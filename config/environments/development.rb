@@ -1,4 +1,15 @@
 Rails.application.configure do
+  config.generators do |g|
+    g.orm             :active_record
+    g.template_engine :erb
+    g.test_framework  false
+    g.stylesheets     false
+    g.javascripts     false
+    g.helper          false
+    g.assets          false
+    g.view_specs      false
+  end
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
