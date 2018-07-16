@@ -2,9 +2,9 @@ class Overseers::BaseController < ApplicationController
 	include Pundit
 	layout 'overseers/layouts/application'
 
-	# before_action :authenticate_overseer!
-	# before_action :set_paper_trail_whodunnit
-	# after_action :verify_authorized
+	before_action :authenticate_overseer!
+	before_action :set_paper_trail_whodunnit
+	after_action :verify_authorized
 
 	protected
 	def policy!(user, record)
@@ -25,7 +25,6 @@ class Overseers::BaseController < ApplicationController
 
 	def pundit_user
 		current_overseer
-		Overseer.new
 	end
 
 	def namespace
