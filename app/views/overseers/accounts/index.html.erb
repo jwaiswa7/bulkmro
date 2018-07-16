@@ -10,6 +10,7 @@
       <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
         <tr>
           <td><%= account.id %></td>
           <td><%= account.name %></td>
+          <td><a href="<%= edit_overseers_account_path(account) %>">Edit</a></td>
         </tr>
       <% end %>
     </tbody>

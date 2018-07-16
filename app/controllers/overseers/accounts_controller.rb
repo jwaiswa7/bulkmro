@@ -1,4 +1,5 @@
 class Overseers::AccountsController < Overseers::BaseController
+  before_action :set_account, :only => [:edit, :update]
   def index
     @accounts = Account.all
     authorize @accounts
@@ -38,6 +39,7 @@ class Overseers::AccountsController < Overseers::BaseController
     params.require(:account).permit(
       :id,
       :name,
+      :contacts_attributes => [:id, :first_name, :last_name]
     )
   end
 

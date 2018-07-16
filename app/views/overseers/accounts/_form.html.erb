@@ -1,0 +1,15 @@
+<%= simple_form_for([:overseers, @account]) do |f| %>
+  <%= f.input :name %>
+
+  <h4>Contacts</h4>
+  <%= f.nested_fields_for :contacts, wrapper_tag: :div do |contact| %>
+    <%= contact.input :first_name %>
+    <%= contact.input :last_name %>
+  <% end %>
+
+  <%= f.add_nested_fields_link :contacts do %>
+    <button type="button" class="btn btn-primary m-t-10">+ Add Contact</button>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
