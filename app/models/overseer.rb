@@ -1,4 +1,6 @@
 class Overseer < ApplicationRecord
+  include Mixins::HasName
+
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -13,4 +15,5 @@ class Overseer < ApplicationRecord
       admin: 10,
       sales: 20
   }
+
 end

@@ -18,7 +18,10 @@
         <tr>
           <td><%= account.id %></td>
           <td><%= account.name %></td>
-          <td><a href="<%= edit_overseers_account_path(account) %>">Edit</a></td>
+          <td>
+            <a href="<%= edit_overseers_account_path(account) %>">Edit</a>
+            <a href="<%= overseers_account_path(account) %>">Show</a>
+          </td>
         </tr>
       <% end %>
     </tbody>

@@ -45,8 +45,8 @@
           <img src="https://media.licdn.com/dms/image/C4E03AQGw5Z8eu4-Cpg/profile-displayphoto-shrink_800_800/0?e=1536796800&v=beta&t=mlJuSuoV2XTqaD51PMel37ga1pVY6E6r7cicTeEFX6A" alt="" class="thumb-md rounded-circle">
         </div>
         <div class="user-info">
-          <a href="#">Gaurang Shah</a>
-          <p class="text-muted m-0">Administrator</p>
+          <a href="#"><%= current_overseer.full_name %></a>
+          <p class="text-muted m-0"><%= format_enum(current_overseer.role) %></p>
         </div>
       </div>
 

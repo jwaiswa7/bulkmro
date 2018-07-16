@@ -1,8 +1,12 @@
 class Overseers::AccountsController < Overseers::BaseController
-  before_action :set_account, :only => [:edit, :update]
+  before_action :set_account, :only => [:edit, :update, :show]
   def index
     @accounts = Account.all
     authorize @accounts
+  end
+
+  def show
+    authorize @account
   end
 
   def new

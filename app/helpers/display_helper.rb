@@ -19,6 +19,9 @@ module DisplayHelper
     end
   end
 
+  def format_enum(val)
+    val.humanize if val.present?
+  end
 
   def percentage(number)
     if number
