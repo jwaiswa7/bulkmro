@@ -5,6 +5,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
     create_table :overseers do |t|
       t.string :first_name
       t.string :last_name
+      t.integer :role, index: true
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""

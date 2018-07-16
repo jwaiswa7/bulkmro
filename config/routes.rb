@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :overseers
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root :to => 'overseers/dashboard#show'
+  get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
+
+  namespace 'overseers' do
+    resource :dashboard, :controller => :dashboard
+    resources :accounts do
+      namespace :accounts do
+        resources :companies
+        resources :contacts
+        resources :addresses
+      end
+    end
+  end
+
 end
