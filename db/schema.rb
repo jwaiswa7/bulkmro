@@ -19,13 +19,25 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_accounts_on_created_by_id"
+    t.index ["name"], name: "index_accounts_on_name", unique: true
+    t.index ["updated_by_id"], name: "index_accounts_on_updated_by_id"
   end
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "company_id"
+    t.string "name"
+    t.string "street1"
+    t.string "street2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
+    t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
   create_table "brands", force: :cascade do |t|
@@ -33,7 +45,11 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["company_id"], name: "index_brands_on_company_id"
+    t.index ["created_by_id"], name: "index_brands_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_brands_on_updated_by_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -42,8 +58,12 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["account_id"], name: "index_companies_on_account_id"
+    t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
+    t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
   end
 
   create_table "company_contacts", force: :cascade do |t|
@@ -51,8 +71,12 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.bigint "contact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["company_id"], name: "index_company_contacts_on_company_id"
     t.index ["contact_id"], name: "index_company_contacts_on_contact_id"
+    t.index ["created_by_id"], name: "index_company_contacts_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_company_contacts_on_updated_by_id"
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -61,7 +85,11 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["account_id"], name: "index_contacts_on_account_id"
+    t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_contacts_on_updated_by_id"
   end
 
   create_table "inquiries", force: :cascade do |t|
@@ -70,8 +98,12 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
+    t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 
   create_table "overseers", force: :cascade do |t|
@@ -110,14 +142,22 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.string "sku"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
     t.index ["brand_id"], name: "index_products_on_brand_id"
+    t.index ["created_by_id"], name: "index_products_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
   create_table "quotes", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_quotes_on_created_by_id"
     t.index ["inquiry_id"], name: "index_quotes_on_inquiry_id"
+    t.index ["updated_by_id"], name: "index_quotes_on_updated_by_id"
   end
 
   create_table "rfqs", force: :cascade do |t|
@@ -125,8 +165,12 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.bigint "inquiry_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_rfqs_on_created_by_id"
     t.index ["inquiry_id"], name: "index_rfqs_on_inquiry_id"
     t.index ["supplier_id"], name: "index_rfqs_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_rfqs_on_updated_by_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -139,17 +183,37 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "accounts", "overseers", column: "created_by_id"
+  add_foreign_key "accounts", "overseers", column: "updated_by_id"
   add_foreign_key "addresses", "companies"
+  add_foreign_key "addresses", "overseers", column: "created_by_id"
+  add_foreign_key "addresses", "overseers", column: "updated_by_id"
   add_foreign_key "brands", "companies"
+  add_foreign_key "brands", "overseers", column: "created_by_id"
+  add_foreign_key "brands", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
+  add_foreign_key "companies", "overseers", column: "created_by_id"
+  add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
   add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
+  add_foreign_key "company_contacts", "overseers", column: "created_by_id"
+  add_foreign_key "company_contacts", "overseers", column: "updated_by_id"
   add_foreign_key "contacts", "accounts"
+  add_foreign_key "contacts", "overseers", column: "created_by_id"
+  add_foreign_key "contacts", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
+  add_foreign_key "inquiries", "overseers", column: "created_by_id"
+  add_foreign_key "inquiries", "overseers", column: "updated_by_id"
   add_foreign_key "products", "brands"
+  add_foreign_key "products", "overseers", column: "created_by_id"
+  add_foreign_key "products", "overseers", column: "updated_by_id"
   add_foreign_key "quotes", "inquiries"
+  add_foreign_key "quotes", "overseers", column: "created_by_id"
+  add_foreign_key "quotes", "overseers", column: "updated_by_id"
   add_foreign_key "rfqs", "companies", column: "supplier_id"
   add_foreign_key "rfqs", "inquiries"
+  add_foreign_key "rfqs", "overseers", column: "created_by_id"
+  add_foreign_key "rfqs", "overseers", column: "updated_by_id"
 end

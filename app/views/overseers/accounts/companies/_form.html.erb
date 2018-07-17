@@ -1,0 +1,17 @@
+Account under <%= @company.account.name %>
+
+<%= simple_form_for([:overseers, @account, @company]) do |f| %>
+  <%= f.hidden_field :account_id %>
+  <%= f.input :created_by, disabled: true %>
+  <%= f.input :created_at, disabled: true %>
+  <%= f.input :updated_by, disabled: true %>
+  <%= f.input :updated_at, disabled: true %>
+
+
+  <%= f.input :name %>
+
+  <%= f.association :default_payment_option, include_blank: 'Select a default' %>
+  <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <%= f.submit %>
+<% end %>

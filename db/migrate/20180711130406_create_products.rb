@@ -5,6 +5,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.string :sku
 
       t.timestamps
+      t.userstamps
     end
   end
 end

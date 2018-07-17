@@ -6,6 +6,13 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
+
+    resources :companies do
+      scope module: 'companies' do
+        resources :addresses
+      end
+    end
+
     resources :accounts do
       scope module: 'accounts' do
         resources :companies

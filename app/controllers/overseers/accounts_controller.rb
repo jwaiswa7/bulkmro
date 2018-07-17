@@ -10,16 +10,15 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def new
-    @account = Account.new
+    @account = Account.new(overseer: current_overseer)
     authorize @account
   end
 
   def create
-    @account = Account.new(account_params)
+    @account = Account.new(account_params.merge(overseer: current_overseer))
     authorize @account
     if @account.save
-      set_flash(@account, action_name)
-      redirect_to edit_overseers_account_path(@account)
+      redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'new'
     end
@@ -30,18 +29,16 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def update
-    @account.assign_attributes(account_params)
+    @account.assign_attributes(account_params.merge(overseer: current_overseer))
     authorize @account
     if @account.save
-      set_flash(@account, action_name)
-      redirect_to edit_overseers_account_path(@account)
+      redirect_to edit_overseers_account_path(@account), notice: flash_message(@account, action_name)
     end
   end
 
   private
   def account_params
     params.require(:account).permit(
-      :id,
       :name,
       :contacts_attributes => [:id, :first_name, :last_name]
     )

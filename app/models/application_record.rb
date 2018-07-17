@@ -5,6 +5,8 @@ class ApplicationRecord < ActiveRecord::Base
   include PgSearch
   include Hashid::Rails
 
+  belongs_to :created_by, class_name: 'Overseer', required: false
+
   scope :latest, -> { order(:created_at => :desc) }
   scope :earliest, -> { order(:created_at => :asc) }
   scope :today, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today) }

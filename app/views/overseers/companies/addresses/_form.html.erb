@@ -1,10 +1,15 @@
-<%= simple_form_for([:overseers, @account]) do |f| %>
+company under <%= @address.company %>
+
+<%= simple_form_for([:overseers, @company, @address]) do |f| %>
+  <%= f.hidden_field :company_id %>
   <%= f.input :created_by, disabled: true %>
   <%= f.input :created_at, disabled: true %>
   <%= f.input :updated_by, disabled: true %>
   <%= f.input :updated_at, disabled: true %>
 
   <%= f.input :name %>
+  <%= f.input :street1, as: :text %>
+  <%= f.input :street2, as: :text  %>
 
   <%= f.submit %>
 <% end %>

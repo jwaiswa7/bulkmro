@@ -4,6 +4,7 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.string :name, index: { :unique => true }
 
       t.timestamps
+      t.userstamps
     end
   end
 end

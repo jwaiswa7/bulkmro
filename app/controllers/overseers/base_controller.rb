@@ -4,6 +4,7 @@ class Overseers::BaseController < ApplicationController
 
 	before_action :authenticate_overseer!
 	before_action :set_paper_trail_whodunnit
+	before_action
 	after_action :verify_authorized
 
 	protected
@@ -27,6 +28,10 @@ class Overseers::BaseController < ApplicationController
 		current_overseer
 	end
 
+	def stamping_user
+		current_overseer
+	end
+
 	def namespace
 		controller_namespace.capitalize
 	end
@@ -41,17 +46,21 @@ class Overseers::BaseController < ApplicationController
 
 	def set_flash(object, action, sentiment: :info, now: false)
 		flash_hash = now ? flash.now : flash
+		flash_hash[sentiment] = flash_message(object, action)
+	end
+
+	def flash_message(object, action)
 		class_name = object.class.name
 
 		case action.to_sym
-			when :create
-				flash_hash[sentiment] = "#{class_name} has been successfully created."
-			when :update
-				flash_hash[sentiment] = "#{class_name} has been successfully updated."
-			when :destroy
-				flash_hash[sentiment] = "#{class_name} has been successfully destroyed."
-			else
-				flash_hash[sentiment] = "#{class_name} has been successfully changed."
+		when :create
+			"#{class_name} has been successfully created."
+		when :update
+			"#{class_name} has been successfully updated."
+		when :destroy
+			"#{class_name} has been successfully destroyed."
+		else
+			"#{class_name} has been successfully changed."
 		end
 	end
 end

@@ -6,6 +6,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :company, foreign_key: true
 
       t.timestamps
+      t.userstamps
     end
   end
 end

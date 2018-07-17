@@ -1,0 +1,15 @@
+Account under <%= @contact.account.name %>
+
+<%= simple_form_for([:overseers, @account, @contact]) do |f| %>
+  <%= f.hidden_field :account_id %>
+  <%= f.input :created_by, disabled: true %>
+  <%= f.input :created_at, disabled: true %>
+  <%= f.input :updated_by, disabled: true %>
+  <%= f.input :updated_at, disabled: true %>
+
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.select :company_ids, @account.companies.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <%= f.submit %>
+<% end %>

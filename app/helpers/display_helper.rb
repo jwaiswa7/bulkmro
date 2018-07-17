@@ -37,6 +37,10 @@ module DisplayHelper
     [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (currency || currency.default).sign : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
   end
 
+  def format_collection(kollection)
+    kollection.map(&:to_s).to_sentence
+  end
+
   def currency_sign(currency)
     content_tag :span do
       currency.sign
