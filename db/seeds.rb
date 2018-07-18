@@ -84,6 +84,8 @@ end
 
 100.times do
   Product.create!(
-
+    name: Faker::Commerce.product_name,
+    sku: ['BM', rand(5..300000) + 100000].join,
+    brand: RandomRecord.for(Brand)
   )
 end

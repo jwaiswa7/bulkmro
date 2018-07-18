@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.integer "updated_by_id"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
+    t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
