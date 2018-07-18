@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_16_120311) do
+ActiveRecord::Schema.define(version: 2018_07_18_135528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,17 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 
+  create_table "inquiry_products", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.bigint "product_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
+    t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
+    t.index ["product_id"], name: "index_inquiry_products_on_product_id"
+  end
+
   create_table "overseers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -228,6 +239,8 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiry_products", "inquiries"
+  add_foreign_key "inquiry_products", "products"
   add_foreign_key "products", "brands"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"

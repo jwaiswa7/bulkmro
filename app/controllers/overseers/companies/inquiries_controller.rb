@@ -42,7 +42,8 @@ class Overseers::Companies::InquiriesController < Overseers::Companies::BaseCont
         :contact_id,
         :billing_address_id,
         :shipping_address_id,
-        :comments
+        :comments,
+        :inquiry_products_attributes => [:id, :product_id, :quantity]
     )
   end
 end
