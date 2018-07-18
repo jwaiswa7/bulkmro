@@ -41,6 +41,10 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
+  def format_size(kollection)
+    [kollection.size, kollection.class.to_s.split('::').first.downcase.pluralize].join(' ')
+  end
+
   def currency_sign(currency)
     content_tag :span do
       currency.sign

@@ -6,7 +6,9 @@ class Company < ApplicationRecord
   has_many :company_contacts
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
-  has_many :brands
+  has_many :company_brands
+  has_many :brands, :through => :company_brands
+  accepts_nested_attributes_for :company_brands
   has_many :products, :through => :brands
   has_many :inquiries
   has_many :addresses

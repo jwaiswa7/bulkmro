@@ -1,0 +1,28 @@
+<a href="<%= new_overseers_product_path %>">
+  <button type="button" class="btn btn-primary m-t-10">+ Create New Product</button>
+</a>
+
+<div class="table-responsive">
+  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Brand</th>
+        <th>Name</th>
+        <th>Available with</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td><%= product.id %></td>
+          <td><%= product.brand.to_s %></td>
+          <td><%= product.name %></td>
+          <td><%= format_size(product.companies) %></td>
+          <td><a href="<%= edit_overseers_product_path(product) %>">Edit</a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

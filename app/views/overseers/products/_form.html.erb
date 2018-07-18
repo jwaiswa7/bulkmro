@@ -1,0 +1,19 @@
+<%= simple_form_for([:overseers, @product]) do |f| %>
+  <% if f.object.errors.any? %>
+    <% f.object.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  <% end %>
+
+  <%= f.input :created_by, disabled: true %>
+  <%= f.input :created_at, disabled: true %>
+  <%= f.input :updated_by, disabled: true %>
+  <%= f.input :updated_at, disabled: true %>
+
+  <%= f.input :name %>
+  <%= f.input :sku %>
+  <%= f.association :brand, include_blank: 'Select a brand' %>
+
+
+  <%= f.submit %>
+<% end %>

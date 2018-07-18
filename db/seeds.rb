@@ -77,3 +77,7 @@ Company.all.each do |company|
     company.addresses.create(name: Faker::Address.community, street1: Faker::Address.street_address, street2: Faker::Address.secondary_address)
   end
 end
+
+10.times do
+  Brand.create(name: Faker::Company.name)
+end

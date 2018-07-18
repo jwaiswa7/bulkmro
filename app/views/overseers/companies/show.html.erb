@@ -56,3 +56,24 @@
     </tbody>
   </table>
 </div>
+
+<h4>Brands</h4>
+
+<div class="table-responsive">
+  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @company.brands.each do |brand| %>
+      <tr>
+        <td><%= brand.id %></td>
+        <td><%= brand.to_s %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

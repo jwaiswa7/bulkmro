@@ -1,0 +1,11 @@
+
+<%= simple_form_for([:overseers, @brand]) do |f| %>
+  <%= f.input :created_by, disabled: true %>
+  <%= f.input :created_at, disabled: true %>
+  <%= f.input :updated_by, disabled: true %>
+  <%= f.input :updated_at, disabled: true %>
+
+  <%= f.input :name %>
+
+  <%= f.submit %>
+<% end %>

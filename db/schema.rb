@@ -41,13 +41,11 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
   end
 
   create_table "brands", force: :cascade do |t|
-    t.bigint "company_id"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.index ["company_id"], name: "index_brands_on_company_id"
     t.index ["created_by_id"], name: "index_brands_on_created_by_id"
     t.index ["updated_by_id"], name: "index_brands_on_updated_by_id"
   end
@@ -64,6 +62,20 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
     t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
+  end
+
+  create_table "company_brands", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "brand_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["brand_id"], name: "index_company_brands_on_brand_id"
+    t.index ["company_id", "brand_id"], name: "index_company_brands_on_company_id_and_brand_id", unique: true
+    t.index ["company_id"], name: "index_company_brands_on_company_id"
+    t.index ["created_by_id"], name: "index_company_brands_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_company_brands_on_updated_by_id"
   end
 
   create_table "company_contacts", force: :cascade do |t|
@@ -144,6 +156,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
 
   create_table "products", force: :cascade do |t|
     t.bigint "brand_id"
+    t.string "name"
     t.string "sku"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -193,13 +206,16 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"
-  add_foreign_key "brands", "companies"
   add_foreign_key "brands", "overseers", column: "created_by_id"
   add_foreign_key "brands", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
+  add_foreign_key "company_brands", "brands"
+  add_foreign_key "company_brands", "companies"
+  add_foreign_key "company_brands", "overseers", column: "created_by_id"
+  add_foreign_key "company_brands", "overseers", column: "updated_by_id"
   add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
   add_foreign_key "company_contacts", "overseers", column: "created_by_id"

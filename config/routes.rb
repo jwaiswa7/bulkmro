@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
 
+    resources :brands
+
+    resources :products
+
     resources :companies do
       scope module: 'companies' do
         resources :addresses
