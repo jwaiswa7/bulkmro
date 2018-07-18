@@ -69,15 +69,21 @@ end
 Company.all.each do |company|
   # Add company_contacts
   RandomRecords.for(company.account.contacts, [*1..5].sample).each do |contact|
-    company.company_contacts.create(:contact => contact)
+    company.company_contacts.create!(:contact => contact)
   end
 
   # Add addresses
   [*1..3].sample.times do
-    company.addresses.create(name: Faker::Address.community, street1: Faker::Address.street_address, street2: Faker::Address.secondary_address)
+    company.addresses.create!(name: Faker::Address.community, street1: Faker::Address.street_address, street2: Faker::Address.secondary_address)
   end
 end
 
 10.times do
-  Brand.create(name: Faker::Company.name)
+  Brand.create!(name: Faker::Company.name)
+end
+
+100.times do
+  Product.create!(
+
+  )
 end
