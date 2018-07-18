@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["company_id", "contact_id"], name: "index_company_contacts_on_company_id_and_contact_id", unique: true
     t.index ["company_id"], name: "index_company_contacts_on_company_id"
     t.index ["contact_id"], name: "index_company_contacts_on_contact_id"
     t.index ["created_by_id"], name: "index_company_contacts_on_created_by_id"
@@ -93,16 +94,20 @@ ActiveRecord::Schema.define(version: 2018_07_16_120311) do
   end
 
   create_table "inquiries", force: :cascade do |t|
-    t.text "comments"
     t.bigint "contact_id"
     t.bigint "company_id"
+    t.integer "billing_address_id"
+    t.integer "shipping_address_id"
+    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["billing_address_id"], name: "index_inquiries_on_billing_address_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
+    t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 

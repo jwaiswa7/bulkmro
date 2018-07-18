@@ -3,4 +3,6 @@ class CompanyContact < ApplicationRecord
 
   belongs_to :company
   belongs_to :contact
+
+  validates_uniqueness_of :contact, scope: :company
 end

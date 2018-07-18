@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :companies do
       scope module: 'companies' do
         resources :addresses
+        resources :inquiries
       end
     end
 

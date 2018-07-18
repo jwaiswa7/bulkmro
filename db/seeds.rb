@@ -65,3 +65,15 @@ Account.all.each do |account|
     account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
   end
 end
+
+Company.all.each do |company|
+  # Add company_contacts
+  RandomRecords.for(company.account.contacts, [*1..5].sample).each do |contact|
+    company.company_contacts.create(:contact => contact)
+  end
+
+  # Add addresses
+  [*1..3].sample.times do
+    company.addresses.create(name: Faker::Address.community, street1: Faker::Address.street_address, street2: Faker::Address.secondary_address)
+  end
+end

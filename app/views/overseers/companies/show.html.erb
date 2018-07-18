@@ -25,3 +25,34 @@
     </tbody>
   </table>
 </div>
+
+<hr />
+
+<h4>Inquiries</h4>
+
+<a href="<%= new_overseers_company_inquiry_path(@company) %>">
+  <button type="button" class="btn btn-primary m-t-10">+ Add Inquiry</button>
+</a>
+
+<div class="table-responsive">
+  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Point of contact</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @company.inquiries.each do |inquiry| %>
+      <tr>
+        <td><%= inquiry.id %></td>
+        <td><%= inquiry.to_s %></td>
+        <td><%= inquiry.contact.to_s %></td>
+        <td><a href="<%= edit_overseers_company_inquiry_path(inquiry.company, inquiry) %>">Edit</a></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
