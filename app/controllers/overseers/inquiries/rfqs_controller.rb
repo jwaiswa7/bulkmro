@@ -8,9 +8,9 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
     authorize @inquiry
 
     # TODO redo validation
-    s_products = inquiry_params[:inquiry_products_attributes].to_unsafe_h.map { |k, v| v[:supplier_ids] }.reject { |x| x.reject(&:blank?).size }
+    # s_products = inquiry_params[:inquiry_products_attributes].to_unsafe_h.map { |k, v| v[:supplier_ids] }.reject { |x| x.reject(&:blank?).size }
 
-    if @inquiry.products.size == s_products.size && @inquiry.update(inquiry_params.merge(:overseer => current_overseer))
+    if @inquiry.update(inquiry_params.merge(:overseer => current_overseer))
       redirect_to generate_rfqs_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'select_suppliers'
