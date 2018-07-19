@@ -43,7 +43,8 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :name,
         :default_payment_option_id,
         :contact_ids => [],
-        :brand_ids => []
+        :brand_ids => [],
+        :product_ids => []
     )
   end
 end

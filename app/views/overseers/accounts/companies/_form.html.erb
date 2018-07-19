@@ -11,8 +11,19 @@ Account under <%= @company.account.name %>
   <%= f.input :name %>
 
   <%= f.association :default_payment_option, include_blank: 'Select a default' %>
+  <hr />
+  <%= f.label :contact_ids, 'Contacts' %>
   <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <hr />
+  <%= f.label :brand_ids, 'Brands' %>
   <%= f.select :brand_ids, Brand.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <hr />
+  <%= f.label :product_ids, 'Products' %>
+  <%= f.select :product_ids, Product.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <hr />
 
   <%= f.submit %>
 <% end %>

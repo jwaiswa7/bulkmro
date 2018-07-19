@@ -82,10 +82,43 @@ end
   Brand.create!(name: Faker::Company.name)
 end
 
+Brand.all.each do |brand|
+  suppliers = RandomRecords.for(Company, [*1..5].sample)
+  suppliers.each do |supplier|
+    brand.brand_suppliers.create!(supplier: supplier)
+  end
+end
+
 100.times do
   Product.create!(
     name: Faker::Commerce.product_name,
     sku: ['BM', rand(5..300000) + 100000].join,
     brand: RandomRecord.for(Brand)
   )
+end
+
+Product.all.each do |product|
+  suppliers = RandomRecords.for(Company, [*1..3].sample)
+  suppliers.each do |supplier|
+    product.product_suppliers.create!(supplier: supplier)
+  end
+end
+
+Account.all.each do |account|
+  5.times do
+    contact = RandomRecord.for(account.contacts)
+    company = RandomRecord.for(contact.companies)
+    products = RandomRecords.for(Product.all, 5)
+    i = Inquiry.create!(
+      contact: contact,
+      company: company,
+      billing_address: RandomRecord.for(company.addresses),
+      shipping_address: RandomRecord.for(company.addresses),
+      comments: Faker::Lorem.paragraph_by_chars(256, false)
+    )
+
+    products.each do |product|
+      i.inquiry_products.create(product_id: product.id, quantity: 1)
+    end
+  end
 end

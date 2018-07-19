@@ -14,5 +14,8 @@
 //= require activestorage
 //= require turbolinks
 //= require jquery/dist/jquery.min
+//= require select2/dist/js/select2.full.js
 //= require nested_form_fields
+//= require main
+//= require run
 //= require_tree .

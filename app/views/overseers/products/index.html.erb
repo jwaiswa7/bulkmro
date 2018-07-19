@@ -10,7 +10,8 @@
         <th>Brand</th>
         <th>Name</th>
         <th>SKU</th>
-        <th>Available with</th>
+        <th>Suppliers through brands</th>
+        <th>Suppliers through products</th>
         <th>Edit</th>
       </tr>
     </thead>
@@ -21,7 +22,8 @@
           <td><%= product.brand.to_s %></td>
           <td><%= product.name %></td>
           <td><%= product.sku %></td>
-          <td><%= format_size(product.companies) %></td>
+          <td><%= format_size(product.b_suppliers) %></td>
+          <td><%= format_size(product.p_suppliers) %></td>
           <td><a href="<%= edit_overseers_product_path(product) %>">Edit</a></td>
         </tr>
       <% end %>

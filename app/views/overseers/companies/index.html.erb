@@ -7,6 +7,7 @@
       <th>Name</th>
       <th>Contacts</th>
       <th>Brands</th>
+      <th>Products</th>
       <th>Addresses</th>
       <th>Actions</th>
     </tr>
@@ -18,10 +19,11 @@
         <td><%= company.name %></td>
         <td><%= format_collection(company.contacts) %></td>
         <td><%= format_collection(company.brands) %></td>
+        <td><%= format_collection(company.products) %></td>
         <td><%= format_collection(company.addresses) %></td>
         <td>
-          <a href="<%= edit_overseers_account_company_path(company.account, company) %>">Edit</a>
-          <a href="<%= overseers_company_path(company) %>">Show</a>
+          <a href="<%= edit_overseers_account_company_path(company.account, company) %>">Edit</a> |
+          <a href="<%= overseers_company_path(company) %>">Show</a> |
           <a href="<%= new_overseers_company_inquiry_path(company) %>">+ New Inquiry</a>
         </td>
       </tr>

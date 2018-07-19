@@ -7,6 +7,7 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
       t.integer :quantity
 
       t.timestamps
+      t.userstamps
     end
 
     add_index :inquiry_products, [:inquiry_id, :product_id], unique: true

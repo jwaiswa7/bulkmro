@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-md-6">
+    <h3>Suppliers</h3>
+
+    <% @inquiry.suppliers.uniq.each do |supplier| %>
+
+      <h6><%= supplier.to_s %></h6>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @inquiry.inquiry_products_for(supplier).each do |inquiry_product| %>
+          <tr>
+            <td><%= inquiry_product.product.name %></td>
+            <td><%= inquiry_product.quantity %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
+    <h3>Email Template</h3>
+  </div>
+
+  <button type="submit">Generate and send rfqs</button>
+</div>

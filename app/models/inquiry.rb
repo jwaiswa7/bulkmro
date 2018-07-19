@@ -7,11 +7,30 @@ class Inquiry < ApplicationRecord
   belongs_to :billing_address, class_name: 'Address', foreign_key: 'billing_address_id'
   belongs_to :shipping_address, class_name: 'Address', foreign_key: 'shipping_address_id'
 
-  has_many :inquiry_products
+  has_many :inquiry_products, :inverse_of => :inquiry
   has_many :products, :through => :inquiry_products
+  has_many :inquiry_suppliers, :through => :inquiry_products
+  has_many :s_products, :through => :inquiry_suppliers, :source => :product
   accepts_nested_attributes_for :inquiry_products
+  has_many :brands, :through => :products
+  has_many :suppliers, :through => :inquiry_suppliers
 
   has_many :quotes
   has_many :rfqs
 
+  def all_products_have_suppliers?
+    products.size == s_products.size
+  end
+
+  def inquiry_products_for(supplier)
+    self.inquiry_products.joins(:inquiry_suppliers).where('inquiry_suppliers.supplier_id = ?', supplier.id)
+  end
+
+  def suppliers_selected?
+    self.inquiry_suppliers.present?
+  end
+
+  def rfqs_generated?
+    self.rfqs.present?
+  end
 end

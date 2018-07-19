@@ -8,8 +8,20 @@ Rails.application.routes.draw do
     resource :dashboard, :controller => :dashboard
 
     resources :brands
-
     resources :products
+
+    resources :inquiries do
+      scope module: 'inquiries' do
+        resources :rfqs do
+          collection do
+            get 'select_suppliers'
+            post 'suppliers_selected'
+            get 'generate_rfqs'
+            post 'rfqs_generated'
+          end
+        end
+      end
+    end
 
     resources :companies do
       scope module: 'companies' do
@@ -26,5 +38,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
 end

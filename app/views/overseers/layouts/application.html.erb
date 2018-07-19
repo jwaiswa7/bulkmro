@@ -5,6 +5,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
@@ -84,6 +85,12 @@
               <i class="ti-package"></i><span> Products </span>
             </a>
           </li>
+
+          <li class="active">
+            <a href="<%= overseers_inquiries_path %>">
+              <i class="ti-marker"></i><span> Inquiries </span>
+            </a>
+          </li>
         </ul>
       </div>
       <!-- Sidebar -->
@@ -101,7 +108,7 @@
 
           <div class="row">
             <div class="col-sm-12">
-              <h4 class="header-title m-t-0 m-b-20"><%= controller_name.capitalize %></h4>
+              <h4 class="header-title m-t-0 m-b-20"><%= controller_path.split('/').push(action_name).map { |x| x.capitalize }.join(' > ') %></h4>
             </div>
           </div>
 

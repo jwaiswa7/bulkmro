@@ -19,16 +19,18 @@ company under <%= @inquiry.company %>
   <%= f.association :billing_address, include_blank: 'Select a billing address', collection: @company.addresses  %>
   <%= f.association :shipping_address, include_blank: 'Select a shipping address', collection: @company.addresses  %>
 
+  <hr />
   <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
     <%= inquiry_product.hidden_field :id %>
-    <%= inquiry_product.association :product, include_blank: 'Choose a product', label: false %>
+    <%= inquiry_product.association :product, collection: [inquiry_product.object.product], include_blank: "Type SKU number, name, or brand", label: false, input_html: { class: 'ajax', :'data-source' => overseers_products_path } %>
     <%= inquiry_product.input :quantity %>
   <% end %>
 
   <%= f.add_nested_fields_link :inquiry_products, 'Add Product' %>
 
+  <hr />
 
   <%= f.input :comments %>
 
-  <%= f.submit %>
+  <%= f.submit 'Save and select suppliers' %>
 <% end %>

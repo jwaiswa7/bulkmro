@@ -1,0 +1,16 @@
+<%= simple_form_for(@inquiry, url: suppliers_selected_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
+  <% if f.object.errors.any? %>
+    <% f.object.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  <% end %>
+
+  <%= f.simple_fields_for :inquiry_products do |inquiry_product| %>
+    <h3><%= inquiry_product.object.product.name %></h3>
+    <%= inquiry_product.hidden_field :id %>
+    <%= inquiry_product.select :supplier_ids, inquiry_product.object.product.suppliers.map { |x| [x.to_contextual_s(inquiry_product.object.product), x.id] }, {}, multiple: true %>
+  <% end %>
+
+  <hr />
+  <%= f.submit 'Save and generate RFQs' %>
+<% end %>

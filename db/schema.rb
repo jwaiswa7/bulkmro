@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_18_135528) do
+ActiveRecord::Schema.define(version: 2018_07_19_112251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,20 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
+  create_table "brand_suppliers", force: :cascade do |t|
+    t.bigint "brand_id"
+    t.integer "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["brand_id"], name: "index_brand_suppliers_on_brand_id"
+    t.index ["created_by_id"], name: "index_brand_suppliers_on_created_by_id"
+    t.index ["supplier_id", "brand_id"], name: "index_brand_suppliers_on_supplier_id_and_brand_id", unique: true
+    t.index ["supplier_id"], name: "index_brand_suppliers_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_brand_suppliers_on_updated_by_id"
+  end
+
   create_table "brands", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -62,20 +76,6 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
     t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
-  end
-
-  create_table "company_brands", force: :cascade do |t|
-    t.bigint "company_id"
-    t.bigint "brand_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["brand_id"], name: "index_company_brands_on_brand_id"
-    t.index ["company_id", "brand_id"], name: "index_company_brands_on_company_id_and_brand_id", unique: true
-    t.index ["company_id"], name: "index_company_brands_on_company_id"
-    t.index ["created_by_id"], name: "index_company_brands_on_created_by_id"
-    t.index ["updated_by_id"], name: "index_company_brands_on_updated_by_id"
   end
 
   create_table "company_contacts", force: :cascade do |t|
@@ -129,9 +129,27 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_inquiry_products_on_created_by_id"
     t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
     t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
     t.index ["product_id"], name: "index_inquiry_products_on_product_id"
+    t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
+  end
+
+  create_table "inquiry_suppliers", force: :cascade do |t|
+    t.bigint "inquiry_product_id"
+    t.integer "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_inquiry_suppliers_on_created_by_id"
+    t.index ["inquiry_product_id", "supplier_id"], name: "index_inquiry_suppliers_on_inquiry_product_id_and_supplier_id", unique: true
+    t.index ["inquiry_product_id"], name: "index_inquiry_suppliers_on_inquiry_product_id"
+    t.index ["supplier_id"], name: "index_inquiry_suppliers_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_inquiry_suppliers_on_updated_by_id"
   end
 
   create_table "overseers", force: :cascade do |t|
@@ -163,6 +181,20 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "product_suppliers", force: :cascade do |t|
+    t.bigint "product_id"
+    t.integer "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_product_suppliers_on_created_by_id"
+    t.index ["product_id"], name: "index_product_suppliers_on_product_id"
+    t.index ["supplier_id", "product_id"], name: "index_product_suppliers_on_supplier_id_and_product_id", unique: true
+    t.index ["supplier_id"], name: "index_product_suppliers_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_product_suppliers_on_updated_by_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -218,16 +250,16 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"
+  add_foreign_key "brand_suppliers", "brands"
+  add_foreign_key "brand_suppliers", "companies", column: "supplier_id"
+  add_foreign_key "brand_suppliers", "overseers", column: "created_by_id"
+  add_foreign_key "brand_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "brands", "overseers", column: "created_by_id"
   add_foreign_key "brands", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
-  add_foreign_key "company_brands", "brands"
-  add_foreign_key "company_brands", "companies"
-  add_foreign_key "company_brands", "overseers", column: "created_by_id"
-  add_foreign_key "company_brands", "overseers", column: "updated_by_id"
   add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
   add_foreign_key "company_contacts", "overseers", column: "created_by_id"
@@ -240,7 +272,17 @@ ActiveRecord::Schema.define(version: 2018_07_18_135528) do
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "inquiries"
+  add_foreign_key "inquiry_products", "overseers", column: "created_by_id"
+  add_foreign_key "inquiry_products", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "products"
+  add_foreign_key "inquiry_suppliers", "companies", column: "supplier_id"
+  add_foreign_key "inquiry_suppliers", "inquiry_products"
+  add_foreign_key "inquiry_suppliers", "overseers", column: "created_by_id"
+  add_foreign_key "inquiry_suppliers", "overseers", column: "updated_by_id"
+  add_foreign_key "product_suppliers", "companies", column: "supplier_id"
+  add_foreign_key "product_suppliers", "overseers", column: "created_by_id"
+  add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"
+  add_foreign_key "product_suppliers", "products"
   add_foreign_key "products", "brands"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
