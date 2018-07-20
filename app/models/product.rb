@@ -9,11 +9,15 @@ class Product < ApplicationRecord
   belongs_to :category
   has_many :product_suppliers
 
-  has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
   has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
+  has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
+
+  def c_suppliers
+    self.category.root.suppliers
+  end
 
   def suppliers
-    Company.where('id in (?)', b_suppliers.pluck(:id) + p_suppliers.pluck(:id)).uniq
+    Company.where('id in (?)', p_suppliers.pluck(:id) + c_suppliers.pluck(:id) + b_suppliers.pluck(:id)).uniq
   end
 
   validates_presence_of :name, :sku

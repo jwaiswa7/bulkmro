@@ -16,12 +16,16 @@ Account under <%= @company.account.name %>
   <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
 
   <hr />
-  <%= f.label :brand_ids, 'Brands' %>
-  <%= f.select :brand_ids, Brand.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
-
-  <hr />
   <%= f.label :product_ids, 'Products' %>
   <%= f.select :product_ids, Product.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <hr />
+  <%= f.label :category_ids, 'Category' %>
+  <%= f.select :category_ids, Category.roots.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+  <hr />
+  <%= f.label :brand_ids, 'Brands' %>
+  <%= f.select :brand_ids, Brand.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
 
   <hr />
 

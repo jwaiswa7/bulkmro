@@ -6,8 +6,9 @@
       <th>Id</th>
       <th>Name</th>
       <th>Contacts</th>
-      <th>Brands</th>
       <th>Products</th>
+      <th>Categories</th>
+      <th>Brands</th>
       <th>Addresses</th>
       <th>Actions</th>
     </tr>
@@ -18,8 +19,9 @@
         <td><%= company.id %></td>
         <td><%= company.name %></td>
         <td><%= format_collection(company.contacts) %></td>
-        <td><%= format_collection(company.brands) %></td>
         <td><%= format_collection(company.products) %></td>
+        <td><%= format_collection(company.categories) %></td>
+        <td><%= format_collection(company.brands) %></td>
         <td><%= format_collection(company.addresses) %></td>
         <td>
           <a href="<%= edit_overseers_account_company_path(company.account, company) %>">Edit</a> |

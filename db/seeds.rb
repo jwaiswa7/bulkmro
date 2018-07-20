@@ -135,6 +135,12 @@ cleaning.children.create([
                               { name: 'Recycling Equipment' },
                           ])
 
+Category.roots.each do |category|
+  suppliers = RandomRecords.for(Company, [*2..5].sample)
+  suppliers.each do |supplier|
+    category.category_suppliers.create!(supplier: supplier)
+  end
+end
 
 100.times do
   Product.create!(

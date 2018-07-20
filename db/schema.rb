@@ -84,6 +84,20 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
     t.index ["descendant_id"], name: "category_desc_idx"
   end
 
+  create_table "category_suppliers", force: :cascade do |t|
+    t.bigint "category_id"
+    t.integer "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["category_id"], name: "index_category_suppliers_on_category_id"
+    t.index ["created_by_id"], name: "index_category_suppliers_on_created_by_id"
+    t.index ["supplier_id", "category_id"], name: "index_category_suppliers_on_supplier_id_and_category_id", unique: true
+    t.index ["supplier_id"], name: "index_category_suppliers_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_category_suppliers_on_updated_by_id"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.bigint "account_id"
     t.integer "default_payment_option_id"
@@ -283,6 +297,10 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
   add_foreign_key "categories", "overseers", column: "updated_by_id"
   add_foreign_key "category_hierarchies", "categories", column: "ancestor_id"
   add_foreign_key "category_hierarchies", "categories", column: "descendant_id"
+  add_foreign_key "category_suppliers", "categories"
+  add_foreign_key "category_suppliers", "companies", column: "supplier_id"
+  add_foreign_key "category_suppliers", "overseers", column: "created_by_id"
+  add_foreign_key "category_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"

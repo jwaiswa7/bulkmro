@@ -13,6 +13,7 @@
   <%= f.input :name %>
   <%= f.input :sku %>
   <%= f.association :brand, include_blank: 'Select a brand' %>
+  <%= f.association :category, include_blank: 'Select a category', collection: Category.leaves %>
 
 
   <%= f.submit %>
