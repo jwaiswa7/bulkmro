@@ -13,7 +13,7 @@ class Product < ApplicationRecord
   has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
 
   def c_suppliers
-    self.category.root.suppliers
+    Company.joins(:category_suppliers).where('category_id IN (?)', self.category.self_and_descendants.map(&:id))
   end
 
   def suppliers

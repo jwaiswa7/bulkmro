@@ -135,7 +135,7 @@ cleaning.children.create([
                               { name: 'Recycling Equipment' },
                           ])
 
-Category.roots.each do |category|
+RandomRecords.for(Category.all, 10).each do |category|
   suppliers = RandomRecords.for(Company, [*2..5].sample)
   suppliers.each do |supplier|
     category.category_suppliers.create!(supplier: supplier)
@@ -147,7 +147,7 @@ end
     name: Faker::Commerce.product_name,
     sku: ['BM', rand(5..300000) + 100000].join,
     brand: RandomRecord.for(Brand),
-    category: RandomRecord.for(Category.leaves)
+    category: RandomRecord.for(Category)
   )
 end
 
