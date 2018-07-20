@@ -18,8 +18,12 @@ class Inquiry < ApplicationRecord
   has_many :quotes
   has_many :rfqs
 
-  def all_products_have_suppliers?
-    products.size == s_products.size
+  validate :all_products_have_suppliers
+
+  def all_products_have_suppliers
+    if products.size != s_products.size && self.inquiry_suppliers.present?
+      errors.add(:inquiry_suppliers, 'every product must have at least one supplier')
+    end
   end
 
   def inquiry_products_for(supplier)
@@ -27,10 +31,10 @@ class Inquiry < ApplicationRecord
   end
 
   def suppliers_selected?
-    self.inquiry_suppliers.present?
+    self.inquiry_suppliers.persisted.present?
   end
 
   def rfqs_generated?
-    self.rfqs.present?
+    self.rfqs.persisted.present?
   end
 end
