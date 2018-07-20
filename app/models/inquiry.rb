@@ -21,7 +21,7 @@ class Inquiry < ApplicationRecord
   validate :all_products_have_suppliers
 
   def all_products_have_suppliers
-    if products.size != s_products.size && self.inquiry_suppliers.present?
+    if products.size != s_products.uniq.size && self.inquiry_suppliers.present?
       errors.add(:inquiry_suppliers, 'every product must have at least one supplier')
     end
   end

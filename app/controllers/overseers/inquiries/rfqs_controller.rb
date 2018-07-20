@@ -7,6 +7,7 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
   def suppliers_selected
     authorize @inquiry
 
+
     begin
       if @inquiry.update_attributes(inquiry_params.merge(:overseer => current_overseer))
         redirect_to generate_rfqs_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -16,6 +17,8 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
     rescue ActiveRecord::RecordInvalid => e
       render 'select_suppliers'
     end
+
+
   end
 
   def generate_rfqs
