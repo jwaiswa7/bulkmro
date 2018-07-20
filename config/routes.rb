@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
     resources :brands
     resources :products
+    resources :categories
 
     resources :inquiries do
       scope module: 'inquiries' do

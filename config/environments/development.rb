@@ -1,4 +1,6 @@
 Rails.application.configure do
+  ActiveSupport::Deprecation.silenced = true
+
   config.generators do |g|
     g.orm             :active_record
     g.template_engine :erb

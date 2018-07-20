@@ -89,11 +89,59 @@ Brand.all.each do |brand|
   end
 end
 
+abrasives = ::Category.create(name: 'Abrasives')
+abrasives.children.create([
+                               { name: 'Abrasive Accessories' },
+                               { name: 'Bands and Rolls' },
+                               { name: 'Discs and Belts' },
+                               { name: 'Hand Pads and Sponges' },
+                               { name: 'Mounting Points' },
+                               { name: 'Polishing' },
+                               { name: 'Sandpaper' },
+                               { name: 'Sharpening Stones' },
+                               { name: 'Tumblers and Accessories' },
+                               { name: 'Wheels' },
+                           ])
+
+abrasives.children.first.children.create([
+                                     { name: 'Abrasive Mandrels' },
+                                     { name: 'Abrasive Pads' },
+                                     { name: 'Abrasive Stars' },
+                                     { name: 'Abrasive Test Kits' },
+                                     { name: 'Assemblies' },
+                                     { name: 'Expanding Drums' },
+                                     { name: 'Face Plates, Hubs' },
+                                     { name: 'Pad Holder' },
+                                 ])
+
+cleaning = ::Category.create(name: 'Cleaning Equipment')
+cleaning.children.create([
+                              { name: 'Furniture Maintenance' },
+                              { name: 'Mops and Cleaning Accessories' },
+                              { name: 'Personal Care' },
+                              { name: 'Toilet Equipment' },
+                              { name: 'Trash Bags' },
+                              { name: 'Wiping' },
+                              { name: 'Brooms and Accessories' },
+                              { name: 'Chemicals' },
+                              { name: 'Containers' },
+                              { name: 'Equipment' },
+                              { name: 'Flooring Accessories' },
+                              { name: 'Flooring Equipment and Accessories' },
+                              { name: 'Janitorial Equipment' },
+                              { name: 'Mops and Accessories' },
+                              { name: 'Odor Control' },
+                              { name: 'Paper Products' },
+                              { name: 'Recycling Equipment' },
+                          ])
+
+
 100.times do
   Product.create!(
     name: Faker::Commerce.product_name,
     sku: ['BM', rand(5..300000) + 100000].join,
-    brand: RandomRecord.for(Brand)
+    brand: RandomRecord.for(Brand),
+    category: RandomRecord.for(Category.leaves)
   )
 end
 

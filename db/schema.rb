@@ -64,6 +64,26 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
     t.index ["updated_by_id"], name: "index_brands_on_updated_by_id"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.integer "parent_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_categories_on_created_by_id"
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
+    t.index ["updated_by_id"], name: "index_categories_on_updated_by_id"
+  end
+
+  create_table "category_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "category_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "category_desc_idx"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.bigint "account_id"
     t.integer "default_payment_option_id"
@@ -199,6 +219,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
 
   create_table "products", force: :cascade do |t|
     t.bigint "brand_id"
+    t.bigint "category_id"
     t.string "name"
     t.string "sku"
     t.datetime "created_at", null: false
@@ -206,6 +227,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["brand_id"], name: "index_products_on_brand_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
@@ -256,6 +278,11 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
   add_foreign_key "brand_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "brands", "overseers", column: "created_by_id"
   add_foreign_key "brands", "overseers", column: "updated_by_id"
+  add_foreign_key "categories", "categories", column: "parent_id"
+  add_foreign_key "categories", "overseers", column: "created_by_id"
+  add_foreign_key "categories", "overseers", column: "updated_by_id"
+  add_foreign_key "category_hierarchies", "categories", column: "ancestor_id"
+  add_foreign_key "category_hierarchies", "categories", column: "descendant_id"
   add_foreign_key "companies", "accounts"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"
@@ -284,6 +311,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
   add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "product_suppliers", "products"
   add_foreign_key "products", "brands"
+  add_foreign_key "products", "categories"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
   add_foreign_key "quotes", "inquiries"
