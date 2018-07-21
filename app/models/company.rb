@@ -24,6 +24,7 @@ class Company < ApplicationRecord
   accepts_nested_attributes_for :brand_suppliers
 
   has_many :inquiries
+  has_many :inquiry_suppliers, :through => :inquiries
   has_many :addresses
 
   validates_presence_of :name

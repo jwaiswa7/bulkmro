@@ -1,34 +1,54 @@
 <div class="row">
   <div class="col-md-6">
-    <h3>Suppliers</h3>
-
-    <% @inquiry.suppliers.uniq.each do |supplier| %>
-
-      <h6><%= supplier.to_s %></h6>
-
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @inquiry.inquiry_products_for(supplier).each do |inquiry_product| %>
-          <tr>
-            <td><%= inquiry_product.product.name %></td>
-            <td><%= inquiry_product.quantity %></td>
-          </tr>
+    <%= simple_form_for(@inquiry, url: rfqs_generated_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
-        </tbody>
-      </table>
+      <% end %>
 
+      <h3>RFQs</h3>
+
+      <%= f.simple_fields_for :rfqs do |rfq| %>
+        <%= rfq.hidden_field :inquiry_id %>
+        <%= rfq.hidden_field :supplier_id %>
+
+        <h6><%= rfq.object.supplier.to_s %></h6>
+
+        <%= rfq.label :contact_ids, 'Email' %>
+        <%= rfq.select :contact_ids, rfq.object.supplier.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% rfq.object.inquiry_products.each do |inquiry_product| %>
+            <tr>
+              <td><%= inquiry_product.product.name %></td>
+              <td><%= inquiry_product.quantity %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
+
+        <h3>Email Template</h3>
+
+
+          <%= f.input :rfq_subject %>
+          <%= f.input :rfq_comments %>
+
+      <%= f.submit 'Generate and send rfqs' %>
     <% end %>
   </div>
-
   <div class="col-md-6">
-    <h3>Email Template</h3>
-  </div>
+    <h4>Email Preview</h4>
 
-  <button type="submit">Generate and send rfqs</button>
+    <iframe height="800" width="675" src="<%= rfqs_generated_mailer_preview_overseers_inquiry_rfqs_path %>">
+    </iframe>
+  </div>
 </div>

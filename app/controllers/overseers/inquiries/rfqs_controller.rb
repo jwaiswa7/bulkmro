@@ -1,5 +1,4 @@
 class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseController
-
   def select_suppliers
     authorize @inquiry
   end
@@ -9,7 +8,7 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
 
 
     begin
-      if @inquiry.update_attributes(inquiry_params.merge(:overseer => current_overseer))
+      if @inquiry.update_attributes(select_suppliers_params.merge(:overseer => current_overseer)) && @inquiry.inquiry_suppliers.size > 0
         redirect_to generate_rfqs_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
       else
         render 'select_suppliers'
@@ -22,17 +21,40 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
   end
 
   def generate_rfqs
+    @inquiry.suppliers.uniq.each do |supplier|
+      @inquiry.rfqs.build(:supplier => supplier)
+    end
+
     authorize @inquiry
   end
 
   def rfqs_generated
     authorize @inquiry
+
+    if @inquiry.update(generate_rfqs_params.merge(:overseer => current_overseer))
+      redirect_to overseers_inquiries_path, notice: flash_message(@inquiry, action_name)
+    else
+      render 'generate_rfqs'
+    end
+  end
+
+  def rfqs_generated_mailer_preview
+    authorize @inquiry
+    render plain: InquiryMailer.rfq_generated(Rfq.new(:inquiry => @inquiry, :supplier => RandomRecord.for(@inquiry.suppliers)))
   end
 
   private
-  def inquiry_params
+  def select_suppliers_params
     params.require(:inquiry).permit(
         :inquiry_products_attributes => [:id, :supplier_ids => []]
+    )
+  end
+
+  def generate_rfqs_params
+    params.require(:inquiry).permit(
+      :rfq_subject,
+      :rfq_comments,
+      :rfqs_attributes => [:supplier_id, :inquiry_id, :contact_ids => []]
     )
   end
 end

@@ -4,6 +4,9 @@ class CreateRfqs < ActiveRecord::Migration[5.2]
       t.integer :supplier_id, index: true
       t.references :inquiry, foreign_key: true
 
+      t.text :subject
+      t.text :comments
+
       t.timestamps
       t.userstamps
     end

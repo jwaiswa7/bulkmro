@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_19_112251) do
+ActiveRecord::Schema.define(version: 2018_07_20_123423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,9 +258,25 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
     t.index ["updated_by_id"], name: "index_quotes_on_updated_by_id"
   end
 
+  create_table "rfq_contacts", force: :cascade do |t|
+    t.bigint "rfq_id"
+    t.bigint "contact_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["contact_id"], name: "index_rfq_contacts_on_contact_id"
+    t.index ["created_by_id"], name: "index_rfq_contacts_on_created_by_id"
+    t.index ["rfq_id", "contact_id"], name: "index_rfq_contacts_on_rfq_id_and_contact_id", unique: true
+    t.index ["rfq_id"], name: "index_rfq_contacts_on_rfq_id"
+    t.index ["updated_by_id"], name: "index_rfq_contacts_on_updated_by_id"
+  end
+
   create_table "rfqs", force: :cascade do |t|
     t.integer "supplier_id"
     t.bigint "inquiry_id"
+    t.text "subject"
+    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -335,6 +351,10 @@ ActiveRecord::Schema.define(version: 2018_07_19_112251) do
   add_foreign_key "quotes", "inquiries"
   add_foreign_key "quotes", "overseers", column: "created_by_id"
   add_foreign_key "quotes", "overseers", column: "updated_by_id"
+  add_foreign_key "rfq_contacts", "contacts"
+  add_foreign_key "rfq_contacts", "overseers", column: "created_by_id"
+  add_foreign_key "rfq_contacts", "overseers", column: "updated_by_id"
+  add_foreign_key "rfq_contacts", "rfqs"
   add_foreign_key "rfqs", "companies", column: "supplier_id"
   add_foreign_key "rfqs", "inquiries"
   add_foreign_key "rfqs", "overseers", column: "created_by_id"

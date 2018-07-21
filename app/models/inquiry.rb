@@ -3,6 +3,7 @@ class Inquiry < ApplicationRecord
 
   belongs_to :contact
   belongs_to :company
+  has_one :account, :through => :company
 
   belongs_to :billing_address, class_name: 'Address', foreign_key: 'billing_address_id'
   belongs_to :shipping_address, class_name: 'Address', foreign_key: 'shipping_address_id'
@@ -15,9 +16,13 @@ class Inquiry < ApplicationRecord
   has_many :brands, :through => :products
   has_many :suppliers, :through => :inquiry_suppliers
 
-  has_many :quotes
   has_many :rfqs
+  accepts_nested_attributes_for :rfqs
+  attr_accessor :rfq_subject, :rfq_comments
 
+  has_many :quotes
+
+  validates_length_of :products, minimum: 1
   validate :all_products_have_suppliers
 
   def all_products_have_suppliers

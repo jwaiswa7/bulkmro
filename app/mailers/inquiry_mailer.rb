@@ -1,8 +1,7 @@
 class InquiryMailer < ApplicationMailer
-  def rfq_generated(inquiry, company)
-    @inquiry = inquiry
-    @company = company
+  def rfq_generated(rfq)
+    @rfq = rfq
 
-    mail template_path: 'mailers', to: "xyz@#{company.name.paramterize}.com", subject: 'This is a test'
+    mail template_path: 'mailers/inquiry_mailer', to: "xyz@#{@rfq.supplier.name.parameterize}.com", subject: 'This is a test'
   end
 end
