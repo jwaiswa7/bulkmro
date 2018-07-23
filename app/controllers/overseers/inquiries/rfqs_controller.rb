@@ -45,6 +45,10 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
     render plain: InquiryMailer.rfq_generated(Rfq.new(:inquiry => @inquiry, :supplier => RandomRecord.for(@inquiry.suppliers)))
   end
 
+  def purchase_quotations
+    authorize @inquiry
+  end
+
   private
   def select_suppliers_params
     params.require(:inquiry).permit(

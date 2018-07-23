@@ -27,9 +27,10 @@
             <a href="<%= edit_overseers_company_inquiry_path(inquiry.company, inquiry) %>">Edit</a>
           <% end %>
 
-          <% if inquiry.rfqs_generated? %>
+          <% if policy(inquiry).purchase_quotations? %>
             <p>RFQs sent on <%= format_date(inquiry.rfqs_generated_on) %></p>
-          <% end %>
+            <a href="<%= purchase_quotations_overseers_inquiry_rfqs_path(inquiry) %>">Purchase quotations</a>
+        <% end %>
 
         </td>
       </tr>

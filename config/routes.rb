@@ -21,6 +21,7 @@ Rails.application.routes.draw do
             get 'generate_rfqs'
             post 'rfqs_generated'
             get 'rfqs_generated_mailer_preview'
+            get 'purchase_quotations'
           end
         end
       end

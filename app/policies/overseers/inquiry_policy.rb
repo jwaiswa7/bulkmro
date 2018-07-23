@@ -22,4 +22,8 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def rfqs_generated_mailer_preview?
     true
   end
+
+  def purchase_quotations?
+    record.suppliers_selected? && record.rfqs_generated?
+  end
 end
