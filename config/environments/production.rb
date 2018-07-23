@@ -1,4 +1,20 @@
 Rails.application.configure do
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: Settings.domain }
+  config.action_mailer.asset_host = Settings.domain
+  config.action_mailer.delivery_method :smtp
+  config.action_mailer.smtp_settings = {
+      :port                 => 587,
+      :domain               => Settings.domain,
+      :address              => 'smtp.sendgrid.net',
+      :enable_starttls_auto => true,
+      :authentication       => :plain,
+      :user_name            => Settings.sendgrid.username,
+      :password             => Settings.sendgrid.password,
+  }
+
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
