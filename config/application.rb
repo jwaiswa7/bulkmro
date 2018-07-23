@@ -17,5 +17,6 @@ module Bulkmro
     # the framework and any gems in your application.
     config.assets.paths << Rails.root.join('vendor', 'assets')
     config.time_zone = 'Asia/Dubai'
+    config.active_record.default_timezone = :local
   end
 end

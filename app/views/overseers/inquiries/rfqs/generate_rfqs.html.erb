@@ -36,11 +36,12 @@
         </table>
       <% end %>
 
-        <h3>Email Template</h3>
+      <h3>Email Template</h3>
+      <div class="col-md-6">
+        <%= f.input :rfq_subject, as: :text, input_html: { rows: 4 } %>
+        <%= f.input :rfq_comments, as: :text, input_html: { rows: 6 } %>
 
-
-          <%= f.input :rfq_subject %>
-          <%= f.input :rfq_comments %>
+      </div>
 
       <%= f.submit 'Generate and send rfqs' %>
     <% end %>

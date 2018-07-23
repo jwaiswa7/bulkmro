@@ -18,14 +18,19 @@
         <td><%= inquiry.contact.to_s %></td>
         <td>
           <% if policy(inquiry).select_suppliers? %>
-            <a href="<%= select_suppliers_overseers_inquiry_rfqs_path(inquiry) %>">Select Suppliers</a>
-          <% end %> |
+            <a href="<%= select_suppliers_overseers_inquiry_rfqs_path(inquiry) %>">Select Suppliers</a> |
+          <% end %>
           <% if policy(inquiry).generate_rfqs? %>
             <a href="<%= generate_rfqs_overseers_inquiry_rfqs_path(inquiry) %>">Generate RFQs</a>
-          <% end %> |
+          <% end %>
           <% if policy(inquiry).edit? %>
             <a href="<%= edit_overseers_company_inquiry_path(inquiry.company, inquiry) %>">Edit</a>
           <% end %>
+
+          <% if inquiry.rfqs_generated? %>
+            <p>RFQs sent on <%= format_date(inquiry.rfqs_generated_on) %></p>
+          <% end %>
+
         </td>
       </tr>
     <% end %>

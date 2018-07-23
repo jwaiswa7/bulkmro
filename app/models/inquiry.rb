@@ -12,7 +12,7 @@ class Inquiry < ApplicationRecord
   has_many :products, :through => :inquiry_products
   has_many :inquiry_suppliers, :through => :inquiry_products
   has_many :s_products, :through => :inquiry_suppliers, :source => :product
-  accepts_nested_attributes_for :inquiry_products
+  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? }
   has_many :brands, :through => :products
   has_many :suppliers, :through => :inquiry_suppliers
 
@@ -22,7 +22,7 @@ class Inquiry < ApplicationRecord
 
   has_many :quotes
 
-  validates_length_of :products, minimum: 1
+  validates_length_of :inquiry_products, minimum: 1
   validate :all_products_have_suppliers
 
   def all_products_have_suppliers
@@ -41,5 +41,9 @@ class Inquiry < ApplicationRecord
 
   def rfqs_generated?
     self.rfqs.persisted.present?
+  end
+
+  def rfqs_generated_on
+    self.rfqs.minimum(:created_at)
   end
 end

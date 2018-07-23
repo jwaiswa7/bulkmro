@@ -14,5 +14,5 @@ class Rfq < ApplicationRecord
 
   validates_length_of :products, minimum: 1
   validates_length_of :contacts, minimum: 1
-  validates_presence_of :subject, :comments
+  validates_presence_of :subject
 end
