@@ -163,7 +163,7 @@ Account.all.each do |account|
     contact = RandomRecord.for(account.contacts)
     company = RandomRecord.for(contact.companies)
     products = RandomRecords.for(Product.all, 5)
-    i = Inquiry.create!(
+    i = Inquiry.new(
       contact: contact,
       company: company,
       billing_address: RandomRecord.for(company.addresses),
@@ -172,7 +172,9 @@ Account.all.each do |account|
     )
 
     products.each do |product|
-      i.inquiry_products.create(product_id: product.id, quantity: 1)
+      i.inquiry_products.build(product_id: product.id, quantity: 1)
     end
+
+    i.save
   end
 end
