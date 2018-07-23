@@ -29,17 +29,11 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
 
   def rfqs_generated
     @inquiry.assign_attributes(generate_rfqs_params.merge(:overseer => current_overseer))
+    service = Services::Overseers::Rfqs::SaveAndSend.new(@inquiry)
 
     authorize @inquiry
 
-    @inquiry.rfqs.each do |rfq|
-      rfq.assign_attributes(
-          :subject => @inquiry.rfq_subject,
-          :comments => @inquiry.rfq_comments
-      )
-    end
-
-    if @inquiry.save
+    if service.call
       redirect_to overseers_inquiries_path, notice: flash_message(@inquiry, action_name)
     else
       render 'generate_rfqs'
