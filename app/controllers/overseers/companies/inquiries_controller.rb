@@ -11,7 +11,7 @@ class Overseers::Companies::InquiriesController < Overseers::Companies::BaseCont
     authorize @inquiry
 
     if @inquiry.save
-      redirect_to select_suppliers_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to edit_suppliers_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render :new
     end
@@ -26,7 +26,7 @@ class Overseers::Companies::InquiriesController < Overseers::Companies::BaseCont
     authorize @inquiry
 
     if @inquiry.save
-      redirect_to select_suppliers_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to edit_suppliers_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render :new
     end
