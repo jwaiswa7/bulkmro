@@ -1,13 +1,10 @@
 class Inquiry < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::HasAddresses
 
   belongs_to :contact
   belongs_to :company
   has_one :account, :through => :company
-
-  belongs_to :billing_address, class_name: 'Address', foreign_key: 'billing_address_id'
-  belongs_to :shipping_address, class_name: 'Address', foreign_key: 'shipping_address_id'
-
   has_many :inquiry_products, :inverse_of => :inquiry
   has_many :products, :through => :inquiry_products
   has_many :inquiry_suppliers, :through => :inquiry_products
@@ -20,7 +17,7 @@ class Inquiry < ApplicationRecord
   accepts_nested_attributes_for :rfqs
   attr_accessor :rfq_subject, :rfq_comments
 
-  has_many :quotes
+  has_one :sales_quote
 
   validates_length_of :inquiry_products, minimum: 1
   validate :all_products_have_suppliers

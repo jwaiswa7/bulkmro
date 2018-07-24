@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :brands
     resources :products
     resources :categories
+    resources :suppliers
 
     resources :inquiries do
       scope module: 'inquiries' do
@@ -25,6 +26,8 @@ Rails.application.routes.draw do
             post 'update_quotations'
           end
         end
+
+        resources :sales_quotes
       end
     end
 

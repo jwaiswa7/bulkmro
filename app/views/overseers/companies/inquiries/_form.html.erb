@@ -1,6 +1,7 @@
 company under <%= @inquiry.company %>
 
 <%= simple_form_for([:overseers, @company, @inquiry]) do |f| %>
+  <%= f.hidden_field :company_id %>
 
   <% if f.object.errors.any? %>
     <% f.object.errors.full_messages.each do |message| %>
@@ -9,15 +10,14 @@ company under <%= @inquiry.company %>
   <% end %>
 
 
-  <%= f.hidden_field :company_id %>
   <%= f.input :created_by, disabled: true %>
   <%= f.input :created_at, disabled: true %>
   <%= f.input :updated_by, disabled: true %>
   <%= f.input :updated_at, disabled: true %>
 
   <%= f.association :contact, include_blank: 'Select a point of contact'  %>
-  <%= f.association :billing_address, include_blank: 'Select a billing address', collection: @company.addresses  %>
-  <%= f.association :shipping_address, include_blank: 'Select a shipping address', collection: @company.addresses  %>
+  <%= f.association :billing_address, include_blank: 'Select a billing address'  %>
+  <%= f.association :shipping_address, include_blank: 'Select a shipping address'  %>
 
   <hr />
   <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>

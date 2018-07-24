@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_20_123423) do
+ActiveRecord::Schema.define(version: 2018_07_24_074152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,17 +248,6 @@ ActiveRecord::Schema.define(version: 2018_07_20_123423) do
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
-  create_table "quotes", force: :cascade do |t|
-    t.bigint "inquiry_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_quotes_on_created_by_id"
-    t.index ["inquiry_id"], name: "index_quotes_on_inquiry_id"
-    t.index ["updated_by_id"], name: "index_quotes_on_updated_by_id"
-  end
-
   create_table "rfq_contacts", force: :cascade do |t|
     t.bigint "rfq_id"
     t.bigint "contact_id"
@@ -286,6 +275,41 @@ ActiveRecord::Schema.define(version: 2018_07_20_123423) do
     t.index ["inquiry_id"], name: "index_rfqs_on_inquiry_id"
     t.index ["supplier_id"], name: "index_rfqs_on_supplier_id"
     t.index ["updated_by_id"], name: "index_rfqs_on_updated_by_id"
+  end
+
+  create_table "sales_products", force: :cascade do |t|
+    t.bigint "sales_quote_id"
+    t.bigint "product_id"
+    t.integer "supplier_id"
+    t.integer "quantity"
+    t.decimal "unit_cost_price", default: "0.0"
+    t.decimal "margin"
+    t.decimal "unit_sales_price", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_products_on_created_by_id"
+    t.index ["product_id"], name: "index_sales_products_on_product_id"
+    t.index ["sales_quote_id", "product_id"], name: "index_sales_products_on_sales_quote_id_and_product_id", unique: true
+    t.index ["sales_quote_id"], name: "index_sales_products_on_sales_quote_id"
+    t.index ["supplier_id"], name: "index_sales_products_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_sales_products_on_updated_by_id"
+  end
+
+  create_table "sales_quotes", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.integer "billing_address_id"
+    t.integer "shipping_address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["billing_address_id"], name: "index_sales_quotes_on_billing_address_id"
+    t.index ["created_by_id"], name: "index_sales_quotes_on_created_by_id"
+    t.index ["inquiry_id"], name: "index_sales_quotes_on_inquiry_id"
+    t.index ["shipping_address_id"], name: "index_sales_quotes_on_shipping_address_id"
+    t.index ["updated_by_id"], name: "index_sales_quotes_on_updated_by_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -349,9 +373,6 @@ ActiveRecord::Schema.define(version: 2018_07_20_123423) do
   add_foreign_key "products", "categories"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
-  add_foreign_key "quotes", "inquiries"
-  add_foreign_key "quotes", "overseers", column: "created_by_id"
-  add_foreign_key "quotes", "overseers", column: "updated_by_id"
   add_foreign_key "rfq_contacts", "contacts"
   add_foreign_key "rfq_contacts", "overseers", column: "created_by_id"
   add_foreign_key "rfq_contacts", "overseers", column: "updated_by_id"
@@ -360,4 +381,12 @@ ActiveRecord::Schema.define(version: 2018_07_20_123423) do
   add_foreign_key "rfqs", "inquiries"
   add_foreign_key "rfqs", "overseers", column: "created_by_id"
   add_foreign_key "rfqs", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_products", "companies", column: "supplier_id"
+  add_foreign_key "sales_products", "overseers", column: "created_by_id"
+  add_foreign_key "sales_products", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_products", "products"
+  add_foreign_key "sales_products", "sales_quotes"
+  add_foreign_key "sales_quotes", "inquiries"
+  add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
+  add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
 end

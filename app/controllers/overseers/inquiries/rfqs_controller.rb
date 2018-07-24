@@ -55,7 +55,7 @@ class Overseers::Inquiries::RfqsController < Overseers::Inquiries::BaseControlle
     authorize @inquiry
 
     if @inquiry.save
-      redirect_to overseers_inquiries_path, notice: flash_message(@inquiry, action_name)
+      redirect_to new_overseers_inquiry_sales_quote_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_quotations'
     end

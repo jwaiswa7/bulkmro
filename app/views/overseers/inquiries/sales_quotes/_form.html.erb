@@ -1,0 +1,46 @@
+<p>Created using inquiry #<%= @inquiry.id %></p>
+
+<%= simple_form_for([:overseers, @inquiry, @sales_quote]) do |f| %>
+  <%= f.hidden_field :inquiry_id %>
+
+  <% if f.object.errors.any? %>
+    <% f.object.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  <% end %>
+
+  <%= f.association :billing_address, include_blank: 'Select a billing address' %>
+  <%= f.association :shipping_address, include_blank: 'Select a shipping address' %>
+
+
+  <hr />
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Supplier</th>
+        <th>Quantity</th>
+        <th>Unit cost price</th>
+        <th>Margin</th>
+        <th>Unit sales price</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%= f.nested_fields_for :sales_products, wrapper_tag: :tr do |sales_product| %>
+      <tr>
+        <td><%= sales_product.hidden_field :id %><%= sales_product.association :product, collection: [sales_product.object.product], include_blank: "Type SKU number, name, or brand", label: false, input_html: { class: 'ajax', :'data-source' => overseers_products_path } %></td>
+         <td><%= sales_product.association :supplier, collection: [sales_product.object.supplier], include_blank: "Type supplier name", label: false, input_html: { class: 'ajax', :'data-source' => overseers_suppliers_path } %></td>
+        <td><%= sales_product.input :quantity, label: false %></td>
+        <td><%= sales_product.input :unit_cost_price, label: false %></td>
+        <td><%= sales_product.input :margin, label: false %></td>
+        <td><%= sales_product.input :unit_sales_price, label: false %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+
+  <%= f.add_nested_fields_link :sales_products, 'Add Product' %>
+
+<% end %>

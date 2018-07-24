@@ -1,6 +1,8 @@
 class Company < ApplicationRecord
   include Mixins::CanBeStamped
 
+  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+
   belongs_to :account
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id
   has_many :company_contacts
