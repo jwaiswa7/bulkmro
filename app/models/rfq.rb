@@ -7,6 +7,7 @@ class Rfq < ApplicationRecord
   has_many :inquiry_suppliers, -> (object) { where(:supplier => object.supplier) }, :through => :inquiry
   has_many :inquiry_products, :through => :inquiry_suppliers
   has_many :products, :through => :inquiry_products
+  accepts_nested_attributes_for :inquiry_suppliers
 
   has_many :rfq_contacts
   has_many :contacts, :through => :rfq_contacts

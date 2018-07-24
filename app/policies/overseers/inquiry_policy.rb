@@ -3,27 +3,31 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     !record.rfqs_generated? && !record.suppliers_selected?
   end
 
-  def select_suppliers?
+  def edit_suppliers?
     !record.suppliers_selected?
   end
 
-  def suppliers_selected?
-    select_suppliers?
+  def update_suppliers?
+    edit_suppliers?
   end
 
-  def generate_rfqs?
+  def edit_rfqs?
     !record.rfqs_generated? && record.suppliers_selected?
   end
 
-  def rfqs_generated?
-    generate_rfqs?
+  def update_rfqs?
+    edit_rfqs?
   end
 
-  def rfqs_generated_mailer_preview?
-    true
+  def edit_rfqs_mailer_preview?
+    edit_rfqs?
   end
 
-  def purchase_quotations?
+  def edit_quotations?
     record.suppliers_selected? && record.rfqs_generated?
+  end
+
+  def update_quotations?
+    edit_quotations?
   end
 end

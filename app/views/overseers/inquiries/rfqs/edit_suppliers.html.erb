@@ -1,4 +1,4 @@
-<%= simple_form_for(@inquiry, url: suppliers_selected_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
+<%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
   <% if f.object.errors.any? %>
     <% f.object.errors.full_messages.each do |message| %>
       <li><%= message %></li>

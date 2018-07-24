@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 2018_07_20_123423) do
   create_table "inquiry_suppliers", force: :cascade do |t|
     t.bigint "inquiry_product_id"
     t.integer "supplier_id"
+    t.decimal "unit_price", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"

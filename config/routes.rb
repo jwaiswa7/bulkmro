@@ -16,12 +16,13 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :rfqs do
           collection do
-            get 'select_suppliers'
-            post 'suppliers_selected'
-            get 'generate_rfqs'
-            post 'rfqs_generated'
-            get 'rfqs_generated_mailer_preview'
-            get 'purchase_quotations'
+            get 'edit_suppliers'
+            post 'update_suppliers'
+            get 'edit_rfqs'
+            post 'update_rfqs'
+            get 'edit_rfqs_mailer_preview'
+            get 'edit_quotations'
+            post 'update_quotations'
           end
         end
       end

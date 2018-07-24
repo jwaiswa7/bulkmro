@@ -1,0 +1,41 @@
+<%= simple_form_for(@inquiry, url: update_quotations_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
+  <% if f.object.errors.any? %>
+    <% f.object.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  <% end %>
+
+  <h3>RFQs</h3>
+
+  <%= f.simple_fields_for :rfqs do |rfq| %>
+    <%= rfq.hidden_field :id %>
+    <%= rfq.hidden_field :inquiry_id %>
+    <%= rfq.hidden_field :supplier_id %>
+
+    <h6><%= rfq.object.supplier.to_s %></h6>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= rfq.simple_fields_for :inquiry_suppliers do |inquiry_supplier| %>
+        <%= inquiry_supplier.hidden_field :id %>
+        <tr>
+          <td><%= inquiry_supplier.object.product.name %></td>
+          <td><%= inquiry_supplier.object.inquiry_product.quantity %></td>
+          <td><%= inquiry_supplier.input :unit_price %></td>
+        </tr>
+      <% end %>
+
+      </tbody>
+    </table>
+  <% end %>
+
+
+  <%= f.submit 'Update Quotations' %>
+<% end %>

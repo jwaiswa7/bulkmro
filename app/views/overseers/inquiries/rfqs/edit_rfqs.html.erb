@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6">
-    <%= simple_form_for(@inquiry, url: rfqs_generated_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
+    <%= simple_form_for(@inquiry, url: update_rfqs_overseers_inquiry_rfqs_path, method: :POST) do |f| %>
       <% if f.object.errors.any? %>
         <% f.object.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -49,7 +49,7 @@
   <div class="col-md-6">
     <h4>Email Preview</h4>
 
-    <iframe height="800" width="675" src="<%= rfqs_generated_mailer_preview_overseers_inquiry_rfqs_path %>">
+    <iframe height="800" width="675" src="<%= edit_rfqs_mailer_preview_overseers_inquiry_rfqs_path %>">
     </iframe>
   </div>
 </div>

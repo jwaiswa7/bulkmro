@@ -17,19 +17,19 @@
         <td><%= inquiry.company.to_s %></td>
         <td><%= inquiry.contact.to_s %></td>
         <td>
-          <% if policy(inquiry).select_suppliers? %>
-            <a href="<%= select_suppliers_overseers_inquiry_rfqs_path(inquiry) %>">Select Suppliers</a> |
+          <% if policy(inquiry).edit_suppliers? %>
+            <a href="<%= edit_suppliers_overseers_inquiry_rfqs_path(inquiry) %>">Select Suppliers</a> |
           <% end %>
-          <% if policy(inquiry).generate_rfqs? %>
-            <a href="<%= generate_rfqs_overseers_inquiry_rfqs_path(inquiry) %>">Generate RFQs</a>
+          <% if policy(inquiry).edit_rfqs? %>
+            <a href="<%= edit_rfqs_overseers_inquiry_rfqs_path(inquiry) %>">Generate RFQs</a>
           <% end %>
           <% if policy(inquiry).edit? %>
             <a href="<%= edit_overseers_company_inquiry_path(inquiry.company, inquiry) %>">Edit</a>
           <% end %>
 
-          <% if policy(inquiry).purchase_quotations? %>
+          <% if policy(inquiry).edit_quotations? %>
             <p>RFQs sent on <%= format_date(inquiry.rfqs_generated_on) %></p>
-            <a href="<%= purchase_quotations_overseers_inquiry_rfqs_path(inquiry) %>">Purchase quotations</a>
+            <a href="<%= edit_quotations_overseers_inquiry_rfqs_path(inquiry) %>">Purchase quotations</a>
         <% end %>
 
         </td>

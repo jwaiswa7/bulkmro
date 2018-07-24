@@ -3,6 +3,7 @@ class CreateInquirySuppliers < ActiveRecord::Migration[5.2]
     create_table :inquiry_suppliers do |t|
       t.references :inquiry_product, foreign_key: true
       t.integer :supplier_id, index: true
+      t.decimal :unit_price, default: 0.0
 
       t.timestamps
       t.userstamps
