@@ -1,4 +1,5 @@
 class SalesProduct < ApplicationRecord
+  include Mixins::CanBeStamped
   include Mixins::HasSupplier
 
   belongs_to :sales_quote

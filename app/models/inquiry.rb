@@ -18,6 +18,8 @@ class Inquiry < ApplicationRecord
   attr_accessor :rfq_subject, :rfq_comments
 
   has_one :sales_quote
+  has_one :sales_approval, :through => :sales_quote
+  has_one :sales_order, :through => :sales_approval
 
   validates_length_of :inquiry_products, minimum: 1
   validate :all_products_have_suppliers

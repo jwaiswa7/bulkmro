@@ -20,9 +20,11 @@
           <% if policy(inquiry).edit_suppliers? %>
             <a href="<%= edit_suppliers_overseers_inquiry_rfqs_path(inquiry) %>">Select Suppliers</a> |
           <% end %>
+
           <% if policy(inquiry).edit_rfqs? %>
             <a href="<%= edit_rfqs_overseers_inquiry_rfqs_path(inquiry) %>">Generate RFQs</a>
           <% end %>
+
           <% if policy(inquiry).edit? %>
             <a href="<%= edit_overseers_company_inquiry_path(inquiry.company, inquiry) %>">Edit</a>
           <% end %>
@@ -30,8 +32,21 @@
           <% if policy(inquiry).edit_quotations? %>
             <p>RFQs sent on <%= format_date(inquiry.rfqs_generated_on) %></p>
             <a href="<%= edit_quotations_overseers_inquiry_rfqs_path(inquiry) %>">Purchase quotations</a>
-        <% end %>
+          <% end %>
 
+          <% if policy(inquiry).new_sales_approval? %>
+            <p>Sales quote sent on <%= format_date(inquiry.sales_quote.created_at) %></p>
+            <a href="<%= new_overseers_sales_quote_sales_approval_path(inquiry.sales_quote) %>">Approve Sales Quote</a>
+          <% end %>
+
+          <% if policy(inquiry).new_sales_order? %>
+            <p>Sales quote approved on <%= format_date(inquiry.sales_approval.created_at) %></p>
+            <a href="<%= new_overseers_sales_approval_sales_order_path(inquiry.sales_approval) %>">New Sales Order</a>
+          <% end %>
+
+          <% if inquiry.sales_order.present? %>
+            <p>Sales order created on <%= format_date(inquiry.sales_order.created_at) %></p>
+          <% end %>
         </td>
       </tr>
     <% end %>

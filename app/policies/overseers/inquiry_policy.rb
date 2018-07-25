@@ -24,10 +24,26 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_quotations?
-    record.suppliers_selected? && record.rfqs_generated?
+    record.suppliers_selected? && record.rfqs_generated? && !record.sales_quote.present?
   end
 
   def update_quotations?
     edit_quotations?
+  end
+
+  def new_sales_approval?
+    record.sales_quote.present? && !record.sales_approval.present?
+  end
+
+  def create_sales_approval?
+    new_sales_approval?
+  end
+
+  def new_sales_order?
+    record.sales_approval.present? && !record.sales_order.present?
+  end
+
+  def create_sales_order?
+    new_sales_order?
   end
 end
