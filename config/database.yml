@@ -8,11 +8,11 @@ default: &default
 
 development:
   <<: *default
-  database: erp_dev
+  database: bulkmro_spring_dev
 
 test:
   <<: *default
-  database: erp_test
+  database: bulkmro_spring_test
 
 production:
   <<: *default
