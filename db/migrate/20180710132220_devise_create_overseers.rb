@@ -3,6 +3,8 @@
 class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
   def change
     create_table :overseers do |t|
+      t.integer :parent_id, index: true
+
       t.string :first_name
       t.string :last_name
       t.integer :role, index: true
@@ -38,11 +40,13 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
 
 
       t.timestamps null: false
+      t.userstamps
     end
 
     add_index :overseers, :email,                unique: true
     add_index :overseers, :reset_password_token, unique: true
     # add_index :overseers, :confirmation_token,   unique: true
     add_index :overseers, :unlock_token,         unique: true
+    add_foreign_key :overseers, :overseers, column: :parent_id
   end
 end

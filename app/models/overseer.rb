@@ -1,5 +1,8 @@
 class Overseer < ApplicationRecord
+  include Mixins::CanBeStamped
   include Mixins::HasName
+
+  has_closure_tree({ name_column: :to_s })
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
@@ -11,5 +14,9 @@ class Overseer < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.role ||= :admin
+  end
+
+  def hierarchy_to_s
+    ancestry_path.join(' > ')
   end
 end

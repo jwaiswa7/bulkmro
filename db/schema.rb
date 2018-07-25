@@ -187,7 +187,16 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["updated_by_id"], name: "index_inquiry_suppliers_on_updated_by_id"
   end
 
+  create_table "overseer_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "overseer_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "overseer_desc_idx"
+  end
+
   create_table "overseers", force: :cascade do |t|
+    t.integer "parent_id"
     t.string "first_name"
     t.string "last_name"
     t.integer "role"
@@ -206,10 +215,15 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.datetime "locked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_overseers_on_created_by_id"
     t.index ["email"], name: "index_overseers_on_email", unique: true
+    t.index ["parent_id"], name: "index_overseers_on_parent_id"
     t.index ["reset_password_token"], name: "index_overseers_on_reset_password_token", unique: true
     t.index ["role"], name: "index_overseers_on_role"
     t.index ["unlock_token"], name: "index_overseers_on_unlock_token", unique: true
+    t.index ["updated_by_id"], name: "index_overseers_on_updated_by_id"
   end
 
   create_table "payment_options", force: :cascade do |t|
@@ -390,6 +404,11 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
   add_foreign_key "inquiry_suppliers", "inquiry_products"
   add_foreign_key "inquiry_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_suppliers", "overseers", column: "updated_by_id"
+  add_foreign_key "overseer_hierarchies", "overseers", column: "ancestor_id"
+  add_foreign_key "overseer_hierarchies", "overseers", column: "descendant_id"
+  add_foreign_key "overseers", "overseers", column: "created_by_id"
+  add_foreign_key "overseers", "overseers", column: "parent_id"
+  add_foreign_key "overseers", "overseers", column: "updated_by_id"
   add_foreign_key "product_suppliers", "companies", column: "supplier_id"
   add_foreign_key "product_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"

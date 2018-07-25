@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :products
     resources :categories
     resources :suppliers
+    resources :overseers
 
     resources :inquiries do
       scope module: 'inquiries' do
