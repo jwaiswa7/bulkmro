@@ -1,0 +1,12 @@
+<div class="navbar bg-white breadcrumb-bar">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <% controller_path.split('/').push(action_name).each do |x| %>
+          <li class="breadcrumb-item <% if x == controller_path.split('/').push(action_name).last %>active<% end %>">
+            <a href="<%= controller_path %>"><%= x.capitalize %></a>
+          </li>
+      <% end %>
+    </ol>
+  </nav>
+</div>
+

@@ -10,6 +10,7 @@ main = {
 
         $('select.ajax').each(function(k, v) {
             $(this).select2({
+                theme: "bootstrap",
                 ajax: {
                     url: $(this).attr('data-source'),
                     dataType: 'json',
