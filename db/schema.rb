@@ -325,7 +325,6 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.bigint "inquiry_id"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
-    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"

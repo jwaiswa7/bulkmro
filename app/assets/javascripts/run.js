@@ -1,8 +1,11 @@
 $(function () {
-    main.init();
+    main.load();
 });
 
 document.addEventListener("turbolinks:load", function() {
-    main.init();
+    main.load();
 });
 
+document.addEventListener("turbolinks:before-cache", function() {
+    main.beforeCache();
+});
