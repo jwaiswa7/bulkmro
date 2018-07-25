@@ -12,15 +12,24 @@
     <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z">
       <thead>
       <tr>
-        <th>ID</th>
+        <th class="d-none">ID</th>
         <th>Name</th>
+        <th class="text-right"><i class="fal fa-building"></i> Companies</th>
+        <th class="text-right"><i class="fal fa-user-tie"></i> Contacts</th>
+        <th class="no-sort"></th>
       </tr>
       </thead>
       <tbody>
       <% @accounts.each do |account| %>
           <tr>
-            <td><%= account.id %></td>
-            <td><%= account.name %></td>
+            <td class="d-none"><%= account.id %></td>
+            <td><a href="<%= overseers_account_path(account) %>"><%= account.name %></a></td>
+            <td class="text-right"><%= account.companies.count %></td>
+            <td class="text-right"><%= account.contacts.count %></td>
+            <td class="text-right">
+              <a href="<%= new_overseers_account_company_path(account) %>" class="btn btn-sm btn-success"><i class="fal fa-building"></i></a>
+              <a href="<%= new_overseers_account_contact_path(account) %>" class="btn btn-sm btn-success"><i class="fal fa-user-tie"></i></a>
+            </td>
           </tr>
       <% end %>
       </tbody>

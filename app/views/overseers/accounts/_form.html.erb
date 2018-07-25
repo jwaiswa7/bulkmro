@@ -25,14 +25,14 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-success btn-block"><i class="fal fa-plus-circle"></i> Create Account</button>
+    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+      <i class="fal fa-plus-circle"></i> Create Account
+    <% end %>
 
       <%= f.input :created_by, disabled: true %>
       <%= f.input :created_at, disabled: true %>
       <%= f.input :updated_by, disabled: true %>
       <%= f.input :updated_at, disabled: true %>
-
-      <%= f.submit %>
   <% end %>
 </div>
 
