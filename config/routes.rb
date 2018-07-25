@@ -31,6 +31,18 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :sales_quotes do
+      scope module: 'sales_quotes' do
+        resources :sales_approvals
+      end
+    end
+
+    resources :sales_approvals do
+      scope module: 'sales_approvals' do
+        resources :sales_orders
+      end
+    end
+
     resources :companies do
       scope module: 'companies' do
         resources :addresses

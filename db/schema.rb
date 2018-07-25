@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_074152) do
+ActiveRecord::Schema.define(version: 2018_07_25_063351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,6 +277,30 @@ ActiveRecord::Schema.define(version: 2018_07_24_074152) do
     t.index ["updated_by_id"], name: "index_rfqs_on_updated_by_id"
   end
 
+  create_table "sales_approvals", force: :cascade do |t|
+    t.bigint "sales_quote_id"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_approvals_on_created_by_id"
+    t.index ["sales_quote_id"], name: "index_sales_approvals_on_sales_quote_id"
+    t.index ["updated_by_id"], name: "index_sales_approvals_on_updated_by_id"
+  end
+
+  create_table "sales_orders", force: :cascade do |t|
+    t.bigint "sales_approval_id"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_orders_on_created_by_id"
+    t.index ["sales_approval_id"], name: "index_sales_orders_on_sales_approval_id"
+    t.index ["updated_by_id"], name: "index_sales_orders_on_updated_by_id"
+  end
+
   create_table "sales_products", force: :cascade do |t|
     t.bigint "sales_quote_id"
     t.bigint "product_id"
@@ -301,6 +325,7 @@ ActiveRecord::Schema.define(version: 2018_07_24_074152) do
     t.bigint "inquiry_id"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
+    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -381,6 +406,12 @@ ActiveRecord::Schema.define(version: 2018_07_24_074152) do
   add_foreign_key "rfqs", "inquiries"
   add_foreign_key "rfqs", "overseers", column: "created_by_id"
   add_foreign_key "rfqs", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_approvals", "overseers", column: "created_by_id"
+  add_foreign_key "sales_approvals", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_approvals", "sales_quotes"
+  add_foreign_key "sales_orders", "overseers", column: "created_by_id"
+  add_foreign_key "sales_orders", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_orders", "sales_approvals"
   add_foreign_key "sales_products", "companies", column: "supplier_id"
   add_foreign_key "sales_products", "overseers", column: "created_by_id"
   add_foreign_key "sales_products", "overseers", column: "updated_by_id"

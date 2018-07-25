@@ -1,4 +1,6 @@
 class InquiryProduct < ApplicationRecord
+  include Mixins::CanBeStamped
+
   belongs_to :inquiry
   belongs_to :product
   has_many :inquiry_suppliers, :inverse_of => :inquiry_product
