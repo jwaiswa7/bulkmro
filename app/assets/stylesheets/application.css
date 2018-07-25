@@ -7893,6 +7893,10 @@ table.table.dataTable {
 .select2-container--bootstrap .select2-results__option[aria-selected=true] {
   display: none; }
 
+.turbolinks-progress-bar {
+  height: 3px;
+  background-color: #fd7e14; }
+
 .no-scroll-bars {
   -ms-overflow-style: none; }
   .no-scroll-bars::-webkit-scrollbar {
