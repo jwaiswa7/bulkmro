@@ -5,7 +5,7 @@
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
     <div class="form-group">
-      <label>Account's Name</label>
+      <%= f.label :name %>
       <%= f.input_field :name, :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
       <div class="valid-feedback">
         Looks good!

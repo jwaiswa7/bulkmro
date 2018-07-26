@@ -27,8 +27,8 @@
             <td class="text-right"><%= account.companies.count %></td>
             <td class="text-right"><%= account.contacts.count %></td>
             <td class="text-right">
-              <a href="<%= new_overseers_account_company_path(account) %>" class="btn btn-sm btn-success"><i class="fal fa-building"></i></a>
-              <a href="<%= new_overseers_account_contact_path(account) %>" class="btn btn-sm btn-success"><i class="fal fa-user-tie"></i></a>
+              <a href="<%= new_overseers_account_company_path(account) %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="New company"><i class="fal fa-building"></i></a>
+              <a href="<%= new_overseers_account_contact_path(account) %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="New contact"><i class="fal fa-user-tie"></i></a>
             </td>
           </tr>
       <% end %>
