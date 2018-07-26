@@ -82,4 +82,21 @@ module DisplayHelper
     end
   end
 
+  def breadcrumbs(url)
+    crumbs = []
+    so_far = '/'
+    elements = url.split('/')
+
+    for i in 1...elements.size
+      so_far += elements[i] + '/'
+
+      if elements[i] =~ /^[a-z,A-Z]{6}$/ && !elements[i].singularize.camelize.classify.is_a?(Class)
+        crumbs << { name: eval("#{elements[i - 1].singularize.camelize}.find('#{elements[i]}').to_s").gsub("_"," ").to_s, path: so_far }
+      else
+        crumbs << { name: elements[i].gsub("_"," ").titleize, path: so_far }
+      end
+    end
+
+    crumbs
+  end
 end

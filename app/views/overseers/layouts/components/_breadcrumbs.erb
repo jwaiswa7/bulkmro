@@ -1,12 +1,15 @@
 <div class="navbar bg-white breadcrumb-bar">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <% controller_path.split('/').push(action_name).each do |x| %>
-          <li class="breadcrumb-item <% if x == controller_path.split('/').push(action_name).last %>active<% end %>">
-            <a href="<%= controller_path %>"><%= x.capitalize %></a>
+      <% breadcrumbs(request.path).each do |x| %>
+          <li class="breadcrumb-item">
+            <% if [request.path, '/'].join == x[:path] %>
+              <%= x[:name] %>
+            <% else %>
+              <a href="<%= x[:path] %>"><%= x[:name] %></a>
+            <% end %>
           </li>
       <% end %>
     </ol>
   </nav>
 </div>
-
