@@ -26,13 +26,13 @@
     </div>
 
     <% if action_name.capitalize == "New" %>
-          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-plus-circle"></i> Create <%= controller_name %>
-          <% end %>
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-plus-circle"></i> <%= submit_text(@account) %>
+        <% end %>
     <% else %>
-          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Update <%= controller_name %>
-          <% end %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <i class="fal fa-pen"></i> <%= submit_text(@account) %>
+        <% end %>
     <% end %>
 
 
