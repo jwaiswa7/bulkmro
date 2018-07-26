@@ -8,12 +8,12 @@ default: &default
 
 development:
   <<: *default
-  database: erp_dev
+  database: sprint_dev
 
 test:
   <<: *default
-  database: erp_test
+  database: sprint_test
 
 production:
   <<: *default
-  database: erp_production
+  database: sprint_production

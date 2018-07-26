@@ -1,10 +1,41 @@
-<%= simple_form_for([:overseers, @account]) do |f| %>
-  <%= f.input :created_by, disabled: true %>
-  <%= f.input :created_at, disabled: true %>
-  <%= f.input :updated_by, disabled: true %>
-  <%= f.input :updated_at, disabled: true %>
+<div class="col-lg-8">
+  <div class="page-header">
+    <h2>New Account</h2>
+    <p>This will create a new account and log it as having been created by <strong>Chucky Chuck</strong>.</p>
+  </div>
+  <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
+    <div class="form-group">
+      <label>Account's Name</label>
+      <%= f.input_field :name, :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter a name for the account.
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Account's Alias</label>
+      <input type="text" class="form-control" placeholder="e.g. RIL" required>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please enter an alias for the account.
+      </div>
+    </div>
 
-  <%= f.input :name %>
+    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+      <i class="fal fa-plus-circle"></i> Create Account
+    <% end %>
 
-  <%= f.submit %>
-<% end %>
+      <%= f.input :created_by, disabled: true %>
+      <%= f.input :created_at, disabled: true %>
+      <%= f.input :updated_by, disabled: true %>
+      <%= f.input :updated_at, disabled: true %>
+  <% end %>
+</div>
+
+
+
+
