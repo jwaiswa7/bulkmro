@@ -14,6 +14,11 @@
 //= require activestorage
 //= require turbolinks
 // https://github.com/heroku/heroku-buildpack-ruby/issues/591 to fix yarn issues
+
+// Component Imports
+//= require bootstrap/dist/js/bootstrap.min.js
+//= require select2/dist/js/select2.full.min.js
+
 //= require nested_form_fields
 //= require script
 //= require main
