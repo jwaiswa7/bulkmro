@@ -1,7 +1,7 @@
 <div class="col-lg-8">
   <div class="page-header">
-    <h2><%= action_name.capitalize %> Company</h2>
-    <p>This will create a new company under <strong><%= @account.name %></strong> and log it as having been created by <strong>Chucky Chuck</strong>.</p>
+    <h2><%= action_name.capitalize %> Account</h2>
+    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
       <div class="form-group">
