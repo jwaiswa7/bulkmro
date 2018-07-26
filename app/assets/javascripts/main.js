@@ -3,6 +3,7 @@ main = {
         main.initSelects();
         main.initBootstrapValidations();
         main.initDynamicForms();
+        main.initTooltips();
         main.dataTables.init();
     },
 
@@ -58,6 +59,11 @@ main = {
                 }, false);
             });
         }, false);
+    },
+
+    // Initaialize Bootstrap tooltips
+    initTooltips: function() {
+        $('[data-toggle="tooltip"]').tooltip();
     },
 
     dataTables: {
