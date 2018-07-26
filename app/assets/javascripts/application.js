@@ -20,7 +20,6 @@
 //= require select2/dist/js/select2.full.min.js
 
 //= require nested_form_fields
-//= require script
 //= require main
 //= require run
 //= require_tree .
