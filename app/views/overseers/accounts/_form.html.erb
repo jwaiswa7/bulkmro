@@ -1,7 +1,12 @@
 <div class="col-lg-8">
   <div class="page-header">
+<<<<<<< HEAD
     <h2><%= action_name.capitalize %> Account</h2>
     <p>This will create a new account and log it as having been created by <strong>Chucky Chuck</strong>.</p>
+=======
+    <h2>New Account</h2>
+    <p>This will create a new account and log it as having been created by <strong><%= @account.created_by.to_s %></strong>.</p>
+>>>>>>> ad7c89c844afbd6dd5e517679e082b9d631c0de0
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
     <div class="form-group">
@@ -35,15 +40,12 @@
         <% end %>
     <% end %>
 
-
-      <%= f.input :created_by, disabled: true %>
-      <%= f.input :created_at, disabled: true %>
-      <%= f.input :updated_by, disabled: true %>
-      <%= f.input :updated_at, disabled: true %>
-    <%= submit_text(@account) %>
+    <%= f.input :created_by, disabled: true %>
+    <%= f.input :created_at, disabled: true %>
+    <%= f.input :updated_by, disabled: true %>
+    <%= f.input :updated_at, disabled: true %>
 
   <% end %>
-
 </div>
 
 
