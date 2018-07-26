@@ -69,4 +69,17 @@ module DisplayHelper
     num.to_int
   end
 
+  def submit_text(obj, use_alias: nil, suffix: nil)
+    class_name = use_alias ? use_alias.humanize : obj.class.name
+    if obj.new_record?
+      "Create #{class_name}"
+    else
+      if suffix.present?
+        "Update #{class_name} #{suffix.humanize}"
+      else
+        "Update #{class_name}"
+      end
+    end
+  end
+
 end
