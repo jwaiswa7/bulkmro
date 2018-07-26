@@ -1,6 +1,6 @@
 <div class="col-lg-8">
   <div class="page-header">
-    <h2>New Account</h2>
+    <h2><%= action_name.capitalize %> Account</h2>
     <p>This will create a new account and log it as having been created by <strong>Chucky Chuck</strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
@@ -25,9 +25,16 @@
       </div>
     </div>
 
-    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-      <i class="fal fa-plus-circle"></i> Create Account
+    <% if action_name.capitalize == "New" %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+              <i class="fal fa-plus-circle"></i> Create <%= controller_name %>
+          <% end %>
+    <% else %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+              <i class="fal fa-pen"></i> Update <%= controller_name %>
+          <% end %>
     <% end %>
+
 
       <%= f.input :created_by, disabled: true %>
       <%= f.input :created_at, disabled: true %>
