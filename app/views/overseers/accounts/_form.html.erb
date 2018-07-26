@@ -1,7 +1,7 @@
 <div class="col-lg-8">
   <div class="page-header">
     <h2>New Account</h2>
-    <p>This will create a new account and log it as having been created by <strong>Chucky Chuck</strong>.</p>
+    <p>This will create a new account and log it as having been created by <strong><%= @account.created_by.to_s %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
     <div class="form-group">
@@ -28,15 +28,9 @@
     <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
       <i class="fal fa-plus-circle"></i> Create Account
     <% end %>
-
-      <%= f.input :created_by, disabled: true %>
-      <%= f.input :created_at, disabled: true %>
-      <%= f.input :updated_by, disabled: true %>
-      <%= f.input :updated_at, disabled: true %>
     <%= submit_text(@account) %>
 
   <% end %>
-
 </div>
 
 
