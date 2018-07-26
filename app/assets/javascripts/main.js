@@ -12,9 +12,12 @@ main = {
 
     // Converts select to select2
     initSelects: function() {
-        $('select:not(.ajax)').select2();
+        $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2({
+            theme: "bootstrap",
+            containerCssClass: ':all:',
+        });
 
-        $('select.ajax').each(function(k, v) {
+        $('select.select2-ajax').each(function(k, v) {
             $(this).select2({
                 theme: "bootstrap",
                 containerCssClass: ':all:',
@@ -148,7 +151,6 @@ main = {
             $('.datatable').each(function() {
                 if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) {
                     $(this).DataTable().destroy();
-                    $(this).remove();
                 }
             });
         }
