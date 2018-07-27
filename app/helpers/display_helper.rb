@@ -91,7 +91,11 @@ module DisplayHelper
       so_far += elements[i] + '/'
 
       if elements[i] =~ /^[a-z,A-Z]{6}$/ && !elements[i].singularize.camelize.classify.is_a?(Class)
-        crumbs << { name: eval("#{elements[i - 1].singularize.camelize}.find('#{elements[i]}').to_s").gsub("_"," ").to_s, path: so_far }
+        begin
+          crumbs << { name: eval("#{elements[i - 1].singularize.camelize}.find('#{elements[i]}').to_s").gsub("_"," ").to_s, path: so_far }
+        rescue ActiveRecord::RecordNotFound
+          crumbs << { name: elements[i].gsub("_"," ").titleize, path: so_far }
+        end
       else
         crumbs << { name: elements[i].gsub("_"," ").titleize, path: so_far }
       end
