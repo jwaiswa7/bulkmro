@@ -27,62 +27,31 @@
       <div class="tab-pane fade active show" id="companies" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Companies</h3>
-          <a href="#" class="btn btn-sm btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Company</a>
+          <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Company</a>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All companies filterable in any way that we want under <strong>RIL (Reliance)</strong>.
+          All companies filterable in any way that we want under <strong><%= @account.name %></strong>.
         </p>
 
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
           <thead>
-          <tr>
-            <th data-priority="1" class="no-sort"></th>
-            <th data-priority="2">Name</th>
-            <th class="text-right">Payment Terms</th>
-            <th class="text-right numeric"><i class="fal fa-file-invoice"></i> Orders</th>
-            <th class="text-right"><i class="fal fa-clock"></i> Last Order</th>
-            <th class="text-right"><i class="fal fa-user-tie"></i> Contacts</th>
-            <th class="text-right no-sort" data-priority="3"></th>
-          </tr>
+            <tr>
+              <th data-priority="1" class="no-sort"></th>
+              <th data-priority="2">Name</th>
+              <th class="text-right numeric">Contacts</th>
+              <th class="text-right numeric">Brands</th>
+              <th class="text-right numeric">Products</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a></td>
-            <td><a href="company.html">Reliance Life Sciences</a></td>
-            <td class="text-right">90 days</td>
-            <td class="text-right">1092</td>
-            <td class="text-right">3 days ago</td>
-            <td class="text-right">15</td>
-            <td class="text-right">
-              <a href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Create order"><i class="fal fa-file-invoice"></i></a>
-              <a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select contacts"><i class="fal fa-user-tie"></i></a>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a></td>
-            <td><a href="company.html">Reliance Retail</a></td>
-            <td class="text-right">30 days</td>
-            <td class="text-right">5043</td>
-            <td class="text-right">6 days ago</td>
-            <td class="text-right">29</td>
-            <td class="text-right">
-              <a href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Create order"><i class="fal fa-file-invoice"></i></a>
-              <a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select contacts"><i class="fal fa-user-tie"></i></a>
-            </td>
-          </tr>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a></td>
-            <td><a href="company.html">Reliance Logistics</a></td>
-            <td class="text-right">60 days</td>
-            <td class="text-right">1092</td>
-            <td class="text-right">2 hours ago</td>
-            <td class="text-right">3</td>
-            <td class="text-right">
-              <a href="#" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Create order"><i class="fal fa-file-invoice"></i></a>
-              <a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select contacts"><i class="fal fa-user-tie"></i></a>
-            </td>
-          </tr>
-
+          <% @account.companies.each do |company| %>
+              <tr><td><a href="<%= edit_overseers_account_company_path(company.account, company) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a></td>
+                <td><a href="<%= overseers_company_path(company) %>"><%= company.name %></a></td>
+                <td class="text-right"><%= company.contacts.count %></td>
+                <td class="text-right"><%= company.brands.count %></td>
+                <td class="text-right"><%= company.products.count %></td>
+              </tr>
+          <% end %>
           </tbody>
         </table>
       </div>
@@ -90,40 +59,28 @@
       <div class="tab-pane fade" id="contacts" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
-          <a href="#" class="btn btn-sm btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Contact</a>
+          <a href="<%= new_overseers_account_contact_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Contact</a>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All contacts filterable in any way that we want under <strong>RIL (Reliance)</strong>.
+          All contacts filterable in any way that we want under <strong><%= @account.name %></strong>.
         </p>
 
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
           <thead>
-          <tr>
-            <th data-priority="1"></th>
-            <th data-priority="2">Name</th>
-            <th class="text-right"><i class="fal fa-building"></i> Companies</th>
-            <th class="text-right no-sort" data-priority="3"></th>
-          </tr>
+            <tr>
+              <th data-priority="1"></th>
+              <th data-priority="2">Name</th>
+              <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a></td>
-            <td><a href="#">Rajnikanth</a></td>
-            <td class="text-right">39</td>
-            <td class="text-right"><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select companies"><i class="fal fa-building"></i></a></td>
-          </tr>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a></td>
-            <td><a href="#">Chuck Norris</a></td>
-            <td class="text-right">23</td>
-            <td class="text-right"><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select companies"><i class="fal fa-building"></i></a></td>
-          </tr>
-          <tr>
-            <td><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a></td>
-            <td><a href="#">Jimmy Paddiwala</a></td>
-            <td class="text-right">13</td>
-            <td class="text-right"><a href="#" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Select companies"><i class="fal fa-building"></i></a></td>
-          </tr>
+            <% @account.contacts.each do |contact| %>
+                <tr>
+                  <td><a href="<%= edit_overseers_account_contact_path(contact.account, contact) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a></td>
+                  <td><%= contact.full_name %></td>
+                  <td class="text-right"><%= contact.companies.count %></td>
+                </tr>
+            <% end %>
           </tbody>
         </table>
       </div>

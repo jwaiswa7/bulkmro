@@ -1,11 +1,11 @@
 <div class="col-lg-8">
   <div class="page-header">
     <h2><%= action_name.capitalize %> Account</h2>
-    <p>This will create a new account and log it as having been created by <strong>Chucky Chuck</strong>.</p>
+    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
     <div class="form-group">
-      <label>Account's Name</label>
+      <%= f.label :name %>
       <%= f.input_field :name, :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
       <div class="valid-feedback">
         Looks good!
@@ -35,10 +35,10 @@
         <% end %>
     <% end %>
 
-    <%= f.input :created_by, disabled: true %>
-    <%= f.input :created_at, disabled: true %>
-    <%= f.input :updated_by, disabled: true %>
-    <%= f.input :updated_at, disabled: true %>
+    <%= f.input :created_by, :as => :hidden, disabled: true %>
+    <%= f.input :created_at, :as => :hidden, disabled: true %>
+    <%= f.input :updated_by, :as => :hidden, disabled: true %>
+    <%= f.input :updated_at, :as => :hidden, disabled: true %>
 
   <% end %>
 </div>

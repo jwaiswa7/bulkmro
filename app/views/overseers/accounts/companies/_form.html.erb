@@ -1,33 +1,56 @@
-Account under <%= @company.account.name %>
+<div class="col-lg-8">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> Account</h2>
+    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+  <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.input_field :name, :placeholder => 'e.g. Reliance Life Sciences', :class => 'form-control' %>
 
-<%= simple_form_for([:overseers, @account, @company]) do |f| %>
-  <%= f.hidden_field :account_id %>
-  <%= f.input :created_by, disabled: true %>
-  <%= f.input :created_at, disabled: true %>
-  <%= f.input :updated_by, disabled: true %>
-  <%= f.input :updated_at, disabled: true %>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Please enter a name for the company.
+        </div>
+      </div>
+
+      <%= f.association :default_payment_option, include_blank: 'Select a default' %>
+
+      <hr />
+      <%= f.label :contact_ids, 'Contacts' %>
+      <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+      <hr />
+      <%= f.label :product_ids, 'Products' %>
+      <%= f.select :product_ids, Product.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+      <hr />
+      <%= f.label :category_ids, 'Category' %>
+      <%= f.select :category_ids, Category.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+
+      <hr />
+      <%= f.label :brand_ids, 'Brands' %>
+      <%= f.select :brand_ids, Brand.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
 
 
-  <%= f.input :name %>
 
-  <%= f.association :default_payment_option, include_blank: 'Select a default' %>
-  <hr />
-  <%= f.label :contact_ids, 'Contacts' %>
-  <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+      <% if action_name.capitalize == "New" %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+              <i class="fal fa-plus-circle"></i> <%= submit_text(@company) %>
+          <% end %>
+      <% else %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+              <i class="fal fa-pen"></i> <%= submit_text(@company) %>
+          <% end %>
+      <% end %>
 
-  <hr />
-  <%= f.label :product_ids, 'Products' %>
-  <%= f.select :product_ids, Product.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
+      <%= f.hidden_field :account_id %>
+      <%= f.input :created_by, disabled: true %>
+      <%= f.input :created_at, disabled: true %>
+      <%= f.input :updated_by, disabled: true %>
+      <%= f.input :updated_at, disabled: true %>
 
-  <hr />
-  <%= f.label :category_ids, 'Category' %>
-  <%= f.select :category_ids, Category.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
-
-  <hr />
-  <%= f.label :brand_ids, 'Brands' %>
-  <%= f.select :brand_ids, Brand.all.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
-
-  <hr />
-
-  <%= f.submit %>
-<% end %>
+  <% end %>
+</div>

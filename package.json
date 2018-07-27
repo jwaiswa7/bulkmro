@@ -10,6 +10,7 @@
     "datatables.net-rowgroup-bs4": "^1.0.4",
     "datatables.net-scroller-bs4": "^1.5.1",
     "pdfmake": "^0.1.37",
+    "popper.js": "^1.14.3",
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme"
   },
@@ -19,4 +20,3 @@
   "author": "Ashwin Goyal <ashwin.goyal@bulkmro.com>",
   "license": "MIT"
 }
-

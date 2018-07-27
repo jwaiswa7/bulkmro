@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render 'overseers/layouts/components/meta' %>
+  <%= render 'overseers/layouts/components/fonts' %>
+  <%= render 'overseers/layouts/components/stylesheets' %>
+  <%= render 'overseers/layouts/components/scripts' %>
+</head>
+
+<body>
+  <div class="main-container fullscreen">
+    <div class="container py-0">
+      <div class="row justify-content-center">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
