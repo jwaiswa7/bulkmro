@@ -1,36 +1,15 @@
+<% provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Companies</th>
+  <th>Contacts</th>
+  <th>Actions</th>
+<% end %>
+
 <div class="col-lg-11">
-  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
-    <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 mb-1">Accounts</h1>
-      <a href="<%= new_overseers_account_path %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>New Account</a>
-    </div>
-    <p class="lead mt-1">
-      All company accounts filterable in any way that we want.
-    </p>
-  </section>
-  <section class="pb-4 pb-lg-5">
-    <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z">
-      <thead>
-      <tr>
-        <th data-priority="1">Name</th>
-        <th class="text-right"><i class="fal fa-building"></i> Companies</th>
-        <th class="text-right"><i class="fal fa-user-tie"></i> Contacts</th>
-        <th class="no-sort"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @accounts.each do |account| %>
-          <tr>
-            <td><a href="<%= overseers_account_path(account) %>"><%= account.name %></a></td>
-            <td class="text-right"><%= account.companies.count %></td>
-            <td class="text-right"><%= account.contacts.count %></td>
-            <td class="text-right">
-              <a href="<%= new_overseers_account_company_path(account) %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="New company"><i class="fal fa-building"></i></a>
-              <a href="<%= new_overseers_account_contact_path(account) %>" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="New contact"><i class="fal fa-user-tie"></i></a>
-            </td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </section>
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>

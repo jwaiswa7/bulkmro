@@ -1,28 +1,14 @@
-<a href="<%= new_overseers_overseer_path %>">
-  <button type="button" class="btn btn-primary m-t-10">+ Add Overseer</button>
-</a>
+<% provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
 
-<div class="table-responsive">
-  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Hierarchy</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @overseers.each do |overseer| %>
-      <tr>
-        <td><%= overseer.id %></td>
-        <td><%= overseer.to_s %></td>
-        <td><%= overseer.hierarchy_to_s %></td>
-        <td><%= overseer.role %></td>
-        <td><a href="<%= edit_overseers_overseer_path(overseer) %>">Edit</a></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Role</th>
+  <th>Actions</th>
+<% end %>
+
+<div class="col-lg-11">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>

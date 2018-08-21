@@ -1,34 +1,16 @@
-<a href="<%= new_overseers_product_path %>">
-  <button type="button" class="btn btn-primary m-t-10">+ Create New Product</button>
-</a>
+<% provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
 
-<div class="table-responsive">
-  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Brand</th>
-        <th>Name</th>
-        <th>SKU</th>
-        <th>Suppliers through products</th>
-        <th>Suppliers through categories</th>
-        <th>Suppliers through brands</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @products.each do |product| %>
-        <tr>
-          <td><%= product.id %></td>
-          <td><%= product.brand.to_s %></td>
-          <td><%= product.name %></td>
-          <td><%= product.sku %></td>
-          <td><%= format_size(product.p_suppliers) %></td>
-          <td><%= format_size(product.c_suppliers) %></td>
-          <td><%= format_size(product.b_suppliers) %></td>
-          <td><a href="<%= edit_overseers_product_path(product) %>">Edit</a></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Brand</th>
+  <th>SKU</th>
+  <th>Suppliers</th>
+  <th>Actions</th>
+<% end %>
+
+<div class="col-lg-11">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>

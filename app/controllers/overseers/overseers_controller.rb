@@ -2,7 +2,7 @@ class Overseers::OverseersController < Overseers::BaseController
   before_action :set_overseer, only: [:edit, :update]
 
   def index
-    @overseers = Overseer.all
+    @overseers = ApplyDatatableParams.to(Overseer.all, params)
     authorize @overseers
   end
 

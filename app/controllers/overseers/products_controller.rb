@@ -2,7 +2,7 @@ class Overseers::ProductsController < Overseers::BaseController
   before_action :set_product, only: [:show, :edit, :update]
 
   def index
-    @products = ApplyParams.to(Product.all.includes(:brand), params)
+    @products = ApplyDatatableParams.to(Product.all.includes(:brand), params)
     authorize @products
   end
 

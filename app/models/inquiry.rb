@@ -2,6 +2,8 @@ class Inquiry < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasAddresses
 
+  pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
+
   belongs_to :contact
   belongs_to :company
   has_one :account, :through => :company

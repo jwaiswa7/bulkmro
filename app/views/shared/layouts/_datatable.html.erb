@@ -1,9 +1,12 @@
 <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
   <div class="d-md-flex justify-content-between">
-    <% if content_for?(:heading) %><h1 class="display-5 mb-1"><%= yield :heading %></h1>
+    <% if content_for?(:heading) %>
+      <h1 class="display-5 mb-1"><%= yield :heading %></h1>
+    <% else %>
+      <h1 class="display-5 mb-1"><%= current_model %></h1>
     <% end %>
 
-    <% if content_for?(:can_be_directly_created) %>
+    <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
         <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
           <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
         </a>

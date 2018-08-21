@@ -1,35 +1,14 @@
+<% provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
 
-<div class="table-responsive">
-  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Contacts</th>
-      <th>Products</th>
-      <th>Categories</th>
-      <th>Brands</th>
-      <th>Addresses</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @companies.each do |company| %>
-      <tr>
-        <td><%= company.id %></td>
-        <td><%= company.name %></td>
-        <td><%= format_collection(company.contacts) %></td>
-        <td><%= format_collection(company.products) %></td>
-        <td><%= format_collection(company.categories) %></td>
-        <td><%= format_collection(company.brands) %></td>
-        <td><%= format_collection(company.addresses) %></td>
-        <td>
-          <a href="<%= edit_overseers_account_company_path(company.account, company) %>">Edit</a> |
-          <a href="<%= overseers_company_path(company) %>">Show</a> |
-          <a href="<%= new_overseers_company_inquiry_path(company) %>">+ New Inquiry</a>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Contacts</th>
+  <th>Actions</th>
+<% end %>
+
+<div class="col-lg-11">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>

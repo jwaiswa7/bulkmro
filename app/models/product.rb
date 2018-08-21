@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
   include Mixins::CanBeStamped
 
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand
   belongs_to :category

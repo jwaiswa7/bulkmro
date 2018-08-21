@@ -1,6 +1,6 @@
 class Overseers::InquiriesController < Overseers::BaseController
   def index
-    @inquiries = Inquiry.all
+    @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
     authorize @inquiries
   end
 end

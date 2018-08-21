@@ -2,7 +2,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   before_action :set_company, only: [:show]
 
   def index
-    @companies = Company.all
+    @companies = ApplyDatatableParams.to(Company.all, params)
     authorize @companies
   end
 

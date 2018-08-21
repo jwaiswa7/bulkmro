@@ -1,28 +1,13 @@
-<a href="<%= new_overseers_category_path %>">
-  <button type="button" class="btn btn-primary m-t-10">+ Create New Category</button>
-</a>
+<% provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
 
-<hr />
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Actions</th>
+<% end %>
 
-<div class="table-responsive">
-  <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @categories.each do |category| %>
-        <tr>
-          <td><%= category.id %></td>
-          <td><%= category.to_s %></td>
-          <td>
-            <a href="<%= edit_overseers_category_path(category) %>">Edit</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="col-lg-11">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
 </div>

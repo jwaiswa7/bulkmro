@@ -2,7 +2,7 @@ class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
   def index
-    @brands = Brand.all
+    @brands = ApplyDatatableParams.to(Brand.all, params)
     authorize @brands
   end
 
