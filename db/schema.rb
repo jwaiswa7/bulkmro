@@ -26,15 +26,28 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["updated_by_id"], name: "index_accounts_on_updated_by_id"
   end
 
+  create_table "address_states", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_address_states_on_name", unique: true
+  end
+
   create_table "addresses", force: :cascade do |t|
     t.bigint "company_id"
+    t.bigint "address_state_id"
+    t.string "country_code"
     t.string "name"
+    t.string "state_name"
+    t.string "city_name"
+    t.string "pincode"
     t.string "street1"
     t.string "street2"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
@@ -390,6 +403,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
 
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
+  add_foreign_key "addresses", "address_states"
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"

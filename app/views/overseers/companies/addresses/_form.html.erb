@@ -8,6 +8,16 @@ company under <%= @address.company %>
   <%= f.input :updated_at, disabled: true %>
 
   <%= f.input :name %>
+
+  <%= f.country_select :country_code, priority_countries: ["IN", "US"] %>
+
+  <%= f.input :pincode %>
+
+  <%= f.association :state %>
+  <%= f.input :state_name %>
+
+  <%= f.input :city_name  %>
+
   <%= f.input :street1, as: :text %>
   <%= f.input :street2, as: :text  %>
 

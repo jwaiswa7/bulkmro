@@ -40,6 +40,11 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   def address_params
     params.require(:address).permit(
         :name,
+        :country_code,
+        :pincode,
+        :city_name,
+        :address_state_id,
+        :state_name,
         :street1,
         :street2
     )

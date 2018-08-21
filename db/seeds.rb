@@ -1,3 +1,39 @@
+states = [
+    'Andhra Pradesh',
+    'Arunachal Pradesh',
+    'Assam',
+    'Bihar',
+    'Chhattisgarh',
+    'Goa',
+    'Gujarat',
+    'Haryana',
+    'Himachal Pradesh',
+    'Jammu and Kashmir',
+    'Jharkhand',
+    'Karnataka',
+    'Kerala',
+    'Madhya Pradesh',
+    'Maharashtra',
+    'Manipur',
+    'Meghalaya',
+    'Mizoram',
+    'Nagaland',
+    'Odisha',
+    'Punjab',
+    'Rajasthan',
+    'Sikkim',
+    'Tamil Nadu',
+    'Telangana',
+    'Tripura',
+    'Uttar Pradesh',
+    'Uttarakhand',
+    'West Bengal',
+]
+
+states.each do |state|
+  AddressState.create(name: state)
+end
+
 industries = [
     'Transport',
     'Telecom',
@@ -112,7 +148,15 @@ Company.all.each do |company|
 
   # Add addresses
   [*1..3].sample.times do
-    company.addresses.create!(name: Faker::Address.community, street1: Faker::Address.street_address, street2: Faker::Address.secondary_address)
+    company.addresses.create!(
+        name: Faker::Address.community,
+        state: RandomRecord.for(AddressState),
+        state_name: Faker::Address.state,
+        city_name: Faker::Address.city,
+        country_code: Faker::Address.country_code,
+        street1: Faker::Address.street_address,
+        street2: Faker::Address.secondary_address
+    )
   end
 end
 
