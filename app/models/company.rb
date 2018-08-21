@@ -34,6 +34,9 @@ class Company < ApplicationRecord
   has_many :inquiry_suppliers, :through => :inquiries
   has_many :addresses
 
+  validates_presence_of :tax_identifier
+  validates_uniqueness_of :tax_identifier
+
   def to_contextual_s(product)
     s = [self.to_s]
 

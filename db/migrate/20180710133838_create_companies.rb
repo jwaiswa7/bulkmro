@@ -7,6 +7,8 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.integer :default_payment_option_id, index: true
       t.string :name
 
+      t.string :tax_identifier, index: { unique: true }
+
       t.timestamps
       t.userstamps
     end
