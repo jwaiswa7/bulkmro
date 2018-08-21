@@ -15,8 +15,8 @@
       </div>
     </div>
     <div class="form-group">
-      <label>Account's Alias</label>
-      <input type="text" class="form-control" placeholder="e.g. RIL" required>
+      <%= f.label :alias %>
+      <%= f.input_field :alias, :placeholder => 'e.g. RIL', :required => 'true', :class => 'form-control' %>
       <div class="valid-feedback">
         Looks good!
       </div>
