@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
 
   create_table "companies", force: :cascade do |t|
     t.bigint "account_id"
+    t.bigint "industry_id"
     t.integer "default_payment_option_id"
     t.string "name"
     t.datetime "created_at", null: false
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["account_id"], name: "index_companies_on_account_id"
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
+    t.index ["industry_id"], name: "index_companies_on_industry_id"
     t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
   end
 
@@ -137,6 +139,13 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["account_id"], name: "index_contacts_on_account_id"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
     t.index ["updated_by_id"], name: "index_contacts_on_updated_by_id"
+  end
+
+  create_table "industries", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_industries_on_name", unique: true
   end
 
   create_table "inquiries", force: :cascade do |t|
@@ -382,6 +391,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
   add_foreign_key "category_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "category_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
+  add_foreign_key "companies", "industries"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"

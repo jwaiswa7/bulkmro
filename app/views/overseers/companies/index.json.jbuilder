@@ -2,6 +2,7 @@ json.data (@companies) do |company|
   json.array! [
                   format_date(company.created_at),
                   company.to_s,
+                  company.industry.to_s,
                   company.contacts.size,
                   [
                       row_action_button(overseers_company_path(company), 'eye', 'Show', 'warning'),

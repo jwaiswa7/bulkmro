@@ -1,10 +1,13 @@
 class Company < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::HasUniqueName
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :account
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id
+  belongs_to :industry
+
   has_many :company_contacts
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
@@ -28,9 +31,6 @@ class Company < ApplicationRecord
   has_many :inquiries
   has_many :inquiry_suppliers, :through => :inquiries
   has_many :addresses
-
-  validates_presence_of :name
-  validates_uniqueness_of :name
 
   def to_contextual_s(product)
     s = [self.to_s]

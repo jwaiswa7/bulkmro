@@ -1,3 +1,32 @@
+industries = [
+    'Transport',
+    'Telecom',
+    'Technology',
+    'Steel',
+    'Shipbuilding',
+    'Power',
+    'Pharma',
+    'Oil & Gas',
+    'Mining',
+    'Media',
+    'Manufacturing',
+    'Hospitality',
+    'FMCG',
+    'Electronics',
+    'Education',
+    'Defense',
+    'Construction',
+    'Chemical',
+    'Banking',
+    'Automotive',
+    'Agriculture',
+    'Aerospace'
+]
+
+industries.each do |industry|
+  Industry.create(name: industry)
+end
+
 Overseer.create!(
     :first_name => 'Ashwin',
     :last_name => 'Goyal',
@@ -33,7 +62,8 @@ ril = Account.create!(name: 'Reliance Industries Limited (RIL)')
 ].each do |name|
   ril.companies.create!(
       name: name,
-      default_payment_option: RandomRecord.for(PaymentOption)
+      default_payment_option: RandomRecord.for(PaymentOption),
+      industry: RandomRecord.for(Industry)
   )
 end
 
@@ -63,7 +93,8 @@ ge = Account.create!(name: 'General Electric (GE)')
 ].each do |name|
   ge.companies.create!(
       name: name,
-      default_payment_option: RandomRecord.for(PaymentOption)
+      default_payment_option: RandomRecord.for(PaymentOption),
+      industry: RandomRecord.for(Industry)
   )
 end
 
