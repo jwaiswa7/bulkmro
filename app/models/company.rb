@@ -8,6 +8,8 @@ class Company < ApplicationRecord
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id
   belongs_to :industry
 
+  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
+
   has_many :company_contacts
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
