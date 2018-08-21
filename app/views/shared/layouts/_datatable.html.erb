@@ -1,0 +1,33 @@
+<section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+  <div class="d-md-flex justify-content-between">
+    <% if content_for?(:heading) %><h1 class="display-5 mb-1"><%= yield :heading %></h1>
+    <% end %>
+
+    <% if content_for?(:can_be_directly_created) %>
+        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
+        </a>
+    <% end %>
+  </div>
+
+  <% unless content_for?(:hide_table_desc) %>
+      <p class="lead mt-1">
+        All <%= current_model.downcase %> filterable in any way that we want.
+      </p>
+  <% end %>
+</section>
+<section class="pb-4 pb-lg-5">
+  <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything"
+         <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path
+  %>"
+  <% end %>>
+    <thead>
+    <tr>
+      <%= yield :header_row %>
+    </tr>
+    </thead>
+    <tbody>
+    <%= yield %>
+    </tbody>
+  </table>
+</section>

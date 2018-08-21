@@ -1,29 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <%= render 'overseers/layouts/components/meta' %>
-  <%= render 'overseers/layouts/components/fonts' %>
-  <%= render 'overseers/layouts/components/stylesheets' %>
-  <%= render 'overseers/layouts/components/scripts' %>
-</head>
-
-<body>
-<%= render 'overseers/layouts/components/navigation' %>
-<div class="layout layout-nav-top">
-  <div class="main-container">
-    <%= render 'overseers/layouts/components/breadcrumbs' %>
-
-    <div class="container">
-      <div class="row justify-content-center">
-        <%= yield %>
-
-        <% flash.each do |message_type, message| %>
-          <%= message %>
-          <%= message_type %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-</body>
-</html>
+<%= render layout: 'shared/layouts/application', locals: { navigation: render(partial: 'overseers/layouts/components/navigation') } do %>
+    <%= yield %>
+<% end %>

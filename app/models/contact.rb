@@ -1,5 +1,5 @@
 class Contact < ApplicationRecord
-  include Mixins::HasName
+  include Mixins::IsAPerson
   include Mixins::CanBeStamped
 
   belongs_to :account

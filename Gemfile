@@ -72,8 +72,41 @@ gem 'kaminari'
 # Handles self-referencing tables
 gem 'closure_tree'
 
-# Email previews
-gem 'maily'
+# Generate two-factor codes
+gem 'rotp'
+
+# Send text messages
+gem 'twilio-ruby', '~> 5.11.2'
+
+# Send text messages
+gem 'msg91ruby'
+
+# Validate phone numbers
+gem 'phony_rails'
+
+# Use Microsoft Azure for file storage
+gem 'azure-storage', require: false
+
+# Parse xls files
+gem 'spreadsheet', require: false
+
+# Validate file uploads
+gem 'file_validators'
+
+# Http requests made easy
+gem 'httparty'
+
+# Render html as pdf
+gem 'wicked_pdf'
+
+# Send transactional emails
+gem 'sendgrid-ruby'
+
+# Validate dates in ActiveRecord
+gem 'validates_timeliness', '~> 5.0.0.alpha3'
+
+# Custom error pages
+gem 'gaffe'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

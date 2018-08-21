@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  mount Maily::Engine, at: '/maily'
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 

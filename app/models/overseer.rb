@@ -1,6 +1,6 @@
 class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
-  include Mixins::HasName
+  include Mixins::IsAPerson
 
   has_closure_tree({ name_column: :to_s })
 

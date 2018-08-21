@@ -1,14 +1,14 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  def format_status(status)
-    case status.to_sym
-      when :active
-        content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-      else
-        content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-    end
-  end
+  # def format_status(status)
+  #   case status.to_sym
+  #     when :active
+  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
+  #     else
+  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
+  #   end
+  # end
 
   def format_status_label(status)
     case status.to_sym
@@ -19,13 +19,29 @@ module DisplayHelper
     end
   end
 
+  def format_class(klass)
+    klass.class.name
+  end
+
+  def format_status(status)
+    capitalize(status)
+  end
+
   def format_enum(val)
     val.humanize if val.present?
   end
 
-  def percentage(number)
+  def day_count(val)
+    if val == 1
+      "#{val} day"
+    else
+      "#{val} days"
+    end
+  end
+
+  def percentage(number, precision: 0)
     if number
-      [number_with_precision(number * 100, precision: 0), '%'].join
+      [number_with_precision(number, precision: precision), '%'].join
     end
   end
 
@@ -33,8 +49,8 @@ module DisplayHelper
     text.to_s.humanize if text
   end
 
-  def format_currency(amount, currency: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
-    [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (currency || currency.default).sign : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
+  def format_currency(amount, symbol: nil, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+    [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
   end
 
   def format_collection(kollection)
@@ -52,11 +68,7 @@ module DisplayHelper
   end
 
   def format_id(id, prefix: nil)
-    if prefix
-      "##{prefix}#{id}"
-    else
-      "##{id}"
-    end
+    id.upcase if id.present?
   end
 
   def format_date(date, format=:short)
@@ -67,40 +79,5 @@ module DisplayHelper
 
   def format_int(num)
     num.to_int
-  end
-
-  def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias.humanize : obj.class.name
-    if obj.new_record?
-      "Create #{class_name}"
-    else
-      if suffix.present?
-        "Update #{class_name} #{suffix.humanize}"
-      else
-        "Update #{class_name}"
-      end
-    end
-  end
-
-  def breadcrumbs(url)
-    crumbs = []
-    so_far = '/'
-    elements = url.split('/')
-
-    for i in 1...elements.size
-      so_far += elements[i] + '/'
-
-      if elements[i] =~ /^[a-z,A-Z]{6}$/ && !elements[i].singularize.camelize.classify.is_a?(Class)
-        begin
-          crumbs << { name: eval("#{elements[i - 1].singularize.camelize}.find('#{elements[i]}').to_s").gsub("_"," ").to_s, path: so_far }
-        rescue ActiveRecord::RecordNotFound
-          crumbs << { name: elements[i].gsub("_"," ").titleize, path: so_far }
-        end
-      else
-        crumbs << { name: elements[i].gsub("_"," ").titleize, path: so_far }
-      end
-    end
-
-    crumbs
   end
 end
