@@ -9,6 +9,9 @@ Account under <%= @contact.account.name %>
 
   <%= f.input :first_name %>
   <%= f.input :last_name %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
   <%= f.select :company_ids, @account.companies.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
 
   <%= f.submit %>

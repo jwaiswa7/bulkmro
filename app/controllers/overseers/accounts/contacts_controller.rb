@@ -22,7 +22,7 @@ class Overseers::Accounts::ContactsController < Overseers::Accounts::BaseControl
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer))
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |_, v| v.blank? })
     authorize @contact
 
     if @contact.save
@@ -42,6 +42,9 @@ class Overseers::Accounts::ContactsController < Overseers::Accounts::BaseControl
         :account_id,
         :first_name,
         :last_name,
+        :email,
+        :password,
+        :password_confirmation,
         :company_ids => []
     )
   end
