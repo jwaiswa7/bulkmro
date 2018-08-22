@@ -12,7 +12,6 @@ class InquiryProduct < ApplicationRecord
   validates_numericality_of :quantity, :greater_than => 0
 
   after_initialize :set_defaults, :if => :new_record?
-
   def set_defaults
     self.quantity ||= 1
   end

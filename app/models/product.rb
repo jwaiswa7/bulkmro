@@ -1,12 +1,14 @@
 class Product < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::CanBeApproved
 
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand
   belongs_to :category
   has_many :product_suppliers
-
+  has_one :approval, :class_name => 'ProductApproval', inverse_of: :product
+  accepts_nested_attributes_for :approval
   has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
 
@@ -21,7 +23,10 @@ class Product < ApplicationRecord
   validates_presence_of :name, :sku
   validates_uniqueness_of :sku
 
+  scope :approved, -> { joins(:approval).where.not(product_approvals: { id: nil }) }
+  scope :not_approved, -> { joins(:approval).where(product_approvals: { id: nil }) }
+
   def to_s
-    "#{brand.name} > #{name} (#{sku})"
+    "#{name} (#{sku})"
   end
 end

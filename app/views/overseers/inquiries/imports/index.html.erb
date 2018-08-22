@@ -1,0 +1,24 @@
+<%= render layout: 'overseers/inquiries/tabs_layout' do %>
+  <% provide :hide_table_desc, true %>
+  <% provide :hide_table_heading, true %>
+
+  <div class="col-lg-12 mb-12">
+    <% content_for :header_row do %>
+      <th>Created</th>
+      <th>Imported By</th>
+      <th>Import Type</th>
+      <th>Actions</th>
+    <% end %>
+
+    <%= render layout: 'shared/layouts/datatable' do %>
+      <% @imports.each do |import| %>
+        <tr>
+          <td><%= format_date(import.created_at) %></td>
+          <td><%= import.created_by.to_s %></td>
+          <td><%= format_enum(import.import_type) %></td>
+          <td><%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

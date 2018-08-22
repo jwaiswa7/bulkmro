@@ -1,0 +1,14 @@
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([:overseers, @inquiry, @import], url: overseers_inquiry_imports_path(@inquiry), :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :import_type %>
+    <div class="card-body">
+      <div class="form-group">
+        <%= f.input :import_text, label: 'List text', as: :text, rows: 10 %>
+      </div>
+
+      <div class="form-group mb-0">
+        <%= f.submit(class: 'btn btn-success btn-block') %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

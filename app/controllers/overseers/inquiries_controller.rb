@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :import_from_excel, :import_from_list]
+  before_action :set_inquiry, only: [:show, :edit, :update]
   before_action :set_company, only: [:new]
 
   def index
@@ -14,22 +14,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def new
     @inquiry = @company.inquiries.build(overseer: current_overseer)
-    authorize @inquiry
-  end
-
-  def import_from_excel
-    authorize @inquiry
-  end
-
-  def handle_excel
-    authorize @inquiry
-  end
-
-  def import_from_list
-    authorize @inquiry
-  end
-
-  def handle_list
     authorize @inquiry
   end
 
@@ -75,19 +59,9 @@ class Overseers::InquiriesController < Overseers::BaseController
         :billing_address_id,
         :shipping_address_id,
         :comments,
-        :inquiry_products_attributes => [:id, :product_id, :quantity]
+        :inquiry_products_attributes => [:id, :product_id, :quantity, :_destroy]
     )
   end
 
-  def import_from_excel_params
-    params.require(:import_from_excel).permit(
-      :excel_text,
-    )
-  end
 
-  def import_from_list_params
-    params.require(:import_from_list).permit(
-      :list_text,
-    )
-  end
 end

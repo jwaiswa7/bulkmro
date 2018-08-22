@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_21_122559) do
+ActiveRecord::Schema.define(version: 2018_08_22_103022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,19 @@ ActiveRecord::Schema.define(version: 2018_08_21_122559) do
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 
+  create_table "inquiry_imports", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.integer "import_type"
+    t.text "import_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_inquiry_imports_on_created_by_id"
+    t.index ["inquiry_id"], name: "index_inquiry_imports_on_inquiry_id"
+    t.index ["updated_by_id"], name: "index_inquiry_imports_on_updated_by_id"
+  end
+
   create_table "inquiry_products", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.bigint "product_id"
@@ -293,6 +306,18 @@ ActiveRecord::Schema.define(version: 2018_08_21_122559) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "product_approvals", force: :cascade do |t|
+    t.bigint "product_id"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_product_approvals_on_created_by_id"
+    t.index ["product_id"], name: "index_product_approvals_on_product_id"
+    t.index ["updated_by_id"], name: "index_product_approvals_on_updated_by_id"
   end
 
   create_table "product_suppliers", force: :cascade do |t|
@@ -472,6 +497,8 @@ ActiveRecord::Schema.define(version: 2018_08_21_122559) do
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"
+  add_foreign_key "inquiry_imports", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "inquiries"
   add_foreign_key "inquiry_products", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_products", "overseers", column: "updated_by_id"
@@ -485,6 +512,9 @@ ActiveRecord::Schema.define(version: 2018_08_21_122559) do
   add_foreign_key "overseers", "overseers", column: "created_by_id"
   add_foreign_key "overseers", "overseers", column: "parent_id"
   add_foreign_key "overseers", "overseers", column: "updated_by_id"
+  add_foreign_key "product_approvals", "overseers", column: "created_by_id"
+  add_foreign_key "product_approvals", "overseers", column: "updated_by_id"
+  add_foreign_key "product_approvals", "products"
   add_foreign_key "product_suppliers", "companies", column: "supplier_id"
   add_foreign_key "product_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"

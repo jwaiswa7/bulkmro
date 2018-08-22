@@ -4,7 +4,7 @@
       <h1 class="display-5 mb-1"><%= yield :heading %></h1>
     <% else %>
       <h1 class="display-5 mb-1"><%= current_model %></h1>
-    <% end %>
+    <% end unless content_for?(:hide_table_heading) %>
 
     <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
         <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
