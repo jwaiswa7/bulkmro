@@ -1,0 +1,47 @@
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([:overseers, @inquiry], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :company_id %>
+
+
+    <% if f.object.errors.any? %>
+      <% f.object.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    <% end %>
+
+
+    <div class="card-body">
+      <div class="form-group">
+        <%= f.association :company, disabled: true %>
+        <%= f.association :contact %>
+        <%= f.association :billing_address, label_method: :to_s  %>
+        <%= f.association :shipping_address, label_method: :to_s %>
+      </div>
+      <div class="form-group">
+
+        <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+          <div class="row">
+            <%= inquiry_product.hidden_field :id %>
+            <div class="col-md-8">
+              <%= inquiry_product.association :product, collection: [inquiry_product.object.product], include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path } %>
+            </div>
+            <div class="col-md-4">
+              <%= inquiry_product.input :quantity %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= f.add_nested_fields_link :inquiry_products, 'Add Product' %>
+      </div>
+      <div class="form-group">
+        <%= f.input :comments %>
+      </div>
+
+      <div class="form-group mb-0">
+        <%= f.submit(class: 'btn btn-success btn-block') %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+

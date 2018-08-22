@@ -23,8 +23,12 @@ class Inquiry < ApplicationRecord
   has_one :sales_approval, :through => :sales_quote
   has_one :sales_order, :through => :sales_approval
 
-  validates_length_of :inquiry_products, minimum: 1
+  # validates_length_of :inquiry_products, minimum: 1
   validate :all_products_have_suppliers
+
+  def draft?
+    !inquiry_products.any?
+  end
 
   def all_products_have_suppliers
     if products.size != s_products.uniq.size && self.inquiry_suppliers.present?

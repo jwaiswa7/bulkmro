@@ -18,6 +18,10 @@ class Overseers::ApplicationPolicy
     admin? || sales?
   end
 
+  def autocomplete?
+    index?
+  end
+
   def show?
     index?
   end

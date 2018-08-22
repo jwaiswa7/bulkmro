@@ -6,6 +6,11 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def autocomplete
+    @products = ApplyParams.to(Product.all.includes(:brand), params)
+    authorize @products
+  end
+
   def new
     @product = Product.new(:overseer => current_overseer)
     authorize @product

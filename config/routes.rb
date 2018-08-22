@@ -8,7 +8,13 @@ Rails.application.routes.draw do
     resource :dashboard, :controller => :dashboard
 
     resources :brands
-    resources :products
+
+    resources :products do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
     resources :categories
     resources :suppliers
     resources :overseers
@@ -46,7 +52,6 @@ Rails.application.routes.draw do
     resources :companies do
       scope module: 'companies' do
         resources :addresses
-        resources :inquiries
       end
     end
 

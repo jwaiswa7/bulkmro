@@ -7,7 +7,7 @@ json.data (@companies) do |company|
                   [
                       row_action_button(overseers_company_path(company), 'eye', 'Show', 'warning'),
                       row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit', 'warning'),
-                      row_action_button(new_overseers_company_inquiry_path(company), 'plus-circle', 'New Inquiry', 'success'),
+                      row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success'),
                   ].join(' ')
               ]
 end

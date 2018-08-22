@@ -11,7 +11,7 @@ json.data (@inquiries) do |inquiry|
                         row_action_button(edit_rfqs_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Generate RFQs', 'warning')
                       end,
                       if policy(inquiry).edit?
-                        row_action_button(edit_overseers_company_inquiry_path(inquiry.company, inquiry), 'pencil', 'Edit', 'warning')
+                        row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit', 'warning')
                       end,
                       if policy(inquiry).edit_quotations?
                         row_action_button(edit_quotations_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Purchase Quotations', 'warning')
