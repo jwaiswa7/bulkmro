@@ -1,3 +1,8 @@
+service = Services::Shared::Spreadsheets::CsvImporter.new('tax_codes.csv')
+service.loop(100) do |x|
+  TaxCode.create!(code: x.get_column('Code'), description: x.get_column('Description'))
+end
+
 states = [
     'Andhra Pradesh',
     'Arunachal Pradesh',

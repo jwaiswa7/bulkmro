@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_25_063351) do
+ActiveRecord::Schema.define(version: 2018_08_22_035211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,22 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
     t.index ["industry_id"], name: "index_companies_on_industry_id"
     t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
+  end
+
+  create_table "company_banks", force: :cascade do |t|
+    t.bigint "company_id"
+    t.string "country_code"
+    t.string "account_number"
+    t.string "ifsc"
+    t.string "street_address"
+    t.string "email"
+    t.string "phone"
+    t.string "swift"
+    t.string "routing_number"
+    t.string "iban"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_company_banks_on_company_id"
   end
 
   create_table "company_contacts", force: :cascade do |t|
@@ -391,6 +407,14 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
     t.index ["updated_by_id"], name: "index_sales_quotes_on_updated_by_id"
   end
 
+  create_table "tax_codes", force: :cascade do |t|
+    t.string "code"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_tax_codes_on_code", unique: true
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
@@ -427,6 +451,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_063351) do
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
+  add_foreign_key "company_banks", "companies"
   add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
   add_foreign_key "company_contacts", "overseers", column: "created_by_id"
