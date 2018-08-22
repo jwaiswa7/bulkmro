@@ -10,17 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_22_035211) do
+ActiveRecord::Schema.define(version: 2018_08_21_122559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
+    t.string "alias"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["alias"], name: "index_accounts_on_alias", unique: true
     t.index ["created_by_id"], name: "index_accounts_on_created_by_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["updated_by_id"], name: "index_accounts_on_updated_by_id"
@@ -78,6 +80,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
   end
 
   create_table "categories", force: :cascade do |t|
+    t.bigint "tax_code_id"
     t.integer "parent_id"
     t.string "name"
     t.datetime "created_at", null: false
@@ -86,6 +89,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_categories_on_created_by_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+    t.index ["tax_code_id"], name: "index_categories_on_tax_code_id"
     t.index ["updated_by_id"], name: "index_categories_on_updated_by_id"
   end
 
@@ -116,6 +120,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
     t.bigint "industry_id"
     t.integer "default_payment_option_id"
     t.string "name"
+    t.string "tax_identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -124,6 +129,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
     t.index ["industry_id"], name: "index_companies_on_industry_id"
+    t.index ["tax_identifier"], name: "index_companies_on_tax_identifier", unique: true
     t.index ["updated_by_id"], name: "index_companies_on_updated_by_id"
   end
 
@@ -140,6 +146,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
     t.string "iban"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_number"], name: "index_company_banks_on_account_number", unique: true
     t.index ["company_id"], name: "index_company_banks_on_company_id"
   end
 
@@ -413,6 +420,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_tax_codes_on_code", unique: true
+    t.index ["description"], name: "index_tax_codes_on_description"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -440,6 +448,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_035211) do
   add_foreign_key "categories", "categories", column: "parent_id"
   add_foreign_key "categories", "overseers", column: "created_by_id"
   add_foreign_key "categories", "overseers", column: "updated_by_id"
+  add_foreign_key "categories", "tax_codes"
   add_foreign_key "category_hierarchies", "categories", column: "ancestor_id"
   add_foreign_key "category_hierarchies", "categories", column: "descendant_id"
   add_foreign_key "category_suppliers", "categories"
