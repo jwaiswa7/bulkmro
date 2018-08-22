@@ -13,7 +13,7 @@ class ApplyDatatableParams < BaseFunction
 		# 		records = records.order(k.to_sym => (v.to_i == 1 ? :asc : :desc), :created_at => :desc)
 		# 	end
 		# else
-		# 	records = records.latest
+			records = records.latest
 		# end
 
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1

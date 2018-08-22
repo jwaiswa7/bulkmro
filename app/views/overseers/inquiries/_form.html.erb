@@ -2,13 +2,11 @@
   <%= simple_form_for([:overseers, @inquiry], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
 
-
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     <% end %>
-
 
     <div class="card-body">
       <div class="form-group">
@@ -31,7 +29,12 @@
           </div>
         <% end %>
 
-        <%= f.add_nested_fields_link :inquiry_products, 'Add Product' %>
+        <%= f.add_nested_fields_link :inquiry_products, 'Select A New Product', class: 'btn btn-outline-dark' %>
+
+        <% if f.object.persisted? %>
+          <a href="<%= import_from_excel_overseers_inquiry_path(@inquiry) %>" class="btn btn-success btn-outline-dark">Import Products using Excel</a>
+          <a href="<%= import_from_list_overseers_inquiry_path(@inquiry) %>" class="btn btn-success btn-outline-dark">Import Products using List</a>
+        <% end %>
       </div>
       <div class="form-group">
         <%= f.input :comments %>

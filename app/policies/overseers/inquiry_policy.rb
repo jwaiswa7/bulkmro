@@ -3,6 +3,22 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     !record.rfqs_generated? && !record.suppliers_selected?
   end
 
+  def import_from_excel?
+    edit?
+  end
+
+  def handle_excel?
+    import_from_excel?
+  end
+
+  def import_from_list?
+    edit?
+  end
+
+  def handle_list?
+    import_from_list?
+  end
+
   def edit_suppliers?
     !record.suppliers_selected?
   end

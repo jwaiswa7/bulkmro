@@ -20,6 +20,14 @@ Rails.application.routes.draw do
     resources :overseers
 
     resources :inquiries do
+      member do
+        get 'import_from_excel'
+        get 'import_from_list'
+
+        post 'handle_excel'
+        post 'handle_list'
+      end
+
       scope module: 'inquiries' do
         resources :rfqs do
           collection do
