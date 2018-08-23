@@ -15,6 +15,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def excel_template?
+    new_excel_import?
+  end
+
   def create_excel_import?
     new_excel_import?
   end

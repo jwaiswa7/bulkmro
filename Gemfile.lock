@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/randym/axlsx.git
+  revision: c8ac844572b25fda358cc01d2104720c4c42f450
+  ref: c8ac844
+  specs:
+    axlsx (2.1.0.pre)
+      htmlentities (~> 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (>= 1.6.6)
+      rubyzip (>= 1.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -47,6 +58,9 @@ GEM
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
+    axlsx_rails (0.5.2)
+      actionpack (>= 3.1)
+      axlsx (>= 2.0.1)
     azure-core (0.1.14)
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
@@ -158,6 +172,7 @@ GEM
       hashids (~> 1.0)
     hashids (1.0.4)
     hashie (3.5.7)
+    htmlentities (4.3.4)
     httparty (0.16.2)
       multi_xml (>= 0.5.2)
     i18n (1.0.1)
@@ -308,6 +323,9 @@ GEM
     simple_form (4.0.1)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
+    simple_xlsx_reader (1.0.4)
+      nokogiri
+      rubyzip
     sinatra (2.0.3)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -378,6 +396,8 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  axlsx!
+  axlsx_rails
   azure-storage
   bootsnap (>= 1.1.0)
   byebug
@@ -408,10 +428,12 @@ DEPENDENCIES
   pundit
   rails (~> 5.2.0)
   rotp
+  rubyzip (>= 1.2.1)
   sass-rails (~> 5.0)
   selenium-webdriver
   sendgrid-ruby
   simple_form
+  simple_xlsx_reader
   slack-ruby-client
   spreadsheet
   spring

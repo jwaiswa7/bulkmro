@@ -90,6 +90,14 @@ gem 'azure-storage', require: false
 # Parse xls files
 gem 'spreadsheet', require: false
 
+# Parse XLSX files
+gem 'simple_xlsx_reader'
+
+# Render XLSX files
+gem 'rubyzip', '>= 1.2.1'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx_rails'
+
 # Validate file uploads
 gem 'file_validators'
 

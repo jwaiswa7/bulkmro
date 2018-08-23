@@ -8,7 +8,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def create_list_import
     @list_import = @inquiry.imports.build(import_params.merge(import_type: :list, overseer: current_overseer))
-    authorize @inquiry, :create_list_import?
+    authorize @inquiry
 
     service = Services::Overseers::Inquiries::ListImporter.new(@inquiry, @list_import)
 
@@ -21,6 +21,10 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def new_excel_import
     @import = @inquiry.imports.build(import_type: :excel, overseer: current_overseer)
+    authorize @inquiry
+  end
+
+  def excel_template
     authorize @inquiry
   end
 

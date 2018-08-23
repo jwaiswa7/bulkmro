@@ -1,4 +1,5 @@
 <%= render layout: 'shared/layouts/form' do %>
+  <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" class="btn btn-block" target="_blank">Download Excel Template</a>
   <%= simple_form_for([:overseers, @inquiry, @import], url: overseers_inquiry_imports_path(@inquiry), :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :import_type %>
 
