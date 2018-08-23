@@ -3,10 +3,20 @@ class InquiryImport < ApplicationRecord
 
   belongs_to :inquiry
   has_many :inquiry_products
+  has_one_attached :file
 
-  validates_presence_of :import_text
   validates_presence_of :import_type
-  validates :import_text, format: { with: /BM\d*[,]?\s?\d*/ }
+  validates_presence_of :import_text, :if => :list?
+  validates :import_text, format: { with: /BM\d*[,]?\s?\d*/ }, :if => :list?
+
+  validates :file, file_content_type: { allow: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'] }, if: -> { file.attached? }
+  validate :has_file_attachment, :if => :excel?
+
+  def has_file_attachment
+    if !file.attached?
+      errors.add(:base, 'File is required')
+    end
+  end
 
   enum import_type: { excel: 10, list: 20 }
 

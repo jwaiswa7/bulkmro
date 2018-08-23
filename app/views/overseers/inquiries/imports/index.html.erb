@@ -20,7 +20,11 @@
           <td><%= format_num(import.inquiry_products.size) %></td>
           <td><%= format_num(import.failed_skus.size) %></td>
           <td><%= format_enum(import.import_type) %></td>
-          <td><%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %></td>
+          <% if import.excel? && import.file.attached? %>
+            <td><%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %></td>
+        <% else %>
+            <td><%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %></td>
+        <% end %>
         </tr>
       <% end %>
     <% end %>
