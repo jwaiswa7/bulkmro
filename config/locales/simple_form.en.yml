@@ -1,5 +1,8 @@
 en:
   simple_form:
+    placeholders:
+      inquiries:
+        comments: Any additional information about about this inquiry
     "yes": 'Yes'
     "no": 'No'
     required:
@@ -8,9 +11,6 @@ en:
       # You can uncomment the line below if you need to overwrite the whole required html.
       # When using html, text and mark won't be used.
       # html: '<abbr title="required">*</abbr>'
-    placeholders:
-      inquiries:
-        comments: Any comments about this inquiry
     error_notification:
       default_message: "Please review the problems below:"
     # Examples

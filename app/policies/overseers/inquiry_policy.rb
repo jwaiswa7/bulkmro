@@ -3,16 +3,20 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     !record.rfqs_generated? && !record.suppliers_selected?
   end
 
-  def new_excel_import?
-    edit?
-  end
-
   def new_list_import?
     edit?
   end
 
-  def create_import?
-    new_excel_import? || new_list_import?
+  def create_list_import?
+    new_list_import?
+  end
+
+  def new_excel_import?
+    edit?
+  end
+
+  def create_excel_import?
+    new_excel_import?
   end
 
   def imports_index?

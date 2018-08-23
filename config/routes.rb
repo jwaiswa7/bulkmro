@@ -24,7 +24,9 @@ Rails.application.routes.draw do
         resources :imports do
           collection do
             get 'new_excel_import'
+            post 'create_excel_import'
             get 'new_list_import'
+            post 'create_list_import'
           end
         end
 

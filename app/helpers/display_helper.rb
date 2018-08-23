@@ -77,6 +77,10 @@ module DisplayHelper
     end
   end
 
+  def format_num(num, precision=0)
+    number_with_precision(num, precision: precision)
+  end
+
   def format_int(num)
     num.to_int
   end

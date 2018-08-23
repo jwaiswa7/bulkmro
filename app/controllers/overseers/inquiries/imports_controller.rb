@@ -1,22 +1,31 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
 
+  def new_list_import
+    @list_import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
+    authorize @inquiry
+  end
+
+  def create_list_import
+    @list_import = @inquiry.imports.build(import_params.merge(import_type: :list, overseer: current_overseer))
+    authorize @inquiry, :create_list_import?
+
+    service = Services::Overseers::Inquiries::ListImporter.new(@inquiry, @list_import)
+
+    if service.call
+      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'new_list_import'
+    end
+  end
+
   def new_excel_import
     @import = @inquiry.imports.build(import_type: :excel, overseer: current_overseer)
     authorize @inquiry
   end
 
-  def new_list_import
-    @import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
-    authorize @inquiry
-  end
+  def create_excel_import
 
-  def create
-    @import = @inquiry.imports.build(import_params.merge(overseer: current_overseer))
-    authorize @inquiry, :create_import?
-    @import.save
-
-    redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
   def index
@@ -39,7 +48,6 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def import_params
     params.require(:inquiry_import).permit(
-      :import_type,
       :import_text
     )
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_22_103022) do
+ActiveRecord::Schema.define(version: 2018_08_22_092430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_103022) do
     t.bigint "inquiry_id"
     t.integer "import_type"
     t.text "import_text"
+    t.string "failed_skus", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -236,6 +237,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_103022) do
   create_table "inquiry_products", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.bigint "product_id"
+    t.bigint "inquiry_import_id"
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -244,6 +246,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_103022) do
     t.index ["created_by_id"], name: "index_inquiry_products_on_created_by_id"
     t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
     t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
+    t.index ["inquiry_import_id"], name: "index_inquiry_products_on_inquiry_import_id"
     t.index ["product_id"], name: "index_inquiry_products_on_product_id"
     t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
   end
@@ -500,6 +503,7 @@ ActiveRecord::Schema.define(version: 2018_08_22_103022) do
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_imports", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "inquiries"
+  add_foreign_key "inquiry_products", "inquiry_imports"
   add_foreign_key "inquiry_products", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_products", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "products"
