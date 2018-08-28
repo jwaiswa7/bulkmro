@@ -18,7 +18,7 @@ class Services::Overseers::Inquiries::ExcelImporter < Services::Shared::BaseServ
         columns = excel_items.shift
       end
       columns = columns.map(&:downcase)
-      #raise()
+
       loop_and_set_products(excel_items, columns)
       ActiveRecord::Base.transaction do
         add_existing_products_to_inquiry
@@ -60,14 +60,19 @@ class Services::Overseers::Inquiries::ExcelImporter < Services::Shared::BaseServ
     excel_import.update_attributes(
         failed_skus: failed_skus
     )
+
   end
 
   def get_excel_items(excel_import)
     doc = SimpleXlsxReader.open(ActiveStorage::Blob.service.send(:path_for, excel_import.file.key))
-
     excel_items = doc.sheets.first.rows
-    # Remove Empty or Blank rows from the
-    excel_items = excel_items.map {|e| e.instance_of?(Array) ? e.reject(&:blank?).collect {|ei| ei.to_s.strip} : e}.reject(&:empty?)
+
+    # Strip White Space from rows
+    excel_items = excel_items.map { |e| e.instance_of?(Array) ? e.collect {|ei| ei.to_s.strip} : e}
+    # Remove rows with blank elements
+    excel_items = excel_items.map { |e| e[1].empty?? e.reject(&:blank?): e }.reject(&:empty?)
+
+    return excel_items
   end
 
   attr_accessor :inquiry, :excel_import, :existing_products, :failed_skus
