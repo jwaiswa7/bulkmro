@@ -23,6 +23,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     new_excel_import?
   end
 
+  def manage_failed_skus?
+    create_excel_import?
+  end
+
+  def create_pending_products?
+    manage_failed_skus?
+  end
+
   def imports_index?
     show?
   end

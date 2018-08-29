@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_23_112217) do
+ActiveRecord::Schema.define(version: 2018_08_28_072046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(version: 2018_08_23_112217) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.jsonb "failed_skus_metadata"
     t.index ["created_by_id"], name: "index_inquiry_imports_on_created_by_id"
     t.index ["inquiry_id"], name: "index_inquiry_imports_on_inquiry_id"
     t.index ["updated_by_id"], name: "index_inquiry_imports_on_updated_by_id"
