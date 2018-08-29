@@ -16,12 +16,14 @@ class Services::Overseers::Inquiries::ListImporter < Services::Shared::BaseServi
         add_existing_products_to_inquiry
         log_failed_skus
       end
+
+      list_import
     end
   end
 
   def loop_and_set_products
     list_import.import_text.split("\n").each do |list_item|
-      tuples = list_item.delete(' ').gsub(/[\r\n]/,'').split(',')
+      tuples = list_item.delete(' ').gsub(/[\r\n]/, '').split(',')
 
       sku = tuples[0]
       quantity = tuples.length > 1 ? tuples[1] : 1
@@ -48,7 +50,7 @@ class Services::Overseers::Inquiries::ListImporter < Services::Shared::BaseServi
 
   def log_failed_skus
     list_import.update_attributes(
-      failed_skus: failed_skus
+        failed_skus: failed_skus
     )
   end
 
