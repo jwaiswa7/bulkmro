@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_23_112217) do
+ActiveRecord::Schema.define(version: 2018_08_29_042612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,15 @@ ActiveRecord::Schema.define(version: 2018_08_23_112217) do
     t.index ["supplier_id", "category_id"], name: "index_category_suppliers_on_supplier_id_and_category_id", unique: true
     t.index ["supplier_id"], name: "index_category_suppliers_on_supplier_id"
     t.index ["updated_by_id"], name: "index_category_suppliers_on_updated_by_id"
+  end
+
+  create_table "chat_messages", force: :cascade do |t|
+    t.string "to"
+    t.string "from"
+    t.text "message"
+    t.jsonb "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "companies", force: :cascade do |t|
