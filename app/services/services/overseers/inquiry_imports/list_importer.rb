@@ -3,6 +3,7 @@ class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::I
   def call
     if import.save
       set_rows
+      delete_duplicate_rows
       set_existing_and_failed_products
 
       ActiveRecord::Base.transaction do
