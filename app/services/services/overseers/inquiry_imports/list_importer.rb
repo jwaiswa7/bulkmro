@@ -1,4 +1,4 @@
-class Services::Overseers::Inquiries::ListImporter < Services::Overseers::Inquiries::BaseImporter
+class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::InquiryImports::BaseImporter
 
   def call
     if import.save
@@ -7,6 +7,7 @@ class Services::Overseers::Inquiries::ListImporter < Services::Overseers::Inquir
 
       ActiveRecord::Base.transaction do
         add_existing_products_to_inquiry
+        add_successful_rows_to_inquiry
         add_failed_rows_to_inquiry
       end
 
@@ -21,7 +22,7 @@ class Services::Overseers::Inquiries::ListImporter < Services::Overseers::Inquir
       sku = tuples[0]
       quantity = tuples.length > 1 ? tuples[1] : 1
 
-      rows.push({ SKU: sku, Quantity: quantity })
+      rows.push({ sku: sku, quantity: quantity })
     end
   end
 end

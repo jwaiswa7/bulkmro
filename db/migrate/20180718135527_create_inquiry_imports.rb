@@ -6,8 +6,6 @@ class CreateInquiryImports < ActiveRecord::Migration[5.2]
       t.integer :import_type
       t.text :import_text
 
-      t.string :failed_skus, array: true, default: []
-
       t.timestamps
       t.userstamps
     end

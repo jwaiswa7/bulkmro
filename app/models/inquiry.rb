@@ -8,10 +8,10 @@ class Inquiry < ApplicationRecord
   belongs_to :company
   has_one :account, :through => :company
   has_many :inquiry_products, :inverse_of => :inquiry
+  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :products, :through => :inquiry_products
   has_many :inquiry_suppliers, :through => :inquiry_products
   has_many :s_products, :through => :inquiry_suppliers, :source => :product
-  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :brands, :through => :products
   has_many :suppliers, :through => :inquiry_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry

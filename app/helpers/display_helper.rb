@@ -71,9 +71,9 @@ module DisplayHelper
     id.upcase if id.present?
   end
 
-  def format_date(date, format=:short)
+  def format_date(date, format=:long)
     if date.present?
-      date.to_formatted_s format
+      date.strftime("%F %H:%M:%S")
     end
   end
 

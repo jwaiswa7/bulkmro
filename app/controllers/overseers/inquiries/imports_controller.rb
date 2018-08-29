@@ -1,6 +1,6 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
-  before_action :set_import, only: [:show, :create_pending_products]
-  before_action :set_excel_import, only: [:manage_failed_skus,:create_pending_products]
+  before_action :set_import, only: [:show]
+  before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
 
   def new_list_import
     @list_import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
@@ -11,7 +11,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     @list_import = @inquiry.imports.build(create_list_import_params.merge(import_type: :list, overseer: current_overseer))
     authorize @inquiry
 
-    service = Services::Overseers::Inquiries::ListImporter.new(@inquiry, @list_import)
+    service = Services::Overseers::InquiryImports::ListImporter.new(@inquiry, @list_import)
 
     if service.call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -33,49 +33,35 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     @excel_import = @inquiry.imports.build(create_excel_import_params.merge(import_type: :excel, overseer: current_overseer))
     authorize @inquiry
 
-    service = Services::Overseers::Inquiries::ExcelImporter.new(@inquiry, @excel_import)
-    service.call
+    service = Services::Overseers::InquiryImports::ExcelImporter.new(@inquiry, @excel_import)
 
-    if @excel_import.persisted?
-      if @excel_import.failed_skus.length > 0
-        redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import)
-      else
-        redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
-      end
+    if service.call
+       if service.any_failed?
+         redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import), notice: flash_message(@inquiry, action_name)
+       else
+         redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+       end
     else
       render 'new_excel_import'
     end
   end
 
   def manage_failed_skus
-    authorize @inquiry
-
-    @failed_products = []
-    @excel_import.failed_skus_metadata.each do |product|
-      failed_product = Product.new
-      failed_product.name = product["name"]
-      failed_product.sku = product["sku"]
-      brand = Brand.find_by_name(product["brand"])
-      if brand.present?
-        failed_product.brand_id = brand.id
-      end
-
-      @failed_products << failed_product
-    end
-    @failed_products
+    authorize @excel_import
+    service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
+    service.call
   end
 
   def create_failed_skus
-    authorize @inquiry
-    service = Services::Overseers::Inquiries::MassUploader.new(@inquiry, @excel_import, create_failed_product_import_params, current_overseer)
-    service.call
+    @excel_import.assign_attributes(create_failed_skus_params)
+    authorize @excel_import
+    service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
-    if @excel_import.failed_skus.length > 0
-      redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import)
-    else
+    if service.call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'manage_failed_skus'
     end
-
   end
 
   def index
@@ -87,7 +73,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @inquiry, :show_import?
 
     respond_to do |format|
-      format.text {render plain: @import.import_text}
+      format.text { render plain: @import.import_text }
     end
   end
 
@@ -107,13 +93,21 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     )
   end
 
-  def create_failed_product_import_params
-    params.require(:products)
-  end
-
   def create_excel_import_params
     params.require(:inquiry_import).permit(
         :file
+    )
+  end
+
+  def create_failed_skus_params
+    params.require(:inquiry_import).permit(
+      :inquiry_products_attributes => [
+          :inquiry_id,
+          :quantity,
+          :failed_sku,
+          :_destroy,
+          :product_attributes => [:inquiry_import_id, :name, :sku, :brand_id, :category_id]
+      ]
     )
   end
 end

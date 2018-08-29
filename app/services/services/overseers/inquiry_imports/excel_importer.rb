@@ -1,4 +1,4 @@
-class Services::Overseers::Inquiries::ExcelImporter < Services::Overseers::Inquiries::BaseImporter
+class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
   class ExcelInvalidHeader < StandardError; end
 
   def call
@@ -10,6 +10,7 @@ class Services::Overseers::Inquiries::ExcelImporter < Services::Overseers::Inqui
 
       ActiveRecord::Base.transaction do
         add_existing_products_to_inquiry
+        add_successful_rows_to_inquiry
         add_failed_rows_to_inquiry
       end
     end
@@ -30,7 +31,7 @@ class Services::Overseers::Inquiries::ExcelImporter < Services::Overseers::Inqui
 
     excel_header_row.each do |column|
       if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(Id Name Brand MPN SKU Quantity))
-        next
+        column.downcase!
       else
         raise ExcelInvalidHeader
       end

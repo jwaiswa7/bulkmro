@@ -6,7 +6,9 @@ class Product < ApplicationRecord
 
   belongs_to :brand
   belongs_to :category
+  belongs_to :import, :class_name => 'InquiryImport', foreign_key: :inquiry_import_id, required: false
   has_many :product_suppliers
+  has_many :inquiry_products, :dependent => :destroy
   has_one :approval, :class_name => 'ProductApproval', inverse_of: :product
   accepts_nested_attributes_for :approval
   has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier

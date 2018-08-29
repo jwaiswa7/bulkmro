@@ -17,14 +17,17 @@
         <tr>
           <td><%= format_date(import.created_at) %></td>
           <td><%= import.created_by.to_s %></td>
-          <td><%= format_num(import.inquiry_products.size) %></td>
-          <td><%= format_num(import.failed_skus.size) %></td>
+          <td><%= format_num(import.successful_skus_metadata.size) %></td>
+          <td><%= format_num(import.failed_skus_metadata.size) %></td>
           <td><%= format_enum(import.import_type) %></td>
-          <% if import.excel? && import.file.attached? %>
-            <td><%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %></td>
-        <% else %>
-            <td><%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %></td>
-        <% end %>
+          <td>
+          <% if policy(import).show? && import.excel? && import.file.attached? %>
+            <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
+          <% elsif policy(import).show? %>
+            <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
+          <% end %>
+            <%= if policy(import).manage_failed_skus?; row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning'); end %>
+          </td>
         </tr>
       <% end %>
     <% end %>

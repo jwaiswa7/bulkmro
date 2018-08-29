@@ -2,8 +2,10 @@ class InquiryImport < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :inquiry
-  has_many :inquiry_products
+  has_many :inquiry_products, dependent: :destroy
+  accepts_nested_attributes_for :inquiry_products, allow_destroy: true
   has_one_attached :file
+  has_many :products, dependent: :destroy
 
   validates_presence_of :import_type
   validates_presence_of :import_text, :if => :list?
