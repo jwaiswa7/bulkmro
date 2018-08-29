@@ -22,6 +22,10 @@ Rails.application.routes.draw do
     resources :inquiries do
       scope module: 'inquiries' do
         resources :imports do
+          member do
+            get 'manage_failed_skus'
+            post 'create_pending_products'
+          end
           collection do
             get 'new_excel_import'
             post 'create_excel_import'

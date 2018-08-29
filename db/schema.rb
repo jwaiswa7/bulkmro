@@ -259,6 +259,7 @@ ActiveRecord::Schema.define(version: 2018_08_29_042612) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.jsonb "failed_skus_metadata"
     t.index ["created_by_id"], name: "index_inquiry_imports_on_created_by_id"
     t.index ["inquiry_id"], name: "index_inquiry_imports_on_inquiry_id"
     t.index ["updated_by_id"], name: "index_inquiry_imports_on_updated_by_id"

@@ -1,0 +1,14 @@
+# This is a sample build configuration for Ruby.
+# Check our guides at https://confluence.atlassian.com/x/8r-5Mw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: ruby:2.5.1
+
+pipelines:
+  default:
+    - step:
+        name: Deploy to Heroku
+        deployment: production 
+        script:
+          - git push https://heroku:2c8472ca-d02f-44e2-85c5-dbc709c76c92@git.heroku.com/bulkmro.git HEAD
