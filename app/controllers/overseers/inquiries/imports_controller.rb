@@ -42,7 +42,6 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
       else
         redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
       end
-
     else
       render 'new_excel_import'
     end
@@ -66,7 +65,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     @failed_products
   end
 
-  def create_pending_products
+  def create_failed_skus
     authorize @inquiry
     service = Services::Overseers::Inquiries::MassUploader.new(@inquiry, @excel_import, create_failed_product_import_params, current_overseer)
     service.call

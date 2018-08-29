@@ -24,7 +24,7 @@ Rails.application.routes.draw do
         resources :imports do
           member do
             get 'manage_failed_skus'
-            post 'create_pending_products'
+            post 'create_failed_skus'
           end
           collection do
             get 'new_excel_import'

@@ -1,80 +1,47 @@
-class Services::Overseers::Inquiries::ExcelImporter < Services::Shared::BaseService
-  def initialize(inquiry, excel_import)
-    @inquiry = inquiry
-    @excel_import = excel_import
-
-    @existing_products = []
-    @failed_skus = []
-    @failed_skus_metadata = []
-  end
+class Services::Overseers::Inquiries::ExcelImporter < Services::Overseers::Inquiries::BaseImporter
+  class ExcelInvalidHeader < StandardError; end
 
   def call
-    if excel_import.save
+    if import.save
+      set_excel_rows
+      set_and_validate_excel_header_row
+      set_rows
+      set_existing_and_failed_products
 
-      loop_and_set_products(excel_import)
       ActiveRecord::Base.transaction do
         add_existing_products_to_inquiry
-        log_failed_skus
+        add_failed_rows_to_inquiry
       end
     end
-    excel_import
+
+    import
   end
 
-  def loop_and_set_products(excel_import)
-    excel_items = get_excel_items(excel_import)
-    columns = ["id", "name", "brand", "mpn", "sku", "quantity"]
+  def set_excel_rows
+    excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
+    excel_rows = excel.sheets.first.rows
+    excel_rows.reject! { |er| er.compact.blank? }
 
-    if (excel_items.first.first.downcase == 'id')
-      columns = excel_items.shift
-    end
-    columns = columns.map(&:downcase)
+    @excel_rows = excel_rows
+  end
 
-    @colums_sym = columns.map(&:to_sym)
-    excel_items.each do |excel_item|
-      unless excel_item[1].nil?
-        add_product(excel_item, columns)
+  def set_and_validate_excel_header_row
+    @excel_header_row = excel_rows.shift
+
+    excel_header_row.each do |column|
+      if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(Id Name Brand MPN SKU Quantity))
+        next
+      else
+        raise ExcelInvalidHeader
       end
     end
   end
 
-  def add_product(excel_item, columns)
-    sku = excel_item[columns.index('sku')]
-    quantity = excel_item[columns.index('quantity')]
-    product = Product.find_by_sku(sku)
-
-    if product.present?
-      existing_products << [product, quantity]
-    else
-      failed_skus << sku
-      failed_skus_metadata << @colums_sym.zip(excel_item).to_h
+  def set_rows
+    excel_rows.each do |excel_row|
+      rows.push excel_header_row.zip(excel_row).to_h
     end
   end
 
-  def add_existing_products_to_inquiry
-    existing_products.each do |product, quantity|
-      inquiry.inquiry_products.where(product: product).first_or_create.update_attributes(:quantity => quantity, :import => excel_import)
-    end
-  end
-
-  def log_failed_skus
-    excel_import.update_attributes(
-        failed_skus: failed_skus,
-        failed_skus_metadata: failed_skus_metadata.as_json
-    )
-
-  end
-
-  def get_excel_items(excel_import)
-    doc = SimpleXlsxReader.open(ActiveStorage::Blob.service.send(:path_for, excel_import.file.key))
-    excel_items = doc.sheets.first.rows
-
-    # Strip White Space from rows
-    excel_items = excel_items.map {|e| e.instance_of?(Array) ? e.collect {|ei| ei.to_s.strip} : e}
-    # Remove rows with blank elements
-    excel_items = excel_items.map {|e| e[1].empty? ? e.reject(&:blank?) : e}.reject(&:empty?)
-
-    return excel_items
-  end
-
-  attr_accessor :inquiry, :excel_import, :existing_products, :failed_skus, :failed_skus_metadata
+  attr_accessor :inquiry, :import, :excel_rows, :excel_header_row, :excel_products
 end
