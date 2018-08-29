@@ -15,10 +15,15 @@ class Services::Overseers::Inquiries::MassUploader < Services::Shared::BaseServi
       product.updated_by = @current_overseer
       product.save
       products << product
+
+      @excel_import.failed_skus.delete(p[:sku])
       #remove from Failed
       #add_to_queue
       #notify
     end
+
+    service = Services::Overseers::Inquiries::ExcelImporter.new(@inquiry, @excel_import)
+    service.call
 
   end
 

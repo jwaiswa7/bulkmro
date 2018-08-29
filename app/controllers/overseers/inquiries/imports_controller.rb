@@ -1,6 +1,6 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show, :create_pending_products]
-  before_action :set_excel_import, only: [:manage_failed_skus]
+  before_action :set_excel_import, only: [:manage_failed_skus,:create_pending_products]
 
   def new_list_import
     @list_import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
@@ -70,6 +70,13 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @inquiry
     service = Services::Overseers::Inquiries::MassUploader.new(@inquiry, @excel_import, create_failed_product_import_params, current_overseer)
     service.call
+
+    if @excel_import.failed_skus.length > 0
+      redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import)
+    else
+      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    end
+
   end
 
   def index
