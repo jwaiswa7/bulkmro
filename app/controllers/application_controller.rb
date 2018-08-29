@@ -4,6 +4,11 @@ class ApplicationController < ActionController::Base
     flash_hash[sentiment] = flash_message(object, action)
   end
 
+  def set_flash_message(message, sentiment, now: false)
+    flash_hash = now ? flash.now : flash
+    flash_hash[sentiment] = message
+  end
+
   def flash_message(object, action)
     class_name = object.class.name
 

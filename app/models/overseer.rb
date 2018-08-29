@@ -2,6 +2,8 @@ class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::IsAPerson
 
+  has_one_attached :file
+
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
   has_closure_tree({ name_column: :to_s })
 

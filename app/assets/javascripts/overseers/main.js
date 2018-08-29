@@ -1,4 +1,5 @@
 main = {
+    a: undefined,
     load: function () {
         main.initGoogleAnalytics();
         main.initFilefields();
@@ -83,6 +84,12 @@ main = {
 
         window.Parsley.on('form:validated', function(form) {
             // form.$element.addClass('was-validated');
+        });
+
+        window.Parsley.on('field:success', function(e) {
+            if (!$(this.element).parent().find('div.valid-feedback').exists() && $(this.element).attr('data-parsely-no-valid-feedback') === undefined) {
+                $(this.element).parent().append('<div class="valid-feedback">Looks good!</div>');
+            }
         });
 
         $("[data-parsley-validate]").parsley();

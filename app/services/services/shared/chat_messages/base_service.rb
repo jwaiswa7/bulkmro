@@ -7,13 +7,13 @@ class Services::Shared::ChatMessages::BaseService < Services::Shared::BaseServic
     client.chat_postMessage(
         channel: to,
         text: message,
-        icon_emoji: ':moneybag:',
-        username: 'Sprint Bot',
+        icon_emoji: Settings.slack.icon_emoji,
+        username: Settings.slack.username,
         attachments: attachments,
         as_user: false
     )
 
-    ChatMessage.create!(to: to, message: message)
+    ChatMessage.create!(to: to, from: Settings.slack.username, message: message, metadata: attachments)
   end
 
   attr_accessor :client

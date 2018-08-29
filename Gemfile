@@ -119,6 +119,12 @@ gem 'gaffe'
 # Easy country selection
 gem 'country_select'
 
+# Two-factor authentication for Devise
+gem 'two_factor_authentication'
+
+# Dump database into file
+gem 'seed_dump'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

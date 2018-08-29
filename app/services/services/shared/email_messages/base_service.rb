@@ -6,13 +6,18 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
   def send_email_message(recipient, template_id, template_data)
     response = client.client.mail._('send').post(request_body: {
         from: {
-            email: Settings.email_messages.from
+            email: Settings.email_messages.from,
+            name: Settings.email_messages.from_name
+        },
+        reply_to: {
+            email: Settings.email_messages.reply_to,
+            name: Settings.email_messages.reply_to_name
         },
         personalizations: [
             to: [{
-                email: recipient.email,
-                name: recipient.to_s
-            }],
+                     email: recipient.email,
+                     name: recipient.to_s
+                 }],
             dynamic_template_data: template_data.merge(root_url: routes.root_url)
         ],
         template_id: template_id
@@ -36,7 +41,12 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
 
     response = client.client.mail._('send').post(request_body: {
         from: {
-            email: Settings.email_messages.from
+            email: Settings.email_messages.from,
+            name: Settings.email_messages.from_name
+        },
+        reply_to: {
+            email: Settings.email_messages.reply_to,
+            name: Settings.email_messages.reply_to_name
         },
         personalizations: personalizations_array.as_json,
         template_id: template_id

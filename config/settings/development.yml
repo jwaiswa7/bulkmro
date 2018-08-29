@@ -1,9 +1,13 @@
 email_messages:
-  from: nobody@bulkmro.com
+  from: no-reply@bulkmro.com
+  from_name: Bulk MRO Notifications
+  reply_to: care@bulkmro.com
+  reply_to_name: Bulk MRO Support
 
 slack:
-  access_token: xoxp-395906857286-395824799415-397063976980-c73aaf550513f95e7fdff829317b1640
   bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
+  username: Sprint Bot
+  icon_emoji: ':moneybag:'
 
 sendgrid:
   username: bulk
