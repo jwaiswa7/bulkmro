@@ -270,4 +270,7 @@ Account.all.each do |account|
 end
 
 # Product approvals
-# Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
+Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
+RandomRecords.for(Product.not_approved, 20).each do |p|
+  p.create_approval(:comments => Faker::Lorem.sentence)
+end
