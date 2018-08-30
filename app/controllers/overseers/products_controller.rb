@@ -11,11 +11,16 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def pending
+    @products = ApplyDatatableParams.to(Product.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)).group(:id).order('count(inquiry_products.id) Desc'), params)
+    authorize @products
+  end
+
   def new
     @product = Product.new(:overseer => current_overseer)
     authorize @product
   end
-  
+
   def create
     @product = Product.new(product_params.merge(overseer: current_overseer))
     authorize @product
@@ -39,6 +44,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   private
+
   def product_params
     params.require(:product).permit(
         :name,

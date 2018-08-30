@@ -265,7 +265,6 @@ ActiveRecord::Schema.define(version: 2018_08_30_081724) do
     t.bigint "inquiry_id"
     t.integer "import_type"
     t.text "import_text"
-    t.string "failed_skus", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"

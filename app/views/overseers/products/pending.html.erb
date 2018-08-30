@@ -1,0 +1,16 @@
+
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :header_row do %>
+  <th>Created</th>
+  <th>Name</th>
+  <th>Brand</th>
+  <th>SKU</th>
+  <th>Suppliers</th>
+  <th>Actions</th>
+<% end %>
+
+<div class="col-lg-11">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

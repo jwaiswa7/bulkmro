@@ -25,8 +25,8 @@ class Product < ApplicationRecord
   validates_presence_of :name, :sku
   validates_uniqueness_of :sku
 
-  scope :approved, -> { joins(:approval).where.not(product_approvals: { id: nil }) }
-  scope :not_approved, -> { joins(:approval).where(product_approvals: { id: nil }) }
+  scope :approved, -> { joins(:approval).where.not(product_approvals: {id: nil }) }
+  scope :not_approved, -> { joins(:approval).where(product_approvals: {id: nil }) }
 
   def to_s
     "#{name} (#{sku})"

@@ -1,0 +1,19 @@
+<div class="col-lg-12 mb-12">
+
+  <h4> Product: <%= @product.to_s %> </h4>
+
+
+  <%= simple_form_for([:overseers, @product_approval]) do |f| %>
+
+    <% if f.object.errors.any? %>
+      <% f.object.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    <% end %>
+
+    <%= f.input :comments %>
+
+    <%= f.submit 'Approve product' %>
+  <% end %>
+
+</div>
