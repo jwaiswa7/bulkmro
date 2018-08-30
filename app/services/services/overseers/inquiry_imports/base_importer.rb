@@ -10,6 +10,19 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     @failed_skus_metadata = []
   end
 
+  def call_base
+    delete_duplicate_rows
+    set_existing_and_failed_products
+
+    ActiveRecord::Base.transaction do
+      add_existing_products_to_inquiry
+      add_successful_rows_to_inquiry
+      add_failed_rows_to_inquiry
+    end
+
+    import
+  end
+
   def delete_duplicate_rows
     rows.uniq! { |row| row['sku'] }
   end

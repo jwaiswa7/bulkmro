@@ -6,17 +6,9 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
       set_excel_rows
       set_and_validate_excel_header_row
       set_rows
-      delete_duplicate_rows
-      set_existing_and_failed_products
 
-      ActiveRecord::Base.transaction do
-        add_existing_products_to_inquiry
-        add_successful_rows_to_inquiry
-        add_failed_rows_to_inquiry
-      end
+      call_base
     end
-
-    import
   end
 
   def set_excel_rows
