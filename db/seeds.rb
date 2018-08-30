@@ -268,3 +268,6 @@ Account.all.each do |account|
     i.save
   end
 end
+
+# Product approvals
+# Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end

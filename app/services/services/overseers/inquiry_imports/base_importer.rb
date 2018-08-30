@@ -31,7 +31,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     rows.each do |row|
       row.stringify_keys!
 
-      product = Product.find_by_sku(row['sku'])
+      product = Product.approved.find_by_sku(row['sku'])
 
       if product.present?
         existing_products << [product, row['quantity']]
