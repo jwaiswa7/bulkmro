@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
-  devise_for :overseers, controllers: { sessions: 'overseers/sessions' }
+  devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
@@ -12,7 +12,17 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'pending'
       end
+      scope module: 'products' do
+        resources :approvals do
+          member do
+            get 'new'
+            post 'create'
+          end
+        end
+      end
+
     end
 
     resources :categories

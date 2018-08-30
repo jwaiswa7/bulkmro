@@ -41,6 +41,7 @@
             <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
             <%= nav_item 'Categories', overseers_categories_path, policy(:category).index? %>
             <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+            <%= nav_item 'Pending Approvals', pending_overseers_products_path, policy(:overseer).index? %>
         </ul>
     </div>
     <!-- Navigation Bar -->
