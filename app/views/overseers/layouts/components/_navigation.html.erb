@@ -38,10 +38,10 @@
             <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
             <%= nav_item 'Brands', overseers_brands_path, policy(:brand).index? %>
             <%= nav_item 'Products', overseers_products_path, policy(:product).index? %>
+            <%= nav_item 'Approval Queue', pending_overseers_products_path, policy(:product).pending? %>
             <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
             <%= nav_item 'Categories', overseers_categories_path, policy(:category).index? %>
             <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-            <%= nav_item 'Pending Approvals', pending_overseers_products_path, policy(:overseer).index? %>
         </ul>
     </div>
     <!-- Navigation Bar -->

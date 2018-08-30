@@ -7,7 +7,7 @@ json.data (@products) do |product|
                   product.suppliers.size,
                   [
                       if policy(product).new_approval?
-                        row_action_button(new_overseers_product_approval_path(product), 'plus', 'Edit', 'warning')
+                        row_action_button(new_overseers_product_approval_path(product), 'plus-circle', 'New Approval', 'success')
                       end,
                   ].join(' ')
               ]
