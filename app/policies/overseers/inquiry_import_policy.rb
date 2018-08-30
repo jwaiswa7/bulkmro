@@ -1,6 +1,6 @@
 class Overseers::InquiryImportPolicy < Overseers::ApplicationPolicy
   def manage_failed_skus?
-    record.failed_skus_metadata.any?
+    record.rows.failed.any?
   end
 
   def create_failed_skus?

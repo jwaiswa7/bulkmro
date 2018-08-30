@@ -5,7 +5,9 @@ class InquiryImport < ApplicationRecord
   has_many :inquiry_products, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, allow_destroy: true
   has_one_attached :file
-  has_many :products, dependent: :destroy
+  has_many :rows, :class_name => 'InquiryImportRow'
+  has_many :products, :through => :rows
+  accepts_nested_attributes_for :rows, allow_destroy: true
 
   validates_presence_of :import_type
   validates_presence_of :import_text, :if => :list?

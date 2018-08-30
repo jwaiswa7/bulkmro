@@ -6,10 +6,10 @@ class Product < ApplicationRecord
 
   belongs_to :brand
   belongs_to :category
-  belongs_to :import, :class_name => 'InquiryImport', foreign_key: :inquiry_import_id, required: false
-  has_many :product_suppliers
+  belongs_to :import_row, :class_name => 'InquiryImportRow', foreign_key: :inquiry_import_row_id, required: false
+  has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
-  has_one :approval, :class_name => 'ProductApproval', inverse_of: :product
+  has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
   accepts_nested_attributes_for :approval
   has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers

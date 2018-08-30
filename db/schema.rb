@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_120459) do
+ActiveRecord::Schema.define(version: 2018_08_30_081724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,6 +250,17 @@ ActiveRecord::Schema.define(version: 2018_08_29_120459) do
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 
+  create_table "inquiry_import_rows", force: :cascade do |t|
+    t.bigint "inquiry_import_id"
+    t.bigint "inquiry_product_id"
+    t.string "sku"
+    t.jsonb "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inquiry_import_id"], name: "index_inquiry_import_rows_on_inquiry_import_id"
+    t.index ["inquiry_product_id"], name: "index_inquiry_import_rows_on_inquiry_product_id"
+  end
+
   create_table "inquiry_imports", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.integer "import_type"
@@ -378,11 +389,11 @@ ActiveRecord::Schema.define(version: 2018_08_29_120459) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.bigint "inquiry_import_id"
+    t.bigint "inquiry_import_row_id"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
-    t.index ["inquiry_import_id"], name: "index_products_on_inquiry_import_id"
+    t.index ["inquiry_import_row_id"], name: "index_products_on_inquiry_import_row_id"
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
@@ -559,7 +570,7 @@ ActiveRecord::Schema.define(version: 2018_08_29_120459) do
   add_foreign_key "product_suppliers", "products"
   add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
-  add_foreign_key "products", "inquiry_imports"
+  add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
   add_foreign_key "rfq_contacts", "contacts"

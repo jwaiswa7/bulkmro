@@ -274,3 +274,6 @@ Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.se
 RandomRecords.for(Product.not_approved, 20).each do |p|
   p.create_approval(:comments => Faker::Lorem.sentence)
 end
+
+# Product.all.each do |p| p.destroy; end
+# InquiryImport.all.each do |i| i.destroy; end

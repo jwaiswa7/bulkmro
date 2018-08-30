@@ -1,40 +1,40 @@
 <div class="col-lg-12 mb-12">
-  <%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path) do |f| %>
+  <%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path, html: { }) do |f| %>
 
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     <% end %>
-    <%= f.nested_fields_for :inquiry_products do |inquiry_product| %>
-      <%= inquiry_product.hidden_field :inquiry_id %>
-      <%= inquiry_product.hidden_field :failed_sku %>
-      <div class="row">
-        <%= inquiry_product.simple_fields_for :product do |product| %>
-          <%= product.hidden_field :inquiry_import_id %>
-          <%= product.input :name %>
-          <%= product.input :sku %>
-          <%= product.association :brand %>
-          <div class="col-md-2">
-            <%= product.association :category, collection: Category.leaves %>
+    <%= f.simple_fields_for :rows do |row| %>
+      <% next if row.object.inquiry_product.persisted? %>
+      <div class="wrapper-class">
+        <%= row.hidden_field :id %>
+        <%= row.simple_fields_for :inquiry_product do |inquiry_product| %>
+          <%= inquiry_product.hidden_field :inquiry_id %>
+          <div class="row">
+            <%= inquiry_product.simple_fields_for :product do |product| %>
+              <%= product.hidden_field :inquiry_import_row_id %>
+              <%= product.input :name %>
+              <%= product.input :sku %>
+              <%= product.association :brand %>
+              <div class="col-md-2">
+                <%= product.association :category, collection: Category.leaves %>
+              </div>
+            <% end %>
+            <div class="col-md-2">
+              <%= inquiry_product.input :quantity %>
+            </div>
           </div>
         <% end %>
 
         <div class="col-md-1 form-group">
-          <%= inquiry_product.label nil, class: 'form-control-label required' do %>
-            Skip
-            <abbr title="required">*</abbr>
-          <% end %>
-          <%= inquiry_product.remove_nested_fields_link class: 'btn btn-danger' do %>
+          <%= link_to_remove_association row, { class: 'dynamic btn btn-danger', wrapper_class: 'wrapper-class' } do %>
             Skip
           <% end %>
-        </div>
-        <div class="col-md-2">
-          <%= inquiry_product.input :quantity %>
         </div>
       </div>
     <% end %>
-
     <%= f.submit(class: 'btn btn-success btn-block') %>
   <% end %>
 

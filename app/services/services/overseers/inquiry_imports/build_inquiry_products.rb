@@ -5,20 +5,18 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
   end
 
   def call
-    excel_import.assign_attributes(inquiry_products: [])
-
-    excel_import.failed_skus_metadata.each do |failed_sku_metadata|
-      excel_import.inquiry_products.build(
+    excel_import.rows.each do |row|
+      row.build_inquiry_product(
         inquiry: inquiry,
-        failed_sku: failed_sku_metadata['sku'],
+        import: excel_import,
         product: Product.new(
-            import: excel_import,
-            name: failed_sku_metadata['name'],
-            sku: failed_sku_metadata['sku'],
-            brand: Brand.find_by_name(failed_sku_metadata['brand']),
+            import_row: row,
+            name: row.metadata['name'],
+            sku: row.sku,
+            brand: Brand.find_by_name(row.metadata['brand']),
         ),
-        quantity: failed_sku_metadata['quantity'].to_i
-      )
+        quantity: row.metadata['quantity'].to_i
+      ) if row.failed?
     end
   end
 

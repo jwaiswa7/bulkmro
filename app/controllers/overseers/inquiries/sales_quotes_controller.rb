@@ -1,4 +1,9 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
+  def index
+    @sales_quote = @inquiry.sales_quotes
+    authorize @sales_quote
+  end
+
   def new
     @sales_quote = Services::Overseers::SalesQuotes::BuildFromInquiry.new(@inquiry, current_overseer).call
     authorize @sales_quote

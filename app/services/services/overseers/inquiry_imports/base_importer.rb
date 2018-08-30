@@ -5,19 +5,14 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     @import = import
 
     @rows = []
-    @existing_products = []
-    @successful_skus_metadata = []
-    @failed_skus_metadata = []
   end
 
   def call_base
     delete_duplicate_rows
-    set_existing_and_failed_products
+    persist_import_rows
 
     ActiveRecord::Base.transaction do
-      add_existing_products_to_inquiry
-      add_successful_rows_to_inquiry
-      add_failed_rows_to_inquiry
+      set_existing_products
     end
 
     import
@@ -27,45 +22,30 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     rows.uniq! { |row| row['sku'] }
   end
 
-  def set_existing_and_failed_products
+  def persist_import_rows
     rows.each do |row|
-      row.stringify_keys!
+      import.rows.create(import: import, sku: row['sku'], metadata: row)
+    end
+  end
 
-      product = Product.approved.find_by_sku(row['sku'])
+  def set_existing_products
+    import.rows.each do |row|
+      product = Product.approved.find_by_sku(row.sku)
 
       if product.present?
-        existing_products << [product, row['quantity']]
-        successful_skus_metadata << row
-      else
-        failed_skus_metadata << row
+        inquiry_product = inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|
+          inquiry_product.quantity = row.metadata['quantity']
+          inquiry_product.import = import
+        end
+
+        row.update_attributes(:inquiry_product => inquiry_product)
       end
     end
-  end
-
-  def add_existing_products_to_inquiry
-    existing_products.each do |product, quantity|
-      inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|
-        inquiry_product.quantity = quantity
-        inquiry_product.import = import
-      end
-    end
-  end
-
-  def add_successful_rows_to_inquiry
-    import.update_attributes(
-        successful_skus_metadata: successful_skus_metadata
-    )
-  end
-
-  def add_failed_rows_to_inquiry
-    import.update_attributes(
-        failed_skus_metadata: failed_skus_metadata
-    )
   end
 
   def any_failed?
-    failed_skus_metadata.any?
+    import.rows.failed.any?
   end
 
-  attr_accessor :inquiry, :import, :rows, :existing_products, :failed_skus_metadata, :successful_skus_metadata
+  attr_accessor :inquiry, :import, :rows
 end

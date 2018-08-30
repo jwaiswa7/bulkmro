@@ -17,8 +17,8 @@
         <tr>
           <td><%= format_date(import.created_at) %></td>
           <td><%= import.created_by.to_s %></td>
-          <td><%= format_num(import.successful_skus_metadata.size) %></td>
-          <td><%= format_num(import.failed_skus_metadata.size) %></td>
+          <td><%= format_num(import.rows.successful.size) %></td>
+          <td><%= format_num(import.rows.failed.size) %></td>
           <td><%= format_enum(import.import_type) %></td>
           <td>
           <% if policy(import).show? && import.excel? && import.file.attached? %>

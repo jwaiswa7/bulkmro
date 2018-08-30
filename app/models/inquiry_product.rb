@@ -8,8 +8,7 @@ class InquiryProduct < ApplicationRecord
   has_many :inquiry_suppliers, :inverse_of => :inquiry_product
   has_many :suppliers, :through => :inquiry_suppliers
   accepts_nested_attributes_for :inquiry_suppliers
-
-  attr_accessor :failed_sku
+  has_one :import_row, :class_name => 'InquiryImportRow'
 
   validates_presence_of :quantity
   validates_uniqueness_of :product, scope: :inquiry
