@@ -3,7 +3,19 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def new_approval?
-    record.not_approved?
+  def new_comment?
+    record.persisted?
+  end
+
+  def approve?
+    record.not_approved? && !record.trashed? && !record.disapproved?
+  end
+
+  def disapprove?
+    approve?
+  end
+
+  def reject?
+    approve?
   end
 end

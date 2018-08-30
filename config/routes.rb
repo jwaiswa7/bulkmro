@@ -14,15 +14,12 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending'
       end
-      scope module: 'products' do
-        resources :approvals do
-          member do
-            get 'new'
-            post 'create'
-          end
-        end
-      end
 
+      scope module: 'products' do
+        resources :comments do
+        end
+        resources :approvals
+      end
     end
 
     resources :categories

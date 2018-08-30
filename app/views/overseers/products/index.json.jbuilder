@@ -6,7 +6,12 @@ json.data (@products) do |product|
                   product.sku,
                   product.suppliers.size,
                   [
-                      row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit', 'warning'),
+                      if policy(product).edit?
+                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit', 'warning')
+                      end,
+                      if policy(product).new_comment?
+                        row_action_button(new_overseers_product_comment_path(product), 'comment-lines', 'New Comments', 'success')
+                      end
                   ].join(' ')
               ]
 end

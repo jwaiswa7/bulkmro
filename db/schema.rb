@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_30_081724) do
+ActiveRecord::Schema.define(version: 2018_08_30_121619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2018_08_30_081724) do
     t.bigint "inquiry_id"
     t.integer "import_type"
     t.text "import_text"
+    t.string "failed_skus", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -355,14 +356,27 @@ ActiveRecord::Schema.define(version: 2018_08_30_081724) do
 
   create_table "product_approvals", force: :cascade do |t|
     t.bigint "product_id"
-    t.text "comments"
+    t.bigint "product_comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_product_approvals_on_created_by_id"
+    t.index ["product_comment_id"], name: "index_product_approvals_on_product_comment_id"
     t.index ["product_id"], name: "index_product_approvals_on_product_id"
     t.index ["updated_by_id"], name: "index_product_approvals_on_updated_by_id"
+  end
+
+  create_table "product_comments", force: :cascade do |t|
+    t.bigint "product_id"
+    t.text "message"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_product_comments_on_created_by_id"
+    t.index ["product_id"], name: "index_product_comments_on_product_id"
+    t.index ["updated_by_id"], name: "index_product_comments_on_updated_by_id"
   end
 
   create_table "product_suppliers", force: :cascade do |t|
@@ -389,6 +403,7 @@ ActiveRecord::Schema.define(version: 2018_08_30_081724) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.bigint "inquiry_import_row_id"
+    t.string "trashed_uid"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
@@ -562,7 +577,11 @@ ActiveRecord::Schema.define(version: 2018_08_30_081724) do
   add_foreign_key "overseers", "overseers", column: "updated_by_id"
   add_foreign_key "product_approvals", "overseers", column: "created_by_id"
   add_foreign_key "product_approvals", "overseers", column: "updated_by_id"
+  add_foreign_key "product_approvals", "product_comments"
   add_foreign_key "product_approvals", "products"
+  add_foreign_key "product_comments", "overseers", column: "created_by_id"
+  add_foreign_key "product_comments", "overseers", column: "updated_by_id"
+  add_foreign_key "product_comments", "products"
   add_foreign_key "product_suppliers", "companies", column: "supplier_id"
   add_foreign_key "product_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"

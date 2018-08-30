@@ -1,10 +1,4 @@
 class Overseers::Products::ApprovalsController < Overseers::Products::BaseController
-  def new
-    @product_approval = @product.build_approval(:overseer => current_overseer)
-    authorize @product_approval
-
-  end
-
   def create
     @product_approval = @product.build_approval(product_approval_params.merge(:overseer => current_overseer))
     authorize @product_approval
