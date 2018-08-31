@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers]
   before_action :set_company, only: [:new]
 
   def index
@@ -42,6 +42,27 @@ class Overseers::InquiriesController < Overseers::BaseController
       render :new
     end
   end
+
+  def edit_suppliers
+    authorize @inquiry
+  end
+
+  def update_suppliers
+    authorize @inquiry
+
+=begin
+    begin
+      if @inquiry.update_attributes(edit_suppliers_params.merge(:overseer => current_overseer)) && @inquiry.inquiry_suppliers.size > 0
+        redirect_to edit_rfqs_overseers_inquiry_rfqs_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      else
+        render 'edit_suppliers'
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      render 'edit_suppliers'
+    end
+=end
+  end
+
 
   private
   def set_company

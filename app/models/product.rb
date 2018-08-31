@@ -17,7 +17,7 @@ class Product < ApplicationRecord
   has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
   accepts_nested_attributes_for :approval
 
-  has_many :comments, :class_name => 'ProductComment'
+  has_many :comments, :class_name => 'ProductComment', dependent: :destroy
   has_one :last_comment, -> { order(created_at: :desc) }, class_name: 'ProductComment'
   accepts_nested_attributes_for :comments
 
