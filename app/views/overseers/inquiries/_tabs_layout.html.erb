@@ -4,9 +4,9 @@
     <ul class="nav nav-tabs nav-fill">
       <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), policy(@inquiry).edit?) %>
       <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), policy(@inquiry).imports?) %>
+      <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), policy(@inquiry).edit_suppliers?) %>
       <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), policy(@inquiry).sales_quotes?) %>
     </ul>
-
     <div class="tab-content">
       <div class="tab-pane fade active show" role="tabpanel">
         <%= yield %>

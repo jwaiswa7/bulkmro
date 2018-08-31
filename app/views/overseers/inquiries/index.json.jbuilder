@@ -5,7 +5,7 @@ json.data (@inquiries) do |inquiry|
                   inquiry.contact.to_s,
                   [
                       # if policy(inquiry).edit_suppliers?
-                      #   row_action_button(edit_suppliers_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Select Suppliers', 'warning')
+                      #   row_action_button(edit_suppliers_overseers_inquiry_path(inquiry), 'long-arrow-right', 'Select Suppliers', 'warning')
                       # end,
                       # if policy(inquiry).edit_rfqs?
                       #   row_action_button(edit_rfqs_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Generate RFQs', 'warning')
