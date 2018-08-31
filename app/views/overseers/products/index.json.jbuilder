@@ -9,8 +9,8 @@ json.data (@products) do |product|
                       if policy(product).edit?
                         row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit', 'warning')
                       end,
-                      if policy(product).new_comment?
-                        row_action_button(new_overseers_product_comment_path(product), 'comment-lines', 'New Comments', 'success')
+                      if policy(product).comments?
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'New Comments', 'success')
                       end
                   ].join(' ')
               ]

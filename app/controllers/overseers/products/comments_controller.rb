@@ -1,7 +1,7 @@
 class Overseers::Products::CommentsController < Overseers::Products::BaseController
-  def new
-    @comment = @product.comments.build(:overseer => current_overseer)
-    authorize @comment
+  def index
+    @comments = @product.comments
+    authorize @comments
   end
 
   def create
@@ -10,10 +10,11 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
     authorize @comment
 
     if @comment.save
-      callback_method = %w(approve disapprove reject).detect { |action| params[action] }
+      callback_method = %w(approve disapp
+rove reject).detect { |action| params[action] }
       send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
 
-      redirect_to new_overseers_product_comment_path(@product), notice: flash_message(@comment, action_name)
+      redirect_to overseers_product_comments_path(@product), notice: flash_message(@comment, action_name)
     else
       render 'new'
     end

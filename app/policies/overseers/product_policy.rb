@@ -3,7 +3,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def new_comment?
+  def comments?
     record.persisted?
   end
 

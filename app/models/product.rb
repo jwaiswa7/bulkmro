@@ -10,20 +10,25 @@ class Product < ApplicationRecord
   belongs_to :import_row, :class_name => 'InquiryImportRow', foreign_key: :inquiry_import_row_id, required: false
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
+  has_many :inquiry_suppliers, :through => :inquiry_products
+  has_many :suppliers, :through => :inquiry_suppliers, class_name: 'Company', source: :supplier
   has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
   accepts_nested_attributes_for :approval
-  has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
-  has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
+
   has_many :comments, :class_name => 'ProductComment'
+  has_one :last_comment, -> { last }, class_name: 'ProductComment'
   accepts_nested_attributes_for :comments
 
-  def c_suppliers
-    Company.joins(:category_suppliers).where('category_id IN (?)', self.category.self_and_descendants.map(&:id))
-  end
-
-  def suppliers
-    Company.where('id in (?)', p_suppliers.pluck(:id) + c_suppliers.pluck(:id) + b_suppliers.pluck(:id)).uniq
-  end
+  # Start ignore
+  # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
+  # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
+  # def c_suppliers
+  #   Company.joins(:category_suppliers).where('category_id IN (?)', self.category.self_and_descendants.map(&:id))
+  # end
+  # def all_suppliers
+  #   Company.where('id in (?)', p_suppliers.pluck(:id) + c_suppliers.pluck(:id) + b_suppliers.pluck(:id)).uniq
+  # end
+  # End ignore
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_trashed?
@@ -38,5 +43,9 @@ class Product < ApplicationRecord
 
   def disapproved?
     false
+  end
+
+  def rejected?
+    trashed?
   end
 end

@@ -6,8 +6,8 @@ json.data (@products) do |product|
                   product.sku,
                   product.suppliers.size,
                   [
-                      if policy(product).new_comment?
-                        row_action_button(new_overseers_product_comment_path(product), 'comment-lines', 'New Comments', 'success')
+                      if policy(product).comments?
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'See Comments', 'success')
                       end,
                   ].join(' ')
               ]
