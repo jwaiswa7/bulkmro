@@ -46,20 +46,25 @@ class Overseers::InquiriesController < Overseers::BaseController
   def edit_suppliers
     authorize @inquiry
 
-    @suppliers = Company.all.map {|x| [x.name, x.id]}
-
     @inquiry.inquiry_products.each do |ip|
+
       if ip.inquiry_suppliers.blank?
-
         if !ip.product.inquiry_suppliers.blank?
-          @lowest_price = ip.product.inquiry_suppliers.order(unit_price: :desc).first
-          @latest = ip.product.inquiry_suppliers.order(updated_at: :asc).first
-          ip.inquiry_suppliers.build(supplier: @lowest_price.supplier, unit_price: @lowest_price.unit_price)
+          @lowest_price = ip.product.inquiry_suppliers.persisted.order(unit_price: :asc).first
+          @latest_price = InquirySupplier.where(:supplier_id => @lowest_price.supplier_id).persisted.order(updated_at: :desc).first
+          ip.inquiry_suppliers.build(supplier: @lowest_price.supplier, unit_price: @lowest_price.unit_price, lowest_price: @lowest_price.unit_price, latest_price: @latest_price.unit_price)
         else
-
+          ip.inquiry_suppliers.build(lowest_price: "N/A", latest_price: "N/A")
+        end
+      else
+        ip.inquiry_suppliers.each do |is|
+          @lowest_price = InquirySupplier.where(:supplier_id => is.supplier_id).persisted.order(unit_price: :asc).first
+          @latest_price = InquirySupplier.where(:supplier_id => is.supplier_id).persisted.order(updated_at: :desc).first
+          is.update_attributes(lowest_price: @lowest_price.unit_price, latest_price: @latest_price.unit_price)
         end
 
       end
+
     end
   end
 
@@ -108,7 +113,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def edit_suppliers_params
     params.require(:inquiry).permit(
-        :inquiry_products_attributes => [:id, :inquiry_suppliers_attributes => [ :id, :supplier_id, :unit_price, :_destroy]]
+        :inquiry_products_attributes => [:id, :inquiry_suppliers_attributes => [:id, :supplier_id, :unit_price, :_destroy]]
 
     )
   end

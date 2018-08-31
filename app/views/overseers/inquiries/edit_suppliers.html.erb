@@ -9,7 +9,9 @@
           <li><%= message %></li>
         <% end %>
       <% end %>
-
+      <div class="form-group">
+        <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
+      </div>
       <%= f.simple_fields_for :inquiry_products do |inquiry_product| %>
         <div class="row">
           <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -20,14 +22,20 @@
               <%= inquiry_product.hidden_field :id %>
 
               <%= inquiry_product.nested_fields_for :inquiry_suppliers do |inquiry_supplier| %>
-                <div class="form-group">
-                  <%= inquiry_supplier.hidden_field :id %>
-                  <%= inquiry_supplier.select :supplier_id, Company.all.map {|x| [x.name, x.id]}, {}, class: "form-control" %>
-                </div>
-                <div class="form-group">
-                  <%= inquiry_supplier.input :unit_price %>
-                  <%= inquiry_supplier.remove_nested_fields_link 'Remove Supplier', class: 'btn btn-outline-danger' %>
-                </div>
+
+                <%= inquiry_supplier.hidden_field :id %>
+                <%= inquiry_supplier.select :supplier_id, Company.all.map {|x| [x.name, x.id]}, {}, class: "form-control" %>
+
+
+                <%= inquiry_supplier.input :unit_price %>
+
+                <%= inquiry_supplier.input :lowest_price, disabled: true %>
+
+                <%= inquiry_supplier.input :latest_price, disabled: true %>
+
+                <%= inquiry_supplier.remove_nested_fields_link 'Remove Supplier', class: 'btn btn-outline-danger' %>
+
+
               <% end %>
               <div class="form-group">
                 <%= inquiry_product.add_nested_fields_link :inquiry_suppliers, 'Add Supplier', class: 'btn btn-outline-dark' %>
@@ -40,7 +48,9 @@
       <% end %>
 
       <hr/>
-      <%= f.submit 'Save ' %>
+
+      <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
+
     </div>
   <% end %>
 
