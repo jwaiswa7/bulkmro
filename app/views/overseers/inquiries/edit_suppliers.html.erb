@@ -10,10 +10,12 @@
         <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
       </div>
       <%= f.simple_fields_for :inquiry_products do |inquiry_product| %>
+        <% next if inquiry_product.object.product.blank?  %>
         <%= inquiry_product.hidden_field :id %>
 
         <div class="col-md-12">
           <label><%= inquiry_product.object.product.name %></label>
+          <%  %>
         </div>
 
         <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
