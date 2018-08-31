@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
-  devise_for :overseers, controllers: { sessions: 'overseers/sessions' }
+  devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
@@ -25,6 +25,12 @@ Rails.application.routes.draw do
     resources :overseers
 
     resources :inquiries do
+
+      member do
+        get 'edit_suppliers'
+        post 'update_suppliers'
+
+      end
       scope module: 'inquiries' do
         resources :imports do
           member do
@@ -39,6 +45,7 @@ Rails.application.routes.draw do
             get 'new_list_import'
             get 'excel_template'
             post 'create_list_import'
+
           end
         end
 

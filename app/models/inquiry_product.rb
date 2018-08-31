@@ -7,7 +7,7 @@ class InquiryProduct < ApplicationRecord
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
   has_many :inquiry_suppliers, :inverse_of => :inquiry_product
   has_many :suppliers, :through => :inquiry_suppliers
-  accepts_nested_attributes_for :inquiry_suppliers
+  accepts_nested_attributes_for :inquiry_suppliers, allow_destroy: true
   has_one :import_row, :class_name => 'InquiryImportRow'
 
   validates_presence_of :quantity

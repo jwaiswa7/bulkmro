@@ -4,6 +4,7 @@
     <ul class="nav nav-tabs nav-fill">
       <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), policy(@inquiry).edit?) %>
       <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), policy(@inquiry).imports_index?) %>
+      <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), policy(@inquiry).edit_suppliers?) %>
     </ul>
 
     <div class="tab-content">
