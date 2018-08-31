@@ -1,6 +1,6 @@
 include DisplayHelper
 
-class Services::Investors::TexterMessages::SendText < Services::Shared::TextMessages::BaseService
+class Services::Overseers::TexterMessages::SendText < Services::Shared::TextMessages::BaseService
   def initialize(use_alt_provider: false)
     @use_alt_provider = use_alt_provider
   end

@@ -48,4 +48,20 @@ class Product < ApplicationRecord
   def self.approvals_table
     :product_approvals
   end
+
+  def lowest_inquiry_supplier
+    self.inquiry_suppliers.order(:unit_cost_price => :asc).first
+  end
+
+  def latest_inquiry_supplier
+    self.inquiry_suppliers.latest_record
+  end
+
+  def lowest_unit_cost_price
+    lowest_inquiry_supplier.unit_cost_price if lowest_inquiry_supplier.present?
+  end
+
+  def latest_unit_cost_price
+    latest_inquiry_supplier.unit_cost_price if latest_inquiry_supplier.present?
+  end
 end

@@ -1,7 +1,8 @@
-class Services::Investors::EmailMessages::SendEmail < Services::Shared::EmailMessages::BaseService
+class Services::Overseers::EmailMessages::SendEmail < Services::Shared::EmailMessages::BaseService
 
   def initialize
     super
   end
+
 
 end
