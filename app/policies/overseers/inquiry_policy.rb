@@ -1,6 +1,7 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def edit?
-    !record.rfqs_generated? && !record.suppliers_selected?
+    #!record.rfqs_generated? && !record.suppliers_selected?
+    !record.rfqs_generated?
   end
 
   def new_list_import?
@@ -32,7 +33,8 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_suppliers?
-    !record.suppliers_selected?
+    #!record.suppliers_selected?
+    edit?
   end
 
   def update_suppliers?

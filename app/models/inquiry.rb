@@ -25,7 +25,7 @@ class Inquiry < ApplicationRecord
   has_one :sales_order, :through => :sales_approval
 
   # validates_length_of :inquiry_products, minimum: 1
-  validate :all_products_have_suppliers
+  # validate :all_products_have_suppliers
 
   def draft?
     !inquiry_products.any?

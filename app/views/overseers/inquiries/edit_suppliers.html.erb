@@ -1,0 +1,47 @@
+<%= render layout: 'overseers/inquiries/tabs_layout' do %>
+
+
+
+  <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card-body">
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      <% end %>
+
+      <%= f.simple_fields_for :inquiry_products do |inquiry_product| %>
+        <div class="row">
+          <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+            <div class="col-md-4">
+              <label><%= inquiry_product.object.product.name %></label>
+            </div>
+            <div class="col-md-8 col-md-8">
+              <%= inquiry_product.hidden_field :id %>
+
+              <%= inquiry_product.nested_fields_for :inquiry_suppliers do |inquiry_supplier| %>
+                <div class="form-group">
+                  <%= inquiry_supplier.hidden_field :id %>
+                  <%= inquiry_supplier.select :supplier_id, Company.all.map {|x| [x.name, x.id]}, {}, class: "form-control" %>
+                </div>
+                <div class="form-group">
+                  <%= inquiry_supplier.input :unit_price %>
+                  <%= inquiry_supplier.remove_nested_fields_link 'Remove Supplier', class: 'btn btn-outline-danger' %>
+                </div>
+              <% end %>
+              <div class="form-group">
+                <%= inquiry_product.add_nested_fields_link :inquiry_suppliers, 'Add Supplier', class: 'btn btn-outline-dark' %>
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+
+      <% end %>
+
+      <hr/>
+      <%= f.submit 'Save ' %>
+    </div>
+  <% end %>
+
+<% end %>
