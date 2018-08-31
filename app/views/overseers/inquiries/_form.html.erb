@@ -17,9 +17,9 @@
       <%= f.association :shipping_address, label_method: :to_s %>
     </div>
     <div class="form-group">
-      <%= f.simple_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+      <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+        <div class="row">
 
-        <div class="wrapper-class row">
           <%= inquiry_product.hidden_field :id %>
           <div class="col-md-1">
             <%= inquiry_product.label :status %>
@@ -43,14 +43,9 @@
               </div>
             <% end %>
           </div>
-          <% if inquiry_product.object.product.last_comment.present? %>
-            <div class="col-md-12">
-
-            </div>
-          <% end %>
           <div class="col-md-7">
             <%= inquiry_product.label :product %>
-            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], disabled: inquiry_product.object.product.trashed?, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
           </div>
           <div class="col-md-3">
             <%= inquiry_product.input :quantity %>
@@ -58,13 +53,16 @@
           <div class="col-md-1">
             <%= inquiry_product.label :remove %>
             <div class="form-control">
-
-              <%= link_to_remove_association inquiry_product, { class: 'dynamic btn btn-danger', wrapper_class: 'wrapper-class' } do %>
-                DEL
-              <% end %>
+              <%= inquiry_product.remove_nested_fields_link 'DEL' %>
             </div>
           </div>
+          <% if inquiry_product.object.persisted? && inquiry_product.object.product.inquiry == @inquiry && inquiry_product.object.product.last_comment.present? %>
+            <div class="col-md-12">
+              <%= inquiry_product.input_field :last_comment, value: inquiry_product.object.product.last_comment.message, disabled: true, class: 'form-control' %>
+            </div>
+          <% end %>
         </div>
+        <hr />
       <% end %>
 
       <%= f.add_nested_fields_link :inquiry_products, 'Select A New Product', class: 'btn btn-outline-dark' %>

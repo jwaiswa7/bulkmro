@@ -8,6 +8,8 @@ class Product < ApplicationRecord
   belongs_to :brand
   belongs_to :category
   belongs_to :import_row, :class_name => 'InquiryImportRow', foreign_key: :inquiry_import_row_id, required: false
+  has_one :import, :through => :import_row, class_name: 'InquiryImport'
+  has_one :inquiry, :through => :import
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_suppliers, :through => :inquiry_products
@@ -16,7 +18,7 @@ class Product < ApplicationRecord
   accepts_nested_attributes_for :approval
 
   has_many :comments, :class_name => 'ProductComment'
-  has_one :last_comment, -> { last }, class_name: 'ProductComment'
+  has_one :last_comment, -> { order(created_at: :desc) }, class_name: 'ProductComment'
   accepts_nested_attributes_for :comments
 
   # Start ignore
