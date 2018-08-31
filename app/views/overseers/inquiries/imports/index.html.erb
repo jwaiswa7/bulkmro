@@ -2,6 +2,9 @@
   <% provide :hide_table_desc, true %>
   <% provide :hide_table_heading, true %>
 
+  <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using Excel</a><br />
+  <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using List</a>
+
   <div class="col-lg-12 mb-12">
     <% content_for :header_row do %>
       <th>Created</th>

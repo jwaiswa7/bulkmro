@@ -3,7 +3,7 @@ main = {
     load: function () {
         main.initGoogleAnalytics();
         main.initFilefields();
-        // main.initSelects();
+        main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
         main.dataTables.init();

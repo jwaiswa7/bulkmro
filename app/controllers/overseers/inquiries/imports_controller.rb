@@ -4,12 +4,11 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def index
     @imports = @inquiry.imports
-    authorize @inquiry, :imports_index?
-
+    authorize @inquiry, :imports?
   end
 
   def show
-    authorize @inquiry, :show_import?
+    authorize @import
 
     respond_to do |format|
       format.text { render plain: @import.import_text }

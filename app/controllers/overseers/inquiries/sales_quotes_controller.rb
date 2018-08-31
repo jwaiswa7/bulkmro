@@ -1,7 +1,7 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
   def index
-    @sales_quote = @inquiry.sales_quotes
-    authorize @sales_quote
+    @sales_quotes = @inquiry.sales_quotes
+    authorize @sales_quotes
   end
 
   def new
