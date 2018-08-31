@@ -10,8 +10,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
     authorize @comment
 
     if @comment.save
-      callback_method = %w(approve disapp
-rove reject).detect { |action| params[action] }
+      callback_method = %w(approve reject).detect { |action| params[action] }
       send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
 
       redirect_to overseers_product_comments_path(@product), notice: flash_message(@comment, action_name)
@@ -32,11 +31,10 @@ rove reject).detect { |action| params[action] }
     @product.create_approval(:comment => @comment, :overseer => current_overseer)
   end
 
-  def disapprove
-    raise
-  end
-
   def reject
-    @product.update_attributes(:trashed_uid => @product.sku, :sku => nil)
+    ActiveRecord::Base.transaction do
+      @product.create_rejection(:comment => @comment, :overseer => current_overseer)
+      @product.update_attributes(:trashed_sku => @product.sku, :sku => nil)
+    end
   end
 end

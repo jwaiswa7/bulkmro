@@ -1,8 +1,9 @@
 class Product < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
-  include Mixins::CanBeTrashed
+  include Mixins::CanBeRejected
 
+  default_scope { not_rejected }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand
@@ -15,7 +16,7 @@ class Product < ApplicationRecord
   has_many :inquiry_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_suppliers, class_name: 'Company', source: :supplier
   has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
-  accepts_nested_attributes_for :approval
+  has_one :rejection, :class_name => 'ProductRejection', inverse_of: :product, dependent: :destroy
 
   has_many :comments, :class_name => 'ProductComment'
   has_one :last_comment, -> { order(created_at: :desc) }, class_name: 'ProductComment'
@@ -33,21 +34,18 @@ class Product < ApplicationRecord
   # End ignore
 
   validates_presence_of :name
-  validates_presence_of :sku, :if => :not_trashed?
-  validates_uniqueness_of :sku, :if => :not_trashed?
-
-  scope :approved, -> { joins(:approval).where.not(product_approvals: {id: nil }) }
-  scope :not_approved, -> { joins(:approval).where(product_approvals: {id: nil }) }
+  validates_presence_of :sku, :if => :not_rejected?
+  validates_uniqueness_of :sku, :if => :not_rejected?
 
   def to_s
-    "#{name} (#{sku || trashed_uid})"
+    "#{name} (#{sku || trashed_sku })"
   end
 
-  def disapproved?
-    false
+  def self.rejections_table
+    :product_rejections
   end
 
-  def rejected?
-    trashed?
+  def self.approvals_table
+    :product_approvals
   end
 end

@@ -8,11 +8,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    record.not_approved? && !record.trashed? && !record.disapproved?
-  end
-
-  def disapprove?
-    approve?
+    record.not_approved? && !record.rejected?
   end
 
   def reject?

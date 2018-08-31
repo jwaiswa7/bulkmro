@@ -232,48 +232,48 @@ RandomRecords.for(Category.all, 10).each do |category|
   end
 end
 
-100.times do
-  Product.create!(
-    name: Faker::Commerce.product_name,
-    sku: ['BM', rand(5..300000) + 100000].join,
-    brand: RandomRecord.for(Brand),
-    category: RandomRecord.for(Category)
-  )
-end
-
-Product.all.each do |product|
-  suppliers = RandomRecords.for(Company, [*1..3].sample)
-  suppliers.each do |supplier|
-    product.product_suppliers.create!(supplier: supplier)
-  end
-end
-
-Account.all.each do |account|
-  5.times do
-    contact = RandomRecord.for(account.contacts)
-    company = RandomRecord.for(contact.companies)
-    products = RandomRecords.for(Product.all, 5)
-    i = Inquiry.new(
-      contact: contact,
-      company: company,
-      billing_address: RandomRecord.for(company.addresses),
-      shipping_address: RandomRecord.for(company.addresses),
-      comments: Faker::Lorem.paragraph_by_chars(256, false)
-    )
-
-    products.each do |product|
-      i.inquiry_products.build(product_id: product.id, quantity: 1)
-    end
-
-    i.save
-  end
-end
+# 100.times do
+#   Product.create!(
+#     name: Faker::Commerce.product_name,
+#     sku: ['BM', rand(5..300000) + 100000].join,
+#     brand: RandomRecord.for(Brand),
+#     category: RandomRecord.for(Category)
+#   )
+# end
+#
+# Product.all.each do |product|
+#   suppliers = RandomRecords.for(Company, [*1..3].sample)
+#   suppliers.each do |supplier|
+#     product.product_suppliers.create!(supplier: supplier)
+#   end
+# end
+#
+# Account.all.each do |account|
+#   5.times do
+#     contact = RandomRecord.for(account.contacts)
+#     company = RandomRecord.for(contact.companies)
+    # products = RandomRecords.for(Product.all, 5)
+    # i = Inquiry.new(
+    #   contact: contact,
+    #   company: company,
+    #   billing_address: RandomRecord.for(company.addresses),
+    #   shipping_address: RandomRecord.for(company.addresses),
+    #   comments: Faker::Lorem.paragraph_by_chars(256, false)
+    # )
+    #
+    # products.each do |product|
+    #   i.inquiry_products.build(product_id: product.id, quantity: 1)
+    # end
+    #
+    # i.save
+  # end
+# end
 
 # Product approvals
-Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
-RandomRecords.for(Product.not_approved, 20).each do |p|
-  p.create_approval(:comments => Faker::Lorem.sentence)
-end
+# Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
+# RandomRecords.for(Product.not_approved, 20).each do |p|
+#   p.create_approval(:comments => Faker::Lorem.sentence)
+# end
 
 # Product.all.each do |p| p.destroy; end
 # InquiryImport.all.each do |i| i.destroy; end

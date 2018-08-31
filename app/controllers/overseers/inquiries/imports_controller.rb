@@ -2,6 +2,20 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   before_action :set_import, only: [:show]
   before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
 
+  def index
+    @imports = @inquiry.imports
+    authorize @inquiry, :imports_index?
+
+  end
+
+  def show
+    authorize @inquiry, :show_import?
+
+    respond_to do |format|
+      format.text { render plain: @import.import_text }
+    end
+  end
+
   def new_list_import
     @list_import = @inquiry.imports.build(import_type: :list, overseer: current_overseer)
     authorize @inquiry
@@ -64,21 +78,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     end
   end
 
-  def index
-    @imports = @inquiry.imports
-    authorize @inquiry, :imports_index?
-  end
-
-  def show
-    authorize @inquiry, :show_import?
-
-    respond_to do |format|
-      format.text { render plain: @import.import_text }
-    end
-  end
-
   private
-
   def set_import
     @import = @inquiry.imports.find(params[:id])
   end

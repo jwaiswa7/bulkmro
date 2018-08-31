@@ -3,8 +3,8 @@ class InquiryImportRow < ApplicationRecord
   belongs_to :inquiry_product, required: false
   accepts_nested_attributes_for :inquiry_product, allow_destroy: true
 
-  scope :failed, -> { where(:inquiry_product => nil)  }
-  scope :successful, -> { where.not(:inquiry_product => nil)  }
+  scope :failed, -> { where(:inquiry_product_id => nil)  }
+  scope :successful, -> { where.not(:inquiry_product_id => nil)  }
 
   validates_presence_of :sku, :metadata
   validates_uniqueness_of :sku, scope: :import

@@ -16,9 +16,7 @@ Rails.application.routes.draw do
       end
 
       scope module: 'products' do
-        resources :comments do
-        end
-        resources :approvals
+        resources :comments
       end
     end
 

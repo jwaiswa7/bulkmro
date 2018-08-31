@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_30_121619) do
+ActiveRecord::Schema.define(version: 2018_08_31_061219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,13 +265,10 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
     t.bigint "inquiry_id"
     t.integer "import_type"
     t.text "import_text"
-    t.string "failed_skus", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.jsonb "failed_skus_metadata"
-    t.jsonb "successful_skus_metadata"
     t.index ["created_by_id"], name: "index_inquiry_imports_on_created_by_id"
     t.index ["inquiry_id"], name: "index_inquiry_imports_on_inquiry_id"
     t.index ["updated_by_id"], name: "index_inquiry_imports_on_updated_by_id"
@@ -357,10 +354,10 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
   create_table "product_approvals", force: :cascade do |t|
     t.bigint "product_id"
     t.bigint "product_comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_product_approvals_on_created_by_id"
     t.index ["product_comment_id"], name: "index_product_approvals_on_product_comment_id"
     t.index ["product_id"], name: "index_product_approvals_on_product_id"
@@ -377,6 +374,19 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
     t.index ["created_by_id"], name: "index_product_comments_on_created_by_id"
     t.index ["product_id"], name: "index_product_comments_on_product_id"
     t.index ["updated_by_id"], name: "index_product_comments_on_updated_by_id"
+  end
+
+  create_table "product_rejections", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "product_comment_id"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_product_rejections_on_created_by_id"
+    t.index ["product_comment_id"], name: "index_product_rejections_on_product_comment_id"
+    t.index ["product_id"], name: "index_product_rejections_on_product_id"
+    t.index ["updated_by_id"], name: "index_product_rejections_on_updated_by_id"
   end
 
   create_table "product_suppliers", force: :cascade do |t|
@@ -403,7 +413,7 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.bigint "inquiry_import_row_id"
-    t.string "trashed_uid"
+    t.string "trashed_sku"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
@@ -559,6 +569,8 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiry_import_rows", "inquiry_imports"
+  add_foreign_key "inquiry_import_rows", "inquiry_products"
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_imports", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "inquiries"
@@ -582,6 +594,10 @@ ActiveRecord::Schema.define(version: 2018_08_30_121619) do
   add_foreign_key "product_comments", "overseers", column: "created_by_id"
   add_foreign_key "product_comments", "overseers", column: "updated_by_id"
   add_foreign_key "product_comments", "products"
+  add_foreign_key "product_rejections", "overseers", column: "created_by_id"
+  add_foreign_key "product_rejections", "overseers", column: "updated_by_id"
+  add_foreign_key "product_rejections", "product_comments"
+  add_foreign_key "product_rejections", "products"
   add_foreign_key "product_suppliers", "companies", column: "supplier_id"
   add_foreign_key "product_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "product_suppliers", "overseers", column: "updated_by_id"

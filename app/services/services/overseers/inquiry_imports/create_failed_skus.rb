@@ -5,9 +5,11 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
   end
 
   def call
-    excel_import.rows.each do |row|
-      if row.marked_for_destruction?
-        row.reload
+    if excel_import.valid?
+      excel_import.rows.each do |row|
+        if row.marked_for_destruction?
+          row.reload
+        end
       end
     end
 

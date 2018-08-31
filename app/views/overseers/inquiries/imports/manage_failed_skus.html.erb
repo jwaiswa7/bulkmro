@@ -7,10 +7,12 @@
       <% end %>
     <% end %>
     <%= f.simple_fields_for :rows do |row| %>
-      <% next if row.object.inquiry_product.persisted? %>
+      <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
+
       <div class="wrapper-class">
         <%= row.hidden_field :id %>
         <%= row.simple_fields_for :inquiry_product do |inquiry_product| %>
+          <%= inquiry_product.hidden_field :id %>
           <%= inquiry_product.hidden_field :inquiry_id %>
           <div class="row">
             <%= inquiry_product.simple_fields_for :product do |product| %>
@@ -31,7 +33,7 @@
         <div class="col-md-1 form-group">
           <%= link_to_remove_association row, { class: 'dynamic btn btn-danger', wrapper_class: 'wrapper-class' } do %>
             Skip
-          <% end %>
+          <% end  %>
         </div>
       </div>
     <% end %>
