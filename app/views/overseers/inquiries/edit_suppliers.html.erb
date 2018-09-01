@@ -21,12 +21,12 @@
         <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
           <%= inquiry_product.nested_fields_for :inquiry_suppliers do |inquiry_supplier| %>
             <%= inquiry_supplier.hidden_field :id %>
-            <div class="row">
-              <div class="col-md-3"><%= inquiry_supplier.association :supplier, include_blank: 'Select A Supplier' %></div>
+            <div class="row" >
+              <div class="col-md-3"><%= inquiry_supplier.association :supplier, input_html: { "data-lookup": inquiry_product.object.product.id }, include_blank: 'Select A Supplier' %></div>
               <div class="col-md-3"><%= inquiry_supplier.input :unit_cost_price %></div>
               <div class="col-md-2"><%= inquiry_supplier.input :lowest_unit_cost_price, disabled: true, label: 'Lowest' %></div>
               <div class="col-md-2"><%= inquiry_supplier.input :latest_unit_cost_price, disabled: true, label: 'Latest' %></div>
-              <div class="col-md-1"><%= inquiry_supplier.label 'Remove' %><div class="form-control"><%= inquiry_supplier.remove_nested_fields_link 'DEL', class: '' %></div></div>
+              <div class="col-md-1 "><%= inquiry_supplier.label 'Remove' %><div class="form-control"><%= inquiry_supplier.remove_nested_fields_link 'DEL', class: '' %></div></div>
             </div>
           <% end %>
         <% end %>

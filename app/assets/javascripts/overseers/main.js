@@ -7,35 +7,36 @@ main = {
         main.initParselyValidations();
         main.initDynamicForms();
         main.dataTables.init();
+        main.lookupSupplierData();
     },
 
-    beforeCache: function() {
+    beforeCache: function () {
         main.dataTables.cleanUp()
     },
 
-    initGoogleAnalytics: function() {
+    initGoogleAnalytics: function () {
         if (typeof ga === 'function') {
             ga('set', 'location', event.data.url);
             return ga('send', 'pageview');
         }
     },
 
-    initFilefields: function() {
-        $('.custom-file-input').on('change',function(){
+    initFilefields: function () {
+        $('.custom-file-input').on('change', function () {
             $(this).next('.custom-file-label').addClass("selected").html($(this).val().split('\\').slice(-1)[0]);
         })
     },
 
     // Converts select to select2
-    initSelects: function() {
+    initSelects: function () {
         $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2({
             theme: "bootstrap",
             containerCssClass: ':all:',
-        }).on('change', function() {
+        }).on('change', function () {
             $(this).trigger('input');
         });
 
-        $('select.select2-ajax').each(function(k, v) {
+        $('select.select2-ajax').each(function (k, v) {
             $(this).select2({
                 theme: "bootstrap",
                 containerCssClass: ':all:',
@@ -45,34 +46,34 @@ main = {
                     delay: 100
                 }
             });
-        }).on('change', function() {
+        }).on('change', function () {
             $(this).trigger('input');
         });
     },
 
     // TO DO - REMOVE?
     // Handles dynamic additions of fields to nested forms
-    initDynamicForms: function() {
+    initDynamicForms: function () {
         $('body')
-            .on("fields_added.nested_form_fields", function(e, param) {
+            .on("fields_added.nested_form_fields", function (e, param) {
                 main.initSelects();
             })
-            .on("fields_removed.nested_form_fields", function(e, param) {
+            .on("fields_removed.nested_form_fields", function (e, param) {
                 main.initSelects();
             });
     },
 
     // Bootstrap override default browser validation with Bootstrap's helper classes
-    initParselyValidations: function() {
+    initParselyValidations: function () {
         $.extend(window.Parsley.options, {
             errorClass: 'is-invalid',
             successClass: 'is-valid',
             errorsWrapper: '<span></span>',
             errorTemplate: '<span></span>',
             trigger: 'change',
-            errorsContainer: function(e) {
+            errorsContainer: function (e) {
                 $errorWrapper = e.$element.siblings('.invalid-feedback');
-                if ($errorWrapper.length){
+                if ($errorWrapper.length) {
                     return $errorWrapper;
                 } else {
                     return e.$element.closest('.form-group').find('.invalid-feedback');
@@ -82,11 +83,11 @@ main = {
 
         });
 
-        window.Parsley.on('form:validated', function(form) {
+        window.Parsley.on('form:validated', function (form) {
             // form.$element.addClass('was-validated');
         });
 
-        window.Parsley.on('field:success', function(e) {
+        window.Parsley.on('field:success', function (e) {
             if (!$(this.element).parent().find('div.valid-feedback').exists() && $(this.element).attr('data-parsely-no-valid-feedback') === undefined) {
                 $(this.element).parent().append('<div class="valid-feedback">Looks good!</div>');
             }
@@ -95,13 +96,13 @@ main = {
         $("[data-parsley-validate]").parsley();
     },
 
-    initBootstrapValidations: function() {
-        $(document).ready(function() {
+    initBootstrapValidations: function () {
+        $(document).ready(function () {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function(form) {
-                form.addEventListener('submit', function(event) {
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
                     if (form.checkValidity() === false) {
                         event.preventDefault();
                         event.stopPropagation();
@@ -113,20 +114,20 @@ main = {
     },
 
     // Initaialize Bootstrap tooltips
-    initTooltips: function() {
+    initTooltips: function () {
         $('[data-toggle="tooltip"]').tooltip();
     },
 
     dataTables: {
-        init: function() {
+        init: function () {
             main.dataTables.preInit();
             main.dataTables.setup();
             main.dataTables.ajax();
         },
 
         // Setup the filter field before all DataTables if the filter attribute exists
-        preInit: function() {
-            $(document).on('preInit.dt', function(e, settings) {
+        preInit: function () {
+            $(document).on('preInit.dt', function (e, settings) {
                 if ($(e.target).data('has-search') == true) return;
 
                 var api = new $.fn.dataTable.Api(settings);
@@ -134,9 +135,9 @@ main = {
                 var searchText = $target.data('search');
 
                 if (searchText) {
-                    var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText +"'>";
+                    var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
                     $input = $($input);
-                    $input.on('keyup', function(e){
+                    $input.on('keyup', function (e) {
                         $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
                     });
 
@@ -156,7 +157,7 @@ main = {
             });
         },
 
-        setup: function() {
+        setup: function () {
             $('.datatable').each(function () {
                 if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
                 var isAjax = !!$(this).data('ajax');
@@ -181,8 +182,8 @@ main = {
                         "targets": 'numeric',
                         "render": $.fn.dataTable.render.number(',', '.', 0)
                     }],
-                    fnServerParams: function(data) {
-                        data['columns'].forEach(function(items, index) {
+                    fnServerParams: function (data) {
+                        data['columns'].forEach(function (items, index) {
                             data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').text();
                         });
                     },
@@ -219,10 +220,10 @@ main = {
             });
         },
 
-        ajax: function() {
+        ajax: function () {
             if (!$('.datatable[data-ajax]')) return false;
 
-            $('.datatable[data-ajax]').each(function() {
+            $('.datatable[data-ajax]').each(function () {
                 // Add blur to make sure that the table is not visible before data's loaded in
                 $(this).addClass('blur');
 
@@ -237,16 +238,37 @@ main = {
             });
         },
 
-        cleanUp: function() {
-            $('.datatable').each(function() {
+        cleanUp: function () {
+            $('.datatable').each(function () {
                 if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) {
                     $(this).DataTable().destroy();
                 }
             });
         }
+    },
+    lookupSupplierData: function () {
+
+        $(document).on('change', 'select[data-lookup]', function (e) {
+            var response;
+            if($(this).val().trim() != "" ){
+                var name = $(this).attr("name").replace("[supplier_id]", "");
+                $.getJSON({
+                    url: "/overseers/products/" + $(this).data("lookup") + "/get_supplier_prices",
+                    data: {"inquiry_supplier": $(this).val()},
+                    success: function (result) {
+                        response = result.pop();
+                        $("input[name='" + name + "[lowest_unit_cost_price]']").val(response.lowest_price);
+                        $("input[name='" + name + "[latest_unit_cost_price]']").val(response.latest_price);
+                    }
+                });
+            }
+
+
+
+        })
     }
 };
 
-$.fn.exists = function(){
+$.fn.exists = function () {
     return jQuery(this).length > 0;
 };

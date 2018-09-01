@@ -1,5 +1,6 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update]
+  before_action :set_product, only: [:show, :edit, :update, :get_supplier_prices]
+  before_action :set_supplier, only: [:get_supplier_prices]
 
   def index
     @products = ApplyDatatableParams.to(Product.all.includes(:brand), params)
@@ -43,6 +44,14 @@ class Overseers::ProductsController < Overseers::BaseController
     end
   end
 
+
+  def get_supplier_prices
+    authorize @product
+    service = Services::Overseers::Products::GetSupplierPrices.new(@product, @supplier)
+    render json: service.call
+
+  end
+
   private
 
   def product_params
@@ -56,4 +65,10 @@ class Overseers::ProductsController < Overseers::BaseController
   def set_product
     @product = Product.find(params[:id])
   end
+
+  def set_supplier
+    @supplier = Company.find(params[:inquiry_supplier])
+  end
+
+
 end
