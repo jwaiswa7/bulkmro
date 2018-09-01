@@ -43,8 +43,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
-
-
   def edit_suppliers
     authorize @inquiry
 
