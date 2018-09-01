@@ -51,29 +51,17 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update_suppliers
+    @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
 
-
-    begin
-      #edit_suppliers_params["inquiry_products_attributes"]["0"]["supplier_ids"].reject!{ |a| a.blank? }
-
-
-      if @inquiry.update_attributes(edit_suppliers_params.merge(:overseer => current_overseer)) && @inquiry.inquiry_suppliers.size > 0
-
-
-        redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
-      else
-        render 'edit_suppliers'
-      end
-    rescue ActiveRecord::RecordInvalid => e
+    if @inquiry.save
+      redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
       render 'edit_suppliers'
     end
-
   end
 
-
   private
-
   def set_company
     @company ||= Company.find(params[:company_id])
   end
