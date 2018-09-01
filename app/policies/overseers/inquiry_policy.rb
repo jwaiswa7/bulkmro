@@ -40,6 +40,14 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def new_sales_quote?
+    edit? && record.approvals.any? && record.inquiry_suppliers.any?
+  end
+
+  def sales_orders?
+    new_sales_quote?
+  end
+
   # def edit_rfqs?
   #   !record.rfqs_generated? && record.suppliers_selected?
   # end

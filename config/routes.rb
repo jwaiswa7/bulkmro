@@ -6,8 +6,10 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
-
     resources :brands
+    resources :categories
+    resources :suppliers
+    resources :overseers
 
     resources :products do
       collection do
@@ -20,18 +22,17 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :categories
-    resources :suppliers
-    resources :overseers
 
     resources :inquiries do
-
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
-
       end
+
       scope module: 'inquiries' do
+        resources :sales_quotes
+        resources :sales_orders
+
         resources :imports do
           member do
             get 'manage_failed_skus'
@@ -45,7 +46,6 @@ Rails.application.routes.draw do
             get 'new_list_import'
             get 'excel_template'
             post 'create_list_import'
-
           end
         end
 
@@ -60,8 +60,6 @@ Rails.application.routes.draw do
             # post 'update_quotations'
           # end
         # end
-
-        resources :sales_quotes
       end
     end
 

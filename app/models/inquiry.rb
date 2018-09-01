@@ -10,6 +10,7 @@ class Inquiry < ApplicationRecord
   has_many :inquiry_products, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :products, :through => :inquiry_products
+  has_many :approvals, :through => :products, :class_name => 'ProductApproval'
   has_many :inquiry_suppliers, :through => :inquiry_products
   has_many :brands, :through => :products
   has_many :suppliers, :through => :inquiry_suppliers
