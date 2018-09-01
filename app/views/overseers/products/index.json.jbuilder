@@ -1,8 +1,8 @@
 json.data (@products) do |product|
   json.array! [
                   format_date(product.created_at),
+                  format_date(product.approval.try(:created_at)),
                   product.name,
-                  product.brand.to_s,
                   product.sku,
                   product.suppliers.size,
                   [

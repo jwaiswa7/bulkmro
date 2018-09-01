@@ -9,8 +9,7 @@
       <div class="form-group">
         <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
       </div>
-      <%= f.simple_fields_for :inquiry_products do |inquiry_product| %>
-        <% next if inquiry_product.object.product.blank?  %>
+      <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select { |ip| ip.approved?; } do |inquiry_product| %>
         <%= inquiry_product.hidden_field :id %>
 
         <div class="col-md-12">

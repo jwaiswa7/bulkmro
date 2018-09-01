@@ -10,6 +10,7 @@ class InquiryProduct < ApplicationRecord
   accepts_nested_attributes_for :inquiry_suppliers, allow_destroy: true
   has_one :import_row, :class_name => 'InquiryImportRow', dependent: :nullify
 
+  delegate :approved?, to: :product
 
   validates_presence_of :quantity
   validates_uniqueness_of :product, scope: :inquiry

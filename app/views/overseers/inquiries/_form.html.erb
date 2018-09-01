@@ -1,6 +1,4 @@
 <%= simple_form_for([:overseers, @inquiry], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-  <% Product.unscoped do %>
-
   <%= f.hidden_field :company_id %>
 
   <% if f.object.errors.any? %>
@@ -87,5 +85,4 @@
       </div>
     <% end %>
   </div>
-  <% end %>
 <% end %>
