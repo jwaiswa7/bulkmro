@@ -14,4 +14,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def reject?
     approve?
   end
+
+  def get_supplier_prices?
+    index?
+  end
 end

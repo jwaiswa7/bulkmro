@@ -12,8 +12,13 @@ Rails.application.routes.draw do
     resources :overseers
 
     resources :products do
+      member do
+        get 'get_supplier_prices'
+      end
+
       collection do
         get 'autocomplete'
+
         get 'pending'
       end
 

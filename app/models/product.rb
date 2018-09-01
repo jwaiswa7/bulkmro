@@ -57,6 +57,24 @@ class Product < ApplicationRecord
     self.inquiry_suppliers.latest_record
   end
 
+  def lowest_unit_cost_price_for(supplier)
+    price_supplier = self.inquiry_suppliers.where(:supplier => supplier).order(:unit_cost_price => :asc).first
+    if price_supplier.present?
+      price_supplier.unit_cost_price
+    else
+      "N/A"
+    end
+  end
+
+  def latest_unit_cost_price_for(supplier)
+    price_supplier = self.inquiry_suppliers.where(:supplier => supplier).latest_record
+    if price_supplier.present?
+      price_supplier.unit_cost_price
+    else
+      "N/A"
+    end
+  end
+
   def lowest_unit_cost_price
     lowest_inquiry_supplier.unit_cost_price if lowest_inquiry_supplier.present?
   end

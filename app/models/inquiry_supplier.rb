@@ -6,14 +6,21 @@ class InquirySupplier < ApplicationRecord
   has_one :inquiry, :through => :inquiry_product
   has_many :sales_products
 
-  delegate :lowest_unit_cost_price, :latest_unit_cost_price, to: :product, allow_nil: true
-
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, :greater_than_or_equal_to => 0
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.unit_cost_price ||= 0
+  end
+
+  def lowest_unit_cost_price
+
+    self.product.lowest_unit_cost_price_for(self.supplier) if self.persisted?
+  end
+
+  def latest_unit_cost_price
+    self.product.latest_unit_cost_price_for(self.supplier) if self.persisted?
   end
 
 end
