@@ -7,7 +7,7 @@ main = {
         main.initParselyValidations();
         main.initDynamicForms();
         main.dataTables.init();
-        main.lookupSupplierData();
+        main.initEditSuppliers();
     },
 
     beforeCache: function () {
@@ -246,25 +246,23 @@ main = {
             });
         }
     },
-    lookupSupplierData: function () {
+    initEditSuppliers: function () {
+        $('form[action$=update_suppliers] select[name*=supplier_id]').change(function (e) {
+            var optionSelected = $("option:selected", this);
+            var select = $(this).closest('select');
 
-        $(document).on('change', 'select[data-lookup]', function (e) {
-            var response;
-            if($(this).val().trim() != "" ){
-                var name = $(this).attr("name").replace("[supplier_id]", "");
+            if (optionSelected.exists() && optionSelected.val() !== '' ) {
                 $.getJSON({
-                    url: "/overseers/products/" + $(this).data("lookup") + "/get_supplier_prices",
-                    data: {"inquiry_supplier": $(this).val()},
-                    success: function (result) {
-                        response = result.pop();
-                        $("input[name='" + name + "[lowest_unit_cost_price]']").val(response.lowest_price);
-                        $("input[name='" + name + "[latest_unit_cost_price]']").val(response.latest_price);
+                    url: Routes.best_prices_overseers_product_path(select.data('product-id')),
+                    data: {
+                        supplier_id: optionSelected.val()
+                    },
+                    success: function (response) {
+                        select.closest('div.row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
+                        select.closest('div.row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
                     }
                 });
             }
-
-
-
         })
     }
 };

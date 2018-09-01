@@ -1,6 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :get_supplier_prices]
-  before_action :set_supplier, only: [:get_supplier_prices]
+  before_action :set_product, only: [:show, :edit, :update, :best_prices]
 
   def index
     @products = ApplyDatatableParams.to(Product.approved.includes(:brand), params)
@@ -44,16 +43,16 @@ class Overseers::ProductsController < Overseers::BaseController
     end
   end
 
-
-  def get_supplier_prices
+  def best_prices
+    @supplier = Company.acts_as_supplier.find(params[:supplier_id])
     authorize @product
-    service = Services::Overseers::Products::GetSupplierPrices.new(@product, @supplier)
-    render json: service.call
-
+    render json: {
+        lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier),
+        latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier)
+    }
   end
 
   private
-
   def product_params
     params.require(:product).permit(
         :name,
@@ -65,10 +64,5 @@ class Overseers::ProductsController < Overseers::BaseController
   def set_product
     @product = Product.find(params[:id])
   end
-
-  def set_supplier
-    @supplier = Company.find(params[:inquiry_supplier])
-  end
-
 
 end

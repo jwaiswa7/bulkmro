@@ -13,6 +13,7 @@
 //= require select2/dist/js/select2.full.min.js
 //= require nested_form_fields
 //= require cocoon
+//= require js-routes
 
 //= require overseers/main
 //= require overseers/run

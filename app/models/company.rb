@@ -34,6 +34,9 @@ class Company < ApplicationRecord
   has_many :inquiry_suppliers, :through => :inquiries
   has_many :addresses
 
+  # todo implement
+  scope :acts_as_supplier, -> { }
+
   alias_attribute :gst, :tax_identifier
   validates_presence_of :tax_identifier
   validates_uniqueness_of :tax_identifier

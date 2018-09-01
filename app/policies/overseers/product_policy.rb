@@ -15,7 +15,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     approve?
   end
 
-  def get_supplier_prices?
+  def best_prices?
     index?
   end
 end
