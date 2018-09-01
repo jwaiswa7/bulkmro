@@ -53,14 +53,9 @@ class Overseers::InquiriesController < Overseers::BaseController
   def update_suppliers
     authorize @inquiry
 
-
     begin
-      #edit_suppliers_params["inquiry_products_attributes"]["0"]["supplier_ids"].reject!{ |a| a.blank? }
-
 
       if @inquiry.update_attributes(edit_suppliers_params.merge(:overseer => current_overseer)) && @inquiry.inquiry_suppliers.size > 0
-
-
         redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
       else
         render 'edit_suppliers'

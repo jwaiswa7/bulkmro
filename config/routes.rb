@@ -10,8 +10,13 @@ Rails.application.routes.draw do
     resources :brands
 
     resources :products do
+      member do
+        get 'get_supplier_prices'
+      end
+
       collection do
         get 'autocomplete'
+
         get 'pending'
       end
 
