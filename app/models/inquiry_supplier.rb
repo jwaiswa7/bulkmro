@@ -4,6 +4,7 @@ class InquirySupplier < ApplicationRecord
   belongs_to :inquiry_product
   has_one :product, :through => :inquiry_product
   has_one :inquiry, :through => :inquiry_product
+  has_many :sales_products
 
   delegate :lowest_unit_cost_price, :latest_unit_cost_price, to: :product, allow_nil: true
 

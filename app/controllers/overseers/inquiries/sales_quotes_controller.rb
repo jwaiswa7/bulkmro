@@ -1,4 +1,6 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
+  before_action :set_sales_quote, only: [:edit, :update]
+
   def index
     @sales_quotes = @inquiry.sales_quotes
     authorize @sales_quotes
@@ -14,13 +16,32 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize @sales_quote
 
     if @sales_quote.save
-      redirect_to overseers_inquiries_path, notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry, @sales_quote), notice: flash_message(@inquiry, action_name)
     else
       render 'new'
     end
   end
 
+  def edit
+    authorize @sales_quote
+  end
+
+  def update
+    @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
+    authorize @sales_quote
+
+    if @sales_quote.save
+      redirect_to edit_overseers_inquiry_sales_quote_path(@inquiry, @sales_quote), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit'
+    end
+  end
+
   private
+  def set_sales_quote
+    @sales_quote = @inquiry.sales_quotes.find(params[:id])
+  end
+
   def sales_quote_params
     params.require(:sales_quote).permit(
         :inquiry_id,
@@ -29,12 +50,10 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :comments,
         :sales_products_attributes => [
             :id,
-            :product_id,
-            :supplier_id,
+            :inquiry_supplier_id,
             :quantity,
-            :unit_cost_price,
-            :margin,
-            :unit_sales_price
+            :margin_percentage,
+            :unit_selling_price
         ]
     )
   end

@@ -5,8 +5,8 @@ class CreateSalesProducts < ActiveRecord::Migration[5.2]
       t.references :inquiry_supplier, foreign_key: true
 
       t.integer :quantity
-      t.decimal :margin_percentage, default: 0.0
-      t.decimal :unit_selling_price, default: 0.0
+      t.decimal :margin_percentage
+      t.decimal :unit_selling_price
 
       t.timestamps
       t.userstamps

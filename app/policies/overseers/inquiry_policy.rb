@@ -28,7 +28,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_suppliers?
-    #!record.suppliers_selected?
     edit?
   end
 

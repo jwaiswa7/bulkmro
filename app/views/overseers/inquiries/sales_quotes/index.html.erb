@@ -10,8 +10,10 @@
 
   <div class="col-lg-12 mb-12">
     <% content_for :header_row do %>
-      <th>Created</th>
+      <th>Created At</th>
       <th>Created By</th>
+      <th>Line Items</th>
+      <th>Quote Total</th>
       <th>Actions</th>
     <% end %>
 
@@ -20,7 +22,13 @@
         <tr>
           <td><%= format_date(sales_quote.created_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>
-          <td></td>
+          <td><%= sales_quote.sales_products.size %></td>
+          <td><%= format_currency(sales_quote.calculated_total) %></td>
+          <td>
+            <% if policy(sales_quote).edit? %>
+              <%= row_action_button(edit_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'pencil', 'Edit Sales Quote', 'warning') %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>

@@ -294,7 +294,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
   create_table "inquiry_suppliers", force: :cascade do |t|
     t.bigint "inquiry_product_id"
     t.integer "supplier_id"
-    t.decimal "unit_cost_price", default: "0.0"
+    t.decimal "unit_cost_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -455,8 +455,8 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.bigint "sales_quote_id"
     t.bigint "inquiry_supplier_id"
     t.integer "quantity"
-    t.decimal "margin_percentage", default: "0.0"
-    t.decimal "unit_selling_price", default: "0.0"
+    t.decimal "margin_percentage"
+    t.decimal "unit_selling_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"

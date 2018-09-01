@@ -248,27 +248,27 @@ end
 #   end
 # end
 #
-# Account.all.each do |account|
-#   5.times do
-#     contact = RandomRecord.for(account.contacts)
-#     company = RandomRecord.for(contact.companies)
+Account.all.each do |account|
+  5.times do
+    contact = RandomRecord.for(account.contacts)
+    company = RandomRecord.for(contact.companies)
     # products = RandomRecords.for(Product.all, 5)
-    # i = Inquiry.new(
-    #   contact: contact,
-    #   company: company,
-    #   billing_address: RandomRecord.for(company.addresses),
-    #   shipping_address: RandomRecord.for(company.addresses),
-    #   comments: Faker::Lorem.paragraph_by_chars(256, false)
-    # )
-    #
+    i = Inquiry.new(
+      contact: contact,
+      company: company,
+      billing_address: RandomRecord.for(company.addresses),
+      shipping_address: RandomRecord.for(company.addresses),
+      comments: Faker::Lorem.paragraph_by_chars(256, false)
+    )
+
     # products.each do |product|
     #   i.inquiry_products.build(product_id: product.id, quantity: 1)
     # end
-    #
-    # i.save
-  # end
-# end
 
+    i.save
+  end
+end
+#
 # Product approvals
 # Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
 # RandomRecords.for(Product.not_approved, 20).each do |p|
