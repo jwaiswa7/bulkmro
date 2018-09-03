@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_31_061222) do
+ActiveRecord::Schema.define(version: 2018_09_03_085956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -451,6 +451,13 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.index ["updated_by_id"], name: "index_rfqs_on_updated_by_id"
   end
 
+  create_table "sales_orders", force: :cascade do |t|
+    t.bigint "sales_quote_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sales_quote_id"], name: "index_sales_orders_on_sales_quote_id"
+  end
+
   create_table "sales_products", force: :cascade do |t|
     t.bigint "sales_quote_id"
     t.bigint "inquiry_supplier_id"
@@ -583,6 +590,7 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
   add_foreign_key "rfqs", "inquiries"
   add_foreign_key "rfqs", "overseers", column: "created_by_id"
   add_foreign_key "rfqs", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_products", "inquiry_suppliers"
   add_foreign_key "sales_products", "overseers", column: "created_by_id"
   add_foreign_key "sales_products", "overseers", column: "updated_by_id"

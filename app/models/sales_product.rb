@@ -16,7 +16,7 @@ class SalesProduct < ApplicationRecord
 
   validate :is_unit_selling_price_consistent_with_margin_percentage?
   def is_unit_selling_price_consistent_with_margin_percentage?
-    if unit_selling_price != calculated_unit_selling_price
+    if unit_selling_price.round(2) != calculated_unit_selling_price.round(2)
       errors.add :base, 'selling price is not consistent with margin'
     end
   end
@@ -36,6 +36,6 @@ class SalesProduct < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    self.unit_cost_price * (1 + (self.margin_percentage / 100))
+    self.unit_cost_price / (1 - (self.margin_percentage / 100))
   end
 end

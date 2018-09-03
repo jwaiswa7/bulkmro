@@ -44,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_orders?
-    new_sales_quote?
+    edit?
   end
 
   # def edit_rfqs?
