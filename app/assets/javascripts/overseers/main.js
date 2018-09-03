@@ -68,7 +68,7 @@ main = {
         $.extend(window.Parsley.options, {
             errorClass: 'is-invalid',
             successClass: 'is-valid',
-            errorsWrapper: '<span></span>',
+            errorsWrapper: '<div class="invalid-feedback"></div>',
             errorTemplate: '<span></span>',
             trigger: 'change',
             errorsContainer: function (e) {
