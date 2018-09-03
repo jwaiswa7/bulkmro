@@ -8,6 +8,7 @@ main = {
         main.initDynamicForms();
         main.dataTables.init();
         main.initEditSuppliers();
+        main.updateWithSupplierPrice();
     },
 
     beforeCache: function () {
@@ -251,7 +252,7 @@ main = {
             var optionSelected = $("option:selected", this);
             var select = $(this).closest('select');
 
-            if (optionSelected.exists() && optionSelected.val() !== '' ) {
+            if (optionSelected.exists() && optionSelected.val() !== '') {
                 $.getJSON({
                     url: Routes.best_prices_overseers_product_path(select.data('product-id')),
                     data: {
@@ -263,6 +264,13 @@ main = {
                     }
                 });
             }
+        })
+    },
+    updateWithSupplierPrice: function () {
+        $('form[action$=update_suppliers] .update-with-best-price').click(function (e) {
+            var parent = $(this).parent();
+            var input = parent.find('input');
+            parent.closest('div.row').find('[name*=unit_cost_price]').val(input.val());
         })
     }
 };
