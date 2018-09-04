@@ -36,6 +36,6 @@ class SalesProduct < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    self.unit_cost_price / (1 - (self.margin_percentage / 100))
+    (self.unit_cost_price / (1 - (self.margin_percentage / 100))).round(2)
   end
 end

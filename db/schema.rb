@@ -475,14 +475,25 @@ ActiveRecord::Schema.define(version: 2018_09_03_085956) do
     t.index ["updated_by_id"], name: "index_sales_products_on_updated_by_id"
   end
 
+  create_table "sales_quote_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "sales_quote_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "sales_quote_desc_idx"
+  end
+
   create_table "sales_quotes", force: :cascade do |t|
     t.bigint "inquiry_id"
+    t.integer "parent_id"
+    t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_sales_quotes_on_created_by_id"
     t.index ["inquiry_id"], name: "index_sales_quotes_on_inquiry_id"
+    t.index ["parent_id"], name: "index_sales_quotes_on_parent_id"
     t.index ["updated_by_id"], name: "index_sales_quotes_on_updated_by_id"
   end
 
@@ -598,4 +609,5 @@ ActiveRecord::Schema.define(version: 2018_09_03_085956) do
   add_foreign_key "sales_quotes", "inquiries"
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_quotes", "sales_quotes", column: "parent_id"
 end

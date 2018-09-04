@@ -40,7 +40,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def new_sales_quote?
-    edit? && record.approvals.any? && record.inquiry_suppliers.any?
+    edit? && record.approvals.any? && record.inquiry_suppliers.any? && record.sales_quotes.blank?
   end
 
   def sales_orders?

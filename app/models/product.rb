@@ -65,11 +65,11 @@ class Product < ApplicationRecord
     latest_inquiry_supplier.unit_cost_price if latest_inquiry_supplier.present?
   end
 
-  def lowest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
+  def lowest_unit_cost_price_for(supplier, except)
+    self.inquiry_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
-  def latest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
+  def latest_unit_cost_price_for(supplier, except)
+    self.inquiry_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 end

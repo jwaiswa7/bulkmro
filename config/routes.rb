@@ -34,6 +34,10 @@ Rails.application.routes.draw do
 
       scope module: 'inquiries' do
         resources :sales_quotes do
+          member do
+            get 'new_revision'
+          end
+
           scope module: 'sales_quotes' do
             resources :sales_orders
           end
