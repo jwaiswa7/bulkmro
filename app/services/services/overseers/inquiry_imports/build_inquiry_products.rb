@@ -17,12 +17,9 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
           ),
           quantity: row.metadata['quantity'].to_i
       ) if row.failed?
-
-      alternate = Product.where("name LIKE ?", "%#{row.metadata['name'].split.first}%").limit(4) || nil
-
-      row.inquiry_product.assign_attributes(:alternate=>alternate)
-
     end
+
+
   end
 
   attr_accessor :inquiry, :excel_import

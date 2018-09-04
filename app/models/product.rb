@@ -4,7 +4,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
 
   # default_scope { not_rejected }
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false } }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
 
   belongs_to :brand
   belongs_to :category
