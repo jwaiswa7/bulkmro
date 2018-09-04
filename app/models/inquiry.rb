@@ -16,6 +16,7 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
+  has_many :sales_orders, :through => :sales_quotes
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs

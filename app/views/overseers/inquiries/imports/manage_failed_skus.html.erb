@@ -1,43 +1,74 @@
 <div class="col-lg-12 mb-12">
-  <%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path, html: { }) do |f| %>
+  <%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path, html: {}) do |f| %>
 
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     <% end %>
+
+
     <%= f.simple_fields_for :rows do |row| %>
       <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
 
-      <div class="wrapper-class">
+      <div class="wrapper">
         <%= row.hidden_field :id %>
-        <%= row.simple_fields_for :inquiry_product do |inquiry_product| %>
-          <%= inquiry_product.hidden_field :id %>
-          <%= inquiry_product.hidden_field :inquiry_id %>
-          <div class="row">
-            <%= inquiry_product.simple_fields_for :product do |product| %>
-              <%= product.hidden_field :inquiry_import_row_id %>
-              <%= product.input :name %>
-              <%= product.input :sku %>
-              <%= product.association :brand %>
-              <div class="col-md-2">
-                <%= product.association :category, collection: Category.leaves %>
+<!--        <div class="col-md-2">-->
+          <%#= inquiry_product.input :quantity %>
+<!--        </div>-->
+
+        <%= row.simple_fields_for :inquiry_product do |inquiry_product, index| %>
+          <div class="nested">
+            <%= inquiry_product.hidden_field :id %>
+            <%= inquiry_product.hidden_field :inquiry_id %>
+            <%= inquiry_product.hidden_field :quantity %>
+            <div class="row">
+              <div class="col-md-10">
+                <%= inquiry_product.simple_fields_for :product do |product| %>
+                  <div class="row">
+                    <div class="col-md-1">
+                      <%= row.radio_button :approved_alternative_id, nil %>
+                    </div>
+                    <%= product.hidden_field :inquiry_import_row_id %>
+                    <%= product.input :name %>
+                    <%= product.input :sku %>
+                    <%= product.association :brand %>
+                    <div class="col-md-2">
+                      <%= product.association :category, collection: Category.leaves %>
+                    </div>
+                  </div>
+                <% end %>
               </div>
-            <% end %>
-            <div class="col-md-2">
-              <%= inquiry_product.input :quantity %>
+            </div>
+          </div>
+        <% end %>
+
+        <%= row.hidden_field :approved_alternative_id %>
+
+        <% row.object.approved_alternatives.each do |approved_alternative| %>
+          <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+                  <div class="col-md-1">
+                    <%= row.radio_button :approved_alternative_id, approved_alternative.id %>
+                  </div>
+
+                  <div class="col-md-3"><%= approved_alternative.name %></div>
+                  <div class="col-md-2"><%= approved_alternative.sku %></div>
+                  <div class="col-md-3"><%= approved_alternative.brand.to_s %></div>
+                  <div class="col-md-3"><%= approved_alternative.category.name %></div>
+                </div>
             </div>
           </div>
         <% end %>
 
         <div class="col-md-1 form-group">
-          <%= link_to_remove_association row, { class: 'dynamic btn btn-danger', wrapper_class: 'wrapper-class' } do %>
+          <%= link_to_remove_association row, {class: 'dynamic btn btn-danger', wrapper_class: 'wrapper'} do %>
             Skip
-          <% end  %>
+          <% end %>
         </div>
       </div>
     <% end %>
     <%= f.submit(class: 'btn btn-success btn-block') %>
   <% end %>
-
 </div>

@@ -4,7 +4,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
 
   # default_scope { not_rejected }
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
 
   belongs_to :brand
   belongs_to :category
@@ -65,11 +65,11 @@ class Product < ApplicationRecord
     latest_inquiry_supplier.unit_cost_price if latest_inquiry_supplier.present?
   end
 
-  def lowest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
+  def lowest_unit_cost_price_for(supplier, except)
+    self.inquiry_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
-  def latest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
+  def latest_unit_cost_price_for(supplier, except)
+    self.inquiry_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 end

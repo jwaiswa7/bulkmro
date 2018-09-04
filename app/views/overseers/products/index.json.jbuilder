@@ -4,7 +4,7 @@ json.data (@products) do |product|
                   format_date(product.approval.try(:created_at)),
                   product.name,
                   product.sku,
-                  product.suppliers.size,
+                  product.suppliers.uniq.size,
                   [
                       if policy(product).edit?
                         row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit', 'warning')

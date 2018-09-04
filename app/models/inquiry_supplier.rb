@@ -15,12 +15,14 @@ class InquirySupplier < ApplicationRecord
   end
 
   def lowest_unit_cost_price
-
-    self.product.lowest_unit_cost_price_for(self.supplier) if self.persisted?
+    self.product.lowest_unit_cost_price_for(self.supplier, self) if self.persisted?
   end
 
   def latest_unit_cost_price
-    self.product.latest_unit_cost_price_for(self.supplier) if self.persisted?
+    self.product.latest_unit_cost_price_for(self.supplier, self) if self.persisted?
   end
 
+  def to_s
+    self.product.to_s
+  end
 end
