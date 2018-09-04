@@ -1,3 +1,10 @@
-<%= render layout: 'overseers/inquiries/tabs_layout' do %>
-  <%= render 'overseers/inquiries/form' %>
-<% end %>
+<div class="col-lg-11">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> Inquiry</h2>
+    <p>This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= render 'overseers/inquiries/form' %>
+  <% end %>
+</div>

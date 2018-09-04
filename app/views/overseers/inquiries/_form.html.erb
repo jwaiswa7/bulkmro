@@ -1,72 +1,65 @@
-<div class="col-lg-8">
-  <div class="page-header">
-    <h2><%= action_name.capitalize %> Inquiry</h2>
-    <p>This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
-  </div>
+<%= simple_form_for([:overseers, @inquiry], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= f.hidden_field :company_id %>
 
-  <%= simple_form_for([:overseers, @inquiry], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.hidden_field :company_id %>
-
-    <% if f.object.errors.any? %>
-      <% f.object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+  <% if f.object.errors.any? %>
+    <% f.object.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
     <% end %>
+  <% end %>
 
-    <div class="card-body">
-      <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
-      <%= f.association :contact, :wrapper => :custom_multi_select %>
-      <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s  %>
-      <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
+  <div class="card-body">
+    <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
+    <%= f.association :contact, :wrapper => :custom_multi_select %>
+    <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s  %>
+    <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
 
-      <div class="form-group">
-        <label>Products</label>
-        <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
-          <div class="form-row flex-row align-items-center">
-            <%= inquiry_product.hidden_field :id %>
-            <div class="col-8">
-              <%= inquiry_product.label :product, :class => 'd-none' %>
-              <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
-            </div>
-            <div class="col-4">
-              <div class="d-flex flex-row">
-                <%= inquiry_product.input :quantity, :label => false %>
-                <div class="form-group align-self-center ml-2">
-                  <%= inquiry_product.remove_nested_fields_link do %>
-                      <i class="far fa-times text-danger"></i>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-            <% if inquiry_product.object.persisted? && inquiry_product.object.product.inquiry == @inquiry && inquiry_product.object.product.last_comment.present? %>
-              <div class="col-12">
-                <%= inquiry_product.input_field :last_comment, value: inquiry_product.object.product.last_comment.message, disabled: true, class: 'form-control' %>
-              </div>
-            <% end %>
+    <div class="form-group">
+      <label>Products</label>
+      <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+        <div class="form-row flex-row align-items-center">
+          <%= inquiry_product.hidden_field :id %>
+          <div class="col-8">
+            <%= inquiry_product.label :product, :class => 'd-none' %>
+            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
           </div>
-        <% end %>
-
-        <%= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
-
-        <% if f.object.persisted? %>
-          <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block">Import products using excel</a>
-          <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block">Import products</a>
-        <% end %>
-      </div>
-      <div class="form-group">
-        <%= f.input :comments %>
-      </div>
-
-      <div class="form-group ">
-        <%= f.submit(class: 'btn btn-success btn-block') %>
-      </div>
-      <% if f.object.persisted? %>
-        <div class="form-group">
-
-            <a href="<%= edit_suppliers_overseers_inquiry_path(@inquiry) %>" class="btn btn-success btn-outline-dark">Add / Edit Suppliers</a>
-
+          <div class="col-4">
+            <div class="d-flex flex-row">
+              <%= inquiry_product.input :quantity, :label => false %>
+              <div class="form-group align-self-center ml-2">
+                <%= inquiry_product.remove_nested_fields_link do %>
+                    <i class="far fa-times text-danger"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% if inquiry_product.object.persisted? && inquiry_product.object.product.inquiry == @inquiry && inquiry_product.object.product.last_comment.present? %>
+            <div class="col-12">
+              <%= inquiry_product.input_field :last_comment, value: inquiry_product.object.product.last_comment.message, disabled: true, class: 'form-control' %>
+            </div>
+          <% end %>
         </div>
       <% end %>
+
+      <%= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
+
+      <% if f.object.persisted? %>
+        <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block">Import products using excel</a>
+        <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block">Import products</a>
+      <% end %>
     </div>
-  <% end %>
-</div>
+    <div class="form-group">
+      <%= f.input :comments %>
+    </div>
+
+    <div class="form-group ">
+      <%= f.submit(class: 'btn btn-success btn-block') %>
+    </div>
+    <% if f.object.persisted? %>
+      <div class="form-group">
+
+          <a href="<%= edit_suppliers_overseers_inquiry_path(@inquiry) %>" class="btn btn-success btn-outline-dark">Add / Edit Suppliers</a>
+
+      </div>
+    <% end %>
+  </div>
+<% end %>
