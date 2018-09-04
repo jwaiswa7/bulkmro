@@ -1,6 +1,7 @@
 <%= render layout: 'overseers/inquiries/tabs_layout' do %>
   <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => { :class => 'card col-md-12' }) do |f| %>
     <%= f.hidden_field :inquiry_id %>
+    <%= f.hidden_field :parent_id %>
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -9,25 +10,26 @@
 
     <div class="card-body">
       <div class="form-group">
-        <%= f.nested_fields_for :sales_products, wrapper_tag: :div do |sales_product| %>
+        <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
-            <%= sales_product.hidden_field :id %>
-            <div class="col-md-2"><%= sales_product.association :inquiry_supplier, label_method: :to_s, collection: @inquiry.inquiry_suppliers, include_blank: 'Select a Line Item'%></div>
-            <div class="col-md-2"><%= sales_product.input :quantity %></div>
-            <div class="col-md-2"><%= sales_product.input :unit_cost_price, disabled: true %></div>
-            <div class="col-md-2"><%= sales_product.input :margin_percentage %></div>
-            <div class="col-md-2"><%= sales_product.input :unit_selling_price %></div>
-            <div class="col-md-2">
-              <%= sales_product.label :remove %>
+            <%= row.hidden_field :id %>
+            <div class="col-md-3"><%= row.association :inquiry_product_supplier, label_method: :to_s, collection: @inquiry.inquiry_product_suppliers, include_blank: 'Select a Line Item'%></div>
+            <div class="col-md-2"><%= row.input :quantity %></div>
+            <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
+            <div class="col-md-2"><%= row.input :margin_percentage %></div>
+            <div class="col-md-2"><%= row.input :unit_selling_price %></div>
+            <div class="col-md-1">
+              <%= row.label :remove %>
               <div class="form-control">
-                <%= sales_product.remove_nested_fields_link 'DEL' %>
+                <%= row.remove_nested_fields_link 'DEL' %>
               </div>
             </div>
           </div>
         <% end %>
-        <%= f.add_nested_fields_link :sales_products, 'Add Product', class: 'btn btn-outline-dark' %>
+        <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-outline-dark' %>
         <hr />
-        <%= f.submit 'Send sales quote', class: 'btn btn-success btn-block' %>
+        <%= f.submit 'Save as Draft', name: 'save', class: 'btn btn-success btn-block' %>
+        <%= f.submit 'Save and Send', name: 'save_and_send', class: 'btn btn-success btn-block' %>
       </div>
     </div>
   <% end %>

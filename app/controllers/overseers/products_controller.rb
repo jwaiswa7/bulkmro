@@ -7,7 +7,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def autocomplete
-    @products = ApplyParams.to(Product.approved.includes(:brand).unscoped, params)
+    @products = ApplyParams.to(Product.approved.includes(:brand), params)
     authorize @products
   end
 

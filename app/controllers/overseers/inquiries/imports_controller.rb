@@ -67,12 +67,15 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def create_failed_skus
     @excel_import.assign_attributes(create_failed_skus_params)
+
     authorize @excel_import
     service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
+      service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
+      service.call
       render 'manage_failed_skus'
     end
   end
@@ -102,6 +105,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     params.require(:inquiry_import).permit(
       :rows_attributes => [
           :id,
+          :approved_alternative_id,
           :_destroy,
           :inquiry_product_attributes => [
               :inquiry_id,

@@ -8,6 +8,45 @@ main = {
         main.initDynamicForms();
         main.dataTables.init();
         main.initEditSuppliers();
+
+        var dataAttributes = $('body').data();
+        var controller = main.camelize(dataAttributes.controller);
+        var controllerAction = main.camelize(dataAttributes.controllerAction);
+
+        if (controller in main && controllerAction in main[controller]) {
+            main[controller][controllerAction]()
+        }
+    },
+    camelize: function camelize(text) {
+        var separator = arguments.length <= 1 || arguments[1] === undefined ? '_' : arguments[1];
+        var words = text.split(separator);
+        var camelized = [words[0]].concat(words.slice(1).map(function (word) {
+            return '' + word.slice(0, 1).toUpperCase() + word.slice(1).toLowerCase();
+        }));
+        return camelized.join('');
+    },
+
+    imports: {
+        manageFailedSkus: function() {
+            var onRadioChange = function(radio) {
+                var newProductForm = $(radio).closest('div.wrapper').find('div.nested');
+
+                if (isNaN(radio.value)) {
+                    newProductForm.find(':input:visible:not(:radio)').prop('disabled', false);
+                } else {
+                    newProductForm.find(':input:visible:not(:radio)').prop('disabled', true);
+                }
+            };
+
+            $(':input:visible:radio:checked').each(function(e) {
+                onRadioChange(this);
+            });
+
+            $('input[name*=approved_alternative_id]:radio').on('change', function(e) {
+                onRadioChange(this);
+            });
+        },
+        createFailedSkus: function() { main.imports.manageFailedSkus() }
     },
 
     beforeCache: function () {
