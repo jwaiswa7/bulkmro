@@ -4,17 +4,17 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
 
   # default_scope { not_rejected }
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
 
   belongs_to :brand
   belongs_to :category
-  belongs_to :import_row, :class_name => 'InquiryImportRow', foreign_key: :inquiry_import_row_id, required: false
-  has_one :import, :through => :import_row, class_name: 'InquiryImport'
+  belongs_to :inquiry_import_row, required: false
+  has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, :through => :import
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
-  has_many :inquiry_suppliers, :through => :inquiry_products
-  has_many :suppliers, :through => :inquiry_suppliers, class_name: 'Company', source: :supplier
+  has_many :inquiry_product_suppliers, :through => :inquiry_products
+  has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
   has_one :rejection, :class_name => 'ProductRejection', inverse_of: :product, dependent: :destroy
 
@@ -49,27 +49,27 @@ class Product < ApplicationRecord
     :product_approvals
   end
 
-  def lowest_inquiry_supplier
-    self.inquiry_suppliers.order(:unit_cost_price => :asc).first
+  def lowest_inquiry_product_supplier
+    self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
   end
 
-  def latest_inquiry_supplier
-    self.inquiry_suppliers.latest_record
+  def latest_inquiry_product_supplier
+    self.inquiry_product_suppliers.latest_record
   end
 
   def lowest_unit_cost_price
-    lowest_inquiry_supplier.unit_cost_price if lowest_inquiry_supplier.present?
+    lowest_inquiry_product_supplier.unit_cost_price if lowest_inquiry_product_supplier.present?
   end
 
   def latest_unit_cost_price
-    latest_inquiry_supplier.unit_cost_price if latest_inquiry_supplier.present?
+    latest_inquiry_product_supplier.unit_cost_price if latest_inquiry_product_supplier.present?
   end
 
-  def lowest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
+  def lowest_unit_cost_price_for(supplier, except)
+    self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
-  def latest_unit_cost_price_for(supplier)
-    self.inquiry_suppliers.where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
+  def latest_unit_cost_price_for(supplier, except)
+    self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 end

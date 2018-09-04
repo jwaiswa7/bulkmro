@@ -18,7 +18,6 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
-
         get 'pending'
       end
 
@@ -27,7 +26,6 @@ Rails.application.routes.draw do
       end
     end
 
-
     resources :inquiries do
       member do
         get 'edit_suppliers'
@@ -35,7 +33,16 @@ Rails.application.routes.draw do
       end
 
       scope module: 'inquiries' do
-        resources :sales_quotes
+        resources :sales_quotes do
+          member do
+            get 'new_revision'
+          end
+
+          scope module: 'sales_quotes' do
+            resources :sales_orders
+          end
+        end
+
         resources :sales_orders
 
         resources :imports do
@@ -54,31 +61,8 @@ Rails.application.routes.draw do
           end
         end
 
-        # resources :rfqs do
-        #   collection do
-            # get 'edit_suppliers'
-            # post 'update_suppliers'
-            # get 'edit_rfqs'
-            # post 'update_rfqs'
-            # get 'edit_rfqs_mailer_preview'
-            # get 'edit_quotations'
-            # post 'update_quotations'
-          # end
-        # end
       end
     end
-
-    # resources :sales_quotes do
-    #   scope module: 'sales_quotes' do
-    #     resources :sales_approvals
-    #   end
-    # end
-
-    # resources :sales_approvals do
-    #   scope module: 'sales_approvals' do
-    #     resources :sales_orders
-    #   end
-    # end
 
     resources :companies do
       scope module: 'companies' do

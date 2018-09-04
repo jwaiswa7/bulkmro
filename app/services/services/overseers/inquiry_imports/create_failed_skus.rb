@@ -5,20 +5,24 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
   end
 
   def call
-    if excel_import.valid?
-      excel_import.rows.each do |row|
-        if row.marked_for_destruction?
-          row.reload
-        end
+    excel_import.rows.each do |row|
+      if row.marked_for_destruction?
+        row.reload
+      elsif row.approved_alternative_id.present?
+        row.build_inquiry_product(
+            :inquiry => inquiry,
+            :import => excel_import,
+            :product_id => row.approved_alternative_id,
+            :quantity => row.metadata['quantity']
+        )
+      else
+        row
       end
     end
 
     excel_import.save
   end
 
-  def notify
-
-  end
 
   attr_accessor :inquiry, :excel_import
 end

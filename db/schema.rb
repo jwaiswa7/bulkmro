@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_31_061222) do
+ActiveRecord::Schema.define(version: 2018_09_04_100238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -274,6 +274,21 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.index ["updated_by_id"], name: "index_inquiry_imports_on_updated_by_id"
   end
 
+  create_table "inquiry_product_suppliers", force: :cascade do |t|
+    t.bigint "inquiry_product_id"
+    t.integer "supplier_id"
+    t.decimal "unit_cost_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_inquiry_product_suppliers_on_created_by_id"
+    t.index ["inquiry_product_id", "supplier_id"], name: "index_ips_on_inquiry_product_id_and_supplier_id", unique: true
+    t.index ["inquiry_product_id"], name: "index_inquiry_product_suppliers_on_inquiry_product_id"
+    t.index ["supplier_id"], name: "index_inquiry_product_suppliers_on_supplier_id"
+    t.index ["updated_by_id"], name: "index_inquiry_product_suppliers_on_updated_by_id"
+  end
+
   create_table "inquiry_products", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.bigint "product_id"
@@ -289,21 +304,6 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.index ["inquiry_import_id"], name: "index_inquiry_products_on_inquiry_import_id"
     t.index ["product_id"], name: "index_inquiry_products_on_product_id"
     t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
-  end
-
-  create_table "inquiry_suppliers", force: :cascade do |t|
-    t.bigint "inquiry_product_id"
-    t.integer "supplier_id"
-    t.decimal "unit_cost_price"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_inquiry_suppliers_on_created_by_id"
-    t.index ["inquiry_product_id", "supplier_id"], name: "index_inquiry_suppliers_on_inquiry_product_id_and_supplier_id", unique: true
-    t.index ["inquiry_product_id"], name: "index_inquiry_suppliers_on_inquiry_product_id"
-    t.index ["supplier_id"], name: "index_inquiry_suppliers_on_supplier_id"
-    t.index ["updated_by_id"], name: "index_inquiry_suppliers_on_updated_by_id"
   end
 
   create_table "overseer_hierarchies", id: false, force: :cascade do |t|
@@ -422,38 +422,34 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
-  create_table "rfq_contacts", force: :cascade do |t|
-    t.bigint "rfq_id"
-    t.bigint "contact_id"
+  create_table "sales_order_rows", force: :cascade do |t|
+    t.bigint "sales_order_id"
+    t.bigint "sales_quote_row_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["contact_id"], name: "index_rfq_contacts_on_contact_id"
-    t.index ["created_by_id"], name: "index_rfq_contacts_on_created_by_id"
-    t.index ["rfq_id", "contact_id"], name: "index_rfq_contacts_on_rfq_id_and_contact_id", unique: true
-    t.index ["rfq_id"], name: "index_rfq_contacts_on_rfq_id"
-    t.index ["updated_by_id"], name: "index_rfq_contacts_on_updated_by_id"
+    t.index ["sales_order_id", "sales_quote_row_id"], name: "index_sales_order_rows_on_sales_order_id_and_sales_quote_row_id", unique: true
+    t.index ["sales_order_id"], name: "index_sales_order_rows_on_sales_order_id"
+    t.index ["sales_quote_row_id"], name: "index_sales_order_rows_on_sales_quote_row_id"
   end
 
-  create_table "rfqs", force: :cascade do |t|
-    t.integer "supplier_id"
-    t.bigint "inquiry_id"
-    t.text "subject"
-    t.text "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_rfqs_on_created_by_id"
-    t.index ["inquiry_id"], name: "index_rfqs_on_inquiry_id"
-    t.index ["supplier_id"], name: "index_rfqs_on_supplier_id"
-    t.index ["updated_by_id"], name: "index_rfqs_on_updated_by_id"
-  end
-
-  create_table "sales_products", force: :cascade do |t|
+  create_table "sales_orders", force: :cascade do |t|
     t.bigint "sales_quote_id"
-    t.bigint "inquiry_supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sales_quote_id"], name: "index_sales_orders_on_sales_quote_id"
+  end
+
+  create_table "sales_quote_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "sales_quote_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "sales_quote_desc_idx"
+  end
+
+  create_table "sales_quote_rows", force: :cascade do |t|
+    t.bigint "sales_quote_id"
+    t.bigint "inquiry_product_supplier_id"
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
@@ -461,21 +457,24 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_sales_products_on_created_by_id"
-    t.index ["inquiry_supplier_id"], name: "index_sales_products_on_inquiry_supplier_id"
-    t.index ["sales_quote_id", "inquiry_supplier_id"], name: "index_sales_products_on_sales_quote_id_and_inquiry_supplier_id", unique: true
-    t.index ["sales_quote_id"], name: "index_sales_products_on_sales_quote_id"
-    t.index ["updated_by_id"], name: "index_sales_products_on_updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_quote_rows_on_created_by_id"
+    t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
+    t.index ["sales_quote_id", "inquiry_product_supplier_id"], name: "index_sqr_on_sales_quote_id_and_inquiry_product_supplier_id", unique: true
+    t.index ["sales_quote_id"], name: "index_sales_quote_rows_on_sales_quote_id"
+    t.index ["updated_by_id"], name: "index_sales_quote_rows_on_updated_by_id"
   end
 
   create_table "sales_quotes", force: :cascade do |t|
     t.bigint "inquiry_id"
+    t.integer "parent_id"
+    t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_sales_quotes_on_created_by_id"
     t.index ["inquiry_id"], name: "index_sales_quotes_on_inquiry_id"
+    t.index ["parent_id"], name: "index_sales_quotes_on_parent_id"
     t.index ["updated_by_id"], name: "index_sales_quotes_on_updated_by_id"
   end
 
@@ -541,15 +540,15 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
   add_foreign_key "inquiry_import_rows", "inquiry_products"
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_imports", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiry_product_suppliers", "companies", column: "supplier_id"
+  add_foreign_key "inquiry_product_suppliers", "inquiry_products"
+  add_foreign_key "inquiry_product_suppliers", "overseers", column: "created_by_id"
+  add_foreign_key "inquiry_product_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "inquiries"
   add_foreign_key "inquiry_products", "inquiry_imports"
   add_foreign_key "inquiry_products", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_products", "overseers", column: "updated_by_id"
   add_foreign_key "inquiry_products", "products"
-  add_foreign_key "inquiry_suppliers", "companies", column: "supplier_id"
-  add_foreign_key "inquiry_suppliers", "inquiry_products"
-  add_foreign_key "inquiry_suppliers", "overseers", column: "created_by_id"
-  add_foreign_key "inquiry_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "overseer_hierarchies", "overseers", column: "ancestor_id"
   add_foreign_key "overseer_hierarchies", "overseers", column: "descendant_id"
   add_foreign_key "overseers", "overseers", column: "created_by_id"
@@ -575,19 +574,15 @@ ActiveRecord::Schema.define(version: 2018_08_31_061222) do
   add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
-  add_foreign_key "rfq_contacts", "contacts"
-  add_foreign_key "rfq_contacts", "overseers", column: "created_by_id"
-  add_foreign_key "rfq_contacts", "overseers", column: "updated_by_id"
-  add_foreign_key "rfq_contacts", "rfqs"
-  add_foreign_key "rfqs", "companies", column: "supplier_id"
-  add_foreign_key "rfqs", "inquiries"
-  add_foreign_key "rfqs", "overseers", column: "created_by_id"
-  add_foreign_key "rfqs", "overseers", column: "updated_by_id"
-  add_foreign_key "sales_products", "inquiry_suppliers"
-  add_foreign_key "sales_products", "overseers", column: "created_by_id"
-  add_foreign_key "sales_products", "overseers", column: "updated_by_id"
-  add_foreign_key "sales_products", "sales_quotes"
+  add_foreign_key "sales_order_rows", "sales_orders"
+  add_foreign_key "sales_order_rows", "sales_quote_rows"
+  add_foreign_key "sales_orders", "sales_quotes"
+  add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
+  add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
+  add_foreign_key "sales_quote_rows", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_quote_rows", "sales_quotes"
   add_foreign_key "sales_quotes", "inquiries"
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_quotes", "sales_quotes", column: "parent_id"
 end

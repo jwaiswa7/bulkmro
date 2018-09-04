@@ -11,6 +11,7 @@
   <div class="col-lg-12 mb-12">
     <% content_for :header_row do %>
       <th>Created At</th>
+      <th>Sent At</th>
       <th>Created By</th>
       <th>Line Items</th>
       <th>Quote Total</th>
@@ -21,12 +22,15 @@
       <% @sales_quotes.each do |sales_quote| %>
         <tr>
           <td><%= format_date(sales_quote.created_at) %></td>
+          <td><%= format_date(sales_quote.sent_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>
-          <td><%= sales_quote.sales_products.size %></td>
+          <td><%= sales_quote.rows.size %></td>
           <td><%= format_currency(sales_quote.calculated_total) %></td>
           <td>
             <% if policy(sales_quote).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'pencil', 'Edit Sales Quote', 'warning') %>
+            <% elsif policy(sales_quote).new_revision? %>
+              <%= row_action_button(new_revision_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'redo-alt', 'New Sales Quote Revision', 'warning') %>
             <% end %>
           </td>
         </tr>
