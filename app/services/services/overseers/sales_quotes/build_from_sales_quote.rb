@@ -5,13 +5,13 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
   end
 
   def call
-    @sales_quote = old_sales_quote.deep_clone include: :sales_products
+    @sales_quote = old_sales_quote.deep_clone include: :rows
 
     sales_quote.assign_attributes(:overseer => overseer)
     sales_quote.assign_attributes(:parent_id => old_sales_quote.id)
     sales_quote.assign_attributes(:sent_at => nil)
-    sales_quote.sales_products.each do |sales_product|
-      sales_product.assign_attributes(:overseer => overseer)
+    sales_quote.rows.each do |row|
+      row.assign_attributes(:overseer => overseer)
     end
 
     sales_quote

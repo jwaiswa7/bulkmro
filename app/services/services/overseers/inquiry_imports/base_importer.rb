@@ -9,7 +9,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
 
   def call_base
     delete_duplicate_rows
-    persist_import_rows
+    persist_inquiry_import_rows
 
     ActiveRecord::Base.transaction do
       set_existing_products
@@ -22,8 +22,9 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     rows.uniq! { |row| row['sku'] }
   end
 
-  def persist_import_rows
+  def persist_inquiry_import_rows
     rows.each do |row|
+      row.stringify_keys!
       import.rows.create(import: import, sku: row['sku'], metadata: row)
     end
   end

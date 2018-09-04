@@ -1,10 +1,10 @@
-class InquirySupplier < ApplicationRecord
+class InquiryProductSupplier < ApplicationRecord
   include Mixins::HasSupplier
 
   belongs_to :inquiry_product
   has_one :product, :through => :inquiry_product
   has_one :inquiry, :through => :inquiry_product
-  has_many :sales_products
+  has_many :sales_quote_rows
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, :greater_than_or_equal_to => 0

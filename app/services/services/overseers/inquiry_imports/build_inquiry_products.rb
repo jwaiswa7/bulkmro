@@ -10,7 +10,7 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
           inquiry: inquiry,
           import: excel_import,
           product: Product.new(
-              import_row: row,
+              inquiry_import_row: row,
               name: row.metadata['name'],
               sku: row.sku,
               brand: Brand.find_by_name(row.metadata['brand']),

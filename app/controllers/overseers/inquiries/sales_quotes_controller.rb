@@ -69,9 +69,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :billing_address_id,
         :shipping_address_id,
         :comments,
-        :sales_products_attributes => [
+        :rows_attributes => [
             :id,
-            :inquiry_supplier_id,
+            :inquiry_product_supplier_id,
             :quantity,
             :margin_percentage,
             :unit_selling_price,

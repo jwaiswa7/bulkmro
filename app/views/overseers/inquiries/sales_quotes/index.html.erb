@@ -24,7 +24,7 @@
           <td><%= format_date(sales_quote.created_at) %></td>
           <td><%= format_date(sales_quote.sent_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>
-          <td><%= sales_quote.sales_products.size %></td>
+          <td><%= sales_quote.rows.size %></td>
           <td><%= format_currency(sales_quote.calculated_total) %></td>
           <td>
             <% if policy(sales_quote).edit? %>
