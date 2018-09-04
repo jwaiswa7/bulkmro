@@ -40,11 +40,20 @@
         </div>
       <% end %>
 
-      <%= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
-
-      <% if f.object.persisted? %>
-        <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block">Import products using excel</a>
-        <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block">Import products</a>
+      <% if !f.object.persisted? %>
+        <%= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
+      <% else %>
+        <div class="form-row">
+          <div class="col-md-4">
+            <%= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
+          </div>
+          <div class="col-md-4">
+            <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block">Add products using excel</a>
+          </div>
+          <div class="col-md-4">
+            <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block">Add products through list</a>
+          </div>
+        </div>
       <% end %>
     </div>
     <div class="form-group">
