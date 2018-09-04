@@ -6,6 +6,8 @@ class InquiryImportRow < ApplicationRecord
   scope :failed, -> { where(:inquiry_product_id => nil)  }
   scope :successful, -> { where.not(:inquiry_product_id => nil)  }
 
+
+
   validates_presence_of :sku, :metadata
   validates_uniqueness_of :sku, scope: :import
 
