@@ -102,7 +102,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   end
 
   def create_failed_skus_params
-    params.require(:inquiry_import).permit(
+    params[:inquiry_import].present? ? params.require(:inquiry_import).permit(
       :rows_attributes => [
           :id,
           :approved_alternative_id,
@@ -113,6 +113,6 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
               :product_attributes => [:inquiry_import_row_id, :name, :sku, :brand_id, :category_id]
           ],
       ]
-    )
+    ) : {}
   end
 end

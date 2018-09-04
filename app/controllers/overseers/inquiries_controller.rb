@@ -84,7 +84,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   def edit_suppliers_params
     params.require(:inquiry).permit(
         :inquiry_products_attributes => [:id, :inquiry_product_suppliers_attributes => [:id, :supplier_id, :unit_cost_price, :_destroy]]
-
     )
   end
 
