@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :posts
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'export_inquiry'
       end
 
       scope module: 'inquiries' do

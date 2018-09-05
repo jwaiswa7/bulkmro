@@ -134,6 +134,13 @@ gem 'js-routes'
 # Deep clone ActiveRecord objects
 gem 'deep_cloneable', '~> 2.3.2'
 
+#TEST
+# OJ for Parsing JSON
+gem 'oj'
+
+# Serilizer for MODEL -> JSON
+gem 'active_model_serializers', '~> 0.10.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
