@@ -62,15 +62,6 @@
       <%= f.input :comments %>
     </div>
 
-    <div class="form-group ">
-      <%= f.submit(class: 'btn btn-success btn-block') %>
-    </div>
-    <% if f.object.persisted? %>
-      <div class="form-group">
-
-          <a href="<%= edit_suppliers_overseers_inquiry_path(@inquiry) %>" class="btn btn-success btn-outline-dark">Add / Edit Suppliers</a>
-
-      </div>
-    <% end %>
+    <%= f.submit(class: 'btn btn-success btn-block') %>
   </div>
 <% end %>
