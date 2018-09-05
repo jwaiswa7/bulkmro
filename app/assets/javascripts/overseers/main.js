@@ -14,7 +14,8 @@ main = {
 
         if (controller in main && controllerAction in main[controller]) {
             main[controller][controllerAction]();
-            console.log("Executing: main[" + controller + "][" + controllerAction + "]()")
+            //For Debugging
+            //console.log("Executing: main[" + controller + "][" + controllerAction + "]()")
         }
     },
     camelize: function camelize(text) {
