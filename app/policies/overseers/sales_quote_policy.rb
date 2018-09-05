@@ -6,4 +6,9 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_revision?
     record == record.inquiry.sales_quotes.latest_record && record.persisted? && record.sent?
   end
+
+  def new_sales_order?
+    new_revision?
+  end
+
 end

@@ -26,6 +26,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :sales_orders do
+      collection do
+        get 'pending'
+      end
+
+      scope module: 'sales_orders' do
+        resources :comments
+      end
+    end
+
     resources :inquiries do
       member do
         get 'edit_suppliers'
@@ -33,17 +43,17 @@ Rails.application.routes.draw do
       end
 
       scope module: 'inquiries' do
+        resources :sales_orders do
+          member do
+            get 'new_revision'
+          end
+        end
+
         resources :sales_quotes do
           member do
             get 'new_revision'
           end
-
-          scope module: 'sales_quotes' do
-            resources :sales_orders
-          end
         end
-
-        resources :sales_orders
 
         resources :imports do
           member do

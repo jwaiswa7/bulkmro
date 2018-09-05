@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_04_100238) do
+ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -422,21 +422,79 @@ ActiveRecord::Schema.define(version: 2018_09_04_100238) do
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
+  create_table "sales_order_approvals", force: :cascade do |t|
+    t.bigint "sales_order_id"
+    t.bigint "sales_order_comment_id"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_sales_order_approvals_on_created_by_id"
+    t.index ["sales_order_comment_id"], name: "index_sales_order_approvals_on_sales_order_comment_id"
+    t.index ["sales_order_id"], name: "index_sales_order_approvals_on_sales_order_id"
+    t.index ["updated_by_id"], name: "index_sales_order_approvals_on_updated_by_id"
+  end
+
+  create_table "sales_order_comments", force: :cascade do |t|
+    t.bigint "sales_order_id"
+    t.text "message"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_sales_order_comments_on_created_by_id"
+    t.index ["sales_order_id"], name: "index_sales_order_comments_on_sales_order_id"
+    t.index ["updated_by_id"], name: "index_sales_order_comments_on_updated_by_id"
+  end
+
+  create_table "sales_order_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "sales_order_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "sales_order_desc_idx"
+  end
+
+  create_table "sales_order_rejections", force: :cascade do |t|
+    t.bigint "sales_order_id"
+    t.bigint "sales_order_comment_id"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_sales_order_rejections_on_created_by_id"
+    t.index ["sales_order_comment_id"], name: "index_sales_order_rejections_on_sales_order_comment_id"
+    t.index ["sales_order_id"], name: "index_sales_order_rejections_on_sales_order_id"
+    t.index ["updated_by_id"], name: "index_sales_order_rejections_on_updated_by_id"
+  end
+
   create_table "sales_order_rows", force: :cascade do |t|
     t.bigint "sales_order_id"
     t.bigint "sales_quote_row_id"
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_order_rows_on_created_by_id"
     t.index ["sales_order_id", "sales_quote_row_id"], name: "index_sales_order_rows_on_sales_order_id_and_sales_quote_row_id", unique: true
     t.index ["sales_order_id"], name: "index_sales_order_rows_on_sales_order_id"
     t.index ["sales_quote_row_id"], name: "index_sales_order_rows_on_sales_quote_row_id"
+    t.index ["updated_by_id"], name: "index_sales_order_rows_on_updated_by_id"
   end
 
   create_table "sales_orders", force: :cascade do |t|
     t.bigint "sales_quote_id"
+    t.integer "parent_id"
+    t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["created_by_id"], name: "index_sales_orders_on_created_by_id"
+    t.index ["parent_id"], name: "index_sales_orders_on_parent_id"
     t.index ["sales_quote_id"], name: "index_sales_orders_on_sales_quote_id"
+    t.index ["updated_by_id"], name: "index_sales_orders_on_updated_by_id"
   end
 
   create_table "sales_quote_hierarchies", id: false, force: :cascade do |t|
@@ -574,8 +632,23 @@ ActiveRecord::Schema.define(version: 2018_09_04_100238) do
   add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_approvals", "overseers", column: "created_by_id"
+  add_foreign_key "sales_order_approvals", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_approvals", "sales_order_comments"
+  add_foreign_key "sales_order_approvals", "sales_orders"
+  add_foreign_key "sales_order_comments", "overseers", column: "created_by_id"
+  add_foreign_key "sales_order_comments", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_comments", "sales_orders"
+  add_foreign_key "sales_order_rejections", "overseers", column: "created_by_id"
+  add_foreign_key "sales_order_rejections", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_rejections", "sales_order_comments"
+  add_foreign_key "sales_order_rejections", "sales_orders"
+  add_foreign_key "sales_order_rows", "overseers", column: "created_by_id"
+  add_foreign_key "sales_order_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_order_rows", "sales_orders"
   add_foreign_key "sales_order_rows", "sales_quote_rows"
+  add_foreign_key "sales_orders", "overseers", column: "created_by_id"
+  add_foreign_key "sales_orders", "overseers", column: "updated_by_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"

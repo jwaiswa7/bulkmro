@@ -38,4 +38,8 @@ class SalesQuoteRow < ApplicationRecord
   def calculated_unit_selling_price
     (self.unit_cost_price / (1 - (self.margin_percentage / 100))).round(2)
   end
+
+  def to_s
+    product.to_s
+  end
 end

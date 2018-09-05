@@ -22,7 +22,7 @@ module ShortcutsHelper
       begin
         prev_element = elements[index - 1]
 
-        if prev_element.classify.constantize && prev_element.classify.constantize.find(element)
+        if prev_element.classify.constantize && prev_element.classify.constantize.find(element.remove('_'))
           name = prev_element.classify.constantize.find(element).to_s
         end
       rescue NameError => e

@@ -1,8 +1,78 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
+  before_action :set_sales_order, only: [:edit, :update]
+
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
   end
 
+  def new
+    @sales_quote = @inquiry.sales_quotes.find(params[:sales_quote_id])
+    @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
+    authorize @sales_quote, :new_sales_order?
+  end
+
+  def new_revision
+    @old_sales_order = @inquiry.sales_orders.find(params[:id])
+    @sales_order = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_order, current_overseer).call
+    authorize @old_sales_order
+    render 'new'
+  end
+
+  def create
+    @sales_order = SalesOrder.new(sales_order_params.merge(:overseer => current_overseer))
+    authorize @sales_order
+
+    callback_method = %w(save save_and_send).detect { |action| params[action] }
+
+    if callback_method.present? && send(callback_method)
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'new'
+    end
+  end
+
+  def edit
+    authorize @sales_order
+  end
+
+  def update
+    @sales_order.assign_attributes(sales_order_params.merge(:overseer => current_overseer))
+    authorize @sales_order
+
+    callback_method = %w(save save_and_send).detect { |action| params[action] }
+
+    if callback_method.present? && send(callback_method)
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit'
+    end
+  end
+
   private
+  def save
+    @sales_order.save
+  end
+
+  def save_and_send
+    @sales_order.assign_attributes(:sent_at => Time.now)
+    @sales_order.save
+  end
+
+  def set_sales_order
+    @sales_order = @inquiry.sales_orders.find(params[:id])
+  end
+
+  def sales_order_params
+    params.require(:sales_order).permit(
+        :sales_quote_id,
+        :parent_id,
+        :rows_attributes => [
+            :id,
+            :sales_quote_row_id,
+            :quantity,
+            :_destroy
+        ]
+    )
+  end
 end

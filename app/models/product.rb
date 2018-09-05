@@ -1,9 +1,14 @@
 class Product < ApplicationRecord
+  COMMENTS_CLASS = 'ProductComment'
+  REJECTIONS_CLASS = 'ProductRejection'
+  APPROVALS_CLASS = 'ProductApproval'
+
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
   include Mixins::CanBeRejected
+  include Mixins::HasApproveableStatus
+  include Mixins::HasComments
 
-  # default_scope { not_rejected }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
 
   belongs_to :brand
@@ -15,12 +20,6 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
-  has_one :approval, :class_name => 'ProductApproval', inverse_of: :product, dependent: :destroy
-  has_one :rejection, :class_name => 'ProductRejection', inverse_of: :product, dependent: :destroy
-
-  has_many :comments, :class_name => 'ProductComment', dependent: :destroy
-  has_one :last_comment, -> { order(created_at: :desc) }, class_name: 'ProductComment'
-  accepts_nested_attributes_for :comments
 
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
@@ -41,14 +40,6 @@ class Product < ApplicationRecord
     "#{name} (#{sku || trashed_sku })"
   end
 
-  def self.rejections_table
-    :product_rejections
-  end
-
-  def self.approvals_table
-    :product_approvals
-  end
-
   def lowest_inquiry_product_supplier
     self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
   end
@@ -65,11 +56,11 @@ class Product < ApplicationRecord
     latest_inquiry_product_supplier.unit_cost_price if latest_inquiry_product_supplier.present?
   end
 
-  def lowest_unit_cost_price_for(supplier, except)
+  def lowest_unit_cost_price_for(supplier, except=nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
-  def latest_unit_cost_price_for(supplier, except)
+  def latest_unit_cost_price_for(supplier, except=nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 end

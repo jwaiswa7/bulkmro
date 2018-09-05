@@ -1,7 +1,8 @@
 <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-  <%= simple_form_for([:overseers, @inquiry, @sales_quote], :html => { :class => 'card col-md-12' }) do |f| %>
-    <%= f.hidden_field :inquiry_id %>
+  <%= simple_form_for([:overseers, @inquiry, @sales_order], :html => { :class => 'card col-md-12' }) do |f| %>
     <%= f.hidden_field :parent_id %>
+    <%= f.hidden_field :sales_quote_id %>
+
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -13,12 +14,11 @@
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
             <%= row.hidden_field :id %>
-            <div class="col-md-3">
-              <%= row.association :inquiry_product_supplier, collection: @inquiry.inquiry_product_suppliers.map {|p| [p.to_s, p.id, {'data-unit-cost-price' => p.unit_cost_price }]}, include_blank: 'Select a Line Item'%></div>
+            <div class="col-md-3"><%= row.association :sales_quote_row, label_method: :to_s, collection: @sales_order.sales_quote.rows, include_blank: 'Select a Line Item'%></div>
             <div class="col-md-2"><%= row.input :quantity %></div>
             <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
-            <div class="col-md-2"><%= row.input :margin_percentage, input_html: {:min => 0, :max => 99.99}%></div>
-            <div class="col-md-2"><%= row.input :unit_selling_price, input_html: {:min => 0} %></div>
+            <div class="col-md-2"><%= row.input :margin_percentage, disabled: true %></div>
+            <div class="col-md-2"><%= row.input :unit_selling_price, disabled: true %></div>
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">
