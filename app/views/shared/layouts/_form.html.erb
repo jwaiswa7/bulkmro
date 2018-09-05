@@ -1,4 +1,16 @@
-<div class="col-lg-12 col-md-12 my-2 my-lg-5">
-  <h3 class="mb-1"><%= request.path.split('/').last.titleize %></h3>
-  <%= yield %>
+<div class="col-lg-11">
+  <div class="page-header">
+    <div class="d-md-flex justify-content-between">
+      <h2><%= request.path.split('/').last.titleize %></h2>
+      <% if content_for?(:heading_button) %>
+        <%= yield :heading_button %>
+      <% end %>
+    </div>
+
+    <% if content_for?(:heading_byline) %>
+      <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
+    <% end %>
+
+    <%= yield %>
+  </div>
 </div>
