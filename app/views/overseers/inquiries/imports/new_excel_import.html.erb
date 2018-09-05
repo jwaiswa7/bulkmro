@@ -1,11 +1,21 @@
-<%= render layout: 'shared/layouts/form' do %>
+<% content_for :heading_button do %>
+  <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down">
+    <i class="fal fa-download mr-1"></i>Download Excel Template
+  </a>
+<% end %>
 
-  <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" class="btn btn-block" target="_blank">Download Excel Template</a>
+<%= render layout: 'shared/layouts/form' do %>
   <%= simple_form_for([:overseers, @inquiry, @excel_import], url: create_excel_import_overseers_inquiry_imports_path(@inquiry), :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :import_type %>
     <div class="card-body">
       <div class="form-group">
-        <%= f.input :file, label: 'Excel File', required: true, accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+        <label>Excel File</label>
+        <div class="input-group">
+          <div class="custom-file">
+            <%= f.file_field :file, :class => 'custom-file-input', required: true, accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+            <label class="custom-file-label">Products Excel File</label>
+          </div>
+        </div>
       </div>
 
       <div class="form-group mb-0">
