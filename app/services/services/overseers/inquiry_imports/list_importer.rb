@@ -15,7 +15,7 @@ class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::I
       sku = tuples[0]
       quantity = tuples.length > 1 ? tuples[1] : 1
 
-      rows.push({ sku: sku, quantity: quantity })
+      rows.push({ 'sku' => sku, 'quantity' => quantity })
     end
   end
 end

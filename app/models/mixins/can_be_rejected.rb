@@ -2,10 +2,10 @@ module Mixins::CanBeRejected
   extend ActiveSupport::Concern
 
   included do
-    class NotAllowed < StandardError; end
+    has_one :rejection, :class_name => self::REJECTIONS_CLASS, dependent: :destroy
 
-    scope :rejected, -> { left_outer_joins(:rejection).where.not(rejections_table => { id: nil }) }
-    scope :not_rejected, -> { left_outer_joins(:rejection).where(rejections_table => { id: nil }) }
+    scope :rejected, -> { left_outer_joins(:rejection).where.not([self.class.to_s.split('::')[0].underscore.downcase, 'rejections'].join('_') => { id: nil }) }
+    scope :not_rejected, -> { left_outer_joins(:rejection).where([self.class.to_s.split('::')[0].underscore.downcase, 'rejections'].join('_') => { id: nil }) }
 
     def rejected?
       rejection.present?
@@ -13,10 +13,6 @@ module Mixins::CanBeRejected
 
     def not_rejected?
       !rejected?
-    end
-
-    def self.rejections_table
-      nil
     end
   end
 end

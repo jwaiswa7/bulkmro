@@ -28,7 +28,7 @@ module DisplayHelper
   end
 
   def format_enum(val)
-    val.humanize if val.present?
+    val.to_s.humanize if val.present?
   end
 
   def day_count(val)

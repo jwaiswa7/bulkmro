@@ -2,8 +2,10 @@ module Mixins::CanBeApproved
   extend ActiveSupport::Concern
 
   included do
-    scope :approved, -> { left_outer_joins(:approval).where.not(approvals_table => { id: nil }) }
-    scope :not_approved, -> { left_outer_joins(:approval).where(approvals_table => { id: nil }) }
+    has_one :approval, :class_name => self::APPROVALS_CLASS, dependent: :destroy
+
+    scope :approved, -> { left_outer_joins(:approval).where.not([self.class.to_s.split('::')[0].underscore.downcase, 'approvals'].join('_') => { id: nil }) }
+    scope :not_approved, -> { left_outer_joins(:approval).where([self.class.to_s.split('::')[0].underscore.downcase, 'approvals'].join('_') => { id: nil }) }
 
     def approved?
       self.approval.present?
@@ -13,8 +15,6 @@ module Mixins::CanBeApproved
       !approved?
     end
 
-    def self.approvals_table
-      nil
-    end
+
   end
 end

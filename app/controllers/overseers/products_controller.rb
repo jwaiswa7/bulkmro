@@ -2,17 +2,17 @@ class Overseers::ProductsController < Overseers::BaseController
   before_action :set_product, only: [:show, :edit, :update, :best_prices]
 
   def index
-    @products = ApplyDatatableParams.to(Product.approved.includes(:brand), params)
+    @products = ApplyDatatableParams.to(Product.all.approved.includes(:brand), params)
     authorize @products
   end
 
   def autocomplete
-    @products = ApplyParams.to(Product.approved.includes(:brand), params)
+    @products = ApplyParams.to(Product.all.approved.includes(:brand), params)
     authorize @products
   end
 
   def pending
-    @products = ApplyDatatableParams.to(Product.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)).group(:id).order('count(inquiry_products.id) Desc'), params)
+    @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)).group(:id).order('COUNT(inquiry_products.id) DESC'), params)
     authorize @products
   end
 
