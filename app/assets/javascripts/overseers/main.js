@@ -6,6 +6,7 @@ main = {
         main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
+        main.initTextareaAutosize();
         main.dataTables.init();
         main.initEditSuppliers();
 
@@ -17,6 +18,7 @@ main = {
             main[controller][controllerAction]()
         }
     },
+
     camelize: function camelize(text) {
         var separator = arguments.length <= 1 || arguments[1] === undefined ? '_' : arguments[1];
         var words = text.split(separator);
@@ -100,6 +102,10 @@ main = {
             .on("fields_removed.nested_form_fields", function (e, param) {
                 main.initSelects();
             });
+    },
+
+    initTextareaAutosize: function() {
+        autosize(document.querySelectorAll('textarea'));
     },
 
     // Bootstrap override default browser validation with Bootstrap's helper classes

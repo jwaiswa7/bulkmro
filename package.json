@@ -2,6 +2,7 @@
   "name": "bulkmro",
   "private": true,
   "dependencies": {
+    "autosize": "^4.0.2",
     "bootstrap": "4.1.3",
     "chartjs": "^0.3.24",
     "datatables.net-bs4": "^1.10.19",
