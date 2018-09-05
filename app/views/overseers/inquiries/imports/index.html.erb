@@ -1,38 +1,40 @@
-<%= render layout: 'overseers/inquiries/tabs_layout' do %>
-  <% provide :hide_table_desc, true %>
-  <% provide :hide_table_heading, true %>
+<div class="col-lg-11">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <% provide :hide_table_desc, true %>
+    <% provide :hide_table_heading, true %>
 
-  <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using Excel</a><br />
-  <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using List</a>
+    <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using Excel</a><br />
+    <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus-circle mr-1"></i>Import Products using List</a>
 
-  <div class="col-lg-12 mb-12">
-    <% content_for :header_row do %>
-      <th>Created</th>
-      <th>Imported By</th>
-      <th>Successful</th>
-      <th>Failed</th>
-      <th>Import Type</th>
-      <th>Actions</th>
-    <% end %>
-
-    <%= render layout: 'shared/layouts/datatable' do %>
-      <% @imports.each do |import| %>
-        <tr>
-          <td><%= format_date(import.created_at) %></td>
-          <td><%= import.created_by.to_s %></td>
-          <td><%= format_num(import.rows.successful.size) %></td>
-          <td><%= format_num(import.rows.failed.size) %></td>
-          <td><%= format_enum(import.import_type) %></td>
-          <td>
-          <% if policy(import).show? && import.excel? && import.file.attached? %>
-            <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
-          <% elsif policy(import).show? %>
-            <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
-          <% end %>
-            <%= if policy(import).manage_failed_skus?; row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning'); end %>
-          </td>
-        </tr>
+    <div class="col-lg-12 mb-12">
+      <% content_for :header_row do %>
+        <th>Created</th>
+        <th>Imported By</th>
+        <th>Successful</th>
+        <th>Failed</th>
+        <th>Import Type</th>
+        <th>Actions</th>
       <% end %>
-    <% end %>
-  </div>
-<% end %>
+
+      <%= render layout: 'shared/layouts/datatable' do %>
+        <% @imports.each do |import| %>
+          <tr>
+            <td><%= format_date(import.created_at) %></td>
+            <td><%= import.created_by.to_s %></td>
+            <td><%= format_num(import.rows.successful.size) %></td>
+            <td><%= format_num(import.rows.failed.size) %></td>
+            <td><%= format_enum(import.import_type) %></td>
+            <td>
+            <% if policy(import).show? && import.excel? && import.file.attached? %>
+              <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
+            <% elsif policy(import).show? %>
+              <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
+            <% end %>
+              <%= if policy(import).manage_failed_skus?; row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning'); end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
