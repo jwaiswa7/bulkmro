@@ -22,22 +22,22 @@
             <%= inquiry_product_supplier.hidden_field :id %>
             <div class="row">
 
-              <div class="col-md-3"><%= inquiry_supplier.association :supplier, input_html: {:'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select A Supplier' %></div>
-              <div class="col-md-3"><%= inquiry_supplier.input :unit_cost_price %></div>
-              <div class="col-md-2"><%= inquiry_supplier.input :lowest_unit_cost_price, disabled: true, label: 'Lowest' %>
+              <div class="col-md-3"><%= inquiry_product_supplier.association :supplier, input_html: {:'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select A Supplier' %></div>
+              <div class="col-md-3"><%= inquiry_product_supplier.input :unit_cost_price %></div>
+              <div class="col-md-2"><%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: 'Lowest' %>
                 <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
                   <i class="far fa-check"></i>
                 <% end %>
 
               </div>
-              <div class="col-md-2"><%= inquiry_supplier.input :latest_unit_cost_price, disabled: true, label: 'Latest' %>
+              <div class="col-md-2"><%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: 'Latest' %>
                 <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
                   <i class="far fa-check"></i>
                 <% end %>
 
               </div>
-              <div class="col-md-1 "><%= inquiry_supplier.label 'Remove' %>
-                <div class="form-control"><%= inquiry_supplier.remove_nested_fields_link 'DEL', class: '' %></div>
+              <div class="col-md-1 "><%= inquiry_product_supplier.label 'Remove' %>
+                <div class="form-control"><%= inquiry_product_supplier.remove_nested_fields_link 'DEL', class: '' %></div>
               </div>
 
             </div>

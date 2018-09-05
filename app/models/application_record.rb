@@ -16,7 +16,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :before_datetime, -> (time) { where('created_at < ?', time) }
   scope :after_datetime, -> (time) { where('created_at >= ?', time) }
   scope :as_of, -> (time) { where('created_at < ?', time) }
-  scope :except_object, -> (obj) { where.not(:id => obj.id) }
+  scope :except_object, -> (obj) { where.not(:id => obj.id) if obj.present? }
   scope :except_objects, -> (objs) { where.not("#{self.model_name.collection}.id IN (?)", objs.pluck(:id)) if objs.present? }
   scope :persisted, -> { where "#{self.model_name.collection}.id IS NOT NULL" }
 
