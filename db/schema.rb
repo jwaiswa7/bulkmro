@@ -485,16 +485,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "sales_orders", force: :cascade do |t|
     t.bigint "sales_quote_id"
-    t.integer "parent_id"
-    t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_sales_orders_on_created_by_id"
-    t.index ["parent_id"], name: "index_sales_orders_on_parent_id"
     t.index ["sales_quote_id"], name: "index_sales_orders_on_sales_quote_id"
-    t.index ["updated_by_id"], name: "index_sales_orders_on_updated_by_id"
   end
 
   create_table "sales_quote_hierarchies", id: false, force: :cascade do |t|
@@ -647,8 +640,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_order_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_order_rows", "sales_orders"
   add_foreign_key "sales_order_rows", "sales_quote_rows"
-  add_foreign_key "sales_orders", "overseers", column: "created_by_id"
-  add_foreign_key "sales_orders", "overseers", column: "updated_by_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
