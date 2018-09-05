@@ -1,11 +1,8 @@
 <%= render layout: 'shared/layouts/form' do %>
-
   <%= simple_form_for([:overseers, @inquiry, @list_import], url: create_list_import_overseers_inquiry_imports_path(@inquiry), :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= render partial: 'shared/snippets/form_errors', locals: { f: f } %>
-
     <div class="card-body">
       <div class="form-group">
-        <%= f.input :import_text, label: 'List text', as: :text, placeholder: 'SKU, Quantity; one product per row' %>
+        <%= f.input :import_text, label: 'List', as: :text, placeholder: 'SKU, Quantity; one product per row', required: true %>
       </div>
 
       <div class="form-group mb-0">

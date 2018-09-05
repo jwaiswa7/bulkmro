@@ -3,8 +3,6 @@
   <a href="<%= excel_template_overseers_inquiry_imports_path(format: :xlsx) %>" class="btn btn-block" target="_blank">Download Excel Template</a>
   <%= simple_form_for([:overseers, @inquiry, @excel_import], url: create_excel_import_overseers_inquiry_imports_path(@inquiry), :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :import_type %>
-    <%= render partial: 'shared/snippets/form_errors', locals: { f: f } %>
-
     <div class="card-body">
       <div class="form-group">
         <%= f.input :file, label: 'Excel File', required: true, accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
