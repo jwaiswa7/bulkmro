@@ -1,6 +1,7 @@
 class Inquiry < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasAddresses
+  include Mixins::CanBeSynced
 
   pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
@@ -27,6 +28,10 @@ class Inquiry < ApplicationRecord
 
   # validates_length_of :inquiry_products, minimum: 1
   # validate :all_products_have_suppliers
+
+  def self.syncable_identifiers
+    [:project_uid, :quotation_uid]
+  end
 
   def draft?
     !inquiry_products.any?
