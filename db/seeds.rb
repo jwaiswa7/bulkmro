@@ -303,7 +303,7 @@ end
 Account.all.each do |account|
   5.times do
     contact = RandomRecord.for(account.contacts)
-    company = RandomRecord.for(contact.companies)
+    company = RandomRecord.for(Company)
     products = RandomRecords.for(Product.all, 5)
     i = Inquiry.create!(
         contact: contact,
