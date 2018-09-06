@@ -246,7 +246,9 @@ main = {
             selector: '[data-toggle="tooltip"]'
         });
     },
-
+    initTextareaAutosize: function() {
+        autosize(document.querySelectorAll('textarea'));
+    },
     dataTables: {
         init: function () {
             main.dataTables.preInit();
