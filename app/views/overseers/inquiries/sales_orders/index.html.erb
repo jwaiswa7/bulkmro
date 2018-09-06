@@ -1,40 +1,42 @@
-<%= render layout: 'overseers/inquiries/tabs_layout' do %>
-  <% provide :hide_table_desc, true %>
-  <% provide :hide_table_heading, true %>
+<div class="col-lg-11">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <% provide :hide_table_desc, true %>
+    <% provide :hide_table_heading, true %>
 
-  <div class="col-lg-12 mb-12">
-    <% content_for :header_row do %>
-      <th>Created At</th>
-      <th>Sent At</th>
-      <th>Created By</th>
-      <th>Line Items</th>
-      <th>Status</th>
-      <th>Quote Total</th>
-      <th>Actions</th>
-    <% end %>
-
-    <%= render layout: 'shared/layouts/datatable' do %>
-      <% @sales_orders.each do |sales_order| %>
-        <tr>
-          <td><%= format_date(sales_order.created_at) %></td>
-          <td><%= format_date(sales_order.sent_at) %></td>
-          <td><%= sales_order.created_by.to_s %></td>
-          <td><%= sales_order.rows.size %></td>
-          <td><%= format_enum(sales_order.status) %></td>
-          <td><%= format_currency(sales_order.calculated_total) %></td>
-          <td>
-            <% if policy(sales_order).edit? %>
-              <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
-            <% elsif policy(sales_order).new_revision? %>
-              <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
-            <% end %>
-
-            <% if policy(sales_order).comments? %>
-              <%= row_action_button(overseers_sales_order_comments_path(sales_order), 'comment-lines', 'See Comments', 'success') %>
-            <% end %>
-          </td>
-        </tr>
+    <div class="col-lg-12 mb-12">
+      <% content_for :header_row do %>
+        <th>Created At</th>
+        <th>Sent At</th>
+        <th>Created By</th>
+        <th>Line Items</th>
+        <th>Status</th>
+        <th>Quote Total</th>
+        <th>Actions</th>
       <% end %>
-    <% end %>
-  </div>
-<% end %>
+
+      <%= render layout: 'shared/layouts/datatable' do %>
+        <% @sales_orders.each do |sales_order| %>
+          <tr>
+            <td><%= format_date(sales_order.created_at) %></td>
+            <td><%= format_date(sales_order.sent_at) %></td>
+            <td><%= sales_order.created_by.to_s %></td>
+            <td><%= sales_order.rows.size %></td>
+            <td><%= format_enum(sales_order.status) %></td>
+            <td><%= format_currency(sales_order.calculated_total) %></td>
+            <td>
+              <% if policy(sales_order).edit? %>
+                <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
+              <% elsif policy(sales_order).new_revision? %>
+                <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
+              <% end %>
+
+              <% if policy(sales_order).comments? %>
+                <%= row_action_button(overseers_sales_order_comments_path(sales_order), 'comment-lines', 'See Comments', 'success') %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

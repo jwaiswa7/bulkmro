@@ -20,4 +20,8 @@ module FormHelper
 		end
 	end
 
+	def html_id_for(html_text)
+		/id="([a-z\d_]*)"/.match(html_text)[1]
+	end
+
 end
