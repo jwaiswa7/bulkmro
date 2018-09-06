@@ -64,7 +64,8 @@ main = {
                     $.getJSON({
                         url: Routes.best_prices_overseers_product_path(select.data('product-id')),
                         data: {
-                            supplier_id: optionSelected.val()
+                            supplier_id: optionSelected.val(),
+                            inquiry_product_supplier_id: select.data('inquiry-product-supplier-id')
                         },
                         success: function (response) {
                             select.closest('div.row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
