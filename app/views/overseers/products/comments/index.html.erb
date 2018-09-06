@@ -1,8 +1,9 @@
 <% content_for :heading_button do %>
-  <a href="<%= edit_overseers_inquiry_path(@product.inquiry_import_row.import.inquiry) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down">
-    <i class="fal fa-external-link mr-1"></i> Check Inquiry
-  </a>
+    <%= link_to 'Go to Inquiry', edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down"  if @product.inquiry_products.first.try(:inquiry) do %>
+      <i class="fal fa-external-link mr-1"></i> Check Inquiry
+      <% end %>
 <% end %>
+
 
 <% content_for :heading_byline do %>
   This will <em>'update/approve/reject <%= @product %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.
