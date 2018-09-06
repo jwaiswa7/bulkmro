@@ -1,24 +1,45 @@
-<div class="col-lg-12 mb-12">
-    <%= link_to 'Go to Inquiry', edit_overseers_inquiry_path(@product.inquiry_import_row.import.inquiry) %>
-  <% @comments.persisted.each do |comment| %>
-    <div><%= comment.message %> by <%= comment.created_by.full_name %> <% if comment.approval.present? %>and approved it wut<% end %><% if comment.rejection.present? %> and rejected it!<% end %>
+<% content_for :heading_button do %>
+  <a href="<%= edit_overseers_inquiry_path(@product.inquiry_import_row.import.inquiry) %>" target="_blank" class="d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down">
+    <i class="fal fa-external-link mr-1"></i> Check Inquiry
+  </a>
+<% end %>
+
+<% content_for :heading_byline do %>
+  This will <em>'update/approve/reject product'</em> and log it under <strong><%= current_overseer.full_name %></strong>.
+<% end %>
+
+<%= render layout: 'shared/layouts/form' do %>
+  <%= simple_form_for([:overseers, @product.comments.build], :html => { :class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card-body">
+      <div class="chats mb-3">
+        <% @comments.persisted.each do |comment| %>
+          <div class="media chat-item">
+            <div class="media-body">
+              <div class="chat-item-title">
+                <span class="chat-item-author"><%= comment.created_by.full_name %></span>
+                <span><span class="mr-2"><strong><% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %><% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span> 4 days ago</span>
+              </div>
+              <div class="chat-item-body">
+                <p><%= comment.message %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      <% end %>
+
+      <%= f.input :message, required: true, :placeholder => 'Type message' %>
+
+      <div class="flex-fill">
+        <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@product).approve? %>
+        <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@product).reject? %>
+      </div>
     </div>
   <% end %>
-
-  <%= simple_form_for([:overseers, @product.comments.build]) do |f| %>
-
-    <% if f.object.errors.any? %>
-      <% f.object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    <% end %>
-
-    <%= f.input :message %>
-
-    <%= f.submit 'Reply', name: 'reply' %>
-    <%= f.submit 'Reply and Approve', name: 'approve' if policy(@product).approve? %>
-    <%= f.submit 'Reply and Reject', name: 'reject' if policy(@product).reject? %>
-  <% end %>
-
-
-</div>
+<% end %>
