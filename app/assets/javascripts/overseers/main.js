@@ -7,6 +7,7 @@ main = {
         main.initParselyValidations();
         main.initDynamicForms();
         main.initTextareaAutosize();
+        main.initTooltips();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -244,7 +245,9 @@ main = {
 
     // Initaialize Bootstrap tooltips
     initTooltips: function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('body').tooltip({
+            selector: '[data-toggle="tooltip"]'
+        });
     },
 
     dataTables: {

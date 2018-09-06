@@ -19,12 +19,30 @@
         <div class="form-row flex-row align-items-center">
           <%= inquiry_product.hidden_field :id %>
           <div class="col-8">
-            <%= inquiry_product.label :product, :class => 'd-none' %>
-            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+            <div class="d-flex flex-row">
+              <div class="form-group align-self-center mr-2">
+                <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product; <%= inquiry_product.object.product.last_comment.message %>"><i class="far fa-comment-lines"></i></a>
+                <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.rejected? %>
+                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product; <%= inquiry_product.object.product.last_comment.message %>"><i class="far fa-comment-lines"></i></a>
+                <% elsif inquiry_product.object.persisted? %>
+                  <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-warning" data-toggle="tooltip" title="Discuss product; <%= inquiry_product.object.product.last_comment.message %>"><i class="far fa-comment-lines"></i></a>
+                <% else %>
+                <span class="text-success" data-toggle="tooltip" title="Approved product">
+                  <i class="far fa-check"></i></i>
+                </span>
+                <% end %>
+              </div>
+              <div class="flex-grow-1">
+                <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+              </div>
+            </div>
           </div>
           <div class="col-4">
             <div class="d-flex flex-row">
-              <%= inquiry_product.input :quantity, :label => false %>
+              <div class="flex-grow-1">
+                <%= inquiry_product.input :quantity, :label => false %>
+              </div>
               <div class="form-group align-self-center ml-2">
                 <%= inquiry_product.remove_nested_fields_link do %>
                     <i class="far fa-times text-danger"></i>
@@ -32,11 +50,6 @@
               </div>
             </div>
           </div>
-          <% if inquiry_product.object.persisted? && inquiry_product.object.product.inquiry == @inquiry && inquiry_product.object.product.last_comment.present? %>
-            <div class="col-12">
-              <%= inquiry_product.input_field :last_comment, value: inquiry_product.object.product.last_comment.message, disabled: true, class: 'form-control' %>
-            </div>
-          <% end %>
         </div>
       <% end %>
 
