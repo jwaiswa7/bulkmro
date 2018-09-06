@@ -6,6 +6,8 @@ main = {
         main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
+        main.initTextareaAutosize();
+        main.initTooltips();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -14,7 +16,7 @@ main = {
 
         if (controller in main && controllerAction in main[controller]) {
             main[controller][controllerAction]();
-            console.log("main["+controller+"]["+controllerAction+"]")
+            console.log("main[" + controller + "][" + controllerAction + "]")
         }
     },
     camelize: function camelize(text) {
@@ -90,9 +92,11 @@ main = {
             main.salesQuotes.updateMarginAndSellingPrice();
             main.salesQuotes.updateUnitCostPriceOnSelect();
         },
+        newRevision: function () {
+            main.salesQuotes.new();
+        },
         edit: function () {
-            main.salesQuotes.updateMarginAndSellingPrice();
-            main.salesQuotes.updateUnitCostPriceOnSelect();
+            main.salesQuotes.new();
         },
         updateMarginAndSellingPrice: function () {
             var updateValues = function (container, trigger) {
@@ -238,7 +242,9 @@ main = {
 
     // Initaialize Bootstrap tooltips
     initTooltips: function () {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('body').tooltip({
+            selector: '[data-toggle="tooltip"]'
+        });
     },
 
     dataTables: {

@@ -5,6 +5,7 @@
 
 // Component Imports
 //= require jquery/dist/jquery.min.js
+//= require popper.js/dist/umd/popper.min.js
 //= require jquery-ujs/src/rails.js
 //= require parsleyjs/dist/parsley.min.js
 //= require bootstrap/dist/js/bootstrap.js
