@@ -1,5 +1,5 @@
 <% content_for :heading_button do %>
-    <%= link_to 'Go to Inquiry', edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down"  if @product.inquiry_products.first.try(:inquiry) do %>
+    <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down"  if @product.inquiry_products.first.try(:inquiry) do %>
       <i class="fal fa-external-link mr-1"></i> Check Inquiry
       <% end %>
 <% end %>
