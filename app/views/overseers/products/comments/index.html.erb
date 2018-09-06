@@ -1,5 +1,8 @@
 <div class="col-lg-12 mb-12">
-    <%= link_to 'Go to Inquiry', edit_overseers_inquiry_path(@product.inquiry_products.first.inquiry) %>
+      <% if @product.inquiry_products.first.try(:inquiry) %>
+        <%= link_to 'Go to Inquiry', edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)) %>
+      <% end %>
+
   <% @comments.persisted.each do |comment| %>
     <div><%= comment.message %> by <%= comment.created_by.full_name %> <% if comment.approval.present? %>and approved it wut<% end %><% if comment.rejection.present? %> and rejected it!<% end %>
     </div>
