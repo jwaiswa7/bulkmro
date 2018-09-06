@@ -23,7 +23,7 @@
               <%= inquiry_product_supplier.hidden_field :id %>
               <div class="row">
 
-                <div class="col-md-3"><%= inquiry_product_supplier.association :supplier, input_html: {:'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select A Supplier' %></div>
+                <div class="col-md-3"><%= inquiry_product_supplier.association :supplier, input_html: { :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id }, include_blank: 'Select A Supplier' %></div>
                 <div class="col-md-3"><%= inquiry_product_supplier.input :unit_cost_price %></div>
                 <div class="col-md-2"><%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: 'Lowest' %>
                   <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
