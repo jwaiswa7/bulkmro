@@ -8,6 +8,7 @@ class Contact < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :lockable
 
   belongs_to :account
+  belongs_to :group
   has_many :inquiries
   has_many :company_contacts
   has_many :companies, :through => :company_contacts

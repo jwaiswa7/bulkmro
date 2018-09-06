@@ -5,6 +5,13 @@ class Address < ApplicationRecord
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company
 
+  # Attachments
+  has_one_attached :gst_doc
+  has_one_attached :cst_doc
+  has_one_attached :vat_doc
+  has_one_attached :excise_doc
+
+
   validates_presence_of :name, :country_code, :city_name, :street1
   validates_presence_of :pincode, :state, :if => :domestic?
   validates_presence_of :state_name, :if => :international?

@@ -34,8 +34,8 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.userstamps
     end
     add_foreign_key :companies, :payment_options, column: :default_payment_option_id
-    add_foreign_key :companies, :address, column: :default_billing_address
-    add_foreign_key :companies, :address, column: :default_shipping_address
+    add_foreign_key :companies, :addresses, column: :default_billing_address
+    add_foreign_key :companies, :addresses, column: :default_shipping_address
 
   end
 end

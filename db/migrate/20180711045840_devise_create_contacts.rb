@@ -2,9 +2,16 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
   def change
     create_table :contacts do |t|
       t.references :account, foreign_key: true
+      t.references :group, foreign_key: true      
       t.string :first_name
       t.string :last_name
+      t.string :prefix
+      t.string :designation
+      t.string :phone
+      t.string :mobile
       t.integer :role, index: true
+      t.boolean :is_active
+      t.integer :sap_id, index: { :unique => true }
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""

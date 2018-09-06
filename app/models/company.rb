@@ -34,6 +34,11 @@ class Company < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiries
   has_many :addresses
 
+  # Attachments
+  has_one_attached :tan_doc
+  has_one_attached :pan_doc
+  has_one_attached :excise_doc
+
   # todo implement
   scope :acts_as_supplier, -> { }
 
