@@ -6,7 +6,6 @@ main = {
         main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
-        main.initTextareaAutosize();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -15,9 +14,9 @@ main = {
 
         if (controller in main && controllerAction in main[controller]) {
             main[controller][controllerAction]();
+            console.log("main["+controller+"]["+controllerAction+"]")
         }
     },
-
     camelize: function camelize(text) {
         var separator = arguments.length <= 1 || arguments[1] === undefined ? '_' : arguments[1];
         var words = text.split(separator);
@@ -31,7 +30,7 @@ main = {
         manageFailedSkus: function () {
             var onRadioChange = function (radio) {
                 var newProductForm = $(radio).closest('div.wrapper').find('div.nested');
-
+                0
                 if (isNaN(radio.value)) {
                     newProductForm.find(':input:visible:not(:radio)').prop('disabled', false);
                 } else {
@@ -74,12 +73,12 @@ main = {
 
             $('form[action$=update_suppliers]').on('change', 'select[name*=supplier_id]', function (e) {
                 onSupplierChange(this);
-            }).find('select[name*=supplier_id]').each(function (e) {
-                onSupplierChange(this);
             }).on('click', '.update-with-best-price', function (e) {
                 var parent = $(this).parent();
                 var input = parent.find('input');
                 parent.closest('div.row').find('[name*=unit_cost_price]').val(input.val());
+            }).find('select[name*=supplier_id]').each(function (e) {
+                onSupplierChange(this);
             });
         },
         updateSuppliers: function () {
@@ -87,6 +86,10 @@ main = {
         },
     },
     salesQuotes: {
+        new: function () {
+            main.salesQuotes.updateMarginAndSellingPrice();
+            main.salesQuotes.updateUnitCostPriceOnSelect();
+        },
         edit: function () {
             main.salesQuotes.updateMarginAndSellingPrice();
             main.salesQuotes.updateUnitCostPriceOnSelect();
@@ -125,11 +128,6 @@ main = {
                 select.closest('div.row').find('[name*=unit_cost_price]').val(optionSelected.data("unit-cost-price"));
                 select.closest('div.row').find('[name*=margin_percentage]').val(15).change();
             };
-
-            $("[name$='[inquiry_product_supplier_id]']").each(function (e) {
-                onSupplierChange(this);
-            });
-
             $('form').on('change', 'select[name*=inquiry_product_supplier_id]', function (e) {
                 onSupplierChange(this);
             })
@@ -186,10 +184,6 @@ main = {
             .on("fields_removed.nested_form_fields", function (e, param) {
                 main.initSelects();
             });
-    },
-
-    initTextareaAutosize: function() {
-        autosize(document.querySelectorAll('textarea'));
     },
 
     // Bootstrap override default browser validation with Bootstrap's helper classes
