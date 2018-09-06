@@ -32,7 +32,7 @@ main = {
         manageFailedSkus: function () {
             var onRadioChange = function (radio) {
                 var newProductForm = $(radio).closest('div.wrapper').find('div.nested');
-                0
+            
                 if (isNaN(radio.value)) {
                     newProductForm.find(':input:visible:not(:radio)').prop('disabled', false);
                 } else {
