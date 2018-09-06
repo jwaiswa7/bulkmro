@@ -92,6 +92,7 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
     'Reliance Retail',
     'Reliance Life Sciences',
     'Reliance Institute of Life Sciences (RILS)',
+=begin
     'Reliance Logistics',
     'Reliance Clinical Research Services (RCRS)',
     'Reliance Solar',
@@ -100,6 +101,7 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
     'Reliance Industrial Infrastructure Limited (RIIL)',
     'LYF',
     'Network 18'
+=end
 ].each do |name|
   ril.companies.create!(
       name: name,
@@ -117,6 +119,7 @@ ge = Account.create!(name: 'General Electric', alias: 'GE')
     'GE Capital',
     'GE Capital Rail Services (Europe)',
     'GE Appliances',
+=begin
     'GE Digital',
     'GE Power',
     'GE Global Research',
@@ -132,6 +135,7 @@ ge = Account.create!(name: 'General Electric', alias: 'GE')
     'GE Technology Infrastructure',
     'Thomson-Houston Electric Company',
     'Tungsram'
+=end
 ].each do |name|
   ge.companies.create!(
       name: name,
@@ -181,49 +185,49 @@ end
 
 abrasives = ::Category.create!(name: 'Abrasives')
 abrasives.children.create!([
-                               { name: 'Abrasive Accessories', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Bands and Rolls', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Discs and Belts', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Hand Pads and Sponges', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Mounting Points', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Polishing', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Sandpaper', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Sharpening Stones', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Tumblers and Accessories', tax_code: RandomRecord.for(TaxCode) },
-                               { name: 'Wheels', tax_code: RandomRecord.for(TaxCode) },
+                               {name: 'Abrasive Accessories', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Bands and Rolls', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Discs and Belts', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Hand Pads and Sponges', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Mounting Points', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Polishing', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Sandpaper', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Sharpening Stones', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Tumblers and Accessories', tax_code: RandomRecord.for(TaxCode)},
+                               {name: 'Wheels', tax_code: RandomRecord.for(TaxCode)},
                            ])
 
 abrasives.children.first.children.create!([
-                                     { name: 'Abrasive Mandrels', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Abrasive Pads', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Abrasive Stars', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Abrasive Test Kits', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Assemblies', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Expanding Drums', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Face Plates, Hubs', tax_code: RandomRecord.for(TaxCode) },
-                                     { name: 'Pad Holder', tax_code: RandomRecord.for(TaxCode) },
-                                 ])
+                                              {name: 'Abrasive Mandrels', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Abrasive Pads', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Abrasive Stars', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Abrasive Test Kits', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Assemblies', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Expanding Drums', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Face Plates, Hubs', tax_code: RandomRecord.for(TaxCode)},
+                                              {name: 'Pad Holder', tax_code: RandomRecord.for(TaxCode)},
+                                          ])
 
 cleaning = ::Category.create(name: 'Cleaning Equipment')
 cleaning.children.create([
-                              { name: 'Furniture Maintenance', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Mops and Cleaning Accessories', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Personal Care', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Toilet Equipment', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Trash Bags', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Wiping', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Brooms and Accessories', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Chemicals', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Containers', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Equipment', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Flooring Accessories', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Flooring Equipment and Accessories', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Janitorial Equipment', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Mops and Accessories', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Odor Control', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Paper Products', tax_code: RandomRecord.for(TaxCode) },
-                              { name: 'Recycling Equipment', tax_code: RandomRecord.for(TaxCode) },
-                          ])
+                             {name: 'Furniture Maintenance', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Mops and Cleaning Accessories', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Personal Care', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Toilet Equipment', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Trash Bags', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Wiping', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Brooms and Accessories', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Chemicals', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Containers', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Equipment', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Flooring Accessories', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Flooring Equipment and Accessories', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Janitorial Equipment', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Mops and Accessories', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Odor Control', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Paper Products', tax_code: RandomRecord.for(TaxCode)},
+                             {name: 'Recycling Equipment', tax_code: RandomRecord.for(TaxCode)},
+                         ])
 
 RandomRecords.for(Category.all, 10).each do |category|
   suppliers = RandomRecords.for(Company, [*2..5].sample)
@@ -232,42 +236,99 @@ RandomRecords.for(Category.all, 10).each do |category|
   end
 end
 
-# 100.times do
-#   Product.create!(
-#     name: Faker::Commerce.product_name,
-#     sku: ['BM', rand(5..300000) + 100000].join,
-#     brand: RandomRecord.for(Brand),
-#     category: RandomRecord.for(Category)
-#   )
-# end
+20.times do
+  product = Product.create!(
+      name: Faker::Commerce.product_name,
+      sku: ['BM', rand(5..300000) + 100000].join,
+      brand: RandomRecord.for(Brand),
+      category: RandomRecord.for(Category)
+  )
+
+end
+
+# Static products
 #
-# Product.all.each do |product|
-#   suppliers = RandomRecords.for(Company, [*1..3].sample)
-#   suppliers.each do |supplier|
-#     product.product_suppliers.create!(supplier: supplier)
-#   end
-# end
-#
+Product.create!(
+    [
+        {
+            name: "Sleek Copper Clock",
+            sku: 'SBM392881',
+            brand: RandomRecord.for(Brand),
+            category: RandomRecord.for(Category)
+        },
+        {
+            name: "Durable Linen Clock",
+            sku: 'SBM399100',
+            brand: RandomRecord.for(Brand),
+            category: RandomRecord.for(Category)
+        },
+        {
+            name: "Mediocre Paper Pants",
+            sku: 'SBM118094',
+            brand: RandomRecord.for(Brand),
+            category: RandomRecord.for(Category)
+        }, {
+            name: "Awesome Granite Chair",
+            sku: 'SBM372000',
+            brand: RandomRecord.for(Brand),
+            category: RandomRecord.for(Category)
+        }
+
+    ]
+)
+
+
+Product.all.each do |product|
+  suppliers = RandomRecords.for(Company, [*1..3].sample)
+  suppliers.each do |supplier|
+    product.product_suppliers.create!(supplier: supplier)
+  end
+
+  Faker::Number.between(1, 10).times do
+    ProductComment.create!(
+        product: product,
+        message: Faker::HarryPotter.quote,
+        overseer: RandomRecord.for(Overseer)
+    )
+  end
+
+
+  ProductApproval.create!(
+      product: product,
+      comment: product.comments.last,
+      overseer: RandomRecord.for(Overseer)
+  )
+end
+
 Account.all.each do |account|
   5.times do
     contact = RandomRecord.for(account.contacts)
-    company = RandomRecord.for(contact.companies)
-    # products = RandomRecords.for(Product.all, 5)
-    i = Inquiry.new(
-      contact: contact,
-      company: company,
-      billing_address: RandomRecord.for(company.addresses),
-      shipping_address: RandomRecord.for(company.addresses),
-      comments: Faker::Lorem.paragraph_by_chars(256, false)
+    company = RandomRecord.for(Company)
+    products = RandomRecords.for(Product.all, 5)
+    i = Inquiry.create!(
+        contact: contact,
+        company: company,
+        billing_address: RandomRecord.for(company.addresses),
+        shipping_address: RandomRecord.for(company.addresses),
+        comments: Faker::Lorem.paragraph_by_chars(256, false)
     )
 
-    # products.each do |product|
-    #   i.inquiry_products.build(product_id: product.id, quantity: 1)
-    # end
+    products.each do |product|
+      i.inquiry_products.create!(product_id: product.id, quantity: 1)
+    end
+
+    i.inquiry_products.each do |inquiry_product|
+      suppliers = RandomRecords.for(Company, [*1..3].sample)
+      suppliers.each do |supplier|
+        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Commerce.price(100, 10000))
+      end
+
+    end
 
     i.save
   end
 end
+
 #
 # Product approvals
 # Inquiry.last.products.each do |p| p.create_approval(:comments => Faker::Lorem.sentence) if p.not_approved?; end
@@ -277,3 +338,5 @@ end
 
 # Product.all.each do |p| p.destroy; end
 # InquiryImport.all.each do |i| i.destroy; end
+
+
