@@ -4,6 +4,8 @@ class CreateSalesOrderApprovals < ActiveRecord::Migration[5.2]
       t.references :sales_order, foreign_key: true
       t.references :sales_order_comment, foreign_key: true
 
+      t.jsonb :metadata
+
       t.userstamps
       t.timestamps
     end

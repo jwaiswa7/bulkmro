@@ -429,6 +429,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "sales_order_approvals", force: :cascade do |t|
     t.bigint "sales_order_id"
     t.bigint "sales_order_comment_id"
+    t.jsonb "metadata"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false

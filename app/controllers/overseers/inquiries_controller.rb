@@ -14,7 +14,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export
     authorize @inquiry
-    render json: @inquiry
+    render json: Serializers::InquirySerializer.new(@inquiry).serialized_json
   end
 
   def new
