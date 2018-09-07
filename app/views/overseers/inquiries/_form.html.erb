@@ -18,10 +18,10 @@
           <%= f.input :inside_sales_owner, :wrapper => :custom_multi_select, as: :select, collection: ["Swati Bhosale","Supriya Govalkar", "Aditya Andankar"], include_blank: false %>
         </div>
         <div class="col-md-6">
-          <%= f.input :manager, as: :select, :wrapper => :custom_multi_select, collection: ["Devang Shah", "Gaurang Shah","Shailender Agarwal"], include_blank: false %>
+          <%= f.input :sales_manager, as: :select, :wrapper => :custom_multi_select, collection: ["Devang Shah", "Gaurang Shah","Shailender Agarwal"], include_blank: false %>
         </div>
         <div class="col-md-6">
-          <%= f.input :outside_sales_manager, as: :select, :wrapper => :custom_multi_select, collection: ["Abid Shaikh", "Ashish Dobriya", "Jeetendra Sharma"], include_blank: false %>
+          <%= f.input :outside_sales_owner, as: :select, :wrapper => :custom_multi_select, collection: ["Abid Shaikh", "Ashish Dobriya", "Jeetendra Sharma"], include_blank: false %>
         </div>
         <div class="col-md-6">
           <%= f.input :quote_category, as: :select, :wrapper => :custom_multi_select, collection: ["BMRO", "ONG"], include_blank: false %>
@@ -29,23 +29,39 @@
         <div class="col-md-6">
           <%= f.input :potential_amount, input_html: {value: '0.01'} %>
         </div>
+        <div class="col-md-6">
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: ["Active", "Inactive"], include_blank: false, disabled: true %>
+        </div>
 
         <div class="col-md-6">
-          <%= f.input :opportunity_type, as: :select, :wrapper => :custom_multi_select, collection: ["Amazon", "Rate Contract", "Financing", "Regular", "Service", "Repeat", "Route Through", "Tender"], include_blank: false %>
+          <%= f.input :opportunity_type, as: :select, :wrapper => :custom_multi_select, collection: ["Regular", "Amazon", "Rate Contract", "Financing", "Service", "Repeat", "Route Through", "Tender"], include_blank: false %>
         </div>
+
         <div class="col-md-6">
           <%= f.input :opportunity_source, as: :select, :wrapper => :custom_multi_select, collection: [ "Email","Meeting", "Phone call", "Quote/Tender Prep"], include_blank: false %>
         </div>
         <div class="col-md-6">
-          <%= f.input :payment_terms, as: :select, :wrapper => :custom_multi_select, collection: ["EXW", "FOB", "CIF", "CFR", "DAP", "Door Delivery", "FCA Mumbai", "CIP"], include_blank: false %>
+          <%= f.input :price_basis, as: :select, :wrapper => :custom_multi_select, collection: ["EXW", "FOB", "CIF", "CFR", "DAP", "Door Delivery", "FCA Mumbai", "CIP"], include_blank: false %>
         </div>
+        <div class="col-md-6">
+          <%= f.input :payment_terms, as: :select, :wrapper => :custom_multi_select, collection: ["60 Days", "30 Days", "90 Days"], include_blank: false %>
+        </div>
+
         <div class="col-md-6">
           <%= f.input :freight, as: :select, :wrapper => :custom_multi_select, collection: ["Included", "Extra as per Actual"], include_blank: false %>
         </div>
+
         <div class="col-md-6">
           <%= f.input :packing_and_forwarding, as: :select, :wrapper => :custom_multi_select, collection: ["Included", "Not Included"], include_blank: false %>
         </div>
 
+
+        <div class="col-md-12">
+          <%= f.input :commertial_terms_and_conditions, as: :text, input_html: {value: '1. Cost does not include any additional certification if required as per Indian regulations.
+2. Any errors in Quotation including HSN codes, GST Tax rate must be notified before placing order.
+3. Order once placed cannot be changed.
+4. Bulk MRO does not accept any financial penalties for late deliveries.'}  %>
+        </div>
       </div>
     </div>
     <div class="form-group">
