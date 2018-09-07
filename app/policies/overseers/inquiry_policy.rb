@@ -19,7 +19,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
-  def export_inquiry?
+  def export?
     edit?
   end
 
