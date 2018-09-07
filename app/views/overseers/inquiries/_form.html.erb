@@ -15,10 +15,10 @@
     <div class="form-group">
       <div class="form-row flex-row align-items-center">
         <div class="col-md-6">
-          <%= f.input :inside_sales_owner, :wrapper => :custom_multi_select, as: :select, collection: ["Swati Bhosale","Supriya Govalkar", "Aditya Andankar"], include_blank: false %>
+          <%= f.input :inside_sales_owner, :wrapper => :custom_multi_select, as: :select, collection: ["Swati Bhosale", "Supriya Govalkar", "Aditya Andankar"], include_blank: false %>
         </div>
         <div class="col-md-6">
-          <%= f.input :sales_manager, as: :select, :wrapper => :custom_multi_select, collection: ["Devang Shah", "Gaurang Shah","Shailender Agarwal"], include_blank: false %>
+          <%= f.input :sales_manager, as: :select, :wrapper => :custom_multi_select, collection: ["Devang Shah", "Gaurang Shah", "Shailender Agarwal"], include_blank: false %>
         </div>
         <div class="col-md-6">
           <%= f.input :outside_sales_owner, as: :select, :wrapper => :custom_multi_select, collection: ["Abid Shaikh", "Ashish Dobriya", "Jeetendra Sharma"], include_blank: false %>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="col-md-6">
-          <%= f.input :opportunity_source, as: :select, :wrapper => :custom_multi_select, collection: [ "Email","Meeting", "Phone call", "Quote/Tender Prep"], include_blank: false %>
+          <%= f.input :opportunity_source, as: :select, :wrapper => :custom_multi_select, collection: ["Email", "Meeting", "Phone call", "Quote/Tender Prep"], include_blank: false %>
         </div>
         <div class="col-md-6">
           <%= f.input :price_basis, as: :select, :wrapper => :custom_multi_select, collection: ["EXW", "FOB", "CIF", "CFR", "DAP", "Door Delivery", "FCA Mumbai", "CIP"], include_blank: false %>
@@ -60,7 +60,7 @@
           <%= f.input :commertial_terms_and_conditions, as: :text, input_html: {value: '1. Cost does not include any additional certification if required as per Indian regulations.
 2. Any errors in Quotation including HSN codes, GST Tax rate must be notified before placing order.
 3. Order once placed cannot be changed.
-4. Bulk MRO does not accept any financial penalties for late deliveries.'}  %>
+4. Bulk MRO does not accept any financial penalties for late deliveries.'} %>
         </div>
       </div>
     </div>
