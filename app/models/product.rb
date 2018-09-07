@@ -63,4 +63,8 @@ class Product < ApplicationRecord
   def latest_unit_cost_price_for(supplier, except=nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
+
+  def brand_name
+    self.brand.name
+  end
 end
