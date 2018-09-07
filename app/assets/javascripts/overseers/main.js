@@ -36,7 +36,7 @@ main = {
                 if (isNaN(radio.value)) {
                     newProductForm.find(':input:visible:not(:radio)').prop('disabled', false).prop('required', true);
                 } else {
-                    newProductForm.find(':input:visible:not(:radio)').prop('disabled', true).prop('required', true);
+                    newProductForm.find(':input:visible:not(:radio)').prop('disabled', true).prop('required', false);
                 }
             };
 
