@@ -41,9 +41,19 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     params.require(:company).permit(
         :account_id,
         :name,        
-        :website,
         :industry_id,
         :default_payment_option_id,
+        :default_billing_address_id,
+        :default_shipping_address_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
+        :sales_manager_id,
+        :company_type,
+        :priority,
+        :site,
+        :nature_of_business,
+
+
         :contact_ids => [],
         :brand_ids => [],
         :product_ids => []

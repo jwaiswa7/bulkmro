@@ -1,3 +1,4 @@
+
 class DeviseCreateContacts < ActiveRecord::Migration[5.2]
   def change
     create_table :contacts do |t|
@@ -7,7 +8,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
       t.string :last_name
       t.string :prefix
       t.string :designation
-      t.string :phone
+      t.string :telephone
       t.string :mobile
       t.integer :role, index: true
       t.boolean :is_active

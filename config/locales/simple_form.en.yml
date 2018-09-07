@@ -3,6 +3,9 @@ en:
     placeholders:
       inquiries:
         comments: Any additional information about about this inquiry
+      companies:
+        name: 'e.g. Reliance Life Sciences'
+        site: 'e.g. reliance.com'
     "yes": 'Yes'
     "no": 'No'
     required:

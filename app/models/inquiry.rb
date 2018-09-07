@@ -1,6 +1,7 @@
 class Inquiry < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasAddresses
+  include Mixins::HasManagers
 
   pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
@@ -27,6 +28,15 @@ class Inquiry < ApplicationRecord
 
   # validates_length_of :inquiry_products, minimum: 1
   # validate :all_products_have_suppliers
+
+
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    if self.company.present?
+      self.outside_sales_owner ||= self.company.outside_sales_owner
+      self.sales_manager ||= self.sales_manager
+    end
+  end
 
   def draft?
     !inquiry_products.any?

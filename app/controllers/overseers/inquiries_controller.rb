@@ -1,6 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers]
-  before_action :set_company, only: [:new]
 
   def index
     @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
@@ -13,6 +12,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def new
+    @company = Company.find(params[:company_id])
     @inquiry = @company.inquiries.build(overseer: current_overseer)
     authorize @inquiry
   end
@@ -62,10 +62,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
-  def set_company
-    @company ||= Company.find(params[:company_id])
-  end
-
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
