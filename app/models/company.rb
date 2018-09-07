@@ -43,7 +43,7 @@ class Company < ApplicationRecord
   scope :acts_as_supplier, -> { }
 
   alias_attribute :gst, :tax_identifier
-  validates_presence_of :tax_identifier
+  validates_presence_of :tax_identifier  
   validates_uniqueness_of :tax_identifier
 
   def to_contextual_s(product)

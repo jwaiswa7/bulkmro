@@ -40,6 +40,7 @@ class Overseers::Accounts::ContactsController < Overseers::Accounts::BaseControl
   def contact_params
     params.require(:contact).permit(
         :account_id,
+        :group_id,
         :first_name,
         :last_name,
         :email,

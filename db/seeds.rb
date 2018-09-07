@@ -39,6 +39,21 @@ states.each do |state|
   AddressState.create(name: state)
 end
 
+groups = [
+  'General',
+  'Company',
+  'Top Manager',
+  'Retailer',
+  'Ador',
+  'VMI Group',
+  'C-form Customer group',
+  'Manager'
+]
+
+groups.each do |group|
+  Group.create(name: group)
+end
+
 industries = [
     'Transport',
     'Telecom',
@@ -143,7 +158,7 @@ end
 
 Account.all.each do |account|
   5.times do
-    account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123')
+    account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123', :group_id => 1)
   end
 end
 
@@ -232,22 +247,22 @@ RandomRecords.for(Category.all, 10).each do |category|
   end
 end
 
-# 100.times do
-#   Product.create!(
-#     name: Faker::Commerce.product_name,
-#     sku: ['BM', rand(5..300000) + 100000].join,
-#     brand: RandomRecord.for(Brand),
-#     category: RandomRecord.for(Category)
-#   )
-# end
-#
-# Product.all.each do |product|
-#   suppliers = RandomRecords.for(Company, [*1..3].sample)
-#   suppliers.each do |supplier|
-#     product.product_suppliers.create!(supplier: supplier)
-#   end
-# end
-#
+100.times do
+  Product.create!(
+   name: Faker::Commerce.product_name,
+   sku: ['BM', rand(5..300000) + 100000].join,
+   brand: RandomRecord.for(Brand),
+   category: RandomRecord.for(Category)
+ )
+ end
+
+ Product.all.each do |product|
+   suppliers = RandomRecords.for(Company, [*1..3].sample)
+   suppliers.each do |supplier|
+     product.product_suppliers.create!(supplier: supplier)
+   end
+ end
+
 Account.all.each do |account|
   5.times do
     contact = RandomRecord.for(account.contacts)

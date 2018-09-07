@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "addresses", force: :cascade do |t|
+    t.bigint "company_id"
     t.bigint "address_state_id"
     t.string "country_code"
     t.string "name"
@@ -80,6 +81,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
+    t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
     t.index ["sap_id"], name: "index_addresses_on_sap_id", unique: true
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
@@ -164,6 +166,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "company_code"
     t.boolean "is_strategic"
     t.integer "default_payment_term"
+    t.string "email"
     t.string "phone"
     t.string "mobile"
     t.string "website"
@@ -608,6 +611,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
   add_foreign_key "addresses", "address_states"
+  add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"
   add_foreign_key "brand_suppliers", "brands"
@@ -627,8 +631,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "category_suppliers", "overseers", column: "created_by_id"
   add_foreign_key "category_suppliers", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "accounts"
-  add_foreign_key "companies", "addresses", column: "default_billing_address"
-  add_foreign_key "companies", "addresses", column: "default_shipping_address"
   add_foreign_key "companies", "industries"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "updated_by_id"

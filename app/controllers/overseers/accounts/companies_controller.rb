@@ -7,12 +7,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def create
-    @company = @account.companies.build(company_params.merge(overseer: current_overseer))
+    @company = @account.companies.build(company_params.merge(overseer: current_overseer))    
     authorize @company
-
+    raise
     if @company.save
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
-    else
+    else      
       render :new
     end
   end
@@ -40,7 +40,8 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   def company_params
     params.require(:company).permit(
         :account_id,
-        :name,
+        :name,        
+        :website,
         :industry_id,
         :default_payment_option_id,
         :contact_ids => [],
