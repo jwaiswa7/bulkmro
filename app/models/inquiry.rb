@@ -18,7 +18,9 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
-  attr_accessor :inside_sales_owner, :outside_sales_owner, :manager, :quote_category, :potential_amount, :opportunity_source, :opportunity_type, :price_basis, :payment_terms, :freight, :packing_and_forwarding, :commertial_terms_and_conditions
+
+  attr_accessor :inside_sales_owner, :outside_sales_owner, :sales_manager, :quote_category, :potential_amount, :opportunity_source, :opportunity_type, :price_basis, :payment_terms, :freight, :packing_and_forwarding, :commertial_terms_and_conditions, :subject, :status
+
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
   # attr_accessor :rfq_subject, :rfq_comments
