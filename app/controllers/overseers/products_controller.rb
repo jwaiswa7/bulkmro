@@ -45,7 +45,7 @@ class Overseers::ProductsController < Overseers::BaseController
 
   def best_prices
     @supplier = Company.acts_as_supplier.find(params[:supplier_id])
-    @inquiry_product_supplier = InquiryProductSupplier.find(params[:inquiry_product_supplier_id])
+    @inquiry_product_supplier = InquiryProductSupplier.find(params[:inquiry_product_supplier_id]) if params[:inquiry_product_supplier_id].present?
     authorize @product
     render json: {
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
