@@ -1,11 +1,10 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export_inquiry]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
   before_action :set_company, only: [:new]
 
   def index
     @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
     authorize @inquiries
-
   end
 
   def show
@@ -13,7 +12,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     redirect_to edit_overseers_inquiry_path(@inquiry)
   end
 
-  def export_inquiry
+  def export
     authorize @inquiry
     render json: @inquiry
   end
