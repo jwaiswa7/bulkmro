@@ -1,7 +1,8 @@
 <div class="col-lg-8">
   <div class="page-header">
     <h2><%= action_name.capitalize %> Account</h2>
-    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+    <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
     <div class="form-group">
@@ -26,13 +27,13 @@
     </div>
 
     <% if action_name.capitalize == "New" %>
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-            <i class="fal fa-plus-circle"></i> <%= submit_text(@account) %>
-        <% end %>
+      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+        <i class="fal fa-plus-circle"></i> <%= submit_text(@account) %>
+      <% end %>
     <% else %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-            <i class="fal fa-pen"></i> <%= submit_text(@account) %>
-        <% end %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+        <i class="fal fa-pen"></i> <%= submit_text(@account) %>
+      <% end %>
     <% end %>
 
     <%= f.input :created_by, :as => :hidden, disabled: true %>

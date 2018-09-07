@@ -2,13 +2,16 @@
   <section class="pt-3 pt-lg-4 pb-4 pb-lg-5">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 d-flex align-items-center">
-        <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2" />RIL<span class="pl-2 lead text-muted"><%= @account.name %></span>
+        <img src="https://ui-avatars.com/api/?size=128&name=<%= @account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/>RIL<span class="pl-2 lead text-muted"><%= @account.name %></span>
       </h1>
-      <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit Account</a>
+      <a href="<%= edit_overseers_account_path(@account) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        Account</a>
     </div>
     <div class="row">
       <p class="col-md-10 mt-2 mt-md-1">
-        Reliance Industries Limited is an Indian conglomerate holding company headquartered in Mumbai, Maharashtra, India. Reliance owns businesses across India engaged in energy, petrochemicals, textiles, natural resources, retail, and telecommunications.
+        Reliance Industries Limited is an Indian conglomerate holding company headquartered in Mumbai, Maharashtra,
+        India. Reliance owns businesses across India engaged in energy, petrochemicals, textiles, natural resources,
+        retail, and telecommunications.
       </p>
     </div>
   </section>
@@ -27,7 +30,8 @@
       <div class="tab-pane fade active show" id="companies" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Companies</h3>
-          <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Company</a>
+          <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            Company</a>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All companies filterable in any way that we want under <strong><%= @account.name %></strong>.
@@ -35,22 +39,25 @@
 
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
           <thead>
-            <tr>
-              <th data-priority="1" class="no-sort"></th>
-              <th data-priority="2">Name</th>
-              <th class="text-right numeric">Contacts</th>
-              <th class="text-right numeric">Brands</th>
-              <th class="text-right numeric">Products</th>
-            </tr>
+          <tr>
+            <th data-priority="1" class="no-sort"></th>
+            <th data-priority="2">Name</th>
+            <th class="text-right numeric">Contacts</th>
+            <th class="text-right numeric">Brands</th>
+            <th class="text-right numeric">Products</th>
+          </tr>
           </thead>
           <tbody>
           <% @account.companies.each do |company| %>
-              <tr><td><a href="<%= edit_overseers_account_company_path(company.account, company) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a></td>
-                <td><a href="<%= overseers_company_path(company) %>"><%= company.name %></a></td>
-                <td class="text-right"><%= company.contacts.count %></td>
-                <td class="text-right"><%= company.brands.count %></td>
-                <td class="text-right"><%= company.products.count %></td>
-              </tr>
+            <tr>
+              <td>
+                <a href="<%= edit_overseers_account_company_path(company.account, company) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit company"><i class="fal fa-pen"></i></a>
+              </td>
+              <td><a href="<%= overseers_company_path(company) %>"><%= company.name %></a></td>
+              <td class="text-right"><%= company.contacts.count %></td>
+              <td class="text-right"><%= company.brands.count %></td>
+              <td class="text-right"><%= company.products.count %></td>
+            </tr>
           <% end %>
           </tbody>
         </table>
@@ -59,7 +66,8 @@
       <div class="tab-pane fade" id="contacts" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
-          <a href="<%= new_overseers_account_contact_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Contact</a>
+          <a href="<%= new_overseers_account_contact_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            Contact</a>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All contacts filterable in any way that we want under <strong><%= @account.name %></strong>.
@@ -67,20 +75,22 @@
 
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
           <thead>
-            <tr>
-              <th data-priority="1"></th>
-              <th data-priority="2">Name</th>
-              <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
-            </tr>
+          <tr>
+            <th data-priority="1"></th>
+            <th data-priority="2">Name</th>
+            <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
+          </tr>
           </thead>
           <tbody>
-            <% @account.contacts.each do |contact| %>
-                <tr>
-                  <td><a href="<%= edit_overseers_account_contact_path(contact.account, contact) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a></td>
-                  <td><%= contact.full_name %></td>
-                  <td class="text-right"><%= contact.companies.count %></td>
-                </tr>
-            <% end %>
+          <% @account.contacts.each do |contact| %>
+            <tr>
+              <td>
+                <a href="<%= edit_overseers_account_contact_path(contact.account, contact) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a>
+              </td>
+              <td><%= contact.full_name %></td>
+              <td class="text-right"><%= contact.companies.count %></td>
+            </tr>
+          <% end %>
           </tbody>
         </table>
       </div>

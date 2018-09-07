@@ -1,4 +1,4 @@
-<div class="col-lg-11">
+<div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
@@ -29,12 +29,14 @@
           <td><%= format_num(import.rows.failed.size) %></td>
           <td><%= format_enum(import.import_type) %></td>
           <td>
-          <% if policy(import).show? && import.excel? && import.file.attached? %>
-            <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
-          <% elsif policy(import).show? %>
-            <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
-          <% end %>
-            <%= if policy(import).manage_failed_skus?; row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning'); end %>
+            <% if policy(import).show? && import.excel? && import.file.attached? %>
+              <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
+            <% elsif policy(import).show? %>
+              <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
+            <% end %>
+            <%= if policy(import).manage_failed_skus?;
+                  row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning');
+                end %>
           </td>
         </tr>
       <% end %>

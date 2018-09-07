@@ -8,16 +8,16 @@
       <% end unless content_for?(:hide_table_heading) %>
 
       <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
-          <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
-            <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
-          </a>
+        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
+        </a>
       <% end %>
     </div>
 
     <% unless content_for?(:hide_table_desc) %>
-        <p class="lead mt-1">
-          All <%= current_model.downcase %> filterable in any way that we want.
-        </p>
+      <p class="lead mt-1">
+        All <%= current_model.downcase %> filterable in any way that we want.
+      </p>
     <% end %>
   </section>
 <% end %>
@@ -25,7 +25,7 @@
   <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path
   %>"
-  <% end %>>
+         <% end %>>
     <thead>
     <tr>
       <%= yield :header_row %>

@@ -73,7 +73,7 @@ module DisplayHelper
 
   def format_date(date, format=:long)
     if date.present?
-      date.strftime("%F %H:%M:%S")
+      date.strftime("%e %b, %Y %H:%M")
     end
   end
 
