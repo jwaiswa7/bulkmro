@@ -19,6 +19,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def export?
+    edit?
+  end
+
   def create_excel_import?
     new_excel_import?
   end

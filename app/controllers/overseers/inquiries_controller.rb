@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
   before_action :set_company, only: [:new]
 
   def index
@@ -10,6 +10,11 @@ class Overseers::InquiriesController < Overseers::BaseController
   def show
     authorize @inquiry
     redirect_to edit_overseers_inquiry_path(@inquiry)
+  end
+
+  def export
+    authorize @inquiry
+    render json: @inquiry
   end
 
   def new
