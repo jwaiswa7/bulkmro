@@ -1,9 +1,13 @@
 email_messages:
-  from: nobody@bulkmro.com
+  from: no-reply@bulkmro.com
+  from_name: Bulk MRO Notifications
+  reply_to: care@bulkmro.com
+  reply_to_name: Bulk MRO Support
 
 slack:
-  access_token: xoxp-395906857286-395824799415-397063976980-c73aaf550513f95e7fdff829317b1640
   bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
+  username: Sprint Bot
+  icon_emoji: ':moneybag:'
 
 sendgrid:
   username: bulk
@@ -19,8 +23,8 @@ twilio:
   auth_token: 72905dfd297bc2ea39afc029f57ba3da
 
 azure:
-  storage_account_name: bulkmro
-  storage_access_key: HYecY13hBtJUsqup03iqK2gG1B6FOVbnNkIigo7ZgpfKMCLcjRZe6b19SIhaXH/nvnE/HVkNcSkfTsZilZTfDA==
+  storage_account_name: bulksprint
+  storage_access_key: bQHdNppONx0Tv5ye7jGxY+N437XWOjoBbrlQ6YY0nGT9TU3eb2Pjr7rzSFyxbAccCCKv8tEZJgBIY2ersM9Zbw==
   container: sprint
 
 msg91:
