@@ -31,7 +31,7 @@ main = {
     imports: {
         manageFailedSkus: function () {
             var onRadioChange = function (radio) {
-                var newProductForm = $(radio).closest('div.wrapper').find('div.nested');
+                var newProductForm = $(radio).closest('div.option-wrapper').find('div.nested');
             
                 if (isNaN(radio.value)) {
                     newProductForm.find(':input:visible:not(:radio)').prop('disabled', false);
@@ -48,6 +48,7 @@ main = {
                 onRadioChange(this);
             });
         },
+
         createFailedSkus: function () {
             main.imports.manageFailedSkus()
         },

@@ -3,13 +3,17 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
-    <% if policy(@inquiry).new_sales_quote? %>
-      <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="d-sm-block btn btn-success btn-outline-dark btn-rounded align-self-center btn-block-sm-down">
-        <i class="fal fa-plus-circle mr-1"></i>New Sales Quote
-      </a>
-    <% end %>
 
-  <div class="col-lg-12 mb-12">
+    <div class="form-row mb-3">
+      <div class="col-12">
+        <% if policy(@inquiry).new_sales_quote? %>
+          <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
+            <i class="fal fa-plus-circle mr-1"></i>New Sales Quote
+          </a>
+        <% end %>
+      </div>
+    </div>
+
     <% content_for :header_row do %>
       <th>Created At</th>
       <th>Sent At</th>
@@ -41,6 +45,5 @@
       <% end %>
     <% end %>
 
-    </div>
   <% end %>
 </div>
