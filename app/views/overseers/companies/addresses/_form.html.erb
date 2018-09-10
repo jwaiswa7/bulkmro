@@ -34,5 +34,7 @@ company under <%= @address.company %>
   <%= f.input :excise  %>
   <%= f.file_field :excise_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
 
+  <%= f.input :gst_type, as: :select, collection: enum_to_collection(Company.gst_types) %>
+
   <%= f.submit %>
 <% end %>
