@@ -4,39 +4,39 @@
     <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
-  <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :novalidate => 'novalidate'}) do |f| %>
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.input_field :name, :placeholder => 'e.g. Reliance Life Sciences', :class => 'form-control' %>
+  <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.hidden_field :account_id %>
+    <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+    <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
+    <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
 
-      <div class="valid-feedback">
-        Looks good!
-      </div>
-      <div class="invalid-feedback">
-        Please enter a name for the company.
+    <div class="form-group">
+      <%= f.label :contact_ids, 'Contacts' %>
+      <div class="select2-wrapper">
+        <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
       </div>
     </div>
 
-    <%= f.association :industry, include_blank: 'Select an Industry' %>
-    <%= f.association :default_payment_option, include_blank: 'Select a default' %>
+    <div class="form-group">
+      <%= f.label :product_ids, 'Products' %>
+      <div class="select2-wrapper">
+        <%= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
+      </div>
+    </div>
 
-    <hr/>
-    <%= f.label :contact_ids, 'Contacts' %>
-    <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true %>
+    <div class="form-group">
+      <%= f.label :category_ids, 'Category' %>
+      <div class="select2-wrapper">
+        <%= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
+      </div>
+    </div>
 
-    <hr/>
-    <%= f.label :product_ids, 'Products' %>
-    <%= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true %>
-
-    <hr/>
-    <%= f.label :category_ids, 'Category' %>
-    <%= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true %>
-
-    <hr/>
-    <%= f.label :brand_ids, 'Brands' %>
-    <%= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true %>
-
-
+    <div class="form-group">
+      <%= f.label :brand_ids, 'Brands' %>
+      <div class="select2-wrapper">
+        <%= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
+      </div>
+    </div>
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
@@ -47,12 +47,5 @@
         <i class="fal fa-pen"></i> <%= submit_text(@company) %>
       <% end %>
     <% end %>
-
-    <%= f.hidden_field :account_id %>
-    <%= f.input :created_by, disabled: true %>
-    <%= f.input :created_at, disabled: true %>
-    <%= f.input :updated_by, disabled: true %>
-    <%= f.input :updated_at, disabled: true %>
-
   <% end %>
 </div>
