@@ -9094,6 +9094,11 @@ div.dataTables_wrapper div.dataTables_processing {
 .main-container > .container {
   padding-bottom: 4.5rem; }
 
+@media (min-width: 768px) {
+  .container-fluid {
+    padding-left: 2rem;
+    padding-right: 2rem; } }
+
 a, a:link, a:visited, a:hover, a:active, a:focus {
   outline: 0; }
 
