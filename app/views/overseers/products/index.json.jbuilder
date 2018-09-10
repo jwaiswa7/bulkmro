@@ -2,10 +2,10 @@ json.data (@products) do |product|
   json.array! [
                   [
                       if policy(product).edit?
-                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit', 'warning')
+                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
                       end,
                       if policy(product).comments?
-                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'New Comments', 'success')
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
                       end
                   ].join(' '),
                   product.name,

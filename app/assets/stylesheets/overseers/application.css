@@ -7890,6 +7890,8 @@ table.table.dataTable {
       opacity: 0.75; }
     table.table.dataTable th.sorting_desc:after {
       opacity: 0.75; }
+    table.table.dataTable th.no-sort:before, table.table.dataTable th.no-sort:after {
+      display: none; }
   table.table.dataTable th, table.table.dataTable td {
     border-right-width: 0; }
   table.table.dataTable tr.child, table.table.dataTable th.child, table.table.dataTable td.child {
