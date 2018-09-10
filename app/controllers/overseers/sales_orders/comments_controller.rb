@@ -27,7 +27,8 @@ class Overseers::SalesOrders::CommentsController < Overseers::SalesOrders::BaseC
   end
 
   def approve
-    @sales_order.create_approval(:comment => @comment, :overseer => current_overseer)
+    service = Services::Overseers::SalesOrders::ApproveAndSerialize.new(@sales_order, @comment)
+    service.call
   end
 
   def reject
