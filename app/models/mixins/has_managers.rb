@@ -2,7 +2,7 @@ module Mixins::HasManagers
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :inside_sales_owner, -> { sales }, class_name: 'Overseer', foreign_key: 'inside_sales_owner_id'
+    belongs_to :inside_sales_owner, -> { sales }, class_name: 'Overseer', foreign_key: 'inside_sales_owner_id', required: false
     belongs_to :outside_sales_owner, -> { sales }, class_name: 'Overseer', foreign_key: 'outside_sales_owner_id', required: false
     belongs_to :sales_manager, -> { sales_manager }, class_name: 'Overseer', foreign_key: 'sales_manager_id', required: false
 

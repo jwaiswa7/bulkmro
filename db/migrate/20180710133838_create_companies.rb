@@ -23,18 +23,16 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :tan_proof
       t.string :pan_proof
       t.string :cen_proof
-      t.string :is_msme
-      t.string :is_unregistered_dealer
+      t.boolean :is_msme, default: false
+      t.boolean :is_unregistered_dealer, default: false
 
       t.string :tax_identifier, index: { unique: true }
 
       t.timestamps
       t.userstamps
     end
-    add_foreign_key :companies, :company_contacts, column: :default_contact_id
     add_foreign_key :companies, :payment_options, column: :default_payment_option_id
-    add_foreign_key :companies, :addresses, column: :default_billing_address_id
-    add_foreign_key :companies, :addresses, column: :default_shipping_address_id
+
 
     add_foreign_key :companies, :overseers, column: :inside_sales_owner_id
     add_foreign_key :companies, :overseers, column: :outside_sales_owner_id

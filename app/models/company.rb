@@ -1,8 +1,8 @@
 class Company < ApplicationRecord
+  include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::HasManagers
-  include FileContentValidator
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
@@ -42,67 +42,6 @@ class Company < ApplicationRecord
   has_one_attached :pan_proof
   has_one_attached :cen_proof
 
-  validates :credit_limit, numericality: { greater_than: 0 }
-  
-  # todo: implement
-
-  #validates :email, presence: true, email: true
-
-  # validates_content_type_of :tan_proof, %w('image/png application/pdf image/jpeg')
-  # validates_fize_size_of :tan_proof, mb: 2
-
-  # validates_content_type_of :pan_proof, %w('image/png application/pdf image/jpeg')
-  # validates_fize_size_of :pan_proof, mb: 2
-
-  # validates_content_type_of :cen_proof, %w('image/png application/pdf image/jpeg')
-  # validates_fize_size_of :cen_proof, mb: 2
-  # # https://guides.rubyonrails.org/active_record_validations.html#custom-validators
-  # #
-  # validate :tan_proof_content_type, :pan_proof_content_type, :cen_proof_content_type
-  # validate :tan_proof_file_size, :pan_proof_file_size, :cen_proof_file_size
-  # #
-  # def tan_proof_content_type
-  #   if tan_proof.attached? && !tan_proof.content_type.in?(%w(image/png application/pdf image/jpeg))
-  #     errors.add(:document, 'Must be an image or a pdf file')
-  #     proof.purge
-  #   end
-  # end
-  # #
-  # def tan_proof_file_size
-  #   if tan_proof.attached? && tan_proof.blob.byte_size > 2097152
-  #     errors.add(:document, 'Must be less than 2 MB in size')
-  #     proof.purge
-  #   end
-  # end
-
-  # def pan_proof_content_type
-  #   if pan_proof.attached? && !pan_proof.content_type.in?(%w(image/png application/pdf image/jpeg))
-  #     errors.add(:document, 'Must be an image or a pdf file')
-  #     proof.purge
-  #   end
-  # end
-  # #
-  # def pan_proof_file_size
-  #   if pan_proof.attached? && pan_proof.blob.byte_size > 2097152
-  #     errors.add(:document, 'Must be less than 2 MB in size')
-  #     proof.purge
-  #   end
-  # end
-
-  # def cen_proof_content_type
-  #   if cen_proof.attached? && !cen_proof.content_type.in?(%w(image/png application/pdf image/jpeg))
-  #     errors.add(:document, 'Must be an image or a pdf file')
-  #     proof.purge
-  #   end
-  # end
-  # #
-  # def cen_proof_file_size
-  #   if cen_proof.attached? && cen_proof.blob.byte_size > 2097152
-  #     errors.add(:document, 'Must be less than 2 MB in size')
-  #     proof.purge
-  #   end
-  # end
-
   enum company_type: {
       :proprietorship => 10,
       :private_limited => 20,
@@ -122,14 +61,17 @@ class Company < ApplicationRecord
       dealer: 30
   }
 
+  alias_attribute :gst, :tax_identifier
+
   # todo implement
   scope :acts_as_supplier, -> { }
 
-  alias_attribute :gst, :tax_identifier
-  validates_presence_of :tax_identifier  
+  validates_presence_of :tax_identifier
   validates_uniqueness_of :tax_identifier
-  validates_inclusion_of :is_msme, :in => [true, false]
-  validates_inclusion_of :is_unregistered_dealer, :in => [true, false]
+  validates :credit_limit, numericality: { greater_than: 0 }, allow_nil: true
+  validates_with FileValidator, attachment: :tan_proof, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :pan_proof, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :cen_proof, file_size_in_megabytes: 2
 
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
 

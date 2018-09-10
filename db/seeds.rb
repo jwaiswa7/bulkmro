@@ -120,7 +120,7 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
       name: name,
       default_payment_option: RandomRecord.for(PaymentOption),
       industry: RandomRecord.for(Industry),
-      tax_identifier: Faker::Company.polish_taxpayer_identification_number
+      tax_identifier: Faker::Company.polish_taxpayer_identification_number,
   )
 end
 
