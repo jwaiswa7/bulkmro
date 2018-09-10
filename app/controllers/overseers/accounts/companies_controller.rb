@@ -52,6 +52,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :priority,
         :site,
         :nature_of_business,
+        :creadit_limit,
+        :tan_proof,
+        :pan_proof,
+        :cen_proof,
+        :is_msme,
+        :is_unregistered_dealer,
 
 
         :contact_ids => [],

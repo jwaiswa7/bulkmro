@@ -14,15 +14,15 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
 
       t.string :name, index: true
       t.integer :company_type
-      t.string :remote_uid, index: { unqiue: true }
+      t.string :remote_uid, index: { unique: true }
       t.integer :priority
       t.string :site
       t.integer :nature_of_business
 
       t.decimal :credit_limit
-      t.string :tan
-      t.string :pan
-      t.string :cen
+      t.string :tan_proof
+      t.string :pan_proof
+      t.string :cen_proof
       t.string :is_msme
       t.string :is_unregistered_dealer
 
