@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.bigint "company_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
@@ -169,7 +170,11 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "name"
     t.integer "company_type"
     t.string "remote_uid"
+<<<<<<< HEAD
     t.integer "priority"
+=======
+    t.string "priority"
+>>>>>>> 554c9549b90f0aba37fdfd91a3a21b1f861613d9
     t.string "site"
     t.integer "nature_of_business"
     t.decimal "credit_limit"
@@ -217,6 +222,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "company_contacts", force: :cascade do |t|
+<<<<<<< HEAD
+=======
+    t.integer "company_id"
+>>>>>>> 554c9549b90f0aba37fdfd91a3a21b1f861613d9
     t.bigint "contact_id"
     t.bigint "company_id"
     t.datetime "created_at", null: false
@@ -653,7 +662,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
   add_foreign_key "company_banks", "companies"
-  add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
   add_foreign_key "company_contacts", "overseers", column: "created_by_id"
   add_foreign_key "company_contacts", "overseers", column: "updated_by_id"

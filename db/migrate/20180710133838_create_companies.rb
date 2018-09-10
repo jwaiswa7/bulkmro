@@ -3,6 +3,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
     create_table :companies do |t|
       t.references :account, foreign_key: true
       t.references :industry, foreign_key: true
+      t.string :remote_uid, index: { unique: true }
 
       t.integer :default_contact_id, index: true
       t.integer :default_payment_option_id, index: true
@@ -13,16 +14,13 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.integer :sales_manager_id, index: true
 
       t.string :name, index: true
-      t.integer :company_type
-      t.string :remote_uid, index: { unique: true }
-      t.integer :priority
       t.string :site
+
+      t.integer :company_type
+      t.integer :priority
       t.integer :nature_of_business
 
       t.decimal :credit_limit
-      t.string :tan_proof
-      t.string :pan_proof
-      t.string :cen_proof
       t.boolean :is_msme, default: false
       t.boolean :is_unregistered_dealer, default: false
 
@@ -32,8 +30,6 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.userstamps
     end
     add_foreign_key :companies, :payment_options, column: :default_payment_option_id
-
-
     add_foreign_key :companies, :overseers, column: :inside_sales_owner_id
     add_foreign_key :companies, :overseers, column: :outside_sales_owner_id
     add_foreign_key :companies, :overseers, column: :sales_manager_id

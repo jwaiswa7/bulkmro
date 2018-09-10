@@ -5,11 +5,19 @@ class Address < ApplicationRecord
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company
 
-  # Attachments
   has_one_attached :gst_proof
   has_one_attached :cst_proof
   has_one_attached :vat_proof
   has_one_attached :excise_proof
+
+  enum gst_type: {
+      regular_tds_isd_regular_isd: 10,
+      casual_taxable_person: 20,
+      composition_levy: 30,
+      psu_government_department_or_psu: 40,
+      non_resident_taxable_person: 50,
+      un_agency_or_embassy: 60,
+  }
 
   validates_presence_of :name, :country_code, :city_name, :street1
   validates_presence_of :pincode, :state, :if => :domestic?

@@ -18,6 +18,59 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
+  belongs_to :payment_option
+
+  enum status: {
+    # TODO add statuses
+  }
+
+  def commercial_status
+
+  end
+
+  enum opportunity_type: {
+    :amazon => 10,
+    :rate_contract => 20,
+    :financing => 30,
+    :regular => 40,
+    :service => 50,
+    :repeat => 60,
+    :route_through => 70,
+    :tender => 80
+  }
+  
+  enum opportunity_source: {
+    :meeting => 10,
+    :phome_call => 20,
+    :email => 30,
+    :quote_tender_prep => 40
+  }
+
+  enum quote_category: {
+    :bmro => 10,
+    :ong => 20
+  }
+
+  enum price_type: {
+    :exw => 10,
+    :fob => 20,
+    :cif => 30,
+    :cfr => 40,
+    :dap => 50,
+    :door_delivery => 60,
+    :fca_mumbai => 70,
+    :cip => 80
+  }
+
+  enum freight_option: {
+    :included => 10,
+    :extra => 20
+  }
+
+  enum packing_and_forwarding_option: {
+    :added => 10,
+    :not_added => 20
+  }
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -35,6 +88,13 @@ class Inquiry < ApplicationRecord
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
       self.sales_manager ||= self.sales_manager
+      self.opportunity_type ||= :regular
+      self.opportunity_source ||= :meeting
+      self.quote_category ||= :bmro
+      self.price_option ||= :exw
+      self.freight_option ||= :included
+      self.packing_and_forwarding_option ||= :added
+      self.expected_closing_date ||= (Time.now + 60.days)
     end
   end
 

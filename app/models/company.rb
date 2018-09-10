@@ -69,9 +69,9 @@ class Company < ApplicationRecord
   validates_presence_of :tax_identifier
   validates_uniqueness_of :tax_identifier
   validates :credit_limit, numericality: { greater_than: 0 }, allow_nil: true
-  validates_with FileValidator, attachment: :tan_proof, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :pan_proof, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :cen_proof, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :tan_proof
+  validates_with FileValidator, attachment: :pan_proof
+  validates_with FileValidator, attachment: :cen_proof
 
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
 
@@ -81,6 +81,11 @@ class Company < ApplicationRecord
     self.priority ||= :standard
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
+    self.default_contact ||= set_default_contact
+  end
+
+  def set_default_contact
+    self.company_contacts.first
   end
 
   def to_contextual_s(product)
