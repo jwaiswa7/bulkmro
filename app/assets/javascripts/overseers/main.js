@@ -341,7 +341,7 @@ main = {
 
                     language: {
                         processing: '<i class="fal fa-spinner-third fa-spin fa-3x fa-fw"></i>' +
-                            '<span class="sr-only">Loajjding...</span>',
+                            '<span class="sr-only">Loading...</span>',
                         paginate: {
                             first: '<i class="fal fa-arrow-to-left"></i>',
                             previous: '<i class="fal fa-angle-left"></i>',
@@ -366,8 +366,8 @@ main = {
                 });
 
                 // Load data from the specified data attribute
-                var url = $(this).data('ajax');
-                $(this).ajax.url(url).load();
+                // var url = $(this).data('ajax');
+                // $(this).ajax.url(url).load();
             });
         },
 

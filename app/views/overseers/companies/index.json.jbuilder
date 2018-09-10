@@ -1,14 +1,14 @@
 json.data (@companies) do |company|
   json.array! [
-                  format_date(company.created_at),
+                  [
+                      row_action_button(overseers_company_path(company), 'eye', 'View Inquiry', 'dark'),
+                      row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit Inquiry', 'warning'),
+                      row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success'),
+                  ].join(' '),
                   company.to_s,
                   company.industry.to_s,
                   company.contacts.size,
-                  [
-                      row_action_button(overseers_company_path(company), 'eye', 'Show', 'warning'),
-                      row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit', 'warning'),
-                      row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success'),
-                  ].join(' ')
+                  format_date(company.created_at)
               ]
 end
 
