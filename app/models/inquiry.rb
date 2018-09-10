@@ -7,6 +7,9 @@ class Inquiry < ApplicationRecord
 
   belongs_to :contact
   belongs_to :company
+  belongs_to :billing_address, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+
   has_one :account, :through => :company
   has_many :inquiry_products, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
