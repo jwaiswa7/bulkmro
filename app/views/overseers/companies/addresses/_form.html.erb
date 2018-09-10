@@ -20,6 +20,19 @@ company under <%= @address.company %>
 
   <%= f.input :street1, as: :text %>
   <%= f.input :street2, as: :text  %>
+  
+  <%= f.input :telephone  %>
+  <%= f.input :mobile  %>  
+
+  <%= f.input :tan  %>
+  <%= f.input :gst  %>
+  <%= f.file_field :gst_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+  <%= f.input :cst  %>
+  <%= f.file_field :cst_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+  <%= f.input :vat  %>
+  <%= f.file_field :vat_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+  <%= f.input :excise  %>
+  <%= f.file_field :excise_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
 
   <%= f.submit %>
 <% end %>

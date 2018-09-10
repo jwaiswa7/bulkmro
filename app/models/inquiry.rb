@@ -24,6 +24,8 @@ class Inquiry < ApplicationRecord
     # TODO add statuses
   }
 
+  validates :gross_profit_percentage, numericality: { greater_than: 0, less_than: 100 }, allow_nil: true
+
   def commercial_status
 
   end

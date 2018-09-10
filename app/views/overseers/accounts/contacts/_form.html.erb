@@ -9,9 +9,20 @@ Account under <%= @contact.account.name %>
 
   <%= f.input :first_name %>
   <%= f.input :last_name %>
-  <%= f.input :email %>
+
   <%= f.input :password %>
   <%= f.input :password_confirmation %>
+
+  <%= f.input :email %>
+  <%= f.input :prefix %>
+  <%= f.input :designation %>
+  <%= f.input :telephone %>
+  <%= f.input :mobile %>
+
+  <%= f.input :role, as: :select, collection: enum_to_collection(Company.roles) %>
+  <%= f.input :status, as: :select, collection: enum_to_collection(Company.statuses) %>
+  <%= f.input :contact_group, as: :select, collection: enum_to_collection(Company.contact_groups) %>
+
   <%= f.select :company_ids, @account.companies.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
 
   <%= f.submit %>

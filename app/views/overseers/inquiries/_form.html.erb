@@ -18,17 +18,17 @@
     <%= f.input :opportunity_type, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
     <%= f.input :opportunity_source, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
     <%= f.input :subject %>
-    <%= f.input :gross_profit %>
+    <%= f.input :gross_profit_percentage %>
 
     <%= f.input :expected_closing_date %>
     <%= f.input :quote_category, as: :select, collection: enum_to_collection(Inquiry.quote_categories) %>
-    <%= f.input :price, as: :select, collection: enum_to_collection(Inquiry.prices) %>
-    <%= f.input :freight, as: :select, collection: enum_to_collection(Inquiry.freights) %>
+    <%= f.input :price_type, as: :select, collection: enum_to_collection(Inquiry.price_types) %>
+    <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
     <%= f.input :freight_cost %>
-    <%= f.input :packing_and_forwarding, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwardings) %>    
+    <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>    
 
     <%= f.association :payment_option, include_blank: 'Select a Payment Option' %>
-
+    <%= f.input :weight_in_kgs %>
     <%= f.input :commercial_terms_and_conditions %>
 
 

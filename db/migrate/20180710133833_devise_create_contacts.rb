@@ -16,6 +16,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
 
       t.integer :role, index: true
       t.integer :status, index: true
+      t.integer :contact_group, index: true
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""
