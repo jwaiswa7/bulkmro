@@ -8,17 +8,19 @@ class CreateAddresses < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :state_name
       t.string :city_name
+
       t.string :pincode
       t.string :street1
       t.string :street2      
-      t.string :gst_no
-      t.string :cst_no
-      t.string :vat_no
-      t.string :tan_no
-      t.string :excise_no
+      t.string :gst
+      t.string :cst
+      t.string :vat
+      t.string :tan
+      t.string :excise
       t.string :phone
-      t.integer :gst_type # Hardcoded on in the System
-      t.integer :sap_id, index: { :unique => true }
+
+      # t.integer :gst_type todo check
+      t.integer :remote_id, index: { :unique => true }
 
       t.timestamps
       t.userstamps
