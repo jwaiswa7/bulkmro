@@ -7890,6 +7890,8 @@ table.table.dataTable {
       opacity: 0.75; }
     table.table.dataTable th.sorting_desc:after {
       opacity: 0.75; }
+    table.table.dataTable th.no-sort:before, table.table.dataTable th.no-sort:after {
+      display: none; }
   table.table.dataTable th, table.table.dataTable td {
     border-right-width: 0; }
   table.table.dataTable tr.child, table.table.dataTable th.child, table.table.dataTable td.child {
@@ -9093,6 +9095,11 @@ div.dataTables_wrapper div.dataTables_processing {
 
 .main-container > .container {
   padding-bottom: 4.5rem; }
+
+@media (min-width: 768px) {
+  .container-fluid {
+    padding-left: 2rem;
+    padding-right: 2rem; } }
 
 a, a:link, a:visited, a:hover, a:active, a:focus {
   outline: 0; }

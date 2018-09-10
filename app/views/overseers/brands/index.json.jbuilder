@@ -1,12 +1,12 @@
 json.data (@brands) do |brand|
   json.array! [
-                  format_date(brand.created_at),
+                  [
+                      row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning'),
+                  ].join(' '),
                   brand.to_s,
                   brand.suppliers.size,
                   brand.products.size,
-                  [
-                      row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit', 'warning'),
-                  ].join(' ')
+                  format_date(brand.created_at)
               ]
 end
 

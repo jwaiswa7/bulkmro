@@ -235,8 +235,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "inquiries", force: :cascade do |t|
     t.bigint "contact_id"
     t.bigint "company_id"
-    t.string "project_uid"
-    t.string "quotation_uid"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
     t.text "comments"
@@ -248,8 +246,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
-    t.index ["project_uid"], name: "index_inquiries_on_project_uid", unique: true
-    t.index ["quotation_uid"], name: "index_inquiries_on_quotation_uid", unique: true
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
@@ -429,7 +425,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "sales_order_approvals", force: :cascade do |t|
     t.bigint "sales_order_id"
     t.bigint "sales_order_comment_id"
-    t.jsonb "metadata"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false

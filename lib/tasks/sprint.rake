@@ -3,6 +3,7 @@ namespace :sprint do
   task setup: :environment do
     Rake::Task["db:migrate"].invoke
   end
+
   # Pull
   task :pull, [:repo] do |t,args|
     args.with_defaults(:repo => "master")
@@ -11,7 +12,7 @@ namespace :sprint do
     system 'bundle'
     Rake::Task["db:migrate"].invoke
   end
+
   # Pull Task
   task :p, [:repo] => :pull
-
 end
