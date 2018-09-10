@@ -58,8 +58,6 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :cen_proof,
         :is_msme,
         :is_unregistered_dealer,
-
-
         :contact_ids => [],
         :brand_ids => [],
         :product_ids => []

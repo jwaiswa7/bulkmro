@@ -15,7 +15,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :name, index: true
       t.integer :company_type
       t.string :remote_uid, index: { unique: true }
-      t.integer :priority
+      t.string :priority
       t.string :site
       t.integer :nature_of_business
 

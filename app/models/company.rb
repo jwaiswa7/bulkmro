@@ -2,7 +2,6 @@ class Company < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::HasManagers
-  include FileContentValidator
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
@@ -139,6 +138,11 @@ class Company < ApplicationRecord
     self.priority ||= :standard
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
+    self.default_contact ||= set_default_contact
+  end
+
+  def set_default_contact
+    self.company_contacts.first
   end
 
   def to_contextual_s(product)

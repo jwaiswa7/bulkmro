@@ -28,6 +28,10 @@
     <%= f.input :is_msme, as: :radio_buttons %>
     <%= f.input :is_unregistered_dealer, as: :radio_buttons %>   
     
+    <%= f.input :mobile %>
+    <%= f.input :email %>
+    <%= f.input :telephone %>
+    
     <hr />
     <%= f.label :contact_ids, 'Contacts' %>
     <%= f.select :contact_ids, @account.contacts.collect { |x| [x.to_s, x.id] }, {}, :multiple => true %>
