@@ -19,6 +19,8 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
 
+  enum status: { inquiry_number_assigned: 1, prepare_quotation: 5, quotation_sent: 6, sales_order_approved: 92  }
+
   attr_accessor :inside_sales_owner, :outside_sales_owner, :sales_manager, :quote_category, :potential_amount, :opportunity_source, :opportunity_type, :price_basis, :payment_terms, :freight, :packing_and_forwarding, :commertial_terms_and_conditions, :subject, :status
 
   # has_many :rfqs
@@ -31,8 +33,8 @@ class Inquiry < ApplicationRecord
   # validates_length_of :inquiry_products, minimum: 1
   # validate :all_products_have_suppliers
 
-  def self.syncable_identifiers
-    [:project_uid, :quotation_uid]
+  def syncable_identifiers
+    [:project_uid, :quotation_uid, :opportunity_uid]
   end
 
   def draft?

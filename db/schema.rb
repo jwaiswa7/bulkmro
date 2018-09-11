@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_05_040432) do
+ActiveRecord::Schema.define(version: 2018_09_10_105838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "company_id"
     t.string "project_uid"
     t.string "quotation_uid"
+    t.string "opportunity_uid"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
     t.text "comments"
@@ -244,10 +245,12 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.integer "status"
     t.index ["billing_address_id"], name: "index_inquiries_on_billing_address_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
+    t.index ["opportunity_uid"], name: "index_inquiries_on_opportunity_uid", unique: true
     t.index ["project_uid"], name: "index_inquiries_on_project_uid", unique: true
     t.index ["quotation_uid"], name: "index_inquiries_on_quotation_uid", unique: true
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
@@ -653,6 +656,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_order_rows", "sales_quote_rows"
   add_foreign_key "sales_orders", "overseers", column: "created_by_id"
   add_foreign_key "sales_orders", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_orders", "sales_orders", column: "parent_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"

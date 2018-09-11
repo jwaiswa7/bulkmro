@@ -52,10 +52,13 @@ class Resources::ApplicationResource
   end
 
   def self.create(attributes)
-    post("/#{collection_name}", body: attributes.to_json)
+    OpenStruct.new(post("/#{collection_name}", body: attributes.to_json).parsed_response)
   end
 
   def self.update(id, attributes)
-    patch("/#{collection_name}('#{id}')", body: attributes.to_json)
+    OpenStruct.new(patch("/#{collection_name}('#{id}')", body: attributes.to_json).parsed_response)
   end
+
+  #TODO
+  # Handle Error for Wrong data sent or Issue in updating
 end

@@ -6,6 +6,8 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
 
       t.string :project_uid, index: { unique: true }
       t.string :quotation_uid, index: { unique: true }
+      t.string :opportunity_uid, index: { unique: true }
+
 
       t.integer :billing_address_id, index: true
       t.integer :shipping_address_id, index: true
