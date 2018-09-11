@@ -1,11 +1,11 @@
 json.data (@overseers) do |overseer|
   json.array! [
-                  format_date(overseer.created_at),
-                  overseer.hierarchy_to_s,
-                  format_enum(overseer.role),
                   [
                       row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit', 'warning'),
-                  ].join(' ')
+                  ].join(' '),
+                  overseer.hierarchy_to_s,
+                  format_enum(overseer.role),
+                  format_date(overseer.created_at)
               ]
 end
 
