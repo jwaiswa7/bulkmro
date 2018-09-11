@@ -2,12 +2,8 @@ main = {
     a: undefined,
     load: function () {
         main.initGoogleAnalytics();
-        main.initFilefields();
-        main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
-        main.initTextareaAutosize();
-        main.initTooltips();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -150,36 +146,6 @@ main = {
         }
     },
 
-    initFilefields: function () {
-        $('.custom-file-input').on('change', function () {
-            $(this).next('.custom-file-label').addClass("selected").html($(this).val().split('\\').slice(-1)[0]);
-        })
-    },
-
-    // Converts select to select2
-    initSelects: function () {
-        $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2({
-            theme: "bootstrap",
-            containerCssClass: ':all:',
-        }).on('change', function () {
-            $(this).trigger('input');
-        });
-
-        $('select.select2-ajax').each(function (k, v) {
-            $(this).select2({
-                theme: "bootstrap",
-                containerCssClass: ':all:',
-                ajax: {
-                    url: $(this).attr('data-source'),
-                    dataType: 'json',
-                    delay: 100
-                }
-            });
-        }).on('change', function () {
-            $(this).trigger('input');
-        });
-    },
-
     // TO DO - REMOVE?
     // Handles dynamic additions of fields to nested forms
     initDynamicForms: function () {
@@ -242,15 +208,6 @@ main = {
         }, false);
     },
 
-    // Initaialize Bootstrap tooltips
-    initTooltips: function () {
-        $('body').tooltip({
-            selector: '[data-toggle="tooltip"]'
-        });
-    },
-    initTextareaAutosize: function() {
-        autosize(document.querySelectorAll('textarea'));
-    },
     dataTables: {
         init: function () {
             main.dataTables.preInit();

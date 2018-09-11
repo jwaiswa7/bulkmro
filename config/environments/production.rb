@@ -1,4 +1,6 @@
 Rails.application.configure do
+  # Verifies that versions and hashed value of the package contents in the project's package.json
+  config.webpacker.check_yarn_integrity = false
   Rails.application.routes.default_url_options[:host]= Settings.domain
   Rails.application.routes.default_url_options[:protocol]= 'https'
 
