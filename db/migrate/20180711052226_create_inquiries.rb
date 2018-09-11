@@ -4,9 +4,10 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.references :company, foreign_key: true
       t.references :payment_option, foreign_key: true
+      t.references :industry, foreign_key: true
       t.integer :billing_address_id, index: true
       t.integer :shipping_address_id, index: true
-      t.integer :insider_sales_owner_id, index: true
+      t.integer :inside_sales_owner_id, index: true
       t.integer :outside_sales_owner_id, index: true
       t.integer :sales_manager_id, index: true
 
@@ -33,9 +34,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.timestamps
       t.userstamps
     end
-    add_foreign_key :inquiries, :addresses, column: :default_billing_address_id
-    add_foreign_key :inquiries, :addresses, column: :default_shipping_address_id
-    add_foreign_key :inquiries, :overseers, column: :insider_sales_owner_id
+    add_foreign_key :inquiries, :overseers, column: :inside_sales_owner_id
     add_foreign_key :inquiries, :overseers, column: :outside_sales_owner_id
     add_foreign_key :inquiries, :overseers, column: :sales_manager_id
   end

@@ -16,9 +16,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
+    t.string "remote_uid"
     t.string "name"
     t.string "alias"
-    t.string "remote_uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -53,6 +53,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "address_states", force: :cascade do |t|
     t.string "name"
+    t.string "country_code"
+    t.string "remote_code"
+    t.string "tax_state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_address_states_on_name", unique: true
@@ -61,6 +64,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "addresses", force: :cascade do |t|
     t.bigint "address_state_id"
     t.bigint "company_id"
+    t.integer "remote_id"
     t.string "country_code"
     t.string "name"
     t.string "state_name"
@@ -68,23 +72,22 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "pincode"
     t.string "street1"
     t.string "street2"
-    t.string "gst_no"
-    t.string "cst_no"
-    t.string "vat_no"
-    t.string "tan_no"
-    t.string "excise_no"
-    t.string "phone"
+    t.string "gst"
+    t.string "cst"
+    t.string "vat"
+    t.string "tan"
+    t.string "excise"
+    t.string "telephone"
+    t.string "mobile"
     t.integer "gst_type"
-    t.integer "sap_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.bigint "company_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
-    t.index ["sap_id"], name: "index_addresses_on_sap_id", unique: true
+    t.index ["remote_id"], name: "index_addresses_on_remote_id", unique: true
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
@@ -160,6 +163,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "companies", force: :cascade do |t|
     t.bigint "account_id"
     t.bigint "industry_id"
+    t.string "remote_uid"
     t.integer "default_contact_id"
     t.integer "default_payment_option_id"
     t.integer "default_billing_address_id"
@@ -168,21 +172,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "outside_sales_owner_id"
     t.integer "sales_manager_id"
     t.string "name"
-    t.integer "company_type"
-    t.string "remote_uid"
-<<<<<<< HEAD
-    t.integer "priority"
-=======
-    t.string "priority"
->>>>>>> 554c9549b90f0aba37fdfd91a3a21b1f861613d9
     t.string "site"
+    t.integer "company_type"
+    t.integer "priority"
     t.integer "nature_of_business"
     t.decimal "credit_limit"
-    t.string "tan_proof"
-    t.string "pan_proof"
-    t.string "cen_proof"
-    t.string "is_msme"
-    t.string "is_unregistered_dealer"
+    t.boolean "is_msme", default: false
+    t.boolean "is_unregistered_dealer", default: false
     t.string "tax_identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -222,18 +218,16 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "company_contacts", force: :cascade do |t|
-<<<<<<< HEAD
-=======
-    t.integer "company_id"
->>>>>>> 554c9549b90f0aba37fdfd91a3a21b1f861613d9
     t.bigint "contact_id"
     t.bigint "company_id"
+    t.integer "contact_group"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["company_id", "contact_id"], name: "index_company_contacts_on_company_id_and_contact_id", unique: true
     t.index ["company_id"], name: "index_company_contacts_on_company_id"
+    t.index ["contact_group"], name: "index_company_contacts_on_contact_group"
     t.index ["contact_id"], name: "index_company_contacts_on_contact_id"
     t.index ["created_by_id"], name: "index_company_contacts_on_created_by_id"
     t.index ["updated_by_id"], name: "index_company_contacts_on_updated_by_id"
@@ -241,7 +235,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "contacts", force: :cascade do |t|
     t.bigint "account_id"
-    t.bigint "group_id"
+    t.integer "remote_id"
     t.string "first_name"
     t.string "last_name"
     t.string "prefix"
@@ -249,8 +243,8 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "telephone"
     t.string "mobile"
     t.integer "role"
-    t.boolean "is_active"
-    t.integer "sap_id"
+    t.integer "status"
+    t.integer "contact_group"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -269,24 +263,15 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["account_id"], name: "index_contacts_on_account_id"
+    t.index ["contact_group"], name: "index_contacts_on_contact_group"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
     t.index ["email"], name: "index_contacts_on_email", unique: true
-    t.index ["group_id"], name: "index_contacts_on_group_id"
+    t.index ["remote_id"], name: "index_contacts_on_remote_id", unique: true
     t.index ["reset_password_token"], name: "index_contacts_on_reset_password_token", unique: true
     t.index ["role"], name: "index_contacts_on_role"
-    t.index ["sap_id"], name: "index_contacts_on_sap_id", unique: true
+    t.index ["status"], name: "index_contacts_on_status"
     t.index ["unlock_token"], name: "index_contacts_on_unlock_token", unique: true
     t.index ["updated_by_id"], name: "index_contacts_on_updated_by_id"
-  end
-
-  create_table "groups", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "created_by_id"
-    t.integer "updated_by_id"
-    t.index ["created_by_id"], name: "index_groups_on_created_by_id"
-    t.index ["updated_by_id"], name: "index_groups_on_updated_by_id"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -299,11 +284,26 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "inquiries", force: :cascade do |t|
     t.bigint "contact_id"
     t.bigint "company_id"
+    t.bigint "payment_option_id"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
-    t.integer "insider_sales_owner_id"
+    t.integer "inside_sales_owner_id"
     t.integer "outside_sales_owner_id"
     t.integer "sales_manager_id"
+    t.string "subject"
+    t.integer "opportunity_source"
+    t.integer "opportunity_type"
+    t.integer "status"
+    t.integer "freight_option"
+    t.integer "packing_and_forwarding_option"
+    t.integer "quote_category"
+    t.integer "price_type"
+    t.decimal "potential_amount", default: "0.0"
+    t.decimal "freight_cost", default: "0.0"
+    t.decimal "gross_profit_percentage", default: "0.0"
+    t.decimal "weight_in_kgs", default: "0.0"
+    t.date "expected_closing_date"
+    t.text "commercial_terms_and_conditions"
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -313,8 +313,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
-    t.index ["insider_sales_owner_id"], name: "index_inquiries_on_insider_sales_owner_id"
+    t.index ["inside_sales_owner_id"], name: "index_inquiries_on_inside_sales_owner_id"
     t.index ["outside_sales_owner_id"], name: "index_inquiries_on_outside_sales_owner_id"
+    t.index ["payment_option_id"], name: "index_inquiries_on_payment_option_id"
     t.index ["sales_manager_id"], name: "index_inquiries_on_sales_manager_id"
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
@@ -662,22 +663,21 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "companies", "overseers", column: "updated_by_id"
   add_foreign_key "companies", "payment_options", column: "default_payment_option_id"
   add_foreign_key "company_banks", "companies"
+  add_foreign_key "company_contacts", "companies"
   add_foreign_key "company_contacts", "contacts"
   add_foreign_key "company_contacts", "overseers", column: "created_by_id"
   add_foreign_key "company_contacts", "overseers", column: "updated_by_id"
   add_foreign_key "contacts", "accounts"
-  add_foreign_key "contacts", "groups"
   add_foreign_key "contacts", "overseers", column: "created_by_id"
   add_foreign_key "contacts", "overseers", column: "updated_by_id"
-  add_foreign_key "groups", "overseers", column: "created_by_id"
-  add_foreign_key "groups", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
-  add_foreign_key "inquiries", "overseers", column: "insider_sales_owner_id"
+  add_foreign_key "inquiries", "overseers", column: "inside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "outside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "sales_manager_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiries", "payment_options"
   add_foreign_key "inquiry_import_rows", "inquiry_imports"
   add_foreign_key "inquiry_import_rows", "inquiry_products"
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"

@@ -7,6 +7,7 @@ class Inquiry < ApplicationRecord
 
   belongs_to :contact
   belongs_to :company
+  belongs_to :industry
   belongs_to :billing_address, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 
@@ -24,7 +25,9 @@ class Inquiry < ApplicationRecord
   belongs_to :payment_option
 
   enum status: {
-    # TODO add statuses
+      :active => 10,
+      :expired => 20,
+      :won => 30
   }
 
   validates :gross_profit_percentage, numericality: { greater_than: 0, less_than: 100 }, allow_nil: true
@@ -46,7 +49,7 @@ class Inquiry < ApplicationRecord
   
   enum opportunity_source: {
     :meeting => 10,
-    :phome_call => 20,
+    :phone_call => 20,
     :email => 30,
     :quote_tender_prep => 40
   }
@@ -93,10 +96,11 @@ class Inquiry < ApplicationRecord
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
       self.sales_manager ||= self.sales_manager
+      self.status ||= :active
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
       self.quote_category ||= :bmro
-      self.price_option ||= :exw
+      self.price_type ||= :exw
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
       self.expected_closing_date ||= (Time.now + 60.days)

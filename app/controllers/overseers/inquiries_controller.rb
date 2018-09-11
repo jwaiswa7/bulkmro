@@ -70,10 +70,12 @@ class Overseers::InquiriesController < Overseers::BaseController
     params.require(:inquiry).permit(
         :company_id,
         :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
         :billing_address_id,
         :shipping_address_id,
         :status,
-        :internal_status,
         :opportunity_type,
         :opportunity_source,
         :subject,

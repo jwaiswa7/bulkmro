@@ -8,7 +8,7 @@ module Mixins::HasManagers
 
     after_initialize :set_insider_sales_owner, if: :new_record_and_overseer_defined?
     def set_insider_sales_owner
-      self.insider_sales_owner ||= overseer
+      self.inside_sales_owner ||= overseer
     end
   end
 end

@@ -39,21 +39,6 @@ states.each do |state|
   AddressState.create(name: state)
 end
 
-groups = [
-  'General',
-  'Company',
-  'Top Manager',
-  'Retailer',
-  'Ador',
-  'VMI Group',
-  'C-form Customer group',
-  'Manager'
-]
-
-groups.each do |group|
-  Group.create(name: group)
-end
-
 industries = [
     'Transport',
     'Telecom',
@@ -158,7 +143,7 @@ end
 
 Account.all.each do |account|
   5.times do
-    account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123', :group_id => 1)
+    account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123')
   end
 end
 

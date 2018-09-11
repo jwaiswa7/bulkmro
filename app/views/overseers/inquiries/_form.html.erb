@@ -10,11 +10,12 @@
   <div class="card-body">
     <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
     <%= f.association :contact, :wrapper => :custom_multi_select %>
+    <%= f.association :industry, :wrapper => :custom_multi_select %>
     <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s  %>
     <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
 
     <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses)  %>
-    <%= f.input :internal_status, as: :select, collection: enum_to_collection(Inquiry.internal_statuses)  %>
+    <!-- TODO commercial_status need to be added -->
     <%= f.input :opportunity_type, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
     <%= f.input :opportunity_source, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
     <%= f.input :subject %>
