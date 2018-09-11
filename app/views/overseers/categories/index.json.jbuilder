@@ -1,10 +1,10 @@
 json.data (@categories) do |category|
   json.array! [
-                  format_date(category.created_at),
-                  category.to_s,
                   [
                       row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit', 'warning'),
-                  ].join(' ')
+                  ].join(' '),
+                  category.to_s,
+                  format_date(category.created_at)
               ]
 end
 

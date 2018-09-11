@@ -12,22 +12,17 @@
     </div>
 
     <% content_for :header_row do %>
-      <th>Created</th>
+      <th class="no-sort"></th>
       <th>Imported By</th>
       <th>Successful</th>
       <th>Failed</th>
       <th>Import Type</th>
-      <th>Actions</th>
+      <th>Created</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
       <% @imports.each do |import| %>
         <tr>
-          <td><%= format_date(import.created_at) %></td>
-          <td><%= import.created_by.to_s %></td>
-          <td><%= format_num(import.rows.successful.size) %></td>
-          <td><%= format_num(import.rows.failed.size) %></td>
-          <td><%= format_enum(import.import_type) %></td>
           <td>
             <% if policy(import).show? && import.excel? && import.file.attached? %>
               <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
@@ -38,6 +33,11 @@
                   row_action_button(manage_failed_skus_overseers_inquiry_import_path(@inquiry, import), 'redo', 'Manage Failed SKUs', 'warning');
                 end %>
           </td>
+          <td><%= import.created_by.to_s %></td>
+          <td><%= format_num(import.rows.successful.size) %></td>
+          <td><%= format_num(import.rows.failed.size) %></td>
+          <td><%= format_enum(import.import_type) %></td>
+          <td><%= format_date(import.created_at) %></td>
         </tr>
       <% end %>
     <% end %>
