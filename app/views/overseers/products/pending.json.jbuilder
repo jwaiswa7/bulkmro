@@ -1,15 +1,16 @@
 json.data (@products) do |product|
   json.array! [
-                  format_date(product.created_at),
-                  product.name,
-                  product.brand.to_s,
-                  product.sku,
-                  product.suppliers.size,
                   [
                       if policy(product).comments?
-                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'See Comments', 'success')
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
                       end,
-                  ].join(' ')
+                  ].join(' '),
+                  product.name,
+                  product.sku,
+                  product.brand.to_s,
+                  product.suppliers.size,
+                  format_date(product.created_at)
+
               ]
 end
 
