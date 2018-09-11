@@ -14,9 +14,21 @@ class Contact < ApplicationRecord
   accepts_nested_attributes_for :company_contacts
 
   enum role: { admin: 10 }
+  enum status: { active: 10, inactive: 20 }
+  enum contact_group: {
+      general: 10,
+      company_top_manager: 20,
+      retailer: 30,
+      ador: 40,
+      vmi_group: 50,
+      c_form_customer_group: 60,
+      manager: 70,
+  }
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.role ||= :admin
+    self.status ||= :active
+    self.contact_group ||= :general
   end
 end

@@ -12,58 +12,25 @@
     <%= f.association :contact, :wrapper => :custom_multi_select %>
     <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s %>
     <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
-    <div class="form-group">
-      <div class="form-row flex-row align-items-center">
-        <div class="col-md-6">
-          <%= f.input :inside_sales_owner, :wrapper => :custom_multi_select, as: :select, collection: ["Swati Bhosale", "Supriya Govalkar", "Aditya Andankar"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :sales_manager, as: :select, :wrapper => :custom_multi_select, collection: ["Devang Shah", "Gaurang Shah", "Shailender Agarwal"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :outside_sales_owner, as: :select, :wrapper => :custom_multi_select, collection: ["Abid Shaikh", "Ashish Dobriya", "Jeetendra Sharma"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :quote_category, as: :select, :wrapper => :custom_multi_select, collection: ["BMRO", "ONG"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :potential_amount, input_html: {value: '0.01'} %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: ["Active", "Inactive"], include_blank: false, disabled: true %>
-        </div>
 
-        <div class="col-md-6">
-          <%= f.input :opportunity_type, as: :select, :wrapper => :custom_multi_select, collection: ["Regular", "Amazon", "Rate Contract", "Financing", "Service", "Repeat", "Route Through", "Tender"], include_blank: false %>
-        </div>
+    <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses)  %>
+    <!-- TODO commercial_status need to be added -->
+    <%= f.input :opportunity_type, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
+    <%= f.input :opportunity_source, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
+    <%= f.input :subject %>
+    <%= f.input :gross_profit_percentage %>
 
-        <div class="col-md-6">
-          <%= f.input :opportunity_source, as: :select, :wrapper => :custom_multi_select, collection: ["Email", "Meeting", "Phone call", "Quote/Tender Prep"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :price_basis, as: :select, :wrapper => :custom_multi_select, collection: ["EXW", "FOB", "CIF", "CFR", "DAP", "Door Delivery", "FCA Mumbai", "CIP"], include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :payment_terms, as: :select, :wrapper => :custom_multi_select, collection: ["60 Days", "30 Days", "90 Days"], include_blank: false %>
-        </div>
+    <%= f.input :expected_closing_date %>
+    <%= f.input :quote_category, as: :select, collection: enum_to_collection(Inquiry.quote_categories) %>
+    <%= f.input :price_type, as: :select, collection: enum_to_collection(Inquiry.price_types) %>
+    <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
+    <%= f.input :freight_cost %>
+    <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>    
 
-        <div class="col-md-6">
-          <%= f.input :freight, as: :select, :wrapper => :custom_multi_select, collection: ["Included", "Extra as per Actual"], include_blank: false %>
-        </div>
+    <%= f.association :payment_option, include_blank: 'Select a Payment Option' %>
+    <%= f.input :weight_in_kgs %>
+    <%= f.input :commercial_terms_and_conditions %>
 
-        <div class="col-md-6">
-          <%= f.input :packing_and_forwarding, as: :select, :wrapper => :custom_multi_select, collection: ["Included", "Not Included"], include_blank: false %>
-        </div>
-
-
-        <div class="col-md-12">
-          <%= f.input :commertial_terms_and_conditions, as: :text, input_html: {value: '1. Cost does not include any additional certification if required as per Indian regulations.
-2. Any errors in Quotation including HSN codes, GST Tax rate must be notified before placing order.
-3. Order once placed cannot be changed.
-4. Bulk MRO does not accept any financial penalties for late deliveries.'} %>
-        </div>
-      </div>
-    </div>
     <div class="form-group">
       <label>Products</label>
       <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>

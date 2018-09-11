@@ -1,11 +1,17 @@
 class Company < ApplicationRecord
+  include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
+  include Mixins::HasManagers
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :account
-  belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id
+
+  belongs_to :default_contact, -> (record) { where(account_id: record.account.id) }, class_name: 'CompanyContact', foreign_key: :default_contact_id, required: false
+  belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
+  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry
 
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
@@ -14,17 +20,14 @@ class Company < ApplicationRecord
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
 
-  # Supplier through products
   has_many :product_suppliers, foreign_key: :supplier_id
   has_many :products, :through => :product_suppliers
   accepts_nested_attributes_for :product_suppliers
 
-  # Supplier through categories
   has_many :category_suppliers, foreign_key: :supplier_id
   has_many :categories, :through => :category_suppliers
   accepts_nested_attributes_for :category_suppliers
 
-  # Supplier through brands
   has_many :brand_suppliers, foreign_key: :supplier_id
   has_many :brands, :through => :brand_suppliers
   has_many :brand_products, :through => :brands, :class_name => 'Product', :source => :products
@@ -34,12 +37,55 @@ class Company < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiries
   has_many :addresses
 
+  has_one_attached :tan_proof
+  has_one_attached :pan_proof
+  has_one_attached :cen_proof
+
+  enum company_type: {
+      :proprietorship => 10,
+      :private_limited => 20,
+      :contractor => 30,
+      :trust => 40,
+      :public_limited => 50
+  }
+
+  enum priority: {
+      standard: 10,
+      strategic: 20
+  }
+
+  enum nature_of_business: {
+      trading: 10,
+      manufacturer: 20,
+      dealer: 30
+  }
+
+  alias_attribute :gst, :tax_identifier
+
   # todo implement
   scope :acts_as_supplier, -> { }
 
-  alias_attribute :gst, :tax_identifier
   validates_presence_of :tax_identifier
   validates_uniqueness_of :tax_identifier
+  validates :credit_limit, numericality: { greater_than: 0 }, allow_nil: true
+  validates_with FileValidator, attachment: :tan_proof
+  validates_with FileValidator, attachment: :pan_proof
+  validates_with FileValidator, attachment: :cen_proof
+
+  delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
+
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    self.company_type ||= :private_limited
+    self.priority ||= :standard
+    self.is_msme ||= false
+    self.is_unregistered_dealer ||= false
+    self.default_contact ||= set_default_contact
+  end
+
+  def set_default_contact
+    self.company_contacts.first
+  end
 
   def to_contextual_s(product)
     s = [self.to_s]

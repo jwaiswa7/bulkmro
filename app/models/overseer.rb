@@ -12,7 +12,7 @@ class Overseer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable
 
-  enum role: { admin: 10, sales: 20 }
+  enum role: { admin: 10, sales: 20, sales_manager: 30 }
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
