@@ -3,7 +3,6 @@ main = {
     load: function () {
         main.initGoogleAnalytics();
         main.initFilefields();
-        main.initSelects();
         main.initParselyValidations();
         main.initDynamicForms();
         main.initTextareaAutosize();
@@ -148,36 +147,6 @@ main = {
             ga('set', 'location', event.data.url);
             return ga('send', 'pageview');
         }
-    },
-
-    initFilefields: function () {
-        $('.custom-file-input').on('change', function () {
-            $(this).next('.custom-file-label').addClass("selected").html($(this).val().split('\\').slice(-1)[0]);
-        })
-    },
-
-    // Converts select to select2
-    initSelects: function () {
-        $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2({
-            theme: "bootstrap",
-            containerCssClass: ':all:',
-        }).on('change', function () {
-            $(this).trigger('input');
-        });
-
-        $('select.select2-ajax').each(function (k, v) {
-            $(this).select2({
-                theme: "bootstrap",
-                containerCssClass: ':all:',
-                ajax: {
-                    url: $(this).attr('data-source'),
-                    dataType: 'json',
-                    delay: 100
-                }
-            });
-        }).on('change', function () {
-            $(this).trigger('input');
-        });
     },
 
     // TO DO - REMOVE?
