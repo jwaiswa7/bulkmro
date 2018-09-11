@@ -5,7 +5,7 @@ class SalesQuoteRow < ApplicationRecord
   belongs_to :inquiry_product_supplier
   has_one :inquiry_product, :through => :inquiry_product_supplier
   has_one :product, :through => :inquiry_product
-
+  has_one :supplier, :through => :inquiry_product_supplier
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote

@@ -32,6 +32,13 @@ class Inquiry < ApplicationRecord
       :won => 30
   }
 
+  enum stage: {
+      inquiry_number_assigned: 1,
+      prepare_quotation: 5,
+      quotation_sent: 6,
+      sales_order_approved: 92
+  }
+
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
 
   def commercial_status
@@ -82,6 +89,7 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
+
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
   # attr_accessor :rfq_subject, :rfq_comments
@@ -92,8 +100,8 @@ class Inquiry < ApplicationRecord
   # validates_length_of :inquiry_products, minimum: 1
   # validate :all_products_have_suppliers
 
-  def self.syncable_identifiers
-    [:project_uid, :quotation_uid]
+  def syncable_identifiers
+    [:project_uid, :opportunity_uid]
   end
 
   after_initialize :set_defaults, :if => :new_record?
