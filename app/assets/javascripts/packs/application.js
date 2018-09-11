@@ -9,12 +9,19 @@
 
 import customFileInputs from "./components/customFileInputs";
 import select2s from "./components/select2s";
+import tooltips from "./components/tooltips";
 
-const load = () => {
+// Namespacing all imports under app
+let app = {};
+
+// Initaialize all components
+app.initializeComponents = () => {
     customFileInputs();
     select2s();
+    tooltips();
 };
 
+// Turbolinks load event
 document.addEventListener("turbolinks:load", function() {
-    load();
+    app.initializeComponents();
 });

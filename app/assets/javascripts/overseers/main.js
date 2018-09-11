@@ -2,7 +2,6 @@ main = {
     a: undefined,
     load: function () {
         main.initGoogleAnalytics();
-        main.initFilefields();
         main.initParselyValidations();
         main.initDynamicForms();
         main.initTextareaAutosize();
@@ -213,9 +212,7 @@ main = {
 
     // Initaialize Bootstrap tooltips
     initTooltips: function () {
-        $('body').tooltip({
-            selector: '[data-toggle="tooltip"]'
-        });
+
     },
     initTextareaAutosize: function() {
         autosize(document.querySelectorAll('textarea'));
