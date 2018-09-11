@@ -1,8 +1,5 @@
 json.data (@inquiries) do |inquiry|
   json.array! [
-                  format_date(inquiry.created_at),
-                  inquiry.company.to_s,
-                  inquiry.contact.to_s,
                   [
                       # if policy(inquiry).edit_suppliers?
                       #   row_action_button(edit_suppliers_overseers_inquiry_path(inquiry), 'long-arrow-right', 'Select Suppliers', 'warning')
@@ -11,7 +8,7 @@ json.data (@inquiries) do |inquiry|
                       #   row_action_button(edit_rfqs_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Generate RFQs', 'warning')
                       # end,
                       if policy(inquiry).edit?
-                        row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit', 'warning')
+                        row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
                       end,
                       # if policy(inquiry).edit_quotations?
                       #   row_action_button(edit_quotations_overseers_inquiry_rfqs_path(inquiry), 'long-arrow-right', 'Purchase Quotations', 'warning')
@@ -22,7 +19,10 @@ json.data (@inquiries) do |inquiry|
                       # if policy(inquiry).new_sales_order?
                       #   row_action_button(new_overseers_sales_approval_sales_order_path(inquiry.sales_approval), 'long-arrow-right', 'New Sales Order', 'warning')
                       # end,
-                  ].join(' ')
+                  ].join(' '),
+                  inquiry.company.to_s,
+                  inquiry.contact.to_s,
+                  format_date(inquiry.created_at)
               ]
 end
 
