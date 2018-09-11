@@ -46,7 +46,19 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
         :address_state_id,
         :state_name,
         :street1,
-        :street2
+        :street2,
+        :telephone,
+        :mobile,
+        :gst_proof,
+        :cst_proof,
+        :vat_proof,
+        :excise_proof,
+        :gst,
+        :cst,
+        :vat,
+        :tan,
+        :excise,
+        :gst_type
     )
   end
 end

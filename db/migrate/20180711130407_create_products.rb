@@ -5,6 +5,8 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.references :category, foreign_key: true
       t.string :name
       t.string :sku, index: { unique: true }
+      t.integer :type, index: true
+      t.boolean :is_verified, default: false
 
       t.timestamps
       t.userstamps

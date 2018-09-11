@@ -107,7 +107,7 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
       name: name,
       default_payment_option: RandomRecord.for(PaymentOption),
       industry: RandomRecord.for(Industry),
-      tax_identifier: Faker::Company.polish_taxpayer_identification_number
+      tax_identifier: Faker::Company.polish_taxpayer_identification_number,
   )
 end
 
@@ -1214,7 +1214,21 @@ Product.all.each do |product|
       overseer: RandomRecord.for(Overseer)
   )
 end
-
+# 100.times do
+#   Product.create!(
+#    name: Faker::Commerce.product_name,
+#    sku: ['BM', rand(5..300000) + 100000].join,
+#    brand: RandomRecord.for(Brand),
+#    category: RandomRecord.for(Category)
+#  )
+#  end
+#
+#  Product.all.each do |product|
+#    suppliers = RandomRecords.for(Company, [*1..3].sample)
+#    suppliers.each do |supplier|
+#      product.product_suppliers.create!(supplier: supplier)
+#    end
+#  end
 Account.all.each do |account|
   5.times do
     contact = RandomRecord.for(account.contacts)
@@ -1253,4 +1267,3 @@ end
 
 # Product.all.each do |p| p.destroy; end
 # InquiryImport.all.each do |i| i.destroy; end
-
