@@ -50,22 +50,22 @@
 
     <%= f.input :name %>
     <%= f.association :industry, include_blank: 'Select an Industry' %>
-    <%= f.association :default_payment_option, include_blank: 'Select a default' %>
-    <%= f.association :default_contact, collection: @account.contacts, include_blank: 'Select a default' %>
+    <%= f.association :default_payment_option, include_blank: 'Select a default payment option' %>
+    <%= f.association :default_contact, collection: @account.contacts, include_blank: 'Select a default contact' %>
 
     <% if f.object.persisted? %>
-      <%= f.association :default_billing_address, collection: f.object.addresses, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, collection: f.object.addresses, include_blank: 'Select a default' %>
+      <%= f.association :default_billing_address, collection: f.object.addresses, include_blank: 'Select a default billing address' %>
+      <%= f.association :default_shipping_address, collection: f.object.addresses, include_blank: 'Select a default shipping address' %>
     <% end %>
 
     <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
     <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
     <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
 
-    <%= f.input :company_type, as: :select, collection: enum_to_collection(Company.company_types) %>
+    <%= f.input :company_type, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
     <%= f.input :priority, as: :select, collection: enum_to_collection(Company.priorities) %>
     <%= f.input :site %>
-    <%= f.input :nature_of_business, as: :select, collection: enum_to_collection(Company.nature_of_businesses) %>
+    <%= f.input :nature_of_business, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
     <%= f.input :credit_limit %>
 
     <%= f.file_field :tan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
