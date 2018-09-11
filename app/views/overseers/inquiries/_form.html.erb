@@ -10,7 +10,6 @@
   <div class="card-body">
     <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
     <%= f.association :contact, :wrapper => :custom_multi_select %>
-    <%= f.association :industry, :wrapper => :custom_multi_select %>
     <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s  %>
     <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
 

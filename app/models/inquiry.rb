@@ -5,11 +5,12 @@ class Inquiry < ApplicationRecord
 
   pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
-  belongs_to :contact
+  belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :company
-  belongs_to :industry
-  belongs_to :billing_address, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  has_one :industry, :through => :company
+
+  belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 
   has_one :account, :through => :company
   has_many :inquiry_products, :inverse_of => :inquiry
@@ -30,7 +31,7 @@ class Inquiry < ApplicationRecord
       :won => 30
   }
 
-  validates :gross_profit_percentage, numericality: { greater_than: 0, less_than: 100 }, allow_nil: true
+  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
 
   def commercial_status
 
@@ -104,6 +105,11 @@ class Inquiry < ApplicationRecord
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
       self.expected_closing_date ||= (Time.now + 60.days)
+
+      self.contact ||= self.company.default_contact
+      self.payment_option ||= self.company.default_payment_option
+      self.billing_address ||= self.company.default_billing_address
+      self.shipping_address ||= self.company.default_shipping_address
     end
   end
 

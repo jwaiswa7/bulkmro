@@ -1,11 +1,12 @@
 en:
   simple_form:
     placeholders:
-      inquiries:
-        comments: Any additional information about about this inquiry
-      companies:
+      inquiry:
+        comments: 'Any additional information about about this inquiry'
+      company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
+        mobile: 'e.g. +919987480784'
     "yes": 'Yes'
     "no": 'No'
     required:

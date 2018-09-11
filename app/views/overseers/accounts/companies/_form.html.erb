@@ -14,8 +14,13 @@
     <%= f.input :name %>
     <%= f.association :industry, include_blank: 'Select an Industry' %>
     <%= f.association :default_payment_option, include_blank: 'Select a default' %>
-    <%= f.association :default_billing_address, include_blank: 'Select a default' %>
-    <%= f.association :default_shipping_address, include_blank: 'Select a default' %>
+    <%= f.association :default_contact, collection: @account.contacts, include_blank: 'Select a default' %>
+
+    <% if f.object.persisted? %>
+      <%= f.association :default_billing_address, collection: f.object.addresses, include_blank: 'Select a default' %>
+      <%= f.association :default_shipping_address, collection: f.object.addresses, include_blank: 'Select a default' %>
+    <% end %>
+
     <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
     <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
     <%= f.association :sales_manager, include_blank: 'Select a Manager' %>

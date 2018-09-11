@@ -4,8 +4,6 @@ class CreateCompanyContacts < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.references :company, foreign_key: true
 
-      t.integer :contact_group, index: true
-
       t.timestamps
       t.userstamps
     end

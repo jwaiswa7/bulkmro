@@ -8,9 +8,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
       t.string :first_name
       t.string :last_name
       t.string :prefix
-
       t.string :designation
-
       t.string :telephone
       t.string :mobile
 

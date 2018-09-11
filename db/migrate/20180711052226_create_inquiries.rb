@@ -4,7 +4,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.references :company, foreign_key: true
       t.references :payment_option, foreign_key: true
-      t.references :industry, foreign_key: true
+
       t.integer :billing_address_id, index: true
       t.integer :shipping_address_id, index: true
       t.integer :inside_sales_owner_id, index: true

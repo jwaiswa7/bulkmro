@@ -8,11 +8,10 @@ class Company < ApplicationRecord
 
   belongs_to :account
 
-  belongs_to :default_contact, class_name: 'CompanyContact', foreign_key: :default_contact_id, required: false
+  belongs_to :default_contact, -> (record) { where(account_id: record.account.id) }, class_name: 'CompanyContact', foreign_key: :default_contact_id, required: false
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
-
+  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry
 
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
