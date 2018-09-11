@@ -4,8 +4,6 @@ main = {
         main.initGoogleAnalytics();
         main.initParselyValidations();
         main.initDynamicForms();
-        main.initTextareaAutosize();
-        main.initTooltips();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -210,13 +208,6 @@ main = {
         }, false);
     },
 
-    // Initaialize Bootstrap tooltips
-    initTooltips: function () {
-
-    },
-    initTextareaAutosize: function() {
-        autosize(document.querySelectorAll('textarea'));
-    },
     dataTables: {
         init: function () {
             main.dataTables.preInit();
