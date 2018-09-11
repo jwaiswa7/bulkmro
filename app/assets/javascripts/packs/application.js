@@ -7,6 +7,7 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+// Component Imports
 import customFileInputs from "./components/customFileInputs";
 import select2s from "./components/select2s";
 import tooltips from "./components/tooltips";
