@@ -13,12 +13,13 @@
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
             <%= row.hidden_field :id %>
+            <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
             <div class="col-md-3">
-              <%= row.association :inquiry_product_supplier, collection: @inquiry.inquiry_product_suppliers.map {|p| [p.to_s, p.id, {'data-unit-cost-price' => p.unit_cost_price}]}, include_blank: 'Select a Line Item' %></div>
-            <div class="col-md-2"><%= row.input :quantity %></div>
+              <%= row.association :inquiry_product_supplier, collection: @inquiry.inquiry_product_suppliers.map {|ips| [ips.to_s, ips.id, { 'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no }]}, include_blank: 'Select a Line Item' %></div>
+            <div class="col-md-1"><%= row.input :quantity %></div>
             <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
-            <div class="col-md-2"><%= row.input :margin_percentage, input_html: {:min => 0, :max => 99.99} %></div>
-            <div class="col-md-2"><%= row.input :unit_selling_price, input_html: {:min => 0} %></div>
+            <div class="col-md-2"><%= row.input :margin_percentage, input_html: { :min => 0, :max => 99.99 } %></div>
+            <div class="col-md-2"><%= row.input :unit_selling_price, input_html: { :min => 0 } %></div>
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">
