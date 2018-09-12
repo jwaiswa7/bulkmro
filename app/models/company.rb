@@ -8,7 +8,7 @@ class Company < ApplicationRecord
 
   belongs_to :account
 
-  belongs_to :default_contact, -> (record) { where(account_id: record.account.id) }, class_name: 'CompanyContact', foreign_key: :default_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
   belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
@@ -72,7 +72,7 @@ class Company < ApplicationRecord
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
 
-  delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
+  delegate :mobile, :email, :telephone, to: :default_company_contact, allow_nil: true
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
@@ -80,10 +80,10 @@ class Company < ApplicationRecord
     self.priority ||= :standard
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
-    self.default_contact ||= set_default_contact
+    self.default_company_contact ||= set_default_company_contact
   end
 
-  def set_default_contact
+  def set_default_company_contact
     self.company_contacts.first
   end
 

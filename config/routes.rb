@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
 
   namespace 'overseers' do
+
     resource :dashboard, :controller => :dashboard
     resources :brands
     resources :categories

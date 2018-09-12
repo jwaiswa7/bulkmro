@@ -39,7 +39,7 @@
                   <%= inquiry_product_supplier.label 'Remove' %>
                   <%= inquiry_product_supplier.remove_nested_fields_link do %>
                     <i class="far fa-times text-danger"></i>
-                  <% end %>
+                  <% end if policy(inquiry_product_supplier.object).destroy? %>
                 </div>
               </div>
             <% end %>

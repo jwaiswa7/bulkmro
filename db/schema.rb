@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_11_095742) do
+ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.bigint "account_id"
     t.bigint "industry_id"
     t.string "remote_uid"
-    t.integer "default_contact_id"
+    t.integer "default_company_contact_id"
     t.integer "default_payment_option_id"
     t.integer "default_billing_address_id"
     t.integer "default_shipping_address_id"
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.index ["account_id"], name: "index_companies_on_account_id"
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
     t.index ["default_billing_address_id"], name: "index_companies_on_default_billing_address_id"
-    t.index ["default_contact_id"], name: "index_companies_on_default_contact_id"
+    t.index ["default_company_contact_id"], name: "index_companies_on_default_company_contact_id"
     t.index ["default_payment_option_id"], name: "index_companies_on_default_payment_option_id"
     t.index ["default_shipping_address_id"], name: "index_companies_on_default_shipping_address_id"
     t.index ["industry_id"], name: "index_companies_on_industry_id"
@@ -220,14 +220,12 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
   create_table "company_contacts", force: :cascade do |t|
     t.bigint "contact_id"
     t.bigint "company_id"
-    t.integer "contact_group"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["company_id", "contact_id"], name: "index_company_contacts_on_company_id_and_contact_id", unique: true
     t.index ["company_id"], name: "index_company_contacts_on_company_id"
-    t.index ["contact_group"], name: "index_company_contacts_on_contact_group"
     t.index ["contact_id"], name: "index_company_contacts_on_contact_id"
     t.index ["created_by_id"], name: "index_company_contacts_on_created_by_id"
     t.index ["updated_by_id"], name: "index_company_contacts_on_updated_by_id"
@@ -285,7 +283,8 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.bigint "contact_id"
     t.bigint "company_id"
     t.bigint "payment_option_id"
-    t.bigint "industry_id"
+    t.string "project_uid"
+    t.string "opportunity_uid"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
     t.integer "inside_sales_owner_id"
@@ -295,6 +294,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.integer "opportunity_source"
     t.integer "opportunity_type"
     t.integer "status"
+    t.integer "stage"
     t.integer "freight_option"
     t.integer "packing_and_forwarding_option"
     t.integer "quote_category"
@@ -314,10 +314,11 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
-    t.index ["industry_id"], name: "index_inquiries_on_industry_id"
     t.index ["inside_sales_owner_id"], name: "index_inquiries_on_inside_sales_owner_id"
+    t.index ["opportunity_uid"], name: "index_inquiries_on_opportunity_uid", unique: true
     t.index ["outside_sales_owner_id"], name: "index_inquiries_on_outside_sales_owner_id"
     t.index ["payment_option_id"], name: "index_inquiries_on_payment_option_id"
+    t.index ["project_uid"], name: "index_inquiries_on_project_uid", unique: true
     t.index ["sales_manager_id"], name: "index_inquiries_on_sales_manager_id"
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
@@ -366,12 +367,12 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.bigint "inquiry_id"
     t.bigint "product_id"
     t.bigint "inquiry_import_id"
+    t.integer "sr_no"
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.integer "sr_no"
     t.index ["created_by_id"], name: "index_inquiry_products_on_created_by_id"
     t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
     t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
@@ -502,6 +503,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
   create_table "sales_order_approvals", force: :cascade do |t|
     t.bigint "sales_order_id"
     t.bigint "sales_order_comment_id"
+    t.jsonb "metadata"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false
@@ -602,6 +604,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
   create_table "sales_quotes", force: :cascade do |t|
     t.bigint "inquiry_id"
     t.integer "parent_id"
+    t.string "quotation_uid"
     t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -610,6 +613,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
     t.index ["created_by_id"], name: "index_sales_quotes_on_created_by_id"
     t.index ["inquiry_id"], name: "index_sales_quotes_on_inquiry_id"
     t.index ["parent_id"], name: "index_sales_quotes_on_parent_id"
+    t.index ["quotation_uid"], name: "index_sales_quotes_on_quotation_uid", unique: true
     t.index ["updated_by_id"], name: "index_sales_quotes_on_updated_by_id"
   end
 
@@ -657,7 +661,7 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
   add_foreign_key "companies", "accounts"
   add_foreign_key "companies", "addresses", column: "default_billing_address_id"
   add_foreign_key "companies", "addresses", column: "default_shipping_address_id"
-  add_foreign_key "companies", "company_contacts", column: "default_contact_id"
+  add_foreign_key "companies", "company_contacts", column: "default_company_contact_id"
   add_foreign_key "companies", "industries"
   add_foreign_key "companies", "overseers", column: "created_by_id"
   add_foreign_key "companies", "overseers", column: "inside_sales_owner_id"
@@ -675,7 +679,6 @@ ActiveRecord::Schema.define(version: 2018_09_11_095742) do
   add_foreign_key "contacts", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
-  add_foreign_key "inquiries", "industries"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "inside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "outside_sales_owner_id"

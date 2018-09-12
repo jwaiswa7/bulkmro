@@ -6,8 +6,11 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
 
   def call
     inquiry.save
-    return true
+    perform_later(inquiry)
+    true
+  end
 
+  def call_later
     if inquiry.project_uid.blank?
       inquiry.project_uid = Resources::Project.create(inquiry)
     end
@@ -27,7 +30,6 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
         end
       end
     end
-
   end
 
   attr_accessor :inquiry

@@ -5,7 +5,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.references :industry, foreign_key: true
       t.string :remote_uid, index: { unique: true }
 
-      t.integer :default_contact_id, index: true
+      t.integer :default_company_contact_id, index: true
       t.integer :default_payment_option_id, index: true
       t.integer :default_billing_address_id, index: true
       t.integer :default_shipping_address_id, index: true

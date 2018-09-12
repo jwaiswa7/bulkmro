@@ -73,7 +73,7 @@
               <div class="form-group align-self-center ml-2">
                 <%= inquiry_product.remove_nested_fields_link do %>
                   <i class="far fa-times text-danger"></i>
-                <% end %>
+                <% end if policy(inquiry_product.object).destroy? %>
               </div>
             </div>
           </div>

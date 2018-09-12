@@ -20,6 +20,6 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def maximum_quantity
-    self.sales_quote_row.quantity
+    self.sales_quote_row.quantity if sales_quote_row.present?
   end
 end
