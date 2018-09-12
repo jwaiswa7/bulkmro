@@ -15,6 +15,7 @@ import textareaAutosize from "./components/textareaAutosize";
 import nestedForms from "./components/nestedForms";
 import googleAnalytics from "./components/googleAnalytics";
 import parselyValidations from "./components/parselyValidations";
+import dataTables from "./components/dataTables";
 
 // Namespacing all imports under app
 let app = {};
@@ -28,6 +29,7 @@ app.initializeComponents = () => {
     nestedForms();
     googleAnalytics();
     parselyValidations();
+    dataTables();
 };
 
 // Turbolinks load event
