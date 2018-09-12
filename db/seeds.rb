@@ -1243,7 +1243,7 @@ Account.all.each do |account|
     )
 
     products.each do |product|
-      i.inquiry_products.create!(product_id: product.id, quantity: 1)
+      i.inquiry_products.create!(product_id: product.id, quantity: 1, sr_no: 1)
     end
 
     i.inquiry_products.each do |inquiry_product|
