@@ -43,6 +43,11 @@ class Resources::ApplicationResource
     model_name.pluralize
   end
 
+  # Subclass implements
+  def self.identifier
+    nil
+  end
+
   def self.all
     get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
   end
@@ -51,11 +56,20 @@ class Resources::ApplicationResource
     OpenStruct.new(get("/#{collection_name}('#{id}')").parsed_response)
   end
 
-  def self.create(attributes)
-    post("/#{collection_name}", body: attributes.to_json)
+  def self.create(record)
+    response = OpenStruct.new(post("/#{collection_name}", body: to_remote(record).to_json).parsed_response)
+    response.send(self.identifier)
   end
 
-  def self.update(id, attributes)
-    patch("/#{collection_name}('#{id}')", body: attributes.to_json)
+  def self.update(id, record)
+    OpenStruct.new(patch("/#{collection_name}('#{id}')", body: to_remote(record).to_json).parsed_response)
+    id
+  end
+
+  #TODO
+  # Handle Error for Wrong data sent or Issue in updating
+  #
+  #
+  def format_date
   end
 end

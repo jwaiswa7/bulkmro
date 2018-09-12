@@ -6,7 +6,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :payment_option, foreign_key: true
 
       t.string :project_uid, index: { unique: true }
-      t.string :quotation_uid, index: { unique: true }
+      t.string :opportunity_uid, index: { unique: true }
 
       t.integer :billing_address_id, index: true
       t.integer :shipping_address_id, index: true
@@ -19,6 +19,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :opportunity_source
       t.integer :opportunity_type
       t.integer :status
+      t.integer :stage
       t.integer :freight_option
       t.integer :packing_and_forwarding_option
       t.integer :quote_category

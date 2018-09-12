@@ -5,7 +5,29 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
+    inquiry.save
 
+    if inquiry.project_uid.blank?
+      inquiry.project_uid = Resources::Project.create(inquiry)
+    end
+
+    if inquiry.opportunity_uid.present?
+      # Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
+    else
+      inquiry.opportunity_uid =  Resources::SalesOpportunity.create(inquiry)
+    end
+
+    if inquiry.sales_quotes.any?
+      inquiry.sales_quotes.each do |sales_quote|
+        if sales_quote.quotation_uid.present?
+          # Resources::Quotation.update(inquiry.quotation_uid, inquiry)
+        else
+          sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
+        end
+      end
+    end
+
+    inquiry.save
   end
 
   attr_accessor :inquiry
