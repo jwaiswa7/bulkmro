@@ -12,6 +12,7 @@ import customFileInputs from "./components/customFileInputs";
 import select2s from "./components/select2s";
 import tooltips from "./components/tooltips";
 import textareaAutosize from "./components/textareaAutosize";
+import nestedForms from "./components/nestedForms";
 
 // Namespacing all imports under app
 let app = {};
@@ -22,6 +23,7 @@ app.initializeComponents = () => {
     select2s();
     tooltips();
     textareaAutosize();
+    nestedForms();
 };
 
 // Turbolinks load event

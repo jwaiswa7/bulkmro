@@ -3,7 +3,6 @@ main = {
     load: function () {
         main.initGoogleAnalytics();
         main.initParselyValidations();
-        main.initDynamicForms();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -144,18 +143,6 @@ main = {
             ga('set', 'location', event.data.url);
             return ga('send', 'pageview');
         }
-    },
-
-    // TO DO - REMOVE?
-    // Handles dynamic additions of fields to nested forms
-    initDynamicForms: function () {
-        $('body')
-            .on("fields_added.nested_form_fields", function (e, param) {
-                main.initSelects();
-            })
-            .on("fields_removed.nested_form_fields", function (e, param) {
-                main.initSelects();
-            });
     },
 
     // Bootstrap override default browser validation with Bootstrap's helper classes
