@@ -6,6 +6,7 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
 
   def call
     inquiry.save
+    return true
 
     if inquiry.project_uid.blank?
       inquiry.project_uid = Resources::Project.create(inquiry)
@@ -27,7 +28,6 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
       end
     end
 
-    inquiry.save
   end
 
   attr_accessor :inquiry

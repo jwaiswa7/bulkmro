@@ -14,7 +14,7 @@ class Inquiry < ApplicationRecord
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 
   has_one :account, :through => :company
-  has_many :inquiry_products, :inverse_of => :inquiry
+  has_many :inquiry_products, -> { order(sr_no: :asc) }, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :products, :through => :inquiry_products
   has_many :approvals, :through => :products, :class_name => 'ProductApproval'
@@ -149,5 +149,9 @@ class Inquiry < ApplicationRecord
 
   def rfqs_generated_on
     self.rfqs.minimum(:created_at)
+  end
+
+  def last_sr_no
+    self.inquiry_products.maximum(:sr_no) || 0
   end
 end

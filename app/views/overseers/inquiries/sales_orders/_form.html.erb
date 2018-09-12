@@ -14,8 +14,12 @@
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
             <%= row.hidden_field :id %>
-            <div class="col-md-3"><%= row.association :sales_quote_row, label_method: :to_s, collection: @sales_order.sales_quote.rows, include_blank: 'Select a Line Item' %></div>
-            <div class="col-md-2"><%= row.input :quantity %></div>
+            <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
+
+            <div class="col-md-3"><%= row.association :sales_quote_row, label_method: :to_s, collection: @sales_order.sales_quote.rows.map { |row| [row.to_s, row.id, {
+                :'data-sr-no' => row.sr_no, 'data-quantity' => row.maximum_quantity,
+            }]}, include_blank: 'Select a Line Item' %></div>
+            <div class="col-md-1"><%= row.input :quantity %></div>
             <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
             <div class="col-md-2"><%= row.input :margin_percentage, disabled: true %></div>
             <div class="col-md-2"><%= row.input :unit_selling_price, disabled: true %></div>

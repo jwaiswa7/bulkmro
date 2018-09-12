@@ -6,6 +6,8 @@ class InquiryProductSupplier < ApplicationRecord
   has_one :inquiry, :through => :inquiry_product
   has_many :sales_quote_rows
 
+  delegate :sr_no, to: :inquiry_product
+
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, :greater_than_or_equal_to => 0
 

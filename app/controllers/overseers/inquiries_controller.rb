@@ -1,6 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
-  before_action :set_company, only: [:new]
 
   def index
     @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
@@ -96,7 +95,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :weight_in_kgs,
         :commercial_terms_and_conditions,                        
         :comments,
-        :inquiry_products_attributes => [:id, :product_id, :quantity, :_destroy]
+        :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :_destroy]
     )
   end
 
