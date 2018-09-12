@@ -193,7 +193,7 @@ main = {
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
                     pagingType: 'full_numbers',
-                    order: [[0, 'desc']],
+                    order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
                     columnDefs: [{
                         "targets": 'no-sort',
                         "orderable": false
