@@ -1,6 +1,7 @@
 json.data (@accounts) do |account|
   json.array! [
                   [
+                      row_action_button(overseers_account_path(account), 'eye', 'View Account', 'dark'),
                       row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success'),
                       row_action_button(new_overseers_account_contact_path(account), 'user-tie', 'New Contact', 'success'),
                   ].join(' '),
