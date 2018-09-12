@@ -1,5 +1,14 @@
 const edit = () => {
     //TODO
+
+    $('form')
+        .on('change', 'select[name*=product_id]', function (e) {
+            onProductChange(this);
+        })
+        .find('select[name*=product_id]')
+        .each(function (e) {
+            onProductChange(this);
+        });
     /*
     *
     * Auto Add Position as per the last position when add to product adds a nested field
@@ -21,5 +30,23 @@ const edit = () => {
             $(positionInputs[positionInputs.length]).val(position);
         }
     });*/
+};
+
+let onProductChange = (container) => {
+    let optionSelected = $("option:selected", container);
+    let select = $(container).closest('select');
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        $.getJSON({
+            url: Routes.bp_catalog_overseers_product_path(optionSelected.val()),
+            data: {
+                company_id: $('#inquiry_company_id').val()
+            },
+
+            success: function (response) {
+                select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
+            }
+        });
+    }
 };
 export default edit

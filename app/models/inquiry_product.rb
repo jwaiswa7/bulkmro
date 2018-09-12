@@ -15,7 +15,7 @@ class InquiryProduct < ApplicationRecord
 
   delegate :approved?, to: :product
 
-  # attr_accessor :alternate
+  #attr_accessor :product_catalog_name
 
   validates_presence_of :quantity, :sr_no
   validates_uniqueness_of :inquiry_id, scope: :product_id
@@ -26,5 +26,9 @@ class InquiryProduct < ApplicationRecord
 
   def set_defaults
     self.quantity ||= 1
+  end
+
+  def set_product_catalog_name
+    #self
   end
 end

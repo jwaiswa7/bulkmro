@@ -18,4 +18,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def best_prices?
     index?
   end
+
+  def bp_catalog?
+    index?
+  end
 end

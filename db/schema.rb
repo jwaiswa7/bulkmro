@@ -352,6 +352,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "inquiry_product_id"
     t.integer "supplier_id"
     t.decimal "unit_cost_price"
+    t.string "bp_catalog_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -369,6 +370,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "inquiry_import_id"
     t.integer "sr_no"
     t.integer "quantity"
+    t.string "bp_catalog_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
