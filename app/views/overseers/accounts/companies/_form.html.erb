@@ -47,5 +47,55 @@
         <i class="fal fa-pen"></i> <%= submit_text(@company) %>
       <% end %>
     <% end %>
+
+    <%= f.input :name %>
+    <%= f.association :industry, include_blank: 'Select an Industry' %>
+    <%= f.association :default_payment_option, include_blank: 'Select a default' %>
+    <%= f.association :default_contact, collection: @account.contacts, include_blank: 'Select a default' %>
+
+    <% if f.object.persisted? %>
+      <%= f.association :default_billing_address, collection: f.object.addresses, include_blank: 'Select a default' %>
+      <%= f.association :default_shipping_address, collection: f.object.addresses, include_blank: 'Select a default' %>
+    <% end %>
+
+    <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+    <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+    <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+
+    <%= f.input :company_type, as: :select, collection: enum_to_collection(Company.company_types) %>
+    <%= f.input :priority, as: :select, collection: enum_to_collection(Company.priorities) %>
+    <%= f.input :site %>
+    <%= f.input :nature_of_business, as: :select, collection: enum_to_collection(Company.nature_of_businesses) %>
+    <%= f.input :credit_limit %>
+
+    <%= f.file_field :tan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+    <%= f.file_field :pan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+    <%= f.file_field :cen_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+
+    <%= f.input :is_msme, as: :radio_buttons %>
+    <%= f.input :is_unregistered_dealer, as: :radio_buttons %>   
+    
+    <%= f.input :mobile %>
+    <%= f.input :email %>
+    <%= f.input :telephone %>
+    
+
+
+    <% if action_name.capitalize == "New" %>
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-plus-circle"></i> <%= submit_text(@company) %>
+        <% end %>
+    <% else %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <i class="fal fa-pen"></i> <%= submit_text(@company) %>
+        <% end %>
+    <% end %>
+
+    <%= f.hidden_field :account_id %>
+    <%= f.input :created_by, disabled: true %>
+    <%= f.input :created_at, disabled: true %>
+    <%= f.input :updated_by, disabled: true %>
+    <%= f.input :updated_at, disabled: true %>
+
   <% end %>
 </div>

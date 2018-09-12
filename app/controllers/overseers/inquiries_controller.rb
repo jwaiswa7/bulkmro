@@ -18,6 +18,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def new
+    @company = Company.find(params[:company_id])
     @inquiry = @company.inquiries.build(overseer: current_overseer)
     authorize @inquiry
   end
@@ -26,7 +27,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save
+    if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render :new
@@ -41,7 +42,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save
+    if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render :new
@@ -59,7 +60,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
 
-    if @inquiry.save
+    if @inquiry.save_and_sync
       redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'
@@ -67,10 +68,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
-  def set_company
-    @company ||= Company.find(params[:company_id])
-  end
-
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
@@ -79,8 +76,25 @@ class Overseers::InquiriesController < Overseers::BaseController
     params.require(:inquiry).permit(
         :company_id,
         :contact_id,
+        :industry_id,
+        :inside_sales_owner_id,
+        :outside_sales_owner_id,
         :billing_address_id,
         :shipping_address_id,
+        :status,
+        :opportunity_type,
+        :opportunity_source,
+        :subject,
+        :gross_profit_percentage,
+        :expected_closing_date,
+        :quote_category,
+        :price_type,
+        :freight_option,
+        :freight_cost,
+        :packing_and_forwarding_option,
+        :payment_option_id,
+        :weight_in_kgs,
+        :commercial_terms_and_conditions,                        
         :comments,
         :inquiry_products_attributes => [:id, :product_id, :quantity, :_destroy]
     )

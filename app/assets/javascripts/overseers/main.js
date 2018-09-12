@@ -1,9 +1,6 @@
 main = {
     a: undefined,
     load: function () {
-        main.initGoogleAnalytics();
-        main.initParselyValidations();
-        main.initDynamicForms();
         main.dataTables.init();
 
         var dataAttributes = $('body').data();
@@ -135,77 +132,9 @@ main = {
             })
         }
     },
+
     beforeCache: function () {
         main.dataTables.cleanUp()
-    },
-
-    initGoogleAnalytics: function () {
-        if (typeof ga === 'function') {
-            ga('set', 'location', event.data.url);
-            return ga('send', 'pageview');
-        }
-    },
-
-    // TO DO - REMOVE?
-    // Handles dynamic additions of fields to nested forms
-    initDynamicForms: function () {
-        $('body')
-            .on("fields_added.nested_form_fields", function (e, param) {
-                main.initSelects();
-            })
-            .on("fields_removed.nested_form_fields", function (e, param) {
-                main.initSelects();
-            });
-    },
-
-    // Bootstrap override default browser validation with Bootstrap's helper classes
-    initParselyValidations: function () {
-        $.extend(window.Parsley.options, {
-            errorClass: 'is-invalid',
-            successClass: 'is-valid',
-            errorsWrapper: '<div class="invalid-feedback"></div>',
-            errorTemplate: '<span></span>',
-            trigger: 'change',
-            errorsContainer: function (e) {
-                $errorWrapper = e.$element.siblings('.invalid-feedback');
-                if ($errorWrapper.length) {
-                    return $errorWrapper;
-                } else {
-                    return e.$element.closest('.form-group').find('.invalid-feedback');
-                }
-
-            }
-
-        });
-
-        window.Parsley.on('form:validated', function (form) {
-            // form.$element.addClass('was-validated');
-        });
-
-        window.Parsley.on('field:success', function (e) {
-            if (!$(this.element).parent().find('div.valid-feedback').exists() && $(this.element).attr('data-parsely-no-valid-feedback') === undefined) {
-                $(this.element).parent().append('<div class="valid-feedback">Looks good!</div>');
-            }
-        });
-
-        $("[data-parsley-validate]").parsley();
-    },
-
-    initBootstrapValidations: function () {
-        $(document).ready(function () {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
-            var validation = Array.prototype.filter.call(forms, function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (form.checkValidity() === false) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        }, false);
     },
 
     dataTables: {
@@ -264,7 +193,7 @@ main = {
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
                     pagingType: 'full_numbers',
-                    order: [[0, 'desc']],
+                    order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
                     columnDefs: [{
                         "targets": 'no-sort',
                         "orderable": false

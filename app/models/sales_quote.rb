@@ -1,6 +1,7 @@
 class SalesQuote < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSent
+  include Mixins::CanBeSynced
 
   has_closure_tree({ name_column: :to_s })
 
@@ -14,6 +15,10 @@ class SalesQuote < ApplicationRecord
 
   validates_length_of :rows, minimum: 1
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
+
+  def syncable_identifiers
+    [:quotation_uid]
+  end
 
   def calculated_total
     rows.map { |row| row.unit_selling_price * row.quantity }.sum

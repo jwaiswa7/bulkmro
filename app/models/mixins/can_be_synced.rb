@@ -7,11 +7,12 @@ module Mixins::CanBeSynced
       service.call
     end
 
-    def self.syncable_identifiers
+    def syncable_identifiers
       []
     end
 
     def synced?
+
       syncable_identifiers.each do |si|
         return true if self.send(si).present?
       end

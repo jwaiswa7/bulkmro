@@ -12,6 +12,9 @@ import customFileInputs from "./components/customFileInputs";
 import select2s from "./components/select2s";
 import tooltips from "./components/tooltips";
 import textareaAutosize from "./components/textareaAutosize";
+import nestedForms from "./components/nestedForms";
+import googleAnalytics from "./components/googleAnalytics";
+import parselyValidations from "./components/parselyValidations";
 
 // Namespacing all imports under app
 let app = {};
@@ -22,6 +25,9 @@ app.initializeComponents = () => {
     select2s();
     tooltips();
     textareaAutosize();
+    nestedForms();
+    googleAnalytics();
+    parselyValidations();
 };
 
 // Turbolinks load event
