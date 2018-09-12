@@ -8,6 +8,7 @@ import googleAnalytics from "./components/googleAnalytics";
 import parselyValidations from "./components/parselyValidations";
 import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
+import alertsAutohide from "./components/alertsAutohide";
 
 // Namespacing all imports under app
 let app = {};
@@ -16,6 +17,7 @@ let app = {};
 app.initializeComponents = () => {
     customFileInputs();
     select2s();
+    alertsAutohide();
     tooltips();
     textareaAutosize();
     nestedForms();
