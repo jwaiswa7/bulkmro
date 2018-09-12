@@ -8,6 +8,8 @@ class SalesQuoteRow < ApplicationRecord
   has_one :supplier, :through => :inquiry_product_supplier
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
 
+  delegate :sr_no, to: :inquiry_product, allow_nil: true
+
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
   validates_numericality_of :quantity, :greater_than_or_equal_to => 1
