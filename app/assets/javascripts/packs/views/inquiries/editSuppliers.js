@@ -1,0 +1,37 @@
+const editSuppliers = () => {
+    $('form[action$=update_suppliers]')
+        .on('change', 'select[name*=supplier_id]', function (e) {
+            onSupplierChange(this);
+        })
+        .on('click', '.update-with-best-price', function (e) {
+            let parent = $(this).parent();
+            let input = parent.find('input');
+            parent.closest('div.row').find('[name*=unit_cost_price]').val(input.val());
+        })
+        .find('select[name*=supplier_id]')
+        .each(function (e) {
+            onSupplierChange(this);
+        });
+};
+
+let onSupplierChange = (container) => {
+    let optionSelected = $("option:selected", container);
+    let select = $(container).closest('select');
+
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        $.getJSON({
+            url: Routes.best_prices_overseers_product_path(select.data('product-id')),
+            data: {
+                supplier_id: optionSelected.val(),
+                inquiry_product_supplier_id: select.data('inquiry-product-supplier-id')
+            },
+
+            success: function (response) {
+                select.closest('div.row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
+                select.closest('div.row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
+            }
+        });
+    }
+};
+
+export default editSuppliers

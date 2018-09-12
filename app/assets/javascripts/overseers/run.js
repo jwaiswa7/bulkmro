@@ -1,7 +1,3 @@
-// $(function () {
-//     main.load();
-// });
-
-document.addEventListener("turbolinks:load", function() {
-    main.load();
-});
+$.fn.exists = function () {
+    return jQuery(this).length > 0;
+};
