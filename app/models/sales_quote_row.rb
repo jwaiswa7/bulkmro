@@ -34,7 +34,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def maximum_quantity
-    self.inquiry_product.quantity
+    self.inquiry_product.quantity if self.inquiry_product.present?
   end
 
   def calculated_unit_selling_price

@@ -16,9 +16,7 @@
             <%= row.hidden_field :id %>
             <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
 
-            <div class="col-md-3"><%= row.association :sales_quote_row, label_method: :to_s, collection: @sales_order.sales_quote.rows.map { |row| [row.to_s, row.id, {
-                :'data-sr-no' => row.sr_no, 'data-quantity' => row.maximum_quantity,
-            }]}, include_blank: 'Select a Line Item' %></div>
+            <div class="col-md-3"><%= row.association :sales_quote_row, collection: @sales_order.sales_quote.rows.map { |r| [r.to_s, r.id, { :'data-sr-no' => r.sr_no, 'data-quantity' => r.quantity, 'data-unit-cost-price' => r.unit_cost_price, 'data-margin-percentage' => r.margin_percentage, 'data-unit-selling-price' => r.unit_selling_price  }] }, include_blank: 'Select a Line Item' %></div>
             <div class="col-md-1"><%= row.input :quantity %></div>
             <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
             <div class="col-md-2"><%= row.input :margin_percentage, disabled: true %></div>
