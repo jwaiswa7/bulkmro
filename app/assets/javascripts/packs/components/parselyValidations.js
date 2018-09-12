@@ -7,15 +7,13 @@ const parselyValidations = () => {
         errorTemplate: '<span></span>',
         trigger: 'change',
         errorsContainer: function (e) {
-            $errorWrapper = e.$element.siblings('.invalid-feedback');
+            let $errorWrapper = e.$element.siblings('.invalid-feedback');
             if ($errorWrapper.length) {
                 return $errorWrapper;
             } else {
                 return e.$element.closest('.form-group').find('.invalid-feedback');
             }
-
         }
-
     });
 
     window.Parsley.on('form:validated', function (form) {
