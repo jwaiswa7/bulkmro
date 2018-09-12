@@ -110,6 +110,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
           :inquiry_product_attributes => [
               :inquiry_id,
               :quantity,
+              :position,
               :product_attributes => [:inquiry_import_row_id, :name, :sku, :brand_id, :category_id]
           ],
       ]

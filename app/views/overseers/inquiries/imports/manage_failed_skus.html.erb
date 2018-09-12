@@ -26,6 +26,7 @@
                 <%= inquiry_product.hidden_field :inquiry_id %>
                 <%= inquiry_product.hidden_field :quantity %>
 
+                <%= inquiry_product.hidden_field :position %>
                 <div class="row">
                   <div class="col-12">
                     <%= inquiry_product.simple_fields_for :product do |product| %>

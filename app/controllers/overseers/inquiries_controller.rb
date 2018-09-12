@@ -38,6 +38,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update
+
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
@@ -82,7 +83,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :billing_address_id,
         :shipping_address_id,
         :comments,
-        :inquiry_products_attributes => [:id, :product_id, :quantity, :_destroy]
+        :inquiry_products_attributes => [:id, :product_id, :position, :quantity, :_destroy]
     )
   end
 

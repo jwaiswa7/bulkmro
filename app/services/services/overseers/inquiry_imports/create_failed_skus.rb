@@ -5,7 +5,8 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
   end
 
   def call
-    excel_import.rows.each do |row|
+
+    excel_import.rows.each_with_index do |row,index|
       if row.marked_for_destruction?
         row.reload
       elsif row.approved_alternative_id.present?
@@ -13,7 +14,8 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
             :inquiry => inquiry,
             :import => excel_import,
             :product_id => row.approved_alternative_id,
-            :quantity => row.metadata['quantity']
+            :quantity => row.metadata['quantity'],
+            :position => inquiry.last_position + index + 1,
         )
       else
         row

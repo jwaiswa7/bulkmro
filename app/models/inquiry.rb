@@ -60,4 +60,9 @@ class Inquiry < ApplicationRecord
   def rfqs_generated_on
     self.rfqs.minimum(:created_at)
   end
+
+  def last_position
+    self.inquiry_products.try(:last).try(:position) || 0
+  end
+
 end

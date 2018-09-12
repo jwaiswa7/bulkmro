@@ -9,13 +9,13 @@ class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::I
   end
 
   def set_rows
-    import.import_text.split("\n").each do |list_item|
+    import.import_text.split("\n").each_with_index do |list_item,index|
       tuples = list_item.delete(' ').gsub(/[\r\n]/, '').split(',')
 
       sku = tuples[0]
       quantity = tuples.length > 1 ? tuples[1] : 1
 
-      rows.push({ 'sku' => sku, 'quantity' => quantity })
+      rows.push({ 'sku' => sku, 'quantity' => quantity , 'id' => inquiry.last_position + index + 1 } )
     end
   end
 end

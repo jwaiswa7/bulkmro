@@ -1,6 +1,7 @@
 class InquiryProduct < ApplicationRecord
   include Mixins::CanBeStamped
 
+  default_scope { order(position: :asc) }
   belongs_to :inquiry
   belongs_to :product
   accepts_nested_attributes_for :product
@@ -17,9 +18,11 @@ class InquiryProduct < ApplicationRecord
 
   # attr_accessor :alternate
 
-  validates_presence_of :quantity
+  validates_presence_of :quantity, :position
   validates_uniqueness_of :inquiry_id, scope: :product_id
+  validates_uniqueness_of :position, scope: :inquiry_id
   validates_numericality_of :quantity, :greater_than => 0
+
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults

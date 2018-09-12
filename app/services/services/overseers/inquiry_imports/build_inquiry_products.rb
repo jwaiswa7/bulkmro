@@ -5,10 +5,12 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
   end
 
   def call
-    excel_import.rows.each do |row|
+    excel_import.rows.each_with_index do |row, index|
+
       row.build_inquiry_product(
           inquiry: inquiry,
           import: excel_import,
+          position: inquiry.last_position + index + 1,
           product: Product.new(
               inquiry_import_row: row,
               name: row.metadata['name'],
