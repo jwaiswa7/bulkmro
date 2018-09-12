@@ -7,7 +7,9 @@
 
 (function() {
   this.App || (this.App = {});
-
   App.cable = ActionCable.createConsumer();
-
 }).call(this);
+
+$.fn.exists = function () {
+    return jQuery(this).length > 0;
+};

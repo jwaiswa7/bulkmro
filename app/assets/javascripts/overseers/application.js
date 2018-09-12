@@ -17,5 +17,4 @@
 //= require cocoon
 //= require js-routes
 
-//= require overseers/main
 //= require overseers/run
