@@ -5,6 +5,11 @@ Rails.application.routes.draw do
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
 
+  namespace 'callbacks' do
+    resources :sales_orders
+    get 'login' => '/callbacks/sessions#new'
+  end
+
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
     resources :brands
