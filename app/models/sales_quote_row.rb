@@ -26,6 +26,8 @@ class SalesQuoteRow < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.margin_percentage ||= 15.0
+    self.freight_cost ||= 0.0
+    self.unit_freight_cost ||= 0.0
 
     if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity

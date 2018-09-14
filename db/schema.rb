@@ -590,6 +590,8 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
+    t.decimal "freight_cost"
+    t.decimal "unit_freight_cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"

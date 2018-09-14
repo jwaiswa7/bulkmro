@@ -73,6 +73,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :id,
             :inquiry_product_supplier_id,
             :quantity,
+            :freight_cost,
             :margin_percentage,
             :unit_selling_price,
             :_destroy

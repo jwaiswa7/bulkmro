@@ -13,6 +13,8 @@ class SalesQuote < ApplicationRecord
   has_many :products, :through => :rows
   has_many :sales_orders
 
+  attr_accessor :total_freight_cost
+
   validates_length_of :rows, minimum: 1
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
 
