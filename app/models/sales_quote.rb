@@ -6,6 +6,10 @@ class SalesQuote < ApplicationRecord
   has_closure_tree({ name_column: :to_s })
 
   belongs_to :inquiry
+  has_one :inquiry_currency, :through => :inquiry
+  accepts_nested_attributes_for :inquiry_currency
+
+  has_one :currency, :through => :inquiry_currency
   has_one :company, :through => :inquiry
   has_many :inquiry_products, :through => :inquiry
   has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesQuoteRow', inverse_of: :sales_quote
@@ -26,5 +30,9 @@ class SalesQuote < ApplicationRecord
 
   def inquiry_has_many_sales_quotes?
     self.inquiry.sales_quotes.except_object(self).count >= 1
+  end
+
+  def calculated_freight_cost_total
+    self.rows.sum(:freight_cost_subtotal).to_f
   end
 end

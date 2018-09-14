@@ -4,6 +4,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.references :company, foreign_key: true
       t.references :payment_option, foreign_key: true
+      t.references :inquiry_currency, foreign_key: true, index: { unique: true }
 
       t.string :project_uid, index: { unique: true }
       t.string :opportunity_uid, index: { unique: true }
@@ -26,7 +27,6 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :price_type
 
       t.decimal :potential_amount, default: 0.00
-      t.decimal :freight_cost, default: 0.00
       t.decimal :gross_profit_percentage, default: 0.00
       t.decimal :weight_in_kgs, default: 0.0
 

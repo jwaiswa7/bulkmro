@@ -6,6 +6,8 @@ class Inquiry < ApplicationRecord
 
   pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
+  belongs_to :inquiry_currency
+  has_one :currency, :through => :inquiry_currency
   belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :company
   has_one :industry, :through => :company
@@ -89,6 +91,11 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
+  validates_presence_of :inquiry_currency
+  validates_presence_of :contact
+  validates_presence_of :company
+  validates_presence_of :billing_address
+  validates_presence_of :shipping_address
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -123,6 +130,8 @@ class Inquiry < ApplicationRecord
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
     end
+
+    self.inquiry_currency ||= self.build_inquiry_currency
   end
 
   def draft?

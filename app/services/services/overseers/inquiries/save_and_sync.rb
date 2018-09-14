@@ -5,9 +5,9 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    inquiry.save
-    perform_later(inquiry)
-    true
+    if inquiry.save
+      perform_later(inquiry)
+    end
   end
 
   def call_later

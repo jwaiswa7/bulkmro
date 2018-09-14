@@ -5,6 +5,7 @@ class CreateInquiryProductSuppliers < ActiveRecord::Migration[5.2]
       t.integer :supplier_id, index: true
       t.decimal :unit_cost_price
       t.string :bp_catalog_name, index: true
+      t.string :bp_catalog_sku, index: true
 
       t.timestamps
       t.userstamps

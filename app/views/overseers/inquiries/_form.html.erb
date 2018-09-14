@@ -24,8 +24,7 @@
     <%= f.input :quote_category, as: :select, collection: enum_to_collection(Inquiry.quote_categories) %>
     <%= f.input :price_type, as: :select, collection: enum_to_collection(Inquiry.price_types) %>
     <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
-    <%= f.input :freight_cost %>
-    <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>    
+    <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
 
     <%= f.association :payment_option, include_blank: 'Select a Payment Option' %>
     <%= f.input :weight_in_kgs %>
@@ -65,10 +64,17 @@
               </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-2">
             <div class="d-flex flex-row">
               <div class="flex-grow-1">
                 <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="d-flex flex-row">
+              <div class="flex-grow-1">
+                <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false %>
               </div>
             </div>
           </div>

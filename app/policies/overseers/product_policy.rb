@@ -15,11 +15,11 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     approve?
   end
 
-  def customer_bp_catalog_name?
+  def customer_bp_catalog?
     index?
   end
 
-  def best_prices_and_supplier_bp_catalog_name?
+  def best_prices_and_supplier_bp_catalog?
     index?
   end
 end

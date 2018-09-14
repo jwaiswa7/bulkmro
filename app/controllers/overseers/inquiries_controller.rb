@@ -90,20 +90,30 @@ class Overseers::InquiriesController < Overseers::BaseController
         :quote_category,
         :price_type,
         :freight_option,
-        :freight_cost,
+        :total_freight_cost,
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
         :commercial_terms_and_conditions,                        
         :comments,
-        :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :_destroy]
+        :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
 
     )
   end
 
   def edit_suppliers_params
     params.require(:inquiry).permit(
-        :inquiry_products_attributes => [:id, :inquiry_product_suppliers_attributes => [:id, :supplier_id, :bp_catalog_name, :unit_cost_price, :_destroy]]
+        :inquiry_products_attributes => [
+            :id,
+            :inquiry_product_suppliers_attributes => [
+                :id,
+                :supplier_id,
+                :bp_catalog_name,
+                :bp_catalog_sku,
+                :unit_cost_price,
+                :_destroy
+            ]
+        ]
     )
   end
 

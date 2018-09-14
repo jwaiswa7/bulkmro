@@ -50,12 +50,14 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   private
   def save
-    @sales_quote.save
+    service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
+    service.call
   end
 
   def save_and_send
     @sales_quote.assign_attributes(:sent_at => Time.now)
-    @sales_quote.save
+    service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
+    service.call
   end
 
   def set_sales_quote
@@ -69,10 +71,18 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :billing_address_id,
         :shipping_address_id,
         :comments,
+        :inquiry_currency_attributes => [
+          :id,
+          :currency_id,
+          :conversion_rate,
+        ],
         :rows_attributes => [
             :id,
+            :sales_quote_id,
             :inquiry_product_supplier_id,
             :quantity,
+            :freight_cost_subtotal,
+            :unit_freight_cost,
             :margin_percentage,
             :unit_selling_price,
             :_destroy

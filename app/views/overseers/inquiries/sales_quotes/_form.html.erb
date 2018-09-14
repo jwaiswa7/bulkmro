@@ -8,18 +8,37 @@
       <% end %>
     <% end %>
 
+
+    <div class="card-body">
+      <div class="row">
+        <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
+        <div class="col-md-6">
+          <%= inquiry_currency.association :currency, include_blank: false %>
+        </div>
+        <div class="col-md-6">
+          <%= inquiry_currency.input :conversion_rate %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+
     <div class="card-body">
       <div class="form-group">
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
+            <%= row.hidden_field :sales_quote_id %>
             <%= row.hidden_field :id %>
             <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
-            <div class="col-md-3">
-              <%= row.association :inquiry_product_supplier, collection: @inquiry.inquiry_product_suppliers.map { |ips| [ips.to_s, ips.id, { 'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no, 'data-quantity' => ips.inquiry_product.quantity, 'data-margin-percentage' => 15 }] }, include_blank: 'Select a Line Item' %></div>
+            <div class="col-md-2">
+              <%= row.association :inquiry_product_supplier, label: 'Product', collection: @inquiry.inquiry_product_suppliers.map { |ips| [ips.to_s, ips.id, { 'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no, 'data-quantity' => ips.inquiry_product.quantity, 'data-margin-percentage' => 15 }] }, include_blank: 'Select a Line Item' %></div>
             <div class="col-md-1"><%= row.input :quantity %></div>
-            <div class="col-md-2"><%= row.input :unit_cost_price, disabled: true %></div>
-            <div class="col-md-2"><%= row.input :margin_percentage, input_html: { :min => 0, :max => 99.99 } %></div>
-            <div class="col-md-2"><%= row.input :unit_selling_price, input_html: { :min => 0 } %></div>
+            <div class="col-md-1"><%= row.input :freight_cost_subtotal, label: 'Total FR' %></div>
+            <div class="col-md-1"><%= row.input :unit_freight_cost, label: 'UFC' %></div>
+            <div class="col-md-1"><%= row.input :unit_cost_price, label: 'UCP', disabled: true %></div>
+            <div class="col-md-1"><%= row.input :unit_cost_price_with_unit_freight_cost, label: 'UCP w/ F', disabled: true %></div>
+            <div class="col-md-1"><%= row.input :margin_percentage, label: 'Margin %', input_html: { :min => 0, :max => 99.99 } %></div>
+            <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', input_html: { :min => 0 } %></div>
+            <div class="col-md-1"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: { :min => 0 } %></div>
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">
@@ -28,7 +47,12 @@
             </div>
           </div>
         <% end %>
-        <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-outline-dark' %>
+        <div class="row">
+          <div class="col-md-3"><%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-outline-dark' %></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12"><%= f.input :calculated_freight_cost_total, disabled: true %></div>
+        </div>
         <hr/>
         <%= f.submit 'Save as Draft', name: 'save', class: 'btn btn-success btn-block' %>
         <%= f.submit 'Save and Send', name: 'save_and_send', class: 'btn btn-success btn-block' %>

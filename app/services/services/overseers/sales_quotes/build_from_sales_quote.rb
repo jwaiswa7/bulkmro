@@ -12,6 +12,7 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
     sales_quote.assign_attributes(:sent_at => nil)
     sales_quote.rows.each do |row|
       row.assign_attributes(:overseer => overseer)
+      row.assign_attributes(:sales_quote_id => old_sales_quote.id)
     end
 
     sales_quote
