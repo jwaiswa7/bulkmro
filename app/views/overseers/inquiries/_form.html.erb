@@ -58,7 +58,7 @@
                 <% end %>
               </div>
               <div class="mr-2">
-                <%= inquiry_product.input :sr_no, placeholder: 'Serial Number', label: false %>
+                <%= inquiry_product.input :sr_no, label: false %>
               </div>
               <div class="flex-grow-1">
                 <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
@@ -91,17 +91,13 @@
         <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
       <% else %>
         <div class="form-row">
-          <div class="col-md-2">
-            <a href="#" class="btn btn-warning btn-outline-warning btn-block mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Reset Sr Nos</a>
-          </div>
-
           <div class="col-md-4">
             <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add products using excel</a>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Add products through list</a>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
               <i class="fal fa-plus-circle mr-1"></i>Add a product
             <% end %>

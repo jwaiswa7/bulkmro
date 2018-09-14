@@ -36,7 +36,7 @@ let onProductChange = (container) => {
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.past_bp_catalog_name_overseers_product_path(optionSelected.val()),
+            url: Routes.customer_bp_catalog_name_overseers_product_path(optionSelected.val()),
             data: {
                 company_id: $('#inquiry_company_id').val()
             },

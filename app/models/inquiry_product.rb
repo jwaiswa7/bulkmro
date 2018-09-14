@@ -2,6 +2,7 @@ class InquiryProduct < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :inquiry
+  has_one :company, :through => :inquiry
   belongs_to :product
   accepts_nested_attributes_for :product
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
@@ -26,9 +27,5 @@ class InquiryProduct < ApplicationRecord
 
   def set_defaults
     self.quantity ||= 1
-  end
-
-  def set_product_catalog_name
-    #self
   end
 end

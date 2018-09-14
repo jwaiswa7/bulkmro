@@ -357,6 +357,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["bp_catalog_name"], name: "index_inquiry_product_suppliers_on_bp_catalog_name"
     t.index ["created_by_id"], name: "index_inquiry_product_suppliers_on_created_by_id"
     t.index ["inquiry_product_id", "supplier_id"], name: "index_ips_on_inquiry_product_id_and_supplier_id", unique: true
     t.index ["inquiry_product_id"], name: "index_inquiry_product_suppliers_on_inquiry_product_id"
@@ -375,6 +376,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.index ["bp_catalog_name"], name: "index_inquiry_products_on_bp_catalog_name"
     t.index ["created_by_id"], name: "index_inquiry_products_on_created_by_id"
     t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
     t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
