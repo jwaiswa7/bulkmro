@@ -14,6 +14,10 @@ class Overseer < ApplicationRecord
 
   enum role: { admin: 10, sales: 20, sales_manager: 30 }
 
+  validates_presence_of :email
+  validates_presence_of :password, :if => :new_record?
+  validates_presence_of :password_confirmation, :if => :new_record?
+
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.role ||= :admin
