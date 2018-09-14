@@ -9,9 +9,9 @@
 
   <div class="card-body">
     <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
-    <%= f.association :contact, :wrapper => :custom_multi_select %>
-    <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s %>
-    <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s %>
+    <%= f.association :contact, :wrapper => :custom_multi_select, include_blank: "Select a contact" %>
+    <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a billing address"  %>
+    <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping address" %>
 
     <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses)  %>
     <!-- TODO commercial_status need to be added -->
