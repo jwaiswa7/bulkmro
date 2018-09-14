@@ -33,9 +33,18 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
+  validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?
+  def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
+    if (freight_cost_subtotal / quantity).round != unit_freight_cost
+      errors.add :base, 'freight cost is not consistent with freight cost subtotal'
+    end
+  end
+
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.margin_percentage ||= 15.0
+    self.freight_cost_subtotal ||= 0.0
+    self.unit_freight_cost ||= 0.0
 
     if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity
@@ -48,6 +57,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price
+    # (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100))).round(2)
     (self.unit_cost_price / (1 - (self.margin_percentage / 100))).round(2)
   end
 
@@ -57,6 +67,10 @@ class SalesQuoteRow < ApplicationRecord
 
   def conversion_rate
     self.sales_quote.inquiry_currency.conversion_rate
+  end
+
+  def unit_cost_price_with_unit_freight_cost
+    unit_cost_price + unit_freight_cost if unit_cost_price.present? && unit_freight_cost.present?
   end
 
   def to_s

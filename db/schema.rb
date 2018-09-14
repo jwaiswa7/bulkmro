@@ -308,7 +308,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "quote_category"
     t.integer "price_type"
     t.decimal "potential_amount", default: "0.0"
-    t.decimal "freight_cost", default: "0.0"
+    t.decimal "freight_cost_total", default: "0.0"
     t.decimal "gross_profit_percentage", default: "0.0"
     t.decimal "weight_in_kgs", default: "0.0"
     t.date "expected_closing_date"
@@ -616,6 +616,8 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
     t.decimal "converted_unit_selling_price"
+    t.decimal "freight_cost_subtotal"
+    t.decimal "unit_freight_cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
