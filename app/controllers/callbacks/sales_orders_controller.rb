@@ -4,7 +4,7 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
 
   def create
     resp_status = 0
-    resp_msg = ''
+    resp_msg = 'Invalid request.'
     resp_response = ''
     #request params: {"U_MgntDocID":"942","Status":"1","comment":"","DocNum":"10300008","DocEntry":"609","UserEmail":"35","SapReject":""}
     #In create U_MgntDocID is ref id vaule sent while creating sales draft from magento to SAP
@@ -28,8 +28,6 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
       else
         resp_msg = "Invalid/Unknown Status received from SAP.";
       end
-    else
-      resp_msg = "Invalid request."
     end
 
     response = format_response(resp_status, resp_msg, resp_response)
@@ -37,15 +35,21 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
   end
 
   def update
+    resp_status = 0
+    resp_msg = 'Invalid request.'
+    resp_response = ''
     #request params: {"increment_id":"2001656","sap_order_status":"30","comment":"","DocNum":"2001656","DocEntry":"2169","UserEmail":"35","SapReject":""}
     # In update increment_id and DocNum are same
-    if params['increment_id'] && params['sap_order_status'] && params['comment']
+    if params['increment_id'] && params['sap_order_status']
       #update order based on status (like cancel) and add comment
-      resp_status = 1
-      resp_msg = "The order has been updated Successfully"
-    else
-      resp_status = 0
-      resp_msg = "Invalid request."
+      if params['sap_order_status'] == '30'
+        #cancel the order along with update quote product qty and cancel order item qty
+        resp_status = 1
+        resp_msg = "The order has been cancelled Successfully"
+      else
+        resp_status = 1
+        resp_msg = "The order has been updated Successfully"
+      end
     end
     response = format_response(resp_status, resp_msg)
     render json: response, status: :ok
