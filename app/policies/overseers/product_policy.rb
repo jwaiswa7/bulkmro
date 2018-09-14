@@ -19,7 +19,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def bp_catalog?
+  def past_bp_catalog_name?
     index?
   end
 end

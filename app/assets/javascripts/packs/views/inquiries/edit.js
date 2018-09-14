@@ -1,14 +1,12 @@
 const edit = () => {
     //TODO
 
-    $('form')
-        .on('change', 'select[name*=product_id]', function (e) {
-            onProductChange(this);
-        })
-        .find('select[name*=product_id]')
-        .each(function (e) {
-            onProductChange(this);
-        });
+    $('form').on('change', 'select[name*=product_id]', function (e) {
+        onProductChange(this);
+    }).find('select[name*=product_id]').each(function (e) {
+        onProductChange(this);
+    });
+
     /*
     *
     * Auto Add Position as per the last position when add to product adds a nested field
@@ -38,7 +36,7 @@ let onProductChange = (container) => {
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.bp_catalog_overseers_product_path(optionSelected.val()),
+            url: Routes.past_bp_catalog_name_overseers_product_path(optionSelected.val()),
             data: {
                 company_id: $('#inquiry_company_id').val()
             },
@@ -49,4 +47,5 @@ let onProductChange = (container) => {
         });
     }
 };
+
 export default edit

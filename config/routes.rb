@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     resources :products do
       member do
         get 'best_prices'
-        get 'bp_catalog'
+        get 'past_bp_catalog_name'
       end
 
       collection do

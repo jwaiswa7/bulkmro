@@ -7,7 +7,7 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
 
       t.integer :sr_no
       t.integer :quantity
-      t.string :bp_catalog_name
+      t.string :bp_catalog_name, index: true
 
       t.timestamps
       t.userstamps

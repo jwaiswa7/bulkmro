@@ -53,11 +53,11 @@ class Overseers::ProductsController < Overseers::BaseController
     }
   end
 
-  def bp_catalog
+  def past_bp_catalog_name
     @company = Company.find(params[:company_id])
     authorize @product
     render json: {
-        bp_catalog_name: @product.bp_catalog_name_for_buyer(@company)
+        bp_catalog_name: @product.bp_catalog_name_for_customer(@company)
     }
   end
 

@@ -67,8 +67,8 @@ class Product < ApplicationRecord
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 
-  def bp_catalog_name_for_buyer(compnay)
-    self.inquiry_products.joins(:inquiry).where("inquiries.company_id = ?", compnay.id ).order(updated_at: :desc).pluck(:bp_catalog_name).compact.first
+  def bp_catalog_name_for_customer(company)
+    self.inquiry_products.joins(:inquiry).where("inquiries.company_id = ?", company.id).order(updated_at: :desc).pluck(:bp_catalog_name).compact.first
   end
 
   def bp_catalog_name_for_supplier(supplier)
