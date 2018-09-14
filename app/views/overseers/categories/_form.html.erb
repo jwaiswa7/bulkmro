@@ -5,9 +5,9 @@
   </div>
   <%= simple_form_for([:overseers, @category], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <% if @category.persisted? %>
-      <%= f.association :parent, :label_method => :to_s, collection: Category.except_objects(@category.self_and_descendants) %>
+      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Category.except_objects(@category.self_and_descendants) %>
     <% else %>
-      <%= f.association :parent, :label_method => :to_s %>
+      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s %>
     <% end %>
 
     <%= f.input :name %>
