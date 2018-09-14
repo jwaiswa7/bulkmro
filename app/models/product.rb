@@ -9,7 +9,8 @@ class Product < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
+  pg_search_scope :locate_any, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand
   belongs_to :category
@@ -64,6 +65,14 @@ class Product < ApplicationRecord
 
   def latest_unit_cost_price_for(supplier, except=nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
+  end
+
+  def bp_catalog_name_for_customer(company)
+    self.inquiry_products.joins(:inquiry).where("inquiries.company_id = ?", company.id).order(updated_at: :desc).pluck(:bp_catalog_name).compact.first
+  end
+
+  def bp_catalog_name_for_supplier(supplier)
+    self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name).compact.first
   end
 
   def brand_name

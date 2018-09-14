@@ -20,7 +20,7 @@ let onSupplierChange = (container) => {
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.best_prices_overseers_product_path(select.data('product-id')),
+            url: Routes.best_prices_and_supplier_bp_catalog_name_overseers_product_path(select.data('product-id')),
             data: {
                 supplier_id: optionSelected.val(),
                 inquiry_product_supplier_id: select.data('inquiry-product-supplier-id')
@@ -29,6 +29,7 @@ let onSupplierChange = (container) => {
             success: function (response) {
                 select.closest('div.row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
                 select.closest('div.row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
+                select.closest('div.row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
             }
         });
     }

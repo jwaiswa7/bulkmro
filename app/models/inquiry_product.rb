@@ -2,6 +2,7 @@ class InquiryProduct < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :inquiry
+  has_one :company, :through => :inquiry
   belongs_to :product
   accepts_nested_attributes_for :product
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
@@ -15,7 +16,7 @@ class InquiryProduct < ApplicationRecord
 
   delegate :approved?, to: :product
 
-  # attr_accessor :alternate
+  #attr_accessor :product_catalog_name
 
   validates_presence_of :quantity, :sr_no
   validates_uniqueness_of :inquiry_id, scope: :product_id

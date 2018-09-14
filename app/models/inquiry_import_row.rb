@@ -22,6 +22,6 @@ class InquiryImportRow < ApplicationRecord
   end
 
   def approved_alternatives(page=1)
-    Product.approved.not_rejected.locate(metadata['name']).except_objects(inquiry.products).page(page).per(4)
+    Product.approved.not_rejected.locate_any(metadata['name']).except_objects(inquiry.products).page(page).per(4)
   end
 end

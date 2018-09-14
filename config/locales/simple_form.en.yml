@@ -2,11 +2,31 @@ en:
   simple_form:
     placeholders:
       inquiry:
-        comments: 'Any additional information about about this inquiry'
+        bp_catalog_name: 'Business Partner Catalog Name'
+        subject: 'e.g. Drill machine'
+        commercial_terms_and_conditions: 'e.g. 1. Cost does not include any additional certification if required as per Indian regulations'
+        comments: 'e.g. Sales Order Amended'
+      inquiry_products:
+        sr_no: 'Serial Number'
+        bp_catalog_name: 'Business Partner Catalog Name'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
-        mobile: 'e.g. +919987480784'
+        mobile: 'e.g. 9987480784'
+        credit_limit: 'e.g. 1'
+        nature_of_business: 'e.g. Trading'
+        email: 'e.g. info@reliance.com'
+        telephone: 'e.g. 02240236090'
+      contact:
+        first_name: 'e.g. Ashwin'
+        last_name: 'e.g. Goyal'
+        password: 'e.g. Ashwingoyal@123'
+        password_confirmation: 'e.g. Ashwingoyal@123'
+        email: 'e.g. ashwin.goyal@gmail.com'
+        prefix: 'e.g. Mr'
+        designation: 'e.g. Admin'
+        telephone: 'e.g. 02240236090'
+        mobile: 'e.g. 9987480784'
     "yes": 'Yes'
     "no": 'No'
     required:
