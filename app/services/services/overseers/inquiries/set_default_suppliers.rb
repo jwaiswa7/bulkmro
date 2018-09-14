@@ -8,7 +8,11 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
     inquiry.inquiry_products.each do |inquiry_product|
       if inquiry_product.product.approved? && inquiry_product.inquiry_product_suppliers.blank?
           if inquiry_product.product.inquiry_product_suppliers.present?
-            inquiry_product.inquiry_product_suppliers.build(:supplier => inquiry_product.product.lowest_inquiry_product_supplier.supplier, :unit_cost_price => inquiry_product.product.lowest_unit_cost_price)
+            inquiry_product.inquiry_product_suppliers.build(
+              :supplier => inquiry_product.product.lowest_inquiry_product_supplier.supplier,
+              :unit_cost_price => inquiry_product.product.lowest_unit_cost_price,
+              :bp_catalog_name => inquiry_product.product.bp_catalog_name_for_supplier(inquiry_product.product.lowest_inquiry_product_supplier.supplier)
+            )
         end
       end
     end

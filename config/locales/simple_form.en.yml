@@ -3,6 +3,11 @@ en:
     placeholders:
       inquiry:
         comments: 'Any additional information about about this inquiry'
+        bp_catalog_name: 'Business Partner Catalog Name'
+        commercial_terms_and_conditions: 'Commercial terms and conditions'
+      inquiry_products:
+        sr_no: 'Serial Number'
+        bp_catalog_name: 'Business Partner Catalog Name'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
