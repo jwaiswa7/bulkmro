@@ -24,7 +24,7 @@
 
     <%= f.input :email, :required => true %>
     <%= f.input :password, :required => true %>
-    <%= f.input :password_confirmation, :required => true %>
+    <%= f.input :password_confirmation, :input_html => {:"data-parsley-error-message" => 'Passwords do not match.', :"data-parsley-equalto" => '#overseer_password'}, :required => true %>
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
