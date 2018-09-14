@@ -6,7 +6,7 @@ class SalesOrderRow < ApplicationRecord
   belongs_to :sales_quote_row
   has_one :inquiry_product, :through => :sales_quote_row
 
-  delegate :unit_cost_price, :unit_selling_price, :margin_percentage, to: :sales_quote_row, allow_nil: true
+  delegate :unit_cost_price, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
 
   validates_presence_of :quantity

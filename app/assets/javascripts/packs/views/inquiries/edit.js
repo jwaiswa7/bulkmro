@@ -36,13 +36,14 @@ let onProductChange = (container) => {
 
     if (optionSelected.exists() && optionSelected.val() !== '') {
         $.getJSON({
-            url: Routes.customer_bp_catalog_name_overseers_product_path(optionSelected.val()),
+            url: Routes.customer_bp_catalog_overseers_product_path(optionSelected.val()),
             data: {
                 company_id: $('#inquiry_company_id').val()
             },
 
             success: function (response) {
                 select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
+                select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
             }
         });
     }

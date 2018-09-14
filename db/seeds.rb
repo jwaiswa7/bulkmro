@@ -3,6 +3,13 @@ service.loop(100) do |x|
   TaxCode.create!(code: x.get_column('Code'), description: x.get_column('Description'))
 end
 
+
+Currency.create!([
+                     { name: 'USD', conversion_rate: 71.59 },
+                     { name: 'INR', conversion_rate: 1 },
+                     { name: 'EUR', conversion_rate: 83.85 },
+                 ])
+
 states = [
     'Andhra Pradesh',
     'Arunachal Pradesh',
@@ -1231,7 +1238,7 @@ end
 #  end
 Account.all.each do |account|
   5.times do
-    contact = RandomRecord.for(account.contacts)
+    contact = RandomRecord.for(Contact)
     company = RandomRecord.for(Company)
     products = RandomRecords.for(Product.all, 5)
     i = Inquiry.create!(

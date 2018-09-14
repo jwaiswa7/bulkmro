@@ -272,6 +272,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["updated_by_id"], name: "index_contacts_on_updated_by_id"
   end
 
+  create_table "currencies", force: :cascade do |t|
+    t.string "name"
+    t.decimal "conversion_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "industries", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -283,6 +290,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "contact_id"
     t.bigint "company_id"
     t.bigint "payment_option_id"
+    t.bigint "inquiry_currency_id"
     t.string "project_uid"
     t.string "opportunity_uid"
     t.integer "billing_address_id"
@@ -314,6 +322,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
+    t.index ["inquiry_currency_id"], name: "index_inquiries_on_inquiry_currency_id", unique: true
     t.index ["inside_sales_owner_id"], name: "index_inquiries_on_inside_sales_owner_id"
     t.index ["opportunity_uid"], name: "index_inquiries_on_opportunity_uid", unique: true
     t.index ["outside_sales_owner_id"], name: "index_inquiries_on_outside_sales_owner_id"
@@ -322,6 +331,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["sales_manager_id"], name: "index_inquiries_on_sales_manager_id"
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
+  end
+
+  create_table "inquiry_currencies", force: :cascade do |t|
+    t.bigint "currency_id"
+    t.decimal "conversion_rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["currency_id"], name: "index_inquiry_currencies_on_currency_id"
   end
 
   create_table "inquiry_import_rows", force: :cascade do |t|
@@ -353,11 +370,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "supplier_id"
     t.decimal "unit_cost_price"
     t.string "bp_catalog_name"
+    t.string "bp_catalog_sku"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["bp_catalog_name"], name: "index_inquiry_product_suppliers_on_bp_catalog_name"
+    t.index ["bp_catalog_sku"], name: "index_inquiry_product_suppliers_on_bp_catalog_sku"
     t.index ["created_by_id"], name: "index_inquiry_product_suppliers_on_created_by_id"
     t.index ["inquiry_product_id", "supplier_id"], name: "index_ips_on_inquiry_product_id_and_supplier_id", unique: true
     t.index ["inquiry_product_id"], name: "index_inquiry_product_suppliers_on_inquiry_product_id"
@@ -372,11 +391,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "sr_no"
     t.integer "quantity"
     t.string "bp_catalog_name"
+    t.string "bp_catalog_sku"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["bp_catalog_name"], name: "index_inquiry_products_on_bp_catalog_name"
+    t.index ["bp_catalog_sku"], name: "index_inquiry_products_on_bp_catalog_sku"
     t.index ["created_by_id"], name: "index_inquiry_products_on_created_by_id"
     t.index ["inquiry_id", "product_id"], name: "index_inquiry_products_on_inquiry_id_and_product_id", unique: true
     t.index ["inquiry_id"], name: "index_inquiry_products_on_inquiry_id"
@@ -594,6 +615,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
+    t.decimal "converted_unit_selling_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -683,12 +705,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "contacts", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
+  add_foreign_key "inquiries", "inquiry_currencies"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "inside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "outside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "sales_manager_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "payment_options"
+  add_foreign_key "inquiry_currencies", "currencies"
   add_foreign_key "inquiry_import_rows", "inquiry_imports"
   add_foreign_key "inquiry_import_rows", "inquiry_products"
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"

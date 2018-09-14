@@ -7,6 +7,7 @@ class CreateSalesQuoteRows < ActiveRecord::Migration[5.2]
       t.integer :quantity
       t.decimal :margin_percentage
       t.decimal :unit_selling_price
+      t.decimal :converted_unit_selling_price
 
       t.timestamps
       t.userstamps

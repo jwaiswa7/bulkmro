@@ -11,7 +11,7 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
             inquiry_product.inquiry_product_suppliers.build(
               :supplier => inquiry_product.product.lowest_inquiry_product_supplier.supplier,
               :unit_cost_price => inquiry_product.product.lowest_unit_cost_price,
-              :bp_catalog_name => inquiry_product.product.bp_catalog_name_for_supplier(inquiry_product.product.lowest_inquiry_product_supplier.supplier)
+              :bp_catalog_name => inquiry_product.product.bp_catalog_for_supplier(inquiry_product.product.lowest_inquiry_product_supplier.supplier)
             )
         end
       end

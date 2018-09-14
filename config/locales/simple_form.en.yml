@@ -8,7 +8,11 @@ en:
         comments: 'e.g. Sales Order Amended'
       inquiry_products:
         sr_no: 'Serial Number'
-        bp_catalog_name: 'Business Partner Catalog Name'
+        bp_catalog_name: 'BP Catalog Name'
+        bp_catalog_sku: 'BP Catalog #'
+      inquiry_product_suppliers:
+        bp_catalog_name: 'BP Catalog Name'
+        bp_catalog_sku: 'BP Catalog #'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
