@@ -2,9 +2,10 @@ en:
   simple_form:
     placeholders:
       inquiry:
-        comments: 'Any additional information about about this inquiry'
         bp_catalog_name: 'Business Partner Catalog Name'
-        commercial_terms_and_conditions: 'Commercial terms and conditions'
+        subject: 'e.g. Drill machine'
+        commercial_terms_and_conditions: 'e.g. 1. Cost does not include any additional certification if required as per Indian regulations'
+        comments: 'e.g. Sales Order Amended'
       inquiry_products:
         sr_no: 'Serial Number'
         bp_catalog_name: 'Business Partner Catalog Name'
@@ -26,10 +27,6 @@ en:
         designation: 'e.g. Admin'
         telephone: 'e.g. 02240236090'
         mobile: 'e.g. 9987480784'
-      inquiry:
-        subject: 'e.g. Drill machine'
-        commercial_terms_and_conditions: 'e.g. 1. Cost does not include any additional certification if required as per Indian regulations'
-        comments: 'e.g. Sales Order Amended'
     "yes": 'Yes'
     "no": 'No'
     required:
