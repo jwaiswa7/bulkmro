@@ -36,7 +36,7 @@
       <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
         <div class="form-row flex-row align-items-center">
           <%= inquiry_product.hidden_field :id %>
-          <div class="col-9">
+          <div class="col-5">
             <div class="d-flex flex-row">
               <div class="form-group align-self-center mr-2">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -62,6 +62,13 @@
               </div>
               <div class="flex-grow-1">
                 <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex flex-row">
+              <div class="flex-grow-1">
+                <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>
               </div>
             </div>
           </div>
