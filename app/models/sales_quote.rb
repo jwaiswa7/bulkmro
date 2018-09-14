@@ -31,4 +31,8 @@ class SalesQuote < ApplicationRecord
   def inquiry_has_many_sales_quotes?
     self.inquiry.sales_quotes.except_object(self).count >= 1
   end
+
+  def calculated_freight_cost_total
+    self.rows.sum(:freight_cost_subtotal).to_f
+  end
 end

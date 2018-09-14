@@ -27,7 +27,6 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :price_type
 
       t.decimal :potential_amount, default: 0.00
-      t.decimal :freight_cost, default: 0.00
       t.decimal :gross_profit_percentage, default: 0.00
       t.decimal :weight_in_kgs, default: 0.0
 

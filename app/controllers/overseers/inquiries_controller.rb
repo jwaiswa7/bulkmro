@@ -90,7 +90,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :quote_category,
         :price_type,
         :freight_option,
-        :freight_cost,
+        :total_freight_cost,
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
