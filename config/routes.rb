@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
     resources :products do
       member do
-        get 'best_prices'
+        get 'best_prices_and_bp_catalog'
         get 'bp_catalog'
       end
 

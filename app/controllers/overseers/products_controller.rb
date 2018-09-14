@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :best_prices, :bp_catalog]
+  before_action :set_product, only: [:show, :edit, :update, :best_prices_and_bp_catalog, :bp_catalog]
 
   def index
     @products = ApplyDatatableParams.to(Product.all.approved.includes(:brand), params)
@@ -43,13 +43,14 @@ class Overseers::ProductsController < Overseers::BaseController
     end
   end
 
-  def best_prices
+  def best_prices_and_bp_catalog
     @supplier = Company.acts_as_supplier.find(params[:supplier_id])
     @inquiry_product_supplier = InquiryProductSupplier.find(params[:inquiry_product_supplier_id]) if params[:inquiry_product_supplier_id].present?
     authorize @product
     render json: {
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
-        latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier)
+        latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+        bp_catalog_name: @product.bp_catalog_name_for_supplier(@supplier)
     }
   end
 
