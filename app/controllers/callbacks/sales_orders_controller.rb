@@ -54,13 +54,4 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
     response = format_response(resp_status, resp_msg)
     render json: response, status: :ok
   end
-
-  def format_response(status, msg, resp = nil)
-    response = Hash.new
-    response['success'] = status
-    response['status'] = status
-    response['message'] = msg
-    response['response'] = resp
-    response
-  end
 end

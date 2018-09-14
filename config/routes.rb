@@ -16,6 +16,11 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
+    resources :item_weights do
+      collection do
+        patch 'update'
+      end
+    end
     get 'login' => '/callbacks/sessions#new'
   end
 
