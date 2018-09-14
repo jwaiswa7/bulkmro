@@ -6,7 +6,16 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
 
   namespace 'callbacks' do
-    resources :sales_orders
+    resources :sales_orders do
+      collection do
+        patch 'update'
+      end
+    end
+    resources :sales_invoices do
+      collection do
+        patch 'update'
+      end
+    end
     get 'login' => '/callbacks/sessions#new'
   end
 
