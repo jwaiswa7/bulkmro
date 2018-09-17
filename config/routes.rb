@@ -47,6 +47,9 @@ Rails.application.routes.draw do
       end
 
       scope module: 'inquiries' do
+
+        resources :comments
+
         resources :sales_orders do
           member do
             get 'new_revision'

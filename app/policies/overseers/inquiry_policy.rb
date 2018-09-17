@@ -51,6 +51,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def comments?
+    edit?
+  end
+
   # def edit_rfqs?
   #   !record.rfqs_generated? && record.suppliers_selected?
   # end
