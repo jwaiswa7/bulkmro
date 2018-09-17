@@ -16,5 +16,5 @@
 //= require nested_form_fields
 //= require cocoon
 //= require js-routes
-
+//= require vue
 //= require overseers/run

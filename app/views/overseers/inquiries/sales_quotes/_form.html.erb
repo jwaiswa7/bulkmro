@@ -8,16 +8,15 @@
       <% end %>
     <% end %>
 
-
     <div class="card-body">
       <div class="row">
         <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
-        <div class="col-md-6">
-          <%= inquiry_currency.association :currency, include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= inquiry_currency.input :conversion_rate %>
-        </div>
+          <div class="col-md-6">
+            <%= inquiry_currency.association :currency, include_blank: false %>
+          </div>
+          <div class="col-md-6">
+            <%= inquiry_currency.input :conversion_rate %>
+          </div>
         <% end %>
       </div>
     </div>
@@ -25,20 +24,20 @@
     <div class="card-body">
       <div class="form-group">
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-          <div class="row">
+          <div class="row" data-index="__nested_field_for_replace_with_index__">
             <%= row.hidden_field :sales_quote_id %>
             <%= row.hidden_field :id %>
             <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
             <div class="col-md-2">
-              <%= row.association :inquiry_product_supplier, label: 'Product', collection: @inquiry.inquiry_product_suppliers.map { |ips| [ips.to_s, ips.id, { 'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no, 'data-quantity' => ips.inquiry_product.quantity, 'data-margin-percentage' => 15 }] }, include_blank: 'Select a Line Item' %></div>
-            <div class="col-md-1"><%= row.input :quantity %></div>
-            <div class="col-md-1"><%= row.input :freight_cost_subtotal, label: 'Total FR' %></div>
-            <div class="col-md-1"><%= row.input :unit_freight_cost, label: 'UFC' %></div>
-            <div class="col-md-1"><%= row.input :unit_cost_price, label: 'UCP', disabled: true %></div>
-            <div class="col-md-1"><%= row.input :unit_cost_price_with_unit_freight_cost, label: 'UCP w/ F', disabled: true %></div>
-            <div class="col-md-1"><%= row.input :margin_percentage, label: 'Margin %', input_html: { :min => 0, :max => 99.99 } %></div>
-            <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', input_html: { :min => 0 } %></div>
-            <div class="col-md-1"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: { :min => 0 } %></div>
+              <%= row.association :inquiry_product_supplier, label: 'Product', collection: @inquiry.inquiry_product_suppliers.map {|ips| [ips.to_s, ips.id, {'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no, 'data-quantity' => ips.inquiry_product.quantity, 'data-margin-percentage' => 15}]}, include_blank: 'Select a Line Item', input_html: {"data-bind": "inquiry_product_supplier", "data-v-on:change": "changeSupplier", "data-row": "__nested_field_for_replace_with_index__"} %></div>
+            <div class="col-md-1"><%= row.input :quantity, input_html: {"data-bind": "quantity"} %></div>
+            <div class="col-md-1"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": "freight_cost_subtotal", "data-v-on:change":"updateFreightCostAndUnitFreightCost(_index_,'freight_cost')"}, label: 'Total FR' %></div>
+            <div class="col-md-1"><%= row.input :unit_freight_cost, input_html: {"data-bind": "unit_freight_cost", "data-v-on:change":"updateFreightCostAndUnitFreightCost(_index_,'unit_freight_cost')"}, label: 'UFC' %></div>
+            <div class="col-md-1"><%= row.input :unit_cost_price, input_html: {"data-bind": "unit_cost_price"}, label: 'UCP', disabled: true %></div>
+            <div class="col-md-1"><%= row.input :unit_cost_price_with_unit_freight_cost, input_html: {"data-bind": "unit_cost_price_with_unit_freight_cost"}, label: 'UCP w/ F', disabled: true %></div>
+            <div class="col-md-1"><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": "margin_percentage"} %></div>
+            <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": "unit_selling_price"} %></div>
+            <div class="col-md-1"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": "converted_unit_selling_price"} %></div>
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">
