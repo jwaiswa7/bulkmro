@@ -77,7 +77,7 @@
       <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
         <div class="form-row flex-row align-items-center">
           <%= inquiry_product.hidden_field :id %>
-          <div class="col-5">
+          <div class="col-2">
             <div class="d-flex flex-row">
               <div class="form-group align-self-center mr-2">
                 <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -98,38 +98,31 @@
               </span>
                 <% end %>
               </div>
-              <div class="mr-2">
+              <div class="flex-grow-1">
                 <%= inquiry_product.input :sr_no, label: false %>
               </div>
-              <div class="flex-grow-1">
-                <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
-              </div>
+
             </div>
+          </div>
+          <div class="col-4">
+            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
           </div>
           <div class="col-2">
-            <div class="d-flex flex-row">
-              <div class="flex-grow-1">
-                <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>
-              </div>
-            </div>
+            <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>
           </div>
           <div class="col-2">
-            <div class="d-flex flex-row">
-              <div class="flex-grow-1">
-                <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false %>
-              </div>
-            </div>
+            <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false %>
           </div>
-          <div class="col-3">
-            <div class="d-flex flex-row">
-              <div class="flex-grow-1">
+          <div class="col-2">
+            <div class="d-flex flex-row align-items-center">
+              <div>
                 <%= inquiry_product.input :quantity, :label => false %>
               </div>
-              <div class="form-group align-self-center ml-2">
-                <%= inquiry_product.remove_nested_fields_link do %>
-                  <i class="far fa-times text-danger"></i>
+              <%= inquiry_product.remove_nested_fields_link do %>
+                  <div class="form-group align-self-center flex-grow-1 ml-2">
+                      <i class="far fa-times text-danger"></i>
+                  </div>
                 <% end if policy(inquiry_product.object).destroy? %>
-              </div>
             </div>
           </div>
         </div>
