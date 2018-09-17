@@ -15,8 +15,7 @@ class Callbacks::BaseController < ApplicationController
 
   def authenticate_callback
     authenticate_or_request_with_http_token do |token, options|
-      # token == Rails.cache.fetch(:sap_callbacks_key) ? true: false
-      1
+      token == Rails.cache.fetch(:sap_callbacks_key) ? true: false
     end
   end
 end
