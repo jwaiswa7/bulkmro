@@ -6,9 +6,56 @@
   </div>
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :account_id %>
+
     <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
-    <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
-    <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+    <div class="form-row">
+      <div class="col-3">
+        <%= f.input :site %>
+      </div>
+      <div class="col-3">
+        <%= f.input :mobile %>
+      </div>
+      <div class="col-3">
+        <%= f.input :email %>
+      </div>
+      <div class="col-3">
+        <%= f.input :telephone %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities) %>
+      </div>
+      <div class="col-4">
+        <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :credit_limit %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+      </div>
+      <div class="col-4">
+        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+      </div>
+      <div class="col-4">
+        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+      </div>
+    </div>
 
     <div class="form-group">
       <%= f.label :contact_ids, 'Contacts' %>
@@ -38,6 +85,19 @@
       </div>
     </div>
 
+    <% if f.object.persisted? %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
+    <% end %>
+
+    <%= f.file_field :tan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+    <%= f.file_field :pan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+    <%= f.file_field :cen_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+
+    <%= f.input :is_msme, as: :radio_buttons %>
+    <%= f.input :is_unregistered_dealer, as: :radio_buttons %>
+
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> <%= submit_text(@company) %>
@@ -48,54 +108,6 @@
       <% end %>
     <% end %>
 
-    <%= f.input :name %>
-    <%= f.association :industry, include_blank: 'Select an Industry' %>
-    <%= f.association :default_payment_option, include_blank: 'Select a default' %>
-    <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-
-    <% if f.object.persisted? %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
-    <% end %>
-
-    <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
-    <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
-    <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
-
-    <%= f.input :company_type, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
-    <%= f.input :priority, as: :select, collection: enum_to_collection(Company.priorities) %>
-    <%= f.input :site %>
-    <%= f.input :nature_of_business, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
-    <%= f.input :credit_limit %>
-
-    <%= f.file_field :tan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.file_field :pan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.file_field :cen_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-
-    <%= f.input :is_msme, as: :radio_buttons %>
-    <%= f.input :is_unregistered_dealer, as: :radio_buttons %>   
-    
-    <%= f.input :mobile %>
-    <%= f.input :email %>
-    <%= f.input :telephone %>
-    
-
-
-    <% if action_name.capitalize == "New" %>
-        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-            <i class="fal fa-plus-circle"></i> <%= submit_text(@company) %>
-        <% end %>
-    <% else %>
-        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-            <i class="fal fa-pen"></i> <%= submit_text(@company) %>
-        <% end %>
-    <% end %>
-
-    <%= f.hidden_field :account_id %>
-    <%= f.input :created_by, disabled: true %>
-    <%= f.input :created_at, disabled: true %>
-    <%= f.input :updated_by, disabled: true %>
-    <%= f.input :updated_at, disabled: true %>
 
   <% end %>
 </div>
