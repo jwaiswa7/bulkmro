@@ -1239,7 +1239,7 @@ Account.all.each do |account|
         company: company,
         billing_address: RandomRecord.for(company.addresses),
         shipping_address: RandomRecord.for(company.addresses),
-        comments: Faker::Lorem.paragraph_by_chars(256, false)
+        #comments: Faker::Lorem.paragraph_by_chars(256, false)
     )
 
     products.each do |product|

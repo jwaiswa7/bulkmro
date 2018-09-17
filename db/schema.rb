@@ -324,6 +324,20 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
 
+  create_table "inquiry_comments", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.bigint "sales_order_id"
+    t.text "message"
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_inquiry_comments_on_created_by_id"
+    t.index ["inquiry_id"], name: "index_inquiry_comments_on_inquiry_id"
+    t.index ["sales_order_id"], name: "index_inquiry_comments_on_sales_order_id"
+    t.index ["updated_by_id"], name: "index_inquiry_comments_on_updated_by_id"
+  end
+
   create_table "inquiry_import_rows", force: :cascade do |t|
     t.bigint "inquiry_import_id"
     t.bigint "inquiry_product_id"
@@ -506,14 +520,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "sales_order_approvals", force: :cascade do |t|
     t.bigint "sales_order_id"
-    t.bigint "sales_order_comment_id"
+    t.bigint "inquiry_comment_id"
     t.jsonb "metadata"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_sales_order_approvals_on_created_by_id"
-    t.index ["sales_order_comment_id"], name: "index_sales_order_approvals_on_sales_order_comment_id"
+    t.index ["inquiry_comment_id"], name: "index_sales_order_approvals_on_inquiry_comment_id"
     t.index ["sales_order_id"], name: "index_sales_order_approvals_on_sales_order_id"
     t.index ["updated_by_id"], name: "index_sales_order_approvals_on_updated_by_id"
   end
@@ -540,13 +554,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "sales_order_rejections", force: :cascade do |t|
     t.bigint "sales_order_id"
-    t.bigint "sales_order_comment_id"
+    t.bigint "inquiry_comment_id"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_sales_order_rejections_on_created_by_id"
-    t.index ["sales_order_comment_id"], name: "index_sales_order_rejections_on_sales_order_comment_id"
+    t.index ["inquiry_comment_id"], name: "index_sales_order_rejections_on_inquiry_comment_id"
     t.index ["sales_order_id"], name: "index_sales_order_rejections_on_sales_order_id"
     t.index ["updated_by_id"], name: "index_sales_order_rejections_on_updated_by_id"
   end
@@ -689,6 +703,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "inquiries", "overseers", column: "sales_manager_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "payment_options"
+  add_foreign_key "inquiry_comments", "inquiries"
+  add_foreign_key "inquiry_comments", "overseers", column: "created_by_id"
+  add_foreign_key "inquiry_comments", "overseers", column: "updated_by_id"
+  add_foreign_key "inquiry_comments", "sales_orders"
   add_foreign_key "inquiry_import_rows", "inquiry_imports"
   add_foreign_key "inquiry_import_rows", "inquiry_products"
   add_foreign_key "inquiry_imports", "overseers", column: "created_by_id"
@@ -727,16 +745,16 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_approvals", "inquiry_comments"
   add_foreign_key "sales_order_approvals", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_approvals", "overseers", column: "updated_by_id"
-  add_foreign_key "sales_order_approvals", "sales_order_comments"
   add_foreign_key "sales_order_approvals", "sales_orders"
   add_foreign_key "sales_order_comments", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_comments", "overseers", column: "updated_by_id"
   add_foreign_key "sales_order_comments", "sales_orders"
+  add_foreign_key "sales_order_rejections", "inquiry_comments"
   add_foreign_key "sales_order_rejections", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_rejections", "overseers", column: "updated_by_id"
-  add_foreign_key "sales_order_rejections", "sales_order_comments"
   add_foreign_key "sales_order_rejections", "sales_orders"
   add_foreign_key "sales_order_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_rows", "overseers", column: "updated_by_id"
