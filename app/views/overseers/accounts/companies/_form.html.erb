@@ -56,6 +56,42 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="col-4">
+        <div class="form-group">
+          <label>TAN Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :tan_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">TAN Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label>PAN Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :pan_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">PAN Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label>CEN Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :cen_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">CEN Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="form-group">
       <%= f.label :contact_ids, 'Contacts' %>
       <div class="select2-wrapper">
@@ -89,10 +125,6 @@
       <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
     <% end %>
-
-    <%= f.file_field :tan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.file_field :pan_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.file_field :cen_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
 
     <%= f.input :is_msme, as: :radio_buttons %>
     <%= f.input :is_unregistered_dealer, as: :radio_buttons %>
