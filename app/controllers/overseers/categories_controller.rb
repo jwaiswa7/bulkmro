@@ -1,5 +1,10 @@
 class Overseers::CategoriesController < Overseers::BaseController
-  before_action :set_category, :only => [:edit, :update]
+  before_action :set_category, :only => [:edit, :update, :show]
+
+  def show
+    redirect_to edit_overseers_category_path (@category)
+    authorize @category
+  end
 
   def index
     @categories = ApplyDatatableParams.to(Category.all, params)
