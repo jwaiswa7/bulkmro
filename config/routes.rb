@@ -21,6 +21,11 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
+    resources :shipments do
+      collection do
+        patch 'update'
+      end
+    end
     get 'login' => '/callbacks/sessions#new'
   end
 
