@@ -9,50 +9,49 @@
 
     <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
     <div class="form-row">
-      <div class="col-3">
+      <div class="col-6 col-md-3">
         <%= f.input :site %>
       </div>
-      <div class="col-3">
+      <div class="col-6 col-md-3">
         <%= f.input :mobile %>
       </div>
-      <div class="col-3">
+      <div class="col-6 col-md-3">
         <%= f.input :email %>
       </div>
-      <div class="col-3">
+      <div class="col-6 col-md-3">
         <%= f.input :telephone %>
       </div>
     </div>
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :industry, wrapper: :custom_multi_select, include_blank: 'Select an Industry' %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.input :company_type, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.company_types), include_blank: 'Select a company type' %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.input :nature_of_business, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.nature_of_businesses), include_blank: 'Select a nature of business' %>
       </div>
-    </div>
-    <div class="form-row">
-      <div class="col-4">
+
+      <div class="col-6 col-md-4">
         <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities) %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.input :credit_limit %>
       </div>
     </div>
 
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
       </div>
     </div>
