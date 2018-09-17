@@ -4,13 +4,13 @@
     <p>This will <em>'<%= submit_text(@category).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @category], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.input :name %>
+
     <% if @category.persisted? %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Category.except_objects(@category.self_and_descendants) %>
     <% else %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s %>
     <% end %>
-
-    <%= f.input :name %>
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
