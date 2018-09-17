@@ -16,6 +16,11 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def show
+    redirect_to edit_overseers_product_path(@product)
+    authorize @product
+  end
+
   def new
     @product = Product.new(:overseer => current_overseer)
     authorize @product
