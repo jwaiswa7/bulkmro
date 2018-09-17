@@ -25,7 +25,7 @@
               <% end %>
 
               <% if policy(sales_order).comments? %>
-                <%= row_action_button(overseers_sales_order_comments_path(sales_order), 'comment-lines', 'See Comments', 'success') %>
+                <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
               <% end %>
             </td>
             <td><%= format_date(sales_order.sent_at) %></td>

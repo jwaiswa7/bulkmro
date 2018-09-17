@@ -1,8 +1,11 @@
 class Inquiry < ApplicationRecord
+  COMMENTS_CLASS = 'InquiryComment'
+
   include Mixins::CanBeStamped
   include Mixins::HasAddresses
   include Mixins::CanBeSynced
   include Mixins::HasManagers
+  include Mixins::HasComments
 
   pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
@@ -27,6 +30,8 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
   belongs_to :payment_option
+
+  accepts_nested_attributes_for :comments
 
   enum status: {
       :active => 10,

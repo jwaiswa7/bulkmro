@@ -1,5 +1,5 @@
 class SalesOrder < ApplicationRecord
-  COMMENTS_CLASS = 'SalesOrderComment'
+  COMMENTS_CLASS = 'InquiryComment'
   REJECTIONS_CLASS = 'SalesOrderRejection'
   APPROVALS_CLASS = 'SalesOrderApproval'
 
