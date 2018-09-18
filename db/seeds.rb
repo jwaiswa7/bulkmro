@@ -1,6 +1,13 @@
-service = Services::Shared::Spreadsheets::CsvImporter.new('tax_codes.csv')
+service = Services::Shared::Spreadsheets::CsvImporter.new('hsncodes.csv')
 service.loop(100) do |x|
-  TaxCode.create!(code: x.get_column('Code'), description: x.get_column('Description'))
+  TaxCode.create!(
+      remote_uid: x.get_column('internal_key'),
+      chapter: x.get_column('chapter'),
+      code: x.get_column('hsn').gsub!('.', ''),
+      description: x.get_column('description'),
+      is_service: x.get_column('is_service') == 'NULL' ? false : true,
+      tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f
+  )
 end
 
 
@@ -1205,6 +1212,8 @@ Product.all.each do |product|
   suppliers.each do |supplier|
     product.product_suppliers.create!(supplier: supplier)
   end
+
+  product.tax_code = RandomRecord.for(TaxCode)
 
   Faker::Number.between(1, 4).times do
     ProductComment.create!(

@@ -7,30 +7,46 @@
         <li><%= message %></li>
       <% end %>
     <% end %>
+    <div class="card-header">
+      <div class="row">
+        <div class="col-lg-3">Total Selling Price (Excl. tax): <br> <strong><%= format_currency(f.object.calculated_total)%></strong></div>
+        <div class="col-lg-3">Total Tax: <br> <strong><%= format_currency(f.object.calculated_total_tax)%></strong></div>
+        <div class="col-lg-3">Total Selling Price (Incl. tax): <br> <strong><%= format_currency(f.object.calculated_total_with_tax)%></strong></div>
+        <div class="col-lg-3">Total Margin: <br> <strong><%= format_currency(f.object.calculated_total_margin) %>)     </strong></div>
+      </div>
+    </div>
 
 
     <div class="card-body">
       <div class="row">
         <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
-        <div class="col-md-6">
-          <%= inquiry_currency.association :currency, include_blank: false %>
-        </div>
-        <div class="col-md-6">
-          <%= inquiry_currency.input :conversion_rate %>
-        </div>
+          <div class="col-md-6">
+            <%= inquiry_currency.association :currency, include_blank: false %>
+          </div>
+          <div class="col-md-6">
+            <%= inquiry_currency.input :conversion_rate %>
+          </div>
         <% end %>
       </div>
     </div>
 
     <div class="card-body">
       <div class="form-group">
-        <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-          <div class="row">
+        <% f.object.rows.group_by(&:inquiry_product).each do |inquiry_product, rows| %>
+          <%= inquiry_product.product.name %>
+
+          <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
+            <div class="row">
+            <%= row.hidden_field :inquiry_product_id %>
+            <%= row.hidden_field :inquiry_product_supplier_id %>
             <%= row.hidden_field :sales_quote_id %>
             <%= row.hidden_field :id %>
+
+            <div class="col-md-1"><%= radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, row.object.persisted? %></div>
             <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
             <div class="col-md-2">
-              <%= row.association :inquiry_product_supplier, label: 'Product', collection: @inquiry.inquiry_product_suppliers.map { |ips| [ips.to_s, ips.id, { 'data-unit-cost-price' => ips.unit_cost_price, 'data-sr-no' => ips.sr_no, 'data-quantity' => ips.inquiry_product.quantity, 'data-margin-percentage' => 15 }] }, include_blank: 'Select a Line Item' %></div>
+              <%= row.input :inquiry_product_supplier, as: :string, disabled: true, label: 'Supplier' %></div>
+
             <div class="col-md-1"><%= row.input :quantity %></div>
             <div class="col-md-1"><%= row.input :freight_cost_subtotal, label: 'Total FR' %></div>
             <div class="col-md-1"><%= row.input :unit_freight_cost, label: 'UFC' %></div>
@@ -39,17 +55,13 @@
             <div class="col-md-1"><%= row.input :margin_percentage, label: 'Margin %', input_html: { :min => 0, :max => 99.99 } %></div>
             <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', input_html: { :min => 0 } %></div>
             <div class="col-md-1"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: { :min => 0 } %></div>
-            <div class="col-md-1">
-              <%= row.label :remove %>
-              <div class="form-control">
-                <%= row.remove_nested_fields_link 'DEL' %>
-              </div>
-            </div>
+
+            <div class="col-md-2"><%= row.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %></div>
+            <div class="col-md-2"><%= row.input :total_selling_price, input_html: { :min => 0 }, disabled: true %></div>
+            <div class="col-md-2"><%= row.input :total_selling_price_with_tax, input_html: { :min => 0 }, disabled: true %></div>
           </div>
         <% end %>
-        <div class="row">
-          <div class="col-md-3"><%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-outline-dark' %></div>
-        </div>
+        <% end %>
         <div class="row">
           <div class="col-md-12"><%= f.input :calculated_freight_cost_total, disabled: true %></div>
         </div>

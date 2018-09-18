@@ -69,6 +69,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         :parent_id,
         :rows_attributes => [
             :id,
+            :sales_order_id,
             :sales_quote_row_id,
             :quantity,
             :_destroy

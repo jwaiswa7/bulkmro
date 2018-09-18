@@ -14,7 +14,7 @@
   <%= f.input :sku %>
   <%= f.association :brand, include_blank: 'Select a brand' %>
   <%= f.association :category, include_blank: 'Select a category', collection: Category.leaves, label_method: :to_s %>
-
-
+  <%= f.input :best_tax_code, disabled: true %>
+    <%= f.association :tax_code, collection: TaxCode.all.map { |tax_code| [tax_code.to_s, tax_code.id, { 'data-tax-rate' => tax_code.rate }] }, include_blank: 'Choose a Tax Code' %>
   <%= f.submit %>
 <% end %>

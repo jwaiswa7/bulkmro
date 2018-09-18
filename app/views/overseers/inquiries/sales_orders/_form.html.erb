@@ -8,7 +8,15 @@
         <li><%= message %></li>
       <% end %>
     <% end %>
+    <div class="card-header">
+      <div class="row">
+        <div class="col-lg-3">Total Selling Price (Excl. tax): <br> <strong><%= format_currency(f.object.calculated_total)%></strong></div>
+        <div class="col-lg-3">Total Tax: <br> <strong><%= format_currency(f.object.calculated_total_tax)%></strong></div>
+        <div class="col-lg-3">Total Selling Price (Incl. tax): <br> <strong><%= format_currency(f.object.calculated_total_with_tax)%></strong></div>
+        <div class="col-lg-3">Total Margin: <br> <strong><%= format_currency(f.object.calculated_total_margin) %></strong></div>
 
+      </div>
+    </div>
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
@@ -24,6 +32,7 @@
       <div class="form-group">
         <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
           <div class="row">
+            <%= row.hidden_field :sales_order_id %>
             <%= row.hidden_field :id %>
             <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
             <div class="col-md-3"><%= row.association :sales_quote_row, label: 'Product', collection: @sales_order.sales_quote.rows.map { |r| [r.to_s, r.id, { :'data-sr-no' => r.sr_no, 'data-quantity' => r.quantity, 'data-unit-cost-price' => r.unit_cost_price, 'data-margin-percentage' => r.margin_percentage, 'data-unit-selling-price' => r.unit_selling_price  }] }, include_blank: 'Select a Line Item' %></div>
@@ -32,6 +41,12 @@
             <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', disabled: true %></div>
             <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', disabled: true %></div>
             <div class="col-md-1"><%= row.input :converted_unit_selling_price, label: 'CUSP', disabled: true %></div>
+
+            <div class="col-md-2"><%= row.input :tax_code, disabled: true %>
+            </div>
+            <div class="col-md-2"><%= row.input :total_selling_price, input_html: { :min => 0 }, disabled: true %></div>
+            <div class="col-md-2"><%= row.input :total_selling_price_with_tax, input_html: { :min => 0 }, disabled: true %></div>
+
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">

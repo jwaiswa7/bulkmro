@@ -13,6 +13,17 @@ namespace :sprint do
     Rake::Task["db:migrate"].invoke
   end
 
+  # Pull
+  task :dbreset do |t|
+    system 'rm db/schema.rb'
+    Rake::Task["db:reset"].invoke
+  end
+
+  task :seed do |t|
+    Rake::Task["db:migrate"].invoke
+    Rake::Task["db:seed"].invoke
+  end
+
   # Pull Task
   task :p, [:repo] => :pull
 end

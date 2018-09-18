@@ -312,7 +312,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.decimal "weight_in_kgs", default: "0.0"
     t.date "expected_closing_date"
     t.text "commercial_terms_and_conditions"
-    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -519,6 +518,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "products", force: :cascade do |t|
     t.bigint "brand_id"
     t.bigint "category_id"
+    t.bigint "tax_code_id"
     t.string "name"
     t.string "sku"
     t.integer "type"
@@ -534,6 +534,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
     t.index ["inquiry_import_row_id"], name: "index_products_on_inquiry_import_row_id"
     t.index ["sku"], name: "index_products_on_sku", unique: true
+    t.index ["tax_code_id"], name: "index_products_on_tax_code_id"
     t.index ["type"], name: "index_products_on_type"
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
@@ -625,6 +626,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "sales_quote_rows", force: :cascade do |t|
     t.bigint "sales_quote_id"
     t.bigint "inquiry_product_supplier_id"
+    t.bigint "tax_code_id"
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
@@ -639,6 +641,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
     t.index ["sales_quote_id", "inquiry_product_supplier_id"], name: "index_sqr_on_sales_quote_id_and_inquiry_product_supplier_id", unique: true
     t.index ["sales_quote_id"], name: "index_sales_quote_rows_on_sales_quote_id"
+    t.index ["tax_code_id"], name: "index_sales_quote_rows_on_tax_code_id"
     t.index ["updated_by_id"], name: "index_sales_quote_rows_on_updated_by_id"
   end
 
@@ -659,12 +662,17 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "tax_codes", force: :cascade do |t|
+    t.integer "remote_uid"
+    t.integer "chapter"
     t.string "code"
     t.string "description"
+    t.boolean "is_service"
+    t.decimal "tax_percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_tax_codes_on_code", unique: true
     t.index ["description"], name: "index_tax_codes_on_description"
+    t.index ["remote_uid"], name: "index_tax_codes_on_remote_uid", unique: true
   end
 
   create_table "versions", force: :cascade do |t|
@@ -770,6 +778,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
+  add_foreign_key "products", "tax_codes"
   add_foreign_key "sales_order_approvals", "inquiry_comments"
   add_foreign_key "sales_order_approvals", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_approvals", "overseers", column: "updated_by_id"
@@ -793,6 +802,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_quote_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quote_rows", "sales_quotes"
+  add_foreign_key "sales_quote_rows", "tax_codes"
   add_foreign_key "sales_quotes", "inquiries"
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
