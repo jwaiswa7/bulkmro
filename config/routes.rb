@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
     resources :bank_masters
 
+    resources :activities
+
     get 'login' => '/callbacks/sessions#new'
   end
 
