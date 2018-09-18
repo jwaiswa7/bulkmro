@@ -93,16 +93,12 @@
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
           <thead>
           <tr>
-            <th data-priority="1" class="no-sort"></th>
-            <th data-priority="2">Name</th>
+            <th>Name</th>
           </tr>
           </thead>
           <tbody>
           <% @company.brands.each do |brand| %>
             <tr>
-              <td>
-                <a href="<%= edit_overseers_brand_path(brand) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Brand"><i class="fal fa-pen"></i></a>
-              </td>
               <td><%= brand.to_s %></td>
             </tr>
           <% end %>
