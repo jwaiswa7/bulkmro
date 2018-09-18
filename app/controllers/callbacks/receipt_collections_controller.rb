@@ -57,7 +57,7 @@ class Callbacks::ReceiptCollectionsController < Callbacks::BaseController
         end
       end
     end
-    response = format_response(resp_status, resp_msg, resp_response)
+    response = format_response(resp_status, resp_msg)
     render json: response, status: :ok
   end
 end
