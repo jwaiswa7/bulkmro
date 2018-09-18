@@ -26,6 +26,11 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
+
+    resources :receipt_collections
+
+    resources :bank_masters
+
     get 'login' => '/callbacks/sessions#new'
   end
 
