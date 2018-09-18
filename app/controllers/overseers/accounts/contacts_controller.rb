@@ -1,9 +1,18 @@
 class Overseers::Accounts::ContactsController < Overseers::Accounts::BaseController
-  before_action :set_contact, only: [:edit, :update]
+  before_action :set_contact, only: [:show, :edit, :update]
+  def show
+    redirect_to edit_overseers_account_contact_path(@account, @contact)
+    authorize @contact
+  end
 
   def new
     @contact = @account.contacts.build(overseer: current_overseer)
     authorize @contact
+  end
+
+  def index
+    redirect_to overseers_account_path(@account)
+    authorize @account
   end
 
   def create
