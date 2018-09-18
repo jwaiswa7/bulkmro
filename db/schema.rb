@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_05_040432) do
+ActiveRecord::Schema.define(version: 2018_09_18_081526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -317,12 +317,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.bigint "lead_time_id"
     t.index ["billing_address_id"], name: "index_inquiries_on_billing_address_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
     t.index ["inquiry_currency_id"], name: "index_inquiries_on_inquiry_currency_id", unique: true
     t.index ["inside_sales_owner_id"], name: "index_inquiries_on_inside_sales_owner_id"
+    t.index ["lead_time_id"], name: "index_inquiries_on_lead_time_id"
     t.index ["opportunity_uid"], name: "index_inquiries_on_opportunity_uid", unique: true
     t.index ["outside_sales_owner_id"], name: "index_inquiries_on_outside_sales_owner_id"
     t.index ["payment_option_id"], name: "index_inquiries_on_payment_option_id"
@@ -417,6 +419,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["inquiry_import_id"], name: "index_inquiry_products_on_inquiry_import_id"
     t.index ["product_id"], name: "index_inquiry_products_on_product_id"
     t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
+  end
+
+  create_table "lead_times", force: :cascade do |t|
+    t.integer "min"
+    t.integer "max"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "overseer_hierarchies", id: false, force: :cascade do |t|
@@ -529,6 +539,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "updated_by_id"
     t.bigint "inquiry_import_row_id"
     t.string "trashed_sku"
+    t.string "unit_of_measurement"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
@@ -540,14 +551,14 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "sales_order_approvals", force: :cascade do |t|
     t.bigint "sales_order_id"
-    t.bigint "inquiry_comment_id"
+    t.bigint "sales_order_comment_id"
     t.jsonb "metadata"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_sales_order_approvals_on_created_by_id"
-    t.index ["inquiry_comment_id"], name: "index_sales_order_approvals_on_inquiry_comment_id"
+    t.index ["sales_order_comment_id"], name: "index_sales_order_approvals_on_sales_order_comment_id"
     t.index ["sales_order_id"], name: "index_sales_order_approvals_on_sales_order_id"
     t.index ["updated_by_id"], name: "index_sales_order_approvals_on_updated_by_id"
   end
@@ -574,13 +585,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "sales_order_rejections", force: :cascade do |t|
     t.bigint "sales_order_id"
-    t.bigint "inquiry_comment_id"
+    t.bigint "sales_order_comment_id"
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_sales_order_rejections_on_created_by_id"
-    t.index ["inquiry_comment_id"], name: "index_sales_order_rejections_on_inquiry_comment_id"
+    t.index ["sales_order_comment_id"], name: "index_sales_order_rejections_on_sales_order_comment_id"
     t.index ["sales_order_id"], name: "index_sales_order_rejections_on_sales_order_id"
     t.index ["updated_by_id"], name: "index_sales_order_rejections_on_updated_by_id"
   end
@@ -635,8 +646,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.bigint "lead_time_id"
     t.index ["created_by_id"], name: "index_sales_quote_rows_on_created_by_id"
     t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
+    t.index ["lead_time_id"], name: "index_sales_quote_rows_on_lead_time_id"
     t.index ["sales_quote_id", "inquiry_product_supplier_id"], name: "index_sqr_on_sales_quote_id_and_inquiry_product_supplier_id", unique: true
     t.index ["sales_quote_id"], name: "index_sales_quote_rows_on_sales_quote_id"
     t.index ["updated_by_id"], name: "index_sales_quote_rows_on_updated_by_id"
@@ -721,6 +734,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "inquiry_currencies"
+  add_foreign_key "inquiries", "lead_times"
   add_foreign_key "inquiries", "overseers", column: "created_by_id"
   add_foreign_key "inquiries", "overseers", column: "inside_sales_owner_id"
   add_foreign_key "inquiries", "overseers", column: "outside_sales_owner_id"
@@ -770,16 +784,16 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "products", "inquiry_import_rows"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
-  add_foreign_key "sales_order_approvals", "inquiry_comments"
   add_foreign_key "sales_order_approvals", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_approvals", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_approvals", "sales_order_comments"
   add_foreign_key "sales_order_approvals", "sales_orders"
   add_foreign_key "sales_order_comments", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_comments", "overseers", column: "updated_by_id"
   add_foreign_key "sales_order_comments", "sales_orders"
-  add_foreign_key "sales_order_rejections", "inquiry_comments"
   add_foreign_key "sales_order_rejections", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_rejections", "overseers", column: "updated_by_id"
+  add_foreign_key "sales_order_rejections", "sales_order_comments"
   add_foreign_key "sales_order_rejections", "sales_orders"
   add_foreign_key "sales_order_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_order_rows", "overseers", column: "updated_by_id"
@@ -790,6 +804,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_orders", "sales_orders", column: "parent_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
+  add_foreign_key "sales_quote_rows", "lead_times"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_quote_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quote_rows", "sales_quotes"

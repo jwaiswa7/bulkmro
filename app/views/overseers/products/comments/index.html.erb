@@ -13,7 +13,7 @@
 <% end %>
 
 <%= render layout: 'shared/layouts/form' do %>
-  <%= simple_form_for([:overseers, @product.comments.build], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @new_comment], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card-body">
       <% if @comments.persisted.size > 0 %>
         <div class="chats mb-3">
@@ -44,9 +44,29 @@
       <%= f.input :message, required: true, :placeholder => 'Type message' %>
 
       <div class="flex-fill">
-        <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-        <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@product).approve? %>
-        <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@product).reject? %>
+        <div class="row">
+          <div class="col-lg-6">
+            <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+            <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@product).approve? %>
+            <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@product).reject? %>
+          </div>
+          <div class="col-lg-6">
+
+              <%= content_tag :div, class:'row' do %>
+                <div class="col-lg-8">
+                  <%= f.input :merge_product, :wrapper => :custom_multi_select, collection: Product.approved.all, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
+                </div>
+                <div class="col-lg-4">
+                  <%= f.submit 'Merge Product', name: 'merge', class: 'btn btn-warning float-right' %>
+                </div>
+              <% end if policy(@product).merge? %>
+
+
+
+          </div>
+        </div>
+
+
       </div>
     </div>
   <% end %>

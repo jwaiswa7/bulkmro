@@ -8,6 +8,7 @@ class SalesQuoteRow < ApplicationRecord
   has_one :inquiry_product, :through => :inquiry_product_supplier
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier
+  belongs_to :lead_time, required: false
 
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true

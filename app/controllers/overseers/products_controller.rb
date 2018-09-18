@@ -76,6 +76,8 @@ class Overseers::ProductsController < Overseers::BaseController
         :name,
         :sku,
         :brand_id,
+        :category_id,
+        :unit_of_measurement
     )
   end
 

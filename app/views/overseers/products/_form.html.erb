@@ -21,7 +21,10 @@
       <div class="col-6">
         <%= f.association :category, :wrapper => :custom_multi_select, include_blank: 'Select a category', collection: Category.leaves, label_method: :to_s %>
       </div>
+
     </div>
+
+    <%= f.input :unit_of_measurement %>
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>

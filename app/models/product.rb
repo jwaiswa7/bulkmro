@@ -33,7 +33,9 @@ class Product < ApplicationRecord
   # end
   # End ignore
 
+
   enum type: { item: 0, service: 1 }
+
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?

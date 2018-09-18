@@ -39,6 +39,7 @@
             <div class="col-md-1"><%= row.input :margin_percentage, label: 'Margin %', input_html: { :min => 0, :max => 99.99 } %></div>
             <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', input_html: { :min => 0 } %></div>
             <div class="col-md-1"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: { :min => 0 } %></div>
+            <%= row.association :lead_time, label: 'Lead Time', include_blank: 'Select a Lead Time' %></div>
             <div class="col-md-1">
               <%= row.label :remove %>
               <div class="form-control">
