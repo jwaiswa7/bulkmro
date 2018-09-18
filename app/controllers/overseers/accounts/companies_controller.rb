@@ -1,9 +1,18 @@
 class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseController
-  before_action :set_company, only: [:edit, :update]
+  before_action :set_company, only: [:show, :edit, :update]
+  def show
+    redirect_to edit_overseers_account_company_path(@account, @company)
+    authorize @account
+  end
 
   def new
     @company = @account.companies.build(overseer: current_overseer)
     authorize @company
+  end
+
+  def index
+    redirect_to overseers_account_path(@account)
+    authorize @account
   end
 
   def create

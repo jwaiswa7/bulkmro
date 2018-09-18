@@ -7,6 +7,7 @@ class Overseers::BrandsController < Overseers::BaseController
   end
 
   def show
+    redirect_to edit_overseers_brand_path(@brand)
     authorize @brand
   end
 
