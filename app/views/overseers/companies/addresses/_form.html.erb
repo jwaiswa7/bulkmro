@@ -9,7 +9,7 @@
 
     <%= f.input :name %>
 
-    <%= f.country_select :country_code, priority_countries: ["IN", "US"] %>
+    <%= f.input :country_code, as: :country, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
 
     <%= f.input :pincode %>
 
