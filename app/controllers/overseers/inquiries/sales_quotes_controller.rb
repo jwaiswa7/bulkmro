@@ -7,7 +7,8 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def new
-    @sales_quote = Services::Overseers::SalesQuotes::BuildFromInquiry.new(@inquiry, current_overseer).call
+    @sales_quote = @inquiry.sales_quotes.build(:overseer => current_overseer)
+    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
     authorize @inquiry, :new_sales_quote?
   end
 
@@ -32,6 +33,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def edit
+    @sales_quote = Services::Overseers::SalesQuotes::BuildRows.new(@sales_quote).call
     authorize @sales_quote
   end
 
@@ -79,14 +81,17 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :rows_attributes => [
             :id,
             :sales_quote_id,
+            :tax_code_id,
             :inquiry_product_supplier_id,
+            :lead_time_option_id,
             :quantity,
             :freight_cost_subtotal,
             :unit_freight_cost,
             :margin_percentage,
             :unit_selling_price,
             :_destroy
-        ]
+        ],
+        :selected_suppliers => {}
     )
   end
 end

@@ -3,6 +3,8 @@ class CreateSalesQuoteRows < ActiveRecord::Migration[5.2]
     create_table :sales_quote_rows do |t|
       t.references :sales_quote, foreign_key: true
       t.references :inquiry_product_supplier, foreign_key: true
+      t.references :tax_code, foreign_key: true
+      t.references :lead_time_option, foreign_key: true
 
       t.integer :quantity
       t.decimal :margin_percentage

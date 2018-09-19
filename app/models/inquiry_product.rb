@@ -22,10 +22,13 @@ class InquiryProduct < ApplicationRecord
   validates_uniqueness_of :inquiry_id, scope: :product_id
   # validates_uniqueness_of :sr_no, scope: :inquiry_id
   validates_numericality_of :quantity, :greater_than => 0
-
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
     self.quantity ||= 1
+  end
+
+  def tax_code
+    self.product.tax_code.code if self.product.tax_code.present?
   end
 end

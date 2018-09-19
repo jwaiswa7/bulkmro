@@ -13,6 +13,9 @@
 
     <%= f.input :name %>
     <%= f.input :sku %>
+    <%= f.input :best_tax_code, disabled: true %>
+    <%= f.association :measurement_unit %>
+    <%= f.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
 
     <div class="form-row">
       <div class="col-6">

@@ -25,6 +25,6 @@ class InquiryProductSupplier < ApplicationRecord
   end
 
   def to_s
-    self.product.to_s
+    [self.supplier, self.product.to_s].join(' > ')
   end
 end

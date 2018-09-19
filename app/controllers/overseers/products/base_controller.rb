@@ -3,6 +3,6 @@ class Overseers::Products::BaseController < Overseers::BaseController
 
   private
   def set_product
-    @product = Product.unscoped.find(params[:product_id])
+    @product = Product.find(params[:product_id])
   end
 end
