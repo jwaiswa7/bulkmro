@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_05_040432) do
+ActiveRecord::Schema.define(version: 2018_09_19_055520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,11 +84,13 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.bigint "warehouse_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
     t.index ["remote_id"], name: "index_addresses_on_remote_id", unique: true
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
+    t.index ["warehouse_id"], name: "index_addresses_on_warehouse_id"
   end
 
   create_table "brand_suppliers", force: :cascade do |t|
@@ -685,12 +687,27 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "warehouses", force: :cascade do |t|
+    t.string "name"
+    t.bigint "address_id"
+    t.string "code"
+    t.boolean "is_hidden"
+    t.string "location"
+    t.string "remote_uid"
+    t.string "remote_branch_code"
+    t.string "remote_branch_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_warehouses_on_address_id"
+  end
+
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
   add_foreign_key "addresses", "address_states"
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"
+  add_foreign_key "addresses", "warehouses"
   add_foreign_key "brand_suppliers", "brands"
   add_foreign_key "brand_suppliers", "companies", column: "supplier_id"
   add_foreign_key "brand_suppliers", "overseers", column: "created_by_id"
@@ -807,4 +824,5 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quotes", "sales_quotes", column: "parent_id"
+  add_foreign_key "warehouses", "addresses"
 end

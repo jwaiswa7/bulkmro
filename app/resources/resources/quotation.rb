@@ -6,21 +6,23 @@ class Resources::Quotation < Resources::ApplicationResource
   def self.to_remote(record)
     items = []
 
-    record.rows.each do |row|
+
+
+    record.rows.each_with_index do |row,index|
       item = OpenStruct.new
       item.DiscountPercent = 5
       item.ItemCode = row.product.sku
       item.ItemDescription = row.product.name # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
-      item.ProjectCode = record.inquiry.recordproject_uid # Project Code
-      item.LineNum = "0"  # Row Number
+      item.ProjectCode = record.inquiry.project_uid # Project Code
+      item.LineNum = index  # Row Number
       item.MeasureUnit = "unit" # Unit of measure?
       item.U_MPN = "15487"
       item.U_LeadTime = "2 - 3 Days" # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_cost_price # Row Unit Price
       item.Currency = "INR"# Curr
-      item.TaxCode = "IG@28"# Code?
+      item.TaxCode = "IG@28"# Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.id# Supplier
       item.U_Vendor_Name = row.supplier.name# Supplier  Name
       item.Weight1 = "200"  # product Weight
