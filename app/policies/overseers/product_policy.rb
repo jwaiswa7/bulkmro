@@ -15,6 +15,10 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     approve?
   end
 
+  def merge?
+    approve?
+  end
+
   def customer_bp_catalog?
     index?
   end

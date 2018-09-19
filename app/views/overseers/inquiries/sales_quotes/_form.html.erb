@@ -59,6 +59,13 @@
             <div class="col-md-2"><%= row.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %></div>
             <div class="col-md-2"><%= row.input :total_selling_price, input_html: { :min => 0 }, disabled: true %></div>
             <div class="col-md-2"><%= row.input :total_selling_price_with_tax, input_html: { :min => 0 }, disabled: true %></div>
+            <%= row.association :lead_time_option %></div>
+            <div class="col-md-1">
+              <%= row.label :remove %>
+              <div class="form-control">
+                <%= row.remove_nested_fields_link 'DEL' %>
+              </div>
+            </div>
           </div>
         <% end %>
         <% end %>

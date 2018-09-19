@@ -16,6 +16,7 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :tax_code, required: false
   belongs_to :inquiry_import_row, required: false
+  belongs_to :measurement_unit, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, :through => :import
 
@@ -37,14 +38,23 @@ class Product < ApplicationRecord
   # end
   # End ignore
 
-  enum type: {item: 0, service: 1}
+  enum product_type: { item: 10, service: 20 }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
 
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    self.measurement_unit ||= MeasurementUnit.default
+  end
+
   def best_tax_code
-    self.tax_code || self.category.tax_code
+    self.tax_code || self.category.try(:tax_code)
+  end
+
+  def applicable_tax_percentage
+    self.best_tax_code.tax_percentage if self.best_tax_code.present?
   end
 
   def to_s
@@ -85,13 +95,5 @@ class Product < ApplicationRecord
 
   def brand_name
     self.brand.name
-  end
-
-  def best_tax_code
-    self.tax_code || self.category.tax_code
-  end
-
-  def applicable_tax_percentage
-    self.best_tax_code.tax_percentage
   end
 end
