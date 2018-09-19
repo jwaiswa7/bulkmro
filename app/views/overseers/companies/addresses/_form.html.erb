@@ -13,7 +13,7 @@
 
     <div class="form-row">
       <div class="col-6 col-md-3">
-        <%= f.association :state %>
+        <%= f.association :state, :wrapper => :custom_multi_select %>
       </div>
       <div class="col-6 col-md-3">
         <%= f.input :city_name %>

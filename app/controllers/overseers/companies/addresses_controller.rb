@@ -10,6 +10,11 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     authorize @address
   end
 
+  def index
+    redirect_to overseers_company_path(@company)
+    authorize @company
+  end
+
   def create
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
     authorize @address
