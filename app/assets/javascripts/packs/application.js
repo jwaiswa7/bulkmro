@@ -26,8 +26,6 @@ app.initializeComponents = () => {
     dataTables();
 };
 
-
-
 // Turbolinks load event
 document.addEventListener("turbolinks:load", function() {
     app.initializeComponents();
