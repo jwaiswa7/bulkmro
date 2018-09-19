@@ -10,6 +10,7 @@
 //= require parsleyjs/dist/parsley.min.js
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
+//= require vue/dist/vue.js
 // https://github.com/twbs/bootstrap/issues/23381#issuecomment-322358996 to fix popper not found issue
 
 //= require select2/dist/js/select2.full.min.js

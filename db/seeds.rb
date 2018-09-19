@@ -254,7 +254,7 @@ Brand.all.each do |brand|
   end
 end
 
-abrasives = ::Category.create!(name: 'Abrasives')
+abrasives = ::Category.create!(name: 'Abrasives', tax_code: RandomRecord.for(TaxCode) )
 abrasives.children.create!([
                                {name: 'Abrasive Accessories', tax_code: RandomRecord.for(TaxCode)},
                                {name: 'Bands and Rolls', tax_code: RandomRecord.for(TaxCode)},
@@ -279,7 +279,7 @@ abrasives.children.first.children.create!([
                                               {name: 'Pad Holder', tax_code: RandomRecord.for(TaxCode)},
                                           ])
 
-cleaning = ::Category.create(name: 'Cleaning Equipment')
+cleaning = ::Category.create(name: 'Cleaning Equipment', tax_code: RandomRecord.for(TaxCode))
 cleaning.children.create([
                              {name: 'Furniture Maintenance', tax_code: RandomRecord.for(TaxCode)},
                              {name: 'Mops and Cleaning Accessories', tax_code: RandomRecord.for(TaxCode)},
