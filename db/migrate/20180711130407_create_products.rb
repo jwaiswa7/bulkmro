@@ -8,6 +8,13 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.integer :type, index: true
       t.boolean :is_verified, default: false
 
+      t.string :description
+      t.string :meta_description
+      t.string :meta_keyword
+      t.string :meta_title
+
+      t.string :mfr_model_number
+
       t.timestamps
       t.userstamps
     end

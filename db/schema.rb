@@ -18,12 +18,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "accounts", force: :cascade do |t|
     t.string "remote_uid"
     t.string "name"
-    t.string "alias"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.index ["alias"], name: "index_accounts_on_alias", unique: true
     t.index ["created_by_id"], name: "index_accounts_on_created_by_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["remote_uid"], name: "index_accounts_on_remote_uid", unique: true
@@ -56,15 +54,24 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "country_code"
     t.string "remote_code"
     t.string "tax_state"
+    t.string "country_id"
+    t.string "region_code"
+    t.integer "region_id"
+    t.integer "region_gst_id"
+    t.string "remote_uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_address_states_on_country_id"
     t.index ["name"], name: "index_address_states_on_name", unique: true
+    t.index ["region_gst_id"], name: "index_address_states_on_region_gst_id"
+    t.index ["region_id"], name: "index_address_states_on_region_id"
+    t.index ["remote_uid"], name: "index_address_states_on_remote_uid", unique: true
   end
 
   create_table "addresses", force: :cascade do |t|
     t.bigint "address_state_id"
     t.bigint "company_id"
-    t.integer "remote_id"
+    t.string "remote_uid"
     t.string "country_code"
     t.string "name"
     t.string "state_name"
@@ -87,7 +94,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
-    t.index ["remote_id"], name: "index_addresses_on_remote_id", unique: true
+    t.index ["remote_uid"], name: "index_addresses_on_remote_uid", unique: true
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
@@ -112,19 +119,23 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_brands_on_created_by_id"
+    t.index ["name"], name: "index_brands_on_name", unique: true
     t.index ["updated_by_id"], name: "index_brands_on_updated_by_id"
   end
 
   create_table "categories", force: :cascade do |t|
     t.bigint "tax_code_id"
+    t.integer "remote_uid"
     t.integer "parent_id"
     t.string "name"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_categories_on_created_by_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+    t.index ["remote_uid"], name: "index_categories_on_remote_uid"
     t.index ["tax_code_id"], name: "index_categories_on_tax_code_id"
     t.index ["updated_by_id"], name: "index_categories_on_updated_by_id"
   end
@@ -233,7 +244,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "contacts", force: :cascade do |t|
     t.bigint "account_id"
-    t.integer "remote_id"
+    t.string "remote_uid"
     t.string "first_name"
     t.string "last_name"
     t.string "prefix"
@@ -264,7 +275,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["contact_group"], name: "index_contacts_on_contact_group"
     t.index ["created_by_id"], name: "index_contacts_on_created_by_id"
     t.index ["email"], name: "index_contacts_on_email", unique: true
-    t.index ["remote_id"], name: "index_contacts_on_remote_id", unique: true
+    t.index ["remote_uid"], name: "index_contacts_on_remote_uid", unique: true
     t.index ["reset_password_token"], name: "index_contacts_on_reset_password_token", unique: true
     t.index ["role"], name: "index_contacts_on_role"
     t.index ["status"], name: "index_contacts_on_status"
@@ -281,9 +292,12 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "industries", force: :cascade do |t|
     t.string "name"
+    t.string "remote_uid"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_industries_on_name", unique: true
+    t.index ["remote_uid"], name: "index_industries_on_remote_uid", unique: true
   end
 
   create_table "inquiries", force: :cascade do |t|
@@ -429,9 +443,18 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "overseers", force: :cascade do |t|
     t.integer "parent_id"
+    t.string "username"
     t.string "first_name"
     t.string "last_name"
     t.integer "role"
+    t.string "mobile"
+    t.string "designation"
+    t.string "identifier"
+    t.string "department"
+    t.string "geography"
+    t.integer "remote_sales_uid"
+    t.integer "remote_emp_uid"
+    t.integer "center_code"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -452,6 +475,8 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["created_by_id"], name: "index_overseers_on_created_by_id"
     t.index ["email"], name: "index_overseers_on_email", unique: true
     t.index ["parent_id"], name: "index_overseers_on_parent_id"
+    t.index ["remote_emp_uid"], name: "index_overseers_on_remote_emp_uid", unique: true
+    t.index ["remote_sales_uid"], name: "index_overseers_on_remote_sales_uid", unique: true
     t.index ["reset_password_token"], name: "index_overseers_on_reset_password_token", unique: true
     t.index ["role"], name: "index_overseers_on_role"
     t.index ["unlock_token"], name: "index_overseers_on_unlock_token", unique: true
@@ -523,6 +548,11 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "sku"
     t.integer "type"
     t.boolean "is_verified", default: false
+    t.string "description"
+    t.string "meta_description"
+    t.string "meta_keyword"
+    t.string "meta_title"
+    t.string "mfr_model_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -659,12 +689,17 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "tax_codes", force: :cascade do |t|
+    t.integer "remote_uid"
+    t.integer "chapter"
     t.string "code"
     t.string "description"
+    t.boolean "is_service"
+    t.decimal "tax_percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["code"], name: "index_tax_codes_on_code", unique: true
+    t.index ["code"], name: "index_tax_codes_on_code"
     t.index ["description"], name: "index_tax_codes_on_description"
+    t.index ["remote_uid"], name: "index_tax_codes_on_remote_uid"
   end
 
   create_table "versions", force: :cascade do |t|

@@ -3,7 +3,7 @@ class CreateAddresses < ActiveRecord::Migration[5.2]
     create_table :addresses do |t|
       t.references :address_state, foreign_key: true
       t.references :company, foreign_key: true
-      t.integer :remote_id, index: { :unique => true }
+      t.string :remote_uid, index: { :unique => true }
 
       t.string :country_code
       t.string :name

@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   REJECTIONS_CLASS = 'ProductRejection'
   APPROVALS_CLASS = 'ProductApproval'
 
+  include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
   include Mixins::CanBeRejected
@@ -12,7 +13,7 @@ class Product < ApplicationRecord
   pg_search_scope :locate_any, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
-  belongs_to :brand
+  belongs_to :brand, required: false
   belongs_to :category
   belongs_to :inquiry_import_row, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
@@ -21,6 +22,8 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+
+  has_one_attached :image
 
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
@@ -38,6 +41,7 @@ class Product < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
+  validates_with FileValidator, attachment: :image
 
   def to_s
     "#{name} (#{sku || trashed_sku })"
