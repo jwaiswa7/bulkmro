@@ -76,11 +76,13 @@ class Overseers::ProductsController < Overseers::BaseController
         :name,
         :sku,
         :brand_id,
+        :category_id,
+        :tax_code_id,
+        :measurement_unit_id
     )
   end
 
   def set_product
     @product = Product.find(params[:id])
   end
-
 end

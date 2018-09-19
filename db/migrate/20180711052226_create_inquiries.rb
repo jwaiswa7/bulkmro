@@ -33,7 +33,6 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.date :expected_closing_date
 
       t.text :commercial_terms_and_conditions
-      t.text :comments
 
       t.timestamps
       t.userstamps

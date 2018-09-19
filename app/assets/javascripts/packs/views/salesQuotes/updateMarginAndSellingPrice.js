@@ -14,7 +14,6 @@ let updateValues = function (container, trigger) {
     let margin_percentage = $(container).closest('div.nested_fields').find("[name$='[margin_percentage]']").val();
     let unit_selling_price = $(container).closest('div.nested_fields').find("[name$='[unit_selling_price]']").val();
     let unit_cost_price = $(container).closest('div.nested_fields').find("[name$='[unit_cost_price]']").val();
-
     if (trigger === 'margin_percentage') {
         if (margin_percentage >= 0 && margin_percentage < 100) {
             unit_selling_price = unit_cost_price / (1 - (margin_percentage / 100));
