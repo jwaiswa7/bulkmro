@@ -9,6 +9,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
   include Mixins::CanBeSent
+  include Mixins::HasRowCalculations
 
   has_closure_tree({ name_column: :to_s })
 
@@ -22,7 +23,4 @@ class SalesOrder < ApplicationRecord
 
   delegate :conversion_rate, to: :inquiry_currency
 
-  def calculated_total
-    rows.map { |row| row.unit_selling_price * row.quantity }.sum
-  end
 end

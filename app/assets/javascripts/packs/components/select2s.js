@@ -15,7 +15,11 @@ const select2s = () => {
                 url: $(this).attr('data-source'),
                 dataType: 'json',
                 delay: 100
-            }
+            },
+            processResults: function(data, page) {
+                return { results: data };
+            },
+
         });
     }).on('change', function () {
         $(this).trigger('input');

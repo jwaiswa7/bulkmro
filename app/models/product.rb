@@ -14,13 +14,18 @@ class Product < ApplicationRecord
 
   belongs_to :brand
   belongs_to :category
+  belongs_to :tax_code, required: false
   belongs_to :inquiry_import_row, required: false
+  belongs_to :measurement_unit, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, :through => :import
+
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+
+  attr_accessor :applicable_tax_percentage
 
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
@@ -33,11 +38,24 @@ class Product < ApplicationRecord
   # end
   # End ignore
 
-  enum type: { item: 0, service: 1 }
+  enum product_type: { item: 10, service: 20 }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
+
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    self.measurement_unit ||= MeasurementUnit.default
+  end
+
+  def best_tax_code
+    self.tax_code || self.category.try(:tax_code)
+  end
+
+  def applicable_tax_percentage
+    self.best_tax_code.tax_percentage if self.best_tax_code.present?
+  end
 
   def to_s
     "#{name} (#{sku || trashed_sku })"
@@ -59,11 +77,11 @@ class Product < ApplicationRecord
     latest_inquiry_product_supplier.unit_cost_price if latest_inquiry_product_supplier.present?
   end
 
-  def lowest_unit_cost_price_for(supplier, except=nil)
+  def lowest_unit_cost_price_for(supplier, except = nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
-  def latest_unit_cost_price_for(supplier, except=nil)
+  def latest_unit_cost_price_for(supplier, except = nil)
     self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 

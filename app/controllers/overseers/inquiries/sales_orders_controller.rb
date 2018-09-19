@@ -49,6 +49,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def new_confirmation
+
+  end
+
+  def create_confirmation
+
+  end
+
   private
   def save
     @sales_order.save
@@ -69,6 +77,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         :parent_id,
         :rows_attributes => [
             :id,
+            :sales_order_id,
             :sales_quote_row_id,
             :quantity,
             :_destroy
