@@ -1,3 +1,8 @@
+omniauth:
+  google_oauth2:
+    client_id: 436964214631-llt53r38ks78k5afam2r751f9nhkg1ae.apps.googleusercontent.com
+    client_secret: rtOMQ1p8G8kjTThgxN7olU5_
+
 email_messages:
   from: no-reply@bulkmro.com
   from_name: Bulk MRO Notifications

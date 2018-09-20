@@ -37,7 +37,8 @@ module ShortcutsHelper
         end)
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
-          link_to name, path_so_far
+          # link_to name, path_so_far
+          name
         end)
       end
     end
