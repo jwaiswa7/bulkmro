@@ -5,7 +5,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
     create_table :overseers do |t|
       t.integer :parent_id, index: true
 
-      t.string :username, index: { :unique => true }
+      t.string :username, index: { :unique => true }, null: false
       t.string :first_name
       t.string :last_name
       t.string :mobile
