@@ -23,17 +23,17 @@
               <%= inquiry_product_supplier.hidden_field :id %>
               <div class="form-row">
                 <div class="col-md-3">
-                  <%= inquiry_product_supplier.association :supplier, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {:'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select a Supplier' %></div>
+                  <%= inquiry_product_supplier.association :supplier, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? 'Supplier' : false, input_html: {:'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select a Supplier' %></div>
                 <div class="col-md-2">
-                  <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP Catalog Name" : false %>
+                  <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? "BP Catalog Name" : false %>
                 </div>
                 <div class="col-md-2">
-                  <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP SKU" : false %>
+                  <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? "BP SKU" : false %>
                 </div>
                 <div class="col-md-5">
                   <div class="d-flex flex-row">
                     <div class="mr-1">
-                      <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
+                      <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
                         <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right", disabled: true %>
                         <div class="input-group-append">
                           <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
@@ -44,11 +44,11 @@
                     </div>
 
                     <div class="mr-1">
-                      <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false %>
+                      <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? 'Unit Price' : false %>
                     </div>
 
                     <div class="mr-1">
-                      <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
+                      <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
                         <div class="input-group-prepend">
                           <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
                             <i class="far fa-arrow-left"></i>
@@ -58,7 +58,7 @@
                       <% end %>
                     </div>
 
-                    <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
+                    <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first != inquiry_product_supplier.object ? 'align-self-center' : '' %>">
                       <%= inquiry_product_supplier.remove_nested_fields_link do %>
                         <i class="far fa-times text-danger"></i>
                       <% end if policy(inquiry_product_supplier.object).destroy? %>
