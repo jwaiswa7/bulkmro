@@ -27,7 +27,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
   end
   
   def get_column(name)
-    current_row[name].strip if current_row[name].present?
+    current_row[name].strip if current_row[name].present? && current_row[name] != 'NULL'
   end
 
   def get_underscored(name)
