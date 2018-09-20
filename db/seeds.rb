@@ -1,1 +1,1 @@
-Services::Shared::Migrations::Migrations.new()
+Services::Shared::Migrations::Migrations.new

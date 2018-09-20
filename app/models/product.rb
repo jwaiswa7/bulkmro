@@ -49,7 +49,6 @@ class Product < ApplicationRecord
   validates_uniqueness_of :sku, :if => :not_rejected?
   validates_with FileValidator, attachment: :image
 
-
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default

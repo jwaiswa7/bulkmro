@@ -3,7 +3,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
   def change
     create_table :contacts do |t|
       t.references :account, foreign_key: true
-      t.string :remote_uid, index: { :unique => true }
+      t.integer :remote_uid, index: { :unique => true }
 
       t.string :first_name
       t.string :last_name

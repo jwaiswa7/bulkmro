@@ -1,5 +1,4 @@
 class TaxCode < ApplicationRecord
-
   pg_search_scope :locate, :against => [:code, :description], :using => { :tsearch => { :prefix => true, :any_word => true } }
 
   has_many :products
