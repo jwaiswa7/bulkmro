@@ -8,6 +8,12 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :username, unique:true
       t.string :first_name
       t.string :last_name
+      t.string :mobile
+      t.string :designation
+      t.string :identifier
+      t.string :geography
+      t.integer :remote_sales_uid
+      t.integer :remote_emp_uid
       t.integer :role, index: true
       t.string :mobile
       t.string :designation
@@ -21,6 +27,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      t.string :username,           null: false
 
       ## Recoverable
       t.string   :reset_password_token

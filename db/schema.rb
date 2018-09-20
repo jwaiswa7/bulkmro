@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_accounts_on_created_by_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
-    t.index ["remote_uid"], name: "index_accounts_on_remote_uid", unique: true
     t.index ["updated_by_id"], name: "index_accounts_on_updated_by_id"
   end
 
@@ -459,6 +458,12 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.string "username"
     t.string "first_name"
     t.string "last_name"
+    t.string "mobile"
+    t.string "designation"
+    t.string "identifier"
+    t.string "geography"
+    t.integer "remote_sales_uid"
+    t.integer "remote_emp_uid"
     t.integer "role"
     t.string "mobile"
     t.string "designation"
@@ -470,6 +475,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "center_code"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "username", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -498,6 +504,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "payment_options", force: :cascade do |t|
     t.string "name"
+    t.integer "remote_uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

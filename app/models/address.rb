@@ -20,9 +20,9 @@ class Address < ApplicationRecord
       un_agency_or_embassy: 60,
   }
 
-  validates_presence_of :name, :country_code, :city_name, :street1
-  validates_presence_of :pincode, :state, :if => :domestic?
-  validates_presence_of :state_name, :if => :international?
+  #validates_presence_of :name, :country_code, :city_name, :street1
+  #validates_presence_of :pincode, :state, :if => :domestic?
+  #validates_presence_of :state_name, :if => :international?
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
