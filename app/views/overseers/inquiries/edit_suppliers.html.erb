@@ -3,7 +3,7 @@
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <div class="card-header">
         <div class="form-group mb-0">
-          <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
+          <%= f.submit 'Save Suppliers', class: 'btn btn-success btn-block' %>
         </div>
       </div>
       <div class="card-body">
@@ -12,50 +12,71 @@
             <li><%= message %></li>
           <% end %>
         <% end %>
-        <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product| %>
+        <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
           <%= inquiry_product.hidden_field :id %>
 
-          <h4 class="text-black-50"><%= inquiry_product.object.product.name %></h4>
+          <h6 class="text-uppercase">
+            <strong><%= inquiry_product.object.product.name %></strong>
+          </h6>
           <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
             <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
               <%= inquiry_product_supplier.hidden_field :id %>
-              <div class="row">
-
-                <div class="col-md-2"><%= inquiry_product_supplier.association :supplier, input_html: {:'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select A Supplier' %></div>
-                <div class="col-md-2"><%= inquiry_product_supplier.input :bp_catalog_name %></div>
-                <div class="col-md-1"><%= inquiry_product_supplier.input :bp_catalog_sku, label: 'BP SKU' %></div>
-                <div class="col-md-2"><%= inquiry_product_supplier.input :unit_cost_price %></div>
-                <div class="col-md-2"><%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: 'Lowest' %>
-                  <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
-                    <i class="far fa-check"></i>
-                  <% end %>
-
+              <div class="form-row">
+                <div class="col-md-3">
+                  <%= inquiry_product_supplier.association :supplier, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {:'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select a Supplier' %></div>
+                <div class="col-md-2">
+                  <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP Catalog Name" : false %>
                 </div>
-                <div class="col-md-2"><%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: 'Latest' %>
-                  <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
-                    <i class="far fa-check"></i>
-                  <% end %>
-
+                <div class="col-md-2">
+                  <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP SKU" : false %>
                 </div>
-                <div class="col-md-1 ">
-                  <%= inquiry_product_supplier.label 'Remove' %>
-                  <%= inquiry_product_supplier.remove_nested_fields_link do %>
-                    <i class="far fa-times text-danger"></i>
-                  <% end if policy(inquiry_product_supplier.object).destroy? %>
+                <div class="col-md-5">
+                  <div class="d-flex flex-row">
+                    <div class="mr-1">
+                      <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
+                        <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right", disabled: true %>
+                        <div class="input-group-append">
+                          <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
+                            <i class="far fa-arrow-right"></i>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+
+                    <div class="mr-1">
+                      <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false %>
+                    </div>
+
+                    <div class="mr-1">
+                      <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
+                        <div class="input-group-prepend">
+                          <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-latest-unit-cost-price" do %>
+                            <i class="far fa-arrow-left"></i>
+                          <% end %>
+                        </div>
+                        <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control", disabled: true %>
+                      <% end %>
+                    </div>
+
+                    <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
+                      <%= inquiry_product_supplier.remove_nested_fields_link do %>
+                        <i class="far fa-times text-danger"></i>
+                      <% end if policy(inquiry_product_supplier.object).destroy? %>
+                    </div>
+                  </div>
                 </div>
               </div>
             <% end %>
           <% end %>
 
-
           <div class="form-group">
-            <%= inquiry_product.add_nested_fields_link :inquiry_product_suppliers, 'Add Supplier', class: 'btn btn-outline-dark' %>
+            <%= inquiry_product.add_nested_fields_link :inquiry_product_suppliers, 'Add Supplier', class: 'btn btn-outline-success btn-sm-down-block' %>
           </div>
-          <hr/>
+          <hr class="<%= f.object.inquiry_products.last == inquiry_product.object ? 'd-none' : '' %>"/>
         <% end %>
       </div>
       <div class="card-footer">
-        <%= f.submit 'Save Suppliers', class: 'btn btn-success' %>
+        <%= f.submit 'Save Suppliers', class: 'btn btn-success btn-block' %>
       </div>
     <% end %>
   <% end %>
