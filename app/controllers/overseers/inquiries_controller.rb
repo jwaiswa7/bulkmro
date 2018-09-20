@@ -102,7 +102,8 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def edit_suppliers_params
-    params.require(:inquiry).permit(
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
         :inquiry_products_attributes => [
             :id,
             :inquiry_product_suppliers_attributes => [
@@ -114,7 +115,10 @@ class Overseers::InquiriesController < Overseers::BaseController
                 :_destroy
             ]
         ]
-    )
+      )
+    else
+      {}
+    end
   end
 
 end
