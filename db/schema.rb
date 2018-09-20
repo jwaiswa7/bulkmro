@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_19_055520) do
+ActiveRecord::Schema.define(version: 2018_09_20_052212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,13 +84,11 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.bigint "warehouse_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
     t.index ["remote_id"], name: "index_addresses_on_remote_id", unique: true
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
-    t.index ["warehouse_id"], name: "index_addresses_on_warehouse_id"
   end
 
   create_table "brand_suppliers", force: :cascade do |t|
@@ -420,6 +418,20 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
   end
 
+  create_table "lead_time_options", force: :cascade do |t|
+    t.integer "min_days"
+    t.integer "max_days"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "measurement_units", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "overseer_hierarchies", id: false, force: :cascade do |t|
     t.integer "ancestor_id", null: false
     t.integer "descendant_id", null: false
@@ -450,6 +462,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.jsonb "google_oauth2_metadata"
+    t.string "google_oauth2_uid"
     t.index ["created_by_id"], name: "index_overseers_on_created_by_id"
     t.index ["email"], name: "index_overseers_on_email", unique: true
     t.index ["parent_id"], name: "index_overseers_on_parent_id"
@@ -480,6 +494,9 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
 
   create_table "product_comments", force: :cascade do |t|
     t.bigint "product_id"
+    t.string "merged_product_name"
+    t.string "merged_product_sku"
+    t.jsonb "merged_product_metadata"
     t.text "message"
     t.integer "created_by_id"
     t.integer "updated_by_id"
@@ -521,9 +538,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.bigint "brand_id"
     t.bigint "category_id"
     t.bigint "tax_code_id"
+    t.bigint "measurement_unit_id"
     t.string "name"
     t.string "sku"
-    t.integer "type"
+    t.integer "product_type"
     t.boolean "is_verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -535,9 +553,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
     t.index ["inquiry_import_row_id"], name: "index_products_on_inquiry_import_row_id"
+    t.index ["measurement_unit_id"], name: "index_products_on_measurement_unit_id"
+    t.index ["product_type"], name: "index_products_on_product_type"
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["tax_code_id"], name: "index_products_on_tax_code_id"
-    t.index ["type"], name: "index_products_on_type"
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
@@ -629,6 +648,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.bigint "sales_quote_id"
     t.bigint "inquiry_product_supplier_id"
     t.bigint "tax_code_id"
+    t.bigint "lead_time_option_id"
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
@@ -641,6 +661,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_sales_quote_rows_on_created_by_id"
     t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
+    t.index ["lead_time_option_id"], name: "index_sales_quote_rows_on_lead_time_option_id"
     t.index ["sales_quote_id", "inquiry_product_supplier_id"], name: "index_sqr_on_sales_quote_id_and_inquiry_product_supplier_id", unique: true
     t.index ["sales_quote_id"], name: "index_sales_quote_rows_on_sales_quote_id"
     t.index ["tax_code_id"], name: "index_sales_quote_rows_on_tax_code_id"
@@ -687,27 +708,12 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "warehouses", force: :cascade do |t|
-    t.string "name"
-    t.bigint "address_id"
-    t.string "code"
-    t.boolean "is_hidden"
-    t.string "location"
-    t.string "remote_uid"
-    t.string "remote_branch_code"
-    t.string "remote_branch_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["address_id"], name: "index_warehouses_on_address_id"
-  end
-
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
   add_foreign_key "addresses", "address_states"
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
   add_foreign_key "addresses", "overseers", column: "updated_by_id"
-  add_foreign_key "addresses", "warehouses"
   add_foreign_key "brand_suppliers", "brands"
   add_foreign_key "brand_suppliers", "companies", column: "supplier_id"
   add_foreign_key "brand_suppliers", "overseers", column: "created_by_id"
@@ -793,6 +799,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
   add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "inquiry_import_rows"
+  add_foreign_key "products", "measurement_units"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
   add_foreign_key "products", "tax_codes"
@@ -816,6 +823,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
   add_foreign_key "sales_orders", "sales_orders", column: "parent_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
+  add_foreign_key "sales_quote_rows", "lead_time_options"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_quote_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quote_rows", "sales_quotes"
@@ -824,5 +832,4 @@ ActiveRecord::Schema.define(version: 2018_09_19_055520) do
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quotes", "sales_quotes", column: "parent_id"
-  add_foreign_key "warehouses", "addresses"
 end

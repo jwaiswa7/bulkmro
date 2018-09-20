@@ -83,6 +83,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :sales_quote_id,
             :tax_code_id,
             :inquiry_product_supplier_id,
+            :lead_time_option_id,
             :quantity,
             :freight_cost_subtotal,
             :unit_freight_cost,

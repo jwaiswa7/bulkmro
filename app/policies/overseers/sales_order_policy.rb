@@ -7,6 +7,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.persisted? && record.sent? && record.rejected?
   end
 
+  def comments?
+    record.persisted?
+  end
+
   def pending?
     admin?
   end
@@ -16,14 +20,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    record.sent? && record.not_approved? && !record.rejected?
+    pending? && record.sent? && record.not_approved? && !record.rejected?
   end
 
   def reject?
     record.sent? && approve?
-  end
-
-  def comments?
-    record.persisted?
   end
 end

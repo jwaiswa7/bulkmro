@@ -28,45 +28,48 @@
       </div>
     </div>
 
-    <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses) %>
-    <!-- TODO commercial_status need to be added -->
-
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-6 col-md-3">
+        <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses) %>
+        <!-- TODO commercial_status need to be added -->
+      </div>
+      <div class="col-6 col-md-3">
         <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories) %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-3">
         <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-3">
         <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
       </div>
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
+      </div>
+      <div class="col-4">
+        <%= f.input :gross_profit_percentage %>
       </div>
     </div>
 
-    <%= f.input :gross_profit_percentage %>
 
     <!-- FIX DATE WRAPPER -->
     <%= f.input :expected_closing_date %>
     <!-- FIX DATE WRAPPER -->
 
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-6 col-md-4">
+        <%= f.input :weight_in_kgs %>
+      </div>
+      <div class="col-6 col-md-4">
         <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
-      </div>
-      <div class="col-4">
-        <%= f.input :weight_in_kgs %>
       </div>
     </div>
 
@@ -105,7 +108,7 @@
             </div>
           </div>
           <div class="col-4">
-            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
+            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
           </div>
           <div class="col-2">
             <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>

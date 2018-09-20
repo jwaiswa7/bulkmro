@@ -44,19 +44,18 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-2">
                           <%= product.input :sku, readonly: true %>
                         </div>
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-2">
                           <%= product.association :brand, :wrapper => :custom_multi_select %>
                         </div>
 
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-2">
                           <%= product.association :category, :wrapper => :custom_multi_select, collection: Category.leaves %>
                         </div>
-                        <div class="col-6 col-md-3">
-                          <%= product.association :tax_code, collection: TaxCode.all.map { |tax_code| [tax_code.to_s, tax_code.id, { 'data-tax-rate' => tax_code.rate }] }, include_blank: 'Choose a Tax Code' %>
-                          <%= product.input :applicable_tax_percentage, disabled: true %>
+                        <div class="col-6 col-md-2">
+                          <%= product.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
                         </div>
                       </div>
                     <% end %>

@@ -49,6 +49,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def new_confirmation
+
+  end
+
+  def create_confirmation
+
+  end
+
   private
   def save
     @sales_order.save

@@ -4,42 +4,32 @@
       <img src="<%= image_path('BMIS_Logo_PNG.png') %>" height="30"/>
     </h1>
     <p>Welcome back &#x1f44b;!</p>
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'needs-validation text-left', :novalidate => 'novalidate'}) do |f| %>
-      <button class="d-none btn btn-lg btn-block btn-danger my-2" role="button" type="submit">
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:class => 'needs-validation text-left', :novalidate => 'novalidate'}) do |f| %>
+      <a href="<%= overseer_google_oauth2_omniauth_authorize_path %>" class="btn btn-lg btn-block btn-danger my-2" role="button" type="submit">
         Continue with <i class="fab fa-google"></i>
-      </button>
-      <p class="d-none">..or sign in with your email address.</p>
-      <div class="form-group">
-        <%= f.email_field :email, :class => 'form-control', :required => 'required', :placeholder => "name@bulkmro.com", autofocus: true, autocomplete: "email", value: 'ashwin.goyal@bulkmro.com' %>
+      </a>
 
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Please enter a valid email address.
-        </div>
-      </div>
-      <div class="form-group">
-        <%= f.password_field :password, :class => 'form-control', :required => 'required', :placeholder => "••••••••", autocomplete: "off", value: Rails.env.production? ? '' : 'abc123' %>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Please enter a valid password.
-        </div>
-      </div>
-
-      <% if devise_mapping.rememberable? -%>
+      <% if params.has_key?('debug') %>
+        <p class="">..or sign in with your email address.</p>
         <div class="form-group">
-          <div class="custom-control custom-checkbox">
-            <%= f.check_box :remember_me, :class => 'custom-control-input' %>
-            <%= f.label :remember_me, :class => 'custom-control-label' %>
-          </div>
+          <%= f.input :email, :class => 'form-control', :required => 'required', :placeholder => "name@bulkmro.com", autofocus: true, autocomplete: "email", value: 'ashwin.goyal@bulkmro.com' %>
         </div>
-      <% end -%>
+        <div class="form-group">
+          <%= f.input :password, :class => 'form-control', :required => 'required', :placeholder => "••••••••", autocomplete: "off", value: Rails.env.production? ? '' : 'abc123' %>
+        </div>
 
-      <%= button_tag(type: "submit", class: "btn btn-light btn-block") do %>
-        Sign In
+        <% if devise_mapping.rememberable? -%>
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <%= f.check_box :remember_me, :class => 'custom-control-input' %>
+              <%= f.label :remember_me, :class => 'custom-control-label' %>
+            </div>
+          </div>
+        <% end -%>
+
+        <%= button_tag(type: "submit", class: "btn btn-light btn-block") do %>
+          Sign In
+        <% end %>
       <% end %>
       <p class="text-center">
         <small>Lost? Ping the sysadmin on <a href="mailto:ashwin.goyal@bulkmro.com">ashwin.goyal@bulkmro.com</a>.
