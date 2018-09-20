@@ -42,14 +42,14 @@
       </div>
     </div>
 
-    <%= f.input :email %>
-    <%= f.input :password %>
-    <%= f.input :password_confirmation %>
+    <%= f.input :email, required: true %>
+    <%= f.input :password, required: true %>
+    <%= f.input :password_confirmation, required: true %>
 
 <!--    <div class="form-group">-->
       <%#= f.label :company_ids, 'Companies' %>
 <!--      <div class="select2-wrapper">-->
-        <%#= f.select :company_ids, @company.account.companies.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
+        <%#= f.select :company_ids, @account.companies.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select a Company' %>
 <!--      </div>-->
 <!--    </div>-->
 
