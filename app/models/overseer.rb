@@ -22,7 +22,7 @@ class Overseer < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.role ||= :admin
+    self.role ||= :sales
   end
 
   def hierarchy_to_s
