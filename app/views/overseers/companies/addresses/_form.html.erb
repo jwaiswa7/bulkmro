@@ -8,35 +8,112 @@
     <%= f.hidden_field :company_id %>
 
     <%= f.input :name %>
+    <%= f.input :street1, label: 'Address Line 1' %>
+    <%= f.input :street2, label: 'Address Line 2'  %>
 
-    <%= f.country_select :country_code, priority_countries: ["IN", "US"] %>
+    <div class="form-row">
+      <div class="col-6 col-md-3">
+        <%= f.association :state, :wrapper => :custom_multi_select %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :city_name %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :pincode %>
+      </div>
+      <div class="col-6 col-md-3">
+        <%= f.input :country_code, as: :country, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+      </div>
+    </div>
 
-    <%= f.input :pincode %>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :telephone  %>
+      </div>
+      <div class="col-6">
+        <%= f.input :mobile  %>
+      </div>
+    </div>
 
-    <%= f.association :state %>
-    <%= f.input :state_name %>
+    <%= f.input :tan, label: 'TAN'  %>
 
-    <%= f.input :city_name %>
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :gst, label: 'GST Number' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :gst_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Address.gst_types), label: 'GST Type' %>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="form-group">
+          <label>GST Number Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :gst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">GST Number Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <%= f.input :street1, as: :text %>
-    <%= f.input :street2, as: :text  %>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :cst, label: 'CST Number'  %>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>CST Number Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">CST Number Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :vat, label: 'VAT Number'  %>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>VAT Number Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :vat_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">VAT Number Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :excise, label: 'Excise Number'  %>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label>Excise Number Proof</label>
+          <div class="input-group">
+            <div class="custom-file">
+              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <label class="custom-file-label">Excise Number Proof</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <%= f.input :telephone  %>
-    <%= f.input :mobile  %>
-
-    <%= f.input :tan  %>
-    <%= f.input :gst  %>
-    <%= f.file_field :gst_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.input :cst  %>
-    <%= f.file_field :cst_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.input :vat  %>
-    <%= f.file_field :vat_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-    <%= f.input :excise  %>
-    <%= f.file_field :excise_proof, :class => '', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
-
-    <%= f.input :gst_type, as: :select, collection: enum_to_collection(Address.gst_types) %>
-
-
-    <%= f.submit %>
+    <% if action_name.capitalize == "New" %>
+      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+        <i class="fal fa-plus-circle"></i> <%= submit_text(@address) %>
+      <% end %>
+    <% else %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+        <i class="fal fa-pen"></i> <%= submit_text(@address) %>
+      <% end %>
+    <% end %>
   <% end %>
 </div>

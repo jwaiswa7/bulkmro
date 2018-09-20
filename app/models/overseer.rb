@@ -1,3 +1,5 @@
+require 'mail'
+
 class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::IsAPerson
@@ -8,9 +10,9 @@ class Overseer < ApplicationRecord
   has_closure_tree({ name_column: :to_s })
 
   # Include default devise modules. Others available are:
-  # :confirmable, :timeoutable and :omniauthable
+  # :confirmable, :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+         :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
   enum role: { admin: 10, sales: 20, sales_manager: 30 }
 
@@ -20,10 +22,28 @@ class Overseer < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.role ||= :admin
+    self.role ||= :sales
   end
 
   def hierarchy_to_s
     ancestry_path.join(' > ')
+  end
+
+  def self.from_omniauth(access_token)
+    data = access_token.info
+    email = data['email']
+    domain = Mail::Address.new(email).domain
+
+    if domain.in? %w(bulkmro.com)
+      overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
+        overseer.password = Devise.friendly_token[0, 20]
+        overseer.first_name = data['first_name']
+        overseer.last_name = data['last_name']
+        overseer.google_oauth2_uid = data['uid']
+      end
+
+      overseer.assign_attributes(:google_oauth2_metadata => data)
+      overseer
+    end
   end
 end

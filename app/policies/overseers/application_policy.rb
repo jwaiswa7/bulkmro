@@ -10,8 +10,12 @@ class Overseers::ApplicationPolicy
     overseer.admin?
   end
 
+  def sales_manager?
+    overseer.sales_manager? || admin?
+  end
+
   def sales?
-    overseer.sales?
+    overseer.sales? || sales_manager?
   end
 
   def index?
@@ -27,7 +31,7 @@ class Overseers::ApplicationPolicy
   end
 
   def new?
-    admin? || sales?
+    index?
   end
 
   def create?
@@ -35,7 +39,7 @@ class Overseers::ApplicationPolicy
   end
 
   def edit?
-    admin? || sales?
+    create?
   end
 
   def update?
@@ -43,7 +47,7 @@ class Overseers::ApplicationPolicy
   end
 
   def destroy?
-    admin? || sales?
+    sales_manager?
   end
 
   def scope
