@@ -33,6 +33,8 @@ class Overseers::AccountsController < Overseers::BaseController
     authorize @account
     if @account.save
       redirect_to edit_overseers_account_path(@account), notice: flash_message(@account, action_name)
+    else
+      render 'edit'
     end
   end
 

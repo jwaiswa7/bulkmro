@@ -12,7 +12,7 @@ class Product < ApplicationRecord
   pg_search_scope :locate_any, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
-  belongs_to :brand
+  belongs_to :brand, required: false
   belongs_to :category
   belongs_to :tax_code, required: false
   belongs_to :inquiry_import_row, required: false
