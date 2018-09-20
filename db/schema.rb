@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   create_table "accounts", force: :cascade do |t|
     t.string "remote_uid"
     t.string "name"
+    t.string "alias"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -455,7 +456,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "overseers", force: :cascade do |t|
     t.integer "parent_id"
-    t.string "username"
+    t.string "username", null: false
     t.string "first_name"
     t.string "last_name"
     t.string "mobile"
@@ -465,17 +466,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "remote_sales_uid"
     t.integer "remote_emp_uid"
     t.integer "role"
-    t.string "mobile"
-    t.string "designation"
-    t.string "identifier"
     t.string "department"
-    t.string "geography"
-    t.integer "remote_sales_uid"
-    t.integer "remote_emp_uid"
     t.integer "center_code"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "username", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

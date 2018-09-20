@@ -1,22 +1,22 @@
 require 'csv'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-  def initialize()
-    overseers
-    measurement_unit
-    leadtime_option
-    currencies
-    states
-    payment_options
-    industries
-    accounts
-    contacts
-    companies
-    addresses
-    brands
-    tax_codes
-    categories
-    products
+  def initialize
+    #overseers
+    #measurement_unit
+    #leadtime_option
+    #currencies
+    #states
+    #payment_options
+    #industries
+    #accounts
+    #contacts
+    #companies
+    #addresses
+    #brands
+    #tax_codes
+    #categories
+    #products
   end
 
   def addresses
@@ -133,6 +133,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     contact_group = {"General" => 10,"Company Top Manager" => 20,"retailer" => 30,"ador" => 40,"vmi_group" => 50,"C-Form customer GROUP" => 60,"Manager" => 70}
 
     company_contacts_service.loop(company_contacts_service.rows_count) do |x|
+      puts "#{x.get_column('sap_id')}"
       if x.get_column('aliasname').present?
         account = Account.find_by_name(x.get_column('aliasname'))
       else
@@ -143,7 +144,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         Contact.where(email: x.get_column('email').strip.downcase).first_or_create do |contact|
           contact.assign_attributes(
               account: account,
-              remote_id: x.get_column('sap_id'),
+              remote_uid: (x.get_column('sap_id') == "NULL" ? nil : x.get_column('sap_id')),
               first_name: x.get_column('firstname') || 'fname',
               last_name: x.get_column('lastname'),
               prefix: x.get_column('prefix'),
