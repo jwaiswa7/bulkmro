@@ -5,9 +5,20 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
     create_table :overseers do |t|
       t.integer :parent_id, index: true
 
+      t.string :username, index: { :unique => true }, null: false
       t.string :first_name
       t.string :last_name
+      t.string :mobile
+      t.string :designation
+      t.string :identifier
+      t.string :department
+      t.string :geography
+
       t.integer :role, index: true
+
+      t.integer :salesperson_uid, index: { :unique => true }
+      t.integer :employee_uid, index: { :unique => true }
+      t.integer :center_code_uid
 
       t.string :google_oauth2_uid
       t.jsonb :google_oauth2_metadata
@@ -15,6 +26,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      t.string :username,           null: false
 
       ## Recoverable
       t.string   :reset_password_token

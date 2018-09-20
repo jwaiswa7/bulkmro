@@ -1,0 +1,920 @@
+country_id,region_id,code,default_name,gst_state_code,sap_code,name
+AE,699,AUH,"Abu Dhabi",NULL,AUH,NULL
+AE,700,JM,Ajman,NULL,JM,NULL
+AE,701,SHJ,Sharjah,NULL,SHJ,NULL
+AE,702,DXB,Dubai,NULL,DXB,NULL
+AE,703,FUJ,Fujairah,NULL,FUJ,NULL
+AE,704,RAK,"Ras Al Khaimah",NULL,RAK,NULL
+AE,705,UAQ,"Umm Al Quwain",NULL,UAQ,NULL
+AT,95,WI,Wien,NULL,WI,Wien
+AT,96,NO,Niederösterreich,NULL,NO,Niederösterreich
+AT,97,OO,Oberösterreich,NULL,OO,Oberösterreich
+AT,98,SB,Salzburg,NULL,SB,Salzburg
+AT,99,KN,Kärnten,NULL,KN,Kärnten
+AT,100,ST,Steiermark,NULL,ST,Steiermark
+AT,101,TI,Tirol,NULL,TI,Tirol
+AT,102,BL,Burgenland,NULL,BL,Burgenland
+AT,103,VB,Vorarlberg,NULL,VB,Vorarlberg
+AU,885,AU1,"New South Wales",NULL,AU1,NULL
+AU,886,AU2,Queensland,NULL,AU2,NULL
+AU,887,AU3,"South Australia",NULL,AU3,NULL
+AU,888,AU4,Tasmania,NULL,AU4,NULL
+AU,889,AU5,Victoria,NULL,AU5,NULL
+AU,890,AU6,"Western Australia",NULL,AU6,NULL
+AU,891,AU7,"Australian Capital Territory",NULL,AU7,NULL
+AU,892,AU8,"Jervis Bay Territory",NULL,AU8,NULL
+AU,893,AU9,"Northern Territory",NULL,AU9,NULL
+AU,894,AU10,"Norfolk Island",NULL,A10,NULL
+AU,895,AU11,"Australian Antarctic Territory",NULL,A11,NULL
+AU,896,AU12,"Coral Sea Islands",NULL,A12,NULL
+AU,897,AU13,"Ashmore and Cartier Islands",NULL,A13,NULL
+AU,898,AU14,"Heard Island and McDonald Islands",NULL,A14,NULL
+BD,878,dac,Dhaka,NULL,dac,NULL
+CA,66,AB,Alberta,NULL,AB,Alberta
+CA,67,BC,"British Columbia",NULL,BC,"British Columbia"
+CA,68,MB,Manitoba,NULL,MB,Manitoba
+CA,69,NL,"Newfoundland and Labrador",NULL,NL,"Newfoundland and Labrador"
+CA,70,NB,"New Brunswick",NULL,NB,"New Brunswick"
+CA,71,NS,"Nova Scotia",NULL,NS,"Nova Scotia"
+CA,72,NT,"Northwest Territories",NULL,NT,"Northwest Territories"
+CA,73,NU,Nunavut,NULL,NU,Nunavut
+CA,74,ON,Ontario,NULL,ON,Ontario
+CA,75,PE,"Prince Edward Island",NULL,PE,"Prince Edward Island"
+CA,76,QC,Quebec,NULL,QC,Quebec
+CA,77,SK,Saskatchewan,NULL,SK,Saskatchewan
+CA,78,YT,"Yukon Territory",NULL,YT,"Yukon Territory"
+CH,104,AG,Aargau,NULL,AG,Aargau
+CH,105,AI,"Appenzell Innerrhoden",NULL,AI,"Appenzell Innerrhoden"
+CH,106,AR,"Appenzell Ausserrhoden",NULL,AR,"Appenzell Ausserrhoden"
+CH,107,BE,Bern,NULL,BE,Bern
+CH,108,BL,Basel-Landschaft,NULL,BL,Basel-Landschaft
+CH,109,BS,Basel-Stadt,NULL,BS,Basel-Stadt
+CH,110,FR,Freiburg,NULL,FR,Freiburg
+CH,111,GE,Genf,NULL,GE,Genf
+CH,112,GL,Glarus,NULL,GL,Glarus
+CH,113,GR,Graubünden,NULL,GR,Graubünden
+CH,114,JU,Jura,NULL,JU,Jura
+CH,115,LU,Luzern,NULL,LU,Luzern
+CH,116,NE,Neuenburg,NULL,NE,Neuenburg
+CH,117,NW,Nidwalden,NULL,NW,Nidwalden
+CH,118,OW,Obwalden,NULL,OW,Obwalden
+CH,119,SG,"St. Gallen",NULL,SG,"St. Gallen"
+CH,120,SH,Schaffhausen,NULL,SH,Schaffhausen
+CH,121,SO,Solothurn,NULL,SO,Solothurn
+CH,122,SZ,Schwyz,NULL,SZ,Schwyz
+CH,123,TG,Thurgau,NULL,TG,Thurgau
+CH,124,TI,Tessin,NULL,TI,Tessin
+CH,125,UR,Uri,NULL,UR,Uri
+CH,126,VD,Waadt,NULL,VD,Waadt
+CH,127,VS,Wallis,NULL,VS,Wallis
+CH,128,ZG,Zug,NULL,ZG,Zug
+CH,129,ZH,Zürich,NULL,ZH,Zürich
+CN,521,ANH,Anhui,NULL,ANH,NULL
+CN,522,BEI,Beijing,NULL,BEI,NULL
+CN,523,CHO,Chongqing,NULL,CHO,NULL
+CN,524,FUJ,Fujian,NULL,FUJ,NULL
+CN,525,GAN,Gansu,NULL,GAN,NULL
+CN,526,GDG,Guangdong,NULL,GDG,NULL
+CN,527,GXI,Guangxi,NULL,GXI,NULL
+CN,528,GUI,Guizhou,NULL,GUI,NULL
+CN,529,HAI,Hainan,NULL,HAI,NULL
+CN,530,HEB,Hebei,NULL,HEB,NULL
+CN,531,HEI,Heilongjiang,NULL,HEI,NULL
+CN,532,HEN,Henan,NULL,HEN,NULL
+CN,533,HUB,Hubei,NULL,HUB,NULL
+CN,534,HUN,Hunan,NULL,HUN,NULL
+CN,535,JSU,Jiangsu,NULL,JSU,NULL
+CN,536,JXI,Jiangxi,NULL,JXI,NULL
+CN,537,JIL,Jilin,NULL,JIL,NULL
+CN,538,LIA,Liaoning,NULL,LIA,NULL
+CN,539,MON,"Nei Mongol",NULL,MON,NULL
+CN,540,NIN,Ningxia,NULL,NIN,NULL
+CN,541,QIN,Qinghai,NULL,QIN,NULL
+CN,542,SHA,Shaanxi,NULL,SHA,NULL
+CN,543,SHD,Shandong,NULL,SHD,NULL
+CN,544,SHH,Shanghai,NULL,SHH,NULL
+CN,545,SHX,Shanxi,NULL,SHX,NULL
+CN,546,SIC,Sichuan,NULL,SIC,NULL
+CN,547,TIA,Tianjin,NULL,TIA,NULL
+CN,548,XIN,Xinjiang,NULL,XIN,NULL
+CN,549,XIZ,Xizang,NULL,XIZ,NULL
+CN,550,YUN,Yunnan,NULL,YUN,NULL
+CN,551,ZHE,Zhejiang,NULL,ZHE,NULL
+DE,79,NDS,Niedersachsen,NULL,NDS,Niedersachsen
+DE,80,BAW,Baden-Württemberg,NULL,BAW,Baden-Württemberg
+DE,81,BAY,Bayern,NULL,BAY,Bayern
+DE,82,BER,Berlin,NULL,BER,Berlin
+DE,83,BRG,Brandenburg,NULL,BRG,Brandenburg
+DE,84,BRE,Bremen,NULL,BRE,Bremen
+DE,85,HAM,Hamburg,NULL,HAM,Hamburg
+DE,86,HES,Hessen,NULL,HES,Hessen
+DE,87,MEC,Mecklenburg-Vorpommern,NULL,MEC,Mecklenburg-Vorpommern
+DE,88,NRW,"North Rhine-Westphalia",NULL,NRW,"North Rhine-Westphalia"
+DE,89,RHE,Rheinland-Pfalz,NULL,RHE,Rheinland-Pfalz
+DE,90,SAR,Saarland,NULL,SAR,Saarland
+DE,91,SAS,Sachsen,NULL,SAS,Sachsen
+DE,92,SAC,Sachsen-Anhalt,NULL,SAC,Sachsen-Anhalt
+DE,93,SCN,Schleswig-Holstein,NULL,SCN,Schleswig-Holstein
+DE,94,THE,Thüringen,NULL,THE,Thüringen
+DE,873,Altk,Altenkirchen,NULL,Alt,NULL
+DE,903,95,Mainz,NULL,95,NULL
+DE,904,96,Weilheim,NULL,96,NULL
+DE,907,95,ETTLINGEN,NULL,97,NULL
+DE,1248,NI,"Lower Saxony",NULL,NULL,NULL
+DE,1980,95,Luhe,NULL,98,NULL
+EE,340,EE-37,Harjumaa,NULL,EEH,Harjumaa
+EE,341,EE-39,Hiiumaa,NULL,EE3,Hiiumaa
+EE,342,EE-44,Ida-Virumaa,NULL,EE4,Ida-Virumaa
+EE,343,EE-49,Jõgevamaa,NULL,EE9,Jõgevamaa
+EE,344,EE-51,Järvamaa,NULL,EE5,Järvamaa
+EE,345,EE-57,Läänemaa,NULL,EE7,Läänemaa
+EE,346,EE-59,Lääne-Virumaa,NULL,EEL,Lääne-Virumaa
+EE,347,EE-65,Põlvamaa,NULL,EE6,Põlvamaa
+EE,348,EE-67,Pärnumaa,NULL,E67,Pärnumaa
+EE,349,EE-70,Raplamaa,NULL,EER,Raplamaa
+EE,350,EE-74,Saaremaa,NULL,EES,Saaremaa
+EE,351,EE-78,Tartumaa,NULL,EET,Tartumaa
+EE,352,EE-82,Valgamaa,NULL,EEV,Valgamaa
+EE,353,EE-84,Viljandimaa,NULL,EE8,Viljandimaa
+EE,354,EE-86,Võrumaa,NULL,EEA,Võrumaa
+EG,1988,EG01,Cairo,NULL,NULL,NULL
+ES,130,"A Coruсa","A Coruña",NULL,"A C","A Coruña"
+ES,131,Alava,Alava,NULL,Ala,Alava
+ES,132,Albacete,Albacete,NULL,Alb,Albacete
+ES,133,Alicante,Alicante,NULL,Ali,Alicante
+ES,134,Almeria,Almeria,NULL,Alm,Almeria
+ES,135,Asturias,Asturias,NULL,Ast,Asturias
+ES,136,Avila,Avila,NULL,Avi,Avila
+ES,137,Badajoz,Badajoz,NULL,Bad,Badajoz
+ES,138,Baleares,Baleares,NULL,Bal,Baleares
+ES,139,Barcelona,Barcelona,NULL,Bar,Barcelona
+ES,140,Burgos,Burgos,NULL,Bur,Burgos
+ES,141,Caceres,Caceres,NULL,Cac,Caceres
+ES,142,Cadiz,Cadiz,NULL,Cad,Cadiz
+ES,143,Cantabria,Cantabria,NULL,Can,Cantabria
+ES,144,Castellon,Castellon,NULL,Cas,Castellon
+ES,145,Ceuta,Ceuta,NULL,Ceu,Ceuta
+ES,146,"Ciudad Real","Ciudad Real",NULL,Ciu,"Ciudad Real"
+ES,147,Cordoba,Cordoba,NULL,Cor,Cordoba
+ES,148,Cuenca,Cuenca,NULL,Cue,Cuenca
+ES,149,Girona,Girona,NULL,Gir,Girona
+ES,150,Granada,Granada,NULL,Gra,Granada
+ES,151,Guadalajara,Guadalajara,NULL,Gua,Guadalajara
+ES,152,Guipuzcoa,Guipuzcoa,NULL,Gui,Guipuzcoa
+ES,153,Huelva,Huelva,NULL,Hue,Huelva
+ES,154,Huesca,Huesca,NULL,Hus,Huesca
+ES,155,Jaen,Jaen,NULL,Jae,Jaen
+ES,156,"La Rioja","La Rioja",NULL,La,"La Rioja"
+ES,157,"Las Palmas","Las Palmas",NULL,Las,"Las Palmas"
+ES,158,Leon,Leon,NULL,Leo,Leon
+ES,159,Lleida,Lleida,NULL,Lle,Lleida
+ES,160,Lugo,Lugo,NULL,Lug,Lugo
+ES,161,Madrid,Madrid,NULL,Mad,Madrid
+ES,162,Malaga,Malaga,NULL,Mal,Malaga
+ES,163,Melilla,Melilla,NULL,Mel,Melilla
+ES,164,Murcia,Murcia,NULL,Mur,Murcia
+ES,165,Navarra,Navarra,NULL,Nav,Navarra
+ES,166,Ourense,Ourense,NULL,Our,Ourense
+ES,167,Palencia,Palencia,NULL,Pal,Palencia
+ES,168,Pontevedra,Pontevedra,NULL,Pon,Pontevedra
+ES,169,Salamanca,Salamanca,NULL,Sal,Salamanca
+ES,170,"Santa Cruz de Tenerife","Santa Cruz de Tenerife",NULL,San,"Santa Cruz de Tenerife"
+ES,171,Segovia,Segovia,NULL,Seg,Segovia
+ES,172,Sevilla,Sevilla,NULL,Sev,Sevilla
+ES,173,Soria,Soria,NULL,Sor,Soria
+ES,174,Tarragona,Tarragona,NULL,Tar,Tarragona
+ES,175,Teruel,Teruel,NULL,Ter,Teruel
+ES,176,Toledo,Toledo,NULL,Tol,Toledo
+ES,177,Valencia,Valencia,NULL,Val,Valencia
+ES,178,Valladolid,Valladolid,NULL,Vld,Valladolid
+ES,179,Vizcaya,Vizcaya,NULL,Viz,Vizcaya
+ES,180,Zamora,Zamora,NULL,Zam,Zamora
+ES,181,Zaragoza,Zaragoza,NULL,Zar,Zaragoza
+FI,320,Lappi,Lappi,NULL,Lap,Lappi
+FI,321,Pohjois-Pohjanmaa,Pohjois-Pohjanmaa,NULL,Poh,Pohjois-Pohjanmaa
+FI,322,Kainuu,Kainuu,NULL,Kai,Kainuu
+FI,323,Pohjois-Karjala,Pohjois-Karjala,NULL,Pok,Pohjois-Karjala
+FI,324,Pohjois-Savo,Pohjois-Savo,NULL,Pos,Pohjois-Savo
+FI,325,Etelä-Savo,Etelä-Savo,NULL,Ete,Etelä-Savo
+FI,326,Etelä-Pohjanmaa,Etelä-Pohjanmaa,NULL,Etp,Etelä-Pohjanmaa
+FI,327,Pohjanmaa,Pohjanmaa,NULL,Poa,Pohjanmaa
+FI,328,Pirkanmaa,Pirkanmaa,NULL,Pir,Pirkanmaa
+FI,329,Satakunta,Satakunta,NULL,Sat,Satakunta
+FI,330,Keski-Pohjanmaa,Keski-Pohjanmaa,NULL,Kes,Keski-Pohjanmaa
+FI,331,Keski-Suomi,Keski-Suomi,NULL,Kem,Keski-Suomi
+FI,332,Varsinais-Suomi,Varsinais-Suomi,NULL,Var,Varsinais-Suomi
+FI,333,Etelä-Karjala,Etelä-Karjala,NULL,Etk,Etelä-Karjala
+FI,334,Päijät-Häme,Päijät-Häme,NULL,Päi,Päijät-Häme
+FI,335,Kanta-Häme,Kanta-Häme,NULL,Kan,Kanta-Häme
+FI,336,Uusimaa,Uusimaa,NULL,Uus,Uusimaa
+FI,337,Itä-Uusimaa,Itä-Uusimaa,NULL,Itä,Itä-Uusimaa
+FI,338,Kymenlaakso,Kymenlaakso,NULL,Kym,Kymenlaakso
+FI,339,Ahvenanmaa,Ahvenanmaa,NULL,Ahv,Ahvenanmaa
+FI,881,SALO,Salo,NULL,SAL,NULL
+FR,182,1,Ain,NULL,1,Ain
+FR,183,2,Aisne,NULL,2,Aisne
+FR,184,3,Allier,NULL,3,Allier
+FR,185,4,Alpes-de-Haute-Provence,NULL,4,Alpes-de-Haute-Provence
+FR,186,5,Hautes-Alpes,NULL,5,Hautes-Alpes
+FR,187,6,Alpes-Maritimes,NULL,6,Alpes-Maritimes
+FR,188,7,Ardèche,NULL,7,Ardèche
+FR,189,8,Ardennes,NULL,8,Ardennes
+FR,190,9,Ariège,NULL,9,Ariège
+FR,191,10,Aube,NULL,10,Aube
+FR,192,11,Aude,NULL,11,Aude
+FR,193,12,Aveyron,NULL,12,Aveyron
+FR,194,13,Bouches-du-Rhône,NULL,13,Bouches-du-Rhône
+FR,195,14,Calvados,NULL,14,Calvados
+FR,196,15,Cantal,NULL,15,Cantal
+FR,197,16,Charente,NULL,16,Charente
+FR,198,17,Charente-Maritime,NULL,17,Charente-Maritime
+FR,199,18,Cher,NULL,18,Cher
+FR,200,19,Corrèze,NULL,19,Corrèze
+FR,201,2A,Corse-du-Sud,NULL,2A,Corse-du-Sud
+FR,202,2B,Haute-Corse,NULL,2B,Haute-Corse
+FR,203,21,Côte-d'Or,NULL,21,Côte-d'Or
+FR,204,22,Côtes-d'Armor,NULL,22,Côtes-d'Armor
+FR,205,23,Creuse,NULL,23,Creuse
+FR,206,24,Dordogne,NULL,24,Dordogne
+FR,207,25,Doubs,NULL,25,Doubs
+FR,208,26,Drôme,NULL,26,Drôme
+FR,209,27,Eure,NULL,27,Eure
+FR,210,28,Eure-et-Loir,NULL,28,Eure-et-Loir
+FR,211,29,Finistère,NULL,29,Finistère
+FR,212,30,Gard,NULL,30,Gard
+FR,213,31,Haute-Garonne,NULL,31,Haute-Garonne
+FR,214,32,Gers,NULL,32,Gers
+FR,215,33,Gironde,NULL,33,Gironde
+FR,216,34,Hérault,NULL,34,Hérault
+FR,217,35,Ille-et-Vilaine,NULL,35,Ille-et-Vilaine
+FR,218,36,Indre,NULL,36,Indre
+FR,219,37,Indre-et-Loire,NULL,37,Indre-et-Loire
+FR,220,38,Isère,NULL,38,Isère
+FR,221,39,Jura,NULL,JU,Jura
+FR,222,40,Landes,NULL,40,Landes
+FR,223,41,Loir-et-Cher,NULL,41,Loir-et-Cher
+FR,224,42,Loire,NULL,42,Loire
+FR,225,43,Haute-Loire,NULL,43,Haute-Loire
+FR,226,44,Loire-Atlantique,NULL,44,Loire-Atlantique
+FR,227,45,Loiret,NULL,45,Loiret
+FR,228,46,Lot,NULL,46,Lot
+FR,229,47,Lot-et-Garonne,NULL,47,Lot-et-Garonne
+FR,230,48,Lozère,NULL,48,Lozère
+FR,231,49,Maine-et-Loire,NULL,49,Maine-et-Loire
+FR,232,50,Manche,NULL,50,Manche
+FR,233,51,Marne,NULL,51,Marne
+FR,234,52,Haute-Marne,NULL,52,Haute-Marne
+FR,235,53,Mayenne,NULL,53,Mayenne
+FR,236,54,Meurthe-et-Moselle,NULL,54,Meurthe-et-Moselle
+FR,237,55,Meuse,NULL,55,Meuse
+FR,238,56,Morbihan,NULL,56,Morbihan
+FR,239,57,Moselle,NULL,57,Moselle
+FR,240,58,Nièvre,NULL,58,Nièvre
+FR,241,59,Nord,NULL,59,Nord
+FR,242,60,Oise,NULL,60,Oise
+FR,243,61,Orne,NULL,61,Orne
+FR,244,62,Pas-de-Calais,NULL,62,Pas-de-Calais
+FR,245,63,Puy-de-Dôme,NULL,63,Puy-de-Dôme
+FR,246,64,Pyrénées-Atlantiques,NULL,64,Pyrénées-Atlantiques
+FR,247,65,Hautes-Pyrénées,NULL,65,Hautes-Pyrénées
+FR,248,66,Pyrénées-Orientales,NULL,66,Pyrénées-Orientales
+FR,249,67,Bas-Rhin,NULL,67,Bas-Rhin
+FR,250,68,Haut-Rhin,NULL,68,Haut-Rhin
+FR,251,69,Rhône,NULL,69,Rhône
+FR,252,70,Haute-Saône,NULL,70,Haute-Saône
+FR,253,71,Saône-et-Loire,NULL,71,Saône-et-Loire
+FR,254,72,Sarthe,NULL,72,Sarthe
+FR,255,73,Savoie,NULL,73,Savoie
+FR,256,74,Haute-Savoie,NULL,74,Haute-Savoie
+FR,257,75,Paris,NULL,75,Paris
+FR,258,76,Seine-Maritime,NULL,76,Seine-Maritime
+FR,259,77,Seine-et-Marne,NULL,77,Seine-et-Marne
+FR,260,78,Yvelines,NULL,78,Yvelines
+FR,261,79,Deux-Sèvres,NULL,79,Deux-Sèvres
+FR,262,80,Somme,NULL,80,Somme
+FR,263,81,Tarn,NULL,81,Tarn
+FR,264,82,Tarn-et-Garonne,NULL,82,Tarn-et-Garonne
+FR,265,83,Var,NULL,83,Var
+FR,266,84,Vaucluse,NULL,84,Vaucluse
+FR,267,85,Vendée,NULL,85,Vendée
+FR,268,86,Vienne,NULL,86,Vienne
+FR,269,87,Haute-Vienne,NULL,87,Haute-Vienne
+FR,270,88,Vosges,NULL,88,Vosges
+FR,271,89,Yonne,NULL,89,Yonne
+FR,272,90,Territoire-de-Belfort,NULL,90,Territoire-de-Belfort
+FR,273,91,Essonne,NULL,91,Essonne
+FR,274,92,Hauts-de-Seine,NULL,92,Hauts-de-Seine
+FR,275,93,Seine-Saint-Denis,NULL,93,Seine-Saint-Denis
+FR,276,94,Val-de-Marne,NULL,94,Val-de-Marne
+FR,277,95,Val-d'Oise,NULL,95,Val-d'Oise
+FR,871,AKH," Altkirch",NULL,AKH,NULL
+GB,552,K4,Kent,NULL,K4,NULL
+GB,553,I0,"Aberconwy and Colwyn",NULL,I0,NULL
+GB,554,I1,"Aberdeen City",NULL,I1,NULL
+GB,555,I2,Aberdeenshire,NULL,I2,NULL
+GB,556,I3,Anglesey,NULL,I3,NULL
+GB,557,I4,Angus,NULL,I4,NULL
+GB,558,I5,Antrim,NULL,I5,NULL
+GB,559,I6,"Argyll and Bute",NULL,I6,NULL
+GB,560,I7,Armagh,NULL,I7,NULL
+GB,561,I8,Avon,NULL,I8,NULL
+GB,562,I9,Ayrshire,NULL,I9,NULL
+GB,563,IB,"Bath and NE Somerset",NULL,IB,NULL
+GB,564,IC,Bedfordshire,NULL,IC,NULL
+GB,565,IE,Belfast,NULL,IE,NULL
+GB,566,IF,Berkshire,NULL,IF,NULL
+GB,567,IG,Berwickshire,NULL,IG,NULL
+GB,568,IH,BFPO,NULL,IH,NULL
+GB,569,II,"Blaenau Gwent",NULL,II,NULL
+GB,570,IJ,Buckinghamshire,NULL,IJ,NULL
+GB,571,IK,Caernarfonshire,NULL,IK,NULL
+GB,572,IM,Caerphilly,NULL,IM,NULL
+GB,573,IO,Caithness,NULL,IO,NULL
+GB,574,IP,Cambridgeshire,NULL,IP,NULL
+GB,575,IQ,Cardiff,NULL,IQ,NULL
+GB,576,IR,Cardiganshire,NULL,IR,NULL
+GB,577,IS,Carmarthenshire,NULL,IS,NULL
+GB,578,IT,Ceredigion,NULL,IT,NULL
+GB,579,IU,"Channel Islands",NULL,IU,NULL
+GB,580,IV,Cheshire,NULL,IV,NULL
+GB,581,IW,"City of Bristol",NULL,IW,NULL
+GB,582,IX,Clackmannanshire,NULL,IX,NULL
+GB,583,IY,Clwyd,NULL,IY,NULL
+GB,584,IZ,Conwy,NULL,IZ,NULL
+GB,585,J0,Cornwall/Scilly,NULL,J0,NULL
+GB,586,J1,Cumbria,NULL,J1,NULL
+GB,587,J2,Denbighshire,NULL,J2,NULL
+GB,588,J3,Derbyshire,NULL,J3,NULL
+GB,589,J4,Derry/Londonderry,NULL,J4,NULL
+GB,590,J5,Devon,NULL,J5,NULL
+GB,591,J6,Dorset,NULL,J6,NULL
+GB,592,J7,Down,NULL,J7,NULL
+GB,593,J8,"Dumfries and Galloway",NULL,J8,NULL
+GB,594,J9,Dunbartonshire,NULL,J9,NULL
+GB,595,JA,Dundee,NULL,JA,NULL
+GB,596,JB,Durham,NULL,JB,NULL
+GB,597,JC,Dyfed,NULL,JC,NULL
+GB,598,JD,"East Ayrshire",NULL,JD,NULL
+GB,599,JE,"East Dunbartonshire",NULL,JE,NULL
+GB,600,JF,"East Lothian",NULL,JF,NULL
+GB,601,JG,"East Renfrewshire",NULL,JG,NULL
+GB,602,JH,"East Riding Yorkshire",NULL,JH,NULL
+GB,603,JI,"East Sussex",NULL,JI,NULL
+GB,604,JJ,Edinburgh,NULL,JJ,NULL
+GB,605,JK,England,NULL,JK,NULL
+GB,606,JL,Essex,NULL,JL,NULL
+GB,607,JM,Falkirk,NULL,JM,NULL
+GB,608,JN,Fermanagh,NULL,JN,NULL
+GB,609,JO,Fife,NULL,JO,NULL
+GB,610,JP,Flintshire,NULL,JP,NULL
+GB,611,JQ,Glasgow,NULL,JQ,NULL
+GB,612,JR,Gloucestershire,NULL,JR,NULL
+GB,613,JS,"Greater London",NULL,JS,NULL
+GB,614,JT,"Greater Manchester",NULL,JT,NULL
+GB,615,JU,Gwent,NULL,JU,NULL
+GB,616,JV,Gwynedd,NULL,JV,NULL
+GB,617,JW,Hampshire,NULL,JW,NULL
+GB,618,JX,Hartlepool,NULL,JX,NULL
+GB,619,HAW,"Hereford and Worcester",NULL,HAW,NULL
+GB,620,JY,Hertfordshire,NULL,JY,NULL
+GB,621,JZ,Highlands,NULL,JZ,NULL
+GB,622,K0,Inverclyde,NULL,K0,NULL
+GB,623,K1,Inverness-Shire,NULL,K1,NULL
+GB,624,K2,"Isle of Man",NULL,K2,NULL
+GB,625,K3,"Isle of Wight",NULL,K3,NULL
+GB,626,K4,Kent,NULL,K4,NULL
+GB,627,K5,Kincardinshire,NULL,K5,NULL
+GB,628,K6,"Kingston Upon Hull",NULL,K6,NULL
+GB,629,K7,Kinross-Shire,NULL,K7,NULL
+GB,630,K8,Kirklees,NULL,K8,NULL
+GB,631,K9,Lanarkshire,NULL,K9,NULL
+GB,632,KA,Lancashire,NULL,KA,NULL
+GB,633,KB,Leicestershire,NULL,KB,NULL
+GB,634,KC,Lincolnshire,NULL,KC,NULL
+GB,635,KD,Londonderry,NULL,KD,NULL
+GB,636,KE,Merseyside,NULL,KE,NULL
+GB,637,KF,"Merthyr Tydfil",NULL,KF,NULL
+GB,638,KG,"Mid Glamorgan",NULL,KG,NULL
+GB,639,KI,"Mid Lothian",NULL,KI,NULL
+GB,640,KH,Middlesex,NULL,KH,NULL
+GB,641,KJ,Monmouthshire,NULL,KJ,NULL
+GB,642,KK,Moray,NULL,KK,NULL
+GB,643,KL,"Neath & Port Talbot",NULL,KL,NULL
+GB,644,KM,Newport,NULL,KM,NULL
+GB,645,KN,Norfolk,NULL,KN,NULL
+GB,646,KP,"North Ayrshire",NULL,KP,NULL
+GB,647,KQ,"North East Lincolnshire",NULL,KQ,NULL
+GB,648,KR,"North Lanarkshire",NULL,KR,NULL
+GB,649,KT,"North Lincolnshire",NULL,KT,NULL
+GB,650,KU,"North Somerset",NULL,KU,NULL
+GB,651,KV,"North Yorkshire",NULL,KV,NULL
+GB,652,KO,Northamptonshire,NULL,KO,NULL
+GB,653,KW,"Northern Ireland",NULL,KW,NULL
+GB,654,KX,Northumberland,NULL,KX,NULL
+GB,655,KZ,Nottinghamshire,NULL,KZ,NULL
+GB,656,L0,"Orkney and Shetland Isles",NULL,L0,NULL
+GB,657,L1,Oxfordshire,NULL,L1,NULL
+GB,658,L2,Pembrokeshire,NULL,L2,NULL
+GB,659,L3,"Perth and Kinross",NULL,L3,NULL
+GB,660,L4,Powys,NULL,L4,NULL
+GB,661,L5,"Redcar and Cleveland",NULL,L5,NULL
+GB,662,L6,Renfrewshire,NULL,L6,NULL
+GB,663,L7,"Rhonda Cynon Taff",NULL,L7,NULL
+GB,664,L8,Rutland,NULL,L8,NULL
+GB,665,L9,"Scottish Borders",NULL,L9,NULL
+GB,666,LB,Shetland,NULL,LB,NULL
+GB,667,LC,Shropshire,NULL,LC,NULL
+GB,668,LD,Somerset,NULL,LD,NULL
+GB,669,LE,"South Ayrshire",NULL,LE,NULL
+GB,670,LF,"South Glamorgan",NULL,LF,NULL
+GB,671,LG,"South Gloucesteshire",NULL,LG,NULL
+GB,672,LH,"South Lanarkshire",NULL,LH,NULL
+GB,673,LI,"South Yorkshire",NULL,LI,NULL
+GB,674,LJ,Staffordshire,NULL,LJ,NULL
+GB,675,LK,Stirling,NULL,LK,NULL
+GB,676,LL,"Stockton On Tees",NULL,LL,NULL
+GB,677,LM,Suffolk,NULL,LM,NULL
+GB,678,LN,Surrey,NULL,LN,NULL
+GB,679,LO,Swansea,NULL,LO,NULL
+GB,680,LP,Torfaen,NULL,LP,NULL
+GB,681,LQ,"Tyne and Wear",NULL,LQ,NULL
+GB,682,LR,Tyrone,NULL,LR,NULL
+GB,683,LS,"Vale Of Glamorgan",NULL,LS,NULL
+GB,684,LT,Wales,NULL,LT,NULL
+GB,685,LU,Warwickshire,NULL,LU,NULL
+GB,686,LV,"West Berkshire",NULL,LV,NULL
+GB,687,LW,"West Dunbartonshire",NULL,LW,NULL
+GB,688,LX,"West Glamorgan",NULL,LX,NULL
+GB,689,LY,"West Lothian",NULL,LY,NULL
+GB,690,LZ,"West Midlands",NULL,LZ,NULL
+GB,691,M0,"West Sussex",NULL,M0,NULL
+GB,692,M1,"West Yorkshire",NULL,M1,NULL
+GB,693,M2,"Western Isles",NULL,M2,NULL
+GB,694,M3,Wiltshire,NULL,M3,NULL
+GB,695,M4,Wirral,NULL,M4,NULL
+GB,696,M5,Worcestershire,NULL,M5,NULL
+GB,697,M6,Wrexham,NULL,M6,NULL
+GB,698,M7,York,NULL,M7,NULL
+GB,872,BIR,Birmingham,NULL,BIR,NULL
+GI,1987,GI,Gibraltar,NULL,NULL,NULL
+HK,1272,CW,Kowloon,NULL,NULL,NULL
+HU,1278,GS,Hungary,NULL,NULL,NULL
+ID,1990,JW,"Jawa Timur",NULL,JW,NULL
+IE,900,IE01,Dublin,NULL,IE0,NULL
+IL,874,HFA,Haifa,NULL,HFA,NULL
+IN,485,AN,"Andaman Nicobar",35,AN,NULL
+IN,486,AP,"Andhra Pradesh",37,AP,NULL
+IN,487,AR,"Arunachal Pradesh",12,AR,NULL
+IN,488,AS,Assam,18,AS,NULL
+IN,489,BH,Bihar,10,BH,NULL
+IN,490,CH,Chandigarh,04,CH,NULL
+IN,491,CG,Chhattisgarh,22,CG,NULL
+IN,492,DN,"Dadar and Nagar Haveli",26,AN,NULL
+IN,493,DD,"Daman and Diu",25,DD,NULL
+IN,494,DL,Delhi,07,DL,NULL
+IN,495,GA,Goa,30,GO,NULL
+IN,496,GJ,Gujarat,24,GJ,NULL
+IN,497,HR,Haryana,06,HR,NULL
+IN,498,HP,"Himachal Pradesh",02,HP,NULL
+IN,499,JK,"Jammu and Kashmir",01,JK,NULL
+IN,500,JH,Jharkhand,20,JH,NULL
+IN,501,KA,Karnataka,29,KA,NULL
+IN,502,KL,Kerala,32,KL,NULL
+IN,503,LD,Lakshadweep,31,LD,NULL
+IN,504,MP,"Madhya Pradesh",23,MP,NULL
+IN,505,MH,Maharashtra,27,MH,NULL
+IN,506,MN,Manipur,14,MN,NULL
+IN,507,ML,Meghalaya,17,ME,NULL
+IN,508,MZ,Mizoram,15,MI,NULL
+IN,509,NL,Nagaland,13,NL,NULL
+IN,510,OR,Odisha,21,OR,NULL
+IN,511,PY,Pondicherry,34,PY,NULL
+IN,512,PB,Punjab,03,PB,NULL
+IN,513,RJ,Rajasthan,08,RJ,NULL
+IN,514,SK,Sikkim,11,SK,NULL
+IN,515,TN,"Tamil Nadu",33,TN,NULL
+IN,516,TR,Tripura,16,TR,NULL
+IN,517,UP,"Uttar Pradesh",09,UP,NULL
+IN,518,UT,Uttarakhand,05,UT,NULL
+IN,519,WB,"West Bengal",19,WB,NULL
+IN,520,TN,Chennai,NULL,TN,NULL
+IN,870,TS,Telangana,36,TS,NULL
+IT,706,RM,Rome,NULL,RM,NULL
+IT,707,SCV,"Vatican City",NULL,SCV,NULL
+IT,708,VT,Viterbo,NULL,VT,NULL
+IT,709,RI,Rieti,NULL,RI,NULL
+IT,710,FR,Frosinone,NULL,FR,NULL
+IT,711,LT,Latina,NULL,LT,NULL
+IT,712,TR,Terni,NULL,TR,NULL
+IT,713,PG,Perugia,NULL,PG,NULL
+IT,714,SS,Sassari,NULL,SS,NULL
+IT,715,OT,Olbia-Tempio,NULL,OT,NULL
+IT,716,NU,Nuoro,NULL,NU,NULL
+IT,717,OG,Ogliastra,NULL,OG,NULL
+IT,718,CA,Cagliari,NULL,CA,NULL
+IT,719,OR,Oristano,NULL,OR,NULL
+IT,720,CI,Carbonia-Iglesias,NULL,CI,NULL
+IT,721,MD,"Medio Campidano",NULL,MD,NULL
+IT,722,TO,Turin,NULL,TO,NULL
+IT,723,AO,Aosta,NULL,AO,NULL
+IT,724,CN,Cuneo,NULL,CN,NULL
+IT,725,VC,Vercelli,NULL,VC,NULL
+IT,726,BI,Biella,NULL,BI,NULL
+IT,727,AT,Asti,NULL,AT,NULL
+IT,728,AL,Alessandria,NULL,AL,NULL
+IT,729,GE,Genoa,NULL,GE,NULL
+IT,730,SV,Savona,NULL,SV,NULL
+IT,731,IM,Imperia,NULL,IM,NULL
+IT,732,SP,"La Spezia",NULL,SP,NULL
+IT,733,MI,Milan,NULL,MI,NULL
+IT,734,MB,"Monza and Brianza",NULL,MB,NULL
+IT,735,VA,Varese,NULL,VA,NULL
+IT,736,CO,Como,NULL,CO,NULL
+IT,737,SO,Sondrio,NULL,SO,NULL
+IT,738,LC,Lecco,NULL,LC,NULL
+IT,739,BG,Bergamo,NULL,BG,NULL
+IT,740,BS,Brescia,NULL,BS,NULL
+IT,741,CR,Cremona,NULL,CR,NULL
+IT,742,LO,Lodi,NULL,LO,NULL
+IT,743,PV,Pavia,NULL,PV,NULL
+IT,744,NO,Novara,NULL,NO,NULL
+IT,745,VB,Verbano-Cusio-Ossola,NULL,VB,NULL
+IT,746,PC,Piacenza,NULL,PC,NULL
+IT,747,VE,Venice,NULL,VE,NULL
+IT,748,TV,Treviso,NULL,TV,NULL
+IT,749,BL,Belluno,NULL,BL,NULL
+IT,750,UD,Udine,NULL,UD,NULL
+IT,751,PN,Pordenone,NULL,PN,NULL
+IT,752,TS,Trieste,NULL,TS,NULL
+IT,753,GO,Gorizia,NULL,GO,NULL
+IT,754,PD,Padua,NULL,PD,NULL
+IT,755,VI,Vicenza,NULL,VI,NULL
+IT,756,VR,Verona,NULL,VR,NULL
+IT,757,TN,Trento,NULL,TN,NULL
+IT,758,BZ,Bolzano/Bozen,NULL,BZ,NULL
+IT,759,BO,Bologna,NULL,BO,NULL
+IT,760,MO,Modena,NULL,MO,NULL
+IT,761,RE,"Reggio Emilia",NULL,RE,NULL
+IT,762,PR,Parma,NULL,PR,NULL
+IT,763,FE,Ferrara,NULL,FE,NULL
+IT,764,RO,Rovigo,NULL,RO,NULL
+IT,765,MN,Mantua,NULL,MN,NULL
+IT,766,FC,Forli-Cesena,NULL,FC,NULL
+IT,767,RN,Rimini,NULL,RN,NULL
+IT,768,RSM,"Republic of San Marino",NULL,RSM,NULL
+IT,769,RA,Ravenna,NULL,RA,NULL
+IT,770,FI,Florence,NULL,FI,NULL
+IT,771,PT,Pistoia,NULL,PT,NULL
+IT,772,AR,Arezzo,NULL,AR,NULL
+IT,773,SI,Siena,NULL,SI,NULL
+IT,774,MS,Massa-Carrara,NULL,MS,NULL
+IT,775,LU,Lucca,NULL,LU,NULL
+IT,776,PI,Pisa,NULL,PI,NULL
+IT,777,LI,Livorno,NULL,LI,NULL
+IT,778,GR,Grosseto,NULL,GR,NULL
+IT,779,PO,Prato,NULL,PO,NULL
+IT,780,AN,Ancona,NULL,AN,NULL
+IT,781,PU,"Pesaro e Urbino",NULL,PU,NULL
+IT,782,MC,Macerata,NULL,MC,NULL
+IT,783,AP,"Ascoli Piceno",NULL,AP,NULL
+IT,784,FM,Fermo,NULL,FM,NULL
+IT,785,TE,Teramo,NULL,TE,NULL
+IT,786,PE,Pescara,NULL,PE,NULL
+IT,787,CH,Chieti,NULL,CH,NULL
+IT,788,AQ,L-Aquila,NULL,AQ,NULL
+IT,789,BA,Bari,NULL,BA,NULL
+IT,790,FG,Foggia,NULL,FG,NULL
+IT,791,BR,Brindisi,NULL,BR,NULL
+IT,792,LE,Lecce,NULL,LE,NULL
+IT,793,TA,Taranto,NULL,TA,NULL
+IT,794,MT,Matera,NULL,MT,NULL
+IT,795,BT,Barletta-Andria-Trani,NULL,BT,NULL
+IT,796,NA,Naples,NULL,NA,NULL
+IT,797,CE,Caserta,NULL,CE,NULL
+IT,798,BN,Benevento,NULL,BN,NULL
+IT,799,AV,Avellino,NULL,AV,NULL
+IT,800,SA,Salerno,NULL,SA,NULL
+IT,801,PZ,Potenza,NULL,PZ,NULL
+IT,802,CB,Campobasso,NULL,CB,NULL
+IT,803,IS,Isernia,NULL,IS,NULL
+IT,804,CS,Cosenza,NULL,CS,NULL
+IT,805,CZ,Catanzaro,NULL,CZ,NULL
+IT,806,KR,Crotone,NULL,KR,NULL
+IT,807,RC,"Reggio Calabria",NULL,RC,NULL
+IT,808,VV,"Vibo Valentia",NULL,VV,NULL
+IT,809,PA,Palermo,NULL,PA,NULL
+IT,810,TP,Trapani,NULL,TP,NULL
+IT,811,AG,Agrigento,NULL,AG,NULL
+IT,812,CL,Caltanissetta,NULL,CL,NULL
+IT,813,EN,Enna,NULL,EN,NULL
+IT,814,CT,Catania,NULL,CT,NULL
+IT,815,SR,Syracuse,NULL,SR,NULL
+IT,816,RG,Ragusa,NULL,RG,NULL
+IT,817,ME,Messina,NULL,ME,NULL
+JP,1986,JP01,Higashimatsuyama,NULL,JP1,NULL
+JP,1989,1987,Tokyo,NULL,NULL,NULL
+KR,840,KR-11,Seoul,NULL,K11,NULL
+KR,841,KR-26,Busan,NULL,K26,NULL
+KR,842,KR-27,Daegu,NULL,K27,NULL
+KR,843,KR-30,Daejeon,NULL,K30,NULL
+KR,844,KR-29,Gwangju,NULL,K29,NULL
+KR,845,KR-28,Incheon,NULL,K28,NULL
+KR,846,KR-31,Ulsan,NULL,K31,NULL
+KR,847,KR-50,Sejong,NULL,K50,NULL
+KR,848,KR-43,"North Chungcheong",NULL,K43,NULL
+KR,849,KR-44,"South Chungcheong",NULL,K44,NULL
+KR,850,KR-42,Gangwon,NULL,K42,NULL
+KR,851,KR-41,Gyeonggi,NULL,K41,NULL
+KR,852,KR-47,"North Gyeongsang",NULL,K47,NULL
+KR,853,KR-48,"South Gyeongsang",NULL,K48,NULL
+KR,854,KR-45,"North Jeolla",NULL,K45,NULL
+KR,855,KR-46,"South Jeolla",NULL,K46,NULL
+KR,856,KR-49,Jeju,NULL,K49,NULL
+KZ,875,GUW,Atyrau,NULL,GUW,NULL
+LK,879,ML,Malwana,NULL,ML,NULL
+LT,475,LT-AL,"Alytaus Apskritis",NULL,LTA,"Alytaus Apskritis"
+LT,476,LT-KU,"Kauno Apskritis",NULL,LTK,"Kauno Apskritis"
+LT,477,LT-KL,"Klaipėdos Apskritis",NULL,LKA,"Klaipėdos Apskritis"
+LT,478,LT-MR,"Marijampolės Apskritis",NULL,LTM,"Marijampolės Apskritis"
+LT,479,LT-PN,"Panevėžio Apskritis",NULL,LTP,"Panevėžio Apskritis"
+LT,480,LT-SA,"Šiaulių Apskritis",NULL,LTS,"Šiaulių Apskritis"
+LT,481,LT-TA,"Tauragės Apskritis",NULL,LTT,"Tauragės Apskritis"
+LT,482,LT-TE,"Telšių Apskritis",NULL,LTE,"Telšių Apskritis"
+LT,483,LT-UT,"Utenos Apskritis",NULL,LTU,"Utenos Apskritis"
+LT,484,LT-VL,"Vilniaus Apskritis",NULL,LTV,"Vilniaus Apskritis"
+LV,355,LV-DGV,Daugavpils,NULL,LVD,Daugavpils
+LV,356,LV-JEL,Jelgava,NULL,LVJ,Jelgava
+LV,357,Jēkabpils,Jēkabpils,NULL,Jēk,Jēkabpils
+LV,358,LV-JUR,Jūrmala,NULL,LVA,Jūrmala
+LV,359,LV-LPX,Liepāja,NULL,LVL,Liepāja
+LV,360,LV-LE,"Liepājas novads",NULL,LVN,"Liepājas novads"
+LV,361,LV-REZ,Rēzekne,NULL,LVR,Rēzekne
+LV,362,LV-RIX,Rīga,NULL,LVG,Rīga
+LV,363,LV-RI,"Rīgas novads",NULL,LV,"Rīgas novads"
+LV,364,Valmiera,Valmiera,NULL,VaV,Valmiera
+LV,365,LV-VEN,Ventspils,NULL,LVE,Ventspils
+LV,366,"Aglonas novads","Aglonas novads",NULL,Agl,"Aglonas novads"
+LV,367,LV-AI,"Aizkraukles novads",NULL,LVI,"Aizkraukles novads"
+LV,368,"Aizputes novads","Aizputes novads",NULL,Aiz,"Aizputes novads"
+LV,369,"Aknīstes novads","Aknīstes novads",NULL,Akn,"Aknīstes novads"
+LV,370,"Alojas novads","Alojas novads",NULL,Alo,"Alojas novads"
+LV,371,"Alsungas novads","Alsungas novads",NULL,Als,"Alsungas novads"
+LV,372,LV-AL,"Alūksnes novads",NULL,LVU,"Alūksnes novads"
+LV,373,"Amatas novads","Amatas novads",NULL,Ama,"Amatas novads"
+LV,374,"Apes novads","Apes novads",NULL,Ape,"Apes novads"
+LV,375,"Auces novads","Auces novads",NULL,Auc,"Auces novads"
+LV,376,"Babītes novads","Babītes novads",NULL,Bab,"Babītes novads"
+LV,377,"Baldones novads","Baldones novads",NULL,Bal,"Baldones novads"
+LV,378,"Baltinavas novads","Baltinavas novads",NULL,Ban,"Baltinavas novads"
+LV,379,LV-BL,"Balvu novads",NULL,LVS,"Balvu novads"
+LV,380,LV-BU,"Bauskas novads",NULL,LVK,"Bauskas novads"
+LV,381,"Beverīnas novads","Beverīnas novads",NULL,Bev,"Beverīnas novads"
+LV,382,"Brocēnu novads","Brocēnu novads",NULL,Bro,"Brocēnu novads"
+LV,383,"Burtnieku novads","Burtnieku novads",NULL,Bur,"Burtnieku novads"
+LV,384,"Carnikavas novads","Carnikavas novads",NULL,Car,"Carnikavas novads"
+LV,385,"Cesvaines novads","Cesvaines novads",NULL,Ces,"Cesvaines novads"
+LV,386,"Ciblas novads","Ciblas novads",NULL,Cib,"Ciblas novads"
+LV,387,LV-CE,"Cēsu novads",NULL,LV-,"Cēsu novads"
+LV,388,"Dagdas novads","Dagdas novads",NULL,Dag,"Dagdas novads"
+LV,389,LV-DA,"Daugavpils novads",NULL,LDA,"Daugavpils novads"
+LV,390,LV-DO,"Dobeles novads",NULL,LVO,"Dobeles novads"
+LV,391,"Dundagas novads","Dundagas novads",NULL,Dun,"Dundagas novads"
+LV,392,"Durbes novads","Durbes novads",NULL,Dur,"Durbes novads"
+LV,393,"Engures novads","Engures novads",NULL,Eng,"Engures novads"
+LV,394,"Garkalnes novads","Garkalnes novads",NULL,Gar,"Garkalnes novads"
+LV,395,"Grobiņas novads","Grobiņas novads",NULL,Gro,"Grobiņas novads"
+LV,396,LV-GU,"Gulbenes novads",NULL,LVB,"Gulbenes novads"
+LV,397,"Iecavas novads","Iecavas novads",NULL,Iec,"Iecavas novads"
+LV,398,"Ikšķiles novads","Ikšķiles novads",NULL,Ikš,"Ikšķiles novads"
+LV,399,"Ilūkstes novads","Ilūkstes novads",NULL,Ilū,"Ilūkstes novads"
+LV,400,"Inčukalna novads","Inčukalna novads",NULL,Inč,"Inčukalna novads"
+LV,401,"Jaunjelgavas novads","Jaunjelgavas novads",NULL,Jau,"Jaunjelgavas novads"
+LV,402,"Jaunpiebalgas novads","Jaunpiebalgas novads",NULL,JaP,"Jaunpiebalgas novads"
+LV,403,"Jaunpils novads","Jaunpils novads",NULL,JaJ,"Jaunpils novads"
+LV,404,LV-JL,"Jelgavas novads",NULL,LJN,"Jelgavas novads"
+LV,405,LV-JK,"Jēkabpils novads",NULL,LJS,"Jēkabpils novads"
+LV,406,"Kandavas novads","Kandavas novads",NULL,Kan,"Kandavas novads"
+LV,407,"Kokneses novads","Kokneses novads",NULL,Kok,"Kokneses novads"
+LV,408,"Krimuldas novads","Krimuldas novads",NULL,Kri,"Krimuldas novads"
+LV,409,"Krustpils novads","Krustpils novads",NULL,Kru,"Krustpils novads"
+LV,410,LV-KR,"Krāslavas novads",NULL,LKN,"Krāslavas novads"
+LV,411,LV-KU,"Kuldīgas novads",NULL,LSN,"Kuldīgas novads"
+LV,412,"Kārsavas novads","Kārsavas novads",NULL,Kār,"Kārsavas novads"
+LV,413,"Lielvārdes novads","Lielvārdes novads",NULL,Lie,"Lielvārdes novads"
+LV,414,LV-LM,"Limbažu novads",NULL,LLV,"Limbažu novads"
+LV,415,"Lubānas novads","Lubānas novads",NULL,Lub,"Lubānas novads"
+LV,416,LV-LU,"Ludzas novads",NULL,LLN,"Ludzas novads"
+LV,417,"Līgatnes novads","Līgatnes novads",NULL,Līg,"Līgatnes novads"
+LV,418,"Līvānu novads","Līvānu novads",NULL,Līv,"Līvānu novads"
+LV,419,LV-MA,"Madonas novads",NULL,LVM,"Madonas novads"
+LV,420,"Mazsalacas novads","Mazsalacas novads",NULL,Maz,"Mazsalacas novads"
+LV,421,"Mālpils novads","Mālpils novads",NULL,Māl,"Mālpils novads"
+LV,422,"Mārupes novads","Mārupes novads",NULL,Mār,"Mārupes novads"
+LV,423,"Naukšēnu novads","Naukšēnu novads",NULL,Nau,"Naukšēnu novads"
+LV,424,"Neretas novads","Neretas novads",NULL,Ner,"Neretas novads"
+LV,425,"Nīcas novads","Nīcas novads",NULL,Nīc,"Nīcas novads"
+LV,426,LV-OG,"Ogres novads",NULL,LON,"Ogres novads"
+LV,427,"Olaines novads","Olaines novads",NULL,Ola,"Olaines novads"
+LV,428,"Ozolnieku novads","Ozolnieku novads",NULL,Ozo,"Ozolnieku novads"
+LV,429,LV-PR,"Preiļu novads",NULL,LPN,"Preiļu novads"
+LV,430,"Priekules novads","Priekules novads",NULL,Pri,"Priekules novads"
+LV,431,"Priekuļu novads","Priekuļu novads",NULL,PPN,"Priekuļu novads"
+LV,432,"Pārgaujas novads","Pārgaujas novads",NULL,Pār,"Pārgaujas novads"
+LV,433,"Pāvilostas novads","Pāvilostas novads",NULL,Pāv,"Pāvilostas novads"
+LV,434,"Pļaviņu novads","Pļaviņu novads",NULL,Pļa,"Pļaviņu novads"
+LV,435,"Raunas novads","Raunas novads",NULL,Rau,"Raunas novads"
+LV,436,"Riebiņu novads","Riebiņu novads",NULL,Rie,"Riebiņu novads"
+LV,437,"Rojas novads","Rojas novads",NULL,Roj,"Rojas novads"
+LV,438,"Ropažu novads","Ropažu novads",NULL,Rop,"Ropažu novads"
+LV,439,"Rucavas novads","Rucavas novads",NULL,Ruc,"Rucavas novads"
+LV,440,"Rugāju novads","Rugāju novads",NULL,Rug,"Rugāju novads"
+LV,441,"Rundāles novads","Rundāles novads",NULL,Run,"Rundāles novads"
+LV,442,LV-RE,"Rēzeknes novads",NULL,LRN,"Rēzeknes novads"
+LV,443,"Rūjienas novads","Rūjienas novads",NULL,Rūj,"Rūjienas novads"
+LV,444,"Salacgrīvas novads","Salacgrīvas novads",NULL,Sal,"Salacgrīvas novads"
+LV,445,"Salas novads","Salas novads",NULL,SSN,"Salas novads"
+LV,446,"Salaspils novads","Salaspils novads",NULL,SAL,"Salaspils novads"
+LV,447,LV-SA,"Saldus novads",NULL,LAS,"Saldus novads"
+LV,448,"Saulkrastu novads","Saulkrastu novads",NULL,Sau,"Saulkrastu novads"
+LV,449,"Siguldas novads","Siguldas novads",NULL,Sig,"Siguldas novads"
+LV,450,"Skrundas novads","Skrundas novads",NULL,Skr,"Skrundas novads"
+LV,451,"Skrīveru novads","Skrīveru novads",NULL,SkN,"Skrīveru novads"
+LV,452,"Smiltenes novads","Smiltenes novads",NULL,Smi,"Smiltenes novads"
+LV,453,"Stopiņu novads","Stopiņu novads",NULL,Sto,"Stopiņu novads"
+LV,454,"Strenču novads","Strenču novads",NULL,Str,"Strenču novads"
+LV,455,"Sējas novads","Sējas novads",NULL,Sēj,"Sējas novads"
+LV,456,LV-TA,"Talsu novads",NULL,LVT,"Talsu novads"
+LV,457,LV-TU,"Tukuma novads",NULL,LTU,"Tukuma novads"
+LV,458,"Tērvetes novads","Tērvetes novads",NULL,Tēr,"Tērvetes novads"
+LV,459,"Vaiņodes novads","Vaiņodes novads",NULL,Vai,"Vaiņodes novads"
+LV,460,LV-VK,"Valkas novads",NULL,LVV,"Valkas novads"
+LV,461,LV-VM,"Valmieras novads",NULL,LAV,"Valmieras novads"
+LV,462,"Varakļānu novads","Varakļānu novads",NULL,Var,"Varakļānu novads"
+LV,463,"Vecpiebalgas novads","Vecpiebalgas novads",NULL,Vec,"Vecpiebalgas novads"
+LV,464,"Vecumnieku novads","Vecumnieku novads",NULL,VEN,"Vecumnieku novads"
+LV,465,LV-VE,"Ventspils novads",NULL,VLS,"Ventspils novads"
+LV,466,"Viesītes novads","Viesītes novads",NULL,Vie,"Viesītes novads"
+LV,467,"Viļakas novads","Viļakas novads",NULL,Viļ,"Viļakas novads"
+LV,468,"Viļānu novads","Viļānu novads",NULL,Vin,"Viļānu novads"
+LV,469,"Vārkavas novads","Vārkavas novads",NULL,Vār,"Vārkavas novads"
+LV,470,"Zilupes novads","Zilupes novads",NULL,Zil,"Zilupes novads"
+LV,471,"Ādažu novads","Ādažu novads",NULL,Āda,"Ādažu novads"
+LV,472,"Ērgļu novads","Ērgļu novads",NULL,Ērg,"Ērgļu novads"
+LV,473,"Ķeguma novads","Ķeguma novads",NULL,Ķeg,"Ķeguma novads"
+LV,474,"Ķekavas novads","Ķekavas novads",NULL,Ķek,"Ķekavas novads"
+MA,905,MA01,Casablanca,NULL,MA1,NULL
+MA,906,MA02,Rabat,NULL,MA2,NULL
+MY,899,MY),Kedah,NULL,MY),NULL
+MY,1983,MY01,"Selangor Darul Ehsan",NULL,MY0,NULL
+NA,869,DL,"New Delhi",NULL,DL,NULL
+QA,883,DOHA,Doha,NULL,DOH,NULL
+RO,278,AB,Alba,NULL,AB,Alba
+RO,279,AR,Arad,NULL,AR,Arad
+RO,280,AG,Argeş,NULL,AG,Argeş
+RO,281,BC,Bacău,NULL,BC,Bacău
+RO,282,BH,Bihor,NULL,BH,Bihor
+RO,283,BN,Bistriţa-Năsăud,NULL,BN,Bistriţa-Năsăud
+RO,284,BT,Botoşani,NULL,BT,Botoşani
+RO,285,BV,Braşov,NULL,BV,Braşov
+RO,286,BR,Brăila,NULL,BR,Brăila
+RO,287,B,Bucureşti,NULL,B,Bucureşti
+RO,288,BZ,Buzău,NULL,BZ,Buzău
+RO,289,CS,Caraş-Severin,NULL,CS,Caraş-Severin
+RO,290,CL,Călăraşi,NULL,CL,Călăraşi
+RO,291,CJ,Cluj,NULL,CJ,Cluj
+RO,292,CT,Constanţa,NULL,CT,Constanţa
+RO,293,CV,Covasna,NULL,CV,Covasna
+RO,294,DB,Dâmboviţa,NULL,DB,Dâmboviţa
+RO,295,DJ,Dolj,NULL,DJ,Dolj
+RO,296,GL,Galaţi,NULL,GL,Galaţi
+RO,297,GR,Giurgiu,NULL,GR,Giurgiu
+RO,298,GJ,Gorj,NULL,GJ,Gorj
+RO,299,HR,Harghita,NULL,HR,Harghita
+RO,300,HD,Hunedoara,NULL,HD,Hunedoara
+RO,301,IL,Ialomiţa,NULL,IL,Ialomiţa
+RO,302,IS,Iaşi,NULL,IS,Iaşi
+RO,303,IF,Ilfov,NULL,IF,Ilfov
+RO,304,MM,Maramureş,NULL,MM,Maramureş
+RO,305,MH,Mehedinţi,NULL,MH,Mehedinţi
+RO,306,MS,Mureş,NULL,MS,Mureş
+RO,307,NT,Neamţ,NULL,NT,Neamţ
+RO,308,OT,Olt,NULL,OT,Olt
+RO,309,PH,Prahova,NULL,PH,Prahova
+RO,310,SM,Satu-Mare,NULL,SM,Satu-Mare
+RO,311,SJ,Sălaj,NULL,SJ,Sălaj
+RO,312,SB,Sibiu,NULL,SB,Sibiu
+RO,313,SV,Suceava,NULL,SV,Suceava
+RO,314,TR,Teleorman,NULL,TR,Teleorman
+RO,315,TM,Timiş,NULL,TM,Timiş
+RO,316,TL,Tulcea,NULL,TL,Tulcea
+RO,317,VS,Vaslui,NULL,VS,Vaslui
+RO,318,VL,Vâlcea,NULL,VL,Vâlcea
+RO,319,VN,Vrancea,NULL,VN,Vrancea
+RU,882,KGO," Kirovgrad",NULL,KGO,NULL
+RU,1630,MOS,Moscow,NULL,NULL,NULL
+SA,858,AHB,Abha,NULL,AHB,NULL
+SA,859,DA,Dammam,NULL,DA,NULL
+SA,860,KF,Khafji,NULL,KF,NULL
+SA,861,KB,Khobar,NULL,KB,NULL
+SA,862,RI,Riyadh,NULL,RI,NULL
+SA,863,JED,Jeddah,NULL,JED,NULL
+SA,864,MD,Medina,NULL,MD,NULL
+SA,865,KB,Khobar,NULL,KB,NULL
+SA,866,TB,Tabuk,NULL,TB,NULL
+SA,867,HB,"Hafar Al-Batin",NULL,HB,NULL
+SA,868,JU,Jubail,NULL,JU,NULL
+SE,884,Avesta,Avesta,NULL,Ave,NULL
+SE,901,SE01,Degerfors,NULL,SE0,NULL
+SG,857,SG,Singapore,NULL,SG,NULL
+TR,876,ank,Ankara,NULL,ank,NULL
+TW,818,CHA,Changhua,NULL,CHA,NULL
+TW,819,"    CYI    ","    Chiayi",NULL,CYI,NULL
+TW,820,"    CYQ    ","    Chiayi",NULL,CYI,NULL
+TW,821,"    HSZ    ","    Hsinchu",NULL,HSZ,NULL
+TW,822,"    HSQ    ","    Hsinchu",NULL,HSZ,NULL
+TW,823,"    HUA    ","    Hualien",NULL,HUA,NULL
+TW,824,"    KHH    ","    Kaohsiung",NULL,KHH,NULL
+TW,825,"    KEE    ","    Keelung",NULL,KEE,NULL
+TW,826,"    KIN    ","    Kinmen",NULL,KIN,NULL
+TW,827,"    LIE    ","    Lienchiang",NULL,LIE,NULL
+TW,828,"    MIA    ","    Miaoli",NULL,MIA,NULL
+TW,829,"    NAN    ","    Nantou",NULL,NAN,NULL
+TW,830,"    NWT    ","    New Taipei",NULL,NWT,NULL
+TW,831,"    PEN    ","    Penghu",NULL,PEN,NULL
+TW,832,"    PIF    ","    Pingtung",NULL,PIF,NULL
+TW,833,"    TXG    ","    Taichung",NULL,TXG,NULL
+TW,834,"    TNN    ","    Tainan",NULL,TNN,NULL
+TW,835,"    TPE    ","    Taipei",NULL,TPE,NULL
+TW,836,"    TTT    ","    Taitung",NULL,TTT,NULL
+TW,837,"    TAO    ","    Taoyuan",NULL,TAO,NULL
+TW,838,"    ILA    ","    Yilan",NULL,ILA,NULL
+TW,839,"    YUN    ","    Yunlin",NULL,YUN,NULL
+US,1,AL,Alabama,NULL,AL,Alabama
+US,2,AK,Alaska,NULL,AK,Alaska
+US,3,AS,"American Samoa",NULL,AS,"American Samoa"
+US,4,AZ,Arizona,NULL,AZ,Arizona
+US,5,AR,Arkansas,NULL,AR,Arkansas
+US,6,AF,"Armed Forces Africa",NULL,AF,"Armed Forces Africa"
+US,7,AA,"Armed Forces Americas",NULL,AA,"Armed Forces Americas"
+US,8,AC,"Armed Forces Canada",NULL,AC,"Armed Forces Canada"
+US,9,AE,"Armed Forces Europe",NULL,AE,"Armed Forces Europe"
+US,10,AM,"Armed Forces Middle East",NULL,AM,"Armed Forces Middle East"
+US,11,AP,"Armed Forces Pacific",NULL,AP,"Armed Forces Pacific"
+US,12,CA,California,NULL,CA,California
+US,13,CO,Colorado,NULL,CO,Colorado
+US,14,CT,Connecticut,NULL,CT,Connecticut
+US,15,DE,Delaware,NULL,DE,Delaware
+US,16,DC,"District of Columbia",NULL,DC,"District of Columbia"
+US,17,FM,"Federated States Of Micronesia",NULL,FM,"Federated States Of Micronesia"
+US,18,FL,Florida,NULL,FL,Florida
+US,19,GA,Georgia,NULL,GA,Georgia
+US,20,GU,Guam,NULL,GU,Guam
+US,21,HI,Hawaii,NULL,HI,Hawaii
+US,22,ID,Idaho,NULL,ID,Idaho
+US,23,IL,Illinois,NULL,IL,Illinois
+US,24,IN,Indiana,NULL,IN,Indiana
+US,25,IA,Iowa,NULL,IA,Iowa
+US,26,KS,Kansas,NULL,KS,Kansas
+US,27,KY,Kentucky,NULL,KY,Kentucky
+US,28,LA,Louisiana,NULL,LA,Louisiana
+US,29,ME,Maine,NULL,ME,Maine
+US,30,MH,"Marshall Islands",NULL,MH,"Marshall Islands"
+US,31,MD,Maryland,NULL,MD,Maryland
+US,32,MA,Massachusetts,NULL,MA,Massachusetts
+US,33,MI,Michigan,NULL,MI,Michigan
+US,34,MN,Minnesota,NULL,MN,Minnesota
+US,35,MS,Mississippi,NULL,MS,Mississippi
+US,36,MO,Missouri,NULL,MO,Missouri
+US,37,MT,Montana,NULL,MT,Montana
+US,38,NE,Nebraska,NULL,NE,Nebraska
+US,39,NV,Nevada,NULL,NV,Nevada
+US,40,NH,"New Hampshire",NULL,NH,"New Hampshire"
+US,41,NJ,"New Jersey",NULL,NJ,"New Jersey"
+US,42,NM,"New Mexico",NULL,NM,"New Mexico"
+US,43,NY,"New York",NULL,NY,"New York"
+US,44,NC,"North Carolina",NULL,NC,"North Carolina"
+US,45,ND,"North Dakota",NULL,ND,"North Dakota"
+US,46,MP,"Northern Mariana Islands",NULL,MP,"Northern Mariana Islands"
+US,47,OH,Ohio,NULL,OH,Ohio
+US,48,OK,Oklahoma,NULL,OK,Oklahoma
+US,49,OR,Oregon,NULL,OR,Oregon
+US,50,PW,Palau,NULL,PW,Palau
+US,51,PA,Pennsylvania,NULL,PA,Pennsylvania
+US,52,PR,"Puerto Rico",NULL,PR,"Puerto Rico"
+US,53,RI,"Rhode Island",NULL,RI,"Rhode Island"
+US,54,SC,"South Carolina",NULL,SC,"South Carolina"
+US,55,SD,"South Dakota",NULL,SD,"South Dakota"
+US,56,TN,Tennessee,NULL,TN,Tennessee
+US,57,TX,Texas,NULL,TX,Texas
+US,58,UT,Utah,NULL,UT,Utah
+US,59,VT,Vermont,NULL,VT,Vermont
+US,60,VI,"Virgin Islands",NULL,VI,"Virgin Islands"
+US,61,VA,Virginia,NULL,VA,Virginia
+US,62,WA,Washington,NULL,WA,Washington
+US,63,WV,"West Virginia",NULL,WV,"West Virginia"
+US,64,WI,Wisconsin,NULL,WI,Wisconsin
+US,65,WY,Wyoming,NULL,WY,Wyoming
+VN,902,VN01,"Vung Tau City",NULL,VN0,NULL
+VN,1981,VN02,Hanoi,,VN2,NULL
+VN,1982,VN03,"Nam Tu Liem",,VN3,NULL
+ZA,1991,GT,Gauteng,NULL,NULL,NULL

@@ -33,13 +33,15 @@ class Overseers::AccountsController < Overseers::BaseController
     authorize @account
     if @account.save
       redirect_to edit_overseers_account_path(@account), notice: flash_message(@account, action_name)
+    else
+      render 'edit'
     end
   end
 
   private
   def account_params
     params.require(:account).permit(
-      :alias, :name,
+      :name, :alias,
       :contacts_attributes => [:id, :first_name, :last_name]
     )
   end

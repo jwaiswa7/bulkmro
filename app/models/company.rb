@@ -11,7 +11,7 @@ class Company < ApplicationRecord
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
   belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
-  belongs_to :industry
+  belongs_to :industry, required: false
 
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
 
@@ -64,8 +64,8 @@ class Company < ApplicationRecord
   # todo implement
   scope :acts_as_supplier, -> { }
 
-  validates_presence_of :gst
-  validates_uniqueness_of :gst
+  # validates_presence_of :gst
+  # validates_uniqueness_of :gst
   validates :credit_limit, numericality: { greater_than: 0 }, allow_nil: true
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
