@@ -1,5 +1,5 @@
 service = Services::Shared::Spreadsheets::CsvImporter.new('hsncodes.csv')
-service.loop(100) do |x|
+service.loop(service.rows_count) do |x|
   TaxCode.create!(
       remote_uid: x.get_column('internal_key'),
       chapter: x.get_column('chapter'),
@@ -17,177 +17,212 @@ Currency.create!([
                      { name: 'EUR', conversion_rate: 83.85 },
                  ])
 
-states = [
-    'Andhra Pradesh',
-    'Arunachal Pradesh',
-    'Assam',
-    'Bihar',
-    'Chhattisgarh',
-    'Goa',
-    'Gujarat',
-    'Haryana',
-    'Himachal Pradesh',
-    'Jammu and Kashmir',
-    'Jharkhand',
-    'Karnataka',
-    'Kerala',
-    'Madhya Pradesh',
-    'Maharashtra',
-    'Manipur',
-    'Meghalaya',
-    'Mizoram',
-    'Nagaland',
-    'Odisha',
-    'Punjab',
-    'Rajasthan',
-    'Sikkim',
-    'Tamil Nadu',
-    'Telangana',
-    'Tripura',
-    'Uttar Pradesh',
-    'Uttarakhand',
-    'West Bengal',
-]
-
-states.each do |state|
-  AddressState.create(name: state)
-end
-
-industries = [
-    'Transport',
-    'Telecom',
-    'Technology',
-    'Steel',
-    'Shipbuilding',
-    'Power',
-    'Pharma',
-    'Oil & Gas',
-    'Mining',
-    'Media',
-    'Manufacturing',
-    'Hospitality',
-    'FMCG',
-    'Electronics',
-    'Education',
-    'Defense',
-    'Construction',
-    'Chemical',
-    'Banking',
-    'Automotive',
-    'Agriculture',
-    'Aerospace'
-]
-
-industries.each do |industry|
-  Industry.create(name: industry)
-end
-
 Overseer.create!(
     :first_name => 'Ashwin',
     :last_name => 'Goyal',
     :email => 'ashwin.goyal@bulkmro.com',
+    :username => 'ashwin.goyal',
     :password => 'abc123',
     :password_confirmation => 'abc123'
 )
 
+overseerService = Services::Shared::Spreadsheets::CsvImporter.new('admin_users.csv')
+overseerService.loop(overseerService.rows_count) do |x|
 
-devang = Overseer.create!(first_name: 'Devang', :last_name => 'Shah', role: :sales, :email => 'devang.shah@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123')
-lavanya = Overseer.create!(first_name: 'Lavanya', :last_name => 'Jamma', role: :sales, :email => 'lavanya.j@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: devang)
-Overseer.create!(first_name: 'Jeetendra', :last_name => 'Sharma', role: :sales, :email => 'jeetendra.sharma@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: lavanya)
-Overseer.create!(first_name: 'Abid', :last_name => 'Shaikh', role: :sales, :email => 'abid.shaikh@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: lavanya)
-
-
-PaymentOption.create!(name: 'Net 30')
-PaymentOption.create!(name: 'Net 60')
-PaymentOption.create!(name: 'Net 90')
-
-ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
-[
-    'Reliance Retail',
-    'Reliance Life Sciences',
-    'Reliance Institute of Life Sciences (RILS)',
-=begin
-    'Reliance Logistics',
-    'Reliance Clinical Research Services (RCRS)',
-    'Reliance Solar',
-    'Relicord',
-    'Reliance Jio Infocomm Limited (RJIL)',
-    'Reliance Industrial Infrastructure Limited (RIIL)',
-    'LYF',
-    'Network 18'
-=end
-].each do |name|
-  ril.companies.create!(
-      name: name,
-      default_payment_option: RandomRecord.for(PaymentOption),
-      industry: RandomRecord.for(Industry),
-      tax_identifier: Faker::Company.polish_taxpayer_identification_number,
-  )
-end
-
-ge = Account.create!(name: 'General Electric', alias: 'GE')
-[
-    'CFM International',
-    'Engine Alliance',
-    'GE Aviation Systems',
-    'GE Capital',
-    'GE Capital Rail Services (Europe)',
-    'GE Appliances',
-=begin
-    'GE Digital',
-    'GE Power',
-    'GE Global Research',
-    'GE Hitachi Nuclear Energy',
-    'GE Lighting',
-    'GE Power Conversion',
-    'GE Renewable Energy',
-    'GE Security',
-    'GE Ventures',
-    'GE Automation & Controls',
-    'Genesis Lease',
-    'GE Jenbacher',
-    'GE Technology Infrastructure',
-    'Thomson-Houston Electric Company',
-    'Tungsram'
-=end
-].each do |name|
-  ge.companies.create!(
-      name: name,
-      default_payment_option: RandomRecord.for(PaymentOption),
-      industry: RandomRecord.for(Industry),
-      tax_identifier: Faker::Company.polish_taxpayer_identification_number
-  )
-end
-
-Account.all.each do |account|
-  5.times do
-    account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123')
-  end
-end
-
-Company.all.each do |company|
-  # Add company_contacts
-  RandomRecords.for(company.account.contacts, [*1..5].sample).each do |contact|
-    company.company_contacts.create!(:contact => contact)
-  end
-
-  # Add addresses
-  [*1..3].sample.times do
-    company.addresses.create!(
-        name: Faker::Address.community,
-        state: RandomRecord.for(AddressState),
-        state_name: Faker::Address.state,
-        city_name: Faker::Address.city,
-        country_code: Faker::Address.country_code,
-        street1: Faker::Address.street_address,
-        street2: Faker::Address.secondary_address,
-        pincode: Faker::Address.zip_code
+  Overseer.where(email: x.get_column('email').strip.downcase).first_or_create do |overseer|
+    overseer.assign_attributes(
+      first_name: x.get_column('firstname'),
+      last_name: x.get_column('lastname'),
+      username: x.get_column('username'),
+      mobile: x.get_column('mobile'),
+      designation: x.get_column('designation'),
+      identifier: x.get_column('identifier'),
+      geography: x.get_column('geography'),
+      remote_sales_uid: x.get_column('sap_internal_code'),
+      remote_emp_uid: x.get_column('employee_id'),
+      password: 'abc123',
+      password_confirmation: 'abc123'
     )
   end
 end
 
-10.times do
-  Brand.create!(name: Faker::Company.name)
+#Country and States
+state_service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
+state_service.loop(state_service.rows_count) do |x|
+  if x.get_column('default_name').present? && x.get_column('code').present? && x.get_column('region_id').present?
+    AddressState.where(name: x.get_column('default_name').strip).first_or_create do |state|
+      state.assign_attributes(
+        country_code: x.get_column('country_id'),
+        region_code: x.get_column('code'),
+        region_gst_id: x.get_column('gst_state_code'),
+        region_id: x.get_column('region_id'),
+        remote_uid: x.get_column('sap_region_code')
+      )
+    end
+  end
+end
+
+payment_term_service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
+payment_term_service.loop(payment_term_service.rows_count) do |x|
+  PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
+    payment_option.assign_attributes(
+      remote_uid: x.get_column('group_code')
+      )
+    end
+end
+
+#Create FAKE account
+
+Account.create!(
+           remote_uid: 99999999,
+           name:"Fake Account",
+           alias: "FA"
+)
+account_service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
+
+account_service.loop(account_service.rows_count) do |x|
+  #create account alias
+  account_name = x.get_column('aliasname')
+  aliasname = x.get_column('aliasname')
+  remote_uid = x.get_column('sap_id')
+  Account.where(name: account_name).first_or_create do |accounts|
+    accounts.remote_uid = remote_uid
+    accounts.name = account_name
+    accounts.alias = account_name.titlecase.split.map(&:first).join
+  end
+end
+
+#create contacts
+fakeAccount = Account.find_by_name("Fake Account")
+company_contacts_service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
+is_active = [20,10]
+contact_group = {"General" => 10,"Company Top Manager" => 20,"retailer" => 30,"ador" => 40,"vmi_group" => 50,"C-Form customer GROUP" => 60,"Manager" => 70}
+
+company_contacts_service.loop(company_contacts_service.rows_count) do |x|
+
+  if x.get_column('aliasname').present?
+    account = Account.find_by_name(x.get_column('aliasname'))
+  else
+    account = fakeAccount
+  end
+
+  begin
+    Contact.where(email: x.get_column('email').strip.downcase).first_or_create do |contact|
+      contact.assign_attributes(
+            account: account,
+            remote_id: x.get_column('sap_id'),
+            first_name: x.get_column('firstname') || 'fname',
+            last_name: x.get_column('lastname'),
+            prefix: x.get_column('prefix'),
+            designation: x.get_column('designation'),
+            telephone: x.get_column('telephone'),
+            #role: x.get_column('account'),
+            status: is_active[x.get_column('is_active').to_i],
+            contact_group: contact_group[x.get_column('group')],
+            password: 'abc123',
+            password_confirmation: 'abc123'
+        )
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    puts "#{x.get_column('email')} skipped"
+  end
+end
+
+#create companies
+fakeAccount = Account.find_by_name("Fake Account")
+company_service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
+company_service.loop(company_service.rows_count) do |x|
+  if x.get_column('aliasname').present?
+    account = Account.find_by_name(x.get_column('aliasname'))
+  else
+    account = fakeAccount
+  end
+
+  company_type = { "Proprietorship" => 10, "Private Limited" => 20, "Contractor" => 30, "Trust" => 40, "Public Limited" => 50}
+  priority = [10, 20]
+  nature_of_business = { "Trading" => 10,"Manufacturer" => 20,"Dealer" => 30 }
+  is_msme = {"N" => false, "Y" => true}
+  urd = {"N" => false, "Y" => true}
+
+  Company.where(name: x.get_column('cmp_name')).first_or_create do |company|
+
+    inside_email = Overseer.find_by_email(x.get_column('inside_sales_email'))
+    outside_email = Overseer.find_by_email(x.get_column('outside_sales_email'))
+    manager_email = Overseer.find_by_email(x.get_column('manager_email'))
+    payment_option = PaymentOption.find_by_name(x.get_column('default_payment_term'))
+    industry = Industry.find_by_name(x.get_column('cmp_industry'))
+
+    #default_contact = Contact.find_by_email(x.get_column('default_contact_email'))
+    #default_company_contact = CompanyContact.find_in_batches(x.get_column('default_contact'))
+    company.assign_attributes(
+      account: account,
+      industry: industry.present? ? industry : nil,
+      remote_uid: x.get_column('cmp_id'),
+      #default_company_contact:default_company_contact,
+      default_payment_option_id: payment_option.present? ? payment_option.id : nil,
+      #default_billing_address_id: x.get_column('default_billing'),
+      #default_shipping_address_id: x.get_column('default_shipping'),
+      inside_sales_owner_id: inside_email.present? ? inside_email.id : nil,
+      outside_sales_owner_id: outside_email.present? ? outside_email.id : nil,
+      sales_manager_id: manager_email.present? ? manager_email.id : nil,
+      site: x.get_column('cmp_website'),
+      company_type: company_type[x.get_column('company_type')],
+      priority: priority[x.get_column('is_strategic').to_i],
+      nature_of_business: nature_of_business[x.get_column('nature_of_business')],
+      credit_limit: x.get_column('creditlimit').present? && x.get_column('creditlimit').to_i > 0 ? x.get_column('creditlimit') : 1,
+      is_msme: is_msme[x.get_column('msme')],
+      is_unregistered_dealer: urd[x.get_column('urd')],
+      tax_identifier: x.get_column('cmp_gst')
+    )
+  end
+end
+
+address_service = Services::Shared::Spreadsheets::CsvImporter.new('company_address.csv')
+
+gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6=> 60}
+address_service.loop(address_service.rows_count) do |x|
+  company = Company.find_by_name(x.get_column('cmp_name'))
+
+  if x.get_column('country') == "IN" && company.present?
+    Address.create!(
+        company: company,
+        name: company.name,
+        gst:x.get_column('gst_num'),
+        country_code:x.get_column('country'),
+        state: AddressState.find_by_name(x.get_column('state_name')),
+        city_name:x.get_column('city'),
+        pincode:x.get_column('pincode'),
+        street1:x.get_column('address'),
+        #street2:x.get_column('gst_num'),
+        cst:x.get_column('cst_num'),
+        vat:x.get_column('vat_num'),
+        tan:x.get_column('tan_num'),
+        #excise:x.get_column('gst_num'),
+        telephone:x.get_column('telephone'),
+        #mobile:x.get_column('gst_num'),
+        gst_type:gst_type[x.get_column('gst_type')]
+    )
+  elsif company.present?
+    Address.create!(
+        company: company,
+        name: company.name,
+        gst:x.get_column('gst_num'),
+        country_code:x.get_column('country'),
+        state: AddressState.find_by_name(x.get_column('state_name')),
+        state_name: x.get_column('state_name'),
+        city_name:x.get_column('city'),
+        pincode:x.get_column('pincode'),
+        street1:x.get_column('address'),
+        #street2:x.get_column('gst_num'),
+        cst:x.get_column('cst_num'),
+        vat:x.get_column('vat_num'),
+        tan:x.get_column('tan_num'),
+        #excise:x.get_column('gst_num'),
+        telephone:x.get_column('telephone'),
+        #mobile:x.get_column('gst_num'),
+        gst_type:gst_type[x.get_column('gst_type')]
+    )
+  end
 end
 
 Brand.all.each do |brand|

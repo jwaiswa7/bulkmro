@@ -4,9 +4,10 @@ class CreateAddressStates < ActiveRecord::Migration[5.2]
       t.string :name, index: { unique: true }
 
       t.string :country_code
-      t.string :remote_code
-      t.string :tax_state
-
+      t.string :region_code
+      t.string :region_gst_id
+      t.string :region_id
+      t.string :remote_uid
       t.timestamps
     end
   end
