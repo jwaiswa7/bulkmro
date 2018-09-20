@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
-
     resource :dashboard, :controller => :dashboard
     resources :brands
     resources :categories
@@ -89,14 +88,13 @@ Rails.application.routes.draw do
     resources :companies do
       scope module: 'companies' do
         resources :addresses
+        resources :contacts
       end
     end
 
     resources :accounts do
       scope module: 'accounts' do
         resources :companies
-        resources :contacts
-        resources :addresses
       end
     end
   end
