@@ -1,6 +1,11 @@
 class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
+  def autocomplete
+    @brands = ApplyParams.to(Brand.all, params)
+    authorize @brands
+  end
+
   def index
     @brands = ApplyDatatableParams.to(Brand.all, params)
     authorize @brands
