@@ -4,7 +4,7 @@
       <% if content_for?(:heading) %>
         <h1 class="display-5 mb-1"><%= yield :heading %></h1>
       <% else %>
-        <h1 class="display-5 mb-1"><%= current_model %></h1>
+        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
 
       <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
@@ -16,7 +16,7 @@
 
     <% unless content_for?(:hide_table_desc) %>
       <p class="lead mt-1">
-        All <%= current_model.downcase %> filterable in any way that we want.
+        All <%= current_model.humanize.downcase %> filterable in any way that we want.
       </p>
     <% end %>
   </section>

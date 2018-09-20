@@ -32,7 +32,6 @@ module MenuHelper
     end
   end
 
-
   def nav_item(name, path, authorized=false, li_classes=nil, a_classes=nil, attributes: nil)
     if authorized
       content_tag(:li, class: ['nav-item', li_classes].compact.join(' ')) do
