@@ -69,7 +69,7 @@
               <div class="col-md-2"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
               <div class="col-md-2"><%= row.input :unit_cost_price, input_html: {"data-bind": ""}, label: 'UCP', disabled: true %></div>
               <div class="col-md-2"><%= row.input :unit_cost_price_with_unit_freight_cost, input_html: {"data-bind": ""}, label: 'UCP w/ F', disabled: true %></div>
-              <div class="col-md-2 "><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
+              <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
               <div class="col-md-2"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
               <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
               <div class="col-md-2"><%= row.input :inquiry_product_supplier, as: :string, disabled: true, label: 'Supplier' %></div>

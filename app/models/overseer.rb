@@ -35,8 +35,11 @@ class Overseer < ApplicationRecord
     domain = Mail::Address.new(email).domain
 
     if domain.in? %w(bulkmro.com)
+      password = Devise.friendly_token[0, 20]
+
       overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
-        overseer.password = Devise.friendly_token[0, 20]
+        overseer.password_confirmation = password
+        overseer.password = password
         overseer.first_name = data['first_name']
         overseer.last_name = data['last_name']
         overseer.google_oauth2_uid = data['uid']
