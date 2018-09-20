@@ -9,6 +9,9 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :last_name
       t.integer :role, index: true
 
+      t.string :google_oauth2_uid
+      t.jsonb :google_oauth2_metadata
+
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

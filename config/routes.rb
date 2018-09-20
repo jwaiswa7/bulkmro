@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
-  devise_for :overseers, controllers: {sessions: 'overseers/sessions'}
+  devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
+
     resource :dashboard, :controller => :dashboard
     resources :brands
     resources :categories
