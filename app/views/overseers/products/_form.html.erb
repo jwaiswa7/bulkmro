@@ -5,11 +5,7 @@
   </div>
 
   <%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <% if f.object.errors.any? %>
-      <% f.object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    <% end %>
+    <%= render 'shared/snippets/form_errors', f: f %>
 
     <div class="form-row">
       <div class="col-6">

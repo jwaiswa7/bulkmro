@@ -9252,7 +9252,7 @@ label[class*='col'] {
     top: auto;
     height: calc(2.25rem - 4px); }
 .custom-file .valid-feedback, .custom-file .invalid-feedback {
-  display: none; }
+  display: none !important; }
 
 .custom-file-naked {
   cursor: pointer;
