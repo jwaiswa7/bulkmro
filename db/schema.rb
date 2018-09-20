@@ -418,6 +418,20 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["updated_by_id"], name: "index_inquiry_products_on_updated_by_id"
   end
 
+  create_table "lead_time_options", force: :cascade do |t|
+    t.integer "min_days"
+    t.integer "max_days"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "measurement_units", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "overseer_hierarchies", id: false, force: :cascade do |t|
     t.integer "ancestor_id", null: false
     t.integer "descendant_id", null: false
@@ -486,6 +500,9 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
 
   create_table "product_comments", force: :cascade do |t|
     t.bigint "product_id"
+    t.string "merged_product_name"
+    t.string "merged_product_sku"
+    t.jsonb "merged_product_metadata"
     t.text "message"
     t.integer "created_by_id"
     t.integer "updated_by_id"
@@ -527,9 +544,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "brand_id"
     t.bigint "category_id"
     t.bigint "tax_code_id"
+    t.bigint "measurement_unit_id"
     t.string "name"
     t.string "sku"
-    t.integer "type"
+    t.integer "product_type"
     t.boolean "is_verified", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -541,9 +559,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
     t.index ["inquiry_import_row_id"], name: "index_products_on_inquiry_import_row_id"
+    t.index ["measurement_unit_id"], name: "index_products_on_measurement_unit_id"
+    t.index ["product_type"], name: "index_products_on_product_type"
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["tax_code_id"], name: "index_products_on_tax_code_id"
-    t.index ["type"], name: "index_products_on_type"
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
   end
 
@@ -635,6 +654,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "sales_quote_id"
     t.bigint "inquiry_product_supplier_id"
     t.bigint "tax_code_id"
+    t.bigint "lead_time_option_id"
     t.integer "quantity"
     t.decimal "margin_percentage"
     t.decimal "unit_selling_price"
@@ -647,6 +667,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "updated_by_id"
     t.index ["created_by_id"], name: "index_sales_quote_rows_on_created_by_id"
     t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
+    t.index ["lead_time_option_id"], name: "index_sales_quote_rows_on_lead_time_option_id"
     t.index ["sales_quote_id", "inquiry_product_supplier_id"], name: "index_sqr_on_sales_quote_id_and_inquiry_product_supplier_id", unique: true
     t.index ["sales_quote_id"], name: "index_sales_quote_rows_on_sales_quote_id"
     t.index ["tax_code_id"], name: "index_sales_quote_rows_on_tax_code_id"
@@ -784,6 +805,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "inquiry_import_rows"
+  add_foreign_key "products", "measurement_units"
   add_foreign_key "products", "overseers", column: "created_by_id"
   add_foreign_key "products", "overseers", column: "updated_by_id"
   add_foreign_key "products", "tax_codes"
@@ -807,6 +829,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   add_foreign_key "sales_orders", "sales_orders", column: "parent_id"
   add_foreign_key "sales_orders", "sales_quotes"
   add_foreign_key "sales_quote_rows", "inquiry_product_suppliers"
+  add_foreign_key "sales_quote_rows", "lead_time_options"
   add_foreign_key "sales_quote_rows", "overseers", column: "created_by_id"
   add_foreign_key "sales_quote_rows", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quote_rows", "sales_quotes"

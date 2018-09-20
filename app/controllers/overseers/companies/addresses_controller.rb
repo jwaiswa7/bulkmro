@@ -1,5 +1,9 @@
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
-  before_action :set_address, only: [:edit, :update]
+  before_action :set_address, only: [:show, :edit, :update]
+  def show
+    redirect_to edit_overseers_company_address_path(@company, @address)
+    authorize @address
+  end
 
   def new
     @address = @company.addresses.build(overseer: current_overseer)

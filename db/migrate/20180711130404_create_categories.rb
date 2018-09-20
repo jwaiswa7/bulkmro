@@ -1,7 +1,7 @@
 class CreateCategories < ActiveRecord::Migration[5.2]
   def change
     create_table :categories do |t|
-      t.references :tax_code, foreign_key: true
+      t.references :tax_code, foreign_key: true, null: false
       t.integer :parent_id, index: true
 
       t.string :name

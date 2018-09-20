@@ -1,6 +1,7 @@
 class SalesQuoteRow < ApplicationRecord
   include Mixins::CanBeStamped
 
+  belongs_to :lead_time_option, required: false
   belongs_to :sales_quote
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
@@ -56,6 +57,7 @@ class SalesQuoteRow < ApplicationRecord
     self.margin_percentage ||= 15.0
     self.freight_cost_subtotal ||= 0.0
     self.unit_freight_cost ||= 0.0
+    self.lead_time_option ||= LeadTimeOption.default
 
     if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity

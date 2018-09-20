@@ -19,7 +19,8 @@
     "popper": "^1.0.1",
     "popper.js": "^1.14.4",
     "select2": "4.0.5",
-    "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme"
+    "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
+    "vue": "^2.5.17"
   },
   "version": "1.0.0",
   "description": "b2b industrial supplies",
