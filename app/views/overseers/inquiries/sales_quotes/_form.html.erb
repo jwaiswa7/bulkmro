@@ -73,10 +73,7 @@
               <div class="col-md-2"><%= row.input :total_selling_price_with_tax, label: 'TSP w/ Tax', input_html: {:min => 0, "data-bind": ""}, disabled: true %></div>
               <div class="col-md-2"><%= row.association :lead_time_option %></div>
               <div class="col-md-2">
-                <%= row.label :remove %>
-                <div class="form-control">
-                  <%= link_to_remove_association 'DEL', row, {wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} %>
-                </div>
+
               </div>
             </div>
           <% end %>
