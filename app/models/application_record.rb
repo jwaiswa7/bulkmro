@@ -28,6 +28,14 @@ class ApplicationRecord < ActiveRecord::Base
     self.where('id < ?', id).order(id: :desc).first || self.last
   end
 
+  def created_date
+    self.created_at.strftime('%F') if self.created_at.present?
+  end
+
+  def updated_date
+    self.updated_at.strftime('%F') if self.updated_at.present?
+  end
+
   def to_s
     try(:name) || try(:full_name) || try(:description) || "#{self.class.to_s} ##{self.id}"
   end
