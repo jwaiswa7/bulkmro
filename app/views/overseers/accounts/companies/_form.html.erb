@@ -5,6 +5,8 @@
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
     <%= f.hidden_field :account_id %>
 
     <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
@@ -62,7 +64,7 @@
           <label>TAN Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :tan_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :tan_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">TAN Proof</label>
             </div>
           </div>
@@ -73,7 +75,7 @@
           <label>PAN Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :pan_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :pan_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">PAN Proof</label>
             </div>
           </div>
@@ -84,7 +86,7 @@
           <label>CEN Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :cen_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :cen_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">CEN Proof</label>
             </div>
           </div>
