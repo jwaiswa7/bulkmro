@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.bigint "tax_code_id"
+    t.bigint "tax_code_id", null: false
     t.integer "parent_id"
     t.string "name"
     t.datetime "created_at", null: false

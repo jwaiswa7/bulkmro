@@ -11,7 +11,7 @@ class SalesQuoteRow < ApplicationRecord
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier
 
-  attr_accessor :is_selected
+  attr_accessor :is_selected, :tax_percentage, :tax
 
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
