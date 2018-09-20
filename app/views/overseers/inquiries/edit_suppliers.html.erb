@@ -1,17 +1,14 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= render 'shared/snippets/form_errors', f: f %>
+
       <div class="card-header">
         <div class="form-group mb-0">
           <%= f.submit 'Save Suppliers', class: 'btn btn-success btn-block' %>
         </div>
       </div>
       <div class="card-body">
-        <% if f.object.errors.any? %>
-          <% f.object.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        <% end %>
         <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
           <%= inquiry_product.hidden_field :id %>
 

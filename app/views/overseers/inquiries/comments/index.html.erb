@@ -35,11 +35,7 @@
           </div>
         <% end %>
 
-        <% if f.object.errors.any? %>
-          <% f.object.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        <% end %>
+        <%= render 'shared/snippets/form_errors', f: f %>
 
         <%= f.input :message, required: true, :placeholder => 'Type message' %>
 
