@@ -11,11 +11,11 @@ class SalesQuoteRow < ApplicationRecord
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier
 
-  attr_accessor :is_selected
+  attr_accessor :is_selected, :tax_percentage, :tax
 
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
-  delegate :tax_percentage, :gst_rate, to: :tax_code
+  delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
@@ -69,6 +69,10 @@ class SalesQuoteRow < ApplicationRecord
     self.tax_code || self.product.best_tax_code
   end
 
+  def applicable_tax_percentage
+    self.best_tax_code ? self.best_tax_code.tax_percentage : 0
+  end
+
   def conversion_rate
     self.sales_quote.inquiry_currency.conversion_rate
   end
@@ -106,7 +110,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.best_tax_code.tax_percentage)).round(2)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).round(2)
   end
 
   def calculated_unit_selling_price_with_tax
