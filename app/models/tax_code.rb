@@ -3,12 +3,16 @@ class TaxCode < ApplicationRecord
 
   has_many :products
 
-  validates_presence_of :code, :description
+  validates_presence_of :code #, :description
   validates_presence_of :remote_uid
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_service ||= false
+  end
+
+  def self.default
+    first
   end
 
   def to_s

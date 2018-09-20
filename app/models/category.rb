@@ -15,4 +15,8 @@ class Category < ApplicationRecord
   def to_s
     ancestry_path.join(' > ')
   end
+
+  def self.default
+    first
+  end
 end
