@@ -28,8 +28,8 @@ class Product < ApplicationRecord
 
   has_one_attached :image
 
-  attr_accessor :applicable_tax_percentage
 
+  attr_accessor :applicable_tax_percentage
 
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
@@ -48,6 +48,7 @@ class Product < ApplicationRecord
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
   validates_with FileValidator, attachment: :image
+<<<<<<< HEAD
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
@@ -61,6 +62,8 @@ class Product < ApplicationRecord
   def applicable_tax_percentage
     self.best_tax_code.tax_percentage if self.best_tax_code.present?
   end
+=======
+>>>>>>> 9535ff27e7d4ced5ab2a38eeda7b5550d64590f9
 
   def to_s
     "#{name} (#{sku || trashed_sku })"

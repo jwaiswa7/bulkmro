@@ -4,6 +4,7 @@ class CreateCategories < ActiveRecord::Migration[5.2]
 
       t.references :tax_code, foreign_key: true, null: false
 
+
       t.integer :remote_uid, index: true
       t.integer :parent_id, index: true
 
