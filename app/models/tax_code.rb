@@ -1,11 +1,11 @@
 class TaxCode < ApplicationRecord
-  include Mixins::HasRemoteUid
+
   pg_search_scope :locate, :against => [:code, :description], :using => { :tsearch => { :prefix => true, :any_word => true } }
 
   has_many :products
 
   validates_presence_of :code, :description
-  validates_uniqueness_of :code
+  validates_presence_of :remote_uid
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
