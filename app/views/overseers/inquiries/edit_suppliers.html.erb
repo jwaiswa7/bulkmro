@@ -5,7 +5,9 @@
 
       <div class="card-header">
         <div class="form-group mb-0">
-          <%= f.submit 'Save Suppliers', class: 'btn btn-success btn-block' %>
+          <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <i class="fal fa-pen"></i> Update Suppliers
+          <% end %>
         </div>
       </div>
       <div class="card-body">
@@ -73,7 +75,9 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <%= f.submit 'Save Suppliers', class: 'btn btn-success btn-block' %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> Update Suppliers
+        <% end %>
       </div>
     <% end %>
   <% end %>
