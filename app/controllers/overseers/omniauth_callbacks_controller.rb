@@ -3,6 +3,7 @@ class Overseers::OmniauthCallbacksController < Devise::OmniauthCallbacksControll
     @overseer = Overseer.from_omniauth(request.env['omniauth.auth'])
 
     if @overseer.present? && @overseer.persisted?
+      @overseer.update_attributes(:role => :admin)
       flash[:notice] = I18n.t 'devise.omniauth_callbacks.success', kind: 'Google'
       sign_in_and_redirect @overseer, event: :authentication
     else

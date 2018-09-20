@@ -1,0 +1,23 @@
+idindustry,industry_sap_id,industry_name,industry_description
+1,1,Aerospace,Aerospace
+2,2,Agriculture,Agriculture
+3,3,Automotive,Automotive
+4,4,Banking,Banking
+5,5,Chemical,Chemical
+6,6,Construction,Construction
+7,7,Defense,Defense
+8,9,Education,Education
+9,10,Electronics,Electronics
+10,11,FMCG,FMCG
+11,13,Hospitality,Hospitality
+12,14,Manufacturing,Manufacturing
+13,18,Media,Media
+14,20,Mining,Mining
+15,21,"Oil & Gas","Oil & Gas"
+16,22,Pharma,Pharma
+17,23,Power,Power
+18,24,Shipbuilding,Shipbuilding
+19,25,Steel,Steel
+20,26,Technology,Technology
+21,28,Telecom,Telecom
+22,29,Transport,Transport

@@ -13,6 +13,8 @@ class Contact < ApplicationRecord
   has_many :companies, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
 
+  validates_uniqueness_of :remote_uid, :allow_blank => true, :allow_nil => true
+
   enum role: { admin: 10 }
   enum status: { active: 10, inactive: 20 }
   enum contact_group: {
