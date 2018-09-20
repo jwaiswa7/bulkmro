@@ -187,14 +187,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
     puts "Done."
   end
+
   def payment_options
     puts "Creating payment options..."
     payment_term_service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
     payment_term_service.loop(payment_term_service.rows_count) do |x|
-      PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
-        payment_option.assign_attributes(
-            remote_uid: x.get_column('group_code')
-        )
+      if x.get_column('value').present? && x.get_column('group_code').present?
+        puts x.get_column('value')
+        PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
+          payment_option.assign_attributes(
+              remote_uid: x.get_column('group_code')
+          )
+        end
       end
     end
     puts "Done."
@@ -207,6 +211,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     state_service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
     state_service.loop(state_service.rows_count) do |x|
       if x.get_column('default_name').present? && x.get_column('code').present? && x.get_column('region_id').present?
+        puts x.get_column('default_name')
         AddressState.where(name: x.get_column('default_name').strip).first_or_create do |state|
           state.assign_attributes(
               country_code: x.get_column('country_id'),
