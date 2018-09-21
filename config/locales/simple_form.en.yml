@@ -13,6 +13,9 @@ en:
       inquiry_product_suppliers:
         bp_catalog_name: 'BP Catalog Name'
         bp_catalog_sku: 'BP Catalog #'
+        unit_cost_price: 'Unit Cost Price'
+        lowest_unit_cost_price: 'Lowest Unit Cost Price'
+        latest_unit_cost_price: 'Latest Unit Cost Price'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'
