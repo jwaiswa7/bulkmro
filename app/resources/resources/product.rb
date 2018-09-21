@@ -1,0 +1,59 @@
+class Resources::Product < Resources::ApplicationResource
+
+  def self.identifier
+    :ItemCode
+  end
+
+  def self.to_remote(record)
+
+# WareHouse
+
+    {
+
+        "ItemCode": "BG000888",# BMRO Part#
+        "ItemName": record.name,# Product Name
+        "ItemsGroupCode": 100,# Product Category
+        "PurchaseItem": "tYES",#TO BE CREATED IN MAGENTO
+        "SalesItem": "tYES",#TO BE CREATED IN MAGENTO
+        "InventoryItem": "tYES",#Manage Stock
+        "Mainsupplier": null,#Supplier ID
+        "Manufacturer": -1,#Product Manufacturer
+        "ManageBatchNumbers": "tNO",#TO BE CREATED IN MAGENTO
+        "Valid": "tYES",#Status
+        "SalesUnit": null,#TO BE CREATED IN MAGENTO
+        "SalesItemsPerUnit": 1,#UOM Quantity
+        "PurchaseUnit": null,#TO BE CREATED IN MAGENTO
+        "PurchaseItemsPerUnit": 1,#TO BE CREATED IN MAGENTO
+        "PurchaseUnitWeight": 0,#TO BE CREATED IN MAGENTO
+        "SalesUnitWeight1": 0,#weight
+        "SWW": null,#MPN
+        "LeadTime": null,#Delivery Period
+        "MinOrderQuantity": 0,#Minimum Order Qty
+        "MaterialType": "mt_FinishedGoods",#TO BE CREATED IN MAGENTO
+        "InventoryUoMEntry": null,#
+        "InventoryWeight1": 0,#Weight
+        "ChapterID": -1,#HSN Codes
+        "GSTRelevnt": "tNO",#
+        "GSTTaxCategory": null,#Ravi
+        "U_TaxClass": null,#Tax Class
+        "U_Category": record.category.remote_uid,#????
+        "U_ProdID": null,#Product Id
+        "U_MRP": 0,#MRP Price
+        "U_DistAmt": 0,#Distributor Discount
+        "U_SellPrice": 0,#Selling Price
+        "U_ProdSource": null,#Imported or Local
+        "U_CntryOfOrgn": null,#Country of Origin
+        "U_Meta_Dscrpt": record.meta_description,#Meta Description
+        "U_Meta_Title": record.meta_title,#Meta Title
+        "U_Attribute": null,#Attribute Set Name
+        "U_ShortName": null,#Product Short Name
+        "U_MOQIncrement": 0,#MOQ Increment
+        "U_Item_Descr": record.description,#Product Description
+        "U_SubCat": null,#Subcategory 1
+        "U_SubCat2": null,#Subcategory 2
+        "U_Meta_Key": record.meta_keyword#Meta Keyword
+    }
+
+
+  end
+end

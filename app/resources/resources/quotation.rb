@@ -77,7 +77,7 @@ Example Product
         "SalesPersonCode": 8,   #record.inside_sales_owner, # Inside Sales Owner
         "NumAtCard": "test SAP",  #Comment on Quote?
         "DocCurrency": "INR",
-        "TaxDate": nil, # record.created_at.strftime('%F') , #Tax Date??
+        TaxDate: nil, # record.created_at.strftime('%F') , #Tax Date??
         "ImportEnt": 3232,
         "U_RevNo": "R1", #Quotation Revision ID
         "DocDueDate": "2018-10-10", #Quotation Valid Till ?
