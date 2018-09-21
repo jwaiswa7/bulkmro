@@ -25,8 +25,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
 
-    if callback_method == 'confirmation'
-      send('save')
+    if callback_method == 'confirmation' && send('save')
       redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry,@sales_order), notice: flash_message(@inquiry, action_name)
     elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -45,8 +44,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
 
-    if callback_method == 'confirmation'
-      send('save')
+    if callback_method == 'confirmation' && send('save')
       redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry), notice: flash_message(@inquiry, action_name)
     elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
