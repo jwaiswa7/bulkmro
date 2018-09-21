@@ -279,7 +279,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             remote_attachment_id: x.get_column('attachment_entry')
         )
 
-        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('default_contact')))) if x.get_column('default_contact').present?
+        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email')))) if x.get_column('email').present?
+      end
+    end
+  end
+
+  def company_contact_mapping
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
+    service.loop(service.rows_count) do |x|
+      if x.get_column('email').present? && x.get_column('cmp_name').present?
+        company_name = x.get_column('cmp_name')
+        CompanyContact.create(
+            company: Company.find_by_name(company_name),
+            contact: Contact.find_by_email(x.get_column('email').strip.downcase)
+        )
       end
     end
   end
