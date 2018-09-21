@@ -3,11 +3,8 @@
     <%= f.hidden_field :parent_id %>
     <%= f.hidden_field :sales_quote_id %>
 
-    <% if f.object.errors.any? %>
-      <% f.object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    <% end %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
     <div class="card-header">
       <div class="row">
         <div class="col-lg-3">Total Selling Price (Excl. tax): <br> <strong><%= format_currency(f.object.calculated_total)%></strong></div>

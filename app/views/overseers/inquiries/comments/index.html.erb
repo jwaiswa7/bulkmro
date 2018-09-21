@@ -11,10 +11,14 @@
   <% end %>
 
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :sales_order_id %>
 
-      <div class="card-body">
+
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card">
+        <div class="card-body">
         <% if @comments.persisted.size > 0 %>
           <div class="chats mb-3">
             <% @comments.persisted.each do |comment| %>
@@ -35,11 +39,6 @@
           </div>
         <% end %>
 
-        <% if f.object.errors.any? %>
-          <% f.object.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        <% end %>
 
         <%= f.input :message, required: true, :placeholder => 'Type message' %>
 
@@ -50,6 +49,7 @@
             <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
           <% end %>
         </div>
+      </div>
       </div>
     <% end %>
   <% end %>
