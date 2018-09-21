@@ -1,8 +1,4 @@
 const editSuppliers = () => {
-
-    new
-
-
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {
             onSupplierChange(this);
