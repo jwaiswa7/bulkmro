@@ -29,7 +29,7 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
-  belongs_to :payment_option
+  belongs_to :payment_option, required: false
 
   accepts_nested_attributes_for :comments
 

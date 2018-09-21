@@ -90,10 +90,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
-    t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid", unique: true
+    t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
-    t.index ["shipping_address_uid"], name: "index_addresses_on_shipping_address_uid", unique: true
+    t.index ["shipping_address_uid"], name: "index_addresses_on_shipping_address_uid"
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
   end
 
   create_table "brands", force: :cascade do |t|
-    t.integer "name"
+    t.string "name"
     t.integer "legacy_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -306,6 +306,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.bigint "payment_option_id"
     t.bigint "inquiry_currency_id"
     t.string "project_uid"
+    t.string "inquiry_number"
     t.string "opportunity_uid"
     t.integer "billing_address_id"
     t.integer "shipping_address_id"
@@ -335,6 +336,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
     t.index ["created_by_id"], name: "index_inquiries_on_created_by_id"
     t.index ["inquiry_currency_id"], name: "index_inquiries_on_inquiry_currency_id", unique: true
+    t.index ["inquiry_number"], name: "index_inquiries_on_inquiry_number", unique: true
     t.index ["inside_sales_owner_id"], name: "index_inquiries_on_inside_sales_owner_id"
     t.index ["opportunity_uid"], name: "index_inquiries_on_opportunity_uid", unique: true
     t.index ["outside_sales_owner_id"], name: "index_inquiries_on_outside_sales_owner_id"

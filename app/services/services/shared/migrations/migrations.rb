@@ -4,23 +4,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit
 
   def initialize
-    @limit = 15
+    @limit = nil
 
-    perform_migration(:overseers)
-    perform_migration(:measurement_unit)
-    perform_migration(:lead_time_option)
-    perform_migration(:currencies)
-    perform_migration(:states)
-    perform_migration(:payment_options)
-    perform_migration(:industries)
-    perform_migration(:accounts)
-    perform_migration(:contacts)
-    perform_migration(:companies)
-    perform_migration(:addresses)
-    perform_migration(:brands)
-    perform_migration(:tax_codes)
-    perform_migration(:categories)
-    perform_migration(:products)
+    # perform_migration(:overseers)
+    # perform_migration(:measurement_unit)
+    # perform_migration(:lead_time_option)
+    # perform_migration(:currencies)
+    # perform_migration(:states)
+    # perform_migration(:payment_options)
+    # perform_migration(:industries)
+    # perform_migration(:accounts)
+    # perform_migration(:contacts)
+    # perform_migration(:companies)
+    # perform_migration(:companies_contacts)
+    # perform_migration(:addresses)
+    # perform_migration(:brands)
+    # perform_migration(:tax_codes)
+    # perform_migration(:categories)
+    # perform_migration(:products)
+    # perform_migration(:inquiries)
+    # perform_migration(:inquiry_products)
   end
 
   def perform_migration(name)
@@ -194,6 +197,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def contacts
     fake_account = Account.find_by_name("Fake Account")
+    fake_contact = Contact.create!(account: fake_account, remote_uid: 99999999, email: "fake@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: 'abc123', password_confirmation: 'abc123')
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
     is_active = [20, 10]
     contact_group = {"General" => 10, "Company Top Manager" => 20, "retailer" => 30, "ador" => 40, "vmi_group" => 50, "C-Form customer GROUP" => 60, "Manager" => 70}
@@ -230,6 +234,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def companies
     fake_account = Account.find_by_name("Fake Account")
+    fake_contact = Contact.find_by_email("fake@bulkmro.com")
+    fake_company = Company.create!(name: "Fake Company", account: fake_account, remote_uid: 99999999, default_payment_option_id: nil, inside_sales_owner_id: nil )
+    fake_company.assign_attributes(default_company_contact: CompanyContact.create(company: fake_company, contact: fake_account.contacts.first))
     service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
     service.loop(limit) do |x|
       if x.get_column('aliasname').present?
@@ -274,7 +281,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_identifier: x.get_column('cmp_gst')
         )
 
-        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('default_contact')))) if x.get_column('default_contact').present?
+        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email').strip.downcase))) if x.get_column('email').present?
+      end
+    end
+  end
+
+  def companies_contacts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
+    service.loop(service.rows_count) do |x|
+      if x.get_column('email').present? && x.get_column('cmp_name').present?
+        company_name = x.get_column('cmp_name')
+        CompanyContact.find_or_create_by(
+            company: Company.find_by_name(company_name),
+            contact: Contact.find_by_email(x.get_column('email').strip.downcase)
+        )
       end
     end
   end
@@ -282,10 +302,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def addresses
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_address.csv')
     gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
+
+    fake_company = Company.find_by_name("Fake Company")
+    fake_company.addresses.create!(
+        company: fake_company,
+        name: fake_company.name,
+        gst: '2AAAAAAAAAAAAAA',
+        country_code: "IN",
+        state: AddressState.find_by_name('Maharashtra'),
+        state_name: nil,
+        city_name: "Mumbai",
+        pincode: "400001",
+        street1: "LowerParel"
+    )
+
     service.loop(limit) do |x|
       company = Company.find_by_name(x.get_column('cmp_name'))
 
       if company.present?
+
         address = Address.new(
             company: company,
             name: company.name,
@@ -319,7 +354,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def brands
     service = Services::Shared::Spreadsheets::CsvImporter.new('brands.csv')
     service.loop(limit) do |x|
-      # puts x.get_column('value')
+      puts x.get_column('value')
       Brand.where(name: x.get_column('value')).first_or_create do |brand|
         brand.legacy_id = x.get_column('option_id')
       end
@@ -383,5 +418,74 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       # todo handle mfr model number
     end
+  end
+
+  def inquiries
+
+    fake_company = Company.find_by_name("Fake Company")
+
+    status = { "active" => 10, "expired" => 20, "won" => 30 }
+    opportunity_type = { "amazon" => 10, "rate_contract" => 20, "financing" => 30, "regular" => 40, "service" => 50, "repeat" => 60, "route_through" => 70, "tender" => 80 }
+    opportunity_source = { "meeting" => 10, "phone_call" => 20, "email" => 30, "quote_tender_prep" => 40 }
+    quote_category = { "bmro" => 10, "ong" => 20 }
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv')
+    service.loop(limit) do |x|
+      puts "#{x.get_column('increment_id')}"
+
+      company = Company.find_by_remote_uid(x.get_column('customer_company'))
+      company = company.present? ? company : fake_company
+
+      if ( x.get_column('email').present? && x.get_column('email') != "NULL" )
+        contact = Contact.find_by_email(x.get_column('email').downcase)
+        if contact.present?
+          comp_contact = company.contacts.find_by_email(x.get_column('email').downcase)
+          if comp_contact.present?
+            contact = comp_contact
+          else
+            CompanyContact.create!(company: company, contact: contact)
+          end
+        else
+          contact = fake_company.contacts.first
+        end
+      end
+
+      if !company.industry.present?
+        if ( x.get_column('industry_sap_id') != "NULL" && x.get_column('industry_sap_id') != nil )
+          industry = Industry.find_by_remote_uid(x.get_column('industry_sap_id'))
+          company.update_attribute(:industry, industry) if industry.present?
+        end
+      end
+
+      inquiry = Inquiry.create!(
+          inquiry_number: x.get_column('increment_id'),
+          company: company,
+          contact: contact,
+          status: status[x.get_column('status')],
+          opportunity_type: ( opportunity_type[x.get_column('quote_type').gsub(" ", "_")] if x.get_column('quote_type').present? ),
+          potential_amount: x.get_column('potential_amount'),
+          opportunity_source: ( opportunity_source[x.get_column('opportunity_source').downcase] if x.get_column('opportunity_source').present?),
+          subject: x.get_column('caption'),
+          gross_profit_percentage: x.get_column('grossprofitp'),
+          inside_sales_owner: Overseer.find_by_username(x.get_column('manager')),
+          outside_sales_owner: Overseer.find_by_username(x.get_column('outside')),
+          sales_manager: Overseer.find_by_username(x.get_column('powermanager')),
+          quote_category: ( quote_category[x.get_column('category').downcase] if x.get_column('category').present? ),
+          #billing_address: company.addresses.find_by_legacy_id(x.get_column('billing_address')),
+          #shipping_address: company.addresses.find_by_legacy_id(x.get_column('shipping_address')),
+          billing_address: company.addresses.first,
+          shipping_address: company.addresses.first,
+          payment_option_id: company.default_payment_option_id,
+          weight_in_kgs: x.get_column('weight'),
+          opportunity_uid: x.get_column('op_code'),
+          created_at: x.get_column('created_time').to_datetime
+      )
+
+      puts "#{inquiry.inspect}"
+    end
+  end
+
+  def inquiry_products
+
   end
 end

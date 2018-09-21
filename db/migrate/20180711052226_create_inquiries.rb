@@ -7,6 +7,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.references :inquiry_currency, foreign_key: true, index: { unique: true }
 
       t.string :project_uid, index: { unique: true }
+      t.string :inquiry_number, index: { unique: true }
       t.string :opportunity_uid, index: { unique: true }
 
       t.integer :billing_address_id, index: true
