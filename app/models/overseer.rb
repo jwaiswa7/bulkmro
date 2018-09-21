@@ -42,11 +42,10 @@ class Overseer < ApplicationRecord
         overseer.password = password
         overseer.first_name = data['first_name']
         overseer.last_name = data['last_name']
-        overseer.username = data['uid'] + '.' + data['first_name'] + '.' + data['last_name']
         overseer.google_oauth2_uid = data['uid']
       end
 
-      overseer.assign_attributes(:google_oauth2_metadata => data)
+      overseer.update_attributes(:google_oauth2_metadata => data)
       overseer
     end
   end
