@@ -67,6 +67,8 @@ Rails.application.routes.draw do
         resources :sales_orders do
           member do
             get 'new_revision'
+            get 'new_confirmation'
+            post 'create_confirmation'
           end
         end
 
