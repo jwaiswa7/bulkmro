@@ -5,10 +5,12 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    inquiry.sales_manager = Overseer.all.sample
     if inquiry.save
-      call_later
-      #perform_later(inquiry)
+      if Rails.env.development?
+        call_later
+      else
+        perform_later(inquiry)
+      end
     end
   end
 
@@ -20,16 +22,16 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
     if inquiry.opportunity_uid.present?
       # Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
-      inquiry.opportunity_uid =  Resources::SalesOpportunity.create(inquiry)
+      inquiry.opportunity_uid = Resources::SalesOpportunity.create(inquiry)
     end
 
     if inquiry.sales_quotes.any?
-        sales_quote = inquiry.sales_quotes.last
-        if sales_quote.quotation_uid.present?
-          # Resources::Quotation.update(inquiry.quotation_uid, inquiry)
-        else
-          sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
-        end
+      sales_quote = inquiry.sales_quotes.last
+      if sales_quote.quotation_uid.present?
+        # Resources::Quotation.update(inquiry.quotation_uid, inquiry)
+      else
+        sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
+      end
 
     end
   end
