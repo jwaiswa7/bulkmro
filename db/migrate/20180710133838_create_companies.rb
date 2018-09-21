@@ -12,9 +12,12 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.integer :inside_sales_owner_id, index: true
       t.integer :outside_sales_owner_id, index: true
       t.integer :sales_manager_id, index: true
+      t.integer :remote_attachment_id, index: true
 
       t.string :name, index: true
       t.string :site
+      t.string :phone
+      t.string :mobile
 
       t.integer :company_type
       t.integer :priority
@@ -23,6 +26,8 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.decimal :credit_limit
       t.boolean :is_msme, default: false
       t.boolean :is_unregistered_dealer, default: false
+      t.boolean :is_supplier, default: false
+      t.boolean :is_customer, default: false
 
       t.string :tax_identifier, index: { unique: true }
 

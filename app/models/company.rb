@@ -45,7 +45,13 @@ class Company < ApplicationRecord
       :private_limited => 20,
       :contractor => 30,
       :trust => 40,
-      :public_limited => 50
+      :dealer_company => 50,
+      :distributor => 60,
+      :trader => 70,
+      :manufacturer_company => 80,
+      :wholesaler_stockist => 90,
+      :serviceprovider => 100,
+      :employee => 110
   }
 
   enum priority: {

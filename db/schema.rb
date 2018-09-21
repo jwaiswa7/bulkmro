@@ -90,10 +90,10 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
-    t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid", unique: true
+    t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid"
     t.index ["company_id"], name: "index_addresses_on_company_id"
     t.index ["created_by_id"], name: "index_addresses_on_created_by_id"
-    t.index ["shipping_address_uid"], name: "index_addresses_on_shipping_address_uid", unique: true
+    t.index ["shipping_address_uid"], name: "index_addresses_on_shipping_address_uid"
     t.index ["updated_by_id"], name: "index_addresses_on_updated_by_id"
   end
 
@@ -182,14 +182,19 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.integer "inside_sales_owner_id"
     t.integer "outside_sales_owner_id"
     t.integer "sales_manager_id"
+    t.integer "remote_attachment_id"
     t.string "name"
     t.string "site"
+    t.string "phone"
+    t.string "mobile"
     t.integer "company_type"
     t.integer "priority"
     t.integer "nature_of_business"
     t.decimal "credit_limit"
     t.boolean "is_msme", default: false
     t.boolean "is_unregistered_dealer", default: false
+    t.boolean "is_supplier", default: false
+    t.boolean "is_customer", default: false
     t.string "tax_identifier"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -205,6 +210,7 @@ ActiveRecord::Schema.define(version: 2018_09_05_040432) do
     t.index ["inside_sales_owner_id"], name: "index_companies_on_inside_sales_owner_id"
     t.index ["name"], name: "index_companies_on_name"
     t.index ["outside_sales_owner_id"], name: "index_companies_on_outside_sales_owner_id"
+    t.index ["remote_attachment_id"], name: "index_companies_on_remote_attachment_id"
     t.index ["remote_uid"], name: "index_companies_on_remote_uid", unique: true
     t.index ["sales_manager_id"], name: "index_companies_on_sales_manager_id"
     t.index ["tax_identifier"], name: "index_companies_on_tax_identifier", unique: true
