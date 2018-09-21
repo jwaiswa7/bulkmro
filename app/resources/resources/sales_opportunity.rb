@@ -28,8 +28,8 @@ Stage KEY
 =end
 
     {
-        CardCode: record.contact.remote_uid,
-        U_SalesMgr: record.sales_manager.name,
+        CardCode:3,# record.contact.remote_uid,
+        U_SalesMgr: record.sales_manager.full_name,
         StartDate: record.created_at.strftime('%F'),
         MaxSystemTotal: record.potential_amount,
         ProjectCode: record.project_uid,

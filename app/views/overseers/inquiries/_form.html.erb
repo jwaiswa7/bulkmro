@@ -48,14 +48,27 @@
       <div class="col-4">
         <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <%= f.input :gross_profit_percentage %>
       </div>
+      <div class="col-2">
+        <%= f.input :potential_amount %>
+      </div>
     </div>
-
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+      </div>
+    </div>
 
     <!-- FIX DATE WRAPPER -->
     <%= f.input :expected_closing_date %>

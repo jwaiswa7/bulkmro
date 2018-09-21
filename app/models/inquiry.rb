@@ -120,7 +120,7 @@ class Inquiry < ApplicationRecord
   def set_defaults
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
-      self.sales_manager ||= self.sales_manager
+      self.sales_manager ||= self.company.sales_manager
       self.status ||= :active
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
@@ -135,7 +135,7 @@ class Inquiry < ApplicationRecord
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
     end
-
+    self.potential_amount ||= 0.01
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 

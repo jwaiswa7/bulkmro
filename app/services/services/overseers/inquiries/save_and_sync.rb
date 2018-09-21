@@ -5,8 +5,10 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
+    inquiry.sales_manager = Overseer.all.sample
     if inquiry.save
-      perform_later(inquiry)
+      call_later
+      #perform_later(inquiry)
     end
   end
 
@@ -22,13 +24,13 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
     end
 
     if inquiry.sales_quotes.any?
-      inquiry.sales_quotes.each do |sales_quote|
+        sales_quote = inquiry.sales_quotes.last
         if sales_quote.quotation_uid.present?
           # Resources::Quotation.update(inquiry.quotation_uid, inquiry)
         else
           sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
         end
-      end
+
     end
   end
 

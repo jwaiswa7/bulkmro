@@ -1,6 +1,6 @@
 class Resources::Quotation < Resources::ApplicationResource
   def self.identifier
-    :U_MgntDocID
+    :DocEntry
   end
 
   def self.to_remote(record)
@@ -72,7 +72,7 @@ Example Product
 
     {
         U_MgntDocID: record.id, # Quote ID
-        CardCode: record.inquiry.contact.remote_uid,  #Customer ID
+        CardCode: 3 ,#record.inquiry.contact.id,  #Customer ID
         DocDate: record.created_date, #Quote Create Date
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
@@ -99,10 +99,10 @@ Example Product
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
         UpdateDate: record.updated_date, # Update Quote date time
-        DocumentsOwner: record.inquiry.outside_sales_owner.remote_uid,
-        U_SalesMgr: record.inquiry.sales_manager.name,
-        U_In_Sales_Own: record.inquiry.inside_sales_owner.name,
-        U_Out_Sales_Own: record.inquiry.outside_sales_owner.name,
+        DocumentsOwner: 3, #record.inquiry.outside_sales_owner.remote_uid,
+        U_SalesMgr: record.inquiry.sales_manager.full_name,
+        U_In_Sales_Own: record.inquiry.inside_sales_owner.full_name,
+        U_Out_Sales_Own: record.inquiry.outside_sales_owner.full_name,
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
     }
