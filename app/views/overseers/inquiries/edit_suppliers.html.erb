@@ -24,16 +24,16 @@
                 <div class="col-md-3">
                   <%= inquiry_product_supplier.association :supplier, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {:'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id}, include_blank: 'Select a Supplier' %></div>
                 <div class="col-md-2">
-                  <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP Catalog Name" : false %>
+                  <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP Catalog Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name) %>
                 </div>
                 <div class="col-md-2">
-                  <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP SKU" : false %>
+                  <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP SKU" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_sku) %>
                 </div>
                 <div class="col-md-5">
                   <div class="d-flex flex-row">
                     <div class="mr-1">
                       <%= inquiry_product_supplier.input :lowest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Lowest" : false, wrapper: :input_group do %>
-                        <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right", disabled: true %>
+                        <%= inquiry_product_supplier.input_field :lowest_unit_cost_price, class: "form-control text-right", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :lowest_unit_cost_price) %>
                         <div class="input-group-append">
                           <%= f.button :button, type: "button", class: "btn btn-success update-with-best-price update-with-lowest-unit-cost-price" do %>
                             <i class="far fa-arrow-right"></i>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mr-1">
-                      <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false %>
+                      <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false, placeholder: placeholder_for(inquiry_product_supplier, :unit_cost_price) %>
                     </div>
 
                     <div class="mr-1">
@@ -53,7 +53,7 @@
                             <i class="far fa-arrow-left"></i>
                           <% end %>
                         </div>
-                        <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control", disabled: true %>
+                        <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
                       <% end %>
                     </div>
 
