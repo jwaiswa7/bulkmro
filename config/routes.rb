@@ -58,6 +58,7 @@ Rails.application.routes.draw do
         resources :sales_orders do
           member do
             get 'new_revision'
+            get 'confirmation'
           end
         end
 

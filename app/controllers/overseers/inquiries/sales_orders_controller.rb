@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:edit, :update]
+  before_action :set_sales_order, only: [:edit, :update, :confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -23,9 +23,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order = SalesOrder.new(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
 
-    if callback_method.present? && send(callback_method)
+    if callback_method == 'confirmation'
+      send('save')
+      redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry,@sales_order), notice: flash_message(@inquiry, action_name)
+    elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new'
@@ -40,13 +43,20 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order.assign_attributes(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
 
-    if callback_method.present? && send(callback_method)
+    if callback_method == 'confirmation'
+      send('save')
+      redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
     end
+  end
+
+  def confirmation
+    authorize @sales_order
   end
 
   private

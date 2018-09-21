@@ -23,4 +23,6 @@ class SalesOrder < ApplicationRecord
 
   delegate :conversion_rate, to: :inquiry_currency
 
+  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no
+
 end
