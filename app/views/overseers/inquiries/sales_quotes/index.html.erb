@@ -3,16 +3,15 @@
     <% provide :hide_table_desc, true %>
     <% provide :hide_table_heading, true %>
 
-
-    <div class="form-row mb-3">
-      <div class="col-12">
-        <% if policy(@inquiry).new_sales_quote? %>
+    <% if policy(@inquiry).new_sales_quote? %>
+      <div class="form-row mb-3">
+        <div class="col-12">
           <a href="<%= new_overseers_inquiry_sales_quote_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded">
             <i class="fal fa-plus-circle mr-1"></i>New Sales Quote
           </a>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>

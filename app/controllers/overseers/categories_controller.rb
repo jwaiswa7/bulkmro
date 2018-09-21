@@ -1,6 +1,11 @@
 class Overseers::CategoriesController < Overseers::BaseController
   before_action :set_category, :only => [:edit, :update, :show]
 
+  def autocomplete
+    @categories = ApplyParams.to(Category.leaves, params)
+    authorize @categories
+  end
+
   def show
     redirect_to edit_overseers_category_path (@category)
     authorize @category

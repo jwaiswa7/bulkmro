@@ -11,6 +11,10 @@ class TaxCode < ApplicationRecord
     self.is_service ||= false
   end
 
+  def self.default
+    first
+  end
+
   def to_s
     "#{self.code} (#{self.gst_rate})"
   end

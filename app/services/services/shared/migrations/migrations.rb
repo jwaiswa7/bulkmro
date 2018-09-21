@@ -512,7 +512,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         parent = Category.find_by_remote_uid(x.get_column('parent_id')) if (x.get_column('parent_id') != "2" && x.get_column('parent_id') != nil)
         Category.create!(
             remote_uid: x.get_column('id'),
-            tax_code_id: (tax_code.present? ? tax_code.id : nil),
+            tax_code_id: (tax_code.present? ? tax_code.id : TaxCode.default.id),
             parent_id: (parent.present? ? parent.id : nil),
             name: x.get_column('name'),
             description: x.get_column('description')
@@ -529,7 +529,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product = Product.create!(
           name: x.get_column('name'),
           brand: (brand if (brand.present?)),
-          category_id: 1,
+          category: Category.default,
           sku: x.get_column('sku'),
           description: x.get_column('description'),
           meta_description: x.get_column('meta_description'),

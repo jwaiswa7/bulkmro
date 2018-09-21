@@ -11,48 +11,46 @@
   <% end %>
 
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= render layout: 'shared/layouts/form' do %>
-      <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-        <%= f.hidden_field :sales_order_id %>
+    <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.hidden_field :sales_order_id %>
 
+
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card">
         <div class="card-body">
-          <% if @comments.persisted.size > 0 %>
-            <div class="chats mb-3">
-              <% @comments.persisted.each do |comment| %>
-                <div class="media chat-item">
-                  <div class="media-body">
-                    <div class="chat-item-title">
-                      <span class="chat-item-author"><%= comment.created_by.full_name %></span>
-                      <span><span class="mr-1"><strong><% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
-                        <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %>
-                        ago</span>
-                    </div>
-                    <div class="chat-item-body">
-                      <p><%= comment.message %></p>
-                    </div>
+        <% if @comments.persisted.size > 0 %>
+          <div class="chats mb-3">
+            <% @comments.persisted.each do |comment| %>
+              <div class="media chat-item">
+                <div class="media-body">
+                  <div class="chat-item-title">
+                    <span class="chat-item-author"><%= comment.created_by.full_name %></span>
+                    <span><span class="mr-1"><strong><% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
+                      <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %>
+                      ago</span>
+                  </div>
+                  <div class="chat-item-body">
+                    <p><%= comment.message %></p>
                   </div>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
-
-          <% if f.object.errors.any? %>
-            <% f.object.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          <% end %>
-
-          <%= f.input :message, required: true, :placeholder => 'Type message' %>
-
-          <div class="flex-fill">
-            <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
-            <% if @sales_order.present? %>
-              <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
-              <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
+              </div>
             <% end %>
           </div>
+        <% end %>
+
+
+        <%= f.input :message, required: true, :placeholder => 'Type message' %>
+
+        <div class="flex-fill">
+          <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+          <% if @sales_order.present? %>
+            <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+            <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
+          <% end %>
         </div>
-      <% end %>
+      </div>
+      </div>
     <% end %>
   <% end %>
 </div>

@@ -5,12 +5,21 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
-
     resource :dashboard, :controller => :dashboard
-    resources :brands
-    resources :categories
     resources :suppliers
     resources :overseers
+
+    resources :brands do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :categories do
+      collection do
+        get 'autocomplete'
+      end
+    end
 
     resources :tax_codes do
       collection do
@@ -58,6 +67,8 @@ Rails.application.routes.draw do
         resources :sales_orders do
           member do
             get 'new_revision'
+            get 'new_confirmation'
+            post 'create_confirmation'
           end
         end
 
@@ -89,14 +100,13 @@ Rails.application.routes.draw do
     resources :companies do
       scope module: 'companies' do
         resources :addresses
+        resources :contacts
       end
     end
 
     resources :accounts do
       scope module: 'accounts' do
         resources :companies
-        resources :contacts
-        resources :addresses
       end
     end
   end

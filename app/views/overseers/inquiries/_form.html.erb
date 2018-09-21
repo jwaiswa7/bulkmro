@@ -1,11 +1,7 @@
 <%= simple_form_for([:overseers, @inquiry], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= f.hidden_field :company_id %>
 
-  <% if f.object.errors.any? %>
-    <% f.object.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  <% end %>
+  <%= render 'shared/snippets/form_errors', f: f %>
 
   <div class="card-body">
     <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
@@ -102,7 +98,7 @@
                 <% end %>
               </div>
               <div class="flex-grow-1">
-                <%= inquiry_product.input :sr_no, label: false %>
+                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no) %>
               </div>
 
             </div>
@@ -111,15 +107,15 @@
             <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
           </div>
           <div class="col-2">
-            <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false %>
+            <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
           </div>
           <div class="col-2">
-            <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false %>
+            <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku) %>
           </div>
           <div class="col-2">
             <div class="d-flex flex-row align-items-center">
               <div>
-                <%= inquiry_product.input :quantity, :label => false %>
+                <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity) %>
               </div>
               <%= inquiry_product.remove_nested_fields_link do %>
                   <div class="form-group align-self-center flex-grow-1 ml-2">

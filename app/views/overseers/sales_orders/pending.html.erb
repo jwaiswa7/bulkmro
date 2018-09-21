@@ -1,10 +1,10 @@
 <% provide :can_be_ajaxed, true %>
 
 <% content_for :header_row do %>
-  <th>Created At</th>
-  <th>Created By</th>
-  <th>Inquiry</th>
-  <th>Actions</th>
+  <th class="no-sort"></th>
+  <th data-name="created_by_id">Created By</th>
+  <th data-name="sales_quote">Inquiry</th>
+  <th data-name="created_at">Created At</th>
 <% end %>
 
 <div class="col-lg-12">

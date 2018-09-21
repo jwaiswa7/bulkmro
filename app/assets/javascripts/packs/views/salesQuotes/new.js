@@ -1,19 +1,46 @@
-const newAction = () => {
-    let vj = initVueJS();
+import select2s from "../../components/select2s";
 
+const newAction = () => {
+
+    let vj = initVueJS();
     $('body').on("fields_added.nested_form_fields", function (e, params) {
         vj.$destroy();
+
         vj = initVueJS();
     }).on("fields_removing.nested_form_fields", function (e, params) {
         vj.$destroy();
+
         vj = initVueJS();
+    });
+
+
+    $('body').on('change.select2', function (e, params) {
+
     });
 };
 
+let destroySelect = () => {
+    if ($('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2()) {
+        $('.select2-single:not(.select2-ajax), .select2-multiple:not(.select2-ajax)').select2('destroy')
+    }
+
+
+    $('select.select2-ajax').each(function (k, v) {
+        if ($(this).select2()) {
+            $(this).select2('destroy');
+        }
+
+    });
+}
+
 let initVueJS = () => {
-    return new Vue({
+    let vj = new Vue({
         el: 'form',
         data: assignEventsAndGetAttributes(),
+        mounted() {
+            this.updateSelectElements();
+            this.rowsUpdated();
+        },
         watch: {
             rows: {
                 handler(oldVal, newVal) {
@@ -22,8 +49,15 @@ let initVueJS = () => {
                 deep: true
             },
             conversion_rate() {
-                this.updateConvertedSellingPrices()
+                this.calculateConvertedSellingPrices()
             },
+            check: {
+                handler(oldVal, newVal) {
+                    //console.log(this.getCheckedRows());
+                    this.rowsUpdated();
+                },
+                deep: true
+            }
         },
         computed: {
             totalFreightCost: function () {
@@ -36,6 +70,7 @@ let initVueJS = () => {
                 // return total;
             }
         },
+
         methods: {
             getAttribute(name) {
                 return this[name]
@@ -61,30 +96,67 @@ let initVueJS = () => {
                 this.setRow(index, row);
             },
 
-            rowUpdated(index) {
-                let row = this.getRow(index);
-                // perform calculations
-                this.updateConvertedSellingPriceFor(index);
+            getCheckedRows() {
+                let checkedSupplierIds = [];
+                let checkedRows = [];
+                let checked = this.getAttribute("check");
+                for (var property in checked) {
+                    if (checked.hasOwnProperty(property)) {
+                        checkedSupplierIds.push(checked[property]);
+                    }
+                }
 
-                this.setRow(index, row)
+                this.rows.forEach(function (row, currentRowIndex) {
+                    if (checkedSupplierIds.includes(row.inquiry_product_supplier_id)) {
+                        row.index = currentRowIndex;
+                        checkedRows[currentRowIndex] = row;
+                    }
+                })
+
+                return checkedRows;
             },
 
+            rowUpdated(index) {
+                this.updateConvertedSellingPriceFor(index);
+                this.triggerSellingPriceChangeFor(index,'margin_percentage');
+                this.recalculateRowTotals(index);
+            },
+            recalculateRowTotals(index) {
+                console.log()
+                let row = this.getRow(index);
+                    row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity) ;
+                    let tax =  parseFloat(row.total_selling_price * row.tax_percentage / 100);
+                    row.total_selling_price_with_tax =  parseFloat(row.total_selling_price) +  parseFloat(tax );
+                this.setRow(index, row);
+            },
             rowsUpdated() {
                 let _this = this;
-
                 _this.rows.forEach(function (row, currentRowIndex) {
                     _this.rowUpdated(currentRowIndex);
                 });
-
                 this.afterRowsUpdated();
             },
 
             afterRowsUpdated() {
-                let total = 0;
-                this.rows.forEach(function (row, index) {
-                    total += parseFloat(row.freight_cost_subtotal);
+                let calculated_freight_cost_total = 0,
+                    total_selling_price = 0,
+                    total_cost_price = 0,
+                total_selling_price_with_tax = 0,
+                margin_percentage= 0;
+                let checkedRows = this.getCheckedRows();
+                checkedRows.forEach(function (row, index) {
+                    calculated_freight_cost_total += parseFloat(row.freight_cost_subtotal);
+                    total_selling_price += parseFloat(row.total_selling_price);
+                    total_selling_price_with_tax += parseFloat(row.total_selling_price_with_tax);
+                    total_cost_price += parseFloat(row.unit_cost_price_with_unit_freight_cost * row.quantity);
+                    margin_percentage += parseFloat(row.margin_percentage);
                 });
-                this.calculated_freight_cost_total = total;
+                this.calculated_total_margin = toDecimal(total_selling_price - total_cost_price);
+                this.average_margin_percentage = toDecimal(this.calculated_total_margin) / checkedRows.length;
+                this.calculated_total_tax = toDecimal(total_selling_price_with_tax -  total_selling_price);
+                this.calculated_total = toDecimal(total_selling_price);
+                this.calculated_total_with_tax = toDecimal(total_selling_price_with_tax);
+                this.calculated_freight_cost_total = toDecimal(calculated_freight_cost_total);
             },
 
             dropdownChanged(e) {
@@ -95,10 +167,15 @@ let initVueJS = () => {
                 $.each(optionSelected.data(), function (k, v) {
                     _this[underscore(k)] = v;
                 });
+                this.rowsUpdated();
             },
 
             quantityChangedFor(index) {
                 this.triggerFreightChangeFor(index, 'quantity');
+            },
+
+            selectSupplierChangedFor(index) {
+
             },
 
             freightCostSubtotalChangedFor(index) {
@@ -124,7 +201,18 @@ let initVueJS = () => {
             unitSellingPriceChangedFor(index) {
                 this.triggerSellingPriceChangeFor(index);
             },
+            totalSellingPriceChangedFor(index) {
+                this.triggerSellingPriceChangeFor(index);
+            },
+            totalSellingPriceWithTaxChangedFor(index) {
+                this.triggerSellingPriceChangeFor(index);
+            },
+            taxCodeIdChangedFor(index) {
+                //console.log("triggered Changed")
+            },
+            taxPercentageChangedFor(index) {
 
+            },
             convertedUnitSellingPriceChangedFor(index) {
 
             },
@@ -159,7 +247,7 @@ let initVueJS = () => {
                     row.freight_cost_subtotal = toDecimal(unit_freight_cost * quantity);
                 }
 
-                row.unit_cost_price_with_unit_freight_cost = toDecimal(row.unit_freight_cost) + toDecimal(row.unit_cost_price);
+                row.unit_cost_price_with_unit_freight_cost = parseFloat(row.unit_freight_cost) + parseFloat(row.unit_cost_price);
 
                 this.setRow(index, row);
             },
@@ -168,7 +256,7 @@ let initVueJS = () => {
                 let row = this.getRow(index);
 
 
-                console.dir(row);
+                //console.dir(row);
                 let margin_percentage = row.margin_percentage;
                 let unit_selling_price = row.unit_selling_price;
                 let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
@@ -181,28 +269,83 @@ let initVueJS = () => {
                     row.margin_percentage = toDecimal(margin_percentage * 100);
                 }
                 this.setRow(index, row);
-            },
 
+            },
+            /*genericFunction() {
+
+            },
+            initRowAndExecute(index, callback) {
+                let row = this.getRow(index);
+                if (row !== undefined) {
+                    callback(index);
+                }
+            },
+            initRowAndExecuteWithTrigger(index, trigger, callback) {
+                let row = this.getRow(index);
+                if (row !== undefined) {
+                    callback(index, trigger);
+                }
+            },*/
             updateConvertedSellingPriceFor(index) {
                 let row = this.getRow(index);
-                row.converted_unit_selling_price = toDecimal(row.unit_selling_price) / toDecimal(this.getAttribute('conversion_rate'));
+                if (row !== undefined) {
+                    row.converted_unit_selling_price = toDecimal(parseFloat(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
+                }
                 this.setRow(index, row);
             },
 
-            updateConvertedSellingPrices() {
+            calculateConvertedSellingPrices() {
                 let _this = this;
 
                 _this.rows.forEach(function (row, currentRowIndex) {
                     _this.updateConvertedSellingPriceFor(currentRowIndex);
                 })
+            },
+            updateSelectElements() {
+                setTimeout(function () {
+                    destroySelect();
+                    $('form [name*=tax_code_id]').addClass('select2-ajax');
+                    select2s();
+                    $('select.select2-ajax').each(function (k, v) {
+                        $(this).select2({
+                            theme: "bootstrap",
+                            containerCssClass: ':all:',
+                            ajax: {
+                                url: $(this).attr('data-source'),
+                                dataType: 'json',
+                                delay: 100
+                            },
+                            processResults: function (data, page) {
+                                return {results: data};
+                            },
+
+                        }).on('change', function () {
+                            //$(this).trigger('input');
+                            let attributeName = this.name.match(/\[([a-z_]*)\]$/)[1];
+                            let currentRowIndex = $(this).closest('div.simple-row').data('index');
+                            //console.log(currentRowIndex,attributeName,this.value, vj.$data.rows[currentRowIndex][attributeName]);
+                            vj.$data.rows[currentRowIndex][attributeName] = this.value;
+                            //vj.$emit('input', this.value) // emitting Vue change event
+
+                            let optionSelected = $("option:selected", this);
+                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
+                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
+                        });
+                    });
+                }, 1000);
+
             }
         },
     })
+
+    return vj;
 };
 
 let assignEventsAndGetAttributes = () => {
     let rows = [];
-    let data = {};
+    let data = {
+        "check": {}
+    };
 
     // Handle repeatable rows
     $('[data-index]').each(function (index, row) {
@@ -213,12 +356,27 @@ let assignEventsAndGetAttributes = () => {
 
             // Bind attributes
             $(row).find('[data-bind]').each(function (index, el) {
-                let attributeName = el.name.match(/\[([a-z_]*)\]$/)[1];
-                let attributeVal = $(el).val();
+                let attributeName = "";
+                let modelName = "";
+                if ($(el).data("bind") != "") {
 
-                // To recreate VueJS v-model when nested form rows are added or removed
-                $(el).attr("v-model", ["rows[", currentRowIndex, "].", attributeName].join(''));
-                currentRowTemplate[attributeName] = attributeVal;
+                    modelName = $(el).data("bind");
+                    if ($(el).is(":checked")) {
+                        data["check"][modelName] = $(el).val();
+                    }
+                    $(el).attr("v-model", 'check.' + modelName + '');
+                }
+                else {
+                    attributeName = el.name.match(/\[([a-z_]*)\]$/)[1];
+                    modelName = ["rows[", currentRowIndex, "].", attributeName].join('');
+                    let attributeVal = $(el).val();
+
+                    // To recreate VueJS v-model when nested form rows are added or removed
+                    $(el).attr("v-model", modelName);
+                    //$(el).attr("data-v-index", currentRowIndex);
+                    currentRowTemplate[attributeName] = attributeVal;
+                }
+
 
                 assignDataEventsAsEvents(el, currentRowIndex);
             });
@@ -247,7 +405,6 @@ let assignEventsAndGetAttributes = () => {
     $('[data-v-computed]').each(function (index, el) {
         $(el).attr("v-model", $(el).attr('data-v-computed'));
     });
-
     data.rows = rows;
     return data;
 };
@@ -257,9 +414,19 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
     let attributeName = undefined;
 
     if (el.name !== undefined && el.name.trim() !== '') {
-        attributeName = el.name.match(/\[([a-z_]*)\]$/)[1];
 
-        let methodName = camelize([attributeName, 'Changed', 'For'].join('_'));
+        let methodName = "";
+
+        if ($(el).data("bind") != "") {
+            attributeName = $(el).data("bind");
+            methodName = [camelizeAndSkipLastWord(attributeName), 'Changed', 'For'].join('');
+
+        }
+        else {
+            attributeName = el.name.match(/\[([a-z_]*)\]$/)[1];
+            methodName = camelize([attributeName, 'Changed', 'For'].join('_'));
+        }
+
 
         if (currentRowIndex !== '') {
             methodName += '(' + currentRowIndex + ')'

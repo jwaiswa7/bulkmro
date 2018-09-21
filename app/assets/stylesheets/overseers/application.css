@@ -9251,6 +9251,8 @@ label[class*='col'] {
   .custom-file label.custom-file-label::after {
     top: auto;
     height: calc(2.25rem - 4px); }
+.custom-file .valid-feedback, .custom-file .invalid-feedback {
+  display: none !important; }
 
 .custom-file-naked {
   cursor: pointer;

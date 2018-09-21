@@ -11,11 +11,11 @@ class SalesQuoteRow < ApplicationRecord
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier
 
-  attr_accessor :is_selected
+  attr_accessor :is_selected, :tax_percentage, :tax
 
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
-  delegate :tax_percentage, :gst_rate, to: :tax_code
+  delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
@@ -26,21 +26,21 @@ class SalesQuoteRow < ApplicationRecord
 
   validate :is_unit_selling_price_consistent_with_margin_percentage?
   def is_unit_selling_price_consistent_with_margin_percentage?
-    if unit_selling_price.round != calculated_unit_selling_price.round
+    if unit_selling_price.floor != calculated_unit_selling_price.floor
       errors.add :base, 'selling price is not consistent with margin'
     end
   end
 
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
-    if converted_unit_selling_price.round != calculated_converted_unit_selling_price.round
+    if converted_unit_selling_price.floor != calculated_converted_unit_selling_price.floor
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
 
   validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
-    if (freight_cost_subtotal / quantity).round != unit_freight_cost
+    if (freight_cost_subtotal / quantity).floor != unit_freight_cost.floor
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
     end
   end
@@ -67,6 +67,10 @@ class SalesQuoteRow < ApplicationRecord
 
   def best_tax_code
     self.tax_code || self.product.best_tax_code
+  end
+
+  def applicable_tax_percentage
+    self.best_tax_code ? self.best_tax_code.tax_percentage : 0
   end
 
   def conversion_rate
@@ -102,19 +106,19 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    (self.unit_cost_price / (1 - (self.margin_percentage / 100.0))).round(2) if self.unit_cost_price.present? && self.margin_percentage.present?
+    (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).floor(2) if self.unit_cost_price.present? && self.margin_percentage.present?
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.best_tax_code.tax_percentage)).round(2)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
   end
 
   def calculated_unit_selling_price_with_tax
-    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.best_tax_code.tax_percentage)).round(2)
+    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.best_tax_code.tax_percentage)).floor(2)
   end
 
   def calculated_converted_unit_selling_price
-    (self.unit_selling_price / conversion_rate).round(2) if unit_selling_price.present?
+    (self.unit_selling_price / conversion_rate).floor(2) if unit_selling_price.present?
   end
 
   def to_s

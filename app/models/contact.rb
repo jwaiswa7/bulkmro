@@ -12,6 +12,8 @@ class Contact < ApplicationRecord
   has_many :company_contacts
   has_many :companies, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
+  has_one :company_contact
+  has_one :company, :through => :company_contact
 
   validates_uniqueness_of :remote_uid, :allow_blank => true, :allow_nil => true
 
@@ -32,5 +34,9 @@ class Contact < ApplicationRecord
     self.role ||= :admin
     self.status ||= :active
     self.contact_group ||= :general
+
+    if self.company.present?
+      self.account ||= self.company.account
+    end
   end
 end

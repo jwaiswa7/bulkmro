@@ -24,4 +24,15 @@ module FormHelper
 		/id="([a-z\d_]*)"/.match(html_text)[1]
 	end
 
+  def placeholder_for(f, name)
+		singular = ['simple_form', 'placeholders', f.object.class.name.underscore, name].join('.')
+		plural = ['simple_form', 'placeholders', f.object.class.name.underscore.pluralize, name].join('.')
+
+		if I18n.exists?(singular, I18n.locale)
+			I18n.t(singular, I18n.locale)
+		else
+			I18n.t(plural, I18n.locale)
+		end
+	end
+
 end

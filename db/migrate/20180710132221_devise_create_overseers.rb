@@ -5,7 +5,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
     create_table :overseers do |t|
       t.integer :parent_id, index: true
 
-      t.string :username, index: { :unique => true }
+      t.string :username
       t.string :first_name
       t.string :last_name
       t.string :mobile
@@ -26,7 +26,6 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
-      t.string :username,           null: false
 
       ## Recoverable
       t.string   :reset_password_token

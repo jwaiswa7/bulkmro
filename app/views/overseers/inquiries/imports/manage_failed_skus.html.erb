@@ -7,12 +7,7 @@
   <%= render layout: 'shared/layouts/form' do %>
     <%= simple_form_for(@excel_import, url: create_failed_skus_overseers_inquiry_import_path, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
-      <% if f.object.errors.any? %>
-        <% f.object.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      <% end %>
-
+      <%= render 'shared/snippets/form_errors', f: f %>
 
       <%= f.simple_fields_for :rows do |row| %>
         <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
@@ -48,11 +43,11 @@
                           <%= product.input :sku, readonly: true %>
                         </div>
                         <div class="col-6 col-md-2">
-                          <%= product.association :brand, :wrapper => :custom_multi_select %>
+                          <%= product.association :brand, :wrapper => :custom_multi_select, input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path } %>
                         </div>
 
                         <div class="col-6 col-md-2">
-                          <%= product.association :category, :wrapper => :custom_multi_select, collection: Category.leaves %>
+                          <%= product.association :category, :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path } %>
                         </div>
                         <div class="col-6 col-md-2">
                           <%= product.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>

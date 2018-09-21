@@ -17,8 +17,11 @@
         <a class="nav-link" data-toggle="tab" href="#inquiries" role="tab">Inquiries</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#brands" role="tab">Brands</a>
+        <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
       </li>
+      <!--      <li class="nav-item">-->
+      <!--        <a class="nav-link" data-toggle="tab" href="#brands" role="tab">Brands</a>-->
+      <!--      </li>-->
     </ul>
 
     <div class="tab-content">
@@ -51,6 +54,39 @@
           </tbody>
         </table>
       </div>
+
+      <div class="tab-pane fade" id="contacts" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
+          <a href="<%= new_overseers_company_contact_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+            Contact</a>
+        </div>
+        <p class="mt-md-1 d-none d-md-block">
+          All contacts filterable in any way that we want under <strong><%= @company.name %></strong>.
+        </p>
+
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
+          <thead>
+          <tr>
+            <th data-priority="1"></th>
+            <th data-priority="2">Name</th>
+            <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @company.contacts.each do |contact| %>
+            <tr>
+              <td>
+                <a href="<%= edit_overseers_company_contact_path(@company, contact) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a>
+              </td>
+              <td><%= contact.full_name %></td>
+              <td class="text-right"><%= contact.companies.count %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
       <div class="tab-pane fade" id="inquiries" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
@@ -82,29 +118,30 @@
           </tbody>
         </table>
       </div>
-      <div class="tab-pane fade" id="brands" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Brands</h3>
-        </div>
-        <p class="mt-md-1 d-none d-md-block">
-          All brands filterable in any way that we want under <strong><%= @company.name %></strong>.
-        </p>
+<!--      <div class="tab-pane fade" id="brands" role="tabpanel">-->
+<!--        <div class="d-md-flex justify-content-between">-->
+<!--          <h3 class="display-5 mb-1 d-none d-md-block">Brands</h3>-->
+<!--        </div>-->
+<!--        <p class="mt-md-1 d-none d-md-block">-->
+<!--          All brands filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
+<!--        </p>-->
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
-          <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @company.brands.each do |brand| %>
-            <tr>
-              <td><%= brand.to_s %></td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
+<!--        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th data-name="name">Name</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+          <%# @company.brands.each do |brand| %>
+<!--            <tr>-->
+<!--              <td><%#= brand.to_s %></td>-->
+<!--            </tr>-->
+          <%# end %>
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </div>-->
+
     </div>
   </section>
 </div>
