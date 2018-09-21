@@ -1,12 +1,16 @@
 const editSuppliers = () => {
+
+    new
+
+
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {
             onSupplierChange(this);
         })
         .on('click', '.update-with-best-price', function (e) {
-            let parent = $(this).parent();
+            let parent = $(this).closest('.input-group');
             let input = parent.find('input');
-            parent.closest('div.row').find('[name*=unit_cost_price]').val(input.val());
+            parent.closest('div.form-row').find('[name*="[unit_cost_price]"]').val(input.val());
         })
         .find('select[name*=supplier_id]')
         .each(function (e) {
@@ -27,10 +31,10 @@ let onSupplierChange = (container) => {
             },
 
             success: function (response) {
-                select.closest('div.row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
-                select.closest('div.row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
-                select.closest('div.row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
-                select.closest('div.row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
+                select.closest('div.form-row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
+                select.closest('div.form-row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
+                select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
+                select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
             }
         });
     }
