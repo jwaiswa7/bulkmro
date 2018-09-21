@@ -23,10 +23,11 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order = SalesOrder.new(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
+    callback_method = %w(save save_and_send confirmation).detect {|action| params[action]}
 
-    if callback_method == 'confirmation' && send('save')
-      redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry,@sales_order), notice: flash_message(@inquiry, action_name)
+    if callback_method == 'confirmation'
+      send('save')
+      redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
     elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
@@ -42,9 +43,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order.assign_attributes(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send confirmation).detect { |action| params[action] }
+    callback_method = %w(save save_and_send confirmation).detect {|action| params[action]}
 
-    if callback_method == 'confirmation' && send('save')
+    if callback_method == 'confirmation'
+      send('save')
       redirect_to confirmation_overseers_inquiry_sales_order_path(@inquiry), notice: flash_message(@inquiry, action_name)
     elsif callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -58,13 +60,18 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   private
+
   def save
     @sales_order.save
   end
 
   def save_and_send
-    @sales_order.assign_attributes(:sent_at => Time.now)
-    @sales_order.save
+    if validate_confirm
+      @sales_order.assign_attributes(:sent_at => Time.now)
+      @sales_order.save
+    else
+      false
+    end
   end
 
   def set_sales_order
@@ -83,5 +90,13 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
             :_destroy
         ]
     )
+  end
+
+  def validate_confirm
+    if params[:confirm_ord_values] == 1 && params[:confirm_tax_rates] == 1 && params[:confirm_hsn_codes] == 1 && params[:confirm_billing_address] == 1 && params[:confirm_shipping_address] == 1 && params[:confirm_customer_po_no] == 1
+      true
+    else
+      false
+    end
   end
 end
