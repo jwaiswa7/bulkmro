@@ -93,7 +93,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def validate_confirm
-    if params[:confirm_ord_values] == 1 && params[:confirm_tax_rates] == 1 && params[:confirm_hsn_codes] == 1 && params[:confirm_billing_address] == 1 && params[:confirm_shipping_address] == 1 && params[:confirm_customer_po_no] == 1
+    if params[:confirm_ord_values] == 1 && params[:confirm_tax_rates] == 1 && params[:confirm_hsn_codes] == 1 && params[:confirm_billing_address] == 1 && params[:confirm_shipping_address] == 1
       true
     else
       false
