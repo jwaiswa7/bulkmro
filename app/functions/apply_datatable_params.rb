@@ -12,8 +12,9 @@ class ApplyDatatableParams < BaseFunction
 		# 	params[:order].each do |k, v|
     #     column_id = v[:column]
     #     direction = v[:dir]
-    #
-    #
+		#
+		# 		params[]
+		#
 		# 		records = records.order(k.to_sym => (v.to_i == 1 ? :asc : :desc), :created_at => :desc)
 		# 	end
 		# else
