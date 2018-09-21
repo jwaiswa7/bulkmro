@@ -4,8 +4,6 @@ class Overseers::CompaniesController < Overseers::BaseController
   def index
     @companies = ApplyDatatableParams.to(Company.all, params)
     authorize @companies
-
-    raise
   end
 
   def show
