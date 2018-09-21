@@ -13,6 +13,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.integer :outside_sales_owner_id, index: true
       t.integer :sales_manager_id, index: true
       t.integer :remote_attachment_id, index: true
+      t.integer :legacy_id, index:true, required: true
 
       t.string :name, index: true
       t.string :site

@@ -160,7 +160,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         group_code = x.get_column('group_code')
         PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
           payment_option.assign_attributes(
-              remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code
+              remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code,
+              legacy_id: x.get_column('option_id')
           )
         end
       end
@@ -222,7 +223,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               status: is_active[x.get_column('is_active').to_i],
               contact_group: contact_group[x.get_column('group')],
               password: 'abc123',
-              password_confirmation: 'abc123'
+              password_confirmation: 'abc123',
+              legacy_id: x.get_column('entity_id')
           )
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -276,7 +278,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             is_unregistered_dealer: urd[x.get_column('urd')],
             tax_identifier: x.get_column('cmp_gst'),
             is_customer: true,
-            remote_attachment_id: x.get_column('attachment_entry')
+            remote_attachment_id: x.get_column('attachment_entry'),
+            legacy_id: x.get_column('cmp_id')
         )
 
         company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email')))) if x.get_column('email').present?
@@ -322,6 +325,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             telephone: x.get_column('telephone'),
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type')],
+            legacy_id: x.get_column('address_id')
         )
 
         address.assign_attributes(
@@ -386,6 +390,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             is_unregistered_dealer: urd[x.get_column('urd')],
             tax_identifier: x.get_column('cmp_gst'),
             is_supplier: true,
+            legacy_id: x.get_column('sup_id'),
         #phone: x.get_column('sup_tel'),
         #mobile: x.get_column('sup_mob'),
         #remote_attachment_id: x.get_column('attachment_entry')
@@ -427,7 +432,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 status: 10,
                 #contact_group: contact_group[x.get_column('group')],
                 password: 'abc123',
-                password_confirmation: 'abc123'
+                password_confirmation: 'abc123',
+                legacy_id: x.get_column('pc_num')
             )
           end
         end
@@ -463,6 +469,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             telephone: x.get_column('telephone'),
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type')],
+            legacy_id: x.get_column('address_id')
             )
 
         address.assign_attributes(
@@ -515,7 +522,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_code_id: (tax_code.present? ? tax_code.id : TaxCode.default.id),
             parent_id: (parent.present? ? parent.id : nil),
             name: x.get_column('name'),
-            description: x.get_column('description')
+            description: x.get_column('description'),
+            legacy_id: x.get_column('entity_id')
         )
       end
     end
@@ -534,7 +542,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           description: x.get_column('description'),
           meta_description: x.get_column('meta_description'),
           meta_keyword: x.get_column('meta_keyword'),
-          meta_title: x.get_column('meta_title')
+          meta_title: x.get_column('meta_title'),
+          legacy_id: x.get_column('entity_id')
       )
 
       overseer = Overseer.find_by_email('ashwin.goyal@bulkmro.com')
