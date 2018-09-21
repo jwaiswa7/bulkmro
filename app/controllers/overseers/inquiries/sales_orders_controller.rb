@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:edit, :update]
+  before_action :set_sales_order, only: [:edit, :update, :new_confirmation, :create_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -23,10 +23,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order = SalesOrder.new(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_confirm).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
     end
@@ -40,31 +40,44 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order.assign_attributes(sales_order_params.merge(:overseer => current_overseer))
     authorize @sales_order
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_confirm).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'edit'
     end
   end
 
-  def new_confirmation
+  def create_confirmation
+    authorize @sales_order
 
+    if @sales_order.not_confirmed?
+      @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
+      ActiveRecord::Base.transaction do
+        @confirmation.save!
+        @sales_order.update_attributes(:sent_at => Time.now)
+      end
+    else
+      @sales_order.update_attributes(:sent_at => Time.now)
+    end
+
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
-  def create_confirmation
-
+  def new_confirmation
+    authorize @sales_order
   end
 
   private
+
   def save
     @sales_order.save
   end
 
-  def save_and_send
-    @sales_order.assign_attributes(:sent_at => Time.now)
+  def save_and_confirm
     @sales_order.save
+    redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
   end
 
   def set_sales_order
