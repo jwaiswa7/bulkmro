@@ -64,7 +64,7 @@ let setup = () => {
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
-                    data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').text();
+                    data['columns'][index]['name'] = $(that).find('th:eq(' + index + ')').data('name');
                 });
             },
             responsive: {
