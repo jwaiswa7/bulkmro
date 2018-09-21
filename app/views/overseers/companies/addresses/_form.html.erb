@@ -22,7 +22,7 @@
         <%= f.input :pincode %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.input :country_code, as: :country, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+        <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
       </div>
     </div>
 
@@ -49,7 +49,7 @@
           <label>GST Number Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :gst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :gst_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">GST Number Proof</label>
             </div>
           </div>
@@ -66,7 +66,7 @@
           <label>CST Number Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">CST Number Proof</label>
             </div>
           </div>
@@ -82,7 +82,7 @@
           <label>VAT Number Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :vat_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :vat_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">VAT Number Proof</label>
             </div>
           </div>
@@ -98,7 +98,7 @@
           <label>Excise Number Proof</label>
           <div class="input-group">
             <div class="custom-file">
-              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: true, accept: 'image/png, application/pdf, image/jpeg' %>
+              <%= f.file_field :cst_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
               <label class="custom-file-label">Excise Number Proof</label>
             </div>
           </div>

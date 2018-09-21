@@ -65,5 +65,105 @@
         <% end %>
       </div>
     </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Brands</strong></p>
+            <h3 class="mb-0"><%= Brand.all.size %></h3>
+          </div>
+        </div>
+        <% if policy(:brand).index? %>
+          <div class="card-footer">
+            <a href="<%= overseers_brands_path %>" class="btn btn-lg btn-block btn-success">See Brands</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Overseers</strong></p>
+            <h3 class="mb-0"><%= Overseer.all.size %></h3>
+          </div>
+        </div>
+        <% if policy(:overseer).index? %>
+          <div class="card-footer">
+            <a href="<%= overseers_overseers_path %>" class="btn btn-lg btn-block btn-success">See Overseers</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Categories</strong></p>
+            <h3 class="mb-0"><%= Category.all.size %></h3>
+          </div>
+        </div>
+        <% if policy(:category).index? %>
+          <div class="card-footer">
+            <a href="<%= overseers_categories_path %>" class="btn btn-lg btn-block btn-success">See Categories</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
+            <h3 class="mb-0"><%= Account.all.size %></h3>
+          </div>
+        </div>
+        <% if policy(:account).index? %>
+          <div class="card-footer">
+            <a href="<%= overseers_accounts_path %>" class="btn btn-lg btn-block btn-success">See Accounts</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Tax Codes</strong></p>
+            <h3 class="mb-0"><%= TaxCode.all.size %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
+            <h3 class="mb-0"><%= Contact.all.size %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Industries</strong></p>
+            <h3 class="mb-0"><%= Industry.all.size %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card mb-3 ">
+        <div class="card-body">
+          <div class="text-center">
+            <p class="text-uppercase mb-1"><strong>Address State</strong></p>
+            <h3 class="mb-0"><%= AddressState.all.size %></h3>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

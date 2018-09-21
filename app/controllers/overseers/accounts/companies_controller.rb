@@ -18,7 +18,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   def create
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))    
     authorize @company
-    raise
+
     if @company.save
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
     else      
