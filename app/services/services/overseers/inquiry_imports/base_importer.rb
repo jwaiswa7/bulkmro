@@ -19,6 +19,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
   end
 
   def delete_duplicate_rows
+
     rows.uniq! { |row| row['sku'] }
   end
 
@@ -27,6 +28,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
       row.stringify_keys!
       import.rows.create(import: import, sku: row['sku'], metadata: row)
     end
+
   end
 
   def set_existing_products
@@ -43,6 +45,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
         row.update_attributes(:inquiry_product => inquiry_product)
       end
     end
+
   end
 
   def any_failed?
