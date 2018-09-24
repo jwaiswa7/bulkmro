@@ -61,7 +61,10 @@
                     <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %><% end %>
                   </div>
                 </div>
-                <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
+                <div class="col-md-2">
+                  <strong>Sr. Number</strong><br>
+                  <%= row.object.sr_no %>
+                </div>
                 <div class="col-md-2"><%= row.input :inquiry_product_supplier, as: :string, disabled: true, label: 'Supplier' %></div>
                 <div class="col-md-2"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
                 <div class="col-md-2"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total FR' %></div>
