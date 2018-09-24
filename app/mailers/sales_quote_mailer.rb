@@ -8,8 +8,10 @@ class SalesQuoteMailer < ApplicationMailer
           # reply_to: -> { @inviter.email_address_with_name }
   def sales_quote_ack
     subject =  "Quote Request #" + @quote.id.to_s + " : {{var caption}}"
-    file = Rails.root + "app/assets/images/26159_Calc_Sheet.pdf"
-    attachments['salequote.pdf'] = File.open(file, 'rb'){|f| f.read}
+    # file = Rails.root + "app/assets/images/26159_Calc_Sheet.pdf"
+    # attachments['salequote.jpg'] = File.open(file, 'rb'){|f| f.read}
+    file = open('https://bulkmro.com/skin/frontend/base/default/images/Beta-logo.png').read
+    attachments['salequote.jpg'] = file
     mail subject: subject
   end
 
