@@ -1,15 +1,11 @@
-class Resources::Product < Resources::ApplicationResource
+class Resources::Item < Resources::ApplicationResource
 
   def self.identifier
     :ItemCode
   end
 
   def self.to_remote(record)
-
-# WareHouse
-
     {
-
         "ItemCode": "BG000888",# BMRO Part#
         "ItemName": record.name,# Product Name
         "ItemsGroupCode": 100,# Product Category
@@ -53,7 +49,5 @@ class Resources::Product < Resources::ApplicationResource
         "U_SubCat2": null,#Subcategory 2
         "U_Meta_Key": record.meta_keyword#Meta Keyword
     }
-
-
   end
 end
