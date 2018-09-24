@@ -5,6 +5,7 @@ class CreateIndustries < ActiveRecord::Migration[5.2]
 
       t.string :name, index: { unique: true }
       t.text :description
+      t.integer :legacy_id, index:true, required: true
 
       t.timestamps
     end

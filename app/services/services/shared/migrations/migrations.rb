@@ -4,7 +4,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit
 
   def initialize
-
     perform_migration(:overseers)
     perform_migration(:measurement_unit)
     perform_migration(:lead_time_option)
@@ -15,6 +14,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     perform_migration(:accounts)
     perform_migration(:contacts)
     perform_migration(:companies)
+    perform_migration(:company_contact_mapping)
     perform_migration(:addresses)
     perform_migration(:supplier_account)
     perform_migration(:supplier)
@@ -161,7 +161,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
           payment_option.assign_attributes(
               remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code,
-              legacy_id: x.get_column('option_id')
+              legacy_id: x.get_column('id')
           )
         end
       end
@@ -174,7 +174,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       i = Industry.create!(
           remote_uid: x.get_column('industry_sap_id'),
           name: x.get_column('industry_name'),
-          description: x.get_column('industry_description')
+          description: x.get_column('industry_description'),
+          legacy_id: x.get_column('idindustry')
       )
     end
   end
@@ -325,7 +326,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             telephone: x.get_column('telephone'),
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type')],
-            legacy_id: x.get_column('address_id')
+            legacy_id: x.get_column('idcompany_gstinfo')
         )
 
         address.assign_attributes(
@@ -523,7 +524,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             parent_id: (parent.present? ? parent.id : nil),
             name: x.get_column('name'),
             description: x.get_column('description'),
-            legacy_id: x.get_column('entity_id')
+            legacy_id: x.get_column('id')
         )
       end
     end
