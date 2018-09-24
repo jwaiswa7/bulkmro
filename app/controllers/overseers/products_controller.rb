@@ -55,8 +55,9 @@ class Overseers::ProductsController < Overseers::BaseController
     render json: {
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
         latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
-        bp_catalog_name: @product.bp_catalog_for_supplier(@supplier)[0],
-        bp_catalog_sku: @product.bp_catalog_for_supplier(@supplier)[1]
+
+        bp_catalog_name: @product.bp_catalog_for_supplier(@supplier).try(:first),
+        bp_catalog_sku: @product.bp_catalog_for_supplier(@supplier).try(:last)
     }
   end
 
