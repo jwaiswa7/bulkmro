@@ -380,6 +380,20 @@ let assignEventsAndGetAttributes = () => {
 
                 assignDataEventsAsEvents(el, currentRowIndex);
             });
+            // Show Model information in non-input element
+            $(row).find('[data-v-html]').each(function (index, el) {
+                let modelName = "";
+                if ($(el).data("v-html") != "") {
+                    let attributeName = $(el).data("v-html");
+                    modelName = ["rows[", currentRowIndex, "].", attributeName].join('');
+                    let attributeVal = 0;
+
+                    // To recreate VueJS v-model when nested form rows are added or removed
+                    $(el).attr("v-html", modelName);
+                    //$(el).attr("data-v-index", currentRowIndex);
+                    currentRowTemplate[attributeName] = attributeVal;
+                }
+            });
 
             // Bind non-input events like buttons
             $(row).find('[data-v]').each(function (index, element) {
@@ -391,7 +405,8 @@ let assignEventsAndGetAttributes = () => {
     });
 
     // Independent of rows, like a total row
-    $('[data-v-model]').each(function (index, el) {
+    $('[data-' +
+        ']').each(function (index, el) {
         let attributeName = el.name.match(/\[([a-z_]*)\]$/)[1];
         let attributeValue = $(el).val();
 
