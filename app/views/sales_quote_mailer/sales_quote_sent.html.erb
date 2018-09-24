@@ -1,0 +1,16 @@
+<table cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="action-content">
+      <p>Dear <%= @customer.first_name %>,</p>
+      <p>Greetings from Bulk MRO!!!<br/></p>
+      <p>Please find attached our Quotation # <%= @quote.id %>> for your consideration. </p>
+      <p>Tired of emails? Just access all your quotes online <a href="https://www.bulkmro.com/" target="_blank">here</a> </p>
+      <p>If there is any additional information you may require, please feel free to <br/>call me at 022-4921-4921 or email at sales@bulkmro.com and talk to our expert and friendly Sales Agents.</p>
+      <p>Also check out our range of <a href="https://www.bulkmro.com/all-categories/">14 Lakh Products</a> from over  <a href="https://www.bulkmro.com/manufacturer/">5000 Brands</a>. </p>
+      <p>We look forward to your feedback and valuable purchase order.</p>
+      <p>Have a nice day!</p>
+      <br/>
+      <p>Regards,</p>
+      <p> <%= params[:overseer][:name] %> </p>
+  </tr>
+</table>

@@ -54,16 +54,25 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
+    SalesQuoteMailer.with(overseer: set_admin, inquiry: @inquiry, quote: @sales_quote).sales_quote_ack.deliver_now
   end
 
   def save_and_send
     @sales_quote.assign_attributes(:sent_at => Time.now)
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
+    SalesQuoteMailer.with(overseer: set_admin, inquiry: @inquiry, quote: @sales_quote).sales_quote_sent.deliver_now
   end
 
   def set_sales_quote
     @sales_quote = @inquiry.sales_quotes.find(params[:id])
+  end
+
+  def set_admin
+    email_admin = Hash.new
+    email_admin[:email] = current_overseer.email
+    email_admin[:name] = current_overseer.first_name
+    email_admin
   end
 
   def sales_quote_params

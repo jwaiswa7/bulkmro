@@ -1,0 +1,17 @@
+<table cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="action-content">
+      <p>Dear <%= @customer.first_name %>,</p>
+      <p>Thank you for your inquiry.<br/></p>
+      <p>Your inquiry reference number is # <%= @quote.id %>> for your consideration. </p>
+      <p>We will revert to you shortly with a formal quotation.</p>
+      <p>Please mention this reference number for all your correspondence related to this inquiry. </p>
+      <p>If there is any additional information you may require, please feel free to <br/>call me at 022-4921-4921 or email at sales@bulkmro.com and talk to our expert and friendly Sales Agents.</p>
+      <p>Also check out our range of <a href="https://www.bulkmro.com/all-categories/">14 Lakh Products</a> from over  <a href="https://www.bulkmro.com/manufacturer/">5000 Brands</a>. </p>
+      <p>We look forward to your feedback and valuable purchase order.</p>
+      <p>Have a nice day!</p>
+      <br/>
+      <p>Regards,</p>
+      <p> <%= params[:overseer][:name] %> </p>
+  </tr>
+</table>
