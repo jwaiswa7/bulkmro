@@ -12,18 +12,19 @@
 
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
 
-    <% if policy(@sales_order).approve? %>
+
 
       <div class="card">
         <div class="card-body">
           <h5 class="card-title"><%= @sales_order %></h5>
           <div class="card-text">
             <div class="row">
-              <div class="col-md-12">Products: <strong><%= @sales_order.rows.size %></strong></div>
-              <div class="col-lg-3">Total Selling Price (Excl. tax): <br> <strong><%= format_currency(@sales_order.calculated_total)%></strong></div>
-              <div class="col-lg-3">Total Tax: <br> <strong><%= format_currency(@sales_order.calculated_total_tax)%></strong></div>
-              <div class="col-lg-3">Total Selling Price (Incl. tax): <br> <strong><%= format_currency(@sales_order.calculated_total_with_tax)%></strong></div>
-              <div class="col-lg-3">Total Margin: <br> <strong><%= format_currency(@sales_order.calculated_total_margin) %></strong></div>
+              <div class="col-lg-6">Products: <strong><%= @sales_order.rows.size %></strong></div>
+              <div class="col-lg-6">Created On: <strong><%= @sales_order.created_at.strftime("%d-%m-%Y")  %></strong></div>
+              <div class="col-lg-6">Total Selling Price (Excl. tax): <strong><%= format_currency(@sales_order.calculated_total)%></strong></div>
+              <div class="col-lg-6">Total Tax: <strong><%= format_currency(@sales_order.calculated_total_tax)%></strong></div>
+              <div class="col-lg-6">Total Selling Price (Incl. tax): <strong><%= format_currency(@sales_order.calculated_total_with_tax)%></strong></div>
+              <div class="col-lg-6">Total Margin: <strong><%= format_currency(@sales_order.calculated_total_margin) %></strong></div>
 
             </div>
           </div>
@@ -31,7 +32,7 @@
         </div>
       </div>
 
-    <% end %>
+
 
     <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :sales_order_id %>
