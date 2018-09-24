@@ -6,6 +6,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
       set_excel_rows
       set_and_validate_excel_header_row
       set_rows
+      set_generated_skus
 
       call_base
     end
@@ -34,6 +35,16 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
   def set_rows
     excel_rows.each do |excel_row|
       rows.push excel_header_row.zip(excel_row).to_h
+    end
+  end
+
+  def set_generated_skus
+    rows.each do |row|
+      if row['sku'].blank?
+        range = [*'0'..'9',*'A'..'Z',*'a'..'z'];
+        code = Array.new(6){ range.sample }.join.upcase
+        row['sku'] = "BM9" + code;
+      end
     end
   end
 

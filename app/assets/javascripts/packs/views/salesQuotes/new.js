@@ -126,7 +126,7 @@ let initVueJS = () => {
                 let row = this.getRow(index);
                     row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity) ;
                     let tax =  parseFloat(row.total_selling_price * row.tax_percentage / 100);
-                    row.total_selling_price_with_tax =  parseFloat(row.total_selling_price) +  parseFloat(tax );
+                    row.total_selling_price_with_tax =  toDecimal(parseFloat(row.total_selling_price) +  parseFloat(tax ));
                 this.setRow(index, row);
             },
             rowsUpdated() {

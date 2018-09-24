@@ -76,8 +76,11 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def save_and_confirm
-    @sales_order.save
-    redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
+    if @sales_order.save
+      redirect_to new_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), notice: flash_message(@inquiry, action_name)
+    else
+      false
+    end
   end
 
   def set_sales_order
