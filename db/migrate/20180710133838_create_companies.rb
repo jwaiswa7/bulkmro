@@ -3,7 +3,9 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
     create_table :companies do |t|
       t.references :account, foreign_key: true
       t.references :industry, foreign_key: true
-      t.string :remote_uid, index: { unique: true }
+      t.string :remote_uid, index: {unique: true}
+      t.integer :legacy_id, index: true
+      t.integer :attachment_uid, index: true
 
       t.integer :default_company_contact_id, index: true
       t.integer :default_payment_option_id, index: true
@@ -15,6 +17,8 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
 
       t.string :name, index: true
       t.string :site
+      t.string :phone
+      t.string :mobile
 
       t.integer :company_type
       t.integer :priority
@@ -23,8 +27,10 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.decimal :credit_limit
       t.boolean :is_msme, default: false
       t.boolean :is_unregistered_dealer, default: false
+      t.boolean :is_supplier, default: false
+      t.boolean :is_customer, default: false
 
-      t.string :tax_identifier, index: { unique: true }
+      t.string :tax_identifier, index: {unique: true}
 
       t.timestamps
       t.userstamps
