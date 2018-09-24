@@ -7,24 +7,24 @@
       <%= render 'shared/snippets/form_errors', f: f %>
 
       <div class="card">
-        <div class="card-header d-flex flex-row">
+        <div class="card-header d-block d-md-flex flex-row">
           <div class="flex-fill">
             <strong>Total Selling Price (Excl. tax)</strong><br>
             <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Selling Price (Incl. tax)</strong><br>
             <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Tax</strong><br>
             <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Margin</strong><br>
             <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Freight Cost</strong><br>
             <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
           </div>
@@ -75,24 +75,24 @@
                             <%= row.object.inquiry_product_supplier %>
                           </h5>
                           <div class="row">
-                            <div class="col-12 d-flex flex-row">
+                            <div class="col-12 d-block d-md-flex flex-row">
                               <div class="flex-fill">
                                 <strong>Unit Cost</strong><br>
                                 <span data-bind-html="unit_cost_price"><%= row.object.unit_cost_price %></span>
                               </div>
-                              <div class="flex-fill">
+                              <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Cost with Freight</strong><br>
                                 <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
                               </div>
-                              <div class="flex-fill">
+                              <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price</strong><br>
                                 <span data-bind-html="total_selling_price"><%= row.object.total_selling_price %></span>
                               </div>
-                              <div class="flex-fill">
+                              <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price with Tax</strong><br>
                                 <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
                               </div>
-                              <div class="flex-fill">
+                              <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Selling Price (in $)</strong><br>
                                 <span data-bind-html="unit_selling_price"><%= row.object.unit_selling_price %></span>
                               </div>
@@ -102,11 +102,11 @@
                       </div>
                       <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= (f.object.persisted? && row.object.persisted?) || (rows.select { |r| r.new_record? }.size == rows.size && rows[-1] == row.object) ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
                         <div class="form-row mt-2">
-                          <div class="col-md-1 col-2"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
-                          <div class="col-md-1 col-2"><%= row.input :margin_percentage, label: 'Margin', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
-                          <div class="col-md-2"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
-                          <div class="col-md-2"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
-                          <div class="col-md-2"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total Freight' %></div>
+                          <div class="col-md-1 col-4"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
+                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
+                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
+                          <div class="col-md-2 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
+                          <div class="col-md-2 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total Freight' %></div>
 
                           <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
@@ -127,24 +127,24 @@
       <% end %>
 
       <div class="card mt-3">
-        <div class="card-header d-flex flex-row">
+        <div class="card-header d-block d-md-flex flex-row">
           <div class="flex-fill">
             <strong>Total Selling Price (Excl. tax)</strong><br>
             <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Selling Price (Incl. tax)</strong><br>
             <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Tax</strong><br>
             <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Margin</strong><br>
             <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
           </div>
-          <div class="flex-fill">
+          <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Freight Cost</strong><br>
             <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
           </div>

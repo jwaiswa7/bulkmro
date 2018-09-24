@@ -7,14 +7,25 @@
       <%= render 'shared/snippets/form_errors', f: f %>
 
       <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-lg-3">Total Selling Price (Excl. tax): <br> <strong><%= format_currency(f.object.calculated_total)%></strong></div>
-            <div class="col-lg-3">Total Tax: <br> <strong><%= format_currency(f.object.calculated_total_tax)%></strong></div>
-            <div class="col-lg-3">Total Selling Price (Incl. tax): <br> <strong><%= format_currency(f.object.calculated_total_with_tax)%></strong></div>
-            <div class="col-lg-3">Total Margin: <br> <strong><%= format_currency(f.object.calculated_total_margin) %></strong></div>
+        <div class="card-header d-md-flex d-block flex-row">
+          <div class="flex-fill">
+            <strong>Total Selling Price (Excl. tax)</strong><br>
+            <span><%= format_currency(f.object.calculated_total) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Selling Price (Incl. tax)</strong><br>
+            <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Tax</strong><br>
+            <span><%= format_currency(f.object.calculated_total_tax) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Margin</strong><br>
+            <span><%= format_currency(f.object.calculated_total_margin) %></span>
           </div>
         </div>
+
         <div class="card-body">
           <div class="row">
             <div class="col-md-6">
@@ -25,41 +36,52 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="card-body">
-          <div class="form-group">
-            <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-              <div class="row">
-                <%= row.hidden_field :sales_order_id %>
-                <%= row.hidden_field :id %>
-                <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
-                <div class="col-md-3"><%= row.association :sales_quote_row, label: 'Product', collection: @sales_order.sales_quote.rows.map { |r| [r.to_s, r.id, { :'data-sr-no' => r.sr_no, 'data-quantity' => r.quantity, 'data-unit-cost-price' => r.unit_cost_price, 'data-margin-percentage' => r.margin_percentage, 'data-unit-selling-price' => r.unit_selling_price  }] }, include_blank: 'Select a Line Item' %></div>
-                <div class="col-md-1"><%= row.input :quantity %></div>
-                <div class="col-md-2"><%= row.input :unit_cost_price_with_unit_freight_cost, label: 'Unit Cost Price', disabled: true %></div>
-                <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', disabled: true %></div>
-                <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', disabled: true %></div>
-                <div class="col-md-1"><%= row.input :converted_unit_selling_price, label: 'CUSP', disabled: true %></div>
+      <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
+        <div class="card mt-3 option-wrapper">
+          <div class="card-body">
+            <h5 class="mb-1"></h5>
+            <h6 class="text-uppercase">
+              <strong><%= row.object.sales_quote_row.supplier.name %></strong>
+              <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sales_quote_row.sr_no %></p>
+            </h6>
+            <hr>
+            <h6 class="text-uppercase mb-0">
+              <%= row.object.sales_quote_row.product.name %>
+            </h6>
 
-                <div class="col-md-2"><%= row.input :tax_code, disabled: true %>
-                </div>
-                <div class="col-md-2"><%= row.input :total_selling_price, input_html: { :min => 0 }, disabled: true %></div>
-                <div class="col-md-3"><%= row.input :total_selling_price_with_tax, input_html: { :min => 0 }, disabled: true %></div>
+            <div class="row">
+              <%= row.hidden_field :sales_order_id %>
+              <%= row.hidden_field :id %>
+              <div class="col-md-1"><%= row.input :quantity %></div>
+              <div class="col-md-2"><%= row.input :unit_cost_price_with_unit_freight_cost, label: 'Unit Cost Price', disabled: true %></div>
+              <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', disabled: true %></div>
+              <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', disabled: true %></div>
+              <div class="col-md-1"><%= row.input :converted_unit_selling_price, label: 'CUSP', disabled: true %></div>
 
-                <div class="col-md-1">
-                  <%= row.label :remove %>
-                  <div class="form-control">
-                    <%= row.remove_nested_fields_link 'DEL' %>
-                  </div>
+              <div class="col-md-2"><%= row.input :tax_code, disabled: true %>
+              </div>
+              <div class="col-md-2"><%= row.input :total_selling_price, input_html: {:min => 0}, disabled: true %></div>
+              <div class="col-md-3"><%= row.input :total_selling_price_with_tax, input_html: {:min => 0}, disabled: true %></div>
+
+              <div class="col-md-1">
+                <%= row.label :remove %>
+                <div class="form-control">
+                  <%= link_to_remove_association row, {class: 'dynamic btn btn-danger', wrapper_class: 'option-wrapper'} do %>
+                    Remove
+                  <% end %>
                 </div>
               </div>
-            <% end %>
-            <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-outline-dark' %>
-            <hr/>
-            <%= f.submit 'Save as Draft', name: 'save', class: 'btn btn-success btn-block' %>
-            <%= f.submit 'Save and Confirm', name: 'save_and_confirm', class: 'btn btn-success btn-block' %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
+
+      <hr/>
+      <%= f.submit 'Save as Draft', name: 'save', class: 'btn btn-success btn-block' %>
+      <%= f.submit 'Save and Confirm', name: 'save_and_confirm', class: 'btn btn-success btn-block' %>
+
     <% end %>
   <% end %>
 </div>
