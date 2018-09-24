@@ -68,8 +68,8 @@ class Company < ApplicationRecord
 
   alias_attribute :gst, :tax_identifier
 
-  # todo implement
-  scope :acts_as_supplier, -> { }
+  scope :acts_as_supplier, -> { where(is_supplier: true) }
+  scope :acts_as_customer, -> { where(is_customer: true) }
 
   # validates_presence_of :gst
   # validates_uniqueness_of :gst

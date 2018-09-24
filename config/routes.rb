@@ -6,8 +6,13 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
-    resources :suppliers
     resources :overseers
+
+    resources :suppliers do
+      collection do
+        get 'autocomplete'
+      end
+    end
 
     resources :brands do
       collection do

@@ -19,7 +19,7 @@ class InquiryProduct < ApplicationRecord
   #attr_accessor :product_catalog_name
 
   validates_presence_of :quantity, :sr_no
-  validates_uniqueness_of :inquiry_id, scope: :product_id
+  validates_uniqueness_of :product_id, scope: :inquiry_id
   # validates_uniqueness_of :sr_no, scope: :inquiry_id
   validates_numericality_of :quantity, :greater_than => 0
   after_initialize :set_defaults, :if => :new_record?
