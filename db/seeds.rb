@@ -1167,11 +1167,11 @@ end
 
 Account.all.each do |account|
   2.times do
-    contact = RandomRecord.for(Contact)
-    company = RandomRecord.for(Company)
+
+    company = RandomRecord.for(Company.all.acts_as_supplier)
     products = RandomRecords.for(Product.all, 5)
     i = Inquiry.create!(
-        contact: contact,
+        contact: RandomRecord.for(company.contacts),
         company: company,
         billing_address: RandomRecord.for(company.addresses),
         shipping_address: RandomRecord.for(company.addresses),
@@ -1198,11 +1198,12 @@ end
 
 Account.all.each do |account|
   2.times do
-    contact = RandomRecord.for(Contact)
-    company = RandomRecord.for(Company)
+    company = RandomRecord.for(Company.all.acts_as_supplier)
+
+
     products = RandomRecords.for(Product.all, 5)
     i = Inquiry.create!(
-        contact: contact,
+        contact: RandomRecord.for(company.contacts),
         company: company,
         billing_address: RandomRecord.for(company.addresses),
         shipping_address: RandomRecord.for(company.addresses),
