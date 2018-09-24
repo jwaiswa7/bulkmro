@@ -1385,3 +1385,13 @@ end
 
 
 # Overseer.find_by_email('ashwin.goyal@bulkmro.com').update_attributes(:role => Overseer.find_by_email('ashwin.goyal@bulkmro.com').sales? ? :admin : :sales)
+#
+
+account = Account.create(name: 'Ingersoll Rand (India) Ltd.', alias: 'IR')
+company = account.companies.create(
+    name: 'Ingersoll Rand (India) Ltd.'
+)
+
+contact = company.contacts.create(:account => account, :first_name => 'Ketan', :last_name => 'Joshi', email: 'Ketan.Joshi@irco.com', :password => 'abc123', :password_confirmation => 'abc123')
+address = company.addresses.create(:street1 => '21-30', street2: 'GIDC Estate Naroda', :country_code => 'IN', gst: '24AAACI3099Q1Z2', pincode: '382330', state_name: 'Ahmedabad')
+company.update_attributes(:default_company_contact => RandomRecord.for(company.company_contacts), :default_billing_address => address, :default_shipping_address => address, :default_payment_option => RandomRecord.for(PaymentOption))
