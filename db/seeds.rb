@@ -149,7 +149,7 @@ Overseer.create!(
 
 
 
-10000.times do
+100.times do
   Brand.create(name: Faker::Company.name)
   Category.create(name: Faker::Commerce.department, tax_code: RandomRecord.for(TaxCode) )
 end
