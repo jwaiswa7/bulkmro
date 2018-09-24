@@ -4,4 +4,5 @@ class ApplicationMailer < ActionMailer::Base
   # default reply_to: 'sales@bulkmro.com'
   # default from: "from@example.com"
     layout 'mailer'
+  #layout 'mailers/layouts/mailer'
 end

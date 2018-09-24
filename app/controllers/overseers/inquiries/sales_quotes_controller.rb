@@ -23,7 +23,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -41,7 +41,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -51,6 +51,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   private
+
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
@@ -83,9 +84,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :shipping_address_id,
         :comments,
         :inquiry_currency_attributes => [
-          :id,
-          :currency_id,
-          :conversion_rate,
+            :id,
+            :currency_id,
+            :conversion_rate,
         ],
         :rows_attributes => [
             :id,
