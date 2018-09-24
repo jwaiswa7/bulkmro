@@ -6,7 +6,6 @@ json.data (@companies) do |company|
                       if policy(company).new_inquiry?; row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success') end,
                   ].join(' '),
                   company.to_s,
-                  company.industry.to_s,
                   company.contacts.size,
                   format_date(company.created_at)
               ]
