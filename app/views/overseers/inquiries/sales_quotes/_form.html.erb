@@ -5,6 +5,15 @@
       <%= f.hidden_field :parent_id %>
       <%= render 'shared/snippets/form_errors', f: f %>
 
+
+      <% if f.object.errors.any? %>
+        <ul class="list-group text-danger mb-3">
+          <% f.object.errors.full_messages.each do |message| %>
+            <li class="list-group-item"><%= message %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
       <div class="card">
         <div class="card-header d-flex flex-row">
           <div class="flex-fill">
@@ -53,7 +62,6 @@
 
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
               <%= row.hidden_field :inquiry_product_id %>
-
               <%= row.hidden_field :sales_quote_id %>
               <%= row.hidden_field :id %>
 
@@ -106,11 +114,11 @@
                           <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
 
                           <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
-                          <%= row.hidden_field :unit_cost_price, "data-bind": "" %>
-                          <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "" %>
-                          <%= row.hidden_field :total_selling_price, "data-bind": "" %>
-                          <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "" %>
-                          <%= row.hidden_field :tax_percentage, "data-bind": "" %>
+                          <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
                           <div class="col-md-2"><%= row.association :lead_time_option %></div>
                         </div>
                       </div>
@@ -126,12 +134,12 @@
       <div class="card-footer mt-3">
         <div class="form-row">
           <div class="col-6">
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
               <i class="fal fa-pen mr-1"></i> Save as Draft
             <% end %>
           </div>
           <div class="col-6">
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <%= button_tag(type: "submit", name: "save and send", class: "btn btn-success btn-block") do %>
               <i class="fal fa-paper-plane mr-1"></i> Save and Send
             <% end %>
           </div>
