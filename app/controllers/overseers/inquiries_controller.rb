@@ -79,6 +79,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :industry_id,
         :inside_sales_owner_id,
         :outside_sales_owner_id,
+        :sales_manager_id,
         :billing_address_id,
         :shipping_address_id,
         :status,
