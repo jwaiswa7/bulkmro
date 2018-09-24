@@ -42,7 +42,7 @@ class Company < ApplicationRecord
   has_one_attached :cen_proof
 
   enum company_type: {
-      :proprietorship => 10,
+      :proprietorship => 12,
       :private_limited => 20,
       :contractor => 30,
       :trust => 40,
