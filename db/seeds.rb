@@ -1349,6 +1349,9 @@ Account.all.each do |account|
         company: company,
         billing_address: company.default_billing_address,
         shipping_address: company.default_shipping_address,
+        inside_sales_owner: Overseer.all.sales.sample,
+        outside_sales_owner: Overseer.all.sales.sample,
+        sales_manager: Overseer.all.sales.sample
     #comments: Faker::Lorem.paragraph_by_chars(256, false)
     )
 
