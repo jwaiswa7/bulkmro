@@ -148,11 +148,6 @@ Overseer.create!(
 )
 
 
-10000.times do
-  Brand.create(name: Faker::Company.name)
-  Category.create(name: Faker::Commerce.department, tax_code: RandomRecord.for(TaxCode))
-end
-
 
 devang = Overseer.create!(first_name: 'Devang', :last_name => 'Shah', role: :sales, :email => 'devang.shah@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123')
 lavanya = Overseer.create!(first_name: 'Lavanya', :last_name => 'Jamma', role: :sales, :email => 'lavanya.j@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: devang)
@@ -363,14 +358,7 @@ Company.create!([
                         account: RandomRecord.for(Account)
 
                     },
-                    {
-                        name: "Valisons and Co.",
-                        default_payment_option: RandomRecord.for(PaymentOption),
-                        industry: RandomRecord.for(Industry),
-                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
-                        account: RandomRecord.for(Account)
 
-                    },
                     {
                         name: "Bombay Safety Care",
                         default_payment_option: RandomRecord.for(PaymentOption),
@@ -931,14 +919,7 @@ Company.create!([
                         account: RandomRecord.for(Account)
 
                     },
-                    {
-                        name: "Stanley Black and Decker India Pvt. Ltd.",
-                        default_payment_option: RandomRecord.for(PaymentOption),
-                        industry: RandomRecord.for(Industry),
-                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
-                        account: RandomRecord.for(Account)
 
-                    },
                     {
                         name: "A Kumar and Co.",
                         default_payment_option: RandomRecord.for(PaymentOption),
@@ -1117,6 +1098,40 @@ RandomRecords.for(Category.all, 10).each do |category|
   end
 end
 
+legit = Product.create!(
+    [
+        {
+            name: 'FLUKE Digital Multimeter Size Palm – 106',
+            sku: 'BM9B5M4',
+            brand: Brand.find_or_create_by({name: 'Fluke'}),
+            category: RandomRecord.for(Category),
+            tax_code: RandomRecord.for(TaxCode)
+        },
+        {
+            name: '7PC 1/2 SQ. DR. HEX BIT SOCKET SET  MET',
+            sku: 'BM9J5C8',
+            brand: Brand.find_or_create_by({name: 'STANLEY'}),
+            category: RandomRecord.for(Category),
+            tax_code: RandomRecord.for(TaxCode)
+        },
+        {
+            name: 'Bosch GLM 500 Professional Laser Measure',
+            sku: 'BM9K8Y4',
+            brand: Brand.find_or_create_by({name: 'BOSCH'}),
+            category: RandomRecord.for(Category),
+            tax_code: RandomRecord.for(TaxCode)
+        },
+        {
+            name: 'STANLEY Heavy Duty Pipe Wrench Length 24" – 87-626-23',
+            sku: 'BM9N1E8',
+            brand: Brand.find_or_create_by({name: 'STANLEY'}),
+            category: RandomRecord.for(Category),
+            tax_code: RandomRecord.for(TaxCode)
+        }
+    ]
+)
+
+
 
 Product.create!(
     [
@@ -1279,40 +1294,6 @@ Product.create!(
     ])
 
 
-legit = Product.create!(
-    [
-        {
-            name: 'FLUKE Digital Multimeter Size Palm – 106',
-            sku: 'BM9B5M4',
-            brand: Brand.find_or_create_by({name: 'Fluke'}),
-            category: RandomRecord.for(Category),
-            tax_code: RandomRecord.for(TaxCode)
-        },
-        {
-            name: '7PC 1/2 SQ. DR. HEX BIT SOCKET SET  MET',
-            sku: 'BM9J5C8',
-            brand: Brand.find_or_create_by({name: 'STANLEY'}),
-            category: RandomRecord.for(Category),
-            tax_code: RandomRecord.for(TaxCode)
-        },
-        {
-            name: 'Bosch GLM 500 Professional Laser Measure',
-            sku: 'BM9K8Y4',
-            brand: Brand.find_or_create_by({name: 'BOSCH'}),
-            category: RandomRecord.for(Category),
-            tax_code: RandomRecord.for(TaxCode)
-        },
-        {
-            name: 'STANLEY Heavy Duty Pipe Wrench Length 24" – 87-626-23',
-            sku: 'BM9N1E8',
-            brand: Brand.find_or_create_by({name: 'STANLEY'}),
-            category: RandomRecord.for(Category),
-            tax_code: RandomRecord.for(TaxCode)
-        }
-    ]
-)
-
-
 50.times do
   Product.create!(
       name: Faker::Commerce.product_name,
@@ -1385,8 +1366,74 @@ Account.all.each do |account|
 end
 
 
+legitCompany = Company.create!([
+                    {
+                        name: "Bosch Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Deluxe Electrical Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "PV Lumens LLP",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Skyking Instruments",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Stanley Black and Decker India Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Valisons and Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Vitronics (India)",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+])
+
+
+
+
+
+
+
+
 Account.all.each do |account|
-  15.times do
+  3.times do
     contact = RandomRecord.for(Contact)
     company = RandomRecord.for(Company)
     products = RandomRecords.for(Product.all, 5)
@@ -1403,7 +1450,7 @@ Account.all.each do |account|
     end
 
     i.inquiry_products.each do |inquiry_product|
-      suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
+      suppliers = RandomRecords.for(legitCompany, [*1..3].sample)
       suppliers.each do |supplier|
         inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 1) * 397, 150).round(2))
       end
