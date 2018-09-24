@@ -11,7 +11,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :sr_no, to: :inquiry_product, allow_nil: true
 
   validates_presence_of :quantity
-  validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity
+  validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :greater_than => 0
   validates_uniqueness_of :sales_quote_row_id, scope: :sales_order_id
 
   after_initialize :set_defaults, :if => :new_record?

@@ -101,6 +101,12 @@
       <div class="col-6">
         <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
       </div>
+      <div class="col-6">
+        <%= f.input :is_supplier, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is Supplier?' %>
+      </div>
+      <div class="col-6">
+        <%= f.input :is_customer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is Customer?' %>
+      </div>
     </div>
 
     <div class="form-group">

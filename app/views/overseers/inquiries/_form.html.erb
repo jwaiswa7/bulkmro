@@ -4,7 +4,7 @@
   <%= render 'shared/snippets/form_errors', f: f %>
 
   <div class="card-body">
-    <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
+    <%= f.input :company, as: :string, disabled: true %>
 
     <div class="form-row">
       <div class="col-4">
@@ -17,10 +17,10 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a billing address" %>
+        <%= f.association :billing_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
       </div>
       <div class="col-6">
-        <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping address" %>
+        <%= f.association :shipping_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
       </div>
     </div>
 

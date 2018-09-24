@@ -5,4 +5,8 @@ class Overseers::SuppliersController < Overseers::BaseController
     authorize @suppliers
   end
 
+  def autocomplete
+    @suppliers = ApplyParams.to(Company.acts_as_supplier, params)
+    authorize @suppliers
+  end
 end

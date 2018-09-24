@@ -148,6 +148,13 @@ Overseer.create!(
 )
 
 
+
+10000.times do
+  Brand.create(name: Faker::Company.name)
+  Category.create(name: Faker::Commerce.department, tax_code: RandomRecord.for(TaxCode) )
+end
+
+
 devang = Overseer.create!(first_name: 'Devang', :last_name => 'Shah', role: :sales, :email => 'devang.shah@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123')
 lavanya = Overseer.create!(first_name: 'Lavanya', :last_name => 'Jamma', role: :sales, :email => 'lavanya.j@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: devang)
 Overseer.create!(first_name: 'Jeetendra', :last_name => 'Sharma', role: :sales, :email => 'jeetendra.sharma@bulkmro.com', :password => 'abc123', :password_confirmation => 'abc123', parent: lavanya)
@@ -159,11 +166,12 @@ PaymentOption.create!(name: 'Net 60')
 PaymentOption.create!(name: 'Net 90')
 
 ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
+=begin
 [
     'Reliance Retail',
     'Reliance Life Sciences',
     'Reliance Institute of Life Sciences (RILS)',
-=begin
+
     'Reliance Logistics',
     'Reliance Clinical Research Services (RCRS)',
     'Reliance Solar',
@@ -172,7 +180,7 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
     'Reliance Industrial Infrastructure Limited (RIIL)',
     'LYF',
     'Network 18'
-=end
+
 ].each do |name|
   ril.companies.create!(
       name: name,
@@ -181,8 +189,10 @@ ril = Account.create!(name: 'Reliance Industries Limited', alias: 'RIL')
       tax_identifier: Faker::Company.polish_taxpayer_identification_number,
       )
 end
+=end
 
 ge = Account.create!(name: 'General Electric', alias: 'GE')
+=begin
 [
     'CFM International',
     'Engine Alliance',
@@ -190,7 +200,7 @@ ge = Account.create!(name: 'General Electric', alias: 'GE')
     'GE Capital',
     'GE Capital Rail Services (Europe)',
     'GE Appliances',
-=begin
+
     'GE Digital',
     'GE Power',
     'GE Global Research',
@@ -206,7 +216,7 @@ ge = Account.create!(name: 'General Electric', alias: 'GE')
     'GE Technology Infrastructure',
     'Thomson-Houston Electric Company',
     'Tungsram'
-=end
+
 ].each do |name|
   ge.companies.create!(
       name: name,
@@ -215,12 +225,811 @@ ge = Account.create!(name: 'General Electric', alias: 'GE')
       tax_identifier: Faker::Company.polish_taxpayer_identification_number
   )
 end
+=end
+
+Company.create!([
+                    {
+                        name: "Lift Arts",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Bhavesh Fastners",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "J.D. Sales Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "P. M. Bhimani Orgochem Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Embassy Office Automation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Aim Safety",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Bagadia Industrial Fasteners",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Empire Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Ethos Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Evergreen Sales",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Ferreterro India Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Jupiter Traders",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Kohinoor Paints Mart",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Kudrati Power Tools and Hardware",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "MrDhruv Shah",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Pragati Hi-Tech Engineers",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Shreenathji Welding And Safety Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Valisons and Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Bombay Safety Care",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "3M India Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "S.P. Engineers",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Techsys Automation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Ringfeder Power Transmission",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Choudhary Enterprise",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Godrej and Boyce Mfg Co. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Archtech Automation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Mihir Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Watson-Marlow India Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Belimo Actuators India Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Arihant Enterprise",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Popatlal and Co",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Hridya Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Krishna Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Komal Scientific Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Al Technologies",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Samruddhi Industries",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Manlon Polymers",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Sundheshwari Steel Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Safex Systems",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Varay Image Runners",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Nandini Steel",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Innovative Technologies",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Modern Traders",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "J.K.Knitwear",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Rx Marine International",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Safelink Agencies LLP",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Akshat Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Unique Industrials",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Uptech Engineering",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Deluxe Electrical Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Impex Tools",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Powerflex Industries",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Core Safety Group",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Deluxe Industrial Gases",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Super Hydro Pneumatic",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "International Tools Syndicate",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Kale Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Novabond",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Rose Cleanwell",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Jacks Enterprise",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Kanti Electric and Hardware",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Swastik Auto Accessories Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Max Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Tej Engineering",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Novus Industrial Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Gokul Plast",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Khemanand Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Smith Engineering Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Kothari Engineering Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Synthoex",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Ramson Health Care",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Hitech Electronics",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Genesis Industrial Solutions",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Vardhman Distributors",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "NULL",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Shree Laxmi Trading",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Krishna Trading Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Madhuraj Industrial Gases Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Shree Parshwa Enterprise",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "OKI Bering Middle East FZE",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Penguin Engineers",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Yusuf Enterprises",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Devang Steels",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Zylok Valves and Engineering Industries",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Samrat Enterprise",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Central Electricals and Electronics Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Boon Distribution Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Hem Controls",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Stanley Black and Decker India Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "A Kumar and Co.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Badami Industrial Corporation",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Nexus Alloys And Steels Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "New Era Engineering",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Survival One Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Huckfinn Adventure Gear",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Acmas Technologies Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Arihant Manufacturing Co",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Royal Chemists",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+                    {
+                        name: "Arihant Vacuum Forming Pvt. Ltd.",
+                        default_payment_option: RandomRecord.for(PaymentOption),
+                        industry: RandomRecord.for(Industry),
+                        tax_identifier: Faker::Company.polish_taxpayer_identification_number,
+                        account: RandomRecord.for(Account)
+
+                    },
+
+                ])
 
 Account.all.each do |account|
   5.times do
     account.contacts.create!(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, :email => Faker::Internet.email, :password => 'abc123', :password_confirmation => 'abc123')
   end
 end
+
+Company.all.each do |c| c.save! end
 
 Company.all.each do |company|
   # Add company_contacts
@@ -241,11 +1050,11 @@ Company.all.each do |company|
         pincode: Faker::Address.zip_code
     )
   end
+
+  company.is_customer = [true,false].sample
+  company.is_supplier = [true,false].sample
 end
 
-10.times do
-  Brand.create!(name: Faker::Company.name)
-end
 
 Brand.all.each do |brand|
   suppliers = RandomRecords.for(Company, [*1..5].sample)
@@ -301,11 +1110,13 @@ cleaning.children.create([
                          ])
 
 RandomRecords.for(Category.all, 10).each do |category|
-  suppliers = RandomRecords.for(Company, [*2..5].sample)
+  suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*2..5].sample)
   suppliers.each do |supplier|
     category.category_suppliers.create!(supplier: supplier)
   end
 end
+
+
 
 Product.create!(
     [
@@ -431,14 +1242,14 @@ end
 
 
 Product.all.each do |product|
-  suppliers = RandomRecords.for(Company, [*1..3].sample)
+  suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
   suppliers.each do |supplier|
     product.product_suppliers.create!(supplier: supplier)
   end
 end
 
 Product.all.each do |product|
-  suppliers = RandomRecords.for(Company, [*1..3].sample)
+  suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
   # suppliers.each do |supplier|
   #   product.product_suppliers.create!(supplier: supplier)
   # end
@@ -479,9 +1290,9 @@ Account.all.each do |account|
     end
 
     i.inquiry_products.each do |inquiry_product|
-      suppliers = RandomRecords.for(Company, [*1..3].sample)
+      suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
       suppliers.each do |supplier|
-        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Commerce.price(10000))
+        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 1) * 397,((inquiry_product.product.id % 10) + 1) * 80).round(2))
       end
 
     end
@@ -493,7 +1304,7 @@ end
 
 
 Account.all.each do |account|
-  5.times do
+  15.times do
     contact = RandomRecord.for(Contact)
     company = RandomRecord.for(Company)
     products = RandomRecords.for(Product.all, 5)
@@ -510,16 +1321,13 @@ Account.all.each do |account|
     end
 
     i.inquiry_products.each do |inquiry_product|
-      suppliers = RandomRecords.for(Company, [*1..3].sample)
+      suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
       suppliers.each do |supplier|
-        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Commerce.price(5000))
+        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 1) * 397,150).round(2))
       end
 
     end
-
     i.save
-
-    puts(i)
   end
 end
 
@@ -533,6 +1341,3 @@ end
 # Product.all.each do |p| p.destroy; end
 # InquiryImport.all.each do |i| i.destroy; end
 #
-
-
-

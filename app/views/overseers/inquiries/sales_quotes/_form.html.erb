@@ -47,7 +47,9 @@
               <%= row.hidden_field :sales_quote_id %>
               <%= row.hidden_field :id %>
 
-              <% if f.object.rows.first == row.index %><hr><% end %>
+              <% if f.object.rows.first == row.index %>
+                <hr>
+              <% end %>
               <div class="form-row simple-row" data-index="<%= row.index %>">
                 <div class="col-12">
                   <h6 class="text-uppercase">
@@ -58,7 +60,8 @@
                 <div class="col-md-1">
                   <div class="custom-control custom-radio custom-control-inline align-self-center">
                     <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, row.object.persisted? || rows[-1] == row.object, "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
-                    <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %><% end %>
+                    <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
+                    <% end %>
                   </div>
                 </div>
                 <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
@@ -71,14 +74,12 @@
                 <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
                 <div class="col-md-2"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
                 <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
-
-                <div class="col-md-2"><%= row.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
                 <%= row.hidden_field :tax_percentage, "data-bind": "" %>
                 <div class="col-md-2"><%= row.input :total_selling_price, input_html: {:min => 0, "data-bind": ""}, disabled: true %></div>
                 <div class="col-md-2"><%= row.input :total_selling_price_with_tax, label: 'TSP w/ Tax', input_html: {:min => 0, "data-bind": ""}, disabled: true %></div>
                 <div class="col-md-2"><%= row.association :lead_time_option %></div>
                 <div class="col-md-2">
-
                 </div>
               </div>
             <% end %>
