@@ -15,6 +15,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def new_revision
     @old_sales_quote = @inquiry.sales_quotes.find(params[:id])
     @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
+
     authorize @old_sales_quote
     render 'new'
   end
@@ -83,7 +84,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :sales_quote_id,
             :tax_code_id,
             :inquiry_product_supplier_id,
-            :inquiry_product_id,
+            # :inquiry_product_id,
             :lead_time_option_id,
             :quantity,
             :freight_cost_subtotal,
