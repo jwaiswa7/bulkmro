@@ -4,8 +4,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit
 
   def initialize
-    @limit = 15
-
     perform_migration(:overseers)
     perform_migration(:measurement_unit)
     perform_migration(:lead_time_option)
@@ -13,10 +11,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     perform_migration(:states)
     perform_migration(:payment_options)
     perform_migration(:industries)
-    perform_migration(:accounts)
+    perform_migration(:accounts_acting_as_customers)
     perform_migration(:contacts)
-    perform_migration(:companies)
+    perform_migration(:companies_acting_as_customers)
+    perform_migration(:company_contacts)
     perform_migration(:addresses)
+    perform_migration(:accounts_acting_as_suppliers)
+    perform_migration(:companies_acting_as_suppliers)
+    perform_migration(:supplier_contacts)
+    perform_migration(:supplier_addresses)
     perform_migration(:brands)
     perform_migration(:tax_codes)
     perform_migration(:categories)
@@ -157,7 +160,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         group_code = x.get_column('group_code')
         PaymentOption.where(name: x.get_column('value')).first_or_create do |payment_option|
           payment_option.assign_attributes(
-              remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code
+              remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code,
+              legacy_id: x.get_column('id')
           )
         end
       end
@@ -170,12 +174,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       i = Industry.create!(
           remote_uid: x.get_column('industry_sap_id'),
           name: x.get_column('industry_name'),
-          description: x.get_column('industry_description')
+          description: x.get_column('industry_description'),
+          legacy_id: x.get_column('idindustry')
       )
     end
   end
 
-  def accounts
+  def accounts_acting_as_customers
     Account.create!(remote_uid: 99999999, name: "Fake Account", alias: "FA")
     service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
 
@@ -219,7 +224,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               status: is_active[x.get_column('is_active').to_i],
               contact_group: contact_group[x.get_column('group')],
               password: 'abc123',
-              password_confirmation: 'abc123'
+              password_confirmation: 'abc123',
+              legacy_id: x.get_column('entity_id')
           )
         end
       rescue ActiveRecord::RecordInvalid => e
@@ -228,7 +234,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def companies
+  def companies_acting_as_customers
     fake_account = Account.find_by_name("Fake Account")
     service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
     service.loop(limit) do |x|
@@ -271,10 +277,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             credit_limit: x.get_column('creditlimit').present? && x.get_column('creditlimit').to_i > 0 ? x.get_column('creditlimit') : 1,
             is_msme: is_msme[x.get_column('msme')],
             is_unregistered_dealer: urd[x.get_column('urd')],
-            tax_identifier: x.get_column('cmp_gst')
+            tax_identifier: x.get_column('cmp_gst'),
+            is_customer: true,
+            attachment_uid: x.get_column('attachment_entry'),
+            legacy_id: x.get_column('cmp_id')
         )
 
-        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('default_contact')))) if x.get_column('default_contact').present?
+        company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email')))) if x.get_column('email').present?
+      end
+    end
+  end
+
+  def company_contacts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
+    service.loop(service.rows_count) do |x|
+      if x.get_column('email').present? && x.get_column('cmp_name').present?
+        company_name = x.get_column('cmp_name')
+        CompanyContact.create(
+            company: Company.find_by_name(company_name),
+            contact: Contact.find_by_email(x.get_column('email').strip.downcase)
+        )
       end
     end
   end
@@ -304,6 +326,149 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             telephone: x.get_column('telephone'),
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type')],
+            legacy_id: x.get_column('idcompany_gstinfo')
+        )
+
+        address.assign_attributes(
+            billing_address_uid: x.get_column('sap_row_num').split(',')[0],
+            shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
+        ) if x.get_column('sap_row_num').present?
+
+        address.save!
+      end
+    end
+  end
+
+  def accounts_acting_as_suppliers
+    Account.create!(
+        remote_uid: 101,
+        name: "Trade",
+        alias: "TRD"
+    )
+
+    Account.create!(
+        remote_uid: 102,
+        name: "Non-Trade",
+        alias: "NTRD"
+    )
+  end
+
+  def companies_acting_as_suppliers
+    supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv')
+    supplier_service.loop(supplier_service.rows_count) do |x|
+      if x.get_column('alias_id')
+        account = Account.find_by_remote_uid(102) #Non-Trade
+      else
+        account = Account.find_by_remote_uid(101) #Trade
+      end
+
+      return if account.blank?
+
+      company_type = {"Proprietorship" => 10, "Private Limited" => 20, "Contractor" => 30, "Trust" => 40, "Public Limited" => 50, "dealer_company" => 50, "distributor" => 60, "trader" => 70, "manufacturer_company" => 80, "wholesaler_stockist" => 90, "serviceprovider" => 100, "employee" => 110}
+
+      is_msme = {"N" => false, "Y" => true}
+      urd = {"N" => false, "Y" => true}
+
+      Company.where(name: x.get_column('sup_name')).first_or_create do |company|
+
+        inside_email = Overseer.find_by_email(x.get_column('sup_sales_person'))
+        outside_email = Overseer.find_by_email(x.get_column('sup_sales_outside'))
+        manager_email = Overseer.find_by_email(x.get_column('sup_sales_manager'))
+        payment_option = PaymentOption.find_by_name(x.get_column('payment_terms'))
+        #industry = Industry.find_by_name(x.get_column('cmp_industry'))
+        company.assign_attributes(
+            account: account,
+            remote_uid: x.get_column('sup_code'),
+            default_payment_option_id: payment_option.present? ? payment_option.id : nil,
+            inside_sales_owner_id: inside_email.present? ? inside_email.id : nil,
+            outside_sales_owner_id: outside_email.present? ? outside_email.id : nil,
+            sales_manager_id: manager_email.present? ? manager_email.id : nil,
+            site: x.get_column('cmp_website'),
+            company_type: company_type[x.get_column('sup_type')],
+            credit_limit: x.get_column('creditlimit').present? && x.get_column('creditlimit').to_i > 0 ? x.get_column('creditlimit') : 1,
+            is_msme: is_msme[x.get_column('msme')],
+            is_unregistered_dealer: urd[x.get_column('urd')],
+            tax_identifier: x.get_column('cmp_gst'),
+            is_supplier: true,
+            legacy_id: x.get_column('sup_id'),
+        #phone: x.get_column('sup_tel'),
+        #mobile: x.get_column('sup_mob'),
+        #remote_attachment_id: x.get_column('attachment_entry')
+        # default_billing_address_id: company.account.addresses.find_by_id(x.get_column('default_billing')),
+        # default_shipping_address_id: company.account.addresses.find_by_id(x.get_column('default_shipping')),
+        #industry: industry.present? ? industry : nil
+        #priority: priority[x.get_column('is_strategic').to_i],
+        #nature_of_business: nature_of_business[x.get_column('nature_of_business')]
+        )
+      end
+    end
+  end
+
+  def supplier_contacts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv')
+
+    service.loop(service.rows_count) do |x|
+      if x.get_column('alias_id')
+        account = Account.find_by_remote_uid("102") #Non-Trade
+      else
+        account = Account.find_by_remote_uid("101") #Trade
+      end
+
+      begin
+
+        if x.get_column('pc_email').present?
+          Contact.where(email: x.get_column('pc_email').strip.downcase).first_or_create do |contact|
+            contact.assign_attributes(
+                account: account,
+                remote_uid: (x.get_column('sap_id') == "NULL" ? nil : x.get_column('sap_id')),
+                first_name: x.get_column('pc_firstname') || 'fname',
+                last_name: x.get_column('pc_lastname') || 'lname',
+                prefix: x.get_column('prefix'),
+                designation: x.get_column('pc_function'),
+                telephone: x.get_column('pc_phone'),
+                mobile: x.get_column('pc_mobile'),
+                #role: x.get_column('account'),
+                status: 10,
+                #contact_group: contact_group[x.get_column('group')],
+                password: 'abc123',
+                password_confirmation: 'abc123',
+                legacy_id: x.get_column('pc_num')
+            )
+          end
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        puts "#{x.get_column('email')} skipped"
+      end
+    end
+  end
+
+  def supplier_addresses
+    supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv')
+    gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
+
+    supplier_address_service.loop(supplier_address_service.rows_count) do |x|
+      company = Company.find_by_name(x.get_column('cmp_name'))
+
+      if company.present?
+        address = Address.new(
+            company: company,
+            name: company.name,
+            gst: x.get_column('gst_num'),
+            country_code: x.get_column('country'),
+            state: AddressState.find_by_name(x.get_column('state_name')),
+            state_name: x.get_column('country') != "IN" ? x.get_column('state_name') : nil,
+            city_name: x.get_column('city'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('address'),
+            #street2:x.get_column('gst_num'),
+            cst: x.get_column('cst_num'),
+            vat: x.get_column('vat_num'),
+            tan: x.get_column('tan_num'),
+            #excise:x.get_column('gst_num'),
+            telephone: x.get_column('telephone'),
+            #mobile:x.get_column('gst_num'),
+            gst_type: gst_type[x.get_column('gst_type')],
+            legacy_id: x.get_column('address_id')
         )
 
         address.assign_attributes(
@@ -356,7 +521,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_code_id: (tax_code.present? ? tax_code.id : TaxCode.default.id),
             parent_id: (parent.present? ? parent.id : nil),
             name: x.get_column('name'),
-            description: x.get_column('description')
+            description: x.get_column('description'),
+            legacy_id: x.get_column('id')
         )
       end
     end
@@ -375,7 +541,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           description: x.get_column('description'),
           meta_description: x.get_column('meta_description'),
           meta_keyword: x.get_column('meta_keyword'),
-          meta_title: x.get_column('meta_title')
+          meta_title: x.get_column('meta_title'),
+          legacy_id: x.get_column('entity_id')
       )
 
       overseer = Overseer.find_by_email('ashwin.goyal@bulkmro.com')

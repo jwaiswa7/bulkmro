@@ -533,6 +533,3 @@ end
 # Product.all.each do |p| p.destroy; end
 # InquiryImport.all.each do |i| i.destroy; end
 #
-
-
-
