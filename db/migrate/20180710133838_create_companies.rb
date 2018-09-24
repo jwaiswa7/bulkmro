@@ -28,7 +28,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.boolean :is_msme, default: false
       t.boolean :is_unregistered_dealer, default: false
       t.boolean :is_supplier, default: false
-      t.boolean :is_customer, default: false
+      t.boolean :is_customer, default: true
 
       t.string :tax_identifier, index: {unique: true}
 

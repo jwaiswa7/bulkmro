@@ -35,4 +35,13 @@ module FormHelper
 		end
 	end
 
+  def selected_option_or_nil(form_object, attribute_name)
+		attribute = form_object.object.send(attribute_name)
+
+		if attribute.present?
+			[attribute]
+		else
+			[]
+		end
+	end
 end
