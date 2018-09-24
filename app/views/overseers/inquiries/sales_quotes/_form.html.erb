@@ -53,7 +53,7 @@
 
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
               <%= row.hidden_field :inquiry_product_id %>
-              <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
+
               <%= row.hidden_field :sales_quote_id %>
               <%= row.hidden_field :id %>
 
@@ -61,6 +61,7 @@
                 <hr class="my-3">
               <% end %>
               <div class="form-row simple-row" data-index="<%= row.index %>">
+                <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
                 <div class="col-12">
                   <div class="d-flex flex-row">
                     <div class="custom-control custom-radio align-self-center mr-2">
@@ -77,19 +78,19 @@
                             <div class="col-12 d-flex flex-row">
                               <div class="mr-4">
                                 <strong>Unit Cost</strong><br>
-                                <%= row.object.unit_cost_price %>
+                                <span data-bind-html="unit_cost_price"><%= row.object.unit_cost_price %></span>
                               </div>
                               <div class="mr-4">
                                 <strong>Unit Cost with Freight</strong><br>
-                                <span data-v-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
                               </div>
                               <div class="mr-4">
                                 <strong>Total Selling Price</strong><br>
-                                <span data-v-html="total_selling_price"><%= row.object.total_selling_price %></span>
+                                <span data-bind-html="total_selling_price"><%= row.object.total_selling_price %></span>
                               </div>
                               <div class="mr-4">
                                 <strong>Total Selling Price with Tax</strong><br>
-                                <span data-v-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
+                                <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
                               </div>
                             </div>
                           </div>
@@ -105,6 +106,10 @@
                           <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
 
                           <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <%= row.hidden_field :unit_cost_price, "data-bind": "" %>
+                          <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "" %>
+                          <%= row.hidden_field :total_selling_price, "data-bind": "" %>
+                          <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "" %>
                           <%= row.hidden_field :tax_percentage, "data-bind": "" %>
                           <div class="col-md-2"><%= row.association :lead_time_option %></div>
                         </div>
