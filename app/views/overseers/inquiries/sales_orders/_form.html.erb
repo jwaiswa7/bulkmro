@@ -41,6 +41,7 @@
       <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
         <%= row.hidden_field :sales_order_id %>
         <%= row.hidden_field :id %>
+        <%= row.hidden_field :sales_quote_row_id %>
 
         <div class="card mt-3 option-wrapper">
           <div class="card-body">
@@ -124,7 +125,7 @@
               <% end %>
             </div>
             <div class="col-6">
-              <%= button_tag(type: "submit", name: "save_and_send", class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: "save_and_confirm", class: "btn btn-success btn-block") do %>
                 <i class="fal fa-paper-plane mr-1"></i> Save and Confirm
               <% end %>
             </div>
