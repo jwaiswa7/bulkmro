@@ -6,7 +6,6 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
 
   def call
     excel_import.rows.each_with_index do |row, index|
-
       if row.failed?
         row.build_inquiry_product(
           inquiry: inquiry,
