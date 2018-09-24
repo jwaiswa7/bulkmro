@@ -10,7 +10,7 @@ class SalesQuoteMailer < ApplicationMailer
     subject = "Quote Request #" + @quote.id.to_s + " : {{var caption}}"
     # file = Rails.root + "app/assets/images/26159_Calc_Sheet.pdf"
     # attachments['salequote.jpg'] = File.open(file, 'rb'){|f| f.read}
-    filename = 'salequote.jpg' + @quote.id.to_s
+    filename = 'salequote_' + @quote.id.to_s + '.jpg'
     file = open('https://bulkmro.com/skin/frontend/base/default/images/Beta-logo.png').read
     attachments[filename] = file
     mail subject: subject
