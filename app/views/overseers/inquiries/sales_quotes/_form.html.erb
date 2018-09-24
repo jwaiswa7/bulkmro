@@ -5,22 +5,36 @@
       <%= f.hidden_field :parent_id %>
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <div class="card">
-        <div class="card-header">
-          <div class="form-row">
-            <div class="col-md-3">
-              <%= f.input :calculated_total, disabled: true, input_html: {"data-v-model": ""}, label: 'Total Selling Price (Excl. tax)' %>
-            </div>
-            <div class="col-md-3">
-              <%= f.input :calculated_total_tax, disabled: true, input_html: {"data-v-model": ""}, label: 'Total Tax' %>
 
-            </div>
-            <div class="col-md-3">
-              <%= f.input :calculated_total_with_tax, disabled: true, input_html: {"data-v-model": ""}, label: 'Total Selling Price (Incl. tax)' %>
-            </div>
-            <div class="col-md-3">
-              <%= f.input :calculated_total_margin, disabled: true, input_html: {"data-v-model": ""}, label: 'Total Margin' %>
-            </div>
+      <% if f.object.errors.any? %>
+        <ul class="list-group text-danger mb-3">
+          <% f.object.errors.full_messages.each do |message| %>
+            <li class="list-group-item"><%= message %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <div class="card">
+        <div class="card-header d-flex flex-row">
+          <div class="flex-fill">
+            <strong>Total Selling Price (Excl. tax)</strong><br>
+            <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
+          </div>
+          <div class="flex-fill">
+            <strong>Total Selling Price (Incl. tax)</strong><br>
+            <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
+          </div>
+          <div class="flex-fill">
+            <strong>Total Tax</strong><br>
+            <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
+          </div>
+          <div class="flex-fill">
+            <strong>Total Margin</strong><br>
+            <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
+          </div>
+          <div class="flex-fill">
+            <strong>Total Freight Cost</strong><br>
+            <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
           </div>
         </div>
 
@@ -40,64 +54,92 @@
 
       <% f.object.rows.group_by(&:inquiry_product).each do |inquiry_product, rows| %>
         <div class="card mt-3">
-          <div class="card-body">
+          <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
+            <h6 class="text-uppercase">
+              <strong><%= inquiry_product.product.name %></strong>
+              <p class="lead text-black-50 text-small d-block mt-1">Serial number <%= inquiry_product.sr_no %></p>
+            </h6>
+
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
               <%= row.hidden_field :inquiry_product_id %>
-              <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
               <%= row.hidden_field :sales_quote_id %>
               <%= row.hidden_field :id %>
 
-              <% if f.object.rows.first == row.index %>
-                <hr>
+              <% if f.object.rows.first != row.object.product %>
+                <hr class="my-3">
               <% end %>
               <div class="form-row simple-row" data-index="<%= row.index %>">
+                <%= row.hidden_field :inquiry_product_supplier_id, "data-bind": "" %>
                 <div class="col-12">
-                  <h6 class="text-uppercase">
-                    <strong><%= inquiry_product.product.name %></strong>
-                  </h6>
-                </div>
+                  <div class="d-flex flex-row">
+                    <div class="custom-control custom-radio align-self-center mr-2">
+                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, row.object.persisted? || rows[-1] == row.object, "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
+                      <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %><% end %>
+                    </div>
+                    <div>
+                      <div class="" data-toggle="collapse" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
+                        <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
+                          <h5 class="text-black-50 mb-1 text-uppercase">
+                            <%= row.object.inquiry_product_supplier %>
+                          </h5>
+                          <div class="row">
+                            <div class="col-12 d-flex flex-row">
+                              <div class="mr-4">
+                                <strong>Unit Cost</strong><br>
+                                <span data-bind-html="unit_cost_price"><%= row.object.unit_cost_price %></span>
+                              </div>
+                              <div class="mr-4">
+                                <strong>Unit Cost with Freight</strong><br>
+                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                              </div>
+                              <div class="mr-4">
+                                <strong>Total Selling Price</strong><br>
+                                <span data-bind-html="total_selling_price"><%= row.object.total_selling_price %></span>
+                              </div>
+                              <div class="mr-4">
+                                <strong>Total Selling Price with Tax</strong><br>
+                                <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
+                              </div>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= row.object.persisted? || rows[-1] == row.object ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
+                        <div class="row">
+                          <div class="col-md-2"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total FR' %></div>
+                          <div class="col-md-2"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
+                          <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
 
-                <div class="col-md-1">
-                  <div class="custom-control custom-radio custom-control-inline align-self-center">
-                    <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, row.object.persisted? || rows[-1] == row.object, "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
-                    <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
-                    <% end %>
+                          <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
+                          <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
+                          <div class="col-md-2"><%= row.association :lead_time_option %></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-1"><%= row.input :sr_no, disabled: true %></div>
-                <div class="col-md-2"><%= row.input :inquiry_product_supplier, as: :string, disabled: true, label: 'Supplier' %></div>
-                <div class="col-md-2"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
-                <div class="col-md-2"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total FR' %></div>
-                <div class="col-md-2"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
-                <div class="col-md-2"><%= row.input :unit_cost_price, input_html: {"data-bind": ""}, label: 'UCP', disabled: true %></div>
-                <div class="col-md-2"><%= row.input :unit_cost_price_with_unit_freight_cost, input_html: {"data-bind": ""}, label: 'UCP w/ F', disabled: true %></div>
-                <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
-                <div class="col-md-2"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
-                <div class="col-md-2"><%= row.input :converted_unit_selling_price, disabled: true, label: '$USP', input_html: {:min => 0, "data-bind": ""} %></div>
-                <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
-                <%= row.hidden_field :tax_percentage, "data-bind": "" %>
-                <div class="col-md-2"><%= row.input :total_selling_price, input_html: {:min => 0, "data-bind": ""}, disabled: true %></div>
-                <div class="col-md-2"><%= row.input :total_selling_price_with_tax, label: 'TSP w/ Tax', input_html: {:min => 0, "data-bind": ""}, disabled: true %></div>
-                <div class="col-md-2"><%= row.association :lead_time_option %></div>
-                <div class="col-md-2">
                 </div>
               </div>
             <% end %>
           </div>
         </div>
       <% end %>
-      <div class="row">
-        <div class="col-md-12"><%= f.input :calculated_freight_cost_total, disabled: true, input_html: {"data-v-model": ""} %></div>
-      </div>
-      <div class="card-footer">
+
+      <div class="card-footer mt-3">
         <div class="form-row">
           <div class="col-6">
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+            <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
               <i class="fal fa-pen mr-1"></i> Save as Draft
             <% end %>
           </div>
           <div class="col-6">
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <%= button_tag(type: "submit", name: "save and send", class: "btn btn-success btn-block") do %>
               <i class="fal fa-paper-plane mr-1"></i> Save and Send
             <% end %>
           </div>
