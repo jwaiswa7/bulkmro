@@ -2,8 +2,8 @@ require 'wit'
 require_relative './config/boot'
 require_relative './config/environment'
 
-client = Wit.new(access_token: Settings.wit.auth_token)
-client.interactive
+# client = Wit.new(access_token: Settings.wit.auth_token)
+# client.interactive
 
 def first_entity_value(entities, entity)
   return nil unless entities.has_key? entity
@@ -21,7 +21,7 @@ def handle_message(response)
 
   case
   when intent
-    return data(entity, intent, number)
+    return data(intent, entity, number)
   when greetings
     return "Hi! Try something like 'What's the status of order 29313?'"
   else
@@ -30,7 +30,7 @@ def handle_message(response)
 end
 
 def data(intent, entity, variable)
-  return "You want to '#{intent}' for '#{variable}'? " + Inquiry.find(variable).to_s + "!"
+  return "You want to look up the '#{intent}' for '#{entity}' with '#{variable}'? "
 end
 
 client = Wit.new(access_token: Settings.wit.auth_token)
