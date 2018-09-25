@@ -10,7 +10,7 @@ class Resources::Quotation < Resources::ApplicationResource
 
     record.rows.each_with_index do |row,index|
       item = OpenStruct.new
-      item.DiscountPercent = 5
+      item.DiscountPercent = 0
       item.ItemCode = row.product.sku
       item.ItemDescription = row.product.name # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
@@ -72,13 +72,14 @@ Example Product
 
     {
         U_MgntDocID: record.id, # Quote ID
-        CardCode: 3 ,#record.inquiry.contact.id,  #Customer ID
+        CardCode: record.inquiry.contact.remote_uid ,#Customer ID
         DocDate: record.created_date, #Quote Create Date
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: 8,   #record.inside_sales_owner, # Inside Sales Owner
-        NumAtCard: "test SAP",  #Comment on Quote?
+        NumAtCard: "",  #Comment on Quote?
         DocCurrency: "INR",
+        "DocEntry": record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
         ImportEnt: 3232,
         U_RevNo: "R1", #Quotation Revision ID
@@ -87,7 +88,6 @@ Example Product
         DocumentLines: items,  #Products
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
-        ShipToCode: 1458,
         U_ConsigneeAddr: 1458,
         U_TermCondition: record.inquiry.commercial_terms_and_conditions, # record.inquiry.commercial_terms,  # Commercial terms and conditions
         U_TrmDeli: record.inquiry.price_type,  # record.inquiry.delivery_terms , # Delivery Terms
