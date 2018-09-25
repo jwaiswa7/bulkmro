@@ -2,7 +2,7 @@ class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
   def autocomplete
-    @brands = ApplyParams.to(Brand.all, params)
+    @brands = ApplyParams.to(Brand.all, params).order(:name)
     authorize @brands
   end
 

@@ -11,14 +11,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     perform_migration(:states)
     perform_migration(:payment_options)
     perform_migration(:industries)
-    perform_migration(:accounts)
+    perform_migration(:accounts_acting_as_customers)
     perform_migration(:contacts)
-    perform_migration(:companies)
-    perform_migration(:company_contact_mapping)
+    perform_migration(:companies_acting_as_customers)
+    perform_migration(:company_contacts)
     perform_migration(:addresses)
-    perform_migration(:supplier_account)
-    perform_migration(:supplier)
-    perform_migration(:supplier_contact)
+    perform_migration(:accounts_acting_as_suppliers)
+    perform_migration(:companies_acting_as_suppliers)
+    perform_migration(:supplier_contacts)
     perform_migration(:supplier_addresses)
     perform_migration(:brands)
     perform_migration(:tax_codes)
@@ -180,7 +180,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def accounts
+  def accounts_acting_as_customers
     Account.create!(remote_uid: 99999999, name: "Fake Account", alias: "FA")
     service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
 
@@ -234,7 +234,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def companies
+  def companies_acting_as_customers
     fake_account = Account.find_by_name("Fake Account")
     service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
     service.loop(limit) do |x|
@@ -279,7 +279,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             is_unregistered_dealer: urd[x.get_column('urd')],
             tax_identifier: x.get_column('cmp_gst'),
             is_customer: true,
-            remote_attachment_id: x.get_column('attachment_entry'),
+            attachment_uid: x.get_column('attachment_entry'),
             legacy_id: x.get_column('cmp_id')
         )
 
@@ -288,7 +288,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def company_contact_mapping
+  def company_contacts
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
     service.loop(service.rows_count) do |x|
       if x.get_column('email').present? && x.get_column('cmp_name').present?
@@ -339,22 +339,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def supplier_account
+  def accounts_acting_as_suppliers
     Account.create!(
         remote_uid: 101,
-        name:"Trade",
+        name: "Trade",
         alias: "TRD"
     )
 
     Account.create!(
         remote_uid: 102,
-        name:"Non-Trade",
+        name: "Non-Trade",
         alias: "NTRD"
     )
   end
 
-  def supplier
-
+  def companies_acting_as_suppliers
     supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv')
     supplier_service.loop(supplier_service.rows_count) do |x|
       if x.get_column('alias_id')
@@ -365,7 +364,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       return if account.blank?
 
-      company_type = {"Proprietorship" => 10, "Private Limited" => 20, "Contractor" => 30, "Trust" => 40, "Public Limited" => 50,"dealer_company" =>  50,"distributor" =>  60,"trader" =>  70,"manufacturer_company" =>  80,"wholesaler_stockist" =>  90,"serviceprovider" =>  100,"employee" =>  110}
+      company_type = {"Proprietorship" => 10, "Private Limited" => 20, "Contractor" => 30, "Trust" => 40, "Public Limited" => 50, "dealer_company" => 50, "distributor" => 60, "trader" => 70, "manufacturer_company" => 80, "wholesaler_stockist" => 90, "serviceprovider" => 100, "employee" => 110}
 
       is_msme = {"N" => false, "Y" => true}
       urd = {"N" => false, "Y" => true}
@@ -400,13 +399,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         #industry: industry.present? ? industry : nil
         #priority: priority[x.get_column('is_strategic').to_i],
         #nature_of_business: nature_of_business[x.get_column('nature_of_business')]
-            )
+        )
       end
     end
   end
 
-  def supplier_contact
-
+  def supplier_contacts
     service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv')
 
     service.loop(service.rows_count) do |x|
@@ -448,7 +446,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv')
     gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
 
-    supplier_address_service .loop(supplier_address_service.rows_count) do |x|
+    supplier_address_service.loop(supplier_address_service.rows_count) do |x|
       company = Company.find_by_name(x.get_column('cmp_name'))
 
       if company.present?
@@ -471,12 +469,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type')],
             legacy_id: x.get_column('address_id')
-            )
+        )
 
         address.assign_attributes(
             billing_address_uid: x.get_column('sap_row_num').split(',')[0],
             shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-            ) if x.get_column('sap_row_num').present?
+        ) if x.get_column('sap_row_num').present?
 
         address.save!
       end

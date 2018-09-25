@@ -5,14 +5,14 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.references :category, foreign_key: true
       t.references :tax_code, foreign_key: true
       t.references :measurement_unit, foreign_key: true
+      t.integer :legacy_id, index: true
 
       t.integer :product_type, index: true
-      t.integer :legacy_id, index:true, required: true
-
       t.boolean :is_verified, default: false
 
       t.string :name
-      t.string :sku, index: { unique: true }
+      t.string :sku, index: {unique: true}
+
       t.string :description
       t.string :meta_description
       t.string :meta_keyword
