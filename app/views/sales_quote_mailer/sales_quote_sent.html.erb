@@ -1,7 +1,7 @@
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td class="action-content">
-      <p>Dear <%= @customer.first_name %>,</p>
+      <p>Dear <%= @recipient.first_name %>,</p>
       <p>Greetings from Bulk MRO!!!<br/></p>
       <p>Please find attached our Quotation # <%= @quote.id %>> for your consideration. </p>
       <p>Tired of emails? Just access all your quotes online <a href="https://www.bulkmro.com/" target="_blank">here</a>
@@ -14,6 +14,6 @@
       <p>Have a nice day!</p>
       <br/>
       <p>Regards,</p>
-      <p> <%= params[:overseer][:name] %> </p>
+      <p> <%= @sender.first_name %> </p>
   </tr>
 </table>

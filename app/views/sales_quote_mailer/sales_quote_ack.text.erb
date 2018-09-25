@@ -1,4 +1,4 @@
-Dear, <%= @customer.first_name %>
+Dear, <%= @recipient.first_name %>
 ===============================================
 
 Thank you for your inquiry.
@@ -19,4 +19,4 @@ Have a nice day!
 
 
 Regards,
-<%= params[:overseer][:name] %>
+<%= @sender.first_name %>

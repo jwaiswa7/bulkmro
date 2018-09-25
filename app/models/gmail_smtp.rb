@@ -1,0 +1,2 @@
+class GmailSmtp < ApplicationRecord
+end

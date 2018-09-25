@@ -72,6 +72,14 @@ service.loop(500) do |x|
   end
 end
 
+service = Services::Shared::Spreadsheets::CsvImporter.new('smtp-conf.csv')
+service.loop(200) do |x|
+  GmailSmtp.create!(
+      email: x.get_column('email'),
+      password: x.get_column('password')
+  )
+end
+
 LeadTimeOption.create!([
                            {name: "2-3 DAYS", min_days: 2, max_days: 3},
                            {name: "1 WEEK", min_days: 7, max_days: 7},
