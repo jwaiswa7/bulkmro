@@ -57,7 +57,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             employee_uid: x.get_column('employee_id'),
             # center_code_uid: x.get_column('center_code'),
             password: 'abc123',
-            password_confirmation: 'abc123'
+            password_confirmation: 'abc123',
+            legacy_id: x.get_column('user_id')
         )
       end
     end
