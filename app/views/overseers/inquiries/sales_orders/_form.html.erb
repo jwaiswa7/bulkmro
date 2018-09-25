@@ -39,6 +39,10 @@
       </div>
 
       <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
+        <%= row.hidden_field :sales_order_id %>
+        <%= row.hidden_field :id %>
+        <%= row.hidden_field :sales_quote_row_id %>
+
         <div class="card mt-3 option-wrapper">
           <div class="card-body">
             <h5 class="mb-1"></h5>
@@ -51,36 +55,83 @@
               <%= row.object.sales_quote_row.product.name %>
             </h6>
 
-            <div class="row">
-              <%= row.hidden_field :sales_order_id %>
-              <%= row.hidden_field :id %>
-              <div class="col-md-1"><%= row.input :quantity %></div>
-              <div class="col-md-2"><%= row.input :unit_cost_price_with_unit_freight_cost, label: 'Unit Cost Price', disabled: true %></div>
-              <div class="col-md-2"><%= row.input :margin_percentage, label: 'Margin %', disabled: true %></div>
-              <div class="col-md-1"><%= row.input :unit_selling_price, label: 'USP', disabled: true %></div>
-              <div class="col-md-1"><%= row.input :converted_unit_selling_price, label: 'CUSP', disabled: true %></div>
-
-              <div class="col-md-2"><%= row.input :tax_code, disabled: true %>
+            <div class="form-row my-2">
+              <div class="col-md-3">
+                <strong>Unit Selling Price</strong><br>
+                <span><%= row.object.unit_selling_price %></span>
               </div>
-              <div class="col-md-2"><%= row.input :total_selling_price, input_html: {:min => 0}, disabled: true %></div>
-              <div class="col-md-3"><%= row.input :total_selling_price_with_tax, input_html: {:min => 0}, disabled: true %></div>
-
-              <div class="col-md-1">
-                <%= row.label :remove %>
-                <div class="form-control">
-                  <%= link_to_remove_association row, {class: 'dynamic btn btn-danger', wrapper_class: 'option-wrapper'} do %>
-                    Remove
-                  <% end %>
-                </div>
+              <div class="col-md-3">
+                <strong>Unit Selling Price (in $)</strong><br>
+                <span><%= row.object.converted_unit_selling_price %></span>
               </div>
+              <div class="col-md-3">
+                <strong>Unit Cost with Freight</strong><br>
+                <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+              </div>
+              <div class="col-md-3">
+                <strong>Total Selling Price</strong><br>
+                <span><%= row.object.total_selling_price %></span>
+              </div>
+            </div>
+            <div class="form-row my-2">
+              <div class="col-md-3">
+                <strong>Total Selling Price with Tax</strong><br>
+                <span><%= row.object.total_selling_price_with_tax %></span>
+              </div>
+              <div class="col-md-3">
+                <strong>Margin Percentage</strong><br>
+                <span><%= row.object.margin_percentage %></span>
+              </div>
+              <div class="col-md-3">
+                <strong>Tax Code</strong><br>
+                <span><%= row.object.tax_code %></span>
+              </div>
+            </div>
+            <div class="d-flex flex-row justify-content-between">
+              <%= row.input :quantity %>
+              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper'} do %>
+                Remove
+              <% end %>
             </div>
           </div>
         </div>
       <% end %>
 
-      <hr/>
-      <%= f.submit 'Save as Draft', name: 'save', class: 'btn btn-success btn-block' %>
-      <%= f.submit 'Save and Confirm', name: 'save_and_confirm', class: 'btn btn-success btn-block' %>
+
+      <div class="card mt-3">
+        <div class="card-header d-block d-md-flex flex-row">
+          <div class="flex-fill">
+            <strong>Total Selling Price (Excl. tax)</strong><br>
+            <span><%= format_currency(f.object.calculated_total) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Selling Price (Incl. tax)</strong><br>
+            <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Tax</strong><br>
+            <span><%= format_currency(f.object.calculated_total_tax) %></span>
+          </div>
+          <div class="flex-fill mt-2 mt-md-0">
+            <strong>Total Margin</strong><br>
+            <span><%= format_currency(f.object.calculated_total_margin) %></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="col-6">
+              <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+                <i class="fal fa-pen mr-1"></i> Save as Draft
+              <% end %>
+            </div>
+            <div class="col-6">
+              <%= button_tag(type: "submit", name: "save_and_confirm", class: "btn btn-success btn-block") do %>
+                <i class="fal fa-paper-plane mr-1"></i> Save and Confirm
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <% end %>
   <% end %>
