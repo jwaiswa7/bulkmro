@@ -1362,7 +1362,7 @@ Account.all.each do |account|
     i.inquiry_products.each do |inquiry_product|
       suppliers = legitCompany.sample([*1..3].sample)
       suppliers.each do |supplier|
-        inquiry_product.inquiry_product_suppliers.create(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 2) * 397, 150).round(2))
+        inquiry_product.inquiry_product_suppliers.create(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 2) * 397, 25).round(2))
 
       end
 
