@@ -106,8 +106,5 @@ Example Product
         "PayToCode": 1441,
         "U_Procure_Date": "2018-09-10"
     }
-
-
   end
-
 end
