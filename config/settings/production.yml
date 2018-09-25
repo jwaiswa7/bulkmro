@@ -35,3 +35,6 @@ azure:
 msg91:
   sender_id: BLKMRO
   auth_key: 220892AIFjiJYI5b6d37f3
+
+wit:
+  auth_token: E4C6GLQOFR4FPNUGUIUDCK3W6T4MWHON
