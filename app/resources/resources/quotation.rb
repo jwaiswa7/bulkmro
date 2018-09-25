@@ -7,27 +7,26 @@ class Resources::Quotation < Resources::ApplicationResource
     items = []
 
 
-
-    record.rows.each_with_index do |row,index|
+    record.rows.each_with_index do |row, index|
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
       item.ItemDescription = row.product.name # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
-      item.LineNum = index  # Row Number
+      item.LineNum = index # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
       item.U_MPN = row.inquiry_product_supplier.bp_catalog_sku
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_cost_price # Row Unit Price
-      item.Currency = "INR"# Curr
-      item.TaxCode = "IG@28"# Code? Comes from Tax Label IG  = IGST
-      item.U_Vendor = row.supplier.id# Supplier
-      item.U_Vendor_Name = row.supplier.name# Supplier  Name
-      item.Weight1 = "1"  # product Weight
-      item.U_ProdBrand = row.product.brand.name# Brand
-      item.WarehouseCode = 2# ship_from_warehouse
+      item.Currency = "INR" # Curr
+      item.TaxCode = "IG@28" # Code? Comes from Tax Label IG  = IGST
+      item.U_Vendor = row.supplier.id # Supplier
+      item.U_Vendor_Name = row.supplier.name # Supplier  Name
+      item.Weight1 = "1" # product Weight
+      item.U_ProdBrand = row.product.brand.name # Brand
+      item.WarehouseCode = 2 # ship_from_warehouse
       item.LocationCode = 1
       item.HSNEntry = row.tax_code.remote_uid # HSN !!
       item.U_MgntRemark = ""
@@ -72,25 +71,25 @@ Example Product
 
     {
         U_MgntDocID: record.id, # Quote ID
-        CardCode: record.inquiry.contact.remote_uid ,#Customer ID
+        CardCode: record.inquiry.contact.remote_uid, #Customer ID
         DocDate: record.created_date, #Quote Create Date
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
-        SalesPersonCode: 8,   #record.inside_sales_owner, # Inside Sales Owner
-        NumAtCard: "",  #Comment on Quote?
+        SalesPersonCode: record.inside_sales_owner.remote_uid, #record.inside_sales_owner, # Inside Sales Owner
+        NumAtCard: "", #Comment on Quote?
         DocCurrency: "INR",
-        "DocEntry": record.quotation_uid,
+        DocEntry: record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
-        ImportEnt: 3232,
+        ImportEnt: 3232, # Customer PO ID Not Available Yet
         U_RevNo: "R1", #Quotation Revision ID
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
         AttachmentEntry: nil,
-        DocumentLines: items,  #Products
+        DocumentLines: items, #Products
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
         U_ConsigneeAddr: 1458,
-        U_TermCondition: record.inquiry.commercial_terms_and_conditions, # record.inquiry.commercial_terms,  # Commercial terms and conditions
-        U_TrmDeli: record.inquiry.price_type,  # record.inquiry.delivery_terms , # Delivery Terms
+        U_TermCondition: record.inquiry.commercial_terms_and_conditions, #   # Commercial terms and conditions
+        U_TrmDeli: record.inquiry.price_type, #  , # Delivery Terms
         U_Frghtterm: record.inquiry.freight_option,
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
         U_BM_BillFromTo: record.inquiry.billing_address.id, #Bill FROM Address
@@ -99,14 +98,13 @@ Example Product
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
         UpdateDate: record.updated_date, # Update Quote date time
-        DocumentsOwner: 3, #record.inquiry.outside_sales_owner.remote_uid,
+        DocumentsOwner: record.inquiry.outside_sales_owner.remote_uid, #record.inquiry.outside_sales_owner.remote_uid,
         U_SalesMgr: record.inquiry.sales_manager.full_name,
         U_In_Sales_Own: record.inquiry.inside_sales_owner.full_name,
         U_Out_Sales_Own: record.inquiry.outside_sales_owner.full_name,
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
     }
-
 
   end
 
