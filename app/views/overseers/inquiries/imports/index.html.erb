@@ -17,7 +17,7 @@
       <th>Successful</th>
       <th>Failed</th>
       <th>Import Type</th>
-      <th>Created</th>
+      <th data-name="created_at">Created</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -25,7 +25,7 @@
         <tr>
           <td>
             <% if policy(import).show? && import.excel? && import.file.attached? %>
-              <%= row_action_button(url_for(import.file), 'eye', 'Raw Text', 'warning', :_blank) %>
+              <%= row_action_button(url_for(import.file), 'download', 'Raw Data', 'dark', :_blank) %>
             <% elsif policy(import).show? %>
               <%= row_action_button(overseers_inquiry_import_path(@inquiry, import, format: :text), 'eye', 'Raw Text', 'warning', :_blank) %>
             <% end %>

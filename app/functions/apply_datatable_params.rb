@@ -8,13 +8,17 @@ class ApplyDatatableParams < BaseFunction
 			end
 		end
 
-		# if params[:sorts]
-		# 	params[:sorts].each do |k, v|
-		# 		records = records.order(k.to_sym => (v.to_i == 1 ? :asc : :desc), :created_at => :desc)
-		# 	end
-		# else
+		if params[:order]
+			params[:order].each do |k, v|
+        column_id = v[:column]
+        direction = v[:dir].to_sym
+				column_name = params[:columns][column_id][:name]
+
+				records = records.order(column_name.to_sym => direction) if column_name.present?
+			end
+		else
 			records = records.latest
-		# end
+		end
 
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1
 		per = params[:length] ? params[:length].to_i : 10

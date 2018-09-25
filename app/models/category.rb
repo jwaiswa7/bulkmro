@@ -10,7 +10,7 @@ class Category < ApplicationRecord
 
   validates_presence_of :name
   #validates_presence_of :tax_code, :if => :child?
-  validates_presence_of :remote_uid
+  # validates_presence_of :remote_uid
 
   def to_s
     ancestry_path.join(' > ')

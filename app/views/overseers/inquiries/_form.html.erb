@@ -1,10 +1,11 @@
-<%= simple_form_for([:overseers, @inquiry], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+<%= simple_form_for([:overseers, @inquiry], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
   <%= f.hidden_field :company_id %>
 
   <%= render 'shared/snippets/form_errors', f: f %>
 
-  <div class="card-body">
-    <%= f.association :company, :wrapper => :custom_multi_select, disabled: true %>
+  <div class="card">
+    <div class="card-body">
+    <%= f.input :company, as: :string, disabled: true %>
 
     <div class="form-row">
       <div class="col-4">
@@ -17,10 +18,10 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :billing_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a billing address" %>
+        <%= f.association :billing_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
       </div>
       <div class="col-6">
-        <%= f.association :shipping_address, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping address" %>
+        <%= f.association :shipping_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
       </div>
     </div>
 
@@ -44,27 +45,25 @@
       <div class="col-4">
         <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <%= f.input :gross_profit_percentage %>
-      </div>
-      <div class="col-2">
-        <%= f.input :potential_amount %>
       </div>
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+        <%= f.association :inside_sales_owner, include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+        <%= f.association :outside_sales_owner, include_blank: false %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+        <%= f.association :sales_manager, include_blank: false %>
       </div>
     </div>
+
 
     <!-- FIX DATE WRAPPER -->
     <%= f.input :expected_closing_date %>
@@ -111,13 +110,13 @@
                 <% end %>
               </div>
               <div class="flex-grow-1">
-                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no) %>
+                <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
               </div>
 
             </div>
           </div>
           <div class="col-4">
-            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+            <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
           </div>
           <div class="col-2">
             <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
@@ -128,7 +127,7 @@
           <div class="col-2">
             <div class="d-flex flex-row align-items-center">
               <div>
-                <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity) %>
+                <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
               </div>
               <%= inquiry_product.remove_nested_fields_link do %>
                   <div class="form-group align-self-center flex-grow-1 ml-2">
@@ -169,5 +168,6 @@
         <i class="fal fa-pen"></i> <%= submit_text(@inquiry) %>
       <% end %>
     <% end %>
+  </div>
   </div>
 <% end %>

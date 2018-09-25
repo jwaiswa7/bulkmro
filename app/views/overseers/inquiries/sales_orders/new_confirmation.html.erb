@@ -1,0 +1,90 @@
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for(@sales_order, url: create_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post) do |f| %>
+      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :sales_quote_id %>
+
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      <% end %>
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-3">Total Selling Price (Excl. tax): <br>
+              <strong><%= format_currency(f.object.calculated_total) %></strong></div>
+            <div class="col-lg-2">Total Tax: <br> <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+            </div>
+            <div class="col-lg-3">Total Selling Price (Incl. tax): <br>
+              <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong></div>
+            <div class="col-lg-2">Total Margin: <br>
+              <strong><%= format_currency(f.object.calculated_total_margin) %></strong></div>
+            <div class="col-lg-2 text-warning"><%= f.check_box :confirm_ord_values, name: '', label: 'Confirm Order Values', :required => true %>
+              <%= f.label :confirm_ord_values, 'Confirm Ord Values' %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6"><strong>Currency</strong> <br> <%= f.object.currency %>
+            </div>
+            <div class="col-md-6"><strong>Conversion rate</strong> <br> <%= f.object.conversion_rate %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6"><strong>Shipping Address</strong> <br> <%= @inquiry.shipping_address %>
+            </div>
+            <div class="col-md-6"><strong>Billing Address</strong> <br> <%= @inquiry.billing_address %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 text-warning"><%= f.check_box :confirm_shipping_address, name: '', :required => true %>
+              <%= f.label :confirm_shipping_address, 'Confirm Shipping Address' %>
+            </div>
+            <div class="col-md-6 text-warning"><%= f.check_box :confirm_billing_address, name: '', label: 'Confirm Billing Address', :required => true %>
+              <%= f.label :confirm_billing_address, 'Confirm Billing Address' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="form-group">
+            <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+              <div class="row">
+                <%= row.hidden_field :sales_order_id %>
+                <%= row.hidden_field :id %>
+                <div class="col-md-1"><strong>Sr no</strong> <br> <%= row.object.sr_no %></div>
+                <div class="col-md-3"><strong>Product</strong> <br> <%= row.object.sales_quote_row %></div>
+                <div class="col-md-1"><strong>Quantity</strong> <br> <%= row.object.quantity %></div>
+                <div class="col-md-2"><strong>Unit Cost Price</strong> <br> <%= row.object.unit_cost_price_with_unit_freight_cost %></div>
+                <div class="col-md-2"><strong>Margin %</strong> <br> <%= row.object.margin_percentage %></div>
+                <div class="col-md-1"><strong>USP</strong> <br> <%= row.object.unit_selling_price %></div>
+                <div class="col-md-1"><strong>CUSP</strong> <br> <%= row.object.converted_unit_selling_price %></div>
+                <div class="col-md-2"><strong>Tax code</strong> <br> <%= row.object.tax_code %></div>
+                <div class="col-md-2"><strong>Total selling price</strong> <br> <%= row.object.total_selling_price %></div>
+                <div class="col-md-2"><strong>Total selling price with tax</strong> <br> <%= row.object.total_selling_price_with_tax %></div>
+              </div>
+            <% end %>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 text-warning"><%= f.check_box :confirm_hsn_codes, name: '', label: 'Confirm HSN Codes', :required => true %>
+                  <%= f.label :confirm_hsn_codes, 'Confirm HSN Codes' %>
+                </div>
+                <div class="col-md-6 text-warning"><%= f.check_box :confirm_tax_rates, name: '', label: 'Confirm Tax Rates', :required => true %>
+                  <%= f.label :confirm_tax_rates, 'Confirm Tax Rates' %>
+                </div>
+              </div>
+            </div>
+            <hr/>
+            <%= f.submit 'Save and Send', name: 'save_and_send', class: 'btn btn-success btn-block' %>
+            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry,@sales_order), class: 'btn btn-secondary btn-block' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

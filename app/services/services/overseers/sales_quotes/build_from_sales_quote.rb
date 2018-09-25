@@ -15,6 +15,16 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
       row.assign_attributes(:sales_quote_id => old_sales_quote.id)
     end
 
+    sales_quote.inquiry.inquiry_products.each do |inquiry_product|
+      inquiry_product.inquiry_product_suppliers.each do |inquiry_product_supplier|
+
+        sales_quote.rows.build(
+            :inquiry_product_supplier => inquiry_product_supplier,
+            :tax_code => inquiry_product_supplier.product.best_tax_code
+        ) if sales_quote.rows.select { |r| r.inquiry_product_supplier == inquiry_product_supplier }.blank?
+      end
+    end
+
     sales_quote
   end
 

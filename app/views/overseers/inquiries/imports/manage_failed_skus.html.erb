@@ -43,14 +43,15 @@
                           <%= product.input :sku, readonly: true %>
                         </div>
                         <div class="col-6 col-md-2">
-                          <%= product.association :brand, :wrapper => :custom_multi_select, collection: [], input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path } %>
+                          <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path } %>
                         </div>
 
                         <div class="col-6 col-md-2">
-                          <%= product.association :category, :wrapper => :custom_multi_select, collection: [], input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path } %>
+                          <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path } %>
+
                         </div>
                         <div class="col-6 col-md-2">
-                          <%= product.association :tax_code, label_method: :to_s, include_blank: "Type to search", collection: [], input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
+                          <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
                         </div>
                       </div>
                     <% end %>
@@ -114,7 +115,7 @@
         </div>
       <% end %>
 
-      <%= f.submit(class: 'btn btn-success btn-block') %>
+      <%= f.submit(class: 'btn btn-warning btn-block') %>
     <% end %>
   <% end %>
 

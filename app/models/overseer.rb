@@ -43,6 +43,7 @@ class Overseer < ApplicationRecord
         overseer.first_name = data['first_name']
         overseer.last_name = data['last_name']
         overseer.google_oauth2_uid = data['uid']
+        overseer.username = "none"
       end
 
       overseer.update_attributes(:username => 'nousername') if overseer.username.blank?

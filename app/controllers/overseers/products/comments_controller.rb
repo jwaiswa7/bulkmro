@@ -1,6 +1,6 @@
 class Overseers::Products::CommentsController < Overseers::Products::BaseController
   def index
-    @comments = @product.comments
+    @comments = @product.comments.earliest
     @new_comment = @product.comments.build
     authorize @comments
   end
