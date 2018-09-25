@@ -102,6 +102,14 @@ class Inquiry < ApplicationRecord
   validates_presence_of :billing_address
   validates_presence_of :shipping_address
 
+  validate :every_product_is_only_added_once?
+
+  def every_product_is_only_added_once?
+    if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
+      errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
+    end
+  end
+
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
   # attr_accessor :rfq_subject, :rfq_comments
@@ -111,6 +119,11 @@ class Inquiry < ApplicationRecord
 
   # validates_length_of :inquiry_products, minimum: 1
   # validate :all_products_have_suppliers
+  # def all_products_have_suppliers
+  #   if products.size != s_products.uniq.size && self.inquiry_product_suppliers.present?
+  #     errors.add(:inquiry_product_suppliers, 'every product must have at least one supplier')
+  #   end
+  # end
 
   def syncable_identifiers
     [:project_uid, :opportunity_uid]
@@ -120,7 +133,7 @@ class Inquiry < ApplicationRecord
   def set_defaults
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
-      self.sales_manager ||= self.sales_manager
+      self.sales_manager ||= self.company.sales_manager
       self.status ||= :active
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
@@ -135,19 +148,13 @@ class Inquiry < ApplicationRecord
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
     end
-
+    self.potential_amount ||= 0.01
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 
   def draft?
     !inquiry_products.any?
   end
-
-  # def all_products_have_suppliers
-  #   if products.size != s_products.uniq.size && self.inquiry_product_suppliers.present?
-  #     errors.add(:inquiry_product_suppliers, 'every product must have at least one supplier')
-  #   end
-  # end
 
   def inquiry_products_for(supplier)
     self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
@@ -167,5 +174,9 @@ class Inquiry < ApplicationRecord
 
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
+  end
+
+  def to_s
+    self.company.name
   end
 end

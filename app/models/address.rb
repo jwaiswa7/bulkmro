@@ -3,7 +3,8 @@ class Address < ApplicationRecord
   include Mixins::HasCountry
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
-  belongs_to :company
+  belongs_to :company, required: false
+  belongs_to :warehouse, required: false
   # has_one :inquiry
 
   has_one_attached :gst_proof

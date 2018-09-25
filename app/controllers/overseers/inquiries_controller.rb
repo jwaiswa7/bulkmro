@@ -25,7 +25,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   def create
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
-
     if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
@@ -79,12 +78,15 @@ class Overseers::InquiriesController < Overseers::BaseController
         :industry_id,
         :inside_sales_owner_id,
         :outside_sales_owner_id,
+        :sales_manager_id,
         :billing_address_id,
         :shipping_address_id,
         :status,
         :opportunity_type,
         :opportunity_source,
         :subject,
+        :potential_amount,
+        :sales_manager_id,
         :gross_profit_percentage,
         :expected_closing_date,
         :quote_category,
