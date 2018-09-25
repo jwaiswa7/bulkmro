@@ -1355,14 +1355,14 @@ Account.all.each do |account|
     #comments: Faker::Lorem.paragraph_by_chars(256, false)
     )
 
-    legit.each_with_index do |product,index|
-      i.inquiry_products.create!(product_id: product.id, quantity: [*1..20].sample, sr_no: index+1)
+    legit.each_with_index do |product, index|
+      i.inquiry_products.create!(product_id: product.id, quantity: [*1..20].sample, sr_no: index + 1)
     end
 
     i.inquiry_products.each do |inquiry_product|
       suppliers = legitCompany.sample([*1..3].sample)
       suppliers.each do |supplier|
-        inquiry_product.inquiry_product_suppliers.create(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 2) * 397, 25).round(2))
+        inquiry_product.inquiry_product_suppliers.create(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 2) * 397, 10).round(2))
 
       end
 
@@ -1394,4 +1394,4 @@ company = account.companies.create(
 
 contact = company.contacts.create(:account => account, :first_name => 'Ketan', :last_name => 'Joshi', email: 'Ketan.Joshi@irco.com', :password => 'abc123', :password_confirmation => 'abc123')
 address = company.addresses.create(:street1 => '21-30', street2: 'GIDC Estate Naroda', :country_code => 'IN', gst: '24AAACI3099Q1Z2', pincode: '382330', state_name: 'Ahmedabad')
-company.update_attributes(:default_company_contact => RandomRecord.for(company.company_contacts), :default_billing_address => address, :default_shipping_address => address, :default_payment_option => RandomRecord.for(PaymentOption))
+company.update_attributes(:default_company_contact => RandomRecord.for(company.company_contacts), :default_billing_address => address, :default_shipping_address => address, :default_payment_option => RandomRecord.for(PaymentOption), :inside_sales_owner => RandomRecord.for(Overseer.sales), :outside_sales_owner => Overseer.find_by_first_name('Abid'), :sales_manager => Overseer.find_by_first_name('Devang'))
