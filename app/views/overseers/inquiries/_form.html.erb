@@ -89,6 +89,28 @@
       </div>
     </div>
 
+    <div class="form-row">
+      <div class="col-6 col-md-2">
+        <% if f.object.customer_po_sheet.attached? %>
+          <%= link_to 'DL', url_for(f.object.customer_po_sheet), target: :_blank %>
+        <% end %>
+
+        <%= f.input :customer_po_sheet %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :copy_of_email, as: :file, label: 'Email attachment' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :suppler_quote, label: 'Supplier Quote' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :final_supplier_quote, label: 'Final Supplier Quote' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :calculation_sheet %>
+      </div>
+    </div>
+
     <%= f.input :commercial_terms_and_conditions %>
 
     <div class="form-group">

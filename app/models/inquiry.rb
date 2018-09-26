@@ -30,6 +30,12 @@ class Inquiry < ApplicationRecord
   belongs_to :payment_option
   has_many :email_messages
 
+  has_one_attached :customer_po_sheet
+  has_one_attached :copy_of_email
+  has_one_attached :suppler_quote
+  has_one_attached :final_supplier_quote
+  has_one_attached :calculation_sheet
+
   accepts_nested_attributes_for :comments
 
   enum status: {
@@ -44,12 +50,6 @@ class Inquiry < ApplicationRecord
       quotation_sent: 6,
       sales_order_approved: 92
   }
-
-  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
-
-  def commercial_status
-
-  end
 
   enum opportunity_type: {
     :amazon => 10,
@@ -95,6 +95,32 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
+  def commercial_status; end
+
+  attr_accessor :force_has_sales_orders
+  with_options if: :has_sales_orders? do |inquiry|
+    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
+    inquiry.validates_with FilePresenceValidator, attachment: :final_supplier_quote
+    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+  end
+
+  def has_sales_orders?
+    self.sales_orders.present? || self.force_has_sales_orders == true
+    false # comment this to enable
+  end
+
+  def valid_for_new_sales_order?
+    self.force_has_sales_orders = true
+    self.valid?
+  end
+
+  validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :suppler_quote, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+
+  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
@@ -102,12 +128,13 @@ class Inquiry < ApplicationRecord
   validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
-
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
+
+
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -163,13 +190,13 @@ class Inquiry < ApplicationRecord
     self.inquiry_product_suppliers.persisted.present?
   end
 
-  def rfqs_generated?
-    self.rfqs.persisted.present?
-  end
-
-  def rfqs_generated_on
-    self.rfqs.minimum(:created_at)
-  end
+  # def rfqs_generated?
+  #   self.rfqs.persisted.present?
+  # end
+  #
+  # def rfqs_generated_on
+  #   self.rfqs.minimum(:created_at)
+  # end
 
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
