@@ -8,17 +8,16 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: Settings.domain }
   config.action_mailer.asset_host = Settings.domain
-  config.action_mailer.delivery_method :smtp
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :port                 => 587,
-      :domain               => Settings.domain,
-      :address              => 'smtp.sendgrid.net',
-      :enable_starttls_auto => true,
-      :authentication       => :plain,
-      :user_name            => Settings.sendgrid.username,
-      :password             => Settings.sendgrid.password,
+      address:              'smtp.gmail.com',
+      port:                 587,
+      domain:               'bulkmro.com',
+      # user_name:            '', # can be use as fallback if user credentials failed
+      # password:             '', # can be use as fallback if user credentials failed
+      authentication:       'plain',
+      enable_starttls_auto: true
   }
-
 
   # Settings specified here will take precedence over those in config/application.rb.
 

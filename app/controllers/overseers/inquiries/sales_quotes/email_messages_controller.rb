@@ -1,0 +1,35 @@
+class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::Inquiries::SalesQuotes::BaseController
+  def new
+    @email_message = @sales_quote.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry, :sales_quote => @sales_quote)
+    @email_message.assign_attributes(
+        :subject => @inquiry.subject,
+        :body => SalesQuoteMailer.acknowledgement(@email_message).body.raw_source
+    )
+
+    authorize @sales_quote, :new_email_message?
+  end
+
+  def create
+    @email_message = @sales_quote.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry, :sales_quote => @sales_quote)
+    @email_message.assign_attributes(email_message_params)
+
+    authorize @sales_quote, :create_email_message?
+
+    if @email_message.save
+      SalesQuoteMailer.send_acknowledgement(@email_message).deliver_later
+      redirect_to edit_overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
+    else
+      render 'new'
+    end
+  end
+
+  private
+
+  def email_message_params
+    params.require(:email_message).permit(
+        :subject,
+        :body,
+        :files => []
+    )
+  end
+end
