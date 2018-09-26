@@ -7,17 +7,15 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [], :associated_against => { company: [:name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
   belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :company
   has_one :industry, :through => :company
-
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
-
   has_one :account, :through => :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -31,6 +29,7 @@ class Inquiry < ApplicationRecord
   has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
   has_many :sales_orders, :through => :sales_quotes
   belongs_to :payment_option
+  has_many :email_messages
 
   accepts_nested_attributes_for :comments
 

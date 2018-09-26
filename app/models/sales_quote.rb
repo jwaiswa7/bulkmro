@@ -18,6 +18,7 @@ class SalesQuote < ApplicationRecord
   has_many :products, :through => :rows
   has_many :sales_orders
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
+  has_many :email_messages
 
   attr_accessor :selected_suppliers
 

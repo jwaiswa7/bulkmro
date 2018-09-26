@@ -19,7 +19,7 @@ sendgrid:
   password: GhgjIH4zw3p2
   api_key: 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
 
-domain: www.bulkmro.com
+domain: sprint.bulkmro.com
 
 twilio:
   phone: +919987480784
