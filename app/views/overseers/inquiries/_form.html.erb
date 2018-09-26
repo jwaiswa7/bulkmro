@@ -91,7 +91,7 @@
 
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet' %>
+        <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', :class => 'flex-grow-1' %>
         <% if f.object.customer_po_sheet.attached? %>
           <%= link_to url_for(f.object.customer_po_sheet), target: :_blank, :class => 'btn btn-dark' do %>
             <i class="fal fa-download"></i>
