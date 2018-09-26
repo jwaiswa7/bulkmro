@@ -25,7 +25,10 @@ json.data (@inquiries) do |inquiry|
                   inquiry.inside_sales_owner.to_s,
                   inquiry.outside_sales_owner.to_s,
                   inquiry.subject.to_s,
-                  inquiry.status.to_s,
+                  '<span class="badge text-uppercase ' +
+                      (inquiry.status.to_s == 'active' ? 'badge-warning' :
+                      inquiry.status.to_s == 'won' ? 'badge-success' : 'badge-danger') +
+                          ' p-1"><strong>' + inquiry.status.to_s + '</strong></span>',
                   format_date(inquiry.created_at)
               ]
 end
