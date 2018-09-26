@@ -9386,6 +9386,7 @@ th {
             border-top-right-radius: 0; }
   .table th, .table td {
     border-width: 0;
+    white-space: nowrap;
     vertical-align: middle; }
     .table th:first-child, .table td:first-child {
       border-left-style: solid;
@@ -9404,6 +9405,8 @@ th {
         text-decoration: underline; }
   .table thead th {
     border-bottom-width: 0; }
+  .table.wrap-whitespace td, .table.wrap-whitespace th {
+    white-space: normal; }
 
 .table.align-items-center td {
   vertical-align: middle;
