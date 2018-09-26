@@ -22,6 +22,8 @@ json.data (@inquiries) do |inquiry|
                   ].join(' '),
                   inquiry.company.to_s,
                   inquiry.contact.to_s,
+                  inquiry.inside_sales_owner.to_s,
+                  inquiry.outside_sales_owner.to_s,
                   format_date(inquiry.created_at)
               ]
 end
