@@ -54,13 +54,13 @@
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: true %>
+        <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: true %>
+        <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner' %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: true %>
+        <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
       </div>
     </div>
 
