@@ -95,6 +95,9 @@ class Overseers::InquiriesController < Overseers::BaseController
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :calculation_sheet,
         :commercial_terms_and_conditions,                        
         :comments,
         :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
