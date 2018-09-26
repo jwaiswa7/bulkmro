@@ -34,6 +34,9 @@
           <% if policy(sales_quote).new_sales_order? %>
             <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'New Sales Order', 'success') %>
           <% end %>
+          <% if policy(sales_quote).new_email_message? %>
+            <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'New Email Message', 'success') %>
+          <% end %>
         </td>
           <td><%= format_date(sales_quote.sent_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>

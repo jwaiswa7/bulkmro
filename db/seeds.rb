@@ -72,6 +72,7 @@ service.loop(500) do |x|
   end
 end
 
+
 LeadTimeOption.create!([
                            {name: "2-3 DAYS", min_days: 2, max_days: 3},
                            {name: "1 WEEK", min_days: 7, max_days: 7},
@@ -1395,3 +1396,10 @@ company = account.companies.create(
 contact = company.contacts.create(:account => account, :first_name => 'Ketan', :last_name => 'Joshi', email: 'Ketan.Joshi@irco.com', :password => 'abc123', :password_confirmation => 'abc123')
 address = company.addresses.create(:street1 => '21-30', street2: 'GIDC Estate Naroda', :country_code => 'IN', gst: '24AAACI3099Q1Z2', pincode: '382330', state_name: 'Ahmedabad')
 company.update_attributes(:default_company_contact => RandomRecord.for(company.company_contacts), :default_billing_address => address, :default_shipping_address => address, :default_payment_option => RandomRecord.for(PaymentOption), :inside_sales_owner => RandomRecord.for(Overseer.sales), :outside_sales_owner => Overseer.find_by_first_name('Abid'), :sales_manager => Overseer.find_by_first_name('Devang'))
+
+
+service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
+service.loop(200) do |x|
+  overseer = Overseer.find_by_email(x.get_column('email'))
+  overseer.update_attributes(:smtp_password => x.get_column('password')) if overseer.present?
+end
