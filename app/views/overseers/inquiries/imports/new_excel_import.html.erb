@@ -13,7 +13,7 @@
   <%= simple_form_for([:overseers, @inquiry, @excel_import], url: create_excel_import_overseers_inquiry_imports_path(@inquiry), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :import_type %>
     <div class="card-body">
-      <%= f.input :file, :class => 'custom-file-input', required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
+      <%= f.input :file, required: true, wrapper: :custom_file, label: 'Products Excel File', accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' %>
 
       <div class="form-group mb-0">
         <%= f.submit(class: 'btn btn-success btn-block') %>
