@@ -21,7 +21,7 @@ class ApplyDatatableParams < BaseFunction
 		end
 
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1
-		per = params[:length] ? params[:length].to_i : 10
+		per = params[:length] ? params[:length].to_i : 25
 		records = records.page(page).per(per)
 		records
 	end
