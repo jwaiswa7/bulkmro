@@ -54,13 +54,13 @@
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+        <%= f.association :inside_sales_owner, include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+        <%= f.association :outside_sales_owner, include_blank: false %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+        <%= f.association :sales_manager, include_blank: false %>
       </div>
     </div>
 
