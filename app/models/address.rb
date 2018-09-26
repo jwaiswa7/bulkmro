@@ -33,4 +33,9 @@ class Address < ApplicationRecord
   def to_s
     [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
   end
+
+  def remote_uid
+    self.legacy_id.present? ? self.legacy_id : "A#{self.id}"
+  end
+
 end

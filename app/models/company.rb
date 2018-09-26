@@ -81,17 +81,30 @@ class Company < ApplicationRecord
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.company_type ||= :private_limited
     self.priority ||= :standard
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
     self.default_company_contact ||= set_default_company_contact
+    self.default_billing_address ||= set_default_company_billing_address
+    self.default_shipping_address ||= set_default_company_shipping_address
   end
 
   def set_default_company_contact
     self.company_contacts.first
   end
+
+  def set_default_company_billing_address
+    self.addresses.first if !self.addresses.blank?
+  end
+
+  def set_default_company_shipping_address
+    self.addresses.first if !self.addresses.blank?
+  end
+
+
 
   def to_contextual_s(product)
     s = [self.to_s]
@@ -106,4 +119,7 @@ class Company < ApplicationRecord
 
     s.join(' ')
   end
+
+
+
 end

@@ -108,4 +108,9 @@ Example Product
 
   end
 
+  def self.update(id, record, options = {})
+    OpenStruct.new(patch("/#{collection_name}(#{id})", body: to_remote(record,options).to_json).parsed_response)
+    id
+  end
+
 end

@@ -57,12 +57,12 @@ class Resources::ApplicationResource
   end
 
   def self.create(record)
-    response = OpenStruct.new(post("/#{collection_name}", body: to_remote(record)).parsed_response)
+    response = OpenStruct.new(post("/#{collection_name}", body: to_remote(record,{}).to_json).parsed_response)
     response.send(self.identifier)
   end
 
-  def self.update(id, record)
-    OpenStruct.new(patch("/#{collection_name}(#{id})", body: to_remote(record).to_json).parsed_response)
+  def self.update(id, record, options = {})
+    OpenStruct.new(patch("/#{collection_name}('#{id}')", body: to_remote(record,options).to_json).parsed_response)
     id
   end
 
