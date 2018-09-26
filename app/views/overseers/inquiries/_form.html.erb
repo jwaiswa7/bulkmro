@@ -98,7 +98,7 @@
         <%= f.input :customer_po_sheet %>
       </div>
       <div class="col-6 col-md-2">
-        <%= f.input :copy_of_email, as: :file, label: 'Email attachment' %>
+        <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: true, label: 'Email attachment' %>
       </div>
       <div class="col-6 col-md-2">
         <%= f.input :suppler_quote, label: 'Supplier Quote' %>
@@ -135,7 +135,7 @@
                   <% end %>"><i class="far fa-comment-lines"></i></a>
                 <% else %>
               <span class="text-success" data-toggle="tooltip" title="Approved product">
-                <i class="far fa-check"></i></i>
+                <i class="far fa-check"></i>
               </span>
                 <% end %>
               </div>
