@@ -27,7 +27,7 @@
 
     <div class="form-row">
       <div class="col-6 col-md-3">
-        <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses) %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
         <!-- TODO commercial_status need to be added -->
       </div>
       <div class="col-6 col-md-3">
@@ -74,10 +74,10 @@
         <%= f.input :weight_in_kgs %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
+        <%= f.input :freight_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+        <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
       </div>
     </div>
 
