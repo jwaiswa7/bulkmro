@@ -13,4 +13,6 @@ class Account < ApplicationRecord
 
   has_many :companies
   has_many :contacts
+  has_many :inquiries, :through => :companies
+  has_many :addresses, :through => :companies
 end
