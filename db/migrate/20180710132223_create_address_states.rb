@@ -1,6 +1,9 @@
 class CreateAddressStates < ActiveRecord::Migration[5.2]
   def change
     create_table :address_states do |t|
+
+      t.integer :legacy_id
+
       t.integer :remote_uid, index: { unique: true }, null: true
       t.string :region_code_uid, index: true
 

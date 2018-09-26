@@ -13,6 +13,7 @@ class Inquiry < ApplicationRecord
   has_one :currency, :through => :inquiry_currency
   belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :company
+  belongs_to :shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :shipping_company_id, required: false
   has_one :industry, :through => :company
 
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
@@ -29,14 +30,36 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
   has_many :sales_orders, :through => :sales_quotes
-  belongs_to :payment_option
+  belongs_to :payment_option, required: false
 
   accepts_nested_attributes_for :comments
 
+  # enum status: {
+  #     :active => 10,
+  #     :expired => 20,
+  #     :won => 30
+  # }
+
   enum status: {
-      :active => 10,
-      :expired => 20,
-      :won => 30
+      :'Lead by O/S' => 11,
+      :'Inquiry No. Assigned' => 0,
+      :'Acknowledgement Mail' => 2,
+      :'Cross Reference' => 3,
+      :'Supplier RFQ Sent' => 12,
+      :'Preparing Quotation' => 4,
+      :'Quotation Sent' => 5,
+      :'Follow Up on Quotation' => 6,
+      :'Expected Order' => 7,
+      :'SO Not Created-Customer PO Awaited' => 13,
+      :'SO Not Created-Pending Customer PO Revision' => 14,
+      :'Draft SO for Approval by Sales Manager' => 15,
+      :'SO Draft: Pending Accounts Approval' => 8,
+      :'SO Rejected by Sales Manager' => 17,
+      :'Rejected by Accounts' => 19,
+      :'Hold by Accounts' => 20,
+      :'Order Won' => 18,
+      :'Order Lost' => 9,
+      :'Regret' => 10
   }
 
   enum stage: {
