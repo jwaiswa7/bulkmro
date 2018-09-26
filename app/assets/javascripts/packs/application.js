@@ -9,6 +9,7 @@ import parselyValidations from "./components/parselyValidations";
 import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
+import ckeditor from "./components/ckeditor";
 
 // Namespacing all imports under app
 let app = {};
@@ -24,6 +25,7 @@ app.initializeComponents = () => {
     googleAnalytics();
     parselyValidations();
     dataTables();
+    ckeditor();
 };
 
 // Turbolinks load event

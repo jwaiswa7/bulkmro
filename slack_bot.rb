@@ -31,7 +31,7 @@ client.on :message do |data|
             when /sales today/i then
               "*#{rand(50) + 20}* total inquires today generated *₹54,30,000* in sales."
             else
-              "What's that #{user}? Say it again, this time I'll get it, I promise."
+              "What's that #{user}? Say it again, this time I'll get it, I promise." if data.text.present?
             end
 
   client.message channel: data.channel, text: message

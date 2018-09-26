@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Maily::Engine, at: '/maily' if Rails.env.development?
+
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
@@ -12,6 +14,9 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
+    end
+
+    resources :sales_quotes do
     end
 
     resources :brands do
@@ -66,8 +71,8 @@ Rails.application.routes.draw do
       end
 
       scope module: 'inquiries' do
-
         resources :comments
+        resources :email_messages
 
         resources :sales_orders do
           member do
@@ -80,6 +85,10 @@ Rails.application.routes.draw do
         resources :sales_quotes do
           member do
             get 'new_revision'
+          end
+
+          scope module: 'sales_quotes' do
+            resources :email_messages
           end
         end
 
