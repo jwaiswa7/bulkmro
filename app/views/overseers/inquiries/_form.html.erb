@@ -3,6 +3,14 @@
 
   <%= render 'shared/snippets/form_errors', f: f %>
 
+  <% if policy(@inquiry).new_email_message? %>
+    <div class="form-row mb-3">
+      <div class="col-6">
+        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded"><i class="fal fa-file-excel mr-1"></i>Send Email Acknowledgement</a>
+      </div>
+    </div>
+  <% end %>
+
   <div class="card">
     <div class="card-body">
     <%= f.input :company, as: :string, disabled: true %>
@@ -27,7 +35,7 @@
 
     <div class="form-row">
       <div class="col-6 col-md-3">
-        <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses) %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
         <!-- TODO commercial_status need to be added -->
       </div>
       <div class="col-6 col-md-3">
@@ -54,13 +62,13 @@
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: false %>
+        <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: false %>
+        <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner' %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: false %>
+        <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
       </div>
     </div>
 
@@ -74,10 +82,32 @@
         <%= f.input :weight_in_kgs %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
+        <%= f.input :freight_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+        <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-2">
+        <% if f.object.customer_po_sheet.attached? %>
+          <%= link_to 'DL', url_for(f.object.customer_po_sheet), target: :_blank %>
+        <% end %>
+
+        <%= f.input :customer_po_sheet %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :copy_of_email, as: :file, label: 'Email attachment' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :suppler_quote, label: 'Supplier Quote' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :final_supplier_quote, label: 'Final Supplier Quote' %>
+      </div>
+      <div class="col-6 col-md-2">
+        <%= f.input :calculation_sheet %>
       </div>
     </div>
 

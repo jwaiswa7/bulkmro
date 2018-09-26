@@ -20,8 +20,18 @@ json.data (@inquiries) do |inquiry|
                       #   row_action_button(new_overseers_sales_approval_sales_order_path(inquiry.sales_approval), 'long-arrow-right', 'New Sales Order', 'warning')
                       # end,
                   ].join(' '),
+                  '<span class="badge text-uppercase ' +
+                      (inquiry.status.to_s == 'active' ? 'badge-warning' :
+                           inquiry.status.to_s == 'won' ? 'badge-success' : 'badge-danger') +
+                      ' p-1"><strong>' + inquiry.status.to_s + '</strong></span>',
+                  inquiry.id,
+                  inquiry.company.account.to_s,
                   inquiry.company.to_s,
                   inquiry.contact.to_s,
+                  # inquiry.subject.to_s,
+                  inquiry.inside_sales_owner.to_s,
+                  inquiry.outside_sales_owner.to_s,
+                  format_currency(inquiry.final_sales_quote.try(:calculated_total)),
                   format_date(inquiry.created_at)
               ]
 end

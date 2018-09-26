@@ -9,6 +9,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :first_name
       t.string :last_name
       t.string :mobile
+      t.string :telephone
       t.string :designation
       t.string :identifier
       t.string :department
@@ -27,6 +28,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      t.string :smtp_password
 
       ## Recoverable
       t.string   :reset_password_token

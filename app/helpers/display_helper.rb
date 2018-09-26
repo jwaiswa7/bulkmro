@@ -68,7 +68,7 @@ module DisplayHelper
   end
 
   def format_id(id, prefix: nil)
-    id.upcase if id.present?
+    ['#', id].join if id.present?
   end
 
   def format_date(date, format=:long)
