@@ -115,7 +115,7 @@
         <% if f.object.suppler_quote.attached? %>
           <%= link_to f.object.customer_po_sheet.blob.filename, url_for(f.object.suppler_quote), target: :_blank %>
         <% end %>
-        <%= f.input :suppler_quote, wrapper: :custom_file label: 'Supplier Quote' %>
+        <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier Quote' %>
       </div>
       <div class="col-6 col-md-2">
         <% if f.object.final_supplier_quote.attached? %>
