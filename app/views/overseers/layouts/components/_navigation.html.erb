@@ -25,10 +25,6 @@
         </div>
       </div>
     </div>
-
-    <% if current_overseer.cannot_send_emails? %>
-      <span class="badge badge-danger">Emails Disallowed</span>
-    <% end %>
   </div>
   <!-- Settings Dropdown MOBILE -->
 
@@ -48,6 +44,10 @@
     </ul>
   </div>
   <!-- Navigation Bar -->
+
+  <% if current_overseer.cannot_send_emails? %>
+    <span class="badge badge-danger text-uppercase p-1 mr-2" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>
+  <% end %>
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
