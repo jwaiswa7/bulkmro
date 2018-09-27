@@ -9,6 +9,8 @@ class SalesOrderRow < ApplicationRecord
 
   delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
+  delegate :taxation, to: :sales_quote_row
+  delegate :is_service, :to => :sales_quote_row
 
   validates_presence_of :quantity
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :greater_than => 0
@@ -55,5 +57,13 @@ class SalesOrderRow < ApplicationRecord
 
   def total_cost_price
     self.sales_quote_row.unit_cost_price * self.quantity if self.sales_quote_row.present?
+  end
+
+  def hsn_or_sac
+    if is_service
+      :sac
+    else
+      :hsn
+    end
   end
 end

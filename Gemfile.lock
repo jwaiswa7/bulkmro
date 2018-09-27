@@ -301,7 +301,6 @@ GEM
     phony_rails (0.14.9)
       activesupport (>= 3.0)
       phony (> 2.15)
-    php-serialize (1.2.0)
     public_suffix (3.0.3)
     puma (3.12.0)
     pundit (2.0.0)
@@ -497,7 +496,6 @@ DEPENDENCIES
   pg
   pg_search
   phony_rails
-  php-serialize
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)

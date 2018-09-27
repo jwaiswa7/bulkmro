@@ -13,9 +13,14 @@ class Inquiry < ApplicationRecord
   has_one :currency, :through => :inquiry_currency
   belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :company
+  has_one :account, :through => :company
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: true
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: true
+
   has_one :account, :through => :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -176,6 +181,7 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
     end
 
+    self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 
@@ -206,4 +212,5 @@ class Inquiry < ApplicationRecord
   def to_s
     self.company.name
   end
+
 end

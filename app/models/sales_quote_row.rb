@@ -16,6 +16,7 @@ class SalesQuoteRow < ApplicationRecord
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
+  delegate :is_service, :to => :product
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
@@ -110,7 +111,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage / 100)).floor(2)
   end
 
   def calculated_unit_selling_price_with_tax
@@ -119,6 +120,12 @@ class SalesQuoteRow < ApplicationRecord
 
   def calculated_converted_unit_selling_price
     (self.unit_selling_price / conversion_rate).floor(2) if unit_selling_price.present?
+  end
+
+  def taxation
+    service = Services::Overseers::SalesQuotes::Taxation.new(self)
+    service.call
+    service
   end
 
   def to_s

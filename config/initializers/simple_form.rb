@@ -333,7 +333,7 @@ SimpleForm.setup do |config|
       ba.use :label, class: 'custom-file-label'
       ba.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback' }
     end
-    b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted' }
+    b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted text-uppercase text-small' }
   end
 
   # custom multi select

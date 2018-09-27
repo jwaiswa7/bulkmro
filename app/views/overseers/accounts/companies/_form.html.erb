@@ -60,37 +60,13 @@
 
     <div class="form-row">
       <div class="col-md-4">
-        <div class="form-group">
-          <label>TAN Proof</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <%= f.file_field :tan_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
-              <label class="custom-file-label">TAN Proof</label>
-            </div>
-          </div>
-        </div>
+        <%= f.input :tan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'TAN Proof' %>
       </div>
       <div class="col-md-4">
-        <div class="form-group">
-          <label>PAN Proof</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <%= f.file_field :pan_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
-              <label class="custom-file-label">PAN Proof</label>
-            </div>
-          </div>
-        </div>
+        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
       </div>
       <div class="col-md-4">
-        <div class="form-group">
-          <label>CEN Proof</label>
-          <div class="input-group">
-            <div class="custom-file">
-              <%= f.file_field :cen_proof, :class => 'custom-file-input', required: false, accept: 'image/png, application/pdf, image/jpeg' %>
-              <label class="custom-file-label">CEN Proof</label>
-            </div>
-          </div>
-        </div>
+        <%= f.input :cen_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CEN Proof' %>
       </div>
     </div>
 

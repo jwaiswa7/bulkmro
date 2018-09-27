@@ -28,6 +28,7 @@
   "author": "Ashwin Goyal <ashwin.goyal@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
+    "@fortawesome/fontawesome-pro": "^5.3.1",
     "webpack-dev-server": "2.11.2"
   }
 }

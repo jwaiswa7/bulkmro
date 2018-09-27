@@ -15,6 +15,9 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :outside_sales_owner_id, index: true
       t.integer :sales_manager_id, index: true
 
+      t.integer :bill_from_id, index: true
+      t.integer :ship_from_id, index: true
+
       t.string :subject
 
       t.integer :opportunity_source
@@ -25,6 +28,8 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :packing_and_forwarding_option
       t.integer :quote_category
       t.integer :price_type
+
+      t.boolean :is_sez, default: false
 
       t.decimal :potential_amount, default: 0.00
       t.decimal :gross_profit_percentage, default: 0.00
@@ -40,5 +45,9 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
     add_foreign_key :inquiries, :overseers, column: :inside_sales_owner_id
     add_foreign_key :inquiries, :overseers, column: :outside_sales_owner_id
     add_foreign_key :inquiries, :overseers, column: :sales_manager_id
+    add_foreign_key :inquiries, :addresses, column: :billing_address_id
+    add_foreign_key :inquiries, :addresses, column: :shipping_address_id
+    add_foreign_key :inquiries, :warehouses, column: :bill_from_id
+    add_foreign_key :inquiries, :warehouses, column: :ship_from_id
   end
 end

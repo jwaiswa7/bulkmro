@@ -12,11 +12,23 @@ module DisplayHelper
 
   def format_status_label(status)
     case status.to_sym
-      when :pending
-        content_tag :span, capitalize(status), class: 'label label-danger'
-      else
-        content_tag :span, capitalize(status), class: 'label label-success'
+    when :active
+      content_tag :span, class: 'badge text-uppercase badge-warning' do
+        content_tag :strong, capitalize(status)
+      end
+    when :won
+      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-success' do
+        content_tag :strong, capitalize(status)
+      end
+    else
+      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
+        content_tag :strong, capitalize(status)
+      end
     end
+  end
+
+  def upcase(string)
+    string.upcase
   end
 
   def format_class(klass)
@@ -50,7 +62,11 @@ module DisplayHelper
   end
 
   def format_currency(amount, symbol: nil, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
-    [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
+    if amount.present?
+      [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
+    else
+      "-"
+    end
   end
 
   def format_collection(kollection)
@@ -71,13 +87,13 @@ module DisplayHelper
     ['#', id].join if id.present?
   end
 
-  def format_date(date, format=:long)
+  def format_date(date, format = :long)
     if date.present?
       date.strftime("%e %b, %Y %H:%M")
     end
   end
 
-  def format_num(num, precision=0)
+  def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
 
