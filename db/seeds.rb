@@ -131,6 +131,7 @@ states = [
     'Uttar Pradesh',
     'Uttarakhand',
     'West Bengal',
+    'Delhi'
 ]
 
 states.each do |state|
