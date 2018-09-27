@@ -28,10 +28,6 @@
         </div>
       </div>
     </div>
-
-    <% if current_overseer.cannot_send_emails? %>
-      <span class="badge badge-danger">Emails Disallowed</span>
-    <% end %>
   </div>
   <!-- Settings Dropdown MOBILE -->
 
@@ -52,17 +48,20 @@
   </div>
   <!-- Navigation Bar -->
 
+  <% if current_overseer.cannot_send_emails? %>
+    <span class="badge badge-danger text-uppercase p-1 mr-2 d-none d-md-block" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>
+  <% end %>
+
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
     <div class="dropdown">
+      <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
+        <i class="fal fa-user"></i>
+      <% end %>
       <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fal fa-cog"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-
-        <%= link_to edit_overseers_profile_path, :class => 'ml-lg-2' do %>
-          <i class="fal fa-cog"></i>&nbsp;Profile
-        <% end %><br />
         <%= link_to destroy_overseer_session_path, method: :delete, :class => 'ml-lg-2' do %>
           <i class="fal fa-power-off"></i>&nbsp;Sign Out
         <% end %>
