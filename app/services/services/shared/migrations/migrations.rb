@@ -4,26 +4,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit
 
   def initialize
-    perform_migration(:overseers)
-    perform_migration(:measurement_unit)
-    perform_migration(:lead_time_option)
-    perform_migration(:currencies)
-    perform_migration(:states)
-    perform_migration(:payment_options)
-    perform_migration(:industries)
-    perform_migration(:accounts_acting_as_customers)
-    perform_migration(:contacts)
-    perform_migration(:companies_acting_as_customers)
-    perform_migration(:company_contacts)
-    perform_migration(:addresses)
-    perform_migration(:accounts_acting_as_suppliers)
-    perform_migration(:companies_acting_as_suppliers)
-    perform_migration(:supplier_contacts)
-    perform_migration(:supplier_addresses)
-    perform_migration(:brands)
-    perform_migration(:tax_codes)
-    perform_migration(:categories)
-    perform_migration(:products)
+    # perform_migration(:overseers)
+    # perform_migration(:measurement_unit)
+    # perform_migration(:lead_time_option)
+    # perform_migration(:currencies)
+    # perform_migration(:states)
+    # perform_migration(:payment_options)
+    # perform_migration(:industries)
+    # perform_migration(:accounts_acting_as_customers)
+    # perform_migration(:contacts)
+    # perform_migration(:companies_acting_as_customers)
+    # perform_migration(:company_contacts)
+    # perform_migration(:addresses)
+    # perform_migration(:accounts_acting_as_suppliers)
+    # perform_migration(:companies_acting_as_suppliers)
+    # perform_migration(:supplier_contacts)
+    # perform_migration(:supplier_addresses)
+    # perform_migration(:brands)
+    # perform_migration(:tax_codes)
+    # perform_migration(:categories)
+    # perform_migration(:products)
+    perform_migration(:inquiry_attachments)
   end
 
   def perform_migration(name)
@@ -552,4 +553,31 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       # todo handle mfr model number
     end
   end
+
+  def inquiry_attachments
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv')
+    service.loop(limit) do |x|
+      inquiry = Inquiry.find(x.get_column('inquiry_number'))
+      sheet_columns = [
+          ['calculation_sheet','calculation_sheet_path','calculation_sheet'],
+          ['customer_po_sheet','customer_po_sheet_path','customer_po_sheet'],
+          ['email_attachment','email_attachment_path','copy_of_email'],
+          ['supplier_quote_attachment','sqa_path','suppler_quote'],
+          ['supplier_quote_attachment_additional','sqa_additional_path','final_supplier_quote']
+      ]
+      if inquiry.present?
+        sheet_columns.each do |file|
+          file_attach(inquiry,  x.get_column(file[0]), file[2], x.get_column(file[1]))
+        end
+      end
+    end
+  end
+
+  def file_attach(inquiry, file_name, field_name, file_url)
+    if file_url.present? && file_name.present?
+      file = open(file_url)
+      inquiry.send(field_name).attach(io:file, filename:file_name)
+    end
+  end
+
 end

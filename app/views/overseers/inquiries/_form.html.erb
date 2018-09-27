@@ -92,21 +92,33 @@
     <div class="form-row">
       <div class="col-6 col-md-2">
         <% if f.object.customer_po_sheet.attached? %>
-          <%= link_to 'DL', url_for(f.object.customer_po_sheet), target: :_blank %>
+          <%= link_to f.object.customer_po_sheet.blob.filename, url_for(f.object.customer_po_sheet), target: :_blank %>
         <% end %>
 
         <%= f.input :customer_po_sheet %>
       </div>
       <div class="col-6 col-md-2">
+        <% if f.object.copy_of_email.attached? %>
+          <%= link_to f.object.customer_po_sheet.blob.filename, url_for(f.object.copy_of_email), target: :_blank %>
+        <% end %>
         <%= f.input :copy_of_email, as: :file, label: 'Email attachment' %>
       </div>
       <div class="col-6 col-md-2">
+        <% if f.object.suppler_quote.attached? %>
+          <%= link_to f.object.customer_po_sheet.blob.filename, url_for(f.object.suppler_quote), target: :_blank %>
+        <% end %>
         <%= f.input :suppler_quote, label: 'Supplier Quote' %>
       </div>
       <div class="col-6 col-md-2">
+        <% if f.object.final_supplier_quote.attached? %>
+          <%= link_to f.object.final_supplier_quote.blob.filename, url_for(f.object.final_supplier_quote), target: :_blank %>
+        <% end %>
         <%= f.input :final_supplier_quote, label: 'Final Supplier Quote' %>
       </div>
       <div class="col-6 col-md-2">
+        <% if f.object.calculation_sheet.attached? %>
+          <%= link_to f.object.calculation_sheet.blob.filename, url_for(f.object.calculation_sheet), target: :_blank %>
+        <% end %>
         <%= f.input :calculation_sheet %>
       </div>
     </div>
