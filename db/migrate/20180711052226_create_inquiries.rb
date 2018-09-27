@@ -29,6 +29,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :quote_category
       t.integer :price_type
 
+
       t.boolean :is_sez, default: false
 
       t.decimal :potential_amount, default: 0.00
