@@ -4,6 +4,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
   def change
     create_table :overseers do |t|
       t.integer :parent_id, index: true
+      t.integer :legacy_id, index: true
 
       t.string :username
       t.string :first_name

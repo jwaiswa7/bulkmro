@@ -71,7 +71,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def applicable_tax_percentage
-    self.best_tax_code ? self.best_tax_code.tax_percentage : 0
+    self.best_tax_code ? self.best_tax_code.tax_percentage / 100.0 : 0
   end
 
   def conversion_rate
@@ -115,7 +115,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price_with_tax
-    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.best_tax_code.tax_percentage)).floor(2)
+    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
   end
 
   def calculated_converted_unit_selling_price

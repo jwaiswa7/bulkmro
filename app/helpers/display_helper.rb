@@ -21,7 +21,7 @@ module DisplayHelper
         content_tag :strong, capitalize(status)
       end
     else
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
+      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
         content_tag :strong, capitalize(status)
       end
     end

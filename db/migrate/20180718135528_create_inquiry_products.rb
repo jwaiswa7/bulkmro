@@ -5,6 +5,8 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
       t.references :product, foreign_key: true
       t.references :inquiry_import, foreign_key: true, on_delete: :nullify
 
+      t.integer :legacy_id, index: true
+
       t.integer :sr_no
       t.integer :quantity
       t.string :bp_catalog_name, index: true
