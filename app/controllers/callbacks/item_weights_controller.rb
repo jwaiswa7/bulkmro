@@ -4,14 +4,42 @@ class Callbacks::ItemWeightsController < Callbacks::BaseController
 
   def update
     resp_status = 0
-    resp_msg = 'Invalid request.'
+    resp_msg = 'Invalid request'
     #request params {"sku":"I1110","weight":"2.5","uom_name":"NOS"}
-    if params['sku'] != ''
+    update = false
+    if params[:sku].present?
       #check sku exist
-      if 1 #sku.present
+      if Product.exists?(sku: params[:sku])
+        product = Product.find_by_sku(params[:sku])
         # Update uomname and weight
-        resp_status = 1
-        resp_msg = 'Item updated successfully'
+        if params[:uom_name].present?
+          unit = MeasurementUnit.where('lower(name) = ?', params[:uom_name].downcase).first
+          if unit && product.measurement_unit_id != unit.id
+            product.measurement_unit_id = unit.id
+            update = true
+          end
+        end
+        <<-DOC
+        # to-do as not in product weight
+        if params[:weight].present? && product.weight != params[:weight]
+         product.weight = params[:weight]
+         update = true
+        end
+        DOC
+
+        if update
+          begin
+            product.save
+            resp_status = 1
+            resp_msg = 'Item updated successfully'
+          rescue => e
+            resp_status = 0
+            resp_msg = 'Item updated failed. Error: ' + e.message
+          end
+        else
+          resp_status = 0
+          resp_msg = 'Item update skipped'
+        end
       else
         resp_msg = 'Item code does not exists'
       end
