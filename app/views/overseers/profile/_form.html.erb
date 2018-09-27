@@ -7,22 +7,21 @@
   <%= simple_form_for(@overseer, url: overseers_profile_path, :method => :patch, :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="form-row">
       <div class="col-6">
-        <%= f.input :first_name, :required => true %>
+        <%= f.input :first_name, :required => true, placeholder: 'e.g. Jon' %>
       </div>
       <div class="col-6">
-        <%= f.input :last_name, :required => true %>
+        <%= f.input :last_name, :required => true, placeholder: 'e.g. Snow'%>
       </div>
     </div>
 
      <div class="form-row">
       <div class="col-6">
-        <%= f.input :smtp_password, as: :string %>
+        <%= f.input :smtp_password, as: :string, label: 'SMTP Password', placeholder: 'e.g. password@1337' %>
       </div>
       <div class="col-6">
-        <%= f.input :slack_uid %>
+        <%= f.input :slack_uid, label: 'Slack UID', placeholder: 'e.g. amit.goyal' %>
       </div>
     </div>
-
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
