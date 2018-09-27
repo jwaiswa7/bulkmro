@@ -9,6 +9,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
 
       t.integer :product_type, index: true
       t.boolean :is_verified, default: false
+      t.boolean :is_service, default: false
 
       t.string :name
       t.string :sku, index: {unique: true}

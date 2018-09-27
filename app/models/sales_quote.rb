@@ -20,6 +20,8 @@ class SalesQuote < ApplicationRecord
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
   has_many :email_messages
 
+  delegate :bill_from, :billing_address, :shipping_address, :is_sez, to: :inquiry
+
   attr_accessor :selected_suppliers
 
   validates_length_of :rows, minimum: 1

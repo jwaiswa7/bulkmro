@@ -28,7 +28,6 @@ class Product < ApplicationRecord
 
   has_one_attached :image
 
-
   attr_accessor :applicable_tax_percentage
 
   # Start ignore
@@ -52,6 +51,7 @@ class Product < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
+    self.is_service ||= false
   end
 
   def best_tax_code
