@@ -9,8 +9,8 @@ json.data (@companies) do |company|
                   company.contacts.size,
                   company.addresses.size,
                   company.inquiries.size,
-                  company.is_supplier,
-                  company.is_customer,
+                  company.is_supplier ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>',
+                  company.is_customer ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>',
                   format_date(company.created_at)
               ]
 end
