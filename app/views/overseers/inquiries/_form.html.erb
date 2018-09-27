@@ -51,14 +51,24 @@
     </div>
 
     <div class="form-row">
-      <div class="col-4">
+      <div class="col-3">
         <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <%= f.input :gross_profit_percentage %>
+      </div>
+      <div class="col-3">
+        <%= f.input :customer_po_number %>
+      </div>
+      <div class="col-3">
+
+        <%= f.input :potential_amount %>
+      </div>
+      <div class="col-3">
+        <%= f.input :freight_cost %>
       </div>
     </div>
     <div class="form-row">
@@ -73,6 +83,48 @@
       </div>
     </div>
 
+      <div class="form-row">
+        <div class="col-6">
+          <% if f.object.created_at %>
+            <div class="form-group select required inquiry_payment_option form-group-valid">
+              <label class="form-control-label select required" for="inquiry_payment_option_id">Created At</label>
+              <div class="d-flex flex-column">
+
+                <%= f.object.created_at %>
+
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+        <div class="col-6">
+          <% if f.object.updated_at %>
+            <div class="form-group select required inquiry_payment_option form-group-valid">
+              <label class="form-control-label select required" for="inquiry_payment_option_id">Updated At</label>
+              <div class="d-flex flex-column">
+
+                <%= f.object.updated_at %>
+
+              </div>
+            </div>
+
+          <% end %>
+        </div>
+        <div class="col-6">
+          <%= f.input :quotation_date %>
+        </div>
+
+
+        <div class="col-6">
+          <%= f.input :customer_committed_date %>
+        </div>
+
+        <div class="col-6">
+          <%= f.input :procurement_date %>
+        </div>
+
+
+      </div>
 
     <!-- FIX DATE WRAPPER -->
     <%= f.input :expected_closing_date %>
