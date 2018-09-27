@@ -9,6 +9,8 @@ json.data (@companies) do |company|
                   company.contacts.size,
                   company.addresses.size,
                   company.inquiries.size,
+                  company.is_supplier,
+                  company.is_customer,
                   format_date(company.created_at)
               ]
 end
