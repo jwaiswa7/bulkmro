@@ -92,26 +92,26 @@
       </div>
     </div>
 
-    <!--    <div class="form-group">-->
-    <%#= f.label :product_ids, 'Products' %>
-    <!--      <div class="select2-wrapper">-->
-    <%#= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
-    <!--      </div>-->
-    <!--    </div>-->
+<!--    <div class="form-group">-->
+      <%#= f.label :product_ids, 'Products' %>
+<!--      <div class="select2-wrapper">-->
+        <%#= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
+<!--      </div>-->
+<!--    </div>-->
 
-    <!--    <div class="form-group">-->
-    <%#= f.label :category_ids, 'Category' %>
-    <!--      <div class="select2-wrapper">-->
-    <%#= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
-    <!--      </div>-->
-    <!--    </div>-->
+<!--    <div class="form-group">-->
+      <%#= f.label :category_ids, 'Category' %>
+<!--      <div class="select2-wrapper">-->
+        <%#= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
+<!--      </div>-->
+<!--    </div>-->
 
-    <!--    <div class="form-group">-->
-    <%#= f.label :brand_ids, 'Brands' %>
-    <!--      <div class="select2-wrapper">-->
-    <%#= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
-    <!--      </div>-->
-    <!--    </div>-->
+<!--    <div class="form-group">-->
+      <%#= f.label :brand_ids, 'Brands' %>
+<!--      <div class="select2-wrapper">-->
+        <%#= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
+<!--      </div>-->
+<!--    </div>-->
 
     <% if f.object.persisted? %>
       <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>

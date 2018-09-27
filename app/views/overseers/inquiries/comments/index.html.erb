@@ -12,9 +12,7 @@
 
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
 
-
     <% if @sales_order.present? %>
-
       <div class="card">
         <div class="card-body">
           <h5 class="card-title"><%= @sales_order %></h5>
@@ -42,7 +40,6 @@
           </div>
         </div>
       </div>
-
     <% end %>
 
     <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
