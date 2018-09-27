@@ -25,6 +25,10 @@
         </div>
       </div>
     </div>
+
+    <% if current_overseer.cannot_send_emails? %>
+      <span class="badge badge-danger">Emails Disallowed</span>
+    <% end %>
   </div>
   <!-- Settings Dropdown MOBILE -->
 

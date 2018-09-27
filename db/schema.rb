@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_27_063841) do
+ActiveRecord::Schema.define(version: 2018_09_27_064127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -564,6 +564,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_063841) do
     t.integer "created_by_id"
     t.integer "updated_by_id"
     t.string "telephone"
+    t.string "smtp_password"
     t.index ["created_by_id"], name: "index_overseers_on_created_by_id"
     t.index ["email"], name: "index_overseers_on_email", unique: true
     t.index ["employee_uid"], name: "index_overseers_on_employee_uid", unique: true
