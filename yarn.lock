@@ -2,6 +2,49 @@
 # yarn lockfile v1
 
 
+"@ckeditor/ckeditor5-core@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-11.0.0.tgz#bd0db3a3d9a0711692b7f518ae0fa839b0ab54c7"
+  dependencies:
+    "@ckeditor/ckeditor5-engine" "^10.2.0"
+    "@ckeditor/ckeditor5-utils" "^10.2.0"
+
+"@ckeditor/ckeditor5-editor-inline@11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-inline/-/ckeditor5-editor-inline-11.0.0.tgz#e9e94037e4c16eb0014a8382c23130b2c70243e6"
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^11.0.0"
+    "@ckeditor/ckeditor5-engine" "^10.2.0"
+    "@ckeditor/ckeditor5-theme-lark" "^11.0.0"
+    "@ckeditor/ckeditor5-ui" "^11.0.0"
+    "@ckeditor/ckeditor5-utils" "^10.2.0"
+
+"@ckeditor/ckeditor5-engine@^10.2.0":
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-10.2.0.tgz#f4cf448c0482233557f48d4b9a97baa571c0e9cc"
+  dependencies:
+    "@ckeditor/ckeditor5-utils" "^10.2.0"
+
+"@ckeditor/ckeditor5-theme-lark@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-11.0.0.tgz#39b1c65530ae85566b669fd472e63a72a9c4aac4"
+  dependencies:
+    "@ckeditor/ckeditor5-ui" "^11.0.0"
+
+"@ckeditor/ckeditor5-ui@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-11.0.0.tgz#90b3cd26b0bba4abf47d698073a5eac2f1d3252e"
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^11.0.0"
+    "@ckeditor/ckeditor5-theme-lark" "^11.0.0"
+    "@ckeditor/ckeditor5-utils" "^10.2.0"
+
+"@ckeditor/ckeditor5-utils@^10.2.0":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-10.2.1.tgz#08268ddb79eddbb2b62acd4d2e04935b2dc75cc6"
+  dependencies:
+    ckeditor5 "^11.0.1"
+
 "@compone/class@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@compone/class/-/class-1.1.1.tgz#cbe6225ca123894769c8cb65b49430bd8dea472a"
@@ -1613,6 +1656,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+ckeditor5@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-11.0.1.tgz#877d4a61d579cd1b6464cb9353787301576012d8"
 
 clap@^1.0.9:
   version "1.2.3"
