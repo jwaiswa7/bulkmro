@@ -53,15 +53,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     if options[:skip_children] == true
 
       response = {
-          CardCode: "cs15446992", #record.remote_uid, # record.remote_uid,#Company Code
+          CardCode: record.remote_uid, #record.remote_uid, # record.remote_uid,#Company Code
           CardName: record.name, #Company Name
           CardType: record.is_supplier ? "cSupplier" : "cCustomer", #
           GroupCode: record.account.remote_uid, #Company Alias
           Address: record.default_billing_address.to_s, #
           ZipCode: record.default_billing_address.pincode, #"410209", #Company zipcode
-          Country: "IN", #Company Country
-          EmailAddress: "sales@universalflowtech.com", #Customer Email ID
-          City: "Navi Mumbai", #Company CIty
+          Country: record.default_billing_address.country_code, #"IN", #Company Country
+          EmailAddress: record.default_company_contact.contact.email, # "sales@universalflowtech.com", #Customer Email ID
+          City: record.default_billing_address.city_name, #Company CIty
           Phone1: record.phone, # "9029482674", #Company Phone
           Phone2: nil, #
           Fax: nil, #
@@ -186,15 +186,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
 
         response = {
-            CardCode: "cs15446992", #record.remote_uid, # record.remote_uid,#Company Code
+            CardCode: record.remote_uid, #record.remote_uid, # record.remote_uid,#Company Code
             CardName: record.name, #Company Name
             CardType: record.is_supplier ? "cSupplier" : "cCustomer", #
             GroupCode: record.account.remote_uid, #Company Alias
             Address: record.default_billing_address.to_s, #
             ZipCode: record.default_billing_address.pincode, #"410209", #Company zipcode
-            Country: "IN", #Company Country
-            EmailAddress: "sales@universalflowtech.com", #Customer Email ID
-            City: "Navi Mumbai", #Company CIty
+            Country: record.default_billing_address.country_code, #"IN", #Company Country
+            EmailAddress: record.default_company_contact.email, # "sales@universalflowtech.com", #Customer Email ID
+            City: record.default_billing_address.city_name, #Company CIty
             Phone1: record.phone, # "9029482674", #Company Phone
             Phone2: nil, #
             Fax: nil, #
@@ -221,7 +221,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         }
       end
     end
-
 
     response
   end
