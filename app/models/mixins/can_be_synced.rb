@@ -3,9 +3,9 @@ module Mixins::CanBeSynced
 
   included do
     def save_and_sync
-      # service = ['Services', 'Overseers', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-      # service.call
-      self.save
+      service = ['Services', 'Overseers', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+      service.call
+      #self.save
     end
 
     def syncable_identifiers

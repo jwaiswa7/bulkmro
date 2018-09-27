@@ -25,7 +25,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_Vendor = row.supplier.id # Supplier
       item.U_Vendor_Name = row.supplier.name # Supplier  Name
       item.Weight1 = "1" # product Weight
-      item.U_ProdBrand = row.product.brand.name # Brand
+      item.U_ProdBrand = row.product.brand.try(:name) # Brand
       item.WarehouseCode = 2 # ship_from_warehouse
       item.LocationCode = 1
       item.HSNEntry = row.tax_code.remote_uid # HSN !!
@@ -70,12 +70,12 @@ Example Product
 
 
     {
-        U_MgntDocID: record.id, # Quote ID
-        CardCode: record.inquiry.contact.remote_uid, #Customer ID
+        U_MgntDocID: record.legacy_id, # Quote ID
+        CardCode: record.inquiry.company.remote_uid, #Customer ID
         DocDate: record.created_date, #Quote Create Date
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
-        SalesPersonCode: record.inside_sales_owner.remote_uid, #record.inside_sales_owner, # Inside Sales Owner
+        SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
         NumAtCard: "", #Comment on Quote?
         DocCurrency: "INR",
         DocEntry: record.quotation_uid,
@@ -92,25 +92,21 @@ Example Product
         U_TrmDeli: record.inquiry.price_type, #  , # Delivery Terms
         U_Frghtterm: record.inquiry.freight_option,
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
-        U_BM_BillFromTo: record.inquiry.billing_address.id, #Bill FROM Address
+        U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
         U_SQ_Status: 6, # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: 1,
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
         UpdateDate: record.updated_date, # Update Quote date time
-        DocumentsOwner: record.inquiry.outside_sales_owner.remote_uid, #record.inquiry.outside_sales_owner.remote_uid,
-        U_SalesMgr: record.inquiry.sales_manager.full_name,
-        U_In_Sales_Own: record.inquiry.inside_sales_owner.full_name,
-        U_Out_Sales_Own: record.inquiry.outside_sales_owner.full_name,
+        DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid, #record.inquiry.outside_sales_owner.remote_uid,
+        U_SalesMgr: record.inquiry.sales_manager.try(:full_name) || "Devang Shah",
+        U_In_Sales_Own: record.inquiry.inside_sales_owner.try(:full_name),
+        U_Out_Sales_Own: record.inquiry.outside_sales_owner.try(:full_name),
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
     }
 
   end
 
-  def self.update(id, record, options = {})
-    OpenStruct.new(patch("/#{collection_name}(#{id})", body: to_remote(record,options).to_json).parsed_response)
-    id
-  end
 
 end

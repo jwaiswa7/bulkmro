@@ -4,6 +4,16 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     :Code
   end
 
+  def self.create(record)
+    response = OpenStruct.new(post("/#{collection_name}", body: to_remote(record,{}).to_json).parsed_response)
+    response.send(self.identifier)
+  end
+
+  def self.update(id, record, options = {})
+    OpenStruct.new(patch("/#{collection_name}('#{id}')", body: to_remote(record,options).to_json).parsed_response)
+    id
+  end
+
   def self.to_remote(record, options)
 
     addresses = []

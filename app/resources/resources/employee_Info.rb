@@ -6,7 +6,10 @@ class Resources::SalesPerson < Resources::ApplicationResource
 
   def self.to_remote(record)
     {
-        SalesEmployeeName: record.full_name,
+        FirstName: record.full_name,
+        LastName: record.last_name,
+        JobTitle: record.designation,
+        Active:'tYes',
         Remarks: record.parent.try(:full_name),
         Active: "tYES"
     }

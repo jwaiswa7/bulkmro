@@ -2,6 +2,7 @@ require 'mail'
 
 class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
   include Mixins::IsAPerson
 
   has_one_attached :file
@@ -59,4 +60,12 @@ class Overseer < ApplicationRecord
   def cannot_send_emails?
     !can_send_emails?
   end
+
+  def save_and_sync
+    service = ['Services', 'Overseers','SaveAndSync'].join('::').constantize.new(self)
+    service.call
+    #self.save
+  end
+
+
 end
