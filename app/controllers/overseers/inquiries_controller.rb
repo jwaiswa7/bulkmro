@@ -2,8 +2,14 @@ class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
 
   def index
-    @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
-    authorize @inquiries
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        @inquiries = ApplyDatatableParams.to(Inquiry.all.joins(:sales_quotes).distinct.includes(:contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]]), params, unscoped_if_search_term: true)
+      end
+    end
   end
 
   def show
@@ -25,6 +31,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def create
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
+
     if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
@@ -81,12 +88,12 @@ class Overseers::InquiriesController < Overseers::BaseController
         :sales_manager_id,
         :billing_address_id,
         :shipping_address_id,
+        :bill_from_id,
+        :ship_from_id,
         :status,
         :opportunity_type,
         :opportunity_source,
         :subject,
-        :potential_amount,
-        :sales_manager_id,
         :gross_profit_percentage,
         :expected_closing_date,
         :quote_category,
@@ -96,6 +103,9 @@ class Overseers::InquiriesController < Overseers::BaseController
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :calculation_sheet,
         :commercial_terms_and_conditions,                        
         :comments,
         :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]

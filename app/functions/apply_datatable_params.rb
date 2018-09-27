@@ -1,6 +1,7 @@
 class ApplyDatatableParams < BaseFunction
-	def self.to(records, params, if_no_search_term: nil)
+	def self.to(records, params, if_no_search_term: nil, unscoped_if_search_term: false)
 		if params[:search] && params[:search][:value].present?
+			records = records.unscoped if unscoped_if_search_term
 			records = records.locate(params[:search][:value])
 		else
 			if if_no_search_term
@@ -21,7 +22,7 @@ class ApplyDatatableParams < BaseFunction
 		end
 
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1
-		per = params[:length] ? params[:length].to_i : 10
+		per = params[:length] ? params[:length].to_i : 25
 		records = records.page(page).per(per)
 		records
 	end

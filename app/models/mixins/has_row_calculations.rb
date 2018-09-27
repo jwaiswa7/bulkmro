@@ -18,9 +18,9 @@ module Mixins::HasRowCalculations
       rows.map { |row| row.total_margin }.sum
     end
 
-     def calculated_total_margin_percentage
-       self.calculated_total_margin / self.calculated_total * 100
-     end
+    # def calculated_total_margin_percentage
+    #   rows.map { |row| row.margin_percentage }.sum / rows.size
+    # end
 
     def calculated_freight_cost_total
       rows.sum(:freight_cost_subtotal).to_f

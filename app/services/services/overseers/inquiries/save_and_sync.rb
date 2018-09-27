@@ -6,13 +6,7 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
 
   def call
     if inquiry.save
-
-      call_later
-      if Rails.env.development?
-
-      else
-        perform_later(inquiry)
-      end
+      perform_later(inquiry)
     end
   end
 
@@ -20,16 +14,22 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
     if inquiry.project_uid.blank?
       inquiry.project_uid = Resources::Project.create(inquiry)
     end
-    inquiry.save
 
     if inquiry.opportunity_uid.present?
       # Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
-      inquiry.opportunity_uid = Resources::SalesOpportunity.create(inquiry)
+      inquiry.opportunity_uid =  Resources::SalesOpportunity.create(inquiry)
     end
-    inquiry.save
 
-
+    if inquiry.sales_quotes.any?
+      inquiry.sales_quotes.each do |sales_quote|
+        if sales_quote.quotation_uid.present?
+          # Resources::Quotation.update(inquiry.quotation_uid, inquiry)
+        else
+          sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
+        end
+      end
+    end
   end
 
   attr_accessor :inquiry

@@ -3,13 +3,21 @@
 
   <%= render 'shared/snippets/form_errors', f: f %>
 
+  <% if policy(@inquiry).new_email_message? %>
+    <div class="form-row mb-3">
+      <div class="col-6">
+        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-success btn-rounded"><i class="fal fa-file-excel mr-1"></i>Send Email Acknowledgement</a>
+      </div>
+    </div>
+  <% end %>
+
   <div class="card">
     <div class="card-body">
     <%= f.input :company, as: :string, disabled: true %>
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.association :contact, :wrapper => :custom_multi_select, include_blank: "Select a contact" %>
+        <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
       </div>
       <div class="col-8">
         <%= f.input :subject %>
@@ -26,8 +34,17 @@
     </div>
 
     <div class="form-row">
+      <div class="col-6">
+        <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from" %>
+      </div>
+      <div class="col-6">
+        <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from" %>
+      </div>
+    </div>
+
+    <div class="form-row">
       <div class="col-6 col-md-3">
-        <%= f.input :status, as: :select, collection: enum_to_collection(Inquiry.statuses) %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
         <!-- TODO commercial_status need to be added -->
       </div>
       <div class="col-6 col-md-3">
@@ -51,19 +68,16 @@
       <div class="col-4">
         <%= f.input :gross_profit_percentage %>
       </div>
-      <div class="col-4">
-        <%= f.input :potential_amount %>
-      </div>
     </div>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: false %>
+        <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: false %>
+        <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner' %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: false %>
+        <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
       </div>
     </div>
 
@@ -77,10 +91,33 @@
         <%= f.input :weight_in_kgs %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :freight_option, as: :select, collection: enum_to_collection(Inquiry.freight_options) %>
+        <%= f.input :freight_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :packing_and_forwarding_option, as: :select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+        <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-12 col-md-6">
+        <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', :class => 'flex-grow-1' %>
+        <% if f.object.customer_po_sheet.attached? %>
+          <%= link_to url_for(f.object.customer_po_sheet), target: :_blank, :class => 'btn btn-dark' do %>
+            <i class="fal fa-download"></i>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet' %>
       </div>
     </div>
 
@@ -108,7 +145,7 @@
                   <% end %>"><i class="far fa-comment-lines"></i></a>
                 <% else %>
               <span class="text-success" data-toggle="tooltip" title="Approved product">
-                <i class="far fa-check"></i></i>
+                <i class="far fa-check"></i>
               </span>
                 <% end %>
               </div>

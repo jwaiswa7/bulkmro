@@ -19,7 +19,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
     end
 
-    sales_quote.save_and_sync
+    sales_quote.save
   end
 
   attr_reader :sales_quote

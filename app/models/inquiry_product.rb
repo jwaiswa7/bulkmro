@@ -28,7 +28,7 @@ class InquiryProduct < ApplicationRecord
     self.quantity ||= 1
   end
 
-  def tax_code
+  def best_tax_code
     self.product.tax_code.code if self.product.tax_code.present?
   end
 end

@@ -1,4 +1,12 @@
 class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
+  def new_email_message?
+    record.persisted? && record.sent? && record.children.blank?
+  end
+
+  def create_email_message?
+    new_email_message?
+  end
+
   def edit?
     record == record.inquiry.sales_quotes.latest_record && record.not_sent?
   end
@@ -8,7 +16,6 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def new_sales_order?
-    new_revision?
+    new_revision? && record.inquiry.valid_for_new_sales_order?
   end
-
 end

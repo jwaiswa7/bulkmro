@@ -7,17 +7,20 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [], :associated_against => { contact: [:first_name, :last_name], company: [:name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
-  belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
+  # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
+  belongs_to :contact
   belongs_to :company
+  has_one :account, :through => :company
+  belongs_to :shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :shipping_company_id, required: false
   has_one :industry, :through => :company
-
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
-
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: true
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: true
   has_one :account, :through => :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, :inverse_of => :inquiry
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
@@ -28,15 +31,45 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
+  has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
   has_many :sales_orders, :through => :sales_quotes
-  belongs_to :payment_option
+  belongs_to :payment_option, required: false
+  has_many :email_messages
+
+  has_one_attached :customer_po_sheet
+  has_one_attached :copy_of_email
+  has_one_attached :suppler_quote
+  has_one_attached :final_supplier_quote
+  has_one_attached :calculation_sheet
 
   accepts_nested_attributes_for :comments
 
+  # enum status: {
+  #     :active => 10,
+  #     :expired => 20,
+  #     :won => 30
+  # }
+
   enum status: {
-      :active => 10,
-      :expired => 20,
-      :won => 30
+      :'Lead by O/S' => 11,
+      :'Inquiry No. Assigned' => 0,
+      :'Acknowledgement Mail' => 2,
+      :'Cross Reference' => 3,
+      :'Supplier RFQ Sent' => 12,
+      :'Preparing Quotation' => 4,
+      :'Quotation Sent' => 5,
+      :'Follow Up on Quotation' => 6,
+      :'Expected Order' => 7,
+      :'SO Not Created-Customer PO Awaited' => 13,
+      :'SO Not Created-Pending Customer PO Revision' => 14,
+      :'Draft SO for Approval by Sales Manager' => 15,
+      :'SO Draft: Pending Accounts Approval' => 8,
+      :'SO Rejected by Sales Manager' => 17,
+      :'Rejected by Accounts' => 19,
+      :'Hold by Accounts' => 20,
+      :'Order Won' => 18,
+      :'Order Lost' => 9,
+      :'Regret' => 10
   }
 
   enum stage: {
@@ -45,12 +78,6 @@ class Inquiry < ApplicationRecord
       quotation_sent: 6,
       sales_order_approved: 92
   }
-
-  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
-
-  def commercial_status
-
-  end
 
   enum opportunity_type: {
     :amazon => 10,
@@ -96,6 +123,32 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
+  def commercial_status; end
+
+  attr_accessor :force_has_sales_orders
+  with_options if: :has_sales_orders? do |inquiry|
+    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
+    inquiry.validates_with FilePresenceValidator, attachment: :final_supplier_quote
+    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+  end
+
+  def has_sales_orders?
+    self.sales_orders.present? || self.force_has_sales_orders == true
+    false # comment this to enable
+  end
+
+  def valid_for_new_sales_order?
+    self.force_has_sales_orders = true
+    self.valid?
+  end
+
+  validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :suppler_quote, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+
+  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
@@ -103,12 +156,13 @@ class Inquiry < ApplicationRecord
   validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
-
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
+
+
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -133,7 +187,7 @@ class Inquiry < ApplicationRecord
   def set_defaults
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
-      self.sales_manager ||= self.company.sales_manager
+      self.sales_manager ||= self.sales_manager
       self.status ||= :active
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
@@ -148,7 +202,8 @@ class Inquiry < ApplicationRecord
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
     end
-    self.potential_amount ||= 0.01
+
+    self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 
@@ -164,13 +219,13 @@ class Inquiry < ApplicationRecord
     self.inquiry_product_suppliers.persisted.present?
   end
 
-  def rfqs_generated?
-    self.rfqs.persisted.present?
-  end
-
-  def rfqs_generated_on
-    self.rfqs.minimum(:created_at)
-  end
+  # def rfqs_generated?
+  #   self.rfqs.persisted.present?
+  # end
+  #
+  # def rfqs_generated_on
+  #   self.rfqs.minimum(:created_at)
+  # end
 
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
@@ -179,4 +234,5 @@ class Inquiry < ApplicationRecord
   def to_s
     self.company.name
   end
+
 end

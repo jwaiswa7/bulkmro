@@ -22,7 +22,7 @@
   </section>
 <% end %>
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"<% end %>>
+  <table class="datatable table table-bordered dt-responsive <% if content_for?(:wrap_whitespace) %>wrap-whitespace<% end %>" data-search="Filter by anything" <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"<% end %>>
     <thead>
     <tr>
       <%= yield :header_row %>

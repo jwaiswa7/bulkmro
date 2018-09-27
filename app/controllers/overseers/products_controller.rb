@@ -2,7 +2,7 @@ class Overseers::ProductsController < Overseers::BaseController
   before_action :set_product, only: [:show, :edit, :update, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
 
   def index
-    @products = ApplyDatatableParams.to(Product.all.approved.includes(:brand), params)
+    @products = ApplyDatatableParams.to(Product.all.approved.includes(:brand, :approval, :suppliers), params)
     authorize @products
   end
 
@@ -76,6 +76,7 @@ class Overseers::ProductsController < Overseers::BaseController
     params.require(:product).permit(
         :name,
         :sku,
+        :is_service,
         :brand_id,
         :category_id,
         :tax_code_id,

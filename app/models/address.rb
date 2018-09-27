@@ -4,8 +4,7 @@ class Address < ApplicationRecord
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
-  belongs_to :warehouse, required: false
-  # has_one :inquiry
+  has_one :warehouse
 
   has_one_attached :gst_proof
   has_one_attached :cst_proof
@@ -25,10 +24,17 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
 
+  validates_presence_of :state, :if => :domestic?
+
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
+
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    self.is_sez ||= false
+  end
 
   def to_s
     [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
