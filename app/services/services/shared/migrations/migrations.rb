@@ -27,7 +27,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     # perform_migration(:tax_codes)
     # perform_migration(:categories)
     # perform_migration(:products)
-    # perform_migration(:inquiries)
+    perform_migration(:inquiries)
     perform_migration(:inquiry_details)
     perform_migration(:sales_order_drafts)
 
@@ -722,7 +722,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             inquiry_number: x.get_column('increment_id'),
             company: company,
             contact: contact,
-            status: x.get_column('bought'),
+            status: x.get_column('bought').to_i,
             opportunity_type: ( opportunity_type[x.get_column('quote_type').gsub(" ", "_")] if x.get_column('quote_type').present? ),
             potential_amount: x.get_column('potential_amount'),
             opportunity_source: ( opportunity_source[x.get_column('opportunity_source').downcase] if x.get_column('opportunity_source').present?),

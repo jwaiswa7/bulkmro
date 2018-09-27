@@ -83,7 +83,6 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.string "gst"
     t.string "cst"
     t.string "vat"
-    t.string "tan"
     t.string "excise"
     t.string "telephone"
     t.string "mobile"
