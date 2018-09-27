@@ -99,24 +99,25 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6 col-md-2">
+      <div class="col-12 col-md-6">
+        <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet' %>
         <% if f.object.customer_po_sheet.attached? %>
-          <%= link_to 'DL', url_for(f.object.customer_po_sheet), target: :_blank %>
+          <%= link_to url_for(f.object.customer_po_sheet), target: :_blank, :class => 'btn btn-dark' do %>
+            <i class="fal fa-download"></i>
+          <% end %>
         <% end %>
-
-        <%= f.input :customer_po_sheet %>
       </div>
-      <div class="col-6 col-md-2">
-        <%= f.input :copy_of_email, as: :file, label: 'Email attachment' %>
+      <div class="col-12 col-md-6">
+        <%= f.input :copy_of_email, wrapper: :custom_file, required: true, label: 'Email attachment' %>
       </div>
-      <div class="col-6 col-md-2">
-        <%= f.input :suppler_quote, label: 'Supplier Quote' %>
+      <div class="col-12 col-md-6">
+        <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote' %>
       </div>
-      <div class="col-6 col-md-2">
-        <%= f.input :final_supplier_quote, label: 'Final Supplier Quote' %>
+      <div class="col-12 col-md-6">
+        <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote' %>
       </div>
-      <div class="col-6 col-md-2">
-        <%= f.input :calculation_sheet %>
+      <div class="col-12 col-md-6">
+        <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet' %>
       </div>
     </div>
 
@@ -144,7 +145,7 @@
                   <% end %>"><i class="far fa-comment-lines"></i></a>
                 <% else %>
               <span class="text-success" data-toggle="tooltip" title="Approved product">
-                <i class="far fa-check"></i></i>
+                <i class="far fa-check"></i>
               </span>
                 <% end %>
               </div>

@@ -7,6 +7,8 @@ json.data (@companies) do |company|
                   ].join(' '),
                   company.to_s,
                   company.contacts.size,
+                  company.addresses.size,
+                  company.inquiries.size,
                   format_date(company.created_at)
               ]
 end
