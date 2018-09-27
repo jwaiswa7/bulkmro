@@ -16,6 +16,8 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :department
       t.string :geography
 
+      # t.string :slack_uid
+
       t.integer :role, index: true
 
       t.integer :salesperson_uid, index: { :unique => true }

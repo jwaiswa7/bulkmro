@@ -19,6 +19,9 @@
           <i class="fal fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
+          <%= link_to edit_overseers_profile_path, :class => 'ml-lg-2' do %>
+            <i class="fal fa-cog"></i>&nbsp;Profile
+          <% end %><br />
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'ml-lg-2' do %>
             <i class="fal fa-power-off"></i>&nbsp;Sign Out
           <% end %>
@@ -56,6 +59,10 @@
         <i class="fal fa-cog"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
+
+        <%= link_to edit_overseers_profile_path, :class => 'ml-lg-2' do %>
+          <i class="fal fa-cog"></i>&nbsp;Profile
+        <% end %><br />
         <%= link_to destroy_overseer_session_path, method: :delete, :class => 'ml-lg-2' do %>
           <i class="fal fa-power-off"></i>&nbsp;Sign Out
         <% end %>
