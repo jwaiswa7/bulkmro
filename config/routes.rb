@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard
+    resource :profile, :controller => :profile
+
     resources :overseers
 
     resources :suppliers do
