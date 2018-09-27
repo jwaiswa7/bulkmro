@@ -111,7 +111,7 @@
                         <%= approved_alternative.best_tax_code.to_s %>
                       <% end %>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-1">
                       <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
                         <span class="mt-2 d-block d-md-none"><strong>Category</strong></span>
                         <%= approved_alternative.is_service %>

@@ -26,6 +26,15 @@ class SalesOrder < ApplicationRecord
 
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no
 
+  enum legacy_request_status: {
+      :'requested' => 10,
+      :'SAP Approval Pending' => 20,
+      :'rejected' => 30,
+      :'SAP Rejected' => 40,
+      :'Cancelled' => 50,
+      :'approved' => 60,
+      :'Order Deleted' => 70
+  }
 
   def confirmed?
     self.confirmation.present?

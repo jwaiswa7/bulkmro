@@ -46,7 +46,7 @@ let setup = () => {
         $.fn.dataTable.ext.errMode = 'throw';
         $(this).DataTable({
             conditionalPaging: true,
-            searchDelay: 350,
+            searchDelay: 1000,
             serverSide: isAjax,
             processing: true,
             stateSave: false,

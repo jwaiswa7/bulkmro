@@ -6,6 +6,8 @@ class CreateSalesQuotes < ActiveRecord::Migration[5.2]
       t.integer :parent_id, index: true
       t.string :quotation_uid, index: { unique: true }
 
+      t.integer :legacy_id, index: true
+
       t.datetime :sent_at
 
       t.timestamps

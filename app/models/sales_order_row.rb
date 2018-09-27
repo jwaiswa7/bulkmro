@@ -32,11 +32,11 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price_with_tax
-    self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.tax_percentage_percentage)).round(2) if self.sales_quote_row.present?
+    self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
   def calculated_tax
-    (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.tax_percentage_percentage)).round(2) if self.sales_quote_row.present?
+    (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
   def total_selling_price_with_tax
