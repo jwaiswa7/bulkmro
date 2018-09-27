@@ -10,7 +10,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :first_name
       t.string :last_name
       t.string :mobile
-      t.string :telephone
+      # t.string :telephone
       t.string :designation
       t.string :identifier
       t.string :department
