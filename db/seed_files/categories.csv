@@ -1,46 +1,46 @@
-id,name,description,parent_id,meta_title,meta_keyword,meta_description,hsn_code,active
+id,name,description,parent_id, Meta Title , Meta Keywords , Meta Description ,hsn_code, Active 
 1,Root Catalog,,0,,,,,
 2,Default Category,,1,,,,,1
-3,Abrasives,"A large assortment of Abrasive Materials and Accessories including discs, belts, bands, rolls, hand pads, sharpening stones, mounting points, grinding wheels, polishers and more. The products come with the best price guarantee and from the most trusted brands and sellers like 3M, Groz, Norton, Bosch, Bipico. ",2,,,"A large assortment of Abrasive Materials and Accessories including discs, belts, bands, rolls, hand pads, sharpening stones, mounting points, grinding wheels, polishers and more. The products come with the best price guarantee and from the most trusted brands and sellers like 3M, Groz, Norton, Bosch, Bipico.",,1
-68,Adhesives,"Purchase high quality adhesives including tapes, glue, concrete, putties, dispensing guns and sealants. You can buy our products from the best brands like 3M, Dap, Devcon, Loctite, Hercules, Aeroflex and many more without compromising on their efficiency.",2,,,"Purchase high quality adhesives including tapes, glue, concrete, putties, dispensing guns and sealants. You can buy our products from the best brands like 3M, Dap, Devcon, Loctite, Hercules, Aeroflex and many more without compromising on their efficiency.",,1
-107,Cleaning Equipment,"We offer a complete range of cleaning accessories and equipments from mops, wipes and trash bags to Chemicals, and Janitorial, Recycling and flooring equipment. Purchase from our list of quality brands such as 3M, Ability one, Rubbermade, Earth Friendly Products.",2,,,"We offer a complete range of cleaning accessories and equipments from mops, wipes and trash bags to Chemicals, and Janitorial, Recycling and flooring equipment. Purchase from our list of quality brands such as 3M, Ability one, Rubbermade, Earth Friendly Products.
+3,Abrasives,A large assortment of Abrasive Materials and Accessories including discs&#44; belts&#44; bands&#44; rolls&#44; hand pads&#44; sharpening stones&#44; mounting points&#44; grinding wheels&#44; polishers and more. The products come with the best price guarantee and from the most trusted brands and sellers like 3M&#44; Groz&#44; Norton&#44; Bosch&#44; Bipico. ,2,,,A large assortment of Abrasive Materials and Accessories including discs&#44; belts&#44; bands&#44; rolls&#44; hand pads&#44; sharpening stones&#44; mounting points&#44; grinding wheels&#44; polishers and more. The products come with the best price guarantee and from the most trusted brands and sellers like 3M&#44; Groz&#44; Norton&#44; Bosch&#44; Bipico.,,1
+68,Adhesives,Purchase high quality adhesives including tapes&#44; glue&#44; concrete&#44; putties&#44; dispensing guns and sealants. You can buy our products from the best brands like 3M&#44; Dap&#44; Devcon&#44; Loctite&#44; Hercules&#44; Aeroflex and many more without compromising on their efficiency.,2,,,Purchase high quality adhesives including tapes&#44; glue&#44; concrete&#44; putties&#44; dispensing guns and sealants. You can buy our products from the best brands like 3M&#44; Dap&#44; Devcon&#44; Loctite&#44; Hercules&#44; Aeroflex and many more without compromising on their efficiency.,,1
+107,Cleaning Equipment,We offer a complete range of cleaning accessories and equipments from mops&#44; wipes and trash bags to Chemicals&#44; and Janitorial&#44; Recycling and flooring equipment. Purchase from our list of quality brands such as 3M&#44; Ability one&#44; Rubbermade&#44; Earth Friendly Products.,2,,,"We offer a complete range of cleaning accessories and equipments from mops&#44; wipes and trash bags to Chemicals&#44; and Janitorial&#44; Recycling and flooring equipment. Purchase from our list of quality brands such as 3M&#44; Ability one&#44; Rubbermade&#44; Earth Friendly Products.
 ",,1
-225,Electrical Equipment,"Discover a wide variety of the best Electrical equipment with us including wire and cables, switches, distribution equipment, enclosures, encoders, lighting control systems, Raceways, Relays, Voltage Regulators, Counters, plugs, solar panels, accessories and more.  The products come from the most trusted brands like Groz, Cablofil, Cope, Hoffman, Kellems and many more",2,,,"Discover a wide variety of the best Electrical equipment with us including wire and cables, switches, distribution equipment, enclosures, encoders, lighting control systems, Raceways, Relays, Voltage Regulators, Counters, plugs, solar panels, accessories and more.  The products come from the most trusted brands like Groz, Cablofil, Cope, Hoffman, Kellems and many more
+225,Electrical Equipment,Discover a wide variety of the best Electrical equipment with us including wire and cables&#44; switches&#44; distribution equipment&#44; enclosures&#44; encoders&#44; lighting control systems&#44; Raceways&#44; Relays&#44; Voltage Regulators&#44; Counters&#44; plugs&#44; solar panels&#44; accessories and more.  The products come from the most trusted brands like Groz&#44; Cablofil&#44; Cope&#44; Hoffman&#44; Kellems and many more,2,,,"Discover a wide variety of the best Electrical equipment with us including wire and cables&#44; switches&#44; distribution equipment&#44; enclosures&#44; encoders&#44; lighting control systems&#44; Raceways&#44; Relays&#44; Voltage Regulators&#44; Counters&#44; plugs&#44; solar panels&#44; accessories and more.  The products come from the most trusted brands like Groz&#44; Cablofil&#44; Cope&#44; Hoffman&#44; Kellems and many more
 ",,1
-536,Electronics and Batteries,"Purchase battery chargers, portable and rechargeable batteries, adapters, headphones, kitchen equipment, phones and phone accessories, digital screens, TVs, display signs, speakers, megaphones and intercom and PA system from our trusted sellers like 3M, Quam-Nichols, Duracell, Energizer, Adaptive micro systems, Lenmar",2,,,"Purchase battery chargers, portable and rechargeable batteries, adapters, headphones, kitchen equipment, phones and phone accessories, digital screens, TVs, display signs, speakers, megaphones and intercom and PA system from our trusted sellers like 3M, Quam-Nichols, Duracell, Energizer, Adaptive micro systems, Lenmar",,1
-567,Fasteners,"We sell a wide variety of key stocks, washers, anchors, nuts, bolts, hooks, nails, screws, spacers and standoffs from the best sellers like Groz, Hitachi, Apex, Armor coat, Micro Plastics and many more",2,,,"We sell a wide variety of key stocks, washers, anchors, nuts, bolts, hooks, nails, screws, spacers and standoffs from the best sellers like Groz, Hitachi, Apex, Armor coat, Micro Plastics and many more",,1
-706,Furniture and Hospitality,"We offer a variety of furnitures, Cooking ware, Gymnasium and Pool Equipment and games with the best price guarantee. Purchase from our list of quality sellers such as Ability one, Carlisle Dinex,  Brava, Chef revival, Triactive Fitness",2,,,"We offer a variety of furnitures, Cooking ware, Gymnasium and Pool Equipment and games with the best price guarantee. Purchase from our list of quality sellers such as Ability one, Carlisle Dinex,  Brava, Chef revival, Triactive Fitness",,1
-930,Hand Tools,"Various brands like Apex, Baker, Bausch & Lomb, Johnson, Kellems, greenlee offer an extensive selection of hand tools including Vises, Measuring and Layout tools, Plastering tools, Screwdrivers, Benders, Clamps, Inspection tools, Marking tools, Cutting tools and Safety tools",2,,,"Various brands like Apex, Baker, Bausch & Lomb, Johnson, Kellems, greenlee offer an extensive selection of hand tools including Vises, Measuring and Layout tools, Plastering tools, Screwdrivers, Benders, Clamps, Inspection tools, Marking tools, Cutting tools and Safety tools
+536,Electronics and Batteries,Purchase battery chargers&#44; portable and rechargeable batteries&#44; adapters&#44; headphones&#44; kitchen equipment&#44; phones and phone accessories&#44; digital screens&#44; TVs&#44; display signs&#44; speakers&#44; megaphones and intercom and PA system from our trusted sellers like 3M&#44; Quam-Nichols&#44; Duracell&#44; Energizer&#44; Adaptive micro systems&#44; Lenmar,2,,,Purchase battery chargers&#44; portable and rechargeable batteries&#44; adapters&#44; headphones&#44; kitchen equipment&#44; phones and phone accessories&#44; digital screens&#44; TVs&#44; display signs&#44; speakers&#44; megaphones and intercom and PA system from our trusted sellers like 3M&#44; Quam-Nichols&#44; Duracell&#44; Energizer&#44; Adaptive micro systems&#44; Lenmar,,1
+567,Fasteners,We sell a wide variety of key stocks&#44; washers&#44; anchors&#44; nuts&#44; bolts&#44; hooks&#44; nails&#44; screws&#44; spacers and standoffs from the best sellers like Groz&#44; Hitachi&#44; Apex&#44; Armor coat&#44; Micro Plastics and many more,2,,,We sell a wide variety of key stocks&#44; washers&#44; anchors&#44; nuts&#44; bolts&#44; hooks&#44; nails&#44; screws&#44; spacers and standoffs from the best sellers like Groz&#44; Hitachi&#44; Apex&#44; Armor coat&#44; Micro Plastics and many more,,1
+706,Furniture and Hospitality,We offer a variety of furnitures&#44; Cooking ware&#44; Gymnasium and Pool Equipment and games with the best price guarantee. Purchase from our list of quality sellers such as Ability one&#44; Carlisle Dinex&#44;  Brava&#44; Chef revival&#44; Triactive Fitness,2,,,We offer a variety of furnitures&#44; Cooking ware&#44; Gymnasium and Pool Equipment and games with the best price guarantee. Purchase from our list of quality sellers such as Ability one&#44; Carlisle Dinex&#44;  Brava&#44; Chef revival&#44; Triactive Fitness,,1
+930,Hand Tools,Various brands like Apex&#44; Baker&#44; Bausch & Lomb&#44; Johnson&#44; Kellems&#44; greenlee offer an extensive selection of hand tools including Vises&#44; Measuring and Layout tools&#44; Plastering tools&#44; Screwdrivers&#44; Benders&#44; Clamps&#44; Inspection tools&#44; Marking tools&#44; Cutting tools and Safety tools,2,,,"Various brands like Apex&#44; Baker&#44; Bausch & Lomb&#44; Johnson&#44; Kellems&#44; greenlee offer an extensive selection of hand tools including Vises&#44; Measuring and Layout tools&#44; Plastering tools&#44; Screwdrivers&#44; Benders&#44; Clamps&#44; Inspection tools&#44; Marking tools&#44; Cutting tools and Safety tools
 ",,1
-1241,Hardware,"The hardware store offers a vast selection of Latches, hinges, braces, cabinet hardware, magnets, springs and many more hardware supplies.
-The best tools are made by the best brands such as 3M, Marlboro, Master lock, Chicago hardware",2,,,"The hardware store offers a vast selection of Latches, hinges, braces, cabinet hardware, magnets, springs and many more hardware supplies.
-The best tools are made by the best brands such as 3M, Marlboro, Master lock, Chicago hardware",,1
-1333,HVAC,"At bulkMRO you will find plenty of HVAC products and accessories including HVAC Controls, Electric heaters, Gas Heaters, Exhaust Fans, Oil heaters, Duct Fans, HVAC Test Instruments. Search through the list of sellers including Anchor Penta, Bell & Gossett, Honeywell, Frigidaire, Hercules to find the exact fit for your needs",2,,,"At bulkMRO you will find plenty of HVAC products and accessories including HVAC Controls, Electric heaters, Gas Heaters, Exhaust Fans, Oil heaters, Duct Fans, HVAC Test Instruments. Search through the list of sellers including Anchor Penta, Bell & Gossett, Honeywell, Frigidaire, Hercules to find the exact fit for your needs",,1
-1542,Hydraulics,"Purchase good quality Hydraulic Hoses, Motors, Tools, Filtration, System components and more products from our hydraulics store. You can buy our products from the best brands like Aeroflex, Dowells.",2,,,"Purchase good quality Hydraulic Hoses, Motors, Tools, Filtration, System components and more products from our hydraulics store. You can buy our products from the best brands like Aeroflex, Dowells
+1241,Hardware,"The hardware store offers a vast selection of Latches&#44; hinges&#44; braces&#44; cabinet hardware&#44; magnets&#44; springs and many more hardware supplies.
+The best tools are made by the best brands such as 3M&#44; Marlboro&#44; Master lock&#44; Chicago hardware",2,,,"The hardware store offers a vast selection of Latches&#44; hinges&#44; braces&#44; cabinet hardware&#44; magnets&#44; springs and many more hardware supplies.
+The best tools are made by the best brands such as 3M&#44; Marlboro&#44; Master lock&#44; Chicago hardware",,1
+1333,HVAC,At bulkMRO you will find plenty of HVAC products and accessories including HVAC Controls&#44; Electric heaters&#44; Gas Heaters&#44; Exhaust Fans&#44; Oil heaters&#44; Duct Fans&#44; HVAC Test Instruments. Search through the list of sellers including Anchor Penta&#44; Bell & Gossett&#44; Honeywell&#44; Frigidaire&#44; Hercules to find the exact fit for your needs,2,,,At bulkMRO you will find plenty of HVAC products and accessories including HVAC Controls&#44; Electric heaters&#44; Gas Heaters&#44; Exhaust Fans&#44; Oil heaters&#44; Duct Fans&#44; HVAC Test Instruments. Search through the list of sellers including Anchor Penta&#44; Bell & Gossett&#44; Honeywell&#44; Frigidaire&#44; Hercules to find the exact fit for your needs,,1
+1542,Hydraulics,Purchase good quality Hydraulic Hoses&#44; Motors&#44; Tools&#44; Filtration&#44; System components and more products from our hydraulics store. You can buy our products from the best brands like Aeroflex&#44; Dowells.,2,,,"Purchase good quality Hydraulic Hoses&#44; Motors&#44; Tools&#44; Filtration&#44; System components and more products from our hydraulics store. You can buy our products from the best brands like Aeroflex&#44; Dowells
 ",,1
-1580,Lab Supplies,"We offer a complete range of Lab supplies including Lab diagnostics and filtration products, Lab Ware and utensils, water purification and quality systems, fume hood and accessories, lab chemicals, lab consumables, lab equipment, lab instruments, lab storage, physical test equipment and many more accessories from our sellers Abdos, Borosil, Orbeco.",2,,,"We offer a complete range of Lab supplies including Lab diagnostics and filtration products, Lab Ware and utensils, water purification and quality systems, fume hood and accessories, lab chemicals, lab consumables, lab equipment, lab instruments, lab storage, physical test equipment and many more accessories from our sellers Abdos, Borosil, Orbeco
+1580,Lab Supplies,We offer a complete range of Lab supplies including Lab diagnostics and filtration products&#44; Lab Ware and utensils&#44; water purification and quality systems&#44; fume hood and accessories&#44; lab chemicals&#44; lab consumables&#44; lab equipment&#44; lab instruments&#44; lab storage&#44; physical test equipment and many more accessories from our sellers Abdos&#44; Borosil&#44; Orbeco.,2,,,"We offer a complete range of Lab supplies including Lab diagnostics and filtration products&#44; Lab Ware and utensils&#44; water purification and quality systems&#44; fume hood and accessories&#44; lab chemicals&#44; lab consumables&#44; lab equipment&#44; lab instruments&#44; lab storage&#44; physical test equipment and many more accessories from our sellers Abdos&#44; Borosil&#44; Orbeco
 ",,1
-1713,Lighting,"Choose from a collection of Lighting products and services including Flashlights, Portable lights, Outdoor area fixtures, Task lights, Ballast, Emergency lighting,Fixtures, Hazardous location accessories, HID fixtures, Lamps, Led lights, Lighting recycling and Site lighting from the best brands like Bosch, Bright Star, Britelite, Coast, Dewalt.",2,,,"Choose from a collection of Lighting products and services including Flashlights, Portable lights, Outdoor area fixtures, Task lights, Ballast, Emergency lighting,Fixtures, Hazardous location accessories, HID fixtures, Lamps, Led lights, Lighting recycling and Site lighting from the best brands like Bosch, Bright Star, Britelite, Coast, Dewalt.",,1
-1789,Lubrication,"We sell good quality Lubricants, Fitting products, Lubricant Storage and Lubricators from our trusted sellers Blaster, CRC, Jet Lube, Petrochem, Renewable Lubricant and many more",2,,,"We sell good quality Lubricants, Fitting products, Lubricant Storage and Lubricators from our trusted sellers Blaster, CRC, Jet Lube, Petrochem, Renewable Lubricant and many more",,1
-1814,Machining,"Purchase from a large collection of Machining tools and accessories including Lathe Tools and accessories, machinery supplies, shop supplies, finishing supplies, inserts, machine cutting tools and more from the best sellers such as Apex, Centaur, Crystal, Groz",2,,,"Purchase from a large collection of Machining tools and accessories including Lathe Tools and accessories, machinery supplies, shop supplies, finishing supplies, inserts, machine cutting tools and more from the best sellers such as Apex, Centaur, Crystal, Groz",,1
-1874,Material Handling ,"A wide assortment of Lifting magnets, movers and dollies, shelving and storage racks, shipping supplies, slings, stock picking carts, storage and transport carts, storage lockers, stretch wrap equipment, structures, cartons, carts, cabinets, ladders and two wheelers is available on bulkMRO. These products come from the best brands like B&P Manufacturing, Bosch, Groz, Hamilton",2,,,"A wide assortment of Lifting magnets, movers and dollies, shelving and storage racks, shipping supplies, slings, stock picking carts, storage and transport carts, storage lockers, stretch wrap equipment, structures, cartons, carts, cabinets, ladders and two wheelers is available on bulkMRO. These products come from the best brands like B&P Manufacturing, Bosch, Groz, Hamilton",,1
-2266,Motors,"Good quality HVAC Motors, AC Motors, DC Motors, Motor Supplies and Pump motors available at our store with the best price guarantee and the most trusted sellers like Century, Autonics, Franklin",2,,,"Good quality HVAC Motors, AC Motors, DC Motors, Motor Supplies and Pump motors available at our store with the best price guarantee and the most trusted sellers like Century, Autonics, Franklin",,1
-2335,Office Supplies,"We have with us everything to keep your work station organised from clips and notebooks to Laminating and binding equipment. Purchase from a huge collection of organizers, files, folders, calculators, computer supplies accessories and many more from our best brands including Klein tools, Ability One, Pentaflex and more",2,,,"We have with us everything to keep your work station organised from clips and notebooks to Laminating and binding equipment. Purchase from a huge collection of organizers, files, folders, calculators, computer supplies accessories and many more from our best brands including Klein tools, Ability One, Pentaflex and more
+1713,Lighting,Choose from a collection of Lighting products and services including Flashlights&#44; Portable lights&#44; Outdoor area fixtures&#44; Task lights&#44; Ballast&#44; Emergency lighting&#44;Fixtures&#44; Hazardous location accessories&#44; HID fixtures&#44; Lamps&#44; Led lights&#44; Lighting recycling and Site lighting from the best brands like Bosch&#44; Bright Star&#44; Britelite&#44; Coast&#44; Dewalt.,2,,,Choose from a collection of Lighting products and services including Flashlights&#44; Portable lights&#44; Outdoor area fixtures&#44; Task lights&#44; Ballast&#44; Emergency lighting&#44;Fixtures&#44; Hazardous location accessories&#44; HID fixtures&#44; Lamps&#44; Led lights&#44; Lighting recycling and Site lighting from the best brands like Bosch&#44; Bright Star&#44; Britelite&#44; Coast&#44; Dewalt.,,1
+1789,Lubrication,We sell good quality Lubricants&#44; Fitting products&#44; Lubricant Storage and Lubricators from our trusted sellers Blaster&#44; CRC&#44; Jet Lube&#44; Petrochem&#44; Renewable Lubricant and many more,2,,,We sell good quality Lubricants&#44; Fitting products&#44; Lubricant Storage and Lubricators from our trusted sellers Blaster&#44; CRC&#44; Jet Lube&#44; Petrochem&#44; Renewable Lubricant and many more,,1
+1814,Machining,Purchase from a large collection of Machining tools and accessories including Lathe Tools and accessories&#44; machinery supplies&#44; shop supplies&#44; finishing supplies&#44; inserts&#44; machine cutting tools and more from the best sellers such as Apex&#44; Centaur&#44; Crystal&#44; Groz,2,,,Purchase from a large collection of Machining tools and accessories including Lathe Tools and accessories&#44; machinery supplies&#44; shop supplies&#44; finishing supplies&#44; inserts&#44; machine cutting tools and more from the best sellers such as Apex&#44; Centaur&#44; Crystal&#44; Groz,,1
+1874,Material Handling ,A wide assortment of Lifting magnets&#44; movers and dollies&#44; shelving and storage racks&#44; shipping supplies&#44; slings&#44; stock picking carts&#44; storage and transport carts&#44; storage lockers&#44; stretch wrap equipment&#44; structures&#44; cartons&#44; carts&#44; cabinets&#44; ladders and two wheelers is available on bulkMRO. These products come from the best brands like B&P Manufacturing&#44; Bosch&#44; Groz&#44; Hamilton,2,,,A wide assortment of Lifting magnets&#44; movers and dollies&#44; shelving and storage racks&#44; shipping supplies&#44; slings&#44; stock picking carts&#44; storage and transport carts&#44; storage lockers&#44; stretch wrap equipment&#44; structures&#44; cartons&#44; carts&#44; cabinets&#44; ladders and two wheelers is available on bulkMRO. These products come from the best brands like B&P Manufacturing&#44; Bosch&#44; Groz&#44; Hamilton,,1
+2266,Motors,Good quality HVAC Motors&#44; AC Motors&#44; DC Motors&#44; Motor Supplies and Pump motors available at our store with the best price guarantee and the most trusted sellers like Century&#44; Autonics&#44; Franklin,2,,,Good quality HVAC Motors&#44; AC Motors&#44; DC Motors&#44; Motor Supplies and Pump motors available at our store with the best price guarantee and the most trusted sellers like Century&#44; Autonics&#44; Franklin,,1
+2335,Office Supplies,We have with us everything to keep your work station organised from clips and notebooks to Laminating and binding equipment. Purchase from a huge collection of organizers&#44; files&#44; folders&#44; calculators&#44; computer supplies accessories and many more from our best brands including Klein tools&#44; Ability One&#44; Pentaflex and more,2,,,"We have with us everything to keep your work station organised from clips and notebooks to Laminating and binding equipment. Purchase from a huge collection of organizers&#44; files&#44; folders&#44; calculators&#44; computer supplies accessories and many more from our best brands including Klein tools&#44; Ability One&#44; Pentaflex and more
 ",,1
-2454,Outdoor Equipment,"We sell the best quality outdoor tools and equipment including Shovels, digging tools, cutting tools, sprayers, sprinkler system, and also pest control, camping and soil treatment from our sellers like Vortex,Ergodyne",2,,,"We sell the best quality outdoor tools and equipment including Shovels, digging tools, cutting tools, sprayers, sprinkler system, and also pest control, camping and soil treatment from our sellers like Vortex,Ergodyne",,1
+2454,Outdoor Equipment,We sell the best quality outdoor tools and equipment including Shovels&#44; digging tools&#44; cutting tools&#44; sprayers&#44; sprinkler system&#44; and also pest control&#44; camping and soil treatment from our sellers like Vortex&#44;Ergodyne,2,,,We sell the best quality outdoor tools and equipment including Shovels&#44; digging tools&#44; cutting tools&#44; sprayers&#44; sprinkler system&#44; and also pest control&#44; camping and soil treatment from our sellers like Vortex&#44;Ergodyne,,1
 2471,Paint and Supplies,,2,,,,,0
-2478,Plumbing,"Choose from a list of plumbing supplies including gaskets, toilets, tube fittings, drains, faucets, valves and water treatment. These products come from the best brands like American Standard, Bemis, Centoco and more",2,,,"Choose from a list of plumbing supplies including gaskets, toilets, tube fittings, drains, faucets, valves, Liquid Level Guages, Pipe Fittings and Couplings and water treatment. These products come from the best brands like American Standard, Bemis, Centoco and more",,1
-2753,Pneumatics,"Various brands at best prices like Aeroflex, Alpha Fittings, Aro and Numatics sell the best quality Compressors, vacuum pumps, hoses, pneumatic tools and compressed air equipment in bulkMRO",2,,,"Various brands at best prices like Aeroflex, Alpha Fittings, Aro and Numatics sell the best quality Compressors, vacuum pumps, hoses, pneumatic tools and compressed air equipment in bulkMRO",,1
-2805,Power Tools,"Discover a selection of the best quality Power drills, heat guns, cordless tools, drain cleaning supplies, drilling accessories, finishing tools, power shears, routers and many more from the best sellers like Black and Decker, Bosch, Dewalt",2,,,"Discover a selection of the best quality Power drills, heat guns, cordless tools, drain cleaning supplies, drilling accessories, finishing tools, power shears, routers and many more from the best sellers like Black and Decker, Bosch, Dewalt",,1
-2937,Power Transmission,"Purchase high quality Vibrators, Coupling, Power Transmission belts and bearings at bulkMRO from our sellers Aegis, Barden, Bunting Bearings and Hub city",2,,,"Purchase high quality Vibrators, Coupling, Power Transmission belts and bearings at bulkMRO from our sellers Aegis, Barden, Bunting Bearings and Hub city",,1
-2953,Pumps,"We sell good quality Barrel Pumps, Pump Accessories, Pump Controls and Centrifugal Pumps from a list of quality brands including Barns, Franklin, Goulds water technology and Little Giant",2,,,"We sell good quality Barrel Pumps, Pump Accessories, Pump Controls and Centrifugal Pumps from a list of quality brands including Barns, Franklin, Goulds water technology and Little Giant
+2478,Plumbing,Choose from a list of plumbing supplies including gaskets&#44; toilets&#44; tube fittings&#44; drains&#44; faucets&#44; valves and water treatment. These products come from the best brands like American Standard&#44; Bemis&#44; Centoco and more,2,,,Choose from a list of plumbing supplies including gaskets&#44; toilets&#44; tube fittings&#44; drains&#44; faucets&#44; valves&#44; Liquid Level Guages&#44; Pipe Fittings and Couplings and water treatment. These products come from the best brands like American Standard&#44; Bemis&#44; Centoco and more,,1
+2753,Pneumatics,Various brands at best prices like Aeroflex&#44; Alpha Fittings&#44; Aro and Numatics sell the best quality Compressors&#44; vacuum pumps&#44; hoses&#44; pneumatic tools and compressed air equipment in bulkMRO,2,,,Various brands at best prices like Aeroflex&#44; Alpha Fittings&#44; Aro and Numatics sell the best quality Compressors&#44; vacuum pumps&#44; hoses&#44; pneumatic tools and compressed air equipment in bulkMRO,,1
+2805,Power Tools,Discover a selection of the best quality Power drills&#44; heat guns&#44; cordless tools&#44; drain cleaning supplies&#44; drilling accessories&#44; finishing tools&#44; power shears&#44; routers and many more from the best sellers like Black and Decker&#44; Bosch&#44; Dewalt,2,,,Discover a selection of the best quality Power drills&#44; heat guns&#44; cordless tools&#44; drain cleaning supplies&#44; drilling accessories&#44; finishing tools&#44; power shears&#44; routers and many more from the best sellers like Black and Decker&#44; Bosch&#44; Dewalt,,1
+2937,Power Transmission,Purchase high quality Vibrators&#44; Coupling&#44; Power Transmission belts and bearings at bulkMRO from our sellers Aegis&#44; Barden&#44; Bunting Bearings and Hub city,2,,,Purchase high quality Vibrators&#44; Coupling&#44; Power Transmission belts and bearings at bulkMRO from our sellers Aegis&#44; Barden&#44; Bunting Bearings and Hub city,,1
+2953,Pumps,We sell good quality Barrel Pumps&#44; Pump Accessories&#44; Pump Controls and Centrifugal Pumps from a list of quality brands including Barns&#44; Franklin&#44; Goulds water technology and Little Giant,2,,,"We sell good quality Barrel Pumps&#44; Pump Accessories&#44; Pump Controls and Centrifugal Pumps from a list of quality brands including Barns&#44; Franklin&#44; Goulds water technology and Little Giant
 ",,1
-2963,Safety,"A large collection of safety products including Fire fighting suits, Fire protection equipment, gas detection, hand protection, head protection, portable coolers, medical diagnostics, noise control equipment and more. Buy these products at bulkMRO from the most trusted brands",2,,,"A large collection of safety products including Fire fighting suits, Fire protection equipment, gas detection, hand protection, head protection, portable coolers, medical diagnostics, noise control equipment and more. Buy these products at bulkMRO from the most trusted brands",,1
-3434,Security,"Ensure more security with our products including scanners, security alarms, barriers, locking systems, personal defence and more. Buy these products at bulkMRO from our trusted sellers such as Abus, Ability One, Altronix and American Lock",2,,,"Ensure more security with our products including scanners, security alarms, barriers, locking systems, personal defence and more. Buy these products at bulkMRO from our trusted sellers such as Abus, Ability One, Altronix and American Lock",,1
-3489,Test Equipment,"Purchase high quality test equipment for Air distribution, testing, power testing, pressure measuring, process monitoring and bench testing from our sellers like 3M, B&K Precision, Greenlee and Honeywell",2,,,"Purchase high quality test equipment for Air distribution, testing, power testing, pressure measuring, process monitoring and bench testing from our sellers like 3M, B&K Precision, Greenlee and Honeywell",,1
-3595,Vehicle Maintenance,"We sell high quality tools for vehicle maintenance including lifting tools, maintenance tools, tires, garage equipment and inspection tools. The tools come with the best price guarantee and from the most trusted brands",2,,,"We sell high quality tools for vehicle maintenance including lifting tools, maintenance tools, tires, garage equipment and inspection tools. The tools come with the best price guarantee and from the most trusted brands",,1
-3737,Welding Equipment,"Buy the best quality Fume extractors, supplies, arc welding consumables, arc welding cutters, rods, wire and soldering equipment from bulkMRO. The best brands like Mag-mate, Markal, Reelcraft, Pace, Master Appliance sell the best products",2,,,"Buy the best quality Fume extractors, supplies, arc welding consumables, arc welding cutters, rods, wire and soldering equipment from bulkMRO. The best brands like Mag-mate, Markal, Reelcraft, Pace, Master Appliance sell the best products",,1
-4763,Raw Materials,"Buy Alloy steel, carbon steel, plastics, rubber, stainless steel at bulkMRO. The materials come with the best price guarantee and from the most trusted brands",2,,,"Buy Alloy steel, carbon steel, plastics, rubber, stainless steel at bulkMRO. The materials come with the best price guarantee and from the most trusted brands",,1
+2963,Safety,A large collection of safety products including Fire fighting suits&#44; Fire protection equipment&#44; gas detection&#44; hand protection&#44; head protection&#44; portable coolers&#44; medical diagnostics&#44; noise control equipment and more. Buy these products at bulkMRO from the most trusted brands,2,,,A large collection of safety products including Fire fighting suits&#44; Fire protection equipment&#44; gas detection&#44; hand protection&#44; head protection&#44; portable coolers&#44; medical diagnostics&#44; noise control equipment and more. Buy these products at bulkMRO from the most trusted brands,,1
+3434,Security,Ensure more security with our products including scanners&#44; security alarms&#44; barriers&#44; locking systems&#44; personal defence and more. Buy these products at bulkMRO from our trusted sellers such as Abus&#44; Ability One&#44; Altronix and American Lock,2,,,Ensure more security with our products including scanners&#44; security alarms&#44; barriers&#44; locking systems&#44; personal defence and more. Buy these products at bulkMRO from our trusted sellers such as Abus&#44; Ability One&#44; Altronix and American Lock,,1
+3489,Test Equipment,Purchase high quality test equipment for Air distribution&#44; testing&#44; power testing&#44; pressure measuring&#44; process monitoring and bench testing from our sellers like 3M&#44; B&K Precision&#44; Greenlee and Honeywell,2,,,Purchase high quality test equipment for Air distribution&#44; testing&#44; power testing&#44; pressure measuring&#44; process monitoring and bench testing from our sellers like 3M&#44; B&K Precision&#44; Greenlee and Honeywell,,1
+3595,Vehicle Maintenance,We sell high quality tools for vehicle maintenance including lifting tools&#44; maintenance tools&#44; tires&#44; garage equipment and inspection tools. The tools come with the best price guarantee and from the most trusted brands,2,,,We sell high quality tools for vehicle maintenance including lifting tools&#44; maintenance tools&#44; tires&#44; garage equipment and inspection tools. The tools come with the best price guarantee and from the most trusted brands,,1
+3737,Welding Equipment,Buy the best quality Fume extractors&#44; supplies&#44; arc welding consumables&#44; arc welding cutters&#44; rods&#44; wire and soldering equipment from bulkMRO. The best brands like Mag-mate&#44; Markal&#44; Reelcraft&#44; Pace&#44; Master Appliance sell the best products,2,,,Buy the best quality Fume extractors&#44; supplies&#44; arc welding consumables&#44; arc welding cutters&#44; rods&#44; wire and soldering equipment from bulkMRO. The best brands like Mag-mate&#44; Markal&#44; Reelcraft&#44; Pace&#44; Master Appliance sell the best products,,1
+4763,Raw Materials,Buy Alloy steel&#44; carbon steel&#44; plastics&#44; rubber&#44; stainless steel at bulkMRO. The materials come with the best price guarantee and from the most trusted brands,2,,,Buy Alloy steel&#44; carbon steel&#44; plastics&#44; rubber&#44; stainless steel at bulkMRO. The materials come with the best price guarantee and from the most trusted brands,,1
 5036,V Belt,,2,,,,,0
 5059,Freight,,2,,,,,0
 5061,Packing and Forwarding,,2,,,,,0
@@ -76,7 +76,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 50,Tumblers and Accessories,,3,,,,6804,1
 55,Wheels,,3,,,,6804,1
 69,Dispensing Guns,,68,,,,3506,1
-74,"Glue, Concrete and Cement",,68,,,,3506,1
+74,Glue&#44; Concrete and Cement,,68,,,,3506,1
 84,Sealants,,68,,,,3920,1
 89,Sealants and Putties,,68,,,,3917,1
 91,Tapes,,68,,,,3920,1
@@ -348,7 +348,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2534,Float Valves and Accessories,,2478,,,,3926,1
 2539,Flow Control Valves,,2478,,,,7318,1
 2553,Flush Valves,,2478,,,,3922,1
-2558,"Hoses, Bibs and Hydrants",,2478,,,,7318,1
+2558,Hoses&#44; Bibs and Hydrants,,2478,,,,7318,1
 2567,Liquid Level Guages,,2478,,,,7326,1
 2572,Pipe and Tubing,,2478,,,,7306,1
 2627,Pipe Fittings and Couplings,,2478,,,,3917,1
@@ -623,7 +623,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 8,Abrasive Test Kits,,4,,,,,1
 9,Assemblies,,4,,,,,1
 10,Expanding Drums,,4,,,,,1
-11,"Face Plates, Hubs",,4,,,,,1
+11,Face Plates&#44; Hubs,,4,,,,,1
 12,Pad Holder,,4,,,,,1
 14,Band and Roll Kits,,13,,,,,0
 15,Bands,,13,,,,,1
@@ -636,7 +636,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 23,Rolls and Kits,,17,,,,,1
 24,Sanding Belts,,17,,,,,1
 26,Hand Pad Rolls,,25,,,,,1
-27,"Hand Pads, Sponges and Sets",,25,,,,,1
+27,Hand Pads&#44; Sponges and Sets,,25,,,,,1
 28,Steel Wool,,25,,,,,0
 30,Mounted Kits,,29,,,,,1
 31,Mounted Points,,29,,,,,1
@@ -709,7 +709,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 111,Brushes,,108,,,,,1
 112,Coloured Brushes,,108,,,,,1
 113,Dust Pans,,108,,,,,1
-114,"Handles, Frames and Braces",,108,,,,,1
+114,Handles&#44; Frames and Braces,,108,,,,,1
 115,Kitchen and Food Service Brushes,,108,,,,,1
 116,Miscellaneous Rollers and Brushes,,108,,,,,1
 117,Pickers,,108,,,,,1
@@ -718,7 +718,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 120,Toilet Brushes,,108,,,,,1
 121,Utility Brushes,,108,,,,,1
 122,Vehicle Cleaning Brushes,,108,,,,,1
-124,"Bathroom, Toilet and Drain Cleaners",,123,,,,,1
+124,Bathroom&#44; Toilet and Drain Cleaners,,123,,,,,1
 125,Chemical Dispensers,,123,,,,,1
 126,Control System Chemicals,,123,,,,,0
 127,Dishwashing Detergents,,123,,,,,1
@@ -785,7 +785,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 198,Toilet Seat Covers,,194,,,,,0
 200,Hand Sanitizers and Soap,,199,,,,,1
 201,Hygiene Products,,199,,,,,1
-202,"Lotions, Creams and Balms",,199,,,,,1
+202,Lotions&#44; Creams and Balms,,199,,,,,1
 203,Shampoo and Body Wash,,199,,,,,1
 204,Toothpaste and Razors,,199,,,,,1
 205,Wipes,,199,,,,,0
@@ -805,10 +805,10 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 223,Towels,,218,,,,,1
 224,Wipe Dispensers,,218,,,,,1
 227,Electrical Boxes and Accessories,,226,,,,,1
-228,"Floor Boxes, Covers and Accessories",,226,,,,,1
+228,Floor Boxes&#44; Covers and Accessories,,226,,,,,1
 229,Hazardous Location Electrical Boxes,,226,,,,,1
 230,Weatherproof Boxes and Covers,,226,,,,,1
-231,"Weatherproof Boxes, Covers and Accessories",,226,,,,,1
+231,Weatherproof Boxes&#44; Covers and Accessories,,226,,,,,1
 233,Channel Accessories,,232,,,,,1
 234,Channels,,232,,,,,1
 235,Clamps,,232,,,,,1
@@ -876,7 +876,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 304,GFCI Receptacles,,303,,,,,1
 305,Portable and Hard Wired GFCI,,303,,,,,1
 306,Power Stations,,303,,,,,1
-307,"Temporary Power Distribution Boxes, Carts and Accessories",,303,,,,,1
+307,Temporary Power Distribution Boxes&#44; Carts and Accessories,,303,,,,,1
 309,ANL and ANN Limiter Fuses,,308,,,,,1
 310,Automotice Fuses,,308,,,,,1
 311,Ceramic Fuses,,308,,,,,1
@@ -1000,7 +1000,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 441,Strain Relief Connectors and Grips,,437,,,,,1
 443,Cable Pull Switches,,442,,,,,1
 444,CAM Switches,,442,,,,,1
-445,"Door, Key and Rotary Switches",,442,,,,,1
+445,Door&#44; Key and Rotary Switches,,442,,,,,1
 446,Fiber Optic Sensors,,442,,,,,1
 447,Foot Switches,,442,,,,,1
 448,Hazardous Location Switches and Accessories,,442,,,,,1
@@ -1039,7 +1039,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 484,Defrost Timer,,483,,,,,1
 485,Electromechanical Timers,,483,,,,,1
 486,Electronic Timers,,483,,,,,1
-487,"Lighting, Cycle and Other Timers",,483,,,,,1
+487,Lighting&#44; Cycle and Other Timers,,483,,,,,1
 488,Spring Wound Timers,,483,,,,,1
 489,Switch Timers,,483,,,,,1
 491,Buck Boost Transformers,,490,,,,,1
@@ -1063,7 +1063,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 511,Lug Compression Connectors,,507,,,,,1
 512,Mechanical Connectors,,507,,,,,1
 513,Miscellaneous Connectors,,507,,,,,1
-514,"Ring, Pin and Wire Terminals",,507,,,,,1
+514,Ring&#44; Pin and Wire Terminals,,507,,,,,1
 515,Splice Connectors and Kits,,507,,,,,1
 516,Split Bolt Connectors,,507,,,,,1
 517,Two Way Compression Connectors,,507,,,,,1
@@ -1084,7 +1084,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 534,Wireway Fittings,,532,,,,,1
 535,Wireway Trays,,532,,,,,1
 538,Booths,,537,,,,,1
-539,"Digital Screens, TVs and Accessories",,537,,,,,1
+539,Digital Screens&#44; TVs and Accessories,,537,,,,,1
 540,Display Signs and Accessories,,537,,,,,1
 541,Phone Enclosure,,537,,,,,1
 543,Battery Chargers,,542,,,,,1
@@ -1149,7 +1149,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 607,Weld Studs,,588,,,,,1
 608,Wheel Bolts,,588,,,,,1
 610,Assortment Cabinets,,609,,,,,0
-611,"Cable, Wire and Hose Clamps",,609,,,,,1
+611,Cable&#44; Wire and Hose Clamps,,609,,,,,1
 612,Chains,,609,,,,,1
 613,Clamp Sets,,609,,,,,1
 614,Clips,,609,,,,,1
@@ -1338,7 +1338,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 818,Rubber Tiles,,813,,,,,1
 819,Vinyl Flooring,,813,,,,,1
 820,Wall Base,,813,,,,,1
-822,"Arm, Back and Foot Rests",,821,,,,,1
+822,Arm&#44; Back and Foot Rests,,821,,,,,1
 823,Benches and Tables,,821,,,,,1
 824,Book trucks,,821,,,,,1
 825,Bookcases,,821,,,,,1
@@ -1351,7 +1351,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 832,Classroom Tables and Desks,,821,,,,,1
 833,Coffee Tables and End Tables,,821,,,,,1
 834,Conference and Seminar Tables,,821,,,,,0
-835,"Corner, L-Shaped and U-Shaped Desks",,821,,,,,0
+835,Corner&#44; L-Shaped and U-Shaped Desks,,821,,,,,0
 836,Cubicles,,821,,,,,0
 837,Desk Accessories,,821,,,,,1
 838,Desk Returns and Bridges,,821,,,,,1
@@ -1446,7 +1446,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 942,C-Clamps,,939,,,,,1
 943,Clamp Accessories,,939,,,,,1
 944,Clamp Tools,,939,,,,,1
-945,"L, Bar and Pipe Clamps",,939,,,,,1
+945,L&#44; Bar and Pipe Clamps,,939,,,,,1
 946,Locking Clamps,,939,,,,,1
 947,Miscellaneous Clamps,,939,,,,,1
 948,Spreaders,,939,,,,,1
@@ -1491,7 +1491,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 993,Axes and Hatchets,,992,,,,,1
 994,Ball Hammers,,992,,,,,1
 995,Chipping Hammers,,992,,,,,1
-996,"Claw, Rip and Framing Hammers",,992,,,,,1
+996,Claw&#44; Rip and Framing Hammers,,992,,,,,1
 997,Engineering and Drilling Hammers,,992,,,,,1
 998,Mallets,,992,,,,,1
 999,Sledge Hammers,,992,,,,,1
@@ -1542,7 +1542,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1051,Pans,,1046,,,,,1
 1052,Trowels,,1046,,,,,1
 1054,Accessories,,1053,,,,,1
-1055,"Box, I-Beam, and Torpedo Levels",,1053,,,,,1
+1055,Box&#44; I-Beam&#44; and Torpedo Levels,,1053,,,,,1
 1056,Caliper Accessories,,1053,,,,,1
 1057,Centre Guages,,1053,,,,,1
 1058,Combination Sets,,1053,,,,,1
@@ -1562,7 +1562,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1072,Guage Blocks,,1053,,,,,1
 1073,Hardness Testers,,1053,,,,,1
 1074,Height Gauges,,1053,,,,,1
-1075,"Hole, Drill, Bore, and Wire Gauges",,1053,,,,,1
+1075,Hole&#44; Drill&#44; Bore&#44; and Wire Gauges,,1053,,,,,1
 1076,Inside Micrometers,,1053,,,,,1
 1077,Level Accessories,,1053,,,,,1
 1078,Level Guages,,1053,,,,,1
@@ -1597,10 +1597,10 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1107,Rotary and Straight Line Laser Levels,,1053,,,,,1
 1108,Rulers and Edges,,1053,,,,,1
 1109,Screw Pitch Gauges,,1053,,,,,1
-1110,"Slope, Pitch and Angle Locators",,1053,,,,,1
+1110,Slope&#44; Pitch and Angle Locators,,1053,,,,,1
 1111,Specialty Levels,,1053,,,,,1
 1112,Spring Calipers,,1053,,,,,1
-1113,"Squares, Bevels, and Stair Gauges",,1053,,,,,1
+1113,Squares&#44; Bevels&#44; and Stair Gauges,,1053,,,,,1
 1114,Stud Finders,,1053,,,,,1
 1115,Surface Plates,,1053,,,,,1
 1116,Surface Testers,,1053,,,,,1
@@ -1613,7 +1613,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1123,Vises,,1053,,,,,1
 1125,Drywall Tools and Accessories,,1124,,,,,1
 1126,Putty Knife and Scraper Sets,,1124,,,,,1
-1127,"Putty, Scrapers and Miscellaneous",,1124,,,,,1
+1127,Putty&#44; Scrapers and Miscellaneous,,1124,,,,,1
 1128,Taping Tools and Floats,,1124,,,,,1
 1130,Brushes,,1129,,,,,0
 1131,Drain Cleaners,,1129,,,,,1
@@ -1830,7 +1830,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1366,Humidifiers,,1361,,,,,0
 1368,Companion Flanges,,1367,,,,,0
 1369,Tube Axial Fans,,1367,,,,,0
-1371,"Air Curtains, Blowers and Accessories",,1370,,,,,1
+1371,Air Curtains&#44; Blowers and Accessories,,1370,,,,,1
 1372,Belt Drive Blowers and Accessories,,1370,,,,,1
 1373,Blower Accessories,,1370,,,,,1
 1374,Corrosion-Resistant Blowers,,1370,,,,,0
@@ -1906,14 +1906,14 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1452,Building Automation Controls,,1449,,,,,1
 1453,Control Accessories,,1449,,,,,0
 1454,Controllers,,1449,,,,,0
-1455,"Electric, Pneumatic and other Actuators",,1449,,,,,1
+1455,Electric&#44; Pneumatic and other Actuators,,1449,,,,,1
 1456,Fan and Limit Controls,,1449,,,,,0
 1457,Furnace and Oil Controls,,1449,,,,,0
-1458,"Gas, Pneumatic, Zone and other Valves",,1449,,,,,1
+1458,Gas&#44; Pneumatic&#44; Zone and other Valves,,1449,,,,,1
 1459,Pilots and Other Components,,1449,,,,,1
 1460,Pneumatic Controls and Accessories,,1449,,,,,1
 1461,Pressure and Control Switches,,1449,,,,,1
-1462,"Pressure, Temperature, Humidity and other Controls",,1449,,,,,1
+1462,Pressure&#44; Temperature&#44; Humidity and other Controls,,1449,,,,,1
 1463,Relays,,1449,,,,,1
 1464,Sensors and Probes,,1449,,,,,1
 1465,Steam Traps,,1449,,,,,1
@@ -1931,14 +1931,14 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1479,Portable Oil and Kerosene Heaters,,1478,,,,,1
 1481,Actuators and Valves,,1480,,,,,1
 1482,Liquid Heating and Cooling Coils,,1480,,,,,0
-1483,"Oil Burner Controls, Burners and Pumps",,1480,,,,,0
+1483,Oil Burner Controls&#44; Burners and Pumps,,1480,,,,,0
 1485,Condensate Pans,,1484,,,,,0
 1486,Cooling Filter Dryers,,1484,,,,,0
 1487,Evacuation Pumps,,1484,,,,,1
 1488,Flush Kits,,1484,,,,,0
 1489,Gauges,,1484,,,,,1
 1490,Glasses,,1484,,,,,0
-1491,"Ice Bins, Dispensers and Accessories",,1484,,,,,0
+1491,Ice Bins&#44; Dispensers and Accessories,,1484,,,,,0
 1492,Ice Machines and Accessories,,1484,,,,,0
 1493,Identifier Accessories,,1484,,,,,1
 1494,Installation Kits,,1484,,,,,0
@@ -2060,9 +2060,9 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1630,Filters,,1627,,,,,1
 1631,Membrane Filters,,1627,,,,,0
 1633,Dryers,,1632,,,,,0
-1634,"Heating Blankets, Cords and Accessories",,1632,,,,,1
+1634,Heating Blankets&#44; Cords and Accessories,,1632,,,,,1
 1635,Heating Mantles,,1632,,,,,0
-1636,"Hot Plates, Ovens and Furnaces",,1632,,,,,0
+1636,Hot Plates&#44; Ovens and Furnaces,,1632,,,,,0
 1637,Incubators,,1632,,,,,0
 1638,Refrigerators and Freezers,,1632,,,,,0
 1639,Temperature Controlled Rooms,,1632,,,,,1
@@ -2094,7 +2094,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 1668,Flasks,,1656,,,,,1
 1669,Funnels,,1656,,,,,1
 1670,Jerricans,,1656,,,,,0
-1671,"Scoops, Scrapers and Spoons",,1656,,,,,1
+1671,Scoops&#44; Scrapers and Spoons,,1656,,,,,1
 1672,Sieve and Accessories,,1656,,,,,1
 1673,Syringes,,1656,,,,,0
 1674,Tongs and Forceps,,1656,,,,,1
@@ -2420,7 +2420,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2036,Clamps,,2033,,,,,1
 2037,Coil Hooks,,2033,,,,,1
 2038,Grabs and Accessories,,2033,,,,,1
-2039,"Grabs, Tongs and Accessories",,2033,,,,,1
+2039,Grabs&#44; Tongs and Accessories,,2033,,,,,1
 2040,Handlers,,2033,,,,,1
 2041,Lift Assists,,2033,,,,,1
 2042,Lifters,,2033,,,,,0
@@ -2428,7 +2428,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2044,Miscellaneous Hooks,,2033,,,,,1
 2045,Picks,,2033,,,,,1
 2046,Pipe Carriers,,2033,,,,,1
-2048,"Blocks, Tackles and Sheaves",,2047,,,,,1
+2048,Blocks&#44; Tackles and Sheaves,,2047,,,,,1
 2049,Rings,,2047,,,,,1
 2050,Shackles,,2047,,,,,1
 2052,Sheet Seperators,,2051,,,,,1
@@ -2440,7 +2440,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2059,Platform Lifts,,2054,,,,,1
 2060,Rotating Platform,,2054,,,,,1
 2061,Stackers,,2054,,,,,1
-2063,"Mobile Benches, Cabinets and Accessories",,2062,,,,,1
+2063,Mobile Benches&#44; Cabinets and Accessories,,2062,,,,,1
 2064,Mobile Bin Carts and Accessories,,2062,,,,,1
 2065,Mobile Work Tables and Accessories,,2062,,,,,1
 2066,Mobile Workstations,,2062,,,,,1
@@ -2714,7 +2714,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2377,Rubber Bands,,2373,,,,,1
 2379,Cards,,2378,,,,,1
 2380,Time Cards,,2378,,,,,1
-2382,"Bags, Sleeves and Cases",,2381,,,,,1
+2382,Bags&#44; Sleeves and Cases,,2381,,,,,1
 2383,Cables and Adapters,,2381,,,,,1
 2384,CD and DVDs and Writers,,2381,,,,,1
 2385,Computer Monitor Arms,,2381,,,,,0
@@ -2722,7 +2722,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2387,Flash Cards and Memory Sticks,,2381,,,,,1
 2388,Keyboards,,2381,,,,,1
 2389,KVM Switches,,2381,,,,,1
-2390,"Laptop, Smartphone and Tablet Chargers",,2381,,,,,1
+2390,Laptop&#44; Smartphone and Tablet Chargers,,2381,,,,,1
 2391,Mouse and Mouse Pads,,2381,,,,,1
 2392,Networking Hardware,,2381,,,,,1
 2393,Tablet Stylus,,2381,,,,,1
@@ -2759,7 +2759,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2428,Recordkeeping Journals,,2417,,,,,1
 2429,Sticky Notes,,2417,,,,,1
 2431,Cash Boxes and Drawers,,2430,,,,,1
-2432,"Coin Counters, and Trays",,2430,,,,,1
+2432,Coin Counters&#44; and Trays,,2430,,,,,1
 2433,Deposit Bags,,2430,,,,,1
 2434,Label Guns,,2430,,,,,1
 2435,Queuing Systems and Accessories,,2430,,,,,1
@@ -2807,9 +2807,9 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2488,Clotheslines,,2479,,,,,1
 2489,Makeup Mirrors,,2479,,,,,1
 2490,Shower Baskets,,2479,,,,,1
-2491,"Shower Curtains, Rods and Tracks",,2479,,,,,1
+2491,Shower Curtains&#44; Rods and Tracks,,2479,,,,,1
 2492,Soap Dishes,,2479,,,,,1
-2493,"Towel Bars, Rings and Warmers",,2479,,,,,1
+2493,Towel Bars&#44; Rings and Warmers,,2479,,,,,1
 2495,Backflow Preventer Accessories,,2494,,,,,1
 2496,Backflow Preventers and Kits,,2494,,,,,1
 2497,Check and Foot Valves,,2494,,,,,1
@@ -2978,7 +2978,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2673,Rotary Joints and Accessories,,2671,,,,,1
 2674,Swivel Joints,,2671,,,,,1
 2676,Air Operated Valves,,2675,,,,,1
-2677,"Air, Gas and Drain Cocks",,2675,,,,,1
+2677,Air&#44; Gas and Drain Cocks,,2675,,,,,1
 2678,Ball Valves,,2675,,,,,1
 2679,Ball Valves Adapters,,2675,,,,,1
 2680,Electric Actuated Ball Valves,,2675,,,,,1
@@ -2988,7 +2988,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2684,Sanitary Ball Valves,,2675,,,,,1
 2685,Water Detection and Shut Off Systems,,2675,,,,,0
 2686,Water Supply Stops,,2675,,,,,1
-2688,"Air, Oil and Water Solenoid Valves",,2687,,,,,1
+2688,Air&#44; Oil and Water Solenoid Valves,,2687,,,,,1
 2689,Hot Water Solenoid Valves,,2687,,,,,1
 2690,Piston Valves,,2687,,,,,1
 2691,Plastic Solenoid Valves,,2687,,,,,1
@@ -3136,7 +3136,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2850,Extension Sockets,,2841,,,,,1
 2851,Hammer Drill Bits and Accessories,,2841,,,,,1
 2852,Hex Shank Drill Bits and Sets,,2841,,,,,1
-2853,"Hole Saws, Cutters and Accessories",,2841,,,,,1
+2853,Hole Saws&#44; Cutters and Accessories,,2841,,,,,1
 2854,Impact Drill Bits and Sets,,2841,,,,,1
 2855,Magnetic Drill Presses and Accessories,,2841,,,,,1
 2856,Masonry Drill Bits and Sets,,2841,,,,,1
@@ -3190,23 +3190,23 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2909,Stands,,2905,,,,,1
 2910,Threading and Cutting Macihnes,,2905,,,,,1
 2912,Abrasive Chop and Cut-off Wheels,,2911,,,,,1
-2913,"Band Saws, Blades and Accessories",,2911,,,,,1
+2913,Band Saws&#44; Blades and Accessories,,2911,,,,,1
 2914,Chain Saws and Accessories,,2911,,,,,1
 2915,Chop Saws and Cut-Off Machines,,2911,,,,,1
-2916,"Circular Saws, Blades and Accessories",,2911,,,,,1
+2916,Circular Saws&#44; Blades and Accessories,,2911,,,,,1
 2917,Concrete Power Cutters and Accessories,,2911,,,,,1
 2918,Diamond Saw Blades,,2911,,,,,1
-2919,"Flush Cut Saws, Blades and Accessories",,2911,,,,,1
-2920,"Jig Saws, Blades and Accessories",,2911,,,,,1
-2921,"Masonry Saws, Blades and Accessories",,2911,,,,,1
-2922,"Panel Saws, Blades and Accessories",,2911,,,,,1
-2923,"Power Hack Saws, Blades and Accessories",,2911,,,,,1
-2924,"Power Miter Saws, Blades and Accessories",,2911,,,,,1
-2925,"Reciprocating Saws, Blades and Accessories",,2911,,,,,1
-2926,"Scroll Saws, Blades and Acccessories",,2911,,,,,1
-2927,"Spiral Saws, Blades and Accessories",,2911,,,,,1
-2928,"Tables Saws, Blades and Accessories",,2911,,,,,1
-2929,"Track Saws, Blades and Accessories",,2911,,,,,1
+2919,Flush Cut Saws&#44; Blades and Accessories,,2911,,,,,1
+2920,Jig Saws&#44; Blades and Accessories,,2911,,,,,1
+2921,Masonry Saws&#44; Blades and Accessories,,2911,,,,,1
+2922,Panel Saws&#44; Blades and Accessories,,2911,,,,,1
+2923,Power Hack Saws&#44; Blades and Accessories,,2911,,,,,1
+2924,Power Miter Saws&#44; Blades and Accessories,,2911,,,,,1
+2925,Reciprocating Saws&#44; Blades and Accessories,,2911,,,,,1
+2926,Scroll Saws&#44; Blades and Acccessories,,2911,,,,,1
+2927,Spiral Saws&#44; Blades and Accessories,,2911,,,,,1
+2928,Tables Saws&#44; Blades and Accessories,,2911,,,,,1
+2929,Track Saws&#44; Blades and Accessories,,2911,,,,,1
 2931,Cement Shears,,2930,,,,,1
 2932,Electric Shears and Accessories,,2930,,,,,1
 2934,Router Bits and Sets,,2933,,,,,1
@@ -3242,7 +3242,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 2971,Disposable Coveralls,,2968,,,,,1
 2972,Disposable Gowns,,2968,,,,,1
 2973,Disposable Hoods,,2968,,,,,1
-2974,"Disposable Lab Coats, Smocks, and Jackets",,2968,,,,,1
+2974,Disposable Lab Coats&#44; Smocks&#44; and Jackets,,2968,,,,,1
 2975,Disposable Pants,,2968,,,,,1
 2976,Disposable Shirts,,2968,,,,,1
 2977,Disposable Sleeves,,2968,,,,,1
@@ -3303,7 +3303,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3037,Splints,,3026,,,,,1
 3038,Stretcher Pads,,3026,,,,,1
 3039,Stretchers,,3026,,,,,1
-3041,"Ankle, Elbow and Knee Supports",,3040,,,,,1
+3041,Ankle&#44; Elbow and Knee Supports,,3040,,,,,1
 3042,Back Supports,,3040,,,,,1
 3043,Protective Elbow and Knee Pads,,3040,,,,,1
 3044,Wrist Supports,,3040,,,,,1
@@ -3348,7 +3348,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3089,Fire Hoses,,3081,,,,,1
 3090,Fire Probing Tools,,3081,,,,,1
 3091,Firestop Accessories,,3081,,,,,1
-3092,"Firestop Sealants, Caulks and Putties",,3081,,,,,1
+3092,Firestop Sealants&#44; Caulks and Putties,,3081,,,,,1
 3093,Foams,,3081,,,,,1
 3094,Monitors,,3081,,,,,1
 3095,Pass Through Devices,,3081,,,,,1
@@ -3459,7 +3459,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3208,Label Maker Tapes,,3199,,,,,1
 3209,Label Makers and Printers,,3199,,,,,1
 3210,Label Protectors,,3199,,,,,1
-3211,"Labels, Signs and Tags",,3199,,,,,1
+3211,Labels&#44; Signs and Tags,,3199,,,,,1
 3212,Letters and Numbers,,3199,,,,,1
 3213,Number Tags,,3199,,,,,1
 3214,Parking Tag,,3199,,,,,1
@@ -3547,7 +3547,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3306,Supplied Air Respirators and Accessories,,3286,,,,,1
 3307,Testing,,3286,,,,,1
 3309,Cabon Monoxide Smoke Detectors,,3308,,,,,1
-3310,"Horns, Bells and Sirens and Accessories",,3308,,,,,1
+3310,Horns&#44; Bells and Sirens and Accessories,,3308,,,,,1
 3311,Strobe and Flashing Lights,,3308,,,,,1
 3312,Tower Lights and Accessories,,3308,,,,,1
 3313,Tower Lights Assemblies,,3308,,,,,1
@@ -3713,7 +3713,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3486,Tactical Vests and Assault Packs,,3473,,,,,1
 3487,Uniform Accessories,,3473,,,,,1
 3488,Weapon Storage Cabinets,,3473,,,,,1
-3491,"Antistatic Mats, Cords and Kits",,3490,,,,,1
+3491,Antistatic Mats&#44; Cords and Kits,,3490,,,,,1
 3492,Digital Multimeters,,3490,,,,,1
 3493,LCR Meters,,3490,,,,,1
 3494,Oscilloscopes,,3490,,,,,1
@@ -3752,7 +3752,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3530,Clamp Meters,,3527,,,,,1
 3531,Combination Kits,,3527,,,,,1
 3532,Current Probes,,3527,,,,,0
-3533,"Current, Capacitor, Multi-Function and Other Testers",,3527,,,,,0
+3533,Current&#44; Capacitor&#44; Multi-Function and Other Testers,,3527,,,,,0
 3534,Instrument Carrying Cases and Boxes,,3527,,,,,1
 3535,Line Splitters,,3527,,,,,0
 3536,Miscellaneous,,3527,,,,,1
@@ -3840,7 +3840,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3626,Mud Flaps,,3621,,,,,1
 3627,Patches,,3621,,,,,1
 3628,Radios,,3621,,,,,0
-3629,"Reflectors, Tapes and Lenses",,3621,,,,,1
+3629,Reflectors&#44; Tapes and Lenses,,3621,,,,,1
 3630,Solar Chargers,,3621,,,,,1
 3631,Trailer Lighting,,3621,,,,,1
 3632,Truck Mirrors,,3621,,,,,1
@@ -3885,7 +3885,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3677,Power Sources,,3668,,,,,1
 3678,Protection Covers,,3668,,,,,1
 3679,Snow Accessories,,3668,,,,,1
-3681,"Air Brakes, Tubing and Accessories",,3680,,,,,1
+3681,Air Brakes&#44; Tubing and Accessories,,3680,,,,,1
 3682,Air Filters,,3680,,,,,1
 3683,Automotive Kits,,3680,,,,,1
 3684,Automotive Repairs,,3680,,,,,1
@@ -3953,7 +3953,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3750,Welding Accessories,,3738,,,,,1
 3751,Welding Connectors,,3738,,,,,1
 3752,Wire Feeders,,3738,,,,,1
-3754,"Arc, Stick and Other Welders",,3753,,,,,1
+3754,Arc&#44; Stick and Other Welders,,3753,,,,,1
 3755,Engine Driven Welders,,3753,,,,,1
 3756,Metal Inert Gas (MIG) Welders,,3753,,,,,1
 3757,Multiprocess Welders,,3753,,,,,1
@@ -4170,7 +4170,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 3984,Covers,,2558,,,,,0
 3985,Cutlery,,794,,,,,0
 3986,Digital Multimeters,,3527,,,,,1
-3987,"Digital Screens, TVs and Accessories",,552,,,,,1
+3987,Digital Screens&#44; TVs and Accessories,,552,,,,,1
 3988,Dispensers,,794,,,,,1
 3989,Doors,,2200,,,,,0
 3990,Drill Presses,,3890,,,,,1
@@ -4285,7 +4285,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4105,Pneumatic Blasting Guns,,4091,,,,,0
 4106,Pneumatic Blasting Media,,4091,,,,,0
 4108,Indexable Boring Bars,,4107,,,,,0
-4109,"Indexable Boring, Milling, and Turning Kits",,4107,,,,,0
+4109,Indexable Boring&#44; Milling&#44; and Turning Kits,,4107,,,,,0
 4110,Indexable Chamfer Mills,,4107,,,,,0
 4111,Indexable End Mills,,4107,,,,,0
 4112,Indexable Face Mills,,4107,,,,,0
@@ -4378,7 +4378,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4208,Power Concrete Trowel Accessories,,4203,,,,,0
 4209,Power Concrete Trowels,,4203,,,,,0
 4211,Boom Sprayer Accessories,,4210,,,,,0
-4212,"Boom Sprayer Guns, Tips and Nozzles",,4210,,,,,0
+4212,Boom Sprayer Guns&#44; Tips and Nozzles,,4210,,,,,0
 4213,Boom Sprayer Hoses and Hose Fittings,,4210,,,,,0
 4214,Boom Sprayer Mounts and Brackets,,4210,,,,,0
 4215,Boom Sprayer Tanks and Intake Tubes,,4210,,,,,0
@@ -4390,7 +4390,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4221,Marking Flags,,4210,,,,,0
 4222,Powered Dumper Accessories,,4210,,,,,0
 4223,Powered Dumpers,,4210,,,,,0
-4224,"Skid, Spot and ATV Sprayers",,4210,,,,,0
+4224,Skid&#44; Spot and ATV Sprayers,,4210,,,,,0
 4225,Trailer Sprayers,,4210,,,,,0
 4227,Chain Saw Accessories,,4226,,,,,0
 4228,Chain Saw Chains,,4226,,,,,0
@@ -4443,12 +4443,12 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4279,Portable Generators- Towable,,4268,,,,,0
 4280,Portable Generators with Lights,,4268,,,,,0
 4281,Standby Generator Fuel Tanks,,4268,,,,,0
-4282,"Standby Generators, Air-Cooled",,4268,,,,,0
-4283,"Standby Generators, Liquid-Cooled",,4268,,,,,0
+4282,Standby Generators&#44; Air-Cooled,,4268,,,,,0
+4283,Standby Generators&#44; Liquid-Cooled,,4268,,,,,0
 4285,Drip Irrigation and Sprinkler Systems,,4284,,,,,0
 4286,Drip Irrigation System Accessories,,4284,,,,,0
 4287,Garden Hose Connectors and Adapters,,4284,,,,,0
-4288,"Garden Hose Reels, Carts, and Hangers",,4284,,,,,0
+4288,Garden Hose Reels&#44; Carts&#44; and Hangers,,4284,,,,,0
 4289,Garden Hoses,,4284,,,,,0
 4290,Irrigation and Sprinkler Timers,,4284,,,,,0
 4291,Irrigation Fittings,,4284,,,,,0
@@ -4568,7 +4568,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4423,Paint Shaker Accessories,,4421,,,,,0
 4424,Paint Shakers,,4421,,,,,0
 4425,Epoxy and Urethane Activators,,4391,,,,,0
-4426,"Epoxy, Urethane, and Specialty Coatings",,4391,,,,,0
+4426,Epoxy&#44; Urethane&#44; and Specialty Coatings,,4391,,,,,0
 4427,Floor Coatings,,4391,,,,,0
 4428,Heat Resistant Coatings,,4391,,,,,0
 4429,Paint Additives,,4391,,,,,0
@@ -4577,7 +4577,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4432,Rubber Coatings and Insulating Varnish,,4391,,,,,0
 4433,Thermoplastic Pavement Marking Paint,,4391,,,,,0
 4434,Aerosol Can Grips,,4395,,,,,0
-4435,"Paint Primer, Sealers & Rust Reformers",,4395,,,,,0
+4435,Paint Primer&#44; Sealers & Rust Reformers,,4395,,,,,0
 4436,Spray Paints,,4395,,,,,0
 4437,Drop Cloths,,4397,,,,,0
 4438,Surface Protection Film Dispensers,,4397,,,,,0
@@ -4857,10 +4857,10 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4760,Submersible Well Pump Heads,,4754,,,,,0
 4761,Submersible Well Pumps,,4754,,,,,0
 4762,Well Pump Accessories,,4754,,,,,0
-4765,"Alloy Steel Blanks, Flats, Bars, Plates, and Sheet Stock",,4764,,,,,0
+4765,Alloy Steel Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4764,,,,,0
 4766,Alloy Steel Rod Stock,,4764,,,,,0
 4768,Aluminum Angle Stock,,4767,,,,,0
-4769,"Aluminum Blanks, Flats, Bars, Plates, and Sheet Stock",,4767,,,,,0
+4769,Aluminum Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4767,,,,,0
 4770,Aluminum Expanded Sheets,,4767,,,,,0
 4771,Aluminum Foil Rolls,,4767,,,,,0
 4772,Aluminum Foil Sheets,,4767,,,,,0
@@ -4874,12 +4874,12 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4780,Aluminum Tread Plate,,4767,,,,,0
 4781,Aluminum U-Shaped Channel Stock,,4767,,,,,0
 4783,Metal Assortments,,4782,,,,,0
-4785,"Brass Blanks, Flats, Bars, Plates, and Sheet Stock",,4784,,,,,0
+4785,Brass Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4784,,,,,0
 4786,Brass Foil Rolls,,4784,,,,,0
 4787,Brass Rod Stock,,4784,,,,,0
 4788,Brass Roll Stock,,4784,,,,,0
-4790,"Bronze Blanks, Flats, Bars, Plates and Sheet Stock",,4789,,,,,0
-4792,"Carbon Steel Blanks, Flats, Bars, Plates, and Sheet Stock",,4791,,,,,0
+4790,Bronze Blanks&#44; Flats&#44; Bars&#44; Plates and Sheet Stock,,4789,,,,,0
+4792,Carbon Steel Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4791,,,,,0
 4793,Carbon Steel Expanded Sheets,,4791,,,,,0
 4794,Carbon Steel Grating,,4791,,,,,0
 4795,Carbon Steel Hex Stock,,4791,,,,,0
@@ -4888,7 +4888,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4798,Carbon Steel Stair Treads,,4791,,,,,0
 4799,Music Wire,,4791,,,,,0
 4801,Cast Iron Rod Stock,,4800,,,,,0
-4803,"Copper Blanks, Flats, Bars, Plates, and Sheet Stock",,4802,,,,,0
+4803,Copper Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4802,,,,,0
 4804,Copper Foil Rolls,,4802,,,,,0
 4805,Copper Rod Stock,,4802,,,,,0
 4806,Copper Roll Stock,,4802,,,,,0
@@ -4902,14 +4902,14 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4817,Fiberglass Grating Pedestals,,4814,,,,,0
 4818,Fiberglass I-Beams,,4814,,,,,0
 4819,Fiberglass Rod Stock,,4814,,,,,0
-4820,"Fiberglass Sheets, Film, and Flat Stock",,4814,,,,,0
+4820,Fiberglass Sheets&#44; Film&#44; and Flat Stock,,4814,,,,,0
 4821,Fiberglass Square Tube Stock,,4814,,,,,0
 4822,Fiberglass Stair Treads,,4814,,,,,0
 4823,Fiberglass Tube Stock,,4814,,,,,0
 4824,Fiberglass U-Shaped Channel Stock,,4814,,,,,0
 4825,Fiberglass Work Platforms,,4814,,,,,0
 4827,Foam Balls,,4826,,,,,0
-4828,"Foam Blanks, Flats, Bars, Plates, and Sheet Stock",,4826,,,,,0
+4828,Foam Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4826,,,,,0
 4829,Foam Cubes,,4826,,,,,0
 4830,Foam Rolls,,4826,,,,,0
 4832,Plastic Angle Stock,,4831,,,,,0
@@ -4921,7 +4921,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4838,Plastic Perforated Sheets,,4831,,,,,0
 4839,Plastic Rod Stock,,4831,,,,,0
 4840,Plastic Rolls,,4831,,,,,0
-4841,"Plastic Sheets, Film, and Flat Stock",,4831,,,,,0
+4841,Plastic Sheets&#44; Film&#44; and Flat Stock,,4831,,,,,0
 4842,Plastic Snap-Ons,,4831,,,,,0
 4843,Plastic Square Rods,,4831,,,,,0
 4844,Plastic Tube Stock,,4831,,,,,0
@@ -4937,7 +4937,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4855,Rubber Sheets and Strips,,4846,,,,,0
 4857,Stainless Steel Angle Stock,,4856,,,,,0
 4858,Stainless Steel Ball Stock,,4856,,,,,0
-4859,"Stainless Steel Blanks, Flats, Bars, Plates, and Sheet Stock",,4856,,,,,0
+4859,Stainless Steel Blanks&#44; Flats&#44; Bars&#44; Plates&#44; and Sheet Stock,,4856,,,,,0
 4860,Stainless Steel Expanded Sheets,,4856,,,,,0
 4861,Stainless Steel Foil Rolls,,4856,,,,,0
 4862,Stainless Steel Grating,,4856,,,,,0
@@ -4966,7 +4966,7 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 4900,Closed Circuit TV System Enclosures,,4892,,,,,0
 4901,Network Video Recorders,,4892,,,,,0
 4902,Power Over Ethernet Devices,,4892,,,,,0
-4903,"Surveillance System Housings, Mounts, and Brackets",,4892,,,,,0
+4903,Surveillance System Housings&#44; Mounts&#44; and Brackets,,4892,,,,,0
 4904,Surveillance System Power Supplies,,4892,,,,,0
 4905,TV and VCR Mounts,,4892,,,,,0
 4907,Detectors and Scanner Accessories,,4906,,,,,0
@@ -5071,12 +5071,12 @@ The best tools are made by the best brands such as 3M, Marlboro, Master lock, Ch
 5045,Cell Research Equipment Accessories,,1601,,,,,0
 5046,Glass Cutter,,964,,,,,0
 5047,Video Surveillance Accessories,,4892,,,,,0
-5048,"Welding, Heating and Cutting Torch Tips and Nozzles",,3762,,,,,0
+5048,Welding&#44; Heating and Cutting Torch Tips and Nozzles,,3762,,,,,0
 5049,Needle Bearings,,2938,,,,,0
 5050,Service,,1275,,,,,0
 5051,Indoor Games,,868,,,,,1
 5053,Consumable Gifts,,5052,,,,,1
 5054,Non Consumable Gifts,,5052,,,,,1
 5055,Printer,,2381,,,,,1
-5057,"Granite Slabs, Blocks, Powder",,5056,,,,,1
+5057,Granite Slabs&#44; Blocks&#44; Powder,,5056,,,,,1
 5058,Printer Cartridge,,2381,,,,,1

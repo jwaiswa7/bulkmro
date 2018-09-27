@@ -1,7 +1,7 @@
 entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobile,email,aliasname,cmp_name,manager,c_password,created_at,updated_at,is_active,sap_id
 1186,General,,Shivshankar,,Hatwar,,,,sshatwar@corbus.com,HUL,"Hindustan Unilever Ltd.",,,"2016-05-18 18:38:28","2017-11-07 11:08:36",1,NULL
 1186,General,,Shivshankar,,Hatwar,,,,sshatwar@corbus.com,"Unilever Industries","Unilever Industries Pvt. Ltd.",,,"2016-05-18 18:38:28","2017-11-07 11:08:36",1,NULL
-1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,IIT,"Indian Institute of Technology Bombay",,,"2016-05-29 12:08:28","2018-09-14 05:15:42",1,NULL
+1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,IIT,"Indian Institute of Technology Bombay",,,"2016-05-29 15:08:28","2018-09-25 06:05:29",1,NULL
 1904,General,,Sachin,,Sawant,,,,sachin.sawant@cummins.com,Cummins,"Cummins India Ltd.",,,"2016-05-19 17:25:49","2017-10-03 10:46:49",1,NULL
 1904,General,,Sachin,,Sawant,,,,sachin.sawant@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-05-19 17:25:49","2017-10-03 10:46:49",1,NULL
 2330,General,,Ravi,,Kakani,,,,ravi_kakani@hotmail.com,"Hanuman Paints","Hanuman Paints Co.",,,"2016-06-02 15:37:55","2017-09-21 12:19:45",1,NULL
@@ -71,8 +71,6 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5270,General,,Vivek,,Shukla,,,,vivek@shopmate.com,"Shop Mate","Shop Mate",,,"2017-10-30 10:31:07","2017-12-28 05:46:32",1,NULL
 5270,General,,Vivek,,Shukla,,,,vivek@shopmate.com,"Luxury Prod Trends","Luxury Products Trendsetter Pvt. Ltd.",,,"2017-10-30 10:31:07","2017-12-28 05:46:32",1,NULL
 5270,General,,Vivek,,Shukla,,,,vivek@shopmate.com,"S L Shet Diamond","S L Shet Diamond House",,,"2017-10-30 10:31:07","2017-12-28 05:46:32",1,NULL
-5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Emission Solutions INC",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,NULL
-5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,NULL
 6128,General,,Mr.,,Umakant,,,,slshetdiamondhouse1947@GMAIL.COM,"Luxury Prod Trends","Luxury Products Trendsetter Pvt. Ltd.",,,"2017-12-13 06:44:07","2017-12-15 07:42:49",1,NULL
 6128,General,,Mr.,,Umakant,,,,slshetdiamondhouse1947@GMAIL.COM,"S L Shet Diamond","S L Shet Diamond House",,,"2017-12-13 06:44:07","2017-12-15 07:42:49",1,NULL
 6303,General,,"Abhijit ",,Bhandari,,,,abhijit.bhandari@cummins.com,Cummins,"Cummins Generator Technologies India Pvt. Ltd.",,,"2017-12-28 07:31:27","2017-12-28 07:07:43",1,NULL
@@ -206,7 +204,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5770,General,,"Komal ",,Chaudhry,,,8264017272,komal.chaudhry@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2017-11-27 18:34:31","2018-09-11 09:15:31",1,20749
 6537,General,,Bigesh,,Patel,,,9925582392,bigesh.patel@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-01-11 17:49:41","2018-05-29 10:32:49",1,20750
 6963,General,,"Vishnu ",,Agrawal,,02717614812,9890436665,Vishnu.agrawal@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-02-21 09:06:29","2018-07-18 08:57:49",1,20751
-7108,General,,"Sapan ",,Sharma,,,8826981007,sapan.sharma@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-03-31 06:16:21","2018-09-19 05:50:45",1,20752
+7108,General,,"Sapan ",,Sharma,,,8826981007,sapan.sharma@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-03-31 07:16:21","2018-09-26 06:03:50",1,20752
 7425,General,,"Naved Sarosh ",,"Khan Patel ",,,9503062049,navedsarosh.khanpatel@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-04-18 15:46:04","2018-05-29 10:28:57",1,20753
 2469,General,,"Atul ",,Kumar,,,,Atul.KUMAR@eskindia.in,"ESK Telecom","ESK Telecom India",,,"2016-06-24 11:56:18","2016-07-30 11:35:06",1,20754
 2617,General,,"Amjith ",,Narayanan,,,,n.amjith@sud-chemie-india.com,Sud-Chemie,"Sud-Chemie India Pvt. Ltd.",,,"2016-09-06 06:41:39","2016-09-08 12:15:27",1,20755
@@ -399,10 +397,10 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4406,General,,Aslam,,Sayyad,,,,aslam.sayyad@ball.com,"Ball Bev. Packing","Ball Beverage Packing India Pvt. Ltd.",,,"2017-10-05 05:02:06","2017-10-05 05:02:06",1,20945
 5702,General,,"Nilesh ",,Keswala,,,,marketing@marshalltechnocast.com,"Marshall Technocast","Marshall Technocast Pvt. Ltd.",,,"2017-11-21 12:39:18","2017-11-21 12:39:18",1,20946
 4013,"Company Top Manager",,"Milind ",,Rade,,,,milind.rade@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-09-20 16:11:29","2018-04-27 13:38:19",1,20947
-5995,Retailer,,"Sirivella Bala ",,Nagaiah,,,,Sirivella.Balanagaiah@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-12-09 00:24:10","2018-09-21 07:50:46",1,20948
+5995,Retailer,,"Sirivella Bala ",,Nagaiah,,,,Sirivella.Balanagaiah@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-12-09 01:24:10","2018-09-24 05:53:13",1,20948
 6297,General,,Mandar,,Parab,,,,plsl.purchase@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-12-27 13:17:41","2017-12-27 13:17:41",1,20949
 6987,General,,"Pravin ",,Bhelose,,,9623171157,pravin.bhelose@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-02-27 00:44:11","2018-08-02 11:03:06",1,20950
-7476,General,,Kiran,,Naiksatam,,4442987900,,Ennoreindirect.SCOC@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-05-05 10:39:20","2018-09-21 14:22:52",1,20951
+7476,General,,Kiran,,Naiksatam,,4442987900,,Ennoreindirect.SCOC@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-05-05 11:39:20","2018-09-25 07:55:23",1,20951
 5304,General,,Saravanan,,K,,"022 2724 8066",,saravanan.k@bmctpl.com,"Bharat Container","Bharat Mumbai Container Terminals Pvt. Ltd.",,,"2017-11-01 02:59:45","2018-09-14 05:30:34",1,20952
 6119,General,,"Durga ",,Prasad,,,,durga.bhandary@bmctpl.com,"Bharat Container","Bharat Mumbai Container Terminals Pvt. Ltd.",,,"2017-12-12 09:15:32","2017-12-12 09:15:32",1,20953
 2893,General,,Patrick,,Barry,,,,pbarry@tridentusa.com,"Trident Computer ","Trident Computer Resources Inc.",,,"2017-01-06 08:00:58","2018-09-05 13:20:24",1,20954
@@ -515,7 +513,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 6579,General,,"harshvardhan ",,kheny,,,,harshvardhan.kheny@ecolab.com,"Ecolab Food Safety","Ecolab Food Safety and Hygiene Solutions Pvt. Ltd.",,,"2018-01-16 15:47:34","2018-01-16 15:47:34",1,21065
 3362,General,,Anand,,Biyani,,,,anandbiyani73@gmail.com,"Biyani Paper","Biyani Paper Converters Pvt. Ltd.",,,"2017-07-20 13:58:28","2017-07-28 12:18:21",1,21066
 3825,General,,"Amit ",,Kanteshria,,,,shreeganeshstamping@gmail.com,"Shree Ganesh Stamp","Shree Ganesh Stamping",,,"2017-09-13 13:15:36","2017-09-13 13:15:36",1,21067
-3742,General,,"Kushal ",,Dwivedi,,,,kushal.dwivedi@ge.com,GE,"GE T and D India Ltd.",,,"2017-09-12 04:19:46","2018-09-19 14:20:10",1,21068
+3742,General,,"Kushal ",,Dwivedi,,,,kushal.dwivedi@ge.com,GE,"GE T and D India Ltd.",,,"2017-09-12 05:19:46","2018-09-24 09:48:32",1,21068
 4117,General,,Jai,,Singh,,,,jai.singh1@ge.com,GE,"GE T and D India Ltd.",,,"2017-09-25 06:51:37","2018-07-02 12:57:25",1,21069
 4812,General,,"Santosh ",,Upadhyay,,,,santosh.upadhyay@ge.com,GE,"GE T and D India Ltd.",,,"2017-10-13 06:57:23","2018-09-05 10:53:04",1,21070
 5619,General,,Sachindra,,Singh,,,,sachindra.singh@ge.com,GE,"GE T and D India Ltd.",,,"2017-11-16 15:47:45","2018-09-20 10:22:15",1,21071
@@ -626,7 +624,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2816,General,,"Monali ",,Patel,,,,monalipatel2200@gmail.com,"Gujrat Lathe Mfg","Gujrat Lathe Manufacturer Pvt. Ltd.",,,"2016-12-01 06:27:46","2016-12-02 12:00:06",1,21177
 4282,General,,"Jaydip ",,Bhondve,,,,jaydip@godrej.com,Godrej,"Godrej and Boyce Manufacturing Co. Ltd.",,,"2017-09-26 15:33:10","2017-09-26 15:33:10",1,21178
 5842,General,,Ketan,,Samani,,,,kjs@godrej.com,Godrej,"Godrej and Boyce Manufacturing Co. Ltd.",,,"2017-12-01 13:14:15","2017-12-01 13:14:15",1,21179
-5847,General,,Rajesh,,Jadhav,,"022 6796 5619",,rajeshrj@godrej.com,Godrej,"Godrej and Boyce Manufacturing Co. Ltd.",,,"2017-12-04 00:58:55","2018-09-14 06:52:21",1,21180
+5847,General,,Rajesh,,Jadhav,,"022 6796 5619",,rajeshrj@godrej.com,Godrej,"Godrej and Boyce Manufacturing Co. Ltd.",,,"2017-12-04 02:58:55","2018-09-24 10:42:47",1,21180
 6464,General,," Prafful ","Pramod ",Jadhav,,,,praffulj@godrej.com,Godrej,"Godrej and Boyce Manufacturing Co. Ltd.",,,"2018-01-08 05:40:51","2018-01-08 05:40:51",1,21181
 2481,General,,Babu,,"Santhosh S",,,,babu.santhosh@bartec.in,"Bartec India","Bartec India Pvt. Ltd.",,,"2016-06-30 07:43:23","2016-12-01 12:08:26",1,21183
 5381,General,,Naseem,,.,,,,naseem@miindia.in,"Mi Industries","Mi Industries India Pvt. Ltd.",,,"2017-11-03 11:14:16","2017-11-13 10:08:51",1,21184
@@ -769,14 +767,14 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2819,General,,"Umesh ",D.,Harkal,,,,umesh.harkal@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2016-12-02 09:52:10","2018-07-05 12:23:46",1,21321
 2940,General,,"Rahul ",,Bhosale,,,,rahul.bhosale@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-01-30 23:34:23","2018-09-03 08:10:41",1,21322
 2952,General,,Lakhani,,"Dhawal ",,,,lakhani.dhawal@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-02-02 23:29:14","2018-09-06 12:46:11",1,21323
-2977,General,,"Shankar ",,Gawade,,,,shankar.gawade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-02-12 00:10:19","2018-08-10 07:53:52",1,21324
+2977,General,,"Shankar ",,Gawade,,,,shankar.gawade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-02-12 01:10:19","2018-09-24 13:05:15",1,21324
 3053,General,,Rahul,,Mahajan,,,,rahul.mahajan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-03-20 16:51:43","2018-09-12 09:10:34",1,21325
 4160,General,,Vijay,,Sahu,,,,corporate@nswindia.com,"NSW India Ltd.","NSW India Ltd.",,,"2017-09-25 11:29:45","2017-09-25 11:29:45",1,21326
 3099,General,,Uddhav,,patil,,"022 3926 6517",,uddhav.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-04-07 12:53:15","2018-07-05 12:23:45",1,21327
 4871,General,,"Vijay ",,Sahu,,,,purchase@nswindia.com,"NSW India Ltd.","NSW India Ltd.",,,"2017-10-16 18:46:32","2017-10-16 18:46:32",1,21328
 3103,General,,"Sridhar  ",,R,,"020 2553 0540",,sridhar.ramachandran@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-04-10 06:13:10","2018-07-05 12:23:45",1,21329
 3158,"Company Top Manager",,Henkel,,@BulkMRO,,,,henkel@bulkmro.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-04-21 05:57:39","2018-07-05 12:23:45",1,21330
-3212,General,,"Trimurti ",,Maddi,,,,trimurti.maddi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-15 04:38:47","2018-09-14 10:50:11",1,21331
+3212,General,,"Trimurti ",,Maddi,,,,trimurti.maddi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-15 05:38:47","2018-09-24 06:05:11",1,21331
 3245,General,,"Paresh ",,Raiyani,,,,paresh.raiyani@in.henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-22 16:01:51","2018-08-17 07:26:00",1,21332
 3246,General,,"Vishal ","S ",Thonge,,,,vishal.thonge@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-22 08:49:23","2018-09-19 14:30:00",1,21333
 3410,General,,"Nishant ",,Tale,,,,nishant.tale@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-07-26 15:14:15","2018-07-05 12:23:43",1,21334
@@ -790,14 +788,14 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4750,General,,"Shabbir ",,Sethwala,,,,shabbir.sethwala@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-10 10:41:50","2018-07-05 12:23:41",1,21342
 4751,General,,"Shivendra ","N ",Shahi,,,,Shivendranarayan.shahi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-10 20:09:38","2018-08-20 11:22:33",1,21343
 5164,General,,"Rakesh ",,Patil,,,,rakesh.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-24 13:22:09","2018-07-05 12:23:41",1,21344
-5696,General,,"Pournima ",,"Patil ",,,"75065 19837",pournima.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-11-22 02:40:15","2018-09-21 13:37:47",1,21345
+5696,General,,"Pournima ",,"Patil ",,,"75065 19837",pournima.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-11-22 05:40:15","2018-09-25 09:51:18",1,21345
 6111,General,,"Bhushan ",,"Chavan ",,,,bhushan.chavan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-11 12:56:17","2018-07-05 12:23:40",1,21346
 6120,General,,"Amol ",,Warade,,,,Amol.warade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-12 13:21:36","2018-07-17 12:51:55",1,21347
 6127,General,,"Minal ",,Suvarna,,,,minal.suvarna@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-13 06:28:21","2018-07-05 12:23:39",1,21348
 6176,General,,"Ajit kumar",,Prusty,,,,Ajitkumar.prusty@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-16 10:14:32","2018-07-05 12:23:38",1,21349
 6448,General,,"Aarti ",,Ramteke,,,,aarti.ramteke@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-01-06 07:40:16","2018-08-29 07:35:40",1,21350
 6705,General,,Bhagavandas,,Thekkethil,,"022 6129 6237",,bhagavandas.thekkethil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-01-29 18:03:56","2018-08-01 12:07:21",1,21351
-6756,General,,"Amol ",,Patil,,,"7620395239 / 9607644995",amol.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-01 03:17:19","2018-09-19 06:47:11",1,21352
+6756,General,,"Amol ",,Patil,,,"7620395239 / 9607644995",amol.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-01 04:17:19","2018-09-26 07:03:14",1,21352
 6853,General,,"Pradip ",,Khade,,,,pradip.khade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-06 12:05:57","2018-07-05 12:23:37",1,21353
 6932,General,,Ganesh,,Tamhanekar,,,9930105625,ganesh.tamhanekar@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-16 11:23:02","2018-07-05 12:23:37",1,21354
 6950,General,,Balkrishna,,Kadam,,,9867656215,balkrishna.kadam@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-17 07:56:31","2018-07-05 12:23:37",1,21355
@@ -870,7 +868,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4472,General,,Kishor,,Patel,,,,Not,"Kishor Industries","Kishor Industries",,,"2017-10-05 14:06:06","2017-10-05 14:06:06",1,21424
 2530,General,,"Y. P",,Mishra,,,,neelyog@gmail.com,"Neelyog Engineers","Neelyog Engineers",,,"2016-07-18 07:00:56","2016-07-18 06:32:29",1,21425
 3490,General,,Babu,,Koli,,,,Babu.Koli@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2017-08-11 09:04:26","2017-08-11 07:46:43",1,21426
-6561,General,,"Shivam ",,Sharma,,,,shivam.sharma@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-01-15 18:30:13","2018-07-30 09:48:49",1,21427
+6561,General,,"Shivam ",,Sharma,,,,shivam.sharma@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-01-15 19:30:13","2018-09-26 10:20:30",1,21427
 6639,General,,"Ashish ",,Kashyap,,,,ashish.kashyap@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-01-22 14:57:40","2018-08-28 06:03:30",1,21428
 7490,General,,Prakash,,Ranjan,,,7419239923,prakash.ranjan@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-05-05 07:14:44","2018-05-05 07:14:44",1,21429
 5226,General,,Jagannath,,Nilwani,,,,Jagannath.Nilwani@sgs.com,"SGS India","SGS India Pvt. Ltd.",,,"2017-10-27 05:18:07","2018-04-16 10:01:18",1,21430
@@ -897,7 +895,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 3266,General,,"USLOOB ",,AHMAD,,,,usloobahmad@bharatpetroleum.in,BPCL,"Bharat Petroleum Corporation Ltd.",,,"2017-05-31 07:31:35","2017-05-31 07:31:35",1,21451
 5292,General,,"AJAY ",,KUMAR,,,,kumara4357@bharatpetroleum.in,BPCL,"Bharat Petroleum Corporation Ltd.",,,"2017-10-30 17:59:03","2017-10-30 17:59:03",1,21452
 4866,General,,"D N",,SHAH,,,,dn.shah@ril.com,Reliance,"Reliance Industries Ltd.",,,"2017-10-16 18:07:19","2017-10-16 18:07:19",1,21454
-6924,General,,"Sujeet ",,Kumar,,"022 4478 8123",,Sujeet.K.Kumar@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-02-14 13:49:36","2018-04-24 11:51:07",1,21455
+6924,General,,"Sujeet ",,Kumar,,"022 4478 8123",,Sujeet.K.Kumar@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-02-14 15:19:36","2018-09-25 09:49:18",1,21455
 6957,General,,Payal,,Chavan,,022-44789492,8452843966,payal.chavan@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-02-20 10:00:43","2018-02-20 10:00:43",1,21456
 6959,General,,Yogesh,,Shah,,022-44789492,,yogesh.r.shah@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-02-20 10:05:05","2018-02-20 10:05:05",1,21457
 6996,General,,"Monica R. ",,Mudaliar,,,,monica.mudaliar@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-02-27 10:45:28","2018-05-17 12:13:08",1,21458
@@ -1325,10 +1323,10 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2504,General,,Saurabh,,Sharma,,,,saurabh.sharma@adityabirla.com,"Indian Rayon","Indian Rayon",,,"2016-07-05 10:54:04","2016-07-30 11:01:35",1,21904
 6661,General,,"Dhaval ",,dave,,,,dhavaldave@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-01-24 00:04:37","2018-09-14 13:19:05",1,21905
 3867,General,,Mr.,,Swami,,,,purchaseteam1@silverlineelectricals.com,"Silverline Elec","Silverline Electricals Pvt. Ltd.",,,"2017-09-14 19:10:54","2018-02-07 07:59:05",1,21906
-6709,General,,"Paresh ",,Ataliwala,,,,pareshataliwala@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-01-29 10:49:24","2018-08-29 11:50:35",1,21907
+6709,General,,"Paresh ",,Ataliwala,,,,pareshataliwala@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-01-29 11:49:24","2018-09-24 11:41:39",1,21907
 7002,General,,"Nishant ",,Vaidya,,79-39324165,,nishantrvaidya@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-03-02 08:24:33","2018-06-14 07:06:27",1,21908
 7007,General,,"Zuber ",,Panja,,,,zuberpanja@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-03-05 12:57:34","2018-06-13 07:54:42",1,21909
-7016,General,,"Gopal ",,Saini,,,,saini@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-03-08 23:19:40","2018-09-21 11:14:05",1,21910
+7016,General,,"Gopal ",,Saini,,,,saini@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-03-09 04:49:40","2018-09-25 12:44:04",1,21910
 2496,General,,Kiran,,Kad,,,,material@poonapressings.com,"Poona Pressings","Poona Pressings Pvt. Ltd.",,,"2016-07-04 09:59:15","2016-07-30 10:26:39",1,21911
 4173,General,,"Kamal ",,Sheth,,,,nomailid1045@bulkmro.com,"Sheth Enterprises","Sheth Enterprises",,,"2017-09-25 12:13:55","2017-09-25 12:13:55",1,21912
 2660,General,,Omprakash,,Yadav,,,,purchase1@costraindia.com,Costra,"Costra Advertising India Pvt. Ltd.",,,"2016-09-23 08:48:13","2017-01-13 09:40:16",1,21913
@@ -1395,7 +1393,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 1302,General,,Nitin,,Snehi,,,,nsnehi1@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-19 11:08:28","2018-02-26 06:48:25",1,21976
 1306,General,,Rajesh,,A.Shah,,,,rshah@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-18 12:38:28","2016-11-25 09:07:36",1,21977
 1307,General,,Prakash,,Bhagchandani,,,,prakash.bhagchandani@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-19 02:38:28","2017-12-21 11:12:29",1,21978
-1308,General,,Yogesh,,Patel,,,,Yogesh.Patel@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-10-05 12:15:10","2018-09-21 08:50:04",1,21979
+1308,General,,Yogesh,,Patel,,,,Yogesh.Patel@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-10-05 13:15:10","2018-09-24 11:36:39",1,21979
 1311,General,,Richard,,Hiwale,,,,Richard.Hiwale@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-18 09:08:28","2016-07-30 11:41:25",1,21980
 1790,General,,Sunil,,Patel,,,,Sunilkumar.Patel@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-21 02:55:49","2018-09-10 10:45:02",1,21981
 1890,General,,Rajesh,,Shah,,,,rashah@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-19 13:55:49","2017-01-02 11:03:12",1,21982
@@ -1526,7 +1524,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2863,General,Ms.,Nandita,,Bondada,,,,nandita.bondada@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-12-22 09:58:00","2016-12-22 12:18:51",1,22112
 2913,General,,"Oonnatie ",,Deolankar,,,,oonnatie.deolankar@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-01-16 06:55:33","2017-01-16 06:55:33",1,22113
 2969,General,,"Amrut ",,Dixit,,,,amrut.s.dixit@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-02-09 12:38:04","2018-02-27 12:01:20",1,22114
-3007,General,,"Pravin ",,Pawar,,,,pravin.pawar@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-02-22 17:25:47","2018-09-12 07:15:58",1,22115
+3007,General,,"Pravin ",,Pawar,,,,pravin.pawar@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-02-22 19:25:47","2018-09-26 05:40:31",1,22115
 3045,General,,Swapnil,,Phatak,,,,swapnil.phatak@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-03-16 11:13:05","2017-04-11 05:31:58",1,22116
 3105,General,Mr.,Ronny,,Matthew,,,,ronny.mathew@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-04-10 10:33:05","2017-07-20 13:23:37",1,22117
 3111,General,,Dinesh,,Rawat,,,,dinesh.rawat@Cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-04-11 11:21:46","2017-07-28 05:05:38",1,22118
@@ -1923,7 +1921,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4352,General,,Ajay,,sir,,,,puneppc@rasandik.com,"Rasandik Engineering","Rasandik Engineering Industries India Pvt. Ltd.",,,"2017-09-28 18:06:22","2017-09-28 18:06:22",1,22534
 3951,General,,"Shraddha ",,Arjel,,,,shraddha_arjel@weikfield.com,"Weikfield Foods","Weikfield Foods Pvt. Ltd.",,,"2017-09-16 16:54:25","2017-09-16 16:54:25",1,22535
 5397,General,,"Mr Vicky",,Gautam,,,,vgautam@nelsonindia.com,"Carl Zeiss","Carl Zeiss India",,,"2017-11-03 15:39:10","2017-11-03 15:39:10",1,22536
-2732,General,,Jyotin,,Shah,,,,jse@vsnl.net,JSE,"J S Equipments",,,"2016-10-22 00:32:41","2018-08-30 09:45:24",1,22537
+2732,General,,Jyotin,,Shah,,,,jse@vsnl.net,JSE,"J S Equipments",,,"2016-10-22 01:32:41","2018-09-25 09:00:39",1,22537
 5824,General,,sushree,,panda,,,,sushree.panda@armacell.com,Armacell,"Armacell India Pvt. Ltd.",,,"2017-11-30 17:57:43","2017-11-30 17:57:43",1,22538
 6520,General,,"sarang ",,dharmadhikari,,,,sarang.dharmadhikari@armacell.com,Armacell,"Armacell India Pvt. Ltd.",,,"2018-01-09 17:06:47","2018-01-09 17:06:47",1,22539
 3753,General,,Jaikant,,Sharma,,,,jaikant.sharma@loreal.com,Loreal,"Loreal India Ltd.",,,"2017-09-11 10:37:44","2017-09-11 10:37:44",1,22540
@@ -1974,7 +1972,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5394,General,,"Mr Sandeep",,"Singh chauhan",,,,sandeepsingh.chauhan@ril.com,Reliance,"Reliance India Ltd.",,,"2017-11-03 15:07:57","2017-11-03 15:07:57",1,22587
 3285,General,,"Anish ",,Anujan,,,,Anish.Anujan@dpworld.com,"Nhava Sheva","Nhava Sheva International Container Terminal Pvt. Ltd.",,,"2017-06-08 09:07:00","2018-04-16 10:10:10",1,22588
 4862,General,,Hitesh,,Sidpara,,,,info@goldcoingroup.co.in,"Goldcoin Industries","Goldcoin Industries Pvt. Ltd.",,,"2017-10-16 11:49:06","2017-10-16 11:49:06",1,22589
-3030,General,,"Jaiganesh ",,S,,,,jaiganesh.subramanian@kssmail.kz,KazStroy,"JSC OGCC KazstroyService",,,"2017-03-08 05:23:03","2018-06-01 07:45:38",1,22590
+3030,General,,"Jaiganesh ",,S,,,,jaiganesh.subramanian@kssmail.kz,KazStroy,"JSC OGCC KazstroyService",,,"2017-03-08 07:23:03","2018-09-25 11:56:35",1,22590
 3638,General,,Bharat,,Bhushan,,,,Bharat.Bhushan@kssmail.kz,KazStroy,"JSC OGCC KazstroyService",,,"2017-09-05 07:24:07","2017-09-05 07:24:07",1,22591
 6530,General,,Mahendra,,boopathy,,,,Mahendra.Boopathy@kssmail.kz,KazStroy,"JSC OGCC KazstroyService",,,"2018-01-11 06:56:34","2018-01-11 06:56:34",1,22592
 3955,General,,"Mr. Vipin ",,"Tyagi ",,,,vipin2486@gmail.com,"Shirish Engineering","Shirish Engineering Pvt. Ltd.",,,"2017-09-18 07:32:28","2017-09-18 07:32:28",1,22593
@@ -2406,7 +2404,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5492,"Company Top Manager",,"Kajal ",,Kanwar,,,,Kajal_Kanwar@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-09 08:11:50","2018-06-12 08:39:26",1,23052
 5510,"Company Top Manager",,"Supriya V ",,Cholin,,,,Supriya_Cholin@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-10 08:13:33","2018-06-12 07:47:38",1,23053
 5598,"Company Top Manager",,"Mithilesh ",,Parvataneni,,,,mithilesh_parvataneni@amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-15 07:16:36","2018-06-12 07:45:09",1,23054
-5759,"Company Top Manager",,"Rohan ",,"Patil ",,,,Rohan_Patil@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-28 09:52:39","2018-09-05 13:47:44",1,23055
+5759,"Company Top Manager",,"Rohan ",,"Patil ",,,,Rohan_Patil@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-28 11:52:39","2018-09-24 10:30:42",1,23055
 5792,"Company Top Manager",,"Pankaj ",,Chaudhary,,,,Pankaj_Chaudhary@amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2017-11-28 13:21:07","2018-06-12 07:40:19",1,23056
 6538,"Company Top Manager",,Karuna,,Habbu,,,,Karuna_Habbu@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2018-01-12 08:41:26","2018-06-12 07:37:51",1,23057
 6961,"Company Top Manager",,Raghavendra,,Thyagaraj,,"080-66283785 ",9845144005,Raghavendra_Thyagaraj@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2018-02-20 15:42:28","2018-06-12 07:35:32",1,23058
@@ -2466,7 +2464,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4399,General,,Amit,,Sakhiya,,,,inquiry@bhanuconcrete.com,"Bhanu Concrete","Bhanu Concrete",,,"2017-10-04 14:10:18","2017-10-04 14:10:18",1,23120
 7491,General,,Rama,,Krishna,,,8842341850,purchase1@andhraelec.com,"Andhra Electronics","Andhra Electronics Ltd.",,,"2018-05-05 12:37:01","2018-06-14 09:00:39",1,23121
 4402,General,,"s. m. ",,kumbhar,,,,suresh.kumbhar@sajdyno.com,"Saj Test Plant","Saj Test Plant Pvt. Ltd.",,,"2017-10-04 16:23:51","2017-10-04 16:23:51",1,23122
-7482,General,,"Laxmikant ",,Joshi,,,,Laxmikant.joshi@huscointl.com,Husco,"Husco Hydraulics Pvt. Ltd.",,,"2018-05-03 12:38:49","2018-06-13 10:51:14",1,23123
+7482,General,,"Laxmikant ",,Joshi,,,,Laxmikant.joshi@huscointl.com,Husco,"Husco Hydraulics Pvt. Ltd.",,,"2018-05-03 13:38:49","2018-09-26 05:43:31",1,23123
 1859,General,,Sherin,,Joy,,,,joysheri@amazon.com,"Amazon Seller","Amazon Seller Services Pvt. Ltd.",,,"2016-05-19 13:25:49","2017-08-10 12:27:35",1,23124
 3264,General,,"Amazon Seller Services Pvt Ltd.",,Amazon,,,,chirag.gohil@bulkmro.com,"Amazon Seller","Amazon Seller Services Pvt. Ltd.",,,"2017-05-29 16:27:09","2017-08-09 13:26:03",1,23125
 7494,General,,"Maneesh ",,Warrier,,,971561881960,maneesh.bhuvanendra@henkel.com,Henkel,"Henkel Polybit Industries Ltd.",,,"2018-05-07 13:05:14","2018-08-01 07:35:04",1,23126
@@ -2487,7 +2485,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2064,General,,Vilas,,shejaval,,,,vilas.shejaval@galiakotwala.in,Galiakotwala,"Galiakotwala Engineering Co. Pvt. Ltd.",,,"2016-05-19 21:55:49","2018-04-02 13:17:19",1,23141
 2800,General,Mr.,Aditya,,Sheth,,,,aditya.sheth@galiakotwala.in,Galiakotwala,"Galiakotwala Engineering Co. Pvt. Ltd.",,,"2016-11-22 04:38:11","2018-08-24 06:05:54",1,23142
 3239,General,,Saurabh,,Kaushik,,,,saurabh.kaushik@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-05-19 11:22:31","2018-05-30 11:14:32",1,23143
-3359,General,,Akhilesh,,Dwivedi,,,9654923140,Akhilesh.Dwivedi@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-07-19 04:26:02","2018-09-14 11:53:09",1,23144
+3359,General,,Akhilesh,,Dwivedi,,,9654923140,Akhilesh.Dwivedi@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-07-19 05:26:02","2018-09-24 10:18:04",1,23144
 6831,General,,Prajesh,,krishnankutty,,,,prajeesh.krishnankutty@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-02-04 19:34:35","2018-05-30 11:14:32",1,23145
 2926,General,,Ferozkhan,,MULLANI,,,,ferozkhan.mullani@ge.com,GE,"GE India Industrial Pvt. Ltd. (GE Energy Connections-SRGI)",,,"2017-01-20 08:33:26","2017-01-20 08:33:26",1,23146
 5168,General,,"Mr Swati",,Khurana,,,,purchase.ho@paramountcable.com,"Paramount Cables","Paramount Cables",,,"2017-10-24 15:42:28","2017-10-24 15:42:28",1,23147
@@ -2696,7 +2694,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5472,General,,"Deepak ",,Nayak,,,,deepak.nayak@entrues.com,"Entrues Business","Entrues Business Services India Pvt. Ltd.",,,"2017-11-08 09:58:45","2017-11-08 09:58:45",1,23358
 3357,General,,Vineet,,Kumar,,,,vineet.kumar@shuttl.com,"Super Highway Labs","Super Highway Labs Pvt. Ltd.",,,"2017-07-18 09:10:35","2017-09-28 06:26:54",1,23359
 4345,General,,"Dr. Vladimir ",,Jitov,,,,tm2002@tm2002.uz,Tehmetall,Tehmetall-2002,,,"2017-09-28 07:31:37","2017-09-28 06:58:16",1,23360
-7502,General,,"Vimlesh Kumar",,Tripathi,,,9839065844,vimleshkumar.tripathi@ge.com,GE,"GE T and D India Ltd.",,,"2018-05-10 14:16:03","2018-09-17 09:44:22",1,23372
+7502,General,,"Vimlesh Kumar",,Tripathi,,,9839065844,vimleshkumar.tripathi@ge.com,GE,"GE T and D India Ltd.",,,"2018-05-10 15:16:03","2018-09-25 12:56:36",1,23372
 7503,General,,Sajan,,Sethi,,,9646348151,a_sajan.sethi@airtel.com,"Bharti Airtel","Bharti Airtel Ltd.",,,"2018-05-10 06:32:28","2018-05-10 06:32:28",1,23373
 2711,General,,"Raj ",,Shekhar,,,,rajshekhar.betageri@cummins.com,Cummins,"Cummins India Ltd.",,,"2016-10-15 12:11:31","2018-09-14 06:38:27",1,23374
 2711,General,,"Raj ",,Shekhar,,,,rajshekhar.betageri@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-10-15 12:11:31","2018-09-14 06:38:27",1,23375
@@ -2704,7 +2702,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 1001,General,,Vijayakumar,,Natarajan,,,,vijayakumar.natarajan@cummins.com,Cummins,"Cummins India Ltd.",,,"2016-05-18 21:08:28","2018-08-25 03:09:06",1,23389
 1001,General,,Vijayakumar,,Natarajan,,,,vijayakumar.natarajan@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-05-18 21:08:28","2018-08-25 03:09:06",1,23390
 7504,General,,Dnyandeo,,Phule,,02115253248,927223777,dnyandeo.n.phule@henkel.co.in,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-05-11 13:15:20","2018-07-05 12:23:33",1,23391
-7511,General,,Aditya,,Varma,,2228831046,7208833927,adityavarma@littlesilver.in,SSI,"Survival Systems India",,,"2018-05-14 21:19:23","2018-09-07 13:19:14",1,23392
+7511,General,,Aditya,,Varma,,2228831046,7208833927,adityavarma@littlesilver.in,SSI,"Survival Systems India",,,"2018-05-14 22:19:23","2018-09-24 09:35:10",1,23392
 7512,General,,"Sonu ",,Mehta,,,8377949071,sonu.mehta@compass-group.co.in,"Compass India Support","Compass India Support Services Pvt. Ltd.",,,"2018-05-14 13:51:49","2018-06-13 10:51:31",1,23393
 7513,General,,Amruta,,Kale,,,7447429252,oj499@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-05-14 09:48:37","2018-07-02 07:24:24",1,23394
 7514,General,,"Ravi Mohan",,Tyagi,,0120-6625500,9711202622,Ravimohan.Tyagi@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-14 15:21:56","2018-09-10 12:54:43",1,23396
@@ -2729,7 +2727,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7532,General,,"Kishor ",,Dawande,,,8433911532,Kishor.Dawande@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-05-17 11:13:24","2018-05-17 11:13:24",1,23440
 7533,General,,Abhishek,,.,,,9481578167,Abhishek_Nr@cargill.com,Cargill,"Cargill India Pvt. Ltd.",,,"2018-05-17 11:55:40","2018-05-17 11:55:40",1,23441
 7534,General,,Shyamal,,Bhattacharjee,,01246753732,9818047788,store@samsfacilities.com,"SAMS Facilities","SAMS Facilities Management Pvt Ltd",,,"2018-05-17 12:13:12","2018-05-17 12:13:12",1,23442
-1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-05-29 12:08:28","2018-09-14 05:15:42",1,23444
+1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-05-29 15:08:28","2018-09-25 06:05:29",1,23444
 7537,General,,Anand,,.,,,9972727709,Anand.Babu@airtel.com,"Bharti Airtel","Bharti Airtel Ltd.",,,"2018-05-18 06:24:48","2018-05-18 06:24:48",1,23445
 7538,General,,"Mr Amit",,Kumar,,,8789323725,amit.kumar1@dbcorp.in,"DB Corp Ltd.","DB Corp Ltd.",,,"2018-05-18 06:57:30","2018-05-18 06:57:30",1,23446
 7539,General,,Vikas,,Singh,,,9599781719,vikas5.singh@paytm.com,"One97 Communications","One97 Communications Ltd",,,"2018-05-18 09:25:54","2018-05-18 09:25:54",1,23449
@@ -2780,8 +2778,8 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7936,General,,Vikram,,Sathe,,,7447464320,vikram.sathe@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-05-30 09:58:50","2018-06-22 05:22:51",1,23676
 7081,General,,"Argha ",,Basu,,,9163209427,Argha.Basu@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-03-21 16:00:29","2018-09-01 05:23:07",1,23679
 7938,General,,Vinoth,,M.V,,,7391051106,mv.vinoth@hyosung.com,Hyosung,"Hyosung T and D India Pvt. Ltd.",,,"2018-05-30 11:39:29","2018-05-30 11:39:29",1,23681
-2611,General,,Bhimrao,,Panpatil,,,,bhimrao.panpatil@cummins.com,Cummins,"Cummins Technical Center India",,,"2016-08-29 23:54:31","2018-08-09 13:23:29",1,23683
-2611,General,,Bhimrao,,Panpatil,,,,bhimrao.panpatil@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-08-29 23:54:31","2018-08-09 13:23:29",1,23684
+2611,General,,Bhimrao,,Panpatil,,,,bhimrao.panpatil@cummins.com,Cummins,"Cummins Technical Center India",,,"2016-08-30 00:54:31","2018-09-25 04:07:17",1,23683
+2611,General,,Bhimrao,,Panpatil,,,,bhimrao.panpatil@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-08-30 00:54:31","2018-09-25 04:07:17",1,23684
 7939,General,,Amol,,Kadu,,,9172209756,amol.sk@kubota.com,Kubota,"Kubota Agricultural Machinery India Pvt. Ltd.",,,"2018-05-31 05:29:38","2018-05-31 05:29:38",1,23686
 7940,General,,Rahul,,Verma,,"120 6625500",9717591805,rahul.verma@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-31 06:29:16","2018-05-31 06:29:16",1,23688
 7941,General,,Tapan,,Parikh,,,9879595875,tapan.parikh@thermotechsystems.com,Thermotech,"Thermotech Systems Ltd.",,,"2018-05-31 10:24:33","2018-05-31 10:09:59",1,23695
@@ -2842,12 +2840,12 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7977,General,,Lalit,,Kumar,,,9620100246,lalit.kumar@gmail.com,PRITECH,PRITECH,,,"2018-06-04 09:40:09","2018-06-04 09:40:09",1,23922
 7978,General,,"Vinod Kumar",,Rana,,1204650000,9818012794,vinod.rana@eclindia.com,"Entertainment City","Entertainment City Ltd.",,,"2018-06-05 13:31:39","2018-08-06 09:48:37",1,24467
 7979,General,,Jayant,,Sawant,,,7447436152,jayant.sawant@cummins.com,Cummins,"Cummins India Ltd.",,,"2018-06-05 11:35:22","2018-06-05 11:35:22",1,24468
-7982,General,,Hiren,,Patel,,2668661084,8128680122,hiren.patel@ge.com,GE,"GE T and D India Ltd.",,,"2018-06-06 11:32:02","2018-09-21 05:22:44",1,24470
+7982,General,,Hiren,,Patel,,2668661084,8128680122,hiren.patel@ge.com,GE,"GE T and D India Ltd.",,,"2018-06-06 12:32:02","2018-09-24 09:55:53",1,24470
 7014,General,,"Rahul ",,Gautam,,,7030295031,rahul.gautam@tatamotors.com,"Tata Group","Tata Motors Ltd.",,,"2018-03-06 13:55:34","2018-06-06 12:19:39",1,24476
 7985,General,,"Shivram Maruti",,Kamble,,,9404833832,Shivram.Kamble@gmail.com,"Aadrsh Motors","Adarsh Motors",,,"2018-06-06 12:06:24","2018-06-06 12:06:24",1,24477
 7986,General,,Kirtikumar,,Katkar,,2033714022,9766696652,kirtikumar.katkar@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-06-06 20:13:49","2018-08-06 05:19:38",1,24478
 7014,General,,"Rahul ",,Gautam,,,7030295031,rahul.gautam@tatamotors.com,"Aadrsh Motors","Adarsh Motors",,,"2018-03-06 13:55:34","2018-06-06 12:19:39",1,24479
-7987,General,,Pratik,,Darad,,,9624744345,pratik.darad@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-06-07 22:56:20","2018-09-17 07:53:12",1,24484
+7987,General,,Pratik,,Darad,,,9624744345,pratik.darad@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-06-08 00:56:20","2018-09-25 05:52:16",1,24484
 2351,General,Mr.,Srinivasan,,M,,,,srinivasan.madhavachary@ge.com,GE,"GE Power Conversion India Pvt. Ltd.",,,"2016-06-07 21:09:16","2018-05-22 07:35:27",1,24485
 2351,General,Mr.,Srinivasan,,M,,,,srinivasan.madhavachary@ge.com,GE,"GE T and D India Ltd.",,,"2016-06-07 21:09:16","2018-05-22 07:35:27",1,24486
 7988,General,,Sara,,Davis,,00852-97963364,"0086 133 2292 7605",sales1@timsen.hk,Timsen,"Timsen Ltd.",,,"2018-06-07 10:07:55","2018-06-07 10:07:55",1,24487
@@ -2855,8 +2853,8 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7991,General,,Dinakaran,,Panneerselvam,,,8939831824,dinakaran.panneerselvam@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-06-07 11:28:25","2018-07-05 12:23:31",1,24490
 7983,General,,"Ashok ",,Patajoshi,,1166513716,7810024422,ashok.patajoshi@tajhotels.com,TAJ,"Taj Hotel",,,"2018-06-06 09:37:40","2018-06-07 11:19:09",1,24491
 7994,General,,Shailesh,,Deshmukh,,1204722300,,Shailesh.Deshmukh@cinda.in,"Cinda Engineering","Cinda Engineering and Construction Pvt. Ltd.",,,"2018-06-08 05:36:06","2018-06-08 05:36:06",1,24495
-1304,General,,Viren,,Shah,,"079 4070 6357",,viren.shah@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-19 10:08:28","2018-09-10 10:14:04",1,24499
-1304,General,,Viren,,Shah,,"079 4070 6357",,viren.shah@irco.com,IR,"Ingersoll Rand Technologies and Services Pvt. Ltd.",,,"2016-05-19 10:08:28","2018-09-10 10:14:04",1,24500
+1304,General,,Viren,,Shah,,"079 4070 6357",,viren.shah@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2016-05-19 11:08:28","2018-09-25 13:33:56",1,24499
+1304,General,,Viren,,Shah,,"079 4070 6357",,viren.shah@irco.com,IR,"Ingersoll Rand Technologies and Services Pvt. Ltd.",,,"2016-05-19 11:08:28","2018-09-25 13:33:56",1,24500
 7996,General,,"Mr. Yateen",,Bhalero,,,8511124799,yateen.bhalero@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-06-11 07:08:23","2018-06-11 07:08:23",1,24506
 7998,General,,Nitin,,Shringi,,,7447797016,nitin.shringi@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-06-11 10:01:53","2018-06-11 10:01:53",1,24510
 7999,General,,Dipak,,Tathe,,,8291925609,dipak.tathe@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-06-11 10:59:21","2018-07-05 12:23:31",1,24511
@@ -2878,14 +2876,14 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 6979,"Company Top Manager",,"Venkateshwarlu ",,Konduri,,,08066283290,Konduri_Venkateshwarlu@amat.com,AMAT,"Applied Materials Inc.",,,"2018-02-23 07:25:00","2018-06-12 07:32:56",1,24540
 1380,"Company Top Manager",,Vijay,,Vhankhande,,,,Vijay_Vhankhande@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2016-05-23 00:08:28","2018-09-07 07:06:43",1,24541
 6961,"Company Top Manager",,Raghavendra,,Thyagaraj,,"080-66283785 ",9845144005,Raghavendra_Thyagaraj@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2018-02-20 15:42:28","2018-06-12 07:35:32",1,24542
-1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2016-05-29 12:08:28","2018-09-14 05:15:42",1,24543
+1381,"Company Top Manager",,Bhupali,,Pawar,,,7710052741,Bhupali_Pawar@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2016-05-29 15:08:28","2018-09-25 06:05:29",1,24543
 2035,"Company Top Manager",,Prashanth,,Babunaidu,,,,prashanth_babunaidu@contractor.am,AMAT,"Applied Materials Inc.",,,"2016-05-19 11:25:49","2018-06-12 07:37:38",1,24544
 2035,"Company Top Manager",,Prashanth,,Babunaidu,,,,prashanth_babunaidu@contractor.am,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-05-19 11:25:49","2018-06-12 07:37:38",1,24545
 6538,"Company Top Manager",,Karuna,,Habbu,,,,Karuna_Habbu@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2018-01-12 08:41:26","2018-06-12 07:37:51",1,24546
 2216,"Company Top Manager",,Abdul,,Karim,,,,Abdulkarim_Abdulkadhar@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2016-05-19 18:45:12","2018-06-12 07:38:40",1,24547
 2216,"Company Top Manager",,Abdul,,Karim,,,,Abdulkarim_Abdulkadhar@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-05-19 18:45:12","2018-06-12 07:38:40",1,24548
 5792,"Company Top Manager",,"Pankaj ",,Chaudhary,,,,Pankaj_Chaudhary@amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-28 13:21:07","2018-06-12 07:40:19",1,24549
-5759,"Company Top Manager",,"Rohan ",,"Patil ",,,,Rohan_Patil@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-28 09:52:39","2018-09-05 13:47:44",1,24550
+5759,"Company Top Manager",,"Rohan ",,"Patil ",,,,Rohan_Patil@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-28 11:52:39","2018-09-24 10:30:42",1,24550
 5598,"Company Top Manager",,"Mithilesh ",,Parvataneni,,,,mithilesh_parvataneni@amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-15 07:16:36","2018-06-12 07:45:09",1,24551
 5510,"Company Top Manager",,"Supriya V ",,Cholin,,,,Supriya_Cholin@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-10 08:13:33","2018-06-12 07:47:38",1,24552
 5492,"Company Top Manager",,"Kajal ",,Kanwar,,,,Kajal_Kanwar@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2017-11-09 08:11:50","2018-06-12 08:39:26",1,24553
@@ -2898,7 +2896,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2538,"Company Top Manager",,Himanshu,," Sharma",,,,Himanshu_Sharma@amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-07-20 19:11:15","2018-06-12 08:51:43",1,24560
 2520,"Company Top Manager",,Jabiulla,,Yattinahalli,,,,Jabiulla_Yattinahalli@contractor.amat.com,AMAT,"Applied Materials Inc.",,,"2016-07-13 12:34:50","2018-06-12 08:53:59",1,24561
 2520,"Company Top Manager",,Jabiulla,,Yattinahalli,,,,Jabiulla_Yattinahalli@contractor.amat.com,AMAT,"Applied Materials India Pvt. Ltd.",,,"2016-07-13 12:34:50","2018-06-12 08:53:59",1,24562
-8005,General,,Kaushik,,Solanki,,,9867252646,kaushik.solanki@covestro.com,Covestro,"Covestro India Pvt. Ltd.",,,"2018-06-12 14:16:44","2018-08-23 12:43:00",1,24576
+8005,General,,Kaushik,,Solanki,,,9867252646,kaushik.solanki@covestro.com,Covestro,"Covestro India Pvt. Ltd.",,,"2018-06-12 16:16:44","2018-09-25 10:06:23",1,24576
 8006,General,,Sonia,,Mahto,,,9000607676,a_sonia.mahto@airtel.com,"Bharti Airtel","Bharti Airtel Ltd.",,,"2018-06-12 12:20:36","2018-06-12 12:20:36",1,24776
 8008,General,,Suresh,,Yadav,,,7447458225,suresh.yadav@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-06-13 08:12:59","2018-06-29 12:23:13",1,24783
 8010,General,,Arth,,Shah,,2833661759,,arth.shah@nayaraenergy.com,"Nayara Energy","Nayara Energy Ltd.",,,"2018-06-13 06:38:24","2018-06-13 06:38:24",1,24785
@@ -2909,7 +2907,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8016,General,,"General Manager ",," Finance & Accounts "," Finance & Accounts",07544274444,,bhaskar.debnath@gail.co.in,GAIL,"GAIL India Ltd.",,,"2018-06-14 10:20:19","2018-06-16 06:53:59",1,24801
 8018,General,,Aarun,,Kangle,,,"94229 42357",aarun1451@gmail.com,Vardhaman,"Vardhaman Engineering",,,"2018-06-14 07:53:51","2018-06-14 07:53:51",1,24803
 8020,General,,Anubhav,,Ghosh,,,9818840756,anubhav.ghosh@ge.com,GE,"GE Power India Ltd.",,,"2018-06-14 12:16:54","2018-06-14 12:16:54",1,24819
-8021,General,,Anil,,Thakur,,2717611-225,7434004442,Anil.Thakur@Beiersdorf.com,"Nivea India","Nivea India Pvt. Ltd.",,,"2018-06-15 14:28:07","2018-09-14 09:46:11",1,24822
+8021,General,,Anil,,Thakur,,2717611-225,7434004442,Anil.Thakur@Beiersdorf.com,"Nivea India","Nivea India Pvt. Ltd.",,,"2018-06-15 16:28:07","2018-09-24 10:00:06",1,24822
 8022,General,,Pavan,,Phanse,,,9029000225,pavan@adinotelecom.com,"Adino Telecom","Adino Telecom Ltd.",,,"2018-06-15 10:53:58","2018-08-30 07:51:12",1,24823
 8023,General,,"V. Gopinath",,.,,,,Gobinath.Venkatesan@sbdinc.com,"Stanley Engineered","Stanley Engineered Fastening India Pvt. Ltd.",,,"2018-06-15 06:33:41","2018-06-15 06:33:41",1,24824
 2873,General,,"Bhawana ",,Verma,,"022 2481 5197",,bhawana.verma@jindalmumbai.com,JINDAL,"Jindal Drilling and Industries Ltd.",,,"2016-12-28 16:00:48","2018-04-21 09:57:57",1,24855
@@ -2953,7 +2951,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8080,General,,"Jayesh ",,Patel,,,,jayesh@avadhindustries.com,"Avadh Engineering","Avadh Engineering Pvt Ltd.",,,"2018-06-29 10:57:07","2018-06-29 10:57:07",1,25004
 8081,General,,"Raju ",,"Patel ",,,,purchase@avadhindustries.com,"Avadh Engineering","Avadh Engineering Pvt Ltd.",,,"2018-06-29 10:58:02","2018-06-29 10:58:02",1,25005
 8084,General,,"Hifzur Rahman ",,"Khan ",,,"8421896540 ",hrtkhan@corbus.com,HUL,"Hindustan Unilever Ltd.",,,"2018-07-02 05:49:05","2018-07-02 05:49:05",1,25030
-8085,General,,"Sonalika ",,Das,,,"+91-7008315374 ",sonalika.Das@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-07-02 06:50:11","2018-07-02 06:50:11",1,25037
+8085,General,,"Sonalika ",,Das,,,"+91-7008315374 ",sonalika.Das@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-07-02 07:50:11","2018-09-25 08:58:36",1,25037
 8086,Manager,,"Christian ",,Joseph,"Manager -Winding, Small Power Transformer",091-0265-6724007,091-9924185205,christian.joseph@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-07-02 07:12:36","2018-07-02 07:12:36",1,25038
 8089,General,,"Syed Shoaibul ",,Hassan,,"+ 9712634949","+ 971555120741",sales@modern-display.com,"Modern Display Product","Modern Display Product Making LLC",,,"2018-07-02 12:11:14","2018-07-02 12:11:14",1,25053
 8092,General,,"Gokulraj ",,"Natarajan ","Maintenance – Chennai",,"+91 8939841606",gokulraj.natarajan@henkel.com,Henkel,"Henkel Anand India Pvt. Ltd.",,,"2018-07-04 05:46:55","2018-07-04 05:46:55",1,25056
@@ -2965,9 +2963,9 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8100,General,,"FA & ",,CAO,,,9810311490,viveksyal@bulkmro.com,Railcoach,"Rail Coach Factory",,,"2018-07-04 07:37:27","2018-07-04 07:37:27",1,25065
 8101,General,,"Dy. ",,"CMM (D) - Shell","Dy. CMM (D) ",,9810311490,vivek_syal@bulkmro.com,Railcoach,"Rail Coach Factory",,,"2018-07-04 08:12:06","2018-07-04 12:36:55",1,25066
 8103,General,,"Swapnil ",,"Jagtap  ",,,"7709442827  ",archanaenterprisesbmt@gmail.com,"Archana Enterprises","Archana Enterprises",,,"2018-07-04 09:22:42","2018-07-04 09:22:42",1,25067
-8104,General,,"Sonali ",,"Joshi ",,"+9122 3802 3742",,Ahmpurchase.scoc@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-07-04 11:51:15","2018-07-04 12:39:30",1,25077
+8104,General,,"Sonali ",,"Joshi ",,"+9122 3802 3742",,Ahmpurchase.scoc@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-07-04 12:51:15","2018-09-25 09:07:19",1,25077
 8106,General,,"Nitin ",,"Shrivastava ",,,"9871306182 ",brinybs_ofa@yahoo.com,"Briny Business Solutions","Briny Business Solutions LLP",,,"2018-07-05 06:06:32","2018-07-05 06:06:32",1,25079
-8107,General,,"Hitesh ",,Malik,,0124-4062212,,hitesh.malik@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-07-05 09:25:57","2018-07-05 09:25:57",1,25082
+8107,General,,"Hitesh ",,Malik,,0124-4062212,,hitesh.malik@aisglass.com,"Asahi India Glass","Asahi India Glass Ltd.",,,"2018-07-05 10:25:57","2018-09-24 09:27:44",1,25082
 8108,General,,Sanket,,Pawar,,,"9664034682  ",sanket@parveen.in,"Parveen Industries","Parveen Industries Pvt. Ltd.",,,"2018-07-06 07:52:09","2018-07-24 09:22:18",1,25095
 8109,General,,"Dheeraj ",,Keswani,,,9967015150,dheeraj.keswani@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-07-06 07:24:26","2018-07-06 07:24:26",1,25099
 8112,General,,"Mohit ",,Sharma,,,7405067588,mohit.sharma@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2018-07-06 15:36:18","2018-09-19 04:23:14",1,25108
@@ -3036,7 +3034,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8216,General,,Pankaj,,Rawat,,,"7798982168 ",pankaj.rawat@oerlikon.com,Oerlikon,"Oerlikon Balzers Coating India Pvt. Ltd.",,,"2018-07-27 12:47:26","2018-08-01 12:18:44",1,25370
 8217,General,,"Nitesh ",,Shrimali,,,7340660255,nitesh.shrimali@vedanta.co.in,Cairn,"Vedanta Ltd. (Division # Cairn Oil and Gas)",,,"2018-07-27 12:42:27","2018-07-27 12:14:37",1,25372
 8217,General,,"Nitesh ",,Shrimali,,,7340660255,nitesh.shrimali@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd",,,"2018-07-27 12:42:27","2018-07-27 12:14:37",1,25373
-8218,General,,"Reshma ",,Debnath,,"022 3080 5000",,radebnath@beckman.com,"Beckman Coulter","Beckman Coulter India Pvt. Ltd.",,,"2018-07-30 12:44:39","2018-09-20 10:13:47",1,25383
+8218,General,,"Reshma ",,Debnath,,"022 3080 5000",,radebnath@beckman.com,"Beckman Coulter","Beckman Coulter India Pvt. Ltd.",,,"2018-07-30 14:14:39","2018-09-24 13:24:12",1,25383
 8219,General,,"Neelam ",,Kutty,,022-25100640,7738522228,neelam.kutty@proboxindia.com,"Probox Solutions","Probox Solutions India Pvt. Ltd.",,,"2018-07-30 07:19:43","2018-07-30 07:19:43",1,25386
 8221,General,,"Dilip ",,Mishra,,,9956296240,dilip.mishra5@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-07-30 11:42:16","2018-07-30 11:42:16",1,25392
 8223,General,,"Rishabh ",,Verma,"Associate Manager- Commercial",,9116152040,Rishabh.Verma@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd",,,"2018-07-31 06:30:15","2018-07-31 06:30:15",1,25398
@@ -3054,7 +3052,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8246,General,,Sukanya,,.,,,08025272969,quote@umacintl.com,"UMAC Avionics","UMAC Avionics Pvt. Ltd",,,"2018-08-06 11:44:13","2018-08-06 11:44:13",1,25474
 8247,General,,"Vishal   ",,Poojara,"Manager Sourcing – Chemicals & Sanitation","223 3963232",9619303551,Vishal.Poojara@mdlz.com,"Mondelez India Foods","Mondelez India Foods Pvt. Ltd.",,,"2018-08-06 12:50:36","2018-08-06 12:50:36",1,25477
 8248,General,,"Rahul ",,Sharma,"Buyer | Samsung India Electronics Pvt. Ltd. ",+91-120-3862300,9643756775,rahul.sh@samsung.com,Samsung,"Samsung India Electronics Pvt. Ltd.",,,"2018-08-07 06:57:59","2018-08-07 06:57:59",1,25482
-8249,General,,"Satish ",,Munde,,9977669888,7999609201,smunde@talis-group.com,"Talis Valves ","Talis Valves india Pvt ltd ",,,"2018-08-07 09:14:46","2018-08-07 09:14:46",1,25484
+8249,General,,"Satish ",,Munde,,9977669888,7999609201,smunde@talis-group.com,"Talis Valves ","Talis Valves india Pvt ltd ",,,"2018-08-07 12:14:46","2018-09-26 05:34:20",1,25484
 8250,General,,"Sumit ",,Chaturvedi,,,,Sumit.Chaturvedi@lntmhps.com,"L and T","Larsen and Toubro Ltd.",,,"2018-08-07 11:26:46","2018-08-07 11:26:46",1,25490
 8251,General,,"Mihir ",,Kuvadiya,,,9712011814,Mihir.Kuvadiya@ge.Com,GE,"GE T and D India Ltd.",,,"2018-08-07 12:34:10","2018-08-07 12:34:10",1,25494
 1149,General,,Alipkhan,M,Shaikh,,,,Alipkhan.Shaikh@ge.com,GE,"GE India Industrial Pvt. Ltd.",,,"2016-05-18 12:08:28","2018-01-30 09:43:06",1,25497
@@ -3113,7 +3111,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8358,General,,"Pradip ",,"Gaikwad ","Assistant Manager (Purchase)",,"020 2733 4260",pradeep.gaikwad@enzene.com,"Enzene Biosciences","Enzene Biosciences Ltd",,,"2018-08-28 10:26:36","2018-08-28 10:26:36",1,25723
 8357,General,,"Narendra ",,Kapadne,"Purchase Coordinator","022 28317748","022 28303030",narendra.kapadne@itchotels.in,ITC,"ITC Maratha -  A Luxury Collection Hotel",,,"2018-08-28 10:07:05","2018-08-28 11:30:06",1,25730
 8297,General,,"Atul ",,Sehgal,"General Purchase",,8233946257,asehgal@hondacarindia.com,HONDA,"Honda Cars India Ltd.",,,"2018-08-18 11:06:48","2018-08-29 05:28:34",1,25736
-8364,General,,"Somanath ",,Behera,,,9130054371,somanath_behera@cargill.com,Cargill,"Cargill India Pvt. Ltd.",,,"2018-08-29 10:10:02","2018-09-12 07:33:07",1,25737
+8364,General,,"Somanath ",,Behera,,,9130054371,somanath_behera@cargill.com,Cargill,"Cargill India Pvt. Ltd.",,,"2018-08-29 11:10:02","2018-09-25 13:05:29",1,25737
 8363,General,,"Vaibhav ",,"Kharat ",,,,vkharat@thelalit.com,"The Lalit","Bharat Hotels Ltd.; Unit : The Lalit Mumbai",,,"2018-08-28 18:39:13","2018-09-06 13:47:38",1,25738
 8366,General,,"Praveen ",,"Mehrotra  ","Jr. Manager – P&C Department",,,praveen.mehrotra@gmrgroup.in,"Delhi International Airport","Delhi International Airport Limited",,,"2018-08-29 09:21:00","2018-08-29 09:21:00",1,25742
 8367,General,,"Javed ",,Ansari,,,7400058708,ansari.javed@mahindraretail.com,Mahindra,"Mahindra Retail Pvt. Ltd.",,,"2018-08-29 19:52:27","2018-08-31 07:57:35",1,25744
@@ -3172,8 +3170,8 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8458,General,,"Prakash  ",,"Salunkhe ","Manager - Procurement",,,prakash.salunkhe@videojet.com,Videojet,"Videojet Technologies India Pvt. Ltd.",,,"2018-09-12 15:38:37","2018-09-12 14:23:08",1,25976
 8161,General,,"Raju ",,Sabhadinde,,"+91 22 79687437",,Raju.Sabhadinde@ril.com,Reliance,"Reliance Corporate IT Park Ltd.",,,"2018-07-16 16:47:31","2018-09-14 10:35:43",1,25977
 1151,General,,Girija,,Sankar,,,,Girija.SankarSubudhi@ge.com,GE,"GE India Industrial Pvt. Ltd.",,,"2016-05-18 20:08:28","2018-03-26 11:59:45",1,25981
-8463,General,,"Raghuveer ",,"Joshi ","Store Manager",,"8003699477 ",Raghuveer.Joshi@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd",,,"2018-09-14 08:53:07","2018-09-14 08:53:07",1,25996
-8463,General,,"Raghuveer ",,"Joshi ","Store Manager",,"8003699477 ",Raghuveer.Joshi@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd.",,,"2018-09-14 08:53:07","2018-09-14 08:53:07",1,25997
+8463,General,,"Raghuveer ",,"Joshi ","Store Manager",,"8003699477 ",Raghuveer.Joshi@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd",,,"2018-09-14 10:53:07","2018-09-24 09:43:44",1,25996
+8463,General,,"Raghuveer ",,"Joshi ","Store Manager",,"8003699477 ",Raghuveer.Joshi@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd.",,,"2018-09-14 10:53:07","2018-09-24 09:43:44",1,25997
 8469,General,,"Anthony ",,D’souza,,"022 22826265",7875445700,anthony.dsouza@tajhotels.com,TAJ,"The Taj Mahal Palace",,,"2018-09-17 04:53:37","2018-09-17 04:53:37",1,26010
 8470,General,,Vishal,,Sharma,,120-6763145,,vishal.sharma@covestro.com,Covestro,"Covestro India Pvt. Ltd.",,,"2018-09-17 05:16:15","2018-09-17 05:16:15",1,26013
 8472,General,,"Jaymin ",,Patel,,,7069025214,sales01@oriententerprise.com,"Orient Enterprise","Orient Enterprise (Guj) Pvt. Ltd.",,,"2018-09-17 05:42:44","2018-09-17 05:42:44",1,26015
@@ -3191,9 +3189,19 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 8489,General,,Maheshkumar,,Chauhan,"SCM - Purchase ",,,maheshkumar.chauhan@lntmhps.com,"L and T","L and T-MHPS Boilers Pvt. Ltd.",,,"2018-09-19 09:39:47","2018-09-19 09:39:47",1,26063
 8491,General,,"Paresh ",,Modi,,"022 61547800",,pdmodi@knexir.in,"Knexir Consultants","Knexir Consultants Pvt. Ltd.",,,"2018-09-19 11:30:35","2018-09-19 11:30:35",1,26065
 8465,General,,"Asgar ",,Ali,,,,asgar@redtapeindia.com,"Miracle Enterprises","Miracle Enterprises",,,"2018-09-14 14:58:29","2018-09-20 10:36:20",1,26072
-8495,General,,"Dipen ",,Desia,,,,operations@bituflexindia.com,BITUFLEX,"Bituflex Shipping And Trading LLP",,,"2018-09-20 13:03:18","2018-09-20 11:52:12",1,26073
+8495,General,,"Dipen ",,Desia,,,,operations@bituflexindia.com,BITUFLEX,"Bituflex Shipping And Trading LLP",,,"2018-09-20 14:03:18","2018-09-25 08:58:07",1,26073
 8497,General,,Santosh,,Jadhav,,022-43337171,,purchase1@jaicoent.com,"Jaico Enterprise","Jaico Enterprise LLP",,,"2018-09-21 07:08:37","2018-09-21 07:08:37",1,26082
 8499,General,,"Suraj Bhan",,Jaiswal,"Plant Head (Sohore)",,9109114751,sb.jaiswal@daulatram.com,"Daulat Ram Engineering Services","Daulat Ram Engineering Services Pvt. Ltd.",,,"2018-09-21 09:19:03","2018-09-21 09:19:03",1,26085
 8500,General,,Alihusain,,Attarwala,"Buyer Projects and Services",,,alihusain_attarwala@huntsman.com,Huntsman,"Huntsman International India Pvt Ltd",,,"2018-09-21 09:24:01","2018-09-21 09:24:01",1,26086
 8501,General,,"Hansnath ",,Chauhan,,"022 66927372",,Hansnath.Chauhan@marriott.com,"Marriott International","Renaissance Mumbai Convention Centre Hotel",,,"2018-09-21 10:39:13","2018-09-21 10:39:13",1,26089
 8502,General,,Amit,,Karchalwar,,,,Amit.Karchalwar@ril.com,Reliance,"Reliance Industries Ltd.",,,"2018-09-21 12:21:39","2018-09-21 12:21:39",1,26091
+8510,General,,Mohamed,,Riyaz,"JLL Procurement - IFM",,9663859477,md.riyaz@shell.com,Shell,"Shell India Markets Pvt. Ltd.",,,"2018-09-24 11:42:34","2018-09-24 11:12:51",1,26105
+8511,General,,Suresh,,Pathak,"Procurement Head",,,purchase.bp@the-ascott.com,"Ascott Beverly Park Hospitality","Ascott Beverly Park Hospitality (India) Pvt Ltd",,,"2018-09-25 04:55:48","2018-09-25 04:55:48",1,26113
+6924,General,,"Sujeet ",,Kumar,,"022 4478 8123",,Sujeet.K.Kumar@ril.com,"Ascott Beverly Park Hospitality","Ascott Beverly Park Hospitality (India) Pvt. Ltd.",,,"2018-02-14 15:19:36","2018-09-25 09:49:18",1,26114
+8512,General,,Saurabh,,Parandekar,,,,Saurabh.Parandekar@tetrapak.com,"Tetra Pak India","Tetra Pak India Pvt. Ltd.",,,"2018-09-25 05:09:43","2018-09-25 05:09:43",1,26115
+8507,General,,"Aamir ",,"Ahmed ",,,9099981903,aamir.ahmed@mb-benchmarkcars.in,"Landmark Cars","Landmark Cars Pvt. Ltd.",,,"2018-09-22 15:33:56","2018-09-25 06:50:59",1,26125
+8514,General,,"Sagar ",,Rawade,,9545551885,"9689796262 ",sagar@mstechnosys.com,"MS Technosys","MS Technosys",,,"2018-09-25 12:49:21","2018-09-25 12:49:21",1,26134
+8516,General,,Sarvesh,,Kumar,,,"7073535444  ",Sarvesh.Kumar@vedanta.co.in,"Hindustan Zinc","Hindustan Zinc Ltd.",,,"2018-09-26 06:56:13","2018-09-26 07:00:12",1,26136
+5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Emission Solutions INC",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,26138
+5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,26139
+8519,General,,"Ragupathy ",,Murugesan,,"040 23477568",,ragupathy.murugesan@airindia.in,"Air India","Air India Ltd.",,,"2018-09-26 09:56:02","2018-09-26 09:56:02",1,26141

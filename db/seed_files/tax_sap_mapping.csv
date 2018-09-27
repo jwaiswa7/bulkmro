@@ -1,0 +1,11 @@
+bmro_tax_code,sap_tax_code,rate,tax_bmro_id
+"CGST + SGST 0%",CSG@0,0,14
+"CGST + SGST 12%",CSG@12,12,15
+"CGST + SGST 18%",CSG@18,18,16
+"CGST + SGST 28%",CSG@28,28,17
+"CGST + SGST 5%",CSG@5,5,18
+"IGST 0%",IG@0,0,14
+"IGST 12%",IG@12,12,15
+"IGST 18%",IG@18,18,16
+"IGST 28%",IG@28,28,17
+"IGST 5%",IG@5,5,18

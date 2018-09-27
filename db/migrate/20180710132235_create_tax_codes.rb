@@ -2,6 +2,7 @@ class CreateTaxCodes < ActiveRecord::Migration[5.2]
   def change
     create_table :tax_codes do |t|
       t.integer :remote_uid, index: true
+      t.integer :legacy_id, index: true
 
       t.string :code, index: true
       t.integer :chapter

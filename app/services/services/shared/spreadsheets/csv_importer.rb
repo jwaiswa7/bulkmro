@@ -18,9 +18,9 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     @file = Rails.root.join('db', 'seed_files', name)
   end
 
-  # def set_rows_count
-  #   @rows_count = `wc -l #{file}`.to_i
-  # end
+  def set_rows_count
+     @rows_count = `wc -l #{file}`.to_i
+  end
 
   def set_current_row(row_hash)
     @current_row = row_hash
