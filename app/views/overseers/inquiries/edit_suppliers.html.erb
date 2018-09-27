@@ -4,13 +4,6 @@
       <%= render 'shared/snippets/form_errors', f: f %>
 
       <div class="card">
-        <div class="card-header">
-          <div class="form-group mb-0">
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Update Suppliers
-            <% end %>
-          </div>
-        </div>
         <div class="card-body">
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
