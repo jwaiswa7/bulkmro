@@ -11,4 +11,14 @@ const tinyHtmlEditor = () => {
     });
 };
 
+// Pump and dump all DataTable set resources
+let cleanUp = () => {
+    tinymce.remove('.html-editor');
+};
+
+// Turbolinks hook
+document.addEventListener("turbolinks:before-cache", function() {
+    cleanUp();
+});
+
 export default tinyHtmlEditor
