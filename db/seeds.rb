@@ -1011,6 +1011,67 @@ Company.all.each do |company|
 end
 
 
+state_codes = {
+    'AN' => 'Andaman and Nicobar Islands',
+    'AP' => 'Andhra Pradesh',
+    'AR' => 'Arunachal Pradesh',
+    'AS' => 'Assam',
+    'BR' => 'Bihar',
+    'CH' => 'Chandigarh',
+    'CT' => 'Chhattisgarh',
+    'DN' => 'Dadra and Nagar Haveli',
+    'DD' => 'Daman and Diu',
+    'DL' => 'Delhi',
+    'GA' => 'Goa',
+    'GJ' => 'Gujarat',
+    'HR' => 'Haryana',
+    'HP' => 'Himachal Pradesh',
+    'JK' => 'Jammu and Kashmir',
+    'JH' => 'Jharkhand',
+    'KA' => 'Karnataka',
+    'KL' => 'Kerala',
+    'LD' => 'Lakshadweep',
+    'MP' => 'Madhya Pradesh',
+    'MH' => 'Maharashtra',
+    'MN' => 'Manipur',
+    'ML' => 'Meghalaya',
+    'MZ' => 'Mizoram',
+    'NL' => 'Nagaland',
+    'OR' => 'Odisha, Orissa',
+    'PY' => 'Puducherry',
+    'PB' => 'Punjab',
+    'RJ' => 'Rajasthan',
+    'SK' => 'Sikkim',
+    'TN' => 'Tamil Nadu',
+    'TG' => 'Telangana',
+    'TR' => 'Tripura',
+    'UP' => 'Uttar Pradesh',
+    'UT' => 'Uttarakhand,Uttaranchal',
+    'WB' => 'West Bengal',
+}
+
+service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+service.loop(200) do |x|
+  Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create do |warehouse|
+    warehouse.assign_attributes(
+        :remote_uid => x.get_column('Warehouse Code'),
+        :legacy_id => x.get_column('Warehouse Code'),
+        :location_uid => x.get_column('Location'),
+        :remote_branch_name => x.get_column('Warehouse Name'),
+        :remote_branch_code => x.get_column('Business Place ID'),
+        )
+
+    warehouse.build_address(
+        :street1 => x.get_column('Street'),
+        :street2 => x.get_column('Block'),
+        :pincode => x.get_column('Zip Code'),
+        :city_name => x.get_column('City'),
+        :country_code => x.get_column('Country'),
+        :state => AddressState.find_by_name(state_codes[x.get_column('State')])
+    )
+  end
+end
+
 Brand.all.each do |brand|
   suppliers = RandomRecords.for(Company, [*1..5].sample)
   suppliers.each do |supplier|
@@ -1299,37 +1360,6 @@ Product.all.each do |product|
   )
 end
 
-Account.all.each do |account|
-  2.times do
-
-    company = RandomRecord.for(Company.all.acts_as_supplier)
-    products = RandomRecords.for(Product.all, 5)
-    i = Inquiry.create!(
-        contact: RandomRecord.for(company.contacts),
-        company: company,
-        billing_address: RandomRecord.for(company.addresses),
-        shipping_address: RandomRecord.for(company.addresses),
-    #comments: Faker::Lorem.paragraph_by_chars(256, false)
-    )
-
-    products.each_with_index do |product, index|
-      i.inquiry_products.create!(product_id: product.id, quantity: [*1..20].sample, sr_no: index + 1)
-    end
-
-    i.inquiry_products.each do |inquiry_product|
-      suppliers = RandomRecords.for(Company.all.acts_as_supplier, [*1..3].sample)
-      suppliers.each do |supplier|
-
-        inquiry_product.inquiry_product_suppliers.create!(inquiry_product_id: inquiry_product.id, supplier_id: supplier.id, unit_cost_price: Faker::Number.normal(((inquiry_product.product.id % 10) + 2) * 397, ((inquiry_product.product.id % 10) + 1) * 80).round(2))
-
-      end
-
-    end
-
-    i.save
-  end
-end
-
 
 Company.all.each do |company|
   company.update_attributes(
@@ -1353,7 +1383,9 @@ Account.all.each do |account|
         shipping_address: company.default_shipping_address,
         inside_sales_owner: Overseer.all.sales.sample,
         outside_sales_owner: Overseer.all.sales.sample,
-        sales_manager: Overseer.all.sales.sample
+        sales_manager: Overseer.all.sales.sample,
+        bill_from: RandomRecord.for(Warehouse),
+        ship_from: RandomRecord.for(Warehouse)
     #comments: Faker::Lorem.paragraph_by_chars(256, false)
     )
 
@@ -1403,65 +1435,4 @@ service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
 service.loop(200) do |x|
   overseer = Overseer.find_by_email(x.get_column('email'))
   overseer.update_attributes(:smtp_password => x.get_column('password')) if overseer.present?
-end
-
-state_codes = {
-    'AN' => 'Andaman and Nicobar Islands',
-    'AP' => 'Andhra Pradesh',
-    'AR' => 'Arunachal Pradesh',
-    'AS' => 'Assam',
-    'BR' => 'Bihar',
-    'CH' => 'Chandigarh',
-    'CT' => 'Chhattisgarh',
-    'DN' => 'Dadra and Nagar Haveli',
-    'DD' => 'Daman and Diu',
-    'DL' => 'Delhi',
-    'GA' => 'Goa',
-    'GJ' => 'Gujarat',
-    'HR' => 'Haryana',
-    'HP' => 'Himachal Pradesh',
-    'JK' => 'Jammu and Kashmir',
-    'JH' => 'Jharkhand',
-    'KA' => 'Karnataka',
-    'KL' => 'Kerala',
-    'LD' => 'Lakshadweep',
-    'MP' => 'Madhya Pradesh',
-    'MH' => 'Maharashtra',
-    'MN' => 'Manipur',
-    'ML' => 'Meghalaya',
-    'MZ' => 'Mizoram',
-    'NL' => 'Nagaland',
-    'OR' => 'Odisha, Orissa',
-    'PY' => 'Puducherry',
-    'PB' => 'Punjab',
-    'RJ' => 'Rajasthan',
-    'SK' => 'Sikkim',
-    'TN' => 'Tamil Nadu',
-    'TG' => 'Telangana',
-    'TR' => 'Tripura',
-    'UP' => 'Uttar Pradesh',
-    'UT' => 'Uttarakhand,Uttaranchal',
-    'WB' => 'West Bengal',
-}
-
-service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
-service.loop(200) do |x|
-  Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create do |warehouse|
-    warehouse.assign_attributes(
-        :remote_uid => x.get_column('Warehouse Code'),
-        :legacy_id => x.get_column('Warehouse Code'),
-        :location_uid => x.get_column('Location'),
-        :remote_branch_name => x.get_column('Warehouse Name'),
-        :remote_branch_code => x.get_column('Business Place ID'),
-    )
-
-    warehouse.build_address(
-        :street1 => x.get_column('Street'),
-        :street2 => x.get_column('Block'),
-        :pincode => x.get_column('Zip Code'),
-        :city_name => x.get_column('City'),
-        :country_code => x.get_column('Country'),
-        :state => AddressState.find_by_name(state_codes[x.get_column('State')])
-    )
-  end
 end

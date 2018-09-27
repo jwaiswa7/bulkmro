@@ -23,7 +23,6 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.integer :salesperson_uid, index: { :unique => true }
       t.integer :employee_uid, index: { :unique => true }
       t.integer :center_code_uid
-      t.integer :legacy_id, index:true
 
       t.string :google_oauth2_uid
       t.jsonb :google_oauth2_metadata
