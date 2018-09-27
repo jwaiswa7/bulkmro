@@ -9175,6 +9175,14 @@ button, button:link, button:visited, button:hover, button:active, button:focus {
 form:focus {
   outline: none; }
 
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+input[type=number] {
+  -moz-appearance: textfield; }
+
 .form-group label {
   color: #6c757d;
   font-size: .875rem;
