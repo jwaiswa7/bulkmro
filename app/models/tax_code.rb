@@ -3,7 +3,8 @@ class TaxCode < ApplicationRecord
 
   has_many :products
 
-  validates_presence_of :code #, :description
+  validates_presence_of :code
+
   validates_presence_of :remote_uid
 
   after_initialize :set_defaults, :if => :new_record?

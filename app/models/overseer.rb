@@ -55,4 +55,8 @@ class Overseer < ApplicationRecord
   def can_send_emails?
     self.smtp_password.present?
   end
+
+  def cannot_send_emails?
+    !can_send_emails?
+  end
 end
