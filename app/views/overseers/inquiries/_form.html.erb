@@ -34,6 +34,15 @@
     </div>
 
     <div class="form-row">
+      <div class="col-6">
+        <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from" %>
+      </div>
+      <div class="col-6">
+        <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from" %>
+      </div>
+    </div>
+
+    <div class="form-row">
       <div class="col-6 col-md-3">
         <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
         <!-- TODO commercial_status need to be added -->

@@ -2,7 +2,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
 
   def index
-    @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
+    @inquiries = ApplyDatatableParams.to(Inquiry.all.includes(:inside_sales_owner, :outside_sales_owner, :final_sales_quote, :company, :account), params)
     authorize @inquiries
   end
 
@@ -82,6 +82,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         :sales_manager_id,
         :billing_address_id,
         :shipping_address_id,
+        :bill_from_id,
+        :ship_from_id,
         :status,
         :opportunity_type,
         :opportunity_source,
