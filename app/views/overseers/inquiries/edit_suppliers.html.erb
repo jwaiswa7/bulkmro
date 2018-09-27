@@ -8,7 +8,6 @@
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
 
-
             <h6 class="text-uppercase">
               <strong><%= inquiry_product.object.product.name %></strong>
             </h6>
