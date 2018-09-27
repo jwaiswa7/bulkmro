@@ -7,11 +7,12 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [], :associated_against => { company: [:name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
-  belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
+  # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
+  belongs_to :contact
   belongs_to :company
   has_one :account, :through => :company
   belongs_to :shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :shipping_company_id, required: false
@@ -40,7 +41,6 @@ class Inquiry < ApplicationRecord
   has_one_attached :suppler_quote
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
-
 
   accepts_nested_attributes_for :comments
 

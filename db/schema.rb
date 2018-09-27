@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_26_094907) do
+ActiveRecord::Schema.define(version: 2018_09_27_054805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.boolean "is_sez"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid"
     t.index ["company_id"], name: "index_addresses_on_company_id"
@@ -309,6 +310,24 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.index ["legacy_id"], name: "index_currencies_on_legacy_id"
   end
 
+  create_table "email_messages", force: :cascade do |t|
+    t.bigint "overseer_id"
+    t.bigint "contact_id"
+    t.bigint "inquiry_id"
+    t.bigint "sales_quote_id"
+    t.string "from"
+    t.string "to"
+    t.string "subject"
+    t.text "body"
+    t.jsonb "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_email_messages_on_contact_id"
+    t.index ["inquiry_id"], name: "index_email_messages_on_inquiry_id"
+    t.index ["overseer_id"], name: "index_email_messages_on_overseer_id"
+    t.index ["sales_quote_id"], name: "index_email_messages_on_sales_quote_id"
+  end
+
   create_table "industries", force: :cascade do |t|
     t.integer "remote_uid"
     t.integer "legacy_id"
@@ -374,6 +393,8 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
+    t.integer "bill_from_id"
+    t.integer "ship_from_id"
     t.index ["billing_address_id"], name: "index_inquiries_on_billing_address_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
@@ -639,6 +660,7 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.integer "updated_by_id"
     t.bigint "inquiry_import_row_id"
     t.string "trashed_sku"
+    t.boolean "is_service", default: false
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
@@ -823,6 +845,22 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  create_table "warehouses", force: :cascade do |t|
+    t.bigint "address_id"
+    t.string "legacy_id"
+    t.string "remote_uid"
+    t.boolean "is_visible", default: true
+    t.string "name"
+    t.string "location_uid"
+    t.string "remote_branch_code"
+    t.string "remote_branch_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_warehouses_on_address_id"
+    t.index ["legacy_id"], name: "index_warehouses_on_legacy_id"
+    t.index ["remote_uid"], name: "index_warehouses_on_remote_uid"
+  end
+
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
   add_foreign_key "addresses", "address_states"
@@ -864,6 +902,10 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
   add_foreign_key "contacts", "accounts"
   add_foreign_key "contacts", "overseers", column: "created_by_id"
   add_foreign_key "contacts", "overseers", column: "updated_by_id"
+  add_foreign_key "email_messages", "contacts"
+  add_foreign_key "email_messages", "inquiries"
+  add_foreign_key "email_messages", "overseers"
+  add_foreign_key "email_messages", "sales_quotes"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "inquiry_currencies"
@@ -873,6 +915,8 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
   add_foreign_key "inquiries", "overseers", column: "sales_manager_id"
   add_foreign_key "inquiries", "overseers", column: "updated_by_id"
   add_foreign_key "inquiries", "payment_options"
+  add_foreign_key "inquiries", "warehouses", column: "bill_from_id"
+  add_foreign_key "inquiries", "warehouses", column: "ship_from_id"
   add_foreign_key "inquiry_comments", "inquiries"
   add_foreign_key "inquiry_comments", "overseers", column: "created_by_id"
   add_foreign_key "inquiry_comments", "overseers", column: "updated_by_id"
@@ -950,4 +994,5 @@ ActiveRecord::Schema.define(version: 2018_09_26_094907) do
   add_foreign_key "sales_quotes", "overseers", column: "created_by_id"
   add_foreign_key "sales_quotes", "overseers", column: "updated_by_id"
   add_foreign_key "sales_quotes", "sales_quotes", column: "parent_id"
+  add_foreign_key "warehouses", "addresses"
 end
