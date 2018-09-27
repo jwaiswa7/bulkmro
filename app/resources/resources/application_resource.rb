@@ -40,7 +40,12 @@ class Resources::ApplicationResource
 
   # Projects
   def self.collection_name
-    model_name.pluralize
+    if model_name == 'SalesPerson'
+      'SalesPersons'
+    else
+      model_name.pluralize
+    end
+
   end
 
   # Subclass implements

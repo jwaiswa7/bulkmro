@@ -107,7 +107,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         # First Entry for Billing Address
         address_row = OpenStruct.new
         address_row.AddressName = address.remote_uid #Company Billing Address
-        address_row.Street = [address.street1, address.street2].compact.join(' ') #"Office No.1 Shree Sai CHS. Plot No.20 Sector No.20 Kamothe,",#address
+        address_row.Street = [address.street1, address.street2].compact.join(' ') # address
         address_row.Block = nil #
         address_row.ZipCode = address.pincode #"410209" #Company zipcode
         address_row.City = address.city_name # "Navi Mumbai" #Company CIty
@@ -119,16 +119,16 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         address_row.AddressName2 = nil #address
         address_row.AddressName3 = nil #address
         address_row.StreetNo = nil #
-        address_row.GSTIN = address.gst #"27AADFU8382N1ZD" #Company GST#
-        address_row.GstType = "gstRegularTDSISD" #
-        address_row.U_VAT = "" #Company VAT#
-        address_row.U_CST = "" #Company  CST#
+        address_row.GSTIN = address.gst #"27AADFU8382N1ZD" #Company GST
+        address_row.GstType = "gstRegularTDSISD" # ???
+        address_row.U_VAT = address.vat #Company VAT
+        address_row.U_CST = address.cst #Company  CST
         addresses.push(address_row.marshal_dump)
 
         # Second Entry for Shipping Address
         address_row = OpenStruct.new
         address_row.AddressName = address.remote_uid #Company Billing Address
-        address_row.Street = [address.street1, address.street2].compact.join(' ') #"Office No.1 Shree Sai CHS. Plot No.20 Sector No.20 Kamothe,",#address
+        address_row.Street = [address.street1, address.street2].compact.join(' ') #"Office No.1 #address
         address_row.Block = nil #
         address_row.ZipCode = address.pincode #"410209" #Company zipcode
         address_row.City = address.city_name # "Navi Mumbai" #Company CIty
@@ -183,7 +183,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         contact_row.MiddleName = nil #Contact Person Middle Name
         contact_row.LastName = contact.last_name #"GAUTAM" #Contact Person Last Name
         contacts.push(contact_row.marshal_dump)
-
 
         response = {
             CardCode: record.remote_uid, #record.remote_uid, # record.remote_uid,#Company Code
