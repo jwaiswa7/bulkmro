@@ -3,6 +3,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
     create_table :companies do |t|
       t.references :account, foreign_key: true
       t.references :industry, foreign_key: true
+
       t.string :remote_uid, index: {unique: true}
       t.integer :legacy_id, index: true
       t.integer :attachment_uid, index: true
@@ -19,6 +20,9 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :site
       t.string :phone
       t.string :mobile
+
+      t.string :pan
+      t.string :tan
 
       t.integer :company_type
       t.integer :priority

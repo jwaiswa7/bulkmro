@@ -17,7 +17,7 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.association :contact, :wrapper => :custom_multi_select, include_blank: "Select a contact" %>
+        <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
       </div>
       <div class="col-8">
         <%= f.input :subject %>
@@ -108,7 +108,7 @@
         <% end %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.input :copy_of_email, wrapper: :custom_file, required: true, label: 'Email attachment' %>
+        <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment' %>
       </div>
       <div class="col-12 col-md-6">
         <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote' %>

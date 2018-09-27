@@ -2,8 +2,14 @@ class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
 
   def index
-    @inquiries = ApplyDatatableParams.to(Inquiry.all.includes(:inside_sales_owner, :outside_sales_owner, :final_sales_quote, :company, :account), params)
-    authorize @inquiries
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        @inquiries = ApplyDatatableParams.to(Inquiry.all.joins(:sales_quotes).distinct.includes(:contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]]), params, unscoped_if_search_term: true)
+      end
+    end
   end
 
   def show

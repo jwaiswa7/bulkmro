@@ -1,6 +1,6 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def new_email_message?
-    record.persisted?
+    record.persisted? && overseer.can_send_emails?
   end
 
   def create_email_message?
