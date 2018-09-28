@@ -4,15 +4,19 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
   def change
     create_table :overseers do |t|
       t.integer :parent_id, index: true
+      t.integer :legacy_id, index: true
 
       t.string :username
       t.string :first_name
       t.string :last_name
       t.string :mobile
+      t.string :telephone
       t.string :designation
       t.string :identifier
-      t.string :department
-      t.string :geography
+      t.integer :department
+      t.integer :geography
+
+      # t.string :slack_uid
 
       t.integer :role, index: true
 
@@ -26,6 +30,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      t.string :smtp_password
 
       ## Recoverable
       t.string   :reset_password_token

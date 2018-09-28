@@ -50,7 +50,7 @@ yarn-debug.log*
 .yarn-integrity
 
 # Gemlock
-Gemfile.lock
+# Gemfile.lock
 
 # DB Schema
 /db/schema.rb

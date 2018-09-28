@@ -9,6 +9,8 @@ class InquiryImport < ApplicationRecord
   has_many :products, :through => :rows
   accepts_nested_attributes_for :rows, allow_destroy: true
 
+  delegate :to_s, to: :inquiry
+
   validates_presence_of :import_type
   validates_presence_of :import_text, :if => :list?
   validates :import_text, format: { with: /BM\d*[,]?\s?\d*/ }, :if => :list?
@@ -35,5 +37,9 @@ class InquiryImport < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.import_type ||= :excel
+  end
+
+  def to_s
+    'InquiryImport'
   end
 end

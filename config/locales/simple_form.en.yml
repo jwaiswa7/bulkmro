@@ -1,6 +1,19 @@
 en:
   simple_form:
     placeholders:
+      overseer:
+        first_name: 'First name'
+        last_name: 'Last name'
+        mobile: 'e.g. 9987480784'
+        telephone: 'e.g. 02240236090'
+        designation: 'e.g. Inside Sales Executive'
+        department: 'e.g. Inside Sales'
+        geography: 'e.g. Mumbai'
+
+      activity:
+        points_discussed: 'Points discussed in the meeting/call/over email'
+        actions_required: 'Actions required on behalf of BulkMRO'
+        subject: 'Subject for the Activity'
       inquiry:
         bp_catalog_name: 'Business Partner Catalog Name'
         subject: 'e.g. Drill machine'

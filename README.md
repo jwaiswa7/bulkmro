@@ -1,24 +1,31 @@
-# README
+# Installing Elasticsearch on Ubuntu
+sudo apt install openjdk-11-jre-headless
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Instructions
+#### Ubuntu
+https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 
-Things you may want to cover:
+#### Windows
+https://www.java.com/en/download/
+https://www.elastic.co/guide/en/elasticsearch/reference/current/windows.html
 
-* Ruby version
+# To configure Elasticsearch to start automatically when the system boots up, run the following commands:
+#### Ubuntu
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable elasticsearch.service
 
-* System dependencies
+#### Windows
+Install it as a service; will auto-start when Windows boots up.
 
-* Configuration
+# Elasticsearch can be started and stopped as follows:
+#### Ubuntu
+sudo systemctl start elasticsearch.service
+sudo systemctl stop elasticsearch.service
 
-* Database creation
+#### Windows
+Restart service using the service manager.
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# To browse Elasticsearch (OPTIONAL)
+sudo snap install docker
+docker run -p 1358:1358 -d appbaseio/dejavu
+open http://localhost:1358/

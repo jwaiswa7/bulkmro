@@ -6,12 +6,32 @@
   <% end %>
 <% end %>
 
+
 <% content_for :heading_byline do %>
   This will <em>'update/approve/reject <%= @product %>'</em> and log it under
   <strong><%= current_overseer.full_name %></strong>.
 <% end %>
 
+
+
+
 <%= render layout: 'shared/layouts/form' do %>
+  <div class="card">
+
+    <div class="card-body">
+      <h5 class="card-title">Product:  <%= @product %></h5>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-md-6"><strong>Brand: </strong><%= @product.brand %></div>
+          <div class="col-md-6"><strong>Category: </strong><%= @product.category %></div>
+          <div class="col-md-6"><strong>Measurement Unit : </strong><%= @product.measurement_unit %></div>
+          <div class="col-md-6"><strong>HSN: </strong><%= @product.best_tax_code %></div>
+          <div class="col-md-6"><strong>Is Service: </strong><%= @product.is_service %></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <%= simple_form_for([:overseers, @new_comment], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card-body">
       <% if @comments.persisted.size > 0 %>
@@ -24,7 +44,8 @@
                   <span><span class="mr-1"><strong>
                     <% if comment.merged? %><span class="badge badge-secondary">Merged</span><% end %>
                     <% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
-                    <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %> ago</span>
+                    <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %></strong></span><%= time_ago_in_words(comment.created_at) %>
+                    ago</span>
                 </div>
                 <div class="chat-item-body">
                   <p><%= comment.message %></p>
@@ -48,9 +69,9 @@
           </div>
 
           <div class="col-lg-6 text-right">
-            <%= content_tag :div, class:'row' do %>
+            <%= content_tag :div, class: 'row' do %>
               <div class="col-lg-8">
-                <%= f.input :merge_with_product_id, :as => :select, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path }, label: false %>
+                <%= f.input :merge_with_product_id, :as => :select, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
               </div>
               <div class="col-lg-4">
                 <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right' %>

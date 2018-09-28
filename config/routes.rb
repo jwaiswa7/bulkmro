@@ -1,13 +1,37 @@
 Rails.application.routes.draw do
+  mount Maily::Engine, at: '/maily' if Rails.env.development?
+
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
-    resource :dashboard, :controller => :dashboard
-    resources :suppliers
+    resource :dashboard, :controller => :dashboard do
+      get 'chewy'
+    end
+
+    resources :reports
+
+    resources :activities
+
+    resource :profile, :controller => :profile
     resources :overseers
+
+    resources :suppliers do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :contacts do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :sales_quotes do
+    end
 
     resources :brands do
       collection do
@@ -60,9 +84,13 @@ Rails.application.routes.draw do
         get 'export'
       end
 
-      scope module: 'inquiries' do
+      collection do
+        get 'autocomplete'
+      end
 
+      scope module: 'inquiries' do
         resources :comments
+        resources :email_messages
 
         resources :sales_orders do
           member do
@@ -75,6 +103,10 @@ Rails.application.routes.draw do
         resources :sales_quotes do
           member do
             get 'new_revision'
+          end
+
+          scope module: 'sales_quotes' do
+            resources :email_messages
           end
         end
 
@@ -98,6 +130,10 @@ Rails.application.routes.draw do
     end
 
     resources :companies do
+      collection do
+        get 'autocomplete'
+      end
+
       scope module: 'companies' do
         resources :addresses
         resources :contacts

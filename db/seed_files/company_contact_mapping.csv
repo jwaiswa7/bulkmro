@@ -1293,8 +1293,6 @@ cmp_name,email
 "Amazon Online Sales",pn1w989r7gy5wjv@marketplace.amazon.in
 "Amazon Online Sales",cbtys3ntsw20gk6@marketplace.amazon.in
 "Amazon Online Sales",1nh21gvktvttbq8@marketplace.amazon.in
-"Cummins Emission Solutions INC",chinmay.pagare@cummins.com
-"Cummins Technologies India Pvt. Ltd.",chinmay.pagare@cummins.com
 "Amazon Online Sales",z3pv9kcw06f2dlr@marketplace.amazon.in
 "Amazon Online Sales",7s98827v5qntz32@marketplace.amazon.in
 "Amazon Online Sales",bbnkddcyd5v2zvw@marketplace.amazon.in
@@ -5098,6 +5096,17 @@ Zomato,mohit.samaniya@zomato.com
 "Daulat Ram Engineering Services Pvt. Ltd.",sb.jaiswal@daulatram.com
 "Huntsman International India Pvt Ltd",alihusain_attarwala@huntsman.com
 "Renaissance Mumbai Convention Centre Hotel",Hansnath.Chauhan@marriott.com
+"Reliance Industries Ltd.",Amit.Karchalwar@ril.com
+"Shell India Markets Pvt. Ltd.",md.riyaz@shell.com
+"Ascott Beverly Park Hospitality (India) Pvt Ltd",purchase.bp@the-ascott.com
+"Ascott Beverly Park Hospitality (India) Pvt. Ltd.",Sujeet.K.Kumar@ril.com
+"Tetra Pak India Pvt. Ltd.",Saurabh.Parandekar@tetrapak.com
+"Landmark Cars Pvt. Ltd.",aamir.ahmed@mb-benchmarkcars.in
+"MS Technosys",sagar@mstechnosys.com
+"Hindustan Zinc Ltd.",Sarvesh.Kumar@vedanta.co.in
+"Cummins Emission Solutions INC",chinmay.pagare@cummins.com
+"Cummins Technologies India Pvt. Ltd.",chinmay.pagare@cummins.com
+"Air India Ltd.",ragupathy.murugesan@airindia.in
 ,NULL
 "A- One Machineries",NULL
 "Acer Granito Pvt. Ltd.",NULL
@@ -5247,7 +5256,6 @@ Pergam,NULL
 "Scigenics India Pvt. Ltd.",NULL
 "Seoyon E-Hwa Automotive India Pvt. Ltd.",NULL
 "Shantha Biotechnics Pvt. Ltd.",NULL
-"Shell India Markets Pvt. Ltd.",NULL
 "Shetron Ltd.",NULL
 "Shilpayan Pvt. Ltd.",NULL
 "Shriram EPC",NULL

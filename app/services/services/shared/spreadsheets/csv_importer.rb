@@ -3,7 +3,7 @@ require 'csv'
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
   def initialize(name)
     set_file(name)
-    set_rows_count
+    # set_rows_count
   end
 
   def loop(limit=nil)
@@ -19,7 +19,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
   end
 
   def set_rows_count
-    @rows_count = `wc -l #{file}`.to_i
+     @rows_count = `wc -l #{file}`.to_i
   end
 
   def set_current_row(row_hash)
@@ -35,5 +35,5 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     val.parameterize.underscore.to_sym if val.present?
   end
 
-  attr_accessor :file, :current_row, :rows_count
+  attr_accessor :file, :current_row #, :rows_count
 end

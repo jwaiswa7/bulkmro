@@ -14,6 +14,9 @@ class CreateSalesQuoteRows < ActiveRecord::Migration[5.2]
       t.decimal :freight_cost_subtotal
       t.decimal :unit_freight_cost
 
+      t.string :legacy_applicable_tax
+      t.string :legacy_applicable_tax_class
+
       t.timestamps
       t.userstamps
     end

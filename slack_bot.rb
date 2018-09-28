@@ -14,19 +14,25 @@ client.on :message do |data|
 
   puts data
   message = case data.text
-  when /(hey|hi|hello)/i then
-    "Howdy #{user}!"
-  when /inquiry\s*(\d*)/i then
-    "This inquiry is currently #{
-      [
-          "awaiting the customer's feedback",
-          "awaiting sales manager approval",
-          "dispatched and will be delivered by #{format_date(Time.now.noon + rand(6).days)}"
-      ].sample
-    }."
-  else
-    "What's that #{user}? Say it again, this time I'll get it, I promise."
-  end
+            when /(hey|hi|hello)/i then
+              "Howdy #{user}!"
+            when /(inquiry\s*(\d*)|where is inquiry\s*(\d*))/i then
+              "This inquiry is currently #{
+              [
+                  "awaiting the customer's feedback",
+                  "awaiting sales manager approval",
+                  "dispatched and will be delivered by *#{format_date(Time.now.noon + rand(6).days)}*"
+              ].sample
+              }."
+            when /order status (\d*)/i then
+              "This order will deliver by *#{format_date(Time.now.noon + rand(6).days)}*."
+            when /account status (\d*)/i then
+              "This account has *#{rand(6) + 1}* open inquiries. This is a _priority account_ with order value exceeding *₹245,000* in the past *7 days*."
+            when /sales today/i then
+              "*#{rand(50) + 20}* total inquires today generated *₹54,30,000* in sales."
+            else
+              "What's that #{user}? Say it again, this time I'll get it, I promise." if data.text.present?
+            end
 
   client.message channel: data.channel, text: message
 end

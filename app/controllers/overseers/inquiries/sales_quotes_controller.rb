@@ -15,6 +15,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def new_revision
     @old_sales_quote = @inquiry.sales_quotes.find(params[:id])
     @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
+
     authorize @old_sales_quote
     render 'new'
   end
@@ -23,7 +24,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -41,7 +42,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect { |action| params[action] }
+    callback_method = %w(save save_and_send).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -51,6 +52,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   private
+
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
@@ -74,15 +76,16 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
         :shipping_address_id,
         :comments,
         :inquiry_currency_attributes => [
-          :id,
-          :currency_id,
-          :conversion_rate,
+            :id,
+            :currency_id,
+            :conversion_rate,
         ],
         :rows_attributes => [
             :id,
             :sales_quote_id,
             :tax_code_id,
             :inquiry_product_supplier_id,
+            # :inquiry_product_id,
             :lead_time_option_id,
             :quantity,
             :freight_cost_subtotal,

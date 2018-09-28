@@ -4,6 +4,7 @@ class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::IsAPerson
 
+  has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
@@ -50,5 +51,13 @@ class Overseer < ApplicationRecord
       overseer.update_attributes(:google_oauth2_metadata => data)
       overseer
     end
+  end
+
+  def can_send_emails?
+    self.smtp_password.present?
+  end
+
+  def cannot_send_emails?
+    !can_send_emails?
   end
 end

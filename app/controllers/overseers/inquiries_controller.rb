@@ -2,7 +2,27 @@ class Overseers::InquiriesController < Overseers::BaseController
   before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
 
   def index
-    @inquiries = ApplyDatatableParams.to(Inquiry.all, params)
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Inquiries.new(params)
+        service.call
+
+        @indexed_inquiries = service.indexed_records
+        @inquiries = service.records
+      end
+    end
+  end
+
+  def autocomplete
+    service = Services::Overseers::Finders::Inquiries.new(params)
+    service.call
+
+    @indexed_inquiries = service.indexed_records
+    @inquiries = service.records
+
     authorize @inquiries
   end
 
@@ -67,6 +87,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
+
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
@@ -79,8 +100,11 @@ class Overseers::InquiriesController < Overseers::BaseController
         :industry_id,
         :inside_sales_owner_id,
         :outside_sales_owner_id,
+        :sales_manager_id,
         :billing_address_id,
         :shipping_address_id,
+        :bill_from_id,
+        :ship_from_id,
         :status,
         :opportunity_type,
         :opportunity_source,
@@ -94,7 +118,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
-        :commercial_terms_and_conditions,                        
+        :customer_po_sheet,
+        :final_supplier_quote,
+        :calculation_sheet,
+        :commercial_terms_and_conditions,
         :comments,
         :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
 
@@ -104,17 +131,17 @@ class Overseers::InquiriesController < Overseers::BaseController
   def edit_suppliers_params
     if params.has_key?(:inquiry)
       params.require(:inquiry).permit(
-        :inquiry_products_attributes => [
-            :id,
-            :inquiry_product_suppliers_attributes => [
-                :id,
-                :supplier_id,
-                :bp_catalog_name,
-                :bp_catalog_sku,
-                :unit_cost_price,
-                :_destroy
-            ]
-        ]
+          :inquiry_products_attributes => [
+              :id,
+              :inquiry_product_suppliers_attributes => [
+                  :id,
+                  :supplier_id,
+                  :bp_catalog_name,
+                  :bp_catalog_sku,
+                  :unit_cost_price,
+                  :_destroy
+              ]
+          ]
       )
     else
       {}

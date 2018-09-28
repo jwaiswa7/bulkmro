@@ -19,6 +19,9 @@
           <i class="fal fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
+          <%= link_to edit_overseers_profile_path, :class => 'ml-lg-2' do %>
+            <i class="fal fa-cog"></i>&nbsp;Profile
+          <% end %><br/>
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'ml-lg-2' do %>
             <i class="fal fa-power-off"></i>&nbsp;Sign Out
           <% end %>
@@ -41,13 +44,22 @@
       <%= nav_item 'Sales Orders Queue', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
       <%= nav_item 'Categories', overseers_categories_path, policy(:category).index? %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+      <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+      <%= nav_item 'Reports', overseers_reports_path, policy(:report).index? %>
     </ul>
   </div>
   <!-- Navigation Bar -->
 
+  <% if current_overseer.cannot_send_emails? %>
+    <span class="badge badge-danger text-uppercase p-1 mr-2 d-none d-md-block" data-toggle="tooltip" title="Set your Google Apps SMTP password"><strong>Emails Disallowed</strong></span>
+  <% end %>
+
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
     <div class="dropdown">
+      <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
+        <i class="fal fa-user"></i>
+      <% end %>
       <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fal fa-cog"></i>
       </a>

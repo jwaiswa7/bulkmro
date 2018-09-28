@@ -4,8 +4,8 @@ json.data (@brands) do |brand|
                       row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning'),
                   ].join(' '),
                   brand.to_s,
-                  brand.suppliers.size,
                   brand.products.size,
+                  brand.suppliers.size,
                   format_date(brand.created_at)
               ]
 end

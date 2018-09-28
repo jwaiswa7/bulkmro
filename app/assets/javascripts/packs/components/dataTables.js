@@ -16,9 +16,9 @@ let preSetup = () => {
         if (searchText) {
             var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
             $input = $($input);
-            $input.on('keyup', function (e) {
+            $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
-            });
+            }, 300);
 
             var $wrapper = "<div class='input-group input-group-round'>" +
                 "<div class='input-group-prepend'>" +
@@ -46,13 +46,14 @@ let setup = () => {
         $.fn.dataTable.ext.errMode = 'throw';
         $(this).DataTable({
             conditionalPaging: true,
-            searchDelay: 350,
+            searchDelay: 1000,
             serverSide: isAjax,
             processing: true,
             stateSave: false,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
+            "pageLength": 20,
             pagingType: 'full_numbers',
             order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
             columnDefs: [{
