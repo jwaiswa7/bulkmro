@@ -9,13 +9,26 @@
     <%= f.association :company, collection: selected_option_or_nil(f, :company), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
     <%= f.association :contact, collection: selected_option_or_nil(f, :contact), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
 
-    <%= f.input :company_type, as: :select, collection: enum_to_collection(Activity.company_types) %>
-    <%= f.input :purpose, as: :select, collection: enum_to_collection(Activity.purposes) %>
-    <%= f.input :activity_type, as: :select, collection: enum_to_collection(Activity.activity_types) %>
-
-    <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id] }, input_html: { :multiple => true }, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Other Overseers' %>
-
     <%= f.input :subject %>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :company_type, as: :select, collection: enum_to_collection(Activity.company_types) %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :activity_type, as: :select, collection: enum_to_collection(Activity.activity_types) %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :purpose, as: :select, collection: enum_to_collection(Activity.purposes) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="select2-wrapper">
+        <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id] }, input_html: { :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select other overseers'} %>
+      </div>
+    </div>
+
     <%= f.input :points_discussed %>
     <%= f.input :actions_required %>
 
