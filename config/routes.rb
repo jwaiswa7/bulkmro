@@ -63,6 +63,10 @@ Rails.application.routes.draw do
         get 'pending'
       end
 
+      member do
+        get 'show_pdf'
+      end
+
       scope module: 'sales_orders' do
         resources :comments
       end
