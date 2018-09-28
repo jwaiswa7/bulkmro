@@ -21,7 +21,7 @@
         <div class="dropdown-menu dropdown-menu-right">
           <%= link_to edit_overseers_profile_path, :class => 'ml-lg-2' do %>
             <i class="fal fa-cog"></i>&nbsp;Profile
-          <% end %><br />
+          <% end %><br/>
           <%= link_to destroy_overseer_session_path, method: :delete, :class => 'ml-lg-2' do %>
             <i class="fal fa-power-off"></i>&nbsp;Sign Out
           <% end %>
@@ -44,6 +44,7 @@
       <%= nav_item 'Sales Orders Queue', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
       <%= nav_item 'Categories', overseers_categories_path, policy(:category).index? %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+      <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
     </ul>
   </div>
   <!-- Navigation Bar -->

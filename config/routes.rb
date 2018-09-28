@@ -11,11 +11,24 @@ Rails.application.routes.draw do
       get 'chewy'
     end
 
-    resource :profile, :controller => :profile
+    resources :reports do
+      collection do
 
+      end
+    end
+
+    resources :activities
+
+    resource :profile, :controller => :profile
     resources :overseers
 
     resources :suppliers do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :contacts do
       collection do
         get 'autocomplete'
       end
@@ -75,6 +88,10 @@ Rails.application.routes.draw do
         get 'export'
       end
 
+      collection do
+        get 'autocomplete'
+      end
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -117,6 +134,10 @@ Rails.application.routes.draw do
     end
 
     resources :companies do
+      collection do
+        get 'autocomplete'
+      end
+
       scope module: 'companies' do
         resources :addresses
         resources :contacts

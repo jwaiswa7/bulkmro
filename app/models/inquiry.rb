@@ -7,8 +7,7 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-
-  update_index('inquiries#inquiry') { self }
+  # update_index('inquiries#inquiry') { self }
   pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
@@ -123,7 +122,9 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
-  def commercial_status; end
+  def commercial_status
+    :open
+  end
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
 
@@ -234,7 +235,10 @@ class Inquiry < ApplicationRecord
   end
 
   def to_s
-    self.company.name
+    [
+        ['#', self.id].join,
+        self.company.name
+    ].join(' ')
   end
 
 end
