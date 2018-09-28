@@ -25,9 +25,11 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
         overseers.push(OpenStruct.new({ id: overseer_id, name: Overseer.find(overseer_id).full_name, count: overseer_count }))
       end
 
+      ActiveRecord::Base.default_timezone = :utc
       activities.group('activities.created_by_id').group_by_day('activities.created_at').count.each do |overseer_id_and_date, count|
         data.entries.merge!({ overseer_id_and_date[1] => { overseer_id_and_date[0] => count }})
       end
+      ActiveRecord::Base.default_timezone = :local
 
       geography.overseers = overseers
       data.geographies.push(geography)
