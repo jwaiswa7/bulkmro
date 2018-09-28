@@ -917,16 +917,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       ]
       if inquiry.present?
         sheet_columns.each do |file|
-          file_attach(inquiry, x.get_column(file[0]), file[2], x.get_column(file[1]))
+          file_attach(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: x.get_column(file[1]))
         end
       end
     end
   end
 
-  def file_attach(inquiry, file_name, field_name, file_url)
-    if file_url.present? && file_name.present?
+  def file_attach(inquiry, filename:, field_name:, file_url:)
+    if file_url.present? && filename.present?
       file = open(file_url)
-      inquiry.send(field_name).attach(io: file, filename: file_name)
+      inquiry.send(field_name).attach(io: file, filename: filename)
     end
   end
 end
