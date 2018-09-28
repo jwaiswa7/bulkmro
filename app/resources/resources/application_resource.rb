@@ -59,7 +59,7 @@ class Resources::ApplicationResource
   end
 
   def self.find(id)
-    OpenStruct.new(get("/#{collection_name}('#{id}')").parsed_response)
+    OpenStruct.new(get("/#{collection_name}(#{id})").parsed_response)
   end
 
   def self.create(record)

@@ -10,13 +10,13 @@ class Services::Overseers::Inquiries::Finder < Services::Shared::BaseService
 
   def run
     @indexed_inquiries = if params[:search].present? && params[:search][:value].present?
-      InquiryIndex.query(:query_string => {
-          fields: InquiryIndex.fields,
+      InquiriesIndex.query(:query_string => {
+          fields: InquiriesIndex.fields,
           query: params[:search][:value],
           default_operator: 'or'
       })
     else
-      InquiryIndex.all
+      InquiriesIndex.all
     end.page(params[:page]).per(20)
 
     @inquiries = Inquiry.where(:id => indexed_inquiries.pluck(:id)).with_includes

@@ -1,4 +1,4 @@
-class InquiryIndex < Chewy::Index
+class InquiriesIndex < Chewy::Index
   define_type Inquiry.all.with_includes do
     field :id
     field :status

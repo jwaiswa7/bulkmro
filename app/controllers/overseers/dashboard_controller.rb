@@ -5,10 +5,10 @@ class Overseers::DashboardController < Overseers::BaseController
 	end
 
 	def chewy
-		# InquiryIndex.delete
-		# InquiryIndex.create!
-		# InquiryIndex.import
-		InquiryIndex.reset!
+		# InquiriesIndex.delete
+		# InquiriesIndex.create!
+		# InquiriesIndex.import
+		InquiriesIndex.reset!
 		#
 		Inquiry.search('asd')
 
