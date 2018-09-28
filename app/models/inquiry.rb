@@ -123,7 +123,9 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
-  def commercial_status; end
+  def commercial_status
+    :open
+  end
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
 
@@ -234,7 +236,10 @@ class Inquiry < ApplicationRecord
   end
 
   def to_s
-    self.company.name
+    [
+        ['#', self.id].join,
+        self.company.name
+    ].join(' ')
   end
 
 end

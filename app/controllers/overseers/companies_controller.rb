@@ -6,6 +6,11 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @companies
   end
 
+  def autocomplete
+    @companies = ApplyParams.to(Company.all, params)
+    authorize @companies
+  end
+
   def show
     authorize @company
   end
