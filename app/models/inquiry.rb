@@ -191,7 +191,7 @@ class Inquiry < ApplicationRecord
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
       self.sales_manager ||= self.sales_manager
-      self.status ||= :active
+      self.status ||= :'Lead by O/S'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
       self.quote_category ||= :bmro
