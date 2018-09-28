@@ -7,6 +7,9 @@ class BaseIndex < Chewy::Index
           letter: {
               tokenizer: 'letter',
               filter: ['lowercase']
+          },
+          keyword: {
+              tokenizer: 'keyword'
           }
       }
   }
