@@ -23,7 +23,7 @@ class Overseers::ApplicationPolicy
   end
 
   def autocomplete?
-    index?
+    true
   end
 
   def show?

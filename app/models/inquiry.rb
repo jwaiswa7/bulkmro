@@ -7,7 +7,9 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
+
+  update_index('inquiries#inquiry') { self }
+  pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
@@ -41,8 +43,6 @@ class Inquiry < ApplicationRecord
   has_one_attached :suppler_quote
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
-
-  accepts_nested_attributes_for :comments
 
   # enum status: {
   #     :active => 10,
@@ -124,6 +124,8 @@ class Inquiry < ApplicationRecord
   }
 
   def commercial_status; end
+
+  scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
