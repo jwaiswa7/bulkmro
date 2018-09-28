@@ -7932,6 +7932,8 @@ table.table.dataTable {
       border-color: #F7F9FA;
       color: #495057; }
 
+.dataTables_wrapper.dt-bootstrap4 .dataTables_info {
+  white-space: normal; }
 .dataTables_wrapper.dt-bootstrap4 .dataTables_paginate {
   margin-top: 0.75rem;
   text-align: center; }
