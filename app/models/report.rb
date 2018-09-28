@@ -24,7 +24,9 @@ class Report < ApplicationRecord
   end
 
   def self.activity
-    find_by_name('ActivityReport')
+    where(name: 'ActivityReport').first_or_create do |report|
+      report.uid = 'activity_report'
+    end
   end
 
   def start_date
