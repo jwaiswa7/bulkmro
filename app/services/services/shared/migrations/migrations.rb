@@ -909,12 +909,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       sheet_columns = [
-          ['calculation_sheet', 'calculation_sheet_path', 'calculation_sheet'],
+          %w(calculation_sheet calculation_sheet_path calculation_sheet),
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
           ['supplier_quote_attachment', 'sqa_path', 'suppler_quote'],
           ['supplier_quote_attachment_additional', 'sqa_additional_path', 'final_supplier_quote']
       ]
+
       if inquiry.present?
         sheet_columns.each do |file|
           file_attach(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: x.get_column(file[1]))
