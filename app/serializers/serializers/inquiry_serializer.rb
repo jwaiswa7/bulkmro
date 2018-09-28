@@ -73,7 +73,7 @@ class Serializers::InquirySerializer
 
   has_one :account, :through => :company, serializer: Serializers::AccountSerializer
   has_one :final_sales_quote, serializer: Serializers::SalesQuoteSerializer
-  has_many :sales_orders, :through => :final_sales_quote, serializer: Serializers::SalesOrderSerializer
+  # has_many :sales_orders, :through => :final_sales_quote, serializer: Serializers::SalesOrderSerializer
   #has_many :sales_quote_rows, :through => :sales_orders
 
   # has_many :sales_quotes
