@@ -40,7 +40,7 @@ module DisplayHelper
   end
 
   def format_enum(val)
-    val.to_s.humanize if val.present?
+    val.to_s.humanize.truncate(17) if val.present?
   end
 
   def day_count(val)
