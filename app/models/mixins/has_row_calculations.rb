@@ -23,7 +23,7 @@ module Mixins::HasRowCalculations
     end
 
     def calculated_total_cost
-      rows.map {|row| (row.freight_cost_subtotal + (row.unit_cost_price * row.quantity))}.sum
+      rows.map {|row| (row.unit_cost_price_with_unit_freight_cost * row.quantity)}.sum
     end
 
     def calculated_freight_cost_total

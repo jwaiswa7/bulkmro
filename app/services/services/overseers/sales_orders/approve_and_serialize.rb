@@ -12,13 +12,7 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
         :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
     )
 
-    #Resources::Draft.create(sales_order)
-
-    # if sales_order.draft_uid.present?
-    #   Resources::Draft.update(sales_order.draft_uid, draft_uid)
-    # else
-    #   sales_order.draft_uid = Resources::Draft.create(sales_order)
-    # end
+    #@sales_order.save_and_sync
   end
 
   attr_reader :sales_order, :overseer, :comment
