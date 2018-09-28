@@ -2,6 +2,8 @@ class Contact < ApplicationRecord
   include Mixins::IsAPerson
   include Mixins::CanBeStamped
 
+  pg_search_scope :locate, :against => [:first_name, :last_name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

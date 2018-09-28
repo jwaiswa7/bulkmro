@@ -1,6 +1,10 @@
 en:
   simple_form:
     placeholders:
+      activity:
+        points_discussed: 'Points discussed in the meeting/call/over email'
+        actions_required: 'Actions required on behalf of BulkMRO'
+        subject: 'Subject for the Activity'
       inquiry:
         bp_catalog_name: 'Business Partner Catalog Name'
         subject: 'e.g. Drill machine'

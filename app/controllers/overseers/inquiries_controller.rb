@@ -16,6 +16,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def autocomplete
+    service = Services::Overseers::Inquiries::Finder.new(params)
+    service.call
+
+    @indexed_inquiries = service.indexed_inquiries
+    @inquiries = service.inquiries
+
+    authorize @inquiries
+  end
+
   def show
     authorize @inquiry
     redirect_to edit_overseers_inquiry_path(@inquiry)

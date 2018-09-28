@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_27_065924) do
+ActiveRecord::Schema.define(version: 2018_09_28_043235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,37 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.bigint "company_id"
+    t.bigint "contact_id"
+    t.string "subject"
+    t.integer "company_type"
+    t.integer "purpose"
+    t.integer "activity_type"
+    t.text "points_discussed"
+    t.text "actions_required"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["company_id"], name: "index_activities_on_company_id"
+    t.index ["contact_id"], name: "index_activities_on_contact_id"
+    t.index ["created_by_id"], name: "index_activities_on_created_by_id"
+    t.index ["inquiry_id"], name: "index_activities_on_inquiry_id"
+    t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
+  end
+
+  create_table "activity_overseers", force: :cascade do |t|
+    t.bigint "overseer_id"
+    t.bigint "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_overseers_on_activity_id"
+    t.index ["overseer_id", "activity_id"], name: "index_activity_overseers_on_overseer_id_and_activity_id", unique: true
+    t.index ["overseer_id"], name: "index_activity_overseers_on_overseer_id"
   end
 
   create_table "address_states", force: :cascade do |t|
@@ -866,6 +897,13 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
 
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
+  add_foreign_key "activities", "companies"
+  add_foreign_key "activities", "contacts"
+  add_foreign_key "activities", "inquiries"
+  add_foreign_key "activities", "overseers", column: "created_by_id"
+  add_foreign_key "activities", "overseers", column: "updated_by_id"
+  add_foreign_key "activity_overseers", "activities"
+  add_foreign_key "activity_overseers", "overseers"
   add_foreign_key "addresses", "address_states"
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
