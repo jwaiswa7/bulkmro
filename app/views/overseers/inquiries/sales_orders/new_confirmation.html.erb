@@ -60,13 +60,16 @@
                 <div class="col-md-1"><strong>Sr no</strong> <br> <%= row.object.sr_no %></div>
                 <div class="col-md-3"><strong>Product</strong> <br> <%= row.object.sales_quote_row %></div>
                 <div class="col-md-1"><strong>Quantity</strong> <br> <%= row.object.quantity %></div>
-                <div class="col-md-2"><strong>Unit Cost Price</strong> <br> <%= row.object.unit_cost_price_with_unit_freight_cost %></div>
+                <div class="col-md-2"><strong>Unit Cost Price</strong>
+                  <br> <%= row.object.unit_cost_price_with_unit_freight_cost %></div>
                 <div class="col-md-2"><strong>Margin %</strong> <br> <%= row.object.margin_percentage %></div>
                 <div class="col-md-1"><strong>USP</strong> <br> <%= row.object.unit_selling_price %></div>
                 <div class="col-md-1"><strong>CUSP</strong> <br> <%= row.object.converted_unit_selling_price %></div>
                 <div class="col-md-2"><strong>Tax code</strong> <br> <%= row.object.tax_code %></div>
-                <div class="col-md-2"><strong>Total selling price</strong> <br> <%= row.object.total_selling_price %></div>
-                <div class="col-md-2"><strong>Total selling price with tax</strong> <br> <%= row.object.total_selling_price_with_tax %></div>
+                <div class="col-md-2"><strong>Total selling price</strong> <br> <%= row.object.total_selling_price %>
+                </div>
+                <div class="col-md-2"><strong>Total selling price with tax</strong>
+                  <br> <%= row.object.total_selling_price_with_tax %></div>
               </div>
             <% end %>
             <div class="card-body">
@@ -81,7 +84,7 @@
             </div>
             <hr/>
             <%= f.submit 'Save and Send', name: 'save_and_send', class: 'btn btn-success btn-block' %>
-            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry,@sales_order), class: 'btn btn-secondary btn-block' %>
+            <%= link_to "Cancel", edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order), class: 'btn btn-secondary btn-block' %>
           </div>
         </div>
       </div>

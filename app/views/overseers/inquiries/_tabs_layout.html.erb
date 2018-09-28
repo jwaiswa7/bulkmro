@@ -5,7 +5,8 @@
       <% if content_for?(:heading_byline) %>
         <p class="mt-2 mt-md-0"><%= yield :heading_byline %></p>
       <% else %>
-        <p>This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+        <p>This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
+          <strong><%= current_overseer.full_name %></strong>.</p>
       <% end %>
     </div>
 

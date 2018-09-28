@@ -32,7 +32,8 @@
                           <div class="d-flex flex-row">
                             <div class="custom-control custom-radio custom-control-inline align-self-center">
                               <%= radio = row.radio_button :approved_alternative_id, nil, class: 'custom-control-input' %>
-                              <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %><% end %>
+                              <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
+                              <% end %>
                             </div>
                             <div class="flex-grow-1">
                               <%= product.input :name, class: 'text-right' %>
@@ -43,15 +44,15 @@
                           <%= product.input :sku, readonly: true %>
                         </div>
                         <div class="col-6 col-md-2">
-                          <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path } %>
+                          <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
                         </div>
 
                         <div class="col-6 col-md-2">
-                          <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path } %>
+                          <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
 
                         </div>
                         <div class="col-6 col-md-2">
-                          <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
+                          <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
                         </div>
                         <div class="col-6 col-md-1">
                           <%= product.input :is_service %>
