@@ -1466,6 +1466,5 @@ service.loop(200) do |x|
   end
 end
 
-
 Report.create!(name: 'ActivityReport', uid: 'activity_report')
 
