@@ -25,11 +25,13 @@ class Activity < ApplicationRecord
   }
 
   enum activity_type: {
-      :'Meeting' => 10,
-      :'Phone call' => 20,
-      :'Email' => 30,
-      :'Quote/Tender Prep' => 40
+      :'meeting' => 10,
+      :'phone_call' => 20,
+      :'email' => 30,
+      :'quote_tender_prep' => 40
   }
+
+  scope :not_meeting, -> { where.not(activity_type: activity_types[:meeting]) }
 
   validates_presence_of :company_type
   validates_presence_of :purpose
