@@ -198,7 +198,7 @@ class Inquiry < ApplicationRecord
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
       self.expected_closing_date ||= (Time.now + 60.days)
-
+      self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
