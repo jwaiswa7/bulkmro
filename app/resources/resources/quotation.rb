@@ -76,11 +76,11 @@ Example Product
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
-        NumAtCard: "", #Comment on Quote?
+        NumAtCard: record.inquiry.comments.last , #Comment on Quote?
         DocCurrency: "INR",
         DocEntry: record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
-        ImportEnt: 3232, # Customer PO ID Not Available Yet
+        ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: "R1", #Quotation Revision ID
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
         AttachmentEntry: nil,
@@ -93,7 +93,7 @@ Example Product
         U_Frghtterm: record.inquiry.freight_option,
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
         U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
-        U_SQ_Status: 6, # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
+        U_SQ_Status: record.inquiry.status, # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: 1,
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time

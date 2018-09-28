@@ -1,15 +1,16 @@
 class Resources::ApplicationResource
   include HTTParty
+  #@@remote_exchange_log = ::Logger.new("#{Rails.root}/log/remote_exchange.log")
+  #debug_output @@remote_exchange_log
 
   def self.new_session_id
     response = post(
-            '/Login',
-            :body => { :CompanyDB => DATABASE, :UserName => USERNAME, :Password => PASSWORD}.to_json,
-            :verify => false,
-            :debug_output => $stdout,
-            :timeout => 30
-        )
-
+        '/Login',
+        :body => {:CompanyDB => DATABASE, :UserName => USERNAME, :Password => PASSWORD}.to_json,
+        :verify => false,
+        :debug_output => $stdout,
+        :timeout => 30
+    )
     response['SessionId']
   end
 
@@ -54,7 +55,7 @@ class Resources::ApplicationResource
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map { |pr| OpenStruct.new(pr) }
+    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
   end
 
   def self.find(id)
@@ -62,19 +63,73 @@ class Resources::ApplicationResource
   end
 
   def self.create(record)
-    response = OpenStruct.new(post("/#{collection_name}", body: to_remote(record).to_json).parsed_response)
-    response.send(self.identifier)
+    #log and Validate Response
+    response = post("/#{collection_name}", body: to_remote(record).to_json)
+
+    get_validated_response(:post, record, response)
+  end
+
+  def self.get_validated_response(method, record, raw_response)
+
+    request = log_request(method, record)
+
+    validated_response = validate_response(raw_response)
+    request.response_message = validated_response
+
+    # Update Return value if data is valid and set Remote Exchange Status
+    response = nil
+    if validated_response.status
+      request.status = :success
+
+      response = OpenStruct.new(validated_response.value)
+      response = response.send(self.identifier)
+    else
+      request.status = :failed
+    end
+
+    request.save
+    response
+  end
+
+  def self.log_request(method, record)
+    RemoteExchangeLog.create({
+                                 method: method,
+                                 resource: collection_name,
+                                 request_message: to_remote(record).to_json,
+                                 url: [ENDPOINT, "/#{collection_name}"].join(""),
+                                 status: :pending
+                             })
   end
 
   def self.update(id, record, options = {})
-    OpenStruct.new(patch("/#{collection_name}(#{id})", body: to_remote(record).to_json).parsed_response)
+    response = patch("/#{collection_name}(#{id})", body: to_remote(record).to_json)
+    get_validated_response(:patch, record, response)
     id
+  end
+
+
+  def self.validate_response(response)
+    validate = OpenStruct.new
+    validate.status = false
+    validate.value = response.parsed_response
+
+    if response['odata.metadata'] || (200...300).include?(response.code)
+      validate.status = true
+      validate.message = 'Success'
+    elsif response['error']
+      validate.message = 'SAP Error :' + response['error']['message']['value']
+    else
+      validate.message = 'SAP Error / Warning :' + response.to_s
+    end
+
+    validate
   end
 
   #TODO
   # Handle Error for Wrong data sent or Issue in updating
   #
   #
-  def format_date
-  end
+  #
+
 end
+
