@@ -1,6 +1,6 @@
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@sales_order, url: create_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post) do |f| %>
+    <%= simple_form_for(@sales_order, url: create_confirmation_overseers_inquiry_sales_order_path(@inquiry, @sales_order), method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :parent_id %>
       <%= f.hidden_field :sales_quote_id %>
 
@@ -11,22 +11,28 @@
       <% end %>
       <div class="card">
         <div class="card-header">
-          <div class="row">
-            <div class="col-lg-3">Total Selling Price (Excl. tax): <br>
-              <strong><%= format_currency(f.object.calculated_total) %></strong></div>
-            <div class="col-lg-2">Total Tax: <br> <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+          <div class=form-row>
+            <div class="col-lg-3">
+              Total Selling Price (Excl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total) %></strong>
             </div>
-            <div class="col-lg-3">Total Selling Price (Incl. tax): <br>
-              <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong></div>
-            <div class="col-lg-2">Total Margin: <br>
-              <strong><%= format_currency(f.object.calculated_total_margin) %></strong></div>
-            <div class="col-lg-2 text-warning"><%= f.check_box :confirm_ord_values, name: '', label: 'Confirm Order Values', :required => true %>
-              <%= f.label :confirm_ord_values, 'Confirm Ord Values' %>
+            <div class="col-lg-2">
+              Total Tax<br>
+              <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+            </div>
+            <div class="col-lg-3">Total Selling Price (Incl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
+            </div>
+            <div class="col-lg-2">Total Margin<br>
+              <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+            </div>
+            <div class="col-lg-2 d-flex align-items-center">
+              <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Order Values', :required => true %>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <div class="row">
+          <div class=form-row>
             <div class="col-md-6"><strong>Currency</strong> <br> <%= f.object.currency %>
             </div>
             <div class="col-md-6"><strong>Conversion rate</strong> <br> <%= f.object.conversion_rate %>
@@ -35,13 +41,13 @@
         </div>
 
         <div class="card-body">
-          <div class="row">
+          <div class=form-row>
             <div class="col-md-6"><strong>Shipping Address</strong> <br> <%= @inquiry.shipping_address %>
             </div>
             <div class="col-md-6"><strong>Billing Address</strong> <br> <%= @inquiry.billing_address %>
             </div>
           </div>
-          <div class="row">
+          <div class=form-row>
             <div class="col-md-6 text-warning"><%= f.check_box :confirm_shipping_address, name: '', :required => true %>
               <%= f.label :confirm_shipping_address, 'Confirm Shipping Address' %>
             </div>
@@ -54,7 +60,7 @@
         <div class="card-body">
           <div class="form-group">
             <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-              <div class="row">
+              <div class=form-row>
                 <%= row.hidden_field :sales_order_id %>
                 <%= row.hidden_field :id %>
                 <div class="col-md-1"><strong>Sr no</strong> <br> <%= row.object.sr_no %></div>
@@ -73,7 +79,7 @@
               </div>
             <% end %>
             <div class="card-body">
-              <div class="row">
+              <div class=form-row>
                 <div class="col-md-6 text-warning"><%= f.check_box :confirm_hsn_codes, name: '', label: 'Confirm HSN Codes', :required => true %>
                   <%= f.label :confirm_hsn_codes, 'Confirm HSN Codes' %>
                 </div>
