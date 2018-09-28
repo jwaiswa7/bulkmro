@@ -6,6 +6,7 @@ sudo apt install openjdk-11-jre-headless
 https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 
 #### Windows
+https://www.java.com/en/download/
 https://www.elastic.co/guide/en/elasticsearch/reference/current/windows.html
 
 # To configure Elasticsearch to start automatically when the system boots up, run the following commands:
