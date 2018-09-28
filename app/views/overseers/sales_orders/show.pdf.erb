@@ -132,7 +132,9 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
-                    <font color="#000000">Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                    <font color="#000000">
+                      <%#= @sales_order.inquiry.bill_from  %>
+                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
                       2nd Floor, A Wing, Todi Estate,<br>
                       Sun Mill Compound, Lower Parel West,<br>
                       Mumbai 400013,<br>
@@ -144,7 +146,9 @@
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <font color="#000000">Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                    <font color="#000000">
+                      <%#= @sales_order.inquiry.ship_from  %>
+                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
                       2nd Floor, A Wing, Todi Estate,<br>
                       Sun Mill Compound, Lower Parel West,<br>
                       Mumbai 400013,<br>
@@ -228,17 +232,17 @@
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"><%= item.sales_quote_row.product.sku  %></font></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"></font></td>
                   <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:left;" valign="top"><font color="#000000"><%=item.sales_quote_row.product.name %><br></font></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"><x/font></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"></font></td>
                   <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"><%=item.hsn_or_sac %></font></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"><%= @sales_order.sales_quote.rows[0].product.measurement_unit.name %></font></td>
                   <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"><%= item.quantity %></font></td>
                   <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: right;" valign="top"><font color="#000000"><%=item.unit_selling_price%></font></td>
                   <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top"><font color="#000000"><%=item.total_selling_price%></font></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" valign="top"><font color="#000000"><%= item.tax_code.tax_percentage%>%</font></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top"><font color="#000000"><%#= item.sales_quote_row.taxation.cgst %></font></td>
-                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top"><font color="#000000">1,008.00</font></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top"><font color="#000000"><%#= item.sales_quote_row.taxation.sgst %></font></td>
-                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top"><font color="#000000">1,008.00</font></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top"><font color="#000000"><%= item.tax_code.tax_percentage / 2 %>%</font></td>
+                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top"><font color="#000000"><%= item.total_tax / 2 %></font></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top"><font color="#000000"><%= item.tax_code.tax_percentage / 2 %>%</font></td>
+                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top"><font color="#000000"><%= item.total_tax / 2 %></font></td>
                   <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top"><font color="#000000"><%=item.total_selling_price_with_tax%></font></td>
                 </tr>
                 <% end %>
@@ -256,9 +260,9 @@
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000"><%= @sales_order.calculated_total %></font></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"></font></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top"><font color="#000000"></font></td>
-                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000">1,640.82</font></b></td>
+                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000"><%= @sales_order.calculated_total_tax / 2 %></font></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top"><font color="#000000"></font></td>
-                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000">1,640.82</font></b></td>
+                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000"><%= @sales_order.calculated_total_tax / 2 %></font></b></td>
                   <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top"><b><font color="#000000"><%= @sales_order.calculated_total_with_tax %></font></b></td>
                 </tr>
                 <tr>
