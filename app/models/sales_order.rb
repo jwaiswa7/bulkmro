@@ -9,6 +9,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
   include Mixins::CanBeSent
+  include Mixins::CanBeSynced
   include Mixins::HasRowCalculations
 
   has_closure_tree({ name_column: :to_s })

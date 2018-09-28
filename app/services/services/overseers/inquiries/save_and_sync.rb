@@ -23,18 +23,11 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
       # Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
       inquiry.opportunity_uid = Resources::SalesOpportunity.create(inquiry)
-      raise
     end
     inquiry.save
     if inquiry.sales_quotes.any?
-      sales_quote = inquiry.sales_quotes.last
-      if sales_quote.quotation_uid.present?
-        Resources::Quotation.update(sales_quote.quotation_uid, sales_quote)
-      else
-        sales_quote.quotation_uid = Resources::Quotation.create(sales_quote)
-        sales_quote.save
-      end
-
+      sales_quote = inquiry.final_sales_quote
+      sales_quote.save_and_sync if sales_quote.present?
     end
 
   end

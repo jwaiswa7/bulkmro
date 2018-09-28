@@ -5,7 +5,9 @@ class Services::Overseers::SalesOrders::SaveAndSync < Services::Shared::BaseServ
   end
 
   def call
-    if sales_order.save
+    if Rails.env.development?
+      call_later
+    else
       perform_later(sales_order)
     end
   end
