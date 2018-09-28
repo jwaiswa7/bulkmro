@@ -16,9 +16,9 @@ let preSetup = () => {
         if (searchText) {
             var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
             $input = $($input);
-            $input.on('keyup', function (e) {
+            $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
-            });
+            }, 300);
 
             var $wrapper = "<div class='input-group input-group-round'>" +
                 "<div class='input-group-prepend'>" +
