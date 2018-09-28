@@ -1,6 +1,6 @@
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for([:overseers, @inquiry, @sales_order]) do |f| %>
+    <%= simple_form_for([:overseers, @inquiry, @sales_order], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= f.hidden_field :parent_id %>
       <%= f.hidden_field :sales_quote_id %>
 
