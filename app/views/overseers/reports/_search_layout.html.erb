@@ -1,0 +1,15 @@
+<%= simple_form_for([:overseers, @report], method: :get) do |f| %>
+
+  <%= f.label :start_at %>
+  <%= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+  <br />
+  <%= f.label :end_at %>
+  <%= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+  <br />
+
+  <%= f.input :date_range, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
+
+  <%= submit_tag 'Refresh', name: nil %>
+<% end %>
+
+<%= yield %>

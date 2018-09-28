@@ -13,8 +13,8 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :telephone
       t.string :designation
       t.string :identifier
-      t.string :department
-      t.string :geography
+      t.integer :department
+      t.integer :geography
 
       # t.string :slack_uid
 

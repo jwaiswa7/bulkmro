@@ -11,11 +11,7 @@ Rails.application.routes.draw do
       get 'chewy'
     end
 
-    resources :reports do
-      collection do
-
-      end
-    end
+    resources :reports
 
     resources :activities
 
