@@ -7,7 +7,10 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
-    resource :dashboard, :controller => :dashboard
+    resource :dashboard, :controller => :dashboard do
+      get 'chewy'
+    end
+
     resource :profile, :controller => :profile
 
     resources :overseers
