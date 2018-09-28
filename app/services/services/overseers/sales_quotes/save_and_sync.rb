@@ -6,7 +6,11 @@ class Services::Overseers::SalesQuotes::SaveAndSync < Services::Shared::BaseServ
 
   def call
     if sales_quote.save
-      perform_later(sales_quote)
+      if Rails.env.development?
+        call_later
+      else
+        perform_later(sales_quote)
+      end
     end
   end
 
@@ -32,6 +36,16 @@ class Services::Overseers::SalesQuotes::SaveAndSync < Services::Shared::BaseServ
         sales_quote.save
       end
     end
+
+=begin
+    SAP = OpenStruct.new({
+                             #attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
+                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Sprint',
+                             attachment_api: '172.31.13.105/b1_shf/Attachments',
+                             server: {host: '35.154.19.43', port: 22},
+                             login: {user: 'b1service0', password: 'b1service0@123'}
+                         })
+=end
   end
 
   attr_accessor :sales_quote

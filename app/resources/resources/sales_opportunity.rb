@@ -5,6 +5,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
+
     {
         CardCode: record.company.remote_uid, #
         U_SalesMgr: record.sales_manager.try(:full_name),

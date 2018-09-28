@@ -24,6 +24,16 @@ class Resources::ApplicationResource
   DATABASE = 'BMRO_JULY05'
   USERNAME = 'manager'
   PASSWORD = 'bm@123'
+
+  SAP = OpenStruct.new({
+                           #attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
+                           attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Sprint',
+                           attachment_api: '172.31.13.105/b1_shf/Attachments',
+                           server: {host: '35.154.19.43', port: 22},
+                           login: {user: 'b1service0', password: 'b1service0@123'}
+                       })
+
+
   base_uri ENDPOINT.to_s
   debug_output($stdout)
   default_options.merge!(verify: false, timeout: 30)
@@ -43,6 +53,8 @@ class Resources::ApplicationResource
   def self.collection_name
     if model_name == 'SalesPerson'
       'SalesPersons'
+    elsif model_name == 'Attachment'
+      'Attachments2'
     else
       model_name.pluralize
     end
@@ -107,7 +119,6 @@ class Resources::ApplicationResource
     id
   end
 
-
   def self.validate_response(response)
     validate = OpenStruct.new
     validate.status = false
@@ -130,6 +141,7 @@ class Resources::ApplicationResource
   #
   #
   #
+
 
 end
 

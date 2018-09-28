@@ -6,7 +6,6 @@ class Resources::Quotation < Resources::ApplicationResource
   def self.to_remote(record)
     items = []
 
-
     record.rows.each_with_index do |row, index|
       item = OpenStruct.new
       item.DiscountPercent = 0
@@ -33,7 +32,6 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_Rmks = ""
 
       items.push(item.marshal_dump)
-
 
 =begin
 Example Product
@@ -76,7 +74,7 @@ Example Product
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
-        NumAtCard: record.inquiry.comments.last , #Comment on Quote?
+        NumAtCard: record.inquiry.comments.last, #Comment on Quote?
         DocCurrency: "INR",
         DocEntry: record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
@@ -106,6 +104,32 @@ Example Product
         Project: record.inquiry.project_uid,
     }
 
+  end
+
+  def self.create(record)
+    #log and Validate Response
+    create_or_update_attachments(record)
+
+    response = post("/#{collection_name}", body: to_remote(record).to_json)
+
+    get_validated_response(:post, record, response)
+  end
+
+  def self.update(id, record, options = {})
+    create_or_update_attachments(record)
+
+    response = patch("/#{collection_name}(#{id})", body: to_remote(record).to_json)
+    get_validated_response(:patch, record, response)
+    id
+  end
+
+  def self.create_or_update_attachments(record)
+    if record.inquiry.attachment_uid.present?
+      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
+      record.save
+    else
+      Resources::Attachment.update(record.inquiry.attachment_uid, record.inquiry)
+    end
   end
 
 end

@@ -218,6 +218,17 @@ class Inquiry < ApplicationRecord
     self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
   end
 
+  def attachments
+    attachment = []
+    attachment.push(self.customer_po_sheet.present? ? self.customer_po_sheet : nil  )
+    attachment.push(self.copy_of_email.present? ? self.copy_of_email : nil  )
+    attachment.push(self.suppler_quote.present? ? self.suppler_quote : nil  )
+    attachment.push(self.final_supplier_quote.present? ? self.final_supplier_quote : nil  )
+    attachment.push(self.calculation_sheet.present? ? self.calculation_sheet : nil  )
+
+    attachment.compact
+  end
+
   def suppliers_selected?
     self.inquiry_product_suppliers.persisted.present?
   end
