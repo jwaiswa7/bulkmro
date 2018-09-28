@@ -42,7 +42,7 @@
               <br> <%= f.object.conversion_rate %>
             </div>
           </div>
-          <div class="card-alternative mt-2 mt-md-3">
+          <div class="card-alternative mt-3">
             <div class="form-row">
               <div class="col-md-6">
                 <strong>Shipping Address</strong><br>
@@ -64,28 +64,25 @@
           <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
             <%= row.hidden_field :sales_order_id %>
             <%= row.hidden_field :id %>
-
            <div>
              <h6 class="text-uppercase mb-0 mt-3">
                <strong><%= row.object.sales_quote_row %></strong>
                <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sr_no %></p>
              </h6>
-             <hr class="my-2">
-
              <div class="form-row my-2">
                <div class="col-md-3">
                  <strong>Unit Selling Price</strong><br>
                  <span><%= row.object.unit_selling_price %></span>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 mt-2 mt-md-0">
                  <strong>Unit Selling Price (in $)</strong><br>
                  <span><%= row.object.converted_unit_selling_price %></span>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 mt-2 mt-md-0">
                  <strong>Unit Cost with Freight</strong><br>
                  <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 mt-2 mt-md-0">
                  <strong>Total Selling Price</strong><br>
                  <span><%= row.object.total_selling_price %></span>
                </div>
@@ -95,16 +92,17 @@
                  <strong>Total Selling Price with Tax</strong><br>
                  <span><%= row.object.total_selling_price_with_tax %></span>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 mt-2 mt-md-0">
                  <strong>Margin Percentage</strong><br>
                  <span><%= row.object.margin_percentage %></span>
                </div>
-               <div class="col-md-3">
+               <div class="col-md-3 mt-2 mt-md-0">
                  <strong>Tax Code</strong><br>
                  <span><%= row.object.tax_code %></span>
                </div>
              </div>
            </div>
+            <hr class="my-2">
           <% end %>
 
           <div class="form-row">
