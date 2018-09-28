@@ -1,11 +1,10 @@
-class Services::Overseers::Reports::Preprocessor < Services::Shared::BaseService
+class Services::Overseers::Reports::BaseReport < Services::Shared::BaseService
   def initialize(report)
     @report = report
   end
 
-  def call
+  def call_base
     apply_date_range
-
   end
 
   def apply_date_range
@@ -14,8 +13,8 @@ class Services::Overseers::Reports::Preprocessor < Services::Shared::BaseService
       report.start_at = Time.now.beginning_of_day
       report.end_at = Time.now.end_of_day
     when :this_month
-      report.start_at = Time.now.beginning_of_day
-      report.end_at = Time.now.end_of_day
+      report.start_at = Time.now.beginning_of_month
+      report.end_at = Time.now.end_of_month
     when :last_week
       report.start_at = 1.week.ago.beginning_of_week
       report.end_at = 1.week.ago.end_of_week
@@ -31,5 +30,5 @@ class Services::Overseers::Reports::Preprocessor < Services::Shared::BaseService
     end
   end
 
-  attr_reader :report
+  attr_reader :report, :data
 end

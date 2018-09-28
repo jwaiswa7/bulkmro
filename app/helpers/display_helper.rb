@@ -87,9 +87,15 @@ module DisplayHelper
     ['#', id].join if id.present?
   end
 
-  def format_date(date, format = :long)
+  def format_date(date)
     if date.present?
       date.strftime("%e %b, %Y %H:%M")
+    end
+  end
+
+  def format_date_without_time(date)
+    if date.present?
+      date.strftime("%e %b, %Y")
     end
   end
 
@@ -100,4 +106,6 @@ module DisplayHelper
   def format_int(num)
     num.to_int
   end
+
+
 end

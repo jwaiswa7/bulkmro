@@ -27,6 +27,14 @@ class Report < ApplicationRecord
     find_by_name('ActivityReport')
   end
 
+  def start_date
+    start_at.to_date
+  end
+
+  def end_date
+    end_at.to_date
+  end
+
   def to_param
     uid
   end

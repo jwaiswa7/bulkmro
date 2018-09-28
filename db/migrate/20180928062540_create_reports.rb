@@ -7,6 +7,7 @@ class CreateReports < ActiveRecord::Migration[5.2]
       t.datetime :start_at
       t.datetime :end_at
       t.integer :date_range
+      t.jsonb :metadata
 
       t.timestamps
     end
