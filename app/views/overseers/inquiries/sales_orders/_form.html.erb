@@ -107,22 +107,24 @@
 
 
       <div class="card mt-3">
-        <div class="card-header d-block d-md-flex flex-row">
-          <div class="flex-fill">
-            <strong>Total Selling Price (Excl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Selling Price (Incl. tax)</strong><br>
-            <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Tax</strong><br>
-            <span><%= format_currency(f.object.calculated_total_tax) %></span>
-          </div>
-          <div class="flex-fill mt-2 mt-md-0">
-            <strong>Total Margin</strong><br>
-            <span><%= format_currency(f.object.calculated_total_margin) %></span>
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-8 col-md-3">
+              <strong>Total Selling Price (Excl. tax)</strong><br>
+              <span><%= format_currency(f.object.calculated_total) %></span>
+            </div>
+            <div class="col-4 col-md-3">
+              <strong>Total Tax</strong><br>
+              <span><%= format_currency(f.object.calculated_total_tax) %></span>
+            </div>
+            <div class="col-8 col-md-3 mt-2 mt-md-0">
+              <strong>Total Selling Price (Incl. tax)</strong><br>
+              <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">
+              <strong>Total Margin</strong><br>
+              <span><%= format_currency(f.object.calculated_total_margin) %></span>
+            </div>
           </div>
         </div>
         <div class="card-body">
