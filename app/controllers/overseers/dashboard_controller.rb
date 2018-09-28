@@ -8,10 +8,11 @@ class Overseers::DashboardController < Overseers::BaseController
 		# InquiryIndex.delete
 		# InquiryIndex.create!
 		# InquiryIndex.import
-		InquiryIndex.reset!
+		# InquiriesIndex.reset!
+		ProductsIndex.reset!
 		#
-		Inquiry.search('asd')
-
-		raise
+		# Inquiry.search('asd')
+		#
+		# raise
 	end
 end
