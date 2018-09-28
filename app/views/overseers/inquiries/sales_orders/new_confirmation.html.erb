@@ -27,32 +27,35 @@
               <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
             </div>
             <div class="col-lg-2 d-flex align-items-center">
-              <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm Order Values', :required => true %>
+              <%= f.input :confirm_ord_values, as: :boolean, wrapper: :custom_boolean, label: 'Confirm order values', :required => true %>
             </div>
           </div>
         </div>
         <div class="card-body">
-          <div class=form-row>
-            <div class="col-md-6"><strong>Currency</strong> <br> <%= f.object.currency %>
+          <div class="form-row">
+            <div class="col-md-6">
+              <strong>Currency</strong>
+              <br> <%= f.object.currency %>
             </div>
-            <div class="col-md-6"><strong>Conversion rate</strong> <br> <%= f.object.conversion_rate %>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-body">
-          <div class=form-row>
-            <div class="col-md-6"><strong>Shipping Address</strong> <br> <%= @inquiry.shipping_address %>
-            </div>
-            <div class="col-md-6"><strong>Billing Address</strong> <br> <%= @inquiry.billing_address %>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Conversion rate</strong>
+              <br> <%= f.object.conversion_rate %>
             </div>
           </div>
-          <div class=form-row>
-            <div class="col-md-6 text-warning"><%= f.check_box :confirm_shipping_address, name: '', :required => true %>
-              <%= f.label :confirm_shipping_address, 'Confirm Shipping Address' %>
+          <div class="form-row mt-0 mt-md-2">
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Shipping Address</strong><br>
+              <%= @inquiry.shipping_address %>
+              <div class="mt-1">
+                <%= f.input :confirm_shipping_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+              </div>
             </div>
-            <div class="col-md-6 text-warning"><%= f.check_box :confirm_billing_address, name: '', label: 'Confirm Billing Address', :required => true %>
-              <%= f.label :confirm_billing_address, 'Confirm Billing Address' %>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Billing Address</strong>
+              <br> <%= @inquiry.billing_address %>
+              <div class="mt-1">
+                <%= f.input :confirm_billing_address, as: :boolean, wrapper: :custom_boolean, :required => true %>
+              </div>
             </div>
           </div>
         </div>
