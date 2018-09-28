@@ -7931,6 +7931,8 @@ table.table.dataTable {
       background-color: #fff;
       border-color: #F7F9FA;
       color: #495057; }
+  table.table.dataTable.fixedHeader-floating, table.table.dataTable.fixedHeader-locked {
+    background-color: transparent; }
 
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
   white-space: normal; }
