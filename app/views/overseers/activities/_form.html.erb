@@ -5,9 +5,9 @@
   </div>
 
   <%= simple_form_for([:overseers, @activity], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path }, include_blank: 'Leave blank if no inquiry connected' %>
-    <%= f.association :company, collection: selected_option_or_nil(f, :company), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
-    <%= f.association :contact, collection: selected_option_or_nil(f, :contact), :wrapper => :custom_multi_select,  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
+    <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path }, include_blank: 'Leave blank if no inquiry connected' %>
+    <%= f.association :company, collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
+    <%= f.association :contact, collection: selected_option_or_nil(f, :contact),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
 
     <%= f.input :subject %>
 
