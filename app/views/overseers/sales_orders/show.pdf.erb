@@ -96,7 +96,7 @@
                 <tbody>
                 <tr>
                   <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top"><b><font color="#000000">Quotation #</font></b> <span style="float:right">:</span></td>
-                  <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top"><font color="#000000"><%= @sales_order.sales_quote.id %></font></td>
+                  <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top"><font color="#000000"><%= @sales_order.sales_quote.quotation_uid %></font></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top"><b><font color="#000000">Date of Quotation</font></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top"><font color="#000000"><%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") %></font></td>
                 </tr>
