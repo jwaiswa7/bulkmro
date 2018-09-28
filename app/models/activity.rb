@@ -41,7 +41,7 @@ class Activity < ApplicationRecord
   def set_defaults
     self.company_type ||= :is_customer
     self.purpose ||= :'First Meeting/Intro Meeting'
-    self.activity_type ||= :'Meeting'
+    self.activity_type ||= :'meeting'
   end
 
   def activity_company
