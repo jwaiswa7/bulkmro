@@ -46,5 +46,17 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     end
   end
 
+  def cgst
+    if !is_igst
+      tax_code.tax_percentage / 2
+    end
+  end
+
+  def sgst
+    if !is_igst
+      tax_code.tax_percentage / 2
+    end
+  end
+
   attr_accessor :sales_quote, :sales_quote_row, :bill_to, :ship_to, :bill_from, :tax_code, :is_service, :is_sez, :is_cgst_sgst, :is_igst
 end
