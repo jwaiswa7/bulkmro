@@ -18,4 +18,9 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_sales_order?
     new_revision? && record.inquiry.valid_for_new_sales_order?
   end
+
+  def show_pdf?
+    record == record.inquiry.sales_quotes.latest_record && record.persisted? && record.sent?
+  end
+
 end
