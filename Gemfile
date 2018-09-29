@@ -152,6 +152,9 @@ gem 'async-websocket'
 # Elasticsearch
 gem 'chewy'
 
+# Sentry.io error monitoring
+gem 'sentry-raven'
+
 # Easy group by queries
 gem 'hightop'
 gem 'groupdate'
