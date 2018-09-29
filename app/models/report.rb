@@ -29,6 +29,12 @@ class Report < ApplicationRecord
     end
   end
 
+  def self.pipeline
+    where(name: 'ActivityReport').first_or_create do |report|
+      report.uid = 'activity_report'
+    end
+  end
+
   def start_date
     start_at.to_date
   end
