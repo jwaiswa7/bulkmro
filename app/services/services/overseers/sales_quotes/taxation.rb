@@ -33,6 +33,8 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
       "IGST #{tax_code.tax_percentage}%"
     else
       "CGST + SGST #{tax_code.tax_percentage}%"
+
+
     end
   end
 
@@ -40,9 +42,9 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     if is_sez
       "0"
     elsif is_igst
-      "IG@#{tax_code.tax_percentage}"
+      "IG@%g" % ("%.2f" % tax_code.tax_percentage)
     else
-      "CSG@#{tax_code.tax_percentage}"
+      "CSG@%g" % ("%.2f" % tax_code.tax_percentage)
     end
   end
 

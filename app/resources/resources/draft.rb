@@ -49,7 +49,7 @@ class Resources::Draft < Resources::ApplicationResource
         DiscPrcnt: 0, #hardcode
         ProjectCode: record.inquiry.project_uid, #increment_id inq
         DocObjectCode: 22,  #hardcode
-        U_MgntDocID: record.id,
+        U_MgntDocID: record.order_number,
         U_Rate_Rmks: "", #hardcode
         U_Qty_Rmks: "", #hardcode
         U_Tax_Rmks: "", #hardcode

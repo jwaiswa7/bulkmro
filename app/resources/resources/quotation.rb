@@ -13,20 +13,20 @@ class Resources::Quotation < Resources::ApplicationResource
       item.ItemDescription = row.product.name # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
-      item.LineNum = index # Row Number
+      item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
       item.U_MPN = row.inquiry_product_supplier.bp_catalog_sku
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_cost_price # Row Unit Price
-      item.Currency = "INR" # Curr
-      item.TaxCode = "IG@28" # Code? Comes from Tax Label IG  = IGST
+      item.Currency = record.currency.name # Curr
+      item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.id # Supplier
       item.U_Vendor_Name = row.supplier.name # Supplier  Name
       item.Weight1 = "1" # product Weight
       item.U_ProdBrand = row.product.brand.try(:name) # Brand
-      item.WarehouseCode = 2 # ship_from_warehouse
-      item.LocationCode = 1
+      item.WarehouseCode = 2 #record.inquiry.ship_from.remote_uid # ship_from_warehouse
+      item.LocationCode = 1 #record.inquiry.ship_from.location_uid
       item.HSNEntry = row.tax_code.remote_uid # HSN !!
       item.U_MgntRemark = ""
       item.U_Rmks = ""
@@ -68,24 +68,23 @@ Example Product
 
 
     {
-        U_MgntDocID: record.legacy_id, # Quote ID
+        U_MgntDocID: record.to_param, # Quote ID
         CardCode: record.inquiry.company.remote_uid, #Customer ID
         DocDate: record.created_date, #Quote Create Date
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
         NumAtCard: record.inquiry.comments.last, #Comment on Quote?
-        DocCurrency: "INR",
+        DocCurrency: record.currency.name,
         DocEntry: record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: "R1", #Quotation Revision ID
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
-        AttachmentEntry: nil,
+        AttachmentEntry: record.inquiry.attachment_uid,
         DocumentLines: items, #Products
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
-        U_ConsigneeAddr: 1458,
         U_TermCondition: record.inquiry.commercial_terms_and_conditions, #   # Commercial terms and conditions
         U_TrmDeli: record.inquiry.price_type, #  , # Delivery Terms
         U_Frghtterm: record.inquiry.freight_option,

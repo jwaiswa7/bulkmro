@@ -44,4 +44,5 @@ class SalesOrder < ApplicationRecord
   def not_confirmed?
     !confirmed?
   end
+
 end
