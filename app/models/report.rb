@@ -30,8 +30,8 @@ class Report < ApplicationRecord
   end
 
   def self.pipeline
-    where(name: 'ActivityReport').first_or_create do |report|
-      report.uid = 'activity_report'
+    where(name: 'PipelineReport').first_or_create do |report|
+      report.uid = 'pipeline_report'
     end
   end
 

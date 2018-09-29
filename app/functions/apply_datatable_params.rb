@@ -21,6 +21,10 @@ class ApplyDatatableParams < BaseFunction
 			records = records.latest
 		end
 
+		params.keys.select { |key| key.ends_with? 'id' }.each do |key|
+		  records = records.where(key.to_sym => params[key])
+		end
+
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1
 		per = params[:length] ? params[:length].to_i : 25
 		records = records.page(page).per(per)

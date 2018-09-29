@@ -36,28 +36,20 @@
           All companies filterable in any way that we want under <strong><%= @account.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" data-ajax="<%= overseers_companies_path(account_id: @account.id) %>">
           <thead>
           <tr>
-            <th data-priority="1" class="no-sort"></th>
-            <th data-priority="2">Name</th>
-            <th class="text-right numeric">Contacts</th>
-            <th class="text-right numeric">Brands</th>
-            <th class="text-right numeric">Products</th>
+            <th class="no-sort"></th>
+            <th data-name="name">Name</th>
+            <th class="no-sort">Addresses</th>
+            <th class="no-sort">Contacts</th>
+            <th class="no-sort">Inquiries</th>
+            <th data-name="is_supplier">Is Supplier</th>
+            <th data-name="is_customer">Is Customer</th>
+            <th data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody>
-          <% @account.companies.each do |company| %>
-            <tr>
-              <td>
-                <a href="<%= edit_overseers_account_company_path(company.account, company) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Company"><i class="fal fa-pen"></i></a>
-              </td>
-              <td><a href="<%= overseers_company_path(company) %>"><%= company.name %></a></td>
-              <td class="text-right"><%= company.contacts.count %></td>
-              <td class="text-right"><%= company.brands.count %></td>
-              <td class="text-right"><%= company.products.count %></td>
-            </tr>
-          <% end %>
           </tbody>
         </table>
       </div>
@@ -70,20 +62,16 @@
           All contacts filterable in any way that we want under <strong><%= @account.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(account_id: @account.id) %>">
           <thead>
           <tr>
-            <th data-priority="2">Name</th>
-            <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
+            <th data-name="name">Name</th>
+            <th class="no-sort"><i class="fal fa-building"></i> Companies</th>
+            <th data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody>
-          <% @account.contacts.each do |contact| %>
-            <tr>
-              <td><%= contact.full_name %></td>
-              <td class="text-right"><%= contact.companies.count %></td>
-            </tr>
-          <% end %>
+
           </tbody>
         </table>
       </div>
