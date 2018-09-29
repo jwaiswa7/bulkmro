@@ -54,9 +54,12 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def show_pdf
     @sales_quote =  @inquiry.sales_quotes.find(params[:id])
     authorize @sales_quote
-    #render pdf:  'show', template: 'overseers/inquiries/sales_quotes/show.pdf.erb'
     respond_to do |format|
-      format.pdf { render pdf: 'show', template: 'overseers/inquiries/sales_quotes/show.pdf.erb' }
+      format.pdf do
+        render  pdf: 'show',
+                template: 'overseers/inquiries/sales_quotes/show.pdf.erb',
+                footer: {center: '[page] of [topage]'}
+      end
     end
   end
 
