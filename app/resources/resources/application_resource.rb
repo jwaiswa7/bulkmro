@@ -103,11 +103,44 @@ class Resources::ApplicationResource
     response
   end
 
+  def self.get_validated_response_for_query(method, query, raw_response)
+
+    request = log_query_request(method,query)
+
+    validated_response = validate_response(raw_response)
+    request.response_message = validated_response
+
+    # Update Return value if data is valid and set Remote Exchange Status
+    response = nil
+    if validated_response.status
+      request.status = :success
+      puts validated_response.value
+      response = OpenStruct.new(OpenStruct.new(validated_response.value).value.first)
+      puts(response)
+      response = response.send(self.identifier)
+    else
+      request.status = :failed
+    end
+
+    request.save
+    response
+  end
+
   def self.log_request(method, record)
     RemoteExchangeLog.create({
                                  method: method,
                                  resource: collection_name,
                                  request_message: to_remote(record).to_json,
+                                 url: [ENDPOINT, "/#{collection_name}"].join(""),
+                                 status: :pending
+                             })
+  end
+
+  def self.log_query_request(method,query)
+    RemoteExchangeLog.create({
+                                 method: method,
+                                 resource: collection_name,
+                                 request_message: "Search for #{query}",
                                  url: [ENDPOINT, "/#{collection_name}"].join(""),
                                  status: :pending
                              })

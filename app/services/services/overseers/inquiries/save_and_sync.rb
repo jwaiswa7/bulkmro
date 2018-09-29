@@ -16,11 +16,17 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
 
   def call_later
     if inquiry.project_uid.blank?
-      inquiry.project_uid = Resources::Project.create(inquiry)
+      project_uid = Resources::Project.create(inquiry)
+
+      if(project_uid == nil)
+        project_uid = Resources::Project.find_by_name(inquiry.subject)
+      end
+
+      inquiry.project_uid = project_uid
     end
     inquiry.save
     if inquiry.opportunity_uid.present?
-      # Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
+      Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
       inquiry.opportunity_uid = Resources::SalesOpportunity.create(inquiry)
     end

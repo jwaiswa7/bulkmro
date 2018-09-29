@@ -25,10 +25,10 @@ class Resources::Draft < Resources::ApplicationResource
         DocDueDate: record.inquiry.expected_closing_date.to_s, #estimated_shipping_date
         U_CustComDt: record.inquiry.expected_closing_date.to_s, #not
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid,
-        OwnerCode: record.inquiry.outside_sales_owner.employee_uid,
+        OwnerCode: record.inquiry.outside_sales_owner.salesperson_uid,
         U_SalesMgr: record.inquiry.sales_manager.try(:full_name),#record.inquiry.sales_manager.full_name,
         AttachmentEntry: record.inquiry.attachment_uid, #6383, #$quote['attachment_entry'] ------------
-        BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
+       # BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         ContactPersonCode: record.inquiry.contact.remote_uid, #22537, #
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
         U_CnfrmAddB: "P", #hardcode
@@ -58,8 +58,8 @@ class Resources::Draft < Resources::ApplicationResource
         U_Bill_Rmks: "", #hardcode
         U_PostBy: "Magento", #hardcode
         U_PostMagento: "Y", #hardcode
-        ShipToCode: record.inquiry.ship_from.remote_uid, #record.inquiry.shipping_address.legacy_id, ------
-        PayToCode: record.inquiry.bill_from.remote_uid, #record.inquiry.billing_address.legacy_id, -----
+        ShipToCode: record.inquiry.shipping_address.remote_uid, #record.inquiry.shipping_address.legacy_id, ------
+        PayToCode: record.inquiry.billing_address.remote_uid, #record.inquiry.billing_address.legacy_id, -----
         Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin,
         DocumentLines: items

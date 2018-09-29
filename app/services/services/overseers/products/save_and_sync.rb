@@ -10,7 +10,6 @@ class Services::Overseers::Products::SaveAndSync < Services::Shared::BaseService
     else
       perform_later(product)
     end
-
   end
 
   def call_later

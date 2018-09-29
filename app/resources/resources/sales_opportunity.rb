@@ -5,7 +5,6 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
-
     {
         CardCode: record.company.remote_uid, #
         U_SalesMgr: record.sales_manager.try(:full_name),
@@ -13,16 +12,17 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
         MaxSystemTotal: record.potential_amount,
         ProjectCode: record.project_uid,
         Status: "sos_Open",
+        GrossProfit: record.gross_profit_percentage,
         PredictedClosingDate: (record.created_at + 2.months).strftime('%F'),
         OpportunityName: record.subject,
         InterestLevel: 2,
         SalesOpportunitiesLines: [
             {
                 LineNum: 0,
-                SalesPerson: record.inside_sales_owner_id, # Inside Sales
-                StartDate: record.created_at.strftime('%F'),
-                ClosingDate: record.created_at.strftime('%F'),
-                StageKey: 1,
+                SalesPerson: record.inside_sales_owner.salesperson_uid, # Inside Sales
+                StartDate: record.created_date,
+                ClosingDate: record.created_date,
+                StageKey: Inquiry.stages[record.stage],
                 PercentageRate: 1,
                 MaxLocalTotal: record.potential_amount,
                 Remarks: record.commercial_terms_and_conditions,
@@ -36,7 +36,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
                 ContactPerson: record.contact.remote_uid,
                 BPChanelName: nil,
                 BPChanelCode: nil,
-                DataOwnershipfield: 307,
+                DataOwnershipfield: record.outside_sales_owner.employee_uid,
                 BPChannelContact: nil
             }
         ],

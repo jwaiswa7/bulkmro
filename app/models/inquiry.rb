@@ -204,6 +204,7 @@ class Inquiry < ApplicationRecord
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
+      self.stage ||= 1
     end
 
     self.is_sez ||= false

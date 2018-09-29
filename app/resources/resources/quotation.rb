@@ -18,7 +18,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_MPN = row.inquiry_product_supplier.bp_catalog_sku
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
-      item.UnitPrice = row.unit_cost_price # Row Unit Price
+      item.UnitPrice = row.unit_selling_price # Row Unit Price
       item.Currency = record.currency.name # Curr
       item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.id # Supplier
@@ -74,7 +74,7 @@ Example Product
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
-        NumAtCard: record.inquiry.comments.last, #Comment on Quote?
+        NumAtCard: record.inquiry.subject, #Comment on Quote?
         DocCurrency: record.currency.name,
         DocEntry: record.quotation_uid,
         TaxDate: nil, # record.created_date , #Tax Date??
@@ -92,6 +92,8 @@ Example Product
         U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
         U_SQ_Status: record.inquiry.status, # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: 1,
+        "ShipToCode": record.inquiry.shipping_address.remote_uid,
+        "PayToCode": record.inquiry.billing_address.remote_uid,
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
         UpdateDate: record.updated_date, # Update Quote date time
