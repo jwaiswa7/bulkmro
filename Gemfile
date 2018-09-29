@@ -149,6 +149,13 @@ gem 'omniauth-google-oauth2'
 # Slack real-time requirement
 gem 'async-websocket'
 
+# Elasticsearch
+gem 'chewy'
+
+# Easy group by queries
+gem 'hightop'
+gem 'groupdate'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -1,27 +1,36 @@
 <div class="font-family: Arial; color: #555; font-size: 14.5px;">
-    <p style="color: #555;">Dear <%= @contact.first_name %>,</p>
+  <p style="color: #555;">Dear <%= @contact.first_name %>,</p>
 
-    <p style="color: #555;">Greetings from Bulk MRO!</p>
-    <p style="color: #555;">Please find attached our Quotation # <%= @sales_quote.id %> for your consideration.</p>
-    <p style="color: #555;">If there is any additional information you may require, please feel free to call me at <a href="tel:02249214921">022-4921-4921</a> or email at <a href="mailto:sales@bulkmro.com">sales@bulkmro.com</a> and talk to our expert and friendly Sales Agents.</p>
-    <p style="color: #555;">We look forward to your feedback and valuable purchase order.</p>
-    <p style="color: #555;">Have a nice day!</p>
-    <br/>
-    <p style="color: #555;">Regards,<br><%= @overseer.full_name %></p>
+  <p style="color: #555;">Greetings from Bulk MRO!</p>
+  <p style="color: #555;">Please find attached our Quotation # <%= @sales_quote.id %> for your consideration.</p>
+  <p style="color: #555;">If there is any additional information you may require, please feel free to call me at
+    <a href="tel:02249214921">022-4921-4921</a> or email at <a href="mailto:sales@bulkmro.com">sales@bulkmro.com</a> and
+    talk to our expert and friendly Sales Agents.</p>
+  <p style="color: #555;">We look forward to your feedback and valuable purchase order.</p>
+  <p style="color: #555;">Have a nice day!</p>
+  <br/>
+  <p style="color: #555;">Regards,<br><%= @overseer.full_name %></p>
 </div>
 
-<% if @overseer.designation.present? %><p style="margin:0 0 0;"><span style="font-size:8pt;font-family:Arial"><font color="#000000"><%= @overseer.designation %></font></span> <span style="font-size:8pt;font-family:Arial"><font color="#000000"><br></font></span></p><% end %>
+<% if @overseer.designation.present? %><p style="margin:0 0 0;">
+  <span style="font-size:8pt;font-family:Arial"><font color="#000000"><%= @overseer.designation %></font></span>
+  <span style="font-size:8pt;font-family:Arial"><font color="#000000"><br></font></span></p>
+<% end %>
 
 <div>
   <div>
     <div dir="ltr">
       <div style="font-size:12.8px">
-        <p style="margin:0 0 0"><img class="CToWUd" height="46" src="https://www.bulkmro.com/skin/frontend/base/default/images/emaillogo.jpg" width="420"><br></p>
+        <p style="margin:0 0 0">
+          <img class="CToWUd" height="46" src="https://www.bulkmro.com/skin/frontend/base/default/images/emaillogo.jpg" width="420"><br>
+        </p>
       </div>
     </div>
   </div>
   <div style="font-size:12.8px; color: #555;">
-    <p style="margin:0 0 0;font-size:12.8px"><span style="font-family:Arial;font-size:13.33px"><span style="font-size:8pt"><b>Bulk MRO Industrial Supply Pvt. Ltd.</b></span>&nbsp;<br></span></p><span style="font-size:8pt"><span style="font-size:10.66px"></span></span>
+    <p style="margin:0 0 0;font-size:12.8px">
+      <span style="font-family:Arial;font-size:13.33px"><span style="font-size:8pt"><b>Bulk MRO Industrial Supply Pvt. Ltd.</b></span>&nbsp;<br></span>
+    </p><span style="font-size:8pt"><span style="font-size:10.66px"></span></span>
 
     <p style="margin:0 0 0">
       <span style="font-size:8pt">

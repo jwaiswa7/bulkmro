@@ -7,12 +7,24 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'overseers' do
-    resource :dashboard, :controller => :dashboard
-    resource :profile, :controller => :profile
+    resource :dashboard, :controller => :dashboard do
+      get 'chewy'
+    end
 
+    resources :reports
+
+    resources :activities
+
+    resource :profile, :controller => :profile
     resources :overseers
 
     resources :suppliers do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :contacts do
       collection do
         get 'autocomplete'
       end
@@ -72,6 +84,10 @@ Rails.application.routes.draw do
         get 'export'
       end
 
+      collection do
+        get 'autocomplete'
+      end
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -114,6 +130,10 @@ Rails.application.routes.draw do
     end
 
     resources :companies do
+      collection do
+        get 'autocomplete'
+      end
+
       scope module: 'companies' do
         resources :addresses
         resources :contacts

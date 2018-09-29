@@ -1,7 +1,8 @@
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> Product</h2>
-    <p>This will <em>'<%= submit_text(@product).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+    <p>This will <em>'<%= submit_text(@product).downcase %>'</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
   <%= simple_form_for([:overseers, @product], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -18,7 +19,7 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :tax_code, label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
+        <%= f.association :tax_code, collection: selected_option_or_nil(f,:tax_code), label_method: :to_s, include_blank: "Type to search", input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path } %>
       </div>
       <div class="col-6">
         <%= f.input :best_tax_code, disabled: true %>
@@ -27,13 +28,13 @@
 
     <div class="form-row">
       <div class="col-12 col-md-4">
-        <%= f.association :measurement_unit %>
+        <%= f.association :measurement_unit, include_blank: false, input_html: { class: 'select2-single'} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :brand, :wrapper => :custom_multi_select, include_blank: 'Select a brand' %>
+        <%= f.association :brand, collection: selected_option_or_nil(f,:brand), :wrapper => :custom_multi_select, include_blank: 'Select a brand' , input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path }%>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :category, :wrapper => :custom_multi_select, include_blank: 'Select a category', collection: Category.leaves, label_method: :to_s %>
+        <%= f.association :category, collection: selected_option_or_nil(f,:category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path } %>
       </div>
     </div>
 

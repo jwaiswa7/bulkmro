@@ -40,7 +40,7 @@ module DisplayHelper
   end
 
   def format_enum(val)
-    val.to_s.humanize if val.present?
+    val.to_s.humanize.truncate(17) if val.present?
   end
 
   def day_count(val)
@@ -87,9 +87,15 @@ module DisplayHelper
     ['#', id].join if id.present?
   end
 
-  def format_date(date, format = :long)
+  def format_date(date)
     if date.present?
       date.strftime("%e %b, %Y %H:%M")
+    end
+  end
+
+  def format_date_without_time(date)
+    if date.present?
+      date.strftime("%e %b, %Y")
     end
   end
 
@@ -100,4 +106,6 @@ module DisplayHelper
   def format_int(num)
     num.to_int
   end
+
+
 end

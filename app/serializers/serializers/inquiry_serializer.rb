@@ -1,29 +1,28 @@
 class Serializers::InquirySerializer
   include FastJsonapi::ObjectSerializer
 
-  attributes :id
+  attributes :id, :created_at, :updated_at
 
   attribute :company_name do |inquiry|
     inquiry.company.name
   end
 
+  attribute :created_by do |inquiry|
+    inquiry.created_by.full_name if inquiry.created_by.present?
+  end
+
+  attribute :updated_by do |inquiry|
+    inquiry.updated_by.full_name if inquiry.updated_by.present?
+  end
+
   # has_many :inquiry_products, :inverse_of => :inquiry
   # belongs_to :contact
 
-  # has_one :account, :through => :company
+  has_one :account, :through => :company, serializer: Serializers::AccountSerializer
+  # has_one :final_sales_quote
   # has_many :sales_quotes
   # has_many :sales_orders, :through => :sales_quotes
 
-  # class CompanySerializer < ActiveModel::Serializer
-  #   #to restrict the amount of fields needed
-  #   has_one :industry
-  #   attributes :industry, :name
-  #
-  #   class IndustrySerializer < ActiveModel::Serializer
-  #     #to restrict the amount of fields needed
-  #     attributes :name
-  #   end
-  # end
   #
   # class InquiryProductSerializer < ActiveModel::Serializer
   #   attributes :id, :quantity, :product
