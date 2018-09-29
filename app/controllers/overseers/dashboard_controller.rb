@@ -9,10 +9,12 @@ class Overseers::DashboardController < Overseers::BaseController
 		# InquiryIndex.create!
 		# InquiryIndex.import
 		# InquiriesIndex.reset!
-		ProductsIndex.reset!
+		# ProductsIndex.reset!
 		#
 		# Inquiry.search('asd')
 		#
-		# raise
+		#
+		authorize :dashboard, :show?
+		render json: Serializers::InquirySerializer.new(RandomRecord.for(Inquiry), { include: [:account, :final_sales_quote] }).serialized_json
 	end
 end

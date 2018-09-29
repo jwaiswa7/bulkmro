@@ -2,6 +2,7 @@ class Overseers::ReportsController < Overseers::BaseController
 
   def index
     Report.activity
+    Report.pipeline
     @reports = ApplyDatatableParams.to(Report.all, params)
     authorize @reports
   end
