@@ -7,6 +7,8 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
       t.string :remote_uid, index: true
       t.integer :legacy_request_status
 
+      t.jsonb :legacy_metadata
+
       t.string :order_number
       t.string :sap_series
       t.string :doc_number

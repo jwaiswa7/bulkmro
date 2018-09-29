@@ -14,7 +14,7 @@ id,aliasname,address,sap_id
 14,CourtYard,,143
 15,Kirloskar,,312
 16,"Aastral Industries",,1399
-17,"ABB Global",,
+17,"ABB Global",,1786
 18,Accuramech,,1405
 19,"ACE Tech Packaging",,1411
 20,"ACG Inspection Sys",,153
@@ -2384,3 +2384,6 @@ Bangalore 562123,Land no 080-49489713,",1257
 3459,"Landmark Cars",,1781
 3460,"MS Technosys",,1782
 3461,"Air India",,1783
+3462,Google,,1785
+3463,"GMM Pfaudler",,1784
+3464,"MEP International",,1787

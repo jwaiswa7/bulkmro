@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_27_065924) do
+ActiveRecord::Schema.define(version: 2018_09_28_043235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "accounts", force: :cascade do |t|
     t.integer "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "name"
     t.string "alias"
     t.datetime "created_at", null: false
@@ -52,6 +53,41 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "activities", force: :cascade do |t|
+    t.bigint "inquiry_id"
+    t.bigint "company_id"
+    t.bigint "contact_id"
+    t.integer "legacy_id"
+    t.integer "activity_status"
+    t.jsonb "legacy_metadata"
+    t.string "subject"
+    t.string "reference_number"
+    t.integer "company_type"
+    t.integer "purpose"
+    t.integer "activity_type"
+    t.text "points_discussed"
+    t.text "actions_required"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "created_by_id"
+    t.integer "updated_by_id"
+    t.index ["company_id"], name: "index_activities_on_company_id"
+    t.index ["contact_id"], name: "index_activities_on_contact_id"
+    t.index ["created_by_id"], name: "index_activities_on_created_by_id"
+    t.index ["inquiry_id"], name: "index_activities_on_inquiry_id"
+    t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
+  end
+
+  create_table "activity_overseers", force: :cascade do |t|
+    t.bigint "overseer_id"
+    t.bigint "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_overseers_on_activity_id"
+    t.index ["overseer_id", "activity_id"], name: "index_activity_overseers_on_overseer_id_and_activity_id", unique: true
+    t.index ["overseer_id"], name: "index_activity_overseers_on_overseer_id"
+  end
+
   create_table "address_states", force: :cascade do |t|
     t.integer "legacy_id"
     t.integer "remote_uid"
@@ -59,6 +95,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "name"
     t.string "country_code"
     t.string "region_code"
+    t.jsonb "legacy_metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["legacy_id"], name: "index_address_states_on_legacy_id"
@@ -71,6 +108,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "address_state_id"
     t.bigint "company_id"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.integer "billing_address_uid"
     t.integer "shipping_address_uid"
     t.string "country_code"
@@ -86,12 +124,12 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "excise"
     t.string "telephone"
     t.string "mobile"
+    t.boolean "is_sez", default: false
     t.integer "gst_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.boolean "is_sez"
     t.index ["address_state_id"], name: "index_addresses_on_address_state_id"
     t.index ["billing_address_uid"], name: "index_addresses_on_billing_address_uid"
     t.index ["company_id"], name: "index_addresses_on_company_id"
@@ -118,6 +156,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "brands", force: :cascade do |t|
     t.string "name"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -132,6 +171,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.integer "legacy_id"
     t.integer "parent_id"
     t.integer "remote_uid"
+    t.jsonb "legacy_metadata"
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
@@ -183,6 +223,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "remote_uid"
     t.integer "legacy_id"
     t.integer "attachment_uid"
+    t.jsonb "legacy_metadata"
     t.integer "default_company_contact_id"
     t.integer "default_payment_option_id"
     t.integer "default_billing_address_id"
@@ -194,6 +235,9 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "site"
     t.string "phone"
     t.string "mobile"
+    t.string "legacy_email"
+    t.string "pan"
+    t.string "tan"
     t.integer "company_type"
     t.integer "priority"
     t.integer "nature_of_business"
@@ -207,8 +251,6 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.string "pan"
-    t.string "tan"
     t.index ["account_id"], name: "index_companies_on_account_id"
     t.index ["attachment_uid"], name: "index_companies_on_attachment_uid"
     t.index ["created_by_id"], name: "index_companies_on_created_by_id"
@@ -247,6 +289,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "company_contacts", force: :cascade do |t|
     t.bigint "contact_id"
     t.bigint "company_id"
+    t.jsonb "legacy_metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
@@ -262,6 +305,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "account_id"
     t.integer "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "first_name"
     t.string "last_name"
     t.string "prefix"
@@ -331,6 +375,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "industries", force: :cascade do |t|
     t.integer "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "name"
     t.text "description"
     t.datetime "created_at", null: false
@@ -346,6 +391,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "payment_option_id"
     t.bigint "inquiry_currency_id"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "project_uid"
     t.string "inquiry_number"
     t.string "opportunity_uid"
@@ -365,6 +411,8 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.integer "inside_sales_owner_id"
     t.integer "outside_sales_owner_id"
     t.integer "sales_manager_id"
+    t.integer "bill_from_id"
+    t.integer "ship_from_id"
     t.integer "opportunity_source"
     t.integer "opportunity_type"
     t.integer "status"
@@ -393,8 +441,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.integer "bill_from_id"
-    t.integer "ship_from_id"
+    t.index ["bill_from_id"], name: "index_inquiries_on_bill_from_id"
     t.index ["billing_address_id"], name: "index_inquiries_on_billing_address_id"
     t.index ["company_id"], name: "index_inquiries_on_company_id"
     t.index ["contact_id"], name: "index_inquiries_on_contact_id"
@@ -408,6 +455,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.index ["payment_option_id"], name: "index_inquiries_on_payment_option_id"
     t.index ["project_uid"], name: "index_inquiries_on_project_uid", unique: true
     t.index ["sales_manager_id"], name: "index_inquiries_on_sales_manager_id"
+    t.index ["ship_from_id"], name: "index_inquiries_on_ship_from_id"
     t.index ["shipping_address_id"], name: "index_inquiries_on_shipping_address_id"
     t.index ["updated_by_id"], name: "index_inquiries_on_updated_by_id"
   end
@@ -484,6 +532,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "product_id"
     t.bigint "inquiry_import_id"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.integer "sr_no"
     t.integer "quantity"
     t.string "bp_catalog_name"
@@ -536,6 +585,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.string "first_name"
     t.string "last_name"
     t.string "mobile"
+    t.string "telephone"
     t.string "designation"
     t.string "identifier"
     t.string "department"
@@ -546,8 +596,10 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.integer "center_code_uid"
     t.string "google_oauth2_uid"
     t.jsonb "google_oauth2_metadata"
+    t.jsonb "legacy_metadata"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "smtp_password"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -563,8 +615,6 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.string "telephone"
-    t.string "smtp_password"
     t.string "slack_uid"
     t.index ["created_by_id"], name: "index_overseers_on_created_by_id"
     t.index ["email"], name: "index_overseers_on_email", unique: true
@@ -581,6 +631,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "payment_options", force: :cascade do |t|
     t.integer "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -648,9 +699,12 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "category_id"
     t.bigint "tax_code_id"
     t.bigint "measurement_unit_id"
+    t.string "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.integer "product_type"
     t.boolean "is_verified", default: false
+    t.boolean "is_service", default: false
     t.string "name"
     t.string "sku"
     t.string "description"
@@ -663,7 +717,6 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.integer "updated_by_id"
     t.bigint "inquiry_import_row_id"
     t.string "trashed_sku"
-    t.boolean "is_service", default: false
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["created_by_id"], name: "index_products_on_created_by_id"
@@ -671,6 +724,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.index ["legacy_id"], name: "index_products_on_legacy_id"
     t.index ["measurement_unit_id"], name: "index_products_on_measurement_unit_id"
     t.index ["product_type"], name: "index_products_on_product_type"
+    t.index ["remote_uid"], name: "index_products_on_remote_uid", unique: true
     t.index ["sku"], name: "index_products_on_sku", unique: true
     t.index ["tax_code_id"], name: "index_products_on_tax_code_id"
     t.index ["updated_by_id"], name: "index_products_on_updated_by_id"
@@ -753,19 +807,21 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "sales_quote_id"
     t.integer "parent_id"
     t.integer "legacy_id"
+    t.string "remote_uid"
+    t.integer "legacy_request_status"
+    t.jsonb "legacy_metadata"
+    t.string "order_number"
+    t.string "sap_series"
+    t.string "doc_number"
     t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.string "order_number"
-    t.string "sap_series"
-    t.string "remote_uid"
-    t.string "doc_number"
-    t.integer "legacy_request_status"
     t.index ["created_by_id"], name: "index_sales_orders_on_created_by_id"
     t.index ["legacy_id"], name: "index_sales_orders_on_legacy_id"
     t.index ["parent_id"], name: "index_sales_orders_on_parent_id"
+    t.index ["remote_uid"], name: "index_sales_orders_on_remote_uid"
     t.index ["sales_quote_id"], name: "index_sales_orders_on_sales_quote_id"
     t.index ["updated_by_id"], name: "index_sales_orders_on_updated_by_id"
   end
@@ -789,12 +845,12 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.decimal "converted_unit_selling_price"
     t.decimal "freight_cost_subtotal"
     t.decimal "unit_freight_cost"
+    t.string "legacy_applicable_tax"
+    t.string "legacy_applicable_tax_class"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by_id"
     t.integer "updated_by_id"
-    t.string "legacy_applicable_tax"
-    t.integer "legacy_applicable_tax_class"
     t.index ["created_by_id"], name: "index_sales_quote_rows_on_created_by_id"
     t.index ["inquiry_product_supplier_id"], name: "index_sales_quote_rows_on_inquiry_product_supplier_id"
     t.index ["lead_time_option_id"], name: "index_sales_quote_rows_on_lead_time_option_id"
@@ -825,6 +881,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   create_table "tax_codes", force: :cascade do |t|
     t.integer "remote_uid"
     t.integer "legacy_id"
+    t.jsonb "legacy_metadata"
     t.string "code"
     t.integer "chapter"
     t.string "description"
@@ -852,6 +909,7 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
     t.bigint "address_id"
     t.string "legacy_id"
     t.string "remote_uid"
+    t.jsonb "legacy_metadata"
     t.boolean "is_visible", default: true
     t.string "name"
     t.string "location_uid"
@@ -866,6 +924,13 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
 
   add_foreign_key "accounts", "overseers", column: "created_by_id"
   add_foreign_key "accounts", "overseers", column: "updated_by_id"
+  add_foreign_key "activities", "companies"
+  add_foreign_key "activities", "contacts"
+  add_foreign_key "activities", "inquiries"
+  add_foreign_key "activities", "overseers", column: "created_by_id"
+  add_foreign_key "activities", "overseers", column: "updated_by_id"
+  add_foreign_key "activity_overseers", "activities"
+  add_foreign_key "activity_overseers", "overseers"
   add_foreign_key "addresses", "address_states"
   add_foreign_key "addresses", "companies"
   add_foreign_key "addresses", "overseers", column: "created_by_id"
@@ -909,6 +974,8 @@ ActiveRecord::Schema.define(version: 2018_09_27_065924) do
   add_foreign_key "email_messages", "inquiries"
   add_foreign_key "email_messages", "overseers"
   add_foreign_key "email_messages", "sales_quotes"
+  add_foreign_key "inquiries", "addresses", column: "billing_address_id"
+  add_foreign_key "inquiries", "addresses", column: "shipping_address_id"
   add_foreign_key "inquiries", "companies"
   add_foreign_key "inquiries", "contacts"
   add_foreign_key "inquiries", "inquiry_currencies"

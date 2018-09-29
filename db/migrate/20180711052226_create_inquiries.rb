@@ -8,6 +8,8 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
 
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.string :project_uid, index: { unique: true }
       t.string :inquiry_number, index: { unique: true }
       t.string :opportunity_uid, index: { unique: true }

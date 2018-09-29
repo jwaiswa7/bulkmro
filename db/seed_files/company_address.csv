@@ -786,7 +786,7 @@ Lalru, Dist- Mohali",Mohali,NULL,"Vecumnieku novads",IN,140501,NULL,,NULL,,NULL,
 1908,271,"Pentair Water India Pvt. Ltd.","No GST Number",NULL,"Green Boulevard, B-9/A, 7th Floor
  Tower B, Sector 62",Noida,NULL,Yonne,IN,201301,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 1909,271,"Pentair Water India Pvt. Ltd.","No GST Number",NULL,"Verna Industrial Estate",Verna,NULL,Yonne,IN,403505,NULL,,NULL,,NULL,,NULL,NULL,NULL,"2,3",NULL,NULL
-1910,275,"Prabha Energy Pvt. Ltd.","No GST Number",NULL,"12A, Abhishree Corporate Park, Ambli Rd, Ambli",Ahmedabad,NULL,Seine-Saint-Denis,IN,380058,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
+1910,275,"Prabha Energy Pvt. Ltd.","No GST Number",NULL,"12A & 14, Abhishree Corporate Park, Ambli Bopal Road, Ambli",Ahmedabad,NULL,Seine-Saint-Denis,IN,380058,7574896534,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 1911,272,"Petronet LNG Ltd.","No GST Number",NULL,"Plot No.7/A, GIDC Dahej,
  Taluka-Vagra",Bharuch,NULL,Territoire-de-Belfort,IN,392130,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 1912,273,"PNP Maritime Services Pvt. Ltd.",27AABCP8020D1ZS,NULL,"2nd Floor,Lansdowne House, Mahakavi Bhushan Road, Colaba",Mumbai,NULL,Essonne,IN,400001,9819135672,NULL,NULL,"Non Tin",NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -870,7 +870,7 @@ Lalru, Dist- Mohali",Mohali,NULL,"Vecumnieku novads",IN,140501,NULL,,NULL,,NULL,
 1967,459,"Sicim S.P.A","No GST Number",NULL,"Via Consolatico Superiore, 96/98",Busseto,NULL,"Vaiņodes novads",IT,43011,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 1968,315,"Siddharth Enterprises",27AASFS5529E1ZS,NULL,"H.No 618,Kothari Niwas ,Subhash Chouk ,Shirur",Pune,,Timiş,IN,412210,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 1969,316,"Siddhi Works","No GST Number",NULL,Panvel,Panvel,NULL,Tulcea,IN,410206,NULL,27651154812V,NULL,27651154812V,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
-1970,317,"Sigma Engineers Works",24AYVPP9759Q1ZV,NULL,"A-222, Second Floor, Lilamani Business Center, Opp. Delhi Darwaja, Nr. Brts, Dudheshwar Road",Ahmedabad,,Vaslui,IN,380004,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
+1970,317,"Sigma Engineers Works",24AYVPP9759Q1ZV,NULL,"A-222, Second Floor, Lilamani Business Center, Opp. Delhi Darwaja, Nr. Brts, Dudheshwar Road",Ahmedabad,,Vaslui,IN,380004,990926345,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 1971,318,"GE Power Conversion India Pvt. Ltd.","No GST Number",NULL,"C/O Mr. Bijay Kr. Baruah, Baruah Compound, T.R. Phukan Road, Near Jay Bee Auto Agency, Amolapatty",Dibrugarh,NULL,Vâlcea,IN,786001,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",NULL,NULL
 1972,445,"Siyaram Silk Mills Ltd.",27AAACS6995D1Z2,NULL,"H-3/2, MIDC, A-Road, Tarapur, Boisar, Palghar District",Tarapur,505,"Salas novads",IN,401506,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 1973,319,"Smart Industrial Supplies Trading","No GST Number",NULL,"P.O Box 171 Jubail City 31951 Kingdom Of Saudi Arabia",Jubail,NULL,Vrancea,AE,31951,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -2308,7 +2308,7 @@ Mumbai - Pune Road, Akurdi",Pune,NULL,,IN,411035,NULL,NULL,NULL,NULL,NULL,NULL,N
 6545,1895,"Scigenics India Pvt. Ltd.",NULL,NULL,"Plot No. H-4,5&6, 3rd Cross Street, Nehru Nagar, Perungudi","Chennai ",NULL,,IN,600096,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 6546,1896,"Royal Sundaram General Insurance Co. Ltd.",NULL,NULL,"Vishranthi Melaram Towers, No.2/319, Rajiv Gandhi Salai (OMR), Karapakkam",Chennai,NULL,,IN,600097,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 6547,1897,"Balkrishna Industries Ltd.",NULL,NULL,"SP-923, Phase-3, Rico Industrial Area",Bhiwadi,NULL,,IN,301019,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-6548,1898,"Panasonic India Pvt. Ltd.",NULL,NULL,"12th Floor, Ambience Tower, Ambience Island, NH-8","Gurugram ",NULL,,IN,122002,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+6548,1898,"Panasonic India Pvt. Ltd.","No GST Number",NULL,"12th Floor, Ambience Tower, Ambience Island, NH-8","Gurugram ",NULL,,IN,122002,"95995 56802",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 6549,1696,"DuPont India Pvt. Ltd.","No GST Number",NULL,"DuPont India Private Limited. EP & I & F Facility (Savli-1) Plot. No.11, Savli GIDC Village, Manjusar","Vadodara ",NULL,,IN,391775,-,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 6550,1899,"Colourtex Industries Pvt. Ltd.",NULL,NULL,"Plot No 158/3, Survey No 80, Behind SMC Fire Station, GIDC, Pandesara",Surat,NULL,,IN,394221,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 6551,1900,"L and T Heavy Enginering",NULL,NULL,"International Marketing, Hazira Manufacturing Complex, Surat-Hazira Road",Surat,NULL,,IN,394510,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
@@ -2401,3 +2401,9 @@ Kirol Road Off. L.B.S. Marg, Kurla West","Mumbai ",NULL,,IN,400070,NULL,NULL,NUL
 6640,1941,"MS Technosys",27AAXFM7470R1ZY,NULL,"1058, Dev Kunj, Shukrawar Peth, Near Abhinav Collage",Pune,NULL,,IN,411002,"9689796262 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 6641,1941,"MS Technosys","27AAXFM7470R1ZY ",NULL,"Prabhu Prasad, Sr.No.104, Ganesh Nagar Road, Uruli Dewachi",Pune,NULL,,IN,412308,9689796262,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 6642,1942,"Air India Ltd.",36AACCN6194P2ZP,NULL,"DGM-MMD, Near Gate No.3, MRO Complex, RGI Airport, Shamshabad",Hyderabad,NULL,,IN,500409,"040 23477568",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+6643,1691,"Compass India Support Services Pvt. Ltd.","No GST Number",NULL,"GOOGLE - SIGA Sector - 15, Part - II, Village Silokher, Signature Tower - II, Tower - A",Gurgaon,NULL,,IN,122001,7290082408,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"82,83",1,NULL
+6644,1943,"GMM Pfaudler","27AABCG0563A1Z7 ",NULL,"1001 Peninsula Towers, Peninsula Corporate Park, Ganpatrao Kadam Marg, Lower Parel",Mumbai,NULL,,IN,400013,"022 66503900",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+6645,1944,Google,"No GST Number",NULL,"SIGA Sector - 15, Part - II, Village Silokher, Signature Tower - II, Tower - A",Gurgaon,NULL,,IN,122001,7290082408,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+6646,1008,"Reliance Industries Ltd.","No GST Number",NULL,"No. 89. Dr Radhakrishnan  Salai, Mylapore",Chennai,NULL,,IN,600004,"044 4332 000",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"24,25",1,NULL
+6648,1945,"ABB Global Business Services","No GST Number",NULL,"ABB, 6th Floor, Brigade magnum  Amruthnagar, Byatarayanapura Hebbal",Bengaluru,NULL,,IN,560092,-,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+6649,1946,"MEP International",27ABCFM3190L1Z0,NULL,"Office: 4 & 13,  Ramkrishna Compound, Near Naseman Society, Tilak Nagar, Link Road, Sakinaka, Andheri East",Mumbai,NULL,,IN,400072,"72081 32353",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL

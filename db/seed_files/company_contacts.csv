@@ -204,7 +204,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5770,General,,"Komal ",,Chaudhry,,,8264017272,komal.chaudhry@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2017-11-27 18:34:31","2018-09-11 09:15:31",1,20749
 6537,General,,Bigesh,,Patel,,,9925582392,bigesh.patel@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-01-11 17:49:41","2018-05-29 10:32:49",1,20750
 6963,General,,"Vishnu ",,Agrawal,,02717614812,9890436665,Vishnu.agrawal@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-02-21 09:06:29","2018-07-18 08:57:49",1,20751
-7108,General,,"Sapan ",,Sharma,,,8826981007,sapan.sharma@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-03-31 07:16:21","2018-09-26 06:03:50",1,20752
+7108,General,,"Sapan ",,Sharma,,,8826981007,sapan.sharma@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-03-31 09:16:21","2018-09-27 09:57:28",1,20752
 7425,General,,"Naved Sarosh ",,"Khan Patel ",,,9503062049,navedsarosh.khanpatel@ge.com,Alstom,"Alstom Bharat Forge Power Pvt. Ltd.",,,"2018-04-18 15:46:04","2018-05-29 10:28:57",1,20753
 2469,General,,"Atul ",,Kumar,,,,Atul.KUMAR@eskindia.in,"ESK Telecom","ESK Telecom India",,,"2016-06-24 11:56:18","2016-07-30 11:35:06",1,20754
 2617,General,,"Amjith ",,Narayanan,,,,n.amjith@sud-chemie-india.com,Sud-Chemie,"Sud-Chemie India Pvt. Ltd.",,,"2016-09-06 06:41:39","2016-09-08 12:15:27",1,20755
@@ -399,7 +399,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4013,"Company Top Manager",,"Milind ",,Rade,,,,milind.rade@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-09-20 16:11:29","2018-04-27 13:38:19",1,20947
 5995,Retailer,,"Sirivella Bala ",,Nagaiah,,,,Sirivella.Balanagaiah@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-12-09 01:24:10","2018-09-24 05:53:13",1,20948
 6297,General,,Mandar,,Parab,,,,plsl.purchase@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2017-12-27 13:17:41","2017-12-27 13:17:41",1,20949
-6987,General,,"Pravin ",,Bhelose,,,9623171157,pravin.bhelose@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-02-27 00:44:11","2018-08-02 11:03:06",1,20950
+6987,General,,"Pravin ",,Bhelose,,,9623171157,pravin.bhelose@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-02-27 01:44:11","2018-09-27 11:07:33",1,20950
 7476,General,,Kiran,,Naiksatam,,4442987900,,Ennoreindirect.SCOC@piramal.com,Piramal,"Piramal Enterprises Ltd.",,,"2018-05-05 11:39:20","2018-09-25 07:55:23",1,20951
 5304,General,,Saravanan,,K,,"022 2724 8066",,saravanan.k@bmctpl.com,"Bharat Container","Bharat Mumbai Container Terminals Pvt. Ltd.",,,"2017-11-01 02:59:45","2018-09-14 05:30:34",1,20952
 6119,General,,"Durga ",,Prasad,,,,durga.bhandary@bmctpl.com,"Bharat Container","Bharat Mumbai Container Terminals Pvt. Ltd.",,,"2017-12-12 09:15:32","2017-12-12 09:15:32",1,20953
@@ -774,7 +774,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4871,General,,"Vijay ",,Sahu,,,,purchase@nswindia.com,"NSW India Ltd.","NSW India Ltd.",,,"2017-10-16 18:46:32","2017-10-16 18:46:32",1,21328
 3103,General,,"Sridhar  ",,R,,"020 2553 0540",,sridhar.ramachandran@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-04-10 06:13:10","2018-07-05 12:23:45",1,21329
 3158,"Company Top Manager",,Henkel,,@BulkMRO,,,,henkel@bulkmro.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-04-21 05:57:39","2018-07-05 12:23:45",1,21330
-3212,General,,"Trimurti ",,Maddi,,,,trimurti.maddi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-15 05:38:47","2018-09-24 06:05:11",1,21331
+3212,General,,"Trimurti ",,Maddi,,,,trimurti.maddi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-15 07:38:47","2018-09-27 11:03:30",1,21331
 3245,General,,"Paresh ",,Raiyani,,,,paresh.raiyani@in.henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-22 16:01:51","2018-08-17 07:26:00",1,21332
 3246,General,,"Vishal ","S ",Thonge,,,,vishal.thonge@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-05-22 08:49:23","2018-09-19 14:30:00",1,21333
 3410,General,,"Nishant ",,Tale,,,,nishant.tale@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-07-26 15:14:15","2018-07-05 12:23:43",1,21334
@@ -786,7 +786,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 4362,General,,"Santosh ",,Chavan,,,,santosh.chavan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-09-29 11:55:22","2018-07-05 12:23:42",1,21340
 4419,General,,Ranjithdoss,,R,,"022 3929 6725",,r.ranjithdoss@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-05 10:18:03","2018-07-05 12:23:41",1,21341
 4750,General,,"Shabbir ",,Sethwala,,,,shabbir.sethwala@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-10 10:41:50","2018-07-05 12:23:41",1,21342
-4751,General,,"Shivendra ","N ",Shahi,,,,Shivendranarayan.shahi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-10 20:09:38","2018-08-20 11:22:33",1,21343
+4751,General,,"Shivendra ","N ",Shahi,,,,Shivendranarayan.shahi@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-10 22:09:38","2018-09-28 05:31:31",1,21343
 5164,General,,"Rakesh ",,Patil,,,,rakesh.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-10-24 13:22:09","2018-07-05 12:23:41",1,21344
 5696,General,,"Pournima ",,"Patil ",,,"75065 19837",pournima.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-11-22 05:40:15","2018-09-25 09:51:18",1,21345
 6111,General,,"Bhushan ",,"Chavan ",,,,bhushan.chavan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-11 12:56:17","2018-07-05 12:23:40",1,21346
@@ -794,8 +794,8 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 6127,General,,"Minal ",,Suvarna,,,,minal.suvarna@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-13 06:28:21","2018-07-05 12:23:39",1,21348
 6176,General,,"Ajit kumar",,Prusty,,,,Ajitkumar.prusty@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2017-12-16 10:14:32","2018-07-05 12:23:38",1,21349
 6448,General,,"Aarti ",,Ramteke,,,,aarti.ramteke@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-01-06 07:40:16","2018-08-29 07:35:40",1,21350
-6705,General,,Bhagavandas,,Thekkethil,,"022 6129 6237",,bhagavandas.thekkethil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-01-29 18:03:56","2018-08-01 12:07:21",1,21351
-6756,General,,"Amol ",,Patil,,,"7620395239 / 9607644995",amol.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-01 04:17:19","2018-09-26 07:03:14",1,21352
+6705,General,,Bhagavandas,,Thekkethil,,"022 6129 6237",,bhagavandas.thekkethil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-01-29 20:03:56","2018-09-27 10:27:41",1,21351
+6756,General,,"Amol ",,Patil,,,"7620395239 / 9607644995",amol.patil@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-01 08:17:19","2018-09-27 10:42:18",1,21352
 6853,General,,"Pradip ",,Khade,,,,pradip.khade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-06 12:05:57","2018-07-05 12:23:37",1,21353
 6932,General,,Ganesh,,Tamhanekar,,,9930105625,ganesh.tamhanekar@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-16 11:23:02","2018-07-05 12:23:37",1,21354
 6950,General,,Balkrishna,,Kadam,,,9867656215,balkrishna.kadam@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-02-17 07:56:31","2018-07-05 12:23:37",1,21355
@@ -804,12 +804,12 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7017,General,,Jyoti,,Gawai,,020-39803124,,jyoti.gawai@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-07 11:09:16","2018-07-05 12:23:36",1,21360
 7033,General,,"Dhruva ",,Patel,,022-7130111,9739096510,dhruva.patel@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-09 20:03:17","2018-09-20 12:27:13",1,21361
 7053,General,,Prashant,,Durgule,,,9503821822,prashant.durgule@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-15 06:15:55","2018-07-05 12:23:35",1,21362
-7057,General,,"Saurabh ",,Gorantiwar,,,,saurabh.gorantiwar@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-15 21:43:41","2018-08-17 12:39:12",1,21363
+7057,General,,"Saurabh ",,Gorantiwar,,,,saurabh.gorantiwar@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-15 22:43:41","2018-09-27 12:51:37",1,21363
 7099,General,,"Sushant ",,Naik,,,9930045327,sushant.naik@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-23 17:25:42","2018-07-06 13:36:02",1,21364
 7113,General,,Dinesh,,Borole,,"022 7130 1112",,dinesh.borole@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-28 06:09:52","2018-07-05 12:23:34",1,21365
 7114,General,,"Madhuri ",,Kakade,,,9272203677,Madhuri.Kakade@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-03-28 09:45:27","2018-07-05 12:23:34",1,21366
 7390,General,,"Pravin ",,Mogal,,,9158909056,pravin.mogal@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-04-10 06:35:13","2018-07-05 12:23:34",1,21367
-7400,General,,Ravi,,Nandan,,,7506519823,ravi.nandan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-04-12 12:26:41","2018-08-22 09:07:12",1,21368
+7400,General,,Ravi,,Nandan,,,7506519823,ravi.nandan@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-04-12 13:26:41","2018-09-27 10:11:08",1,21368
 4143,General,,Mr.,,Parveen,,,,paryad@rediffmail.com,"Seven Chemicals","Seven Chemicals Pvt. Ltd.",,,"2017-09-25 11:25:16","2017-09-25 10:55:38",1,21369
 7409,General,,"Vinayak ",,Morab,,,9619563428,vinayak.morab@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-04-13 12:32:15","2018-07-05 12:23:34",1,21370
 7444,General,,"Rajendra ",,Kadam,,,8291091238,rajendra.kadam@henkel.com,Henkel,"Henkel Adhesive Technologies India Pvt. Ltd.",,,"2018-04-21 09:34:37","2018-08-22 13:37:19",1,21371
@@ -2485,7 +2485,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 2064,General,,Vilas,,shejaval,,,,vilas.shejaval@galiakotwala.in,Galiakotwala,"Galiakotwala Engineering Co. Pvt. Ltd.",,,"2016-05-19 21:55:49","2018-04-02 13:17:19",1,23141
 2800,General,Mr.,Aditya,,Sheth,,,,aditya.sheth@galiakotwala.in,Galiakotwala,"Galiakotwala Engineering Co. Pvt. Ltd.",,,"2016-11-22 04:38:11","2018-08-24 06:05:54",1,23142
 3239,General,,Saurabh,,Kaushik,,,,saurabh.kaushik@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-05-19 11:22:31","2018-05-30 11:14:32",1,23143
-3359,General,,Akhilesh,,Dwivedi,,,9654923140,Akhilesh.Dwivedi@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-07-19 05:26:02","2018-09-24 10:18:04",1,23144
+3359,General,,Akhilesh,,Dwivedi,,,9654923140,Akhilesh.Dwivedi@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2017-07-19 06:26:02","2018-09-27 10:23:08",1,23144
 6831,General,,Prajesh,,krishnankutty,,,,prajeesh.krishnankutty@ge.com,GE,"GE Diesel Locomotive Pvt. Ltd.",,,"2018-02-04 19:34:35","2018-05-30 11:14:32",1,23145
 2926,General,,Ferozkhan,,MULLANI,,,,ferozkhan.mullani@ge.com,GE,"GE India Industrial Pvt. Ltd. (GE Energy Connections-SRGI)",,,"2017-01-20 08:33:26","2017-01-20 08:33:26",1,23146
 5168,General,,"Mr Swati",,Khurana,,,,purchase.ho@paramountcable.com,"Paramount Cables","Paramount Cables",,,"2017-10-24 15:42:28","2017-10-24 15:42:28",1,23147
@@ -2705,7 +2705,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7511,General,,Aditya,,Varma,,2228831046,7208833927,adityavarma@littlesilver.in,SSI,"Survival Systems India",,,"2018-05-14 22:19:23","2018-09-24 09:35:10",1,23392
 7512,General,,"Sonu ",,Mehta,,,8377949071,sonu.mehta@compass-group.co.in,"Compass India Support","Compass India Support Services Pvt. Ltd.",,,"2018-05-14 13:51:49","2018-06-13 10:51:31",1,23393
 7513,General,,Amruta,,Kale,,,7447429252,oj499@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-05-14 09:48:37","2018-07-02 07:24:24",1,23394
-7514,General,,"Ravi Mohan",,Tyagi,,0120-6625500,9711202622,Ravimohan.Tyagi@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-14 15:21:56","2018-09-10 12:54:43",1,23396
+7514,General,,"Ravi Mohan",,Tyagi,,0120-6625500,9711202622,Ravimohan.Tyagi@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-14 16:21:56","2018-09-27 10:14:42",1,23396
 7515,General,,"Akshay ",,Anand,,,9033015841,apnatradersank@gmail.com,"Apana Traders","Apana Traders",,,"2018-05-14 09:34:01","2018-05-14 09:34:01",1,23397
 7516,General,,"Juilee V",,Kale,,,9404235184,juilee.kale@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-05-14 13:00:24","2018-05-14 13:00:24",1,23399
 7517,General,,"Mukesh ",,Negi,,,,mukesh.negi@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-05-14 14:07:47","2018-09-11 09:04:43",1,23400
@@ -2758,8 +2758,8 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 1001,General,,Vijayakumar,,Natarajan,,,,vijayakumar.natarajan@cummins.com,Cummins,"Cummins Emission Solutions INC",,,"2016-05-18 21:08:28","2018-08-25 03:09:06",1,23508
 7915,General,,A,,S,,,,Purchase@sbbindia.com,"Shree Brijbehari","Shree Brijbehari Engg Pvt. Ltd.",,,"2018-05-25 07:14:28","2018-05-25 07:14:28",1,23517
 7916,General,,"Mr. Milind",,.,,,8605916160,sales.saiengineers@gmail.com,"Sai Utility & Fire Systems","Sai Utility & Fire Systems (I) Pvt. Ltd.",,,"2018-05-25 08:47:38","2018-05-25 08:47:38",1,23518
-944,General,,Safiul,,Khan,,,,safiul.khan@cummins.com,Cummins,"Cummins India Ltd.",,,"2016-05-18 18:38:28","2018-09-11 13:16:53",1,23519
-944,General,,Safiul,,Khan,,,,safiul.khan@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-05-18 18:38:28","2018-09-11 13:16:53",1,23520
+944,General,,Safiul,,Khan,,,,safiul.khan@cummins.com,Cummins,"Cummins India Ltd.",,,"2016-05-18 19:38:28","2018-09-28 05:31:31",1,23519
+944,General,,Safiul,,Khan,,,,safiul.khan@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2016-05-18 19:38:28","2018-09-28 05:31:31",1,23520
 7107,General,,Dharmendra,,Chauhan,,,9582220665,Dharmendra.chauhan@dhl.com,DHL,"DHL Supply Chain India Pvt. Ltd.",,,"2018-03-27 06:26:33","2018-05-25 12:03:35",1,23534
 3541,General,,"Sunny ",,Zhou,,1800797063,,Procurement_Help_IN@dhl.com,DHL,"DHL Global Business Services",,,"2017-08-23 13:55:49","2018-09-03 06:01:34",1,23538
 3541,General,,"Sunny ",,Zhou,,1800797063,,Procurement_Help_IN@dhl.com,DHL,"DHL Supply Chain India Pvt. Ltd.",,,"2017-08-23 13:55:49","2018-09-03 06:01:34",1,23539
@@ -2767,7 +2767,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7922,General,,Sekar,,Sakthivel,,,9600016828,sakthivel.sekar@sbdinc.com,"Stanley Engineered","Stanley Engineered Fastening India Pvt. Ltd.",,,"2018-05-28 17:21:48","2018-08-29 12:07:09",1,23545
 7923,General,,Roopansh,,Jain,,1149862336,9599600939,roopanshj@ndtv.com,"New Delhi Television","New Delhi Television Ltd",,,"2018-05-29 05:21:39","2018-05-29 05:21:39",1,23549
 7924,General,,Shanawaz,,J,Sr.Engineer/Procurement,,7795737262,Shanawaz.jamadar@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-29 09:40:07","2018-08-17 10:54:04",1,23551
-7925,General,,Ajay,,Kumar,"National Procurement",,7290017891,Ajay.Kumar@compass-group.co.in,"Compass India Support","Compass India Support Services Pvt. Ltd.",,,"2018-05-29 05:44:18","2018-05-29 05:44:18",1,23552
+7925,General,,Ajay,,Kumar,"National Procurement",,7290017891,Ajay.Kumar@compass-group.co.in,"Compass India Support","Compass India Support Services Pvt. Ltd.",,,"2018-05-29 06:14:18","2018-09-27 07:16:40",1,23552
 7927,General,,Nitin,,Shrivastav,,,9575311472,nitin.shrivastav@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2018-05-29 07:35:27","2018-05-31 06:50:19",1,23560
 7928,General,,Brijesh,,Patel,"Test Engineer",,9978262854,brijeshkumar.patel@irco.com,"Tech Engineers","Tech Engineers",,,"2018-05-29 07:36:26","2018-05-29 07:09:22",1,23565
 7928,General,,Brijesh,,Patel,"Test Engineer",,9978262854,brijeshkumar.patel@irco.com,IR,"Ingersoll Rand (India) Ltd.",,,"2018-05-29 07:36:26","2018-05-29 07:09:22",1,23567
@@ -2784,7 +2784,7 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 7940,General,,Rahul,,Verma,,"120 6625500",9717591805,rahul.verma@oerlikon.com,Graziano,"Graziano Trasmissioni India Pvt. Ltd.",,,"2018-05-31 06:29:16","2018-05-31 06:29:16",1,23688
 7941,General,,Tapan,,Parikh,,,9879595875,tapan.parikh@thermotechsystems.com,Thermotech,"Thermotech Systems Ltd.",,,"2018-05-31 10:24:33","2018-05-31 10:09:59",1,23695
 6750,General,,Kuldeep,P,Thopate,,,9130023592,kuldeep.thopate@cummins.com,Cummins,"Cummins India Ltd.",,,"2018-01-30 23:48:03","2018-09-05 11:01:13",1,23697
-7942,General,,Vikas,,Gupta,,,7878251925,vgbag@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-06-01 13:27:17","2018-08-14 11:01:02",1,23702
+7942,General,,Vikas,,Gupta,,,7878251925,vgbag@ghcl.co.in,GHCL,"GHCL Ltd.",,,"2018-06-01 15:57:17","2018-09-28 06:31:13",1,23702
 7943,General,,Vasant,,Chavan,,,9167216307,Vasant.Chavan@gmail.com,TCL,"Tata Communications Ltd.",,,"2018-06-01 12:23:06","2018-06-01 12:09:00",1,23707
 7944,General,,Sachin,,Kalaskar,,,9029059116,Sachin.Kalaskar@gmail.com,TCL,"Tata Communications Ltd.",,,"2018-06-01 12:26:21","2018-06-01 12:10:10",1,23708
 7945,General,,Sanjeev,,.,,,9619893207,sanjeev@gmail.com,Concentrix,"Concentrix Services India Pvt. Ltd.",,,"2018-06-01 12:29:08","2018-06-01 12:11:43",1,23709
@@ -3205,3 +3205,11 @@ entity_id,group,prefix,firstname,middlename,lastname,designation,telephone,mobil
 5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Emission Solutions INC",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,26138
 5804,General,,"Chinmay S ",,Pagare,,,,chinmay.pagare@cummins.com,Cummins,"Cummins Technologies India Pvt. Ltd.",,,"2017-11-29 13:19:56","2018-01-05 08:36:57",1,26139
 8519,General,,"Ragupathy ",,Murugesan,,"040 23477568",,ragupathy.murugesan@airindia.in,"Air India","Air India Ltd.",,,"2018-09-26 09:56:02","2018-09-26 09:56:02",1,26141
+8521,General,,"Jigar ",,Shah,,,"95742 23235",jigar.harivadan-shah@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-09-27 06:56:05","2018-09-27 07:30:34",1,26144
+8522,General,,"Joy ",,"Christian ","Procurement & Contracts Dept.",,7574896534,contracts@prabhaenergy.com,"Prabha Energy","Prabha Energy Pvt. Ltd.",,,"2018-09-27 06:54:34","2018-09-27 06:54:34",1,26146
+8523,General,,"Saurabh ",,"Vankhade ",,"022 6650 3900 ","77388 07628",saurabh.vankhade@gmmpfaudler.com,"GMM Pfaudler","GMM Pfaudler",,,"2018-09-27 07:09:58","2018-09-27 07:09:58",1,26147
+8524,General,,Vikrant,,Kumar,,,"7290082408  ",Vikrantkumar@google.org,Google,Google,,,"2018-09-27 07:39:40","2018-09-27 07:39:40",1,26149
+8525,General,,Mansi,,Singh,,,08792358505,mansi.singh@in.abb.com,"ABB India","ABB Global Industries and Services Pvt. Ltd.",,,"2018-09-27 12:08:22","2018-09-27 12:32:06",1,26156
+8525,General,,Mansi,,Singh,,,08792358505,mansi.singh@in.abb.com,"ABB India","ABB India Ltd.",,,"2018-09-27 12:08:22","2018-09-27 12:32:06",1,26157
+8525,General,,Mansi,,Singh,,,08792358505,mansi.singh@in.abb.com,"ABB Global","ABB Global Business Services",,,"2018-09-27 12:08:22","2018-09-27 12:32:06",1,26158
+8257,General,,Gopala,,Pillai,"Sr. Executive – Procurement / Vendor Development & MRO",,"95995 56802",gopala.pillai@in.panasonic.com,Panasonic,"Panasonic India Pvt. Ltd.",,,"2018-08-08 16:43:31","2018-09-27 11:20:07",1,26159

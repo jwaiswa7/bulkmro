@@ -6,6 +6,8 @@ class CreateAddresses < ActiveRecord::Migration[5.2]
 
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.integer :billing_address_uid, index: true
       t.integer :shipping_address_uid, index: true
 

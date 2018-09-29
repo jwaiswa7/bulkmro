@@ -8,6 +8,8 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.integer :legacy_id, index: true
       t.integer :attachment_uid, index: true
 
+      t.jsonb :legacy_metadata
+
       t.integer :default_company_contact_id, index: true
       t.integer :default_payment_option_id, index: true
       t.integer :default_billing_address_id, index: true
@@ -20,6 +22,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :site
       t.string :phone
       t.string :mobile
+      t.string :legacy_email
 
       t.string :pan
       t.string :tan

@@ -7,6 +7,8 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
 
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.integer :sr_no
       t.integer :quantity
       t.string :bp_catalog_name, index: true

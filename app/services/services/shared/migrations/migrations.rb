@@ -8,6 +8,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
 
     # perform_migration(:overseers)
+    # perform_migration(:smtp_conf)
     # perform_migration(:measurement_unit)
     # perform_migration(:lead_time_option)
     # perform_migration(:currencies)
@@ -17,19 +18,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     # perform_migration(:accounts_acting_as_customers)
     # perform_migration(:contacts)
     # perform_migration(:companies_acting_as_customers)
-    # perform_migration(:company_contacts)
+    # perform_migration(:companies_payment_terms)
     # perform_migration(:addresses)
     # perform_migration(:accounts_acting_as_suppliers)
     # perform_migration(:companies_acting_as_suppliers)
     # perform_migration(:supplier_contacts)
     # perform_migration(:supplier_addresses)
+    # perform_migration(:warehouse)
     # perform_migration(:brands)
-    # perform_migration(:tax_codes)
-    # perform_migration(:categories)
-    # perform_migration(:products)
-    perform_migration(:inquiries)
-    perform_migration(:inquiry_details)
-    perform_migration(:sales_order_drafts)
+    perform_migration(:tax_codes)
+    perform_migration(:categories)
+    perform_migration(:products)
+    # perform_migration(:inquiries)
+    # perform_migration(:inquiry_terms)
+    # perform_migration(:activity)
+    # perform_migration(:inquiry_details)
+    # perform_migration(:sales_order_drafts)
+
 
   end
 
@@ -74,9 +79,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               geography: x.get_column('geography'),
               salesperson_uid: x.get_column('sap_internal_code'),
               employee_uid: x.get_column('employee_id'),
+              center_code_uid: x.get_column('user_id'),
+              legacy_id: x.get_column('user_id'),
               # center_code_uid: x.get_column('center_code'),
               password: 'abc123',
-              password_confirmation: 'abc123'
+              password_confirmation: 'abc123',
+              legacy_metadata: x.get_row()
           )
         end
       rescue => error
@@ -86,6 +94,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     generate_csv(errors, "overseers")
   end
 
+  def smtp_conf
+    service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
+    service.loop(limit) do |x|
+      overseer = Overseer.find_by_email(x.get_column('email'))
+      overseer.update_attributes(:smtp_password => x.get_column('password')) if overseer.present?
+    end
+  end
 
   def measurement_unit
     MeasurementUnit.create!([
@@ -95,6 +110,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                                {name: 'KG'},
                                {name: 'M'},
                                {name: 'FT'},
+                               {name: 'Pack'},
                                {name: 'Pair'},
                                {name: 'PR'},
                                {name: 'BOX'},
@@ -122,9 +138,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                                {name: 'BOTTEL'},
                                {name: 'CUBIC METER'},
                                {name: 'PC'},
+                               {name: 'GRAM'},
+                               {name: 'EACH'},
+                               {name: 'FOOT'},
+                               {name: 'Dozen'},
+                               {name: 'INCH'},
+                               {name: 'Ream'},
+                               {name: 'Bag'},
+                               {name: 'Unit'},
+                               {name: 'MT'},
+                               {name: 'KIT'},
+                               {name: 'SQ INCH'},
+                               {name: 'CASE'}
                            ])
   end
-
 
   def lead_time_option
     LeadTimeOption.create!([
@@ -141,12 +168,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                                {name: "4-6 WEEKS", min_days: 28, max_days: 42},
                                {name: "6-8 WEEKS", min_days: 42, max_days: 56},
                                {name: "8 WEEKS", min_days: 56, max_days: 56},
+                               {name: "20 WEEKS", min_days: 140, max_days: 140},
+                               {name: "24 WEEKS", min_days: 168, max_days: 168},
                                {name: "6-10 WEEKS", min_days: 42, max_days: 70},
                                {name: "10-12 WEEKS", min_days: 70, max_days: 84},
                                {name: "12-14 WEEKS", min_days: 84, max_days: 98},
                                {name: "14-16 WEEKS", min_days: 98, max_days: 112},
                                {name: "MORE THAN 14 WEEKS", min_days: 98, max_days: nil},
-                               {name: "60 days from the date of order for 175MT, and 60 days for remaining from the date of call", min_days: 60, max_days: 120}
+                               {name: "MORE THAN 12 WEEKS", min_days: 84, max_days: nil},
+                               {name: "MORE THAN 6 WEEKS", min_days: 42, max_days: nil},
+                               {name: "60 days from the date of order for 175MT, and 60 days for remaining from the date of call", min_days: 60, max_days: 120},
+                               {name: "In Stock", min_days: 0, max_days: 0},
+                               {name: "Refer T&C", min_days: 0, max_days: 0}
                            ])
   end
 
@@ -172,6 +205,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 region_code_uid: x.get_column('sap_code'),
                 remote_uid: x.get_column('gst_state_code') == 'NULL' ? nil : x.get_column('gst_state_code'),
                 legacy_id: x.get_column('region_id'),
+                legacy_metadata: x.get_row()
             )
           end
         end
@@ -192,7 +226,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
             payment_option.assign_attributes(
                 remote_uid: (group_code.blank? || group_code == 0 || group_code == '0') ? nil : group_code,
-                legacy_id: x.get_column('id')
+                legacy_id: x.get_column('id'),
+                legacy_metadata: x.get_row()
             )
           end
         end
@@ -212,7 +247,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             remote_uid: x.get_column('industry_sap_id'),
             name: x.get_column('industry_name'),
             description: x.get_column('industry_description'),
-            legacy_id: x.get_column('idindustry')
+            legacy_id: x.get_column('idindustry'),
+            legacy_metadata: x.get_row()
         )
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('industry_sap_id')}")
@@ -236,6 +272,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           accounts.remote_uid = remote_uid
           accounts.name = account_name
           accounts.alias = account_name.titlecase.split.map(&:first).join
+          accounts.legacy_metadata = x.get_row()
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('sap_id')}")
@@ -250,7 +287,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     fake_contact = Contact.create!(account: fake_account, remote_uid: 99999999, email: "fake@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: 'abc123', password_confirmation: 'abc123')
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
     is_active = [20, 10]
-    contact_group = {"General" => 10, "Company Top Manager" => 20, "retailer" => 30, "ador" => 40, "vmi_group" => 50, "C-Form customer GROUP" => 60, "Manager" => 70}
+    contact_group = {"General" => 10, "Company Top Manager" => 20, "Retailer" => 30, "Ador" => 40, "Vmi_group" => 50, "C-Form customer GROUP" => 60, "Manager" => 70}
 
     service.loop(limit) do |x|
       if x.get_column('aliasname').present?
@@ -274,7 +311,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               contact_group: contact_group[x.get_column('group')],
               password: 'abc123',
               password_confirmation: 'abc123',
-              legacy_id: x.get_column('entity_id')
+              legacy_id: x.get_column('entity_id'),
+              legacy_metadata: x.get_row()
           )
         end
       rescue => error
@@ -312,13 +350,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           inside_email = Overseer.find_by_email(x.get_column('inside_sales_email'))
           outside_email = Overseer.find_by_email(x.get_column('outside_sales_email'))
           manager_email = Overseer.find_by_email(x.get_column('manager_email'))
-          payment_option = PaymentOption.find_by_name(x.get_column('default_payment_term'))
+          payment_option = PaymentOption.find_by_name(x.get_column('payment_term'))
           industry = Industry.find_by_name(x.get_column('cmp_industry'))
 
           company.assign_attributes(
               account: account,
               industry: industry.present? ? industry : nil,
               remote_uid: x.get_column('cmp_id'),
+              legacy_email: (x.get_column('cmp_email').downcase if x.get_column('cmp_emil').present?),
               default_payment_option_id: payment_option.present? ? payment_option.id : nil,
               # default_billing_address_id: company.account.addresses.find_by_id(x.get_column('default_billing')),
               # default_shipping_address_id: company.account.addresses.find_by_id(x.get_column('default_shipping')),
@@ -337,12 +376,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               attachment_uid: x.get_column('attachment_entry'),
               legacy_id: x.get_column('cmp_id'),
               pan: ( x.get_column('cmp_pan') if x.get_column('cmp_pan') != 'NULL' ),
-              tan: ( x.get_column('cmp_tan') if x.get_column('cmp_tan') != 'NULL' )
+              tan: ( x.get_column('cmp_tan') if x.get_column('cmp_tan') != 'NULL' ),
+              legacy_metadata: x.get_row()
           )
-
-
           company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email').strip.downcase))) if x.get_column('email').present?
-
           end
         end
       rescue => error
@@ -352,6 +389,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     generate_csv(errors, "companies_acting_as_customers")
   end
 
+  def companies_payment_terms
+    service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
+    service.loop(limit) do |x|
+      if (x.get_column('cmp_name') != nil)
+        payment_option = PaymentOption.find_by_name(x.get_column('payment_term'))
+        company = Company.find_by_name(x.get_column('cmp_name'))
+        company.default_payment_option_id = ( payment_option.present? ? payment_option.id : nil )
+        company.save!
+      end
+    end
+  end
+
   def company_contacts
     errors = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
@@ -359,11 +408,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       begin
         if x.get_column('email').present? && x.get_column('cmp_name').present?
           company_name = x.get_column('cmp_name')
+          company = Company.find_by_name(company_name)
 
-          CompanyContact.find_or_create_by(
+          company_contact = CompanyContact.find_or_create_by(
               company: Company.find_by_name(company_name),
-              contact: Contact.find_by_email(x.get_column('email').strip.downcase)
+              contact: Contact.find_by_email(x.get_column('email').strip.downcase),
+              legacy_metadata: x.get_row()
           )
+
+          if (company.legacy_metadata["default_contact"] == x.get_column('entity_id'))
+            company.default_company_contact = company_contact
+            company.save!
+          end
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('email')}")
@@ -396,32 +452,43 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         if company.present?
 
-        address = Address.new(
-            company: company,
-            name: company.name,
-            gst: x.get_column('gst_num'),
-            country_code: x.get_column('country'),
-            state: AddressState.find_by_name(x.get_column('state_name')),
-            state_name: x.get_column('country') != "IN" ? x.get_column('state_name') : nil,
-            city_name: x.get_column('city'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('address'),
-            #street2:x.get_column('gst_num'),
-            cst: x.get_column('cst_num'),
-            vat: x.get_column('vat_num'),
-            excise: x.get_column('ed_num'),
-            telephone: x.get_column('telephone'),
-            #mobile:x.get_column('gst_num'),
-            gst_type: gst_type[x.get_column('gst_type')],
-            legacy_id: x.get_column('idcompany_gstinfo')
-        )
+          address = Address.new(
+              company: company,
+              name: company.name,
+              gst: x.get_column('gst_num'),
+              country_code: x.get_column('country'),
+              state: AddressState.find_by_name(x.get_column('state_name')),
+              state_name: x.get_column('country') != "IN" ? x.get_column('state_name') : nil,
+              city_name: x.get_column('city'),
+              pincode: x.get_column('pincode'),
+              street1: x.get_column('address'),
+              #street2:x.get_column('gst_num'),
+              cst: x.get_column('cst_num'),
+              vat: x.get_column('vat_num'),
+              excise: x.get_column('ed_num'),
+              telephone: x.get_column('telephone'),
+              #mobile:x.get_column('gst_num'),
+              gst_type: gst_type[x.get_column('gst_type').to_i],
+              legacy_id: x.get_column('idcompany_gstinfo'),
+              legacy_metadata: x.get_row()
+          )
 
-        address.assign_attributes(
-            billing_address_uid: x.get_column('sap_row_num').split(',')[0],
-            shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-        ) if x.get_column('sap_row_num').present?
+          address.assign_attributes(
+              billing_address_uid: x.get_column('sap_row_num').split(',')[0],
+              shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
+          ) if x.get_column('sap_row_num').present?
 
-        address.save!
+          address.save!
+
+          if (company.legacy_metadata["default_billing"] == x.get_column('idcompany_gstinfo'))
+            company.default_billing_address = address
+          end
+
+          if (company.legacy_metadata["default_shipping"] == x.get_column('idcompany_gstinfo'))
+            company.default_shipping_address = address
+          end
+
+          company.save!
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('cmp_id')}")
@@ -454,9 +521,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         account = Account.find_by_remote_uid(101) #Trade
       end
 
+      company = Company.find_by_name(x.get_column('sup_name'))
+      name = x.get_column('sup_name')
+      if company.present?
+        company.name = "#{company.name} (Customer)"
+        company.save!
+        name = "#{name} (Supplier)"
+      end
+
       return if account.blank?
 
-      company_type = {"Proprietorship" => 10, "Private Limited" => 20, "Contractor" => 30, "Trust" => 40, "Public Limited" => 50, "dealer_company" => 50, "distributor" => 60, "trader" => 70, "manufacturer_company" => 80, "wholesaler_stockist" => 90, "serviceprovider" => 100, "employee" => 110}
+      company_type = {"proprietorship" => 10, "Private Limited" => 20, "contractor" => 30, "trust" => 40, "Public Limited" => 50, "dealer" => 50, "distributor" => 60, "trader" => 70, "manufacturer" => 80, "wholesaler/stockist" => 90, "serviceprovider" => 100, "employee" => 110}
 
       is_msme = {"N" => false, "Y" => true}
       urd = {"N" => false, "Y" => true}
@@ -471,29 +546,31 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         #industry = Industry.find_by_name(x.get_column('cmp_industry'))
         company.assign_attributes(
             account: account,
-            name: x.get_column('sup_name'),
-            default_payment_option_id: payment_option.present? ? payment_option.id : nil,
-            inside_sales_owner_id: inside_email.present? ? inside_email.id : nil,
-            outside_sales_owner_id: outside_email.present? ? outside_email.id : nil,
-            sales_manager_id: manager_email.present? ? manager_email.id : nil,
+            name: name,
+            default_payment_option_id: (payment_option.present? ? payment_option.id : nil),
+            inside_sales_owner_id: (inside_email.present? ? inside_email.id : nil),
+            outside_sales_owner_id: (outside_email.present? ? outside_email.id : nil),
+            sales_manager_id: (manager_email.present? ? manager_email.id : nil),
             site: x.get_column('cmp_website'),
-            company_type: company_type[x.get_column('sup_type')],
-            credit_limit: x.get_column('creditlimit').present? && x.get_column('creditlimit').to_i > 0 ? x.get_column('creditlimit') : 1,
+            company_type: (company_type[x.get_column('sup_type').split(",").first] if x.get_column('sup_type') != nil),
+            credit_limit: (x.get_column('creditlimit').present? && x.get_column('creditlimit').to_i > 0 ? x.get_column('creditlimit') : 1),
             is_msme: is_msme[x.get_column('msme')],
             is_unregistered_dealer: urd[x.get_column('urd')],
             tax_identifier: x.get_column('cmp_gst'),
             is_supplier: true,
+            is_customer: false,
             legacy_id: x.get_column('sup_id'),
             pan: ( x.get_column('cmp_pan') if x.get_column('sup_pan') != 'NULL' ),
+            legacy_metadata: x.get_row()
             #tan: ( x.get_column('cmp_tan') if x.get_column('cmp_tan') != 'NULL' )
-          #phone: x.get_column('sup_tel'),
-          #mobile: x.get_column('sup_mob'),
-          #remote_attachment_id: x.get_column('attachment_entry')
-          # default_billing_address_id: company.account.addresses.find_by_id(x.get_column('default_billing')),
-          # default_shipping_address_id: company.account.addresses.find_by_id(x.get_column('default_shipping')),
-          #industry: industry.present? ? industry : nil
-          #priority: priority[x.get_column('is_strategic').to_i],
-          #nature_of_business: nature_of_business[x.get_column('nature_of_business')]
+            #phone: x.get_column('sup_tel'),
+            #mobile: x.get_column('sup_mob'),
+            #remote_attachment_id: x.get_column('attachment_entry')
+            # default_billing_address_id: company.account.addresses.find_by_id(x.get_column('default_billing')),
+            # default_shipping_address_id: company.account.addresses.find_by_id(x.get_column('default_shipping')),
+            #industry: industry.present? ? industry : nil
+            #priority: priority[x.get_column('is_strategic').to_i],
+            #nature_of_business: nature_of_business[x.get_column('nature_of_business')]
         )
         end
       rescue => error
@@ -516,26 +593,35 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       begin
+        if x.get_column('pc_email').present? && x.get_column('sup_name').present?
+           sup_contact = Contact.where(email: x.get_column('pc_email').strip.downcase).first_or_create! do |contact|
+              contact.assign_attributes(
+                  account: account,
+                  remote_uid: (x.get_column('sap_id') == "NULL" ? nil : x.get_column('sap_id')),
+                  first_name: x.get_column('pc_firstname') || 'fname',
+                  last_name: x.get_column('pc_lastname') || 'lname',
+                  prefix: x.get_column('prefix'),
+                  designation: x.get_column('pc_function'),
+                  telephone: x.get_column('pc_phone'),
+                  mobile: x.get_column('pc_mobile'),
+                  #role: x.get_column('account'),
+                  status: 10,
+                  #contact_group: contact_group[x.get_column('group')],
+                  password: 'abc123',
+                  password_confirmation: 'abc123',
+                  legacy_id: x.get_column('pc_num'),
+                  legacy_metadata: x.get_row()
+              )
+           end
 
-        if x.get_column('pc_email').present?
-          Contact.where(email: x.get_column('pc_email').strip.downcase).first_or_create! do |contact|
-            contact.assign_attributes(
-                account: account,
-                remote_uid: (x.get_column('sap_id') == "NULL" ? nil : x.get_column('sap_id')),
-                first_name: x.get_column('pc_firstname') || 'fname',
-                last_name: x.get_column('pc_lastname') || 'lname',
-                prefix: x.get_column('prefix'),
-                designation: x.get_column('pc_function'),
-                telephone: x.get_column('pc_phone'),
-                mobile: x.get_column('pc_mobile'),
-                #role: x.get_column('account'),
-                status: 10,
-                #contact_group: contact_group[x.get_column('group')],
-                password: 'abc123',
-                password_confirmation: 'abc123',
-                legacy_id: x.get_column('pc_num')
-            )
-          end
+           company = Company.find_by_name(x.get_column('sup_name'))
+
+           company_contact = CompanyContact.find_or_create_by(
+               company: company,
+               contact: sup_contact,
+               legacy_metadata: x.get_row()
+           )
+
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('pc_email')}")
@@ -560,7 +646,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               gst: x.get_column('gst_num'),
               country_code: x.get_column('country'),
               state: AddressState.find_by_name(x.get_column('state_name')),
-              state_name: x.get_column('country') != "IN" ? x.get_column('state_name') : nil,
+              state_name: (x.get_column('country') != "IN" ? x.get_column('state_name') : nil),
               city_name: x.get_column('city'),
               pincode: x.get_column('pincode'),
               street1: x.get_column('address'),
@@ -570,8 +656,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               excise: ( x.get_column('ed_num') if (x.get_column('ed_num') != 'NULL' && x.get_column('ed_num') != nil)),
               telephone: x.get_column('telephone'),
               #mobile:x.get_column('gst_num'),
-              gst_type: gst_type[x.get_column('gst_type')],
-              legacy_id: x.get_column('address_id')
+              gst_type: gst_type[x.get_column('gst_type').to_i],
+              legacy_id: x.get_column('address_id'),
+              legacy_metadata: x.get_row()
           )
 
           address.assign_attributes(
@@ -580,12 +667,47 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ) if x.get_column('sap_row_num').present?
 
           address.save!
+
+          if (company.legacy_metadata["default_billing"] == x.get_column('address_id'))
+            company.default_billing_address = address
+          end
+
+          if (company.legacy_metadata["default_shipping"] == x.get_column('address_id'))
+            company.default_shipping_address = address
+          end
+
+          company.save!
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('address_id')}")
       end
     end
     generate_csv(errors, "supplier_address")
+  end
+
+  def warehouse
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+    service.loop(200) do |x|
+      Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create do |warehouse|
+        warehouse.assign_attributes(
+            :remote_uid => x.get_column('Warehouse Code'),
+            :legacy_id => x.get_column('Warehouse Code'),
+            :location_uid => x.get_column('Location'),
+            :remote_branch_name => x.get_column('Warehouse Name'),
+            :remote_branch_code => x.get_column('Business Place ID'),
+            :legacy_metadata => x.get_row()
+            )
+
+        warehouse.build_address(
+            :street1 => x.get_column('Street'),
+            :street2 => x.get_column('Block'),
+            :pincode => x.get_column('Zip Code'),
+            :city_name => x.get_column('City'),
+            :country_code => x.get_column('Country'),
+            :state => AddressState.find_by_region_code(x.get_column('State'))
+        )
+      end
+    end
   end
 
   def brands
@@ -595,6 +717,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       begin
         Brand.where(name: x.get_column('value')).first_or_create! do |brand|
           brand.legacy_id = x.get_column('option_id')
+          brand.legacy_metadata = x.get_row()
         end
       rescue => error
         errors.push("#{error.inspect} - #{x.get_column('option_id')}")
@@ -611,12 +734,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         # puts "#{x.get_column('idbmro_sap_hsn_mapping')}"
         # puts "#{x.get_column('hsn')}"
         if (x.get_column('chapter') != "NULL" && x.get_column('tax_code') != nil)
-          TaxCode.where(chapter: x.get_column('chapter')).first_or_create!(
+          TaxCode.where(legacy_id: x.get_column('idbmro_sap_hsn_mapping')).first_or_create!(
+              chapter: x.get_column('chapter'),
               remote_uid: x.get_column('internal_key'),
               code: ( (x.get_column('hsn') == "NULL") || (x.get_column('hsn') == nil) ? x.get_column('chapter') : x.get_column('hsn').gsub('.', '') ),
               description: x.get_column('description'),
               is_service: x.get_column('is_service') == 'NULL' ? false : true,
-              tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f
+              tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f,
+              legacy_metadata: x.get_row()
           )
         end
       rescue => error
@@ -636,12 +761,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code')) if (x.get_column('hsn_code').present?)
           parent = Category.find_by_remote_uid(x.get_column('parent_id')) if (x.get_column('parent_id') != "2" && x.get_column('parent_id') != nil)
           Category.create!(
-              remote_uid: x.get_column('id'),
+              remote_uid: (x.get_column('sap_code') if x.get_column('sap_code') != 0),
               tax_code_id: (tax_code.present? ? tax_code.id : TaxCode.default.id),
               parent_id: (parent.present? ? parent.id : nil),
               name: x.get_column('name'),
               description: x.get_column('description'),
-              legacy_id: x.get_column('id')
+              legacy_id: x.get_column('id'),
+              legacy_metadata: x.get_row()
           )
         end
       rescue => error
@@ -657,7 +783,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       begin
         # puts "#{x.get_column('entity_id')}"
-        brand = Brand.find_by_name(x.get_column('product_brand'))
+        brand = Brand.find_by_legacy_id(x.get_column('product_brand'))
+        uom = MeasurementUnit.find_by_name(x.get_column('uom_name'))
         product = Product.create!(
             name: x.get_column('name'),
             brand: (brand if (brand.present?)),
@@ -667,7 +794,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             meta_description: x.get_column('meta_description'),
             meta_keyword: x.get_column('meta_keyword'),
             meta_title: x.get_column('meta_title'),
-            legacy_id: x.get_column('entity_id')
+            legacy_id: x.get_column('entity_id'),
+            remote_uid: (x.get_column('sku') if (x.get_column('sap_created') == true)) ,
+            measurement_unit_id: ( uom.id if (uom.present?)),
+            legacy_metadata: x.get_row()
         )
 
         overseer = Overseer.find_by_email('ashwin.goyal@bulkmro.com')
@@ -685,8 +815,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     fake_company = Company.find_by_name("Fake Company")
 
     opportunity_type = { "amazon" => 10, "rate_contract" => 20, "financing" => 30, "regular" => 40, "service" => 50, "repeat" => 60, "route_through" => 70, "tender" => 80 }
-    opportunity_source = { "meeting" => 10, "phone_call" => 20, "email" => 30, "quote_tender_prep" => 40 }
     quote_category = { "bmro" => 10, "ong" => 20 }
+    opportunity_source = { 1 => 10, 2 => 20, 3 => 30, 4 => 40 }
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv')
     service.loop(limit) do |x|
@@ -723,9 +853,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             company: company,
             contact: contact,
             status: x.get_column('bought').to_i,
-            opportunity_type: ( opportunity_type[x.get_column('quote_type').gsub(" ", "_")] if x.get_column('quote_type').present? ),
+            opportunity_type: ( opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present? ),
             potential_amount: x.get_column('potential_amount'),
-            opportunity_source: ( opportunity_source[x.get_column('opportunity_source').downcase] if x.get_column('opportunity_source').present?),
+            opportunity_source: ( opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?),
             subject: x.get_column('caption'),
             gross_profit_percentage: x.get_column('grossprofitp'),
             inside_sales_owner: Overseer.find_by_username(x.get_column('manager')),
@@ -734,8 +864,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             quote_category: ( quote_category[x.get_column('category').downcase] if x.get_column('category').present? ),
             billing_address: ( company.addresses.find_by_legacy_id(x.get_column('billing_address')).present? ? company.addresses.find_by_legacy_id(x.get_column('billing_address')) : company.addresses.first ),
             shipping_address: ( company.addresses.find_by_legacy_id(x.get_column('shipping_address')).present? ? company.addresses.find_by_legacy_id(x.get_column('shipping_address')) : company.addresses.first ),
-            #billing_address: company.addresses.find_by_,
-            created_at: x.get_column('created_time').to_datetime,
+            created_at: ( x.get_column('created_time').to_datetime if x.get_column('created_time').present? ),
             opportunity_uid: x.get_column('op_code'),
             customer_po_number: x.get_column('customer_po_id'),
             customer_po_sheet: x.get_column('additional_pdf1'),
@@ -744,14 +873,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             supplier_quote_attachment: x.get_column('supplier_quote_attachment'),
             supplier_quote_attachment_additional: x.get_column('final_sup_quote_attachment'),
             shipping_company: Company.find_by_remote_uid(x.get_column('customer_shipping_company')),
-            #bill_from_warehouse: x.get_column('warehouse'),
-            #ship_from_warehouse: x.get_column('ship_from_warehouse'),
-            bill_to_name: Contact.find_by_legacy_id(x.get_column('billing_name')),
-            #billing_address_id: x.get_column('billing_address'),
-            #shipping_address_id: x.get_column('shipping_address'),
-            #inside_sales_owner_id: x.get_column('manager'),
-            #outside_sales_owner_id: x.get_column('outside'),
-            sales_manager_id: x.get_column('powermanager'),
+            bill_from: Warehouse.find_by_legacy_id( x.get_column('warehouse') ),
+            ship_from: Warehouse.find_by_legacy_id( x.get_column('ship_from_warehouse') ),
+            bill_to_name: ((company.contacts.where('first_name LIKE ? AND last_name LIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present?),
             attachment_uid: x.get_column('attachment_entry'),
             legacy_id: x.get_column('quotation_id'),
             priority: x.get_column('is_prioritized'),
@@ -765,24 +889,45 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             procurement_date: x.get_column('procurement_date'),
             is_sez: x.get_column('sez'),
             is_kit: x.get_column('is_kit'),
-
-            #stage: x.get_column('increment_id'),
-            # freight_option: x.get_column('increment_id'),
-            # project_uid: x.get_column('increment_id'),
-            # payment_option: x.get_column('increment_id'),
-            # packing_and_forwarding_option: x.get_column('increment_id'),
-            # price_type: x.get_column('increment_id'),
             weight_in_kgs: x.get_column('weight'),
-            # commercial_terms_and_conditions: x.get_column('increment_id'),
+            legacy_metadata: x.get_row()
         )
-
-        inquiry.assign_attributes( inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_name(x.get_column('currency'))))
+        # inquiry.assign_attributes( inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_name(x.get_column('currency'))))
+        puts "<------------------------------#{inquiry}------------------------------------------->"
       rescue => error
+        puts "#{error.inspect}"
         errors.push("#{error.inspect} - #{x.get_column('increment_id')}")
       end
     end
-
     generate_csv(errors, "inquiries")
+  end
+
+  def inquiry_terms
+    errors = []
+
+    price = { "CIF" => 30, "CIP Mumbai Airport" => 80, "DAP" => 50, "DD" => 90, "Door Delivery" => 60, "EXW" => 10, "FCA Mumbai" => 70, "FOB" => 20, "CFR" => 40 }
+    freight = { "Extra as per Actual" => 20, "Included" => 10 }
+    packing_and_forwarding_option = { "Included" => 10, "Not Included" => 20 }
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
+    service.loop(limit) do |x|
+      begin
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+        if inquiry.present?
+          inquiry.assign_attributes(
+              price_type: price[x.get_column('Price')],
+              freight_option: freight[x.get_column('Freight')],
+              commercial_terms_and_conditions: x.get_column('Commercial Terms & Conditions'),
+              payment_option: PaymentOption.find_by_name(x.get_column('Payment Terms')),
+              packing_and_forwarding_option: packing_and_forwarding_option[x.get_column('Packing and Forwarding')]
+          )
+          inquiry.save!
+        end
+      rescue => error
+        errors.push("#{error.inspect} - #{x.get_column('inquiry_number')}")
+      end
+    end
+    generate_csv(errors, "inquiry_terms")
   end
 
   def inquiry_details
@@ -814,11 +959,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 inquiry: inquiry,
                 product: product,
                 sr_no: x.get_column('order'),
-                quantity: x.get_column('qty'),
+                quantity: (x.get_column('qty')),
                 bp_catalog_name: x.get_column('caption'),
-                bp_catalog_sku:  ( x.get_column('bpcat') if x.get_column('bpcat') != 'NULL' )
+                bp_catalog_sku:  ( x.get_column('bpcat') if x.get_column('bpcat') != 'NULL' ),
+                legacy_metadata: x.get_row()
             )
-            if ( x.get_column('sup_code') != 'NULL' )
+            if ( x.get_column('sup_code') != 'NULL' && x.get_column('sup_code') != nil )
               supplier = Company.where(remote_uid: x.get_column('sup_code'), is_supplier: true).first
               inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.create!(
                   supplier: supplier,
@@ -854,17 +1000,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def sales_order_drafts
     errors = []
-    legacy_request_status = { 'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+    legacy_request_status = { "requested" => 10, "SAP Approval Pending" => 20, "rejected" => 30, "SAP Rejected" => 40, "Cancelled" => 50, "approved" => 60, "Order Deleted" => 70}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')
     service.loop(limit) do |x|
       begin
         inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-        if ( inquiry.present? && x.get_column('order_number').present? )
-
+        if ( inquiry.present? )
+          puts "<------------------------------>"
           requested_by = Overseer.find_by_legacy_id(x.get_column('requested_by'))
           requested_by = requested_by.present? ? requested_by : Overseer.find_by_email('ashwin.goyal@bulkmro.com')
-
           sales_quote = inquiry.sales_quotes.last
 
           sales_order = sales_quote.sales_orders.build(
@@ -874,7 +1019,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               sap_series: x.get_column('sap_series'),
               remote_uid: x.get_column('remote_uid'),
               doc_number: x.get_column('doc_num'),
-              legacy_request_status: legacy_request_status[x.get_column('request_status')]
+              legacy_request_status: legacy_request_status[x.get_column('request_status')],
+              legacy_metadata: x.get_row()
           )
 
           product_skus = x.get_column('skus')
@@ -899,7 +1045,49 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         errors.push("#{error.inspect} - #{x.get_column('inquiry_number')}")
       end
     end
-
     generate_csv(errors, "sales_order_drafts")
   end
+
+  def activity
+    errors = []
+    company_type = { "is_supplier" => 10, "is_customer" => 20 }
+    purpose = { "First Meeting/Intro Meeting" => 10, "Follow up" => 20, "Negotiation" => 30, "Closure" => 40, "Others" => 50 }
+    activity_type = { "Meeting" => 10, "Phone call" => 20, "Email" => 30, "Quote/Tender Prep" => 40, "Tender preparation" => 50 }
+    activity_status = { "Approved" => 10, "Pending Approval" => 20, "Rejected" => 30 }
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv')
+    service.loop(limit) do |x|
+      begin
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+        contact = Contact.find_by_legacy_id(x.get_column('company_contact_lagacy'))
+        company = nil
+        if contact.present?
+          company = contact.companies.first
+        end
+        activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
+          activity.assign_attributes(
+              inquiry: inquiry,
+              company: company,
+              contact: contact,
+              subject: x.get_column('subject'),
+              company_type: company_type[( company.present? ? ( company.is_supplier ? "is_supplier" : "is_customer" ) : nil )],
+              purpose: purpose[x.get_column('purpose')],
+              activity_type: activity_type[x.get_column('activity')],
+              activity_status: activity_status[x.get_column('activitystatus')],
+              points_discussed: x.get_column('comment'),
+              actions_required: x.get_column('actionrequired'),
+              reference_number: x.get_column('refno'),
+              created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
+              legacy_metadata: x.get_row()
+          )
+        end
+        ActivityOverseer.create!(activity: activity, overseer: Overseer.find_by_legacy_id(x.get_column('overseer_legacy_id'))) if ( x.get_column('overseer_legacy_id') != 'NULL' )
+      rescue => error
+        puts "#{error.inspect}"
+        errors.push("#{error.inspect} - #{x.get_column('legacy_id')}")
+      end
+    end
+    generate_csv(errors, "activities")
+  end
+
 end

@@ -30,6 +30,10 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     current_row[name].strip if current_row[name].present? && current_row[name] != 'NULL'
   end
 
+  def get_row()
+    current_row
+  end
+
   def get_underscored(name)
     val = get_column(name)
     val.parameterize.underscore.to_sym if val.present?

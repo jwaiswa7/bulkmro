@@ -5,6 +5,8 @@ class CreateIndustries < ActiveRecord::Migration[5.2]
       t.integer :remote_uid, index: {unique: true}
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.string :name, index: {unique: true}
       t.text :description
 

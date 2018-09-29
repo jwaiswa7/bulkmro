@@ -20,7 +20,7 @@ class SalesQuoteRow < ApplicationRecord
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
-  validates_numericality_of :quantity, :greater_than_or_equal_to => 1
+  # validates_numericality_of :quantity, :greater_than_or_equal_to => 1
   validates_numericality_of :unit_selling_price, :greater_than => 0
   validates_numericality_of :converted_unit_selling_price, :greater_than => 0
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity

@@ -2,7 +2,7 @@ class Inquiry < ApplicationRecord
   COMMENTS_CLASS = 'InquiryComment'
 
   include Mixins::CanBeStamped
-  include Mixins::HasAddresses
+  #include Mixins::HasAddresses
   include Mixins::CanBeSynced
   include Mixins::HasManagers
   include Mixins::HasComments
@@ -110,7 +110,9 @@ class Inquiry < ApplicationRecord
     :dap => 50,
     :door_delivery => 60,
     :fca_mumbai => 70,
-    :cip => 80
+    :cip => 80,
+    :dd => 90,
+    :cip_mumbai_airport => 100
   }
 
   enum freight_option: {
@@ -152,8 +154,8 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
-  validates_presence_of :billing_address
-  validates_presence_of :shipping_address
+  #validates_presence_of :billing_address
+  #validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
   def every_product_is_only_added_once?
@@ -201,6 +203,8 @@ class Inquiry < ApplicationRecord
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
+      self.bill_from ||= Warehouse.default
+      self.ship_from ||= Warehouse.default
     end
 
     self.is_sez ||= false

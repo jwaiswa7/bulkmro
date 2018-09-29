@@ -5,6 +5,8 @@ class CreateWarehouses < ActiveRecord::Migration[5.2]
       t.string :legacy_id, index: true
       t.string :remote_uid, index: true
 
+      t.jsonb :legacy_metadata
+
       t.boolean :is_visible, default: true
 
       t.string :name

@@ -5,6 +5,8 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
       t.integer :remote_uid, index: { :unique => true }
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.string :first_name
       t.string :last_name
       t.string :prefix

@@ -5,7 +5,11 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.references :category, foreign_key: true
       t.references :tax_code, foreign_key: true
       t.references :measurement_unit, foreign_key: true
+
+      t.string :remote_uid, index: {unique: true}
       t.integer :legacy_id, index: true
+
+      t.jsonb :legacy_metadata
 
       t.integer :product_type, index: true
       t.boolean :is_verified, default: false

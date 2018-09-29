@@ -4,6 +4,8 @@ class CreateTaxCodes < ActiveRecord::Migration[5.2]
       t.integer :remote_uid, index: true
       t.integer :legacy_id, index: true
 
+      t.jsonb :legacy_metadata
+
       t.string :code, index: true
       t.integer :chapter
       t.string :description, index: true

@@ -9,6 +9,9 @@ class CreateAddressStates < ActiveRecord::Migration[5.2]
       t.string :name, index: { unique: true }
       t.string :country_code
       t.string :region_code
+
+      t.jsonb :legacy_metadata
+
       t.timestamps
     end
   end

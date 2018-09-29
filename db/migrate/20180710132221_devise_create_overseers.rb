@@ -26,6 +26,7 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
 
       t.string :google_oauth2_uid
       t.jsonb :google_oauth2_metadata
+      t.jsonb :legacy_metadata
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""

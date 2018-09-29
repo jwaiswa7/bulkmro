@@ -6,6 +6,8 @@ class CreateCategories < ActiveRecord::Migration[5.2]
       t.integer :parent_id, index: true
       t.integer :remote_uid, index: true
 
+      t.jsonb :legacy_metadata
+
       t.string :name
       t.string :description
 
