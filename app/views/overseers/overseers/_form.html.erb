@@ -15,22 +15,39 @@
     <% end %>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-3 col-md-2">
+        <%= f.input :identifier %>
+      </div>
+      <div class="col-4 col-md-5">
         <%= f.input :first_name %>
       </div>
-      <div class="col-6">
+      <div class="col-5 col-md-5">
         <%= f.input :last_name %>
       </div>
     </div>
 
     <%= f.input :email, :required => true %>
 
-    <%= f.input :mobile %>
-    <%= f.input :telephone %>
-    <%= f.input :identifier %>
-    <%= f.input :designation %>
-    <%= f.input :department %>
-    <%= f.input :geography %>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :mobile %>
+      </div>
+      <div class="col-6">
+        <%= f.input :telephone %></div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :department %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :designation %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :geography %>
+      </div>
+    </div>
+
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>

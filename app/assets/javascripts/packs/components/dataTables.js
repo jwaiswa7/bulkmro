@@ -50,6 +50,10 @@ let setup = () => {
             serverSide: isAjax,
             processing: true,
             stateSave: false,
+            fixedHeader: {
+                header: true,
+                headerOffset: $('.navbar.navbar-expand-lg').height()
+            },
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
