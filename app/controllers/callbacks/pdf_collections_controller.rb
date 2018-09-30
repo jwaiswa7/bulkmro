@@ -15,7 +15,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-    render  pdf: 'invoice #{@invoice[:increment_id].to_s}',
+      render  pdf: 'invoice #{@invoice[:increment_id].to_s}',
             # show_as_html: true,
             template: 'callbacks/pdf_collections/invoice',
             layout: 'overseers/layouts/pdf.html.erb',
@@ -39,7 +39,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-    render  pdf: 'shipment #{@shipment[:increment_id].to_s}',
+      render  pdf: 'shipment #{@shipment[:increment_id].to_s}',
             # show_as_html: true,
             template: 'callbacks/pdf_collections/shipment',
             layout: 'overseers/layouts/pdf.html.erb',
@@ -74,7 +74,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-    render  pdf: 'shipment #{@po[:increment_id].to_s}',
+      render  pdf: 'po #{@po[:increment_id].to_s}',
             # show_as_html: true,
             template: 'callbacks/pdf_collections/po',
             layout: 'overseers/layouts/pdf.html.erb',
