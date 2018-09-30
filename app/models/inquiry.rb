@@ -7,7 +7,6 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-
   update_index('inquiries#inquiry') { self }
   pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
@@ -33,8 +32,11 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
+  has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
   has_many :sales_orders, :through => :sales_quotes
+  has_many :sales_order_rows, :through => :sales_orders
+  has_many :final_sales_orders, -> { where.not(:sent_at => nil).latest }, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: false
   has_many :email_messages
 
@@ -123,7 +125,9 @@ class Inquiry < ApplicationRecord
     :not_added => 20
   }
 
-  def commercial_status; end
+  def commercial_status
+    :open
+  end
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
 
@@ -190,7 +194,7 @@ class Inquiry < ApplicationRecord
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner
       self.sales_manager ||= self.sales_manager
-      self.status ||= :active
+      self.status ||= :'Lead by O/S'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :meeting
       self.quote_category ||= :bmro
@@ -198,7 +202,7 @@ class Inquiry < ApplicationRecord
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
       self.expected_closing_date ||= (Time.now + 60.days)
-
+      self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
@@ -234,7 +238,10 @@ class Inquiry < ApplicationRecord
   end
 
   def to_s
-    self.company.name
+    [
+        ['#', self.id].join,
+        self.company.name
+    ].join(' ')
   end
 
 end

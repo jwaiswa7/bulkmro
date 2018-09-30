@@ -1,21 +1,34 @@
 en:
   simple_form:
     placeholders:
+      overseer:
+        first_name: 'First name'
+        last_name: 'Last name'
+        mobile: 'e.g. 9987480784'
+        telephone: 'e.g. 02240236090'
+        designation: 'e.g. Inside Sales Executive'
+        department: 'e.g. Inside Sales'
+        geography: 'e.g. Mumbai'
+
+      activity:
+        points_discussed: 'Points discussed in the meeting/call/over email'
+        actions_required: 'Actions required on behalf of BulkMRO'
+        subject: 'Subject for the activity'
       inquiry:
-        bp_catalog_name: 'Business Partner Catalog Name'
+        bp_catalog_name: 'Business partner catalog name'
         subject: 'e.g. Drill machine'
         commercial_terms_and_conditions: 'e.g. 1. Cost does not include any additional certification if required as per Indian regulations'
         comments: 'e.g. Sales Order Amended'
       inquiry_products:
         sr_no: 'Serial Number'
-        bp_catalog_name: 'BP Catalog Name'
-        bp_catalog_sku: 'BP Catalog #'
+        bp_catalog_name: 'BP catalog name'
+        bp_catalog_sku: 'BP catalog #'
       inquiry_product_suppliers:
-        bp_catalog_name: 'BP Catalog Name'
-        bp_catalog_sku: 'BP Catalog #'
-        unit_cost_price: 'Unit Cost Price'
-        lowest_unit_cost_price: 'Lowest Unit Cost Price'
-        latest_unit_cost_price: 'Latest Unit Cost Price'
+        bp_catalog_name: 'BP catalog name'
+        bp_catalog_sku: 'BP catalog #'
+        unit_cost_price: 'Unit cost price'
+        lowest_unit_cost_price: 'Lowest unit cost price'
+        latest_unit_cost_price: 'Latest unit cost price'
       company:
         name: 'e.g. Reliance Life Sciences'
         site: 'e.g. reliance.com'

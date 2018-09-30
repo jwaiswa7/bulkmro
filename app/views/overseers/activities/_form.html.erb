@@ -1,0 +1,45 @@
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> Activity</h2>
+    <p>This will <em>'<%= submit_text(@activity).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+  <%= simple_form_for([:overseers, @activity], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path }, include_blank: 'Leave blank if no inquiry connected' %>
+    <%= f.association :company, collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
+    <%= f.association :contact, collection: selected_option_or_nil(f, :contact),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
+
+    <%= f.input :subject %>
+
+    <div class="form-row">
+      <div class="col-6 col-md-4">
+        <%= f.input :company_type, as: :select, collection: enum_to_collection(Activity.company_types) %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :activity_type, as: :select, collection: enum_to_collection(Activity.activity_types) %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :purpose, as: :select, collection: enum_to_collection(Activity.purposes) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="select2-wrapper">
+        <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id] }, input_html: { :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select other overseers'} %>
+      </div>
+    </div>
+
+    <%= f.input :points_discussed %>
+    <%= f.input :actions_required %>
+
+    <% if action_name.capitalize == "New" %>
+      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+        <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
+      <% end %>
+    <% else %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+        <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

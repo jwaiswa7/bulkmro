@@ -4,17 +4,9 @@
       <%= render 'shared/snippets/form_errors', f: f %>
 
       <div class="card">
-        <div class="card-header">
-          <div class="form-group mb-0">
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Update Suppliers
-            <% end %>
-          </div>
-        </div>
         <div class="card-body">
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
-
 
             <h6 class="text-uppercase">
               <strong><%= inquiry_product.object.product.name %></strong>
@@ -23,12 +15,12 @@
               <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
                 <%= inquiry_product_supplier.hidden_field :id %>
                 <div class="form-row">
-                  <div class="col-md-3">
+                  <div class="col-12 col-md-3">
                     <%= inquiry_product_supplier.association :supplier, collection: selected_option_or_nil(inquiry_product_supplier, :supplier), include_blank: "Type to search", label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Supplier' : false, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path, :'data-inquiry-product-supplier-id' => inquiry_product_supplier.object.id, :'data-product-id' => inquiry_product.object.product.id} %></div>
-                  <div class="col-md-2">
+                  <div class="col-6 col-md-2">
                     <%= inquiry_product_supplier.input :bp_catalog_name, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP Catalog Name" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_name) %>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-6 col-md-2">
                     <%= inquiry_product_supplier.input :bp_catalog_sku, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "BP SKU" : false, placeholder: placeholder_for(inquiry_product_supplier, :bp_catalog_sku) %>
                   </div>
                   <div class="col-md-5">

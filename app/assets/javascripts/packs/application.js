@@ -10,6 +10,7 @@ import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
+import chartjs from "./components/chartjs";
 
 // Namespacing all imports under app
 let app = {};
@@ -26,6 +27,7 @@ app.initializeComponents = () => {
     parselyValidations();
     dataTables();
     tinyHtmlEditor();
+    chartjs();
 };
 
 // Turbolinks load event

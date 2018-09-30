@@ -38,4 +38,8 @@ class InquiryImport < ApplicationRecord
   def set_defaults
     self.import_type ||= :excel
   end
+
+  def to_s
+    'InquiryImport'
+  end
 end

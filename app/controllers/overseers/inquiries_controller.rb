@@ -7,13 +7,23 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Inquiries::Finder.new(params)
+        service = Services::Overseers::Finders::Inquiries.new(params)
         service.call
 
-        @indexed_inquiries = service.indexed_inquiries
-        @inquiries = service.inquiries
+        @indexed_inquiries = service.indexed_records
+        @inquiries = service.records
       end
     end
+  end
+
+  def autocomplete
+    service = Services::Overseers::Finders::Inquiries.new(params)
+    service.call
+
+    @indexed_inquiries = service.indexed_records
+    @inquiries = service.records
+
+    authorize @inquiries
   end
 
   def show

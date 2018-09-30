@@ -10,7 +10,8 @@ class Product < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
 
-  pg_search_scope :locate_any, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
+  update_index('products#product') { self if self.approved? }
+  pg_search_scope :locate_any, :against => [:sku, :name], :agssociated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand, required: false
@@ -42,6 +43,8 @@ class Product < ApplicationRecord
   # End ignore
 
   enum product_type: { item: 10, service: 20 }
+
+  scope :with_includes, -> { includes(:brand, :approval) }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?

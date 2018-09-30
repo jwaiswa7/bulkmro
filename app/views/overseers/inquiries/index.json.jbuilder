@@ -19,4 +19,6 @@ end
 
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
+# json.recordsTotal @inquiries.model.all.count
+# json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
