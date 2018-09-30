@@ -152,9 +152,9 @@ gem 'async-websocket'
 # Elasticsearch
 gem 'chewy'
 
-# SCP for SAP
-gem 'net-scp'
-
+# Easy group by queries
+gem 'hightop'
+gem 'groupdate'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

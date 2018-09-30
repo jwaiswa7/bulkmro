@@ -58,4 +58,12 @@ module ShortcutsHelper
       end
     end
   end
+
+  def get_entry(entries, *attributes)
+    if entries[attributes[0]].present? && entries[attributes[0]][attributes[1]].present?
+      entries[attributes[0]][attributes[1]]
+    else
+      0
+    end
+  end
 end
