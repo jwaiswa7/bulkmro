@@ -58,6 +58,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
       format.pdf do
         render  pdf: 'show',
                 template: 'overseers/inquiries/sales_quotes/show.pdf.erb',
+                layout: 'overseers/layouts/pdf.html.erb',
                 footer: {center: '[page] of [topage]'}
       end
     end
