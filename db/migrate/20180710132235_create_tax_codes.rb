@@ -11,6 +11,7 @@ class CreateTaxCodes < ActiveRecord::Migration[5.2]
       t.boolean :is_service, default: false
       t.decimal :tax_percentage
 
+      t.jsonb :legacy_metadata
       t.timestamps
     end
   end

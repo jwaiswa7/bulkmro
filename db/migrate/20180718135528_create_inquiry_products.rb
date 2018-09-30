@@ -4,7 +4,6 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
       t.references :inquiry, foreign_key: true
       t.references :product, foreign_key: true
       t.references :inquiry_import, foreign_key: true, on_delete: :nullify
-
       t.integer :legacy_id, index: true
 
       t.integer :sr_no
@@ -12,6 +11,7 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
       t.string :bp_catalog_name, index: true
       t.string :bp_catalog_sku, index: true
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

@@ -9,6 +9,7 @@ class CreateCategories < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :description
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

@@ -106,4 +106,8 @@ class Company < ApplicationRecord
 
     s.join(' ')
   end
+
+  def self.legacy
+    seld.find_by_name('Legacy Company')
+  end
 end

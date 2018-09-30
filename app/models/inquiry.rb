@@ -2,7 +2,7 @@ class Inquiry < ApplicationRecord
   COMMENTS_CLASS = 'InquiryComment'
 
   include Mixins::CanBeStamped
-  include Mixins::HasAddresses
+  #include Mixins::HasAddresses
   include Mixins::CanBeSynced
   include Mixins::HasManagers
   include Mixins::HasComments
@@ -16,7 +16,6 @@ class Inquiry < ApplicationRecord
   belongs_to :contact
   belongs_to :company
   has_one :account, :through => :company
-  belongs_to :shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :shipping_company_id, required: false
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
@@ -34,11 +33,15 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
+  has_one :sales_quote, -> { latest }
   has_many :sales_orders, :through => :sales_quotes
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> { where.not(:sent_at => nil).latest }, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: false
   has_many :email_messages
+
+  belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
+  belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -112,7 +115,9 @@ class Inquiry < ApplicationRecord
     :dap => 50,
     :door_delivery => 60,
     :fca_mumbai => 70,
-    :cip => 80
+    :cip => 80,
+    :dd => 90,
+    :cip_mumbai_airport => 100
   }
 
   enum freight_option: {
@@ -158,8 +163,8 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
-  validates_presence_of :billing_address
-  validates_presence_of :shipping_address
+  #validates_presence_of :billing_address
+  #validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
   def every_product_is_only_added_once?
@@ -207,6 +212,8 @@ class Inquiry < ApplicationRecord
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
+      self.bill_from ||= Warehouse.default
+      self.ship_from ||= Warehouse.default
     end
 
     self.is_sez ||= false

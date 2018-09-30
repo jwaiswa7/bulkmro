@@ -31,4 +31,8 @@ class Overseers::DashboardController < Overseers::BaseController
     #
     #
   end
+
+  def migrations
+    Services::Shared::Migrations::Migrations.new
+  end
 end

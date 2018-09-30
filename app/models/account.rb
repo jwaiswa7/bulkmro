@@ -15,4 +15,16 @@ class Account < ApplicationRecord
   has_many :contacts
   has_many :inquiries, :through => :companies
   has_many :addresses, :through => :companies
+
+  def self.legacy
+    find_by_name('Legacy Account')
+  end
+
+  def self.trade
+    find_by_name('Trade')
+  end
+
+  def self.non_trade
+    find_by_name('Non-Trade')
+  end
 end

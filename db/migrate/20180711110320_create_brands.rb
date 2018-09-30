@@ -4,6 +4,7 @@ class CreateBrands < ActiveRecord::Migration[5.2]
       t.string :name, index: { :unique => true }
       t.integer :legacy_id
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

@@ -25,13 +25,22 @@ class Activity < ApplicationRecord
   }
 
   enum activity_type: {
-      :'meeting' => 10,
-      :'phone_call' => 20,
-      :'email' => 30,
-      :'quote_tender_prep' => 40
+      :'Meeting' => 10,
+      :'Phone call' => 20,
+      :'Email' => 30,
+      :'Quote/Tender Prep' => 40,
+      :'Tender preparation' => 50
   }
 
-  scope :not_meeting, -> { where.not(activity_type: activity_types[:meeting]) }
+  enum activity_status: {
+      :'Approved' => 10,
+      :'Pending Approval' => 20,
+      :'Rejected' => 30
+  }
+
+  scope :not_meeting, -> { where.not(activity_type: activity_types[:'Meeting']) }
+  scope :meeting, -> { where(activity_type: activity_types[:'Meeting']) }
+
 
   validates_presence_of :company_type
   validates_presence_of :purpose
@@ -41,7 +50,7 @@ class Activity < ApplicationRecord
   def set_defaults
     self.company_type ||= :is_customer
     self.purpose ||= :'First Meeting/Intro Meeting'
-    self.activity_type ||= :'meeting'
+    self.activity_type ||= :'Meeting'
   end
 
   def activity_company

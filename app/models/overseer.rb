@@ -60,4 +60,8 @@ class Overseer < ApplicationRecord
   def cannot_send_emails?
     !can_send_emails?
   end
+
+  def self.default
+    find_by_email('ashwin.goyal@bulkmro.com')
+  end
 end

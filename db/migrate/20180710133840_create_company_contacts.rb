@@ -4,6 +4,7 @@ class CreateCompanyContacts < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.references :company, foreign_key: true
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

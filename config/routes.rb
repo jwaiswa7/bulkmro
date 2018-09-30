@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
+      get 'migrations'
     end
 
     resources :reports

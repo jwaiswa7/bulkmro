@@ -41,4 +41,8 @@ class Contact < ApplicationRecord
       self.account ||= self.company.account
     end
   end
+
+  def self.legacy
+    find_by_email('legacy@bulkmro.com')
+  end
 end
