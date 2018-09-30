@@ -19,6 +19,7 @@ class Services::Overseers::SaveAndSync < Services::Shared::BaseService
       Resources::SalesPerson.update(overseer.salesperson_uid, overseer)
     else
       overseer.salesperson_uid = Resources::SalesPerson.create(overseer)
+      overseer.save
     end
   end
 

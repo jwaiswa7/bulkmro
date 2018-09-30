@@ -35,6 +35,8 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize @company
 
     if @company.save
+
+      @company.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
     else
       render :new
