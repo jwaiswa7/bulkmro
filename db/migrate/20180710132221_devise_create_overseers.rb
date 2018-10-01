@@ -17,8 +17,11 @@ class DeviseCreateOverseers < ActiveRecord::Migration[5.2]
       t.string :telephone
       t.string :designation
       t.string :identifier
-      t.integer :department
-      t.integer :geography
+      t.string :department
+      t.string :function
+      t.string :geography
+
+      t.integer :status, index: true
 
       t.integer :role, index: true
 

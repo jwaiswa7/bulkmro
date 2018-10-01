@@ -108,6 +108,6 @@ class Company < ApplicationRecord
   end
 
   def self.legacy
-    seld.find_by_name('Legacy Company')
+    self.find_by_name('Legacy Company')
   end
 end

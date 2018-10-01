@@ -1,10 +1,11 @@
 require 'csv'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-  attr_accessor :limit
+  attr_accessor :limit, :secondary_limit
 
   def initialize
-    @limit = nil
+    @limit = 50
+    @secondary_limit = nil
 
     methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
@@ -17,39 +18,74 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     Overseer.where(:email => 'ashwin.goyal@bulkmro.com').first_or_create! do |overseer|
       overseer.first_name = 'Ashwin'
       overseer.last_name = 'Goyal'
+      overseer.role = :admin
       overseer.username = 'ashwin.goyal'
       overseer.password = 'abc123'
       overseer.password_confirmation = 'abc123'
     end
 
+    roles_mapping = {
+        'Administrators' => :admin,
+        'Logistics' => :sales,
+        'Sales Executive' => :sales,
+        'Data Entry' => :sales,
+        'accounts' => :sales,
+        'Admin With Edit Invoice' => :sales,
+        'Sales Support' => :sales,
+        'SalesExport' => :sales,
+        'sales_supplier' => :sales,
+        'Sales Manager' => :sales_manager,
+        'HR' => :sales,
+        'Creative' => :sales,
+        'saleswithaccounts' => :sales,
+        'salesSupplierNew' => :sales,
+        'Sales Executive with target report' => :sales,
+        'God' => :admin,
+        'NULL' => :sales
+    }
+
+    status_mapping = {
+        '1' => :active,
+        '0' => :inactive
+    }
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('admin_users.csv')
-    service.loop(limit) do |x|
+    service.loop(secondary_limit) do |x|
       Overseer.where(email: x.get_column('email').strip.downcase).first_or_create! do |overseer|
         password = Devise.friendly_token
         overseer.assign_attributes(
+            parent: Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]),
             first_name: x.get_column('firstname'),
             last_name: x.get_column('lastname'),
+            role: roles_mapping[x.get_column('role_name')],
+            function: x.get_column('user_function'),
+            department: x.get_column('user_department'),
+            status: status_mapping[x.get_column('is_active')],
             username: x.get_column('username'),
             mobile: x.get_column('mobile'),
             designation: x.get_column('designation'),
             identifier: x.get_column('identifier'),
-            geography: x.get_column('geography'),
+            geography: x.get_column('user_geography'),
             salesperson_uid: x.get_column('sap_internal_code'),
             employee_uid: x.get_column('employee_id'),
             center_code_uid: x.get_column('user_id'),
             legacy_id: x.get_column('user_id'),
-            # center_code_uid: x.get_column('center_code'),
             password: password,
             password_confirmation: password,
             legacy_metadata: x.get_row
         )
       end
     end
+
+    service.loop(secondary_limit) do |x|
+      Overseer.find_by_email(x.get_column('email', downcase: true)).update_attributes(:parent => Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]))
+    end
   end
 
   def overseers_smtp_config
+    raise
     service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
-    service.loop(limit) do |x|
+    service.loop(secondary_limit) do |x|
       overseer = Overseer.find_by_email!(x.get_column('email'))
       overseer.update_attributes(:smtp_password => x.get_column('password')) if overseer.present?
     end
@@ -62,7 +98,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def lead_time_option
-    LeadTimeOption.create!([
+    lead_time_options = LeadTimeOption.create!([
                                {name: "2-3 DAYS", min_days: 2, max_days: 3},
                                {name: "1 WEEK", min_days: 7, max_days: 7},
                                {name: "8-10 DAYS", min_days: 8, max_days: 10},
@@ -101,7 +137,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def states
     service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
-    service.loop(limit) do |x|
+    service.loop(secondary_limit) do |x|
       AddressState.where(name: x.get_column('default_name').strip).first_or_create! do |state|
         state.assign_attributes(
             country_code: x.get_column('country_id'),
@@ -117,7 +153,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def payment_options
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
-    service.loop(limit) do |x|
+    service.loop(secondary_limit) do |x|
       if x.get_column('value').present? && x.get_column('group_code').present?
         PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
           payment_option.assign_attributes(
@@ -132,7 +168,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def industries
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
-    service.loop(limit) do |x|
+    service.loop(secondary_limit) do |x|
       Industry.create!(
           remote_uid: x.get_column('industry_sap_id'),
           name: x.get_column('industry_name'),
@@ -171,7 +207,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service.loop(limit) do |x|
       if x.get_column('aliasname').present?
-        account = Account.find_by_name(x.get_column('aliasname'))
+        account = Account.find_by_name!(x.get_column('aliasname'))
       else
         account = fake_account
       end

@@ -11,16 +11,19 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
   def loop(limit = nil)
     CSV.foreach(file, :headers => true) do |row|
       set_current_row(row.to_h)
-      begin
+
+      # begin
         yield self
-      rescue => error
-        errors.push("#{error.inspect} - #{row.to_h}")
-      end
+      # rescue => error
+      #   errors.push("#{error.inspect} - #{row.to_h}")
+      # end
 
       break if limit.present? && $..to_i > limit
     end
 
     errors_to_csv if log_errors
+
+    file
   end
 
   def set_files(name)
@@ -60,8 +63,8 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
   end
 
   def errors_to_csv
-    CSV.open(errors_file, 'w', write_headers: true, headers: ['Error']) do |f|
-      f << error
+    CSV.open(errors_file, 'w', write_headers: true, headers: ['Errors']) do |f|
+      f << errors
     end
   end
 

@@ -9,7 +9,8 @@ en:
         designation: 'e.g. Inside Sales Executive'
         department: 'e.g. Inside Sales'
         geography: 'e.g. Mumbai'
-
+        identifier: 'e.g. Inside'
+        function: 'e.g. Sales'
       activity:
         points_discussed: 'Points discussed in the meeting/call/over email'
         actions_required: 'Actions required on behalf of BulkMRO'

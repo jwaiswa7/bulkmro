@@ -16,6 +16,7 @@ class Overseer < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
   enum role: { admin: 10, sales: 20, sales_manager: 30 }
+  enum status: { active: 10, inactive: 20 }
 
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
@@ -24,6 +25,7 @@ class Overseer < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.role ||= :sales
+    self.status ||= :active
   end
 
   def hierarchy_to_s
