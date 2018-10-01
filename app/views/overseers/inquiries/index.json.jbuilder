@@ -16,20 +16,19 @@ json.data (@inquiries) do |inquiry|
                   format_date(inquiry.created_at)
               ]
 end
-json.columnFilters (@inquiries) do |brand|
-  json.array! [
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  [],
-                  []
-              ]
-end
+
+json.columnFilters [
+    [],
+    Inquiry.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+]
 
 
 json.recordsTotal Inquiry.all.count

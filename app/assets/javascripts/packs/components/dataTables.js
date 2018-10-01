@@ -107,28 +107,33 @@ let setup = () => {
                 console.log(json);
                 let table = this;
                 this.api().columns().every(function () {
-                    // let filter = $(this.header()).data('filter');
+                    let column = this;
                     let filter = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')');
-                    let input = '';
 
                     if (filter && filter != false) {
+                        let input = '';
+
                         if (filter == 'dropdown') {
-                            input = '<select class="custom-select"></select>';
-                        } else {
-                            input = '<input type="text" class="form-control" />';
-                            json.columnFilters[this.index()].forEach(function(v) {
-                                $(input).append('<option value="' + v + '">' + v + '</option>')
+                            input = $('<select class="custom-select"></select>');
+
+                            console.log(this.index());
+                            json.columnFilters[this.index()].forEach(function(f) {
+                                let option = $('<option value="' + f.value + '">' + f.label + '</option>');
+                                console.log(option);
+                                input.append(option);
                             });
+                        } else {
+                            input = $('<input type="text" class="form-control" />');
                         }
 
-                        $(input).on('change', function () {
+                        input.on('change', function () {
                             let val = $(this).val();
-                            this.search(val).draw();
+                            column.search(val).draw();
                         });
-                    }
 
-                    td.append($(input));
+                        td.append(input);
+                    }
                 });
             }
         })
