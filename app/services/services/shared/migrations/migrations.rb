@@ -199,6 +199,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         accounts.name = account_name
         accounts.alias = account_name.titlecase.split.map(&:first).join
         accounts.legacy_id = id
+        accounts.account_type = :is_customer
         accounts.legacy_metadata = x.get_row
       end
     end
