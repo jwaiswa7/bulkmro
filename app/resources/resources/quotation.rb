@@ -15,7 +15,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
-      item.U_MPN = row.product.mpn
+      item.U_MPN = row.product.try(:mpn)
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
