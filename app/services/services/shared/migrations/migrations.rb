@@ -262,7 +262,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       last_name = x.get_column('lastname', default: 'lname')
 
       email = x.get_column('email', downcase: true, remove_whitespace: true)
-      email = [remote_uid, '@bulkmro.com'].join if not email.match(Devise.email_regexp).present?
+      email = [remote_uid, '@bulkmro.com'].join if email.match(Devise.email_regexp).blank?
+      email = [remote_uid, email].join('-') if Contact.where(:email => email).exists?
+
       account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
 
       Contact.where(remote_uid: remote_uid).first_or_create! do |contact|
