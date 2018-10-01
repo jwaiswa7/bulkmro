@@ -153,22 +153,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def payment_options
-    raise
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
     service.loop(secondary_limit) do |x|
-      if x.get_column('value').present? && x.get_column('group_code').present?
-        PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
-          payment_option.assign_attributes(
-              remote_uid: x.get_column('group_code', nil_if_zero: true),
-              legacy_id: x.get_column('id'),
-              legacy_metadata: x.get_row
-          )
-        end
+      next if x.get_column('id').in? %w(123 146)
+      raise if x.get_column('value') == 'NULL'
+      PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
+        payment_option.assign_attributes(
+            remote_uid: x.get_column('group_code', nil_if_zero: true),
+            legacy_id: x.get_column('id'),
+            credit_limit: x.get_column('credit_limit').to_f,
+            general_discount: x.get_column('general_discount').to_f,
+            load_limit: x.get_column('load_limit').to_f,
+            legacy_metadata: x.get_row
+        )
       end
     end
   end
 
   def industries
+    raise
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
     service.loop(secondary_limit) do |x|
       Industry.create!(
