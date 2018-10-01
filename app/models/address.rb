@@ -39,4 +39,8 @@ class Address < ApplicationRecord
   def to_s
     [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
   end
+
+  def to_multiline_s
+    [street1, street2, [city_name, pincode].compact.join(', '), [state.to_s, country_name].compact.join(', ')].compact.join(",<br>").html_safe
+  end
 end
