@@ -4,10 +4,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit
 
   def initialize
-    @limit = 50
+    @limit = nil
     @secondary_limit = nil
 
-    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -171,8 +172,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def industries
-    raise
-
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
     service.loop(secondary_limit) do |x|
       Industry.create!(
@@ -186,23 +185,28 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts_acting_as_customers
-    Account.create!(remote_uid: 101, name: "Trade", alias: "TRD")
-    Account.create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
-    Account.create!(remote_uid: 99999999, name: "Legacy Account", alias: "LA")
+    Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
+    Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
+    Account.first_or_create!(remote_uid: 99999999, name: "Legacy Account", alias: "LA")
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
     service.loop(limit) do |x|
+      id = x.get_column('id')
+      next if id.in? %w(3275)
       account_name = x.get_column('aliasname')
       Account.where(name: account_name).first_or_create! do |accounts|
         accounts.remote_uid = x.get_column('sap_id')
         accounts.name = account_name
         accounts.alias = account_name.titlecase.split.map(&:first).join
+        accounts.legacy_id = id
         accounts.legacy_metadata = x.get_row
       end
     end
   end
 
   def contacts
+    raise
+
     password = Devise.friendly_token
     Contact.create!(account: Account.legacy, remote_uid: 99999999, email: "legacy@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
 

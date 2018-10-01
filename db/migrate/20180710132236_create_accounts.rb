@@ -4,7 +4,6 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.integer :remote_uid, index: true
       t.integer :legacy_id, index: true
 
-
       t.string :name, index: { :unique => true }
       t.string :alias
 
