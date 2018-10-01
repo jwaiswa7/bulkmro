@@ -202,7 +202,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def industries
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
     service.loop(secondary_limit) do |x|
-      Industry.create!(
+      Industry.first_or_create!(
           remote_uid: x.get_column('industry_sap_id'),
           name: x.get_column('industry_name'),
           description: x.get_column('industry_description'),
@@ -213,7 +213,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts_acting_as_customers
-    raise
     Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
     Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
     Account.first_or_create!(remote_uid: 99999999, name: "Legacy Account", alias: "LA")
@@ -235,6 +234,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def contacts
+    raise
+
     password = Devise.friendly_token
     Contact.create!(account: Account.legacy, remote_uid: 99999999, email: "legacy@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
 
