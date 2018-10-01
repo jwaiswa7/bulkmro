@@ -28,7 +28,7 @@
         <%= yield :header_row %>
       </tr>
       <% if content_for?(:filter_row) %>
-        <tr>
+        <tr class="filters d-none d-lg-table-row">
           <%= yield :filter_row %>
         </tr>
       <% end %>
