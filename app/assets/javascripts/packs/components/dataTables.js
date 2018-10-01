@@ -125,7 +125,7 @@ let setup = () => {
                                 input.append(option);
                             });
                         } else {
-                            input = $('<input type="text" class="form-control" />');
+                            input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
 
                         input.on('change', function () {
