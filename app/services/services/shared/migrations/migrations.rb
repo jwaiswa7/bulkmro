@@ -366,7 +366,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         company_contact = CompanyContact.find_or_create_by(
             company: Company.find_by_name(company_name),
             contact: Contact.find_by_email(contact_email),
-            # remote_uid: x.get_column('remote_uid'),
+            remote_uid: x.get_column('sap_id'),
             legacy_metadata: x.get_row
         )
 
