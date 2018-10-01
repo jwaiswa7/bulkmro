@@ -27,13 +27,11 @@
       <tr>
         <%= yield :header_row %>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <% if content_for?(:filter_row) %>
+        <tr>
+          <%= yield :filter_row %>
+        </tr>
+      <% end %>
     </thead>
     <tbody>
     <%= yield %>

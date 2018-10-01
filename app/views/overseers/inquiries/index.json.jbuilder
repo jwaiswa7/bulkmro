@@ -16,6 +16,21 @@ json.data (@inquiries) do |inquiry|
                   format_date(inquiry.created_at)
               ]
 end
+json.columnFilters (@inquiries) do |brand|
+  json.array! [
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  [],
+                  []
+              ]
+end
+
 
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count

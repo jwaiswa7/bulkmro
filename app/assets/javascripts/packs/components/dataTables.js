@@ -107,11 +107,12 @@ let setup = () => {
                 console.log(json);
                 let table = this;
                 this.api().columns().every(function () {
-                    let filter = $(this.header()).data('filter');
+                    // let filter = $(this.header()).data('filter');
+                    let filter = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')').data('filter');
                     let td = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')');
                     let input = '';
 
-                    if (filter != false) {
+                    if (filter && filter != false) {
                         if (filter == 'dropdown') {
                             input = '<select class="custom-select"></select>';
                         } else {
