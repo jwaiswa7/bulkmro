@@ -118,7 +118,7 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control"></select>');
+                            input = $('<select class="select2-single form-control" data-placeholder="' + 'Select ' + $(column.header()).text() + '"><option value="" selected disabled></option></select>');
 
                             json.columnFilters[this.index()].forEach(function(f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
