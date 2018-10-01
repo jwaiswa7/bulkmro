@@ -100,6 +100,28 @@ let setup = () => {
                     next: '<i class="fal fa-angle-right"></i>',
                     last: '<i class="fal fa-arrow-to-right"></i>'
                 }
+            },
+
+            initComplete: function(settings, json) {
+                this.api().columns().every(function () {
+                    let column = this;
+                    let select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            let val = $(this).val();
+                            column.search(this.value).draw();
+                        });
+
+                    console.log('~~');
+                    console.log($(column.footer()));
+                    // Only contains the *visible* options from the first page
+                    console.log(column.data().unique());
+
+                    // If I add extra data in my JSON, how do I access it here besides column.data?
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
             }
         })
     });
