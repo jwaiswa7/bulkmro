@@ -7,7 +7,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
@@ -262,7 +262,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       last_name = x.get_column('lastname', default: 'lname')
 
       email = x.get_column('email', downcase: true, remove_whitespace: true)
-      email = [remote_uid, '@bulkmro.com'].join if email !=~ Devise.email_regexp
+      email = [remote_uid, '@bulkmro.com'].join if not email.match(Devise.email_regexp).present?
       account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
 
       Contact.where(remote_uid: remote_uid).first_or_create! do |contact|
@@ -294,13 +294,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def companies_acting_as_customers
     raise
     legacy_account = Account.legacy
-    legacy_company = Company.create!(
-        name: "Legacy Company",
-        account: legacy_account,
-        remote_uid: 99999999,
-    )
+    legacy_company = Company.where(name: "Legacy Company").first_or_create! do |company|
+      company.account = legacy_account
+      company.remote_uid = 99999999
+    end
 
-    company_contact = CompanyContact.create!(company: legacy_company, contact: legacy_account.contacts.first)
+    company_contact = CompanyContact.first_or_create!(company: legacy_company, contact: legacy_account.contacts.first)
     legacy_company.company_contacts << company_contact
     legacy_company.update_attributes(:default_company_contact => company_contact)
 
