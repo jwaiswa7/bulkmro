@@ -94,13 +94,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
 
   def measurement_unit
-    raise
     measurement_units = ["EA", "SET", "PK", "KG", "M", "FT", "Pack", "Pair", "PR", "BOX", "LTR", "LT", "MTR", "ROLL", "Nos", "PKT", "REEL", "FEET", "Meter", "1 ROLL", "ml", "MAT", "LOT", "No", "RFT", "Bundle", "NPkt", "Metre", "CAN", "SQ.Ft", "BOTTLE", "BOTTEL", "CUBIC METER", "PC", "GRAM", "EACH", "FOOT", "Dozen", "INCH", "Ream", "Bag", "Unit", "MT", "KIT", "SQ INCH", "CASE"]
-    MeasurementUnit.create! measurement_units.map {|mu| {name: mu}}
+    MeasurementUnit.first_or_create! measurement_units.map {|mu| {name: mu}}
   end
 
   def lead_time_option
-    lead_time_options = LeadTimeOption.create!([
+    LeadTimeOption.first_or_create!([
                                {name: "2-3 DAYS", min_days: 2, max_days: 3},
                                {name: "1 WEEK", min_days: 7, max_days: 7},
                                {name: "8-10 DAYS", min_days: 8, max_days: 10},
@@ -130,7 +129,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def currencies
-    Currency.create!([
+    Currency.first_or_create!([
                          {name: 'USD', conversion_rate: 71.59, legacy_id: 2},
                          {name: 'INR', conversion_rate: 1, legacy_id: 0},
                          {name: 'EUR', conversion_rate: 83.85, legacy_id: 1},
@@ -138,6 +137,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def states
+    raise
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
     service.loop(secondary_limit) do |x|
       AddressState.where(name: x.get_column('default_name').strip).first_or_create! do |state|
