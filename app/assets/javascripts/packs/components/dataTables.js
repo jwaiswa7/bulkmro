@@ -104,8 +104,23 @@ let setup = () => {
             },
             
             initComplete: function(settings, json) {
-                this.find('th').each(function() {
-                    console.log($(this).html());
+                var dt = this;
+                this.find('th').each(function(i) {
+                    let filter = $(this).data('filter');
+                    let td = $(dt).find('thead tr:eq(1) td:eq(' + i + ')');
+                    let input = '';
+
+                    console.log(td.html());
+
+                    if (filter != false) {
+                        if (filter == 'dropdown') {
+                            input = '<select class="custom-select"></select>';
+                        } else {
+                            input = '<input type="text" class="form-control" />';
+                        }
+                    }
+
+                    td.append(input);
                 });
 
                 this.api().columns().every(function () {
