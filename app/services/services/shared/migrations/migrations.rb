@@ -137,8 +137,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def states
-    raise
-
     service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
     service.loop(secondary_limit) do |x|
       AddressState.where(name: x.get_column('default_name').strip).first_or_create! do |state|
@@ -146,7 +144,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             country_code: x.get_column('country_id'),
             region_code: x.get_column('code'),
             region_code_uid: x.get_column('sap_code'),
-            remote_uid: x.get_column('gst_state_code') == 'NULL' ? nil : x.get_column('gst_state_code'),
+            remote_uid: x.get_column('gst_state_code'),
             legacy_id: x.get_column('region_id'),
             legacy_metadata: x.get_row
         )
@@ -155,6 +153,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def payment_options
+    raise
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
     service.loop(secondary_limit) do |x|
       if x.get_column('value').present? && x.get_column('group_code').present?
