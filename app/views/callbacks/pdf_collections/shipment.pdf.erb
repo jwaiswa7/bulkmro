@@ -16,7 +16,6 @@
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr>
-                  <!--             <td rowspan="4" style="width: 2%"><span style="width: 5%;padding-left: 7px;font-size: 33px;font-weight: bold;font-family: Helvetica;"><span style="color:black;">bulk</span><span style="color:#f58220;">MRO</span></span> </td>-->
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
                 </tr>
@@ -38,7 +37,7 @@
               </table>
             </div>
             <br clear="all">
-            <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <div style=" border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
               <span style="color:#000000"><b>Shipment #<%= @shipment[:increment_id] %></b></span>
             </div>
             <br clear="all">
@@ -186,7 +185,8 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.shipping_address %><br>
+                    <%= @sales_order.inquiry.shipping_address.name %><br>
+                    <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
                     <br>
                     Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
                     GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
@@ -196,7 +196,8 @@
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.billing_address %><br>
+                    <%= @sales_order.inquiry.billing_address.name %><br>
+                    <%= @sales_order.inquiry.billing_address.to_multiline_s %>
                     <br>
                     Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
                     GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
@@ -255,15 +256,13 @@
 
                   </tr>
                   <tr>
-                    <td style="border-bottom-left-radius: 5px; font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                    <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-
-
+                    <td style="border-bottom-left-radius: 5px; font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                    <td style=" font-size: 11px;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                     <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 5px;" valign="top"></td>
                   </tr>
                 <% end %>

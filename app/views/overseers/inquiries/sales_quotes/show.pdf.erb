@@ -13,8 +13,7 @@
             <div style="border:1px solid; border-radius: 0px;padding: 2px">
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
-                <tr>`
-                  <!--             <td rowspan="4" style="width: 2%"><span style="width: 5%;padding-left: 7px;font-size: 33px;font-weight: bold;font-family: Helvetica;"><span style="color:black;">bulk</span><span style="color:#f58220;">MRO</span></span> </td>-->
+                <tr>
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
                 </tr>
@@ -155,7 +154,8 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left; height: 175px;">
                     <%= @sales_quote.inquiry.contact.full_name %><br>
-                    <%= @sales_quote.inquiry.shipping_address %><br>
+                    <%= @sales_order.inquiry.shipping_address.name %><br>
+                    <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
                     <br>
                     Tel: <%= @sales_quote.inquiry.shipping_address.telephone %><br>
                     GST No. :<%= @sales_quote.inquiry.shipping_address.gst %><br>
@@ -165,7 +165,8 @@
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left;">
                     <%= @sales_quote.inquiry.contact.full_name %><br>
-                    <%= @sales_quote.inquiry.billing_address %><br>
+                    <%= @sales_order.inquiry.billing_address.name %><br>
+                    <%= @sales_order.inquiry.billing_address.to_multiline_s %>
                     <br>
                     Tel: <%= @sales_quote.inquiry.billing_address.telephone %><br>
                     GST No. :<%= @sales_quote.inquiry.billing_address.gst %><br>

@@ -9,14 +9,13 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @invoice[:increment_id] %></span></b>
+              <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @po[:PoNum] %></span></b>
             </div>
             <br clear="all">
             <div style="border:1px solid; border-radius: 5px;padding: 2px">
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr>
-                  <!--             <td rowspan="4" style="width: 2%"><span style="width: 5%;padding-left: 7px;font-size: 33px;font-weight: bold;font-family: Helvetica;"><span style="color:black;">bulk</span><span style="color:#f58220;">MRO</span></span> </td>-->
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
                 </tr>
@@ -39,7 +38,7 @@
             </div>
             <br clear="all">
             <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-              <span style="color:#000000"><b>Tax Invoice #<%= @invoice[:increment_id] %></b></span>
+              <span style="color:#000000"><b>Purchase Order #<%= @po[:PoNum] %></b></span>
             </div>
             <br clear="all">
             <div style="border:1px solid; border-radius: 5px;">
@@ -47,66 +46,99 @@
                 <tbody>
                 <tr>
                   <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Bulk MRO Reference #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.sales_quote.quotation_uid %></span></td>
+                    <span style="color:#000000"><%= @po[:PoEnquiryId] %></span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") %></span>
+                    <span style="color:#000000"><%= Date.parse(@po[:PoDate]).strftime("%d-%b-%Y") %></span>
                   </td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Customer Purchase Order #</span></b>
+                    <b><span style="color:#000000">Contact Name</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  %></span></td>
+                    <span style="color:#000000"></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Customer Purchase Order Date</span></b>
+                    <b><span style="color:#000000">Contact #</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  %></span></td>
+                    <span style="color:#000000"></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.id %></span></td>
+                    <span style="color:#000000"><%= Date.parse(@po[:PoCommittedDate]).strftime("%d-%b-%Y") %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.created_at.strftime("%d-%b-%Y") %></span></td>
+                    <span style="color:#000000"><%= @po[:PoFreight] %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Packing & Forwarding</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @invoice[:increment_id] %></span></td>
+                    <span style="color:#000000"><%= @po[:PoPackingForwarding] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Mode of Transport</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= Date.parse(@invoice['created_at']).strftime("%d-%b-%Y") %></span></td>
+                    <span style="color:#000000"><%= @po[:PoModeOfTrasport] %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <b><span style="color:#000000">GRN # </span></b> <span style="float:right">:</span></td>
+                    <b><span style="color:#000000">Delivery Terms </span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"> </span></td>
+                    <span style="color:#000000"><%=  @po[:PoDeliveryTerms] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.inquiry.payment_option %></span></td>
+                    <span style="color:#000000"><%= @po[:PoPaymentTerms] %></span></td>
                 </tr>
                 </tbody>
               </table>
             </div>
             <br clear="all">
             <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-              <b><span style="color:#000000">Supplier - Bill from :</span></b>
+              <b><span style="color:#000000">Supplier - Bill to :</span></b>
             </div>
             <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px;text-align: center;">
-              <b><span style="color:#000000">Supplier - Ship from :</span></b>
+              <b><span style="color:#000000">Supplier - Ship to :</span></b>
+            </div>
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td style="width:48%;">
+                  <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
+                    <%#= @sales_order.inquiry.contact.full_name %><br>
+                    <%#= @sales_order.inquiry.shipping_address %><br>
+                    <br>
+                    Tel: <%#= @sales_order.inquiry.shipping_address.telephone %><br>
+                    GST No. :<%#= @sales_order.inquiry.shipping_address.gst %><br>
+                  </div>
+                </td>
+                <td style="width:4%;"></td>
+                <td style="width:48%;">
+                  <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
+                    <%#= @sales_order.inquiry.contact.full_name %><br>
+                    <%#= @sales_order.inquiry.billing_address %><br>
+                    <br>
+                    Tel: <%#= @sales_order.inquiry.billing_address.telephone %><br>
+                    GST No. :<%#= @sales_order.inquiry.billing_address.gst %><br>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <br clear="all">
+            <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+              <b><span style="color:#000000">Bulk MRO - Bill to :</span></b>
+            </div>
+            <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+              <b><span style="color:#000000">Bulk MRO - Ship to :</span></b>
             </div>
             <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%;">
@@ -115,7 +147,6 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <%#= @sales_order.inquiry.bill_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
                       2nd Floor, A Wing, Todi Estate,<br>
                       Sun Mill Compound, Lower Parel West,<br>
@@ -129,7 +160,6 @@
                 <td style="width:48%;">
                   <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <span style="color:#000000">
-                      <%#= @sales_order.inquiry.ship_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
                       2nd Floor, A Wing, Todi Estate,<br>
                       Sun Mill Compound, Lower Parel West,<br>
@@ -137,39 +167,6 @@
                       Maharashtra<br>
                       GST No. : 27AAGCB7343G1ZN<br>
                       PAN No. : AAGCB7343G</span>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            <br clear="all">
-            <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-              <b><span style="color:#000000">Customer - Bill to :</span></b>
-            </div>
-            <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-              <b><span style="color:#000000">Customer - Ship to :</span></b>
-            </div>
-            <br clear="all">
-            <table border="0" cellspacing="0" style="width: 100%;">
-              <tbody>
-              <tr>
-                <td style="width:48%;">
-                  <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.shipping_address %><br>
-                    <br>
-                    Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
-                  </div>
-                </td>
-                <td style="width:4%;"></td>
-                <td style="width:48%;">
-                  <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.billing_address %><br>
-                    <br>
-                    Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
               </tr>
@@ -227,7 +224,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% @invoice[:ItemLine].each_with_index do |item,index|%>
+                <% @po[:ItemLine].each_with_index do |item,index|%>
                   <tr>
                     <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
                       <span style="color:#000000"><%= index+1 %></span></td>
@@ -237,19 +234,19 @@
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"></span></td>
                     <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: left;" valign="top">
-                      <span style="color:#000000"><%= item[:name] %></span></td>
+                      <span style="color:#000000"><%= item[:PopProductName] %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"><%=  %></span></td>
                     <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                      <span style="color:#000000"><%= item[:hsn] %></span></td>
+                      <span style="color:#000000"><%= item[:PopHsn] %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: center;" valign="top">
                       <span style="color:#000000"><%= item[:uom] %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
-                      <span style="color:#000000"><%= item[:qty] %></span></td>
+                      <span style="color:#000000"><%= item[:PopQty] %></span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item[:price] %></span></td>
+                      <span style="color:#000000"><%= item[:PopPriceHt] %></span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item[:row_total] %></span></td>
+                      <span style="color:#000000"><%= item[:PopPriceHt].to_f * item[:PopQty].to_f %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
                       <span style="color:#000000"><%= item[:tax_rate] %>%</span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
@@ -286,19 +283,19 @@
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @invoice[:subtotal] %></span></b></td>
+                    <b><span style="color:#000000"><%= @po[:item_subtotal] %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @invoice[:tax_amount].to_f / 2 %></span></b></td>
+                    <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @invoice[:tax_amount].to_f / 2 %></span></b></td>
+                    <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
                   <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @invoice[:subtotal_incl_tax] %></span></b></td>
+                    <b><span style="color:#000000"><%= @po[:item_subtotal_incl_tax] %></span></b></td>
                 </tr>
                 <tr>
                   <td style="border-bottom-left-radius: 5px; font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
@@ -326,17 +323,41 @@
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                 <tr>
-                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
-                    <b><span style="color:#000000">Note :</span></b></td>
+                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">Commercial Terms and Conditions :</span></b></td>
                 </tr>
                 <tr>
-                  <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
-                    1. Order once confirmed cannnot be cancelled.<br>
-                    2. Delayed payments will attract 2% interest per month.<br>
-                   3. Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date of invoice.</span></td>
+                  <td height="" style="padding-left:10px;" valign="top">1.</td>
+
+                  <td align="left" valign="top">
+                    <span style="color:#000000">Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.
+</span>
+                  </td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td height="" style="padding-left:10px;" valign="top">2.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000"> In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or inaction.
+</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">3.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000">All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">4.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">5.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
+                    Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
+                  </td>
                 </tr>
                 </tbody>
               </table>
@@ -348,59 +369,7 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
-                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= @invoice[:increment_id] %> when remitting Wire Transfer payment<br>
-                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not reponsible for any banking fees.</span></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <br clear="all">
-            <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
-              <table border="0" cellspacing="0" style="width: 100%;">
-                <tbody>
-                <tr style="background: #d3d3d3;">
-                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
-                    <b><span style="color:#000000">Payment By Wire Transfer To :</span></b></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Bank :</span></b></td>
-                  <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Kotak Mahindra Bank Ltd</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">State Bank of India</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Address :</span></b></td>
-                  <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Aum Saheel Tower, Mumbai 400080.</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Account Name :</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Account Number :</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">9412329433</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">35924122136</span></td>
-                </tr>
-                <tr>
-                  <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">NEFT/RTGS Code :</span></b></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">KKBK0001411</span></td>
-                  <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">SBIN0000510</span></td>
+                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @po[:PoNum] %> when shipping goods.</span></td>
                 </tr>
                 </tbody>
               </table>

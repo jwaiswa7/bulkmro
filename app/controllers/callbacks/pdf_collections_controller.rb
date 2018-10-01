@@ -1,7 +1,54 @@
 class Callbacks::PdfCollectionsController < Callbacks::BaseController
   def invoice_pdf
-    @invoice = params
-    @sales_order = SalesOrder.find(@invoice[:order_id].to_s)
+    save_invoice
+
+    respond_to do |format|
+      format.pdf do
+      render  pdf: 'invoice #{@invoice[:increment_id].to_s}',
+            template: 'callbacks/pdf_collections/invoice',
+            layout: 'overseers/layouts/sap',
+            footer: {center: '[page] of [topage]'}
+      end
+    end
+  end
+
+  def shipment_pdf
+    save_shipment
+
+    respond_to do |format|
+      format.pdf do
+      render  pdf: 'shipment #{@shipment[:increment_id].to_s}',
+            template: 'callbacks/pdf_collections/shipment',
+            layout: 'overseers/layouts/sap',
+            footer: {center: '[page] of [topage]'}
+      end
+    end
+  end
+
+  def po_pdf
+    save_purchase_order
+
+    respond_to do |format|
+      format.pdf do
+      render  pdf: 'po #{@po[:increment_id].to_s}',
+            template: 'callbacks/pdf_collections/po',
+            layout: 'overseers/layouts/sap',
+            footer: {center: '[page] of [topage]'}
+      end
+    end
+
+  end
+
+  private
+
+  def save_invoice
+    inv = SalesInvoice.new
+    inv.invoice_uid = params[:increment_id]
+    inv.sales_order_id = params[:order_id]
+    inv.request_payload = params
+    inv.save
+    @sales_order = inv.sales_order
+    @invoice = inv.request_payload.deep_symbolize_keys
 
     @invoice[:ItemLine].each do |item|
       @sales_order.rows.each do |row|
@@ -13,20 +60,17 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
       end
     end
 
-    respond_to do |format|
-      format.pdf do
-      render  pdf: 'invoice #{@invoice[:increment_id].to_s}',
-            # show_as_html: true,
-            template: 'callbacks/pdf_collections/invoice',
-            layout: 'overseers/layouts/pdf.html.erb',
-            footer: {center: '[page] of [topage]'}
-      end
-    end
   end
 
-  def shipment_pdf
-    @shipment = params
-    @sales_order = SalesOrder.find(@shipment[:order_id].to_s)
+  def save_shipment
+    ship = SalesShipment.new
+    ship.shipment_uid= params[:increment_id]
+    ship.sales_order_id = params[:order_id]
+    ship.request_payload = params
+    ship.save
+
+    @sales_order = ship.sales_order
+    @shipment = ship.request_payload.deep_symbolize_keys
 
     @shipment[:ItemLine].each do |item|
       @sales_order.rows.each do |row|
@@ -37,21 +81,19 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
       end
     end
 
-    respond_to do |format|
-      format.pdf do
-      render  pdf: 'shipment #{@shipment[:increment_id].to_s}',
-            # show_as_html: true,
-            template: 'callbacks/pdf_collections/shipment',
-            layout: 'overseers/layouts/pdf.html.erb',
-            footer: {center: '[page] of [topage]'}
-      end
-    end
   end
 
-  def po_pdf
-    @po = params
-    # raise
-    @inquiry = Inquiry.find(@po[:PoEnquiryId].to_s)
+
+  def save_purchase_order
+    purchase = SalesPurchaseOrder.new
+    purchase.po_uid = params[:PoNum]
+    purchase.inquiry_id = params[:PoEnquiryId]
+    purchase.request_payload = params
+    purchase.save
+
+    purchase = SalesPurchaseOrder.find(2)
+    @inquiry = purchase.inquiry
+    @po = purchase.request_payload.deep_symbolize_keys
 
     @po[:item_subtotal] = 0
     @po[:item_tax_amount] = 0
@@ -59,8 +101,6 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     @po[:ItemLine].each do |item|
       @product = Product.find_by_legacy_id(item[:PopProductId].to_s)
-      puts "hhhshhshs"
-      puts @po[:PopProductId].to_s
       item[:uom] = @product.measurement_unit.name
       item[:sku] = @product.sku #row.tax_code.chapter
       item[:row_total] = item[:PopPriceHt].to_f * item[:PopQty].to_f
@@ -72,15 +112,6 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
       @po[:item_subtotal_incl_tax] += item[:row_total_incl_tax]
     end
 
-    respond_to do |format|
-      format.pdf do
-      render  pdf: 'po #{@po[:increment_id].to_s}',
-            # show_as_html: true,
-            template: 'callbacks/pdf_collections/po',
-            layout: 'overseers/layouts/pdf.html.erb',
-            footer: {center: '[page] of [topage]'}
-      end
-    end
   end
 
 end

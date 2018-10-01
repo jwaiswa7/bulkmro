@@ -39,6 +39,7 @@ class Inquiry < ApplicationRecord
   has_many :final_sales_orders, -> { where.not(:sent_at => nil).latest }, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: false
   has_many :email_messages
+  has_many :sales_purchase_order
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
