@@ -13,7 +13,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
       set_current_row(row.to_h)
 
       # begin
-        yield self
+      yield self
       # rescue => error
       #   errors.push("#{error.inspect} - #{row.to_h}")
       # end
@@ -35,7 +35,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     @current_row = row_hash
   end
 
-  def get_column(name, nil_if_zero: false, default: nil, downcase: false)
+  def get_column(name, nil_if_zero: false, default: nil, downcase: false, to_datetime: false)
     value = if current_row[name].present? && current_row[name] != 'NULL'
               if nil_if_zero
                 current_row[name].to_s == '0' ? nil : current_row[name].strip
@@ -46,8 +46,14 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
               default
             end
 
-    if value.present? && downcase
-      value.downcase
+    value = if value.present? && downcase
+              value.downcase
+            else
+              value
+            end
+
+    if value.present? && to_datetime
+      value.to_datetime
     else
       value
     end

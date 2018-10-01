@@ -7,8 +7,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -54,18 +53,35 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(secondary_limit) do |x|
       Overseer.where(email: x.get_column('email').strip.downcase).first_or_create! do |overseer|
         password = Devise.friendly_token
+        identifier = x.get_column('identifier', downcase: true)
+        role_name = roles_mapping[x.get_column('role_name')]
+
+
         overseer.assign_attributes(
             parent: Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]),
             first_name: x.get_column('firstname'),
             last_name: x.get_column('lastname'),
-            role: roles_mapping[x.get_column('role_name')],
+            role: case role_name
+                  when :sales
+                    if identifier == 'inside'
+                      :inside_sales
+                    elsif identifier == 'outside'
+                      :outside_sales
+                    elsif identifier == 'outside/manager'
+                      :outside_sales_manager
+                    else
+                      :sales
+                    end
+                  else
+                    role_name
+                  end,
             function: x.get_column('user_function'),
             department: x.get_column('user_department'),
             status: status_mapping[x.get_column('is_active')],
             username: x.get_column('username'),
             mobile: x.get_column('mobile'),
             designation: x.get_column('designation'),
-            identifier: x.get_column('identifier'),
+            identifier: identifier,
             geography: x.get_column('user_geography'),
             salesperson_uid: x.get_column('sap_internal_code'),
             employee_uid: x.get_column('employee_id'),
@@ -73,13 +89,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             legacy_id: x.get_column('user_id'),
             password: password,
             password_confirmation: password,
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            created_at: x.get_column('created', to_datetime: true),
+            updated_at: x.get_column('modified', to_datetime: true),
         )
       end
     end
 
     service.loop(secondary_limit) do |x|
-      Overseer.find_by_email(x.get_column('email', downcase: true)).update_attributes(:parent => Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]))
+      overseer = Overseer.find_by_email(x.get_column('email', downcase: true))
+      business_head = x.get_column('business_head')
+      business_head_manager = x.get_column('business_head_manager')
+
+      actual_business_head = if business_head.present? && overseer.first_name == business_head.split(' ')[0]
+                               business_head_manager
+                             else
+                               business_head
+                             end
+
+      overseer.update_attributes(:parent => Overseer.find_by_first_name(actual_business_head.split(' ')[0]))
     end
   end
 
@@ -101,40 +129,40 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def lead_time_option
     LeadTimeOption.first_or_create!([
-                               {name: "2-3 DAYS", min_days: 2, max_days: 3},
-                               {name: "1 WEEK", min_days: 7, max_days: 7},
-                               {name: "8-10 DAYS", min_days: 8, max_days: 10},
-                               {name: "1-2 WEEKS", min_days: 7, max_days: 14},
-                               {name: "2 WEEKS", min_days: 14, max_days: 14},
-                               {name: "2-3 WEEK", min_days: 14, max_days: 21},
-                               {name: "3 WEEKS", min_days: 21, max_days: 21},
-                               {name: "3-4 WEEKS", min_days: 21, max_days: 28},
-                               {name: "4 WEEKS", min_days: 28, max_days: 28},
-                               {name: "5 WEEKS", min_days: 35, max_days: 35},
-                               {name: "4-6 WEEKS", min_days: 28, max_days: 42},
-                               {name: "6-8 WEEKS", min_days: 42, max_days: 56},
-                               {name: "8 WEEKS", min_days: 56, max_days: 56},
-                               {name: "20 WEEKS", min_days: 140, max_days: 140},
-                               {name: "24 WEEKS", min_days: 168, max_days: 168},
-                               {name: "6-10 WEEKS", min_days: 42, max_days: 70},
-                               {name: "10-12 WEEKS", min_days: 70, max_days: 84},
-                               {name: "12-14 WEEKS", min_days: 84, max_days: 98},
-                               {name: "14-16 WEEKS", min_days: 98, max_days: 112},
-                               {name: "MORE THAN 14 WEEKS", min_days: 98, max_days: nil},
-                               {name: "MORE THAN 12 WEEKS", min_days: 84, max_days: nil},
-                               {name: "MORE THAN 6 WEEKS", min_days: 42, max_days: nil},
-                               {name: "60 days from the date of order for 175MT, and 60 days for remaining from the date of call", min_days: 60, max_days: 120},
-                               {name: "In Stock", min_days: 0, max_days: 0},
-                               {name: "Refer T&C", min_days: 0, max_days: 0}
-                           ])
+                                        {name: "2-3 DAYS", min_days: 2, max_days: 3},
+                                        {name: "1 WEEK", min_days: 7, max_days: 7},
+                                        {name: "8-10 DAYS", min_days: 8, max_days: 10},
+                                        {name: "1-2 WEEKS", min_days: 7, max_days: 14},
+                                        {name: "2 WEEKS", min_days: 14, max_days: 14},
+                                        {name: "2-3 WEEK", min_days: 14, max_days: 21},
+                                        {name: "3 WEEKS", min_days: 21, max_days: 21},
+                                        {name: "3-4 WEEKS", min_days: 21, max_days: 28},
+                                        {name: "4 WEEKS", min_days: 28, max_days: 28},
+                                        {name: "5 WEEKS", min_days: 35, max_days: 35},
+                                        {name: "4-6 WEEKS", min_days: 28, max_days: 42},
+                                        {name: "6-8 WEEKS", min_days: 42, max_days: 56},
+                                        {name: "8 WEEKS", min_days: 56, max_days: 56},
+                                        {name: "20 WEEKS", min_days: 140, max_days: 140},
+                                        {name: "24 WEEKS", min_days: 168, max_days: 168},
+                                        {name: "6-10 WEEKS", min_days: 42, max_days: 70},
+                                        {name: "10-12 WEEKS", min_days: 70, max_days: 84},
+                                        {name: "12-14 WEEKS", min_days: 84, max_days: 98},
+                                        {name: "14-16 WEEKS", min_days: 98, max_days: 112},
+                                        {name: "MORE THAN 14 WEEKS", min_days: 98, max_days: nil},
+                                        {name: "MORE THAN 12 WEEKS", min_days: 84, max_days: nil},
+                                        {name: "MORE THAN 6 WEEKS", min_days: 42, max_days: nil},
+                                        {name: "60 days from the date of order for 175MT, and 60 days for remaining from the date of call", min_days: 60, max_days: 120},
+                                        {name: "In Stock", min_days: 0, max_days: 0},
+                                        {name: "Refer T&C", min_days: 0, max_days: 0}
+                                    ])
   end
 
   def currencies
     Currency.first_or_create!([
-                         {name: 'USD', conversion_rate: 71.59, legacy_id: 2},
-                         {name: 'INR', conversion_rate: 1, legacy_id: 0},
-                         {name: 'EUR', conversion_rate: 83.85, legacy_id: 1},
-                     ])
+                                  {name: 'USD', conversion_rate: 71.59, legacy_id: 2},
+                                  {name: 'INR', conversion_rate: 1, legacy_id: 0},
+                                  {name: 'EUR', conversion_rate: 83.85, legacy_id: 1},
+                              ])
   end
 
   def states
@@ -185,6 +213,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts_acting_as_customers
+    raise
     Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
     Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
     Account.first_or_create!(remote_uid: 99999999, name: "Legacy Account", alias: "LA")
@@ -206,8 +235,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def contacts
-    raise
-
     password = Devise.friendly_token
     Contact.create!(account: Account.legacy, remote_uid: 99999999, email: "legacy@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
 
@@ -220,7 +247,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if x.get_column('aliasname').present?
         account = Account.find_by_name!(x.get_column('aliasname'))
       else
-        account = fake_account
+        account = Account.legacy
       end
 
       Contact.where(email: x.get_column('email').downcase).first_or_create! do |contact|
@@ -242,6 +269,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         )
       end
     end
+    raise
+
   end
 
   def companies_acting_as_customers
@@ -700,7 +729,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           is_kit: x.get_column('is_kit'),
           weight_in_kgs: x.get_column('weight'),
           legacy_metadata: x.get_row,
-          created_at: (x.get_column('created_time').to_datetime if x.get_column('created_time').present?),
+          created_at: x.get_column('created_time', to_datetime: true),
       )
 
       inquiry.update_attributes(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present?
