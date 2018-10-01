@@ -9,6 +9,15 @@ json.data (@brands) do |brand|
                   format_date(brand.created_at)
               ]
 end
+json.columnFilters (@brands) do |brand|
+  json.array! [
+                  [],
+                  [],
+                  [],
+                  [],
+                  []
+              ]
+end
 
 json.recordsTotal @brands.model.all.count
 json.recordsFiltered @brands.total_count
