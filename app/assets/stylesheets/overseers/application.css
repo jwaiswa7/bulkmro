@@ -7933,6 +7933,8 @@ table.table.dataTable {
       color: #495057; }
   table.table.dataTable.fixedHeader-floating, table.table.dataTable.fixedHeader-locked {
     background-color: transparent; }
+  table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td {
+    border: 0 transparent; }
 
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
   white-space: normal; }

@@ -1,3 +1,6 @@
+// Component Imports
+import select2s from "./select2s";
+
 const dataTables = () => {
     preSetup();
     setup();
@@ -104,7 +107,6 @@ let setup = () => {
             },
             
             initComplete: function(settings, json) {
-                console.log(json);
                 let table = this;
                 this.api().columns().every(function () {
                     let column = this;
@@ -115,12 +117,10 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="custom-select"></select>');
+                            input = $('<select class="select2-single form-control"></select>');
 
-                            console.log(this.index());
                             json.columnFilters[this.index()].forEach(function(f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
-                                console.log(option);
                                 input.append(option);
                             });
                         } else {
@@ -133,6 +133,7 @@ let setup = () => {
                         });
 
                         td.append(input);
+                        select2s();
                     }
                 });
             }
