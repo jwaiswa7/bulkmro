@@ -9,18 +9,18 @@ let preSetup = () => {
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 
-        var api = new $.fn.dataTable.Api(settings);
-        var $target = $(e.target);
-        var searchText = $target.data('search');
+        let api = new $.fn.dataTable.Api(settings);
+        let $target = $(e.target);
+        let searchText = $target.data('search');
 
         if (searchText) {
-            var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
+            let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
             $input = $($input);
             $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
 
-            var $wrapper = "<div class='input-group input-group-round'>" +
+            let $wrapper = "<div class='input-group input-group-round'>" +
                 "<div class='input-group-prepend'>" +
                 "<span class='input-group-text'>" +
                 "<i class='material-icons'>filter_list</i>" +
@@ -28,7 +28,7 @@ let preSetup = () => {
                 "</div>" +
                 "</div>";
 
-            var $filter = $($wrapper).append($input);
+            let $filter = $($wrapper).append($input);
 
             $filter.insertBefore($target);
             $target.data('has-search', true);
@@ -40,11 +40,12 @@ let preSetup = () => {
 let setup = () => {
     $('.datatable').each(function () {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
-        var isAjax = !!$(this).data('ajax');
-        var that = this;
+        let isAjax = !!$(this).data('ajax');
+        let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
         $(this).DataTable({
+            orderCellsTop: true,
             conditionalPaging: true,
             searchDelay: 1000,
             serverSide: isAjax,
@@ -75,7 +76,7 @@ let setup = () => {
             responsive: {
                 details: {
                     renderer: function (api, rowIdx, columns) {
-                        var $data = $.map(columns, function (col, i) {
+                        let $data = $.map(columns, function (col, i) {
                             return col.hidden ?
                                 '<li class="list-group-item" data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
                                 (col.title ? '<span><strong>' + col.title + '</strong><br>' : '')
@@ -101,10 +102,15 @@ let setup = () => {
                     last: '<i class="fal fa-arrow-to-right"></i>'
                 }
             },
-
+            
             initComplete: function(settings, json) {
+                this.find('th').each(function() {
+                    console.log($(this).html());
+                });
+
                 this.api().columns().every(function () {
                     let column = this;
+
                     let select = $('<select class="form-control"><option value=""></option></select>')
                         .appendTo($(column.footer()).empty())
                         .on('change', function () {
@@ -112,10 +118,8 @@ let setup = () => {
                             column.search(this.value).draw();
                         });
 
-                    console.log('~~');
-                    console.log($(column.footer()));
                     // Only contains the *visible* options from the first page
-                    console.log(column.data().unique());
+                    // console.log(column.data().unique());
 
                     // If I add extra data in my JSON, how do I access it here besides column.data?
                     column.data().unique().sort().each(function (d, j) {
@@ -141,7 +145,7 @@ let ajax = () => {
         });
 
         // Load data from the specified data attribute
-        // var url = $(this).data('ajax');
+        // let url = $(this).data('ajax');
         // $(this).ajax.url(url).load();
     });
 };
