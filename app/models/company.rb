@@ -83,7 +83,7 @@ class Company < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.company_type ||= :private_limited
-    self.priority ||= :standard
+    self.priority ||= :non_strategic
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
     self.default_company_contact ||= set_default_company_contact

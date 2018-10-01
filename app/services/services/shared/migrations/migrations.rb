@@ -7,8 +7,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers company_contacts addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -309,7 +309,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   legacy_account
                 end
 
-      company_type_mapping = {'Proprietorship' => 10, 'Private Limited' => 20, 'Contractor' => 30, 'Trust' => 40, 'Public Limited' => 50}
+      company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
       priority_mapping = {'0' => 10, '1' => 20}
       nature_of_business_mapping = {'Trading' => 10, 'Manufacturer' => 20, 'Dealer' => 30}
       is_msme_mapping = {'N' => false, 'Y' => true}
@@ -434,142 +434,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       company.save!
-    end
-  end
-
-  def companies_acting_as_suppliers
-    raise
-    supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv')
-    supplier_service.loop(limit) do |x|
-      account = x.get_column('alias_id') ? Account.non_trade : Account.trade
-      supplier_name = x.get_column('sup_name')
-      company = Company.find_by_name(supplier_name)
-
-      if company.present?
-        company.update_attributes(:name => "#{company.name} (Customer)")
-        supplier_name = "#{supplier_name} (Supplier)"
-      end
-
-      company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
-      is_msme_mapping = {"N" => false, "Y" => true}
-      urd_mapping = {"N" => false, "Y" => true}
-
-      Company.where(remote_uid: x.get_column('sup_code').strip).first_or_create! do |company|
-
-        inside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_person'))
-        outside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_outside'))
-        sales_manager = Overseer.find_by_email(x.get_column('sup_sales_manager'))
-        payment_option = PaymentOption.find_by_name(x.get_column('payment_terms'))
-
-        company.assign_attributes(
-            account: account,
-            name: name,
-            default_payment_option: payment_option,
-            inside_sales_owner: inside_sales_owner,
-            outside_sales_owner: outside_sales_owner,
-            sales_manager: sales_manager,
-            site: x.get_column('cmp_website'),
-            company_type: (company_type_mapping[x.get_column('sup_type').split(',').first] if x.get_column('sup_type')),
-            credit_limit: x.get_column('creditlimit', default: 1),
-            is_msme: is_msme_mapping[x.get_column('msme')],
-            is_unregistered_dealer: urd_mapping[x.get_column('urd')],
-            tax_identifier: x.get_column('cmp_gst'),
-            is_supplier: true,
-            is_customer: false,
-            legacy_id: x.get_column('sup_id'),
-            pan: x.get_column('sup_pan'),
-            legacy_metadata: x.get_row
-        )
-      end
-    end
-  end
-
-  def supplier_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv')
-
-    service.loop(limit) do |x|
-      account = x.get_column('alias_id') ? Account.non_trade : Account.trade
-      contact_email = x.get_column('pc_email', downcase: true)
-      supplier_name = x.get_column('sup_name')
-
-      if contact_email && supplier_name
-        supplier_contact = Contact.where(email: contact_email).first_or_create! do |contact|
-          password = Devise.friendly_token
-
-          contact.assign_attributes(
-              account: account,
-              remote_uid: x.get_column('sap_id'),
-              first_name: x.get_column('pc_firstname', default: 'fname'),
-              last_name: x.get_column('pc_lastname', default: 'lname'),
-              prefix: x.get_column('prefix'),
-              designation: x.get_column('pc_function'),
-              telephone: x.get_column('pc_phone'),
-              mobile: x.get_column('pc_mobile'),
-              status: :active,
-              password: password,
-              password_confirmation: password,
-              legacy_id: x.get_column('pc_num'),
-              legacy_metadata: x.get_row
-          )
-        end
-
-        company = Company.find_by_name!(supplier_name)
-        CompanyContact.find_or_create_by(
-            company: company,
-            contact: supplier_contact,
-            legacy_metadata: x.get_row
-        )
-      end
-    end
-  end
-
-  def supplier_addresses
-    supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv')
-    gst_type_mapping = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
-
-    supplier_address_service.loop(limit) do |x|
-      company = Company.find_by_name(x.get_column('cmp_name'))
-
-      if company.present?
-        country_code = x.get_column('country')
-        address = Address.new(
-            company: company,
-            name: company.name,
-            gst: x.get_column('gst_num'),
-            country_code: country_code,
-            state: AddressState.find_by_name(x.get_column('state_name')),
-            state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
-            city_name: x.get_column('city'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('address'),
-            cst: x.get_column('cst_num'),
-            vat: x.get_column('vat_num'),
-            excise: x.get_column('ed_num'),
-            telephone: x.get_column('telephone'),
-            gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
-            legacy_id: x.get_column('address_id'),
-            legacy_metadata: x.get_row
-        )
-
-        address.assign_attributes(
-            billing_address_uid: x.get_column('sap_row_num').split(',')[0],
-            shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
-        ) if x.get_column('sap_row_num').present?
-
-
-        if company.legacy_metadata['default_billing'] == x.get_column('address_id')
-          company.default_billing_address = address
-        end
-
-        if company.legacy_metadata['default_shipping'] == x.get_column('address_id')
-          company.default_shipping_address = address
-        end
-
-        ActiveRecord::Base.transaction do
-          address.save!
-          company.save!
-        end
-      end
     end
   end
 
