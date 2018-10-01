@@ -396,7 +396,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       company_name = x.get_column('cmp_name')
       legacy_id = x.get_column('cmp_id')
-      next if company_name == 'Visiport'
       company = Company.find_by_legacy_id!(legacy_id)
       address = Address.where(legacy_id: x.get_column('idcompany_gstinfo')).first_or_create do |address|
         address.assign_attributes(
