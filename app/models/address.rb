@@ -41,4 +41,8 @@ class Address < ApplicationRecord
   def to_s
     [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
   end
+
+  def self.legacy
+    find_by_name('Legacy Indian State')
+  end
 end

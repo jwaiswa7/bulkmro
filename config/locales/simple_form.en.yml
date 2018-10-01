@@ -38,6 +38,8 @@ en:
         nature_of_business: 'e.g. Trading'
         email: 'e.g. info@reliance.com'
         telephone: 'e.g. 02240236090'
+        tan: 'e.g. AVVPS12313'
+        pan: 'e.g. AVVPS12313'
       contact:
         first_name: 'e.g. Jon'
         last_name: 'e.g. Snow'

@@ -56,7 +56,7 @@ class Company < ApplicationRecord
   }
 
   enum priority: {
-      standard: 10,
+      non_strategic: 10,
       strategic: 20
   }
 
