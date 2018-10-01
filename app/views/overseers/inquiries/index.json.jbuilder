@@ -24,8 +24,8 @@ json.columnFilters [
     [],
     [],
     [],
-    [],
-    [],
+    Overseer.sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+    Overseer.sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
     [],
     []
 ]
