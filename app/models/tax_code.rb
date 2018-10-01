@@ -10,6 +10,7 @@ class TaxCode < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_service ||= false
+    self.is_pre_gst ||= false
   end
 
   def self.default

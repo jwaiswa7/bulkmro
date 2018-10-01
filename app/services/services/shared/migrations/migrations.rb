@@ -7,8 +7,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers company_contacts addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(categories)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -213,7 +213,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def accounts_acting_as_customers
+  def accounts
     Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
     Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
 
@@ -436,6 +436,142 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def companies_acting_as_suppliers
+    supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv')
+    supplier_service.loop(limit) do |x|
+      account = x.get_column('alias_id') ? Account.non_trade : Account.trade
+      supplier_name = x.get_column('sup_name')
+      company = Company.find_by_name(supplier_name)
+
+      next if x.get_column('sup_id').in? %w(5406)
+
+      if company.present?
+        company.update_attributes(:name => "#{company.name} (Customer)")
+        supplier_name = "#{supplier_name} (Supplier)"
+      end
+
+      company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
+      is_msme_mapping = {"N" => false, "Y" => true}
+      urd_mapping = {"N" => false, "Y" => true}
+
+      Company.where(remote_uid: x.get_column('sup_code')).first_or_create! do |company|
+        inside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_person'))
+        outside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_outside'))
+        sales_manager = Overseer.find_by_email(x.get_column('sup_sales_manager'))
+        payment_option = PaymentOption.find_by_name(x.get_column('payment_terms'))
+
+        company.assign_attributes(
+            account: account,
+            name: supplier_name,
+            default_payment_option: payment_option,
+            inside_sales_owner: inside_sales_owner,
+            outside_sales_owner: outside_sales_owner,
+            sales_manager: sales_manager,
+            site: x.get_column('cmp_website'),
+            company_type: (company_type_mapping[x.get_column('sup_type').split(',').first] if x.get_column('sup_type')),
+            credit_limit: x.get_column('creditlimit', default: 1),
+            is_msme: is_msme_mapping[x.get_column('msme')],
+            is_unregistered_dealer: urd_mapping[x.get_column('urd')],
+            tax_identifier: x.get_column('cmp_gst'),
+            is_supplier: true,
+            is_customer: false,
+            legacy_id: x.get_column('sup_id'),
+            pan: x.get_column('sup_pan'),
+            legacy_metadata: x.get_row
+        )
+      end
+    end
+  end
+
+  def supplier_contacts
+    service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv')
+
+    service.loop(limit) do |x|
+      account = x.get_column('alias_id') ? Account.non_trade : Account.trade
+      contact_email = x.get_column('pc_email', downcase: true)
+      supplier_name = x.get_column('sup_name')
+
+      if contact_email && supplier_name
+        supplier_contact = Contact.where(email: contact_email).first_or_create! do |contact|
+          password = Devise.friendly_token
+
+          contact.assign_attributes(
+              account: account,
+              remote_uid: x.get_column('sap_id'),
+              first_name: x.get_column('pc_firstname', default: 'fname'),
+              last_name: x.get_column('pc_lastname', default: 'lname'),
+              prefix: x.get_column('prefix'),
+              designation: x.get_column('pc_function'),
+              telephone: x.get_column('pc_phone'),
+              mobile: x.get_column('pc_mobile'),
+              status: :active,
+              password: password,
+              password_confirmation: password,
+              legacy_id: x.get_column('pc_num'),
+              legacy_metadata: x.get_row
+          )
+        end
+
+        company = Company.find_by_name!(supplier_name)
+        CompanyContact.find_or_create_by(
+            company: company,
+            contact: supplier_contact,
+            legacy_metadata: x.get_row
+        )
+      end
+    end
+  end
+
+  def supplier_addresses
+    supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv')
+    gst_type_mapping = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
+
+    supplier_address_service.loop(limit) do |x|
+      company = Company.find_by_name(x.get_column('cmp_name'))
+
+      if company.present?
+        country_code = x.get_column('country')
+        address = Address.new(
+            company: company,
+            name: company.name,
+            gst: x.get_column('gst_num'),
+            country_code: country_code,
+            state: AddressState.find_by_name(x.get_column('state_name')),
+            state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
+            city_name: x.get_column('city'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('address'),
+            cst: x.get_column('cst_num'),
+            vat: x.get_column('vat_num'),
+            excise: x.get_column('ed_num'),
+            telephone: x.get_column('telephone'),
+            gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
+            legacy_id: x.get_column('address_id'),
+            legacy_metadata: x.get_row
+        )
+
+        address.assign_attributes(
+            billing_address_uid: x.get_column('sap_row_num').split(',')[0],
+            shipping_address_uid: x.get_column('sap_row_num').split(',')[1],
+        ) if x.get_column('sap_row_num').present?
+
+
+        if company.legacy_metadata['default_billing'] == x.get_column('address_id')
+          company.default_billing_address = address
+        end
+
+        if company.legacy_metadata['default_shipping'] == x.get_column('address_id')
+          company.default_shipping_address = address
+        end
+
+        ActiveRecord::Base.transaction do
+          address.save!
+          company.save!
+        end
+      end
+    end
+  end
+
   def warehouse
     service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
     service.loop(limit) do |x|
@@ -462,10 +598,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def brands
-    Brand.create!(name: 'Legacy Brand')
+    Brand.where(name: 'Legacy Brand').first_or_create!
     service = Services::Shared::Spreadsheets::CsvImporter.new('brands.csv')
     service.loop(limit) do |x|
-      Brand.where(name: x.get_column('value')).first_or_create! do |brand|
+      name = x.get_column('value')
+      next if name == nil
+
+      Brand.where(name: name).first_or_create! do |brand|
         brand.legacy_id = x.get_column('option_id')
         brand.legacy_metadata = x.get_row
       end
@@ -495,18 +634,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def categories
     service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
     service.loop(limit) do |x|
-      id = x.get_column('id')
       parent_id = x.get_column('parent_id')
+      tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
+      parent = Category.find_by_legacy_id(x.get_column('parent_id'))
+      name = x.get_column('name')
 
-      if id != '1' && id != '2'
-        tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
-        parent = Category.find_by_remote_uid(x.get_column('parent_id')) if parent_id != '2'
-
-        Category.create!(
+      Category.where(name: name).first_or_create! do |category|
+        category.assign_attributes(
             remote_uid: x.get_column('sap_code', nil_if_zero: true),
             tax_code: tax_code || TaxCode.default,
             parent: parent,
-            name: x.get_column('name'),
             description: x.get_column('description'),
             legacy_id: x.get_column('id'),
             legacy_metadata: x.get_row
@@ -520,23 +657,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       brand = Brand.find_by_legacy_id(x.get_column('product_brand'))
       measurement_unit = MeasurementUnit.find_by_name(x.get_column('uom_name'))
+      name = x.get_column('name')
 
-      product = Product.create!(
-          name: x.get_column('name'),
-          brand: brand,
-          category: Category.default,
-          sku: x.get_column('sku'),
-          description: x.get_column('description'),
-          meta_description: x.get_column('meta_description'),
-          meta_keyword: x.get_column('meta_keyword'),
-          meta_title: x.get_column('meta_title'),
-          legacy_id: x.get_column('entity_id'),
-          remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
-          measurement_unit: measurement_unit,
-          legacy_metadata: x.get_row
-      )
 
-      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => overseer)
+      product = Product.where(name: name).first_or_create do |product|
+        product.assign_attributes(
+            brand: brand,
+            category: Category.default,
+            sku: x.get_column('sku'),
+            description: x.get_column('description'),
+            meta_description: x.get_column('meta_description'),
+            meta_keyword: x.get_column('meta_keyword'),
+            meta_title: x.get_column('meta_title'),
+            legacy_id: x.get_column('entity_id'),
+            remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
+            measurement_unit: measurement_unit,
+            legacy_metadata: x.get_row
+        )
+
+        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => overseer)
+      end
     end
   end
 
