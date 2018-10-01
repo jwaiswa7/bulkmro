@@ -6,6 +6,9 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
     resp_status = 0
     resp_msg = 'Invalid request.'
     resp_response = ''
+
+    request = log_request(:sync_back, params)
+
     #request params: {"U_MgntDocID":"942","Status":"1","comment":"","DocNum":"10300008","DocEntry":"609","UserEmail":"35","SapReject":""}
     #
     #In create U_MgntDocID is ref id vaule sent while creating sales draft from magento to SAP
@@ -45,20 +48,27 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
 
         resp_status = 1
         resp_msg = "SO Draft Rejected Successfully"
+
       elsif params['Status'] == '3'
         #UPDATE order_request_flow SET request_status = 'Hold by finance', sap_reject = 2 WHERE order_request_id
         #sap reject also add comment
         resp_status = 1
-
+        #TODO
         InquiryComment.create(message: params['comment'], inquiry: sales_order.inquiry)
 
         resp_msg = "SO Draft Updated Successfully"
       else
         resp_msg = "Invalid/Unknown Status received from SAP.";
       end
+
+
     end
 
     response = format_response(resp_status, resp_msg, resp_response)
+    request.response_message = response.to_json
+    request.status = :success
+    request.save
+
     render json: response, status: :ok
   end
 
@@ -67,6 +77,8 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
     resp_msg = 'Invalid request.'
     resp_response = ''
 
+
+    request = log_request(:sync_back, params)
     #request params: {"increment_id":"2001656","sap_order_status":"30","comment":"","DocNum":"2001656","DocEntry":"2169","UserEmail":"35","SapReject":""}
     # In update increment_id and DocNum are same
     if params['increment_id'] && params['sap_order_status']
@@ -97,6 +109,10 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
 
     end
     response = format_response(resp_status, resp_msg)
+    request.response_message = response.to_json
+    request.status = :success
+    request.save
+
     render json: response, status: :ok
   end
 end

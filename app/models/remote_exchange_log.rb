@@ -10,7 +10,8 @@ class RemoteExchangeLog < ApplicationRecord
   enum method: {
       get: 1,
       post: 2,
-      patch: 3
+      patch: 3,
+      sync_back: 4
   }
 
 end

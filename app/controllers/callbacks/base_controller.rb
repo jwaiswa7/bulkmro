@@ -10,7 +10,18 @@ class Callbacks::BaseController < ApplicationController
     response['response'] = resp
     response
   end
-
+  def self.model_name
+    self.name.split('::').last.to_s
+  end
+  def log_request(method,request)
+    RemoteExchangeLog.create({
+                                 method: method,
+                                 resource: model_name,
+                                 request_message: request,
+                                 url: model_name,
+                                 status: :pending
+                             })
+  end
   private
   def authenticate_callback
     puts(params)
