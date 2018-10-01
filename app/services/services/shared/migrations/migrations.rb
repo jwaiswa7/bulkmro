@@ -7,7 +7,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
@@ -262,7 +262,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       last_name = x.get_column('lastname', default: 'lname')
 
       email = x.get_column('email', downcase: true, remove_whitespace: true)
-      email = [remote_uid, '@bulkmro.com'].join if email != ~Devise.email_regexp
+      email = [remote_uid, '@bulkmro.com'].join if email !=~ Devise.email_regexp
       account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
 
       Contact.where(remote_uid: remote_uid).first_or_create! do |contact|
@@ -292,9 +292,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def companies_acting_as_customers
-
     raise
-
     legacy_account = Account.legacy
     legacy_company = Company.create!(
         name: "Legacy Company",
@@ -343,7 +341,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               company_type: company_type_mapping[x.get_column('company_type')],
               priority: priority_mapping[x.get_column('is_strategic').to_s],
               nature_of_business: nature_of_business_mapping[x.get_column('nature_of_business')],
-              credit_limit: x.get_column('creditlimit', default: 1),
+              credit_limit: x.get_column('creditlimit', default: 1, to_f: true),
               is_msme: is_msme_mapping[x.get_column('msme')],
               is_unregistered_dealer: urd_mapping[x.get_column('urd')],
               tax_identifier: x.get_column('cmp_gst'),
