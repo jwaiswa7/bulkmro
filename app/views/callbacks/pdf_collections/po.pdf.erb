@@ -60,18 +60,18 @@
                     <b><span style="color:#000000">Contact Name</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"></span></td>
+                    <span style="color:#000000"></span>Mr. Kaushik Banglorkar</td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Contact #</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"></span></td>
+                    <span style="color:#000000">+91-9322833445</span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= Date.parse(@po[:PoCommittedDate]).strftime("%d-%b-%Y") %></span></td>
+                    <span style="color:#000000"><%= Date.parse(@po[:PoSupplyDate]).strftime("%d-%b-%Y") %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -81,7 +81,7 @@
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Packing & Forwarding</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:PoPackingForwarding] %></span></td>
+                    <span style="color:#000000"><%= @po[:packing] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Mode of Transport</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -113,21 +113,21 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <%#= @sales_order.inquiry.contact.full_name %><br>
-                    <%#= @sales_order.inquiry.shipping_address %><br>
+                    <%= @supplier_billing.name %><br>
+                    <%= @supplier_billing.to_multiline_s %>
                     <br>
-                    Tel: <%#= @sales_order.inquiry.shipping_address.telephone %><br>
-                    GST No. :<%#= @sales_order.inquiry.shipping_address.gst %><br>
+                    Tel: <%= @supplier_billing.telephone %><br>
+                    GST No. :<%=  @supplier_billing.gst %><br>
                   </div>
                 </td>
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <%#= @sales_order.inquiry.contact.full_name %><br>
-                    <%#= @sales_order.inquiry.billing_address %><br>
+                    <%= @supplier_shipping.name %><br>
+                    <%= @supplier_shipping.to_multiline_s %>
                     <br>
-                    Tel: <%#= @sales_order.inquiry.billing_address.telephone %><br>
-                    GST No. :<%#= @sales_order.inquiry.billing_address.gst %><br>
+                    Tel: <%= @supplier_shipping.telephone %><br>
+                    GST No. :<%=  @supplier_shipping.gst %><br>
                   </div>
                 </td>
               </tr>

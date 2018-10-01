@@ -47,6 +47,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     inv.sales_order_id = params[:order_id]
     inv.request_payload = params
     inv.save
+
     @sales_order = inv.sales_order
     @invoice = inv.request_payload.deep_symbolize_keys
 
@@ -91,9 +92,12 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     purchase.request_payload = params
     purchase.save
 
-    purchase = SalesPurchaseOrder.find(2)
     @inquiry = purchase.inquiry
     @po = purchase.request_payload.deep_symbolize_keys
+    @supplier_billing = Address.find_by_legacy_id(@po[:PoSupBillFrom])
+    @supplier_shipping = Address.find_by_legacy_id(@po[:PoSupShipFrom])
+
+    @po[:packing] = @po[:PoShippingCost].to_f > 0 ? @po[:PoShippingCost].to_f + ' Amount Extra' : 'Included'
 
     @po[:item_subtotal] = 0
     @po[:item_tax_amount] = 0
@@ -102,7 +106,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     @po[:ItemLine].each do |item|
       @product = Product.find_by_legacy_id(item[:PopProductId].to_s)
       item[:uom] = @product.measurement_unit.name
-      item[:sku] = @product.sku #row.tax_code.chapter
+      item[:sku] = @product.sku
       item[:row_total] = item[:PopPriceHt].to_f * item[:PopQty].to_f
       item[:tax_rate] = @product.tax_code.tax_percentage
       item[:tax_amount] = (item[:row_total].to_f * item[:tax_rate] / 100).round(2)
