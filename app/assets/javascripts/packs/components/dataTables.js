@@ -104,13 +104,11 @@ let setup = () => {
             },
             
             initComplete: function(settings, json) {
-                var dt = this;
-                this.find('th').each(function(i) {
-                    let filter = $(this).data('filter');
-                    let td = $(dt).find('thead tr:eq(1) td:eq(' + i + ')');
+                var table = this;
+                this.api().columns().every(function () {
+                    let filter = $(this.header()).data('filter');
+                    let td = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')');
                     let input = '';
-
-                    console.log(td.html());
 
                     if (filter != false) {
                         if (filter == 'dropdown') {
@@ -118,28 +116,14 @@ let setup = () => {
                         } else {
                             input = '<input type="text" class="form-control" />';
                         }
+
+                        input.on('change', function () {
+                            let val = $(this).val();
+                            this.search(val).draw();
+                        });
                     }
 
                     td.append(input);
-                });
-
-                this.api().columns().every(function () {
-                    let column = this;
-
-                    let select = $('<select class="form-control"><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            let val = $(this).val();
-                            column.search(this.value).draw();
-                        });
-
-                    // Only contains the *visible* options from the first page
-                    // console.log(column.data().unique());
-
-                    // If I add extra data in my JSON, how do I access it here besides column.data?
-                    column.data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
-                    });
                 });
             }
         })
