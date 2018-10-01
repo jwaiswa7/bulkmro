@@ -18,6 +18,9 @@ class Overseer < ApplicationRecord
   enum role: { admin: 10, sales: 20, sales_manager: 30 }
   enum status: { active: 10, inactive: 20 }
 
+  scope :can_send_email, -> { where.not(:smtp_password => nil) }
+  scope :cannot_send_email, -> { where(:smtp_password => nil) }
+
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
   validates_presence_of :password_confirmation, :if => :new_record?

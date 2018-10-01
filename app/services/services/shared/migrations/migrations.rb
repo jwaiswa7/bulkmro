@@ -83,16 +83,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def overseers_smtp_config
-    raise
     service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
     service.loop(secondary_limit) do |x|
-      overseer = Overseer.find_by_email!(x.get_column('email'))
-      overseer.update_attributes(:smtp_password => x.get_column('password')) if overseer.present?
+      email = x.get_column('email')
+      next if email.in? %w(shailesh.salekar@bulkmro.com service@bulkmro.com)
+      overseer = Overseer.find_by_email!(email)
+      overseer.update_attributes(:smtp_password => x.get_column('password'))
     end
   end
 
 
   def measurement_unit
+    raise
     measurement_units = ["EA", "SET", "PK", "KG", "M", "FT", "Pack", "Pair", "PR", "BOX", "LTR", "LT", "MTR", "ROLL", "Nos", "PKT", "REEL", "FEET", "Meter", "1 ROLL", "ml", "MAT", "LOT", "No", "RFT", "Bundle", "NPkt", "Metre", "CAN", "SQ.Ft", "BOTTLE", "BOTTEL", "CUBIC METER", "PC", "GRAM", "EACH", "FOOT", "Dozen", "INCH", "Ream", "Bag", "Unit", "MT", "KIT", "SQ INCH", "CASE"]
     MeasurementUnit.create! measurement_units.map {|mu| {name: mu}}
   end
