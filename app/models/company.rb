@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
   include Mixins::HasUniqueName
   include Mixins::HasManagers
 

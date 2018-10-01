@@ -40,13 +40,10 @@ Rails.application.routes.draw do
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'serializer'
     end
 
-    resources :reports do
-      collection do
-
-      end
-    end
+    resources :reports
 
     resources :activities
 

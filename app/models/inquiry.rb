@@ -7,7 +7,7 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  # update_index('inquiries#inquiry') { self }
+  update_index('inquiries#inquiry') { self }
   pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
@@ -32,8 +32,11 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes
+  has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
   has_many :sales_orders, :through => :sales_quotes
+  has_many :sales_order_rows, :through => :sales_orders
+  has_many :final_sales_orders, -> { where.not(:sent_at => nil).latest }, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: false
   has_many :email_messages
 

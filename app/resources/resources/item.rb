@@ -51,6 +51,11 @@ class Resources::Item < Resources::ApplicationResource
     }
   end
 
+
+  def self.create(record)
+    OpenStruct.new(post("/#{collection_name}", body: to_remote(record).to_json).parsed_response)
+  end
+
   def self.update(id, record, options = {})
     response = patch("/#{collection_name}('#{id}')", body: to_remote(record).to_json)
     get_validated_response(:patch, record, response)

@@ -1,0 +1,27 @@
+class Services::Overseers::Accounts::SaveAndSync < Services::Shared::BaseService
+
+  def initialize(account)
+    @account = account
+  end
+
+  def call
+    if Rails.env.development?
+      call_later
+    else
+      perform_later(account)
+    end
+  end
+
+  def call_later
+    if account.persisted?
+      if account.remote_uid.present?
+        Resources::BusinessPartnerGroup.update(account.remote_uid, account)
+      else
+        account.remote_uid = Resources::BusinessPartnerGroup.create(account)
+        account.save
+      end
+    end
+  end
+
+  attr_accessor :account
+end
