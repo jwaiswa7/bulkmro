@@ -17,8 +17,6 @@ class Contact < ApplicationRecord
   has_one :company_contact
   has_one :company, :through => :company_contact
 
-  validates_uniqueness_of :remote_uid, :allow_blank => true, :allow_nil => true
-
   enum role: { customer: 10 }
   enum status: { active: 10, inactive: 20 }
   enum contact_group: {

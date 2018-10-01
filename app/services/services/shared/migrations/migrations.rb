@@ -243,7 +243,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def contacts
     password = Devise.friendly_token
     Contact.where(email: "legacy@bulkmro.com").first_or_create! do |contact|
-      contact.assign_attributes(account: Account.legacy, remote_uid: 99999999, first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
+      contact.assign_attributes(account: Account.legacy, first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
     end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
@@ -253,27 +253,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service.loop(limit) do |x|
       entity_id = x.get_column('entity_id')
-      remote_uid = x.get_column('sap_id')
 
-      next if remote_uid.blank?
 
       alias_name = x.get_column('aliasname')
       first_name = x.get_column('firstname', default: 'fname')
       last_name = x.get_column('lastname', default: 'lname')
 
       email = x.get_column('email', downcase: true, remove_whitespace: true)
-      email = [remote_uid, '@bulkmro.com'].join if email.match(Devise.email_regexp).blank?
-      email = [remote_uid, email].join('-') if Contact.where(:email => email).exists?
+      email = [entity_id, '@bulkmro.com'].join if email.match(Devise.email_regexp).blank?
+      # email = [remote_uid, email].join('-') if Contact.where(:email => email).exists?
 
       account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
 
-      Contact.where(remote_uid: remote_uid).first_or_create! do |contact|
+      Contact.where(email: email).first_or_create! do |contact|
         password = Devise.friendly_token
         contact.assign_attributes(
-            email: email,
             legacy_email: x.get_column('email', downcase: true, remove_whitespace: true),
             account: account,
-            remote_uid: remote_uid,
             first_name: first_name,
             last_name: last_name,
             prefix: x.get_column('prefix'),

@@ -3,7 +3,7 @@ json.data (@contacts) do |contact|
 
                   [
                       if policy(contact).edit?
-                        row_action_button(edit_overseers_contact_path(contact), 'pencil', 'Edit Inquiry', 'warning')
+                        row_action_button(edit_overseers_contact_path(contact), 'pencil', 'Edit Contact', 'warning')
                       end,
                   ].join(' '),
                   contact.full_name,

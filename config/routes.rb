@@ -39,6 +39,9 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :addresses do
+    end
+
     resources :categories do
       collection do
         get 'autocomplete'

@@ -33,22 +33,16 @@
           All addresses filterable in any way that we want under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_addresses_path(company_id: @company.id) %>">
           <thead>
           <tr>
-            <th data-priority="1" class="no-sort"></th>
-            <th data-priority="2">Name</th>
+            <th class="no-sort"></th>
+            <th class="no-sort"><i class="fal fa-building"></i> Address</th>
+            <th data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody>
-          <% @company.addresses.each do |address| %>
-            <tr>
-              <td>
-                <a href="<%= edit_overseers_company_address_path(address.company, address) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Address"><i class="fal fa-pen"></i></a>
-              </td>
-              <td><%= address.to_s %></td>
-            </tr>
-          <% end %>
+
           </tbody>
         </table>
       </div>
@@ -56,31 +50,23 @@
       <div class="tab-pane fade" id="contacts" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
-          <a href="<%= new_overseers_company_contact_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+          <a href="<%= new_overseers_contact_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
             Contact</a>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All contacts filterable in any way that we want under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by x, y or z" style="width:100%;">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
           <thead>
           <tr>
-            <th data-priority="1"></th>
-            <th data-priority="2">Name</th>
-            <th class="text-right numeric"><i class="fal fa-building"></i> Companies</th>
+            <th data-name="name">Name</th>
+            <th class="no-sort"><i class="fal fa-building"></i> Companies</th>
+            <th data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody>
-          <% @company.contacts.each do |contact| %>
-            <tr>
-              <td>
-                <a href="<%= edit_overseers_company_contact_path(@company, contact) %>" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit contact"><i class="fal fa-pen"></i></a>
-              </td>
-              <td><%= contact.full_name %></td>
-              <td class="text-right"><%= contact.companies.count %></td>
-            </tr>
-          <% end %>
+
           </tbody>
         </table>
       </div>
