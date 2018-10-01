@@ -19,7 +19,7 @@ class Contact < ApplicationRecord
 
   validates_uniqueness_of :remote_uid, :allow_blank => true, :allow_nil => true
 
-  enum role: { admin: 10 }
+  enum role: { customer: 10 }
   enum status: { active: 10, inactive: 20 }
   enum contact_group: {
       general: 10,
@@ -33,7 +33,7 @@ class Contact < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.role ||= :admin
+    self.role ||= :customer
     self.status ||= :active
     self.contact_group ||= :general
 

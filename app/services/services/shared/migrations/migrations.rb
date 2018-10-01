@@ -7,7 +7,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts_acting_as_customers contacts companies_acting_as_customers addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -185,7 +186,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
     service.loop(secondary_limit) do |x|
       next if x.get_column('id').in? %w(123 146)
-      raise if x.get_column('value') == 'NULL'
       PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
         payment_option.assign_attributes(
             remote_uid: x.get_column('group_code', nil_if_zero: true),
@@ -202,42 +202,49 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def industries
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
     service.loop(secondary_limit) do |x|
-      Industry.first_or_create!(
-          remote_uid: x.get_column('industry_sap_id'),
-          name: x.get_column('industry_name'),
-          description: x.get_column('industry_description'),
-          legacy_id: x.get_column('idindustry'),
-          legacy_metadata: x.get_row
-      )
+      Industry.where(name: x.get_column('industry_name')).first_or_create! do |industry|
+        industry.assign_attributes(
+            remote_uid: x.get_column('industry_sap_id'),
+            description: x.get_column('industry_description'),
+            legacy_id: x.get_column('idindustry'),
+            legacy_metadata: x.get_row
+        )
+      end
     end
   end
 
   def accounts_acting_as_customers
     Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
     Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
-    Account.first_or_create!(remote_uid: 99999999, name: "Legacy Account", alias: "LA")
+
+    Account.where(:name => 'Legacy Account').first_or_create! do |account|
+      account.remote_uid = 99999999
+      account.alias = 'LGA'
+    end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
     service.loop(limit) do |x|
       id = x.get_column('id')
       next if id.in? %w(3275)
       account_name = x.get_column('aliasname')
-      Account.where(name: account_name).first_or_create! do |accounts|
-        accounts.remote_uid = x.get_column('sap_id')
-        accounts.name = account_name
-        accounts.alias = account_name.titlecase.split.map(&:first).join
-        accounts.legacy_id = id
-        accounts.account_type = :is_customer
-        accounts.legacy_metadata = x.get_row
+      Account.where(name: account_name).first_or_create! do |account|
+        account.remote_uid = x.get_column('sap_id')
+        account.name = account_name
+        account.alias = account_name.titlecase.split.map(&:first).join
+        account.legacy_id = id
+        account.account_type = :is_customer
+        account.legacy_metadata = x.get_row
+        account.created_at = x.get_column('created_at', to_datetime: true)
+        account.updated_at = x.get_column('updated_at', to_datetime: true)
       end
     end
   end
 
   def contacts
-    raise
-
     password = Devise.friendly_token
-    Contact.create!(account: Account.legacy, remote_uid: 99999999, email: "legacy@bulkmro.com", first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
+    Contact.where(email: "legacy@bulkmro.com").first_or_create! do |contact|
+      contact.assign_attributes(account: Account.legacy, remote_uid: 99999999, first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
+    end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
 
@@ -245,36 +252,49 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     contact_group_mapping = {'General' => 10, 'Company Top Manager' => 20, 'Retailer' => 30, 'Ador' => 40, 'Vmi_group' => 50, 'C-Form customer GROUP' => 60, 'Manager' => 70}
 
     service.loop(limit) do |x|
-      if x.get_column('aliasname').present?
-        account = Account.find_by_name!(x.get_column('aliasname'))
-      else
-        account = Account.legacy
-      end
+      entity_id = x.get_column('entity_id')
+      remote_uid = x.get_column('sap_id')
 
-      Contact.where(email: x.get_column('email').downcase).first_or_create! do |contact|
+      next if remote_uid.blank?
+
+      alias_name = x.get_column('aliasname')
+      first_name = x.get_column('firstname', default: 'fname')
+      last_name = x.get_column('lastname', default: 'lname')
+
+      email = x.get_column('email', downcase: true, remove_whitespace: true)
+      email = [remote_uid, '@bulkmro.com'].join if email != ~Devise.email_regexp
+      account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
+
+      Contact.where(remote_uid: remote_uid).first_or_create! do |contact|
         password = Devise.friendly_token
         contact.assign_attributes(
+            email: email,
+            legacy_email: x.get_column('email', downcase: true, remove_whitespace: true),
             account: account,
-            remote_uid: x.get_column('sap_id'),
-            first_name: x.get_column('firstname', default: 'fname'),
-            last_name: x.get_column('lastname'),
+            remote_uid: remote_uid,
+            first_name: first_name,
+            last_name: last_name,
             prefix: x.get_column('prefix'),
             designation: x.get_column('designation'),
             telephone: x.get_column('telephone'),
+            mobile: x.get_column('mobile'),
             status: status_mapping[x.get_column('is_active').to_s],
             contact_group: contact_group_mapping[x.get_column('group')],
             password: password,
             password_confirmation: password,
-            legacy_id: x.get_column('entity_id'),
-            legacy_metadata: x.get_row
+            legacy_id: entity_id,
+            legacy_metadata: x.get_row,
+            created_at: x.get_column('created_at', to_datetime: true),
+            updated_at: x.get_column('updated_at', to_datetime: true),
         )
       end
     end
-    raise
-
   end
 
   def companies_acting_as_customers
+
+    raise
+
     legacy_account = Account.legacy
     legacy_company = Company.create!(
         name: "Legacy Company",

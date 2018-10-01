@@ -35,7 +35,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     @current_row = row_hash
   end
 
-  def get_column(name, nil_if_zero: false, default: nil, downcase: false, to_datetime: false)
+  def get_column(name, nil_if_zero: false, default: nil, downcase: false, to_datetime: false, remove_whitespace: false)
     value = if current_row[name].present? && current_row[name] != 'NULL'
               if nil_if_zero
                 current_row[name].to_s == '0' ? nil : current_row[name].strip
@@ -46,14 +46,11 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
               default
             end
 
-    value = if value.present? && downcase
-              value.downcase
-            else
-              value
-            end
-
-    if value.present? && to_datetime
-      value.to_datetime
+    if value.present?
+      value = value.gsub(/\s+/, "") if remove_whitespace
+      value = value.downcase if downcase
+      value = value.to_datetime if to_datetime
+      value
     else
       value
     end

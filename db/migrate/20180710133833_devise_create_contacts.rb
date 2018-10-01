@@ -18,6 +18,7 @@ class DeviseCreateContacts < ActiveRecord::Migration[5.2]
 
       ## Database authenticatable
       t.string :email, null: false, default: ""
+      t.string :legacy_email
       t.string :encrypted_password, null: false, default: ""
 
       ## Recoverable

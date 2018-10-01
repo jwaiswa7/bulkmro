@@ -14,9 +14,7 @@ Rails.application.routes.draw do
     end
 
     resources :reports
-
     resources :activities
-
     resource :profile, :controller => :profile
     resources :overseers
 
@@ -138,7 +136,6 @@ Rails.application.routes.draw do
 
       scope module: 'companies' do
         resources :addresses
-        resources :contacts
       end
     end
 
