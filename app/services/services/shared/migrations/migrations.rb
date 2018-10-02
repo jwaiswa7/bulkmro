@@ -10,8 +10,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     PaperTrail.enabled = false
 
-    methods = %w(inquiry_attachments) if Rails.env.development?
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts activities inquiry_attachments) if Rails.env.production?
+    methods = %w(activity)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
 
@@ -684,6 +684,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       name = x.get_column('name')
       legacy_id = x.get_column('entity_id')
       sku = x.get_column('sku')
+      tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
       next if legacy_id.in? %w(677812 720307 736619 736662 736705)
       next if Product.where(:sku => sku).exists?
 
@@ -692,6 +693,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             brand: brand,
             category: Category.default,
             sku: sku,
+            tax_code: tax_code || TaxCode.default,
             # mpn: x.get_column('mfr_model_number'),
             description: x.get_column('description'),
             meta_description: x.get_column('meta_description'),
@@ -730,7 +732,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_legacy_id = x.get_column('customer_id')
       contact_email = x.get_column('email', downcase: true)
 
-      contact = Contact.find_by_legacy_id('contact_legacy_id') || Contact.find_by_email(contact_email) || company.contacts.first
+      contact = Contact.find_by_legacy_id(contact_legacy_id) || Contact.find_by_email(contact_email) || company.contacts.first
       next if contact.blank?
 
       if company.industry.blank?
@@ -929,7 +931,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       contact = Contact.find_by_legacy_id(x.get_column('company_contact_lagacy'))
-      company = contact.companies.first if contact.present?
+
+      next if inquiry.blank?
+
+      if contact.present?
+        company = contact.companies.first
+      else
+        contact = inquiry.contact
+        company = inquiry.company
+      end
       company_type = company_type_mapping[company.is_supplier ? 'is_supplier' : 'is_customer'] if company.present?
 
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
