@@ -13,9 +13,9 @@ class Callbacks::SalesOrdersController < Callbacks::BaseController
     #
     #In create U_MgntDocID is ref id vaule sent while creating sales draft from magento to SAP
 
-    if params['U_MgntDocID'] && params['Status']
+    if params['U_MgntDocID'] && params['Status'] && params['DocEntry']
 
-      sales_order = SalesOrder.find(params['U_MgntDocID']) || SalesOrder.find_by_legacy_id(params['U_MgntDocID'])
+      sales_order = SalesOrder.find_by_doc_number(params['DocEntry']) || SalesOrder.find_by_legacy_id(params['U_MgntDocID'])
 
       if sales_order.present?
         if params['Status'] == '1'
