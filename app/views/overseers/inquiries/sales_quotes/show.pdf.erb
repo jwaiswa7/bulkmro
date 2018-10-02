@@ -20,7 +20,7 @@
               <tr>
                 <td style="text-align: center;">
                     <span style="color:#000000">
-                      <% if @sales_quote.inquiry.bill_from.address.present? %>
+                      <% if @sales_quote.inquiry.bill_from.present? %>
                       <%= @sales_quote.inquiry.bill_from.address.to_header_multiline_s %>
                       <% end %>
                     </span>
@@ -129,10 +129,10 @@
                     <span style="color:#000000">
                       <%#= @sales_quote.inquiry.bill_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      <% if @sales_quote.inquiry.bill_from.address.present? %>
+                      <% if @sales_quote.inquiry.bill_from.present? %>
                       <%= @sales_quote.inquiry.bill_from.address.to_multiline_s %><br>
-                      <% end %>
                       GST No. : <%= @sales_quote.inquiry.bill_from.address.gst %><br>
+                      <% end %>
                       PAN No. : AAGCB7343G</span>
                 </div>
               </td>
@@ -142,10 +142,10 @@
                     <span style="color:#000000">
                       <%#= @sales_quote.inquiry.ship_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      <% if @sales_quote.inquiry.ship_from.address.present? %>
+                      <% if @sales_quote.inquiry.ship_from.present? %>
                       <%= @sales_quote.inquiry.ship_from.address.to_multiline_s %><br>
-                        <% end %>
                       GST No. : <%= @sales_quote.inquiry.ship_from.address.gst %><br>
+                      <% end %>
                       PAN No. : AAGCB7343G</span>
                 </div>
               </td>
