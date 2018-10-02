@@ -336,10 +336,13 @@
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% if @sales_order.sales_quote.tax_summary.to_i == 0 ||
+                      (@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <% if @sales_order.sales_quote.tax_summary.to_i != 0 ||
-                      (!@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
+                  <% else %>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <% end %>
@@ -349,6 +352,40 @@
               </table>
             </div>
             <br clear="all">
+
+
+            <% if @sales_order.inquiry.bill_from.present? && @sales_order.inquiry.bill_from == 12 %>
+              <div id="noteInvoiceContainer">
+
+                <table  style="width: 100%;"   cellspacing="0" border="0">
+
+
+                  <tr>
+                    <td colspan="2"style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;"  height="20" align="left" valign="top"><b><span style="color:#000000">Note :</span></b></td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left:10px;" height="" align="left" valign="top"><span style="color:#000000">1. Order once confirmed cannot be cancelled or returned.<br>2. Delayed payments will attract 2% interest per month.<br>3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>4. Order once confirmed cannnot be cancelled.<br>5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.<br> </span>
+                      <!-- commercial terms -->
+  <br/>
+                    </td>
+                  </tr>
+
+                </table>
+              </div>
+              <br clear="all"/>
+              <div id="OtherinfoInvoice"  style="border:1px solid; border-radius: 5px;">
+                <table  style="width: 100%;"  cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1"style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="20" align="left" valign="top"><b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td class="invoiceheader1"style=" border-right:1px solid black;border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" colspan="21" rowspan="6" height="105" align="left" valign="top"><span style="color:#000000"><b>First Republic Bank :</b><br>2274 EI Camino Real Palo Alto, CA 94306<br>Account Name: Bulk MRO Industrial Supply , INC ABA : 321081669<br>Account Number: 80003839610</span></td>
+
+                  </tr>
+                </table>
+              </div>
+            <% else %>
             <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
@@ -414,6 +451,7 @@
                 </tbody>
               </table>
             </div>
+              <% end %>
             <br clear="all">
           </div>
         </div>
