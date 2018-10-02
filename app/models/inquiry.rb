@@ -198,8 +198,8 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     if self.company.present?
-      self.outside_sales_owner ||= self.company.outside_sales_owner
-      self.sales_manager ||= self.sales_manager
+      # self.outside_sales_owner ||= self.company.outside_sales_owner
+      # self.sales_manager ||= self.company.sales_manager
       self.status ||= :'Lead by O/S'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure

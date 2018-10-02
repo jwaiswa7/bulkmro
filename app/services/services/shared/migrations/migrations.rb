@@ -7,8 +7,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
+    PaperTrail.enabled = false
+
     methods = %w(inquiries inquiry_terms activity inquiry_details sales_order_drafts)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+
+    PaperTrail.enabled = true
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -56,7 +60,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         password = Devise.friendly_token
         identifier = x.get_column('identifier', downcase: true)
         role_name = roles_mapping[x.get_column('role_name')]
-
 
         overseer.assign_attributes(
             parent: Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]),
@@ -716,7 +719,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     quote_category = {'bmro' => 10, 'ong' => 20}
     opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
     service.loop(limit) do |x|
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')
@@ -758,7 +761,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             quote_category: (quote_category[x.get_column('category').downcase] if x.get_column('category').present?),
             billing_address: billing_address || company.addresses.first,
             shipping_address: shipping_address || company.addresses.first,
-            opportunity_uid: x.get_column('op_code'),
+            opportunity_uid: x.get_column('op_code', nil_if_zero: true),
             customer_po_number: x.get_column('customer_po_id'),
             legacy_shipping_company: Company.find_by_remote_uid(x.get_column('customer_shipping_company')),
             bill_from: Warehouse.find_by_legacy_id(x.get_column('warehouse')),
@@ -778,12 +781,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             is_kit: x.get_column('is_kit'),
             weight_in_kgs: x.get_column('weight'),
             legacy_metadata: x.get_row,
-            created_at: x.get_column('created_time', to_datetime: true)
+            created_at: x.get_column('created_time', to_datetime: true),
+            updated_at: x.get_column('update_time', to_datetime: true)
         )
       end
 
-      inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present?
-      inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency'))))
+      inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
+      inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) && inquiry.inquiry_currency_id.blank?
     end
   end
 
