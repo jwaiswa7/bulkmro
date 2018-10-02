@@ -160,7 +160,7 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
-  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
+  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
