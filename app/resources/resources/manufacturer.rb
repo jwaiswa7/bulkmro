@@ -6,8 +6,7 @@ class Resources::Manufacturer < Resources::ApplicationResource
 
   def self.to_remote(record)
     {
-        "Code": -1,
-        "ManufacturerName": "- No Manufacturer -"#product brand
+        "ManufacturerName": record.name
     }
   end
 end
