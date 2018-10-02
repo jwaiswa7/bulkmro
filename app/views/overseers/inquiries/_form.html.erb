@@ -87,7 +87,7 @@
       <div class="card-alternative mt-3">
         <h6 class="text-uppercase text-black-50 mb-1">Important Dates</h6>
         <div class="form-row">
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <% if f.object.created_at %>
               <div class="form-group">
                 <label class="form-control-label d-block">Created at</label>
@@ -95,7 +95,7 @@
               </div>
             <% end %>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <% if f.object.updated_at %>
               <div class="form-group">
                 <label class="form-control-label d-block">Updated at</label>
@@ -104,7 +104,7 @@
             <% end %>
           </div>
           <div class="col-6">
-            <%= f.input :quotation_date, as: :string %>
+            <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-6">
             <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
@@ -159,10 +159,10 @@
             <% end %>
           </div>
           <div class="col-6">
-            <%= f.input :customer_committed_date, as: :string %>
+            <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-6">
-            <%= f.input :procurement_date, as: :string %>
+            <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
         </div>
       </div>
