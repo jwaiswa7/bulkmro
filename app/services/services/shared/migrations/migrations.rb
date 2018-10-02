@@ -7,7 +7,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(categories)
+    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
@@ -214,8 +214,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts
-    Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD")
-    Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD")
+    Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier)
+    Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier)
 
     Account.where(:name => 'Legacy Account').first_or_create! do |account|
       account.remote_uid = 99999999
@@ -477,7 +477,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             is_customer: false,
             legacy_id: x.get_column('sup_id'),
             pan: x.get_column('sup_pan'),
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            created_at: x.get_column('created_at', to_datetime: true),
+            updated_at: x.get_column('updated_at', to_datetime: true)
         )
       end
     end
@@ -491,7 +493,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = x.get_column('pc_email', downcase: true)
       supplier_name = x.get_column('sup_name')
 
-      if contact_email && supplier_name
+      # if contact_email && supplier_name
         supplier_contact = Contact.where(email: contact_email).first_or_create! do |contact|
           password = Devise.friendly_token
 
@@ -518,7 +520,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             contact: supplier_contact,
             legacy_metadata: x.get_row
         )
-      end
+      # end
     end
   end
 
@@ -529,7 +531,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_address_service.loop(limit) do |x|
       company = Company.find_by_name(x.get_column('cmp_name'))
 
-      if company.present?
+      # if company.present?
         country_code = x.get_column('country')
         address = Address.new(
             company: company,
@@ -568,7 +570,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           address.save!
           company.save!
         end
-      end
+      # end
     end
   end
 
@@ -660,11 +662,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       name = x.get_column('name')
 
 
-      product = Product.where(name: name).first_or_create do |product|
+      product = Product.where(name: name).first_or_create! do |product|
         product.assign_attributes(
             brand: brand,
             category: Category.default,
             sku: x.get_column('sku'),
+            mpn: x.get_column('mfr_model_number'),
             description: x.get_column('description'),
             meta_description: x.get_column('meta_description'),
             meta_keyword: x.get_column('meta_keyword'),
@@ -672,11 +675,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             legacy_id: x.get_column('entity_id'),
             remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
             measurement_unit: measurement_unit,
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            created_at: x.get_column('created', to_datetime: true),
+            updated_at: x.get_column('modified', to_datetime: true),
         )
-
-        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => overseer)
       end
+
+      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => overseer)
     end
   end
 

@@ -16,6 +16,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
 
       t.string :name
       t.string :sku, index: {unique: true}
+      t.string :mpn, index: {unique: true}
 
       t.string :description
       t.string :meta_description
