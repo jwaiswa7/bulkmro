@@ -21,11 +21,9 @@
                 </tr>
                 <tr>
                   <td style="text-align: center;">
-                    <span style="color:#000000">2nd Floor, A Wing, Todi Estate, Sun Mill Compound, Lower Parel West,</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: center;"><span style="color:#000000">Mumbai 400013, Maharashtra, India</span>
+                    <span style="color:#000000">
+                      <%= @sales_order.inquiry.bill_from.address.to_header_multiline_s  %>
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -146,11 +144,8 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.bill_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -160,11 +155,8 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.ship_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>

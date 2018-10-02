@@ -21,11 +21,10 @@
                 </tr>
                 <tr>
                   <td style="text-align: center;">
-                    <span style="color:#000000">2nd Floor, A Wing, Todi Estate, Sun Mill Compound, Lower Parel West,</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: center;"><span style="color:#000000">Mumbai 400013, Maharashtra, India</span>
+                    <span style="color:#000000">
+                      <%= @inquiry.bill_from.address.to_header_multiline_s  %>
+
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -147,7 +146,7 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <br>
                       2nd Floor, A Wing, Todi Estate,<br>
                       Sun Mill Compound, Lower Parel West,<br>
                       Mumbai 400013,<br>
@@ -206,6 +205,14 @@
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">Tax<br>
                     Rate</span></b></th>
+                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                    <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                      <b><span style="color:#000000">IGST<br>
+                    Rate</span></b></th>
+                    <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                      <b><span style="color:#000000">IGST<br>
+                    Amt</span></b></th>
+                  <% else %>
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">CGST<br>
                     Rate</span></b></th>
@@ -218,6 +225,7 @@
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">SGST<br>
                     Amt</span></b></th>
+                    <% end %>
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;border-top-right-radius: 5px; background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">Total<br>
                     (INR)</span></b></th>
@@ -249,15 +257,21 @@
                       <span style="color:#000000"><%= item[:PopPriceHt].to_f * item[:PopQty].to_f %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
                       <span style="color:#000000"><%= item[:tax_rate] %>%</span></td>
+                    <% if @po[:PoTaxRate].to_s.include? "IG" %>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item[:tax_rate].to_f / 2 %>%</span></td>
+                      <span style="color:#000000"><%= item[:tax_rate].to_f %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item[:tax_amount].to_f / 2 %></span></td>
-
+                      <span style="color:#000000"><%= item[:tax_amount].to_f %></span></td>
+                      <% else %>
+                      <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                        <span style="color:#000000"><%= item[:tax_rate].to_f / 2 %>%</span></td>
+                      <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                        <span style="color:#000000"><%= item[:tax_amount].to_f / 2 %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"><%= item[:tax_rate].to_f / 2 %>%</span></td>
                     <td align="center" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
                       <span style="color:#000000"><%= (item[:tax_amount].to_f / 2) %><br></span></td>
+                      <% end %>
                     <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top">
                       <span style="color:#000000"><%= item[:row_total_incl_tax]  %></span></td>
                   </tr>
@@ -288,12 +302,17 @@
                     <span style="color:#000000"></span></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
+                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                    <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                      <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f %></span></b></td>
+                    <% else %>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
                     <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
                     <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
+                    <% end %>
                   <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
                     <b><span style="color:#000000"><%= @po[:item_subtotal_incl_tax] %></span></b></td>
                 </tr>
@@ -309,10 +328,15 @@
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% else %>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% end %>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 5px;" valign="top"></td>
                 </tr>
                 </tbody>

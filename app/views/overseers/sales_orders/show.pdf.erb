@@ -21,11 +21,9 @@
                 </tr>
                 <tr>
                   <td style="text-align: center;">
-                    <span style="color:#000000">2nd Floor, A Wing, Todi Estate, Sun Mill Compound, Lower Parel West,</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="text-align: center;"><span style="color:#000000">Mumbai 400013, Maharashtra, India</span>
+                    <span style="color:#000000">
+                      <%= @sales_order.inquiry.bill_from.address.to_header_multiline_s  %>
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -106,11 +104,8 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.bill_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -120,11 +115,8 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.ship_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -200,6 +192,15 @@
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">Tax<br>
                     Rate</span></b></th>
+                  <% if @sales_order.sales_quote.tax_summary.to_i == 0 ||
+                         (@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
+                    <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                      <b><span style="color:#000000">IGST<br>
+                    Rate</span></b></th>
+                    <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                      <b><span style="color:#000000">IGST<br>
+                    Amt</span></b></th>
+                  <% else %>
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">CGST<br>
                     Rate</span></b></th>
@@ -212,6 +213,7 @@
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">SGST<br>
                     Amt</span></b></th>
+                  <% end %>
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;border-top-right-radius: 5px; background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">Total<br>
                     (INR)</span></b></th>
@@ -242,6 +244,13 @@
                       <span style="color:#000000"><%= item.total_selling_price %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" valign="top">
                       <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                    <% if @sales_order.sales_quote.tax_summary.to_i == 0 ||
+                        (@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
+                      <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                        <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                      <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                        <span style="color:#000000"><%= item.total_tax %></span></td>
+                    <% else %>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
                       <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
@@ -250,6 +259,7 @@
                       <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
                       <span style="color:#000000"><%= item.total_tax / 2 %></span></td>
+                    <% end %>
                     <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top">
                       <span style="color:#000000"><%= item.total_selling_price_with_tax %></span></td>
                   </tr>
@@ -278,14 +288,22 @@
                     <b><span style="color:#000000"><%= @sales_order.calculated_total %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
+                  <% if @sales_order.sales_quote.tax_summary.to_i == 0 ||
+                      (@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @sales_order.calculated_total_tax / 2 %></span></b></td>
+                    <b><span style="color:#000000"><%= @sales_order.calculated_total_tax %></span></b></td>
+                  <% else %>
+                    <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                      <span style="color:#000000"></span></td>
+                    <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                      <b><span style="color:#000000"><%= @sales_order.calculated_total_tax / 2 %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
                     <b><span style="color:#000000"><%= @sales_order.calculated_total_tax / 2 %></span></b></td>
+                  <% end %>
                   <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
                     <b><span style="color:#000000"><%= @sales_order.calculated_total_with_tax %></span></b></td>
                 </tr>
@@ -303,8 +321,11 @@
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% if @sales_order.sales_quote.tax_summary.to_i != 0 ||
+                      (!@sales_order.sales_quote.tax_summary.to_s.include? "IGST")  %>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <% end %>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 5px;" valign="top"></td>
                 </tr>
                 </tbody>

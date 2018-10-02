@@ -50,12 +50,11 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     @sales_order = inv.sales_order
     @invoice = inv.request_payload.deep_symbolize_keys
-
     @invoice[:ItemLine].each do |item|
       @sales_order.rows.each do |row|
         if row.sales_quote_row.product.sku == item[:sku]
           item[:uom] = row.sales_quote_row.product.measurement_unit.name
-          item[:hsn] = row.tax_code.chapter
+          item[:hsn] =  @sales_order.sales_quote.is_sez ? row.tax_code.chapter : row.tax_code.code
           item[:tax_rate] = row.tax_code.tax_percentage
         end
       end
@@ -93,6 +92,9 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     purchase.save
 
     @inquiry = purchase.inquiry
+    if params[:PoTargetWarehouse].present?
+      @warehouse = Warehouse.find(params[:PoTargetWarehouse])
+    end
     @po = purchase.request_payload.deep_symbolize_keys
     @supplier_billing = Address.find_by_legacy_id(@po[:PoSupBillFrom])
     @supplier_shipping = Address.find_by_legacy_id(@po[:PoSupShipFrom])
