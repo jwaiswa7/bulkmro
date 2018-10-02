@@ -89,6 +89,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
+        get 'index_pg'
       end
 
       scope module: 'inquiries' do

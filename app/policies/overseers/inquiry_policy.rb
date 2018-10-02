@@ -1,4 +1,8 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
+  def index_pg?
+    index?
+  end
+
   def new_email_message?
     record.persisted? && overseer.can_send_emails?
   end

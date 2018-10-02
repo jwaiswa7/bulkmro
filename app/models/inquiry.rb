@@ -8,7 +8,7 @@ class Inquiry < ApplicationRecord
   include Mixins::HasComments
 
   update_index('inquiries#inquiry') { self }
-  pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:id, :inquiry_number], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
@@ -96,6 +96,7 @@ class Inquiry < ApplicationRecord
   }
   
   enum opportunity_source: {
+    :unsure => 5,
     :meeting => 10,
     :phone_call => 20,
     :email => 30,
@@ -201,7 +202,7 @@ class Inquiry < ApplicationRecord
       self.sales_manager ||= self.sales_manager
       self.status ||= :'Lead by O/S'
       self.opportunity_type ||= :regular
-      self.opportunity_source ||= :meeting
+      self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
       self.price_type ||= :exw
       self.freight_option ||= :included

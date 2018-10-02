@@ -49,7 +49,7 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     if value.present?
       value = value.gsub(/\s+/, "") if remove_whitespace
       value = value.downcase if downcase
-      value = value.to_datetime if to_datetime
+      value = (value == '0000-00-00' ? Time.at(0) : value.to_datetime) if to_datetime
       value = value.to_f if to_f
       value
     else
