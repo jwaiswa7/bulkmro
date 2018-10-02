@@ -9,8 +9,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     PaperTrail.enabled = false
 
-    methods = %w(inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
+    methods = %w(inquiry_details sales_order_drafts) if Rails.env.development?
+    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activity) if Rails.env.production?
 
     PaperTrail.enabled = true
 
