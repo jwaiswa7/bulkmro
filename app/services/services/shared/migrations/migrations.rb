@@ -1,4 +1,5 @@
 require 'csv'
+require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit
@@ -986,8 +987,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def attach_file(inquiry, filename:, field_name:, file_url:)
     if file_url.present? && filename.present?
-      file = open(file_url)
-      inquiry.send(field_name).attach(io: file, filename: filename)
+      url = URI.parse(file_url)
+      req = Net::HTTP.new(url.host, url.port)
+      req.use_ssl = true
+      res = req.request_head(url.path)
+
+      if res.code == '200'
+        file = open(file_url)
+        inquiry.send(field_name).attach(io: file, filename: filename)
+      else
+        puts res.code
+      end
     end
   end
 end
