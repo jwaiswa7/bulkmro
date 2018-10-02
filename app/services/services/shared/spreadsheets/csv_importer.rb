@@ -1,7 +1,7 @@
 require 'csv'
 
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
-  def initialize(name, skip = 0, log_errors = true)
+  def initialize(name, skip = 0, log_errors = false)
     @errors = []
     @skip = skip
     @log_errors = log_errors
