@@ -22,11 +22,11 @@ class ApplicationRecord < ActiveRecord::Base
   scope :legacy, -> { where.not(:legacy_id => nil) }
   scope :not_legacy, -> { where(:legacy_id => nil) }
 
-  def self.legacy?
+  def legacy?
     self.legacy_id.present?
   end
 
-  def self.not_legacy?
+  def not_legacy?
     !legacy?
   end
 

@@ -10,7 +10,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     PaperTrail.enabled = false
 
     methods = %w(inquiry_details sales_order_drafts) if Rails.env.development?
-    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activity) if Rails.env.production?
+    methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts activities inquiry_attachments) if Rails.env.production?
 
     PaperTrail.enabled = true
 
@@ -815,7 +815,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def inquiry_details
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv', 22000)
     service.loop(limit) do |x|
       quotation_id = x.get_column('quotation_id')
       product_id = x.get_column('product_id')
@@ -923,7 +923,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def activity
+  def activities
     company_type_mapping = {'is_supplier' => 10, 'is_customer' => 20}
     purpose = {'First Meeting/Intro Meeting' => 10, 'Follow up' => 20, 'Negotiation' => 30, 'Closure' => 40, 'Others' => 50}
     activity_type = {'Meeting' => 10, 'Phone call' => 20, 'Email' => 30, 'Quote/Tender Prep' => 40, 'Tender preparation' => 50}
