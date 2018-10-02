@@ -8,7 +8,7 @@ json.data (@products) do |product|
                         row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
                       end
                   ].join(' '),
-                  product.name,
+                  product.name.truncate(50),
                   product.sku,
                   product.brand.to_s,
                   product.category.to_s,

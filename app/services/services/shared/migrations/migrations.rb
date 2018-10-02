@@ -7,7 +7,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(inquiries inquiry_terms activity inquiry_details sales_order_drafts)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
