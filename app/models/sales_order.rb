@@ -22,6 +22,8 @@ class SalesOrder < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['sales_quote_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
   has_one :confirmation, :class_name => 'SalesOrderConfirmation'
+  has_many :sales_invoice
+  has_many :sales_shipment
 
   delegate :conversion_rate, to: :inquiry_currency
 

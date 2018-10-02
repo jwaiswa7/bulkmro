@@ -6,6 +6,24 @@ Rails.application.routes.draw do
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
+  namespace 'callbacks' do
+
+    resources :pdf_collections do
+      collection do
+        post 'invoice_pdf'
+        post 'po_pdf'
+        post 'shipment_pdf'
+      end
+    end
+    resources :receipt_collections
+
+    resources :bank_masters
+
+    resources :activities
+
+    get 'login' => '/callbacks/sessions#new'
+  end
+
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'

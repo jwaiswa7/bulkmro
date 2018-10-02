@@ -11,7 +11,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.pdf do
         render pdf: 'show',
-               template: 'overseers/sales_orders/show.pdf.erb',
+               template: 'overseers/sales_orders/show',
+               layout: 'overseers/layouts/sap',
                footer: {center: '[page] of [topage]'}
       end
     end
