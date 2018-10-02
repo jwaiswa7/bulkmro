@@ -22,7 +22,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                                default_operator: 'or'
                            })
                          else
-                           index_klass.all
+                           index_klass.all.order(:created_at => :desc)
                          end.page(page).per(per)
 
 
