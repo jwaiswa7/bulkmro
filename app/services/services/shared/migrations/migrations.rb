@@ -7,8 +7,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @limit = nil
     @secondary_limit = nil
 
-    methods = %w(products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
 
     methods.each do |method|
       perform_migration(method.to_sym)
@@ -674,19 +674,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       brand = Brand.find_by_legacy_id(x.get_column('product_brand'))
       measurement_unit = MeasurementUnit.find_by_name(x.get_column('uom_name'))
       name = x.get_column('name')
+      legacy_id = x.get_column('entity_id')
+      sku = x.get_column('sku')
+      next if legacy_id.in? %w(677812 720307 736619 736662 736705)
+      next if Product.where(:sku => sku).exists?
 
-
-      product = Product.where(name: name).first_or_create! do |product|
+      product = Product.where(legacy_id: legacy_id).first_or_create! do |product|
         product.assign_attributes(
             brand: brand,
             category: Category.default,
-            sku: x.get_column('sku'),
-            mpn: x.get_column('mfr_model_number'),
+            sku: sku,
+            # mpn: x.get_column('mfr_model_number'),
             description: x.get_column('description'),
             meta_description: x.get_column('meta_description'),
             meta_keyword: x.get_column('meta_keyword'),
             meta_title: x.get_column('meta_title'),
-            legacy_id: x.get_column('entity_id'),
+            name: name || "noname ##{legacy_id}",
             remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
             measurement_unit: measurement_unit,
             legacy_metadata: x.get_row,
@@ -695,12 +698,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         )
       end
 
-      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => overseer)
+      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+    end
+  end
+
+  def product_categories
+    service = Services::Shared::Spreadsheets::CsvImporter.new('category_product_mapping.csv')
+    service.loop(limit) do |x|
+      Product.find_by_legacy_id(x.get_column('product_legacy_id')).update_attributes(:category => Category.find_by_legacy_id(x.get_column('category_legacy_id')))
     end
   end
 
 
   def inquiries
+    raise
     legacy_company = Company.legacy
     opportunity_type = {'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80}
     quote_category = {'bmro' => 10, 'ong' => 20}

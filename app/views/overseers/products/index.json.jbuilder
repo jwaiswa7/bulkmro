@@ -11,6 +11,7 @@ json.data (@products) do |product|
                   product.name,
                   product.sku,
                   product.brand.to_s,
+                  product.category.to_s,
                   format_date(product.created_at),
                   format_date(product.approval.try(:created_at))
               ]
