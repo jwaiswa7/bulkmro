@@ -36,13 +36,19 @@
       </div>
 
       <div class="col-6 col-md-4">
-        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities) %>
+        <%= f.input :priority, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Company.priorities), include_blank: false %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.association :default_payment_option, wrapper: :custom_multi_select, include_blank: 'Select a default' %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.input :credit_limit %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :tan %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :pan %>
       </div>
     </div>
 

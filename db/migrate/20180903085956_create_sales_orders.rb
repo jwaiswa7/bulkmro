@@ -5,6 +5,7 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
       t.integer :parent_id, index: true
       t.integer :legacy_id, index: true
       t.string :remote_uid, index: true
+
       t.integer :legacy_request_status
 
       t.string :order_number
@@ -13,6 +14,7 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
 
       t.datetime :sent_at
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

@@ -16,6 +16,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def index_pg
+    @inquiries = ApplyDatatableParams.to(Inquiry.all.with_includes, params)
+    authorize @inquiries
+  end
+
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params)
     service.call

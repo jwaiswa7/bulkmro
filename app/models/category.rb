@@ -11,6 +11,12 @@ class Category < ApplicationRecord
   validates_presence_of :name
   #validates_presence_of :tax_code, :if => :child?
   # validates_presence_of :remote_uid
+  #
+  after_initialize :set_defaults, :if => :new_record?
+  def set_defaults
+    self.is_service ||= false
+  end
+
 
   def to_s
     ancestry_path.join(' > ')

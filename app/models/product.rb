@@ -44,7 +44,7 @@ class Product < ApplicationRecord
 
   enum product_type: { item: 10, service: 20 }
 
-  scope :with_includes, -> { includes(:brand, :approval) }
+  scope :with_includes, -> { includes(:brand) }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?

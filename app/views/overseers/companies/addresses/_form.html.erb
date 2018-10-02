@@ -8,7 +8,14 @@
   <%= simple_form_for([:overseers, @company, @address], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
 
-    <%= f.input :name %>
+    <div class="form-row">
+      <div class="col-md-1">
+        <%= f.input :legacy_id, disabled: true %>
+      </div>
+      <div class="col-md-11">
+        <%= f.input :name %>
+      </div>
+    </div>
     <%= f.input :street1, label: 'Address Line 1' %>
     <%= f.input :street2, label: 'Address Line 2' %>
 
@@ -38,8 +45,6 @@
         <%= f.input :mobile %>
       </div>
     </div>
-
-    <%= f.input :tan, label: 'TAN' %>
 
     <div class="form-row">
       <div class="col-6 col-md-4">

@@ -65,8 +65,9 @@
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(account_id: @account.id) %>">
           <thead>
           <tr>
+            <th class="no-sort"></th>
             <th data-name="name">Name</th>
-            <th class="no-sort"><i class="fal fa-building"></i> Companies</th>
+            <th class="no-sort">Companies</th>
             <th data-name="created_at">Created</th>
           </tr>
           </thead>

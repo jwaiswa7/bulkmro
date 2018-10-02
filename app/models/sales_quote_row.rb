@@ -6,7 +6,7 @@ class SalesQuoteRow < ApplicationRecord
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
   belongs_to :inquiry_product_supplier
-  belongs_to :tax_code
+  belongs_to :tax_code, required: false
   has_one :inquiry_product, :through => :inquiry_product_supplier
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier
@@ -14,13 +14,13 @@ class SalesQuoteRow < ApplicationRecord
   attr_accessor :is_selected, :tax_percentage, :tax
 
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
-  delegate :sr_no, to: :inquiry_product, allow_nil: true
+  delegate :sr_no, :legacy_id, to: :inquiry_product, allow_nil: true
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
   delegate :is_service, :to => :product
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
-  validates_numericality_of :quantity, :greater_than_or_equal_to => 1
+  # validates_numericality_of :quantity, :greater_than_or_equal_to => 1
   validates_numericality_of :unit_selling_price, :greater_than => 0
   validates_numericality_of :converted_unit_selling_price, :greater_than => 0
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity
@@ -48,7 +48,7 @@ class SalesQuoteRow < ApplicationRecord
 
   validate :tax_percentage_is_not_nil?
   def tax_percentage_is_not_nil?
-    if self.tax_code.tax_percentage.blank?
+    if self.not_legacy? && self.tax_code.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
     end
   end
@@ -107,7 +107,13 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).floor(2) if self.unit_cost_price.present? && self.margin_percentage.present?
+    if self.unit_cost_price.present? && self.margin_percentage.present?
+      if self.margin_percentage >= 100
+        self.unit_cost_price_with_unit_freight_cost
+      else
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).floor(2)
+      end
+    end
   end
 
   def calculated_tax

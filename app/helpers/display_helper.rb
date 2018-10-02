@@ -107,5 +107,7 @@ module DisplayHelper
     num.to_int
   end
 
-
+  def format_collection(kollection)
+    kollection.map(&:to_s).to_sentence
+  end
 end

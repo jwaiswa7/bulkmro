@@ -1,7 +1,8 @@
 class Overseers::DashboardController < Overseers::BaseController
+  skip_before_action :authenticate_overseer!, only: :migrations
+
   def show
     authorize :dashboard, :show?
-
   end
 
   def serializer
@@ -24,11 +25,15 @@ class Overseers::DashboardController < Overseers::BaseController
     # InquiryIndex.delete
     # InquiryIndex.create!
     # InquiryIndex.import
-    InquiriesIndex.reset!
+    # InquiriesIndex.reset!
     ProductsIndex.reset!
     #
     # Inquiry.search('asd')
     #
     #
+  end
+
+  def migrations
+    Services::Shared::Migrations::Migrations.new
   end
 end
