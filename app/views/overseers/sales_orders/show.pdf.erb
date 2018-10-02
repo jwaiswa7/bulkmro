@@ -22,7 +22,9 @@
                 <tr>
                   <td style="text-align: center;">
                     <span style="color:#000000">
+                      <% if @sales_order.inquiry.bill_from.present? %>
                       <%= @sales_order.inquiry.bill_from.address.to_header_multiline_s  %>
+                      <% end %>
                     </span>
                   </td>
                 </tr>
@@ -50,7 +52,11 @@
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") %></span>
+                    <span style="color:#000000">
+                      <% if @sales_order.sales_quote.created_at.present? %>
+                      <%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") %>
+                      <% end %>
+                      </span>
                   </td>
                 </tr>
                 <tr>
@@ -73,7 +79,10 @@
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.created_at.strftime("%d-%b-%Y") %></span></td>
+                    <% if @sales_order.created_at.present? %>
+                    <span style="color:#000000"><%= @sales_order.created_at.strftime("%d-%b-%Y") %></span>
+                    <% end %>
+                      </td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -104,8 +113,10 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.bill_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <% if @sales_order.inquiry.bill_from.present? %>
                       <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
                       GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
+                        <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -115,8 +126,10 @@
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.ship_from  %>
                       Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <% if @sales_order.inquiry.ship_from.present? %>
                       <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
                       GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
+                      <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -138,7 +151,9 @@
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
                     <%= @sales_order.inquiry.shipping_address.name %><br>
+                    <% if @sales_order.inquiry.shipping_address.present? %>
                     <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
+                    <% end %>
                     <br>
                     Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
                     GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
@@ -149,7 +164,9 @@
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
                     <%= @sales_order.inquiry.billing_address.name %><br>
+                    <% if @sales_order.inquiry.shipping_address.present? %>
                     <%= @sales_order.inquiry.billing_address.to_multiline_s %>
+                    <% end %>
                     <br>
                     Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
                     GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
