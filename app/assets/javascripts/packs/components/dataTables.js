@@ -9,6 +9,7 @@ const dataTables = () => {
 
 // Setup the filter field before all dataTables, if the filter attribute exists
 let preSetup = () => {
+    // $.fn.DataTable.ext.pager.numbers_length = 4;
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 
@@ -117,14 +118,14 @@ let setup = () => {
                         let input = '';
 
                         if (filter == 'dropdown') {
-                            input = $('<select class="select2-single form-control"></select>');
+                            input = $('<select class="select2-single form-control" data-placeholder="' + 'Select ' + $(column.header()).text() + '"><option value="" selected disabled></option></select>');
 
                             json.columnFilters[this.index()].forEach(function(f) {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
                             });
                         } else {
-                            input = $('<input type="text" class="form-control" />');
+                            input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
 
                         input.on('change', function () {
