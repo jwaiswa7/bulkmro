@@ -18,9 +18,9 @@ class SalesOrder < ApplicationRecord
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
-  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order
+  has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order
   has_many :sales_order_rows, inverse_of: :sales_order
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['sales_quote_row_id'].blank? && attributes['id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['sales_quote_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
   has_one :confirmation, :class_name => 'SalesOrderConfirmation'
 
@@ -28,14 +28,21 @@ class SalesOrder < ApplicationRecord
 
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no
 
-  enum legacy_request_status: {
+  after_initialize :set_defaults, :if => :new_record?
+
+  def set_defaults
+    self.set_status('requested')
+  end
+
+  enum order_status: {
       :'requested' => 10,
       :'SAP Approval Pending' => 20,
       :'rejected' => 30,
       :'SAP Rejected' => 40,
-      #:'Cancelled' => 50,
+      :'Cancelled' => 50,
       :'approved' => 60,
-      :'Order Deleted' => 70
+      :'Order Deleted' => 70,
+      :'Hold by Finance' => 80
   }
 
   enum remote_status: {
@@ -52,10 +59,10 @@ class SalesOrder < ApplicationRecord
       :'Delivered: GRN Received' => 27,
       :'Partial Payment Received' => 28,
       :'Payment Received (Closed)' => 29,
-      :'Cancelled' => 30,
+      :'Cancelled by SAP' => 30,
       :'Short Close' => 31,
       :'Processing' => 32,
-      :'Material Ready For Dispatch' => 33
+      :'Material Ready For Dispatch' => 33,
   }
 
   def confirmed?
@@ -64,5 +71,9 @@ class SalesOrder < ApplicationRecord
 
   def not_confirmed?
     !confirmed?
+  end
+
+  def set_status(status)
+    self.order_status = SalesOrder.order_statuses[status]
   end
 end

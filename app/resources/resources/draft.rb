@@ -1,6 +1,6 @@
 class Resources::Draft < Resources::ApplicationResource
   def self.identifier
-    :DocNum
+    :DocEntry
   end
 
   def self.to_remote(record)
@@ -50,7 +50,7 @@ class Resources::Draft < Resources::ApplicationResource
         U_CnfrmTax: "P", #hardcode
         U_SO_Status: 32, #hardcode
         U_CnfrmGross: "P", #hardcode
-        U_MgntDocID: record.order_number,
+        U_MgntDocID: record.id ,
         U_Rate_Rmks: "", #hardcode
         U_Qty_Rmks: "", #hardcode
         U_Tax_Rmks: "", #hardcode

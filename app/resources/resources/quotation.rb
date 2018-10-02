@@ -63,7 +63,7 @@ class Resources::Quotation < Resources::ApplicationResource
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
         TaxDate: record.inquiry.customer_order_date, # record.created_date , #Tax Date??
         AttachmentEntry: record.inquiry.attachment_uid,
-        DocumentLines: items, #Products]
+        DocumentLines: items, # [Products]
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
         U_TermCondition: record.inquiry.commercial_terms_and_conditions, #   # Commercial terms and conditions
@@ -85,7 +85,6 @@ class Resources::Quotation < Resources::ApplicationResource
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
         TaxExtension: sez
-
     }
 
   end
@@ -109,10 +108,11 @@ class Resources::Quotation < Resources::ApplicationResource
 
   def self.create_or_update_attachments(record)
     if record.inquiry.attachment_uid.present?
-      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
-      record.save
-    else
       Resources::Attachment.update(record.inquiry.attachment_uid, record.inquiry)
+    else
+      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
+      record.inquiry.save
+
     end
   end
 

@@ -37,11 +37,11 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
 
   def cancel
 
-    @sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
+    @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
 
   end
 
   def reject
-    @sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
+    @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
   end
 end
