@@ -55,10 +55,11 @@ class Resources::ApplicationResource
       'SalesPersons'
     elsif model_name == 'Attachment'
       'Attachments2'
+    elsif model_name == 'EmployeeInfo'
+      'EmployeesInfo'
     else
       model_name.pluralize
     end
-
   end
 
   # Subclass implements
