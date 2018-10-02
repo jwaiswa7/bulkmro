@@ -43,4 +43,9 @@ class SalesQuote < ApplicationRecord
   def inquiry_has_many_sales_quotes?
     self.inquiry.sales_quotes.except_object(self).count >= 1
   end
+
+  def tax_summary
+      self.rows[0].taxation.to_s
+  end
+
 end
