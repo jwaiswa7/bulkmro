@@ -11,7 +11,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
              end.gsub(/[^0-9A-Za-z]/, '')
 
     @per = (params[:per] || params[:length] || 20).to_i
-    @page = params[:page] || ((params[:start] || 20).to_i / per)
+    @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
   end
 
   def call_base
