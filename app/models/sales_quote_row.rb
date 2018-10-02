@@ -48,7 +48,7 @@ class SalesQuoteRow < ApplicationRecord
 
   validate :tax_percentage_is_not_nil?
   def tax_percentage_is_not_nil?
-    if self.tax_code.tax_percentage.blank?
+    if self.tax_code.tax_percentage.blank? && self.not_legacy?
       errors.add :base, 'tax rate cannot be N/A'
     end
   end

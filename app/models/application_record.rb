@@ -22,6 +22,14 @@ class ApplicationRecord < ActiveRecord::Base
   scope :legacy, -> { where.not(:legacy_id => nil) }
   scope :not_legacy, -> { where(:legacy_id => nil) }
 
+  def self.legacy?
+    self.legacy_id.present?
+  end
+
+  def self.not_legacy?
+    !legacy?
+  end
+
   def next
     self.where('id > ?', id).order(id: :asc).first || self.first
   end

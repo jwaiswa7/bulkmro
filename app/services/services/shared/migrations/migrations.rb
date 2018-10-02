@@ -297,6 +297,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     legacy_company = Company.where(name: "Legacy Company").first_or_create! do |company|
       company.account = legacy_account
       company.remote_uid = 99999999
+      company.is_customer = true
+      company.is_supplier = true
     end
 
     company_contact = CompanyContact.first_or_create!(company: legacy_company, contact: legacy_account.contacts.first)
@@ -819,31 +821,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product_id = x.get_column('product_id')
       supplier_uid = x.get_column('sup_code')
 
-      inquiry = Inquiry.find_by_legacy_id!(quotation_id)
-      product = Product.find_by_legacy_id!(product_id)
-
-      next if inquiry.blank?
-
-      if product.blank?
-        product = Product.where(legacy_id: x.get_column('product_id')).first_or_create! do |product|
-          product.assign_attributes(
-              name: x.get_column('caption'),
-              brand: Brand.legacy,
-              category: Category.default,
-              sku: x.get_column('sku'),
-              description: x.get_column('caption'),
-              meta_description: x.get_column('caption'),
-              meta_title: x.get_column('caption'),
-          )
-        end
-
-        product.create_approval(
-            :comment => product.comments.create!(
-                :overseer => Overseer.default, message: 'Legacy product, being preapproved'
-            ),
-            :overseer => Overseer.default
-        ) if product.approval.blank?
-      end
+      next if quotation_id.in? %w(3529 2848 123 8023)
+      inquiry = Inquiry.find_by_legacy_id(quotation_id)
+      product = Product.find_by_legacy_id(product_id)
+      next if inquiry.blank? || product.blank?
 
       inquiry_product = InquiryProduct.where(
           inquiry: inquiry,
@@ -854,12 +835,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             quantity: x.get_column('qty', nil_if_zero: true) || 1,
             bp_catalog_name: x.get_column('caption'),
             bp_catalog_sku: x.get_column('bpcat'),
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            legacy_id: x.get_column('quotation_item_id')
         )
       end
 
       # if supplier_uid
-      supplier = Company.acts_as_supplier.find_by_remote_uid!(supplier_uid)
+      supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
       inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_create! do |ips|
         ips.unit_cost_price = x.get_column('cost')
       end
@@ -882,7 +864,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             converted_unit_selling_price: x.get_column('price_ht'),
             lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
         )
-      end
+      end if sales_quote.present?
       # end
     end
   end
