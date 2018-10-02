@@ -15,7 +15,7 @@ class Resources::EmployeeInfo < Resources::ApplicationResource
         FirstName: record.full_name,
         LastName: record.last_name,
         JobTitle: record.designation,
-        Active:'tYes',
+        Active:'Y',
         Remarks: record.parent.try(:full_name),
         EmployeeBranchAssignment: branch_assignments["EmployeeBranchAssignment"]
     }
