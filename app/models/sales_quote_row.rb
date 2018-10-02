@@ -6,7 +6,7 @@ class SalesQuoteRow < ApplicationRecord
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
   belongs_to :inquiry_product_supplier
-  belongs_to :tax_code
+  belongs_to :tax_code, required: false
   has_one :inquiry_product, :through => :inquiry_product_supplier
   has_one :product, :through => :inquiry_product
   has_one :supplier, :through => :inquiry_product_supplier

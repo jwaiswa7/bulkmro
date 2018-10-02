@@ -9,8 +9,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     PaperTrail.enabled = false
 
-    methods = %w(inquiries inquiry_terms activity inquiry_details sales_order_drafts)
-    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms activity inquiry_details sales_order_drafts)
+    methods = %w(inquiry_details sales_order_drafts)
+    # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
 
@@ -620,11 +620,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     Brand.where(name: 'Legacy Brand').first_or_create!
     service = Services::Shared::Spreadsheets::CsvImporter.new('brands.csv')
     service.loop(limit) do |x|
-      name = x.get_column('value')
+      name = x.get_column('name')
       next if name == nil
 
       Brand.where(name: name).first_or_create! do |brand|
-        brand.legacy_id = x.get_column('option_id')
+        brand.legacy_id = x.get_column('manufacturer_id')
+        brand.remote_uid = x.get_column('sap_code')
         brand.legacy_metadata = x.get_row
       end
     end
@@ -664,6 +665,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_code: tax_code || TaxCode.default,
             parent: parent,
             description: x.get_column('description'),
+            is_service: x.get_column('is_service'),
             legacy_id: x.get_column('id'),
             legacy_metadata: x.get_row
         )
@@ -745,7 +747,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         billing_address = company.addresses.find_by_legacy_id!(x.get_column('billing_address'))
       end
 
-      inquiry = Inquiry.where(inquiry_number: x.get_column('increment_id')).first_or_create! do |inquiry|
+      inquiry = Inquiry.where(inquiry_number: x.get_column('increment_id', downcase: true, remove_whitespace: true)).first_or_create! do |inquiry|
         inquiry.assign_attributes(
             company: company,
             contact: contact,
@@ -792,8 +794,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def inquiry_terms
-    raise
-
     price_type_mapping = {'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 90, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40}
     freight_option_mapping = {'Extra as per Actual' => 20, 'Included' => 10}
     packing_and_forwarding_option_mapping = {'Included' => 10, 'Not Included' => 20}
@@ -801,6 +801,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
     service.loop(limit) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      next if inquiry.blank?
       inquiry.update_attributes(
           price_type: price_type_mapping[x.get_column('Price')],
           freight_option: freight_option_mapping[x.get_column('Freight')],
@@ -816,12 +817,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       quotation_id = x.get_column('quotation_id')
       product_id = x.get_column('product_id')
-      if quotation_id && product_id
-        inquiry = Inquiry.find_by_legacy_id(quotation_id)
-        product = Product.find_by_legacy_id(product_id)
+      supplier_uid = x.get_column('sup_code')
 
-        if product.blank?
-          product = Product.create!(
+      inquiry = Inquiry.find_by_legacy_id!(quotation_id)
+      product = Product.find_by_legacy_id!(product_id)
+
+      next if inquiry.blank?
+
+      if product.blank?
+        product = Product.where(legacy_id: x.get_column('product_id')).first_or_create! do |product|
+          product.assign_attributes(
               name: x.get_column('caption'),
               brand: Brand.legacy,
               category: Category.default,
@@ -829,64 +834,62 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               description: x.get_column('caption'),
               meta_description: x.get_column('caption'),
               meta_title: x.get_column('caption'),
-              legacy_id: x.get_column('product_id')
-          )
-
-          product.create_approval(
-              :comment => product.comments.create!(
-                  :overseer => Overseer.default, message: 'Legacy product, being preapproved'
-              ),
-              :overseer => Overseer.default
           )
         end
 
-        if inquiry.present?
-          inquiry_product = InquiryProduct.create!(
-              inquiry: inquiry,
-              product: product,
-              sr_no: x.get_column('order'),
-              quantity: x.get_column('qty', nil_if_zero: true) || 1,
-              bp_catalog_name: x.get_column('caption'),
-              bp_catalog_sku: x.get_column('bpcat'),
-              legacy_metadata: x.get_row
-          )
-
-          supplier_uid = x.get_column('sup_code')
-          if supplier_uid
-            supplier = Company.where(remote_uid: supplier_uid, is_supplier: true).first
-            inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.create!(
-                supplier: supplier,
-                unit_cost_price: x.get_column('cost')
-            )
-
-            quotation_uid = x.get_column('doc_entry')
-            sales_quote = inquiry.sales_quote
-
-            if sales_quote.blank?
-              if quotation_uid.present?
-                sales_quote = inquiry.sales_quotes.build({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
-              end
-            end
-
-            # todo look at tax_code
-            sales_quote.rows.create!(
-                inquiry_product_supplier: inquiry_product_supplier,
-                quantity: x.get_column('qty', nil_if_zero: true) || 1,
-                margin_percentage: ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100),
-                tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || TaxCode.default,
-                legacy_applicable_tax: x.get_column('tax_code'),
-                legacy_applicable_tax_class: x.get_column('tax_class_id'),
-                unit_selling_price: x.get_column('price_ht'),
-                converted_unit_selling_price: x.get_column('price_ht'),
-                lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
-            )
-          end
-        end
+        product.create_approval(
+            :comment => product.comments.create!(
+                :overseer => Overseer.default, message: 'Legacy product, being preapproved'
+            ),
+            :overseer => Overseer.default
+        ) if product.approval.blank?
       end
+
+      inquiry_product = InquiryProduct.where(
+          inquiry: inquiry,
+          product: product,
+      ).first_or_create! do |ip|
+        ip.assign_attributes(
+            sr_no: x.get_column('order'),
+            quantity: x.get_column('qty', nil_if_zero: true) || 1,
+            bp_catalog_name: x.get_column('caption'),
+            bp_catalog_sku: x.get_column('bpcat'),
+            legacy_metadata: x.get_row
+        )
+      end
+
+      # if supplier_uid
+      supplier = Company.acts_as_supplier.find_by_remote_uid!(supplier_uid)
+      inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_create! do |ips|
+        ips.unit_cost_price = x.get_column('cost')
+      end
+
+      quotation_uid = x.get_column('doc_entry')
+      sales_quote = inquiry.sales_quote
+
+      if sales_quote.blank? && quotation_uid.present?
+        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
+      end
+
+      sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_create do |row|
+        row.assign_attributes(
+            quantity: x.get_column('qty', nil_if_zero: true) || 1,
+            margin_percentage: ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100),
+            tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
+            legacy_applicable_tax: x.get_column('tax_code'),
+            legacy_applicable_tax_class: x.get_column('tax_class_id'),
+            unit_selling_price: x.get_column('price_ht'),
+            converted_unit_selling_price: x.get_column('price_ht'),
+            lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
+        )
+      end
+      # end
     end
   end
 
   def sales_order_drafts
+    raise
+
     legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')

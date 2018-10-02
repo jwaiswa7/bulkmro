@@ -1,8 +1,9 @@
 require 'csv'
 
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
-  def initialize(name, log_errors = true)
+  def initialize(name, skip = 0, log_errors = true)
     @errors = []
+    @skip = skip
     @log_errors = log_errors
 
     set_files(name)
@@ -10,6 +11,8 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
 
   def loop(limit = nil)
     CSV.foreach(file, :headers => true) do |row|
+      next if skip.present? && $..to_i <= skip
+
       set_current_row(row.to_h)
 
       # begin
@@ -72,5 +75,5 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     end
   end
 
-  attr_accessor :file, :errors_file, :errors, :current_row, :log_errors
+  attr_accessor :skip, :file, :errors_file, :errors, :current_row, :log_errors
 end

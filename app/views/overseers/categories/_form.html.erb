@@ -6,6 +6,7 @@
   </div>
   <%= simple_form_for([:overseers, @category], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.input :name %>
+    <%= f.input :is_service %>
 
     <% if @category.persisted? %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Category.except_objects(@category.self_and_descendants) %>
