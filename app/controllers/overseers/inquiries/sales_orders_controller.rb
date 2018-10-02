@@ -14,7 +14,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def new_revision
     @old_sales_order = @inquiry.sales_orders.find(params[:id])
-    @sales_order = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_order, current_overseer).call
+    @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@old_sales_order.sales_quote, current_overseer).call
     authorize @old_sales_order
     render 'new'
   end

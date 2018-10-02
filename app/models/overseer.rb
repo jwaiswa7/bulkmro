@@ -8,21 +8,22 @@ class Overseer < ApplicationRecord
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
 
-  pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
-  has_closure_tree({ name_column: :to_s })
+  pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
+  has_closure_tree({name_column: :to_s})
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
-  enum role: { admin: 10, sales: 20, sales_manager: 30 }
+  enum role: {admin: 10, sales: 20, sales_manager: 30}
 
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
   validates_presence_of :password_confirmation, :if => :new_record?
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.role ||= :sales
   end
@@ -63,9 +64,21 @@ class Overseer < ApplicationRecord
   end
 
   def save_and_sync
-    service = ['Services', 'Overseers','SaveAndSync'].join('::').constantize.new(self)
+    service = ['Services', 'Overseers', 'SaveAndSync'].join('::').constantize.new(self)
     service.call
     #self.save
+  end
+
+
+  def self.sap_approver
+    overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|
+      overseer.first_name = "SAP"
+      overseer.last_name = "Approver"
+      overseer.password = "bm@123"
+      overseer.password_confirmation = "bm@123"
+    end
+    overseer.save
+    overseer
   end
 
 

@@ -28,9 +28,12 @@ class Resources::ApplicationResource
   SAP = OpenStruct.new({
                            #attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
                            attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Sprint',
-                           attachment_api: '172.31.13.105/b1_shf/Attachments',
+                           attachment_api: '172.31.13.105/b1_shf/Sprint',
+                           #attachment_api: '172.31.13.105/b1_shf/Attachments',
                            server: {host: '35.154.19.43', port: 22},
-                           login: {user: 'b1service0', password: 'b1service0@123'}
+                           login: {user: 'b1service0', password: 'b1service0@123'},
+                           draft_doc_object_code: 17, # 22 for Live SAP
+                           draft_base_type: 23 # 17 for Live SAP #TODO
                        })
 
 

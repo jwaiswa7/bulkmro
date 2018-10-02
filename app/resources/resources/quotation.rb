@@ -15,7 +15,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
-      item.U_MPN = row.inquiry_product_supplier.bp_catalog_sku
+      item.U_MPN = row.product.try(:mpn)
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
@@ -26,23 +26,21 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_Vendor_Name = row.supplier.name # Supplier  Name
       item.Weight1 = "1" # product Weight
       item.U_ProdBrand = row.product.brand.try(:name) # Brand
-      item.WarehouseCode = 2 #record.inquiry.ship_from.remote_uid # ship_from_warehouse
-      item.LocationCode = 1 #record.inquiry.ship_from.location_uid
+      item.WarehouseCode = record.inquiry.ship_from.remote_uid # ship_from_warehouse
+      item.LocationCode = record.inquiry.ship_from.location_uid
 
       if row.product.is_service
         item.SACEntry = row.tax_code.remote_uid # HSN !!
       else
         item.HSNEntry = row.tax_code.remote_uid # HSN !!
       end
-
-
       item.U_MgntRemark = ""
       item.U_Rmks = ""
 
       items.push(item.marshal_dump)
 
     end
-    sez = {}
+    sez = nil
 
     if record.inquiry.is_sez
       sez = {
@@ -50,60 +48,22 @@ class Resources::Quotation < Resources::ApplicationResource
           'ImportOrExportType': 'et_SEZ_Unit',
       }
     end
-=begin
-Example Product
-      [
-          {
-              "DiscountPercent": 0,
-              "ItemCode": "BM9G6G2",
-              "ItemDescription": "WHIRPOOL 3 Star Direct-Cool Single Door Refrigerator, Capacity 190 Ltr, Colour Blue - WDE 205 CLS 3S",
-              "Quantity": 1,
-              "ProjectCode": record.inquiry.project_uid,
-              "LineNum": 0,
-              "MeasureUnit": "ea",
-              "U_MPN": "WDE 205 CLS 3S",
-              "U_LeadTime": "2-3 days",
-              "Comments": nil,
-              "UnitPrice": 14705,
-              "Currency": "INR",
-              "TaxCode": "IG@28",
-              "U_Vendor": "SC-01774",
-              "U_Vendor_Name": "Amazon.in",
-              "Weight1": 0,
-              "U_Margin": 14.994899693982,
-              "U_ProdBrand": "WHIRPOOL",
-              "U_BuyCost": 12500,
-              "WarehouseCode": 2,
-              "LocationCode": 1,
-              "HSNEntry": 7602,
-              "U_MgntRemark": "",
-              "U_Rmks": ""
-          }
-      ]
-=end
-
-
     {
         U_MgntDocID: record.to_param, # Quote ID
         CardCode: record.inquiry.company.remote_uid, #Customer ID
-
         ReqDate: record.updated_date, # Commited Date
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
         NumAtCard: record.inquiry.subject, #Comment on Quote?
         DocCurrency: record.currency.name,
         DocEntry: record.quotation_uid,
-
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: "R1", #Quotation Revision ID
-
         DocDate: record.created_date, #Quote Create Date
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
         TaxDate: record.inquiry.customer_order_date, # record.created_date , #Tax Date??
-
-
         AttachmentEntry: record.inquiry.attachment_uid,
-        DocumentLines: items, #Products
+        DocumentLines: items, # [Products]
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
         U_TermCondition: record.inquiry.commercial_terms_and_conditions, #   # Commercial terms and conditions
@@ -125,7 +85,6 @@ Example Product
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
         TaxExtension: sez
-
     }
 
   end
@@ -149,10 +108,11 @@ Example Product
 
   def self.create_or_update_attachments(record)
     if record.inquiry.attachment_uid.present?
-      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
-      record.save
-    else
       Resources::Attachment.update(record.inquiry.attachment_uid, record.inquiry)
+    else
+      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
+      record.inquiry.save
+
     end
   end
 

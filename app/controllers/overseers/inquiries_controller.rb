@@ -115,6 +115,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :price_type,
         :potential_amount,
         :freight_option,
+        :freight_cost,
         :total_freight_cost,
         :packing_and_forwarding_option,
         :payment_option_id,
