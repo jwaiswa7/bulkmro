@@ -9,7 +9,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     PaperTrail.enabled = false
 
-    methods = %w(inquiries inquiry_terms)
+    methods = %w(activity)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
@@ -729,7 +729,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_legacy_id = x.get_column('customer_id')
       contact_email = x.get_column('email', downcase: true)
 
-      contact = Contact.find_by_legacy_id('contact_legacy_id') || Contact.find_by_email(contact_email) || company.contacts.first
+      contact = Contact.find_by_legacy_id(contact_legacy_id) || Contact.find_by_email(contact_email) || company.contacts.first
       next if contact.blank?
 
       if company.industry.blank?
@@ -954,6 +954,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       contact = Contact.find_by_legacy_id(x.get_column('company_contact_lagacy'))
+
+      next if inquiry.blank?
+
       if contact.present?
         company = contact.companies.first
       else
