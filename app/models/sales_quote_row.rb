@@ -128,6 +128,10 @@ class SalesQuoteRow < ApplicationRecord
     service
   end
 
+  def to_bp_catalog_s
+    inquiry_product.to_bp_catalog_s
+  end
+
   def to_s
     product.to_s
   end

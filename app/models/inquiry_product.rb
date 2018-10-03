@@ -31,4 +31,11 @@ class InquiryProduct < ApplicationRecord
   def best_tax_code
     self.product.tax_code.code if self.product.tax_code.present?
   end
+
+  def to_bp_catalog_s
+    name = bp_catalog_name.present? ? bp_catalog_name : self.product.name
+    sku = bp_catalog_sku.present? ? "#{bp_catalog_sku} -" : ''
+    "#{sku} #{name}"
+  end
+
 end
