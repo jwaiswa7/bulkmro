@@ -11,19 +11,19 @@
           <div class="form-row">
             <div class="col-8 col-md-3">
               <strong>Total Selling Price (Excl. tax)</strong><br>
-              <span data-v-html="calculated_total"><%= format_currency(f.object.calculated_total) %></span>
+              <span data-v-html="calculated_total"><%= format_currency(f.object.calculated_total, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-4 col-md-3">
               <strong>Total Tax</strong><br>
-              <span data-v-html="calculated_total_tax"><%= format_currency(f.object.calculated_total_tax) %></span>
+              <span data-v-html="calculated_total_tax"><%= format_currency(f.object.calculated_total_tax, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-8 col-md-3 mt-2 mt-md-0">
               <strong>Total Selling Price (Incl. tax)</strong><br>
-              <span data-v-html="calculated_total_with_tax"><%= format_currency(f.object.calculated_total_with_tax) %></span>
+              <span data-v-html="calculated_total_with_tax"><%= format_currency(f.object.calculated_total_with_tax, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
               <strong>Total Margin</strong><br>
-              <span data-v-html="calculated_total_margin"><%= format_currency(f.object.calculated_total_margin) %></span>
+              <span data-v-html="calculated_total_margin"><%= format_currency(f.object.calculated_total_margin, symbol: f.object.currency.sign) %></span>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
               <%= f.input :currency, disabled: true %>
             </div>
             <div class="col-md-6">
-              <%= f.input :conversion_rate, disabled: true %>
+              <%= f.input :conversion_rate, disabled: true, input_html: {"data-v-model": "", } %>
             </div>
           </div>
         </div>
@@ -45,7 +45,7 @@
         <%= row.hidden_field :id %>
         <%= row.hidden_field :sales_quote_row_id %>
 
-        <div class="card mt-3 option-wrapper">
+        <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
             <h6 class="text-uppercase mb-1">
               <strong><%= row.object.sales_quote_row.supplier.name %></strong>
@@ -54,40 +54,39 @@
               <%= row.object.sales_quote_row.product.name %>
               <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sales_quote_row.sr_no %></p>
             </h6>
-
             <hr>
-
-
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Unit Selling Price</strong><br>
-                <span><%= row.object.unit_selling_price %></span>
+                <span data-bind-html="unit_selling_price"><%= format_currency(row.object.unit_selling_price, symbol: f.object.currency.sign) %></span>
+
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Unit Selling Price (in $)</strong><br>
-                <span><%= row.object.converted_unit_selling_price %></span>
+                <span data-bind-html="converted_unit_selling_price"><%= format_currency(row.object.converted_unit_selling_price, symbol: f.object.currency.sign) %></span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Unit Cost with Freight</strong><br>
-                <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost, symbol: f.object.currency.sign) %></span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Total Selling Price</strong><br>
-                <span><%= row.object.total_selling_price %></span>
+                <span data-bind-html="total_selling_price"><%= format_currency(row.object.total_selling_price, symbol: f.object.currency.sign) %></span>
               </div>
             </div>
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Total Selling Price with Tax</strong><br>
-                <span><%= row.object.total_selling_price_with_tax %></span>
+                <span data-bind-html="total_selling_price_with_tax"><%= format_currency(row.object.total_selling_price_with_tax, symbol: f.object.currency.sign) %></span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Margin Percentage</strong><br>
-                <span><%= row.object.margin_percentage %></span>
+                <span data-bind-html="margin_percentage"><%= row.object.margin_percentage %></span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Tax Code</strong><br>
                 <span><%= row.object.tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
+                <%= row.hidden_field :tax_percentage, value: row.object.tax_code.tax_percentage, "data-bind": "", disabled: true %>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Taxation</strong><br>
@@ -96,8 +95,8 @@
             </div>
 
             <div class="d-block d-md-flex flex-row justify-content-between">
-              <%= row.input :quantity %>
-              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper'} do %>
+              <%= row.input :quantity, input_html: {"data-bind": ""} %>
+              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper',"data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                 Remove
               <% end %>
             </div>
@@ -111,19 +110,19 @@
           <div class="form-row">
             <div class="col-8 col-md-3">
               <strong>Total Selling Price (Excl. tax)</strong><br>
-              <span><%= format_currency(f.object.calculated_total) %></span>
+              <span data-v-html="calculated_total"><%= format_currency(f.object.calculated_total, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-4 col-md-3">
               <strong>Total Tax</strong><br>
-              <span><%= format_currency(f.object.calculated_total_tax) %></span>
+              <span data-v-html="calculated_total_tax"><%= format_currency(f.object.calculated_total_tax, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-8 col-md-3 mt-2 mt-md-0">
               <strong>Total Selling Price (Incl. tax)</strong><br>
-              <span><%= format_currency(f.object.calculated_total_with_tax) %></span>
+              <span data-v-html="calculated_total_with_tax"><%= format_currency(f.object.calculated_total_with_tax, symbol: f.object.currency.sign) %></span>
             </div>
             <div class="col-4 col-md-3 mt-2 mt-md-0">
               <strong>Total Margin</strong><br>
-              <span><%= format_currency(f.object.calculated_total_margin) %></span>
+              <span data-v-html="calculated_total_margin"><%= format_currency(f.object.calculated_total_margin, symbol: f.object.currency.sign) %></span>
             </div>
           </div>
         </div>

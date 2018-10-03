@@ -88,7 +88,7 @@ let initVueJS = () => {
                 }
             },
 
-            /*dropRow(index) {
+            dropRow(index) {
                 let row = this.getRow(index);
                 for (var property in row) {
                     if (row.hasOwnProperty(property)) {
@@ -96,7 +96,7 @@ let initVueJS = () => {
                     }
                 }
                 this.setRow(index, row);
-            },*/
+            },
 
             getCheckedRows() {
                 let checkedSupplierIds = [];
@@ -145,20 +145,20 @@ let initVueJS = () => {
                     total_cost_price = 0,
                     total_selling_price_with_tax = 0,
                     margin_percentage = 0;
-                let checkedRows = this.getCheckedRows();
-                checkedRows.forEach(function (row, index) {
-                    calculated_freight_cost_total += parseFloat(row.freight_cost_subtotal);
+
+                this.rows.forEach(function (row, index) {
+
                     total_selling_price += parseFloat(row.total_selling_price);
                     total_selling_price_with_tax += parseFloat(row.total_selling_price_with_tax);
                     total_cost_price += parseFloat(row.unit_cost_price_with_unit_freight_cost * row.quantity);
                     margin_percentage += parseFloat(row.margin_percentage);
                 });
                 this.calculated_total_margin = toDecimal(total_selling_price - total_cost_price);
-                this.average_margin_percentage = toDecimal(this.calculated_total_margin) / checkedRows.length;
+                this.average_margin_percentage = toDecimal(this.calculated_total_margin) / this.rows.length;
                 this.calculated_total_tax = toDecimal(total_selling_price_with_tax - total_selling_price);
                 this.calculated_total = toDecimal(total_selling_price);
                 this.calculated_total_with_tax = toDecimal(total_selling_price_with_tax);
-                this.calculated_freight_cost_total = toDecimal(calculated_freight_cost_total);
+
             },
 
             dropdownChanged(e) {
@@ -173,7 +173,8 @@ let initVueJS = () => {
             },
 
             quantityChangedFor(index) {
-                this.triggerFreightChangeFor(index, 'quantity');
+                //this.triggerFreightChangeFor(index, 'quantity');
+                this.triggerSellingPriceChangeFor(index);
             },
 
             selectSupplierChangedFor(index) {
@@ -295,7 +296,10 @@ let initVueJS = () => {
                 }
                 this.setRow(index, row);
             },
-
+            formatCurrency(value) {
+                let val = (value / 1).toFixed(2)
+                return this.currencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            },
             calculateConvertedSellingPrices() {
                 let _this = this;
 
@@ -346,6 +350,7 @@ let initVueJS = () => {
 let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
+        currencySign: "",
         "check": {},
         calculated_total_margin: 0,
         average_margin_percentage: 0,
@@ -397,11 +402,25 @@ let assignEventsAndGetAttributes = () => {
 
                     // To recreate VueJS v-model when nested form rows are added or removed
                     $(el).attr("v-html", modelName);
-                    //$(el).attr("data-v-index", currentRowIndex);
-                    if(currentRowTemplate[attributeName] == undefined){
-                        currentRowTemplate[attributeName] = 0;
-                    }
 
+
+                    //$(el).attr("data-v-index", currentRowIndex);
+                    if (currentRowTemplate[attributeName] == undefined) {
+
+                        let value = $(el).text().trim();
+                        let numberValue = value;
+
+                        //Check if first char is not a number
+                        if (value.match("[^0-9]").index == 0) {
+                            if (data.currencySign == "") {
+                                data.currencySign = value.match("[^0-9]")[0]
+                            }
+                            $(el).attr("v-html", "formatCurrency(" + modelName + ")");
+                            numberValue = value.replace(/[^0-9.]/g, "")
+                        }
+
+                        currentRowTemplate[attributeName] = parseFloat(numberValue);
+                    }
 
                 }
             });
@@ -414,6 +433,7 @@ let assignEventsAndGetAttributes = () => {
             rows[currentRowIndex] = currentRowTemplate;
         }
     });
+
 
     // Independent of rows, like a total row
     $('[data-v-model]').each(function (index, el) {
@@ -428,7 +448,22 @@ let assignEventsAndGetAttributes = () => {
 
     // V-models that cannot be edited, auto calculated
     $('[data-v-html]').each(function (index, el) {
-        $(el).attr("v-html", $(el).attr('data-v-html'));
+
+        let value = $(el).text().trim();
+        let attributeValue = value;
+        let attributeName = $(el).attr('data-v-html');
+        let modelName = attributeName;
+        //Check if first char is not a number
+        if (value.match("[^0-9]").index == 0) {
+            if (data.currencySign == "") {
+                data.currencySign = value.match("[^0-9]")[0];
+            }
+            attributeName = "formatCurrency(" + modelName + ")";
+            attributeValue = value.replace(/[^0-9.]/g, "")
+        }
+
+        $(el).attr("v-html", attributeName);
+        data[modelName] = attributeValue
     });
     data.rows = rows;
     return data;
