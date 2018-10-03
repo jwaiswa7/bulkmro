@@ -119,7 +119,7 @@
         <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_number %>
+            <%= f.input :customer_po_number, label: 'Customer PO number' %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', :class => 'flex-grow-1' %>
@@ -161,10 +161,13 @@
               <% end %>
             <% end %>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
+            <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+          </div>
+          <div class="col-12 col-md-4">
             <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
         </div>
