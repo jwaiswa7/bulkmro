@@ -21,15 +21,18 @@
         <div class="form-row">
           <div class="col-md-8">
             <div class="form-row">
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
                 <!-- TODO commercial_status need to be added -->
               </div>
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-3">
                 <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-6 col-md-3">
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
+              </div>
+              <div class="col-6 col-md-3">
+                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ' %>
               </div>
             </div>
           </div>
