@@ -11,7 +11,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     PaperTrail.enabled = false
 
     # methods = %w(activity)
-    methods = %w(brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
+    methods = %w(product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
@@ -716,10 +716,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def product_categories
     service = Services::Shared::Spreadsheets::CsvImporter.new('category_product_mapping.csv')
     service.loop(limit) do |x|
-      Product.find_by_legacy_id(x.get_column('product_legacy_id')).update_attributes(:category => Category.find_by_legacy_id(x.get_column('category_legacy_id')))
+      product = Product.find_by_legacy_id(x.get_column('product_legacy_id'))
+      product.update_attributes(:category => Category.find_by_legacy_id(x.get_column('category_legacy_id'))) if product.present?
     end
   end
-
 
   def inquiries
     legacy_company = Company.legacy
