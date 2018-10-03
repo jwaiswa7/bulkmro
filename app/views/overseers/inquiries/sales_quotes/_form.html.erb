@@ -51,6 +51,7 @@
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
               <strong><%= inquiry_product.product.sku %> - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %></strong>
               <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.sku? ? '(' + inquiry_product.product.sku + ')' : '' %></span>
             </h6>
 
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
