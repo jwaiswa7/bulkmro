@@ -26,6 +26,10 @@
             <% if policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
+
+            <% if policy(sales_order).show_pdf? %>
+              <%= row_action_button(show_pdf_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'file-pdf', 'Download', 'dark') %>
+            <% end %>
           </td>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>

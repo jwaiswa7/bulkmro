@@ -8,7 +8,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def show_pdf?
-    edit?
+    sales?
   end
 
   def create_confirmation?

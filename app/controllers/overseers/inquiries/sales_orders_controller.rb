@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:edit, :update, :new_confirmation, :create_confirmation]
+  before_action :set_sales_order, only: [:edit, :update, :new_confirmation, :create_confirmation, :show_pdf]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -67,6 +67,18 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def new_confirmation
     authorize @sales_order
+  end
+
+  def show_pdf
+    authorize @sales_order
+    respond_to do |format|
+      format.pdf do
+        render pdf: 'show',
+               template: 'overseers/inquiries/sales_orders/show.pdf.erb',
+               layout: 'overseers/layouts/sap',
+               footer: {center: '[page] of [topage]'}
+      end
+    end
   end
 
   private
