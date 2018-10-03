@@ -9,10 +9,10 @@
     <%= f.hidden_field :company_id %>
 
     <div class="form-row">
-      <div class="col-md-1">
+      <div class="col-3 col-md-1">
         <%= f.input :legacy_id, disabled: true %>
       </div>
-      <div class="col-md-11">
+      <div class="col-9 col-md-11">
         <%= f.input :name %>
       </div>
     </div>
@@ -55,33 +55,6 @@
       </div>
       <div class="col-12 col-md-4">
         <%= f.input :gst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'GST Number Proof' %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :cst, label: 'CST Number' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :cst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CST Number Proof' %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :vat, label: 'VAT Number' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :vat_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'VAT Number Proof' %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :excise, label: 'Excise Number' %>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <%= f.input :cst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'Excise Number Proof' %>
-        </div>
       </div>
     </div>
 
