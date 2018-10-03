@@ -132,8 +132,7 @@
               <td style="width:48%;">
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <%#= @sales_quote.inquiry.bill_from  %>
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <%= @sales_quote.inquiry.bill_from.present? ? (@sales_quote.inquiry.bill_from.name.to_s + '<br>').html_safe : '' %>
                       <% if @sales_quote.inquiry.bill_from.present? %>
                       <%= @sales_quote.inquiry.bill_from.address.to_multiline_s %><br>
                       GST No. : <%= @sales_quote.inquiry.bill_from.address.gst %><br>
@@ -145,8 +144,7 @@
               <td style="width:48%;">
                 <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left;">
                     <span style="color:#000000">
-                      <%#= @sales_quote.inquiry.ship_from  %>
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <%= @sales_quote.inquiry.ship_from.present? ? (@sales_quote.inquiry.ship_from.name.to_s + '<br>').html_safe  : '' %>
                       <% if @sales_quote.inquiry.ship_from.present? %>
                       <%= @sales_quote.inquiry.ship_from.address.to_multiline_s %><br>
                       GST No. : <%= @sales_quote.inquiry.ship_from.address.gst %><br>
@@ -270,7 +268,7 @@
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:left;" valign="top">
-                    <span style="color:#000000"><%= item.product.name %><br></span></td>
+                    <span style="color:#000000"><%= item.to_bp_catalog_s %><br></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
