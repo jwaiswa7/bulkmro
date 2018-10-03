@@ -13,10 +13,9 @@ class Services::Overseers::Industries::SaveAndSync < Services::Shared::BaseServi
   def call_later
     if industry.remote_uid.present?
       Resources::Industry.update(industry.remote_uid, industry)
-      industry.save
     else
-      industry.remote_uid = Resources::Industry.create(industry)
-      industry.save
+      remote_uid = Resources::Industry.create(industry)
+      industry.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
     end
   end
 
