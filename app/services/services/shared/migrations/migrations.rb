@@ -5,6 +5,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit
 
   def initialize
+  end
+
+  def call
+    call_later
+  end
+
+  def call_later
     @limit = nil
     @secondary_limit = nil
 
