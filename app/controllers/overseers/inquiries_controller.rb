@@ -133,6 +133,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :final_supplier_quote,
         :suppler_quote,
         :copy_of_email,
+        :is_sez,
         :calculation_sheet,
         :commercial_terms_and_conditions,
         :comments,
