@@ -10,4 +10,16 @@
       </p>
     </div>
   </div>
+
+  <script src="https://browser.sentry-cdn.com/4.0.6/bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+      Sentry.init({
+          dsn: 'https://4fafea922f6346d198b8e8a74cecf9a0@sentry.io/1291091',
+          beforeSend: (event) => {
+              // Check if it is an exception -> Show report dialog
+              event.exception && Sentry.showReportDialog();
+              return event;
+          }
+      });
+  </script>
 <% end %>
