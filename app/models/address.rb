@@ -45,4 +45,8 @@ class Address < ApplicationRecord
   def self.legacy
     find_by_name('Legacy Indian State')
   end
+
+  def remote_uid
+    self.legacy_id.present? ? self.legacy_id : "A#{self.id + 10000 }"
+  end
 end

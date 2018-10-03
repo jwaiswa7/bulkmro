@@ -26,6 +26,7 @@ class Overseers::BrandsController < Overseers::BaseController
     authorize @brand
 
     if @brand.save
+      @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
       render :new
@@ -41,6 +42,7 @@ class Overseers::BrandsController < Overseers::BaseController
     authorize @brand
 
     if @brand.save
+      @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
       render :new

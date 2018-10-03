@@ -30,6 +30,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
 
   def approve
     @product.create_approval(:comment => @comment, :overseer => current_overseer)
+    @product.save_and_sync
   end
 
   def reject

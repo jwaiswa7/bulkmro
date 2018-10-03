@@ -1,5 +1,6 @@
 class Category < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
   has_closure_tree

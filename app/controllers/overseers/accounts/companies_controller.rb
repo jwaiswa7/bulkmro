@@ -19,10 +19,10 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))    
     authorize @company
 
-    if @company.save
+    if @company.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
     else      
-      render :new
+      render 'new'
     end
   end
 
@@ -34,10 +34,10 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize @company
 
-    if @company.save
+    if @company.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 

@@ -15,6 +15,7 @@ class Overseers::OverseersController < Overseers::BaseController
     @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer))
     authorize @overseer
     if @overseer.save
+      @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
       render 'new'
@@ -29,6 +30,7 @@ class Overseers::OverseersController < Overseers::BaseController
     @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |_, v| v.blank? })
     authorize @overseer
     if @overseer.save
+      @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     end
   end

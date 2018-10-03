@@ -1,5 +1,6 @@
 class Overseers::AccountsController < Overseers::BaseController
   before_action :set_account, :only => [:edit, :update, :show]
+
   def index
     @accounts = ApplyDatatableParams.to(Account.all, params)
     authorize @accounts
@@ -17,7 +18,7 @@ class Overseers::AccountsController < Overseers::BaseController
   def create
     @account = Account.new(account_params.merge(overseer: current_overseer))
     authorize @account
-    if @account.save
+    if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'new'
@@ -31,7 +32,7 @@ class Overseers::AccountsController < Overseers::BaseController
   def update
     @account.assign_attributes(account_params.merge(overseer: current_overseer))
     authorize @account
-    if @account.save
+    if @account.save_and_sync
       redirect_to edit_overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'edit'
@@ -39,10 +40,11 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   private
+
   def account_params
     params.require(:account).permit(
-      :name, :alias,
-      :contacts_attributes => [:id, :first_name, :last_name]
+        :name, :alias,
+        :contacts_attributes => [:id, :first_name, :last_name]
     )
   end
 

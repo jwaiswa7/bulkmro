@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
+  include Mixins::CanBeSynced
 
   update_index('products#product') { self if self.approved? }
   pg_search_scope :locate_any, :against => [:sku, :name], :agssociated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => false, :any_word => true } }

@@ -159,8 +159,11 @@ gem 'sentry-raven'
 gem 'hightop'
 gem 'groupdate'
 
-# Sidekiq
+# Background tasks
 gem 'sidekiq'
+
+# NET SCP for sending files to SAP
+gem 'net-scp'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -3,9 +3,9 @@ module Mixins::CanBeSynced
 
   included do
     def save_and_sync
-      # service = ['Services', 'Overseers', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-      # service.call
-      self.save
+      service = ['Services', 'Overseers', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+      service.call
+      #self.save
     end
 
     def syncable_identifiers
@@ -24,6 +24,17 @@ module Mixins::CanBeSynced
 
     def sync_id
       self.legacy_id || self.id
+    end
+
+    def generate_remote_uid
+      remote_uid = Faker::Number.number(10)
+
+      10.times.each_with_index do
+        break if not self.class.where(:remote_uid => remote_uid).exists?
+        remote_uid = Faker::Number.number(10)
+      end
+
+      remote_uid
     end
   end
 end

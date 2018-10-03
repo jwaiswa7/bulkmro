@@ -29,3 +29,6 @@ Restart service using the service manager.
 sudo snap install docker
 docker run -p 1358:1358 -d appbaseio/dejavu
 open http://localhost:1358/
+
+#Run Chewy
+overseers/dashboard/chewy

@@ -11,7 +11,7 @@
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
           <div class="col-4">
-            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
+            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact", input_html: { class: 'select2-single'}  %>
           </div>
           <div class="col-8">
             <%= f.input :subject %>
@@ -73,13 +73,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3">
-            <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner' %>
+            <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner', input_html: { class: 'select2-single'} %>
           </div>
           <div class="col-6 col-md-3">
-            <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner' %>
+            <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner', input_html: { class: 'select2-single'}  %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
+            <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager', input_html: { class: 'select2-single'}  %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true) %>
@@ -172,6 +172,9 @@
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+          </div>
+          <div class="col-4">
+            <%= f.input :procurement_date, as: :string %>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
   include Mixins::HasUniqueName
   include Mixins::HasManagers
 
@@ -74,6 +75,7 @@ class Company < ApplicationRecord
   # validates_presence_of :gst
   # validates_uniqueness_of :gst
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  # validates_presence_of :pan, :if => :not_legacy?
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
@@ -81,16 +83,27 @@ class Company < ApplicationRecord
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.company_type ||= :private_limited
     self.priority ||= :non_strategic
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
     self.default_company_contact ||= set_default_company_contact
+    self.default_billing_address ||= set_default_company_billing_address
+    self.default_shipping_address ||= set_default_company_shipping_address
   end
 
   def set_default_company_contact
     self.company_contacts.first
+  end
+
+  def set_default_company_billing_address
+    self.addresses.first if !self.addresses.blank?
+  end
+
+  def set_default_company_shipping_address
+    self.addresses.first if !self.addresses.blank?
   end
 
   def to_contextual_s(product)

@@ -161,12 +161,17 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
+  validates_numericality_of :potential_amount, greater_than_equal_to: 1
+
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
-  #validates_presence_of :billing_address
-  #validates_presence_of :shipping_address
-
+    # validates_presence_of :billing_address
+  # validates_presence_of :shipping_address
+  validates_presence_of :inside_sales_owner_id
+  validates_presence_of :outside_sales_owner_id
+  validates_presence_of :payment_option_id
+  validates_presence_of :potential_amount
   validate :every_product_is_only_added_once?
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
@@ -199,6 +204,9 @@ class Inquiry < ApplicationRecord
       # self.outside_sales_owner ||= self.company.outside_sales_owner
       # self.sales_manager ||= self.company.sales_manager
       self.status ||= :'Lead by O/S'
+      self.outside_sales_owner ||= self.company.outside_sales_owner
+      self.sales_manager ||= self.sales_manager
+      self.status ||= :"Inquiry No. Assigned"
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
@@ -213,10 +221,14 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
-      self.commercial_terms_and_conditions ||= '1. Cost does not include any additional certification if required as per Indian regulations.
-2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.
-3. Order once placed cannot be changed.
-4. BulkMRO does not accept any financial penalties for late deliveries.'
+      self.commercial_terms_and_conditions ||= [
+          '1. Cost does not include any additional certification if required as per Indian regulations.',
+          '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
+          '3. Order once placed cannot be changed.',
+          '4. BulkMRO does not accept any financial penalties for late deliveries.'
+      ].join('\n')
+
+      self.stage ||= 1
     end
 
     self.is_sez ||= false
@@ -230,6 +242,17 @@ class Inquiry < ApplicationRecord
 
   def inquiry_products_for(supplier)
     self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
+  end
+
+  def attachments
+    attachment = []
+    attachment.push(self.customer_po_sheet.present? ? self.customer_po_sheet : nil  )
+    attachment.push(self.copy_of_email.present? ? self.copy_of_email : nil  )
+    attachment.push(self.suppler_quote.present? ? self.suppler_quote : nil  )
+    attachment.push(self.final_supplier_quote.present? ? self.final_supplier_quote : nil  )
+    attachment.push(self.calculation_sheet.present? ? self.calculation_sheet : nil  )
+
+    attachment.compact
   end
 
   def suppliers_selected?

@@ -25,8 +25,8 @@ class Overseers::DashboardController < Overseers::BaseController
     # InquiryIndex.delete
     # InquiryIndex.create!
     # InquiryIndex.import
-    # InquiriesIndex.reset!
-    ProductsIndex.reset!
+    InquiriesIndex.reset!
+    # ProductsIndex.reset!
     #
     # Inquiry.search('asd')
     #
