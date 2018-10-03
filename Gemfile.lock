@@ -511,6 +511,8 @@ DEPENDENCIES
   country_select
   deep_cloneable (~> 2.3.2)
   devise
+  elasticsearch-model
+  elasticsearch-rails
   faker
   fast_jsonapi
   file_validators
