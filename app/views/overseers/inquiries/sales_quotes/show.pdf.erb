@@ -16,14 +16,14 @@
                 <tr>
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">
-                      <%= @sales_quote.inquiry.bill_from.present? ? @sales_quote.inquiry.bill_from.name : '' %>
+                      <%= @sales_quote.inquiry.bill_from.name if @sales_quote.inquiry.bill_from.present? %>
                     </span>
                   </td>
                 </tr>
                 <tr>
                 <td style="text-align: center;">
                   <span style="color:#000000">
-                    <%= @sales_quote.inquiry.bill_from.present? ? @sales_quote.inquiry.bill_from.address.to_header_multiline_s : '' %>
+                    <%= @sales_quote.inquiry.bill_from.address.to_header_multiline_s if @sales_quote.inquiry.bill_from.present? %>
                   </span>
                 </td>
               </tr>
@@ -61,17 +61,13 @@
                   <b><span style="color:#000000">Date of Inquiry</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" sdnum="16393;0;D MMM YY" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <span style="color:#000000">
-                    <% if @sales_quote.inquiry.created_at.present? %>
-                    <%= @sales_quote.inquiry.created_at.strftime("%d-%b-%Y") %>
-                    <% end %>
+                    <%= @sales_quote.inquiry.created_at.strftime("%d-%b-%Y") if @sales_quote.inquiry.created_at.present? %>
                   </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Quotation Validity</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <span style="color:#000000">
-                    <% if @sales_quote.inquiry.created_at.present? %>
-                    <%= @sales_quote.inquiry.quotation_date.strftime("%d-%b-%Y") %>
-                      <% end %>
+                    <%= @sales_quote.inquiry.quotation_date.strftime("%d-%b-%Y") if @sales_quote.inquiry.created_at.present? %>
                   </span>
                 </td>
               </tr>
@@ -80,9 +76,7 @@
                   <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" sdnum="16393;0;D MMM YY" sdval="42913" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <span style="color:#000000">
-                    <% if @sales_quote.created_at.present? %>
-                    <%= @sales_quote.created_at.strftime("%d-%b-%Y") %>
-                  <% end %>
+                    <%= @sales_quote.created_at.strftime("%d-%b-%Y") if @sales_quote.created_at.present? %>
                   </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer Inquiry Reference</span></b>
@@ -132,7 +126,7 @@
               <td style="width:48%;">
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <%= @sales_quote.inquiry.bill_from.present? ? (@sales_quote.inquiry.bill_from.name.to_s + '<br>').html_safe : '' %>
+                      <%= (@sales_quote.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_quote.inquiry.bill_from.present? %>
                       <% if @sales_quote.inquiry.bill_from.present? %>
                       <%= @sales_quote.inquiry.bill_from.address.to_multiline_s %><br>
                       GST No. : <%= @sales_quote.inquiry.bill_from.address.gst %><br>
@@ -144,7 +138,7 @@
               <td style="width:48%;">
                 <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left;">
                     <span style="color:#000000">
-                      <%= @sales_quote.inquiry.ship_from.present? ? (@sales_quote.inquiry.ship_from.name.to_s + '<br>').html_safe  : '' %>
+                      <%= (@sales_quote.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_quote.inquiry.ship_from.present? %>
                       <% if @sales_quote.inquiry.ship_from.present? %>
                       <%= @sales_quote.inquiry.ship_from.address.to_multiline_s %><br>
                       GST No. : <%= @sales_quote.inquiry.ship_from.address.gst %><br>
