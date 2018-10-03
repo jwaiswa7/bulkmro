@@ -31,7 +31,7 @@
         </div>
 
         <div class="card-body">
-          <div class="row">
+          <div class="form-row">
             <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
               <div class="col-md-6">
                 <%= inquiry_currency.association :currency, collection: Currency.all.map {|currency| [currency.to_s, currency.id, {'data-conversion-rate' => currency.conversion_rate}]}, include_blank: false, input_html: {"data-v-model": "", "data-v-on:change": "dropdownChanged"} %>

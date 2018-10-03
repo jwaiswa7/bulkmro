@@ -22,7 +22,7 @@
                 <%= inquiry_product.hidden_field :quantity %>
 
                 <%= inquiry_product.hidden_field :sr_no %>
-                <div class="row">
+                <div class="form-row">
                   <div class="col-12">
                     <%= inquiry_product.simple_fields_for :product do |product| %>
                       <%= product.hidden_field :inquiry_import_row_id %>
