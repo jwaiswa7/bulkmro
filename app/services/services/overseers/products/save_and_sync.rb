@@ -12,11 +12,15 @@ class Services::Overseers::Products::SaveAndSync < Services::Shared::BaseService
 
   def call_later
     if product.persisted?
+      if product.remote_uid.blank?
+        remote_uid = Resources::Item.custom_find(product.sku)
+        product.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
+      end
+
       if product.remote_uid.present?
         Resources::Item.update(product.remote_uid, product)
       else
-        product.remote_uid = Resources::Item.create(product)
-        product.save
+        product.update_attributes(:remote_uid => Resources::Item.create(product))
       end
     end
 

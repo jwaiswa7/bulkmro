@@ -81,6 +81,18 @@ class Resources::ApplicationResource
     OpenStruct.new(get("/#{collection_name}(#{id})").parsed_response)
   end
 
+  def self.custom_find(id, by=nil)
+    response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
+    validated_response = get_validated_response(response)
+    log_request(:get, id, response, is_query: true)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+      yield remote_record if block_given?
+      remote_record[self.identifier.to_s]
+    end
+  end
+
   def self.create(record)
     response = post("/#{collection_name}", body: to_remote(record).to_json)
     validated_response = get_validated_response(response)

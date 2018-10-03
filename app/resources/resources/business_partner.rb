@@ -19,16 +19,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     end
   end
 
-  def self.find_by_obj(company)
-    response = get("/#{collection_name}?$filter=CardName eq '#{company}'&$top=1")
-    validated_response = get_validated_response(response)
-    log_request(:get, company, response, is_query: true)
-
-    if validated_response['value'].present?
-      remote_record = validated_response['value'][0]
+  def self.custom_find(company)
+    super(company, 'CardName') do |remote_record|
       update_associated_records(company, remote_record)
-
-      remote_record[self.identifier.to_s]
     end
   end
 

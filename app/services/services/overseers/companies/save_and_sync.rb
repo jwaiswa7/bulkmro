@@ -18,10 +18,10 @@ class Services::Overseers::Companies::SaveAndSync < Services::Shared::BaseServic
       end
 
       if company.remote_uid.blank?
-        remote_uid = Resources::BusinessPartner.find_by_obj(company)
+        remote_uid = Resources::BusinessPartner.custom_find(company)
         company.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       else
-        Resources::BusinessPartner.find_by_obj(company)
+        Resources::BusinessPartner.custom_find(company)
       end
 
       if company.remote_uid.blank?
