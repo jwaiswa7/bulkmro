@@ -38,7 +38,7 @@
               <%= row_action_button(new_overseers_inquiry_sales_quote_email_message_path(@inquiry, sales_quote), 'envelope', 'Send Email', 'dark') %>
             <% end %>
             <% if policy(sales_quote).show_pdf? %>
-              <%= row_action_button(show_pdf_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'file-pdf', 'Download', 'dark') %>
+              <%= row_action_button(show_pdf_overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_back_url) %>
             <% end %>
           </td>
           <td><%= format_date(sales_quote.sent_at) %></td>

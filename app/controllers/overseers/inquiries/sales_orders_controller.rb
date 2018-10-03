@@ -73,8 +73,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
     respond_to do |format|
       format.pdf do
-        render pdf: 'show',
-               template: 'overseers/inquiries/sales_orders/show.pdf.erb',
+        render pdf: 'Order_'+ @sales_order.id.to_s,
+               template: 'overseers/inquiries/sales_orders/show',
                layout: 'overseers/layouts/sap',
                footer: {center: '[page] of [topage]'}
       end
