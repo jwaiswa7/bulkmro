@@ -15,5 +15,4 @@ class Resources::SalesPerson < Resources::ApplicationResource
         Active: "tYES"
     }
   end
-
 end

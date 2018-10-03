@@ -73,12 +73,6 @@ class Overseer < ApplicationRecord
     find_by_email('ashwin.goyal@bulkmro.com')
   end
 
-  def save_and_sync
-    service = ['Services', 'Overseers', 'SaveAndSync'].join('::').constantize.new(self)
-    service.call
-    #self.save
-  end
-
   def self.sap_approver
     overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|
       overseer.first_name = "SAP"
