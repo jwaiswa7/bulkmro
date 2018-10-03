@@ -4,7 +4,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-      render  pdf: 'invoice #{@invoice[:increment_id].to_s}',
+      render  pdf: 'invoice_' + @invoice[:increment_id].to_s,
             template: 'callbacks/pdf_collections/invoice',
             layout: 'overseers/layouts/sap',
             footer: {center: '[page] of [topage]'}
@@ -17,7 +17,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-      render  pdf: 'shipment #{@shipment[:increment_id].to_s}',
+      render  pdf: 'shipment_' + @shipment[:increment_id].to_s,
             template: 'callbacks/pdf_collections/shipment',
             layout: 'overseers/layouts/sap',
             footer: {center: '[page] of [topage]'}
@@ -30,7 +30,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
 
     respond_to do |format|
       format.pdf do
-      render  pdf: 'po #{@po[:increment_id].to_s}',
+      render  pdf: 'po_' + @po[:increment_id].to_s,
             template: 'callbacks/pdf_collections/po',
             layout: 'overseers/layouts/sap',
             footer: {center: '[page] of [topage]'}
@@ -53,6 +53,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     @invoice[:ItemLine].each do |item|
       @sales_order.rows.each do |row|
         if row.sales_quote_row.product.sku == item[:sku]
+          item[:name] = row.sales_quote_row.to_bp_catalog_s
           item[:uom] = row.sales_quote_row.product.measurement_unit.name
           item[:hsn] =  @sales_order.sales_quote.is_sez ? row.tax_code.chapter : row.tax_code.code
           item[:tax_rate] = row.tax_code.tax_percentage
@@ -75,6 +76,7 @@ class Callbacks::PdfCollectionsController < Callbacks::BaseController
     @shipment[:ItemLine].each do |item|
       @sales_order.rows.each do |row|
         if row.sales_quote_row.product.sku == item[:sku]
+          item[:name] = row.sales_quote_row.to_bp_catalog_s
           item[:uom] = row.sales_quote_row.product.measurement_unit.name
           item[:hsn] = row.tax_code.chapter
         end

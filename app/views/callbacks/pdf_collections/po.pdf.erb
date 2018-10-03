@@ -17,13 +17,14 @@
                 <tbody>
                 <tr>
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
-                    <span style="color:#F58220">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                    <span style="color:#F58220">
+                      <%= @inquiry.bill_from.address.name if @inquiry.bill_from.present?  %>
+                    </span></td>
                 </tr>
                 <tr>
                   <td style="text-align: center;">
                     <span style="color:#000000">
-                      <%= @inquiry.bill_from.address.to_header_multiline_s  %>
-
+                      <%= @inquiry.bill_from.address.to_header_multiline_s if @inquiry.bill_from.present?  %>
                     </span>
                   </td>
                 </tr>
@@ -51,7 +52,9 @@
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= Date.parse(@po[:PoDate]).strftime("%d-%b-%Y") %></span>
+                    <span style="color:#000000">
+                      <%= Date.parse(@po[:PoDate]).strftime("%d-%b-%Y") if @po[:PoDate].present? %>
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -70,7 +73,9 @@
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= Date.parse(@po[:PoSupplyDate]).strftime("%d-%b-%Y") %></span></td>
+                    <span style="color:#000000">
+                      <%= Date.parse(@po[:PoSupplyDate]).strftime("%d-%b-%Y") if @po[:PoSupplyDate].present? %>
+                    </span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -112,8 +117,8 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <%= @supplier_billing.name %><br>
-                    <%= @supplier_billing.to_multiline_s %>
+                    <%= @supplier_billing.name if @supplier_billing.name.present? %><br>
+                    <%= @supplier_billing.to_multiline_s if @supplier_billing.present? %>
                     <br>
                     Tel: <%= @supplier_billing.telephone %><br>
                     GST No. :<%=  @supplier_billing.gst %><br>
@@ -122,8 +127,8 @@
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <%= @supplier_shipping.name %><br>
-                    <%= @supplier_shipping.to_multiline_s %>
+                    <%= @supplier_shipping.name if @supplier_shipping.name.present? %><br>
+                    <%= @supplier_shipping.to_multiline_s if @supplier_shipping.to_multiline_s.present? %>
                     <br>
                     Tel: <%= @supplier_shipping.telephone %><br>
                     GST No. :<%=  @supplier_shipping.gst %><br>
@@ -146,12 +151,11 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%= (@inquiry.bill_from.name.to_s + '<br>').html_safe if  @inquiry.bill_from.present? %>
+                      <% if @inquiry.bill_from.present? %>
+                      <%= @inquiry.bill_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @inquiry.bill_from.address.gst %><br>
+                        <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -159,12 +163,11 @@
                 <td style="width:48%;">
                   <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <span style="color:#000000">
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
-                      2nd Floor, A Wing, Todi Estate,<br>
-                      Sun Mill Compound, Lower Parel West,<br>
-                      Mumbai 400013,<br>
-                      Maharashtra<br>
-                      GST No. : 27AAGCB7343G1ZN<br>
+                      <%=  (@inquiry.ship_from.name.to_s + '<br>').html_safe if @inquiry.ship_from.present? %>
+                      <% if @inquiry.ship_from.present? %>
+                      <%= @inquiry.ship_from.address.to_multiline_s  %><br>
+                      GST No. : <%= @inquiry.ship_from.address.gst %><br>
+                        <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
                 </td>
@@ -361,7 +364,7 @@
                 <tr>
                   <td height="" style="padding-left:10px;" valign="top">2.</td>
                   <td align="left" valign="top">
-                    <span style="color:#000000"> In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or inaction.
+                    <span style="color:#000000"> In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
 </span>
                   </td>
                 </tr>
@@ -393,7 +396,13 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
-                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @po[:PoNum] %> when shipping goods.</span></td>
+                    <% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
+                    1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @po[:PoNum] %> when shipping goods.
+                      <% else %>
+                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @po[:PoNum] %> when shipping goods.
+                    <% end %>
+
+                      </span></td>
                 </tr>
                 </tbody>
               </table>
