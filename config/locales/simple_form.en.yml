@@ -40,6 +40,7 @@ en:
         telephone: 'e.g. 02240236090'
         tan: 'e.g. AVVPS12313'
         pan: 'e.g. AVVPS12313'
+        legacy_id: 'Legacy id'
       contact:
         first_name: 'e.g. Jon'
         last_name: 'e.g. Snow'
@@ -52,6 +53,7 @@ en:
         mobile: 'e.g. 9987480784'
         legacy_email: 'e.g. ashwin.goyal@bulkmro.com'
         companies: 'List of companies associated with this contact'
+        legacy_id: 'Legacy id'
     "yes": 'Yes'
     "no": 'No'
     required:

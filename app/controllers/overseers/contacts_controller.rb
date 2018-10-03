@@ -17,11 +17,13 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def new
+    @company = Company.find(params[:company_id])
     @contact = @company.contacts.build(overseer: current_overseer)
     authorize @contact
   end
 
   def create
+    @company = Company.find(params[:company_id])
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer))
     authorize @contact
 
@@ -41,7 +43,7 @@ class Overseers::ContactsController < Overseers::BaseController
     authorize @contact
 
     if @contact.save
-      redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
+      redirect_to :back, notice: flash_message(@contact, action_name)
     else
       render 'edit'
     end
