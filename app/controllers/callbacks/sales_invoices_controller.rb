@@ -1,6 +1,4 @@
 class Callbacks::SalesInvoicesController < Callbacks::BaseController
-  protect_from_forgery with: :null_session
-  before_action :authenticate_callback
 
   def create
     resp_status = 0

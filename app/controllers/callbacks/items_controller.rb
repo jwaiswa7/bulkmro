@@ -1,6 +1,4 @@
 class Callbacks::ItemsController < Callbacks::BaseController
-  protect_from_forgery with: :null_session
-
   def update
     sku = params[:sku]
     uom = params[:uom_name]

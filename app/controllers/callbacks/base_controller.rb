@@ -1,6 +1,7 @@
 class Callbacks::BaseController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :authenticate_callback!
+  before_action :log_request
 
   def format_response(status, message, response = nil)
     Hash.new({
@@ -11,12 +12,12 @@ class Callbacks::BaseController < ApplicationController
              })
   end
 
-  def log_request(method, resource, request)
+  def log_request
     RemoteRequest.create({
-                             method: method,
-                             resource: resource,
-                             request: request,
-                             url: resource,
+                             method: :callback,
+                             resource: self.class.name,
+                             request: params,
+                             url: request.url,
                              status: :pending
                          })
   end

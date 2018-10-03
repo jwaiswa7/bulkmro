@@ -83,8 +83,4 @@ class SalesOrder < ApplicationRecord
   def not_confirmed?
     !confirmed?
   end
-
-  def set_status(status)
-    self.order_status = SalesOrder.order_statuses[status]
-  end
 end
