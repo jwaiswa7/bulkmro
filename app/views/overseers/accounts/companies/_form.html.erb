@@ -5,10 +5,11 @@
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= render 'shared/snippets/form_errors', f: f %>
 
+    <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.hidden_field :account_id %>
 
+    <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
     <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
     <div class="form-row">
       <div class="col-6 col-md-3">
@@ -44,12 +45,6 @@
       <div class="col-6 col-md-4">
         <%= f.input :credit_limit %>
       </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :tan %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :pan %>
-      </div>
     </div>
 
     <div class="form-row">
@@ -64,17 +59,16 @@
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="col-md-4">
-        <%= f.input :tan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'TAN Proof' %>
-      </div>
-      <div class="col-md-4">
-        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
-      </div>
-      <div class="col-md-4">
-        <%= f.input :cen_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CEN Proof' %>
+    <div class="form-group">
+      <%= f.label :contact_ids, 'Contacts' %>
+      <div class="select2-wrapper">
+        <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
       </div>
     </div>
+
+    <% if f.object.persisted? %>
+    <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
+    <% end %>
 
     <div class="form-row">
       <div class="col-6">
@@ -91,12 +85,26 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <%= f.label :contact_ids, 'Contacts' %>
-      <div class="select2-wrapper">
-        <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
+    <h6 class="text-uppercase text-black-50 mb-1 mt-2">Documents</h6>
+    <div class="form-row">
+      <div class="col-12 col-md-6">
+        <%= f.input :tan %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :tan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'TAN Proof' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :pan %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :cen_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CEN Proof' %>
       </div>
     </div>
+
+
 
 <!--    <div class="form-group">-->
       <%#= f.label :product_ids, 'Products' %>
@@ -120,7 +128,6 @@
 <!--    </div>-->
 
     <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
     <% end %>
@@ -134,7 +141,6 @@
         <i class="fal fa-pen"></i> <%= submit_text(@company) %>
       <% end %>
     <% end %>
-
-
   <% end %>
+
 </div>
