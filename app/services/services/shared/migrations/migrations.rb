@@ -11,7 +11,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     PaperTrail.enabled = false
 
     # methods = %w(activity)
-    methods = %w(brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
+    methods = %w(products product_categories)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
@@ -777,14 +777,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             attachment_uid: x.get_column('attachment_entry'),
             legacy_id: x.get_column('quotation_id'),
             priority: x.get_column('is_prioritized'),
-            expected_closing_date: x.get_column('closing_date'),
-            quotation_date: x.get_column('quotation_date'),
-            quotation_expected_date: x.get_column('quotation_expected_date'),
-            valid_end_time: x.get_column('valid_end_time'),
-            quotation_followup_date: x.get_column('quotation_followup_date'),
-            customer_order_date: x.get_column('customer_order_date'),
-            customer_committed_date: x.get_column('committed_customer_date'),
-            procurement_date: x.get_column('procurement_date'),
+            expected_closing_date: x.get_column('closing_date', to_datetime: true),
+            quotation_date: (x.get_column('quotation_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            quotation_expected_date: x.get_column('quotation_expected_date', to_datetime: true),
+            valid_end_time: (x.get_column('valid_end_time', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            quotation_followup_date: x.get_column('quotation_followup_date', to_datetime: true),
+            customer_order_date: (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            customer_committed_date: (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            procurement_date: (x.get_column('procurement_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
             is_sez: x.get_column('sez'),
             is_kit: x.get_column('is_kit'),
             weight_in_kgs: x.get_column('weight'),
