@@ -13,6 +13,7 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def chewy
+    authorize :dashboard
     # InquiryIndex.delete
     # InquiryIndex.create!
     # InquiryIndex.import
