@@ -90,7 +90,7 @@ class Resources::ApplicationResource
   end
 
   def self.update(id, record, use_quotes_for_id: false)
-    response = patch("/#{collection_name}(#{use_quotes_for_id ? ["'", id, ","].join : id})", body: to_remote(record).to_json)
+    response = patch("/#{collection_name}(#{use_quotes_for_id ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
     validated_response = get_validated_response(response)
     log_request(:patch, record, validated_response)
     yield validated_response if block_given?
@@ -99,10 +99,12 @@ class Resources::ApplicationResource
 
   def self.get_validated_response(raw_response)
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
-      OpenStruct.new(raw_response.value)
+      OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
+      raise
       { raw_response: raw_response, error_message: 'SAP Error :' + raw_response['error']['message']['value'] }
     else
+      raise
       { raw_response: raw_response, error_message: 'SAP Error / Warning :' + raw_response.to_s }
     end
   end

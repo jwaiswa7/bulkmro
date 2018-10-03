@@ -18,7 +18,7 @@ class Overseers::ContactsController < Overseers::BaseController
 
   def new
     @company = Company.find(params[:company_id])
-    @contact = @company.contacts.build(overseer: current_overseer)
+    @contact = @company.contacts.build(overseer: current_overseer, account: @company.account)
     authorize @contact
   end
 
@@ -27,7 +27,7 @@ class Overseers::ContactsController < Overseers::BaseController
     @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer))
     authorize @contact
 
-    if @contact.save
+    if @contact.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
     else
       render 'new'
@@ -42,8 +42,8 @@ class Overseers::ContactsController < Overseers::BaseController
     @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |_, v| v.blank? })
     authorize @contact
 
-    if @contact.save
-      redirect_to :back, notice: flash_message(@contact, action_name)
+    if @contact.save_and_sync
+      redirect_to overseers_account_path(@contact.account), notice: flash_message(@contact, action_name)
     else
       render 'edit'
     end

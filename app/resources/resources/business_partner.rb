@@ -1,12 +1,12 @@
 class Resources::BusinessPartner < Resources::ApplicationResource
 
   def self.identifier
-    :Code
+    :CardCode
   end
 
   def self.create(record)
     id = super(record) do |validated_response|
-      self.update_sap_fields(record, validated_response)
+      self.update_associated_records(record, validated_response)
     end
 
     id
@@ -15,13 +15,26 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   def self.update(id, record)
     super(id, record, use_quotes_for_id: true) do
       remote_record = self.find(record.remote_uid)
-      self.update_sap_fields(record, remote_record) if remote_record.blank?
+      self.update_associated_records(record, remote_record) if remote_record.blank?
     end
   end
 
-  def self.update_sap_fields(company, response)
+  def self.find_by_obj(company)
+    response = get("/#{collection_name}?$filter=CardName eq '#{company}'&$top=1")
+    validated_response = get_validated_response(response)
+    log_request(:get, company, response, is_query: true)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+      update_associated_records(company, remote_record)
+
+      remote_record[self.identifier.to_s]
+    end
+  end
+
+  def self.update_associated_records(company, response)
     # addresses = OpenStruct.new(response.value).BPAddresses
-    # contacts = OpenStruct.new(response.value).ContactEmployees
+    contacts = response['ContactEmployees']
 
     #Update Address's row numbers
     #
@@ -45,14 +58,12 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     #   end
     # end
     #
-    # if contacts.present?
-    #   contacts.each do |contact|
-    #     remote_uid = contact["InternalCode"]
-    #     company_contact = company.contacts.find_by_email(contact["E_Mail"])
-    #     company_contact.remote_uid = remote_uid
-    #     company_contact.save
-    #   end
-    # end
+
+    contacts.each do |contact|
+      remote_uid = contact["InternalCode"]
+      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"]).first
+      company_contact.update_attributes(:remote_uid => remote_uid)
+    end if contacts.present?
   end
 
   def self.to_remote(record)
@@ -77,7 +88,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       address_row.City = address.city_name
       address_row.County = nil
       address_row.Country = address.country_code
-      address_row.State = address.state.region_code
+      address_row.State = address.state.try(:region_code_uid)
       address_row.BuildingFloorRoom = nil
       address_row.AddressType = "bo_BillTo"
       address_row.AddressName2 = address_name2
@@ -99,7 +110,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
 
       # BPFiscalTaxIDCollection Start
-
       bp_tax_collection_row = OpenStruct.new
 
       #Address Level tax Info
@@ -162,7 +172,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
 
-    record.contacts.each do |contact|
+    record.company_contacts.each do |company_contact|
+      contact = company_contact.contact
+
       contact_row = OpenStruct.new
       contact_row.CardCode = record.remote_uid
       contact_row.Name = contact.full_name
@@ -179,8 +191,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contact_row.FirstName = contact.first_name
       contact_row.MiddleName = nil
       contact_row.LastName = contact.last_name
-      contact_row.InternalCode = contact.remote_uid
+      contact_row.InternalCode = company_contact.remote_uid
       contact_row.U_MgntCustID = contact.legacy_id.present? ? contact.legacy_id : contact.id
+
       contacts.push(contact_row.marshal_dump)
     end
 

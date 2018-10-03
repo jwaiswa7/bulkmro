@@ -1,6 +1,7 @@
 class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry
+  include Mixins::CanBeSynced
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false

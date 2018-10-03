@@ -17,10 +17,17 @@ class Services::Overseers::Companies::SaveAndSync < Services::Shared::BaseServic
         account.update_attributes(:remote_uid => Resources::BusinessPartnerGroup.create(account))
       end
 
-      if company.remote_uid.present?
-        Resources::BusinessPartner.update(company.remote_uid, company)
+      if company.remote_uid.blank?
+        remote_uid = Resources::BusinessPartner.find_by_obj(company)
+        company.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       else
+        Resources::BusinessPartner.find_by_obj(company)
+      end
+
+      if company.remote_uid.blank?
         company.update_attributes(:remote_uid => Resources::BusinessPartner.create(company))
+      else
+        Resources::BusinessPartner.update(company.remote_uid, company)
       end
     end
   end
