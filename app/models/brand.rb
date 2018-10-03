@@ -13,4 +13,8 @@ class Brand < ApplicationRecord
   def to_s
     name
   end
+
+  def self.legacy
+    find_by_name('Legacy Brand')
+  end
 end

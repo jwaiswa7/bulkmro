@@ -11,11 +11,11 @@ class Overseers::ApplicationPolicy
   end
 
   def sales_manager?
-    overseer.sales_manager? || admin?
+    overseer.outside_sales_manager? || overseer.sales_manager? || admin?
   end
 
   def sales?
-    overseer.sales? || sales_manager?
+    overseer.inside_sales? || overseer.outside_sales? || overseer.sales? || sales_manager?
   end
 
   def index?

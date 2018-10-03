@@ -12,9 +12,9 @@ class BaseIndex < Chewy::Index
               tokenizer: 'keyword'
           }
       }
-  }
+  }, max_result_window: 5000000
 
   def self.fields
-    mappings_hash[:mappings][self.to_s.underscore.split('_').first.singularize.to_sym][:properties].keys
+    mappings_hash[:mappings][self.to_s.underscore.split('_').first.singularize.to_sym][:properties].keys - [:created_at, :updated_at]
   end
 end

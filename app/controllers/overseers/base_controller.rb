@@ -36,7 +36,7 @@ class Overseers::BaseController < ApplicationController
 	end
 
 	def user_for_paper_trail
-		current_overseer.to_gid.to_s
+		current_overseer.to_gid.to_s if current_overseer.present?
 	end
 
 	def controller_namespace

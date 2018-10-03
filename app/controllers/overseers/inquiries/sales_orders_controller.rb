@@ -1,9 +1,14 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:edit, :update, :new_confirmation, :create_confirmation]
+  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
+  end
+
+  def show
+    redirect_to edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order)
+    authorize @sales_order
   end
 
   def new

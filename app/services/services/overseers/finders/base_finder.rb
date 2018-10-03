@@ -10,8 +10,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                ''
              end.gsub(/[^0-9A-Za-z]/, '')
 
-    @page = params[:page]
-    @per = params[:per] || 20
+    @per = (params[:per] || params[:length] || 20).to_i
+    @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
   end
 
   def call_base
@@ -22,7 +22,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                                default_operator: 'or'
                            })
                          else
-                           index_klass.all
+                           index_klass.all.order(:created_at => :desc)
                          end.page(page).per(per)
 
 

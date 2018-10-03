@@ -13,13 +13,13 @@
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.input :company_type, as: :select, collection: enum_to_collection(Activity.company_types) %>
+        <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :activity_type, as: :select, collection: enum_to_collection(Activity.activity_types) %>
+        <%= f.input :activity_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.input :purpose, as: :select, collection: enum_to_collection(Activity.purposes) %>
+        <%= f.input :purpose, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
       </div>
     </div>
 

@@ -36,20 +36,21 @@ class Overseers::OverseersController < Overseers::BaseController
   private
   def overseer_params
     params.require(:overseer).permit(
-        :id,
         :first_name,
         :last_name,
+        :role,
+        :parent_id,
         :email,
         :mobile,
         :telephone,
         :identifier,
         :designation,
         :department,
+        :function,
         :geography,
+        :status,
         :password,
         :password_confirmation,
-        :role,
-        :parent_id
     )
   end
 

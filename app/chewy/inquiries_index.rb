@@ -8,8 +8,8 @@ class InquiriesIndex < BaseIndex
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'letter'
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'letter'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'letter'
-    field :created_at
-    field :updated_at
+    field :created_at, type: 'date'
+    field :updated_at, type: 'date'
     field :created_by, value: -> (record) { record.created_by.to_s }, analyzer: 'letter'
     field :updated_by, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
   end
