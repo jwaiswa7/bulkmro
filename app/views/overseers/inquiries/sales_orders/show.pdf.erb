@@ -17,14 +17,14 @@
                 <tbody>
                 <tr>
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
-                    <span style="color:#F58220">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                    <span style="color:#F58220">
+                      <%= @sales_order.inquiry.bill_from.name if @sales_order.inquiry.bill_from.present? %>
+                    </span></td>
                 </tr>
                 <tr>
                   <td style="text-align: center;">
                     <span style="color:#000000">
-                      <% if @sales_order.inquiry.bill_from.present? %>
-                      <%= @sales_order.inquiry.bill_from.address.to_header_multiline_s  %>
-                      <% end %>
+                      <%= @sales_order.inquiry.bill_from.address.to_header_multiline_s if @sales_order.inquiry.bill_from.present? %>
                     </span>
                   </td>
                 </tr>
@@ -48,14 +48,12 @@
                   <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.sales_quote.quotation_uid %></span></td>
+                    <span style="color:#000000"><%= @sales_order.inquiry.inquiry_number %></span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <% if @sales_order.sales_quote.created_at.present? %>
-                      <%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") %>
-                      <% end %>
+                      <%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") if @sales_order.sales_quote.created_at.present? %>
                       </span>
                   </td>
                 </tr>
@@ -92,7 +90,10 @@
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.inquiry.payment_option %></span></td>
+                    <span style="color:#000000">
+                      <%= @sales_order.inquiry.payment_option.name if @sales_order  .inquiry.payment_option.present? %>
+                    </span>
+                  </td>
                 </tr>
                 </tbody>
               </table>
@@ -112,7 +113,7 @@
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.bill_from  %>
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <%= (@sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.bill_from.present? %>
                       <% if @sales_order.inquiry.bill_from.present? %>
                       <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
                       GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
@@ -125,7 +126,7 @@
                   <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <span style="color:#000000">
                       <%#= @sales_order.inquiry.ship_from  %>
-                      Bulk MRO Industrial Supply Pvt. Ltd.<br>
+                      <%= (@sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.ship_from.present? %>
                       <% if @sales_order.inquiry.ship_from.present? %>
                       <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
                       GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
@@ -150,26 +151,22 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.shipping_address.name %><br>
-                    <% if @sales_order.inquiry.shipping_address.present? %>
-                    <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
-                    <% end %>
+                    <%= @sales_order.inquiry.billing_address.name %><br>
+                      <%= @sales_order.inquiry.billing_address.to_multiline_s if @sales_order.inquiry.billing_address.present? %>
                     <br>
-                    Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
+                    Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
+                    GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <%= @sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_order.inquiry.billing_address.name %><br>
-                    <% if @sales_order.inquiry.shipping_address.present? %>
-                    <%= @sales_order.inquiry.billing_address.to_multiline_s %>
-                    <% end %>
+                    <%= @sales_order.inquiry.shipping_address.name %><br>
+                      <%= @sales_order.inquiry.shipping_address.to_multiline_s if @sales_order.inquiry.shipping_address.present? %>
                     <br>
-                    Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
+                    Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
+                    GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>
               </tr>
@@ -246,7 +243,7 @@
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"></span></td>
                     <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:left;" valign="top">
-                      <span style="color:#000000"><%= item.sales_quote_row.product.name %><br></span></td>
+                      <span style="color:#000000"><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"></span></td>
                     <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
@@ -354,7 +351,7 @@
             <br clear="all">
 
 
-            <% if @sales_order.inquiry.bill_from.present? && @sales_order.inquiry.bill_from == 12 %>
+            <% if @sales_order.inquiry.bill_from.present? && @sales_order.inquiry.bill_from.legacy_id == 12 %>
               <div id="noteInvoiceContainer">
 
                 <table  style="width: 100%;"   cellspacing="0" border="0">
@@ -393,8 +390,12 @@
                     <b><span style="color:#000000">Other Information :</span></b></td>
                 </tr>
                 <tr>
-                  <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
-                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</span></td>
+                  <td align="left" style=" padding-left: 10px;" valign="top">
+                    <span style="color:#000000">
+                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
+                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+                    </span>
+                  </td>
                 </tr>
                 <tr>
                   <td></td>
