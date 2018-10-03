@@ -25,11 +25,10 @@ class Overseers::BrandsController < Overseers::BaseController
     @brand = Brand.new(brand_params.merge(overseer: current_overseer))
     authorize @brand
 
-    if @brand.save
-      @brand.save_and_sync
+    if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -41,11 +40,10 @@ class Overseers::BrandsController < Overseers::BaseController
     @brand.assign_attributes(brand_params.merge(overseer: current_overseer))
     authorize @brand
 
-    if @brand.save
-      @brand.save_and_sync
+    if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
