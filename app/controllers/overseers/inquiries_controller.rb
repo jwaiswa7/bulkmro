@@ -51,10 +51,10 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save_and_sync
+    if @inquiry.save
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -66,10 +66,10 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save_and_sync
+    if @inquiry.save
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
