@@ -79,7 +79,7 @@
             <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories) %>
+            <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true) %>
           </div>
         </div>
       </div>
@@ -103,11 +103,14 @@
               </div>
             <% end %>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <%= f.input :quotation_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <%= f.input :expected_closing_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= f.input :quotation_followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
         </div>
       </div>
