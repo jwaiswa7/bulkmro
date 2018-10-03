@@ -56,7 +56,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize @sales_quote
     respond_to do |format|
       format.pdf do
-        render  pdf: 'Quotation_' + @sales_quote.quotation_uid.to_s,
+        render  pdf: 'Quotation_' + @sales_quote.inquiry.inquiry_number.to_s,
                 template: 'overseers/inquiries/sales_quotes/show',
                 layout: 'overseers/layouts/sap',
                 footer: {center: '[page] of [topage]'}

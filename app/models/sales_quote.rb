@@ -45,7 +45,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def tax_summary
-      self.rows[0].taxation.to_s
+      self.rows.first.taxation.to_s
   end
 
 end
