@@ -85,22 +85,12 @@
       </div>
     </div>
 
-    <h6 class="text-uppercase text-black-50 mb-1 mt-2">Documents</h6>
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.input :tan %>
-      </div>
-      <div class="col-12 col-md-6">
-        <%= f.input :tan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'TAN Proof' %>
-      </div>
-      <div class="col-12 col-md-6">
-        <%= f.input :pan %>
+        <%= f.input :pan, label: 'PAN' %>
       </div>
       <div class="col-12 col-md-6">
         <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
-      </div>
-      <div class="col-12 col-md-6">
-        <%= f.input :cen_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CEN Proof' %>
       </div>
     </div>
 
