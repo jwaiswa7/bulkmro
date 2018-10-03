@@ -58,33 +58,6 @@
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :cst, label: 'CST Number' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :cst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'CST Number Proof' %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :vat, label: 'VAT Number' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :vat_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'VAT Number Proof' %>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :excise, label: 'Excise Number' %>
-      </div>
-      <div class="col-6">
-        <div class="form-group">
-          <%= f.input :cst_proof, :wrapper => :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'Excise Number Proof' %>
-        </div>
-      </div>
-    </div>
-
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> <%= submit_text(@address) %>
