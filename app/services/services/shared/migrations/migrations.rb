@@ -10,7 +10,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     PaperTrail.enabled = false
 
-    methods = %w(activity)
+    # methods = %w(activity)
+    methods = %w(brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
     # methods = %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
 
     PaperTrail.enabled = true
