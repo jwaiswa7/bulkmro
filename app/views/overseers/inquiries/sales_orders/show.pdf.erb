@@ -62,12 +62,12 @@
                     <b><span style="color:#000000">Customer Purchase Order #</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000">NPO17-733??</span></td>
+                    <span style="color:#000000"><%= @sales_order.inquiry.customer_po_number if @sales_order.inquiry.customer_po_number.present? %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Customer Purchase Order Date</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000">21-Dec-2017??</span></td>
+                    <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date if @sales_order.inquiry.customer_order_date.present? %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
