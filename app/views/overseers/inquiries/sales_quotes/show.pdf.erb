@@ -93,11 +93,22 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_quote.inquiry.freight_option %></span></td>
+                  <span style="color:#000000">
+                    <% if @sales_quote.inquiry.commercial_terms_and_conditions.present? %>
+                          <% terms = PHP.unserialize(@sales_quote.inquiry.commercial_terms_and_conditions) %>
+                      <% if terms['freight'].present? %>
+                          <%= terms['freight'] %>
+                          <% end %>
+                        <% end %>
+                  </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Price Quoted</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_quote.inquiry.price_type %></span></td>
+                  <span style="color:#000000">
+                    <% if @sales_quote.inquiry.price_type.present? %>
+                    <%= @sales_quote.inquiry.price_type == 'DD' ? 'Door Delivery' : @sales_quote.inquiry.price_type %>
+                      <% end %>
+                  </span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -391,6 +402,15 @@
                   <span style="color:#000000">2. Any errors in Quotation including HSN codes, GST Tax rate must be notified before placing order.<br></span>
                   <span style="color:#000000">3. Order once placed cannot be changed.<br></span>
                   <span style="color:#000000">4. Bulk MRO does not accept any financial penalties for late deliveries.<br></span>
+                  <% if @sales_quote.inquiry.commercial_terms_and_conditions.present? %>
+                    <% terms = PHP.unserialize(@sales_quote.inquiry.commercial_terms_and_conditions) %>
+                    <% if terms['commercial'].present? %>
+                    <% commercials = terms['commercial'].split(/[\r\n]+/) %>
+                     <% commercials.each_with_index  do | commercial, index| %>
+                      <span style="color:#000000"> <%= (index+5).to_s + ". " + terms['commercial'] %><br></span>
+                      <% end %>
+                    <% end %>
+                  <% end %>
                 </td>
               </tr>
               </tbody>
