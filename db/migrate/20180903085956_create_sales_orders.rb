@@ -4,7 +4,7 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
       t.references :sales_quote, foreign_key: true
       t.integer :parent_id, index: true
       t.integer :legacy_id, index: true
-      t.string :remote_uid, index: true
+      t.integer :remote_uid, index: true
 
       t.integer :legacy_request_status
 

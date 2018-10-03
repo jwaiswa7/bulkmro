@@ -9,10 +9,11 @@ class Resources::ItemGroup < Resources::ApplicationResource
         GroupName: record.name[0..19]
     }
 
-    if record.is_service?
-      params[:ItemClass] = "itcService"
-      params[:InventorySystem] = "bis_MovingAverage"
-    end
+    params.merge!({
+                      ItemClass: "itcService",
+                      InventorySystem: "bis_MovingAverage"
+                  }) if record.is_service?
+
     params
   end
 

@@ -24,8 +24,7 @@ class Overseers::CategoriesController < Overseers::BaseController
   def create
     @category = Category.new(category_params.merge(overseer: current_overseer))
     authorize @category
-    if @category.save
-      @category.save_and_sync
+    if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
     else
       render 'new'
@@ -39,9 +38,10 @@ class Overseers::CategoriesController < Overseers::BaseController
   def update
     @category.assign_attributes(category_params.merge(overseer: current_overseer))
     authorize @category
-    if @category.save
-      @category.save_and_sync
+    if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
+    else
+      render 'edit'
     end
   end
 
