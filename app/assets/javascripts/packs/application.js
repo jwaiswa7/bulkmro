@@ -11,6 +11,7 @@ import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
 import chartjs from "./components/chartjs";
+import datePicker from "./components/datePicker";
 
 // Namespacing all imports under app
 let app = {};
@@ -28,6 +29,7 @@ app.initializeComponents = () => {
     dataTables();
     tinyHtmlEditor();
     chartjs();
+    datePicker();
 };
 
 // Turbolinks load event

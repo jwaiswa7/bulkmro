@@ -7,6 +7,9 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.string :name, index: { :unique => true }
       t.string :alias
 
+      t.integer :account_type
+
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

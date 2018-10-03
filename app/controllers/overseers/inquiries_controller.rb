@@ -16,6 +16,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def index_pg
+    @inquiries = ApplyDatatableParams.to(Inquiry.all.with_includes, params)
+    authorize @inquiries
+  end
+
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params)
     service.call
@@ -110,6 +115,9 @@ class Overseers::InquiriesController < Overseers::BaseController
         :opportunity_source,
         :subject,
         :gross_profit_percentage,
+        :quotation_date,
+        :customer_committed_date,
+        :procurement_date,
         :expected_closing_date,
         :quote_category,
         :price_type,

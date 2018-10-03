@@ -10,12 +10,11 @@ Rails.application.routes.draw do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
+      get 'migrations'
     end
 
     resources :reports
-
     resources :activities
-
     resource :profile, :controller => :profile
     resources :overseers
 
@@ -38,6 +37,9 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
+    end
+
+    resources :addresses do
     end
 
     resources :categories do
@@ -87,6 +89,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
+        get 'index_pg'
       end
 
       scope module: 'inquiries' do
@@ -137,7 +140,6 @@ Rails.application.routes.draw do
 
       scope module: 'companies' do
         resources :addresses
-        resources :contacts
       end
     end
 

@@ -152,9 +152,15 @@ gem 'async-websocket'
 # Elasticsearch
 gem 'chewy'
 
+# Sentry.io error monitoring
+gem 'sentry-raven'
+
 # Easy group by queries
 gem 'hightop'
 gem 'groupdate'
+
+# Sidekiq
+gem 'sidekiq'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -182,6 +188,9 @@ group :test do
   gem 'chromedriver-helper'
 end
 
+group :production do
+  gem 'bonsai-elasticsearch-rails', '~> 7'
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

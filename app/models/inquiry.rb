@@ -2,13 +2,13 @@ class Inquiry < ApplicationRecord
   COMMENTS_CLASS = 'InquiryComment'
 
   include Mixins::CanBeStamped
-  include Mixins::HasAddresses
+  #include Mixins::HasAddresses
   include Mixins::CanBeSynced
   include Mixins::HasManagers
   include Mixins::HasComments
 
   update_index('inquiries#inquiry') { self }
-  pg_search_scope :locate, :against => [:id], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:id, :inquiry_number], :associated_against => { company: [:name], account: [:name], :contact => [:first_name, :last_name], :inside_sales_owner => [:first_name, :last_name], :outside_sales_owner => [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :inquiry_currency
   has_one :currency, :through => :inquiry_currency
@@ -16,7 +16,6 @@ class Inquiry < ApplicationRecord
   belongs_to :contact
   belongs_to :company
   has_one :account, :through => :company
-  belongs_to :shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :shipping_company_id, required: false
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
@@ -34,11 +33,15 @@ class Inquiry < ApplicationRecord
   has_many :sales_quotes
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> { where.not(:sent_at => nil).latest }, class_name: 'SalesQuote'
+  has_one :sales_quote, -> { latest }
   has_many :sales_orders, :through => :sales_quotes
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> { where.not(:sent_at => nil).latest }, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: false
   has_many :email_messages
+
+  belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
+  belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -93,6 +96,7 @@ class Inquiry < ApplicationRecord
   }
   
   enum opportunity_source: {
+    :unsure => 5,
     :meeting => 10,
     :phone_call => 20,
     :email => 30,
@@ -112,7 +116,9 @@ class Inquiry < ApplicationRecord
     :dap => 50,
     :door_delivery => 60,
     :fca_mumbai => 70,
-    :cip => 80
+    :cip => 80,
+    :dd => 90,
+    :cip_mumbai_airport => 100
   }
 
   enum freight_option: {
@@ -154,12 +160,12 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
-  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than: 100, allow_nil: true
+  validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
-  validates_presence_of :billing_address
-  validates_presence_of :shipping_address
+  #validates_presence_of :billing_address
+  #validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
   def every_product_is_only_added_once?
@@ -167,8 +173,6 @@ class Inquiry < ApplicationRecord
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
-
-
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -192,11 +196,11 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     if self.company.present?
-      self.outside_sales_owner ||= self.company.outside_sales_owner
-      self.sales_manager ||= self.sales_manager
+      # self.outside_sales_owner ||= self.company.outside_sales_owner
+      # self.sales_manager ||= self.company.sales_manager
       self.status ||= :'Lead by O/S'
       self.opportunity_type ||= :regular
-      self.opportunity_source ||= :meeting
+      self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
       self.price_type ||= :exw
       self.freight_option ||= :included
@@ -207,10 +211,17 @@ class Inquiry < ApplicationRecord
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
+      self.bill_from ||= Warehouse.default
+      self.ship_from ||= Warehouse.default
+      self.commercial_terms_and_conditions ||= '1. Cost does not include any additional certification if required as per Indian regulations.
+2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.
+3. Order once placed cannot be changed.
+4. BulkMRO does not accept any financial penalties for late deliveries.'
     end
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
+    # self.inquiry_number ||= Inquiry.maximum(:inquiry_number) + 1
   end
 
   def draft?

@@ -8,7 +8,9 @@ class CreateCategories < ActiveRecord::Migration[5.2]
 
       t.string :name
       t.string :description
+      t.boolean :is_service, default: false
 
+      t.jsonb :legacy_metadata
       t.timestamps
       t.userstamps
     end

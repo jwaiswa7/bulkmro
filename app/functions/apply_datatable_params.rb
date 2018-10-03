@@ -21,8 +21,12 @@ class ApplyDatatableParams < BaseFunction
 			records = records.latest
 		end
 
-		params.keys.select { |key| key.ends_with? 'id' }.each do |key|
-		  records = records.where(key.to_sym => params[key])
+		if params[:company_id].present? && params[:via_company_contacts]
+			records = records.joins(:company_contacts).where('company_contacts.company_id = ?', params[:company_id]).distinct
+		else
+			params.keys.select { |key| key.ends_with? 'id' }.each do |key|
+			  records = records.where(key.to_sym => params[key])
+			end
 		end
 
 		page = params[:start] && params[:length] ? (params[:start].to_i / params[:length].to_i) + 1 : 1

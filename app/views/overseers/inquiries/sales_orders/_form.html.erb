@@ -95,7 +95,7 @@
               </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-between">
+            <div class="d-block d-md-flex flex-row justify-content-between">
               <%= row.input :quantity %>
               <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper'} do %>
                 Remove
@@ -129,12 +129,12 @@
         </div>
         <div class="card-body">
           <div class="form-row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
                 <i class="fal fa-pen mr-1"></i> Save as Draft
               <% end %>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
               <%= button_tag(type: "submit", name: "save_and_confirm", class: "btn btn-success btn-block") do %>
                 <i class="fal fa-paper-plane mr-1"></i> Save and Confirm
               <% end %>

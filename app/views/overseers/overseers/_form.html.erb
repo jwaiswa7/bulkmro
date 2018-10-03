@@ -6,17 +6,9 @@
   </div>
 
   <%= simple_form_for([:overseers, @overseer], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: 'Select a role' %>
-
-    <% if @overseer.persisted? %>
-      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Overseer.except_objects(@overseer.self_and_descendants), include_blank: 'Select a parent' %>
-    <% else %>
-      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, include_blank: 'Select a parent' %>
-    <% end %>
-
     <div class="form-row">
       <div class="col-3 col-md-2">
-        <%= f.input :identifier %>
+        <%= f.input :legacy_id, label: 'Legacy ID', disabled: true %>
       </div>
       <div class="col-4 col-md-5">
         <%= f.input :first_name %>
@@ -25,6 +17,16 @@
         <%= f.input :last_name %>
       </div>
     </div>
+
+    <%= f.input :role, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Overseer.roles), include_blank: false %>
+
+    <% if @overseer.persisted? %>
+      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, collection: Overseer.except_objects(@overseer.self_and_descendants), include_blank: 'Select a parent' %>
+    <% else %>
+      <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, include_blank: 'Select a parent' %>
+    <% end %>
+
+    <%= f.input :email, :required => true %>
 
     <div class="form-row">
       <div class="col-12 col-md-4">
@@ -39,13 +41,22 @@
 
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.input :department %>
+        <%= f.input :identifier %>
       </div>
       <div class="col-6 col-md-4">
         <%= f.input :designation %>
       </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :department %>
+      </div>
+      <div class="col-6 col-md-4">
+        <%= f.input :function %>
+      </div>
       <div class="col-12 col-md-4">
         <%= f.input :geography %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :status, as: :select, collection: enum_to_collection(Overseer.statuses) %>
       </div>
     </div>
 

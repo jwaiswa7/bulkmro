@@ -9,7 +9,8 @@ en:
         designation: 'e.g. Inside Sales Executive'
         department: 'e.g. Inside Sales'
         geography: 'e.g. Mumbai'
-
+        identifier: 'e.g. Inside'
+        function: 'e.g. Sales'
       activity:
         points_discussed: 'Points discussed in the meeting/call/over email'
         actions_required: 'Actions required on behalf of BulkMRO'
@@ -37,16 +38,22 @@ en:
         nature_of_business: 'e.g. Trading'
         email: 'e.g. info@reliance.com'
         telephone: 'e.g. 02240236090'
+        tan: 'e.g. AVVPS12313'
+        pan: 'e.g. AVVPS12313'
+        legacy_id: 'Legacy id'
       contact:
         first_name: 'e.g. Jon'
         last_name: 'e.g. Snow'
         password: 'e.g. password@123'
         password_confirmation: 'e.g. password@123'
-        email: 'e.g. ashwin.goyal@gmail.com'
+        email: 'e.g. ashwin.goyal@bulkmro.com'
         prefix: 'e.g. Mr'
         designation: 'e.g. Admin'
         telephone: 'e.g. 02240236090'
         mobile: 'e.g. 9987480784'
+        legacy_email: 'e.g. ashwin.goyal@bulkmro.com'
+        companies: 'List of companies associated with this contact'
+        legacy_id: 'Legacy id'
     "yes": 'Yes'
     "no": 'No'
     required:

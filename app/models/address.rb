@@ -5,6 +5,8 @@ class Address < ApplicationRecord
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
   has_one :warehouse
+  has_one :as_default_billing_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_billing_address, foreign_key: :default_billing_address_id
+  has_one :as_default_shipping_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_shipping_address, foreign_key: :default_shipping_address_id
 
   has_one_attached :gst_proof
   has_one_attached :cst_proof
@@ -38,5 +40,9 @@ class Address < ApplicationRecord
 
   def to_s
     [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
+  end
+
+  def self.legacy
+    find_by_name('Legacy Indian State')
   end
 end

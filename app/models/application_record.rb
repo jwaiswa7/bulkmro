@@ -19,6 +19,16 @@ class ApplicationRecord < ActiveRecord::Base
   scope :except_object, -> (obj) { where.not(:id => obj.id) if obj.present? }
   scope :except_objects, -> (objs) { where.not("#{self.model_name.collection}.id IN (?)", objs.pluck(:id)) if objs.present? }
   scope :persisted, -> { where "#{self.model_name.collection}.id IS NOT NULL" }
+  scope :legacy, -> { where.not(:legacy_id => nil) }
+  scope :not_legacy, -> { where(:legacy_id => nil) }
+
+  def legacy?
+    self.legacy_id.present?
+  end
+
+  def not_legacy?
+    !legacy?
+  end
 
   def next
     self.where('id > ?', id).order(id: :asc).first || self.first

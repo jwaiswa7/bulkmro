@@ -22,4 +22,4 @@ Maily.setup do |config|
 
   # Customize welcome message
   # config.welcome_message = "Welcome to our email testing platform. If you have any problem, please contact support team at support@example.com."
-end
+end if Rails.env.development?

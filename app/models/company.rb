@@ -16,7 +16,7 @@ class Company < ApplicationRecord
 
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
 
-  has_many :company_contacts
+  has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
 
@@ -35,7 +35,7 @@ class Company < ApplicationRecord
 
   has_many :inquiries
   has_many :inquiry_product_suppliers, :through => :inquiries
-  has_many :addresses
+  has_many :addresses, dependent: :destroy
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -56,7 +56,7 @@ class Company < ApplicationRecord
   }
 
   enum priority: {
-      standard: 10,
+      non_strategic: 10,
       strategic: 20
   }
 
@@ -73,7 +73,7 @@ class Company < ApplicationRecord
 
   # validates_presence_of :gst
   # validates_uniqueness_of :gst
-  validates :credit_limit, numericality: { greater_than: 0 }, allow_nil: true
+  validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
@@ -83,7 +83,7 @@ class Company < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.company_type ||= :private_limited
-    self.priority ||= :standard
+    self.priority ||= :non_strategic
     self.is_msme ||= false
     self.is_unregistered_dealer ||= false
     self.default_company_contact ||= set_default_company_contact
@@ -105,5 +105,9 @@ class Company < ApplicationRecord
     end
 
     s.join(' ')
+  end
+
+  def self.legacy
+    self.find_by_name('Legacy Company')
   end
 end

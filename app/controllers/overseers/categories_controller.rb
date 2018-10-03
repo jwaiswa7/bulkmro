@@ -48,6 +48,7 @@ class Overseers::CategoriesController < Overseers::BaseController
     params.require(:category).permit(
         :parent_id,
         :name,
+        :is_service
     )
   end
 
