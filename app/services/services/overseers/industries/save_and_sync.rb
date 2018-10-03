@@ -1,4 +1,4 @@
-class Services::Overseers::industrys::SaveAndSync < Services::Shared::BaseService
+class Services::Overseers::Industries::SaveAndSync < Services::Shared::BaseService
 
   def initialize(industry)
     @industry = industry
