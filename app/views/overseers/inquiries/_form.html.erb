@@ -133,7 +133,7 @@
             <% end %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment' %>
+            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', placeholder: f.object.copy_of_email.attached? ? f.object.copy_of_email : 'Email Attachment' %>
             <% if f.object.copy_of_email.attached? %>
               <%= link_to url_for(f.object.copy_of_email), target: :_blank, :class => 'btn btn-dark' do %>
                 <i class="fal fa-download"></i>
