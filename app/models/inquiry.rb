@@ -161,12 +161,14 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
-  validates_numericality_of :potential_amount, greater_than_equal_to: 1
+  validates_numericality_of :potential_amount, greater_than: 0
 
+  validates_presence_of :subject, :if => :not_legacy?
+  validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :contact
   validates_presence_of :company
-    # validates_presence_of :billing_address
+  # validates_presence_of :billing_address
   # validates_presence_of :shipping_address
   validates_presence_of :inside_sales_owner_id
   validates_presence_of :outside_sales_owner_id
