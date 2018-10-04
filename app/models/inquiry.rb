@@ -57,25 +57,25 @@ class Inquiry < ApplicationRecord
   # }
 
   enum status: {
-      :'Inquiry No. Assigned' => 0,
-      :'Acknowledgement Mail' => 2,
-      :'Cross Reference' => 3,
-      :'Preparing Quotation' => 4,
+      :'Order Won' => 18,
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
+      :'Hold by Accounts' => 20,
       :'SO Draft: Pending Accounts Approval' => 8,
-      :'Order Lost' => 9,
-      :'Regret' => 10,
-      :'Lead by O/S' => 11,
-      :'Supplier RFQ Sent' => 12,
       :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
+      :'Inquiry No. Assigned' => 0,
+      :'Lead by O/S' => 11,
+      :'Acknowledgement Mail' => 2,
+      :'Preparing Quotation' => 4,
+      :'Cross Reference' => 3,
+      :'Supplier RFQ Sent' => 12,
       :'SO Rejected by Sales Manager' => 17,
+      :'Regret' => 10,
+      :'Order Lost' => 9,
       :'Rejected by Accounts' => 19,
-      :'Hold by Accounts' => 20,
-      :'Order Won' => 18,
   }
 
   enum stage: {
