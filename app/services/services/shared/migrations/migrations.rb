@@ -887,7 +887,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
             legacy_applicable_tax: x.get_column('tax_code'),
             legacy_applicable_tax_class: x.get_column('tax_class_id'),
-            legacy_applicable_tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f,
+            legacy_applicable_tax_percentage: (x.get_column('tax_code').match(/\d+/)[0].to_f if x.get_column('tax_code').present?),
             unit_selling_price: x.get_column('price_ht', to_f: true),
             converted_unit_selling_price: x.get_column('price_ht', to_f: true),
             lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
