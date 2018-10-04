@@ -12,18 +12,19 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
   end
 
   def call_base
     @indexed_records = if query.present?
-                          index_klass.query(:query_string => {
-                               fields: index_klass.fields,
-                               query: query,
-                               default_operator: 'or'
-                           })
-                         else
-                           index_klass.all.order(:created_at => :desc)
-                         end.page(page).per(per)
+                         index_klass.query(:query_string => {
+                             fields: index_klass.fields,
+                             query: query,
+                             default_operator: 'or'
+                         })
+                       else
+                         index_klass.all.order(:created_at => :desc)
+                       end.order(:inquiry_number => :desc).page(page).per(per)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
