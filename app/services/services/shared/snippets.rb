@@ -27,7 +27,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def run_inquiry_details_migration
-    Services::Shared::Migrations::Migrations.new(['inquiry_details']).call
+    Services::Shared::Migrations::Migrations.new(['sales_order_drafts']).call
   end
 
   def approve_products

@@ -847,7 +847,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if quotation_id.in? %w(3529 2848 123 8023)
       inquiry = Inquiry.find_by_legacy_id(quotation_id)
       product = Product.find_by_legacy_id(product_id)
-      next if inquiry.blank? || product.blank?
+      next if inquiry.blank? || inquiry.inquiry_products.exists? || product.blank?
 
       inquiry_product = InquiryProduct.where(
           inquiry: inquiry,
@@ -897,6 +897,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_order_drafts
+
     legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')
@@ -919,7 +920,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             doc_number: x.get_column('doc_num'),
             legacy_request_status: legacy_request_status_mapping[x.get_column('request_status')],
             legacy_metadata: x.get_row,
-            :sent_at => sales_order.created_at
+            :sent_at => sales_quote.created_at
         )
       end
 
