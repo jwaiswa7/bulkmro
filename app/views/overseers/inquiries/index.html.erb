@@ -6,10 +6,10 @@
   <div class="row mt-3 mt-lg-4">
     <% Inquiry.statuses.each do |status, v| %>
       <div class="col-md-2">
-        <div class="card mb-3">
+        <div class="card mb-3 rim rim-bottom border-success">
           <div class="card-body">
             <div class="text-center">
-              <p class="text-uppercase text-black-50 mb-1"><strong><%= format_enum(status) %></strong></p>
+              <p class="text-uppercase text-black-50 mb-1"><strong><%= format_status_label(status) %></strong></p>
               <h3 class="mb-0"><%= Inquiry.send(status).size %></h3>
             </div>
           </div>

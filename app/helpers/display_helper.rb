@@ -10,101 +10,12 @@ module DisplayHelper
   #   end
   # end
 
-  def format_status_label(status)
-    case status.to_sym
-    when :'Lead by O/S'
-      content_tag :span, class: 'badge text-uppercase badge-secondary' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Inquiry No. Assigned'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-secondary' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Acknowledgement Mail'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-secondary' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Cross Reference'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-dark' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Supplier RFQ Sent'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-dark' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Preparing Quotation'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-secondary' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Quotation Sent'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-success' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Follow Up on Quotation'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Expected Order'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'SO Not Created-Customer PO Awaited'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'SO Not Created-Pending Customer PO Revision'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Draft SO for Approval by Sales Manager'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'SO Draft: Pending Accounts Approval'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'SO Rejected by Sales Manager'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Rejected by Accounts'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Hold by Accounts'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Order Won'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-success' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Order Lost'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
-        content_tag :strong, capitalize(status)
-      end
-    when :'Regret'
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-danger' do
-        content_tag :strong, capitalize(status)
-      end
-    else
-      content_tag :span, capitalize(status), class: 'badge text-uppercase badge-warning' do
-        content_tag :strong, capitalize(status)
-      end
-    end
-  end
-
   def upcase(string)
     string.upcase
   end
 
   def format_class(klass)
     klass.class.name
-  end
-
-  def format_status(status)
-    capitalize(status)
   end
 
   def format_enum(val)
@@ -135,10 +46,6 @@ module DisplayHelper
     else
       "-"
     end
-  end
-
-  def format_collection(kollection)
-    kollection.map(&:to_s).to_sentence
   end
 
   def format_size(kollection)
