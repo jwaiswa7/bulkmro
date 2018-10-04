@@ -8,10 +8,10 @@ json.data (@companies) do |company|
                         row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit Company', 'warning')
                       end,
                       if policy(company).edit?;
-                        row_action_button(new_overseers_contact_path(company), 'user', 'New Contact', 'success')
+                        row_action_button(new_overseers_contact_path(company_id: company.to_param), 'user', 'New Contact', 'success')
                       end,
                       if policy(company).edit?;
-                        row_action_button(new_overseers_company_address_path(company.account, company), 'map-marker-alt', 'New Address', 'success')
+                        row_action_button(new_overseers_company_address_path(company), 'map-marker-alt', 'New Address', 'success')
                       end,
                       if policy(company).new_inquiry?;
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success')

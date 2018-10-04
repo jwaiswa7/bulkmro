@@ -12,7 +12,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
-
   end
 
   def call_base
@@ -23,8 +22,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                              default_operator: 'or'
                          })
                        else
-                         index_klass.all.order(:created_at => :desc)
-                       end.order(:inquiry_number => :desc).page(page).per(per)
+                         index_klass.all.order(default_order)
+                       end.page(page).per(per)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
@@ -32,6 +31,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def index_klass
     [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  def default_order
+    {:created_at => :desc}
   end
 
   attr_accessor :query, :page, :per, :records, :indexed_records
