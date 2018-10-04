@@ -1,9 +1,6 @@
 // Imports
 let loader = {};
 let importAll = (r) => {
-    console.log(r);
-    console.log('Inside importAll()');
-
     r.keys().forEach(key => {
         // Remove any files under the /views directory
         if (key.split('/')[1].includes('.js')) return;
@@ -22,11 +19,18 @@ let importAll = (r) => {
 importAll(require.context('./', true, /\.js$/));
 
 const loadViews = () => {
-    console.log('Inside loadViews()');
+    console.log('Loader >--');
+    console.log(loader);
 
     let dataAttributes = $('body').data();
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
+
+    console.log('controller >--');
+    console.log(controller);
+
+    console.log('controllerAction >--');
+    console.log(controllerAction);
 
     if (controller in loader && controllerAction in loader[controller]) {
         loader[controller][controllerAction]();
