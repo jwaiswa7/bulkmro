@@ -1,9 +1,6 @@
 // Imports
 let loader = {};
 let importAll = (r) => {
-    console.log(r);
-    console.log('Inside importAll()');
-
     r.keys().forEach(key => {
         // Remove any files under the /views directory
         if (key.split('/')[1].includes('.js')) return;
@@ -16,14 +13,15 @@ let importAll = (r) => {
 
         // Set the functions relative to the controllers
         loader[controller] = loader[controller] ? loader[controller] : {};
+
+        console.log(r(key).default.name);
+        console.log(r(key).default);
         loader[controller][view.name] = r(key).default;
     });
 };
 importAll(require.context('./', true, /\.js$/));
 
 const loadViews = () => {
-    console.log('Inside loadViews()');
-
     let dataAttributes = $('body').data();
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
