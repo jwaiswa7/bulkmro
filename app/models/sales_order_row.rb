@@ -12,6 +12,8 @@ class SalesOrderRow < ApplicationRecord
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, :to => :sales_quote_row
 
+  attr_accessor :tax_percentage
+
   validates_presence_of :quantity
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :greater_than => 0
   validates_uniqueness_of :sales_quote_row_id, scope: :sales_order_id
