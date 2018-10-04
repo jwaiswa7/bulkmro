@@ -10,7 +10,7 @@ class Report < ApplicationRecord
       :today => 30,
       :last_week => 40,
       :last_month => 50
-  }
+  }, _prefix: true
 
   validates_presence_of :name
   validates_uniqueness_of :name
