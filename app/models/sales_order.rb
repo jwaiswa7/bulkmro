@@ -35,7 +35,7 @@ class SalesOrder < ApplicationRecord
       :'Cancelled' => 50,
       :'approved' => 60,
       :'Order Deleted' => 70
-  }
+  }, _prefix: true
 
   def confirmed?
     self.confirmation.present?
