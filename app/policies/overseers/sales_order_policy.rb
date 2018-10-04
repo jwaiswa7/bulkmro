@@ -4,7 +4,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def show?
-    edit?
+    true
   end
 
   def new_confirmation?

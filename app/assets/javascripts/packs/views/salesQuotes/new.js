@@ -271,7 +271,7 @@ let initVueJS = () => {
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {
                     margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
-                    row.margin_percentage = toDecimal(margin_percentage * 100);
+                    row.margin_percentage = parseFloat(margin_percentage * 100);
                 }
 
                 this.setRow(index, row);
