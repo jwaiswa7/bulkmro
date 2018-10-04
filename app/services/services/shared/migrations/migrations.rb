@@ -4,21 +4,21 @@ require 'net/http'
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit, :custom_methods
 
-  def initialize(custom_methods=nil)
+  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil)
     @custom_methods = custom_methods
-    @limit = nil
-    @secondary_limit = nil
+    @limit = limit
+    @secondary_limit = secondary_limit
   end
 
   def call
     methods = if custom_methods.present?
-      custom_methods
-    elsif Rails.env.production?
-      %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-      # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-    elsif Rails.env.development?
-      %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-    end
+                custom_methods
+              elsif Rails.env.production?
+                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+              elsif Rails.env.development?
+                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+              end
 
     PaperTrail.request(enabled: false) do
       methods.each do |method|
@@ -737,7 +737,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     quote_category = {'bmro' => 10, 'ong' => 20}
     opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
     service.loop(limit) do |x|
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')

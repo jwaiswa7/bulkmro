@@ -42,7 +42,7 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def total_selling_price_with_tax
-    self.sales_quote_row.calculated_unit_selling_price_with_tax * self.quantity if self.sales_quote_row.calculated_unit_selling_price.present? && self.sales_quote_row.present?
+    self.sales_quote_row.calculated_unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.calculated_unit_selling_price.present?
   end
 
   def total_tax
