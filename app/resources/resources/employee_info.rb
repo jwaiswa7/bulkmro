@@ -11,7 +11,7 @@ class Resources::EmployeeInfo < Resources::ApplicationResource
     {
         FirstName: record.full_name,
         LastName: record.last_name,
-        JobTitle: record.designation.truncate(15),
+        JobTitle: record.designation.present? ? record.designation.truncate(15) : "",
         Active: 'Y',
         Remarks: record.parent.try(:full_name),
         EmployeeBranchAssignment: [

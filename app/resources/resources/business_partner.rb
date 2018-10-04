@@ -26,35 +26,27 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.update_associated_records(company, response)
-    # addresses = OpenStruct.new(response.value).BPAddresses
+    addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
 
     #Update Address's row numbers
     #
-    # addresses.each do |address|
-    #   if address["AddressName"].present?
-    #
-    #     address["AddressName"] = address["AddressName"], address["RowNum"].join(",")
-    #   else
-    #     address["AddressName"] = address["RowNum"]
-    #   end
-    #
-    #
-    # end if addresses.present?
-    #
-    #   address_row_nums.each_with_index do |address_legacy_id, remote_row_num|
-    #     address_to_update = company.addresses.find_by_legacy_id(address_legacy_id)
-    #     if address_to_update.present?
-    #       address_to_update.remote_row_num = remote_row_num
-    #       address_to_update.save
-    #     end
-    #   end
-    # end
-    #
+    addresses.each do |address|
+      address_to_update = company.addresses.find_by_legacy_id(address["AddressName"])
+      if address_to_update.present?
+        if address["AddressType"].eql? "bo_ShipTo"
+          address_to_update.shipping_address_uid = address["RowNum"]
+        elsif address["AddressType"].eql? "bo_BillTo"
+          address_to_update.billing_address_uid = address["RowNum"]
+        end
+        address_to_update.save
+      end
+    end if addresses.present?
 
+    #Update contacts
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"]).first
+      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
       company_contact.update_attributes(:remote_uid => remote_uid)
     end if contacts.present?
   end
@@ -64,8 +56,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     bp_tax_collection = []
     contacts = []
     response = {}
+    bp_tax_collection = []
 
-    row_num = 0
     record.addresses.each do |address|
       street_address = [address.street1, address.street2].compact.join(' ')
       street = street_address[0..99]
@@ -91,14 +83,13 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       address_row.GstType = "gstRegularTDSISD"
       address_row.U_VAT = address.vat
       address_row.U_CST = address.cst
-      address_row.RowNum = row_num
+      address_row.RowNum = address.billing_address_uid if !address.billing_address_uid .blank?
       addresses.push(address_row.marshal_dump)
-      row_num += 1
 
       # Second Entry for Shipping Address
       #
       address_row.AddressType = "bo_ShipTo"
-      address_row.RowNum = row_num
+      address_row.RowNum = address.shipping_address_uid if !address.shipping_address_uid.blank?
       addresses.push(address_row.marshal_dump)
 
 
@@ -129,8 +120,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
       # BPFiscalTaxIDCollection End
-
-      row_num += 1
 
       address_tax_row = OpenStruct.new
       address_tax_row.Address = address.remote_uid
@@ -164,13 +153,12 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     bp_tax_collection_row.BPCode = record.remote_uid
     bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
-
     record.company_contacts.each do |company_contact|
       contact = company_contact.contact
 
       contact_row = OpenStruct.new
       contact_row.CardCode = record.remote_uid
-      contact_row.Name = contact.full_name
+      contact_row.Name = [contact.full_name, contact.id, record.id].join("-")
       contact_row.Position = contact.designation
       contact_row.Address = nil
       contact_row.Phone1 = contact.telephone
@@ -201,7 +189,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         EmailAddress: record.default_company_contact.present? ? record.default_company_contact.contact.email : nil,
         City: record.default_billing_address.present? ? record.default_billing_address.city_name : nil,
         ContactPerson: record.default_company_contact.present? ? record.default_company_contact.full_name : nil,
-        OwnerCode: record.inside_sales_owner_id.present? ? record.inside_sales_owner_id.full_name : nil,
+        OwnerCode: record.inside_sales_owner_id.present? ? record.inside_sales_owner.employee_uid : nil,
         Phone1: record.phone,
         Phone2: nil,
         Fax: nil,
@@ -226,7 +214,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         ContactEmployees: contacts,
         BPFiscalTaxIDCollection: bp_tax_collection
     }
-
+    raise
     response
   end
 end

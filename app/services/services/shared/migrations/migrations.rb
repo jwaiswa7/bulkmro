@@ -21,7 +21,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     methods = if Rails.env.production?
                 %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details activity sales_order_drafts inquiry_attachments)
+                %w(lead_time_option overseers overseers_smtp_config measurement_unit states payment_options industries brands accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse tax_codes categories products product_categories)
               end
 
     PaperTrail.enabled = true
@@ -441,7 +441,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             telephone: x.get_column('telephone'),
             #mobile:x.get_column('gst_num'),
             gst_type: gst_type[x.get_column('gst_type').to_i],
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            remote_sap_row_num: x.get_column('sap_row_num')
         )
       end
 

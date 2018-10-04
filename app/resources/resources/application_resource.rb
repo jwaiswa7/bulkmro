@@ -21,9 +21,9 @@ class Resources::ApplicationResource
   end
 
   ENDPOINT = URI.parse('https://35.154.19.43:50000/b1s/v1')
-  DATABASE = 'BMRO_JULY05'
+  DATABASE = 'SPRINT_TEST'
   USERNAME = 'manager'
-  PASSWORD = 'bm@123'
+  PASSWORD = 'vm1234'
 
   ATTACHMENT_ENDPOINT = URI.parse('https://35.154.19.43:22')
   ATTACHMENT_USERNAME = 'b1service0'
