@@ -199,7 +199,7 @@ class Inquiry < ApplicationRecord
     if self.company.present?
       # self.outside_sales_owner ||= self.company.outside_sales_owner
       # self.sales_manager ||= self.company.sales_manager
-      self.status ||= :'Lead by O/S'
+      self.status ||= :'Inquiry No. Assigned'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
