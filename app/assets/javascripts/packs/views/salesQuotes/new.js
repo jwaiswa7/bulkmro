@@ -124,7 +124,6 @@ let initVueJS = () => {
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
-                console.log()
                 let row = this.getRow(index);
                 row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity);
                 let tax = parseFloat(row.total_selling_price * row.tax_percentage / 100);
@@ -239,9 +238,12 @@ let initVueJS = () => {
             triggerFreightChangeFor(index, trigger) {
                 let row = this.getRow(index);
 
-                let freight_cost_subtotal = row.freight_cost_subtotal;
-                let unit_freight_cost = row.unit_freight_cost;
-                let quantity = row.quantity;
+                let freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                let unit_freight_cost = row.unit_freight_cost || 0;
+                let quantity = row.quantity || 0;
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                this.setRow(index, row);
 
                 if (trigger === 'freight_cost_subtotal' && freight_cost_subtotal >= 0) {
                     row.unit_freight_cost = toDecimal(freight_cost_subtotal / quantity);
@@ -250,7 +252,8 @@ let initVueJS = () => {
                 }
 
                 row.unit_cost_price_with_unit_freight_cost = parseFloat(row.unit_freight_cost) + parseFloat(row.unit_cost_price);
-
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
                 this.setRow(index, row);
             },
 
@@ -270,6 +273,7 @@ let initVueJS = () => {
                     margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
                     row.margin_percentage = toDecimal(margin_percentage * 100);
                 }
+
                 this.setRow(index, row);
 
             },
@@ -398,7 +402,7 @@ let assignEventsAndGetAttributes = () => {
                     // To recreate VueJS v-model when nested form rows are added or removed
                     $(el).attr("v-html", modelName);
                     //$(el).attr("data-v-index", currentRowIndex);
-                    if(currentRowTemplate[attributeName] == undefined){
+                    if (currentRowTemplate[attributeName] == undefined) {
                         currentRowTemplate[attributeName] = 0;
                     }
 

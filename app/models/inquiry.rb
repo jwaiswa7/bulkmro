@@ -224,6 +224,8 @@ class Inquiry < ApplicationRecord
     # self.inquiry_number ||= Inquiry.maximum(:inquiry_number) + 1
   end
 
+  before_create :generate_inquiry_number
+
   def draft?
     !inquiry_products.any?
   end
@@ -248,9 +250,13 @@ class Inquiry < ApplicationRecord
     self.inquiry_products.maximum(:sr_no) || 0
   end
 
+  def generate_inquiry_number
+
+  end
+
   def to_s
     [
-        ['#', self.id].join,
+        ['#', self.inquiry_number].join,
         self.company.name
     ].join(' ')
   end
