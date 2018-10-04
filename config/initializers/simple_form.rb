@@ -328,12 +328,18 @@ SimpleForm.setup do |config|
     b.optional :minlength
     b.optional :readonly
     b.use :label, class: 'form-control-label'
-    b.wrapper :custom_file_wrapper, tag: 'div', class: 'custom-file' do |ba|
-      ba.use :input, class: 'custom-file-input', error_class: 'is-invalid', valid_class: 'is-valid'
-      ba.use :label, class: 'custom-file-label'
-      ba.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback' }
+    b.wrapper tag: 'div', class: 'd-flex align-items-center' do |ba|
+      ba.wrapper :custom_file_wrapper, tag: 'div', class: 'custom-file' do |bad|
+        bad.use :input, class: 'custom-file-input', error_class: 'is-invalid', valid_class: 'is-valid'
+        #ba.wrapper tag: :label, class: 'custom-file-label' do |component|
+        #  component.use :placeholder_text.to_s ? :placeholder_text : :label_text
+        #end
+        bad.use :label, class: 'custom-file-label'
+        bad.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback' }
+      end
+      ba.use :hint, class: 'ml-1 btn btn-success'
     end
-    b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted text-uppercase text-small' }
+    #b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted text-uppercase text-small' }
   end
 
   # custom multi select

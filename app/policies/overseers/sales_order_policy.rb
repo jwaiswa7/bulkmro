@@ -3,6 +3,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved?
   end
 
+  def show?
+    edit?
+  end
+
   def new_confirmation?
     edit?
   end
