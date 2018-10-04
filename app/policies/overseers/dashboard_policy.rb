@@ -4,6 +4,10 @@ class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   end
 
   def chewy?
-    true
+    admin?
+  end
+
+  def migrations?
+    admin?
   end
 end
