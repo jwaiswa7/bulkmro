@@ -21,7 +21,7 @@ const parselyValidations = () => {
     });
 
     window.Parsley.on('form:validated', function (form) {
-        // form.$element.addClass('was-validated');
+        form.$element.addClass('was-validated');
     });
 
     window.Parsley.on('field:success', function (e) {
