@@ -12,7 +12,10 @@ const parselyValidations = () => {
             if ($errorWrapper.length) {
                 return $errorWrapper;
             } else {
-                return e.$element.closest('.form-group').find('.invalid-feedback');
+                if (e.$element.closest('.form-group').find('.invalid-feedback').exists())
+                    return e.$element.closest('.form-group').find('.invalid-feedback');
+                else
+                    return e.$element.closest('.form-group').append('<div class="invalid-feedback"></div>');
             }
         }
     });
@@ -32,7 +35,7 @@ const parselyValidations = () => {
             for (let n = 0; n < form.fields.length; n++) {
                 if (form.fields[n].validationResult !== true) {
                     $('html').animate({
-                        scrollTop: $(form.fields[n].$element[0]).offset().top - $('.navbar.navbar-expand-lg').height()
+                        scrollTop: $(form.fields[n].$element[0]).offset().top - $('.navbar.navbar-expand-lg').height() - 10
                     }, 'fast');
                     break;
                 }
