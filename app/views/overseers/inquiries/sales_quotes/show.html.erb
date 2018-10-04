@@ -51,7 +51,7 @@
             <%= row.hidden_field :id %>
             <div>
               <h6 class="text-uppercase mb-0 mt-3">
-                <strong><%= row.object.sales_quote_row %></strong>
+                <strong><%= row.object %></strong>
                 <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sr_no %></p>
               </h6>
               <div class="form-row my-2">
@@ -79,14 +79,13 @@
                 </div>
                 <div class="col-md-3 mt-2 mt-md-0">
                   <strong>Margin Percentage</strong><br>
-                  <span><%= row.object.margin_percentage %></span>
+                  <span><%= row.object.margin_percentage.round(2) %></span>
                 </div>
                 <div class="col-md-3 mt-2 mt-md-0">
                   <strong>Tax Code</strong><br>
                   <span><%= row.object.tax_code %></span>
                 </div>
               </div>
-
             </div>
           <% end %>
 

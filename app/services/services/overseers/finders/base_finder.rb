@@ -8,7 +8,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                params
              else
                ''
-             end.gsub(/[^0-9A-Za-z]/, '')
+             end.gsub(/[^0-9A-Za-z ]/, '')
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -16,14 +16,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def call_base
     @indexed_records = if query.present?
-                          index_klass.query(:query_string => {
-                               fields: index_klass.fields,
-                               query: query,
-                               default_operator: 'or'
-                           })
+                         index_klass.query(:query_string => {
+                             fields: index_klass.fields,
+                             query: query,
+                             default_operator: 'or'
+                         })
                        else
-                           index_klass.all.order(default_order)
-                         end.page(page).per(per)
+                         index_klass.all.order(default_order)
+                       end.page(page).per(per)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
