@@ -6,7 +6,7 @@ class Resources::Project < Resources::ApplicationResource
 
   def self.to_remote(record)
     {
-      Code: record.id,
+      Code: record.inquiry_number,
       Name: record.subject
     }
   end
