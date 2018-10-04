@@ -22,7 +22,7 @@
                 <%= inquiry_product.hidden_field :quantity %>
 
                 <%= inquiry_product.hidden_field :sr_no %>
-                <div class="row">
+                <div class="form-row">
                   <div class="col-12">
                     <%= inquiry_product.simple_fields_for :product do |product| %>
                       <%= product.hidden_field :inquiry_import_row_id %>
@@ -31,7 +31,7 @@
                         <div class="col-6 col-md-3">
                           <div class="d-flex flex-row">
                             <div class="custom-control custom-radio custom-control-inline align-self-center">
-                              <%= radio = row.radio_button :approved_alternative_id, nil, class: 'custom-control-input' %>
+                              <%= radio = row.radio_button :approved_alternative_id, nil, class: 'custom-control-input', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => '' %>
                               <%= row.label :approved_alternative_id, class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
                               <% end %>
                             </div>
@@ -55,10 +55,7 @@
                           <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
                         </div>
                         <div class="col-6 col-md-1">
-                          <div class="form-group">
-                            <label>&nbsp;</label>
-                            <%= product.input :is_service, wrapper: :custom_boolean, label: 'Service' %>
-                          </div>
+                          <%= product.input :is_service, as: :select, wrapper: :custom_multi_select, label: 'Service', include_blank: false %>
                         </div>
                       </div>
                     <% end %>

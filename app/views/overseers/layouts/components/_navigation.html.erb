@@ -54,6 +54,7 @@
       <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
       <%= nav_item 'Reports', overseers_reports_path, policy(:report).index? %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+      <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
     </ul>
   </div>
   <!-- Navigation Bar -->

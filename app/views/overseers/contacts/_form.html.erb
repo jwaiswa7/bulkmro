@@ -5,16 +5,10 @@
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
-  <%= simple_form_for(@contact, url: action_name == 'edit' ? overseers_contact_path(@contact.to_param) : overseers_contacts_path(:company_id => @company.to_param), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for(@contact, url: overseers_contacts_path(:company_id => @company.to_param), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <%= f.hidden_field :account_id %>
-
-    <div class="form-row">
-      <div class="col-12">
-        <%= f.input :account, disabled: true %>
-      </div>
-    </div>
 
     <div class="form-row">
       <div class="col-12">

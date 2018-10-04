@@ -13,6 +13,9 @@ let importAll = (r) => {
 
         // Set the functions relative to the controllers
         loader[controller] = loader[controller] ? loader[controller] : {};
+
+        console.log(r(key).default.name);
+        console.log(r(key).default);
         loader[controller][view.name] = r(key).default;
     });
 };
@@ -31,7 +34,5 @@ const loadViews = () => {
         console.log("loader[" + controller + "][" + controllerAction + "]")
     }
 };
-
-
 
 export default loadViews

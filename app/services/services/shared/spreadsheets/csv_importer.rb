@@ -15,11 +15,11 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
 
       set_current_row(row.to_h)
 
-      begin
+      # begin
         yield self
-      rescue => error
+      # rescue => error
         # errors.push("#{error.inspect} - #{row.to_h}")
-      end
+      # end
 
       break if limit.present? && $..to_i > limit
     end

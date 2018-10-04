@@ -7,7 +7,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def show
-    redirect_to edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order)
     authorize @sales_order
   end
 

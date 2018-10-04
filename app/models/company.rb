@@ -54,18 +54,18 @@ class Company < ApplicationRecord
       :wholesaler_stockist => 90,
       :service_provider => 100,
       :employee => 110
-  }
+  }, _prefix: true
 
   enum priority: {
       non_strategic: 10,
       strategic: 20
-  }
+  }, _prefix: true
 
   enum nature_of_business: {
       trading: 10,
       manufacturer: 20,
       dealer: 30
-  }
+  }, _prefix: true
 
   alias_attribute :gst, :tax_identifier
 

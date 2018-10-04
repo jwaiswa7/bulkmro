@@ -12,6 +12,8 @@ class SalesOrderRow < ApplicationRecord
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, :to => :sales_quote_row
 
+  attr_accessor :tax_percentage
+
   validates_presence_of :quantity
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :greater_than => 0
   validates_uniqueness_of :sales_quote_row_id, scope: :sales_order_id
@@ -40,11 +42,11 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def total_selling_price_with_tax
-    (self.sales_quote_row.calculated_unit_selling_price + self.sales_quote_row.calculated_tax) * self.quantity if self.sales_quote_row.calculated_unit_selling_price.present? if self.sales_quote_row.present?
+    self.sales_quote_row.calculated_unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.calculated_unit_selling_price.present?
   end
 
   def total_tax
-    self.sales_quote_row.calculated_tax * self.quantity if self.sales_quote_row.present?
+    total_selling_price_with_tax - total_selling_price
   end
 
   def total_selling_price

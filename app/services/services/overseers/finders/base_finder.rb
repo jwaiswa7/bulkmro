@@ -21,8 +21,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                                query: query,
                                default_operator: 'or'
                            })
-                         else
-                           index_klass.all.order(:created_at => :desc)
+                       else
+                           index_klass.all.order(default_order)
                          end.page(page).per(per)
 
 
@@ -31,6 +31,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def index_klass
     [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  def default_order
+    {:created_at => :desc}
   end
 
   attr_accessor :query, :page, :per, :records, :indexed_records

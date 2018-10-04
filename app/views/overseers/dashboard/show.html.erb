@@ -34,22 +34,22 @@
         </div>
       </div>
     <% end %>
-    <% if policy(:company).index? %>
-      <div class="col-md-3">
-        <div class="card mb-3 ">
-          <div class="card-body">
-            <div class="text-center">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Companies w/ Inquiries</strong>
-              </p>
-              <h3 class="mb-0"><%= Company.joins(:inquiries).uniq.size %></h3>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= overseers_companies_path %>" class="btn btn-lg btn-block btn-success">See Companies</a>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%# if policy(:company).index? %>
+<!--      <div class="col-md-3">-->
+<!--        <div class="card mb-3 ">-->
+<!--          <div class="card-body">-->
+<!--            <div class="text-center">-->
+<!--              <p class="text-uppercase text-black-50 mb-1"><strong>Companies w/ Inquiries</strong>-->
+<!--              </p>-->
+<!--              <h3 class="mb-0"><%#= Company.joins(:inquiries).uniq.size %></h3>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="card-footer">-->
+<!--            <a href="<%#= overseers_companies_path %>" class="btn btn-lg btn-block btn-success">See Companies</a>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+    <%# end %>
     <% if policy(:product).index? %>
       <div class="col-md-3">
         <div class="card mb-3 ">

@@ -9068,6 +9068,11 @@ div.dataTables_wrapper div.dataTables_processing {
   border-color: #28a745; }
 .form-control.is-valid ~ .select2-container--bootstrap .select2-dropdown {
   border: 1px solid #28a745; }
+.form-control.select2-wrap-text ~ .select2-container--bootstrap .select2-selection--single {
+  height: auto; }
+  .form-control.select2-wrap-text ~ .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+    overflow: visible;
+    white-space: normal; }
 
 .was-validated .form-control:invalid ~ .select2-container--bootstrap .form-control, .was-validated .form-control.is-invalid ~ .select2-container--bootstrap .form-control {
   border-color: #dc3545; }
