@@ -31,7 +31,7 @@
         </div>
 
         <div class="card-body">
-          <div class="row">
+          <div class="form-row">
             <%= f.simple_fields_for :inquiry_currency do |inquiry_currency| %>
               <div class="col-md-6">
                 <%= inquiry_currency.association :currency, collection: Currency.all.map {|currency| [currency.to_s, currency.id, {'data-conversion-rate' => currency.conversion_rate}]}, include_blank: false, input_html: {"data-v-model": "", "data-v-on:change": "dropdownChanged"} %>
@@ -48,8 +48,10 @@
         <div class="card mt-3">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
             <h6 class="text-uppercase">
-              <strong><%= inquiry_product.product.name %></strong>
-              <p class="lead text-black-50 text-small d-block mt-1">#<%= inquiry_product.sr_no %></p>
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
+              <strong><%= inquiry_product.product.sku %> - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %></strong>
+              <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.sku? ? '(' + inquiry_product.product.sku + ')' : '' %></span>
             </h6>
 
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
@@ -72,9 +74,9 @@
                     <div class="flex-grow-1">
                       <div class="" data-toggle="collapse" data-target="#c-<%= row.object.inquiry_product_supplier_id %>">
                         <%= row.label '', for: /id="([a-z\d_]*)"/.match(radio)[1], :class => 'd-block' do %>
-                          <h5 class="text-black-50 mb-1 text-uppercase">
+                          <h6 class="text-black-50 mb-1 text-uppercase">
                             <%= row.object.inquiry_product_supplier %>
-                          </h5>
+                          </h6>
                           <div class="row">
                             <div class="col-12 d-block d-md-flex flex-row">
                               <div class="flex-fill">
@@ -104,12 +106,12 @@
                       <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[-1] == row.object) ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
                         <div class="form-row mt-2">
                           <div class="col-md-1 col-4"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
-                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: {:min => 0, :max => 99.99, "data-bind": ""} %></div>
-                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'USP', input_html: {:min => 0, "data-bind": ""} %></div>
-                          <div class="col-md-2 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": ""}, label: 'UFC' %></div>
-                          <div class="col-md-2 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": ""}, label: 'Total Freight' %></div>
+                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: {min: 0, max: 99.99, "data-bind": ""} %></div>
+                          <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'USP', input_html: {min: 0, "data-bind": ""} %></div>
+                          <div class="col-md-1 col-6"><%= row.input :unit_freight_cost, input_html: {"data-bind": "", min: 0}, label: 'UFC' %></div>
+                          <div class="col-md-2 col-6"><%= row.input :freight_cost_subtotal, input_html: {"data-bind": "", min: 0}, label: 'Total Freight' %></div>
 
-                          <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <div class="col-md-3"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
