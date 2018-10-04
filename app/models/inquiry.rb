@@ -125,7 +125,7 @@ class Inquiry < ApplicationRecord
   enum freight_option: {
     :included => 10,
     :extra => 20
-  }
+  }, _prefix: true
 
   enum packing_and_forwarding_option: {
     :added => 10,

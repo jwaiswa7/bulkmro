@@ -2,10 +2,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def delete_all_inquiries
     SalesOrderRow.delete_all
+    SalesOrderApproval.all.delete_all
+    SalesOrderConfirmation.delete_all
     SalesOrder.delete_all
     SalesQuoteRow.delete_all
     SalesQuote.delete_all
     InquiryProductSupplier.delete_all
+    InquiryImportRow.delete_all
+    InquiryImport.delete_all
     InquiryProduct.delete_all
     ActivityOverseer.delete_all
     Activity.delete_all
