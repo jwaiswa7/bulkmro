@@ -1,4 +1,26 @@
+// Component Imports
+import importsCreateFailedSkus from "./imports/createFailedSkus";
+import importsManageFailedSkus from "./imports/manageFailedSkus";
+
+import inquiriesEdit from "./inquiries/edit";
+import inquiriesEditSuppliers from "./inquiries/edit";
+import inquiriesUpdateSuppliers from "./inquiries/edit";
+
+let loader = {
+    imports: {
+        createFailedSkus: importsCreateFailedSkus,
+        manageFailedSkus: importsManageFailedSkus
+    },
+
+    inquiries: {
+        edit: inquiriesEdit,
+        editSuppliers: inquiriesEditSuppliers,
+        updateSuppliers: inquiriesUpdateSuppliers,
+    },
+};
+
 // Imports
+/*
 let loader = {};
 let importAll = (r) => {
     r.keys().forEach(key => {
@@ -20,6 +42,7 @@ let importAll = (r) => {
     });
 };
 importAll(require.context('./', true, /\.js$/));
+*/
 
 const loadViews = () => {
     let dataAttributes = $('body').data();
