@@ -25,6 +25,8 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def migrations
-    Services::Shared::Migrations::Migrations.new
+    authorize :dashboard
+    Services::Shared::Migrations::Migrations.new.call
+    render json: {}, status: :ok
   end
 end

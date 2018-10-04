@@ -5,6 +5,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit
 
   def initialize
+    @limit = 100
+    @secondary_limit = nil
   end
 
   def call
@@ -12,22 +14,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def call_later
-    @limit = nil
-    @secondary_limit = nil
-
-    PaperTrail.enabled = false
-
-
     methods = if Rails.env.production?
                 %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments)
               end
 
-    PaperTrail.enabled = true
-
-    methods.each do |method|
-      perform_migration(method.to_sym)
+    PaperTrail.request(enabled: false) do
+      methods.each do |method|
+        perform_migration(method.to_sym)
+      end
     end
   end
 
