@@ -990,7 +990,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             reference_number: x.get_column('refno'),
             created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
             legacy_metadata: x.get_row,
-            overseer: overseer
+            created_by: overseer,
+            updated_by: overseer
         )
       end
 
