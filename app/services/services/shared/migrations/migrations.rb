@@ -972,6 +972,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
       company_type = company_type_mapping[company.is_supplier ? 'is_supplier' : 'is_customer'] if company.present?
 
+      overseer_legacy_id = x.get_column('overseer_legacy_id')
+      overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
+
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
         activity.assign_attributes(
             inquiry: inquiry,
@@ -986,12 +989,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             actions_required: x.get_column('actionrequired'),
             reference_number: x.get_column('refno'),
             created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            overseer: overseer
         )
       end
 
-      overseer_legacy_id = x.get_column('overseer_legacy_id')
-      ActivityOverseer.create!(activity: activity, overseer: Overseer.find_by_legacy_id(overseer_legacy_id)) if overseer_legacy_id.present?
+      # ActivityOverseer.create!(activity: activity, overseer: overseer) if overseer_legacy_id.present?
     end
   end
 
