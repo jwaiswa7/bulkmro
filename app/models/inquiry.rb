@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact
+  belongs_to :contact, required: false
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
@@ -57,25 +57,25 @@ class Inquiry < ApplicationRecord
   # }
 
   enum status: {
-      :'Lead by O/S' => 11,
       :'Inquiry No. Assigned' => 0,
       :'Acknowledgement Mail' => 2,
       :'Cross Reference' => 3,
-      :'Supplier RFQ Sent' => 12,
       :'Preparing Quotation' => 4,
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
+      :'SO Draft: Pending Accounts Approval' => 8,
+      :'Order Lost' => 9,
+      :'Regret' => 10,
+      :'Lead by O/S' => 11,
+      :'Supplier RFQ Sent' => 12,
       :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
-      :'SO Draft: Pending Accounts Approval' => 8,
       :'SO Rejected by Sales Manager' => 17,
       :'Rejected by Accounts' => 19,
       :'Hold by Accounts' => 20,
       :'Order Won' => 18,
-      :'Order Lost' => 9,
-      :'Regret' => 10
   }
 
   enum stage: {
@@ -163,10 +163,10 @@ class Inquiry < ApplicationRecord
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_presence_of :inquiry_currency
-  validates_presence_of :contact
   validates_presence_of :company
-  #validates_presence_of :billing_address
-  #validates_presence_of :shipping_address
+  # validates_presence_of :contact
+  # validates_presence_of :billing_address
+  # validates_presence_of :shipping_address
 
   validate :every_product_is_only_added_once?
   def every_product_is_only_added_once?
@@ -206,7 +206,7 @@ class Inquiry < ApplicationRecord
       self.price_type ||= :exw
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
-      self.expected_closing_date ||= (Time.now + 60.days)
+      self.expected_closing_date ||= (Time.now + 60.days) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option

@@ -2,19 +2,23 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-  attr_accessor :limit, :secondary_limit
+  attr_accessor :limit, :secondary_limit, :custom_methods
 
-  def initialize
-    @limit = 100
+  def initialize(custom_methods=nil)
+    @custom_methods = custom_methods
+    @limit = nil
     @secondary_limit = nil
   end
 
   def call
-    methods = if Rails.env.production?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-              elsif Rails.env.development?
-                %w(inquiry_details sales_order_drafts inquiry_attachments)
-              end
+    methods = if custom_methods.present?
+      custom_methods
+    elsif Rails.env.production?
+      %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+      # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+    elsif Rails.env.development?
+      %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+    end
 
     PaperTrail.request(enabled: false) do
       methods.each do |method|
@@ -468,7 +472,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if x.get_column('sup_id').in? %w(5406)
 
       if company.present?
-        company.update_attributes(:name => "#{company.name} (Customer)")
+        company.update_attributes(:name => "#{company.name} (Customer)", is_customer: true, is_supplier: false)
         supplier_name = "#{supplier_name} (Supplier)"
       end
 
@@ -733,41 +737,39 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     quote_category = {'bmro' => 10, 'ong' => 20}
     opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries.csv')
     service.loop(limit) do |x|
-
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')
       contact_email = x.get_column('email', downcase: true)
 
       contact = Contact.find_by_legacy_id(contact_legacy_id) || Contact.find_by_email(contact_email) || company.contacts.first
-      next if contact.blank?
 
       if company.industry.blank?
         industry_uid = x.get_column('industry_sap_id')
 
         if industry_uid
           industry = Industry.find_by_remote_uid(industry_uid)
-          company.update_attributes(:industry => industry) if industry.present?
+          company.update_attributes!(:industry => industry) if industry.present?
         end
       end
 
       if company != legacy_company
-        shipping_address = company.account.addresses.find_by_legacy_id!(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
-        billing_address = company.account.addresses.find_by_legacy_id!(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
+        shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
+        billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
       end
 
-      if shipping_address.blank?
+      if company == legacy_company && shipping_address.blank?
         shipping_address = company.addresses.first
       end
 
-      if billing_address.blank?
+      if company == legacy_company && billing_address.blank?
         billing_address = company.addresses.first
       end
 
-      raise if shipping_address.blank? || billing_address.blank?
+      inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
 
-      inquiry = Inquiry.where(inquiry_number: x.get_column('increment_id', downcase: true, remove_whitespace: true)).first_or_create! do |inquiry|
+      inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_create! do |inquiry|
         inquiry.assign_attributes(
             company: company,
             contact: contact,
@@ -793,13 +795,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             legacy_id: x.get_column('quotation_id'),
             priority: x.get_column('is_prioritized'),
             expected_closing_date: x.get_column('closing_date', to_datetime: true),
-            quotation_date: (x.get_column('quotation_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            quotation_date: (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00"),
             quotation_expected_date: x.get_column('quotation_expected_date', to_datetime: true),
-            valid_end_time: (x.get_column('valid_end_time', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            valid_end_time: (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00"),
             quotation_followup_date: x.get_column('quotation_followup_date', to_datetime: true),
             customer_order_date: (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
-            customer_committed_date: (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
-            procurement_date: (x.get_column('procurement_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
+            customer_committed_date: (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00"),
+            procurement_date: (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00"),
             is_sez: x.get_column('sez'),
             is_kit: x.get_column('is_kit'),
             weight_in_kgs: x.get_column('weight'),
@@ -835,7 +837,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def inquiry_details
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv')
-    service.loop(nil) do |x|
+    service.loop(limit) do |x|
       puts "#{x.get_column('quotation_item_id')}"
       #next if (x.get_column('quotation_item_id').to_i < 3189 )
       quotation_id = x.get_column('quotation_id')
@@ -871,20 +873,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       if sales_quote.blank?
         sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
+
       end
 
-      sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_create do |row|
+      if inquiry.status_before_type_cast >= 5
+        sales_quote.update_attributes!(:sent_at => sales_quote.created_at)
+      end
+
+      sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_create! do |row|
         row.assign_attributes(
             quantity: x.get_column('qty', nil_if_zero: true) || 1,
-            margin_percentage: ((x.get_column('price_ht').to_i == 0 || x.get_column('cost').to_i == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100)),
+            margin_percentage: ((x.get_column('price_ht', to_f: true) == 0 || x.get_column('cost', to_f: true) == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100)),
             tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
             legacy_applicable_tax: x.get_column('tax_code'),
             legacy_applicable_tax_class: x.get_column('tax_class_id'),
-            unit_selling_price: x.get_column('price_ht'),
-            converted_unit_selling_price: x.get_column('price_ht'),
+            legacy_applicable_tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f,
+            unit_selling_price: x.get_column('price_ht', to_f: true),
+            converted_unit_selling_price: x.get_column('price_ht', to_f: true),
             lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
         )
-      end if sales_quote.present?
+      end
     end
   end
 
@@ -893,8 +901,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')
     service.loop(limit) do |x|
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry_number = x.get_column('inquiry_number').to_i
+      next if inquiry_number == 11505
+      inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
       next if inquiry.blank?
+
       requested_by = Overseer.find_by_legacy_id!(x.get_column('requested_by')) || Overseer.default
 
       sales_quote = inquiry.sales_quotes.last
@@ -907,7 +918,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             sap_series: x.get_column('sap_series'),
             doc_number: x.get_column('doc_num'),
             legacy_request_status: legacy_request_status_mapping[x.get_column('request_status')],
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            :sent_at => sales_order.created_at
         )
       end
 

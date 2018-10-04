@@ -13,7 +13,7 @@ class InquiryProductSupplier < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.unit_cost_price ||= 1
+    self.unit_cost_price ||= 0
   end
 
   def lowest_unit_cost_price
