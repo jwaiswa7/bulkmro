@@ -37,13 +37,12 @@
 /.idea/*.xml
 
 # Misc
+/public/packs
 /public/packs-test
 /node_modules
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
-/public/packs-test
-/node_modules
 yarn-debug.log*
 .yarn-integrity
 
