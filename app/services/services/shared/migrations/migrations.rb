@@ -10,14 +10,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def call
-    call_later
-  end
-
-  def call_later
     methods = if Rails.env.production?
                 %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments)
+                %w(inquiry_details sales_order_drafts inquiry_attachments)
               end
 
     PaperTrail.request(enabled: false) do
@@ -25,6 +21,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         perform_migration(method.to_sym)
       end
     end
+  end
+
+  def call_later
+    call
   end
 
   def overseers
@@ -562,7 +562,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_address_service.loop(limit) do |x|
       company = Company.acts_as_supplier.find_by_legacy_id(x.get_column('cmp_id'))
 
-      next if x.get_column('NULL').nil?
+      #next if x.get_column('NULL').nil?
 
       country_code = x.get_column('country')
       address = Address.where(legacy_id: x.get_column('address_id')).first_or_create do |address|
@@ -701,7 +701,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             category: Category.default,
             sku: sku,
             tax_code: tax_code || TaxCode.default,
-            # mpn: x.get_column('mfr_model_number'),
+            mpn: x.get_column('mfr_model_number'),
             description: x.get_column('description'),
             meta_description: x.get_column('meta_description'),
             meta_keyword: x.get_column('meta_keyword'),
@@ -735,6 +735,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
     service.loop(limit) do |x|
+
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')
       contact_email = x.get_column('email', downcase: true)
@@ -751,18 +752,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       end
 
-      if company == legacy_company || contact.legacy_id != contact_legacy_id
-        shipping_address = company.addresses.first
-        billing_address = company.addresses.first
-      else
-        shipping_address = company.addresses.find_by_legacy_id!(x.get_column('shipping_address'))
-        billing_address = company.addresses.find_by_legacy_id!(x.get_column('billing_address'))
+      if company != legacy_company
+        shipping_address = company.account.addresses.find_by_legacy_id!(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
+        billing_address = company.account.addresses.find_by_legacy_id!(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
       end
+
+      if shipping_address.blank?
+        shipping_address = company.addresses.first
+      end
+
+      if billing_address.blank?
+        billing_address = company.addresses.first
+      end
+
+      raise if shipping_address.blank? || billing_address.blank?
 
       inquiry = Inquiry.where(inquiry_number: x.get_column('increment_id', downcase: true, remove_whitespace: true)).first_or_create! do |inquiry|
         inquiry.assign_attributes(
             company: company,
             contact: contact,
+            legacy_contact_name: x.get_column('customer_name'),
             status: x.get_column('bought').to_i,
             opportunity_type: (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?),
             potential_amount: x.get_column('potential_amount'),
@@ -773,8 +782,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             outside_sales_owner: Overseer.find_by_username(x.get_column('outside', downcase: true)),
             sales_manager: Overseer.find_by_username(x.get_column('powermanager', downcase: true)),
             quote_category: (quote_category[x.get_column('category').downcase] if x.get_column('category').present?),
-            billing_address: billing_address || company.addresses.first,
-            shipping_address: shipping_address || company.addresses.first,
+            billing_address: billing_address,
+            shipping_address: shipping_address,
             opportunity_uid: x.get_column('op_code', nil_if_zero: true),
             customer_po_number: x.get_column('customer_po_id'),
             legacy_shipping_company: Company.find_by_remote_uid(x.get_column('customer_shipping_company')),
@@ -801,7 +810,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
-      inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) && inquiry.inquiry_currency_id.blank?
+      inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) if inquiry.inquiry_currency_id.blank?
     end
   end
 
@@ -826,7 +835,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def inquiry_details
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv')
-    service.loop(limit) do |x|
+    service.loop(nil) do |x|
+      puts "#{x.get_column('quotation_item_id')}"
+      #next if (x.get_column('quotation_item_id').to_i < 3189 )
       quotation_id = x.get_column('quotation_id')
       product_id = x.get_column('product_id')
       supplier_uid = x.get_column('sup_code')
@@ -858,14 +869,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       quotation_uid = x.get_column('doc_entry')
       sales_quote = inquiry.sales_quote
 
-      if sales_quote.blank? && quotation_uid.present?
+      if sales_quote.blank?
         sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
       end
 
       sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_create do |row|
         row.assign_attributes(
             quantity: x.get_column('qty', nil_if_zero: true) || 1,
-            margin_percentage: ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100),
+            margin_percentage: ((x.get_column('price_ht').to_i == 0 || x.get_column('cost').to_i == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100)),
             tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
             legacy_applicable_tax: x.get_column('tax_code'),
             legacy_applicable_tax_class: x.get_column('tax_class_id'),

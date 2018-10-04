@@ -3,6 +3,10 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     call_base
   end
 
+  def default_order
+    {:inquiry_number => :desc}
+  end
+
   def model_klass
     Inquiry
   end
