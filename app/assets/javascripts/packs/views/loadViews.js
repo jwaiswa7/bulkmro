@@ -33,7 +33,6 @@ import salesQuotesNew from "./salesQuotes/new";
 import salesQuotesNewRevision from "./salesQuotes/newRevision";
 import salesQuotesUpdate from "./salesQuotes/update";
 
-
 let loader = {
     imports: {
         createFailedSkus: importsCreateFailedSkus,
@@ -98,7 +97,6 @@ const loadViews = () => {
     let dataAttributes = $('body').data();
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
-    console.log(loader);
 
     if (controller in loader && controllerAction in loader[controller]) {
         loader[controller][controllerAction]();

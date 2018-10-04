@@ -10333,3 +10333,23 @@ th {
 @media (max-width: 991.98px) {
   .layout-sidebar .content-container > .chat-module {
     height: calc(100vh - 7.1875rem); } }
+.rim.rim-top {
+  border-top: 4px solid transparent;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important; }
+.rim.rim-right {
+  border-top: 0 !important;
+  border-right: 4px solid transparent;
+  border-bottom: 0 !important;
+  border-left: 0 !important; }
+.rim.rim-bottom {
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 4px solid transparent;
+  border-left: 0 !important; }
+.rim.rim-left {
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 4px solid transparent; }
