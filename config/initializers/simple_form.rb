@@ -330,6 +330,9 @@ SimpleForm.setup do |config|
     b.use :label, class: 'form-control-label'
     b.wrapper :custom_file_wrapper, tag: 'div', class: 'custom-file' do |ba|
       ba.use :input, class: 'custom-file-input', error_class: 'is-invalid', valid_class: 'is-valid'
+      #ba.wrapper tag: :label, class: 'custom-file-label' do |component|
+      #  component.use :placeholder_text.to_s ? :placeholder_text : :label_text
+      #end
       ba.use :label, class: 'custom-file-label'
       ba.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback' }
     end
