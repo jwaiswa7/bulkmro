@@ -17,7 +17,7 @@ class SalesQuote < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inquiry_product_supplier_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :sales_quote_rows, inverse_of: :sales_quote
   has_many :products, :through => :rows
-  has_many :sales_orders
+  has_many :sales_orders, dependent: :destroy
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
   has_many :email_messages
 

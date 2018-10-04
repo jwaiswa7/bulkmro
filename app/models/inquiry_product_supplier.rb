@@ -4,7 +4,7 @@ class InquiryProductSupplier < ApplicationRecord
   belongs_to :inquiry_product
   has_one :product, :through => :inquiry_product
   has_one :inquiry, :through => :inquiry_product
-  has_many :sales_quote_rows
+  has_many :sales_quote_rows, dependent: :destroy
 
   delegate :sr_no, to: :inquiry_product
 
