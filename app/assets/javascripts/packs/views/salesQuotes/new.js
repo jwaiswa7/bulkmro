@@ -78,6 +78,21 @@ let initVueJS = () => {
                 return this[name]
             },
 
+            hideProduct(product_id){
+                console.log(product_id);
+                let _this = this
+                $('#ac-'+ product_id).find("[data-index]").each(function (index, row) {
+                    let currentRowIndex = $(row).data('index');
+                    $(row).find('.btn.btn-danger').each(function (index, row) {
+                        $(row).click();
+                    })
+
+
+
+                });
+                $('#ac-'+ product_id).parent().hide();
+            },
+
             getRow(index) {
                 return this.rows[index];
             },
@@ -88,15 +103,18 @@ let initVueJS = () => {
                 }
             },
 
-            /*dropRow(index) {
+            dropRow(index) {
                 let row = this.getRow(index);
-                for (var property in row) {
+                /*for (var property in row) {
                     if (row.hasOwnProperty(property)) {
                         row[property] = 0;
                     }
-                }
+                }*/
+
+
+
                 this.setRow(index, row);
-            },*/
+            },
 
             getCheckedRows() {
                 let checkedSupplierIds = [];
@@ -430,6 +448,9 @@ let assignEventsAndGetAttributes = () => {
         assignDataEventsAsEvents($(el), undefined);
     });
 
+    $('[data-v-event]').each(function (index, el) {
+        assignDataEventsAsEvents($(el), undefined);
+    });
     // V-models that cannot be edited, auto calculated
     $('[data-v-html]').each(function (index, el) {
         $(el).attr("v-html", $(el).attr('data-v-html'));
@@ -439,6 +460,7 @@ let assignEventsAndGetAttributes = () => {
 };
 
 let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
+    console.log(el);
     let eventNames = ['v-on:change', 'v-on:input', 'v-on:click'];
     let attributeName = undefined;
 
@@ -462,11 +484,14 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
         }
 
         eventNames.forEach(function (eventName) {
+
             $(el).attr('v-on:input', methodName);
         });
     } else {
         eventNames.forEach(function (eventName) {
+
             if ($(el).data(eventName)) {
+
                 $(el).attr(eventName, $(el).data(eventName).replace('_index_', currentRowIndex));
             }
         });

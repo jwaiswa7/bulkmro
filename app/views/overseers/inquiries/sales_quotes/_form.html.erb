@@ -45,7 +45,7 @@
       </div>
 
       <% f.object.rows.group_by(&:inquiry_product).each do |inquiry_product, rows| %>
-        <div class="card mt-3">
+        <div class="card mt-3 option-wrapper">
           <div class="card-body accordion" id="ac-<%= inquiry_product.id %>">
             <h6 class="text-uppercase">
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
@@ -53,7 +53,7 @@
               <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
               <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.sku? ? '(' + inquiry_product.product.sku + ')' : '' %></span>
             </h6>
-
+            <div class="btn btn-danger" data-v-event=""  data-v-on:click="hideProduct('<%= inquiry_product.id %>')" >Hide</div>
             <%= f.simple_fields_for :rows, rows.sort_by(&:unit_cost_price), wrapper_tag: :div do |row| %>
               <%= row.hidden_field :inquiry_product_id %>
               <%= row.hidden_field :sales_quote_id %>
@@ -118,15 +118,21 @@
                           <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
                           <div class="col-md-2"><%= row.association :lead_time_option %></div>
+                          <%= link_to_remove_association row, {class: 'btn btn-danger align-self-center d-none', wrapper_class: 'simple-row',"data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                            Hide
+                          <% end %>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             <% end %>
           </div>
         </div>
+
+
       <% end %>
 
       <div class="card mt-3">
