@@ -3,7 +3,7 @@ class ProductsIndex < BaseIndex
     field :id
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'letter'
     field :sku, analyzer: 'edge_ngram'
-    field :name, analyzer: 'letter'
+    field :name, analyzer: 'edge_ngram'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :created_by, value: -> (record) { record.created_by.to_s }

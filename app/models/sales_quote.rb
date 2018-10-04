@@ -27,14 +27,14 @@ class SalesQuote < ApplicationRecord
 
   # validates_length_of :rows, minimum: 1
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
-  validate :every_product_only_has_one_supplier?
-  def every_product_only_has_one_supplier?
-    self.rows.joins(:inquiry_product).group('inquiry_products.id').count.each do |k, v|
-      if v > 1
-        errors.add :base, 'every inquiry product can only have one designated supplier'
-      end
-    end
-  end
+  # validate :every_product_only_has_one_supplier?
+  # def every_product_only_has_one_supplier?
+  #   self.rows.joins(:inquiry_product).group('inquiry_products.id').count.each do |k, v|
+  #     if v > 1
+  #       errors.add :base, 'every inquiry product can only have one designated supplier'
+  #     end
+  #   end
+  # end
 
   def syncable_identifiers
     [:quotation_uid]

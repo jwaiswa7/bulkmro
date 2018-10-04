@@ -823,7 +823,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
     service.loop(limit) do |x|
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry = Inquiry.where(commercial_terms_and_conditions: nil, packing_and_forwarding_option: nil).find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
       inquiry.update_attributes(
           price_type: price_type_mapping[x.get_column('Price')],
@@ -887,7 +887,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
             legacy_applicable_tax: x.get_column('tax_code'),
             legacy_applicable_tax_class: x.get_column('tax_class_id'),
-            legacy_applicable_tax_percentage: x.get_column('tax_code').match(/\d+/)[0].to_f,
+            legacy_applicable_tax_percentage: (x.get_column('tax_code').match(/\d+/)[0].to_f if x.get_column('tax_code').present?),
             unit_selling_price: x.get_column('price_ht', to_f: true),
             converted_unit_selling_price: x.get_column('price_ht', to_f: true),
             lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
@@ -972,6 +972,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
       company_type = company_type_mapping[company.is_supplier ? 'is_supplier' : 'is_customer'] if company.present?
 
+      overseer_legacy_id = x.get_column('overseer_legacy_id')
+      overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
+
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
         activity.assign_attributes(
             inquiry: inquiry,
@@ -986,12 +989,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             actions_required: x.get_column('actionrequired'),
             reference_number: x.get_column('refno'),
             created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
-            legacy_metadata: x.get_row
+            legacy_metadata: x.get_row,
+            created_by: overseer,
+            updated_by: overseer
         )
       end
 
-      overseer_legacy_id = x.get_column('overseer_legacy_id')
-      ActivityOverseer.create!(activity: activity, overseer: Overseer.find_by_legacy_id(overseer_legacy_id)) if overseer_legacy_id.present?
+      # ActivityOverseer.create!(activity: activity, overseer: overseer) if overseer_legacy_id.present?
     end
   end
 
@@ -1012,6 +1016,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[1])
         next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
+        next if inquiry.send(file[2]).attached?
         attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
       end
     end

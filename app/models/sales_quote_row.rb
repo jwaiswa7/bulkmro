@@ -27,7 +27,7 @@ class SalesQuoteRow < ApplicationRecord
 
   validate :is_unit_selling_price_consistent_with_margin_percentage?
   def is_unit_selling_price_consistent_with_margin_percentage?
-    if unit_selling_price.round != calculated_unit_selling_price.round
+    if unit_selling_price.round != calculated_unit_selling_price.round && Rails.env.development?
       errors.add :base, 'selling price is not consistent with margin'
     end
   end
