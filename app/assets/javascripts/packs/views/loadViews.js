@@ -48,6 +48,7 @@ const loadViews = () => {
     let dataAttributes = $('body').data();
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
+    console.log(loader);
 
     if (controller in loader && controllerAction in loader[controller]) {
         loader[controller][controllerAction]();
