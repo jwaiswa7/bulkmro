@@ -1,10 +1,38 @@
 // Component Imports
+
+//
+// Imports
 import importsCreateFailedSkus from "./imports/createFailedSkus";
 import importsManageFailedSkus from "./imports/manageFailedSkus";
 
+//
+// Inquiries
 import inquiriesEdit from "./inquiries/edit";
 import inquiriesEditSuppliers from "./inquiries/edit";
 import inquiriesUpdateSuppliers from "./inquiries/edit";
+
+//
+// Products
+import productsEdit from "./products/edit";
+import productsNew from "./products/new";
+
+//
+// Sales Orders
+import salesOrdersCreate from "./salesOrders/create";
+import salesOrdersEdit from "./salesOrders/edit";
+import salesOrdersNew from "./salesOrders/new";
+import salesOrdersNewRevision from "./salesOrders/newRevision";
+import salesOrdersUpdate from "./salesOrders/update";
+import salesOrdersUpdateOnSelect from "./salesOrders/updateOnSelect";
+
+//
+// Sales Quotes
+import salesQuotesCreate from "./salesQuotes/create";
+import salesQuotesEdit from "./salesQuotes/edit";
+import salesQuotesNew from "./salesQuotes/new";
+import salesQuotesNewRevision from "./salesQuotes/newRevision";
+import salesQuotesUpdate from "./salesQuotes/update";
+
 
 let loader = {
     imports: {
@@ -16,6 +44,28 @@ let loader = {
         edit: inquiriesEdit,
         editSuppliers: inquiriesEditSuppliers,
         updateSuppliers: inquiriesUpdateSuppliers,
+    },
+
+    products: {
+        edit: productsEdit,
+        new: productsNew
+    },
+
+    salesOrders: {
+        create: salesOrdersCreate,
+        edit: salesOrdersEdit,
+        new: salesOrdersNew,
+        newRevision: salesOrdersNewRevision,
+        update: salesOrdersUpdate,
+        updateOnSelect: salesOrdersUpdateOnSelect
+    },
+
+    salesQuotes: {
+        create: salesQuotesCreate,
+        edit: salesQuotesEdit,
+        new: salesQuotesNew,
+        newRevision: salesQuotesNewRevision,
+        update: salesQuotesUpdate
     },
 };
 
