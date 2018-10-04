@@ -31,9 +31,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def approve_products
-    Product.all.not_approved.each do |product|
-      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+    PaperTrail.request(enabled: false) do
+      Product.all.not_approved.each do |product|
+        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+      end
     end
+  end
+
+  def change_column_type_db
+    ActiveRecord::Base.connection.execute('ALTER TABLE inquiries ALTER COLUMN inquiry_number TYPE BIGINT USING inquiry_number::bigint')
   end
 
   def activities_migration_fix

@@ -823,7 +823,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
     service.loop(limit) do |x|
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry = Inquiry.where(commercial_terms_and_conditions: nil, packing_and_forwarding_option: nil).find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
       inquiry.update_attributes(
           price_type: price_type_mapping[x.get_column('Price')],
@@ -1016,6 +1016,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[1])
         next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
+        next if inquiry.send(file[2]).attached?
         attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
       end
     end
