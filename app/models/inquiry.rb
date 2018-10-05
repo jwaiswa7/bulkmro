@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact, required: false
+  belongs_to :contact, required: :not_legacy?
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
@@ -169,6 +169,7 @@ class Inquiry < ApplicationRecord
   # validates_presence_of :billing_address
   # validates_presence_of :shipping_address
   validates_presence_of :expected_closing_date, :if => :not_legacy?
+  validates_presence_of :subject, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
 
