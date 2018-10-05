@@ -7935,6 +7935,12 @@ table.table.dataTable {
     background-color: transparent; }
   table.table.dataTable.table-bordered th, table.table.dataTable.table-bordered td {
     border: 0 transparent; }
+  table.table.dataTable.table-unstyled {
+    border-spacing: 0 0.375rem; }
+    table.table.dataTable.table-unstyled tr {
+      background-color: transparent; }
+      table.table.dataTable.table-unstyled tr th, table.table.dataTable.table-unstyled tr td {
+        padding: 0; }
 
 .dataTables_wrapper.dt-bootstrap4 .dataTables_info {
   white-space: normal; }

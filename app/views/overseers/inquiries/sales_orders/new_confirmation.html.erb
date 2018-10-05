@@ -66,49 +66,75 @@
             <%= row.hidden_field :id %>
            <div>
              <h6 class="text-uppercase mb-0 mt-3">
+               <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
                <strong><%= row.object.sales_quote_row %></strong>
-               <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sr_no %></p>
              </h6>
-             <div class="form-row my-2">
-               <div class="col-md-3">
-                 <strong>Unit Selling Price</strong><br>
-                 <span><%= row.object.unit_selling_price %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Unit Selling Price (in <%= f.object.currency.sign %>)</strong><br>
-                 <span><%= row.object.converted_unit_selling_price %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Unit Cost with Freight</strong><br>
-                 <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Total Selling Price</strong><br>
-                 <span><%= row.object.total_selling_price %></span>
-               </div>
-             </div>
-             <div class="form-row my-2">
-               <div class="col-md-3">
-                 <strong>Total Selling Price with Tax</strong><br>
-                 <span><%= row.object.total_selling_price_with_tax %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Margin Percentage</strong><br>
-                 <span><%= row.object.margin_percentage %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Tax Code</strong><br>
-                 <span><%= row.object.tax_code %></span>
-               </div>
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>UOM</strong><br>
-                 <span><%= row.object.measurement_unit %></span>
-               </div>
-             </div>
-             <div class="form-row my-2">
-               <div class="col-md-3 mt-2 mt-md-0">
-                 <strong>Quantity</strong><br>
-                 <span><%= row.object.quantity %></span>
+             <div class="form-row my-2 text-small">
+               <div class="col-12">
+                 <table class="w-100 datatable table table-bordered dt-responsive table-unstyled">
+                   <thead>
+                   <tr>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Quantity">Qty</span>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>)</span>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span>Tax Code</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+                     </th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>
+                         <span><%= row.object.quantity %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.margin_percentage %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.unit_selling_price %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.converted_unit_selling_price %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.total_selling_price %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.total_selling_price_with_tax %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.tax_code %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.measurement_unit %></span>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
                </div>
              </div>
            </div>
