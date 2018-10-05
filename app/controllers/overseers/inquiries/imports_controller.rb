@@ -27,7 +27,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service = Services::Overseers::InquiryImports::ListImporter.new(@inquiry, @list_import)
 
     if service.call
-      redirect_to edit_overseers_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new_list_import'
     end
