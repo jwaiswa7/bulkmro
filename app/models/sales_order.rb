@@ -11,10 +11,12 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSent
   include Mixins::HasRowCalculations
 
+  pg_search_scope :locate, :against => [], :associated_against => { :created_by => [:first_name, :last_name], :company => [:name], :inquiry => [:inquiry_number]  }, :using => { :tsearch => {:prefix => true} }
   has_closure_tree({ name_column: :to_s })
 
   belongs_to :sales_quote
   has_one :inquiry, :through => :sales_quote
+  has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
@@ -35,7 +37,7 @@ class SalesOrder < ApplicationRecord
       :'Cancelled' => 50,
       :'approved' => 60,
       :'Order Deleted' => 70
-  }
+  }, _prefix: true
 
   def confirmed?
     self.confirmation.present?

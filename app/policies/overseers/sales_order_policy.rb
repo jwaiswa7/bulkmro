@@ -1,10 +1,6 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent?
-  end
-
-  def show?
-    edit?
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved?
   end
 
   def new_confirmation?
