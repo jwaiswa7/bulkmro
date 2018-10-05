@@ -40,6 +40,8 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def excel_template
     authorize @inquiry
+
+    render xlsx: [@inquiry.to_s, 'Excel Template'].join(' '), template: 'overseers/inquiries/imports/excel_template'
   end
 
   def create_excel_import
