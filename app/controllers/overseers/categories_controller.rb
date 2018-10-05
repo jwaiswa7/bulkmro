@@ -6,6 +6,12 @@ class Overseers::CategoriesController < Overseers::BaseController
     authorize @categories
   end
 
+  def autocomplete_closure_tree
+    calling_category = Category.find(params[:calling_category_id]) if params[:calling_category_id].present?
+    @categories = ApplyParams.to(Category.except_self_and_children(calling_category).leaves, params)
+    authorize @categories
+  end
+
   def show
     redirect_to edit_overseers_category_path (@category)
     authorize @category
@@ -44,6 +50,7 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   private
+
   def category_params
     params.require(:category).permit(
         :parent_id,
