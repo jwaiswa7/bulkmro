@@ -8,7 +8,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                params
              else
                ''
-             end.gsub(/[^0-9A-Za-z]/, '')
+             end.gsub(/[^0-9A-Za-z ]/, '')
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -16,14 +16,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def call_base
     @indexed_records = if query.present?
-                          index_klass.query(:query_string => {
-                               fields: index_klass.fields,
-                               query: query,
-                               default_operator: 'or'
-                           })
-                         else
-                           index_klass.all.order(:created_at => :desc)
-                         end.page(page).per(per)
+                         index_klass.query(:query_string => {
+                             fields: index_klass.fields,
+                             query: query,
+                             default_operator: 'or'
+                         })
+                       else
+                         index_klass.all.order(default_order)
+                       end.page(page).per(per)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
@@ -31,6 +31,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def index_klass
     [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  def default_order
+    {:created_at => :desc}
   end
 
   attr_accessor :query, :page, :per, :records, :indexed_records

@@ -11,7 +11,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
+        @inquiries = service.records.reverse
       end
     end
   end
@@ -117,6 +117,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         :gross_profit_percentage,
         :quotation_date,
         :customer_committed_date,
+        :customer_order_date,
+        :quotation_followup_date,
         :procurement_date,
         :expected_closing_date,
         :quote_category,
@@ -125,11 +127,15 @@ class Overseers::InquiriesController < Overseers::BaseController
         :freight_option,
         :freight_cost,
         :total_freight_cost,
+        :customer_po_number,
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
         :customer_po_sheet,
         :final_supplier_quote,
+        :suppler_quote,
+        :copy_of_email,
+        :is_sez,
         :calculation_sheet,
         :commercial_terms_and_conditions,
         :comments,

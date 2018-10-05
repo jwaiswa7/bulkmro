@@ -61,23 +61,28 @@ class Overseers::ProductsController < Overseers::BaseController
     @supplier = Company.acts_as_supplier.find(params[:supplier_id])
     @inquiry_product_supplier = InquiryProductSupplier.find(params[:inquiry_product_supplier_id]) if params[:inquiry_product_supplier_id].present?
     authorize @product
+
+    bp_catalog = @product.bp_catalog_for_supplier(@supplier)
+
     render json: {
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
         latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
-
-        bp_catalog_name: @product.bp_catalog_for_supplier(@supplier).try(:first),
-        bp_catalog_sku: @product.bp_catalog_for_supplier(@supplier).try(:last)
-    }
+    }.merge!(bp_catalog ? {
+        bp_catalog_name: bp_catalog[0],
+        bp_catalog_sku: bp_catalog[1]
+    } : {})
   end
 
   def customer_bp_catalog
     @company = Company.find(params[:company_id])
     authorize @product
 
-    render json: {
-        bp_catalog_name: @product.bp_catalog_for_customer(@company)[0],
-        bp_catalog_sku: @product.bp_catalog_for_customer(@company)[1]
-    }
+    bp_catalog =  @product.bp_catalog_for_customer(@company)
+
+    render json: bp_catalog ? {
+        bp_catalog_name: bp_catalog[0],
+        bp_catalog_sku: bp_catalog[1]
+    } : {}
   end
 
   private

@@ -7,7 +7,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def show
-    redirect_to edit_overseers_inquiry_sales_order_path(@inquiry, @sales_order)
     authorize @sales_order
   end
 
@@ -61,7 +60,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(:sent_at => Time.now)
+        @sales_order.update_attributes(:sent_at => Time.now, :status => :"SAP Approval Pending")
       end
     else
       @sales_order.update_attributes(:sent_at => Time.now)

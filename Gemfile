@@ -95,7 +95,7 @@ gem 'simple_xlsx_reader'
 
 # Render XLSX files
 gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'axlsx'
 gem 'axlsx_rails'
 
 # Validate file uploads
@@ -164,6 +164,9 @@ gem 'sidekiq'
 
 # NET SCP for sending files to SAP
 gem 'net-scp'
+
+# Zip-zip fixes zip workaround for Heroku
+gem 'zip-zip'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

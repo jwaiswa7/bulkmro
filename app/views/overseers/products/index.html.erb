@@ -1,14 +1,15 @@
 <%= provide :container_fluid, true %>
 <% provide :can_be_directly_created, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, false %>
 
 <% content_for :header_row do %>
-  <th class="no-sort"></th>
-  <th data-name="name">Name</th>
-  <th data-name="sku">SKU</th>
+  <th class="no-sort" data-width="70px"></th>
+  <th class="no-sort" data-name="name">Name</th>
+  <th class="no-sort" data-name="sku">SKU</th>
   <th class="no-sort">Brand</th>
   <th class="no-sort">Category</th>
-  <th data-name="created_at">Created</th>
+  <th class="no-sort" data-name="created_at">Created</th>
   <th class="no-sort">Approved</th>
 <% end %>
 

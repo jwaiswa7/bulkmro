@@ -7,11 +7,19 @@
     <div class="card-body">
       <div>
         <h6 class="text-uppercase text-black-50 mb-1">Opportunity Details</h6>
-
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
           <div class="col-4">
-            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact", input_html: { class: 'select2-single'}  %>
+            <%= f.input :inquiry_number, disabled: true %>
+          </div>
+          <div class="col-8">
+            <%= f.input :legacy_contact_name, disabled: true %>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-4">
+            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
           </div>
           <div class="col-8">
             <%= f.input :subject %>
@@ -32,7 +40,7 @@
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
               </div>
               <div class="col-6 col-md-3">
-                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ' %>
+                <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true %>
               </div>
             </div>
           </div>
@@ -125,44 +133,19 @@
             <%= f.input :customer_po_number, label: 'Customer PO number' %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', :class => 'flex-grow-1' %>
-            <% if f.object.customer_po_sheet.attached? %>
-              <%= link_to url_for(f.object.customer_po_sheet), target: :_blank, :class => 'btn btn-dark' do %>
-                <i class="fal fa-download"></i>
-              <% end %>
-            <% end %>
+            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment' %>
-            <% if f.object.copy_of_email.attached? %>
-              <%= link_to url_for(f.object.copy_of_email), target: :_blank, :class => 'btn btn-dark' do %>
-                <i class="fal fa-download"></i>
-              <% end %>
-            <% end %>
+            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote' %>
-            <% if f.object.suppler_quote.attached? %>
-              <%= link_to url_for(f.object.suppler_quote), target: :_blank, :class => 'btn btn-dark' do %>
-                <i class="fal fa-download"></i>
-              <% end %>
-            <% end %>
+            <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote', hint: f.object.suppler_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.suppler_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote' %>
-            <% if f.object.final_supplier_quote.attached? %>
-              <%= link_to url_for(f.object.final_supplier_quote), target: :_blank, :class => 'btn btn-dark' do %>
-                <i class="fal fa-download"></i>
-              <% end %>
-            <% end %>
+            <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet' %>
-            <% if f.object.calculation_sheet.attached? %>
-              <%= link_to url_for(f.object.calculation_sheet), target: :_blank, :class => 'btn btn-dark' do %>
-                <i class="fal fa-download"></i>
-              <% end %>
-            <% end %>
+            <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
@@ -201,7 +184,7 @@
             <%= f.input :weight_in_kgs %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions %>
+        <%= f.input :commercial_terms_and_conditions%>
       </div>
 
       <div class="mt-3">
@@ -209,9 +192,9 @@
           <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
         <% end %>
         <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
-          <div class="form-row flex-row align-items-center">
+          <div class="form-row flex-row align-items-start">
             <%= inquiry_product.hidden_field :id %>
-            <div class="col-2">
+            <div class="col-1">
               <div class="d-flex flex-row">
                 <div class="form-group align-self-center mr-2">
                   <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -238,16 +221,22 @@
 
               </div>
             </div>
+            <div class="col-6">
+              <div class="select2-wrap">
+                <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+              </div>
+            </div>
             <div class="col-4">
-              <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+              <div class="form-row">
+                <div class="col-6">
+                  <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
+                </div>
+                <div class="col-6">
+                  <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku) %>
+                </div>
+              </div>
             </div>
-            <div class="col-2">
-              <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
-            </div>
-            <div class="col-2">
-              <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku) %>
-            </div>
-            <div class="col-2">
+            <div class="col-1">
               <div class="d-flex flex-row align-items-center">
                 <div>
                   <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>

@@ -9068,6 +9068,11 @@ div.dataTables_wrapper div.dataTables_processing {
   border-color: #28a745; }
 .form-control.is-valid ~ .select2-container--bootstrap .select2-dropdown {
   border: 1px solid #28a745; }
+.form-control.select2-wrap-text ~ .select2-container--bootstrap .select2-selection--single {
+  height: auto; }
+  .form-control.select2-wrap-text ~ .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+    overflow: visible;
+    white-space: normal; }
 
 .was-validated .form-control:invalid ~ .select2-container--bootstrap .form-control, .was-validated .form-control.is-invalid ~ .select2-container--bootstrap .form-control {
   border-color: #dc3545; }
@@ -10328,3 +10333,23 @@ th {
 @media (max-width: 991.98px) {
   .layout-sidebar .content-container > .chat-module {
     height: calc(100vh - 7.1875rem); } }
+.rim.rim-top {
+  border-top: 4px solid transparent;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important; }
+.rim.rim-right {
+  border-top: 0 !important;
+  border-right: 4px solid transparent;
+  border-bottom: 0 !important;
+  border-left: 0 !important; }
+.rim.rim-bottom {
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 4px solid transparent;
+  border-left: 0 !important; }
+.rim.rim-left {
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 4px solid transparent; }

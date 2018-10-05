@@ -6,15 +6,6 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def serializer
-    # InquiryIndex.delete
-    # InquiryIndex.create!
-    # InquiryIndex.import
-    # InquiriesIndex.reset!
-    # ProductsIndex.reset!
-    #
-    # Inquiry.search('asd')
-    #
-    #
     authorize :dashboard, :show?
     render json: Serializers::InquirySerializer.new(Inquiry.find(1004), {
         include: [
@@ -22,18 +13,20 @@ class Overseers::DashboardController < Overseers::BaseController
   end
 
   def chewy
-    # InquiryIndex.delete
-    # InquiryIndex.create!
+    authorize :dashboard
+    # InquiriesIndex.delete
+    # InquiriesIndex.create!
     # InquiryIndex.import
     InquiriesIndex.reset!
-    # ProductsIndex.reset!
-    #
-    # Inquiry.search('asd')
-    #
-    #
+    ProductsIndex.reset!
+
+    # Fix for failure when no shards are found
+    redirect_back fallback_location: overseers_dashboard_path
   end
 
   def migrations
-    Services::Shared::Migrations::Migrations.new
+    authorize :dashboard
+    Services::Shared::Migrations::Migrations.new.call
+    render json: {}, status: :ok
   end
 end

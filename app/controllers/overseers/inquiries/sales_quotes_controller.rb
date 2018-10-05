@@ -1,9 +1,13 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update]
+  before_action :set_sales_quote, only: [:edit, :update, :show]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
     authorize @sales_quotes
+  end
+
+  def show
+    authorize @sales_quote
   end
 
   def new
