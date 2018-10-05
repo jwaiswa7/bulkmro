@@ -69,7 +69,7 @@
             </div>
           <% end %>
 
-          <%= f.input :message, required: true, :placeholder => 'Type message' %>
+          <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 
           <div class="flex-fill">
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>

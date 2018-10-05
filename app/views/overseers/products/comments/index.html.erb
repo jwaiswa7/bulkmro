@@ -58,7 +58,7 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <%= f.input :message, required: true, :placeholder => 'Type message' %>
+      <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 
       <div class="flex-fill">
         <div class="row">
