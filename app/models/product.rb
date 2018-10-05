@@ -11,8 +11,8 @@ class Product < ApplicationRecord
   include Mixins::HasComments
 
   update_index('products#product') { self if self.approved? }
-  pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
-  #pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
+  # pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand, required: false
   belongs_to :category
@@ -44,7 +44,7 @@ class Product < ApplicationRecord
 
   enum product_type: { item: 10, service: 20 }
 
-  scope :with_includes, -> { includes(:brand) }
+  scope :with_includes, -> { includes(:brand, :approval, :category) }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?

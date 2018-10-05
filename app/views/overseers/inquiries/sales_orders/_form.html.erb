@@ -61,10 +61,13 @@
                 <span data-bind-html="unit_selling_price"><%= format_currency(row.object.unit_selling_price, symbol: f.object.currency.sign) %></span>
 
               </div>
-              <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Unit Selling Price (in $)</strong><br>
-                <span data-bind-html="converted_unit_selling_price"><%= format_currency(row.object.converted_unit_selling_price, symbol: f.object.currency.sign) %></span>
-              </div>
+              <% if f.object.currency == "INR" %>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Unit Selling Price (in <%= f.object.currency.sign %>)</strong><br>
+                  <span data-bind-html="converted_unit_selling_price"><%= format_currency(row.object.converted_unit_selling_price, symbol: f.object.currency.sign) %></span>
+                </div>
+              <% end %>
+
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Unit Cost with Freight</strong><br>
                 <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost, symbol: f.object.currency.sign) %></span>
@@ -96,7 +99,7 @@
 
             <div class="d-block d-md-flex flex-row justify-content-between">
               <%= row.input :quantity, input_html: {"data-bind": ""} %>
-              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper',"data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                 Remove
               <% end %>
             </div>

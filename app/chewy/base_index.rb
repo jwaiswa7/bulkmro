@@ -2,19 +2,17 @@ class BaseIndex < Chewy::Index
   settings analysis: {
       analyzer: {
           edge_ngram: {
-              tokenizer: 'edge_ngram'
+              tokenizer: 'edge_ngram',
           },
           letter: {
               tokenizer: 'letter',
               filter: ['lowercase']
           },
           keyword: {
-              tokenizer: 'keyword'
+              tokenizer: 'keyword',
+              filter: ['lowercase']
           },
-          sortable: {
-              tokenizer: 'keyword'
-          },
-      }
+      },
   }, max_result_window: 5000000
 
   def self.fields
