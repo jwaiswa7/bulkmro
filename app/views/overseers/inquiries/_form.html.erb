@@ -151,7 +151,7 @@
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>

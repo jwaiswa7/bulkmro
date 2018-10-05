@@ -67,7 +67,7 @@
                 <div class="col-12">
                   <div class="d-flex flex-row">
                     <div class="custom-control custom-radio align-self-center mr-2">
-                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[-1] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
+                      <%= radio = radio_button_tag ['[sales_quote][selected_suppliers]', row.object.inquiry_product.id].join, row.object.inquiry_product_supplier.id, (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[0] == row.object), "data-bind": "select_supplier_#{row.object.inquiry_product.id}", :class => 'custom-control-input' %>
                       <%= row.label '', class: 'custom-control-label', for: /id="([a-z\d_]*)"/.match(radio)[1] do %><%= '' %>
                       <% end %>
                     </div>
