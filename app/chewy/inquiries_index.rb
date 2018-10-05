@@ -1,12 +1,12 @@
 class InquiriesIndex < BaseIndex
   define_type Inquiry.all.with_includes do
-    field :id
+    field :id, type: 'integer'
     field :status, analyzer: 'letter'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i },  type: 'integer'
+    field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s },  analyzer: 'keyword'
     field :calculated_total, value: -> (record) { record.final_sales_quote.calculated_total.to_i if record.final_sales_quote.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'letter'
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'letter'
-    field :inquiry_number, analyzer: 'keyword', fielddata: true
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'letter'
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'letter'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'letter'

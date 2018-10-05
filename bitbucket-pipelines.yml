@@ -6,9 +6,10 @@
 image: ruby:2.5.1
 
 pipelines:
-  default:
+  branches:
+    production:
     - step:
         name: Deploy to Heroku
-        deployment: production 
+        deployment: production
         script:
-          - git push https://heroku:2c8472ca-d02f-44e2-85c5-dbc709c76c92@git.heroku.com/bulkmro.git HEAD
+        - git push https://heroku:2c8472ca-d02f-44e2-85c5-dbc709c76c92@git.heroku.com/bulkmro.git HEAD

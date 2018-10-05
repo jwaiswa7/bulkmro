@@ -27,7 +27,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def run_inquiry_details_migration
-    Services::Shared::Migrations::Migrations.new(['inquiry_details']).call
+    PaperTrail.request(enabled: false) do
+      Services::Shared::Migrations::Migrations.new(['sales_order_drafts']).call
+    end
   end
 
   def approve_products

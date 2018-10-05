@@ -50,11 +50,11 @@
         </div>
       </li>
       <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
-      <%= nav_item 'Sales Orders', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+      <%= nav_item 'Pending Sales Orders', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
       <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
       <%= nav_item 'Reports', overseers_reports_path, policy(:report).index? %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
+      <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
     </ul>
   </div>
   <!-- Navigation Bar -->

@@ -11,6 +11,9 @@ class BaseIndex < Chewy::Index
           keyword: {
               tokenizer: 'keyword'
           },
+          sortable: {
+              tokenizer: 'keyword'
+          },
       }
   }, max_result_window: 5000000
 
