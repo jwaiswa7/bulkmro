@@ -1,5 +1,5 @@
 class ApplyDatatableParams < BaseFunction
-	def self.to(records, params, if_no_search_term: nil, unscoped_if_search_term: false)
+	def self.to(records, params, if_no_search_term: nil, unscoped_if_search_term: false, do_not_search: false)
 		if params[:search] && params[:search][:value].present?
 			records = records.unscoped if unscoped_if_search_term
 			records = records.locate(params[:search][:value])

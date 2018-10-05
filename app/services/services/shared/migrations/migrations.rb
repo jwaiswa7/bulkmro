@@ -897,7 +897,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_order_drafts
-
     legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')
@@ -911,6 +910,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       sales_quote = inquiry.sales_quotes.last
       next if sales_quote.blank?
+      next if sales_quote.sales_orders.exists?
       sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_create! do |so|
         so.assign_attributes(
             overseer: requested_by,
