@@ -52,9 +52,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -69,7 +69,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
