@@ -27,7 +27,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service = Services::Overseers::InquiryImports::ListImporter.new(@inquiry, @list_import)
 
     if service.call
-      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to edit_overseers_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new_list_import'
     end
@@ -40,6 +40,8 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def excel_template
     authorize @inquiry
+
+    render xlsx: [@inquiry.to_s, 'Excel Template'].join(' '), template: 'overseers/inquiries/imports/excel_template'
   end
 
   def create_excel_import
@@ -113,7 +115,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
               :inquiry_id,
               :quantity,
               :sr_no,
-              :product_attributes => [:inquiry_import_row_id, :name, :sku, :is_service, :brand_id, :category_id]
+              :product_attributes => [:inquiry_import_row_id, :name, :sku, :is_service, :brand_id, :tax_code_id, :category_id]
           ],
       ]
     ) : {}
