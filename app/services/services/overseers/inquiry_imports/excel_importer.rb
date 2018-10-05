@@ -1,5 +1,6 @@
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
-  class ExcelInvalidHeader < StandardError; end
+  class ExcelInvalidHeader < StandardError;
+  end
 
   def call
     if import.save
@@ -15,7 +16,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
   def set_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-    excel_rows.reject! { |er| er.compact.blank? }
+    excel_rows.reject! {|er| er.compact.blank?}
 
     @excel_rows = excel_rows
   end
@@ -40,11 +41,20 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
 
   def set_generated_skus
     rows.each do |row|
-      if row['sku'].blank?
-        range = [*'0'..'9',*'A'..'Z',*'a'..'z'];
-        code = Array.new(6){ range.sample }.join.upcase
-        row['sku'] = "BM9" + code;
+      if row['sku'].blank? || Product.find_by_sku(row['sku']).blank?
+        range = [*'0'..'9', *'A'..'Z', *'a'..'z']
+
+        10.times do
+          code = [
+              "BM9",
+              Array.new(6) {range.sample}.join.upcase
+          ].join
+          row['sku'] = code
+          break if Product.find_by_sku(code).blank?
+        end
+
       end
+
     end
   end
 

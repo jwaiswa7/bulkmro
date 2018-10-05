@@ -5,7 +5,7 @@ json.data (@inquiries) do |inquiry|
                         row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
                       end,
                   ].join(' '),
-                  format_status_label(inquiry.status),
+                  status_helper_format_label(inquiry.status),
                   inquiry.inquiry_number,
                   inquiry.account.to_s,
                   inquiry.company.to_s,

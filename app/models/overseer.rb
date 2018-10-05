@@ -73,14 +73,15 @@ class Overseer < ApplicationRecord
     find_by_email('ashwin.goyal@bulkmro.com')
   end
 
-  def self.sap_approver
+  def self.default_approver
     overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|
       overseer.first_name = "SAP"
       overseer.last_name = "Approver"
       overseer.password = "bm@123"
       overseer.password_confirmation = "bm@123"
     end
-    overseer.save
+
+    overseer.save!
     overseer
   end
 end

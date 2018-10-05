@@ -14,7 +14,7 @@
           <div class=form-row>
             <div class="col-8 col-md-3">
               <strong>Order Number</strong>
-               <br> <%= f.object.order_number.blank? ? "SAP Request Pending":  f.object.order_number  %>
+               <br> <%= f.object.try(:order_number).blank? ? "SAP Request Pending":  f.object.order_number  %>
             </div>
             <div class="col-8 col-md-3">
               <strong>Doc Entry</strong>
@@ -22,7 +22,7 @@
             </div>
             <div class="col-3">
               <strong>Status</strong>
-              <br> <%= f.object.order_status.blank? ? "SAP Request Pending":  f.object.order_status  %>
+              <br> <%= f.object.try(:order_status).blank? ? "SAP Request Pending":  f.object.order_status  %>
             </div>
             <div class="col-3">
               <strong>SAP Status</strong>

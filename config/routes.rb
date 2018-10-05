@@ -7,31 +7,12 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'callbacks' do
-    resources :sales_orders do
-      collection do
-        patch 'update'
-      end
-    end
-    resources :sales_invoices do
-      collection do
-        patch 'update'
-      end
-    end
-    resources :item_weights do
-      collection do
-        patch 'update'
-      end
-    end
-    resources :shipments do
-      collection do
-        patch 'update'
-      end
-    end
-
+    resources :sales_orders
+    resources :sales_invoices
+    resources :items
+    resources :shipments
     resources :receipt_collections
-
     resources :bank_masters
-
     resources :activities
 
     get 'login' => '/callbacks/sessions#new'
