@@ -3,19 +3,25 @@
 <% provide :wrap_whitespace, true %>
 
 <div class="col-lg-12">
-  <div class="form-row mt-3 mt-lg-4 d-flex flex-row align-content-stretch">
-    <% Inquiry.statuses.each do |status, v| %>
-      <div class="col-4 col-md-3 col-lg-2 col-xl-1 d-flex flex-row align-content-stretch">
-        <div class="card w-100 mb-2 rim rim-bottom border-<%= status_helper_color(status) %>">
-          <div class="card-body px-3 pt-3 pb-3">
-            <div class="text-center d-flex flex-column h-100">
-              <p class="mb-1 text-small"><strong><%= status %></strong></p>
-              <h5 class="mb-0 mt-auto text-<%= status_helper_color(status) %>"><%= Inquiry.send(status).size %></h5>
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 collapsed" type="button" data-toggle="collapse" data-target="#summary">
+    Inquiries Summary
+  </a>
+
+  <div id="summary" class="collapse">
+    <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+      <% Inquiry.statuses.each do |status, v| %>
+        <div class="col-4 col-md-3 col-lg-2 col-xl-1 d-flex flex-row align-content-stretch">
+          <div class="card w-100 mb-2 rim rim-bottom border-<%= status_helper_color(status) %>">
+            <div class="card-body px-3 pt-3 pb-3">
+              <div class="text-center d-flex flex-column h-100">
+                <p class="mb-1 text-small"><strong><%= status %></strong></p>
+                <h5 class="mb-0 mt-auto text-<%= status_helper_color(status) %>"><%= Inquiry.send(status).size %></h5>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
