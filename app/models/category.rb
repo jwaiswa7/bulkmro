@@ -20,11 +20,6 @@ class Category < ApplicationRecord
     self.is_service ||= false
   end
 
-
-  def to_s
-    ancestry_path.join(' > ')
-  end
-
   def self.default
     first
   end

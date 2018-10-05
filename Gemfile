@@ -94,9 +94,9 @@ gem 'spreadsheet', require: false
 gem 'simple_xlsx_reader'
 
 # Render XLSX files
-gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx'
-gem 'axlsx_rails'
+gem 'axlsx', '2.0.0'
+gem 'axlsx_rails', '0.1.5'
+gem 'rubyzip', '0.9.9'
 
 # Validate file uploads
 gem 'file_validators'
@@ -161,9 +161,6 @@ gem 'groupdate'
 
 # Sidekiq
 gem 'sidekiq'
-
-# Zip-zip fixes zip workaround for Heroku
-gem 'zip-zip'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

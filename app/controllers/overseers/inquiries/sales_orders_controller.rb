@@ -60,7 +60,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(:sent_at => Time.now, :status => :"SAP Approval Pending")
+        @sales_order.update_attributes(
+            :sent_at => Time.now
+            # :status => :"SAP Approval Pending"
+        )
       end
     else
       @sales_order.update_attributes(:sent_at => Time.now)
