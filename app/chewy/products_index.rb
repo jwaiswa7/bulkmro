@@ -9,4 +9,8 @@ class ProductsIndex < BaseIndex
     field :created_by, value: -> (record) { record.created_by.to_s }
     field :updated_by, value: -> (record) { record.updated_by.to_s }
   end
+
+  def self.fields
+    [:sku]
+  end
 end

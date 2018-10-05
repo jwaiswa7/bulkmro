@@ -2,7 +2,8 @@ class BaseIndex < Chewy::Index
   settings analysis: {
       analyzer: {
           edge_ngram: {
-              tokenizer: 'edge_ngram'
+              tokenizer: 'edge_ngram',
+              filter: ['lowercase']
           },
           letter: {
               tokenizer: 'letter',
