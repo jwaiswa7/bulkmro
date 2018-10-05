@@ -1,6 +1,6 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params)
-    @query = if params[:search].present? && params[:search][:value].present?
+    @query_string = if params[:search].present? && params[:search][:value].present?
                params[:search][:value]
              elsif params[:q].present?
                params[:q]
@@ -15,15 +15,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def call_base
-    @indexed_records = if query.present?
-                         index_klass.query(:query_string => {
-                             fields: index_klass.fields,
-                             query: query,
-                             default_operator: 'or'
-                         })
+    @indexed_records = if query_string.present?
+                         perform_query(query_string)
                        else
-                         index_klass.all.order(default_order)
-                       end.page(page).per(per).order(default_order)
+                         index_klass.all.order(sort_definition)
+                       end.page(page).per(per).order(sort_definition)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
@@ -33,9 +29,19 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-  def default_order
+  def perform_query(query_string)
+    index_klass.query({
+        :query_string => {
+            fields: index_klass.fields,
+            query: query_string,
+            default_operator: 'or'
+        }
+    })
+  end
+
+  def sort_definition
     {:created_at => :desc}
   end
 
-  attr_accessor :query, :page, :per, :records, :indexed_records
+  attr_accessor :query_string, :page, :per, :records, :indexed_records
 end

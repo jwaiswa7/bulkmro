@@ -199,6 +199,10 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
+    if self.created_by.present?
+      self.inside_sales_owner ||= self.created_by
+    end
+
     if self.company.present?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
