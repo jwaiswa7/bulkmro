@@ -11,7 +11,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
+        @inquiries = service.records.reverse
       end
     end
   end
@@ -26,7 +26,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service.call
 
     @indexed_inquiries = service.indexed_records
-    @inquiries = service.records
+    @inquiries = service.records.reverse
 
     authorize @inquiries
   end
