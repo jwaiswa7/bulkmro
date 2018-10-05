@@ -32,11 +32,8 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-6 d-none">
         <%= f.input :role, as: :select, wrapper: :custom_multi_select, collection: enum_to_collection(Contact.roles), include_blank: false %>
-      </div>
-      <div class="col-6">
-        <%= f.input :contact_group, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.contact_groups) %>
       </div>
     </div>
 

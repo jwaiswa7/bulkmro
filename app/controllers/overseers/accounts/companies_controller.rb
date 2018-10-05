@@ -20,9 +20,9 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize @company
 
     if @company.save
-      redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
+      redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else      
-      render :new
+      render 'new'
     end
   end
 
@@ -37,7 +37,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     if @company.save
       redirect_to overseers_account_path(@account), notice: flash_message(@company, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
