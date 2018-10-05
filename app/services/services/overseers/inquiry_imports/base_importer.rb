@@ -20,7 +20,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
 
   def delete_duplicate_rows
 
-    rows.uniq! { |row| row['sku'] }
+    rows.uniq! {|row| row['sku']}
   end
 
   def persist_inquiry_import_rows

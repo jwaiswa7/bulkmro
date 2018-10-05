@@ -23,7 +23,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                          })
                        else
                          index_klass.all.order(default_order)
-                       end.page(page).per(per)
+                       end.page(page).per(per).order(default_order)
 
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
