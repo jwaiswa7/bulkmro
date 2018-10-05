@@ -33,7 +33,7 @@ let destroySelect = () => {
         }
 
     });
-}
+};
 
 let initVueJS = () => {
     let vj = new Vue({

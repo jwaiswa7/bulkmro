@@ -847,7 +847,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if quotation_id.in? %w(3529 2848 123 8023)
       inquiry = Inquiry.find_by_legacy_id(quotation_id)
       product = Product.find_by_legacy_id(product_id)
-      next if inquiry.blank? || product.blank?
+      next if inquiry.blank? || inquiry.inquiry_products.exists? || product.blank?
 
       inquiry_product = InquiryProduct.where(
           inquiry: inquiry,
@@ -910,6 +910,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       sales_quote = inquiry.sales_quotes.last
       next if sales_quote.blank?
+      next if sales_quote.sales_orders.exists?
       sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_create! do |so|
         so.assign_attributes(
             overseer: requested_by,
@@ -919,7 +920,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             doc_number: x.get_column('doc_num'),
             legacy_request_status: legacy_request_status_mapping[x.get_column('request_status')],
             legacy_metadata: x.get_row,
-            :sent_at => sales_order.created_at
+            :sent_at => sales_quote.created_at
         )
       end
 
