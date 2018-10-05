@@ -11,7 +11,7 @@ class Services::Overseers::Contacts::SaveAndSync < Services::Shared::BaseService
   end
 
   def call_later
-    contact.company.save_and_sync
+    contact.save_and_sync
   end
 
   attr_accessor :contact

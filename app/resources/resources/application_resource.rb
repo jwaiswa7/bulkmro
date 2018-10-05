@@ -73,6 +73,10 @@ class Resources::ApplicationResource
     nil
   end
 
+  def self.to_remote_json(record)
+    self.to_remote(record).to_json
+  end
+
   def self.all
     get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
   end

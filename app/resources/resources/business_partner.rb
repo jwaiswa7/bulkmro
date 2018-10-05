@@ -8,61 +8,65 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     id = super(record) do |validated_response|
       self.update_associated_records(record, validated_response)
     end
-
     id
   end
 
   def self.update(id, record)
     super(id, record, use_quotes_for_id: true) do
-      remote_record = self.find(record.remote_uid)
-      self.update_associated_records(record, remote_record) if remote_record.blank?
+      update_associated_records(record) if record.present?
     end
   end
 
   def self.custom_find(company)
-    super(company, 'CardName') do |remote_record|
-      update_associated_records(company, remote_record)
-    end
+    # super(company, 'CardName') do |remote_record|
+    #   update_associated_records(company, remote_record)
+    # end
   end
 
-  def self.update_associated_records(company, response)
-    addresses = response['BPAddresses']
-    contacts = response['ContactEmployees']
+  def self.find(id)
+    response = get("/#{collection_name}('#{id}')")
+    get_validated_response(response)
+  end
 
-    #Update Address's row numbers
-    #
-    addresses.each do |address|
-      address_to_update = company.addresses.find_by_legacy_id(address["AddressName"])
-      if address_to_update.present?
-        if address["AddressType"].eql? "bo_ShipTo"
-          address_to_update.shipping_address_uid = address["RowNum"]
-        elsif address["AddressType"].eql? "bo_BillTo"
-          address_to_update.billing_address_uid = address["RowNum"]
+  def self.update_associated_records(company)
+    response = self.find(company.remote_uid)
+    if response.present?
+      addresses = response.BPAddresses
+      contacts = response.ContactEmployees
+      #Update Address's row numbers
+
+      addresses.each do |address|
+        address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
+        if address_to_update.present?
+          if address["AddressType"].eql? "bo_ShipTo"
+            address_to_update.shipping_address_uid = address["RowNum"]
+          elsif address["AddressType"].eql? "bo_BillTo"
+            address_to_update.billing_address_uid = address["RowNum"]
+          end
+          address_to_update.save
         end
-        address_to_update.save
-      end
-    end if addresses.present?
+      end if addresses.present?
 
-    #Update contacts
-    contacts.each do |contact|
-      remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
-      company_contact.update_attributes(:remote_uid => remote_uid)
-    end if contacts.present?
+      #Update contacts
+      contacts.each do |contact|
+        remote_uid = contact["InternalCode"]
+        company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
+        company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
+      end if contacts.present?
+    end
   end
 
   def self.to_remote(record)
     addresses = []
-    bp_tax_collection = []
     contacts = []
-    response = {}
     bp_tax_collection = []
 
     record.addresses.each do |address|
       street_address = [address.street1, address.street2].compact.join(' ')
-      street = street_address[0..99]
-      address_name2 = street_address[100..149]
+      street = street_address[0..49]
+      address_name2 = street_address[50..149]
       address_name3 = street_address[150..199]
+
       # First Entry for Billing Address
       address_row = OpenStruct.new
       address_row.AddressName = address.remote_uid
@@ -79,21 +83,55 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       address_row.AddressName2 = address_name2
       address_row.AddressName3 = address_name3
       address_row.StreetNo = nil
-      address_row.GSTIN = address.gst
-      address_row.GstType = "gstRegularTDSISD"
+
+      if address.gst.present? && address.gst.to_s != "No GST Number"
+        address_row.GSTIN = address.gst
+        address_row.GstType = "gstRegularTDSISD"
+      end
+
       address_row.U_VAT = address.vat
       address_row.U_CST = address.cst
-      address_row.RowNum = address.billing_address_uid if !address.billing_address_uid .blank?
+
+      if !address.billing_address_uid .blank?
+        address_row.RowNum = address.billing_address_uid
+      end
       addresses.push(address_row.marshal_dump)
 
       # Second Entry for Shipping Address
       #
+      address_row = OpenStruct.new
+      address_row.AddressName = address.remote_uid
+      address_row.BPCode = record.remote_uid
+      address_row.Street = street
+      address_row.Block = nil
+      address_row.ZipCode = address.pincode
+      address_row.City = address.city_name
+      address_row.County = nil
+      address_row.Country = address.country_code
+      address_row.State = address.state.try(:region_code_uid)
+      address_row.BuildingFloorRoom = nil
       address_row.AddressType = "bo_ShipTo"
-      address_row.RowNum = address.shipping_address_uid if !address.shipping_address_uid.blank?
+      address_row.AddressName2 = address_name2
+      address_row.AddressName3 = address_name3
+      address_row.StreetNo = nil
+
+      if address.gst.present? && address.gst.to_s != "No GST Number"
+        address_row.GSTIN = address.gst
+        address_row.GstType = "gstRegularTDSISD"
+      end
+
+      address_row.U_VAT = address.vat
+      address_row.U_CST = address.cst
+
+      if !address.shipping_address_uid.blank?
+        address_row.RowNum = address.shipping_address_uid
+      end
+
       addresses.push(address_row.marshal_dump)
 
-
       # BPFiscalTaxIDCollection Start
+
+      # Push as billing
       bp_tax_collection_row = OpenStruct.new
 
       #Address Level tax Info
@@ -112,29 +150,47 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       bp_tax_collection_row.TaxId8 = record.company_type
       bp_tax_collection_row.TaxId9 = record.nature_of_business
 
-      #Push as billing
       bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
       #Push as shipping
-      bp_tax_collection_row.AddrType = "bo_ShipTo" #Address
+      bp_tax_collection_row = OpenStruct.new
+
+      #Address Level tax Info
+      bp_tax_collection_row.Address = address.remote_uid
+      bp_tax_collection_row.AddrType = "bo_ShipTo"
+      bp_tax_collection_row.BPCode = record.remote_uid
+      bp_tax_collection_row.TaxId1 = address.cst
+      bp_tax_collection_row.TaxId2 = address.vat
+      #bp_tax_collection_row.TaxId6 = address.vat #TAN num
+
+      #Company level info
+      bp_tax_collection_row.TaxId0 = record.pan
+      #bp_tax_collection_row.TaxId3 = record.cmp_st;
+      #bp_tax_collection_row.TaxId4 = record.cmp_edr;
+      bp_tax_collection_row.TaxId6 = record.tan
+      bp_tax_collection_row.TaxId8 = record.company_type
+      bp_tax_collection_row.TaxId9 = record.nature_of_business
+
       bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
       # BPFiscalTaxIDCollection End
 
-      address_tax_row = OpenStruct.new
-      address_tax_row.Address = address.remote_uid
-      address_tax_row.TaxId0 = record.try(:pan) || "ABCDE1234F"
-      address_tax_row.TaxId3 = address.cst
-      address_tax_row.TaxId4 = address.excise
-      address_tax_row.TaxId5 = nil
-      address_tax_row.TaxId6 = record.try(:tan)
-      address_tax_row.TaxId7 = nil
-      address_tax_row.TaxId8 = nil
-      address_tax_row.TaxId9 = record.nature_of_business
-      address_tax_row.TaxId10 = nil
-      address_tax_row.TaxId11 = address.vat
-
+      #Extra as per SAP
+      # address_tax_row = OpenStruct.new
+      # address_tax_row.Address = address.remote_uid
+      # address_tax_row.TaxId0 = record.try(:pan) || "ABCDE1234F"
+      # address_tax_row.TaxId3 = address.cst
+      # address_tax_row.TaxId4 = address.excise
+      # address_tax_row.TaxId5 = nil
+      # address_tax_row.TaxId6 = record.try(:tan)
+      # address_tax_row.TaxId7 = nil
+      # address_tax_row.TaxId8 = nil
+      # address_tax_row.TaxId9 = record.nature_of_business
+      # address_tax_row.TaxId10 = nil
+      # address_tax_row.TaxId11 = address.vat
       #
+      # bp_tax_collection.push(address_tax_row.marshal_dump)
+
     end
 
     #push company pan, edr,tan etc in BPFiscalTaxIDCollection
@@ -183,19 +239,19 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         CardName: record.name,
         CardType: record.is_supplier ? "cSupplier" : "cCustomer",
         GroupCode: record.account.remote_uid,
-        Address: record.default_billing_address.present? ? record.default_billing_address.to_s : nil,
+        #Address: record.default_billing_address.present? ? record.default_billing_address.to_s : nil,
         ZipCode: record.default_billing_address.present? ? record.default_billing_address.pincode : nil,
         Country: record.default_billing_address.present? ? record.default_billing_address.country_code : nil,
         EmailAddress: record.default_company_contact.present? ? record.default_company_contact.contact.email : nil,
         City: record.default_billing_address.present? ? record.default_billing_address.city_name : nil,
         ContactPerson: record.default_company_contact.present? ? record.default_company_contact.full_name : nil,
-        OwnerCode: record.inside_sales_owner_id.present? ? record.inside_sales_owner.employee_uid : nil,
+        OwnerCode: record.outside_sales_owner_id.present? ? record.outside_sales_owner.employee_uid : nil,
         Phone1: record.phone,
         Phone2: nil,
         Fax: nil,
-        PayTermsGrpCode: 1,
-        CreditLimit: 0,
-        SalesPersonCode: -1,
+        PayTermsGrpCode: record.default_payment_option_id.present? ? record.default_payment_option.remote_uid : nil,
+        CreditLimit: record.credit_limit,
+        SalesPersonCode: record.inside_sales_owner_id.present? ? record.inside_sales_owner.salesperson_uid : nil,
         Currency: nil,
         Cellular: record.mobile,
         County: nil,
@@ -212,9 +268,10 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         U_URD: record.is_unregistered_dealer ? "Yes" : "No",
         BPAddresses: addresses,
         ContactEmployees: contacts,
-        BPFiscalTaxIDCollection: bp_tax_collection
+        BPFiscalTaxIDCollection: bp_tax_collection,
+        UseBillToAddrToDetermineTax: "tYES"
     }
-    raise
+
     response
   end
 end

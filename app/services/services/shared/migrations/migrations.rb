@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories )
               end
 
     PaperTrail.request(enabled: false) do
@@ -1039,5 +1039,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         puts res.code
       end
     end
+  end
+
+  def update_addresses_remote_uid
+    Addresses.update_all("remote_uid=legacy_uid")
   end
 end
