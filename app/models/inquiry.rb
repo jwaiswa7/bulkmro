@@ -199,11 +199,8 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    if self.created_by.present?
-      self.inside_sales_owner ||= self.created_by
-    end
-
     if self.company.present?
+      self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
       self.status ||= :'Inquiry No. Assigned'
@@ -227,6 +224,10 @@ class Inquiry < ApplicationRecord
           "3. Order once placed cannot be changed.",
           "4. BulkMRO does not accept any financial penalties for late deliveries."
       ].join("\r\n") if not_legacy?
+    end
+
+    if self.created_by.present?
+      self.inside_sales_owner ||= self.created_by
     end
 
     self.is_sez ||= false
