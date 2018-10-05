@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :categories do
       collection do
         get 'autocomplete'
+        get 'autocomplete_closure_tree'
       end
     end
 
