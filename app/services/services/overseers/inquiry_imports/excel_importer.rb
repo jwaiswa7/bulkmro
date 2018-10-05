@@ -25,7 +25,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     @excel_header_row = excel_rows.shift
 
     excel_header_row.each do |column|
-      if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(Id Name Brand MPN SKU Quantity))
+      if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(id name brand mpn sku quantity))
         column.downcase!
       else
         raise ExcelInvalidHeader

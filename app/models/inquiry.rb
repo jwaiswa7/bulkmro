@@ -200,8 +200,8 @@ class Inquiry < ApplicationRecord
 
   def set_defaults
     if self.company.present?
-      # self.outside_sales_owner ||= self.company.outside_sales_owner
-      # self.sales_manager ||= self.company.sales_manager
+      self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
+      self.sales_manager ||= self.company.sales_manager if not_legacy?
       self.status ||= :'Inquiry No. Assigned'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
