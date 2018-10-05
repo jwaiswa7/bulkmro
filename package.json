@@ -23,7 +23,8 @@
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
     "vue": "^2.5.17",
-    "@fortawesome/fontawesome-pro": "^5.3.1"
+    "@fortawesome/fontawesome-pro": "^5.3.1",
+    "webpack-dev-server": "2.11.2"
   },
   "version": "1.0.0",
   "description": "b2b industrial supplies",
@@ -31,6 +32,5 @@
   "author": "Ashwin Goyal <ashwin.goyal@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
-    "webpack-dev-server": "2.11.2"
   }
 }
