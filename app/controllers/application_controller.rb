@@ -27,7 +27,25 @@ class ApplicationController < ActionController::Base
   end
 
   def set_raven_context
-    Raven.user_context(id: session[:current_user_id]) # or anything else in session
+    if current_overseer.present?
+      Raven.user_context(
+          # User's ID
+          id: current_overseer.id,
+
+          # User's Email address
+          email: current_overseer.email,
+
+          # User's IP address
+          ip_address: request.ip # '127.0.0.1'
+      )
+    else
+      Raven.user_context(
+          # User's IP address
+          ip_address: request.ip # '127.0.0.1'
+      )
+    end
+
+    # or anything else in session
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 end
