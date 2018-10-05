@@ -1,7 +1,7 @@
 class Activity < ApplicationRecord
   include Mixins::CanBeStamped
 
-  pg_search_scope :locate, :against => [:purpose, :company_type, :activity_type], :associated_against => { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name] }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:purpose, :company_type, :activity_type], :associated_against => { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, :using => { :tsearch => {:prefix => true} }
 
   has_many :activity_overseers
   has_many :overseers, :through => :activity_overseers
