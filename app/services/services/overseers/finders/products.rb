@@ -20,4 +20,16 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
 
   end
 
+  def manage_failed_skus(query, per, page)
+    indexed_records = index_klass.query({
+                          multi_match: {
+                              query: query,
+                              operator: 'or',
+                              fields: %w[name],
+                          }
+                      }).page(page).per(per)
+
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
+  end
+
 end

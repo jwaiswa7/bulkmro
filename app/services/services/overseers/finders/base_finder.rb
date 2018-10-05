@@ -21,7 +21,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                          index_klass.all.order(sort_definition)
                        end.page(page).per(per).order(sort_definition)
 
-
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
   end
 
