@@ -1,5 +1,6 @@
 class Currency < ApplicationRecord
   has_many :inquiry_currencies
+  has_many :currency_rate
 
   validates_presence_of :conversion_rate
   validates_numericality_of :conversion_rate, minimum: 1, maximum: 1000
@@ -15,8 +16,8 @@ class Currency < ApplicationRecord
     end
   end
 
-  def self.base_currency
-    find_by_name('INR')
+  def self.fx_currencies
+    where.not(:name => Currency.base_currency.to_s)
   end
 
   def self.base_currency
