@@ -21,8 +21,8 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  company.is_supplier ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>',
-                  company.is_customer ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>',
+                  format_boolean(company.is_supplier),
+                  format_boolean(company.is_customer),
                   format_date(company.created_at)
               ]
 end

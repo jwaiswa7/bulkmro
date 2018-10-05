@@ -85,4 +85,8 @@ module DisplayHelper
   def format_collection(kollection)
     kollection.map(&:to_s).to_sentence
   end
+
+  def format_boolean(true_or_false)
+    (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
+  end
 end
