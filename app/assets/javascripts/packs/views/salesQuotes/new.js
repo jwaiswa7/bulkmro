@@ -62,6 +62,9 @@ let initVueJS = () => {
             }
         },
         computed: {
+            showCurrency: function () {
+                return this.currency_sign != '₹'
+            },
             totalFreightCost: function () {
                 // let total = 0;
                 //
@@ -78,19 +81,18 @@ let initVueJS = () => {
                 return this[name]
             },
 
-            hideProduct(product_id){
+            hideProduct(product_id) {
                 console.log(product_id);
                 let _this = this
-                $('#ac-'+ product_id).find("[data-index]").each(function (index, row) {
+                $('#ac-' + product_id).find("[data-index]").each(function (index, row) {
                     let currentRowIndex = $(row).data('index');
                     $(row).find('.btn.btn-danger').each(function (index, row) {
                         $(row).click();
                     })
 
 
-
                 });
-                $('#ac-'+ product_id).parent().hide();
+                $('#ac-' + product_id).parent().hide();
             },
 
             getRow(index) {
@@ -110,7 +112,6 @@ let initVueJS = () => {
                         row[property] = 0;
                     }
                 }*/
-
 
 
                 this.setRow(index, row);
@@ -369,6 +370,7 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
+        currency_sign: '₹',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
