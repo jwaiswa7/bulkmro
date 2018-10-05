@@ -20,6 +20,6 @@ class FileValidator < ActiveModel::Validator
   end
 
   def file_content_types
-    options[:file_content_types] || %w(image/png application/pdf image/jpeg)
+    options[:file_content_types] || %w(image/png application/pdf image/jpeg application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/msword)
   end
 end
