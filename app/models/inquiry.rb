@@ -17,10 +17,10 @@ class Inquiry < ApplicationRecord
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
-  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: true
-  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: true
+  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: :not_legacy?
+  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: :not_legacy?
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: :not_legacy?
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: :not_legacy?
   has_one :account, :through => :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, :inverse_of => :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
@@ -38,7 +38,7 @@ class Inquiry < ApplicationRecord
   has_many :sales_orders, :through => :sales_quotes
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
-  belongs_to :payment_option, required: false
+  belongs_to :payment_option, required: :not_legacy?
   has_many :email_messages
   has_many :activities, dependent: :nullify
 
