@@ -60,7 +60,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
         redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import), notice: flash_message(@inquiry, action_name)
       else
 
-        redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+        redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
       end
     else
       render 'new_excel_import'

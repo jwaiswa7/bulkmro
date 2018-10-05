@@ -95,6 +95,10 @@
                                 <strong>Total Selling Price with Tax</strong><br>
                                 <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
                               </div>
+                              <div class="flex-fill mt-2 mt-md-0">
+                                <strong>UOM</strong><br>
+                                <span><%= row.object.measurement_unit.to_s %></span>
+                              </div>
                               <div class="flex-fill mt-2 mt-md-0" v-if="showCurrency">
                                 <strong>Unit Selling Price (in {{currency_sign}})</strong><br>
                                 <span data-bind-html="converted_unit_selling_price"><%= row.object.converted_unit_selling_price %></span>
