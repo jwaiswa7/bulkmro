@@ -4,12 +4,12 @@ class Callbacks::BaseController < ApplicationController
   before_action :log_request
 
   def format_response(status, message, response = nil)
-    Hash.new({
-                 success: status,
-                 status: status,
-                 message: message,
-                 response: response
-             })
+    {
+       success: status,
+       status: status,
+       message: message,
+       response: response
+    }
   end
 
   def log_request
