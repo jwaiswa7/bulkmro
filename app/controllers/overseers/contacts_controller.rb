@@ -24,7 +24,8 @@ class Overseers::ContactsController < Overseers::BaseController
 
   def create
     @company = Company.find(params[:company_id])
-    @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer))
+    password = Devise.friendly_token[0, 20]
+    @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer,password: password))
     authorize @contact
 
     if @contact.save_and_sync
