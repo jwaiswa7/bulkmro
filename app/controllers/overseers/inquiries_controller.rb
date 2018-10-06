@@ -21,6 +21,15 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiries
   end
 
+  def index_smartqueue
+    Inquiry.get_smart_queue
+
+    @inquiries = ApplyDatatableParams.to(Inquiry.all.with_includes, params)
+    authorize @inquiries
+  end
+
+
+
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params)
     service.call
@@ -90,6 +99,15 @@ class Overseers::InquiriesController < Overseers::BaseController
       render 'edit_suppliers'
     end
   end
+
+  def set_priority
+    @res = Inquiry.find(1206)
+    if @res.potential_amount
+
+    end
+
+  end
+
 
   private
 

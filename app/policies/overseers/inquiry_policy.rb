@@ -3,6 +3,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def index_smartqueue?
+    index?
+  end
+
   def new_email_message?
     record.persisted? && overseer.can_send_emails?
   end
