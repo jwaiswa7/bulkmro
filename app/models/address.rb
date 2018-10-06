@@ -2,6 +2,8 @@ class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry
 
+  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
   has_one :warehouse
