@@ -111,7 +111,7 @@ Rails.application.routes.draw do
           end
 
           collection do
-            get 'index_smartqueue'
+            get 'smartqueue'
           end
 
           scope module: 'sales_quotes' do

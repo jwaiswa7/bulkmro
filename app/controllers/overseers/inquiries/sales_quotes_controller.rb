@@ -6,7 +6,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize @sales_quotes
   end
 
-  def index_smartqueue
+  def smartqueue
+    # color code logic with shravan (three code 'red,orange,yellow')
+    # get collection from SalesQuote.get_smart_queue and also add codition for manger
     @sales_quotes = @inquiry.sales_quotes
     authorize @sales_quotes
   end
@@ -49,7 +51,6 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     #   end
     # end
 
-    # color code logic with shravan (three code 'red,orange,yellow')
   end
 
   def show

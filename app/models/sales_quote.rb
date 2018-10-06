@@ -53,10 +53,18 @@ class SalesQuote < ApplicationRecord
     # LEFT JOIN admin_user as u ON u.username=quotation.manager
     # LEFT JOIN admin_user as u2 ON u.username=quotation.outside
     # where
+    # and star.staruserid = 171 #current user
     # -- manager = ''
     # quotation.is_closed = 0 AND
     # quotation.bought not in (11, 9, 10)
     # GROUP BY quotation.increment_id
     # order by is_prioritized desc, quotation_followup_date asc, price_ht2 DESC
+    #
+    # manger logic
+    #  if ($userId != 26  && $userId != 161 && $userId != 51 && $userId != 9 && $userId != 35 && $userId != 38 && $role_data["role_id"] != 1 && $role_data["role_id"] != 961 && $role_data["role_id"] != 839 && $role_data["role_id"] != 12) {
+    #             $collection->addFieldToFilter(
+    #                     array('manager'), array($userName)
+    #             );
+    #         }
   end
 end
