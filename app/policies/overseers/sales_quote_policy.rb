@@ -18,4 +18,8 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_sales_order?
     new_revision? && record.inquiry.valid_for_new_sales_order?
   end
+
+  def index_smartqueue?
+    index?
+  end
 end

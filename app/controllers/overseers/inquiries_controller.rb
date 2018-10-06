@@ -100,15 +100,6 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
-  def set_priority
-    @res = Inquiry.find(1206)
-    if @res.potential_amount
-
-    end
-
-  end
-
-
   private
 
   def set_inquiry

@@ -91,7 +91,6 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'index_pg'
-        get 'index_smartqueue'
       end
 
       scope module: 'inquiries' do
@@ -109,6 +108,10 @@ Rails.application.routes.draw do
         resources :sales_quotes do
           member do
             get 'new_revision'
+          end
+
+          collection do
+            get 'index_smartqueue'
           end
 
           scope module: 'sales_quotes' do

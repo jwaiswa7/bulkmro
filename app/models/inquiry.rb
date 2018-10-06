@@ -177,24 +177,6 @@ class Inquiry < ApplicationRecord
     end
   end
 
-  def get_smart_queue
-    # SELECT quotation.*, star.starvalue, company.cmp_name, company.is_strategic, count(distinct opportunity.refno) as cntOpportunity, company.cmp_alias, company_alias.aliasname, u.firstname as managerfirstname, u.lastname as managerlastname,u2.firstname as outsidefirstname, u2.lastname as outsidelastname FROM quotation
-    # LEFT JOIN starred_enquiry as star ON quotation.increment_id=star.inquiryid and star.staruserid = 171
-    # LEFT JOIN opportunity ON quotation.increment_id=opportunity.enquiryids
-    # LEFT JOIN company ON quotation.customer_company=company.cmp_id
-    # LEFT JOIN company_alias ON company_alias.id=company.cmp_alias
-    # LEFT JOIN admin_user as u ON u.username=quotation.manager
-    # LEFT JOIN admin_user as u2 ON u.username=quotation.outside
-    # where
-    # -- manager = ''
-    # quotation.is_closed = 0 AND
-    # quotation.bought not in (11, 9, 10)
-    # GROUP BY quotation.increment_id
-    # order by is_prioritized desc, quotation_followup_date asc, price_ht2 DESC
-
-
-  end
-
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
   # attr_accessor :rfq_subject, :rfq_comments

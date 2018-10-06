@@ -6,6 +6,52 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     authorize @sales_quotes
   end
 
+  def index_smartqueue
+    @sales_quotes = @inquiry.sales_quotes
+    authorize @sales_quotes
+  end
+
+  def set_priority
+    @res = @inquiry.sales_quotes.find(params[:id])
+    # if @sales_quote.calculated_total_with_tax <= 0
+    #   @sales_quote.calculated_total_with_tax = @res.inquiry.potentialAmount;
+    # end
+    #   if  @sales_quote.calculated_total_with_tax <= 100000
+    #     valueScore = 1
+    #   elsif @ @sales_quote.calculated_total_with_tax<= 200000
+    #     valueScore = 2
+    #   elsif  @sales_quote.calculated_total_with_tax <= 500000
+    #     valueScore = 3
+    #   elsif   @sales_quote.calculated_total_with_tax  >= 500000
+    #     valueScore = 4
+    #   end
+
+      #Check if status is in critical, i.e. Quotation sent, Followup, Expected Order, then set stage multiplier=2
+    #   if  @res.inqury.status == '5' || @res.inqury.status == '6' || @res.inqury.status == '7' || @res.inqury.status == '13' || @res.inqury.status == '14'
+    #       $stageMultiplier = 3;
+    #   else
+    #     $stageMultiplier = 1;
+    #   end
+    # end
+
+    #Check if client is strategic then set client score to 1 else .5
+    # if @res.inquiry.isStrategic
+    #     clientScore = 1
+    # else
+    #     clientScore = 0.5
+    # end
+
+    # finalScore = (valueScore * stageMultiplier) + clientScore;
+    #
+    # if @res.inquiry.followup_time.present?
+    #   if followuptime within 30 days
+    #     finalScore += 100
+    #   end
+    # end
+
+    # color code logic with shravan (three code 'red,orange,yellow')
+  end
+
   def show
     authorize @sales_quote
   end
