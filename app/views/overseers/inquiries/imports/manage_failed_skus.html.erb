@@ -69,7 +69,7 @@
 
             <%= row.hidden_field :approved_alternative_id %>
 
-            <% row.object.approved_alternatives.each do |approved_alternative| %>
+            <% row.object.approved_alternatives.with_manage_failed_skus.each do |approved_alternative| %>
               <% if approved_alternative == row.object.approved_alternatives.first %>
                 <hr class="mb-2 mt-0">
               <% else %>
