@@ -43,6 +43,14 @@ class Report < ApplicationRecord
     end_at.to_date
   end
 
+  def start_month
+    start_at.strftime("%B, %Y")
+  end
+
+  def end_month
+    end_at.strftime("%B, %Y")
+  end
+
   def to_param
     uid
   end

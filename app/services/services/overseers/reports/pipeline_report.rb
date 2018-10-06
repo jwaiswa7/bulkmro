@@ -4,11 +4,23 @@ class Services::Overseers::Reports::PipelineReport < Services::Overseers::Report
 
     @data = OpenStruct.new(
         {
-            hello: :world
+            statuses: [],
+            entries: {}
         }
     )
 
+    inquiries = Inquiry.all.where(:created_at => report.start_at..report.end_at)
+    statuses = Inquiry.top(:status)
 
+    statuses.each do |status_title, status_inquiry_count|
+      status = OpenStruct.new({
+                                     name: status_title,
+                                     count: status_inquiry_count,
+                                 })
+
+      data.statuses.push(status)
+
+    end
 
     data
   end

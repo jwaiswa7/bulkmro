@@ -1,3 +1,21 @@
 <%= render layout: 'search_layout' do %>
-  <%= @data.hello %>
+  <hr/>
+  <table class="table-bordered table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <% @data.statuses.each do |status| %>
+          <th><%= status.name %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+
+      <% @report.start_month.upto(@report.end_month) do |date| %>
+        <tr>
+          <td><%= format_date_without_time_and_date(date) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>

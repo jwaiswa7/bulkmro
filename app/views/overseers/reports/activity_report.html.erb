@@ -37,7 +37,6 @@
     </tr>
     </thead>
     <tbody>
-
     <% @report.start_date.upto(@report.end_date) do |date| %>
       <tr>
         <td><%= format_date_without_time(date) %></td>
