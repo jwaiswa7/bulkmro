@@ -67,7 +67,7 @@
                     <b><span style="color:#000000">Customer Purchase Order Date</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date if @sales_order.inquiry.customer_order_date.present? %></span></td>
+                    <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_order.inquiry.customer_order_date.present? %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
@@ -85,11 +85,11 @@
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  %></span></td>
+                    <span style="color:#000000"><%= @shipment[:TrackLine].first[:invoice_number] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= %></span></td>
+                    <span style="color:#000000"><%= Date.parse(@shipment[:TrackLine].first[:order_created_at]).strftime("%d-%b-%Y") if @shipment[:TrackLine].first[:order_created_at].present? %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
@@ -120,7 +120,7 @@
                     <b><span style="color:#000000">GRN #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%=  @shipment[:TrackLine][0][:grn] if @shipment[:TrackLine][0][:grn].present? %>
+                      <%=  @shipment[:TrackLine].map{|g| g[:grn]}.join(",") %>
                     </span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Customer ID</span></b> <span style="float:right">:</span></td>
@@ -131,11 +131,11 @@
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Carrier </span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  @shipment[:TrackLine][0][:carrier_code] %></span></td>
+                    <span style="color:#000000"><%=  @shipment[:TrackLine].map{|g| g[:carrier_code]}.join(",") %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Tracking Number</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  @shipment[:TrackLine][0][:track_number] %></span></td>
+                    <span style="color:#000000"><%=  @shipment[:TrackLine].map{|g| g[:track_number]}.join(",") %></span></td>
                 </tr>
                 </tbody>
               </table>
@@ -156,8 +156,8 @@
                     <span style="color:#000000">
                       <%= (@sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.bill_from.present? %>
                       <% if @sales_order.inquiry.bill_from.present? %>
-                      <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
-                      GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
+                        <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
+                        GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -168,8 +168,8 @@
                     <span style="color:#000000">
                       <%= (@sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.ship_from.present? %>
                       <% if @sales_order.inquiry.ship_from.present? %>
-                      <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
-                      GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
+                        <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
+                        GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -190,7 +190,7 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <%= @sales_order.inquiry.contact.full_name if @sales_order.inquiry.contact.present? %><br>
+                    <%= @sales_order.inquiry.bill_to_contact.full_name if @sales_order.inquiry.bill_to_contact.present? %><br>
                     <% if @sales_order.inquiry.shipping_address.present? %>
                     <%= @sales_order.inquiry.shipping_address.name %><br>
                     <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
@@ -203,7 +203,7 @@
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <%= @sales_order.inquiry.contact.full_name if @sales_order.inquiry.contact.present?  %><br>
+                    <%= @sales_order.inquiry.bill_to_contact.full_name if @sales_order.inquiry.bill_to_contact.present?  %><br>
                     <% if @sales_order.inquiry.billing_address.present? %>
                     <%= @sales_order.inquiry.billing_address.name %><br>
                     <%= @sales_order.inquiry.billing_address.to_multiline_s %>

@@ -52,7 +52,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   end
 
   def show_pdf
-    @sales_quote =  @inquiry.sales_quotes.find(params[:id])
+    @sales_quote = @inquiry.sales_quotes.find(params[:id])
     authorize @sales_quote
     respond_to do |format|
       format.pdf do

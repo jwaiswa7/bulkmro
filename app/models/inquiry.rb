@@ -40,6 +40,7 @@ class Inquiry < ApplicationRecord
   belongs_to :payment_option, required: false
   has_many :email_messages
   has_many :sales_purchase_order
+  belongs_to :bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: true
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email

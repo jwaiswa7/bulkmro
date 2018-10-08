@@ -4,7 +4,6 @@
       <div class="col-main">
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
-
           <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
             <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
@@ -74,7 +73,7 @@
                   <b><span style="color:#000000">Customer Purchase Order Date</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date if @sales_order.inquiry.customer_order_date.present? %></span></td>
+                  <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_order.inquiry.customer_order_date.present? %></span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
@@ -132,12 +131,12 @@
                     <span style="color:#000000">
                       <%= (@sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.bill_from.present? %>
                       <% if @sales_order.inquiry.bill_from.present? %>
-                      <%= @sales_order.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
+                        <%= @sales_order.inquiry.bill_from.address.to_multiline_s %><br>
+                        GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G
                       <% if @sales_order.sales_quote.is_sez %>
-                      <br>LUT # : 57/2017-18 vide No.M.C/DN.X/Export/LUT/27/CGST/2017/Pt,II
+                        <br>LUT # : 57/2017-18 vide No.M.C/DN.X/Export/LUT/27/CGST/2017/Pt,II
                       <% end %>
                     </span>
                 </div>
@@ -148,12 +147,12 @@
                     <span style="color:#000000">
                       <%= (@sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.ship_from.present? %>
                       <% if @sales_order.inquiry.ship_from.present? %>
-                      <%= @sales_order.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
+                        <%= @sales_order.inquiry.ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G
                       <% if @sales_order.sales_quote.is_sez %>
-                      <br>LUT # : 57/2017-18 vide No.M.C/DN.X/Export/LUT/27/CGST/2017/Pt,II
+                        <br>LUT # : 57/2017-18 vide No.M.C/DN.X/Export/LUT/27/CGST/2017/Pt,II
                       <% end %>
                     </span>
                 </div>
@@ -174,7 +173,7 @@
             <tr>
               <td style="width:48%;">
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                  <%= @sales_order.inquiry.contact.full_name %><br>
+                  <%= @sales_order.inquiry.bill_to_contact.full_name %><br>
                   <% if @sales_order.inquiry.shipping_address.present? %>
                     <%= @sales_order.inquiry.shipping_address.name %><br>
                     <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
@@ -187,7 +186,7 @@
               <td style="width:4%;"></td>
               <td style="width:48%;">
                 <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                  <%= @sales_order.inquiry.contact.full_name %><br>
+                  <%= @sales_order.inquiry.bill_to_contact.full_name %><br>
                   <% if @sales_order.inquiry.billing_address.present? %>
                     <%= @sales_order.inquiry.billing_address.name %><br>
                     <%= @sales_order.inquiry.billing_address.to_multiline_s %>
@@ -671,9 +670,9 @@
                 <br clear="all"/>
               <% end %>
             <% end %>
-            <% end %>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

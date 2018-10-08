@@ -67,7 +67,7 @@
                   <b><span style="color:#000000">Quotation Validity</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <span style="color:#000000">
-                    <%= @sales_quote.inquiry.quotation_date.strftime("%d-%b-%Y") if @sales_quote.inquiry.created_at.present? %>
+                    <%= @sales_quote.inquiry.created_at.strftime("%d-%b-%Y") if @sales_quote.inquiry.created_at.present? %>
                   </span>
                 </td>
               </tr>
@@ -225,8 +225,7 @@
                 <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                   <b><span style="color:#000000">Tax<br>
                     Rate</span></b></th>
-                <% if @sales_quote.tax_summary.to_i == 0 ||
-                    (@sales_quote.tax_summary.to_s.include? "IGST") %>
+                <% if @sales_quote.tax_summary.to_i == 0 || (@sales_quote.tax_summary.to_s.include? "IGST") %>
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">IGST<br>
                     Rate</span></b></th>
