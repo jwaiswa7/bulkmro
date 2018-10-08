@@ -972,6 +972,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         company = inquiry.company
       end
       company_type = company_type_mapping[company.is_supplier ? 'is_supplier' : 'is_customer'] if company.present?
+      overseer_legacy_id = x.get_column('overseer_legacy_id')
 
       overseer_legacy_id = x.get_column('overseer_legacy_id')
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
@@ -993,6 +994,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             legacy_metadata: x.get_row,
             created_by: overseer,
             updated_by: overseer
+
         )
       end
 

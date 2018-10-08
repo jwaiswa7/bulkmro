@@ -31,7 +31,7 @@
       <th>Date</th>
       <% @data.geographies.each do |geography| %>
         <% geography.overseers.each do |overseer| %>
-          <td><%= overseer.name %></td>
+          <td><%= "#{overseer.name.split(' ').first[0]}.#{overseer.name.split(" ").last[0]}" %></td>
         <% end %>
       <% end %>
     </tr>
