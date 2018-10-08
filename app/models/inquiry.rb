@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact, required: false
+  belongs_to :contact, required: :not_legacy?
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
@@ -168,6 +168,8 @@ class Inquiry < ApplicationRecord
   # validates_presence_of :contact
   # validates_presence_of :billing_address
   # validates_presence_of :shipping_address
+  validates_presence_of :expected_closing_date, :if => :not_legacy?
+  validates_presence_of :subject, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
 
@@ -199,6 +201,10 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
+    if self.created_by.present?
+      self.inside_sales_owner ||= self.created_by
+    end
+
     if self.company.present?
       self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
@@ -210,7 +216,7 @@ class Inquiry < ApplicationRecord
       self.price_type ||= :exw
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
-      self.expected_closing_date ||= (Time.now + 60.days) if self.not_legacy?
+      self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
@@ -224,10 +230,6 @@ class Inquiry < ApplicationRecord
           "3. Order once placed cannot be changed.",
           "4. BulkMRO does not accept any financial penalties for late deliveries."
       ].join("\r\n") if not_legacy?
-    end
-
-    if self.created_by.present?
-      self.inside_sales_owner ||= self.created_by
     end
 
     self.is_sez ||= false

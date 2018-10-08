@@ -148,13 +148,13 @@
             <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
           <div class="col-12 col-md-4">
-            <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
         </div>
       </div>

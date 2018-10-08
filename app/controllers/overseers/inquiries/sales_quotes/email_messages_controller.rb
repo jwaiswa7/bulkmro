@@ -19,7 +19,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
       @inquiry.update_attributes(:quotation_date => @sales_quote.created_at.to_date)
 
       SalesQuoteMailer.send_acknowledgement(@email_message).deliver_later
-      redirect_to edit_overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
     else
       render 'new'
     end
