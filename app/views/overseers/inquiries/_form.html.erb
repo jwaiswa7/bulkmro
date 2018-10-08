@@ -145,7 +145,13 @@
             <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
+
             <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+            <% if f.object.persisted? %>
+              <a href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
+                <i class="fal fa-download mr-1"></i>Download Calculation Sheet
+              </a>
+            <% end %>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
@@ -181,7 +187,7 @@
             <%= f.input :weight_in_kgs %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions%>
+        <%= f.input :commercial_terms_and_conditions %>
       </div>
 
       <div class="mt-3">
@@ -196,7 +202,7 @@
           </div>
           <div class="col-6">
             <div class="form-group mb-0">
-                <label>Product</label>
+              <label>Product</label>
             </div>
           </div>
           <div class="col-4">
@@ -215,7 +221,7 @@
           </div>
           <div class="col-1">
             <div class="form-group mb-0">
-                <label>Quantity</label>
+              <label>Quantity</label>
             </div>
           </div>
         </div>
@@ -244,7 +250,7 @@
                   <% end %>
                 </div>
                 <div class="flex-grow-1">
-                  <%= inquiry_product.input :sr_no, label: false,placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                 </div>
 
               </div>
@@ -311,7 +317,8 @@
       <% end %>
 
       <% if policy(@inquiry).new_email_message? %>
-        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send Acknowledgement</a>
+        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
+          Acknowledgement</a>
       <% end %>
     </div>
   </div>
