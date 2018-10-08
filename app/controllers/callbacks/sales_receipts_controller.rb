@@ -1,4 +1,4 @@
-class Callbacks::ReceiptCollectionsController < Callbacks::BaseController
+class Callbacks::SalesReceiptsController < Callbacks::BaseController
 
   def create
     resp_status = 0

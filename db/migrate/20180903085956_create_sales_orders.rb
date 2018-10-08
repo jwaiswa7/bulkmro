@@ -8,9 +8,9 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
 
       t.integer :legacy_request_status
 
-      t.string :order_number
+      t.integer :order_number
       t.string :sap_series
-      t.string :doc_number
+      t.integer :doc_number
 
       t.datetime :sent_at
 

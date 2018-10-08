@@ -1,4 +1,4 @@
-class Services::Overseers::Callbacks::NewShipments < Services::Shared::BaseService
+class Services::Overseers::Callbacks::Shipments::New < Services::Shared::BaseService
 
   def initialize(params)
     @params = params
@@ -9,6 +9,7 @@ class Services::Overseers::Callbacks::NewShipments < Services::Shared::BaseServi
     created_at = params['created_at'].to_datetime
     order_number = params['order_id']
     remote_rows = params['ItemLine']
+    remote_packages = params['TrackLine']
 
     sales_order = SalesOrder.find_by_order_number!(order_number)
     sales_shipment = sales_order.shipments.where(remote_uid: remote_uid).first_or_create! do |sales_shipment|
@@ -17,13 +18,27 @@ class Services::Overseers::Callbacks::NewShipments < Services::Shared::BaseServi
     end
 
     remote_rows.each do |remote_row|
-      sales_shipment.rows.where(sku: remote_row['sku']).first_or_create! do |row|
-        row.update_attributes(
+      sku = remote_row['sku']
+
+      sales_shipment.rows.where(sku: sku).first_or_create! do |row|
+        row.assign_attributes(
             :quantity => remote_row['qty'],
             :metadata => remote_row
         )
       end
     end
+
+    remote_packages.each do |remote_package|
+      tracking_number = remote_package['track_number']
+
+      sales_shipment.packages.where(tracking_number: tracking_number).first_or_create! do |package|
+        package.assign_attributes(
+            :metadata => remote_package
+        )
+      end
+    end
+
+    sales_shipment
   end
 
   attr_accessor :params
