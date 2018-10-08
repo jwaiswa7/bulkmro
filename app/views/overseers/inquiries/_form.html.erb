@@ -188,6 +188,37 @@
         <% if f.object.persisted? %>
           <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
         <% end %>
+        <div class="form-row d-none d-md-flex">
+          <div class="col-1 text-right">
+            <div class="form-group mb-0">
+              <label>#</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group mb-0">
+                <label>Product</label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-row">
+              <div class="col-6">
+                <div class="form-group mb-0">
+                  <label>BP Catalog Name</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group mb-0">
+                  <label>BP Catalog #</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="form-group mb-0">
+                <label>Quantity</label>
+            </div>
+          </div>
+        </div>
         <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
           <div class="form-row flex-row align-items-start">
             <%= inquiry_product.hidden_field :id %>
@@ -213,7 +244,7 @@
                   <% end %>
                 </div>
                 <div class="flex-grow-1">
-                  <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  <%= inquiry_product.input :sr_no, label: false,placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                 </div>
 
               </div>
