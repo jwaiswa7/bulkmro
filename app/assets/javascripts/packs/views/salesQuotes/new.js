@@ -138,7 +138,6 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                //this.triggerSellingPriceChangeFor(index);
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
