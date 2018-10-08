@@ -46,7 +46,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     send_file(
         "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
-        filename: "##{@inquiry.inquiry_number}_Calc_Sheet.xlsx"
+        filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
 
