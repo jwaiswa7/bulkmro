@@ -3,7 +3,7 @@ const manageFailedSkus = () => {
         onRadioChange(this);
     });
 
-    $('input[name*=approved_alternative_id]:radio').on('change', function (e) {
+    $('body').on('change','input[name*=approved_alternative_id]:radio', function (e) {
         onRadioChange(this);
     });
 };
