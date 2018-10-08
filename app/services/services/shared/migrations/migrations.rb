@@ -666,6 +666,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def categories
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
     service.loop(limit) do |x|
       parent_id = x.get_column('parent_id')
@@ -713,6 +714,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             name: name || "noname ##{legacy_id}",
             remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
             measurement_unit: measurement_unit,
+            weight: x.get_column('weight'),
             legacy_metadata: x.get_row,
             created_at: x.get_column('created', to_datetime: true),
             updated_at: x.get_column('modified', to_datetime: true),

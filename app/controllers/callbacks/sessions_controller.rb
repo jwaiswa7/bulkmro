@@ -1,4 +1,5 @@
 class Callbacks::SessionsController < Callbacks::BaseController
+  skip_before_action :authenticate_callback!
   EMAIL = 'ashwin.goyal@bulkmro.com'
   PASSWORD = 'abc123'
 
