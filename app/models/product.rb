@@ -66,7 +66,7 @@ class Product < ApplicationRecord
   end
 
   def to_s
-    "#{name} (#{sku || trashed_sku })"
+    "#{sku || trashed_sku} - #{name}"
   end
 
   def lowest_inquiry_product_supplier
