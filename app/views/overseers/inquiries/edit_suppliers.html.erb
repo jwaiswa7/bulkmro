@@ -9,7 +9,8 @@
             <%= inquiry_product.hidden_field :id %>
 
             <h6 class="text-uppercase">
-              <strong><%= inquiry_product.object.product.name %></strong>
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
+              <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
               <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
