@@ -62,6 +62,10 @@ class Resources::Draft < Resources::ApplicationResource
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin,
     }
+  end
+end
+
+
 =begin
     {
         AttachmentEntry: record.inquiry.attachment_uid,
@@ -116,6 +120,3 @@ class Resources::Draft < Resources::ApplicationResource
         U_Total_Rmks: ""
     }
 =end
-  end
-
-end

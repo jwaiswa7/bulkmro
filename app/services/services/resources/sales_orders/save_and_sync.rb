@@ -1,25 +1,24 @@
 class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseService
 
   def initialize(sales_order)
-    @sales_order_draft = sales_order
+    @sales_order = sales_order
   end
 
   def call
     if sales_order.save!
-      perform_later(sales_order_draft)
+      perform_later(sales_order)
     end
   end
 
   def call_later
-    if sales_order_draft.persisted?
-      if sales_order_draft.doc_number.present?
-        ::Resources::Draft.update(sales_order_draft.doc_number, sales_order_draft)
+    if sales_order.persisted?
+      if sales_order.doc_number.present?
+        ::Resources::Draft.update(sales_order.doc_number, sales_order)
       else
-        sales_order_draft.doc_number = ::Resources::Draft.create(sales_order_draft)
-        sales_order_draft.save
+        sales_order.update_attributes(:doc_number => ::Resources::Draft.create(sales_order))
       end
     end
   end
 
-  attr_accessor :sales_order_draft
+  attr_accessor :sales_order
 end
