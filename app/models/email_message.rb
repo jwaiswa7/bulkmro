@@ -11,6 +11,10 @@ class EmailMessage < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
+    if inquiry.present?
+      self.subject ||= self.inquiry.subject
+    end
+
     if self.overseer.present?
       self.from ||= self.overseer.email
     end

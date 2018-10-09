@@ -82,7 +82,6 @@ let initVueJS = () => {
             },
 
             hideProduct(product_id) {
-                console.log(product_id);
                 let _this = this
                 $('#ac-' + product_id).find("[data-index]").each(function (index, row) {
                     let currentRowIndex = $(row).data('index');
@@ -139,7 +138,6 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
@@ -274,6 +272,7 @@ let initVueJS = () => {
                 row.unit_freight_cost = row.unit_freight_cost || 0;
                 row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
                 this.setRow(index, row);
+                this.triggerSellingPriceChangeFor(index,'margin_percentage');
             },
 
             triggerSellingPriceChangeFor(index, trigger) {
@@ -462,7 +461,7 @@ let assignEventsAndGetAttributes = () => {
 };
 
 let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
-    console.log(el);
+
     let eventNames = ['v-on:change', 'v-on:input', 'v-on:click'];
     let attributeName = undefined;
 

@@ -5,23 +5,22 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
   end
 
   def call
-    excel_import.rows.each_with_index do |row, index|
+    excel_import.rows.each do |row|
       if row.failed?
         row.build_inquiry_product(
-          inquiry: inquiry,
-          import: excel_import,
-          :sr_no => row.metadata['id'],
-          product: Product.new(
-            inquiry_import_row: row,
-            name: row.metadata['name'],
-            sku: row.sku,
-            brand: Brand.find_by_name(row.metadata['brand']),
-          ),
-          quantity: row.metadata['quantity'].to_i
+            inquiry: inquiry,
+            import: excel_import,
+            :sr_no => row.metadata['id'],
+            product: Product.new(
+                inquiry_import_row: row,
+                name: row.metadata['name'],
+                sku: row.sku,
+                brand: Brand.find_by_name(row.metadata['brand']),
+            ),
+            quantity: row.metadata['quantity'].to_i
         )
       end
     end
-
 
   end
 

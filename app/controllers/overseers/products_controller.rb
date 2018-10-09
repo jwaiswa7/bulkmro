@@ -90,6 +90,7 @@ class Overseers::ProductsController < Overseers::BaseController
     params.require(:product).permit(
         :name,
         :sku,
+        :mpn,
         :is_service,
         :brand_id,
         :category_id,

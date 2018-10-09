@@ -15,4 +15,8 @@ class InquiriesIndex < BaseIndex
     field :created_by, value: -> (record) { record.created_by.to_s }, analyzer: 'letter'
     field :updated_by, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
   end
+
+  def self.fields
+    [:status, :inquiry_number_string, :inside_sales_owner, :outside_sales_owner, :company, :account, :contact]
+  end
 end

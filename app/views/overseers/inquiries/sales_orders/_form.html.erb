@@ -47,12 +47,11 @@
 
         <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
-            <h6 class="text-uppercase mb-1">
-              <strong><%= row.object.sales_quote_row.supplier.name %></strong>
-            </h6>
             <h6 class="text-uppercase">
-              <%= row.object.sales_quote_row.product.name %>
-              <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sales_quote_row.sr_no %></p>
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= row.object.sales_quote_row.sr_no %></span>
+              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %></strong>
+              <%= row.object.sales_quote_row.inquiry_product.bp_catalog_sku? ? '(' + row.object.sales_quote_row.inquiry_product.bp_catalog_sku + ')' : '' %>
+              <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= row.object.sales_quote_row.product.brand %> <%= row.object.sales_quote_row.product.mpn? ? '(' + row.object.sales_quote_row.product.mpn + ')' : '' %></span>
             </h6>
             <hr>
             <div class="form-row my-2">
@@ -61,10 +60,13 @@
                 <span data-bind-html="unit_selling_price"><%= format_currency(row.object.unit_selling_price, symbol: f.object.currency.sign) %></span>
 
               </div>
-              <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Unit Selling Price (in $)</strong><br>
-                <span data-bind-html="converted_unit_selling_price"><%= format_currency(row.object.converted_unit_selling_price, symbol: f.object.currency.sign) %></span>
-              </div>
+              <% if f.object.currency == "INR" %>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Unit Selling Price (in <%= f.object.currency.sign %>)</strong><br>
+                  <span data-bind-html="converted_unit_selling_price"><%= format_currency(row.object.converted_unit_selling_price, symbol: f.object.currency.sign) %></span>
+                </div>
+              <% end %>
+
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Unit Cost with Freight</strong><br>
                 <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost, symbol: f.object.currency.sign) %></span>
@@ -96,7 +98,7 @@
 
             <div class="d-block d-md-flex flex-row justify-content-between">
               <%= row.input :quantity, input_html: {"data-bind": ""} %>
-              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper',"data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                 Remove
               <% end %>
             </div>

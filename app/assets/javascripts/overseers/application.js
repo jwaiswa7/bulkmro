@@ -13,6 +13,7 @@
 //= require vue/dist/vue.min.js
 //= require chartjs/chart.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js
+//= require stickybits/dist/jquery.stickybits.min.js
 // https://github.com/twbs/bootstrap/issues/23381#issuecomment-322358996 to fix popper not found issue
 
 //= require select2/dist/js/select2.full.min.js

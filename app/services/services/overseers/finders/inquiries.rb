@@ -3,7 +3,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     call_base
   end
 
-  def default_order
+  def sort_definition
     {:inquiry_number => :desc}
   end
 
