@@ -125,28 +125,26 @@ class Resources::ApplicationResource
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
-      { raw_response: raw_response, error_message: 'SAP Error :' + raw_response['error']['message']['value'] }
+      { raw_response: raw_response, error_message: raw_response['error']['message']['value'] }
     else
-      { raw_response: raw_response, error_message: 'SAP Error / Warning :' + raw_response.to_s }
+      { raw_response: raw_response, error_message: raw_response.to_s }
     end
   end
 
-  def self.log_request(method, request, response=nil, is_query: false)
+  def self.log_request(method, request, is_query: false)
     @remote_request = RemoteRequest.create!({
                              method: method,
                              resource: collection_name,
                              request: is_query ? "Search for #{request}" : to_remote(request),
-                             response: response,
                              url: [ENDPOINT, "/#{collection_name}"].join(""),
-                             status: response.is_a?(OpenStruct) ? :success : :failed
+                             status: :pending
                          })
 
     @remote_request
   end
 
   def self.log_response(response)
-    @remote_request.update_attributes(:response => response)
+    @remote_request.update_attributes(:response => response, status: :success)
     @remote_request
   end
 end
-

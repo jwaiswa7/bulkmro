@@ -1,6 +1,7 @@
 class RemoteRequest < ApplicationRecord
   include Mixins::CanBeStamped
 
+  has_paper_trail on: []
   belongs_to :inquiry, required: false
 
   enum status: {

@@ -5,56 +5,43 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.create(record)
-    id = super(record) do |validated_response|
-      self.update_associated_records(record)
+    id = super(record) do |response|
+      update_associated_records(response)
     end
     id
   end
 
   def self.update(id, record)
-    #self.update_associated_records(record)
-    super(id, record, use_quotes_for_id: true) do
-      update_associated_records(record) if record.present?
+    super(id, record, use_quotes_for_id: true) do |response|
+      update_associated_records(response) if response.present?
     end
   end
 
   def self.custom_find(company)
-    # super(company, 'CardName') do |remote_record|
-    #   update_associated_records(company, remote_record)
-    # end
+    super(company, 'CardName')
   end
 
-  def self.find(id)
-    response = get("/#{collection_name}('#{id}')")
-    get_validated_response(response)
-  end
+  def self.update_associated_records(response)
+    addresses = response['BPAddresses']
+    contacts = response['ContactEmployees']
 
-  def self.update_associated_records(company)
-    response = self.find(company.remote_uid)
-    if response.present?
-      addresses = response.BPAddresses
-      contacts = response.ContactEmployees
-      #Update Address's row numbers
-
-      addresses.each do |address|
-        address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
-        if address_to_update.present?
-          if address["AddressType"].eql? "bo_ShipTo"
-            address_to_update.shipping_address_uid = address["RowNum"]
-          elsif address["AddressType"].eql? "bo_BillTo"
-            address_to_update.billing_address_uid = address["RowNum"]
-          end
-          address_to_update.save
+    addresses.each do |address|
+      address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
+      if address_to_update.present?
+        if address["AddressType"].eql? "bo_ShipTo"
+          address_to_update.shipping_address_uid = address["RowNum"]
+        elsif address["AddressType"].eql? "bo_BillTo"
+          address_to_update.billing_address_uid = address["RowNum"]
         end
-      end if addresses.present?
+        address_to_update.save
+      end
+    end if addresses.present?
 
-      #Update contacts
-      contacts.each do |contact|
-        remote_uid = contact["InternalCode"]
-        company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
-        company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
-      end if contacts.present?
-    end
+    contacts.each do |contact|
+      remote_uid = contact["InternalCode"]
+      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
+      company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
+    end if contacts.present?
   end
 
   def self.to_remote(record)
