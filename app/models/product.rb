@@ -56,6 +56,7 @@ class Product < ApplicationRecord
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
+    self.weight_in_kgs ||= 0.0
   end
 
   def best_tax_code

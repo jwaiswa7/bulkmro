@@ -67,6 +67,18 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def purchase_orders?
+    edit?
+  end
+
+  def sales_shipments?
+    edit?
+  end
+
+  def sales_invoices?
+    edit?
+  end
+
   # def edit_rfqs?
   #   !record.rfqs_generated? && record.suppliers_selected?
   # end

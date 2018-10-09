@@ -11,6 +11,7 @@ class CreateRemoteRequests < ActiveRecord::Migration[5.2]
       t.jsonb :request
       t.jsonb :response
 
+      t.userstamps
       t.timestamps
     end
   end

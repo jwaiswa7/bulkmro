@@ -5,7 +5,6 @@ class Currency < ApplicationRecord
   validates_numericality_of :conversion_rate, minimum: 1, maximum: 1000
 
   def sign
-
     if self.name == 'USD'
       '$'
     elsif self.name == 'EUR'
@@ -13,10 +12,6 @@ class Currency < ApplicationRecord
     else
       '₹'
     end
-  end
-
-  def self.base_currency
-    find_by_name('INR')
   end
 
   def self.base_currency

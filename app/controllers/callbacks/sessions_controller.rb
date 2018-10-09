@@ -7,9 +7,15 @@ class Callbacks::SessionsController < Callbacks::BaseController
     if EMAIL == params[:email].downcase && PASSWORD == params[:password]
       sap_api_key = ActiveRecord::Base.generate_unique_secure_token
       Rails.cache.write(:sap_api_key, sap_api_key, expires_in: 25.minutes)
-      render json: {status: :success, api_key: sap_api_key}
+
+      render json: {
+          status: :success,
+          api_key: sap_api_key
+      }, status: :ok
     else
-      render json: {status: :fail}, status: 401
+      render json: {
+          status: :fail
+      }, status: 401
     end
   end
 end

@@ -5,6 +5,8 @@ class CreateSalesShipments < ActiveRecord::Migration[5.2]
       t.integer :remote_uid, index: { unique: true }
       t.jsonb :metadata
 
+      t.integer :status
+
       t.timestamps
       t.userstamps
     end

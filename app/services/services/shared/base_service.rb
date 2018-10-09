@@ -10,6 +10,6 @@ class Services::Shared::BaseService
 	end
 
   def perform_later(*args)
-		ApplicationJob.perform_now(self.class.name, *args)
+		ApplicationJob.perform_later(self.class.name, *args)
 	end
 end

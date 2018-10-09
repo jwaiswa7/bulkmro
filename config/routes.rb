@@ -9,11 +9,10 @@ Rails.application.routes.draw do
   namespace 'callbacks' do
     resources :sales_orders
     resources :sales_invoices
-    resources :items
-    resources :shipments
-    resources :receipt_collections
-    resources :bank_masters
-    resources :activities
+    resources :sales_receipts
+    resources :sales_shipments
+    resources :purchase_orders
+    resources :products
 
     get 'login' => '/callbacks/sessions#new'
   end
@@ -24,6 +23,8 @@ Rails.application.routes.draw do
       get 'serializer'
       get 'migrations'
     end
+
+    resources :remote_requests
 
     resources :reports
     resources :activities
@@ -107,6 +108,10 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
+
+        resources :sales_shipments
+        resources :sales_invoices
+        resources :purchase_orders
 
         resources :sales_orders do
           member do
