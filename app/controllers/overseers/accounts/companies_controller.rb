@@ -64,6 +64,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :nature_of_business,
         :creadit_limit,
         :tan_proof,
+        :pan,
         :pan_proof,
         :cen_proof,
         :is_msme,
@@ -73,7 +74,6 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :contact_ids => [],
         :brand_ids => [],
         :product_ids => [],
-
     )
   end
 end

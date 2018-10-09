@@ -12,7 +12,10 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
-        <% if @company.site? || @company.default_company_contact.contact || @company.industry || @company.company_type || @company.nature_of_business || @company.priority || @company.default_payment_option || @company.credit_limit %>
+        <% if @company.site? || @company.default_company_contact.contact ||
+            @company.industry || @company.company_type || @company.nature_of_business ||
+            @company.priority || @company.default_payment_option || @company.credit_limit ||
+            @company.pan %>
           <div>
           <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
           <div class="form-row">
@@ -79,6 +82,13 @@
               <div class="col-6 col-md-4 mb-2">
                 <strong class="d-block">Credit limit</strong>
                 <%= @company.credit_limit %>
+              </div>
+            <% end %>
+
+            <% if @company.pan %>
+              <div class="col-6 col-md-4 mb-2">
+                <strong class="d-block">PAN</strong>
+                <%= @company.pan %>
               </div>
             <% end %>
           </div>
