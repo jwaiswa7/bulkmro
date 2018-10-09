@@ -14,10 +14,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     methods = if custom_methods.present?
                 custom_methods
               elsif Rails.env.production?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(sales_order_items)
               end
 
     PaperTrail.request(enabled: false) do
@@ -947,6 +947,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         )
       else
         sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+      end
+    end
+  end
+
+  def sales_order_items
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_items.csv')
+    service.loop(limit) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
+      product = Product.find_by_sku(x.get_column('sku'))
+      if sales_order.present?
+        if product.present?
+          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(:inquiry_products => {:product_id => product.id})
+          if sales_order_rows.present?
+            sales_order_rows.first.update_attributes(quantity: x.get_column('qty_ordered'))
+          end
+        end
       end
     end
   end
