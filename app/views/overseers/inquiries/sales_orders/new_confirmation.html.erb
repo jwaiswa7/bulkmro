@@ -109,7 +109,7 @@
                          <span><%= row.object.quantity %></span>
                        </td>
                        <td>
-                         <span><%= row.object.margin_percentage %></span>
+                         <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
                        </td>
                        <td>
                          <span><%= row.object.unit_selling_price %></span>
