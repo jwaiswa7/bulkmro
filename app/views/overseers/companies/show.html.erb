@@ -90,21 +90,21 @@
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Default owners and managers</h6>
             <div class="form-row">
               <% if @company.inside_sales_owner %>
-                <div class="col-6 col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                   <strong class="d-block">Default inside sales</strong>
                   <%= @company.inside_sales_owner %>
                 </div>
               <% end %>
 
               <% if @company.outside_sales_owner %>
-                <div class="col-6 col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                   <strong class="d-block">Default outside sales</strong>
                   <%= @company.outside_sales_owner %>
                 </div>
               <% end %>
 
               <% if @company.sales_manager %>
-                <div class="col-6 col-md-4 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                   <strong class="d-block">Default manager</strong>
                   <%= @company.sales_manager %>
                 </div>
