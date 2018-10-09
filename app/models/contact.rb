@@ -29,8 +29,9 @@ class Contact < ApplicationRecord
       manager: 70,
   }
 
-  validates_presence_of :telephone, :mobile
-  validates_numericality_of :telephone, :mobile, only_integer: true
+  validates_presence_of :telephone, if: -> { !self.mobile.present? }
+  validates_presence_of :mobile, if: -> { !self.telephone.present? }
+  validates_numericality_of :telephone, :mobile, allow_blank: true
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
