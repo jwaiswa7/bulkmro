@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       get 'chewy'
       get 'serializer'
       get 'migrations'
+      get 'console'
     end
 
     resources :remote_requests

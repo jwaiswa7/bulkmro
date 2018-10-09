@@ -24,6 +24,10 @@ class Overseers::DashboardController < Overseers::BaseController
     redirect_back fallback_location: overseers_dashboard_path
   end
 
+  def console
+    authorize :dashboard
+  end
+
   def migrations
     authorize :dashboard
     Services::Shared::Migrations::Migrations.new.call

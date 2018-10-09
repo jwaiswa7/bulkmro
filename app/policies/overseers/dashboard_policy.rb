@@ -6,4 +6,8 @@ class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   def migrations?
     admin?
   end
+
+  def console?
+    admin?
+  end
 end
