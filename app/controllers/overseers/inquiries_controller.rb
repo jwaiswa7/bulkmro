@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet]
 
   def index
     authorize :inquiry
@@ -39,6 +39,15 @@ class Overseers::InquiriesController < Overseers::BaseController
   def export
     authorize @inquiry
     render json: Serializers::InquirySerializer.new(@inquiry).serialized_json
+  end
+
+  def calculation_sheet
+    authorize @inquiry
+
+    send_file(
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
+    )
   end
 
   def new
