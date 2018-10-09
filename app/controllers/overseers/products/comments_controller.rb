@@ -29,7 +29,7 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
   end
 
   def approve
-    ActiveRecord.base.transaction do
+    ActiveRecord::Base.transaction do
       @product.create_approval(:comment => @comment, :overseer => current_overseer)
       @product.save_and_sync
     end

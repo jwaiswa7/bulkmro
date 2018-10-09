@@ -1,5 +1,4 @@
 class Resources::ItemGroup < Resources::ApplicationResource
-
   def self.identifier
     :Number
   end
@@ -16,5 +15,4 @@ class Resources::ItemGroup < Resources::ApplicationResource
 
     params
   end
-
 end

@@ -51,7 +51,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save
+    if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new'
@@ -66,7 +66,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
 
-    if @inquiry.save
+    if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
@@ -84,7 +84,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
 
-    if @inquiry.save_and_sync
+    if @inquiry.save
       redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'

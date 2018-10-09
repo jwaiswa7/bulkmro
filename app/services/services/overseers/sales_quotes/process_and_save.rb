@@ -19,12 +19,11 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
     end
 
-    if(sales_quote.sent_at.present?)
+    if sales_quote.sent_at.present?
       sales_quote.save_and_sync
     else
       sales_quote.save
     end
-
   end
 
   attr_reader :sales_quote

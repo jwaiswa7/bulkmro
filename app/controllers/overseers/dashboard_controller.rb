@@ -26,6 +26,8 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def console
     authorize :dashboard
+
+    render json: Resources::BusinessPartner.find('3095267094', quotes: true)
   end
 
   def migrations

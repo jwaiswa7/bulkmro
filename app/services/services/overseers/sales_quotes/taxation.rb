@@ -11,13 +11,13 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
   def call
     @tax_code = sales_quote_row.best_tax_code
     @is_sez = sales_quote.is_sez || sales_quote.billing_address.is_sez
-    @is_service = sales_quote_row.is_service || tax_code.is_service
+    @is_service = sales_quote_row.is_service # || tax_code.is_service
 
     @is_cgst_sgst = if bill_to.country_code == 'IN'
                       if is_service
                         bill_from.address.state == ship_to.state
                       else
-                        bill_from.address.state == bill_to.state
+                        bill_from.address.state != bill_to.state #todo should be ==
                       end
                     else
                       false
@@ -33,8 +33,6 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
       "IGST #{tax_code.tax_percentage}%"
     else
       "CGST + SGST #{tax_code.tax_percentage}%"
-
-
     end
   end
 

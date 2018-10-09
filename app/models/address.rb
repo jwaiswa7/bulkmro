@@ -26,23 +26,23 @@ class Address < ApplicationRecord
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
-
   validates_presence_of :state, :if => :domestic?
 
+  validates_presence_of :remote_uid
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
-  before_save :set_remote_uid
+  after_initialize :set_global_defaults
 
   def set_defaults
     self.is_sez ||= false
   end
 
-  def set_remote_uid
-    self.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid)
+  def set_global_defaults
+    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid
   end
 
   def to_s

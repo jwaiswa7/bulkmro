@@ -25,15 +25,6 @@ module Mixins::CanBeSynced
       self.legacy_id || self.id
     end
 
-    def generate_remote_uid
-      remote_uid = Faker::Number.number(10)
 
-      10.times.each_with_index do
-        break if not self.class.where(:remote_uid => remote_uid).exists?
-        remote_uid = Faker::Number.number(10)
-      end
-
-      remote_uid
-    end
   end
 end

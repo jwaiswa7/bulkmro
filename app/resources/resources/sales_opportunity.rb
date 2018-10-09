@@ -5,7 +5,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
-    company_contact = record.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
+
     {
         CardCode: record.company.remote_uid, #
         U_SalesMgr: record.sales_manager.try(:full_name),
@@ -34,7 +34,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
                 DocumentNumber: nil,
                 DocumentType: "bodt_MinusOne",
                 DocumentCheckbox: nil,
-                ContactPerson: record.contact.remote_uid,
+                ContactPerson: record.contact.company_contact.remote_uid,
                 BPChanelName: nil,
                 BPChanelCode: nil,
                 DataOwnershipfield: record.outside_sales_owner.employee_uid,

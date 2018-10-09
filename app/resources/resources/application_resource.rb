@@ -70,7 +70,7 @@ class Resources::ApplicationResource
   end
 
   def self.to_remote(record)
-    nil
+    record
   end
 
   def self.to_remote_json(record)
@@ -81,14 +81,14 @@ class Resources::ApplicationResource
     get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
   end
 
-  def self.find(id)
-    OpenStruct.new(get("/#{collection_name}(#{id})").parsed_response)
+  def self.find(id, quotes: false)
+    OpenStruct.new(get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})").parsed_response)
   end
 
-  def self.custom_find(id, by=nil)
+  def self.custom_find(id, by = nil)
     response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
 
-    log_request(:post, id, is_query: true)
+    log_request(:post, id, is_find: true)
     validated_response = get_validated_response(response)
     log_response(validated_response)
 
@@ -110,10 +110,10 @@ class Resources::ApplicationResource
     validated_response[self.identifier]
   end
 
-  def self.update(id, record, use_quotes_for_id: false)
-    response = patch("/#{collection_name}(#{use_quotes_for_id ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
+  def self.update(id, record, quotes: false)
+    response = patch("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
 
-    log_request(:post, record)
+    log_request(:patch, record)
     validated_response = get_validated_response(response)
     log_response(validated_response)
 
@@ -125,20 +125,24 @@ class Resources::ApplicationResource
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
-      { raw_response: raw_response, error_message: raw_response['error']['message']['value'] }
+      # raise(raw_response.to_s) if Rails.env.development?
+      {raw_response: raw_response, error_message: raw_response['error']['message']['value']}
     else
-      { raw_response: raw_response, error_message: raw_response.to_s }
+      # raise(raw_response.to_s) if Rails.env.development?
+      {raw_response: raw_response, error_message: raw_response.to_s}
     end
   end
 
-  def self.log_request(method, request, is_query: false)
+  def self.log_request(method, record, is_find: false)
     @remote_request = RemoteRequest.create!({
-                             method: method,
-                             resource: collection_name,
-                             request: is_query ? "Search for #{request}" : to_remote(request),
-                             url: [ENDPOINT, "/#{collection_name}"].join(""),
-                             status: :pending
-                         })
+                                                subject: record.is_a?(String) ? nil : record,
+                                                method: method,
+                                                is_find: is_find,
+                                                resource: collection_name,
+                                                request: record.is_a?(String) ? record : to_remote(record),
+                                                url: [ENDPOINT, "/#{collection_name}"].join(""),
+                                                status: :pending
+                                            })
 
     @remote_request
   end

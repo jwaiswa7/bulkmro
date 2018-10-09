@@ -12,28 +12,30 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
 
   def call_later
     if inquiry.project_uid.blank?
-      project_uid = ::Resources::Project.create(inquiry)
-
-      if(project_uid == nil)
-        project_uid = ::Resources::Project.find_by_name(inquiry.subject)
-      end
-
-      inquiry.project_uid = project_uid
+      project_uid = ::Resources::Project.find_by_name(inquiry.subject)
+      inquiry.update_attributes(:project_uid => project_uid)
     end
-    inquiry.save
+
+    if inquiry.project_uid.blank?
+      project_uid = ::Resources::Project.create(inquiry)
+      inquiry.update_attributes(:project_uid => project_uid)
+    end
+
     if inquiry.opportunity_uid.present?
       ::Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
-      inquiry.opportunity_uid = ::Resources::SalesOpportunity.create(inquiry)
+      inquiry.update_attributes(:opportunity_uid => ::Resources::SalesOpportunity.create(inquiry))
     end
 
-    inquiry.save
-raise
-    if inquiry.sales_quotes.any?
-      sales_quote = inquiry.final_sales_quote
-      sales_quote.save_and_sync if sales_quote.present?
+    if inquiry.attachment_uid.present?
+      Resources::Attachment.update(inquiry.attachment_uid, inquiry)
+    else
+      inquiry.update_attributes(:attachment_uid => Resources::Attachment.create(inquiry))
     end
 
+    if inquiry.final_sales_quote.present?
+      inquiry.final_sales_quote.save_and_sync
+    end
   end
 
   attr_accessor :inquiry

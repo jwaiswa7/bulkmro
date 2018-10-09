@@ -83,7 +83,6 @@ class Company < ApplicationRecord
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
 
   after_initialize :set_defaults, :if => :new_record?
-  before_save :set_remote_uid
 
   def set_defaults
     self.company_type ||= :private_limited
@@ -93,10 +92,6 @@ class Company < ApplicationRecord
     self.default_company_contact ||= set_default_company_contact
     self.default_billing_address ||= set_default_company_billing_address
     self.default_shipping_address ||= set_default_company_shipping_address
-  end
-
-  def set_remote_uid
-    self.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid)
   end
 
   def set_default_company_contact

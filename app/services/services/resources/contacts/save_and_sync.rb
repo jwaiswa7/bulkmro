@@ -11,7 +11,9 @@ class Services::Resources::Contacts::SaveAndSync < Services::Shared::BaseService
   end
 
   def call_later
-    contact.save_and_sync
+    contact.companies.each do |company|
+      company.save_and_sync
+    end
   end
 
   attr_accessor :contact

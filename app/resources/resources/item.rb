@@ -5,7 +5,7 @@ class Resources::Item < Resources::ApplicationResource
   end
 
   def self.update(id, record)
-    super(id, record, use_quotes_for_id: true)
+    super(id, record, quotes: true)
   end
 
   def self.to_remote(record)

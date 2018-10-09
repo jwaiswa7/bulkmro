@@ -8,12 +8,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     id = super(record) do |response|
       update_associated_records(response)
     end
+
     id
   end
 
   def self.update(id, record)
-    super(id, record, use_quotes_for_id: true) do |response|
-      update_associated_records(response) if response.present?
+    update_associated_records(id, force_find: true)
+
+    super(id, record, quotes: true) do |response|
+      update_associated_records(id, force_find: true) if response.present?
     end
   end
 
@@ -21,7 +24,11 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     super(company, 'CardName')
   end
 
-  def self.update_associated_records(response)
+  def self.update_associated_records(response, force_find: false)
+    response = find(response, quotes: true) if force_find
+    return if response.blank?
+
+    company = Company.find_by_remote_uid!(response['CardCode'])
     addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
 
@@ -48,6 +55,10 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     addresses = []
     contacts = []
     bp_tax_collection = []
+
+    if record.remote_uid.blank?
+      record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid)
+    end
 
     record.addresses.each do |address|
       street_address = [address.street1, address.street2].compact.join(' ')
@@ -80,7 +91,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       address_row.U_VAT = address.vat
       address_row.U_CST = address.cst
 
-      if !address.billing_address_uid .blank?
+      if !address.billing_address_uid.blank?
         address_row.RowNum = address.billing_address_uid
       end
       addresses.push(address_row.marshal_dump)
@@ -178,8 +189,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       # address_tax_row.TaxId11 = address.vat
       #
       # bp_tax_collection.push(address_tax_row.marshal_dump)
-
-    end
+    end if record.remote_uid.present?
 
     #push company pan, edr,tan etc in BPFiscalTaxIDCollection
     bp_tax_collection_row = OpenStruct.new
@@ -219,14 +229,15 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contact_row.InternalCode = company_contact.remote_uid
       contact_row.U_MgntCustID = contact.legacy_id.present? ? contact.legacy_id : contact.id
 
-      if(!company_contact.remote_uid.blank?)
+      if company_contact.remote_uid.present?
         contact_row.InternalCode = company_contact.remote_uid
       end
-      contacts.push(contact_row.marshal_dump)
-    end
 
-    response = {
-        CardCode: record.remote_uid || record.generate_remote_uid,
+      contacts.push(contact_row.marshal_dump)
+    end if record.remote_uid.present?
+
+    params = {
+        CardCode: record.remote_uid,
         CardName: record.name,
         CardType: record.is_supplier ? "cSupplier" : "cCustomer",
         GroupCode: record.account.remote_uid,
@@ -263,6 +274,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         UseBillToAddrToDetermineTax: "tYES"
     }
 
-    response.compact
+    params.compact
   end
 end

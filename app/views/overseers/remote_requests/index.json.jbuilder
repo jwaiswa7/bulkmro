@@ -5,8 +5,8 @@ json.data (@remote_requests) do |remote_request|
                         row_action_button(overseers_remote_request_path(remote_request), 'eye', 'Show remote request', 'warning')
                       end,
                   ].join(' '),
-                  if remote_request.inquiry.present? && policy(remote_request.inquiry).edit?
-                    row_action_button(edit_overseers_inquiry_path(remote_request.inquiry), 'pencil', 'Edit Inquiry', 'warning')
+                  if remote_request.subject.present? && policy(remote_request.subject).show?
+                    [remote_request.subject.class.name, remote_request.subject.to_s].join(' > ')
                   end,
                   format_enum(remote_request.status),
                   format_enum(remote_request.method),

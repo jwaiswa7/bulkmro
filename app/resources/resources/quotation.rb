@@ -17,7 +17,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
       item.U_MPN = row.product.try(:mpn)
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
-      item.Comments = nil # Inquiry COmment
+      item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
       item.Currency = record.currency.name # CContactPersonurr
       item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
@@ -34,20 +34,21 @@ class Resources::Quotation < Resources::ApplicationResource
       else
         item.HSNEntry = row.tax_code.remote_uid # HSN !!
       end
+
       item.U_MgntRemark = ""
       item.U_Rmks = ""
-
       items.push(item.marshal_dump)
-
     end
-    sez = nil
 
-    if record.inquiry.is_sez
-      sez = {
-          'ImportOrExport': 'tYES',
-          'ImportOrExportType': 'et_SEZ_Unit',
-      }
-    end
+    sez = if record.inquiry.is_sez
+            {
+                'ImportOrExport': 'tYES',
+                'ImportOrExportType': 'et_SEZ_Unit',
+            }
+          else
+            nil
+          end
+
     {
         U_MgntDocID: record.to_param, # Quote ID
         CardCode: record.inquiry.company.remote_uid, #Customer ID
@@ -58,7 +59,7 @@ class Resources::Quotation < Resources::ApplicationResource
         DocCurrency: record.currency.name,
         DocEntry: record.quotation_uid,
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
-        U_RevNo: "R1", #Quotation Revision ID
+        U_RevNo: record.ancestors.size, #Quotation Revision ID
         DocDate: record.created_date, #Quote Create Date
         DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
         TaxDate: record.inquiry.customer_order_date, # record.created_date , #Tax Date??
@@ -86,34 +87,5 @@ class Resources::Quotation < Resources::ApplicationResource
         Project: record.inquiry.project_uid,
         TaxExtension: sez
     }
-
   end
-
-  def self.create(record)
-    #log and Validate Response
-    create_or_update_attachments(record)
-
-    response = post("/#{collection_name}", body: to_remote(record).to_json)
-
-    get_validated_response(:post, record, response)
-  end
-
-  def self.update(id, record, options = {})
-    create_or_update_attachments(record)
-
-    response = patch("/#{collection_name}(#{id})", body: to_remote(record).to_json)
-    get_validated_response(:patch, record, response)
-    id
-  end
-
-  def self.create_or_update_attachments(record)
-    if record.inquiry.attachment_uid.present?
-      Resources::Attachment.update(record.inquiry.attachment_uid, record.inquiry)
-    else
-      record.inquiry.attachment_uid = Resources::Attachment.create(record.inquiry)
-      record.inquiry.save
-
-    end
-  end
-
 end

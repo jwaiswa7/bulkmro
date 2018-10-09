@@ -6,6 +6,7 @@ class Services::Resources::Addresses::SaveAndSync < Services::Shared::BaseServic
 
   def call
     if address.save!
+      address.reload
       perform_later(address)
     end
   end
