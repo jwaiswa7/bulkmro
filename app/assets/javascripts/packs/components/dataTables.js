@@ -9,18 +9,18 @@ let preSetup = () => {
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 
-        var api = new $.fn.dataTable.Api(settings);
-        var $target = $(e.target);
-        var searchText = $target.data('search');
+        let api = new $.fn.dataTable.Api(settings);
+        let $target = $(e.target);
+        let searchText = $target.data('search');
 
         if (searchText) {
-            var $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
+            let $input = "<input type='search' class='form-control filter-list-input' placeholder='" + searchText + "'>";
             $input = $($input);
             $input.bindWithDelay('keyup', function (e) {
                 $('#' + $target.attr('id')).DataTable().search($(this).val()).draw();
             }, 300);
 
-            var $wrapper = "<div class='input-group input-group-round'>" +
+            let $wrapper = "<div class='input-group input-group-round'>" +
                 "<div class='input-group-prepend'>" +
                 "<span class='input-group-text'>" +
                 "<i class='material-icons'>filter_list</i>" +
@@ -28,7 +28,7 @@ let preSetup = () => {
                 "</div>" +
                 "</div>";
 
-            var $filter = $($wrapper).append($input);
+            let $filter = $($wrapper).append($input);
 
             $filter.insertBefore($target);
             $target.data('has-search', true);
@@ -40,8 +40,11 @@ let preSetup = () => {
 let setup = () => {
     $('.datatable').each(function () {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
-        var isAjax = !!$(this).data('ajax');
-        var that = this;
+
+        let isAjax = !!$(this).data('ajax');
+        let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
+
+        let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
         $(this).DataTable({
@@ -51,7 +54,7 @@ let setup = () => {
             processing: true,
             stateSave: false,
             fixedHeader: {
-                header: true,
+                header: isFixedHeader,
                 headerOffset: $('.navbar.navbar-expand-lg').height()
             },
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
@@ -75,7 +78,7 @@ let setup = () => {
             responsive: {
                 details: {
                     renderer: function (api, rowIdx, columns) {
-                        var $data = $.map(columns, function (col, i) {
+                        let $data = $.map(columns, function (col, i) {
                             return col.hidden ?
                                 '<li class="list-group-item" data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
                                 (col.title ? '<span><strong>' + col.title + '</strong><br>' : '')
@@ -119,7 +122,7 @@ let ajax = () => {
         });
 
         // Load data from the specified data attribute
-        // var url = $(this).data('ajax');
+        // let url = $(this).data('ajax');
         // $(this).ajax.url(url).load();
     });
 };
