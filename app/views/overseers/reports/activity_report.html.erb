@@ -35,8 +35,8 @@
   </div>
 
   <%= render layout: 'search_layout' do %>
-    <table class="table text-center datatable table-bordered dt-responsive">
-      <thead>
+    <table class="table text-center">
+      <thead data-toggle="sticky">
         <tr>
           <th></th>
           <% @data.geographies.each do |geography| %>
@@ -52,7 +52,7 @@
           <% end %>
         </tr>
         <tr>
-          <th class="text-right">Date</th>
+          <th class="text-right no-sort"></th>
           <% @data.geographies.each do |geography| %>
             <% geography.overseers.each do |overseer| %>
               <td data-toggle="tooltip" title="<%= overseer.name %>">
