@@ -20,103 +20,139 @@
           <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
           <div class="form-row">
             <% if @company.site? %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Site</strong>
                 <%= @company.site %>
               </div>
             <% end %>
 
             <% if @company.default_company_contact.contact %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Mobile</strong>
                 <%= @company.default_company_contact.contact.mobile %>
               </div>
 
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Email address</strong>
                 <%= @company.default_company_contact.contact.email %>
               </div>
 
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Telephone</strong>
                 <%= @company.default_company_contact.contact.telephone %>
               </div>
             <% end %>
 
             <% if @company.industry %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Industry</strong>
                 <%= @company.industry %>
               </div>
             <% end %>
 
             <% if @company.company_type %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Type</strong>
                 <%= @company.company_type %>
               </div>
             <% end %>
 
             <% if @company.nature_of_business %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Nature of business</strong>
                 <%= @company.nature_of_business %>
               </div>
             <% end %>
 
             <% if @company.priority %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Priority</strong>
                 <%= @company.priority %>
               </div>
             <% end %>
 
             <% if @company.default_payment_option %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Default payment option</strong>
                 <%= @company.default_payment_option %>
               </div>
             <% end %>
 
             <% if @company.credit_limit %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Credit limit</strong>
                 <%= @company.credit_limit %>
               </div>
             <% end %>
 
+          </div>
+        </div>
+        <% end %>
+
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting</h6>
+          <div class="form-row">
             <% if @company.pan %>
-              <div class="col-6 col-md-4 mb-2">
+              <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">PAN</strong>
                 <%= @company.pan %>
               </div>
             <% end %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is MSME?</strong>
+              <%= format_boolean(@company.is_msme) %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is unregistered dealer?</strong>
+              <%= format_boolean(@company.is_unregistered_dealer) %>
+            </div>
           </div>
         </div>
-        <% end %>
 
         <% if @company.inside_sales_owner || @company.outside_sales_owner || @company.sales_manager %>
           <div class="mt-3">
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Default owners and managers</h6>
             <div class="form-row">
               <% if @company.inside_sales_owner %>
-                <div class="col-12 col-md-4 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default inside sales</strong>
                   <%= @company.inside_sales_owner %>
                 </div>
               <% end %>
 
               <% if @company.outside_sales_owner %>
-                <div class="col-12 col-md-4 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default outside sales</strong>
                   <%= @company.outside_sales_owner %>
                 </div>
               <% end %>
 
               <% if @company.sales_manager %>
-                <div class="col-12 col-md-4 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default manager</strong>
                   <%= @company.sales_manager %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @company.default_billing_address || @company.default_shipping_address %>
+          <div class="mt-3">
+            <h6 class="text-uppercase text-black-50 mb-1 d-block">Addresses</h6>
+            <div class="form-row">
+              <% if @company.default_billing_address %>
+                <div class="col-12 col-md-6 mb-2">
+                  <strong class="d-block">Default billing address</strong>
+                  <%= @company.default_billing_address %>
+                </div>
+              <% end %>
+
+              <% if @company.default_shipping_address %>
+                <div class="col-12 col-md-6">
+                  <strong class="d-block">Default shipping address</strong>
+                  <%= @company.default_shipping_address %>
                 </div>
               <% end %>
             </div>
