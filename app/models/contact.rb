@@ -29,6 +29,9 @@ class Contact < ApplicationRecord
       manager: 70,
   }
 
+  validates_presence_of :telephone, :mobile
+  validates_numericality_of :telephone, :mobile, only_integer: true
+
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.role ||= :customer
