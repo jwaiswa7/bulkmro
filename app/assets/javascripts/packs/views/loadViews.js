@@ -1,4 +1,40 @@
+// Component Imports
+
+//
 // Imports
+import imports from './imports/init'
+
+//
+// Inquiries
+import inquiries from './inquiries/init'
+
+//
+// Products
+import products from "./products/init";
+
+
+//
+// Sales Orders
+import salesOrders from "./salesOrders/init";
+
+//
+// Sales Quotes
+import salesQuotes from "./salesQuotes/init";
+
+let loader = {
+    imports: imports,
+
+    inquiries: inquiries,
+
+    products: products,
+
+    salesOrders: salesOrders,
+
+    salesQuotes: salesQuotes,
+};
+
+// Imports
+/*
 let loader = {};
 let importAll = (r) => {
     r.keys().forEach(key => {
@@ -13,10 +49,14 @@ let importAll = (r) => {
 
         // Set the functions relative to the controllers
         loader[controller] = loader[controller] ? loader[controller] : {};
+
+        console.log(r(key).default.name);
+        console.log(r(key).default);
         loader[controller][view.name] = r(key).default;
     });
 };
 importAll(require.context('./', true, /\.js$/));
+*/
 
 const loadViews = () => {
     let dataAttributes = $('body').data();
@@ -31,7 +71,5 @@ const loadViews = () => {
         console.log("loader[" + controller + "][" + controllerAction + "]")
     }
 };
-
-
 
 export default loadViews

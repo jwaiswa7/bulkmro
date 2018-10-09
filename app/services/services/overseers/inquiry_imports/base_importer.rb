@@ -19,8 +19,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
   end
 
   def delete_duplicate_rows
-
-    rows.uniq! { |row| row['sku'] }
+    rows.uniq! {|row| row['sku']}
   end
 
   def persist_inquiry_import_rows
@@ -28,12 +27,11 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
       row.stringify_keys!
       import.rows.create(import: import, sku: row['sku'], metadata: row)
     end
-
   end
 
   def set_existing_products
     import.rows.each do |row|
-      product = Product.approved.find_by_sku(row.sku)
+      product = Product.where('lower(sku) = ?', row.sku.downcase).try(:first)
 
       if product.present?
         inquiry_product = inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|

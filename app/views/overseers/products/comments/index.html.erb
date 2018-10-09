@@ -12,21 +12,18 @@
   <strong><%= current_overseer.full_name %></strong>.
 <% end %>
 
-
-
-
 <%= render layout: 'shared/layouts/form' do %>
   <div class="card">
 
     <div class="card-body">
-      <h5 class="card-title">Product:  <%= @product %></h5>
+      <h5 class="card-title">Product: <a href="<%= edit_overseers_product_path(@product) %>" target="_blank"><%= @product %></a></h5>
       <div class="card-text">
         <div class="row">
           <div class="col-md-6"><strong>Brand: </strong><%= @product.brand %></div>
           <div class="col-md-6"><strong>Category: </strong><%= @product.category %></div>
           <div class="col-md-6"><strong>Measurement Unit : </strong><%= @product.measurement_unit %></div>
           <div class="col-md-6"><strong>HSN: </strong><%= @product.best_tax_code %></div>
-          <div class="col-md-6"><strong>Is Service: </strong><%= @product.is_service %></div>
+          <div class="col-md-6"><strong>Is Service: </strong><%= format_boolean(@product.is_service) %></div>
         </div>
       </div>
 
@@ -58,7 +55,7 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <%= f.input :message, required: true, :placeholder => 'Type message' %>
+      <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 
       <div class="flex-fill">
         <div class="row">

@@ -7752,6 +7752,11 @@ stealthy-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
 
+stickybits@^3.5.6:
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/stickybits/-/stickybits-3.5.6.tgz#740925d6de78f7604b1cd69bb8e5cdfdc542f2fe"
+  integrity sha512-tQD9SUw7mBE1/U5nNayqRahYC1j4HZ5sKhisZ9em7Si3IcV5hqut64faC/PClARpfgtAWz1i+moObwQJQuC6SQ==
+
 stream-browserify@^2.0.0, stream-browserify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.1.tgz#66266ee5f9bdb9940a4e4514cafb43bb71e5c9db"

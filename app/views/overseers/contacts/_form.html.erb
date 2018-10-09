@@ -12,12 +12,6 @@
 
     <div class="form-row">
       <div class="col-12">
-        <%= f.input :account, disabled: true, input_html: { value: @company.account.to_s } %>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="col-12">
         <%= f.input :companies, input_html: { value: format_collection(f.object.companies) }, disabled: true %>
       </div>
     </div>
@@ -26,10 +20,7 @@
       <div class="col-1">
         <%= f.input :legacy_id, disabled: true %>
       </div>
-      <div class="col-1">
-        <%= f.input :prefix %>
-      </div>
-      <div class="col-5">
+      <div class="col-6">
         <%= f.input :first_name %>
       </div>
       <div class="col-5">
@@ -38,11 +29,8 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-6 d-none">
         <%= f.input :role, as: :select, wrapper: :custom_multi_select, collection: enum_to_collection(Contact.roles), include_blank: false %>
-      </div>
-      <div class="col-6">
-        <%= f.input :contact_group, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.contact_groups) %>
       </div>
     </div>
 

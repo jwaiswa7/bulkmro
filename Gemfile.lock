@@ -1,14 +1,3 @@
-GIT
-  remote: https://github.com/randym/axlsx.git
-  revision: c8ac844572b25fda358cc01d2104720c4c42f450
-  ref: c8ac844
-  specs:
-    axlsx (2.1.0.pre)
-      htmlentities (~> 4.3.4)
-      mimemagic (~> 0.3)
-      nokogiri (>= 1.6.6)
-      rubyzip (>= 1.2.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -63,8 +52,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    archive-zip (0.11.0)
-      io-like (~> 0.3.0)
     arel (9.0.0)
     async (1.10.3)
       nio4r (~> 2.3)
@@ -74,9 +61,13 @@ GEM
     async-websocket (0.6.1)
       async-io
       websocket-driver (~> 0.7.0)
-    axlsx_rails (0.5.2)
-      actionpack (>= 3.1)
-      axlsx (>= 2.0.1)
+    axlsx (2.0.0)
+      htmlentities (~> 4.3.1)
+      nokogiri (>= 1.4.1)
+      rubyzip (= 0.9.9)
+    axlsx_rails (0.1.5)
+      axlsx
+      rails (>= 3.1)
     azure-core (0.1.14)
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
@@ -96,22 +87,10 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
-    capybara (3.8.2)
-      addressable
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.8)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      xpath (~> 3.1)
     chewy (5.0.0)
       activesupport (>= 4.0)
       elasticsearch (>= 2.0.0)
       elasticsearch-dsl
-    childprocess (0.9.0)
-      ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (2.1.0)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     clockwork (2.0.3)
       tzinfo
     closure_tree (7.0.0)
@@ -228,7 +207,6 @@ GEM
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.8.0)
-    io-like (0.3.0)
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -292,9 +270,9 @@ GEM
       jquery-rails
       rails (>= 3.2.0)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
-    nokogiri (1.8.4-x64-mingw32)
+    nokogiri (1.8.5-x64-mingw32)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.4.0)
       faraday (>= 0.8, < 0.13)
@@ -377,7 +355,7 @@ GEM
     ruby-ole (1.2.12.1)
     ruby_dep (1.5.0)
     ruby_http_client (3.3.0)
-    rubyzip (1.2.2)
+    rubyzip (0.9.9)
     sass (3.6.0)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -392,9 +370,6 @@ GEM
     seed_dump (3.3.1)
       activerecord (>= 4)
       activesupport (>= 4)
-    selenium-webdriver (3.14.0)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.2)
     sendgrid-ruby (5.2.0)
       ruby_http_client (~> 3.2)
       sinatra (>= 1.4.7, < 3)
@@ -485,8 +460,6 @@ GEM
     wicked_pdf (1.1.0)
     with_advisory_lock (4.0.0)
       activerecord (>= 4.2)
-    xpath (3.1.0)
-      nokogiri (~> 1.8)
 
 PLATFORMS
   ruby
@@ -495,15 +468,13 @@ PLATFORMS
 DEPENDENCIES
   activeresource
   async-websocket
-  axlsx!
-  axlsx_rails
+  axlsx (= 2.0.0)
+  axlsx_rails (= 0.1.5)
   azure-storage
   bonsai-elasticsearch-rails (~> 7)
   bootsnap (>= 1.1.0)
   byebug
-  capybara (>= 2.15, < 4.0)
   chewy
-  chromedriver-helper
   clockwork
   closure_tree
   cocoon
@@ -538,10 +509,9 @@ DEPENDENCIES
   pundit
   rails (~> 5.2.0)
   rotp
-  rubyzip (>= 1.2.1)
+  rubyzip (= 0.9.9)
   sass-rails (~> 5.0)
   seed_dump
-  selenium-webdriver
   sendgrid-ruby
   sentry-raven
   sidekiq

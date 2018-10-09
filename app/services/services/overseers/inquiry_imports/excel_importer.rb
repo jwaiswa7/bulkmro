@@ -1,5 +1,6 @@
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
-  class ExcelInvalidHeader < StandardError; end
+  class ExcelInvalidHeader < StandardError;
+  end
 
   def call
     if import.save
@@ -15,7 +16,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
   def set_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-    excel_rows.reject! { |er| er.compact.blank? }
+    excel_rows.reject! {|er| er.compact.blank?}
 
     @excel_rows = excel_rows
   end
@@ -24,7 +25,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     @excel_header_row = excel_rows.shift
 
     excel_header_row.each do |column|
-      if /^[A-Z]{1}[a-zA-Z]*$/.match?(column) && column.in?(%w(Id Name Brand MPN SKU Quantity))
+      if /^[a-zA-Z]{1}[a-zA-Z]*$/i.match?(column) && column.downcase.in?(%w(id name brand mpn sku quantity))
         column.downcase!
       else
         raise ExcelInvalidHeader
@@ -40,10 +41,19 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
 
   def set_generated_skus
     rows.each do |row|
-      if row['sku'].blank?
-        range = [*'0'..'9',*'A'..'Z',*'a'..'z'];
-        code = Array.new(6){ range.sample }.join.upcase
-        row['sku'] = "BM9" + code;
+      if !Product.approved.find_by_sku(row['sku']).present?
+        number = [*'0'..'9']
+        character = [*'A'..'Z', *'a'..'z']
+
+        10.times do
+          code = [
+              "BM9",
+              [number.sample, character.sample, number.sample, character.sample].join.upcase
+          ].join
+          row['sku'] = code
+          puts code
+          break if Product.find_by_sku(code).blank?
+        end
       end
     end
   end

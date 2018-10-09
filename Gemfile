@@ -94,9 +94,9 @@ gem 'spreadsheet', require: false
 gem 'simple_xlsx_reader'
 
 # Render XLSX files
-gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
+gem 'axlsx', '2.0.0'
+gem 'axlsx_rails', '0.1.5'
+gem 'rubyzip', '0.9.9'
 
 # Validate file uploads
 gem 'file_validators'
@@ -182,10 +182,10 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
+  # gem 'capybara', '>= 2.15', '< 4.0'
+  # gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
+  # gem 'chromedriver-helper'
 end
 
 group :production do

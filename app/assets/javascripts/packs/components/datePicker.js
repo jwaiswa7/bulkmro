@@ -1,6 +1,6 @@
 const datePicker = () => {
     $('[data-toggle="datepicker"]').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'dd-M-yyyy'
     });
 };
 

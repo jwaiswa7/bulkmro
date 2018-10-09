@@ -36,6 +36,10 @@ class Address < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_sez ||= false
+
+    if self.company.present?
+      self.name ||= self.company.name
+    end
   end
 
   def to_s

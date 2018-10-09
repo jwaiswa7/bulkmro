@@ -62,6 +62,9 @@ let initVueJS = () => {
             }
         },
         computed: {
+            showCurrency: function () {
+                return this.currency_sign != '₹'
+            },
             totalFreightCost: function () {
                 // let total = 0;
                 //
@@ -78,6 +81,19 @@ let initVueJS = () => {
                 return this[name]
             },
 
+            hideProduct(product_id) {
+                let _this = this
+                $('#ac-' + product_id).find("[data-index]").each(function (index, row) {
+                    let currentRowIndex = $(row).data('index');
+                    $(row).find('.btn.btn-danger').each(function (index, row) {
+                        $(row).click();
+                    })
+
+
+                });
+                $('#ac-' + product_id).parent().hide();
+            },
+
             getRow(index) {
                 return this.rows[index];
             },
@@ -88,15 +104,17 @@ let initVueJS = () => {
                 }
             },
 
-            /*dropRow(index) {
+            dropRow(index) {
                 let row = this.getRow(index);
-                for (var property in row) {
+                /*for (var property in row) {
                     if (row.hasOwnProperty(property)) {
                         row[property] = 0;
                     }
-                }
+                }*/
+
+
                 this.setRow(index, row);
-            },*/
+            },
 
             getCheckedRows() {
                 let checkedSupplierIds = [];
@@ -120,11 +138,9 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
-                console.log()
                 let row = this.getRow(index);
                 row.total_selling_price = toDecimal(row.unit_selling_price * row.quantity);
                 let tax = parseFloat(row.total_selling_price * row.tax_percentage / 100);
@@ -239,9 +255,12 @@ let initVueJS = () => {
             triggerFreightChangeFor(index, trigger) {
                 let row = this.getRow(index);
 
-                let freight_cost_subtotal = row.freight_cost_subtotal;
-                let unit_freight_cost = row.unit_freight_cost;
-                let quantity = row.quantity;
+                let freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                let unit_freight_cost = row.unit_freight_cost || 0;
+                let quantity = row.quantity || 0;
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
+                this.setRow(index, row);
 
                 if (trigger === 'freight_cost_subtotal' && freight_cost_subtotal >= 0) {
                     row.unit_freight_cost = toDecimal(freight_cost_subtotal / quantity);
@@ -250,8 +269,10 @@ let initVueJS = () => {
                 }
 
                 row.unit_cost_price_with_unit_freight_cost = parseFloat(row.unit_freight_cost) + parseFloat(row.unit_cost_price);
-
+                row.unit_freight_cost = row.unit_freight_cost || 0;
+                row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
                 this.setRow(index, row);
+                this.triggerSellingPriceChangeFor(index,'margin_percentage');
             },
 
             triggerSellingPriceChangeFor(index, trigger) {
@@ -268,8 +289,9 @@ let initVueJS = () => {
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {
                     margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
-                    row.margin_percentage = toDecimal(margin_percentage * 100);
+                    row.margin_percentage = parseFloat(margin_percentage * 100);
                 }
+
                 this.setRow(index, row);
 
             },
@@ -347,6 +369,7 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
+        currency_sign: '₹',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
@@ -398,7 +421,7 @@ let assignEventsAndGetAttributes = () => {
                     // To recreate VueJS v-model when nested form rows are added or removed
                     $(el).attr("v-html", modelName);
                     //$(el).attr("data-v-index", currentRowIndex);
-                    if(currentRowTemplate[attributeName] == undefined){
+                    if (currentRowTemplate[attributeName] == undefined) {
                         currentRowTemplate[attributeName] = 0;
                     }
 
@@ -426,6 +449,9 @@ let assignEventsAndGetAttributes = () => {
         assignDataEventsAsEvents($(el), undefined);
     });
 
+    $('[data-v-event]').each(function (index, el) {
+        assignDataEventsAsEvents($(el), undefined);
+    });
     // V-models that cannot be edited, auto calculated
     $('[data-v-html]').each(function (index, el) {
         $(el).attr("v-html", $(el).attr('data-v-html'));
@@ -435,6 +461,7 @@ let assignEventsAndGetAttributes = () => {
 };
 
 let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
+
     let eventNames = ['v-on:change', 'v-on:input', 'v-on:click'];
     let attributeName = undefined;
 
@@ -458,11 +485,14 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
         }
 
         eventNames.forEach(function (eventName) {
+
             $(el).attr('v-on:input', methodName);
         });
     } else {
         eventNames.forEach(function (eventName) {
+
             if ($(el).data(eventName)) {
+
                 $(el).attr(eventName, $(el).data(eventName).replace('_index_', currentRowIndex));
             }
         });

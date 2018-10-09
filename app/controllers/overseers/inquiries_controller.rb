@@ -11,7 +11,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @indexed_inquiries = service.indexed_records
-        @inquiries = service.records
+        @inquiries = service.records.reverse
       end
     end
   end
@@ -26,7 +26,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service.call
 
     @indexed_inquiries = service.indexed_records
-    @inquiries = service.records
+    @inquiries = service.records.reverse
 
     authorize @inquiries
   end
@@ -52,9 +52,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -69,7 +69,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 
@@ -85,7 +85,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      redirect_to edit_suppliers_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'
     end
@@ -117,17 +117,23 @@ class Overseers::InquiriesController < Overseers::BaseController
         :gross_profit_percentage,
         :quotation_date,
         :customer_committed_date,
+        :customer_order_date,
+        :quotation_followup_date,
         :procurement_date,
         :expected_closing_date,
         :quote_category,
         :price_type,
         :freight_option,
         :total_freight_cost,
+        :customer_po_number,
         :packing_and_forwarding_option,
         :payment_option_id,
         :weight_in_kgs,
         :customer_po_sheet,
         :final_supplier_quote,
+        :suppler_quote,
+        :copy_of_email,
+        :is_sez,
         :calculation_sheet,
         :commercial_terms_and_conditions,
         :comments,
