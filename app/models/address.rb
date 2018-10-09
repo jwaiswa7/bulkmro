@@ -35,10 +35,14 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
-  after_create :generate_remote_uid
+  before_save :set_remote_uid
 
   def set_defaults
     self.is_sez ||= false
+  end
+
+  def set_remote_uid
+    self.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid)
   end
 
   def to_s
@@ -47,9 +51,5 @@ class Address < ApplicationRecord
 
   def self.legacy
     find_by_name('Legacy Indian State')
-  end
-
-  def generate_remote_uid
-    update_attribute(:remote_uid, "A#{self.id + 10000 }")
   end
 end
