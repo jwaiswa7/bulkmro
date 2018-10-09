@@ -640,6 +640,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       Brand.where(name: name).first_or_create! do |brand|
         brand.legacy_id = x.get_column('manufacturer_id')
         brand.remote_uid = x.get_column('sap_code')
+        brand.legacy_option_id = x.get_column('option_id')
         brand.legacy_metadata = x.get_row
       end
     end
@@ -690,7 +691,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def products
     service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
     service.loop(limit) do |x|
-      brand = Brand.find_by_legacy_id(x.get_column('product_brand'))
+      brand = Brand.find_by_legacy_option_id(x.get_column('product_brand'))
       measurement_unit = MeasurementUnit.find_by_name(x.get_column('uom_name'))
       name = x.get_column('name')
       legacy_id = x.get_column('entity_id')
@@ -701,24 +702,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       product = Product.where(legacy_id: legacy_id).first_or_create! do |product|
         product.assign_attributes(
-            brand: brand,
-            category: Category.default,
-            sku: sku,
-            tax_code: tax_code || TaxCode.default,
-            mpn: x.get_column('mfr_model_number'),
-            description: x.get_column('description'),
-            meta_description: x.get_column('meta_description'),
-            meta_keyword: x.get_column('meta_keyword'),
-            meta_title: x.get_column('meta_title'),
-            name: name || "noname ##{legacy_id}",
-            remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
-            measurement_unit: measurement_unit,
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created', to_datetime: true),
-            updated_at: x.get_column('modified', to_datetime: true),
+          brand: brand,
+          category: Category.default,
+          sku: sku,
+          tax_code: tax_code || TaxCode.default,
+          mpn: x.get_column('mfr_model_number'),
+          description: x.get_column('description'),
+          meta_description: x.get_column('meta_description'),
+          meta_keyword: x.get_column('meta_keyword'),
+          meta_title: x.get_column('meta_title'),
+          name: name || "noname ##{legacy_id}",
+          remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
+          measurement_unit: measurement_unit,
+          legacy_metadata: x.get_row,
+          created_at: x.get_column('created', to_datetime: true),
+          updated_at: x.get_column('modified', to_datetime: true),
         )
       end
-
       product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
     end
   end
@@ -979,25 +979,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
         activity.assign_attributes(
-            inquiry: inquiry,
-            company: company,
-            contact: contact,
-            subject: x.get_column('subject'),
-            company_type: company_type,
-            purpose: purpose[x.get_column('purpose')],
-            activity_type: activity_type[x.get_column('activity')],
-            activity_status: activity_status[x.get_column('activitystatus')],
-            points_discussed: x.get_column('comment'),
-            actions_required: x.get_column('actionrequired'),
-            reference_number: x.get_column('refno'),
-            created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
-            legacy_metadata: x.get_row,
-            created_by: overseer,
-            updated_by: overseer
-
+          inquiry: inquiry,
+          company: company,
+          contact: contact,
+          subject: x.get_column('subject'),
+          company_type: company_type,
+          purpose: purpose[x.get_column('purpose')],
+          activity_type: activity_type[x.get_column('activity')],
+          activity_status: activity_status[x.get_column('activitystatus')],
+          points_discussed: x.get_column('comment'),
+          actions_required: x.get_column('actionrequired'),
+          reference_number: x.get_column('refno'),
+          created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
+          legacy_metadata: x.get_row,
+          created_by: overseer,
+          updated_by: overseer
         )
       end
-
       # ActivityOverseer.create!(activity: activity, overseer: overseer) if overseer_legacy_id.present?
     end
   end
