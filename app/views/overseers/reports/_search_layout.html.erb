@@ -1,15 +1,27 @@
 <%= simple_form_for([:overseers, @report], method: :get) do |f| %>
 
-  <%= f.label :start_at %>
-  <%= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-  <br />
-  <%= f.label :end_at %>
-  <%= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-  <br />
-
-  <%= f.input :date_range, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
-
-  <%= submit_tag 'Refresh', name: nil %>
+  <div class="card mt-4">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="col-4">
+          <%#= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+          <%= f.input :start_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+        </div>
+        <div class="col-4">
+          <%#= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
+          <%= f.input :end_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+        </div>
+        <div class="col-4">
+          <%= f.input :date_range, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
+        </div>
+        <div class="col-12">
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-redo mr-2"></i>Refresh
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <%= yield %>
