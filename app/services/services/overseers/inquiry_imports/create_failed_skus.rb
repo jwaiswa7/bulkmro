@@ -5,10 +5,17 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
   end
 
   def call
-    excel_import.rows.each_with_index do |row, index|
+
+    already_approved_alternate_ids = []
+
+    excel_import.rows.each do |row|
       if row.marked_for_destruction?
-        row.reload
+        if excel_import.valid?
+          row.reload
+        end
       elsif row.approved_alternative_id.present?
+
+        if not already_approved_alternate_ids.include?(row.approved_alternative_id)
         row.build_inquiry_product(
             :inquiry => inquiry,
             :import => excel_import,
@@ -16,9 +23,15 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
             :quantity => row.metadata['quantity'],
             :sr_no => row.metadata['id'],
         )
+        already_approved_alternate_ids << row.approved_alternative_id
+        else
+          row.reload
+        end
+
       else
         row
       end
+
     end
 
     excel_import.save
