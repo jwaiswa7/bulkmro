@@ -1,30 +1,37 @@
 <div class="col-12">
 
-  <div class="form-row text-center mt-5 mt-lg-4">
-    <% @data.geographies.each do |geography| %>
-      <div class="col-3">
-        <div class="card mb-2">
-          <div class="card-body">
-            <h2><%= geography.count %></h2>
-            <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
-            <div class="form-row">
-              <div class="col-6">
-                <p>
-                  Meeting<br>
-                  <strong><%= geography.meeting %></strong>
-                </p>
-              </div>
-              <div class="col-6">
-                <p>
-                  Others<br>
-                  <strong><%= geography.not_meeting %></strong>
-                </p>
+
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
+    Activity Report Summary
+  </a>
+
+  <div id="summary" class="collapse">
+    <div class="form-row text-center">
+      <% @data.geographies.each do |geography| %>
+        <div class="col-3">
+          <div class="card mb-2">
+            <div class="card-body">
+              <h2><%= geography.count %></h2>
+              <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
+              <div class="form-row">
+                <div class="col-6">
+                  <p>
+                    Meeting<br>
+                    <strong><%= geography.meeting %></strong>
+                  </p>
+                </div>
+                <div class="col-6">
+                  <p>
+                    Others<br>
+                    <strong><%= geography.not_meeting %></strong>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 
   <%= render layout: 'search_layout' do %>
