@@ -78,16 +78,19 @@
                        <span data-toggle="tooltip" title="Quantity">Qty</span>
                      </th>
                      <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+                     </th>
+                     <th class="no-sort">
+                       <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
+                     </th>
+                     <th class="no-sort">
                        <span data-toggle="tooltip" title="Margin Percentage">%</span>
                      </th>
                      <th class="no-sort">
                        <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
                      </th>
-                     <th class="no-sort">
+                     <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
                        <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>)</span>
-                     </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Unit Cost with Freight">UC w. Freight</span><br>
                      </th>
                      <th class="no-sort">
                        <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
@@ -98,9 +101,6 @@
                      <th class="no-sort">
                        <span>Tax Code</span><br>
                      </th>
-                     <th class="no-sort">
-                       <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
-                     </th>
                    </tr>
                    </thead>
                    <tbody>
@@ -109,16 +109,19 @@
                          <span><%= row.object.quantity %></span>
                        </td>
                        <td>
+                         <span><%= row.object.measurement_unit %></span>
+                       </td>
+                       <td>
+                         <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                       </td>
+                       <td>
                          <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
                        </td>
                        <td>
                          <span><%= row.object.unit_selling_price %></span>
                        </td>
-                       <td>
+                       <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
                          <span><%= row.object.converted_unit_selling_price %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
                        </td>
                        <td>
                          <span><%= row.object.total_selling_price %></span>
@@ -128,9 +131,6 @@
                        </td>
                        <td>
                          <span><%= row.object.tax_code %></span>
-                       </td>
-                       <td>
-                         <span><%= row.object.measurement_unit %></span>
                        </td>
                      </tr>
                    </tbody>
