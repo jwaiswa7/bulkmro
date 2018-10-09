@@ -1,41 +1,41 @@
 <% provide :container_fluid, true %>
 
 <div class="col-12">
-  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
-    Activity Report Summary
-  </a>
 
-  <div id="summary" class="collapse">
-    <div class="form-row text-center">
-      <% @data.geographies.each do |geography| %>
-        <div class="col-3">
-          <div class="card mb-2">
-            <div class="card-body">
-              <h2><%= geography.count %></h2>
-              <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
-              <div class="form-row">
-                <div class="col-6">
-                  <p>
-                    Meeting<br>
-                    <strong><%= geography.meeting %></strong>
-                  </p>
-                </div>
-                <div class="col-6">
-                  <p>
-                    Others<br>
-                    <strong><%= geography.not_meeting %></strong>
-                  </p>
+  <%= render layout: 'search_layout' do %>
+    <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
+      Activity Report Summary
+    </a>
+    <div id="summary" class="collapse">
+      <div class="form-row text-center">
+        <% @data.geographies.each do |geography| %>
+          <div class="col-3">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h2><%= geography.meeting + geography.not_meeting %></h2>
+                <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
+                <div class="form-row">
+                  <div class="col-6">
+                    <p>
+                      Meeting<br>
+                      <strong><%= geography.meeting %></strong>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p>
+                      Others<br>
+                      <strong><%= geography.not_meeting %></strong>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <%= render layout: 'search_layout' do %>
-    <table class="table text-center">
+    <table class="table text-center mt-3">
       <thead data-toggle="sticky">
         <tr>
           <th></th>
@@ -68,7 +68,7 @@
             <td class="text-right"><strong><%= format_date_without_time(date) %></strong></td>
             <% @data.geographies.each do |geography| %>
               <% geography.overseers.each do |overseer| %>
-                <td><%= get_entry(@data.entries, date, overseer.id) %></td>
+                <td><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
               <% end %>
             <% end %>
           </tr>
