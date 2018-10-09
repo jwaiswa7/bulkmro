@@ -26,7 +26,9 @@ class Services::Overseers::Inquiries::SaveAndSync < Services::Shared::BaseServic
     else
       inquiry.opportunity_uid = Resources::SalesOpportunity.create(inquiry)
     end
+
     inquiry.save
+raise
     if inquiry.sales_quotes.any?
       sales_quote = inquiry.final_sales_quote
       sales_quote.save_and_sync if sales_quote.present?

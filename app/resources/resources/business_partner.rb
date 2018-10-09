@@ -12,6 +12,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.update(id, record)
+    #self.update_associated_records(record)
     super(id, record, use_quotes_for_id: true) do
       update_associated_records(record) if record.present?
     end
@@ -63,8 +64,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     record.addresses.each do |address|
       street_address = [address.street1, address.street2].compact.join(' ')
-      street = street_address[0..49]
-      address_name2 = street_address[50..149]
+      street = street_address[0..99]
+      address_name2 = street_address[100..149]
       address_name3 = street_address[150..199]
 
       # First Entry for Billing Address
@@ -231,6 +232,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contact_row.InternalCode = company_contact.remote_uid
       contact_row.U_MgntCustID = contact.legacy_id.present? ? contact.legacy_id : contact.id
 
+      if(!company_contact.remote_uid.blank?)
+        contact_row.InternalCode = company_contact.remote_uid
+      end
       contacts.push(contact_row.marshal_dump)
     end
 
@@ -244,7 +248,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         Country: record.default_billing_address.present? ? record.default_billing_address.country_code : nil,
         EmailAddress: record.default_company_contact.present? ? record.default_company_contact.contact.email : nil,
         City: record.default_billing_address.present? ? record.default_billing_address.city_name : nil,
-        ContactPerson: record.default_company_contact.present? ? record.default_company_contact.full_name : nil,
+        ContactPerson: record.default_company_contact.present? ? record.default_company_contact.contact.full_name : nil,
         OwnerCode: record.outside_sales_owner_id.present? ? record.outside_sales_owner.employee_uid : nil,
         Phone1: record.phone,
         Phone2: nil,
@@ -272,6 +276,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         UseBillToAddrToDetermineTax: "tYES"
     }
 
-    response
+    response.compact
   end
 end

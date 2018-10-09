@@ -19,7 +19,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_LeadTime = row.lead_time_option.name # Lead time ?
       item.Comments = nil # Inquiry COmment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
-      item.Currency = record.currency.name # Curr
+      item.Currency = record.currency.name # CContactPersonurr
       item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.remote_uid # Supplier
       item.U_BuyCost = row.unit_cost_price_with_unit_freight_cost

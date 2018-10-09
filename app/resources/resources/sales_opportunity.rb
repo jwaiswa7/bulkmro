@@ -5,6 +5,7 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
+    company_contact = record.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
     {
         CardCode: record.company.remote_uid, #
         U_SalesMgr: record.sales_manager.try(:full_name),
