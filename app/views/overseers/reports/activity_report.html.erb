@@ -35,45 +35,44 @@
   </div>
 
   <%= render layout: 'search_layout' do %>
-    <table class="table-bordered table">
+    <table class="table text-center datatable table-bordered dt-responsive">
       <thead>
-      <tr>
-        <th></th>
-        <% @data.geographies.each do |geography| %>
-          <th colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
-        <% end %>
-      </tr>
-
-      <tr>
-        <th></th>
-        <% @data.geographies.each do |geography| %>
-          <% geography.overseers.each do |overseer| %>
-            <td><%= overseer.count %></td>
-          <% end %>
-        <% end %>
-      </tr>
-
-      <tr>
-        <th>Date</th>
-        <% @data.geographies.each do |geography| %>
-          <% geography.overseers.each do |overseer| %>
-            <td><%= "#{overseer.name.split(' ').first[0]}.#{overseer.name.split(" ").last[0]}" %></td>
-          <% end %>
-        <% end %>
-      </tr>
-      </thead>
-      <tbody>
-
-      <% @report.start_date.upto(@report.end_date) do |date| %>
         <tr>
-          <td><%= format_date_without_time(date) %></td>
+          <th></th>
+          <% @data.geographies.each do |geography| %>
+            <th class="text-uppercase text-black-50" colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
+          <% end %>
+        </tr>
+        <tr>
+          <th></th>
           <% @data.geographies.each do |geography| %>
             <% geography.overseers.each do |overseer| %>
-              <td><%= get_entry(@data.entries, date, overseer.id) %></td>
+              <td><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
             <% end %>
           <% end %>
         </tr>
-      <% end %>
+        <tr>
+          <th class="text-right">Date</th>
+          <% @data.geographies.each do |geography| %>
+            <% geography.overseers.each do |overseer| %>
+              <td data-toggle="tooltip" title="<%= overseer.name %>">
+                <strong><%= "#{overseer.name.split(' ').first[0]}. #{overseer.name.split(" ").last[0]}." %></strong>
+              </td>
+            <% end %>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @report.start_date.upto(@report.end_date) do |date| %>
+          <tr>
+            <td class="text-right"><strong><%= format_date_without_time(date) %></strong></td>
+            <% @data.geographies.each do |geography| %>
+              <% geography.overseers.each do |overseer| %>
+                <td><%= get_entry(@data.entries, date, overseer.id) %></td>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
       </tbody>
     </table>
   <% end %>
