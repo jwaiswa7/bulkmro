@@ -48,7 +48,6 @@ let setup = () => {
 
         $.fn.dataTable.ext.errMode = 'throw';
         $(this).DataTable({
-            conditionalPaging: true,
             searchDelay: 1000,
             serverSide: isAjax,
             processing: true,
@@ -57,6 +56,14 @@ let setup = () => {
                 header: isFixedHeader,
                 headerOffset: $('.navbar.navbar-expand-lg').height()
             },
+            fnDrawCallback: function(oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                } else {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+                }
+            },
+            info: false,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
