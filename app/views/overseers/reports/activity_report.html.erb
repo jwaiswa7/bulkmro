@@ -1,15 +1,33 @@
 <div class="col-12">
-  <%= render layout: 'search_layout' do %>
+
+  <div class="form-row text-center mt-5 mt-lg-4">
     <% @data.geographies.each do |geography| %>
-      <div class="">
-        <p>Geography: <%= geography.name %></p>
-        <p>Count: <%= geography.count %></p>
-        <p>Meeting: <%= geography.meeting %></p>
-        <p>Others: <%= geography.not_meeting %></p>
+      <div class="col-3">
+        <div class="card mb-2">
+          <div class="card-body">
+            <h2><%= geography.count %></h2>
+            <h5 class="text-uppercase text-black-50"><%= geography.name %></h5>
+            <div class="form-row">
+              <div class="col-6">
+                <p>
+                  Meeting<br>
+                  <strong><%= geography.meeting %></strong>
+                </p>
+              </div>
+              <div class="col-6">
+                <p>
+                  Others<br>
+                  <strong><%= geography.not_meeting %></strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     <% end %>
+  </div>
 
-    <hr/>
+  <%= render layout: 'search_layout' do %>
     <table class="table-bordered table">
       <thead>
       <tr>
