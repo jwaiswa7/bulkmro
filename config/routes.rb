@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get 'migrations'
     end
 
+    resources :remote_requests
+
     resources :reports
     resources :activities
     resource :profile, :controller => :profile

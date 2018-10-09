@@ -87,8 +87,10 @@ class Resources::ApplicationResource
 
   def self.custom_find(id, by=nil)
     response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
+
+    log_request(:post, id, is_query: true)
     validated_response = get_validated_response(response)
-    log_request(:get, id, response, is_query: true)
+    log_response(validated_response)
 
     if validated_response['value'].present?
       remote_record = validated_response['value'][0]
@@ -99,16 +101,22 @@ class Resources::ApplicationResource
 
   def self.create(record)
     response = post("/#{collection_name}", body: to_remote(record).to_json)
+
+    log_request(:post, record)
     validated_response = get_validated_response(response)
-    log_request(:post, record, validated_response)
+    log_response(validated_response)
+
     yield validated_response if block_given?
     validated_response[self.identifier]
   end
 
   def self.update(id, record, use_quotes_for_id: false)
     response = patch("/#{collection_name}(#{use_quotes_for_id ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
+
+    log_request(:post, record)
     validated_response = get_validated_response(response)
-    log_request(:patch, record, validated_response)
+    log_response(validated_response)
+
     yield validated_response if block_given?
     id
   end
@@ -117,16 +125,14 @@ class Resources::ApplicationResource
     if raw_response['odata.metadata'] || (200...300).include?(raw_response.code)
       OpenStruct.new(raw_response.parsed_response)
     elsif raw_response['error']
-      raise
       { raw_response: raw_response, error_message: 'SAP Error :' + raw_response['error']['message']['value'] }
     else
-      raise
       { raw_response: raw_response, error_message: 'SAP Error / Warning :' + raw_response.to_s }
     end
   end
 
-  def self.log_request(method, request, response, is_query: false)
-    RemoteRequest.create!({
+  def self.log_request(method, request, response=nil, is_query: false)
+    @remote_request = RemoteRequest.create!({
                              method: method,
                              resource: collection_name,
                              request: is_query ? "Search for #{request}" : to_remote(request),
@@ -134,6 +140,13 @@ class Resources::ApplicationResource
                              url: [ENDPOINT, "/#{collection_name}"].join(""),
                              status: response.is_a?(OpenStruct) ? :success : :failed
                          })
+
+    @remote_request
+  end
+
+  def self.log_response(response)
+    @remote_request.update_attributes(:response => response)
+    @remote_request
   end
 end
 

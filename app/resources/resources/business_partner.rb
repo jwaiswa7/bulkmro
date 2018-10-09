@@ -6,7 +6,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |validated_response|
-      self.update_associated_records(record, validated_response)
+      self.update_associated_records(record)
     end
     id
   end

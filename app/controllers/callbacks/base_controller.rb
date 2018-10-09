@@ -3,16 +3,32 @@ class Callbacks::BaseController < ApplicationController
   before_action :authenticate_callback!
   before_action :log_request
 
-  def render_successful(status=1, message='Request successfully handled', response = nil)
-    render json: {
-                 success: status,
-                 status: status,
-                 message: message,
-                 response: response
-             }, status: :ok
+  def create
+    service_class = ['Services', 'Callbacks', controller_name.classify, 'Create'].join.constantize
+    service = service_class.new(params)
+    service.call
+
+    render_successful
   end
 
-  def render_unsuccessful(status=0, message='Request unsuccessful', response = nil)
+  def update
+    service_class = ['Services', 'Callbacks', controller_name.classify, 'Update'].join.constantize
+    service = service_class.new(params)
+    service.call
+
+    render_successful
+  end
+
+  def render_successful(status = 1, message = 'Request successfully handled', response = nil)
+    render json: {
+        success: status,
+        status: status,
+        message: message,
+        response: response
+    }, status: :ok
+  end
+
+  def render_unsuccessful(status = 0, message = 'Request unsuccessful', response = nil)
     render json: {
         success: status,
         status: status,

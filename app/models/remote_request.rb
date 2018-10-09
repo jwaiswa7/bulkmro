@@ -1,4 +1,6 @@
 class RemoteRequest < ApplicationRecord
+  include Mixins::CanBeStamped
+
   belongs_to :inquiry, required: false
 
   enum status: {
