@@ -1,0 +1,40 @@
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+      <th colspan="1">Inquiry #</th>
+      <th colspan="1">Alias Name</th>
+      <th colspan="1">Company Name</th>
+      <th colspan="1">SKU</th>
+      <th colspan="1">Brand</th>
+      <th colspan="1">Description</th>
+      <th colspan="1">Quote Date</th>
+      <th colspan="1">Quote Buying</th>
+      <th colspan="1">SO Date</th>
+      <th colspan="1">Selling Price</th>
+    </tr>
+  </thead>
+  <% @product_inquiries.each do |product_inquiry| %>
+  <tbody>
+    <br>
+    <td><%= product_inquiry.inquiry.inquiry_number%></td>
+    <td><%= product_inquiry.inquiry.company.account.alias%></td>
+    <td><%= product_inquiry.inquiry.company.account.name%></td>
+    <td><%= product_inquiry.product.sku%></td>
+    <td><%= product_inquiry.product.brand.name%></td>
+    <td><%= product_inquiry.product.name%></td>
+    <td><%= product_inquiry.inquiry.quotation_date.try(:strftime, '%e %b, %Y')%></td>
+    <td><%= product_inquiry.inquiry.final_sales_quote.rows.
+            joins(:inquiry_product).
+            where(:inquiry_products =>{:product_id => product_inquiry.product.id})
+            .first.unit_cost_price.round(2) if product_inquiry.inquiry.final_sales_quote.present?%></td>
+    <td><%= product_inquiry.inquiry.final_sales_quote.sales_orders.
+            approved.first.sent_at.try(:strftime, '%e %b, %Y') if
+                product_inquiry.inquiry.final_sales_quote.present? &&
+                    product_inquiry.inquiry.final_sales_quote.sales_orders.present?%></td>
+    <td><%= product_inquiry.inquiry.final_sales_quote.rows.
+            joins(:inquiry_product).
+            where(:inquiry_products => {:product_id => product_inquiry.product.id})
+            .first.unit_selling_price.round(2) if product_inquiry.inquiry.final_sales_quote.present?%></td>
+  </tbody>
+  <% end %>
+</table>

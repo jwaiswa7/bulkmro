@@ -85,6 +85,14 @@ class Overseers::ProductsController < Overseers::BaseController
     } : {}
   end
 
+  def view
+    service = Services::Overseers::Finders::PurchaseHistory.new(params)
+    service.call
+    @product = service.get_product
+    @product_inquiries = service.product_inquiries_list
+    authorize @product
+  end
+
   private
   def product_params
     params.require(:product).permit(
