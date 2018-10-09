@@ -3,10 +3,10 @@
 <div class="col-12">
 
   <%= render layout: 'search_layout' do %>
-    <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
+    <a class="btn btn-light text-left btn-lg btn-block my-2 mb-2" type="button" data-toggle="collapse" data-target="#summary">
       Activity Report Summary
     </a>
-    <div id="summary" class="collapse">
+    <div id="summary" class="collapse show">
       <div class="form-row text-center">
         <% @data.geographies.each do |geography| %>
           <div class="col-3">
