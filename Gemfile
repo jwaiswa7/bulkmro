@@ -165,9 +165,6 @@ gem 'sidekiq'
 # NET SCP for sending files to SAP
 gem 'net-scp'
 
-# Zip-zip fixes zip workaround for Heroku
-gem 'zip-zip'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
