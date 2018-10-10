@@ -91,6 +91,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'index_pg'
+        get 'smart_queue'
       end
 
       scope module: 'inquiries' do

@@ -21,6 +21,8 @@ class SalesQuote < ApplicationRecord
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
   has_many :email_messages
 
+  before_save :set_calculated_total
+  after_save :set_priority
   delegate :bill_from, :billing_address, :shipping_address, :is_sez, to: :inquiry
 
   attr_accessor :selected_suppliers
@@ -44,27 +46,12 @@ class SalesQuote < ApplicationRecord
     self.inquiry.sales_quotes.except_object(self).count >= 1
   end
 
-  def get_smart_queue
-    # SELECT quotation.*, star.starvalue, company.cmp_name, company.is_strategic, count(distinct opportunity.refno) as cntOpportunity, company.cmp_alias, company_alias.aliasname, u.firstname as managerfirstname, u.lastname as managerlastname,u2.firstname as outsidefirstname, u2.lastname as outsidelastname FROM quotation
-    # LEFT JOIN starred_enquiry as star ON quotation.increment_id=star.inquiryid and star.staruserid = 171
-    # LEFT JOIN opportunity ON quotation.increment_id=opportunity.enquiryids
-    # LEFT JOIN company ON quotation.customer_company=company.cmp_id
-    # LEFT JOIN company_alias ON company_alias.id=company.cmp_alias
-    # LEFT JOIN admin_user as u ON u.username=quotation.manager
-    # LEFT JOIN admin_user as u2 ON u.username=quotation.outside
-    # where
-    # and star.staruserid = 171 #current user
-    # -- manager = ''
-    # quotation.is_closed = 0 AND
-    # quotation.bought not in (11, 9, 10)
-    # GROUP BY quotation.increment_id
-    # order by is_prioritized desc, quotation_followup_date asc, price_ht2 DESC
-    #
-    # manger logic
-    #  if ($userId != 26  && $userId != 161 && $userId != 51 && $userId != 9 && $userId != 35 && $userId != 38 && $role_data["role_id"] != 1 && $role_data["role_id"] != 961 && $role_data["role_id"] != 839 && $role_data["role_id"] != 12) {
-    #             $collection->addFieldToFilter(
-    #                     array('manager'), array($userName)
-    #             );
-    #         }
+  def set_calculated_total
+      self.inquiry.update_attributes(calculated_total: calculated_total)
   end
+
+  def set_priority
+    Services::Overseers::Inquiries::SetInquiryPriority.new(self.inquiry).set_priority
+  end
+
 end
