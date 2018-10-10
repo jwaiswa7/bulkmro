@@ -30,7 +30,6 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
         data.entries.merge!({ overseer_id_and_date[1] => { overseer_id_and_date[0] => count }})
       end
       ActiveRecord::Base.default_timezone = :local
-
       geography.overseers = overseers
       data.geographies.push(geography)
     end

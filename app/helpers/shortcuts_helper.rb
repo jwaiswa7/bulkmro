@@ -66,4 +66,12 @@ module ShortcutsHelper
       0
     end
   end
+
+  def get_pipeline_entry(entries, *attributes)
+    if entries[attributes[0]].present? && entries[attributes[0]][attributes[1].name].present?
+      entries[attributes[0]][attributes[1].name]
+    else
+      0
+    end
+  end
 end
