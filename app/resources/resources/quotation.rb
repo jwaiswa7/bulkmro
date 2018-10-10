@@ -49,6 +49,8 @@ class Resources::Quotation < Resources::ApplicationResource
             nil
           end
 
+    company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
+
     {
         U_MgntDocID: record.to_param, # Quote ID
         CardCode: record.inquiry.company.remote_uid, #Customer ID
@@ -85,7 +87,8 @@ class Resources::Quotation < Resources::ApplicationResource
         U_Out_Sales_Own: record.inquiry.outside_sales_owner.try(:full_name),
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
-        TaxExtension: sez
+        TaxExtension: sez,
+        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil
     }
   end
 end

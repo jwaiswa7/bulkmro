@@ -17,12 +17,14 @@ class Resources::Draft < Resources::ApplicationResource
       items.push(item.marshal_dump)
     end
 
+    company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
+
     {
         AttachmentEntry:  record.inquiry.attachment_uid, #6383, #$quote['attachment_entry'] ------------
         BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, #record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, #record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
-        ContactPersonCode: record.inquiry.contact.remote_uid, #22537, #
+        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         DiscountPercent: 0, #hardcode
         DocDueDate: record.inquiry.expected_closing_date.to_s, #estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
@@ -60,7 +62,7 @@ class Resources::Draft < Resources::ApplicationResource
         U_PostBy: "Magento", #hardcode
         U_PostMagento: "Y", #hardcode
         U_Ovr_Margin: record.calculated_total_margin_percentage,
-        U_Over_Marg_Amnt: record.calculated_total_margin,
+        U_Over_Marg_Amnt: record.calculated_total_margin
     }
   end
 end
