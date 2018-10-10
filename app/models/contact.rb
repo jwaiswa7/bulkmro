@@ -31,9 +31,10 @@ class Contact < ApplicationRecord
 
   validates_presence_of :telephone, if: -> { !self.mobile.present? }
   validates_presence_of :mobile, if: -> { !self.telephone.present? }
-  
-  # TODO
-  validates :telephone, :mobile, telephone_number: {country: "IN", types: [:fixed_line, :mobile]}, allow_blank: true
+
+  # validates contact numbers
+  phony_normalize :telephone, :mobile, default_country_code: 'IN'
+  validates_plausible_phone :telephone, :mobile, allow_blank:true
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults

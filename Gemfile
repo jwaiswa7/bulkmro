@@ -83,7 +83,6 @@ gem 'msg91ruby'
 
 # Validate phone numbers
 gem 'phony_rails'
-gem 'telephone_number'
 
 # Use Microsoft Azure for file storage
 gem 'azure-storage', require: false
