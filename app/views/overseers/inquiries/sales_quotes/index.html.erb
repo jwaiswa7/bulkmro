@@ -18,7 +18,8 @@
       <th>Sent At</th>
       <th>Created By</th>
       <th>Line Items</th>
-      <th>Quote Total</th>
+      <th>Total(Excl. Tax)</th>
+      <th>Total(Incl. Tax)</th>
       <th>Created At</th>
     <% end %>
 
@@ -42,6 +43,7 @@
           <td><%= sales_quote.created_by.to_s %></td>
           <td><%= sales_quote.rows.size %></td>
           <td><%= format_currency(sales_quote.calculated_total) %></td>
+          <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
           <td><%= format_date(sales_quote.created_at) %></td>
         </tr>
       <% end %>

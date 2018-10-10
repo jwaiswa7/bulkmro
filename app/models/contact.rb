@@ -1,6 +1,7 @@
 class Contact < ApplicationRecord
   include Mixins::IsAPerson
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
 
   pg_search_scope :locate, :against => [:first_name, :last_name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 

@@ -24,6 +24,9 @@
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), policy(@inquiry).edit_suppliers?) %>
     <%= nav_item('Sales Quotes', overseers_inquiry_sales_quotes_path(@inquiry), policy(@inquiry).sales_quotes?) %>
     <%= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), policy(@inquiry).sales_orders?) %>
+    <%= nav_item('Purchase Orders', overseers_inquiry_purchase_orders_path(@inquiry), policy(@inquiry).purchase_orders?) %>
+    <%= nav_item('Invoices', overseers_inquiry_sales_invoices_path(@inquiry), policy(@inquiry).sales_invoices?) %>
+    <%= nav_item('Shipments', overseers_inquiry_sales_shipments_path(@inquiry), policy(@inquiry).sales_shipments?) %>
     <%= nav_item('Comments', overseers_inquiry_comments_path(@inquiry), policy(@inquiry).comments?) %>
   </ul>
   <div class="tab-content">

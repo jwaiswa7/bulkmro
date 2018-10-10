@@ -32,10 +32,13 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
+  has_many :purchase_orders
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
   has_one :sales_quote, -> {latest}
   has_many :sales_orders, :through => :sales_quotes
+  has_many :shipments, :through => :sales_orders, class_name: 'SalesShipment', source: :shipments
+  has_many :invoices, :through => :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   belongs_to :payment_option, required: :not_legacy?
@@ -163,13 +166,21 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
+  validates_numericality_of :potential_amount, greater_than: 0
+
+  validates_presence_of :subject, :if => :not_legacy?
+  validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
-  # validates_presence_of :contact
   # validates_presence_of :billing_address
   # validates_presence_of :shipping_address
   validates_presence_of :expected_closing_date, :if => :not_legacy?
   validates_presence_of :subject, :if => :not_legacy?
+  validates_presence_of :inside_sales_owner_id
+  validates_presence_of :outside_sales_owner_id
+  validates_presence_of :payment_option_id
+  validates_presence_of :potential_amount
+  # validates_presence_of :contact
 
   validate :every_product_is_only_added_once?
 
@@ -230,6 +241,7 @@ class Inquiry < ApplicationRecord
           "3. Order once placed cannot be changed.",
           "4. BulkMRO does not accept any financial penalties for late deliveries."
       ].join("\r\n") if not_legacy?
+      self.stage ||= 1
     end
 
     self.is_sez ||= false
@@ -243,6 +255,17 @@ class Inquiry < ApplicationRecord
 
   def inquiry_products_for(supplier)
     self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
+  end
+
+  def attachments
+    attachment = []
+    attachment.push(self.customer_po_sheet.present? ? self.customer_po_sheet : nil  )
+    attachment.push(self.copy_of_email.present? ? self.copy_of_email : nil  )
+    attachment.push(self.suppler_quote.present? ? self.suppler_quote : nil  )
+    attachment.push(self.final_supplier_quote.present? ? self.final_supplier_quote : nil  )
+    attachment.push(self.calculation_sheet.present? ? self.calculation_sheet : nil  )
+
+    attachment.compact
   end
 
   def suppliers_selected?

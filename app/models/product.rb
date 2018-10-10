@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
+  include Mixins::CanBeSynced
 
   update_index('products#product') { self if self.approved? }
   # pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
@@ -56,6 +57,7 @@ class Product < ApplicationRecord
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
+    self.weight_in_kgs ||= 0.0
   end
 
   def best_tax_code
