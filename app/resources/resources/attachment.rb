@@ -1,3 +1,5 @@
+require 'net/scp'
+
 class Resources::Attachment < Resources::ApplicationResource
   include Net
 
