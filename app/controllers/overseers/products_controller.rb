@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
+  before_action :set_product, only: [:show, :edit, :update, :view, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -86,10 +86,9 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def view
-    service = Services::Overseers::Finders::PurchaseHistory.new(params)
+    service = Services::Overseers::Products::PurchaseHistory.new(@product)
     service.call
-    @product = service.get_product
-    @product_inquiries = service.product_inquiries_list
+    @inquiry_products = service.inquiry_products_list
     authorize @product
   end
 

@@ -13,28 +13,28 @@
       <th colspan="1">Selling Price</th>
     </tr>
   </thead>
-  <% @product_inquiries.each do |product_inquiry| %>
+  <% @inquiry_products.each do |inquiry_product| %>
   <tbody>
     <br>
-    <td><%= product_inquiry.inquiry.inquiry_number%></td>
-    <td><%= product_inquiry.inquiry.company.account.alias%></td>
-    <td><%= product_inquiry.inquiry.company.account.name%></td>
-    <td><%= product_inquiry.product.sku%></td>
-    <td><%= product_inquiry.product.brand.name%></td>
-    <td><%= product_inquiry.product.name%></td>
-    <td><%= product_inquiry.inquiry.quotation_date.try(:strftime, '%e %b, %Y')%></td>
-    <td><%= product_inquiry.inquiry.final_sales_quote.rows.
+    <td><%= inquiry_product.inquiry.inquiry_number%></td>
+    <td><%= inquiry_product.inquiry.company.account.alias%></td>
+    <td><%= inquiry_product.inquiry.company.account.name%></td>
+    <td><%= inquiry_product.product.sku%></td>
+    <td><%= inquiry_product.product.brand.name%></td>
+    <td><%= inquiry_product.product.name%></td>
+    <td><%= inquiry_product.inquiry.quotation_date.try(:strftime, '%e %b, %Y')%></td>
+    <td><%= inquiry_product.inquiry.final_sales_quote.rows.
             joins(:inquiry_product).
-            where(:inquiry_products =>{:product_id => product_inquiry.product.id})
-            .first.unit_cost_price.round(2) if product_inquiry.inquiry.final_sales_quote.present?%></td>
-    <td><%= product_inquiry.inquiry.final_sales_quote.sales_orders.
+            where(:inquiry_products =>{:product_id => inquiry_product.product.id})
+            .first.unit_cost_price.round(2) if inquiry_product.inquiry.final_sales_quote.present?%></td>
+    <td><%= inquiry_product.inquiry.final_sales_quote.sales_orders.
             approved.first.sent_at.try(:strftime, '%e %b, %Y') if
-                product_inquiry.inquiry.final_sales_quote.present? &&
-                    product_inquiry.inquiry.final_sales_quote.sales_orders.present?%></td>
-    <td><%= product_inquiry.inquiry.final_sales_quote.rows.
+                inquiry_product.inquiry.final_sales_quote.present? &&
+                    inquiry_product.inquiry.final_sales_quote.sales_orders.present?%></td>
+    <td><%= inquiry_product.inquiry.final_sales_quote.rows.
             joins(:inquiry_product).
-            where(:inquiry_products => {:product_id => product_inquiry.product.id})
-            .first.unit_selling_price.round(2) if product_inquiry.inquiry.final_sales_quote.present?%></td>
+            where(:inquiry_products => {:product_id => inquiry_product.product.id})
+            .first.unit_selling_price.round(2) if inquiry_product.inquiry.final_sales_quote.present?%></td>
   </tbody>
   <% end %>
 </table>
