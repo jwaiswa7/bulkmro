@@ -41,20 +41,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
 
   def set_generated_skus
     rows.each do |row|
-      if !Product.approved.find_by_sku(row['sku']).present?
-        number = [*'0'..'9']
-        character = [*'A'..'Z', *'a'..'z']
-
-        10.times do
-          code = [
-              "BM9",
-              [number.sample, character.sample, number.sample, character.sample].join.upcase
-          ].join
-          row['sku'] = code
-          puts code
-          break if Product.find_by_sku(code).blank?
-        end
-      end
+      row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map { |r| r['sku'] }) if Product.find_by_sku(row['sku']).blank?
     end
   end
 

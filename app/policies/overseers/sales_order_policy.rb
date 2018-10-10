@@ -34,4 +34,8 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def reject?
     record.sent? && approve?
   end
+
+  def resync?
+    record.sent? && record.approved? && record.not_synced?
+  end
 end

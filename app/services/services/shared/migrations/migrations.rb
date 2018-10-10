@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories )
               end
 
     PaperTrail.request(enabled: false) do
@@ -666,6 +666,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def categories
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
     service.loop(limit) do |x|
       parent_id = x.get_column('parent_id')
@@ -713,6 +714,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             name: name || "noname ##{legacy_id}",
             remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
             measurement_unit: measurement_unit,
+            weight: x.get_column('weight'),
             legacy_metadata: x.get_row,
             created_at: x.get_column('created', to_datetime: true),
             updated_at: x.get_column('modified', to_datetime: true),
@@ -1047,5 +1049,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         puts res.code
       end
     end
+  end
+
+  def update_addresses_remote_uid
+    Addresses.update_all("remote_uid=legacy_uid")
   end
 end
