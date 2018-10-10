@@ -179,21 +179,7 @@ class Inquiry < ApplicationRecord
     end
   end
 
-  def color(priority)
-    if priority >= 107
-      "red"
-    elsif priority >= 104
-      "orange"
-    elsif priority >= 100
-      "yellow"
-    elsif priority >= 7
-      "darkgreen"
-    elsif priority >= 4
-      "green"
-    elsif priority >= 0
-      "lightgreen"
-    end
-  end
+
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs

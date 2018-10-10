@@ -5,6 +5,7 @@ json.data (@inquiries) do |inquiry|
                         row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
                       end,
                   ].join(' '),
+                  priority_helper_format_label(inquiry.priority),
                   inquiry.inquiry_number,
                   status_helper_format_label(inquiry.status),
                   inquiry.account.to_s,
@@ -18,7 +19,7 @@ json.data (@inquiries) do |inquiry|
   data = Hash[data.collect.with_index { |item,index| [index, item] } ]
   json.merge! data
   additions =  {
-      "DT_RowClass": "bg-highlight-success"
+      "DT_RowClass": "bg-highlight-" + priority_color(inquiry.priority)
   }
   json.merge! additions
 end
