@@ -1,5 +1,5 @@
 json.data (@inquiries) do |inquiry|
-  json.array! [
+  data = [
                   [
                       if policy(inquiry).edit?
                         row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
@@ -16,6 +16,12 @@ json.data (@inquiries) do |inquiry|
                   inquiry.color(inquiry.priority.to_f),
                   format_date(inquiry.created_at)
               ]
+  data = Hash[data.collect.with_index { |item,index| [index, item] } ]
+  json.merge! data
+  additions =  {
+      "DT_RowClass": "red"
+  }
+  json.merge! additions
 end
 
 json.recordsTotal Inquiry.all.count
