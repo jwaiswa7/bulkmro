@@ -10,23 +10,23 @@
         <div class="card-header d-block d-md-flex flex-row">
           <div class="flex-fill">
             <strong>Total Selling Price (Excl. tax)</strong><br>
-            <span data-v-html="calculated_total"><%= f.object.calculated_total %></span>
+            <span data-v-html="calculated_total"><%= format_currency(f.object.calculated_total) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Selling Price (Incl. tax)</strong><br>
-            <span data-v-html="calculated_total_with_tax"><%= f.object.calculated_total_with_tax %></span>
+            <span data-v-html="calculated_total_with_tax"><%= format_currency(f.object.calculated_total_with_tax) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Tax</strong><br>
-            <span data-v-html="calculated_total_tax"><%= f.object.calculated_total_tax %></span>
+            <span data-v-html="calculated_total_tax"><%= format_currency(f.object.calculated_total_tax) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Margin</strong><br>
-            <span data-v-html="calculated_total_margin"><%= f.object.calculated_total_margin %></span>
+            <span data-v-html="calculated_total_margin"><%= format_currency(f.object.calculated_total_margin) %></span>
           </div>
           <div class="flex-fill mt-2 mt-md-0">
             <strong>Total Freight Cost</strong><br>
-            <span data-v-html="calculated_freight_cost_total"><%= f.object.calculated_freight_cost_total %></span>
+            <span data-v-html="calculated_freight_cost_total"><%= format_currency(f.object.calculated_freight_cost_total) %></span>
           </div>
         </div>
 
@@ -81,26 +81,22 @@
                             <div class="col-12 d-block d-md-flex flex-row">
                               <div class="flex-fill">
                                 <strong>Unit Cost</strong><br>
-                                <span data-bind-html="unit_cost_price"><%= row.object.unit_cost_price %></span>
+                                <span data-bind-html="unit_cost_price"><%= format_currency(row.object.unit_cost_price) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Unit Cost with Freight</strong><br>
-                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                                <span data-bind-html="unit_cost_price_with_unit_freight_cost"><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price</strong><br>
-                                <span data-bind-html="total_selling_price"><%= row.object.total_selling_price %></span>
+                                <span data-bind-html="total_selling_price"><%= format_currency(row.object.total_selling_price) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0">
                                 <strong>Total Selling Price with Tax</strong><br>
-                                <span data-bind-html="total_selling_price_with_tax"><%= row.object.total_selling_price_with_tax %></span>
-                              </div>
-                              <div class="flex-fill mt-2 mt-md-0">
-                                <strong>UOM</strong><br>
-                                <span><%= row.object.measurement_unit.to_s %></span>
+                                <span data-bind-html="total_selling_price_with_tax"><%= format_currency(row.object.total_selling_price_with_tax) %></span>
                               </div>
                               <div class="flex-fill mt-2 mt-md-0" v-if="showCurrency">
-                                <strong>Unit Selling Price (in {{currency_sign}})</strong><br>
+                                <strong>Unit Selling Price (in {{convert_currency_sign}})</strong><br>
                                 <span data-bind-html="converted_unit_selling_price"><%= row.object.converted_unit_selling_price %></span>
                               </div>
                             </div>
@@ -126,6 +122,7 @@
                           <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
                           <div class="col-md-2"><%= row.association :lead_time_option, wrapper: :custom_multi_select %></div>
+                          <div class="col-md-2"><%= row.association :measurement_unit, wrapper: :custom_multi_select %></div>
                           <%= link_to_remove_association row, {class: 'btn btn-danger align-self-center d-none', wrapper_class: 'simple-row' ,"data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
                             Hide
                           <% end %>
