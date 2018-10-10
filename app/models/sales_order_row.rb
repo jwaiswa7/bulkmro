@@ -12,7 +12,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :sr_no, to: :inquiry_product, allow_nil: true
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, :to => :sales_quote_row
-  delegate :measurement_unit, :to => :product, allow_nil: true
+  delegate :measurement_unit, :to => :sales_quote_row, allow_nil: true
 
   attr_accessor :tax_percentage
 

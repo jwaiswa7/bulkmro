@@ -9,8 +9,8 @@ class InquiryImportRow < ApplicationRecord
   scope :failed, -> { where(:inquiry_product_id => nil)  }
   scope :successful, -> { where.not(:inquiry_product_id => nil)  }
 
-  validates_presence_of :sku, :metadata
-  validates_uniqueness_of :sku, scope: :import
+  validates_presence_of :metadata
+  validates_uniqueness_of :sku, scope: :import, allow_nil: true
   validates_associated :inquiry_product
 
   def successful?
@@ -22,8 +22,7 @@ class InquiryImportRow < ApplicationRecord
   end
 
   def approved_alternatives(page=1)
-    service = Services::Overseers::Finders::Products.new({ q: metadata['name'], page: page, per: 4 })
-    service.call
-    service.records
+    service = Services::Overseers::Finders::Products.new({})
+    service.manage_failed_skus(metadata['name'], 4, page)
   end
 end

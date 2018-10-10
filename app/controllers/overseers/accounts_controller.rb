@@ -32,7 +32,7 @@ class Overseers::AccountsController < Overseers::BaseController
     @account.assign_attributes(account_params.merge(overseer: current_overseer))
     authorize @account
     if @account.save
-      redirect_to edit_overseers_account_path(@account), notice: flash_message(@account, action_name)
+      redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'edit'
     end

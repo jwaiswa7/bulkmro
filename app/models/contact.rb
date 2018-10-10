@@ -35,6 +35,10 @@ class Contact < ApplicationRecord
     self.status ||= :active
     self.contact_group ||= :general
 
+    password = Devise.friendly_token[0, 20]
+    self.password ||= password
+    self.password_confirmation ||= password
+
     if self.company.present?
       self.account ||= self.company.account
     end

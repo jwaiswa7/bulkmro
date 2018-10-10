@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet]
 
   def index
     authorize :inquiry
@@ -22,7 +22,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def smart_queue
-
     # @inquiries = ApplyDatatableParams.to(Inquiry.all.where("status not in (11, 9, 10)").where("priority > 0 ").order(:priority => "DESC", :quotation_followup_date => "ASC", :calculated_total => "DESC"), params)
     owners = current_overseer.self_and_descendant_ids.map(&:inspect).join(', ')
     @inquiries = ApplyDatatableParams.to(Inquiry.all.where("status not in (11, 9, 10)").where("created_by_id in (" + owners + ")").order(:priority => "DESC", :quotation_followup_date => "ASC", :calculated_total => "DESC"), params)
@@ -34,7 +33,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service.call
 
     @indexed_inquiries = service.indexed_records
-    @inquiries = service.records
+    @inquiries = service.records.reverse
 
     authorize @inquiries
   end
@@ -49,6 +48,15 @@ class Overseers::InquiriesController < Overseers::BaseController
     render json: Serializers::InquirySerializer.new(@inquiry).serialized_json
   end
 
+  def calculation_sheet
+    authorize @inquiry
+
+    send_file(
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
+    )
+  end
+
   def new
     @company = Company.find(params[:company_id])
     @inquiry = @company.inquiries.build(overseer: current_overseer)
@@ -60,9 +68,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -77,7 +85,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     if @inquiry.save_and_sync
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 

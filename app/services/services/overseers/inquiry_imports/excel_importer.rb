@@ -54,9 +54,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
           puts code
           break if Product.find_by_sku(code).blank?
         end
-
       end
-
     end
   end
 

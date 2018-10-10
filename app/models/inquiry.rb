@@ -13,7 +13,7 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact, required: false
+  belongs_to :contact, required: :not_legacy?
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
@@ -111,26 +111,26 @@ class Inquiry < ApplicationRecord
   }
 
   enum price_type: {
-      :exw => 10,
-      :fob => 20,
-      :cif => 30,
-      :cfr => 40,
-      :dap => 50,
-      :door_delivery => 60,
-      :fca_mumbai => 70,
-      :cip => 80,
-      :dd => 90,
-      :cip_mumbai_airport => 100
+      :"EXW" => 10,
+      :"FOB" => 20,
+      :"CIF" => 30,
+      :"CFR" => 40,
+      :"DAP" => 50,
+      :"Door delivery" => 60,
+      :"FCA Mumbai" => 70,
+      :"CIP" => 80,
+      :"Demand draft" => 90,
+      :"CIP Mumbai airport" => 100
   }
 
   enum freight_option: {
-      :included => 10,
-      :extra => 20
+      :"Added" => 10,
+      :"Not Added" => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :added => 10,
-      :not_added => 20
+      :"Added" => 10,
+      :"Not Added" => 20
   }
 
   def commercial_status
@@ -168,6 +168,8 @@ class Inquiry < ApplicationRecord
   # validates_presence_of :contact
   # validates_presence_of :billing_address
   # validates_presence_of :shipping_address
+  validates_presence_of :expected_closing_date, :if => :not_legacy?
+  validates_presence_of :subject, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
 
@@ -177,21 +179,7 @@ class Inquiry < ApplicationRecord
     end
   end
 
-  def color(priority)
-    if priority >= 107
-      "red"
-    elsif priority >= 104
-      "orange"
-    elsif priority >= 100
-      "yellow"
-    elsif priority >= 7
-      "darkgreen"
-    elsif priority >= 4
-      "green"
-    elsif priority >= 0
-      "lightgreen"
-    end
-  end
+
 
   # has_many :rfqs
   # accepts_nested_attributes_for :rfqs
@@ -215,7 +203,12 @@ class Inquiry < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
+    if self.created_by.present?
+      self.inside_sales_owner ||= self.created_by
+    end
+
     if self.company.present?
+      self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
       self.status ||= :'Inquiry No. Assigned'
@@ -225,7 +218,7 @@ class Inquiry < ApplicationRecord
       self.price_type ||= :exw
       self.freight_option ||= :included
       self.packing_and_forwarding_option ||= :added
-      self.expected_closing_date ||= (Time.now + 60.days) if self.not_legacy?
+      self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
