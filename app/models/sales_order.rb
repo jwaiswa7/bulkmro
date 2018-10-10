@@ -87,4 +87,8 @@ class SalesOrder < ApplicationRecord
   def not_confirmed?
     !confirmed?
   end
+
+  def syncable_identifiers
+    [:draft_uid]
+  end
 end

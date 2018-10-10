@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation]
+  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation, :resync]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -73,8 +73,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
   end
 
-  private
+  def resync
+    authorize @sales_order
 
+    if @sales_order.save_and_sync
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    end
+  end
+
+  private
   def save
     @sales_order.save
   end

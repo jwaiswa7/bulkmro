@@ -26,7 +26,6 @@ Rails.application.routes.draw do
     end
 
     resources :remote_requests
-
     resources :reports
     resources :activities
     resource :profile, :controller => :profile
@@ -119,6 +118,7 @@ Rails.application.routes.draw do
             get 'new_revision'
             get 'new_confirmation'
             post 'create_confirmation'
+            post 'resync'
           end
         end
 
