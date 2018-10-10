@@ -86,9 +86,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def view
-    service = Services::Overseers::Products::PurchaseHistory.new(@product)
-    service.call
-    @inquiry_products = service.inquiry_products_list
+    @inquiry_products = @product.inquiry_products
     authorize @product
   end
 
