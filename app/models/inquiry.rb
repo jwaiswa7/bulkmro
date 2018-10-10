@@ -249,6 +249,8 @@ class Inquiry < ApplicationRecord
     self.inquiry_product_suppliers.persisted.present?
   end
 
+
+
   # def rfqs_generated?
   #   self.rfqs.persisted.present?
   # end
