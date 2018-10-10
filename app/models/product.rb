@@ -44,7 +44,7 @@ class Product < ApplicationRecord
 
   enum product_type: { item: 10, service: 20 }
 
-  scope :with_includes, -> { includes(:brand, :approval, :category) }
+  scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
   scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, :category => [:tax_code]) }
 
   validates_presence_of :name
@@ -67,7 +67,7 @@ class Product < ApplicationRecord
   end
 
   def to_s
-    "#{name} (#{sku || trashed_sku })"
+    "#{sku || trashed_sku} - #{name}"
   end
 
   def lowest_inquiry_product_supplier

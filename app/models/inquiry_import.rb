@@ -23,7 +23,8 @@ class InquiryImport < ApplicationRecord
     end
   end
 
-  validate :has_unique_approved_alternatives?
+  #validate :has_unique_approved_alternatives?
+=begin
   def has_unique_approved_alternatives?
     approved_alternative_ids = rows.map(&:approved_alternative_id).compact.reject { |id| id.blank? }
 
@@ -31,6 +32,7 @@ class InquiryImport < ApplicationRecord
       errors.add :rows, 'approved alternatives have to be unique'
     end
   end
+=end
 
   enum import_type: { excel: 10, list: 20 }
 

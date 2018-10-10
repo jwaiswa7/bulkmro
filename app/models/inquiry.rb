@@ -111,26 +111,26 @@ class Inquiry < ApplicationRecord
   }
 
   enum price_type: {
-      :exw => 10,
-      :fob => 20,
-      :cif => 30,
-      :cfr => 40,
-      :dap => 50,
-      :door_delivery => 60,
-      :fca_mumbai => 70,
-      :cip => 80,
-      :dd => 90,
-      :cip_mumbai_airport => 100
+      :"EXW" => 10,
+      :"FOB" => 20,
+      :"CIF" => 30,
+      :"CFR" => 40,
+      :"DAP" => 50,
+      :"Door delivery" => 60,
+      :"FCA Mumbai" => 70,
+      :"CIP" => 80,
+      :"Demand draft" => 90,
+      :"CIP Mumbai airport" => 100
   }
 
   enum freight_option: {
-      :included => 10,
-      :extra => 20
+      :"Added" => 10,
+      :"Not Added" => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :added => 10,
-      :not_added => 20
+      :"Added" => 10,
+      :"Not Added" => 20
   }
 
   def commercial_status
@@ -248,6 +248,8 @@ class Inquiry < ApplicationRecord
   def suppliers_selected?
     self.inquiry_product_suppliers.persisted.present?
   end
+
+
 
   # def rfqs_generated?
   #   self.rfqs.persisted.present?

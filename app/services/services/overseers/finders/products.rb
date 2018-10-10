@@ -31,7 +31,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                           }
                       }).page(page).per(per)
 
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).approved.with_includes
   end
 
 end
