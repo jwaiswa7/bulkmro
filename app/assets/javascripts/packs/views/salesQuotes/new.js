@@ -63,7 +63,7 @@ let initVueJS = () => {
         },
         computed: {
             showCurrency: function () {
-                return this.convert_currency_sign != '₹'
+                return this.currency_sign != '₹'
             },
             totalFreightCost: function () {
                 // let total = 0;
@@ -89,11 +89,13 @@ let initVueJS = () => {
                         $(row).click();
                     })
 
-
                 });
-                $('#ac-' + product_id).parent().hide();
+                this.hiddenProducts.push(product_id);
+                //$('#ac-' + product_id).parent().hide();
             },
-
+            showProductButton(product_id){
+               return !this.hiddenProducts.includes(product_id)
+            },
             getRow(index) {
                 return this.rows[index];
             },
@@ -156,7 +158,7 @@ let initVueJS = () => {
             },
             formatCurrency(value) {
                 let val = (value / 1).toFixed(2)
-                return this.currencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                return this.defaultCurrencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             },
             afterRowsUpdated() {
                 let calculated_freight_cost_total = 0,
@@ -372,8 +374,9 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
-        convert_currency_sign: '₹',
-        currencySign:'',
+        hiddenProducts:[],
+        currency_sign: '₹',
+        defaultCurrencySign:'',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
@@ -423,10 +426,11 @@ let assignEventsAndGetAttributes = () => {
                     modelName = ["rows[", currentRowIndex, "].", attributeName].join('');
 
                     // To recreate VueJS v-model when nested form rows are added or removed
-                    $(el).attr("v-html", modelName);
+
                     //$(el).attr("data-v-index", currentRowIndex);
                     //$(el).attr("data-v-index", currentRowIndex);
-                    if (currentRowTemplate[attributeName] == undefined) {
+
+                    if (currentRowTemplate[attributeName] != undefined) {
 
                         let value = $(el).text().trim();
                         let numberValue = value;
@@ -435,8 +439,8 @@ let assignEventsAndGetAttributes = () => {
                         if(value.trim() != ""){
 
                             if (value.match("[^0-9]").index == 0) {
-                                if (data.currencySign == "" || data.currencySign === undefined) {
-                                    data.currencySign = value.match("[^0-9]")[0]
+                                if (data.defaultCurrencySign == "" || data.defaultCurrencySign === undefined) {
+                                    data.defaultCurrencySign = value.match("[^0-9]")[0]
                                 }
                                 $(el).attr("v-html", "formatCurrency(" + modelName + ")");
                                 numberValue = value.replace(/[^0-9.]/g, "")
@@ -446,6 +450,11 @@ let assignEventsAndGetAttributes = () => {
 
                         currentRowTemplate[attributeName] = parseFloat(numberValue);
                     }
+                    else{
+                        $(el).attr("v-html", modelName);
+                    }
+
+
 
                 }
             });
@@ -482,8 +491,8 @@ let assignEventsAndGetAttributes = () => {
 
         //Check if first char is not a number
         if (value.match("[^0-9]").index == 0) {
-            if (data.currencySign == "") {
-                data.currencySign = value.match("[^0-9]")[0]
+            if (data.defaultCurrencySign == "") {
+                data.defaultCurrencySign = value.match("[^0-9]")[0]
             }
             $(el).attr("v-html", "formatCurrency(" + modelName + ")");
             numberValue = value.replace(/[^0-9.]/g, "")
