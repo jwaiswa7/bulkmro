@@ -86,6 +86,7 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'calculation_sheet'
         get 'export'
       end
 

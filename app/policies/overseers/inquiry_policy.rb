@@ -63,6 +63,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def calculation_sheet?
+    edit?
+  end
+
   def comments?
     edit?
   end
