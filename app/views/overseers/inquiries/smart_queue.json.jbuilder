@@ -13,13 +13,12 @@ json.data (@inquiries) do |inquiry|
                   inquiry.inside_sales_owner.to_s,
                   inquiry.outside_sales_owner.to_s,
                   format_currency(inquiry.calculated_total),
-                  inquiry.color(inquiry.priority.to_f),
                   format_date(inquiry.created_at)
               ]
   data = Hash[data.collect.with_index { |item,index| [index, item] } ]
   json.merge! data
   additions =  {
-      "DT_RowClass": "red"
+      "DT_RowClass": "bg-highlight-success"
   }
   json.merge! additions
 end
