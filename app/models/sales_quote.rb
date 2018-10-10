@@ -21,6 +21,8 @@ class SalesQuote < ApplicationRecord
   has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
   has_many :email_messages
 
+  before_save :set_calculated_total
+  after_save :set_priority
   delegate :bill_from, :billing_address, :shipping_address, :is_sez, to: :inquiry
 
   attr_accessor :selected_suppliers
@@ -43,4 +45,13 @@ class SalesQuote < ApplicationRecord
   def inquiry_has_many_sales_quotes?
     self.inquiry.sales_quotes.except_object(self).count >= 1
   end
+
+  def set_calculated_total
+      self.inquiry.update_attributes(calculated_total: calculated_total)
+  end
+
+  def set_priority
+    Services::Overseers::Inquiries::SetInquiryPriority.new(self.inquiry).set_priority
+  end
+
 end

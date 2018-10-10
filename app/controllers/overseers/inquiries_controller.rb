@@ -21,6 +21,14 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiries
   end
 
+  def smart_queue
+
+    # @inquiries = ApplyDatatableParams.to(Inquiry.all.where("status not in (11, 9, 10)").where("priority > 0 ").order(:priority => "DESC", :quotation_followup_date => "ASC", :calculated_total => "DESC"), params)
+    owners = current_overseer.self_and_descendant_ids.map(&:inspect).join(', ')
+    @inquiries = ApplyDatatableParams.to(Inquiry.all.where("status not in (11, 9, 10)").where("created_by_id in (" + owners + ")").order(:priority => "DESC", :quotation_followup_date => "ASC", :calculated_total => "DESC"), params)
+    authorize @inquiries
+  end
+
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params)
     service.call
