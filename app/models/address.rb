@@ -33,6 +33,13 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
+  validates_presence_of :telephone, if: -> { !self.mobile.present? }
+  validates_presence_of :mobile, if: -> { !self.telephone.present? }
+
+  # validates contact numbers
+  phony_normalize :telephone, :mobile, default_country_code: 'IN'
+  validates_plausible_phone :telephone, :mobile, allow_blank:true
+
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_sez ||= false
