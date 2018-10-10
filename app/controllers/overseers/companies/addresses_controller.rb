@@ -19,10 +19,10 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
     authorize @address
 
-    if @address.save
+    if @address.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render :new
+      render 'new'
     end
   end
 
@@ -33,11 +33,12 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   def update
     @address.assign_attributes(address_params.merge(overseer: current_overseer))
     authorize @address
+    @address.generate_remote_uid if !@address.remote_uid.present?
 
-    if @address.save
+    if @address.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render :new
+      render 'edit'
     end
   end
 

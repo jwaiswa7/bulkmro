@@ -27,6 +27,7 @@ class SalesQuoteRow < ApplicationRecord
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :if => :not_legacy?
 
   validate :is_unit_selling_price_consistent_with_margin_percentage?
+
   def is_unit_selling_price_consistent_with_margin_percentage?
     if unit_selling_price.round != calculated_unit_selling_price.round && Rails.env.development?
       errors.add :base, 'selling price is not consistent with margin'
@@ -34,6 +35,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?
+
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != calculated_converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
@@ -41,6 +43,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?
+
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
@@ -48,6 +51,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :tax_percentage_is_not_nil?
+
   def tax_percentage_is_not_nil?
     if self.not_legacy? && self.tax_code.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
@@ -55,6 +59,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
     self.freight_cost_subtotal ||= 0.0
@@ -141,5 +146,9 @@ class SalesQuoteRow < ApplicationRecord
 
   def to_s
     product.to_s
+  end
+
+  def to_remote_s
+    self.legacy_id.present? ? self.legacy_id : self.to_param
   end
 end

@@ -1,6 +1,9 @@
 class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry
+  include Mixins::CanBeSynced
+
+  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -25,21 +28,27 @@ class Address < ApplicationRecord
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
-
   validates_presence_of :state, :if => :domestic?
 
+  validates_presence_of :remote_uid
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_global_defaults
+
   def set_defaults
     self.is_sez ||= false
 
     if self.company.present?
       self.name ||= self.company.name
     end
+  end
+
+  def set_global_defaults
+    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid
   end
 
   def to_s
