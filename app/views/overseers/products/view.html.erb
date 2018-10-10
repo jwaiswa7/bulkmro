@@ -22,10 +22,10 @@
     <td><%= inquiry_product.product.sku%></td>
     <td><%= inquiry_product.product.brand.name%></td>
     <td><%= inquiry_product.product.name%></td>
-    <td><%= inquiry_product.inquiry.quotation_date&.strftime('%e %b, %Y')%></td>
-    <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) %></td>
-    <td><%= inquiry_product.approved_sales_order&.sent_at&.strftime('%e %b, %Y') %></td>
-    <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) %></td>
+    <td><%= inquiry_product.inquiry.quotation_date&.strftime('%e %b, %Y') || '-'%></td>
+    <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) || '-' %></td>
+    <td><%= inquiry_product.approved_sales_order&.sent_at&.strftime('%e %b, %Y') || '-' %></td>
+    <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) || '-' %></td>
   </tbody>
   <% end %>
 </table>
