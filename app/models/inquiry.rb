@@ -258,6 +258,12 @@ class Inquiry < ApplicationRecord
     self.inquiry_product_suppliers.persisted.present?
   end
 
+  def self.priority_refresh
+    self.all.each do | inquiry |
+      Services::Overseers::Inquiries::SetInquiryPriority.new(inquiry).set_priority
+    end
+  end
+
   # def rfqs_generated?
   #   self.rfqs.persisted.present?
   # end

@@ -26,7 +26,7 @@ class Services::Overseers::Inquiries::SetInquiryPriority < Services::Shared::Bas
     end
 
     #Check if client is strategic then set client score to 1 else .5
-    if @inquiry.company.is_strategic && @inquiry.company.is_strategic.present?
+    if @inquiry.company.priority == "strategic" && @inquiry.company.priority.present?
       clientScore = 1
     else
       clientScore = 0.5
