@@ -20,21 +20,11 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def render_successful(status = 1, message = 'Request successfully handled', response = nil)
-    render json: {
-        success: status,
-        status: status,
-        message: message,
-        response: response
-    }, status: :ok
+    render json: {success: status, status: status, message: message, response: response}, status: :ok
   end
 
   def render_unsuccessful(status = 0, message = 'Request unsuccessful', response = nil)
-    render json: {
-        success: status,
-        status: status,
-        message: message,
-        response: response
-    }, status: 500
+    render json: {success: status, status: status, message: message, response: response}, status: 500
   end
 
   def log_request
@@ -48,7 +38,6 @@ class Callbacks::BaseController < ApplicationController
   end
 
   private
-
   def authenticate_callback!
     authenticate_or_request_with_http_token do |token, options|
       token == Rails.cache.fetch(:sap_api_key) ? true : false

@@ -4,7 +4,7 @@ class SalesQuote < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasRowCalculations
 
-  has_closure_tree({ name_column: :to_s })
+  has_closure_tree({name_column: :to_s})
 
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -13,12 +13,12 @@ class SalesQuote < ApplicationRecord
   has_one :currency, :through => :inquiry_currency
   has_one :company, :through => :inquiry
   has_many :inquiry_products, :through => :inquiry
-  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesQuoteRow', inverse_of: :sales_quote, dependent: :destroy
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inquiry_product_supplier_id'].blank? && attributes['id'].blank? }, allow_destroy: true
+  has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesQuoteRow', inverse_of: :sales_quote, dependent: :destroy
+  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['inquiry_product_supplier_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, inverse_of: :sales_quote
   has_many :products, :through => :rows
   has_many :sales_orders, dependent: :destroy
-  has_many :unique_products, -> { uniq }, through: :rows, class_name: 'Product'
+  has_many :unique_products, -> {uniq}, through: :rows, class_name: 'Product'
   has_many :email_messages
 
   delegate :ship_from, :bill_from, :billing_address, :shipping_address, :is_sez, :quotation_uid, to: :inquiry
@@ -42,5 +42,13 @@ class SalesQuote < ApplicationRecord
 
   def inquiry_has_many_sales_quotes?
     self.inquiry.sales_quotes.except_object(self).count >= 1
+  end
+
+  def tax_summary
+    self.rows.first.taxation.to_s
+  end
+
+  def filename
+    ['quotation', inquiry.inquiry_number].join('_')
   end
 end

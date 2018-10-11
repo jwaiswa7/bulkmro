@@ -3,7 +3,7 @@ class CreateSalesShipmentRows < ActiveRecord::Migration[5.2]
     create_table :sales_shipment_rows do |t|
       t.references :sales_shipment, foreign_key: true
       t.integer :sku
-      t.integer :quantity
+      t.decimal :quantity
 
       t.jsonb :metadata
 

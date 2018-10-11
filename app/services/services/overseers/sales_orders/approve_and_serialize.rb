@@ -6,13 +6,16 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   end
 
   def call
-    @sales_order.create_approval(
-        :comment => @comment,
-        :overseer => overseer,
-        :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
-    )
+    ActiveRecord::Base.transaction do
+      @sales_order.create_approval(
+          :comment => @comment,
+          :overseer => overseer,
+          :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
+      )
 
-    @sales_order.save_and_sync
+      @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
+      @sales_order.save_and_sync
+    end
   end
 
   attr_reader :sales_order, :overseer, :comment

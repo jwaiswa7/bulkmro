@@ -13,6 +13,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
       t.integer :legacy_shipping_company_id, index: true
       t.integer :legacy_bill_to_contact_id, index: true
 
+      t.integer :quotation_uid, index: { unique: true }
       t.integer :project_uid, index: { unique: true }
       t.integer :inquiry_number, index: { unique: true }
       t.integer :opportunity_uid, index: { unique: true }
@@ -20,6 +21,7 @@ class CreateInquiries < ActiveRecord::Migration[5.2]
 
       t.decimal :freight_cost
 
+      t.string :legacy_contact_name
       t.string :subject
       t.string :customer_po_number
       t.string :customer_po_sheet

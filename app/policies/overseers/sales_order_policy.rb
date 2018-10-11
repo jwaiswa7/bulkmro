@@ -1,4 +1,12 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
+  def show?
+    record.persisted? && !record.serialized_pdf.attached?
+  end
+
+  def show_serialized?
+    record.serialized_pdf.attached?
+  end
+
   def edit?
     record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved?
   end
@@ -20,7 +28,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    admin?
+    sales_manager?
   end
 
   def go_to_inquiry?
@@ -38,4 +46,22 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def resync?
     record.sent? && record.approved? && record.not_synced?
   end
+
+  class Scope
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
+    end
+
+    def resolve
+      if overseer.admin?
+        scope.all
+      else
+        scope.where(:created_by => overseer.self_and_descendants)
+      end
+    end
+  end
+
 end

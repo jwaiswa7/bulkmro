@@ -20,6 +20,9 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     authorize @address
 
     if @address.save_and_sync
+      @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
+      @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
+
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
       render 'new'
@@ -36,6 +39,8 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address.generate_remote_uid if !@address.remote_uid.present?
 
     if @address.save_and_sync
+      @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
+      @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
       render 'edit'
