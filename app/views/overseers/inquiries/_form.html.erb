@@ -47,7 +47,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount %>
+                <%= f.input :potential_amount, input_html: {:min => '1'} %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -169,7 +169,7 @@
         <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
+            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.price_types %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
