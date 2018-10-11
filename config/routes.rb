@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
+        get 'view'
       end
 
       collection do
