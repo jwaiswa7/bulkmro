@@ -3,6 +3,7 @@ class SalesQuoteRow < ApplicationRecord
 
   belongs_to :lead_time_option, required: false
   belongs_to :sales_quote
+  belongs_to :measurement_unit, required: true
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
   belongs_to :inquiry_product_supplier
