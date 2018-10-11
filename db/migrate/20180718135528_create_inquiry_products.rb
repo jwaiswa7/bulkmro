@@ -7,7 +7,7 @@ class CreateInquiryProducts < ActiveRecord::Migration[5.2]
       t.integer :legacy_id, index: true
 
       t.integer :sr_no
-      t.integer :quantity
+      t.decimal :quantity
       t.string :bp_catalog_name, index: true
       t.string :bp_catalog_sku, index: true
 

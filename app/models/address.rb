@@ -51,11 +51,28 @@ class Address < ApplicationRecord
     self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid
   end
 
-  def to_s
-    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
-  end
-
   def self.legacy
     find_by_name('Legacy Indian State')
+  end
+
+  def to_s
+    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+  end
+
+  def to_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode].reject(&:blank?).join(', '),
+        [state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
+  end
+
+  def to_compact_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
   end
 end

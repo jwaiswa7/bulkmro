@@ -110,7 +110,6 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-
         resources :sales_shipments
         resources :sales_invoices
         resources :purchase_orders

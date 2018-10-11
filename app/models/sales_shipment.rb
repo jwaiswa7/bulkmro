@@ -17,4 +17,8 @@ class SalesShipment < ApplicationRecord
   def set_defaults
     self.status ||= :default
   end
+
+  def filename
+    ['shipment', remote_uid].join('_')
+  end
 end

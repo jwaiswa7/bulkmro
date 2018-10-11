@@ -17,7 +17,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def index_pg
-    @inquiries = ApplyDatatableParams.to(Inquiry.all.with_includes, params)
+    @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
     authorize @inquiries
   end
 

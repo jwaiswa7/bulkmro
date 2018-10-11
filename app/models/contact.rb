@@ -30,12 +30,12 @@ class Contact < ApplicationRecord
       manager: 70,
   }
 
-  validates_presence_of :telephone, if: -> { !self.mobile.present? }
-  validates_presence_of :mobile, if: -> { !self.telephone.present? }
+  validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
+  validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
 
   # validates contact numbers
-  phony_normalize :telephone, :mobile, default_country_code: 'IN'
-  validates_plausible_phone :telephone, :mobile, allow_blank:true
+  phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
+  validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults

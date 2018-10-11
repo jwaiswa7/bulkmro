@@ -14,7 +14,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     @is_sez = sales_quote.is_sez || sales_quote.billing_address.is_sez
     @is_service = sales_quote_row.is_service # || tax_code.is_service
 
-    @is_cgst_sgst = if bill_to.country_code == 'IN'
+    @is_cgst_sgst = if bill_to.country_code == 'IN' && bill_from.present? && bill_from.present?
                       if is_service
                         ship_from.address.state == ship_to.state
                       else
@@ -45,6 +45,14 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     else
       "CSG@%g" % ("%.2f" % tax_code.tax_percentage)
     end
+  end
+
+  def calculated_cgst
+    tax_code.tax_percentage / 2 if !is_igst
+  end
+
+  def calculated_sgst
+    tax_code.tax_percentage / 2 if !is_igst
   end
 
   attr_accessor :sales_quote, :sales_quote_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :is_service, :is_sez, :is_cgst_sgst, :is_igst

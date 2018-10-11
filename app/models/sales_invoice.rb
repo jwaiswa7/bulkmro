@@ -20,4 +20,8 @@ class SalesInvoice < ApplicationRecord
 
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
+
+  def filename
+    ['invoice', invoice_number].join('_')
+  end
 end
