@@ -20,7 +20,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    admin?
+    sales_manager?
   end
 
   def go_to_inquiry?
