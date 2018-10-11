@@ -44,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_suppliers?
-    edit?
+    edit? && record.inquiry_products.present?
   end
 
   def update_suppliers?
@@ -52,7 +52,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_quotes?
-    edit?
+    edit? && (new_sales_quote? || record.sales_quotes.present?)
   end
 
   def new_sales_quote?
@@ -60,7 +60,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_orders?
-    edit?
+    edit? && record.sales_orders.present?
   end
 
   def calculation_sheet?
@@ -72,15 +72,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def purchase_orders?
-    edit?
+    edit? && record.purchase_orders.present?
   end
 
   def sales_shipments?
-    edit?
+    edit? && record.invoices.present?
   end
 
   def sales_invoices?
-    edit?
+    edit? && record.shipments.present?
   end
 
   # def edit_rfqs?
