@@ -32,6 +32,18 @@ class InquiryProduct < ApplicationRecord
     self.product.tax_code.code if self.product.tax_code.present?
   end
 
+  def inquiry_final_sales_quote
+    self.inquiry&.final_sales_quote
+  end
+
+  def sales_quote_row
+    inquiry_final_sales_quote&.rows&.joins(:inquiry_product)&.where(:inquiry_products =>{:product_id => self.product.id})&.first
+  end
+
+  def approved_sales_order
+    inquiry_final_sales_quote&.sales_orders&.approved&.first
+  end
+
   def to_bp_catalog_s
     [bp_catalog_sku, bp_catalog_name ? bp_catalog_name : self.product.name].compact.join(' - ')
   end

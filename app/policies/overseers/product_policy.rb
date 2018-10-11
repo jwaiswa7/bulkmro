@@ -27,4 +27,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def best_prices_and_supplier_bp_catalog?
     index?
   end
+
+  def view_purchase_history?
+    index?
+  end
 end
