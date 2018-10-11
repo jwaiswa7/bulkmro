@@ -8,10 +8,13 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(overseers_inquiry_sales_orders_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'warning')
                       end
                   ].join(' '),
+                  sales_order.order_number,
                   sales_order.created_by.to_s,
                   sales_order.inquiry.to_s,
+                  sales_order.status.to_s.capitalize,
+                  sales_order.remote_status.to_s,
                   format_date(sales_order.created_at),
-                  sales_order.status.to_s.capitalize
+
               ]
 end
 
