@@ -5,6 +5,10 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
 
+  has_one_attached :og_invoice_pdf
+  has_one_attached :dup_invoice_pdf
+  has_one_attached :trip_invoice_pdf
+
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -20,4 +24,7 @@ class SalesInvoice < ApplicationRecord
 
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
+  validates_with FileValidator, attachment: :og_invoice_pdf, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :dup_invoice_pdf, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :trip_invoice_pdf, file_size_in_megabytes: 2
 end

@@ -13,14 +13,14 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact, required: :not_legacy?
+  belongs_to :contact, required: false
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: :not_legacy?
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: :not_legacy?
-  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: :not_legacy?
-  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: :not_legacy?
+  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   has_one :account, :through => :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, :inverse_of => :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
@@ -41,7 +41,7 @@ class Inquiry < ApplicationRecord
   has_many :invoices, :through => :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
-  belongs_to :payment_option, required: :not_legacy?
+  belongs_to :payment_option, required: false
   has_many :email_messages
   has_many :activities, dependent: :nullify
 
@@ -166,7 +166,7 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
-  validates_numericality_of :potential_amount, greater_than: 0
+  validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
 
   validates_presence_of :subject, :if => :not_legacy?
   validates_uniqueness_of :subject, :if => :not_legacy?
@@ -176,10 +176,10 @@ class Inquiry < ApplicationRecord
   # validates_presence_of :shipping_address
   validates_presence_of :expected_closing_date, :if => :not_legacy?
   validates_presence_of :subject, :if => :not_legacy?
-  validates_presence_of :inside_sales_owner_id
-  validates_presence_of :outside_sales_owner_id
-  validates_presence_of :payment_option_id
-  validates_presence_of :potential_amount
+  validates_presence_of :inside_sales_owner_id, :if => :not_legacy?
+  validates_presence_of :outside_sales_owner_id, :if => :not_legacy?
+  validates_presence_of :payment_option_id, :if => :not_legacy?
+  validates_presence_of :potential_amount, :if => :not_legacy?
   # validates_presence_of :contact
 
   validate :every_product_is_only_added_once?
@@ -224,9 +224,9 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.price_type ||= :exw
-      self.freight_option ||= :included
-      self.packing_and_forwarding_option ||= :added
+      self.price_type ||= :"EXW"
+      self.freight_option ||= :"Added"
+      self.packing_and_forwarding_option ||= :"Added"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
