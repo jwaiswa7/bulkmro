@@ -222,7 +222,6 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
-    # self.inquiry_number ||= Inquiry.maximum(:inquiry_number) + 1
   end
 
   def draft?

@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiry_terms inquiry_details sales_order_drafts activities)
+                %w(inquiry_details sales_order_drafts activities)
               end
 
     PaperTrail.request(enabled: false) do
@@ -876,8 +876,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_quote = inquiry.sales_quote
 
       if sales_quote.blank?
-        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
-
+        inquiry.update_attributes(:quotation_uid => quotation_uid)
+        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
       end
 
       if inquiry.status_before_type_cast >= 5
