@@ -4,8 +4,8 @@ class ProductsIndex < BaseIndex
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'standard'
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'standard'
 
-    field :sku, analyzer: 'keyword'
-    field :name, analyzer: 'standard'
+    field :sku, analyzer: 'substring_analyzer'
+    field :name, analyzer: 'substring_analyzer'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'

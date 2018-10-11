@@ -12,7 +12,19 @@ class BaseIndex < Chewy::Index
               tokenizer: 'keyword',
               filter: ['lowercase']
           },
+          substring_analyzer: {
+              tokenizer: 'substring_tokenizer',
+              filter: ['lowercase']
+          }
       },
+      tokenizer: {
+          substring_tokenizer: {
+              type: 'edge_ngram',
+              min_gram: 2,
+              max_gram: 7,
+              token_chars:['letter', 'digit']
+          }
+      }
   }, max_result_window: 5000000
 
   def self.fields
