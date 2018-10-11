@@ -1,10 +1,13 @@
 json.data (@products) do |product|
   json.array! [
                   [
+                      if policy(product).show?
+                        row_action_button(overseers_product_path(product), 'eye', 'View Product', 'dark')
+                      end,
                       if policy(product).edit?
                         row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
                       end,
-                      if policy(product).view?
+                      if policy(product).view_purchase_history?
                         row_action_button(view_overseers_product_path(product), 'street-view', 'View Purchase History', 'dark')
                       end,
                       if policy(product).comments?

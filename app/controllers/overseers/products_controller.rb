@@ -26,7 +26,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def show
-    redirect_to edit_overseers_product_path(@product)
+    @inquiry_products = @product.inquiry_products
     authorize @product
   end
 
@@ -85,8 +85,8 @@ class Overseers::ProductsController < Overseers::BaseController
     } : {}
   end
 
-  def view
-    @inquiry_products = @product.inquiry_products
+  def view_purchase_history
+    redirect_to overseers_product_path(@product)
     authorize @product
   end
 

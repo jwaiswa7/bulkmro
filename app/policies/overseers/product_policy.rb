@@ -28,7 +28,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def view?
+  def view_purchase_history?
     index?
   end
 end
