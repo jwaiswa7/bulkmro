@@ -11,6 +11,8 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
         :overseer => overseer,
         :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
     )
+
+    @sales_order.save_and_sync
   end
 
   attr_reader :sales_order, :overseer, :comment

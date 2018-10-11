@@ -6,13 +6,26 @@ Rails.application.routes.draw do
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
+  namespace 'callbacks' do
+    resources :sales_orders
+    resources :sales_invoices
+    resources :sales_receipts
+    resources :sales_shipments
+    resources :purchase_orders
+    resources :products
+
+    get 'login' => '/callbacks/sessions#new'
+  end
+
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
       get 'migrations'
+      get 'console'
     end
 
+    resources :remote_requests
     resources :reports
     resources :activities
     resource :profile, :controller => :profile
@@ -98,11 +111,16 @@ Rails.application.routes.draw do
         resources :comments
         resources :email_messages
 
+        resources :sales_shipments
+        resources :sales_invoices
+        resources :purchase_orders
+
         resources :sales_orders do
           member do
             get 'new_revision'
             get 'new_confirmation'
             post 'create_confirmation'
+            post 'resync'
           end
         end
 
