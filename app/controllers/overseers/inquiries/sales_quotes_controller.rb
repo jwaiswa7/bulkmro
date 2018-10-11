@@ -102,6 +102,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :quantity,
             :freight_cost_subtotal,
             :unit_freight_cost,
+            :measurement_unit_id,
             :margin_percentage,
             :unit_selling_price,
             :_destroy

@@ -28,7 +28,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    admin?
+    sales_manager?
   end
 
   def go_to_inquiry?
@@ -46,4 +46,22 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def resync?
     record.sent? && record.approved? && record.not_synced?
   end
+
+  class Scope
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
+    end
+
+    def resolve
+      if overseer.admin?
+        scope.all
+      else
+        scope.where(:created_by => overseer.self_and_descendants)
+      end
+    end
+  end
+
 end
