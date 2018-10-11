@@ -25,10 +25,11 @@ class Overseers::ContactsController < Overseers::BaseController
   def create
     @company = Company.find(params[:company_id])
     password = Devise.friendly_token[0, 20]
-    @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer,password: password))
+    @contact = @company.contacts.build(contact_params.merge(account: @company.account, overseer: current_overseer, password: password, password_confirmation: password))
     authorize @contact
 
     if @contact.save_and_sync
+      @company.update_attributes(:default_company_contact => @contact.company_contact) if @company.default_company_contact.blank?
       redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
     else
       render 'new'
@@ -40,7 +41,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |_, v| v.blank? })
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|_, v| v.blank?})
     authorize @contact
 
     if @contact.save_and_sync
@@ -51,6 +52,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   private
+
   def set_contact
     @contact ||= Contact.find(params[:id])
   end

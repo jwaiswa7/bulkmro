@@ -4,7 +4,7 @@ class CreateSalesInvoiceRows < ActiveRecord::Migration[5.2]
       t.references :sales_invoice, foreign_key: true
 
       t.string :sku, index: true
-      t.integer :quantity
+      t.decimal :quantity
 
       t.jsonb :metadata
 

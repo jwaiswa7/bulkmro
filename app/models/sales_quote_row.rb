@@ -127,7 +127,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.applicable_tax_percentage / 100)).round(4)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
   end
 
   def calculated_unit_selling_price_with_tax
@@ -142,6 +142,10 @@ class SalesQuoteRow < ApplicationRecord
     service = Services::Overseers::SalesQuotes::Taxation.new(self)
     service.call
     service
+  end
+
+  def to_bp_catalog_s
+    inquiry_product.to_bp_catalog_s
   end
 
   def to_s

@@ -15,6 +15,8 @@ class SalesOrder < ApplicationRecord
   pg_search_scope :locate, :against => [], :associated_against => { :created_by => [:first_name, :last_name], :company => [:name], :inquiry => [:inquiry_number]  }, :using => { :tsearch => {:prefix => true} }
   has_closure_tree({ name_column: :to_s })
 
+  has_one_attached :serialized_pdf
+
   belongs_to :sales_quote
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
@@ -26,7 +28,7 @@ class SalesOrder < ApplicationRecord
   has_many :sales_quote_rows, :through => :sales_quote
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
-  has_one :shipment, class_name: 'SalesShipment', inverse_of: :sales_order
+  has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
 
   delegate :conversion_rate, to: :inquiry_currency
@@ -90,5 +92,9 @@ class SalesOrder < ApplicationRecord
 
   def syncable_identifiers
     [:draft_uid]
+  end
+
+  def filename
+    ['order', id].join('_')
   end
 end
