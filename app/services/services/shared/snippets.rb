@@ -78,4 +78,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def product_brands_fix
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+    service.loop(nil) do |x|
+      brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
+      product = Product.find_by_legacy_id(x.get_column('entity_id'))
+      product.update_attributes(:brand => brand)
+    end
+  end
+
 end

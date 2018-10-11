@@ -46,7 +46,6 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           data[:entries][overseer_id_and_date[1]] = {overseer_id_and_date[0] => a['count_all']}
         end
       end
-
       geography.overseers = overseers
       data.geographies.push(geography)
     end

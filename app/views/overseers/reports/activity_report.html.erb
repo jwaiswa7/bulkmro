@@ -1,11 +1,12 @@
 <% provide :container_fluid, true %>
 
 <div class="col-12">
+
   <%= render layout: 'search_layout' do %>
-    <a class="btn btn-light text-left btn-lg btn-block my-2 mb-2" type="button" data-toggle="collapse" data-target="#summary">
+    <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
       Activity Report Summary
     </a>
-    <div id="summary" class="collapse show">
+    <div id="summary" class="collapse">
       <div class="form-row text-center">
         <% @data.geographies.each do |geography| %>
           <div class="col-3">
@@ -36,42 +37,42 @@
 
     <table class="table text-center mt-3">
       <thead data-toggle="sticky">
-        <tr>
-          <th></th>
-          <% @data.geographies.each do |geography| %>
-            <th class="text-uppercase text-black-50" colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
+      <tr>
+        <th></th>
+        <% @data.geographies.each do |geography| %>
+          <th class="text-uppercase text-black-50" colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <th></th>
+        <% @data.geographies.each do |geography| %>
+          <% geography.overseers.each do |overseer| %>
+            <td><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
           <% end %>
-        </tr>
-        <tr>
-          <th></th>
-          <% @data.geographies.each do |geography| %>
-            <% geography.overseers.each do |overseer| %>
-              <td><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
-            <% end %>
+        <% end %>
+      </tr>
+      <tr>
+        <th class="text-right no-sort"></th>
+        <% @data.geographies.each do |geography| %>
+          <% geography.overseers.each do |overseer| %>
+            <td data-toggle="tooltip" title="<%= overseer.name %>">
+              <strong><%= "#{overseer.name.split(' ').first[0]}. #{overseer.name.split(" ").last[0]}." %></strong>
+            </td>
           <% end %>
-        </tr>
-        <tr>
-          <th class="text-right no-sort"></th>
-          <% @data.geographies.each do |geography| %>
-            <% geography.overseers.each do |overseer| %>
-              <td data-toggle="tooltip" title="<%= overseer.name %>">
-                <strong><%= "#{overseer.name.split(' ').first[0]}. #{overseer.name.split(" ").last[0]}." %></strong>
-              </td>
-            <% end %>
-          <% end %>
-        </tr>
+        <% end %>
+      </tr>
       </thead>
       <tbody>
-        <% @report.start_date.upto(@report.end_date) do |date| %>
-          <tr>
-            <td class="text-right"><strong><%= format_date_without_time(date) %></strong></td>
-            <% @data.geographies.each do |geography| %>
-              <% geography.overseers.each do |overseer| %>
-                <td><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
-              <% end %>
+      <% @report.start_date.upto(@report.end_date) do |date| %>
+        <tr>
+          <td class="text-right"><strong><%= format_date_without_time(date) %></strong></td>
+          <% @data.geographies.each do |geography| %>
+            <% geography.overseers.each do |overseer| %>
+              <td><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
             <% end %>
-          </tr>
-        <% end %>
+          <% end %>
+        </tr>
+      <% end %>
       </tbody>
     </table>
   <% end %>

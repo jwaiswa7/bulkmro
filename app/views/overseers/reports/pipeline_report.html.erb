@@ -1,3 +1,60 @@
 <%= render layout: 'search_layout' do %>
-  <%#= @data %>
+  <hr/>
+  <table class="table-bordered table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <% @data.statuses.each do |status| %>
+          <th><%= status.name %></th>
+        <% end %>
+        <th>Won%</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% (@report.start_at.to_date..@report.end_at.to_date).map(&:beginning_of_month).uniq.each do |month| %>
+        <tr>
+          <td><%= month.strftime("%b, %Y") %></td>
+          <% @data.statuses.each do |status| %>
+            <td><%= get_pipeline_entry(@data.entries, month.strftime("%b, %Y") ,status) %></td>
+          <% end %>
+          <td>
+            <%= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][0]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][0]).to_f )*100).round(2) %>,
+            <%= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][1]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][1]).to_f )*100).round(2) %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>Total Number</td>
+        <% @data.statuses.each do |status, status_count| %>
+          <td>
+            <% count = 0 %>
+            <% @data.entries.each do |month, entry| %>
+              <% if entry["#{status.name}"].present? %>
+                <% count = count + entry[status.name][0] %>
+              <% end %>
+            <% end %>
+            <%= count %>
+          </td>
+        <% end %>
+        <td>
+        </td>
+      </tr>
+      <tr>
+        <td>Total Value</td>
+        <% @data.statuses.each do |status, status_count| %>
+          <td>
+            <% count = 0 %>
+            <% @data.entries.each do |month, entry| %>
+              <% if entry["#{status.name}"].present? %>
+                <% count = count + entry[status.name][1] %>
+              <% end %>
+            <% end %>
+            <%= count %>
+          </td>
+        <% end %>
+        <td>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 <% end %>
