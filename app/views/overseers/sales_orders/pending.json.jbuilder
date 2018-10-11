@@ -11,8 +11,7 @@ json.data (@pending_sales_orders) do |pending_sales_order|
                   ].join(' '),
                   pending_sales_order.created_by.to_s,
                   pending_sales_order.inquiry.to_s,
-                  format_date(pending_sales_order.created_at),
-                  sales_order.status.to_s.capitalize
+                  format_date(pending_sales_order.created_at)
               ]
 end
 
