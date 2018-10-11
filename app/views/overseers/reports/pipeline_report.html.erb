@@ -19,8 +19,8 @@
               <td><%= get_pipeline_entry(@data.entries, month.strftime("%b, %Y") ,status) %></td>
             <% end %>
             <td>
-              <%#= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][0]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][0]).to_f )*100).round(2) %>,
-              <%#= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][1]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][1]).to_f )*100).round(2) %>
+              <%= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][0]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][0]).to_f )*100).round(2) %>,
+              <%= (( (@data.entries[month.strftime("%b, %Y")]["Order Won"][1]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][1]).to_f )*100).round(2) %>
             </td>
           </tr>
         <% end %>
