@@ -106,8 +106,8 @@
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
             <td><%= inquiry_product.inquiry.company.account.alias %></td>
             <td><%= inquiry_product.inquiry.company.account.name %></td>
-            <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) || '-' %></td>
-            <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) || '-' %></td>
+            <td><%= format_currency(inquiry_product.sales_quote_row.try(:unit_cost_price)) %></td>
+            <td><%= format_currency(inquiry_product.sales_quote_row.try(:unit_selling_price)) %></td>
             <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
             <td><%= inquiry_product.approved_sales_order&.sent_at || '-' %></td>
           </tr>
