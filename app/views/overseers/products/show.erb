@@ -85,25 +85,32 @@
     <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;">
       <thead>
       <tr>
-        <th colspan="1">Inquiry #</th>
-        <th colspan="1">Alias Name</th>
-        <th colspan="1">Company Name</th>
-        <th colspan="1">Quote Date</th>
-        <th colspan="1">Quote Buying</th>
-        <th colspan="1">SO Date</th>
-        <th colspan="1">Selling Price</th>
+        <th></th>
+        <th>Inquiry #</th>
+        <th>Alias Name</th>
+        <th>Company Name</th>
+        <th>Quote Date</th>
+        <th>Quote Buying</th>
+        <th>SO Date</th>
+        <th>Selling Price</th>
       </tr>
       </thead>
       <% @inquiry_products.each do |inquiry_product| %>
         <tbody>
-        <br>
-        <td><%= inquiry_product.inquiry.inquiry_number %></td>
-        <td><%= inquiry_product.inquiry.company.account.alias %></td>
-        <td><%= inquiry_product.inquiry.company.account.name %></td>
-        <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
-        <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) || '-' %></td>
-        <td><%= inquiry_product.approved_sales_order&.sent_at || '-' %></td>
-        <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) || '-' %></td>
+          <tr>
+            <td>
+              <% if policy(inquiry_product.inquiry).edit? %>
+                <%= row_action_button(edit_overseers_inquiry_path(inquiry_product.inquiry), 'pencil', 'Edit Inquiry', 'warning') %>
+              <% end %>
+            </td>
+            <td><%= inquiry_product.inquiry.inquiry_number %></td>
+            <td><%= inquiry_product.inquiry.company.account.alias %></td>
+            <td><%= inquiry_product.inquiry.company.account.name %></td>
+            <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
+            <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) || '-' %></td>
+            <td><%= inquiry_product.approved_sales_order&.sent_at || '-' %></td>
+            <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) || '-' %></td>
+          </tr>
         </tbody>
       <% end %>
     </table>

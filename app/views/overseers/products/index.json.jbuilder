@@ -11,7 +11,7 @@ json.data (@products) do |product|
                         row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
                       end,
                       if product.inquiry_products.any? && policy(product).view_purchase_history?
-                        row_action_button(view_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
+                        row_action_button(view_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
                       end
                   ].join(' '),
                   product.name.truncate(30),

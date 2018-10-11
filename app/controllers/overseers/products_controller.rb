@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :view, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
+  before_action :set_product, only: [:show, :edit, :update, :view_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
