@@ -47,6 +47,7 @@
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
           <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
+          <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
         </div>
       </li>
       <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
