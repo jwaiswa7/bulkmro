@@ -7,13 +7,12 @@ json.data (@products) do |product|
                       if policy(product).edit?
                         row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
                       end,
-                      if policy(product).view_purchase_history?
-                        row_action_button(view_overseers_product_path(product), 'street-view', 'View Purchase History', 'dark')
-                      end,
                       if policy(product).comments?
                         row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
+                      end,
+                      if product.inquiry_products.any? && policy(product).view_purchase_history?
+                        row_action_button(view_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
                       end
-
                   ].join(' '),
                   product.name.truncate(30),
                   product.sku,
