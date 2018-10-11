@@ -1,4 +1,4 @@
-class Overseers::RemoteRequestsController < Overseers::BaseController
+class Overseers::ReportsController < Overseers::BaseController
 
   def index
     Report.activity
