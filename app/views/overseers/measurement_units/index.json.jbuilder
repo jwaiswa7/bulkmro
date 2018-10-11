@@ -1,15 +1,13 @@
-json.data (@brands) do |brand|
+json.data (@measurement_units) do |mu|
   json.array! [
                   [
-                      row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning'),
+                      row_action_button(edit_overseers_measurement_unit_path(mu), 'pencil', 'Edit Measurement Units', 'warning'),
                   ].join(' '),
-                  brand.to_s,
-                  brand.products.size,
-                  brand.suppliers.size,
-                  format_date(brand.created_at)
+                  mu.to_s,
+                  format_date(mu.created_at)
               ]
 end
 
-json.recordsTotal @brands.model.all.count
-json.recordsFiltered @brands.total_count
+json.recordsTotal @measurement_units.model.all.count
+json.recordsFiltered @measurement_units.total_count
 json.draw params[:draw]
