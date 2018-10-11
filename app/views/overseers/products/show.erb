@@ -1,5 +1,5 @@
 <div class="col-lg-12">
-  <section class="pt-3 pt-lg-4 pb-4 pb-lg-5">
+  <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <%= @product.name %>
@@ -11,36 +11,100 @@
     </div>
   </section>
 
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+          <div class="form-row">
+            <% if @product.sku? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">BM Number</strong>
+                <%= @product.sku %>
+              </div>
+            <% end %>
+
+            <% if @product.category.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Category</strong>
+                <%= @product.category %>
+              </div>
+            <% end %>
+
+            <% if @product.brand.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Brand</strong>
+                <%= @product.brand %>
+              </div>
+            <% end %>
+
+            <% if @product.mpn? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Manufacturer Part Number</strong>
+                <%= @product.mpn %>
+              </div>
+            <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is Service?</strong>
+              <%= format_boolean(@product.is_service) %>
+            </div>
+
+          </div>
+        </div>
+        <div class="mt-3">
+          <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting and Logistics</h6>
+          <div class="form-row">
+            <% if @product.tax_code.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Tax Code</strong>
+                <%= @product.tax_code %>
+              </div>
+            <% end %>
+
+            <% if @product.measurement_unit %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Unit of Measurement</strong>
+                <%= @product.measurement_unit %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <% if @product.inquiry_products.any? && policy(@product).view_purchase_history? %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1 d-none d-md-block">Purchase History</h3>
+    </div>
+    <p class="mt-md-1 d-none d-md-block mb-0">
+      History filterable in any way that we want under <strong><%= @product.name %></strong>.
+    </p>
+
     <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;">
       <thead>
-        <tr>
-          <th colspan="1">Inquiry #</th>
-          <th colspan="1">Alias Name</th>
-          <th colspan="1">Company Name</th>
-          <th colspan="1">SKU</th>
-          <th colspan="1">Brand</th>
-          <th colspan="1">Description</th>
-          <th colspan="1">Quote Date</th>
-          <th colspan="1">Quote Buying</th>
-          <th colspan="1">SO Date</th>
-          <th colspan="1">Selling Price</th>
-        </tr>
+      <tr>
+        <th colspan="1">Inquiry #</th>
+        <th colspan="1">Alias Name</th>
+        <th colspan="1">Company Name</th>
+        <th colspan="1">Quote Date</th>
+        <th colspan="1">Quote Buying</th>
+        <th colspan="1">SO Date</th>
+        <th colspan="1">Selling Price</th>
+      </tr>
       </thead>
       <% @inquiry_products.each do |inquiry_product| %>
-      <tbody>
+        <tbody>
         <br>
-        <td><%= inquiry_product.inquiry.inquiry_number%></td>
-        <td><%= inquiry_product.inquiry.company.account.alias%></td>
-        <td><%= inquiry_product.inquiry.company.account.name%></td>
-        <td><%= inquiry_product.product.sku%></td>
-        <td><%= inquiry_product.product.brand.name%></td>
-        <td><%= inquiry_product.product.name%></td>
-        <td><%= inquiry_product.inquiry.quotation_date || '-'%></td>
+        <td><%= inquiry_product.inquiry.inquiry_number %></td>
+        <td><%= inquiry_product.inquiry.company.account.alias %></td>
+        <td><%= inquiry_product.inquiry.company.account.name %></td>
+        <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
         <td><%= inquiry_product.sales_quote_row&.unit_cost_price&.round(2) || '-' %></td>
         <td><%= inquiry_product.approved_sales_order&.sent_at || '-' %></td>
         <td><%= inquiry_product.sales_quote_row&.unit_selling_price&.round(2) || '-' %></td>
-      </tbody>
+        </tbody>
       <% end %>
     </table>
   <% end %>
