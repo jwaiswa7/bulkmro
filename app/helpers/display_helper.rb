@@ -74,6 +74,12 @@ module DisplayHelper
     end
   end
 
+  def format_date_without_time_and_date(date)
+    if date.present?
+      date.strftime("%b, %Y")
+    end
+  end
+
   def format_num(num, precision = 0)
     number_with_precision(num, precision: precision)
   end
