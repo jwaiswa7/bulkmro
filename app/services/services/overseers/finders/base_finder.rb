@@ -8,7 +8,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                params
              else
                ''
-             end.gsub(/[^0-9A-Za-z ]/, '')
+             end
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -39,7 +39,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def sort_definition
-    {:created_at => :desc}
+    # {:created_at => :desc}
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records

@@ -15,14 +15,25 @@ class BaseIndex < Chewy::Index
           substring_analyzer: {
               tokenizer: 'substring_tokenizer',
               filter: ['lowercase']
+          },
+          sku_substring_analyzer: {
+              tokenizer: 'sku_substring_tokenizer',
+              filter: ['lowercase']
           }
+
       },
       tokenizer: {
-          substring_tokenizer: {
-              type: 'edge_ngram',
+          sku_substring_tokenizer: {
+              type: 'ngram',
               min_gram: 2,
               max_gram: 7,
-              token_chars:['letter', 'digit']
+              #token_chars:%w(letter digit)
+          },
+          substring_tokenizer: {
+              type: 'ngram',
+              min_gram: 1,
+              max_gram: 30,
+              #token_chars:%w(letter digit whitespace punctuation symbol)
           }
       }
   }, max_result_window: 5000000
