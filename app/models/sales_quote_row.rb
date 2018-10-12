@@ -27,32 +27,28 @@ class SalesQuoteRow < ApplicationRecord
   validates_numericality_of :converted_unit_selling_price, :greater_than_or_equal_to => 0
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :if => :not_legacy?
 
-  validate :is_unit_selling_price_consistent_with_margin_percentage?
-
+  validate :is_unit_selling_price_consistent_with_margin_percentage?, :if => :not_legacy?
   def is_unit_selling_price_consistent_with_margin_percentage?
-    if unit_selling_price.round != calculated_unit_selling_price.round && Rails.env.development?
+    if unit_selling_price.round != calculated_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with margin'
     end
   end
 
-  validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?
-
+  validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != calculated_converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
 
-  validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?
-
+  validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, :if => :not_legacy?
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
     end
   end
 
-  validate :tax_percentage_is_not_nil?
-
+  validate :tax_percentage_is_not_nil?, :if => :not_legacy?
   def tax_percentage_is_not_nil?
     if self.not_legacy? && self.tax_code.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
@@ -60,7 +56,6 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
-
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
     self.freight_cost_subtotal ||= 0.0
@@ -128,7 +123,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.applicable_tax_percentage / 100)).round(4)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
   end
 
   def calculated_unit_selling_price_with_tax
@@ -143,6 +138,10 @@ class SalesQuoteRow < ApplicationRecord
     service = Services::Overseers::SalesQuotes::Taxation.new(self)
     service.call
     service
+  end
+
+  def to_bp_catalog_s
+    inquiry_product.to_bp_catalog_s
   end
 
   def to_s
