@@ -9784,6 +9784,9 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield; }
 
+button, html [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: none; }
+
 .form-group label {
   color: #6c757d;
   font-size: .875rem;
