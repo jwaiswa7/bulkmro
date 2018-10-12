@@ -74,7 +74,7 @@
     </div>
   </section>
 
-  <% if @product.inquiry_products.any? && policy(@product).view_purchase_history? %>
+  <% if @product.inquiry_products.any? && policy(@product).sku_purchase_history? %>
     <div class="d-md-flex justify-content-between mt-5">
       <h3 class="display-5 mb-1">Purchase History</h3>
     </div>
@@ -106,10 +106,10 @@
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
             <td><%= inquiry_product.inquiry.company.account.alias %></td>
             <td><%= inquiry_product.inquiry.company.account.name %></td>
-            <td><%= format_currency(inquiry_product.sales_quote_row.try(:unit_cost_price)) %></td>
-            <td><%= format_currency(inquiry_product.sales_quote_row.try(:unit_selling_price)) %></td>
+            <td><%= format_currency(inquiry_product.final_sales_quote_row.try(:unit_cost_price)) %></td>
+            <td><%= format_currency(inquiry_product.final_sales_quote_row.try(:unit_selling_price)) %></td>
             <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
-            <td><%= inquiry_product.approved_sales_order&.sent_at || '-' %></td>
+            <td><%= inquiry_product.approved_final_sales_order.sent_at || '-' %></td>
           </tr>
         </tbody>
       <% end %>

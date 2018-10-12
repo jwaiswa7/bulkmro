@@ -118,4 +118,5 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   # def create_sales_order?
   #   new_sales_order?
   # end
+  #
 end

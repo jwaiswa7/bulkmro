@@ -8,6 +8,13 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def show
     authorize @sales_quote
+
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_quote
+      end
+    end
   end
 
   def new
@@ -55,7 +62,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     end
   end
 
+
   private
+
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
@@ -93,6 +102,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :quantity,
             :freight_cost_subtotal,
             :unit_freight_cost,
+            :measurement_unit_id,
             :margin_percentage,
             :unit_selling_price,
             :_destroy

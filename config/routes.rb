@@ -72,7 +72,7 @@ Rails.application.routes.draw do
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
-        get 'view_purchase_history'
+        get 'sku_purchase_history'
       end
 
       collection do
@@ -111,7 +111,6 @@ Rails.application.routes.draw do
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
-
         resources :sales_shipments
         resources :sales_invoices
         resources :purchase_orders

@@ -6,11 +6,12 @@ class CreateSalesOrders < ActiveRecord::Migration[5.2]
       t.integer :legacy_id, index: true
       t.integer :remote_uid, index: true
 
-      t.integer :legacy_request_status
+      t.integer :legacy_request_status, index: true
+      t.integer :remote_status, index: true
+      t.integer :status, index: true
 
       t.integer :order_number
-      t.string :sap_series
-      t.integer :doc_number
+      t.integer :draft_uid
 
       t.datetime :sent_at
 

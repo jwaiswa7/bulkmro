@@ -89,11 +89,13 @@ let initVueJS = () => {
                         $(row).click();
                     })
 
-
                 });
-                $('#ac-' + product_id).parent().hide();
+                this.hiddenProducts.push(product_id);
+                //$('#ac-' + product_id).parent().hide();
             },
-
+            showProductButton(product_id){
+               return !this.hiddenProducts.includes(product_id)
+            },
             getRow(index) {
                 return this.rows[index];
             },
@@ -154,7 +156,10 @@ let initVueJS = () => {
                 });
                 this.afterRowsUpdated();
             },
-
+            formatCurrency(value) {
+                let val = (value / 1).toFixed(2)
+                return this.defaultCurrencySign + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            },
             afterRowsUpdated() {
                 let calculated_freight_cost_total = 0,
                     total_selling_price = 0,
@@ -272,7 +277,7 @@ let initVueJS = () => {
                 row.unit_freight_cost = row.unit_freight_cost || 0;
                 row.freight_cost_subtotal = row.freight_cost_subtotal || 0;
                 this.setRow(index, row);
-                this.triggerSellingPriceChangeFor(index,'margin_percentage');
+                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
             },
 
             triggerSellingPriceChangeFor(index, trigger) {
@@ -289,7 +294,7 @@ let initVueJS = () => {
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {
                     margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
-                    row.margin_percentage = parseFloat(margin_percentage * 100);
+                    row.margin_percentage = toDecimal(margin_percentage * 100);
                 }
 
                 this.setRow(index, row);
@@ -369,7 +374,9 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
+        hiddenProducts:[],
         currency_sign: '₹',
+        defaultCurrencySign:'',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
@@ -419,11 +426,34 @@ let assignEventsAndGetAttributes = () => {
                     modelName = ["rows[", currentRowIndex, "].", attributeName].join('');
 
                     // To recreate VueJS v-model when nested form rows are added or removed
-                    $(el).attr("v-html", modelName);
+
                     //$(el).attr("data-v-index", currentRowIndex);
-                    if (currentRowTemplate[attributeName] == undefined) {
-                        currentRowTemplate[attributeName] = 0;
+                    //$(el).attr("data-v-index", currentRowIndex);
+
+                    if (currentRowTemplate[attributeName] != undefined) {
+
+                        let value = $(el).text().trim();
+                        let numberValue = value;
+
+                        //Check if first char is not a number
+                        if(value.trim() != ""){
+
+                            if (value.match("[^0-9]").index == 0) {
+                                if (data.defaultCurrencySign == "" || data.defaultCurrencySign === undefined) {
+                                    data.defaultCurrencySign = value.match("[^0-9]")[0]
+                                }
+                                $(el).attr("v-html", "formatCurrency(" + modelName + ")");
+                                numberValue = value.replace(/[^0-9.]/g, "")
+                            }
+                        }
+
+
+                        currentRowTemplate[attributeName] = parseFloat(numberValue);
                     }
+                    else{
+                        $(el).attr("v-html", modelName);
+                    }
+
 
 
                 }
@@ -454,7 +484,24 @@ let assignEventsAndGetAttributes = () => {
     });
     // V-models that cannot be edited, auto calculated
     $('[data-v-html]').each(function (index, el) {
-        $(el).attr("v-html", $(el).attr('data-v-html'));
+
+        let modelName = $(el).data("v-html");
+        let value = $(el).text().trim();
+        let numberValue = value;
+
+        //Check if first char is not a number
+        if (value.match("[^0-9]").index == 0) {
+            if (data.defaultCurrencySign == "") {
+                data.defaultCurrencySign = value.match("[^0-9]")[0]
+            }
+            $(el).attr("v-html", "formatCurrency(" + modelName + ")");
+            numberValue = value.replace(/[^0-9.]/g, "")
+        }
+        else {
+            $(el).attr("v-html", modelName);
+        }
+
+
     });
     data.rows = rows;
     return data;

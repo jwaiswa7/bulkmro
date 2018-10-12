@@ -11,18 +11,24 @@
 
       <%= f.simple_fields_for :rows, f.object.rows.reverse do |row| %>
         <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
-        <div class="card option-wrapper mb-3 text-right text-md-left">
+        <div class="card option-wrapper mb-3 text-right text-md-left <%= "border-danger rim rim-left" if row.object.errors.any? %>">
+          <div class="card-header text-left">
+            <span class="text-muted">
+              #<%= row.object.metadata["id"].to_i.to_s %>
+            </span>
+          </div>
           <div class="card-body">
             <%= row.hidden_field :id %>
 
             <%= row.simple_fields_for :inquiry_product do |inquiry_product, index| %>
-              <div class="nested"> <!-- TODO: Drop dependence on the nested class -->
+              <div class="nested "> <!-- TODO: Drop dependence on the nested class -->
                 <%= inquiry_product.hidden_field :id %>
                 <%= inquiry_product.hidden_field :inquiry_id %>
                 <%= inquiry_product.hidden_field :quantity %>
                 <%= inquiry_product.hidden_field :sr_no %>
                 <%= inquiry_product.simple_fields_for :product do |product| %>
                   <%= product.hidden_field :inquiry_import_row_id %>
+
 
                   <div class="form-row">
                     <div class="col-6 col-md-3">
@@ -33,6 +39,7 @@
                           <% end %>
                         </div>
                         <div class="flex-grow-1">
+
                           <%= product.input :name, class: 'text-right', as: :text %>
                         </div>
                       </div>
