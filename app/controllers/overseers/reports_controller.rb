@@ -10,7 +10,6 @@ class Overseers::ReportsController < Overseers::BaseController
   def show
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
-
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report)
     @data = service.call
 
