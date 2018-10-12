@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories )
+                %w(inquiry_details sales_order_drafts activities)
               end
 
     PaperTrail.request(enabled: false) do
@@ -566,25 +566,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_address_service.loop(limit) do |x|
       company = Company.acts_as_supplier.find_by_legacy_id(x.get_column('cmp_id'))
 
+      next if company.blank? # todo remove
       #next if x.get_column('NULL').nil?
 
       country_code = x.get_column('country')
       address = Address.where(legacy_id: x.get_column('address_id')).first_or_create do |address|
-        address.assign_attributes(company: company,
-                                  name: company.name,
-                                  gst: x.get_column('gst_num'),
-                                  country_code: country_code,
-                                  state: AddressState.find_by_name(x.get_column('state_name')),
-                                  state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
-                                  city_name: x.get_column('city'),
-                                  pincode: x.get_column('pincode'),
-                                  street1: x.get_column('address'),
-                                  cst: x.get_column('cst_num'),
-                                  vat: x.get_column('vat_num'),
-                                  excise: x.get_column('ed_num'),
-                                  telephone: x.get_column('telephone'),
-                                  gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
-                                  legacy_metadata: x.get_row
+        address.assign_attributes(
+            company: company,
+            name: company.name,
+            gst: x.get_column('gst_num'),
+            country_code: country_code,
+            state: AddressState.find_by_name(x.get_column('state_name')),
+            state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
+            city_name: x.get_column('city'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('address'),
+            cst: x.get_column('cst_num'),
+            vat: x.get_column('vat_num'),
+            excise: x.get_column('ed_num'),
+            telephone: x.get_column('telephone'),
+            gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
+            legacy_metadata: x.get_row
         )
       end
 
@@ -874,8 +876,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_quote = inquiry.sales_quote
 
       if sales_quote.blank?
-        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
-
+        inquiry.update_attributes(:quotation_uid => quotation_uid)
+        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
       end
 
       if inquiry.status_before_type_cast >= 5

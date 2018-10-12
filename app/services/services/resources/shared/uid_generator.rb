@@ -5,11 +5,11 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   end
 
   def self.company_uid
-    "#{Company.maximum(:id) + 10000}"
+    "#{(Company.maximum(:id) || 0) + 10000}"
   end
 
   def self.address_uid
-    "A#{Address.maximum(:id) + 10000}"
+    "A#{(Address.maximum(:id) || 0) + 10000}"
   end
 
   def self.product_sku(unpersisted_skus=[])

@@ -8,6 +8,13 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize @sales_order
+
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_order
+      end
+    end
   end
 
   def new

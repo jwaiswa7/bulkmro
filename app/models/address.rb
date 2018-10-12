@@ -36,6 +36,11 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
+  validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
+  validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
+  phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
+  validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
+
   after_initialize :set_defaults, :if => :new_record?
   after_initialize :set_global_defaults
 
@@ -51,11 +56,28 @@ class Address < ApplicationRecord
     self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid
   end
 
-  def to_s
-    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
-  end
-
   def self.legacy
     find_by_name('Legacy Indian State')
+  end
+
+  def to_s
+    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+  end
+
+  def to_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode].reject(&:blank?).join(', '),
+        [state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
+  end
+
+  def to_compact_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
   end
 end

@@ -28,7 +28,5 @@ module Mixins::CanBeSynced
     def sync_id
       self.legacy_id || self.id
     end
-
-
   end
 end
