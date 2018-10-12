@@ -15,9 +15,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 custom_methods
               elsif Rails.env.production?
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities sales_invoices sales_shipments purchase_orders)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities sales_invoices sales_shipments purchase_orders sales_receipts)
               elsif Rails.env.development?
-                %w(sales_invoices)
+                %w(sales_receipts)
               end
 
     PaperTrail.request(enabled: false) do
@@ -1000,7 +1000,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             legacy_metadata: x.get_row,
             created_by: overseer,
             updated_by: overseer
-
         )
       end
 
@@ -1068,6 +1067,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           po.assign_attributes(inquiry: inquiry, is_legacy: true, po_number: x.get_column('po_number'), metadata: x.get_row)
         end
         attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'po_pdf', file_url: x.get_column('file_path'))
+      end
+    end
+  end
+
+  def sales_receipts
+    payment_method = { 'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95 }
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv')
+    service.loop(limit) do |x|
+      sales_invoice = SalesInvoice.find_by_legacy_id(x.get_column('invoice_legacy_id'))
+      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |sr|
+        sr.assign_attributes(sales_invoice: sales_invoice, is_legacy: true, remote_reference: x.get_column('remote_reference'), metadata: x.get_row, payment_method: payment_method[x.get_column('payment_method')], payment_type: 20)
+      end
+    end
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv')
+    service.loop(limit) do |x|
+      company = Company.acts_as_customer.find_by_legacy_id(x.get_column('company'))
+      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |sr|
+        sr.assign_attributes(company: company, is_legacy: true, remote_reference: x.get_column('remote_reference'), metadata: x.get_row, payment_method: payment_method[x.get_column('payment_method')], payment_type: 10)
       end
     end
   end
