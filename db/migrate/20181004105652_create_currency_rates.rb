@@ -1,8 +1,9 @@
-class CreateInquiryCurrencies < ActiveRecord::Migration[5.2]
+class CreateCurrencyRates < ActiveRecord::Migration[5.2]
   def change
-    create_table :inquiry_currencies do |t|
+    create_table :currency_rates do |t|
       t.references :currency, foreign_key: true
 
+      t.date :logged_at
       t.decimal :conversion_rate
 
       t.timestamps

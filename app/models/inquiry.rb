@@ -35,6 +35,8 @@ class Inquiry < ApplicationRecord
   has_many :purchase_orders
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
+  has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
+  has_one :approved_final_sales_order, -> { approved }, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
   has_many :sales_orders, :through => :sales_quotes
   has_many :shipments, :through => :sales_orders, class_name: 'SalesShipment', source: :shipments
