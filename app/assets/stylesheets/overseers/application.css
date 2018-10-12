@@ -9784,6 +9784,9 @@ input[type=number]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield; }
 
+button, html [type="button"], [type="reset"], [type="submit"] {
+  -webkit-appearance: none; }
+
 .form-group label {
   color: #6c757d;
   font-size: .875rem;
@@ -10361,3 +10364,67 @@ th {
   border-right: 0 !important;
   border-bottom: 0 !important;
   border-left: 4px solid transparent; }
+
+.bg-highlight-primary {
+  background-color: #ffedde !important; }
+
+a.bg-highlight-primary:hover, a.bg-highlight-primary:focus,
+button.bg-highlight-primary:hover,
+button.bg-highlight-primary:focus {
+  background-color: #fed1ac !important; }
+
+.bg-highlight-secondary {
+  background-color: #d8dbdd !important; }
+
+a.bg-highlight-secondary:hover, a.bg-highlight-secondary:focus,
+button.bg-highlight-secondary:hover,
+button.bg-highlight-secondary:focus {
+  background-color: #bcc1c6 !important; }
+
+.bg-highlight-success {
+  background-color: #afecbd !important; }
+
+a.bg-highlight-success:hover, a.bg-highlight-success:focus,
+button.bg-highlight-success:hover,
+button.bg-highlight-success:focus {
+  background-color: #86e29b !important; }
+
+.bg-highlight-info {
+  background-color: #a7e9f4 !important; }
+
+a.bg-highlight-info:hover, a.bg-highlight-info:focus,
+button.bg-highlight-info:hover,
+button.bg-highlight-info:focus {
+  background-color: #7adeee !important; }
+
+.bg-highlight-warning {
+  background-color: #fff4d3 !important; }
+
+a.bg-highlight-warning:hover, a.bg-highlight-warning:focus,
+button.bg-highlight-warning:hover,
+button.bg-highlight-warning:focus {
+  background-color: #ffe7a0 !important; }
+
+.bg-highlight-danger {
+  background-color: #fae3e5 !important; }
+
+a.bg-highlight-danger:hover, a.bg-highlight-danger:focus,
+button.bg-highlight-danger:hover,
+button.bg-highlight-danger:focus {
+  background-color: #f3b7bd !important; }
+
+.bg-highlight-light {
+  background-color: white !important; }
+
+a.bg-highlight-light:hover, a.bg-highlight-light:focus,
+button.bg-highlight-light:hover,
+button.bg-highlight-light:focus {
+  background-color: #e0e7eb !important; }
+
+.bg-highlight-dark {
+  background-color: #96a0aa !important; }
+
+a.bg-highlight-dark:hover, a.bg-highlight-dark:focus,
+button.bg-highlight-dark:hover,
+button.bg-highlight-dark:focus {
+  background-color: #7a8793 !important; }
