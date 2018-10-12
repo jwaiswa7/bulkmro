@@ -25,7 +25,6 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: overseer_count}))
         end
       end
-      #next if (!geo_activities.present?)
 
       geography = OpenStruct.new({
                                      name: geography_name,
