@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <% if overseer_signed_in? %>
+  <% if overseer_signed_in? && Rails.env.production? %>
     <%= render 'shared/layouts/components/usersnap' %>
   <% end %>
   </body>
