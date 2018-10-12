@@ -41,7 +41,7 @@
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Products
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="productsDropdown">
           <%= nav_dropdown_item 'List', overseers_products_path, policy(:product).index? %>
           <%= nav_dropdown_item 'Queue', pending_overseers_products_path, policy(:product).pending? %>
           <div class="dropdown-divider"></div>
@@ -50,7 +50,16 @@
           <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
         </div>
       </li>
-      <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Inquiries
+        </a>
+        <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
+          <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
+          <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
+        </div>
+      </li>
+
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Sales Orders
@@ -65,8 +74,9 @@
           Reports
         </a>
         <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Activity', overseers_report_path(Report.activity), policy(:report).show? %>
-          <%= nav_dropdown_item 'Pipeline', overseers_report_path(Report.pipeline), policy(:report).show? %>
+          <% Report.all.each do |report| %>
+            <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
+          <% end %>
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
         </div>

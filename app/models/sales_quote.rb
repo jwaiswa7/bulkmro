@@ -35,6 +35,14 @@ class SalesQuote < ApplicationRecord
   #     end
   #   end
   # end
+  #
+
+  after_save :handle_smart_queue
+  def handle_smart_queue
+    self.inquiry.update_attributes(calculated_total: calculated_total)
+    service = Services::Overseers::Inquiries::HandleSmartQueue.new(self.inquiry)
+    service.call
+  end
 
   def syncable_identifiers
     [:quotation_uid]

@@ -36,7 +36,7 @@ class Inquiry < ApplicationRecord
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
-  has_one :approved_final_sales_order, -> { approved }, :through => :final_sales_quote, :class_name => 'SalesOrder'
+  has_one :approved_final_sales_order, -> {approved}, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
   has_many :sales_orders, :through => :sales_quotes
   has_many :shipments, :through => :sales_orders, class_name: 'SalesShipment', source: :shipments
@@ -135,6 +135,13 @@ class Inquiry < ApplicationRecord
   end
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
+  scope :smart_queue, -> {
+    where('status NOT IN (?)', [
+        Inquiry.statuses[:'Lead by O/S'],
+        Inquiry.statuses[:'Order Lost'],
+        Inquiry.statuses[:'Regret']
+    ]).order(:priority => :desc, :quotation_followup_date => :asc, :calculated_total => :desc)
+  }
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
@@ -178,6 +185,7 @@ class Inquiry < ApplicationRecord
   validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
+
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
@@ -189,6 +197,7 @@ class Inquiry < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     if self.created_by.present?
       self.inside_sales_owner ||= self.created_by
@@ -236,12 +245,11 @@ class Inquiry < ApplicationRecord
 
   def attachments
     attachment = []
-    attachment.push(self.customer_po_sheet.present? ? self.customer_po_sheet : nil  )
-    attachment.push(self.copy_of_email.present? ? self.copy_of_email : nil  )
-    attachment.push(self.suppler_quote.present? ? self.suppler_quote : nil  )
-    attachment.push(self.final_supplier_quote.present? ? self.final_supplier_quote : nil  )
-    attachment.push(self.calculation_sheet.present? ? self.calculation_sheet : nil  )
-
+    attachment.push(self.customer_po_sheet) if self.customer_po_sheet.attached?
+    attachment.push(self.copy_of_email) if self.copy_of_email.attached?
+    attachment.push(self.suppler_quote) if self.self.suppler_quote.attached?
+    attachment.push(self.final_supplier_quote) if self.final_supplier_quote.attached?
+    attachment.push(self.calculation_sheet) if self.calculation_sheet.attached?
     attachment.compact
   end
 
