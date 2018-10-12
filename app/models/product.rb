@@ -76,6 +76,10 @@ class Product < ApplicationRecord
     self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
   end
 
+  def lowest_inquiry_product_suppliers(number: 1)
+    self.inquiry_product_suppliers.includes(:supplier).order(:unit_cost_price).uniq(&:supplier).first(number)
+  end
+
   def latest_inquiry_product_supplier
     self.inquiry_product_suppliers.latest_record
   end
