@@ -8,6 +8,20 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def show
     authorize @sales_invoice
+
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_invoice
+      end
+    end
   end
+
+  private
+
+  def set_sales_invoice
+    @sales_invoice = @inquiry.invoices.find(params[:id])
+  end
+
 end
 
