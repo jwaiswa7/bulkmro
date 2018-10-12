@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -47,6 +48,12 @@ Rails.application.routes.draw do
     end
 
     resources :brands do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :measurement_units do
       collection do
         get 'autocomplete'
       end
