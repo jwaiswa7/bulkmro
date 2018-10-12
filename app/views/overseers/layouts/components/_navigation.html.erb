@@ -60,7 +60,6 @@
           <%= nav_dropdown_item 'Pending', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
         </div>
       </li>
-      <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Reports
@@ -68,6 +67,8 @@
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Activity', overseers_report_path(Report.activity), policy(:report).show? %>
           <%= nav_dropdown_item 'Pipeline', overseers_report_path(Report.pipeline), policy(:report).show? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
         </div>
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
