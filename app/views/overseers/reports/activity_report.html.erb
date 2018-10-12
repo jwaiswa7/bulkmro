@@ -1,7 +1,13 @@
 <% provide :container_fluid, true %>
 
-<div class="col-12">
+<div class="col-lg-12 mb-0">
+  <div class="page-header mb-0">
+    <h2>Activity Report</h2>
+    <p>Activity report from <strong><%= format_date_without_time(@report.start_at) %></strong> to <strong><%= format_date_without_time(@report.end_at) %></strong>.</p>
+  </div>
+</div>
 
+<div class="col-12">
   <%= render layout: 'search_layout' do %>
     <a class="btn btn-light text-left btn-lg btn-block my-2 collapsed mb-2" type="button" data-toggle="collapse" data-target="#summary">
       Activity Report Summary
