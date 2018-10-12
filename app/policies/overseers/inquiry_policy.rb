@@ -3,6 +3,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def smart_queue?
+    index?
+  end
+
   def new_email_message?
     record.persisted? && overseer.can_send_emails?
   end
@@ -44,7 +48,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_suppliers?
-    edit?
+    edit? && record.inquiry_products.present?
   end
 
   def update_suppliers?
@@ -52,7 +56,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_quotes?
-    edit?
+    edit? && (new_sales_quote? || record.sales_quotes.present?)
   end
 
   def new_sales_quote?
@@ -60,11 +64,27 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_orders?
+    edit? && record.sales_orders.present?
+  end
+
+  def calculation_sheet?
     edit?
   end
 
   def comments?
     edit?
+  end
+
+  def purchase_orders?
+    edit? && record.purchase_orders.present?
+  end
+
+  def sales_shipments?
+    edit? && record.invoices.present?
+  end
+
+  def sales_invoices?
+    edit? && record.shipments.present?
   end
 
   # def edit_rfqs?
@@ -102,4 +122,5 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   # def create_sales_order?
   #   new_sales_order?
   # end
+  #
 end

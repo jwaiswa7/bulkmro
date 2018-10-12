@@ -9,14 +9,16 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.string :remote_uid, index: {unique: true}
       t.integer :legacy_id, index: true
 
-
       t.integer :product_type, index: true
       t.boolean :is_verified, default: false
       t.boolean :is_service, default: false
 
+      t.decimal :weight, :decimal, default: 0.0
+
       t.string :name
       t.string :sku, index: {unique: true}
-      t.string :mpn, index: {unique: true}
+      t.string :trashed_sku, index: true
+      t.string :mpn, index: true
 
       t.string :description
       t.string :meta_description

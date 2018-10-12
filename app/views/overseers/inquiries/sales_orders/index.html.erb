@@ -27,6 +27,18 @@
             <% if policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
+
+            <% if policy(sales_order).resync? %>
+              <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
+            <% end %>
+
+            <% if policy(sales_order).show? %>
+              <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <% end %>
+
+            <% if policy(sales_order).show_serialized? %>
+              <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <% end %>
           </td>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>

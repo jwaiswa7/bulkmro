@@ -2,6 +2,7 @@
   "name": "bulkmro",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.3.1",
     "@rails/webpacker": "3.5",
     "autosize": "^4.0.2",
     "bootstrap": "4.1.3",
@@ -22,8 +23,8 @@
     "popper.js": "^1.14.4",
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
-    "vue": "^2.5.17",
-    "@fortawesome/fontawesome-pro": "^5.3.1"
+    "stickybits": "^3.5.6",
+    "vue": "^2.5.17"
   },
   "version": "1.0.0",
   "description": "b2b industrial supplies",

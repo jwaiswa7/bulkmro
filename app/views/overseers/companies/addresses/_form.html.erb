@@ -24,8 +24,11 @@
         <%= f.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
       </div>
       <div class="col-6 col-md-3">
-        <%= f.association :state, :wrapper => :custom_multi_select %>
+        <%= f.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian %>
       </div>
+      <!--<div class="col-6 col-md-3">
+        <%#= f.input :state_name %>
+      </div>-->
       <div class="col-6 col-md-2">
         <%= f.input :city_name %>
       </div>

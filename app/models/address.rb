@@ -1,6 +1,9 @@
 class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry
+  include Mixins::CanBeSynced
+
+  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -25,15 +28,22 @@ class Address < ApplicationRecord
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
-
   validates_presence_of :state, :if => :domestic?
 
+  validates_presence_of :remote_uid
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
+  validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
+  validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
+  phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
+  validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
+
   after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_global_defaults
+
   def set_defaults
     self.is_sez ||= false
 
@@ -42,11 +52,32 @@ class Address < ApplicationRecord
     end
   end
 
-  def to_s
-    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].compact.join(', ')
+  def set_global_defaults
+    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid
   end
 
   def self.legacy
     find_by_name('Legacy Indian State')
+  end
+
+  def to_s
+    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+  end
+
+  def to_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode].reject(&:blank?).join(', '),
+        [state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
+  end
+
+  def to_compact_multiline_s
+    [
+        street1,
+        street2,
+        [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
+    ].reject(&:blank?).join("<br>").html_safe
   end
 end

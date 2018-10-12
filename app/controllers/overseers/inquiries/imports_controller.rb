@@ -69,6 +69,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def manage_failed_skus
     authorize @excel_import
+
     service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
     service.call
   end

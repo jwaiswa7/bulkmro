@@ -70,4 +70,7 @@ class SalesOrderRow < ApplicationRecord
       :hsn
     end
   end
+  def to_remote_s
+    self.to_param
+  end
 end

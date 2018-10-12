@@ -47,15 +47,16 @@
       </div>
     </div>
 
+    <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, include_blank: 'Select an Inside Owner' %>
+        <%= f.association :inside_sales_owner, wrapper: :custom_multi_select, include_blank: 'Select an Inside Owner' %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, include_blank: 'Select an Outside Owner' %>
+        <%= f.association :outside_sales_owner, wrapper: :custom_multi_select, include_blank: 'Select an Outside Owner' %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, include_blank: 'Select a Manager' %>
+        <%= f.association :sales_manager, wrapper: :custom_multi_select, include_blank: 'Select a Manager' %>
       </div>
     </div>
 
@@ -65,10 +66,6 @@
         <%= f.select :contact_ids, @account.contacts.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Contacts' %>
       </div>
     </div>
-
-    <% if f.object.persisted? %>
-    <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-    <% end %>
 
     <div class="form-row">
       <div class="col-6">
@@ -117,7 +114,9 @@
 <!--      </div>-->
 <!--    </div>-->
 
+
     <% if f.object.persisted? %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
     <% end %>

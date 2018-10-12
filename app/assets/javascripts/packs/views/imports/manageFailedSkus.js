@@ -3,7 +3,13 @@ const manageFailedSkus = () => {
         onRadioChange(this);
     });
 
-    $('input[name*=approved_alternative_id]:radio').on('change', function (e) {
+    $('body').on('cocoon:after-remove', function (e, removedItem) {
+        $(removedItem).each(function (index, item) {
+            $(item).find(':input:not(:radio):not([type=hidden]),textarea').prop('disabled', true).prop('required', false);
+
+        });
+    });
+    $('body').on('change', 'input[name*=approved_alternative_id]:radio', function (e) {
         onRadioChange(this);
     });
 };

@@ -13,18 +13,18 @@ class Inquiry < ApplicationRecord
   belongs_to :inquiry_currency, dependent: :destroy
   has_one :currency, :through => :inquiry_currency
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
-  belongs_to :contact, required: :not_legacy?
+  belongs_to :contact, required: false
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: :not_legacy?
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: :not_legacy?
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: :not_legacy?
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: :not_legacy?
   has_one :account, :through => :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, :inverse_of => :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
-
+  belongs_to :payment_option, required: false
+  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   has_many :products, :through => :inquiry_products
   has_many :approvals, :through => :products, :class_name => 'ProductApproval'
   has_many :inquiry_product_suppliers, :through => :inquiry_products
@@ -32,16 +32,19 @@ class Inquiry < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
+  has_many :purchase_orders
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
+  has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
+  has_one :approved_final_sales_order, -> {approved}, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
   has_many :sales_orders, :through => :sales_quotes
+  has_many :shipments, :through => :sales_orders, class_name: 'SalesShipment', source: :shipments
+  has_many :invoices, :through => :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
-  belongs_to :payment_option, required: :not_legacy?
   has_many :email_messages
   has_many :activities, dependent: :nullify
-
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
 
@@ -50,12 +53,6 @@ class Inquiry < ApplicationRecord
   has_one_attached :suppler_quote
   has_one_attached :final_supplier_quote
   has_one_attached :calculation_sheet
-
-  # enum status: {
-  #     :active => 10,
-  #     :expired => 20,
-  #     :won => 30
-  # }
 
   enum status: {
       :'Order Won' => 18,
@@ -111,26 +108,26 @@ class Inquiry < ApplicationRecord
   }
 
   enum price_type: {
-      :exw => 10,
-      :fob => 20,
-      :cif => 30,
-      :cfr => 40,
-      :dap => 50,
-      :door_delivery => 60,
-      :fca_mumbai => 70,
-      :cip => 80,
-      :dd => 90,
-      :cip_mumbai_airport => 100
+      :'EXW' => 10,
+      :'FOB' => 20,
+      :'CIF' => 30,
+      :'CFR' => 40,
+      :'DAP' => 50,
+      :'Door delivery' => 60,
+      :'FCA Mumbai' => 70,
+      :'CIP' => 80,
+      :'Demand draft' => 90,
+      :'CIP Mumbai airport' => 100
   }
 
   enum freight_option: {
-      :included => 10,
-      :extra => 20
+      :'Added' => 10,
+      :'Not Added' => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :added => 10,
-      :not_added => 20
+      :'Added' => 10,
+      :'Not Added' => 20
   }
 
   def commercial_status
@@ -138,6 +135,13 @@ class Inquiry < ApplicationRecord
   end
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, :final_sales_quote => [:rows => [:inquiry_product_supplier]])}
+  scope :smart_queue, -> {
+    where('status NOT IN (?)', [
+        Inquiry.statuses[:'Lead by O/S'],
+        Inquiry.statuses[:'Order Lost'],
+        Inquiry.statuses[:'Regret']
+    ]).order(:priority => :desc, :quotation_followup_date => :asc, :calculated_total => :desc)
+  }
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
@@ -163,13 +167,22 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
+  validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
+
+  validates_presence_of :subject, :if => :not_legacy?
+  validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
-  # validates_presence_of :contact
-  # validates_presence_of :billing_address
-  # validates_presence_of :shipping_address
   validates_presence_of :expected_closing_date, :if => :not_legacy?
   validates_presence_of :subject, :if => :not_legacy?
+  validates_presence_of :inside_sales_owner, :if => :not_legacy?
+  validates_presence_of :outside_sales_owner, :if => :not_legacy?
+  validates_presence_of :potential_amount, :if => :not_legacy?
+
+  validates_presence_of :payment_option, :if => :not_legacy?
+  validates_presence_of :billing_address, :if => :not_legacy?
+  validates_presence_of :shipping_address, :if => :not_legacy?
+  validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
 
@@ -178,21 +191,6 @@ class Inquiry < ApplicationRecord
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
-
-  # has_many :rfqs
-  # accepts_nested_attributes_for :rfqs
-  # attr_accessor :rfq_subject, :rfq_comments
-  # has_many :s_products, :through => :inquiry_product_suppliers, :source => :product
-  # has_one :sales_approval, :through => :sales_quote
-  # has_one :sales_order, :through => :sales_approval
-
-  # validates_length_of :inquiry_products, minimum: 1
-  # validate :all_products_have_suppliers
-  # def all_products_have_suppliers
-  #   if products.size != s_products.uniq.size && self.inquiry_product_suppliers.present?
-  #     errors.add(:inquiry_product_suppliers, 'every product must have at least one supplier')
-  #   end
-  # end
 
   def syncable_identifiers
     [:project_uid, :opportunity_uid]
@@ -213,9 +211,9 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.price_type ||= :exw
-      self.freight_option ||= :included
-      self.packing_and_forwarding_option ||= :added
+      self.price_type ||= :"EXW"
+      self.freight_option ||= :"Added"
+      self.packing_and_forwarding_option ||= :"Added"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
@@ -225,16 +223,16 @@ class Inquiry < ApplicationRecord
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
       self.commercial_terms_and_conditions ||= [
-          "1. Cost does not include any additional certification if required as per Indian regulations.",
-          "2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.",
-          "3. Order once placed cannot be changed.",
-          "4. BulkMRO does not accept any financial penalties for late deliveries."
-      ].join("\r\n") if not_legacy?
+          '1. Cost does not include any additional certification if required as per Indian regulations.',
+          '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
+          '3. Order once placed cannot be changed.',
+          '4. BulkMRO does not accept any financial penalties for late deliveries.'
+      ].join('\r\n') if not_legacy?
+      self.stage ||= 1
     end
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
-    # self.inquiry_number ||= Inquiry.maximum(:inquiry_number) + 1
   end
 
   def draft?
@@ -245,17 +243,27 @@ class Inquiry < ApplicationRecord
     self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
   end
 
+  def attachments
+    attachment = []
+    attachment.push(self.customer_po_sheet) if self.customer_po_sheet.attached?
+    attachment.push(self.copy_of_email) if self.copy_of_email.attached?
+    attachment.push(self.suppler_quote) if self.self.suppler_quote.attached?
+    attachment.push(self.final_supplier_quote) if self.final_supplier_quote.attached?
+    attachment.push(self.calculation_sheet) if self.calculation_sheet.attached?
+    attachment.compact
+  end
+
   def suppliers_selected?
     self.inquiry_product_suppliers.persisted.present?
   end
 
-  # def rfqs_generated?
-  #   self.rfqs.persisted.present?
-  # end
-  #
-  # def rfqs_generated_on
-  #   self.rfqs.minimum(:created_at)
-  # end
+  def terms
+    commercial_terms_and_conditions
+  end
+
+  def terms_lines
+    terms ? terms.split(/[\r\n]+/) : []
+  end
 
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
@@ -267,5 +275,4 @@ class Inquiry < ApplicationRecord
         self.company.name
     ].join(' ')
   end
-
 end

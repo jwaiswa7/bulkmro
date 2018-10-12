@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
-  before_action :set_raven_context
+  before_action :set_raven_context, :if => :production?
+
+  private
+  def production?
+    Rails.env.production?
+  end
 
   def set_flash(object, action, sentiment: :info, now: false)
     flash_hash = now ? flash.now : flash

@@ -21,6 +21,8 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   end
 
   def manage_failed_skus(query, per, page)
+    return [] if query.blank?
+
     indexed_records = index_klass.query({
                           multi_match: {
                               query: query,
@@ -29,7 +31,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                           }
                       }).page(page).per(per)
 
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).approved.with_includes
   end
 
 end

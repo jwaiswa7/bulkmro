@@ -1,6 +1,13 @@
 en:
   simple_form:
     placeholders:
+      address:
+        name: 'Name'
+        street1: 'Street1'
+        street2: 'Street2'
+        state_name: 'State name'
+        city_name: 'City name'
+
       overseer:
         first_name: 'First name'
         last_name: 'Last name'
@@ -22,11 +29,11 @@ en:
         comments: 'e.g. Sales Order Amended'
       inquiry_products:
         sr_no: 'Serial Number'
-        bp_catalog_name: 'BP catalog name'
-        bp_catalog_sku: 'BP catalog #'
+        bp_catalog_name: 'Customer Material Name'
+        bp_catalog_sku: 'Customer Material Code'
       inquiry_product_suppliers:
-        bp_catalog_name: 'BP catalog name'
-        bp_catalog_sku: 'BP catalog #'
+        bp_catalog_name: 'Supplier Material Name'
+        bp_catalog_sku: 'Supplier Material Code'
         unit_cost_price: 'Unit cost price'
         lowest_unit_cost_price: 'Lowest unit cost price'
         latest_unit_cost_price: 'Latest unit cost price'
