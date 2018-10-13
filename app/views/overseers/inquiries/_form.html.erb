@@ -13,16 +13,16 @@
             <%= f.input :inquiry_number, disabled: true %>
           </div>
           <div class="col-8">
-            <%= f.input :legacy_contact_name, disabled: true %>
+            <%= f.input :legacy_contact_name, disabled: true,  %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-4">
-            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
+            <%= f.association :contact, requied: true, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
           </div>
           <div class="col-8">
-            <%= f.input :subject %>
+            <%= f.input :subject, requied: true %>
           </div>
         </div>
 
@@ -172,7 +172,7 @@
             <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+            <%= f.association :payment_option, requied: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
