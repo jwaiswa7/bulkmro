@@ -51,7 +51,7 @@
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.sr_no %></span>
               <strong><%= inquiry_product.product.sku %>
                 - <%= inquiry_product.bp_catalog_name? ? inquiry_product.bp_catalog_name : inquiry_product.product.name %></strong>
-              <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %>
+              <%= inquiry_product.bp_catalog_sku? ? '(' + inquiry_product.bp_catalog_sku + ')' : '' %> <% if policy(inquiry_product.product).sku_purchase_history? %><a href="<%= sku_purchase_history_overseers_product_path(inquiry_product.product) %>" target="_blank">History</a><% end %>
               <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= inquiry_product.product.brand %> <%= inquiry_product.product.mpn? ? '(' + inquiry_product.product.mpn + ')' : '' %></span>
 
             </h6>
