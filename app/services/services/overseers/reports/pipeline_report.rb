@@ -5,31 +5,52 @@ class Services::Overseers::Reports::PipelineReport < Services::Overseers::Report
     @data = OpenStruct.new(
         {
             statuses: [],
-            entries: {}
+            entries: {},
+            summary_entries: {}
         }
     )
 
-    inquiries = Inquiry.includes({ sales_quotes: [ { sales_quote_rows: :supplier }] }).all.where(:created_at => report.start_at.beginning_of_month..report.end_at.end_of_month)
-    statuses = Inquiry.top(:status)
-    statuses.each do |status_title, status_inquiry_count|
-      status_inquiries = inquiries
-      status = OpenStruct.new({
-                                     name: status_title,
-                                     count: status_inquiry_count,
-                                 })
-      status_inquiries.group_by { |m| [m.created_at.beginning_of_month,m.status] }.each do |inquiry_month_and_status, status_month_inquiries|
-        if data[:entries][inquiry_month_and_status[0].strftime("%b, %Y")].present?
-          data[:entries][inquiry_month_and_status[0].strftime("%b, %Y")].merge!({ inquiry_month_and_status[1] => [ status_month_inquiries.count, status_month_inquiries.map{|i| i.sales_quotes.last.present? ? i.sales_quotes.last.sales_quote_rows.sum(&:total_selling_price).to_i : 0}.inject(0){|sum,x| sum + x }] })
-        else
-          data[:entries][inquiry_month_and_status[0].strftime("%b, %Y")] = { inquiry_month_and_status[1] => [ status_month_inquiries.count, status_month_inquiries.map{|i| i.sales_quotes.last.present? ? i.sales_quotes.last.sales_quote_rows.sum(&:total_selling_price).to_i : 0}.inject(0){|sum,x| sum + x }] }
-        end
+    inquiries = Inquiry.includes({sales_quotes: [{sales_quote_rows: :supplier}]}).where(:created_at => report.start_at.beginning_of_month..report.end_at.end_of_month)
+
+    status_groups = Inquiry.top(:status)
+    status_groups.each do |status_name, status_count|
+      status_inquiries = inquiries.send(status_name)
+      data.statuses.push(OpenStruct.new({name: status_name, count: status_count}))
+
+      ActiveRecord::Base.default_timezone = :utc
+      inquiry_groups = status_inquiries.group_by_month(:created_at, default_value: nil).count
+      inquiry_groups.each do |month, inquiries_count|
+        data[:entries][month] ||= {}
+        data[:entries][month][status_name] ||= {}
+        data[:entries][month][status_name][:count] ||= inquiries_count
+        data[:entries][month][status_name][:value] ||= status_inquiries.where(:created_at => month.beginning_of_month..month.end_of_month).sum(:calculated_total)
+
+        data[:entries][month][:count] ||= inquiries.where(:created_at => month.beginning_of_month..month.end_of_month).size
+        data[:entries][month][:value] ||= inquiries.where(:created_at => month.beginning_of_month..month.end_of_month).sum(:calculated_total)
+
+      end if inquiry_groups.present?
+
+      inquiries.group_by_month(:created_at).count.each do |month, inquiries_count|
+        data[:entries][month] ||= {}
+        data[:entries][month][status_name] ||= {}
+        data[:entries][month][status_name][:count] ||= 0
+        data[:entries][month][status_name][:value] ||= 0
       end
-      data.statuses.push(status)
+      ActiveRecord::Base.default_timezone = :local
+
+      data[:summary_entries][:total_count] ||= {}
+      data[:summary_entries][:total_count][status_name] ||= {}
+      data[:summary_entries][:total_count][status_name][:count] ||= status_inquiries.size
+      data[:summary_entries][:total_count][status_name][:value] ||= status_inquiries.sum(:calculated_total)
+      data[:summary_entries][:total_count][:count] ||= inquiries.size
+      data[:summary_entries][:total_count][:value] ||= inquiries.sum(:calculated_total)
     end
-    data.entries.each do |month, value|
-      data.entries[month]["Total"] = [value.values.sum { |number, value| number }, value.values.sum { |number, value| value }]
-      data.entries[month]["Percentage"] = [((value["Order Won"][0].to_f / data.entries[month]["Total"][0].to_f)*100).round(2), ((value["Order Won"][1].to_f / data.entries[month]["Total"][1].to_f)*100).round(2)]
-    end
+
+    # data[:entries][month][:won_count] ||= inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).size # todo
+    # data[:entries][month][:won_value] ||= inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).sum(:calculated_total) # todo
+    # data[:summary_entries][:total_count][:won_count] ||= inquiries.won.size # todo
+    # data[:summary_entries][:total_count][:won_value] ||= inquiries.won.sum(:calculated_total) # todo
+
     data
   end
 end

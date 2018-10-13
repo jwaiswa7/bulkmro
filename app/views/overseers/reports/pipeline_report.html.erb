@@ -18,51 +18,30 @@
           <th><%= status.name %></th>
         <% end %>
         <th>Grand Total</th>
-        <th>Won%</th>
+        <th>Won %</th>
       </tr>
       </thead>
       <tbody>
-      <% total_counts = sum_of_total_number_and_values(@data.entries) %>
-      <% (@report.start_at.to_date..@report.end_at.to_date).map(&:beginning_of_month).uniq.each do |month| %>
+      <% @data.entries.each do |month, entry| %>
         <tr>
-          <td><%= month.strftime("%b, %Y") %></td>
+          <td><%= format_month(month) %></td>
           <% @data.statuses.each do |status| %>
-            <td><%= get_pipeline_entry(@data.entries, month.strftime("%b, %Y"), status) %></td>
+            <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
           <% end %>
-          <td>
-            <%= @data.entries[month.strftime("%b, %Y")]["Total"] if @data.entries.present? %>
-          </td>
-          <td>
-            <%= @data.entries[month.strftime("%b, %Y")]["Percentage"] if @data.entries.present? %>
-          </td>
+          <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
+          <td><%= format_count(entry[:won_count]) %>, <%= format_count(entry[:won_value]) %></td>
         </tr>
       <% end %>
-      <tr>
-        <td>Total Number</td>
-        <% @data.statuses.each do |status, status_count| %>
-          <td>
-            <%= get_sum_of_entries(@data.entries.values.map{|a| a[status.name]}.compact.map{|a| a[0]}) %>
-          </td>
-        <% end %>
-        <td>
-          <%= total_counts[0] %>
-        </td>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <td>Total Value</td>
-        <% @data.statuses.each do |status, status_count| %>
-          <td>
-            <%= get_sum_of_entries(@data.entries.values.map{|a| a[status.name]}.compact.map{|a| a[1]}) %>
-          </td>
-        <% end %>
-        <td>
-          <%= total_counts[1] %>
-        </td>
-        <td>
-        </td>
-      </tr>
+      <% @data.summary_entries.each do |month, entry| %>
+        <tr>
+          <td><%= format_month(month) %></td>
+          <% @data.statuses.each do |status| %>
+            <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
+          <% end %>
+          <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
+          <td><%= format_count(entry[:won_count]) %>, <%= format_count(entry[:won_value]) %></td>
+        </tr>
+      <% end %>
       </tbody>
     </table>
   <% end %>
