@@ -7881,7 +7881,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 table.table.dataTable {
   max-width: 100% !important;
-  border-spacing: 0 0.75rem; }
+  border-spacing: 0 0.375rem; }
   table.table.dataTable th {
     font-weight: 700;
     font-size: 0.85rem; }
@@ -9978,8 +9978,8 @@ th {
 
 .table {
   border-collapse: separate;
-  border-spacing: 0 0.75rem;
-  margin-top: -0.75rem;
+  border-spacing: 0 0.375rem;
+  margin-top: -0.375rem;
   border-color: transparent; }
   .table tr {
     background-color: #F7F9FA; }
@@ -9992,7 +9992,7 @@ th {
       .table tr.child td {
         padding: 0; }
         .table tr.child td > * {
-          margin-top: -0.75rem; }
+          margin-top: -0.375rem; }
           .table tr.child td > * > * {
             border-top-left-radius: 0;
             border-top-right-radius: 0; }
