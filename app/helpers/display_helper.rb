@@ -65,6 +65,8 @@ module DisplayHelper
   def format_date(date)
     if date.present?
       date.strftime("%e %b, %Y %H:%M")
+    else
+      "-"
     end
   end
 

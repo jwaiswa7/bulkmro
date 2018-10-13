@@ -107,11 +107,10 @@
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
             <td><%= inquiry_product.inquiry.company.account.alias %></td>
             <td><%= inquiry_product.inquiry.company.account.name %></td>
-            <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) || '-' %></td>
-            <td><%= inquiry_product_supplier.final_sales_quote_row.present? ?
-                        format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) : '-' %></td>
-            <td><%= inquiry_product.inquiry.quotation_date || '-' %></td>
-            <td><%= inquiry_product.final_sales_orders.approved.first.try(:sent_at) || '-' %></td>
+            <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
+            <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
+            <td><%= format_date(inquiry_product.inquiry.quotation_date) %></td>
+            <td><%= format_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
           </tr>
         <% end %>
         </tbody>
