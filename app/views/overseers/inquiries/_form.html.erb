@@ -69,10 +69,10 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
+            <%= f.association :billing_address, required: true, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
+            <%= f.association :shipping_address, required: true, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
           </div>
         </div>
       </div>

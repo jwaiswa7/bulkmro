@@ -167,7 +167,6 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
-  validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
 
   validates_presence_of :subject, :if => :not_legacy?
   # validates_uniqueness_of :subject, :if => :not_legacy?
