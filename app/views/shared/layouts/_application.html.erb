@@ -7,7 +7,7 @@
   <%= render 'shared/layouts/components/ga' %>
   <%= render 'shared/layouts/components/scripts' %>
 
-  <% if overseer_signed_in? && Rails.env.production? %>
+  <% if overseer_signed_in? %>
   <%= render 'shared/layouts/components/usersnap' %>
   <% end %>
 </head>
