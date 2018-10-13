@@ -226,7 +226,7 @@ class Inquiry < ApplicationRecord
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
           '3. Order once placed cannot be changed.',
           '4. BulkMRO does not accept any financial penalties for late deliveries.'
-      ].join('\r\n') if not_legacy?
+      ].join("\r\n") if not_legacy?
       self.stage ||= 1
     end
 
