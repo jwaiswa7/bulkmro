@@ -10,7 +10,7 @@
 //= require parsleyjs/dist/parsley.min.js
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
-//= require vue/dist/vue.js
+//= require vue/dist/vue.min.js
 //= require chartjs/chart.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js
 //= require stickybits/dist/jquery.stickybits.min.js
