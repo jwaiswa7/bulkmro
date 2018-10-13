@@ -10,6 +10,8 @@ module Mixins::CanBeSynced
         # service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
         # service.call
       end
+
+      self.valid?
     end
 
     def syncable_identifiers
