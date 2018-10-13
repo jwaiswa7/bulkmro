@@ -35,7 +35,7 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
 
       sql_query = "SELECT COUNT(*) AS count_all, activities.created_by_id AS activities_created_by_id, (DATE_TRUNC('day', (activities.created_at::timestamptz))) AS date_trunc_day_activities_created_at_timestamptz_at_time_zone_e FROM activities JOIN overseers ON overseers.id = activities.created_by_id WHERE activities.created_at BETWEEN ? AND ? AND (overseers.geography = ?) AND (activities.created_at IS NOT NULL) GROUP BY activities.created_by_id, (DATE_TRUNC('day', (activities.created_at::timestamptz)))"
 
-      sql_data = ActiveRecord::Base.connection.execute(sql_query, report.start_at, report.end_at, geography_name)
+      sql_data = Activity.execute_sql(sql_query, report.start_at, report.end_at, geography_name)
       sql_data.each do |a|
         overseer_id_and_date = [a['activities_created_by_id'], a['date_trunc_day_activities_created_at_timestamptz_at_time_zone_e'].to_date]
         if data[:entries][overseer_id_and_date[1]].present?

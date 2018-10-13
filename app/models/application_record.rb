@@ -49,4 +49,8 @@ class ApplicationRecord < ActiveRecord::Base
   def updated_date
     self.updated_at.strftime('%F') if self.updated_at.present?
   end
+
+  def self.execute_sql(*sql_array)
+    connection.execute(sanitize_sql_array(sql_array))
+  end
 end
