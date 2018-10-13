@@ -36,6 +36,12 @@ class Services::Overseers::Reports::PipelineReport < Services::Overseers::Report
         data[:entries][month][status_name][:count] ||= 0
         data[:entries][month][status_name][:value] ||= 0
       end
+
+      # inquiries.group_by_month(:created_at).count.each do |month, inquiries_count|
+      #   next if status_name != "Order Won"
+      #   data[:entries][month][:won_count] ||= ((data[:entries][month][status_name][:count].to_f / data[:entries][month][:count].to_f)*100).round(2)
+      #   data[:entries][month][:won_value] ||= ((data[:entries][month][status_name][:value] / data[:entries][month][:value])*100).round(2)
+      # end
       ActiveRecord::Base.default_timezone = :local
 
       data[:summary_entries][:total_count] ||= {}
@@ -44,10 +50,25 @@ class Services::Overseers::Reports::PipelineReport < Services::Overseers::Report
       data[:summary_entries][:total_count][status_name][:value] ||= status_inquiries.sum(:calculated_total)
       data[:summary_entries][:total_count][:count] ||= inquiries.size
       data[:summary_entries][:total_count][:value] ||= inquiries.sum(:calculated_total)
+
+      # next if status_name != "Order Won"
+      # data[:summary_entries][:total_count][:won_count] ||= ((data[:summary_entries][:total_count][status_name][:count].to_f / data[:summary_entries][:total_count][:count].to_f)*100).round(2) #inquiries.won.size
+      # data[:summary_entries][:total_count][:won_value] ||= ((data[:summary_entries][:total_count][status_name][:value] / data[:summary_entries][:total_count][:value])*100).round(2) #inquiries.won.sum(:calculated_total)
     end
 
+    ActiveRecord::Base.default_timezone = :utc
+    inquiries.group_by_month(:created_at).count.each do |month, inquiries_count|
+      data[:entries][month][:won_count] ||= ((inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).size.to_f / data[:entries][month][:count].to_f)*100).round(2)
+      data[:entries][month][:won_value] ||= ((inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).sum(:calculated_total) / data[:entries][month][:value])*100).round(2)
+    end
+    ActiveRecord::Base.default_timezone = :local
+
+    data[:summary_entries][:total_count][:won_count] ||= ((inquiries.won.size.to_f / data[:summary_entries][:total_count][:count].to_f)*100).round(2) #inquiries.won.size
+    data[:summary_entries][:total_count][:won_value] ||= ((inquiries.won.sum(:calculated_total) / data[:summary_entries][:total_count][:value])*100).round(2) #inquiries.won.sum(:calculated_total)
     # data[:entries][month][:won_count] ||= inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).size # todo
     # data[:entries][month][:won_value] ||= inquiries.won.where(:created_at => month.beginning_of_month..month.end_of_month).sum(:calculated_total) # todo
+    # data[:summary_entries][:total_count][:won_count] ||= inquiries.won.size # todo
+    # data[:summary_entries][:total_count][:won_value] ||= inquiries.won.sum(:calculated_total) # todo
     # data[:summary_entries][:total_count][:won_count] ||= inquiries.won.size # todo
     # data[:summary_entries][:total_count][:won_value] ||= inquiries.won.sum(:calculated_total) # todo
 
