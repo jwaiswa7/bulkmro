@@ -13,7 +13,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                           multi_match: {
                               query: query,
                               operator: 'and',
-                              fields: %w[sku^3 name brand category],
+                              fields: %w[sku^3 sku_edge name brand category],
                               minimum_should_match: '100%'
                           }
                       })

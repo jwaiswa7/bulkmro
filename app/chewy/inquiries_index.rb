@@ -1,22 +1,22 @@
 class InquiriesIndex < BaseIndex
   define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
-    field :status, analyzer: 'letter'
+    field :status, analyzer: 'substring_analyzer'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
-    field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'keyword'
+    field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring_analyzer'
     field :calculated_total, value: -> (record) { record.final_sales_quote.calculated_total.to_i if record.final_sales_quote.present? }
-    field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'letter'
-    field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'letter'
-    field :company, value: -> (record) { record.company.to_s }, analyzer: 'letter'
-    field :account, value: -> (record) { record.account.to_s }, analyzer: 'letter'
-    field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'letter'
+    field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring_analyzer'
+    field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring_analyzer'
+    field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring_analyzer'
+    field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring_analyzer'
+    field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring_analyzer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-    field :created_by, value: -> (record) { record.created_by.to_s }, analyzer: 'letter'
-    field :updated_by, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
+    field :created_by_id, value: -> (record) { record.created_by.to_s }, analyzer: 'letter'
+    field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
   end
 
   def self.fields
-    [:status, :inquiry_number_string, :inside_sales_owner, :outside_sales_owner, :company, :account, :contact]
+    [:status, :inquiry_number_string, :inside_sales_owner, :outside_sales_owner, :company, :account, :contact, :created_by_id]
   end
 end

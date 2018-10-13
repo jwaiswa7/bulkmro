@@ -24,16 +24,16 @@ class BaseIndex < Chewy::Index
       },
       tokenizer: {
           sku_substring_tokenizer: {
-              type: 'ngram',
+              type: 'edge_ngram',
               min_gram: 2,
               max_gram: 7,
-              #token_chars:%w(letter digit)
+              token_chars:%w(letter digit)
           },
           substring_tokenizer: {
               type: 'ngram',
               min_gram: 1,
               max_gram: 30,
-              #token_chars:%w(letter digit whitespace punctuation symbol)
+              token_chars:%w(letter digit whitespace punctuation symbol)
           }
       }
   }, max_result_window: 5000000

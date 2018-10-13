@@ -18,6 +18,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @indexed_records = if query_string.present?
                          perform_query(query_string)
                        else
+                         perform_query(query_string)
                          index_klass.all.order(sort_definition)
                        end.page(page).per(per).order(sort_definition)
 
@@ -39,7 +40,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def sort_definition
-    # {:created_at => :desc}
+    {:created_at => :desc}
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records
