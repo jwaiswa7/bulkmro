@@ -2,6 +2,9 @@
 <% provide :can_be_directly_created, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, false %>
+<% content_for :heading do %>
+  Products Queue
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
