@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -6,13 +7,26 @@ Rails.application.routes.draw do
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
+  namespace 'callbacks' do
+    resources :sales_orders
+    resources :sales_invoices
+    resources :sales_receipts
+    resources :sales_shipments
+    resources :purchase_orders
+    resources :products
+
+    get 'login' => '/callbacks/sessions#new'
+  end
+
   namespace 'overseers' do
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
       get 'migrations'
+      get 'console'
     end
 
+    resources :remote_requests
     resources :reports
     resources :activities
     resource :profile, :controller => :profile
@@ -39,6 +53,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :measurement_units do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
     resources :addresses do
     end
 
@@ -59,6 +79,7 @@ Rails.application.routes.draw do
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
+        get 'sku_purchase_history'
       end
 
       collection do
@@ -85,23 +106,29 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'calculation_sheet'
         get 'export'
       end
 
       collection do
         get 'autocomplete'
         get 'index_pg'
+        get 'smart_queue'
       end
 
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
+        resources :sales_shipments
+        resources :sales_invoices
+        resources :purchase_orders
 
         resources :sales_orders do
           member do
             get 'new_revision'
             get 'new_confirmation'
             post 'create_confirmation'
+            post 'resync'
           end
         end
 

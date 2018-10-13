@@ -3,8 +3,8 @@ module ShortcutsHelper
     controller_name.capitalize.pluralize
   end
 
-  def row_action_button(url, icon, title='', color='success', target=:_self)
-    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, class: ['btn btn-sm btn-', color].join do
+  def row_action_button(url, icon, title='', color='success', target=:_self, method=:get)
+    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, :method => method, class: ['btn btn-sm btn-', color].join do
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
   end
@@ -62,6 +62,14 @@ module ShortcutsHelper
   def get_entry(entries, *attributes)
     if entries[attributes[0]].present? && entries[attributes[0]][attributes[1]].present?
       entries[attributes[0]][attributes[1]]
+    else
+      0
+    end
+  end
+
+  def get_pipeline_entry(entries, *attributes)
+    if entries[attributes[0]].present? && entries[attributes[0]][attributes[1].name].present?
+      entries[attributes[0]][attributes[1].name]
     else
       0
     end

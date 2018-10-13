@@ -1,6 +1,14 @@
 module FormHelper
-	def enum_to_collection(enum, all_caps: false)
-    enum.keys.to_a.map { |w| [all_caps ? w.upcase : w.humanize, w] }
+	def enum_to_collection(enum, keep_raw: false, all_caps: false)
+    enum.keys.to_a.map do |w|
+			if keep_raw
+				[w, w]
+			elsif all_caps
+				[w.upcase, w]
+			else
+				[w.humanize, w]
+			end
+		end
   end
 
 	def disabled_if(condition)

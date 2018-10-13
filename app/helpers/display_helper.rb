@@ -65,12 +65,20 @@ module DisplayHelper
   def format_date(date)
     if date.present?
       date.strftime("%e %b, %Y %H:%M")
+    else
+      "-"
     end
   end
 
   def format_date_without_time(date)
     if date.present?
       date.strftime("%e %b, %Y")
+    end
+  end
+
+  def format_date_without_time_and_date(date)
+    if date.present?
+      date.strftime("%b, %Y")
     end
   end
 

@@ -6,7 +6,7 @@ class CreateSalesQuoteRows < ActiveRecord::Migration[5.2]
       t.references :tax_code, foreign_key: true
       t.references :lead_time_option, foreign_key: true
 
-      t.integer :quantity
+      t.decimal :quantity
       t.decimal :margin_percentage
 
       t.decimal :unit_selling_price
@@ -16,6 +16,7 @@ class CreateSalesQuoteRows < ActiveRecord::Migration[5.2]
 
       t.string :legacy_applicable_tax
       t.string :legacy_applicable_tax_class
+      t.decimal :legacy_applicable_tax_percentage
 
       t.timestamps
       t.userstamps

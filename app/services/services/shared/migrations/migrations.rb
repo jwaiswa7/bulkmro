@@ -14,10 +14,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     methods = if custom_methods.present?
                 custom_methods
               elsif Rails.env.production?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
-                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities)
+                %w(inquiry_details sales_order_drafts activities)
               end
 
     PaperTrail.request(enabled: false) do
@@ -566,25 +566,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_address_service.loop(limit) do |x|
       company = Company.acts_as_supplier.find_by_legacy_id(x.get_column('cmp_id'))
 
+      next if company.blank? # todo remove
       #next if x.get_column('NULL').nil?
 
       country_code = x.get_column('country')
       address = Address.where(legacy_id: x.get_column('address_id')).first_or_create do |address|
-        address.assign_attributes(company: company,
-                                  name: company.name,
-                                  gst: x.get_column('gst_num'),
-                                  country_code: country_code,
-                                  state: AddressState.find_by_name(x.get_column('state_name')),
-                                  state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
-                                  city_name: x.get_column('city'),
-                                  pincode: x.get_column('pincode'),
-                                  street1: x.get_column('address'),
-                                  cst: x.get_column('cst_num'),
-                                  vat: x.get_column('vat_num'),
-                                  excise: x.get_column('ed_num'),
-                                  telephone: x.get_column('telephone'),
-                                  gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
-                                  legacy_metadata: x.get_row
+        address.assign_attributes(
+            company: company,
+            name: company.name,
+            gst: x.get_column('gst_num'),
+            country_code: country_code,
+            state: AddressState.find_by_name(x.get_column('state_name')),
+            state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
+            city_name: x.get_column('city'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('address'),
+            cst: x.get_column('cst_num'),
+            vat: x.get_column('vat_num'),
+            excise: x.get_column('ed_num'),
+            telephone: x.get_column('telephone'),
+            gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
+            legacy_metadata: x.get_row
         )
       end
 
@@ -640,6 +642,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       Brand.where(name: name).first_or_create! do |brand|
         brand.legacy_id = x.get_column('manufacturer_id')
         brand.remote_uid = x.get_column('sap_code')
+        brand.legacy_option_id = x.get_column('option_id')
         brand.legacy_metadata = x.get_row
       end
     end
@@ -666,6 +669,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def categories
+
     service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
     service.loop(limit) do |x|
       parent_id = x.get_column('parent_id')
@@ -690,7 +694,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def products
     service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
     service.loop(limit) do |x|
-      brand = Brand.find_by_legacy_id(x.get_column('product_brand'))
+      brand = Brand.find_by_legacy_option_id(x.get_column('product_brand'))
       measurement_unit = MeasurementUnit.find_by_name(x.get_column('uom_name'))
       name = x.get_column('name')
       legacy_id = x.get_column('entity_id')
@@ -701,24 +705,24 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       product = Product.where(legacy_id: legacy_id).first_or_create! do |product|
         product.assign_attributes(
-            brand: brand,
-            category: Category.default,
-            sku: sku,
-            tax_code: tax_code || TaxCode.default,
-            mpn: x.get_column('mfr_model_number'),
-            description: x.get_column('description'),
-            meta_description: x.get_column('meta_description'),
-            meta_keyword: x.get_column('meta_keyword'),
-            meta_title: x.get_column('meta_title'),
-            name: name || "noname ##{legacy_id}",
-            remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
-            measurement_unit: measurement_unit,
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created', to_datetime: true),
-            updated_at: x.get_column('modified', to_datetime: true),
+          brand: brand,
+          category: Category.default,
+          sku: sku,
+          tax_code: tax_code || TaxCode.default,
+          mpn: x.get_column('mfr_model_number'),
+          description: x.get_column('description'),
+          meta_description: x.get_column('meta_description'),
+          meta_keyword: x.get_column('meta_keyword'),
+          meta_title: x.get_column('meta_title'),
+          name: name || "noname ##{legacy_id}",
+          remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
+          measurement_unit: measurement_unit,
+          weight: x.get_column('weight'),
+          legacy_metadata: x.get_row,
+          created_at: x.get_column('created', to_datetime: true),
+          updated_at: x.get_column('modified', to_datetime: true),
         )
       end
-
       product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
     end
   end
@@ -872,8 +876,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_quote = inquiry.sales_quote
 
       if sales_quote.blank?
-        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner, quotation_uid: quotation_uid})
-
+        inquiry.update_attributes(:quotation_uid => quotation_uid)
+        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
       end
 
       if inquiry.status_before_type_cast >= 5
@@ -951,6 +955,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def sales_order_items
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_items.csv')
+    service.loop(limit) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
+      product = Product.find_by_sku(x.get_column('sku'))
+      if sales_order.present?
+        if product.present?
+          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(:inquiry_products => {:product_id => product.id})
+          if sales_order_rows.present?
+            sales_order_rows.first.update_attributes(quantity: x.get_column('qty_ordered'))
+          end
+        end
+      end
+    end
+  end
+
   def activities
     company_type_mapping = {'is_supplier' => 10, 'is_customer' => 20}
     purpose = {'First Meeting/Intro Meeting' => 10, 'Follow up' => 20, 'Negotiation' => 30, 'Closure' => 40, 'Others' => 50}
@@ -979,25 +999,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
         activity.assign_attributes(
-            inquiry: inquiry,
-            company: company,
-            contact: contact,
-            subject: x.get_column('subject'),
-            company_type: company_type,
-            purpose: purpose[x.get_column('purpose')],
-            activity_type: activity_type[x.get_column('activity')],
-            activity_status: activity_status[x.get_column('activitystatus')],
-            points_discussed: x.get_column('comment'),
-            actions_required: x.get_column('actionrequired'),
-            reference_number: x.get_column('refno'),
-            created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
-            legacy_metadata: x.get_row,
-            created_by: overseer,
-            updated_by: overseer
-
+          inquiry: inquiry,
+          company: company,
+          contact: contact,
+          subject: x.get_column('subject'),
+          company_type: company_type,
+          purpose: purpose[x.get_column('purpose')],
+          activity_type: activity_type[x.get_column('activity')],
+          activity_status: activity_status[x.get_column('activitystatus')],
+          points_discussed: x.get_column('comment'),
+          actions_required: x.get_column('actionrequired'),
+          reference_number: x.get_column('refno'),
+          created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
+          legacy_metadata: x.get_row,
+          created_by: overseer,
+          updated_by: overseer
         )
       end
-
       # ActivityOverseer.create!(activity: activity, overseer: overseer) if overseer_legacy_id.present?
     end
   end
@@ -1047,5 +1065,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         puts res.code
       end
     end
+  end
+
+  def update_addresses_remote_uid
+    Addresses.update_all("remote_uid=legacy_uid")
   end
 end

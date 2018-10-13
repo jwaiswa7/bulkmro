@@ -44,6 +44,19 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     ActiveRecord::Base.connection.execute('ALTER TABLE inquiries ALTER COLUMN inquiry_number TYPE BIGINT USING inquiry_number::bigint')
   end
 
+  def fix_product_brands
+    PaperTrail.request(enabled: false) do
+      service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+      service.loop(nil) do |x|
+        next if x.get_column('entity_id').to_i < 677812
+        brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
+        product = Product.find_by_legacy_id(x.get_column('entity_id'))
+        product.update_attributes(:brand => brand) if product.present?
+      end
+    end
+  end
+
+
   def activities_migration_fix
     Activity.where(:created_by => nil).each do |activity|
       activity_overseer = activity.activity_overseers.first
@@ -62,6 +75,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first
       activity.update_attributes(:created_by => overseer, :updated_by => overseer) if activity.present?
+    end
+  end
+
+  def product_brands_fix
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+    service.loop(nil) do |x|
+      brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
+      product = Product.find_by_legacy_id(x.get_column('entity_id'))
+      product.update_attributes(:brand => brand)
     end
   end
 

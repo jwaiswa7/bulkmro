@@ -38,23 +38,54 @@
       <%= nav_item 'Accounts', overseers_accounts_path, policy(:account).index? %>
       <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Products
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="productsDropdown">
           <%= nav_dropdown_item 'List', overseers_products_path, policy(:product).index? %>
           <%= nav_dropdown_item 'Queue', pending_overseers_products_path, policy(:product).pending? %>
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
           <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
+          <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
         </div>
       </li>
-      <%= nav_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
-      <%= nav_item 'Pending Sales Orders', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
-      <%= nav_item 'Activities', overseers_activities_path, policy(:activity).index? %>
-      <%= nav_item 'Reports', overseers_reports_path, policy(:report).index? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Inquiries
+        </a>
+        <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
+          <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
+          <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sales Orders
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'List', overseers_sales_orders_path, policy(:sales_order).index? %>
+          <%= nav_dropdown_item 'Pending', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+        </div>
+      </li>
+      <% if Rails.env.development? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <% Report.all.each do |report| %>
+            <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
+          <% end %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+        </div>
+      </li>
+      <% end %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
+      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? if Rails.env.development? %>
     </ul>
   </div>
   <!-- Navigation Bar -->
