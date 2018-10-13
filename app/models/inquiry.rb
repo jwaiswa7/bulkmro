@@ -170,7 +170,7 @@ class Inquiry < ApplicationRecord
   validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
 
   validates_presence_of :subject, :if => :not_legacy?
-  validates_uniqueness_of :subject, :if => :not_legacy?
+  # validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
