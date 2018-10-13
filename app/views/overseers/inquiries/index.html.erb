@@ -3,11 +3,11 @@
 <% provide :wrap_whitespace, true %>
 
 <div class="col-lg-12">
-  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 collapsed" type="button" data-toggle="collapse" data-target="#summary">
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
     Inquiries Summary
   </a>
 
-  <div id="summary" class="collapse">
+  <div id="summary" class="collapse show">
     <div class="mt-2 form-row d-flex flex-row align-content-stretch">
       <% Inquiry.statuses.each do |status, v| %>
         <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
