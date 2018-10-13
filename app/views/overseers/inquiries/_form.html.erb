@@ -169,7 +169,11 @@
         <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
+<<<<<<< HEAD
             <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
+=======
+            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection:  enum_to_collection(Inquiry.price_types) %>
+>>>>>>> 48e2e43afb9a00b6d8401436bf01de24829a0bca
           </div>
           <div class="col-12 col-md-3">
             <%= f.association :payment_option, requied: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>

@@ -40,6 +40,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def add_column_dirty
+    ActiveRecord::Base.connection.execute('ALTER TABLE products ADD COLUMN weight DECIMAL')
+  end
+
   def change_column_type_db
     ActiveRecord::Base.connection.execute('ALTER TABLE inquiries ALTER COLUMN inquiry_number TYPE BIGINT USING inquiry_number::bigint')
   end

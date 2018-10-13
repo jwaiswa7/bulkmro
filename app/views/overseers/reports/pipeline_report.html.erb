@@ -17,10 +17,12 @@
         <% @data.statuses.each do |status| %>
           <th><%= status.name %></th>
         <% end %>
+        <th>Grand Total</th>
         <th>Won%</th>
       </tr>
       </thead>
       <tbody>
+      <% total_counts = sum_of_total_number_and_values(@data.entries) %>
       <% (@report.start_at.to_date..@report.end_at.to_date).map(&:beginning_of_month).uniq.each do |month| %>
         <tr>
           <td><%= month.strftime("%b, %Y") %></td>
@@ -28,9 +30,10 @@
             <td><%= get_pipeline_entry(@data.entries, month.strftime("%b, %Y"), status) %></td>
           <% end %>
           <td>
-            <%= (((@data.entries[month.strftime("%b, %Y")]["Order Won"][0]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][0]).to_f) * 100).round(2) %>
-            ,
-            <%= (((@data.entries[month.strftime("%b, %Y")]["Order Won"][1]).to_f / (@data.entries[month.strftime("%b, %Y")]["Grand Total"][1]).to_f) * 100).round(2) %>
+            <%= @data.entries[month.strftime("%b, %Y")]["Total"] if @data.entries.present? %>
+          </td>
+          <td>
+            <%= @data.entries[month.strftime("%b, %Y")]["Percentage"] if @data.entries.present? %>
           </td>
         </tr>
       <% end %>
@@ -38,15 +41,12 @@
         <td>Total Number</td>
         <% @data.statuses.each do |status, status_count| %>
           <td>
-            <% count = 0 %>
-            <% @data.entries.each do |month, entry| %>
-              <% if entry["#{status.name}"].present? %>
-                <% count = count + entry[status.name][0] %>
-              <% end %>
-            <% end %>
-            <%= count %>
+            <%= get_sum_of_entries(@data.entries.values.map{|a| a[status.name]}.compact.map{|a| a[0]}) %>
           </td>
         <% end %>
+        <td>
+          <%= total_counts[0] %>
+        </td>
         <td>
         </td>
       </tr>
@@ -54,15 +54,12 @@
         <td>Total Value</td>
         <% @data.statuses.each do |status, status_count| %>
           <td>
-            <% count = 0 %>
-            <% @data.entries.each do |month, entry| %>
-              <% if entry["#{status.name}"].present? %>
-                <% count = count + entry[status.name][1] %>
-              <% end %>
-            <% end %>
-            <%= count %>
+            <%= get_sum_of_entries(@data.entries.values.map{|a| a[status.name]}.compact.map{|a| a[1]}) %>
           </td>
         <% end %>
+        <td>
+          <%= total_counts[1] %>
+        </td>
         <td>
         </td>
       </tr>
