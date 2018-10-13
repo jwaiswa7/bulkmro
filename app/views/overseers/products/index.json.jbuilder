@@ -10,7 +10,7 @@ json.data (@products) do |product|
                       if policy(product).comments?
                         row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
                       end,
-                      if product.inquiry_products.any? && policy(product).sku_purchase_history?
+                      if policy(product).sku_purchase_history?
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
                       end
                   ].join(' '),
