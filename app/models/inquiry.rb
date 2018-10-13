@@ -144,6 +144,7 @@ class Inquiry < ApplicationRecord
         Inquiry.statuses[:'Regret']
     ]).order(:priority => :desc, :quotation_followup_date => :asc, :calculated_total => :desc)
   }
+  scope :won, -> { where(:status => :'Order Won') }
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
