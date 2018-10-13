@@ -6,6 +6,10 @@
   <%= render 'shared/layouts/components/stylesheets' %>
   <%= render 'shared/layouts/components/ga' %>
   <%= render 'shared/layouts/components/scripts' %>
+
+  <% if overseer_signed_in? && Rails.env.production? %>
+  <%= render 'shared/layouts/components/usersnap' %>
+  <% end %>
 </head>
 
 <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>">
@@ -30,9 +34,5 @@
       </div>
     </div>
   </div>
-
-  <% if overseer_signed_in? && Rails.env.production? %>
-    <%= render 'shared/layouts/components/usersnap' %>
-  <% end %>
   </body>
 </html>
