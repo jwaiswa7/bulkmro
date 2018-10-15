@@ -5,13 +5,14 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
   end
 
   def call
+    service = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
 
     excel_import.rows.reverse.each do |row|
       if row.failed?
         row.build_inquiry_product(
             inquiry: inquiry,
             import: excel_import,
-            :sr_no => NextSrNo.for(inquiry, row.metadata['sr_no']),
+            :sr_no => service.call(row.metadata['sr_no']),
             product: Product.new(
                 inquiry_import_row: row,
                 name: row.metadata['name'],

@@ -6,6 +6,7 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
 
   def call
     already_approved_alternative_ids = excel_import.inquiry.products.map { |p| p.id.to_s }
+    service = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
 
     excel_import.rows.each do |row|
       if row.marked_for_destruction?
@@ -21,7 +22,7 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
               :import => excel_import,
               :product_id => row.approved_alternative_id,
               :quantity => row.metadata['quantity'],
-              :sr_no => NextSrNo.for(inquiry, row.metadata['sr_no']),
+              :sr_no => service.call(row.metadata['sr_no']),
           )
 
           already_approved_alternative_ids << row.approved_alternative_id
@@ -30,6 +31,9 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
     end
 
     excel_import.save
+
+
+
   end
 
 
