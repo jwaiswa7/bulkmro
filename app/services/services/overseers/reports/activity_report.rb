@@ -25,7 +25,6 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: overseer_count}))
         end
       end
-      #next if (!geo_activities.present?)
 
       geography = OpenStruct.new({
                                      name: geography_name,
@@ -34,10 +33,9 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
                                      not_meeting: geo_activities.not_meeting.count,
                                  })
 
-
       sql_query = "SELECT COUNT(*) AS count_all, activities.created_by_id AS activities_created_by_id, (DATE_TRUNC('day', (activities.created_at::timestamptz))) AS date_trunc_day_activities_created_at_timestamptz_at_time_zone_e FROM activities JOIN overseers ON overseers.id = activities.created_by_id WHERE activities.created_at BETWEEN ? AND ? AND (overseers.geography = ?) AND (activities.created_at IS NOT NULL) GROUP BY activities.created_by_id, (DATE_TRUNC('day', (activities.created_at::timestamptz)))"
 
-      sql_data = ActiveRecord::Base.connection.execute(sql_query, report.start_at, report.end_at, geography_name)
+      sql_data = Activity.execute_sql(sql_query, report.start_at, report.end_at, geography_name)
       sql_data.each do |a|
         overseer_id_and_date = [a['activities_created_by_id'], a['date_trunc_day_activities_created_at_timestamptz_at_time_zone_e'].to_date]
         if data[:entries][overseer_id_and_date[1]].present?
@@ -46,7 +44,6 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           data[:entries][overseer_id_and_date[1]] = {overseer_id_and_date[0] => a['count_all']}
         end
       end
-
       geography.overseers = overseers
       data.geographies.push(geography)
     end

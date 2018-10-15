@@ -32,6 +32,7 @@ open http://localhost:1358/
 
 # Run Chewy
 overseers/dashboard/chewy
+
 # yarn file inside bin
 #!/usr/bin/env ruby
 APP_ROOT = File.expand_path('..', __dir__)

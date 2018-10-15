@@ -30,7 +30,7 @@ Rails.application.routes.draw do
 
     resources :remote_requests
     resources :reports
-    resources :activities
+    resources :activities, except: [:show]
     resource :profile, :controller => :profile
     resources :overseers
 
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contacts do
+    resources :contacts, except: [:show] do
       collection do
         get 'autocomplete'
       end
@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
+        get 'sku_purchase_history'
       end
 
       collection do
@@ -114,6 +115,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'index_pg'
+        get 'smart_queue'
       end
 
       scope module: 'inquiries' do

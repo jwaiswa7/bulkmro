@@ -5,6 +5,10 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
 
+  has_one_attached :original_invoice
+  has_one_attached :duplicate_invoice
+  has_one_attached :triplicate_invoice
+
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -18,10 +22,17 @@ class SalesInvoice < ApplicationRecord
       :'Material Rejected' => 207
   }
 
+  validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
+  validates_with FileValidator, attachment: :triplicate_invoice, file_size_in_megabytes: 2
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
 
-  def filename
-    ['invoice', invoice_number].join('_')
+  def filename(include_extension: false)
+    [
+        ['invoice', invoice_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
+
 end

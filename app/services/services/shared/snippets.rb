@@ -40,6 +40,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def add_column_dirty
+    ActiveRecord::Base.connection.execute('ALTER TABLE products ADD COLUMN weight DECIMAL')
+  end
+
   def change_column_type_db
     ActiveRecord::Base.connection.execute('ALTER TABLE inquiries ALTER COLUMN inquiry_number TYPE BIGINT USING inquiry_number::bigint')
   end
@@ -75,6 +79,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first
       activity.update_attributes(:created_by => overseer, :updated_by => overseer) if activity.present?
+    end
+  end
+
+  def product_brands_fix
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+    service.loop(nil) do |x|
+      brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
+      product = Product.find_by_legacy_id(x.get_column('entity_id'))
+      product.update_attributes(:brand => brand)
     end
   end
 

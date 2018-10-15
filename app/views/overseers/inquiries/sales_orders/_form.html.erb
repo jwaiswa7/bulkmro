@@ -47,9 +47,14 @@
 
         <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
-            <h6 class="text-uppercase">
+            <%= link_to_remove_association row, {class: 'float-right dynamic btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+              Remove
+            <% end %>
+            <h6 class="text-uppercase mb-0">
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= row.object.sales_quote_row.sr_no %></span>
-              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %></strong>
+              <strong><%= row.object.sales_quote_row.product.sku %> - <%= row.object.sales_quote_row.inquiry_product.bp_catalog_name? ? row.object.sales_quote_row.inquiry_product.bp_catalog_name : row.object.sales_quote_row.inquiry_product.product.name %> <% if policy(row.object.sales_quote_row.inquiry_product.product).sku_purchase_history? %>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(row.object.sales_quote_row.inquiry_product.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a><% end %>
+              </strong>
               <%= row.object.sales_quote_row.inquiry_product.bp_catalog_sku? ? '(' + row.object.sales_quote_row.inquiry_product.bp_catalog_sku + ')' : '' %>
               <span class="lead text-black-50 text-small mt-1 mr-1 d-block"><%= row.object.sales_quote_row.product.brand %> <%= row.object.sales_quote_row.product.mpn? ? '(' + row.object.sales_quote_row.product.mpn + ')' : '' %></span>
             </h6>
@@ -57,7 +62,7 @@
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Unit Selling Price</strong><br>
-                <span data-bind-html="unit_selling_price"><%= format_currency(row.object.unit_selling_price, symbol: f.object.currency.sign) %></span>
+                <span data-bind-html="unit_selling_price"><%= format_currency(row.object.sales_quote_row.unit_selling_price, symbol: f.object.currency.sign) %></span>
 
               </div>
               <% if f.object.currency == "INR" %>
@@ -96,11 +101,10 @@
               </div>
             </div>
 
-            <div class="d-block d-md-flex flex-row justify-content-between">
-              <%= row.input :quantity, input_html: {"data-bind": ""} %>
-              <%= link_to_remove_association row, {class: 'dynamic btn btn-danger align-self-center', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-                Remove
-              <% end %>
+            <div class="form-row">
+              <div class="col-12 col-md-1">
+                <%= row.input :quantity, input_html: {"data-bind": ""} %>
+              </div>
             </div>
           </div>
         </div>

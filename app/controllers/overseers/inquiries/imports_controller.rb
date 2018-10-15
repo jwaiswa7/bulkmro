@@ -54,15 +54,17 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
     service = Services::Overseers::InquiryImports::ExcelImporter.new(@inquiry, @excel_import)
 
-    if service.call
-
-      if service.any_failed?
-        redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import), notice: flash_message(@inquiry, action_name)
-      else
-
-        redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    begin
+      if service.call
+        if service.any_failed?
+          redirect_to manage_failed_skus_overseers_inquiry_import_path(@inquiry, @excel_import), notice: flash_message(@inquiry, action_name)
+        else
+          redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
+        end
       end
-    else
+    rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidHeader => e
+      render 'new_excel_import'
+    rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidRows => e
       render 'new_excel_import'
     end
   end

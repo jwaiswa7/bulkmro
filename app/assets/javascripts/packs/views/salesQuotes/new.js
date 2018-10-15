@@ -93,8 +93,8 @@ let initVueJS = () => {
                 this.hiddenProducts.push(product_id);
                 //$('#ac-' + product_id).parent().hide();
             },
-            showProductButton(product_id){
-               return !this.hiddenProducts.includes(product_id)
+            showProductButton(product_id) {
+                return !this.hiddenProducts.includes(product_id)
             },
             getRow(index) {
                 return this.rows[index];
@@ -283,7 +283,6 @@ let initVueJS = () => {
             triggerSellingPriceChangeFor(index, trigger) {
                 let row = this.getRow(index);
 
-
                 //console.dir(row);
                 let margin_percentage = row.margin_percentage;
                 let unit_selling_price = row.unit_selling_price;
@@ -318,7 +317,7 @@ let initVueJS = () => {
             updateConvertedSellingPriceFor(index) {
                 let row = this.getRow(index);
                 if (row !== undefined) {
-                    row.converted_unit_selling_price = toDecimal(parseFloat(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
+                    row.converted_unit_selling_price = toDecimal(toDecimal(row.unit_selling_price) / parseFloat(this.getAttribute('conversion_rate')));
                 }
                 this.setRow(index, row);
             },
@@ -374,9 +373,9 @@ let assignEventsAndGetAttributes = () => {
     let rows = [];
     let data = {
         "check": {},
-        hiddenProducts:[],
+        hiddenProducts: [],
         currency_sign: '₹',
-        defaultCurrencySign:'',
+        defaultCurrencySign: '',
         calculated_total_margin: 0,
         average_margin_percentage: 0,
         calculated_total_tax: 0,
@@ -436,7 +435,7 @@ let assignEventsAndGetAttributes = () => {
                         let numberValue = value;
 
                         //Check if first char is not a number
-                        if(value.trim() != ""){
+                        if (value.trim() != "") {
 
                             if (value.match("[^0-9]").index == 0) {
                                 if (data.defaultCurrencySign == "" || data.defaultCurrencySign === undefined) {
@@ -450,10 +449,9 @@ let assignEventsAndGetAttributes = () => {
 
                         currentRowTemplate[attributeName] = parseFloat(numberValue);
                     }
-                    else{
+                    else {
                         $(el).attr("v-html", modelName);
                     }
-
 
 
                 }

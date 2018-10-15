@@ -7,7 +7,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params)
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call
 
         @indexed_inquiries = service.indexed_records
@@ -18,6 +18,15 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def index_pg
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
+    authorize @inquiries
+  end
+
+  def smart_queue
+    self_and_descendant_ids = current_overseer.self_and_descendant_ids
+    # Inquiry.smart_queue.where(:created_by_id => self_and_descendant_ids)
+
+    @inquiries = ApplyDatatableParams.to(Inquiry.smart_queue, params)
+
     authorize @inquiries
   end
 
@@ -142,14 +151,13 @@ class Overseers::InquiriesController < Overseers::BaseController
         :weight_in_kgs,
         :customer_po_sheet,
         :final_supplier_quote,
-        :suppler_quote,
         :copy_of_email,
         :is_sez,
         :calculation_sheet,
         :commercial_terms_and_conditions,
         :comments,
+        :supplier_quotes => [],
         :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-
     )
   end
 

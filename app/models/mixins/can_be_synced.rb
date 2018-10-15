@@ -5,10 +5,13 @@ module Mixins::CanBeSynced
     def save_and_sync
       if Rails.env.development?
         self.save
-      else
-        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-        service.call
+      elsif Rails.env.production?
+        self.save
+        # service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+        # service.call
       end
+
+      self.valid?
     end
 
     def syncable_identifiers

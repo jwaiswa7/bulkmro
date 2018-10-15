@@ -29,7 +29,6 @@ class Product < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
 
   has_one_attached :image
-
   attr_accessor :applicable_tax_percentage
 
   # Start ignore
@@ -74,6 +73,10 @@ class Product < ApplicationRecord
 
   def lowest_inquiry_product_supplier
     self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
+  end
+
+  def lowest_inquiry_product_suppliers(number: 1)
+    self.inquiry_product_suppliers.includes(:supplier).order(:unit_cost_price).uniq(&:supplier).first(number)
   end
 
   def latest_inquiry_product_supplier
