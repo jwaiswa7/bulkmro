@@ -11,13 +11,19 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
   end
 
   def create
-    @email_message = @sales_quote.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry, :sales_quote => @sales_quote)
+    @email_message = @sales_quote.email_messages.build(
+        :overseer => current_overseer,
+        :contact => @inquiry.contact,
+        :inquiry => @inquiry,
+        :sales_quote => @sales_quote
+    )
+
     @email_message.assign_attributes(email_message_params)
 
     authorize @sales_quote, :create_email_message?
 
     if @email_message.auto_attach?
-      # @email_message.files << File.open(RenderPdfToFile.for(@sales_order)
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_quote)), filename: @sales_quote.filename(include_extension: true))
     end
 
     if @email_message.save
