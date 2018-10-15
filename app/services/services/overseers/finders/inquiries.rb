@@ -4,29 +4,24 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
   end
 
   def all_records
-    if @overseers.present?
-      index_klass.all.order(sort_definition).filter({terms: {created_by_id: @overseers  }})
+    if overseer_ids.present?
+      super.filter({terms: {created_by_id: overseer_ids}.compact })
     else
-      index_klass.all.order(sort_definition)
+      super
     end
   end
 
-  def perform_query(query)
-    [prepare_query(query_string), overseer_id_filter].compact.reduce(:merge)
-  end
+  def perform_query(query_string)
+    indexed_records = index_klass.query({
+        multi_match: {
+            query: query_string,
+            operator: 'and',
+            fields: index_klass.fields
+        }
+    })
 
-  def prepare_query(query)
-    index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'and',
-                              fields: index_klass.fields
-                          }
-                      })
-  end
-
-  def overseer_id_filter
-    index_klass.filter({terms: {created_by_id: @overseers  }}) if @overseers.present?
+    indexed_records = indexed_records.filter({terms: {created_by_id: overseer_ids}}) if overseer_ids.present?
+    indexed_records
   end
 
   def sort_definition

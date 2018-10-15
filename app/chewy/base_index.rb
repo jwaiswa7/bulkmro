@@ -20,7 +20,6 @@ class BaseIndex < Chewy::Index
               tokenizer: 'sku_substring',
               filter: ['lowercase']
           }
-
       },
       tokenizer: {
           substring: {

@@ -4,7 +4,7 @@ class InquiriesIndex < BaseIndex
     field :status, analyzer: 'substring'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
-    field :calculated_total, value: -> (record) { record.final_sales_quote.calculated_total.to_i if record.final_sales_quote.present? }
+    field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'

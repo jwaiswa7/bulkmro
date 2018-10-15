@@ -1,5 +1,5 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, overseers = nil)
+  def initialize(params, overseer_ids = [])
     @query_string = if params[:search].present? && params[:search][:value].present?
                params[:search][:value]
              elsif params[:q].present?
@@ -12,7 +12,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
-    @overseers = overseers
+    @overseer_ids = overseer_ids
   end
 
   def call_base
@@ -20,14 +20,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                          perform_query(query_string)
                        else
                          all_records
-                       end.page(page).per(per).order(sort_definition)
+                       end.page(page).per(per)
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
   end
 
-  def index_klass
-    [model_klass.to_s.pluralize, 'Index'].join.constantize
-  end
 
   def all_records
     index_klass.all.order(sort_definition)
@@ -47,5 +44,9 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     {:created_at => :desc}
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records
+  def index_klass
+    [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :overseer_ids
 end
