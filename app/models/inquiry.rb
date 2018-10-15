@@ -66,7 +66,7 @@ class Inquiry < ApplicationRecord
       :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
-      :'Inquiry No. Assigned' => 0,
+      :'New Inquiry' => 0,
       :'Lead by O/S' => 11,
       :'Acknowledgement Mail' => 2,
       :'Preparing Quotation' => 4,
