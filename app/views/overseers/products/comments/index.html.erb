@@ -1,14 +1,13 @@
 <% if @product.inquiry_products.first.try(:inquiry) %>
   <% content_for :heading_button do %>
     <div class="d-flex flex-row">
-      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i> Edit</a>
+      <a class="d-sm-block btn btn-warning btn-rounded align-self-center btn-block-sm-down mr-1" href="<%= edit_overseers_product_path(@product) %>" target="_blank"><i class="fal fa-pencil mr-1"></i>Edit</a>
       <%= link_to edit_overseers_inquiry_path(@product.inquiry_products.first.try(:inquiry)), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
         <i class="fal fa-external-link mr-1"></i> Check Inquiry
       <% end %>
     </div>
   <% end %>
 <% end %>
-
 
 <% content_for :heading_byline do %>
   This will <em>'update/approve/reject <%= @product %>'</em> and log it under
@@ -110,7 +109,7 @@
       <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 
       <div class="flex-fill">
-        <div class="row">
+        <div class="form-row">
           <div class="col-lg-6">
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@product).approve? %>
@@ -118,11 +117,11 @@
           </div>
 
           <div class="col-lg-6 text-right">
-            <%= content_tag :div, class: 'row' do %>
-              <div class="col-lg-8">
+            <%= content_tag :div, class: 'd-flex flex-row align-items-start justify-content-end' do %>
+              <div class="mr-1">
                 <%= f.input :merge_with_product_id, :as => :select, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path}, label: false %>
               </div>
-              <div class="col-lg-4">
+              <div>
                 <%= f.submit 'Merge', name: 'merge', class: 'btn btn-warning float-right' %>
               </div>
             <% end if policy(@product).merge? %>
