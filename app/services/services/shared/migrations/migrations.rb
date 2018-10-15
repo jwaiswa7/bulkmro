@@ -833,7 +833,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
     service.loop(limit) do |x|
-      inquiry = Inquiry.where(commercial_terms_and_conditions: nil, packing_and_forwarding_option: nil).find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+
       next if inquiry.blank?
       inquiry.update_attributes(
           price_type: price_type_mapping[x.get_column('Price')],
@@ -857,7 +858,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if quotation_id.in? %w(3529 2848 123 8023)
       inquiry = Inquiry.find_by_legacy_id(quotation_id)
       product = Product.find_by_legacy_id(product_id)
-      next if inquiry.blank? || inquiry.inquiry_products.exists? || product.blank?
+      next if inquiry.blank? || product.blank?
 
       inquiry_product = InquiryProduct.where(
           inquiry: inquiry,
