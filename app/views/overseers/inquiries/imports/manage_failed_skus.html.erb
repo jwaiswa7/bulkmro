@@ -9,7 +9,7 @@
 
       <%= render 'shared/snippets/form_errors', f: f %>
 
-      <%= f.simple_fields_for :rows, f.object.rows do |row| %>
+      <%= f.simple_fields_for :rows, f.object.rows.reverse do |row| %>
         <% next if (row.object.inquiry_product.present? && row.object.inquiry_product.persisted?) || row.object.marked_for_destruction? %>
         <div class="card option-wrapper mb-3 text-right text-md-left <%= "border-danger rim rim-left" if row.object.errors.any? %>">
           <div class="card-header text-left">
