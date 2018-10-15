@@ -9,7 +9,7 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @po[:PoNum] %></span></b>
+              <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @metadata[:PoNum] %></span></b>
             </div>
             <br clear="all">
             <div style="border:1px solid; border-radius: 5px;padding: 2px">
@@ -38,7 +38,7 @@
             </div>
             <br clear="all">
             <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-              <span style="color:#000000"><b>Purchase Order #<%= @po[:PoNum] %></b></span>
+              <span style="color:#000000"><b>Purchase Order #<%= @metadata[:PoNum] %></b></span>
             </div>
             <br clear="all">
             <div style="border:1px solid; border-radius: 5px;">
@@ -48,12 +48,12 @@
                   <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Bulk MRO Reference #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:PoEnquiryId] %></span></td>
+                    <span style="color:#000000"><%= @metadata[:PoEnquiryId] %></span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= Date.parse(@po[:PoDate]).strftime("%d-%b-%Y") if @po[:PoDate].present? %>
+                      <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
                     </span>
                   </td>
                 </tr>
@@ -74,32 +74,32 @@
                     <b><span style="color:#000000">Committed Delivery Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= Date.parse(@po[:PoSupplyDate]).strftime("%d-%b-%Y") if @po[:PoSupplyDate].present? %>
+                      <%= Date.parse(@metadata[:PoSupplyDate]).strftime("%d-%b-%Y") if @metadata[:PoSupplyDate].present? %>
                     </span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:PoFreight] %></span></td>
+                    <span style="color:#000000"><%= @metadata[:PoFreight] %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Packing & Forwarding</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:packing] %></span></td>
+                    <span style="color:#000000"><%= @metadata[:packing] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Mode of Transport</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:PoModeOfTrasport] %></span></td>
+                    <span style="color:#000000"><%= @metadata[:PoModeOfTrasport] %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Delivery Terms </span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%=  @po[:PoDeliveryTerms] %></span></td>
+                    <span style="color:#000000"><%=  @metadata[:PoDeliveryTerms] %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @po[:PoPaymentTerms] %></span></td>
+                    <span style="color:#000000"><%= @metadata[:PoPaymentTerms] %></span></td>
                 </tr>
                 </tbody>
               </table>
@@ -212,7 +212,7 @@
                   <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
                     <b><span style="color:#000000">Tax<br>
                     Rate</span></b></th>
-                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                  <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                     <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
                       <b><span style="color:#000000">IGST<br>
                     Rate</span></b></th>
@@ -239,7 +239,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% @po[:ItemLine].each_with_index do |item,index|%>
+                <% @metadata[:ItemLine].each_with_index do |item,index|%>
                   <tr>
                     <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
                       <span style="color:#000000"><%= index+1 %></span></td>
@@ -264,7 +264,7 @@
                       <span style="color:#000000"><%= item[:PopPriceHt].to_f * item[:PopQty].to_f %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
                       <span style="color:#000000"><%= item[:tax_rate] %>%</span></td>
-                    <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                    <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                       <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
                         <span style="color:#000000"><%= item[:tax_rate].to_f %>%</span></td>
                       <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
@@ -304,24 +304,24 @@
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @po[:item_subtotal] %></span></b></td>
+                    <b><span style="color:#000000"><%= @metadata[:item_subtotal] %></span></b></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
-                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                  <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                     <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                      <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f %></span></b></td>
+                      <b><span style="color:#000000"><%= @metadata[:item_tax_amount].to_f %></span></b></td>
                   <% else %>
                     <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                      <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
+                      <b><span style="color:#000000"><%= @metadata[:item_tax_amount].to_f / 2 %></span></b></td>
                     <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
                       <span style="color:#000000"></span></td>
                     <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                      <b><span style="color:#000000"><%= @po[:item_tax_amount].to_f / 2 %></span></b></td>
+                      <b><span style="color:#000000"><%= @metadata[:item_tax_amount].to_f / 2 %></span></b></td>
                   <% end %>
                   <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @po[:item_subtotal_incl_tax] %></span></b></td>
+                    <b><span style="color:#000000"><%= @metadata[:item_subtotal_incl_tax] %></span></b></td>
                 </tr>
                 <tr>
                   <td style="border-bottom-left-radius: 5px; font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
@@ -335,7 +335,7 @@
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <% if @po[:PoTaxRate].to_s.include? "IG" %>
+                  <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                     <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                     <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
                   <% else %>
@@ -401,9 +401,9 @@
                   <tr>
                     <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
                       <% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
-                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @po[:PoNum] %> when shipping goods.
+                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %> when shipping goods.
                         <% else %>
-                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @po[:PoNum] %> when shipping goods.
+                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %> when shipping goods.
                       <% end %>
 
                         </span></td>

@@ -14,7 +14,7 @@ json.data (@products) do |product|
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
                       end
                   ].join(' '),
-                  product.name.truncate(30),
+                  product.name,
                   product.sku,
                   product.brand.to_s,
                   product.category.name,

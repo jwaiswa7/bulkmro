@@ -12,8 +12,9 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasRowCalculations
 
-  pg_search_scope :locate, :against => [], :associated_against => { :created_by => [:first_name, :last_name], :company => [:name], :inquiry => [:inquiry_number]  }, :using => { :tsearch => {:prefix => true} }
-  has_closure_tree({ name_column: :to_s })
+  pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
+
+  has_closure_tree({name_column: :to_s})
 
   has_one_attached :serialized_pdf
 
@@ -22,7 +23,7 @@ class SalesOrder < ApplicationRecord
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
-  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
+  has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
   has_many :sales_order_rows, inverse_of: :sales_order
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['sales_quote_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
@@ -35,6 +36,7 @@ class SalesOrder < ApplicationRecord
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.status ||= :'requested'
   end
@@ -86,6 +88,10 @@ class SalesOrder < ApplicationRecord
     self.confirmation.present?
   end
 
+  def remote_approved?
+    self.status == :'approved'
+  end
+
   def not_confirmed?
     !confirmed?
   end
@@ -94,7 +100,10 @@ class SalesOrder < ApplicationRecord
     [:draft_uid]
   end
 
-  def filename
-    ['order', id].join('_')
+  def filename(include_extension: false)
+    [
+        ['order', id].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 end

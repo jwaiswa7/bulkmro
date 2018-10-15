@@ -4,6 +4,31 @@ const globals = () => {
     Chart.defaults.global.hover.mode = 'nearest';
     Chart.defaults.global.defaultFontFamily = "'Muli', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
     Chart.defaults.global.defaultFontSize = 11;
+    Chart.helpers.merge(Chart.defaults.global, {
+        aspectRatio: 4/3,
+        layout: {
+            padding: {
+                top: 42,
+                right: 16,
+                bottom: 32,
+                left: 8
+            }
+        },
+
+        elements: {
+            line: {
+                fill: false
+            },
+            point: {
+                hoverRadius: 7,
+                radius: 5
+            }
+        },
+
+        plugins: {
+            title: false
+        }
+    });
 };
 
 const chartjs = () => {
@@ -26,7 +51,11 @@ const barcharts = () => {
                 fill: false,
                 borderWidth: 1,
                 backgroundColor: colors[index] + '80', // 50% hex opacity
-                borderColor: colors[index] + 'ff' // 100% hex opacity
+                borderColor: colors[index] + 'ff', // 100% hex opacity
+                datalabels: {
+                    align: 'end',
+                    anchor: 'start'
+                }
             }
         });
 
@@ -41,9 +70,22 @@ const barcharts = () => {
                     yAxes: [{
                         ticks: {
                             beginAtZero:true
-                        }
+                        },
                     }]
-                }
+                },
+
+                plugins: {
+                    datalabels: {
+                        color: 'black',
+                        display: function(context) {
+                            return context.dataset.data[context.dataIndex] > 15;
+                        },
+                        font: {
+                            weight: 'bold'
+                        },
+                        formatter: Math.round
+                    }
+                },
             }
         });
     });

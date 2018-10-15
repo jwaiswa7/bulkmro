@@ -21,6 +21,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :persisted, -> { where "#{self.model_name.collection}.id IS NOT NULL" }
   scope :legacy, -> { where.not(:legacy_id => nil) }
   scope :not_legacy, -> { where(:legacy_id => nil) }
+  scope :between_month_for, -> (datetime) { where(:created_at => datetime.beginning_of_month..datetime.end_of_month) }
 
   def legacy?
     self.legacy_id.present?

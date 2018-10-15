@@ -5,7 +5,10 @@ class PurchaseOrder < ApplicationRecord
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
-  def filename
-    ['po', po_number].join('_')
+  def filename(include_extension: false)
+    [
+        ['po', po_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 end

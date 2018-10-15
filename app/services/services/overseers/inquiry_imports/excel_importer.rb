@@ -1,27 +1,23 @@
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
-  class ExcelInvalidHeader < StandardError;
-
-  end
-  class ExcelInvalidRows < StandardError;
-
-  end
+  class ExcelInvalidHeader < StandardError; end
+  class ExcelInvalidRows < StandardError; end
 
   def call
-    if import.save
-      set_and_validate_excel_rows
+    ActiveRecord::Base.transaction do
+      if import.save
+        set_and_validate_excel_rows
+        set_and_validate_excel_header_row
+        set_rows
+        set_generated_skus
 
-      set_and_validate_excel_header_row
-      set_rows
-      set_generated_skus
-
-      call_base
+        call_base
+      end
     end
   end
 
   def set_and_validate_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-
     excel_rows.reject! {|er| er.compact.blank?}
 
     @excel_rows = excel_rows
@@ -31,9 +27,10 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
     @excel_header_row = excel_rows.shift
 
     excel_header_row.each do |column|
-      if /^[a-zA-Z]{1}[a-zA-Z]*$/i.match?(column) && column.downcase.in?(%w(id name brand mpn sku quantity))
+      if /^[a-zA-Z_]{1}[_a-zA-Z]*$/i.match?(column) && column.downcase.in?(InquiryImport::HEADERS)
         column.downcase!
       else
+        import.errors.add(:base, ['invalid excel headers, column', column, 'should be one of', InquiryImport::HEADERS.to_sentence].join(' '))
         raise ExcelInvalidHeader
       end
     end
@@ -48,16 +45,17 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
         excel_rows.delete(excel_row)
       end
     end
+
+    @rows = rows.reverse
   end
 
   def set_generated_skus
     rows.each do |row|
       if Product.find_by_sku(row['sku']).blank?
-        if not row['mpn'].blank?
-
-
+        if row['mpn'].to_s.strip.present?
           row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map {|r| r['sku']})
         else
+          import.errors.add(:base, ['invalid excel rows, sku or mpn are mandatory for every row'].join(' '))
           raise ExcelInvalidRows
         end
       end

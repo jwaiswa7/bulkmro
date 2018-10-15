@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
     resources :remote_requests
     resources :reports
-    resources :activities
+    resources :activities, except: [:show]
     resource :profile, :controller => :profile
     resources :overseers
 
@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contacts do
+    resources :contacts, except: [:show] do
       collection do
         get 'autocomplete'
       end

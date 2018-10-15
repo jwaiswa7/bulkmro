@@ -69,7 +69,6 @@
           <%= nav_dropdown_item 'Pending', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
         </div>
       </li>
-      <% if Rails.env.development? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Reports
@@ -82,7 +81,6 @@
           <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
         </div>
       </li>
-      <% end %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
       <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? if Rails.env.development? %>

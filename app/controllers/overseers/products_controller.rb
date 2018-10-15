@@ -54,6 +54,8 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+    else
+      render 'edit'
     end
   end
 

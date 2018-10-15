@@ -15,7 +15,6 @@ const newAction = () => {
         vj = initVueJS();
     });
 
-
     $('body').on('change.select2', function (e, params) {
 
     });
@@ -120,7 +119,7 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
-                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
+                //this.triggerSellingPriceChangeFor(index, 'margin_percentage');
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
@@ -174,7 +173,7 @@ let initVueJS = () => {
 
             quantityChangedFor(index) {
                 //this.triggerFreightChangeFor(index, 'quantity');
-                this.triggerSellingPriceChangeFor(index);
+                //   //this.triggerSellingPriceChangeFor(index);
             },
 
             selectSupplierChangedFor(index) {
@@ -190,25 +189,25 @@ let initVueJS = () => {
             },
 
             unitCostPriceChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index);
+                //this.triggerSellingPriceChangeFor(index);
             },
 
             unitCostPriceWithUnitFreightCostChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index);
+                //this.triggerSellingPriceChangeFor(index);
             },
 
             marginPercentageChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index, 'margin_percentage');
+                //this.triggerSellingPriceChangeFor(index, 'margin_percentage');
             },
 
             unitSellingPriceChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index);
+                //this.triggerSellingPriceChangeFor(index);
             },
             totalSellingPriceChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index);
+                //this.triggerSellingPriceChangeFor(index);
             },
             totalSellingPriceWithTaxChangedFor(index) {
-                this.triggerSellingPriceChangeFor(index);
+                //this.triggerSellingPriceChangeFor(index);
             },
             taxCodeIdChangedFor(index) {
                 //console.log("triggered Changed")
@@ -234,7 +233,7 @@ let initVueJS = () => {
                 }*/
             },
             sellingPriceChangedFor(index) {
-                // this.triggerSellingPriceChangeFor(index);
+                // //this.triggerSellingPriceChangeFor(index);
             },
 
             triggerFreightChangeFor(index, trigger) {
@@ -258,19 +257,19 @@ let initVueJS = () => {
             triggerSellingPriceChangeFor(index, trigger) {
                 let row = this.getRow(index);
 
+                /*
+                                //console.dir(row);
+                                let margin_percentage = row.margin_percentage;
+                                let unit_selling_price = row.unit_selling_price;
+                                let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
 
-                //console.dir(row);
-                let margin_percentage = row.margin_percentage;
-                let unit_selling_price = row.unit_selling_price;
-                let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
-
-                if (trigger === 'margin_percentage' && margin_percentage >= 0 && margin_percentage < 100) {
-                    unit_selling_price = unit_cost_price_with_unit_freight_cost / (1 - (margin_percentage / 100));
-                    row.unit_selling_price = toDecimal(unit_selling_price);
-                } else {
-                    margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
-                    row.margin_percentage = toDecimal(margin_percentage * 100);
-                }
+                                if (trigger === 'margin_percentage' && margin_percentage >= 0 && margin_percentage < 100) {
+                                    unit_selling_price = unit_cost_price_with_unit_freight_cost / (1 - (margin_percentage / 100));
+                                    row.unit_selling_price = toDecimal(unit_selling_price);
+                                } else {
+                                    margin_percentage = 1 - (unit_cost_price_with_unit_freight_cost / unit_selling_price);
+                                    row.margin_percentage = toDecimal(margin_percentage * 100);
+                                }*/
                 this.setRow(index, row);
 
             },

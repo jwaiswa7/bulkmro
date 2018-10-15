@@ -31,7 +31,7 @@ module DisplayHelper
   end
 
   def percentage(number, precision: 0)
-    if number
+    if number && !number.nan?
       [number_with_precision(number, precision: precision), '%'].join
     end
   end
@@ -40,7 +40,7 @@ module DisplayHelper
     text.to_s.humanize if text
   end
 
-  def format_currency(amount, symbol: nil, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+  def format_currency(amount, symbol: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
     if amount.present?
       [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
     else
@@ -91,11 +91,29 @@ module DisplayHelper
     num.to_int
   end
 
+  def format_month(date)
+    if date.present? && (date.is_a?(DateTime) || date.is_a?(Date))
+      date.strftime('%b, %Y')
+    else
+      date.to_s.titleize
+    end
+  end
+
   def format_collection(kollection)
     kollection.map(&:to_s).to_sentence
   end
 
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
+  end
+
+  def format_count(count, zero_if_nil: true)
+    if count.present?
+      count
+    elsif zero_if_nil
+      0
+    else
+      nil
+    end
   end
 end

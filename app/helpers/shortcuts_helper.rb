@@ -37,8 +37,13 @@ module ShortcutsHelper
         end)
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
-          link_to name, path_so_far
-          # name
+          begin
+            if recognize_path(path_so_far)
+              link_to name, path_so_far
+            end
+          rescue ActionController::RoutingError => e
+            name
+          end
         end)
       end
     end
@@ -67,11 +72,4 @@ module ShortcutsHelper
     end
   end
 
-  def get_pipeline_entry(entries, *attributes)
-    if entries[attributes[0]].present? && entries[attributes[0]][attributes[1].name].present?
-      entries[attributes[0]][attributes[1].name]
-    else
-      0
-    end
-  end
 end

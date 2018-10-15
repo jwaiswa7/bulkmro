@@ -47,7 +47,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount %>
+                <%= f.input :potential_amount, input_html: {} %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -81,13 +81,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3">
-            <%= f.association :inside_sales_owner, required: true, include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.role_and_obj(:inside_sales, f.object.inside_sales_owner), include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-6 col-md-3">
-            <%= f.association :outside_sales_owner, required: true, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.role_and_obj(:outside_sales, f.object.outside_sales_owner), include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, required: true, include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.role_and_obj(:sales_manager, f.object.sales_manager), include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true) %>
@@ -138,20 +138,32 @@
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote', hint: f.object.suppler_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.suppler_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-          </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-          </div>
-          <div class="col-12 col-md-6">
 
-            <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-            <% if f.object.persisted? %>
-              <a href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
-                <i class="fal fa-download mr-1"></i>Download Calculation Sheet
-              </a>
-            <% end %>
+          <div class="col-12 col-md-6">
+            <div class="d-flex flex-row">
+              <div class="flex-grow-1">
+                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+              </div>
+              <% if f.object.persisted? %>
+                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
+                  <i class="fal fa-download"></i>
+                </a>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-12 col-md-12">
+            <div class="d-block d-md-flex align-items-end">
+              <div class="flex-grow-1">
+                <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: { multiple: true }, label: 'Supplier quotes' %>
+              </div>
+              <div class="form-group">
+                <% f.object.supplier_quotes.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 mr-md-0 mr-1 btn-sm btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                  <% end %>
+                <% end if f.object.supplier_quotes.attached? %>
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
