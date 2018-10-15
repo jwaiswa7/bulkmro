@@ -105,8 +105,8 @@
               <% end %>
             </td>
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
-            <td>(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %></td>
-            <td>(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %></td>
+            <td data-toggle="tooltip" title="(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %>">(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name.truncate(25) %></td>
+            <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
             <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
             <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
             <td><%= format_date(inquiry_product.inquiry.quotation_date) %></td>
