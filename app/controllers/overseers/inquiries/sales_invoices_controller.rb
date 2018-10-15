@@ -32,5 +32,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
       end
     end
   end
+
+  private
+
+  def set_sales_invoice
+    @sales_invoice = @inquiry.invoices.find(params[:id])
+  end
+
 end
 

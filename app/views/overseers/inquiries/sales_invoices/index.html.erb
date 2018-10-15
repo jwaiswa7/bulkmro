@@ -1,4 +1,32 @@
 <div class="col-lg-12">
-<%= render layout: 'overseers/inquiries/tabs_layout' do %>
-<% end %>
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <% provide :hide_table_desc, true %>
+    <% provide :hide_table_heading, true %>
+
+    <% content_for :header_row do %>
+      <th class="no-sort"></th>
+      <th># Invoice</th>
+      <th># Sales Order</th>
+      <th>Line Items</th>
+      <th>Created At</th>
+    <% end %>
+
+    <%= render layout: 'shared/layouts/datatable' do %>
+      <% @sales_invoices.each do |sales_invoice| %>
+        <tr>
+          <td>
+            <% if sales_invoice.legacy? %>
+              <%= row_action_button(url_for(sales_invoice.og_invoice_pdf), 'file-pdf', sales_invoice.og_invoice_pdf.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_invoice.dup_invoice_pdf), 'file-pdf', sales_invoice.dup_invoice_pdf.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_invoice.trip_invoice_pdf), 'file-pdf', sales_invoice.trip_invoice_pdf.filename, 'dark', :_blank) %>
+            <% end %>
+          </td>
+          <td><%= sales_invoice.invoice_number %></td>
+          <td><%= sales_invoice.sales_order.order_number %></td>
+          <td><%= sales_invoice.rows.size %></td>
+          <td><%= format_date(sales_invoice.created_at) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>
