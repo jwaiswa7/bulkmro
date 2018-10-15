@@ -147,15 +147,16 @@ class Inquiry < ApplicationRecord
   scope :won, -> {where(:status => :'Order Won')}
 
   attr_accessor :force_has_sales_orders
+
   with_options if: :has_sales_orders? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     inquiry.validates_with FilePresenceValidator, attachment: :final_supplier_quote
     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+    validates_presence_of :customer_po_number
   end
 
   def has_sales_orders?
     self.sales_orders.present? || self.force_has_sales_orders == true
-    false # comment this to enable
   end
 
   def valid_for_new_sales_order?
