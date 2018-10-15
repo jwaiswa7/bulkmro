@@ -48,9 +48,11 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
         excel_rows.delete(excel_row)
       end
     end
+    @rows = rows.reverse
   end
 
   def set_generated_skus
+
     rows.each do |row|
       if Product.find_by_sku(row['sku']).blank?
         if not row['mpn'].blank?
@@ -62,6 +64,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
         end
       end
     end
+
   end
 
 

@@ -12,7 +12,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def show
-    redirect_to edit_overseers_company_contact_path(@company, @contact)
+    redirect_to edit_overseers_contact_path(@contact)
     authorize @contact
   end
 

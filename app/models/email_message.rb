@@ -22,5 +22,7 @@ class EmailMessage < ApplicationRecord
     if self.contact.present?
       self.to ||= self.contact.email
     end
+
+    self.auto_attach ||= false
   end
 end

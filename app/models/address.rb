@@ -36,8 +36,8 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
-  validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
-  validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
+  validates_presence_of :telephone, if: -> { :not_legacy? && self.telephone.blank?  }
+  validates_presence_of :mobile, if: -> { :not_legacy? && self.mobile.blank? }
   phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
   validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
 
