@@ -144,7 +144,7 @@ class Inquiry < ApplicationRecord
         Inquiry.statuses[:'Regret']
     ]).order(:priority => :desc, :quotation_followup_date => :asc, :calculated_total => :desc)
   }
-  scope :won, -> { where(:status => :'Order Won') }
+  scope :won, -> {where(:status => :'Order Won')}
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
@@ -170,10 +170,9 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
-  validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
+  validates_numericality_of :potential_amount, greater_than: 0.00, :if => :not_legacy?
 
-  validates_presence_of :subject, :if => :not_legacy?
-  # validates_uniqueness_of :subject, :if => :not_legacy?
+  validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
@@ -181,6 +180,7 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inside_sales_owner, :if => :not_legacy?
   validates_presence_of :outside_sales_owner, :if => :not_legacy?
   validates_presence_of :potential_amount, :if => :not_legacy?
+  validates_presence_of :quote_category, :if => :not_legacy?
   validates_presence_of :payment_option, :if => :not_legacy?
   validates_presence_of :billing_address, :if => :not_legacy?
   validates_presence_of :shipping_address, :if => :not_legacy?
@@ -213,6 +213,7 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
+      self.potential_amount ||= 0.01
       self.price_type ||= :"EXW"
       self.freight_option ||= :"Added"
       self.packing_and_forwarding_option ||= :"Added"

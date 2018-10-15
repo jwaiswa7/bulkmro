@@ -4,8 +4,8 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
   end
 
   def all_records
-    if overseer_ids.present?
-      super.filter({terms: {created_by_id: overseer_ids}.compact })
+    if current_overseer.present? && !current_overseer.admin?
+      super.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}.compact})
     else
       super
     end
@@ -13,14 +13,14 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
 
   def perform_query(query_string)
     indexed_records = index_klass.query({
-        multi_match: {
-            query: query_string,
-            operator: 'and',
-            fields: index_klass.fields
-        }
-    })
+                                            multi_match: {
+                                                query: query_string,
+                                                operator: 'and',
+                                                fields: index_klass.fields
+                                            }
+                                        })
 
-    indexed_records = indexed_records.filter({terms: {created_by_id: overseer_ids}}) if overseer_ids.present?
+    indexed_records = indexed_records.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}}) if current_overseer.present? && !current_overseer.admin?
     indexed_records
   end
 
