@@ -7,8 +7,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        # service = Services::Overseers::Finders::Inquiries.new(params, current_overseer.self_and_descendant_ids)
-        service = Services::Overseers::Finders::Inquiries.new(params)
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call
 
         @indexed_inquiries = service.indexed_records
