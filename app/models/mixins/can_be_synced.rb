@@ -4,6 +4,8 @@ module Mixins::CanBeSynced
   included do
     def save_and_sync
       if Rails.env.development?
+        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+        service.call
         self.save
       elsif Rails.env.production?
         self.save
@@ -25,7 +27,7 @@ module Mixins::CanBeSynced
     end
 
     def not_synced?
-      !synced?
+      synced?
     end
 
     def sync_id

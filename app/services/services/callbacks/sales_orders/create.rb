@@ -11,26 +11,44 @@ class Services::Callbacks::SalesOrders::Create < Services::Shared::BaseService
     draft_uid = params['DocEntry']
     order_number = params['DocNum']
     comment_message = comment_message_for(remote_status, remote_comment)
-    sales_order = SalesOrder.find_by_doc_number(draft_uid) || SalesOrder.find_by_legacy_id(legacy_id)
+    sales_order = SalesOrder.find_by_draft_uid(draft_uid) || SalesOrder.find_by_legacy_id(legacy_id)
 
-    if legacy_id && remote_status && draft_uid && sales_order.present? && sales_order.approved? && !sales_order.rejected?
+    if legacy_id && draft_uid && sales_order.present?
+
       case to_local_status(remote_status)
       when :'approved'
-        return if sales_order.approved?
+        if sales_order.approved?
+          {success: 1, status: 1, message: "Order Already Approved"}
+        end
 
-        sales_order.update_attributes(:status => :'approved', :order_number => order_number)
-        sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
+        if !sales_order.remote_status.blank?
+          begin
+            sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending' , :status => :'approved', :order_number => order_number)
+            sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
+            {success: 1, status: 1, message: "Order Created Successfully", response: sales_order.rows.to_json}
+          rescue => ex
+            {success: 1, status: 1, message: ex.message}
+          end
+        end
+
       when :'SAP Rejected'
-        return if sales_order.status.in? ['Hold by Finance', 'SAP Rejected']
-
-        sales_order.update_attributes(:status => :'SAP Rejected')
-        comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
-        sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
-        sales_order.approval.destroy!
+        # if sales_order.status.in? ['Hold by Finance', 'SAP Rejected']
+        #   {success: 1, status: 1, message: "Order Already Approved"}
+        # end
+        begin
+          sales_order.update_attributes(:status => :'SAP Rejected')
+          comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
+          sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
+          sales_order.approval.destroy!
+          {success: 1, status: 1, message: "Order Update Successfully"}
+        rescue => ex
+          {success: 0, status: 0, message: ex.message}
+        end
       end
-    end
 
-    sales_order
+    else
+      {success: 0, status: 0, message: "Order Not Processed"}
+    end
   end
 
   def to_local_status(remote_status)

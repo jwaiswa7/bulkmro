@@ -5,6 +5,10 @@ class Resources::Project < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
+    if record.inquiry_number.blank?
+      raise
+    end
+
     {
       Code: record.inquiry_number,
       Name: record.subject

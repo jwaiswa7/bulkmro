@@ -248,7 +248,7 @@ class Inquiry < ApplicationRecord
     attachment = []
     attachment.push(self.customer_po_sheet) if self.customer_po_sheet.attached?
     attachment.push(self.copy_of_email) if self.copy_of_email.attached?
-    attachment.push(self.suppler_quote) if self.self.suppler_quote.attached?
+    attachment.push(self.suppler_quote) if self.suppler_quote.attached?
     attachment.push(self.final_supplier_quote) if self.final_supplier_quote.attached?
     attachment.push(self.calculation_sheet) if self.calculation_sheet.attached?
     attachment.compact

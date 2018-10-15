@@ -12,7 +12,7 @@
   <section class="mb-3">
     <div class="card">
       <div class="card-body">
-        <% if @company.site? || @company.default_company_contact.contact ||
+        <% if @company.site? || (@company.default_company_contact.present? && @company.default_company_contact.contact) ||
             @company.industry || @company.company_type || @company.nature_of_business ||
             @company.priority || @company.default_payment_option || @company.credit_limit ||
             @company.pan %>
@@ -26,7 +26,7 @@
               </div>
             <% end %>
 
-            <% if @company.default_company_contact.contact %>
+            <% if @company.default_company_contact.present? && @company.default_company_contact.contact %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Mobile</strong>
                 <%= @company.default_company_contact.contact.mobile %>

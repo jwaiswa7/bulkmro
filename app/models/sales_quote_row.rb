@@ -19,6 +19,7 @@ class SalesQuoteRow < ApplicationRecord
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
   delegate :is_service, :to => :product
   delegate :measurement_unit, :to => :product, allow_nil: true
+  delegate :sku, :to => :product
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
   validates_presence_of :quantity, :unit_selling_price
