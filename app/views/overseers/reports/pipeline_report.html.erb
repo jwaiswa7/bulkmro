@@ -29,7 +29,7 @@
             <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
           <% end %>
           <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
-          <td><%= format_count(entry[:won_count]) %>, <%= format_count(entry[:won_value]) %></td>
+          <td><%= percentage(entry[:won_count]) %>, <%= percentage(entry[:won_value]) %></td>
         </tr>
       <% end %>
       <% @data.summary_entries.each do |month, entry| %>
@@ -39,7 +39,7 @@
             <td><%= format_count(entry[status.name][:count]) %>, <%= format_currency(entry[status.name][:value]) %></td>
           <% end %>
           <td><%= format_count(entry[:count]) %>, <%= format_currency(entry[:value]) %></td>
-          <td><%= format_count(entry[:won_count]) %>, <%= format_count(entry[:won_value]) %></td>
+          <td><%= percentage(entry[:won_count]) %>, <%= percentage(entry[:won_value]) %></td>
         </tr>
       <% end %>
       </tbody>
