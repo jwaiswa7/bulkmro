@@ -135,6 +135,7 @@ Rails.application.routes.draw do
         resources :sales_quotes do
           member do
             get 'new_revision'
+            get 'preview'
           end
 
           scope module: 'sales_quotes' do
