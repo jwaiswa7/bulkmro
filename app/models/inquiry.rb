@@ -57,25 +57,25 @@ class Inquiry < ApplicationRecord
   has_one_attached :calculation_sheet
 
   enum status: {
-      :'Order Won' => 18,
+      :'New Inquiry' => 0,
+      :'Acknowledgement Mail' => 2,
+      :'Cross Reference' => 3,
+      :'Preparing Quotation' => 4,
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
-      :'Hold by Accounts' => 20,
       :'SO Draft: Pending Accounts Approval' => 8,
+      :'Order Lost' => 9,
+      :'Regret' => 10,
+      :'Lead by O/S' => 11,
+      :'Supplier RFQ Sent' => 12,
       :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
-      :'New Inquiry' => 0,
-      :'Lead by O/S' => 11,
-      :'Acknowledgement Mail' => 2,
-      :'Preparing Quotation' => 4,
-      :'Cross Reference' => 3,
-      :'Supplier RFQ Sent' => 12,
       :'SO Rejected by Sales Manager' => 17,
-      :'Regret' => 10,
-      :'Order Lost' => 9,
+      :'Order Won' => 18,
       :'Rejected by Accounts' => 19,
+      :'Hold by Accounts' => 20,
   }
 
   enum stage: {
@@ -144,7 +144,7 @@ class Inquiry < ApplicationRecord
         Inquiry.statuses[:'Regret']
     ]).order(:priority => :desc, :quotation_followup_date => :asc, :calculated_total => :desc)
   }
-  scope :won, -> { where(:status => :'Order Won') }
+  scope :won, -> {where(:status => :'Order Won')}
 
   attr_accessor :force_has_sales_orders
   with_options if: :has_sales_orders? do |inquiry|
@@ -209,7 +209,7 @@ class Inquiry < ApplicationRecord
       self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
-      self.status ||= :'Inquiry No. Assigned'
+      self.status ||= :'New Inquiry'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
