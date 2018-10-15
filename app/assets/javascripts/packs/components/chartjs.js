@@ -78,7 +78,6 @@ const barcharts = () => {
                     datalabels: {
                         color: 'black',
                         display: function(context) {
-                            console.log('!!!');
                             return context.dataset.data[context.dataIndex] > 15;
                         },
                         font: {
