@@ -19,10 +19,10 @@
 
         <div class="form-row">
           <div class="col-4">
-            <%= f.association :contact, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
+            <%= f.association :contact, required: true, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
           </div>
           <div class="col-8">
-            <%= f.input :subject %>
+            <%= f.input :subject, required: true %>
           </div>
         </div>
 
@@ -47,7 +47,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount %>
+                <%= f.input :potential_amount, input_html: {min: 1} %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -69,10 +69,10 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
+            <%= f.association :billing_address, required: true, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_address, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
+            <%= f.association :shipping_address, required: true, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a shipping address" %>
           </div>
         </div>
       </div>
@@ -81,13 +81,13 @@
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
           <div class="col-6 col-md-3">
-            <%= f.association :inside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Inside Sales Owner' %>
+            <%= f.association :inside_sales_owner, required: true, collection: Overseer.role_and_obj(:inside_sales, f.object.inside_sales_owner), include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-6 col-md-3">
-            <%= f.association :outside_sales_owner, :wrapper => :custom_multi_select, include_blank: 'Select an Outside Sales Owner' %>
+            <%= f.association :outside_sales_owner, required: true, collection: Overseer.role_and_obj(:outside_sales, f.object.outside_sales_owner), include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :sales_manager, :wrapper => :custom_multi_select, include_blank: 'Select a Sales Manager' %>
+            <%= f.association :sales_manager, required: true, collection: Overseer.role_and_obj(:sales_manager, f.object.sales_manager), include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :quote_category, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.quote_categories, all_caps: true) %>
@@ -145,7 +145,16 @@
             <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+            <div class="d-flex flex-row">
+              <div class="flex-grow-1">
+                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+              </div>
+              <% if f.object.persisted? %>
+                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
+                  <i class="fal fa-download"></i>
+                </a>
+              <% end %>
+            </div>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
@@ -163,10 +172,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types) %>
+            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+            <%= f.association :payment_option, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
@@ -175,123 +184,123 @@
             <%= f.input :freight_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
-        <%= f.input :commercial_terms_and_conditions%>
+        <%= f.input :commercial_terms_and_conditions %>
       </div>
 
-      <div class="mt-3">
-        <% if f.object.persisted? %>
+      <% if f.object.persisted? %>
+        <div class="mt-3">
           <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
-        <% end %>
-        <div class="form-row d-none d-md-flex">
-          <div class="col-1 text-right">
-            <div class="form-group mb-0">
-              <label>#</label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="form-group mb-0">
-                <label>Product</label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-row">
-              <div class="col-6">
-                <div class="form-group mb-0">
-                  <label>Customer Material Name</label>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-group mb-0">
-                  <label>Customer Material Code</label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-1">
-            <div class="form-group mb-0">
-                <label>Quantity</label>
-            </div>
-          </div>
-        </div>
-        <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
-          <div class="form-row flex-row align-items-start">
-            <%= inquiry_product.hidden_field :id %>
-            <div class="col-1">
-              <div class="d-flex flex-row">
-                <div class="form-group align-self-center mr-1">
-                  <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
-                    <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
-                  <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
-                  <% end %>"><i class="far fa-comment-lines"></i></a>
-                  <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.rejected? %>
-                    <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
-                  <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
-                  <% end %>"><i class="far fa-comment-lines"></i></a>
-                  <% elsif inquiry_product.object.persisted? %>
-                    <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-warning" data-toggle="tooltip" title="Discuss product
-                  <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
-                  <% end %>"><i class="far fa-comment-lines"></i></a>
-                  <% else %>
-              <span class="text-success" data-toggle="tooltip" title="Approved product">
-                <i class="far fa-check"></i>
-              </span>
-                  <% end %>
-                </div>
-                <div class="flex-grow-1">
-                  <%= inquiry_product.input :sr_no, label: false,placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                </div>
-
+          <div class="form-row d-none d-md-flex">
+            <div class="col-1 text-center">
+              <div class="form-group mb-0">
+                <label>#</label>
               </div>
             </div>
             <div class="col-6">
-              <div class="select2-wrap">
-                <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+              <div class="form-group mb-0">
+                <label>Product</label>
               </div>
             </div>
             <div class="col-4">
               <div class="form-row">
                 <div class="col-6">
-                  <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name) %>
+                  <div class="form-group mb-0">
+                    <label>Customer Material Name</label>
+                  </div>
                 </div>
                 <div class="col-6">
-                  <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku) %>
+                  <div class="form-group mb-0">
+                    <label>Customer Material Code</label>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="col-1">
-              <div class="d-flex flex-row align-items-center">
-                <div>
-                  <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
-                </div>
-                <%= inquiry_product.remove_nested_fields_link do %>
-                  <div class="form-group align-self-center flex-grow-1 ml-2">
-                    <i class="far fa-times text-danger"></i>
-                  </div>
-                <% end if policy(inquiry_product.object).destroy? %>
+              <div class="form-group mb-0">
+                <label>Quantity</label>
               </div>
             </div>
           </div>
-        <% end %>
-        <% if !f.object.persisted? %>
-          <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
-        <% else %>
-          <div class="form-row">
-            <div class="col-md-4">
-              <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
-                products using excel</a>
+          <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
+            <div class="form-row flex-row align-items-start">
+              <%= inquiry_product.hidden_field :id %>
+              <div class="col-1">
+                <div class="d-flex flex-row">
+                  <div class="form-group align-self-center mr-1">
+                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
+                  <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                  <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.rejected? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
+                  <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
+                  <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% elsif inquiry_product.object.persisted? %>
+                      <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-warning" data-toggle="tooltip" title="Discuss product
+                  <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
+                  <% end %>"><i class="far fa-comment-lines"></i></a>
+                    <% else %>
+              <span class="text-success" data-toggle="tooltip" title="Approved product">
+                <i class="far fa-check"></i>
+              </span>
+                    <% end %>
+                  </div>
+                  <div class="flex-grow-1">
+                    <%= inquiry_product.input :sr_no, label: false, placeholder: placeholder_for(inquiry_product, :sr_no), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="select2-wrap">
+                  <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-row">
+                  <div class="col-6">
+                    <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  </div>
+                  <div class="col-6">
+                    <%= inquiry_product.input :bp_catalog_sku, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_sku), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-1">
+                <div class="d-flex flex-row align-items-center">
+                  <div>
+                    <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                  </div>
+                  <%= inquiry_product.remove_nested_fields_link do %>
+                    <div class="form-group align-self-center flex-grow-1 ml-2">
+                      <i class="far fa-times text-danger"></i>
+                    </div>
+                  <% end if policy(inquiry_product.object).destroy? %>
+                </div>
+              </div>
             </div>
-            <div class="col-md-4">
-              <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Add
-                products through list</a>
+          <% end %>
+          <% if !f.object.persisted? %>
+            <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
+          <% else %>
+            <div class="form-row">
+              <div class="col-md-4">
+                <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
+                  products using excel</a>
+              </div>
+              <div class="col-md-4">
+                <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Add
+                  products through list</a>
+              </div>
+              <div class="col-md-4">
+                <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+                  <i class="fal fa-plus-circle mr-1"></i>Add a product
+                <% end %>
+              </div>
             </div>
-            <div class="col-md-4">
-              <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
-                <i class="fal fa-plus-circle mr-1"></i>Add a product
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
     <div class="card-footer">
       <% if action_name.capitalize == "New" %>
@@ -305,7 +314,8 @@
       <% end %>
 
       <% if policy(@inquiry).new_email_message? %>
-        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send Acknowledgement</a>
+        <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
+          Acknowledgement</a>
       <% end %>
     </div>
   </div>

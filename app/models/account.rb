@@ -1,6 +1,7 @@
 class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
+  include Mixins::CanBeSynced
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 

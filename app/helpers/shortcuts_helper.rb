@@ -3,8 +3,8 @@ module ShortcutsHelper
     controller_name.capitalize.pluralize
   end
 
-  def row_action_button(url, icon, title='', color='success', target=:_self)
-    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, class: ['btn btn-sm btn-', color].join do
+  def row_action_button(url, icon, title='', color='success', target=:_self, method=:get)
+    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, :method => method, class: ['btn btn-sm btn-', color].join do
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
   end
@@ -37,8 +37,13 @@ module ShortcutsHelper
         end)
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
-          link_to name, path_so_far
-          # name
+          begin
+            if recognize_path(path_so_far)
+              link_to name, path_so_far
+            end
+          rescue ActionController::RoutingError => e
+            name
+          end
         end)
       end
     end
@@ -66,4 +71,5 @@ module ShortcutsHelper
       0
     end
   end
+
 end

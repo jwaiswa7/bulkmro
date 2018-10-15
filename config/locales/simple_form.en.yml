@@ -1,6 +1,13 @@
 en:
   simple_form:
     placeholders:
+      address:
+        name: 'Name'
+        street1: 'Street1'
+        street2: 'Street2'
+        state_name: 'State name'
+        city_name: 'City name'
+
       overseer:
         first_name: 'First name'
         last_name: 'Last name'

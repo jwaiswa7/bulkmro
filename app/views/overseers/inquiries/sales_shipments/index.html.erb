@@ -1,0 +1,30 @@
+<div class="col-lg-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <% provide :hide_table_desc, true %>
+    <% provide :hide_table_heading, true %>
+
+    <% content_for :header_row do %>
+      <th class="no-sort"></th>
+      <th># Shipment </th>
+      <th># Sales Order</th>
+      <th>Line Items</th>
+      <th>Created At</th>
+    <% end %>
+
+    <%= render layout: 'shared/layouts/datatable' do %>
+      <% @sales_shipments.each do |sales_shipment| %>
+        <tr>
+          <td>
+            <% if sales_shipment.legacy? %>
+              <%= row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank) %>
+            <% end %>
+          </td>
+          <td><%= sales_shipment.remote_uid %></td>
+          <td><%= sales_shipment.sales_order.order_number %></td>
+          <td><%= sales_shipment.rows.size %></td>
+          <td><%= format_date(sales_shipment.created_at) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

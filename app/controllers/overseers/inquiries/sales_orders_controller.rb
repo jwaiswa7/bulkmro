@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation]
+  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation, :resync]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -8,17 +8,25 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize @sales_order
+
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_order
+      end
+    end
   end
 
   def new
-    @sales_quote = @inquiry.sales_quotes.find(params[:sales_quote_id])
+    @sales_quote = SalesQuote.find(params[:sales_quote_id])
+
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
     authorize @sales_quote, :new_sales_order?
   end
 
   def new_revision
     @old_sales_order = @inquiry.sales_orders.find(params[:id])
-    @sales_order = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_order, current_overseer).call
+    @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@old_sales_order.sales_quote, current_overseer).call
     authorize @old_sales_order
     render 'new'
   end
@@ -76,8 +84,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
   end
 
-  private
+  def resync
+    authorize @sales_order
 
+    if @sales_order.save_and_sync
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    end
+  end
+
+  private
   def save
     @sales_order.save
   end

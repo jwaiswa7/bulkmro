@@ -2,13 +2,14 @@ require 'mail'
 
 class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::CanBeSynced
   include Mixins::IsAPerson
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
 
-  pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
-  has_closure_tree({ name_column: :to_s })
+  pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
+  has_closure_tree({name_column: :to_s})
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable
@@ -20,12 +21,14 @@ class Overseer < ApplicationRecord
 
   scope :can_send_email, -> { where.not(:smtp_password => nil) }
   scope :cannot_send_email, -> { where(:smtp_password => nil) }
+  scope :role_and_obj, -> (role, obj) { where('role = ? OR id = ?', roles[role], obj.try(:id)) }
 
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
   validates_presence_of :password_confirmation, :if => :new_record?
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.role ||= :sales
     self.status ||= :active
@@ -68,5 +71,17 @@ class Overseer < ApplicationRecord
 
   def self.default
     find_by_email('ashwin.goyal@bulkmro.com')
+  end
+
+  def self.default_approver
+    overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|
+      overseer.first_name = "SAP"
+      overseer.last_name = "Approver"
+      overseer.password = "bm@123"
+      overseer.password_confirmation = "bm@123"
+    end
+
+    overseer.save!
+    overseer
   end
 end

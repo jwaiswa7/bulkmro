@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeRejected
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
+  include Mixins::CanBeSynced
 
   update_index('products#product') { self if self.approved? }
   # pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
@@ -45,6 +46,7 @@ class Product < ApplicationRecord
   enum product_type: { item: 10, service: 20 }
 
   scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
+  scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, :category => [:tax_code]) }
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
@@ -55,6 +57,7 @@ class Product < ApplicationRecord
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
+    self.weight ||= 0.0
   end
 
   def best_tax_code
@@ -71,6 +74,10 @@ class Product < ApplicationRecord
 
   def lowest_inquiry_product_supplier
     self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
+  end
+
+  def lowest_inquiry_product_suppliers(number: 1)
+    self.inquiry_product_suppliers.includes(:supplier).order(:unit_cost_price).uniq(&:supplier).first(number)
   end
 
   def latest_inquiry_product_supplier

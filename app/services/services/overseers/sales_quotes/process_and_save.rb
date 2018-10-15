@@ -16,10 +16,15 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
     end
 
     sales_quote.rows.each do |row|
+      row.unit_selling_price = row.unit_selling_price.round(2)
       row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
     end
 
-    sales_quote.save
+    if sales_quote.sent_at.present?
+      sales_quote.save_and_sync
+    else
+      sales_quote.save
+    end
   end
 
   attr_reader :sales_quote

@@ -10,9 +10,20 @@
         <div class="form-group">
           <%= f.input :to, disabled: true %>
         </div>
+        <div class="form-group">
+          <%= f.input :cc %>
+        </div>
+        <div class="form-group">
+          <%= f.input :bcc %>
+        </div>
 
         <div class="form-group">
           <%= f.input :subject %>
+        </div>
+
+        <div class="form-group">
+          <%= link_to 'Quotation', overseers_inquiry_sales_quote_path(@inquiry, @sales_quote, format: :pdf, target: :_blank) %>
+          <%= f.input :auto_attach %>
         </div>
 
         <div class="form-group">

@@ -3,9 +3,15 @@ module Mixins::CanBeSynced
 
   included do
     def save_and_sync
-      # service = ['Services', 'Overseers', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-      # service.call
-      self.save
+      if Rails.env.development?
+        self.save
+      elsif Rails.env.production?
+        self.save
+        # service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+        # service.call
+      end
+
+      self.valid?
     end
 
     def syncable_identifiers
@@ -19,7 +25,7 @@ module Mixins::CanBeSynced
     end
 
     def not_synced?
-      synced?
+      !synced?
     end
 
     def sync_id

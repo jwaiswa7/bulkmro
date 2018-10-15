@@ -5,7 +5,6 @@ class CreateInquiryCurrencies < ActiveRecord::Migration[5.2]
 
       t.decimal :conversion_rate
 
-
       t.timestamps
     end
   end

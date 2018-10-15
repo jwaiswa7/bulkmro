@@ -347,10 +347,10 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
     b.use :label, class: 'form-control-label'
-    b.wrapper tag: 'div', class: 'd-flex flex-column' do |ba|
-      ba.use :input, class: 'custom-select', error_class: 'is-invalid', valid_class: 'is-valid'
-    end
-    b.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback d-block' }
+    #b.wrapper tag: 'div', class: 'd-flex flex-column' do |ba|
+      b.use :input, class: 'custom-select', error_class: 'is-invalid', valid_class: 'is-valid'
+      b.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback d-block' }
+    #end
     b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
 

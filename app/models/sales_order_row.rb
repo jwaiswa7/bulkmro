@@ -39,12 +39,16 @@ class SalesOrderRow < ApplicationRecord
     self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
+  def unit_selling_price_with_tax
+    self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
+  end
+
   def calculated_tax
-    (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
+    (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
   def total_selling_price_with_tax
-    self.sales_quote_row.calculated_unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.calculated_unit_selling_price.present?
+    self.sales_quote_row.unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.unit_selling_price.present?
   end
 
   def total_tax
@@ -52,7 +56,7 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    self.sales_quote_row.calculated_unit_selling_price * self.quantity if self.sales_quote_row.calculated_unit_selling_price.present? if self.sales_quote_row.present?
+    self.sales_quote_row.unit_selling_price * self.quantity if self.sales_quote_row.unit_selling_price.present? if self.sales_quote_row.present?
   end
 
   def total_margin
@@ -69,5 +73,8 @@ class SalesOrderRow < ApplicationRecord
     else
       :hsn
     end
+  end
+  def to_remote_s
+    self.to_param
   end
 end

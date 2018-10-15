@@ -45,20 +45,29 @@ let setup = () => {
     $('.datatable').each(function () {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
         let isAjax = !!$(this).data('ajax');
+        let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
+
         $(this).DataTable({
             orderCellsTop: true,
-            conditionalPaging: true,
             searchDelay: 1000,
             serverSide: isAjax,
             processing: true,
             stateSave: false,
             fixedHeader: {
-                header: true,
+                header: isFixedHeader,
                 headerOffset: $('.navbar.navbar-expand-lg').height()
             },
+            fnDrawCallback: function(oSettings) {
+                if (oSettings._iDisplayLength > oSettings.fnRecordsDisplay()) {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+                } else {
+                    $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+                }
+            },
+            info: false,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",

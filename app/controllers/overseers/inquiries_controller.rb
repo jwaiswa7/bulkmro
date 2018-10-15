@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet]
 
   def index
     authorize :inquiry
@@ -7,6 +7,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
+        # service = Services::Overseers::Finders::Inquiries.new(params, current_overseer.self_and_descendant_ids)
         service = Services::Overseers::Finders::Inquiries.new(params)
         service.call
 
@@ -17,7 +18,16 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def index_pg
-    @inquiries = ApplyDatatableParams.to(Inquiry.all.with_includes, params)
+    @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
+    authorize @inquiries
+  end
+
+  def smart_queue
+    self_and_descendant_ids = current_overseer.self_and_descendant_ids
+    # Inquiry.smart_queue.where(:created_by_id => self_and_descendant_ids)
+
+    @inquiries = ApplyDatatableParams.to(Inquiry.smart_queue, params)
+
     authorize @inquiries
   end
 
@@ -39,6 +49,15 @@ class Overseers::InquiriesController < Overseers::BaseController
   def export
     authorize @inquiry
     render json: Serializers::InquirySerializer.new(@inquiry).serialized_json
+  end
+
+  def calculation_sheet
+    authorize @inquiry
+
+    send_file(
+        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+        filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
+    )
   end
 
   def new
@@ -123,7 +142,9 @@ class Overseers::InquiriesController < Overseers::BaseController
         :expected_closing_date,
         :quote_category,
         :price_type,
+        :potential_amount,
         :freight_option,
+        :freight_cost,
         :total_freight_cost,
         :customer_po_number,
         :packing_and_forwarding_option,
