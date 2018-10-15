@@ -2,6 +2,7 @@ module Mixins::HasManagers
   extend ActiveSupport::Concern
 
   included do
+<<<<<<< HEAD
     # belongs_to :inside_sales_owner, ->(record) do
     #   record.legacy? ? order(:first_name) : inside_sales.order(:first_name)
     # end, class_name: 'Overseer', foreign_key: 'inside_sales_owner_id', required: false
