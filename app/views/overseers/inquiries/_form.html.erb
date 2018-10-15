@@ -138,11 +138,15 @@
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
+
           <div class="col-12 col-md-6">
-            <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote', hint: f.object.suppler_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.suppler_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-          </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+            <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: { multiple: true }, label: 'Supplier quotes' %>
+
+            <% f.object.supplier_quotes.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-1 btn btn-success', target: '_blank' do %>
+                <i class="fal fa-download"></i>
+              <% end %>
+            <% end if f.object.supplier_quotes.attached? %>
           </div>
           <div class="col-12 col-md-6">
             <div class="d-flex flex-row">
