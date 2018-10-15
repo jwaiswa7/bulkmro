@@ -29,6 +29,6 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def sku_purchase_history?
-    index?
+    index? && record.inquiry_products.any?
   end
 end
