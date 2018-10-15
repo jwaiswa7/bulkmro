@@ -136,7 +136,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    (self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage))).round(2)
+    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage))
   end
 
   def calculated_converted_unit_selling_price
