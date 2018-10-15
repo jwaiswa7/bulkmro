@@ -1,7 +1,7 @@
 const tinyHtmlEditor = () => {
     tinymce.init({
         selector: '.html-editor',
-        plugins: "fullpage code",
+        plugins: "fullpage code autoresize",
         skin: 'lightgray',
         toolbar: 'undo redo | bold italic | link | code',
         menubar: false,

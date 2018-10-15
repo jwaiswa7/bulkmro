@@ -1,15 +1,15 @@
-<%= simple_form_for([:overseers, @report], method: :get) do |f| %>
+<%= simple_form_for([:overseers, @report], method: :get, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
   <div class="card mt-4">
     <div class="card-body">
       <div class="form-row">
         <div class="col-4">
           <%#= date_select(:report, :start_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-          <%= f.input :start_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.start_at.to_date } %>
+          <%= f.input :start_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.start_at.to_date }, required: true %>
         </div>
         <div class="col-4">
           <%#= date_select(:report, :end_at, start_year: 2017, end_year: Time.current.year, use_month_numbers: false, discard_day: false, include_blank: false) %>
-          <%= f.input :end_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.end_at.to_date } %>
+          <%= f.input :end_at, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.end_at.to_date }, required: true %>
         </div>
         <div class="col-4">
           <%= f.input :date_range, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Report.date_ranges), include_blank: false %>
