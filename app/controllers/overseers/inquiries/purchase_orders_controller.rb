@@ -34,6 +34,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     # @sales_purchase_order.update_attributes(request_payload: @po)
 
     authorize @purchase_order
+    @metadata = @purchase_order.metadata
 
     respond_to do |format|
       format.html {}
