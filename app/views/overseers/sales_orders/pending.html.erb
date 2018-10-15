@@ -1,5 +1,6 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
 <% content_for :heading do %>
   Pending Sales Orders
 <% end %>
@@ -7,12 +8,10 @@
 <% content_for :header_row do %>
   <th class="no-sort"></th>
   <th class="no-sort" data-name="order_number">Inquiry #</th>
-  <th class="no-sort" data-name="">Account</th>
-  <th class="no-sort" data-name="">Company</th>
   <th class="no-sort" data-name="">Inside Sales</th>
+  <th class="no-sort" data-name="created_at">Requested Date</th>
+  <th class="no-sort" data-name="">Company</th>
   <th class="no-sort" data-name="">Outside Sales</th>
-  <th class="no-sort" data-name="created_at">Created At</th>
-  <th class="no-sort" data-name="">Ship to</th>
   <th class="no-sort" data-name="">Customer PO #</th>
   <th class="no-sort" data-name="" data-toggle="tooltip" title="Grand Total (Excluding Tax)">G. Total (E. Tax)</th>
   <th class="no-sort" data-name="" data-toggle="tooltip" title="Grand Total (Including Tax)">G. Total (I. Tax)</th>
