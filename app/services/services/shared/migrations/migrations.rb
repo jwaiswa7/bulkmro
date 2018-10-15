@@ -15,10 +15,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 custom_methods
               elsif Rails.env.production?
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
-                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(inquiry_details sales_order_drafts activities)
-                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products product_categories inquiries inquiry_terms inquiry_details sales_order_drafts inquiry_attachments activities sales_invoices sales_shipments purchase_orders sales_receipts)
+                %w(inquiries inquiry_terms inquiry_details)
+                # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
     PaperTrail.request(enabled: false) do
@@ -680,15 +680,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
       parent = Category.find_by_legacy_id(parent_id)
       name = x.get_column('name')
+      legacy_id = x.get_column('id')
 
-      Category.where(name: name).first_or_create! do |category|
+      Category.where(legacy_id: legacy_id).first_or_create! do |category|
         category.assign_attributes(
             remote_uid: x.get_column('sap_code', nil_if_zero: true),
             tax_code: tax_code || TaxCode.default,
             parent: parent,
             description: x.get_column('description'),
             is_service: x.get_column('is_service'),
-            legacy_id: x.get_column('id'),
+            name: name,
             legacy_metadata: x.get_row
         )
       end
@@ -747,7 +748,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
     service.loop(limit) do |x|
-      next if (x.get_column('quotation_id').to_i <= 27721)
 
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')
@@ -779,6 +779,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
       legacy_id = x.get_column('quotation_id', downcase: true, remove_whitespace: true)
+
+      next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_create! do |inquiry|
         inquiry.assign_attributes(
@@ -833,7 +835,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
     service.loop(limit) do |x|
-      inquiry = Inquiry.where(commercial_terms_and_conditions: nil, packing_and_forwarding_option: nil).find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
       inquiry.update_attributes(
           price_type: price_type_mapping[x.get_column('Price')],
@@ -854,10 +856,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product_id = x.get_column('product_id')
       supplier_uid = x.get_column('sup_code')
 
-      next if quotation_id.in? %w(3529 2848 123 8023)
+      next if quotation_id.in? %w(3529 123 8023)
       inquiry = Inquiry.find_by_legacy_id(quotation_id)
       product = Product.find_by_legacy_id(product_id)
-      next if inquiry.blank? || inquiry.inquiry_products.exists? || product.blank?
+      next if inquiry.blank? || product.blank?
 
       inquiry_product = InquiryProduct.where(
           inquiry: inquiry,
