@@ -11,15 +11,12 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inquiry.inquiry_number,
                   sales_order.inquiry.inside_sales_owner.to_s,
                   format_date(sales_order.created_at),
-                  sales_order.status.to_s.capitalize,
-                  sales_order.remote_status.to_s,
-                  sales_order.order_number,
                   sales_order.inquiry.company.to_s,
                   sales_order.inquiry.outside_sales_owner.to_s,
-                  sales_order.inquiry.contact.to_s,
                   sales_order.inquiry.customer_po_number,
-                  format_currency(sales_order.calculated_total),
-                  format_currency(sales_order.calculated_total_with_tax),
+                  sales_order.order_number,
+                  sales_order.status.to_s.capitalize,
+                  sales_order.remote_status.to_s,
                   format_currency(sales_order.calculated_total_margin),
               ]
 end
