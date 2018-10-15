@@ -11,7 +11,13 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
   end
 
   def create
-    @email_message = @sales_quote.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry, :sales_quote => @sales_quote)
+    @email_message = @sales_quote.email_messages.build(
+        :overseer => current_overseer,
+        :contact => @inquiry.contact,
+        :inquiry => @inquiry,
+        :sales_quote => @sales_quote
+    )
+
     @email_message.assign_attributes(email_message_params)
 
     authorize @sales_quote, :create_email_message?
