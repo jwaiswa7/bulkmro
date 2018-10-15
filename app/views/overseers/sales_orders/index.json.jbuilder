@@ -15,7 +15,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inquiry.outside_sales_owner.to_s,
                   sales_order.inquiry.customer_po_number,
                   sales_order.order_number,
-                  sales_order.status.to_s.capitalize,
+                  sales_order_format_label(sales_order.status.to_s),
                   sales_order.remote_status.to_s,
                   format_currency(sales_order.calculated_total_margin),
               ]
