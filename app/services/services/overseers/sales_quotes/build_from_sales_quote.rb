@@ -20,7 +20,8 @@ class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::
 
         sales_quote.rows.build(
             :inquiry_product_supplier => inquiry_product_supplier,
-            :tax_code => inquiry_product_supplier.product.best_tax_code
+            :tax_code => inquiry_product_supplier.product.best_tax_code,
+            :measurement_unit => inquiry_product.product.measurement_unit
         ) if sales_quote.rows.select { |r| r.inquiry_product_supplier == inquiry_product_supplier }.blank?
       end
     end

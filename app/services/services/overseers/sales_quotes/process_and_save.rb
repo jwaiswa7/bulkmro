@@ -16,6 +16,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
     end
 
     sales_quote.rows.each do |row|
+      row.unit_selling_price = row.unit_selling_price.round(2)
       row.converted_unit_selling_price = row.calculated_converted_unit_selling_price
     end
 

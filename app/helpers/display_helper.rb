@@ -40,7 +40,7 @@ module DisplayHelper
     text.to_s.humanize if text
   end
 
-  def format_currency(amount, symbol: nil, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+  def format_currency(amount, symbol: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
     if amount.present?
       [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
     else
