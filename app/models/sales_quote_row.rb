@@ -28,6 +28,7 @@ class SalesQuoteRow < ApplicationRecord
   validates_numericality_of :quantity, :less_than_or_equal_to => :maximum_quantity, :if => :not_legacy?
 
   validate :is_unit_selling_price_consistent_with_margin_percentage?, :if => :not_legacy?
+
   def is_unit_selling_price_consistent_with_margin_percentage?
     if unit_selling_price.round != calculated_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with margin'
@@ -35,6 +36,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
+
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != calculated_converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
@@ -42,6 +44,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, :if => :not_legacy?
+
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
@@ -49,6 +52,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :tax_percentage_is_not_nil?, :if => :not_legacy?
+
   def tax_percentage_is_not_nil?
     if self.not_legacy? && self.tax_code.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
@@ -56,6 +60,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
     self.freight_cost_subtotal ||= 0.0
@@ -93,11 +98,11 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def total_selling_price
-    self.calculated_unit_selling_price * self.quantity if self.calculated_unit_selling_price.present?
+    self.unit_selling_price * self.quantity if self.unit_selling_price.present?
   end
 
   def total_selling_price_with_tax
-    self.calculated_unit_selling_price_with_tax * self.quantity if self.calculated_unit_selling_price.present?
+    self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
   def total_margin
@@ -117,21 +122,25 @@ class SalesQuoteRow < ApplicationRecord
       if self.margin_percentage >= 100
         self.unit_cost_price_with_unit_freight_cost
       else
-        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).round(4)
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).round(2)
       end
     end
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).floor(2)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).round(2)
   end
 
   def calculated_unit_selling_price_with_tax
-    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).round(4)
+    self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).round(2)
+  end
+
+  def unit_selling_price_with_tax
+    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage)).round(2)
   end
 
   def calculated_converted_unit_selling_price
-    (self.unit_selling_price / conversion_rate).round(4) if unit_selling_price.present?
+    (self.unit_selling_price / conversion_rate).round(2) if unit_selling_price.present?
   end
 
   def taxation

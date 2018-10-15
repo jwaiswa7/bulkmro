@@ -10,7 +10,7 @@ class Services::Overseers::SalesOrders::BuildFromSalesQuote < Services::Shared::
     sales_quote.rows.each do |row|
       sales_order.rows.build(:sales_quote_row => row)
     end
-
+    #raise
     sales_order
   end
 

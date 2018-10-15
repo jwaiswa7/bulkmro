@@ -57,7 +57,7 @@
             <div class="form-row my-2">
               <div class="col-md-3">
                 <strong>Unit Selling Price</strong><br>
-                <span data-bind-html="unit_selling_price"><%= format_currency(row.object.unit_selling_price, symbol: f.object.currency.sign) %></span>
+                <span data-bind-html="unit_selling_price"><%= format_currency(row.object.sales_quote_row.unit_selling_price, symbol: f.object.currency.sign) %></span>
 
               </div>
               <% if f.object.currency == "INR" %>
