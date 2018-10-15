@@ -86,6 +86,10 @@ class SalesOrder < ApplicationRecord
     self.confirmation.present?
   end
 
+  def remote_approved?
+    self.status == :'approved'
+  end
+
   def not_confirmed?
     !confirmed?
   end
