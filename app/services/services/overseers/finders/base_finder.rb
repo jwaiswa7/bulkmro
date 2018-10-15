@@ -1,5 +1,5 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params)
+  def initialize(params, overseers = nil)
     @query_string = if params[:search].present? && params[:search][:value].present?
                params[:search][:value]
              elsif params[:q].present?
@@ -8,17 +8,18 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                params
              else
                ''
-             end.gsub(/[^0-9A-Za-z ]/, '')
+             end
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+    @overseers = overseers
   end
 
   def call_base
     @indexed_records = if query_string.present?
                          perform_query(query_string)
                        else
-                         index_klass.all.order(sort_definition)
+                         all_records
                        end.page(page).per(per).order(sort_definition)
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
@@ -26,6 +27,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def index_klass
     [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  def all_records
+    index_klass.all.order(sort_definition)
   end
 
   def perform_query(query_string)

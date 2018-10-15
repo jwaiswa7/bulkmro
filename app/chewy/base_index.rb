@@ -12,7 +12,30 @@ class BaseIndex < Chewy::Index
               tokenizer: 'keyword',
               filter: ['lowercase']
           },
+          substring: {
+              tokenizer: 'substring',
+              filter: ['lowercase']
+          },
+          sku_substring: {
+              tokenizer: 'sku_substring',
+              filter: ['lowercase']
+          }
+
       },
+      tokenizer: {
+          substring: {
+              type: 'ngram',
+              min_gram: 1,
+              max_gram: 30,
+              token_chars:%w(letter digit whitespace punctuation symbol)
+          },
+          sku_substring: {
+              type: 'edge_ngram',
+              min_gram: 2,
+              max_gram: 7,
+              token_chars:%w(letter digit)
+          }
+      }
   }, max_result_window: 5000000
 
   def self.fields
