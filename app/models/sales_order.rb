@@ -12,7 +12,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasRowCalculations
 
-  pg_search_scope :locate, :against => [], :associated_against => {:created_by => [:first_name, :last_name], :company => [:name], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [], :associated_against => {:created_by => [:first_name, :last_name], :company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
   has_closure_tree({name_column: :to_s})
 
   has_one_attached :serialized_pdf
