@@ -1,11 +1,11 @@
 class ProductsIndex < BaseIndex
   define_type Product.approved.with_includes do
     field :id
-    field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring_analyzer'
-    field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring_analyzer'
+    field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring'
+    field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
 
-    field :sku, analyzer: 'sku_substring_analyzer'
-    field :name, analyzer: 'substring_analyzer'
+    field :sku, analyzer: 'sku_substring'
+    field :name, analyzer: 'substring'
 
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
