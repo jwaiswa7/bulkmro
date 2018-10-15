@@ -64,7 +64,6 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
 
   private
-
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call

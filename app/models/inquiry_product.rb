@@ -8,6 +8,7 @@ class InquiryProduct < ApplicationRecord
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
   has_many :inquiry_product_suppliers, :inverse_of => :inquiry_product, dependent: :destroy
   has_many :sales_quote_rows, :through => :inquiry_product_suppliers
+  has_one :final_sales_order, -> { approved }, :through => :inquiry, source: :final_sales_orders
   has_many :suppliers, :through => :inquiry_product_suppliers, dependent: :destroy
   accepts_nested_attributes_for :inquiry_product_suppliers, allow_destroy: true
   has_one :inquiry_import_row, :dependent => :nullify, inverse_of: :inquiry_product

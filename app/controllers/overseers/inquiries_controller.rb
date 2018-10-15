@@ -21,6 +21,15 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiries
   end
 
+  def smart_queue
+    self_and_descendant_ids = current_overseer.self_and_descendant_ids
+    # Inquiry.smart_queue.where(:created_by_id => self_and_descendant_ids)
+
+    @inquiries = ApplyDatatableParams.to(Inquiry.smart_queue, params)
+
+    authorize @inquiries
+  end
+
   def autocomplete
     service = Services::Overseers::Finders::Inquiries.new(params)
     service.call

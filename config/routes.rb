@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -52,6 +53,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :measurement_units do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
     resources :addresses do
     end
 
@@ -72,6 +79,7 @@ Rails.application.routes.draw do
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
+        get 'sku_purchase_history'
       end
 
       collection do
@@ -105,6 +113,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'index_pg'
+        get 'smart_queue'
       end
 
       scope module: 'inquiries' do

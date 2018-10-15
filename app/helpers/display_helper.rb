@@ -31,7 +31,7 @@ module DisplayHelper
   end
 
   def percentage(number, precision: 0)
-    if number
+    if number && !number.nan?
       [number_with_precision(number, precision: precision), '%'].join
     end
   end
@@ -64,13 +64,22 @@ module DisplayHelper
 
   def format_date(date)
     if date.present?
-      date.strftime("%e %b, %Y %H:%M")
+      #date.strftime("%e %b, %Y %H:%M")
+      date.strftime("%d-%b-%Y")
+    else
+      "-"
     end
   end
 
   def format_date_without_time(date)
     if date.present?
-      date.strftime("%e %b, %Y")
+      date.strftime("%d-%b-%Y")
+    end
+  end
+
+  def format_date_without_time_and_date(date)
+    if date.present?
+      date.strftime("%b-%Y")
     end
   end
 
@@ -82,11 +91,29 @@ module DisplayHelper
     num.to_int
   end
 
+  def format_month(date)
+    if date.present? && (date.is_a?(DateTime) || date.is_a?(Date))
+      date.strftime('%b, %Y')
+    else
+      date.to_s.titleize
+    end
+  end
+
   def format_collection(kollection)
     kollection.map(&:to_s).to_sentence
   end
 
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
+  end
+
+  def format_count(count, zero_if_nil: true)
+    if count.present?
+      count
+    elsif zero_if_nil
+      0
+    else
+      nil
+    end
   end
 end

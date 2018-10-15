@@ -21,6 +21,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :persisted, -> { where "#{self.model_name.collection}.id IS NOT NULL" }
   scope :legacy, -> { where.not(:legacy_id => nil) }
   scope :not_legacy, -> { where(:legacy_id => nil) }
+  scope :between_month_for, -> (datetime) { where(:created_at => datetime.beginning_of_month..datetime.end_of_month) }
 
   def legacy?
     self.legacy_id.present?
@@ -48,5 +49,9 @@ class ApplicationRecord < ActiveRecord::Base
 
   def updated_date
     self.updated_at.strftime('%F') if self.updated_at.present?
+  end
+
+  def self.execute_sql(*sql_array)
+    connection.execute(sanitize_sql_array(sql_array))
   end
 end
