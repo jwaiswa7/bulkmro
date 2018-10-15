@@ -19,12 +19,15 @@
       <% @sales_orders.each do |sales_order| %>
         <tr>
           <td>
+
             <% if policy(sales_order).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>
             <% elsif policy(sales_order).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'redo-alt', 'New Sales Order Revision', 'warning') %>
             <% end %>
-
+            <% if policy(sales_order).show? %>
+              <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'dark') %>
+            <% end %>
             <% if policy(sales_order).comments? %>
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>

@@ -1,5 +1,5 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, overseer_ids = [])
+  def initialize(params, current_overseer = nil)
     @query_string = if params[:search].present? && params[:search][:value].present?
                params[:search][:value]
              elsif params[:q].present?
@@ -12,7 +12,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
-    @overseer_ids = overseer_ids
+    @current_overseer = current_overseer
   end
 
   def call_base
@@ -48,5 +48,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :overseer_ids
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer
 end

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
     resources :remote_requests
     resources :reports
-    resources :activities
+    resources :activities, except: [:show]
     resource :profile, :controller => :profile
     resources :overseers
 

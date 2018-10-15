@@ -29,7 +29,6 @@ class Product < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
 
   has_one_attached :image
-
   attr_accessor :applicable_tax_percentage
 
   # Start ignore
