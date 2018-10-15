@@ -145,13 +145,16 @@
             <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-
-            <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-            <% if f.object.persisted? %>
-              <a href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
-                <i class="fal fa-download mr-1"></i>Download Calculation Sheet
-              </a>
-            <% end %>
+            <div class="d-flex flex-row">
+              <div class="flex-grow-1">
+                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+              </div>
+              <% if f.object.persisted? %>
+                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
+                  <i class="fal fa-download"></i>
+                </a>
+              <% end %>
+            </div>
           </div>
           <div class="col-12 col-md-4">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>

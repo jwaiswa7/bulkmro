@@ -13,6 +13,7 @@ module Mixins::HasManagers
     # belongs_to :sales_manager, ->(record) do
     #   record.legacy? ? order(:first_name) : sales_manager.order(:first_name)
     # end, class_name: 'Overseer', foreign_key: 'sales_manager_id', required: false
+
     belongs_to :inside_sales_owner, class_name: 'Overseer', foreign_key: 'inside_sales_owner_id', required: false
     belongs_to :outside_sales_owner, class_name: 'Overseer', foreign_key: 'outside_sales_owner_id', required: false
     belongs_to :sales_manager, class_name: 'Overseer', foreign_key: 'sales_manager_id', required: false
