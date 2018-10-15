@@ -35,7 +35,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send save_and_preview).detect {|action| params[action]}
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -53,7 +53,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send save_and_preview).detect {|action| params[action]}
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -72,10 +72,9 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     service.call
   end
 
-  def save_and_send
-    @sales_quote.assign_attributes(:sent_at => Time.now)
-    service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
-    service.call
+  def update_sent_at_field
+    @sales_quote.update_attributes(:sent_at => Time.now)
+    redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
   def save_and_preview
