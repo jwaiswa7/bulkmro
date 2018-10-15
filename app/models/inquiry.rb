@@ -17,8 +17,10 @@ class Inquiry < ApplicationRecord
   belongs_to :company
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: :not_legacy?
-  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: :not_legacy?
+  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   has_one :account, :through => :company
   has_many :inquiry_products, -> {order(sr_no: :asc)}, :inverse_of => :inquiry, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
@@ -167,6 +169,7 @@ class Inquiry < ApplicationRecord
   validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
+  validates_numericality_of :potential_amount, greater_than: 0, :if => :not_legacy?
 
   validates_presence_of :subject, :if => :not_legacy?
   # validates_uniqueness_of :subject, :if => :not_legacy?
@@ -177,7 +180,6 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inside_sales_owner, :if => :not_legacy?
   validates_presence_of :outside_sales_owner, :if => :not_legacy?
   validates_presence_of :potential_amount, :if => :not_legacy?
-
   validates_presence_of :payment_option, :if => :not_legacy?
   validates_presence_of :billing_address, :if => :not_legacy?
   validates_presence_of :shipping_address, :if => :not_legacy?
