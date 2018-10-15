@@ -20,8 +20,10 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
         if not already_approved_alternate_ids.include?(row.approved_alternative_id)
 
           id = row.metadata['id']
-          if serial_numbers.include?(id)
+          if serial_numbers.include?(id) || id <= serial_numbers.map(&:to_i).max
             id = serial_numbers.map(&:to_i).max + 1
+            serial_numbers << id
+          else
             serial_numbers << id
           end
 
