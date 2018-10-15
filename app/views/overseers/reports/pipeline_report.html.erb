@@ -9,6 +9,10 @@
 </div>
 
 <div class="col-12">
+  <canvas class="chart-bar" data-chart-axis='<%= (@report.start_at.to_date..@report.end_at.to_date).map(&:beginning_of_month).uniq.map(&:to_s) %>' data-chart-labels='<%= @data.statuses.map {|m| m.name} %>' data-chart-data='<%= @data.statuses.each do |status| %>'></canvas>
+</div>
+
+<div class="col-12">
   <%= render layout: 'search_layout' do %>
     <table class="table-bordered table">
       <thead>
