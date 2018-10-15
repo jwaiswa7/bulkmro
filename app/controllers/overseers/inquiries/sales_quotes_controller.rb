@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -35,10 +35,15 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect {|action| params[action]}
+    callback_method = %w(save save_and_send preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      if callback_method == "preview"
+        redirect_to preview_overseers_inquiry_sales_quote_path(@inquiry, @sales_quote), notice: flash_message(@inquiry, action_name)
+      else
+        redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
+
     else
       render 'new'
     end
@@ -53,15 +58,22 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect {|action| params[action]}
+    callback_method = %w(save save_and_send preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      if callback_method == "preview"
+        redirect_to preview_overseers_inquiry_sales_quote_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      else
+        redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
     else
       render 'edit'
     end
   end
 
+  def preview
+    authorize @sales_quote
+  end
 
   private
   def save
