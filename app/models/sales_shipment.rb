@@ -17,11 +17,15 @@ class SalesShipment < ApplicationRecord
   validates_with FileValidator, attachment: :shipment_pdf, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.status ||= :default
   end
 
-  def filename
-    ['shipment', remote_uid].join('_')
+  def filename(include_extension: false)
+    [
+        ['shipment', remote_uid].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 end

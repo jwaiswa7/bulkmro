@@ -28,8 +28,11 @@ class SalesInvoice < ApplicationRecord
   validates_presence_of :invoice_number
   validates_uniqueness_of :invoice_number
 
-  def filename
-    ['invoice', invoice_number].join('_')
+  def filename(include_extension: false)
+    [
+        ['invoice', invoice_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 
 end
