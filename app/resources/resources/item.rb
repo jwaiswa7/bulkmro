@@ -12,11 +12,11 @@ class Resources::Item < Resources::ApplicationResource
     params = {
         ItemCode: record.sku, #  BMRO Part#
         ItemName: record.name, # Product Name
-        ItemsGroupCode: record.category.remote_uid, # Product Category
+        ItemsGroupCode: 269, #record.category.remote_uid, # Product Category
         PurchaseItem: "tYES", # TO BE CREATED IN MAGENTO
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
-        Manufacturer: -1, # Product Manufacturer
+        #Manufacturer: -1, # Product Manufacturer
         Valid: "tYES", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
@@ -29,7 +29,7 @@ class Resources::Item < Resources::ApplicationResource
         MinOrderQuantity: 0, # Minimum Order Qty
         InventoryUOM: record.measurement_unit.try(:name), #
         InventoryWeight1: 0, # Weight
-        U_Category: record.category.remote_uid, # ????
+        U_Category: 269,#record.category.remote_uid, # ????
         U_ProdID: record.to_param, # Product Id
         U_MRP: 0, # MRP Price
         U_DistAmt: 0, # Distributor Discount

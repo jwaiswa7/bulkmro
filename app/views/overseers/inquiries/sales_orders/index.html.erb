@@ -7,6 +7,7 @@
       <th class="no-sort"></th>
       <th>Order #</th>
       <th>Status</th>
+      <th>Remote Status</th>
       <th>Sent At</th>
       <th>Created By</th>
       <th>Line Items</th>
@@ -46,6 +47,7 @@
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= format_enum(sales_order.status) %></td>
+          <td><%= format_enum(sales_order.remote_status) %></td>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
           <td><%= sales_order.rows.size %></td>

@@ -6,7 +6,7 @@ class Services::Callbacks::SalesOrders::Update < Services::Shared::BaseService
 
   def call
     order_number = params['increment_id']
-    remote_status = params['sap_order_status'].to_i
+    remote_status = params['sap_order_status']
     new_remote_status = SalesOrder.remote_statuses[remote_status]
 
     if order_number && remote_status
@@ -16,19 +16,26 @@ class Services::Callbacks::SalesOrders::Update < Services::Shared::BaseService
           ["SAP Status Updated: ", sales_order.remote_status].join
       ].join('\n')
 
-      ActiveRecord::Base.transaction do
-        if remote_status == 30
-          comment = InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-          sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
-          sales_order.approval.destroy!
-        elsif new_remote_status != sales_order.remote_status
-          sales_order.update_attributes(:remote_status => new_remote_status)
-          InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-        end
-      end
-    end
+      # if remote_status == 30
+      #   comment = InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
+      #   sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
+      #   sales_order.approval.destroy!
+      # elsif new_remote_status != sales_order.remote_status
+      #   sales_order.update_attributes(:remote_status => new_remote_status)
+      #   InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
+      # end
 
-    sales_order
+      begin
+        sales_order.update_attributes(:remote_status => new_remote_status)
+        InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
+        {success: 1, status: 1, message: "Order Updated Successfully"}
+      rescue => ex
+        {success: 1, status: 1, message: ex.message}
+      end
+
+    else
+      {success: 0, status: 0, message: "Order Number or Status blank."}
+    end
   end
 
   attr_accessor :params
