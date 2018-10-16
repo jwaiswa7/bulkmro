@@ -19,7 +19,7 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         pdf: record.filename,
         template: ['overseers', 'inquiries', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'overseers/inquiries/layouts/show',
-        page_size: 'Legal',
+        page_size: 'A4',
         footer: {
             center: '[page] of [topage]'
         },
