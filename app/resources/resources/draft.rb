@@ -26,7 +26,7 @@ class Resources::Draft < Resources::ApplicationResource
         CntctCode: record.inquiry.contact.full_name,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         DiscountPercent: 0, #hardcode
-        DocDueDate: record.inquiry.expected_closing_date.to_s, #estimated_shipping_date
+        DocDueDate: record.inquiry.customer_committed_date.to_s, #estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
         DocCurrency: record.inquiry.inquiry_currency.currency.name,
         DocDate: record.created_date, #created_at
