@@ -45,7 +45,7 @@ Rails.application.routes.draw do
     resources :remote_requests
     resources :reports
     resources :activities, except: [:show]
-    resource :profile, :controller => :profile
+    resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers
 
     resources :suppliers do

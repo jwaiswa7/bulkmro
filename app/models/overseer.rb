@@ -4,6 +4,7 @@ class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::IsAPerson
+  include Mixins::HasMobileAndTelephone
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
@@ -16,7 +17,7 @@ class Overseer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
-  enum role: { admin: 10, inside_sales: 20, outside_sales: 30, sales: 40, outside_sales_manager: 50, sales_manager: 60 }
+  enum role: { admin: 10, inside_sales: 20, outside_sales: 30, sales: 40, outside_sales_manager: 50, sales_manager: 60, left: 70 }
   enum status: { active: 10, inactive: 20 }
 
   scope :can_send_email, -> { where.not(:smtp_password => nil) }
@@ -62,7 +63,7 @@ class Overseer < ApplicationRecord
   end
 
   def can_send_emails?
-    self.smtp_password.present?
+    self.smtp_password.present? && (self.mobile.present? || self.telephone.present?)
   end
 
   def cannot_send_emails?

@@ -12,7 +12,7 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
         row.build_inquiry_product(
             inquiry: inquiry,
             import: excel_import,
-            :sr_no => service.call(row.metadata['sr_no']),
+            :sr_no => service.call(row.metadata['sr_no'] || row.metadata['id']),
             product: Product.new(
                 inquiry_import_row: row,
                 name: row.metadata['name'],

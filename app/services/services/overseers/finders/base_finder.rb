@@ -1,5 +1,15 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
+    @search_filters = []
+
+    if params[:columns].present?
+      params[:columns].each do | index, column |
+        if column[:searchable] && column[:search][:value].present?
+          search_filters << column
+        end
+      end
+    end
+
     @query_string = if params[:search].present? && params[:search][:value].present?
                params[:search][:value]
              elsif params[:q].present?
@@ -40,6 +50,33 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     })
   end
 
+  def filter_query(indexed_records)
+    search_filters.each do |search_filter|
+      indexed_records = indexed_records.filter({
+             term: {
+                 "#{search_filter[:name]}": search_filter[:search][:value]
+             }
+         })
+    end
+
+    indexed_records
+  end
+
+  def range_query(indexed_records)
+    range_filters.each do |range_filter|
+      indexed_records = indexed_records.query({
+          range: {
+              "#{range_filter[:name]}": {
+                  gte: range_filter[:search][:value],
+                  lte: range_filter[:search][:value]
+              }
+           }
+       })
+    end
+
+    indexed_records
+  end
+
   def sort_definition
     {:created_at => :desc}
   end
@@ -48,5 +85,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
 end

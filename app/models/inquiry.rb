@@ -119,18 +119,17 @@ class Inquiry < ApplicationRecord
       :'Door delivery' => 60,
       :'FCA Mumbai' => 70,
       :'CIP' => 80,
-      :'Demand draft' => 90,
       :'CIP Mumbai airport' => 100
   }
 
   enum freight_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }
 
   def commercial_status
@@ -153,7 +152,7 @@ class Inquiry < ApplicationRecord
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
-    validates_presence_of :customer_po_number
+    inquiry.validates_presence_of :customer_po_number
   end
 
   def has_sales_orders?
@@ -216,10 +215,10 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.potential_amount ||= 0.01
+      self.potential_amount = 0.01
       self.price_type ||= :"EXW"
-      self.freight_option ||= :"Added"
-      self.packing_and_forwarding_option ||= :"Added"
+      self.freight_option ||= :"Included"
+      self.packing_and_forwarding_option ||= :"Included"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
