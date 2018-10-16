@@ -22,6 +22,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :legacy, -> { where.not(:legacy_id => nil) }
   scope :not_legacy, -> { where(:legacy_id => nil) }
   scope :between_month_for, -> (datetime) { where(:created_at => datetime.beginning_of_month..datetime.end_of_month) }
+  scope :alphabetical, -> { order(first_name: :asc) }
 
   def legacy?
     self.legacy_id.present?
