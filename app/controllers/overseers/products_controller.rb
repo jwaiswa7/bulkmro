@@ -88,8 +88,8 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def sku_purchase_history
-    redirect_to overseers_product_path(@product)
     authorize @product
+    redirect_to overseers_product_path(@product)
   end
 
   private
