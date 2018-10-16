@@ -1,4 +1,4 @@
-class Services::Callbacks::SalesInvoices::Update < Services::Shared::BaseService
+class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::BaseCallback
 
   def initialize(params)
     @params = params
@@ -6,7 +6,9 @@ class Services::Callbacks::SalesInvoices::Update < Services::Shared::BaseService
 
   def call
     sales_invoice = SalesInvoice.find_by_invoice_number!(params['increment_id'])
-    sales_invoice.update_attributes(:status => SalesInvoice.statuses[params['state']])
+    sales_invoice.update_attributes(:status => params['state'])
+
+    # todo comments
   end
 
   attr_accessor :params

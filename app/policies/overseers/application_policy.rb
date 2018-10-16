@@ -50,6 +50,10 @@ class Overseers::ApplicationPolicy
     sales_manager?
   end
 
+  def dev?
+    Rails.env.development?
+  end
+
   def scope
     Pundit.policy_scope!(overseer, record.class)
   end

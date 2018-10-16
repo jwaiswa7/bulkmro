@@ -10,8 +10,8 @@ class Resources::Draft < Resources::ApplicationResource
       item = OpenStruct.new
       item.TaxCode = row.sales_quote_row.taxation.to_remote_s #hardcode Code? Comes from Tax Label IG  = IGST ------------
       item.BaseType = SAP.draft_base_type #hardcode For SAP Type Use 17 for Live SAP
-      item.BaseLine = row.try(:sr_no) #row.try(:sr_no) #row.sales_quote_row.sr_no #sale_order_row.sales_quote.line_num -----
-      item.BaseEntry = record.sales_quote.quotation_uid #record.sales_quote.quotation_uid # $quote['doc_entry']; -----
+      item.BaseLine = row.remote_uid #row.try(:sr_no) #row.sales_quote_row.sr_no #sale_order_row.sales_quote.line_num -----
+      item.BaseEntry = record.sales_quote.inquiry.quotation_uid #record.sales_quote.quotation_uid # $quote['doc_entry']; -----
       item.Quantity = row.quantity # Quantity
       item.UnitPrice = row.sales_quote_row.unit_selling_price # Row Unit Price
       items.push(item.marshal_dump)
@@ -26,7 +26,7 @@ class Resources::Draft < Resources::ApplicationResource
         CntctCode: record.inquiry.contact.full_name,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         DiscountPercent: 0, #hardcode
-        DocDueDate: record.inquiry.expected_closing_date.to_s, #estimated_shipping_date
+        DocDueDate: record.inquiry.customer_committed_date.to_s, #estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
         DocCurrency: record.inquiry.inquiry_currency.currency.name,
         DocDate: record.created_date, #created_at

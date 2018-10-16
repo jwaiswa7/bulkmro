@@ -1,4 +1,4 @@
-class Services::Callbacks::PurchaseOrders::Create < Services::Shared::BaseService
+class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared::BaseCallback
 
   def initialize(params)
     @params = params
