@@ -1,4 +1,4 @@
-class Services::Callbacks::SalesReceipts::Create < Services::Shared::BaseService
+class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::BaseCallback
 
   def initialize(params)
     @params = params
