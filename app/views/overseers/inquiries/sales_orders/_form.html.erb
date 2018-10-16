@@ -47,7 +47,7 @@
 
         <div class="card mt-3 option-wrapper " data-index="<%= row.index %>">
           <div class="card-body">
-            <%= link_to_remove_association row, {class: 'float-right dynamic btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+            <%= link_to_remove_association row, {class: 'float-right btn btn-danger', wrapper_class: 'option-wrapper', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
               Remove
             <% end %>
             <h6 class="text-uppercase mb-0">

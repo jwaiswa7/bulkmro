@@ -12,6 +12,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     respond_to do |format|
       format.html {}
       format.pdf do
+
+        @font_size =
+
         render_pdf_for @sales_order
       end
     end
@@ -69,8 +72,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       ActiveRecord::Base.transaction do
         @confirmation.save!
         @sales_order.update_attributes(
-            :sent_at => Time.now
-            # :status => :"SAP Approval Pending"
+            :sent_at => Time.now,
+             :status => :"SAP Approval Pending"
         )
       end
     else
