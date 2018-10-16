@@ -184,10 +184,10 @@
             <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, label: 'Payment Terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+            <%= f.association :payment_option, label: 'Payment terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :packing_and_forwarding_option, label: 'Packing and Forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+            <%= f.input :packing_and_forwarding_option, label: 'Packing and forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
           </div>
           <div class="col-12 col-md-3">
             <%= f.input :freight_option, label: 'Freight', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
