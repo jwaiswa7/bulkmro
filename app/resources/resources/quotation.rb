@@ -3,6 +3,14 @@ class Resources::Quotation < Resources::ApplicationResource
     :DocEntry
   end
 
+  def self.create(record)
+    id = super(record) do |response|
+      update_associated_records(response)
+    end
+
+    id
+  end
+
   def self.update(id, record)
     update_associated_records(id, force_find: true)
     super(id, record) do |response|
@@ -15,13 +23,17 @@ class Resources::Quotation < Resources::ApplicationResource
     return if response.blank?
 
     document_lines = response["DocumentLines"]
-    final_sales_quote = Inquiry.find_by_quotation_uid(id).final_sales_quote
+    inquiry = Inquiry.find_by_quotation_uid(id)
 
-    document_lines.each do |line|
-      sku = line["ItemCode"]
-      sales_quote_row = final_sales_quote.rows.select { |r| r.sku == sku }[0]
-      sales_quote_row.remote_uid = line["LineNum"] if sales_quote_row.present?
-      sales_quote_row.save!
+    if inquiry.present? && inquiry.final_sales_quote.present?
+      final_sales_quote = Inquiry.find_by_quotation_uid(id).final_sales_quote
+
+      document_lines.each do |line|
+        sku = line["ItemCode"]
+        sales_quote_row = final_sales_quote.rows.select { |r| r.sku == sku }[0]
+        sales_quote_row.remote_uid = line["LineNum"] if sales_quote_row.present?
+        sales_quote_row.save!
+      end
     end
   end
 

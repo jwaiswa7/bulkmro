@@ -28,13 +28,13 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def log_request
-    RemoteRequest.create({
-                             method: :callback,
-                             resource: self.class.name,
-                             request: params,
-                             url: request.url,
-                             status: :pending
-                         })
+    # RemoteRequest.create({
+    #                          method: :callback,
+    #                          resource: self.class.name,
+    #                          request: params,
+    #                          url: request.url,
+    #                          status: :pending
+    #                      })
   end
 
   private

@@ -5,6 +5,7 @@ class Resources::Project < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
+    record.reload
     if record.inquiry_number.blank?
       raise
     end

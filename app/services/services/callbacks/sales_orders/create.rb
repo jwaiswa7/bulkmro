@@ -5,15 +5,16 @@ class Services::Callbacks::SalesOrders::Create < Services::Shared::BaseService
   end
 
   def call
-    legacy_id = params['U_MgntDocID']
+    #legacy_id = params['U_MgntDocID']
+    sprint_order_id = params['U_MgntDocID']
     remote_status = params['Status']
     remote_comment = params['comment']
-    draft_uid = params['DocEntry']
+    remote_uid = params['DocEntry']
     order_number = params['DocNum']
     comment_message = comment_message_for(remote_status, remote_comment)
-    sales_order = SalesOrder.find_by_draft_uid(draft_uid) || SalesOrder.find_by_legacy_id(legacy_id)
+    sales_order = SalesOrder.find(sprint_order_id) # || SalesOrder.find_by_legacy_id(legacy_id)
 
-    if legacy_id && draft_uid && sales_order.present?
+    if sales_order.present?
 
       case to_local_status(remote_status)
       when :'approved'
@@ -21,11 +22,11 @@ class Services::Callbacks::SalesOrders::Create < Services::Shared::BaseService
           {success: 1, status: 1, message: "Order Already Approved"}
         end
 
-        if !sales_order.remote_status.blank?
+        if sales_order.remote_status.blank?
           begin
-            sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending' , :status => :'approved', :order_number => order_number)
+            sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending' , :status => :'approved', :order_number => order_number, :remote_uid => remote_uid)
             sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
-            {success: 1, status: 1, message: "Order Created Successfully", response: sales_order.rows.to_json}
+            {success: 1, status: 1, message: "Order Created Successfully"} #, response: sales_order.rows.to_json
           rescue => ex
             {success: 1, status: 1, message: ex.message}
           end
@@ -40,7 +41,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Shared::BaseService
           comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
           sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
           sales_order.approval.destroy!
-          {success: 1, status: 1, message: "Order Update Successfully"}
+          {success: 1, status: 1, message: "Order Rejected Successfully"}
         rescue => ex
           {success: 0, status: 0, message: ex.message}
         end
