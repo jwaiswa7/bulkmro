@@ -16,7 +16,7 @@
         <tr>
           <td>
             <% if sales_shipment.legacy? %>
-              <%= row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank) if sales_shipment.shipment_pdf.attached? %>
             <% end %>
           </td>
           <td><%= sales_shipment.remote_uid %></td>

@@ -16,9 +16,9 @@
         <tr>
           <td>
             <% if sales_invoice.legacy? %>
-              <%= row_action_button(url_for(sales_invoice.og_invoice_pdf), 'file-pdf', sales_invoice.og_invoice_pdf.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.dup_invoice_pdf), 'file-pdf', sales_invoice.dup_invoice_pdf.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.trip_invoice_pdf), 'file-pdf', sales_invoice.trip_invoice_pdf.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank) if sales_invoice.original_invoice.attached? %>
+              <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank) if sales_invoice.duplicate_invoice.attached? %>
+              <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank) if sales_invoice.triplicate_invoice.attached? %>
             <% end %>
           </td>
           <td><%= sales_invoice.invoice_number %></td>
