@@ -52,9 +52,8 @@
                 <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
               </div>
             </div>
-          </div>
-          <div class="card-alternative mt-3">
-            <div class="form-row">
+
+            <div class="form-row mt-2 mb-1">
               <div class="col-md-6">
                 <strong>Customer Shipping Address</strong><br>
                 <%= @inquiry.shipping_address %>
