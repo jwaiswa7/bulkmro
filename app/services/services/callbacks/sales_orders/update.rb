@@ -8,13 +8,12 @@ class Services::Callbacks::SalesOrders::Update < Services::Shared::BaseService
     order_number = params['increment_id']
     remote_status = params['sap_order_status']
     new_remote_status = SalesOrder.remote_statuses[remote_status]
+    message = [
+        ["SAP Status Updated: ", sales_order.remote_status].join
+    ].join('\n')
 
     if order_number && remote_status
       sales_order = SalesOrder.find_by_order_number!(order_number)
-
-      message = [
-          ["SAP Status Updated: ", sales_order.remote_status].join
-      ].join('\n')
 
       # if remote_status == 30
       #   comment = InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
@@ -28,13 +27,12 @@ class Services::Callbacks::SalesOrders::Update < Services::Shared::BaseService
       begin
         sales_order.update_attributes(:remote_status => new_remote_status)
         InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-        {success: 1, status: 1, message: "Order Updated Successfully"}
-      rescue => ex
-        {success: 1, status: 1, message: ex.message}
+        set_response("Order Updated Successfully")
+      rescue => e
+        set_response(e.message, 0)
       end
-
     else
-      {success: 0, status: 0, message: "Order Number or Status blank."}
+      set_response("Order Number or Status blank.", 0)
     end
   end
 
