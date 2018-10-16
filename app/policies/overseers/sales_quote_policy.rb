@@ -18,4 +18,8 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_sales_order?
     new_revision? && record.email_messages.present? && record.inquiry.valid_for_new_sales_order?
   end
+
+  def preview?
+    edit?
+  end
 end
