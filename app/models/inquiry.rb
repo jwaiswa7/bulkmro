@@ -153,7 +153,7 @@ class Inquiry < ApplicationRecord
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
-    validates_presence_of :customer_po_number
+    inquiry.validates_presence_of :customer_po_number
   end
 
   def has_sales_orders?
