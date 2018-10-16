@@ -47,7 +47,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount, input_html: {min: 1} %>
+                <%= f.input :potential_amount, input_html: {min:0.01} %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -138,12 +138,7 @@
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
           </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :suppler_quote, wrapper: :custom_file, label: 'Supplier quote', hint: f.object.suppler_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.suppler_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-          </div>
-          <div class="col-12 col-md-6">
-            <%= f.input :final_supplier_quote, wrapper: :custom_file, label: 'Final supplier quote', hint: f.object.final_supplier_quote.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.final_supplier_quote), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
-          </div>
+
           <div class="col-12 col-md-6">
             <div class="d-flex flex-row">
               <div class="flex-grow-1">
@@ -154,6 +149,20 @@
                   <i class="fal fa-download"></i>
                 </a>
               <% end %>
+            </div>
+          </div>
+          <div class="col-12 col-md-12">
+            <div class="d-block d-md-flex align-items-end">
+              <div class="flex-grow-1">
+                <%= f.input :supplier_quotes, wrapper: :custom_file, input_html: { multiple: true }, label: 'Supplier quotes' %>
+              </div>
+              <div class="form-group">
+                <% f.object.supplier_quotes.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 mr-md-0 mr-1 btn-sm btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                  <% end %>
+                <% end if f.object.supplier_quotes.attached? %>
+              </div>
             </div>
           </div>
           <div class="col-12 col-md-4">
@@ -172,16 +181,16 @@
         <h6 class="text-uppercase text-black-50 mb-1">Terms and Conditions</h6>
         <div class="form-row">
           <div class="col-12 col-md-3">
-            <%= f.input :price_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
+            <%= f.input :price_type, label: 'Delivery', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.price_types, keep_raw: true) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.association :payment_option, required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+            <%= f.association :payment_option, label: 'Payment Terms', required: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :packing_and_forwarding_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
+            <%= f.input :packing_and_forwarding_option, label: 'Packing and Forwarding', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.packing_and_forwarding_options) %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.input :freight_option, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
+            <%= f.input :freight_option, label: 'Freight', as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.freight_options) %>
           </div>
         </div>
         <%= f.input :commercial_terms_and_conditions %>

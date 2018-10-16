@@ -38,6 +38,7 @@ class SalesQuote < ApplicationRecord
   #
 
   after_save :handle_smart_queue
+
   def handle_smart_queue
     self.inquiry.update_attributes(calculated_total: calculated_total)
     service = Services::Overseers::Inquiries::HandleSmartQueue.new(self.inquiry)
@@ -56,7 +57,12 @@ class SalesQuote < ApplicationRecord
     self.rows.first.taxation.to_s
   end
 
-  def filename
-    ['quotation', inquiry.inquiry_number].join('_')
+  def filename(include_extension: false)
+    [
+        [
+            'quotation', inquiry.inquiry_number
+        ].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 end

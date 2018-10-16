@@ -1038,8 +1038,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ['calculation_sheet', 'calculation_sheet_path', 'calculation_sheet'],
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
-          ['supplier_quote_attachment', 'sqa_path', 'suppler_quote'],
-          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'final_supplier_quote']
+          ['supplier_quotes', 'sqa_path', 'suppler_quote'],
+          ['supplier_quotes', 'sqa_additional_path', 'final_supplier_quote']
       ]
 
       sheet_columns.each do |file|

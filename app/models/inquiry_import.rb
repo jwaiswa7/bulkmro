@@ -1,4 +1,6 @@
 class InquiryImport < ApplicationRecord
+  HEADERS = %w(id sr_no name brand mpn sku quantity).freeze
+
   include Mixins::CanBeStamped
 
   belongs_to :inquiry
@@ -23,16 +25,14 @@ class InquiryImport < ApplicationRecord
     end
   end
 
-  #validate :has_unique_approved_alternatives?
-=begin
-  def has_unique_approved_alternatives?
-    approved_alternative_ids = rows.map(&:approved_alternative_id).compact.reject { |id| id.blank? }
-
-    if approved_alternative_ids.length != approved_alternative_ids.uniq.length
-      errors.add :rows, 'approved alternatives have to be unique'
-    end
-  end
-=end
+  # validate :has_unique_approved_alternatives?
+  # def has_unique_approved_alternatives?
+  #   approved_alternative_ids = rows.map(&:approved_alternative_id).compact.reject { |id| id.blank? }
+  #
+  #   if approved_alternative_ids.length != approved_alternative_ids.uniq.length
+  #     errors.add :rows, 'approved alternatives have to be unique'
+  #   end
+  # end
 
   enum import_type: { excel: 10, list: 20 }
 

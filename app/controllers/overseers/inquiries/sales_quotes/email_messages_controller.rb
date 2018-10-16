@@ -4,20 +4,27 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     @email_message.assign_attributes(
         :subject => @inquiry.subject,
         :body => SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
-        :auto_attach => true
+        :auto_attach => true,
+        to: current_overseer.email
     )
 
     authorize @sales_quote, :new_email_message?
   end
 
   def create
-    @email_message = @sales_quote.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry, :sales_quote => @sales_quote)
+    @email_message = @sales_quote.email_messages.build(
+        :overseer => current_overseer,
+        :contact => @inquiry.contact,
+        :inquiry => @inquiry,
+        :sales_quote => @sales_quote
+    )
+
     @email_message.assign_attributes(email_message_params)
 
     authorize @sales_quote, :create_email_message?
 
     if @email_message.auto_attach?
-      # @email_message.files << File.open(RenderPdfToFile.for(@sales_order)
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@sales_quote)), filename: @sales_quote.filename(include_extension: true))
     end
 
     if @email_message.save
@@ -36,6 +43,9 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     params.require(:email_message).permit(
         :subject,
         :body,
+        :to,
+        :cc,
+        :bcc,
         :auto_attach,
         :files => []
     )
