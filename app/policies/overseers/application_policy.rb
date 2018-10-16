@@ -11,7 +11,7 @@ class Overseers::ApplicationPolicy
   end
 
   def sales_manager?
-    overseer.outside_sales_manager? || overseer.sales_manager? || admin?
+    overseer.inside_sales_head? || overseer.outside_sales_head? || overseer.outside_sales_manager? || overseer.inside_sales_manager? || admin?
   end
 
   def sales?
