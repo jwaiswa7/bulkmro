@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(purchase_orders)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
@@ -619,11 +619,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         )
 
         warehouse.build_address(
+            :name => x.get_column('Account Name'),
             :street1 => x.get_column('Street'),
             :street2 => x.get_column('Block'),
             :pincode => x.get_column('Zip Code'),
             :city_name => x.get_column('City'),
             :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
             :state => AddressState.find_by_region_code(x.get_column('State'))
         )
       end
