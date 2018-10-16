@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w(inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
@@ -1031,8 +1031,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ['calculation_sheet', 'calculation_sheet_path', 'calculation_sheet'],
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
-          ['supplier_quotes', 'sqa_path', 'suppler_quote'],
-          ['supplier_quotes', 'sqa_additional_path', 'final_supplier_quote']
+          ['supplier_quote_attachment', 'sqa_path', 'supplier_quotes'],
+          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'supplier_quotes']
       ]
 
       sheet_columns.each do |file|
@@ -1124,7 +1124,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       req = Net::HTTP.new(url.host, url.port)
       req.use_ssl = true
       res = req.request_head(url.path)
-
+      puts "---------------------------------"
       if res.code == '200'
         file = open(file_url)
         inquiry.send(field_name).attach(io: file, filename: filename)
