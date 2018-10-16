@@ -1,6 +1,6 @@
 <div class="col-12">
   <%= render layout: 'customers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@sales_quote, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for(@final_sales_quote, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
 
       <% if f.object.errors.any? %>
