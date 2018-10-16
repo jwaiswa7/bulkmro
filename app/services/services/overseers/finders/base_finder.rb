@@ -1,10 +1,11 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
     @search_filters = []
+
     if params[:columns].present?
       params[:columns].each do | index, column |
         if column[:searchable] && column[:search][:value].present?
-          @search_filters << column
+          search_filters << column
         end
       end
     end
@@ -57,6 +58,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
              }
          })
     end
+
     indexed_records
   end
 
@@ -71,6 +73,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
            }
        })
     end
+
     indexed_records
   end
 
