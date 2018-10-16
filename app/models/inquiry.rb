@@ -153,7 +153,7 @@ class Inquiry < ApplicationRecord
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
-    validates_presence_of :customer_po_number
+    inquiry.validates_presence_of :customer_po_number
   end
 
   def has_sales_orders?
@@ -216,7 +216,7 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.potential_amount ||= 0.01
+      self.potential_amount = 0.01
       self.price_type ||= :"EXW"
       self.freight_option ||= :"Included"
       self.packing_and_forwarding_option ||= :"Included"
