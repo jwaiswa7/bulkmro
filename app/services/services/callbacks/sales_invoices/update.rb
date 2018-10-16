@@ -8,7 +8,7 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
     sales_invoice = SalesInvoice.find_by_invoice_number!(params['increment_id'])
     sales_invoice.update_attributes(:status => params['state'])
 
-    #TODO comments
+    # todo comments
   end
 
   attr_accessor :params
