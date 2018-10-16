@@ -13,7 +13,7 @@
       </div>
     <% end %>
 
-    <% if @sales_quotes.present? && @inquiry.sales_orders.blank? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
+    <% if @sales_quotes.present? && @inquiry.sales_orders.blank? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
       <h5>To make a sales order</h5>
       <ul class="list-group text-danger mb-3">
         <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item">Supplier quotation has to be emailed</li><% end %>
