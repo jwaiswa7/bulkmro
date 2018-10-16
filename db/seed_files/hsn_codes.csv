@@ -8533,6 +8533,9 @@ idbmro_sap_hsn_mapping,internal_key,chapter,tariff_heading,tariff_subheading,des
 10265,9869,6210,NULL,NULL,NULL,NULL,NULL,"GST 0%"
 10269,9820,6303,0,0,NULL,6303.0.0,NULL,"GST 0%"
 10270,9777,6205,0,0,NULL,6205.0.0,NULL,"GST 0%"
+10276,9891,6101,0,0,,6101.00.00,NULL,"GST 0%"
+10277,9896,6006,0,0,,6006.00.00,0,"GST 0%"
+10279,9899,6301,0,0,"Worn clothing, and other worn articles; rags",6301.00.00,0,"GST 0%"
 8407,8560,8514,41,0,"Industrial or laboratory electric furnaces and ovens (including those functioning by induction or dielectric loss); oth",8514.41.00,NULL,"GST 18%"
 8408,8561,8514,42,0,"Industrial or laboratory electric furnaces and ovens (including those functioning by induction or dielectric loss); oth",8514.42.00,NULL,"GST 18%"
 8409,8562,8514,43,1,"Industrial or laboratory electric furnaces and ovens (including those functioning by induction or dielectric loss); oth",8514.43.01,NULL,"GST 18%"
@@ -9194,6 +9197,8 @@ idbmro_sap_hsn_mapping,internal_key,chapter,tariff_heading,tariff_subheading,des
 10268,9874,8207,0,0,NULL,8207.00.00,NULL,"GST 18%"
 10271,9876,9027,NULL,NULL,NULL,NULL,NULL,"GST 18%"
 10274,9888,9620,0,0,NULL,9620.0.0,NULL,"GST 18%"
+10278,9897,9604,0,0,,9604.00.00,0,"GST 18%"
+10280,9900,7307,0,0,"TUBE OR PIPE FITTINGS",7307.00.00,0,"GST 18%"
 8368,8521,8507,76,0,"Electric accumulators, including separators therefor, whether or not rectangular (including square)",8507.76.00,NULL,"GST 28%"
 8369,8522,8507,78,0,"Electric accumulators, including separators therefor, whether or not rectangular (including square)",8507.78.00,NULL,"GST 28%"
 8370,8523,8507,79,1,"Electric accumulators, including separators therefor, whether or not rectangular (including square)",8507.79.01,NULL,"GST 28%"
@@ -9977,6 +9982,7 @@ idbmro_sap_hsn_mapping,internal_key,chapter,tariff_heading,tariff_subheading,des
 10177,9761,6201,NULL,NULL,NULL,NULL,NULL,"GST 5%"
 10224,5538,6310,0,0,"Cotton Waste",6310.0.0,NULL,"GST 5%"
 10259,9865,0902,0,0,"DIP Tea Masala",0902.00.00,NULL,"GST 5%"
+10275,9890,0901,0,0,,0901.00.00,NULL,"GST 5%"
 9653,-516,9961,0,0,"Services provided for a fee/commission or contract basis on wholesale trade",996111,1,NULL
 9654,-515,9962,0,0,"Services provided for a fee/commission or contract basis on retail trade",996211,1,NULL
 9669,-500,9964,0,0,"Local land transport services of passengers by railways, metro, monorail, bus, tramway, autos, three wheelers, scooters and other motor vehicles",996411,1,NULL
@@ -10247,7 +10253,7 @@ idbmro_sap_hsn_mapping,internal_key,chapter,tariff_heading,tariff_subheading,des
 10188,3208,",3917",71,1,"Tubes, pipes and hoses, and fittings therefor, of plastics",,NULL,NULL
 10189,8216,",8466",61,1,"Parts and accessories suitable for use solely or principally with the machines of headings 8456 to 8465 including work",,NULL,NULL
 10190,9288,",9017",71,0,"Instruments for measuring length, for use in the hand (for example, measuring rods and tapes, micrometers, callipers),",,NULL,NULL
-10191,7307,",8202",21,1,"Hand saws; blades for saws of all kinds (including slitting, slotting or toothless saw blades)",,NULL,NULL
+10191,7307,8202,21,1,"Hand saws; blades for saws of all kinds (including slitting, slotting or toothless saw blades)",,NULL,NULL
 10192,3303,",3923",31,1,"Articles for the conveyance or packing of goods, of plastics; stoppers, lids, caps and other closures, of plastics",,NULL,NULL
 10193,6271,",7019",91,10,"Glass fibres (including glass wool) and articles thereof (for example, yarn, woven fabrics)",,NULL,NULL
 10194,9760,",9987",0,0,0,,NULL,NULL
