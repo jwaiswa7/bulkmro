@@ -118,7 +118,6 @@ class Inquiry < ApplicationRecord
       :'Door delivery' => 60,
       :'FCA Mumbai' => 70,
       :'CIP' => 80,
-      :'Demand draft' => 90,
       :'CIP Mumbai airport' => 100
   }
 

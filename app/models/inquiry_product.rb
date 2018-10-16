@@ -21,7 +21,7 @@ class InquiryProduct < ApplicationRecord
 
   validates_presence_of :quantity, :sr_no
   validates_uniqueness_of :product_id, scope: :inquiry_id
-   validates_uniqueness_of :sr_no, scope: :inquiry_id
+   validates_uniqueness_of :sr_no, scope: :inquiry_id, if: :not_legacy?
   # validates_numericality_of :quantity, :greater_than => 0
   after_initialize :set_defaults, :if => :new_record?
 
