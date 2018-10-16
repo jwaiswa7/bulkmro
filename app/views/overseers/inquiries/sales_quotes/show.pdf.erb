@@ -130,8 +130,8 @@
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 120px;line-height: 1.5;font-size:11px;">
                     <span style="color:#000000;font-size:11px;">
                       <%#= record.inquiry.bill_from  %>
-                      <% if record.inquiry.bill_from.present? %>
-                        <%= record.inquiry.bill_from.name.to_s %><br>
+                      <% if record.inquiry.bill_from.address.present? %>
+                        <%= record.inquiry.bill_from.address.name.to_s %><br>
                       <% end %>
                       <% if record.inquiry.bill_from.present? %>
                         <%= record.inquiry.bill_from.address.to_multiline_s %><br>
@@ -146,7 +146,7 @@
                     <span style="color:#000000;font-size:11px;">
                       <%#= record.inquiry.ship_from  %>
                       <% if record.inquiry.ship_from.present? %>
-                        <%= record.inquiry.ship_from.name.to_s %><br>
+                        <%= record.inquiry.ship_from.address.name.to_s %><br>
                       <% end %>
                       <% if record.inquiry.ship_from.present? %>
                         <%= record.inquiry.ship_from.address.to_multiline_s %><br>
@@ -211,57 +211,57 @@
                 <th align="center" style="padding:3px;border-top-left-radius: 5px;font-size:10px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="center">
                   <b><span style="color:#000000">Sr.<br>
                     No.</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">SKU</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Mfr<br>
                     Model</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Description</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Make</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">HSN/<br>
                     SAC<br>
                     Code</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Lead Time</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">UOM</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Qty</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Unit Price<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Subtotal<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                   <b><span style="color:#000000">Tax<br>
                     Rate</span></b></th>
                 <% if record.tax_summary.strip == '0' ||
                     (record.tax_summary.to_s.include? "IGST") %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">IGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">IGST<br>
                     Amt</span></b></th>
                 <% else %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">CGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">CGST<br>
                     Amt</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">SGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
+                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; font-size:10px;" valign="center">
                     <b><span style="color:#000000">SGST<br>
                     Amt</span></b></th>
                 <% end %>
-                <th align="center" style="border-top-right-radius: 5px;padding:3px;border-bottom: 1px solid #3c3c3c;  " valign="center">
+                <th align="center" style="border-top-right-radius: 5px;padding:3px;border-bottom: 1px solid #3c3c3c; font-size:10px; " valign="center">
                   <b><span style="color:#000000">Total<br>
                     (INR)</span></b></th>
               </tr>
@@ -366,7 +366,7 @@
 
           <div id="stamp" style="width:94%;position:absolute;top:600px; padding-top: 1px;padding-bottom: 1px;">
             <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-              <%= wicked_pdf_image_tag 'signature.png', :width => "216", :height => "150" %></div>
+              <%= wicked_pdf_image_tag 'signature.png', :width => "165", :height => "115" %></div>
           </div>
           <br clear="all">
 

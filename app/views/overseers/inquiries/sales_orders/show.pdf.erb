@@ -116,11 +116,11 @@
             <tbody>
             <tr>
               <td style="width:47%;">
-                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;line-height: 1.5;font-size:11px;">
+                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 120px;line-height: 1.5;font-size:11px;">
                     <span style="color:#000000;font-size:11px;">
                       <%#= record.inquiry.bill_from  %>
-                      <% if record.inquiry.bill_from.present? %>
-                        <%= record.inquiry.bill_from.name.to_s %><br>
+                      <% if record.inquiry.bill_from.address.present? %>
+                        <%= record.inquiry.bill_from.address.name.to_s %><br>
                       <% end %>
                       <% if record.inquiry.bill_from.present? %>
                         <%= record.inquiry.bill_from.address.to_multiline_s %><br>
@@ -131,11 +131,11 @@
               </td>
               <td style="width:6%;"></td>
               <td style="width:47%;">
-                <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;line-height: 1.5;font-size:11px;">
+                <div style="height: 120px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;line-height: 1.5;font-size:11px;">
                     <span style="color:#000000;font-size:11px;">
                       <%#= record.inquiry.ship_from  %>
                       <% if record.inquiry.ship_from.present? %>
-                        <%= record.inquiry.ship_from.name.to_s %><br>
+                        <%= record.inquiry.ship_from.address.name.to_s %><br>
                       <% end %>
                       <% if record.inquiry.ship_from.present? %>
                         <%= record.inquiry.ship_from.address.to_multiline_s %><br>
