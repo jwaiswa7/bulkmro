@@ -68,9 +68,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-<<<<<<< HEAD
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :overseer_ids, :search_filters
-=======
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer
->>>>>>> master
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters
 end
