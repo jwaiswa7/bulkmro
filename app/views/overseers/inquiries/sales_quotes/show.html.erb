@@ -44,9 +44,8 @@
                 <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
               </div>
             </div>
-          </div>
-          <div class="card-alternative mt-3">
-            <div class="form-row">
+
+            <div class="form-row mt-2 mb-1">
               <div class="col-md-6">
                 <strong>Customer Shipping Address</strong><br>
                 <%= @inquiry.shipping_address %>
@@ -58,7 +57,7 @@
             </div>
           </div>
 
-          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+          <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
             <%= row.hidden_field :sales_quote_id %>
             <%= row.hidden_field :id %>
             <div>
@@ -97,7 +96,10 @@
                         <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
                       </th>
                       <th class="no-sort">
-                        <span>Tax Code</span><br>
+                        <span>HSN/SAC Code</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span>Tax Rate</span><br>
                       </th>
                     </tr>
                     </thead>
@@ -128,7 +130,10 @@
                         <span><%= format_currency(row.object.total_selling_price_with_tax) %></span>
                       </td>
                       <td>
-                        <span><%= row.object.tax_code %></span>
+                        <span><%= row.object.best_tax_code.chapter %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.best_tax_code.tax_percentage %></span>
                       </td>
                     </tr>
                     </tbody>
