@@ -133,6 +133,12 @@ let setup = () => {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
                             });
+                        } else if (filter == 'date') {
+                            input = $('<div class="input-group" data-toggle="daterange">\n' +
+                                        '<input type="text" class="input-sm form-control" name="start" placeholder="From" />\n' +
+                                        '<span class="input-group-addon">to</span>\n' +
+                                        '<input type="text" class="input-sm form-control" name="end" placeholder="To" />\n' +
+                                      '</div>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
