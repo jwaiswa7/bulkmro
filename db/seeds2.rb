@@ -1,2 +1,2 @@
-service = Services::Shared::Migrations::Migrations.new(nil, 100, nil)
+service = Services::Shared::Migrations::Migrations.new
 service.perform_later

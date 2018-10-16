@@ -50,7 +50,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         'Sales Support' => :sales,
         'SalesExport' => :sales,
         'sales_supplier' => :sales,
-        'Sales Manager' => :sales_manager,
+        'Sales Manager' => :outside_sales_manager,
         'HR' => :sales,
         'Creative' => :sales,
         'saleswithaccounts' => :sales,
