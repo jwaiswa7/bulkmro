@@ -3,7 +3,8 @@ class Overseers::Inquiries::EmailMessagesController < Overseers::Inquiries::Base
     @email_message = @inquiry.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry)
     @email_message.assign_attributes(
         :subject => @inquiry.subject,
-        :body => InquiryMailer.acknowledgement(@email_message).body.raw_source
+        :body => InquiryMailer.acknowledgement(@email_message).body.raw_source,
+        to: current_overseer.email
     )
 
     authorize @inquiry, :new_email_message?
@@ -29,6 +30,9 @@ class Overseers::Inquiries::EmailMessagesController < Overseers::Inquiries::Base
     params.require(:email_message).permit(
         :subject,
         :body,
+        :to,
+        :cc,
+        :bcc,
         :files => []
     )
   end
