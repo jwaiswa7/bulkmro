@@ -5,10 +5,15 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
 
   def all_records
     if overseer_ids.present?
-      super.filter({terms: {created_by_id: overseer_ids}.compact })
+      indexed_records = super.filter({terms: {created_by_id: overseer_ids}.compact})
     else
-      super
+      indexed_records = super
     end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+    indexed_records
   end
 
   def perform_query(query_string)
@@ -21,6 +26,10 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     })
 
     indexed_records = indexed_records.filter({terms: {created_by_id: overseer_ids}}) if overseer_ids.present?
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
     indexed_records
   end
 
