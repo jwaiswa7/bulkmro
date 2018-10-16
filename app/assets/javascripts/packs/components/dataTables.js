@@ -121,7 +121,7 @@ let setup = () => {
 
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
-                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger"><i class="fal fa-times"></i></a>');
+                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
                 clear.on('click', function(e) {
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('.filter-list-input').val("");
