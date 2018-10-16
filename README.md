@@ -45,3 +45,8 @@ Dir.chdir(APP_ROOT) do
     exit 1
   end
 end
+
+
+- Disable auto-increment index
+- Perform migration
+- Run calculations in clock process

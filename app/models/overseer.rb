@@ -4,6 +4,7 @@ class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::IsAPerson
+  include Mixins::HasMobileAndTelephone
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
@@ -16,12 +17,26 @@ class Overseer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
-  enum role: { admin: 10, inside_sales: 20, outside_sales: 30, sales: 40, outside_sales_manager: 50, sales_manager: 60 }
-  enum status: { active: 10, inactive: 20 }
+  enum role: {
+      left: 5,
+      admin: 10,
+      inside_sales: 20,
+      inside_sales_head: 25,
+      outside_sales: 30,
+      outside_sales_head: 35,
+      sales: 40,
+      outside_sales_manager: 50,
+      inside_sales_manager: 60,
+      procurement: 65,
+      accounts: 70,
+      logistics: 75,
+  }
 
-  scope :can_send_email, -> { where.not(:smtp_password => nil) }
-  scope :cannot_send_email, -> { where(:smtp_password => nil) }
-  scope :role_and_obj, -> (role, obj) { where('role = ? OR id = ?', roles[role], obj.try(:id)) }
+  enum status: {active: 10, inactive: 20}
+
+  scope :can_send_email, -> {where.not(:smtp_password => nil)}
+  scope :cannot_send_email, -> {where(:smtp_password => nil)}
+  scope :role_and_obj, -> (role, obj) {where('role = ? OR id = ?', roles[role], obj.try(:id))}
 
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
@@ -62,7 +77,7 @@ class Overseer < ApplicationRecord
   end
 
   def can_send_emails?
-    self.smtp_password.present?
+    self.smtp_password.present? && (self.mobile.present? || self.telephone.present?)
   end
 
   def cannot_send_emails?

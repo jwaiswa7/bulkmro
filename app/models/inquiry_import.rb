@@ -1,5 +1,6 @@
 class InquiryImport < ApplicationRecord
-  HEADERS = %w(sr_no name brand mpn sku quantity).freeze
+  HEADERS = %w(id sr_no name brand mpn sku quantity).freeze
+  TEMPLATE_HEADERS = %w(sr_no name brand mpn sku quantity).freeze
 
   include Mixins::CanBeStamped
 

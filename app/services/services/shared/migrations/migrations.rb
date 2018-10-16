@@ -17,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                 %w(inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items inquiry_attachments activities)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(inquiries inquiry_terms inquiry_details)
+                %w(inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
                 # %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
@@ -469,14 +469,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     supplier_service.loop(limit) do |x|
       account = x.get_column('alias_id') ? Account.non_trade : Account.trade
       supplier_name = x.get_column('sup_name')
-      company = Company.find_by_name(supplier_name)
 
       next if x.get_column('sup_id').in? %w(5406)
-
-      if company.present?
-        company.update_attributes(:name => "#{company.name}", is_customer: true, is_supplier: false)
-        supplier_name = "#{supplier_name} (Supplier)"
-      end
 
       company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
       is_msme_mapping = {"N" => false, "Y" => true}
@@ -625,11 +619,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         )
 
         warehouse.build_address(
+            :name => x.get_column('Account Name'),
             :street1 => x.get_column('Street'),
             :street2 => x.get_column('Block'),
             :pincode => x.get_column('Zip Code'),
             :city_name => x.get_column('City'),
             :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
             :state => AddressState.find_by_region_code(x.get_column('State'))
         )
       end
@@ -829,7 +825,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def inquiry_terms
-    price_type_mapping = {'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 90, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40}
+    price_type_mapping = {'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 60, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40}
     freight_option_mapping = {'Extra as per Actual' => 20, 'Included' => 10}
     packing_and_forwarding_option_mapping = {'Included' => 10, 'Not Included' => 20}
 
@@ -922,7 +918,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       sales_quote = inquiry.sales_quotes.last
       next if sales_quote.blank?
-      next if sales_quote.sales_orders.exists?
       sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_create! do |so|
         so.assign_attributes(
             overseer: requested_by,
@@ -991,13 +986,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       contact = Contact.find_by_legacy_id(x.get_column('company_contact_lagacy'))
 
-      next if inquiry.blank?
-
       if contact.present?
         company = contact.companies.first
       else
-        contact = inquiry.contact
-        company = inquiry.company
+        contact = inquiry.contact if inquiry.present?
+        company = inquiry.company if inquiry.present?
       end
       company_type = company_type_mapping[company.is_supplier ? 'is_supplier' : 'is_customer'] if company.present?
       overseer_legacy_id = x.get_column('overseer_legacy_id')
@@ -1038,8 +1031,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ['calculation_sheet', 'calculation_sheet_path', 'calculation_sheet'],
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
-          ['supplier_quotes', 'sqa_path', 'suppler_quote'],
-          ['supplier_quotes', 'sqa_additional_path', 'final_supplier_quote']
+          ['supplier_quote_attachment', 'sqa_path', 'supplier_quotes'],
+          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'supplier_quotes']
       ]
 
       sheet_columns.each do |file|
@@ -1081,15 +1074,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def purchase_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv')
+    errors = []
     service.loop(limit) do |x|
-      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-      if inquiry
-        purchase_order = PurchaseOrder.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |po|
-          po.assign_attributes(inquiry: inquiry, is_legacy: true, po_number: x.get_column('po_number'), metadata: x.get_row)
+      begin
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+        if inquiry
+          purchase_order = PurchaseOrder.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |po|
+            po.assign_attributes(inquiry: inquiry, is_legacy: true, po_number: x.get_column('po_number'), metadata: x.get_row)
+          end
+          attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path'))
         end
-        attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path'))
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('legacy_id')}")
       end
     end
+    puts errors
   end
 
   def sales_receipts
@@ -1125,7 +1124,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       req = Net::HTTP.new(url.host, url.port)
       req.use_ssl = true
       res = req.request_head(url.path)
-
+      puts "---------------------------------"
       if res.code == '200'
         file = open(file_url)
         inquiry.send(field_name).attach(io: file, filename: filename)

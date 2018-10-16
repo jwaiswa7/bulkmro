@@ -36,13 +36,11 @@
         <%= f.input :mobile %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.input :telephone %></div>
+        <%= f.input :telephone %>
+      </div>
     </div>
 
     <div class="form-row">
-      <div class="col-6 col-md-4">
-        <%= f.input :identifier %>
-      </div>
       <div class="col-6 col-md-4">
         <%= f.input :designation %>
       </div>
@@ -59,7 +57,6 @@
         <%= f.input :status, as: :select, collection: enum_to_collection(Overseer.statuses) %>
       </div>
     </div>
-
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>

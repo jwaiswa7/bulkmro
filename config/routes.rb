@@ -8,10 +8,26 @@ Rails.application.routes.draw do
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
 
   namespace 'callbacks' do
-    resources :sales_orders
-    resources :sales_invoices
+    resources :sales_orders do
+      member do
+        patch 'update'
+      end
+    end
+
+    resources :sales_invoices do
+      member do
+        patch 'update'
+      end
+    end
+
     resources :sales_receipts
-    resources :sales_shipments
+
+    resources :sales_shipments do
+      member do
+        patch 'update'
+      end
+    end
+
     resources :purchase_orders
     resources :products
 
@@ -29,7 +45,7 @@ Rails.application.routes.draw do
     resources :remote_requests
     resources :reports
     resources :activities, except: [:show]
-    resource :profile, :controller => :profile
+    resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers
 
     resources :suppliers do
@@ -135,6 +151,7 @@ Rails.application.routes.draw do
         resources :sales_quotes do
           member do
             get 'new_revision'
+            get 'preview'
           end
 
           scope module: 'sales_quotes' do

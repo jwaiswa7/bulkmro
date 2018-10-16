@@ -18,6 +18,11 @@ class Overseers::AccountsController < Overseers::BaseController
   def create
     @account = Account.new(account_params.merge(overseer: current_overseer))
     authorize @account
+
+    if @account.alias.blank?
+      @account.alias = @account.name
+    end
+
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
@@ -32,6 +37,11 @@ class Overseers::AccountsController < Overseers::BaseController
   def update
     @account.assign_attributes(account_params.merge(overseer: current_overseer))
     authorize @account
+
+    if @account.alias.blank?
+      @account.alias = @account.name
+    end
+
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else

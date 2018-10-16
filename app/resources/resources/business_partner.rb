@@ -207,8 +207,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     bp_tax_collection_row.BPCode = record.remote_uid
     bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
-    Inquiry.all.where(:created_at => report.start_at.beginning_of_month..report.end_at.end_of_month).select(:status, :created_at).group_by { |m| [m.created_at.beginning_of_month,m.status] }
-
     record.company_contacts.each do |company_contact|
       contact = company_contact.contact
 

@@ -1,3 +1,6 @@
+// Component Imports
+import select2s from "./select2s";
+
 const dataTables = () => {
     preSetup();
     setup();
@@ -6,6 +9,7 @@ const dataTables = () => {
 
 // Setup the filter field before all dataTables, if the filter attribute exists
 let preSetup = () => {
+    // $.fn.DataTable.ext.pager.numbers_length = 4;
     $(document).on('preInit.dt', function (e, settings) {
         if ($(e.target).data('has-search') == true) return;
 
@@ -40,14 +44,14 @@ let preSetup = () => {
 let setup = () => {
     $('.datatable').each(function () {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
-
         let isAjax = !!$(this).data('ajax');
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
-
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
+
         $(this).DataTable({
+            orderCellsTop: true,
             searchDelay: 1000,
             serverSide: isAjax,
             processing: true,
@@ -110,6 +114,55 @@ let setup = () => {
                     next: '<i class="fal fa-angle-right"></i>',
                     last: '<i class="fal fa-arrow-to-right"></i>'
                 }
+            },
+            
+            initComplete: function(settings, json) {
+                let table = this;
+
+                // Init filters
+                let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
+                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
+                clear.on('click', function(e) {
+                    $('[data-filter="dropdown"] select').val("").trigger('change');
+                    $('.filter-list-input').val("");
+                    e.preventDefault();
+                });
+                actionTd.append(clear);
+
+                this.api().columns().every(function () {
+                    let column = this;
+                    let filter = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')').data('filter');
+                    let td = $(table).find('thead tr:eq(1) td:eq(' + this.index() + ')');
+
+                    if (filter && filter != false) {
+                        let input = '';
+
+                        if (filter == 'dropdown') {
+                            input = $('<select class="select2-single form-control" data-placeholder="' + 'Select ' + $(column.header()).text() + '"><option value="" selected disabled></option></select>');
+
+                            json.columnFilters[this.index()].forEach(function(f) {
+                                let option = $('<option value="' + f.value + '">' + f.label + '</option>');
+                                input.append(option);
+                            });
+                        } else if (filter == 'date') {
+                            input = $('<div class="input-group" data-toggle="daterange">\n' +
+                                        '<input type="text" class="input-sm form-control" name="start" placeholder="From" />\n' +
+                                        '<span class="input-group-addon">to</span>\n' +
+                                        '<input type="text" class="input-sm form-control" name="end" placeholder="To" />\n' +
+                                      '</div>');
+                        } else {
+                            input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
+                        }
+
+                        input.on('change', function () {
+                            let val = $(this).val();
+                            column.search(val).draw();
+                        });
+
+                        td.append(input);
+                        select2s();
+                    }
+                });
             }
         })
     });
