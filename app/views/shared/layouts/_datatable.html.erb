@@ -24,9 +24,14 @@
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered dt-responsive <% if content_for?(:wrap_whitespace) %> wrap-whitespace<% end %>" data-search="Filter by anything"<% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"<% end %>>
     <thead>
-    <tr>
-      <%= yield :header_row %>
-    </tr>
+      <tr>
+        <%= yield :header_row %>
+      </tr>
+      <% if content_for?(:filter_row) %>
+        <tr class="filters d-none d-lg-table-row">
+          <%= yield :filter_row %>
+        </tr>
+      <% end %>
     </thead>
     <tbody>
     <%= yield %>
