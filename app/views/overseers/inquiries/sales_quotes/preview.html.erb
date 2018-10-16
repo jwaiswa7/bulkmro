@@ -65,7 +65,7 @@
             </div>
           </div>
 
-          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+          <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
             <%= row.hidden_field :id %>
             <div>
               <h6 class="text-uppercase mb-0 mt-3">
@@ -102,7 +102,10 @@
                         <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
                       </th>
                       <th class="no-sort">
-                        <span>Tax Code</span><br>
+                        <span>HSN/SAC Code</span><br>
+                      </th>
+                      <th class="no-sort">
+                        <span>Tax Rate</span><br>
                       </th>
                     </tr>
                     </thead>
@@ -133,7 +136,10 @@
                         <span><%= format_currency(row.object.total_selling_price_with_tax) %></span>
                       </td>
                       <td>
-                        <span><%= row.object.tax_code %></span>
+                        <span><%= row.object.best_tax_code.chapter %></span>
+                      </td>
+                      <td>
+                        <span><%= row.object.best_tax_code.tax_percentage %></span>
                       </td>
                     </tr>
                     </tbody>
