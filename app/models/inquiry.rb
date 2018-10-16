@@ -208,7 +208,7 @@ class Inquiry < ApplicationRecord
       self.inside_sales_owner ||= self.company.inside_sales_owner if not_legacy?
       self.outside_sales_owner ||= self.company.outside_sales_owner if not_legacy?
       self.sales_manager ||= self.company.sales_manager if not_legacy?
-      self.status ||= :'Inquiry No. Assigned'
+      self.status ||= :'New Inquiry'
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro

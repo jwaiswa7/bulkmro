@@ -41,7 +41,7 @@
               <%= row_action_button(url_for(sales_order.serialized_pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
           </td>
-          <td><%= format_date(sales_order.order_number) %></td>
+          <td><%= sales_order.order_number %></td>
           <td><%= format_enum(sales_order.status) %></td>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
