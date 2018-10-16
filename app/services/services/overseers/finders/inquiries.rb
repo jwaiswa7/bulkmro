@@ -7,8 +7,18 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if current_overseer.present? && !current_overseer.admin? && !current_overseer.sales_manager?
       super.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}.compact})
     else
-      super
+      indexed_records = super
     end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    # if range_filters.present?
+    #   indexed_records = range_query(indexed_records)
+    # end
+    #indexed_records = indexed_records.query({range: {created_at:{gte:'2018-05-10', lte: '2018-05-20'} }})
+    indexed_records
   end
 
   def perform_query(query_string)
@@ -21,6 +31,11 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
                                         })
 
     indexed_records = indexed_records.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}}) if current_overseer.present? && !current_overseer.admin? && !current_overseer.sales_manager?
+
+    # if search_filters.present?
+    #   indexed_records = filter_query(indexed_records)
+    # end
+    # indexed_records = indexed_records.query({range: {created_at:{gte:'2018-05-10', lte: '2018-05-20'} }})
     indexed_records
   end
 
