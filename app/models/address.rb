@@ -2,6 +2,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry
   include Mixins::CanBeSynced
+  include Mixins::HasMobileAndTelephone
 
   pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
@@ -36,17 +37,12 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
-  validates_presence_of :telephone, if: -> { :not_legacy? && self.telephone.blank?  }
-  validates_presence_of :mobile, if: -> { :not_legacy? && self.mobile.blank? }
-  phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
-  validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
-
   after_initialize :set_defaults, :if => :new_record?
   after_initialize :set_global_defaults
 
   def set_defaults
     self.is_sez ||= false
-
+    self.country_code ||= 'IN'
     if self.company.present?
       self.name ||= self.company.name
     end

@@ -124,13 +124,13 @@ class Inquiry < ApplicationRecord
   }
 
   enum freight_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }
 
   def commercial_status

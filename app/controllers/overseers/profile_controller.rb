@@ -22,6 +22,8 @@ class Overseers::ProfileController < Overseers::BaseController
 		params.require(:overseer).permit(
 				:first_name,
 				:last_name,
+				:mobile,
+				:telephone,
 				:smtp_password,
 				:slack_uid,
 		)
