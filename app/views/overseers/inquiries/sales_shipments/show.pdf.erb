@@ -18,13 +18,13 @@
                 <tr>
                   <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">
-                      <%= @sales_order.inquiry.bill_from.name if @sales_order.inquiry.bill_from.present?  %>
+                      <%= @sales_shipment.sales_order.inquiry.bill_from.name if @sales_shipment.sales_order.inquiry.bill_from.present?  %>
                     </span></td>
                 </tr>
                 <tr>
                   <td style="text-align: center;">
                     <span style="color:#000000">
-                      <%= @sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_order.inquiry.bill_from.present? %>
+                      <%= @sales_shipment.sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_shipment.sales_order.inquiry.bill_from.present? %>
                     </span>
                   </td>
                 </tr>
@@ -48,12 +48,12 @@
                   <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.sales_quote.quotation_uid %></span></td>
+                    <span style="color:#000000"><%= @sales_shipment.sales_order.sales_quote.quotation_uid %></span></td>
                   <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @sales_order.sales_quote.created_at.strftime("%d-%b-%Y") if @sales_order.sales_quote.created_at.present? %>
+                      <%= @sales_shipment.sales_order.sales_quote.created_at.strftime("%d-%b-%Y") if @sales_shipment.sales_order.sales_quote.created_at.present? %>
                     </span>
                   </td>
                 </tr>
@@ -62,23 +62,23 @@
                     <b><span style="color:#000000">Customer Purchase Order #</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.inquiry.customer_po_number if @sales_order.inquiry.customer_po_number.present? %></span></td>
+                    <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.customer_po_number if @sales_shipment.sales_order.inquiry.customer_po_number.present? %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Customer Purchase Order Date</span></b>
                     <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_order.inquiry.customer_order_date.present? %></span></td>
+                    <span style="color:#000000"><%= @sales_shipment.sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_shipment.sales_order.inquiry.customer_order_date.present? %></span></td>
                 </tr>
                 <tr>
                   <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                    <span style="color:#000000"><%= @sales_order.id %></span></td>
+                    <span style="color:#000000"><%= @sales_shipment.sales_order.id %></span></td>
                   <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @sales_order.created_at.strftime("%d-%b-%Y") if @sales_order.created_at.present? %>
+                      <%= @sales_shipment.sales_order.created_at.strftime("%d-%b-%Y") if @sales_shipment.sales_order.created_at.present? %>
                     </span></td>
                 </tr>
                 <tr>
@@ -100,7 +100,7 @@
                     <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
                   <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                     <%= @sales_order.inquiry.payment_option.name if @sales_order.inquiry.payment_option.present? %>
+                     <%= @sales_shipment.sales_order.inquiry.payment_option.name if @sales_shipment.sales_order.inquiry.payment_option.present? %>
                     </span></td>
                 </tr>
                 <tr>
@@ -154,10 +154,10 @@
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <%= (@sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.bill_from.present? %>
-                      <% if @sales_order.inquiry.bill_from.present? %>
-                        <%= @sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
-                        GST No. : <%= @sales_order.inquiry.bill_from.address.gst %><br>
+                      <%= (@sales_shipment.sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.bill_from.present? %>
+                      <% if @sales_shipment.sales_order.inquiry.bill_from.present? %>
+                        <%= @sales_shipment.sales_order.inquiry.bill_from.address.to_multiline_s  %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.bill_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -166,10 +166,10 @@
                 <td style="width:48%;">
                   <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <span style="color:#000000">
-                      <%= (@sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_order.inquiry.ship_from.present? %>
-                      <% if @sales_order.inquiry.ship_from.present? %>
-                        <%= @sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
-                        GST No. : <%= @sales_order.inquiry.ship_from.address.gst %><br>
+                      <%= (@sales_shipment.sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_shipment.sales_order.inquiry.ship_from.present? %>
+                      <% if @sales_shipment.sales_order.inquiry.ship_from.present? %>
+                        <%= @sales_shipment.sales_order.inquiry.ship_from.address.to_multiline_s  %><br>
+                        GST No. : <%= @sales_shipment.sales_order.inquiry.ship_from.address.gst %><br>
                       <% end %>
                       PAN No. : AAGCB7343G</span>
                   </div>
@@ -190,26 +190,26 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <%= @sales_order.inquiry.bill_to_contact.full_name if @sales_order.inquiry.bill_to_contact.present? %><br>
-                    <% if @sales_order.inquiry.shipping_address.present? %>
-                    <%= @sales_order.inquiry.shipping_address.name %><br>
-                    <%= @sales_order.inquiry.shipping_address.to_multiline_s %>
+                    <%= @sales_shipment.sales_order.inquiry.contact.full_name if @sales_shipment.sales_order.inquiry.contact.present? %><br>
+                    <% if @sales_shipment.sales_order.inquiry.shipping_address.present? %>
+                    <%= @sales_shipment.sales_order.inquiry.shipping_address.name %><br>
+                    <%= @sales_shipment.sales_order.inquiry.shipping_address.to_multiline_s %>
                     <br>
-                    Tel: <%= @sales_order.inquiry.shipping_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.shipping_address.gst %><br>
+                    Tel: <%= @sales_shipment.sales_order.inquiry.shipping_address.telephone %><br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.shipping_address.gst %><br>
                     <% end %>
                   </div>
                 </td>
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <%= @sales_order.inquiry.bill_to_contact.full_name if @sales_order.inquiry.bill_to_contact.present?  %><br>
-                    <% if @sales_order.inquiry.billing_address.present? %>
-                    <%= @sales_order.inquiry.billing_address.name %><br>
-                    <%= @sales_order.inquiry.billing_address.to_multiline_s %>
+                    <%= @sales_shipment.sales_order.inquiry.contact.full_name if @sales_shipment.sales_order.inquiry.contact.present?  %><br>
+                    <% if @sales_shipment.sales_order.inquiry.billing_address.present? %>
+                    <%= @sales_shipment.sales_order.inquiry.billing_address.name %><br>
+                    <%= @sales_shipment.sales_order.inquiry.billing_address.to_multiline_s %>
                     <br>
-                    Tel: <%= @sales_order.inquiry.billing_address.telephone %><br>
-                    GST No. :<%= @sales_order.inquiry.billing_address.gst %><br>
+                    Tel: <%= @sales_shipment.sales_order.inquiry.billing_address.telephone %><br>
+                    GST No. :<%= @sales_shipment.sales_order.inquiry.billing_address.gst %><br>
                     <% end %>
                   </div>
                 </td>

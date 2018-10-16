@@ -25,7 +25,7 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
     # @sales_shipment.update_attributes(request_payload: @shipment)
     #
     authorize @sales_shipment
-    @metadata = @sales_shipment.metadata
+    @metadata = @sales_shipment.metadata.deep_symbolize_keys
 
     respond_to do |format|
       format.html {}

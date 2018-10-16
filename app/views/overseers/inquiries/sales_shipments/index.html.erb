@@ -15,8 +15,11 @@
       <% @sales_shipments.each do |sales_shipment| %>
         <tr>
           <td>
-            <% if sales_shipment.legacy? %>
-              <%= row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank) if sales_shipment.shipment_pdf.attached? %>
+            <% if policy(sales_shipment).show? %>
+              <%= row_action_button(overseers_inquiry_sales_shipment_path(@inquiry, sales_shipment, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <% end %>
+            <% if policy(sales_shipment).show_shipment_pdf? %>
+              <%= row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank) %>
             <% end %>
           </td>
           <td><%= sales_shipment.shipment_number %></td>

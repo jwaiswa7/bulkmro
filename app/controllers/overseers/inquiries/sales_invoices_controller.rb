@@ -24,7 +24,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     # @sales_invoice.update_attributes(request_payload: @invoice)
 
     authorize @sales_invoice
-    @metadata = @sales_invoice.metadata
+    @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
     respond_to do |format|
       format.html {}

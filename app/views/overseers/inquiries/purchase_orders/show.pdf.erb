@@ -117,24 +117,24 @@
               <tr>
                 <td style="width:48%;">
                   <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;">
-                    <% if @supplier_billing.present? %>
-                      <%= @supplier_billing.name if @supplier_billing.name.present? %><br>
-                      <%= @supplier_billing.to_multiline_s if @supplier_billing.present? %>
+                    <% if @purchase_order.inquiry.sales_quote.rows.first.supplier.present? %>
+                      <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.name if @purchase_order.inquiry.sales_quote.rows.first.supplier.name.present? %><br>
+                      <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.default_billing_address.to_multiline_s if @purchase_order.inquiry.sales_quote.rows.first.supplier.default_billing_address.present? %>
                       <br>
-                      Tel: <%= @supplier_billing.telephone %><br>
-                      GST No. :<%=  @supplier_billing.gst %><br>
+                      Tel: <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.telephone %><br>
+                      GST No. :<%=  @purchase_order.inquiry.sales_quote.rows.first.supplier.gst %><br>
                     <% end %>
                   </div>
                 </td>
                 <td style="width:4%;"></td>
                 <td style="width:48%;">
                   <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
-                    <% if @supplier_shipping.present? %>
-                      <%= @supplier_shipping.name if @supplier_shipping.name.present? %><br>
-                      <%= @supplier_shipping.to_multiline_s if @supplier_shipping.to_multiline_s.present? %>
+                    <% if @purchase_order.inquiry.sales_quote.rows.first.supplier.present? %>
+                      <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.name if @purchase_order.inquiry.sales_quote.rows.first.supplier.name.present? %><br>
+                      <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.default_shipping_address.to_multiline_s if @purchase_order.inquiry.sales_quote.rows.first.supplier.default_shipping_address.present? %>
                       <br>
-                      Tel: <%= @supplier_shipping.telephone %><br>
-                      GST No. :<%=  @supplier_shipping.gst %><br>
+                      Tel: <%= @purchase_order.inquiry.sales_quote.rows.first.supplier.telephone %><br>
+                      GST No. :<%=  @purchase_order.inquiry.sales_quote.rows.first.supplier.gst %><br>
                     <% end %>
                   </div>
                 </td>
