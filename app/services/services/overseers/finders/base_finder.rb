@@ -60,6 +60,20 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     indexed_records
   end
 
+  def range_query(indexed_records)
+    range_filters.each do |range_filter|
+      indexed_records = indexed_records.query({
+          range: {
+              "#{range_filter[:name]}": {
+                  gte: range_filter[:search][:value],
+                  lte: range_filter[:search][:value]
+              }
+           }
+       })
+    end
+    indexed_records
+  end
+
   def sort_definition
     {:created_at => :desc}
   end
@@ -68,5 +82,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :overseer_ids, :search_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :overseer_ids, :search_filters, :range_filters
 end
