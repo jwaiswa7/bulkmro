@@ -4,6 +4,7 @@ class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::IsAPerson
+  include Mixins::HasMobileAndTelephone
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
@@ -62,7 +63,7 @@ class Overseer < ApplicationRecord
   end
 
   def can_send_emails?
-    self.smtp_password.present?
+    self.smtp_password.present? && (self.mobile.present? || self.telephone.present?)
   end
 
   def cannot_send_emails?
