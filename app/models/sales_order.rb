@@ -92,6 +92,7 @@ class SalesOrder < ApplicationRecord
     self.status == :'approved'
   end
 
+
   def not_confirmed?
     !confirmed?
   end
