@@ -15,7 +15,7 @@
       <% @sales_invoices.each do |sales_invoice| %>
         <tr>
           <td>
-            <% if sales_invoice.show_original_invoice? %>
+            <% if policy(sales_invoice).show_original_invoice? %>
               <%= row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank) %>
               <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank) %>
               <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank) %>
