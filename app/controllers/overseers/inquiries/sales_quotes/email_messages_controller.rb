@@ -4,7 +4,8 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     @email_message.assign_attributes(
         :subject => @inquiry.subject,
         :body => SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
-        :auto_attach => true
+        :auto_attach => true,
+        to: current_overseer.email
     )
 
     authorize @sales_quote, :new_email_message?
@@ -42,6 +43,9 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     params.require(:email_message).permit(
         :subject,
         :body,
+        :to,
+        :cc,
+        :bcc,
         :auto_attach,
         :files => []
     )

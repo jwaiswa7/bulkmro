@@ -124,13 +124,13 @@ class Inquiry < ApplicationRecord
   }
 
   enum freight_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }, _prefix: true
 
   enum packing_and_forwarding_option: {
-      :'Added' => 10,
-      :'Not Added' => 20
+      :'Included' => 10,
+      :'Extra' => 20
   }
 
   def commercial_status
@@ -218,8 +218,8 @@ class Inquiry < ApplicationRecord
       self.quote_category ||= :bmro
       self.potential_amount ||= 0.01
       self.price_type ||= :"EXW"
-      self.freight_option ||= :"Added"
-      self.packing_and_forwarding_option ||= :"Added"
+      self.freight_option ||= :"Included"
+      self.packing_and_forwarding_option ||= :"Included"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
