@@ -59,7 +59,7 @@
               <br> <%= f.object.conversion_rate %>
             </div>
           </div><br>
-          
+
           <div class=""form-row>
             <strong>Payment Terms:</strong>&nbsp;
             <%= @inquiry.payment_option %>
@@ -83,11 +83,15 @@
             <div class="form-row">
               <div class="col-md-6">
                 <strong>Customer Shipping Address</strong><br>
-                <%= @inquiry.shipping_address %>
+                <%= @inquiry.contact.full_name %><br>
+                <%= @inquiry.shipping_address %><br>
+                <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
               </div>
               <div class="col-md-6 mt-2 mt-md-0">
                 <strong>Customer Billing Address</strong><br>
-                <%= @inquiry.billing_address %>
+                <%= @inquiry.contact.full_name %><br>
+                <%= @inquiry.billing_address %><br>
+                <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
               </div>
             </div>
           </div>
