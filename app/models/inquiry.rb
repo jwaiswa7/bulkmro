@@ -216,7 +216,7 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.potential_amount ||= 0.01
+      self.potential_amount = 0.01
       self.price_type ||= :"EXW"
       self.freight_option ||= :"Included"
       self.packing_and_forwarding_option ||= :"Included"
