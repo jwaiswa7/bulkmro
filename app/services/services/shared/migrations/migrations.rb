@@ -385,14 +385,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = x.get_column('email', downcase: true)
       if contact_email && company_name
         company = Company.find_by_name(company_name)
-        company_contact = CompanyContact.find_or_create_by(
-            company: Company.find_by_name(company_name),
+        
+        if company.present?
+          company_contact = CompanyContact.find_or_create_by(
+            company: company,
             contact: Contact.find_by_email(contact_email),
             remote_uid: x.get_column('sap_id'),
             legacy_metadata: x.get_row
-        )
-
-        company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+          )
+          company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+        end
       end
     end
   end
