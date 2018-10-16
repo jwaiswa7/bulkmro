@@ -4,7 +4,7 @@ class Callbacks::BaseController < ApplicationController
   before_action :log_request
 
   def create
-    service_class = ['Services', 'Callbacks', controller_name.classify, 'Create'].join.constantize
+    service_class = ['Services', 'Callbacks', controller_name.classify.pluralize, 'Create'].join('::').constantize
     service = service_class.new(params)
     service.call
 
@@ -12,7 +12,7 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def update
-    service_class = ['Services', 'Callbacks', controller_name.classify, 'Update'].join.constantize
+    service_class = ['Services', 'Callbacks', controller_name.classify.pluralize, 'Update'].join('::').constantize
     service = service_class.new(params)
     service.call
 

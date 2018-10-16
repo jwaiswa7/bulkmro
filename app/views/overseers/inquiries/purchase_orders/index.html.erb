@@ -17,6 +17,13 @@
             <% if purchase_order.legacy? %>
               <%= row_action_button(url_for(purchase_order.po_pdf), 'file-pdf', purchase_order.po_pdf.filename, 'dark', :_blank) %>
             <% end %>
+            <% if policy(purchase_order).show? %>
+              <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'sDownload', 'dark', :_blank) %>
+            <% end %>
+
+            <% if policy(purchase_order).show_document? %>
+              <%= row_action_button(url_for(purchase_order.document), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <% end %>
           </td>
           <td><%= purchase_order.po_number %></td>
           <td><%= purchase_order.rows.size %></td>
