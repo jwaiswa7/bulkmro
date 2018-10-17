@@ -5,43 +5,35 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
   end
 
   def call
-    shipment_number = params['increment_id']
-    created_at = params['created_at'].to_datetime
-    order_number = params['order_id']
-    remote_rows = params['ItemLine']
-    remote_packages = params['TrackLine']
-
-    sales_order = SalesOrder.find_by_order_number!(order_number)
-    sales_shipment = sales_order.shipments.where(shipment_number: shipment_number).first_or_create! do |sales_shipment|
-      sales_shipment.created_at = created_at
-      sales_shipment.overseer = Overseer.default_approver
-    end
-
-    remote_rows.each do |remote_row|
-      sku = remote_row['sku']
-
-      sales_shipment.rows.where(sku: sku).first_or_create! do |row|
-        row.assign_attributes(
-            :quantity => remote_row['qty'],
-            :metadata => remote_row
-        )
+    begin
+      sales_order = SalesOrder.find_by_order_number!(params['order_id'])
+      sales_shipment = sales_order.shipments.where(shipment_number: params['increment_id']).first_or_create! do |sales_shipment|
+        sales_shipment.created_at = params['created_at'].to_datetime
+        sales_shipment.overseer = Overseer.default_approver
       end
-    end
 
-    remote_packages.each do |remote_package|
-      tracking_number = remote_package['track_number']
-      invoice_number = remote_package['invoice_number']
-      sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number)
-
-      sales_shipment.packages.where(tracking_number: tracking_number).first_or_create! do |package|
-        package.assign_attributes(
-            :metadata => remote_package,
-            :sales_invoice => sales_invoice
-        )
+      params['ItemLine'].each do |remote_row|
+        sales_shipment.rows.where(sku: remote_row['sku']).first_or_create! do |row|
+          row.assign_attributes(
+              :quantity => remote_row['qty'],
+              :metadata => remote_row
+          )
+        end
       end
-    end
 
-    sales_shipment
+      params['TrackLine'].each do |remote_package|
+        sales_invoice = SalesInvoice.find_by_invoice_number(remote_package['invoice_number'])
+        sales_shipment.packages.where(tracking_number: remote_package['track_number']).first_or_create! do |package|
+          package.assign_attributes(
+              :metadata => remote_package,
+              :sales_invoice => sales_invoice
+          )
+        end
+      end
+      return_response("Sales Shipment created successfully.")
+    rescue => e
+      return_response(e.message, 0)
+    end
   end
 
   attr_accessor :params

@@ -26,13 +26,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def call_base
-    @indexed_records = if query_string.present?
-                         perform_query(query_string)
-                       else
-                         all_records
-                       end.page(page).per(per)
+    non_paginated_records = if query_string.present?
+                              perform_query(query_string)
+                            else
+                              all_records
+                            end
 
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes
+    @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
   end
 
 
