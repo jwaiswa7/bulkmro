@@ -5,6 +5,7 @@ class SalesShipment < ApplicationRecord
   belongs_to :sales_order
   has_many :rows, :class_name => 'SalesShipmentRow', inverse_of: :sales_shipment
   has_many :packages, :class_name => 'SalesShipmentPackage', inverse_of: :sales_shipment
+  has_many :comments, :class_name => 'SalesShipmentComment', inverse_of: :sales_shipment
 
   has_one_attached :shipment_pdf
 

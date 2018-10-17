@@ -6,7 +6,7 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
 
   def call
     begin
-      sales_order = SalesOrder.find_by_order_number!(params['order_id'])
+      sales_order = SalesOrder.find_by_order_number(params['order_id'])
 
       if sales_order.present?
         sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
