@@ -43,6 +43,14 @@ module Mixins::HasRole
       role.in? MANAGER_ROLES
     end
 
+    def inside?
+      role.in? INSIDE_ROLES
+    end
+
+    def outside?
+      role.in? OUTSIDE_ROLES
+    end
+
     def person?
       true
     end

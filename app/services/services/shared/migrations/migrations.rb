@@ -1045,7 +1045,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         file_url = x.get_column(file[1])
         next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
         next if inquiry.send(file[2]).attached?
-        attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        begin
+          attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
       end
     end
   end

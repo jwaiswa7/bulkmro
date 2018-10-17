@@ -5,10 +5,14 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.manager?
-      super.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}})
-    else
-      super
-    end
+                        if current_overseer.inside?
+                          super.filter({terms: {inside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+                        elsif current_overseer.outside?
+                          super.filter({terms: {outside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+                        end
+                      else
+                        super
+                      end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -31,7 +35,13 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
                                         })
 
     if current_overseer.present? && !current_overseer.manager?
-      indexed_records = indexed_records.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}})
+      indexed_records = indexed_records.filter(
+          if current_overseer.inside?
+            super.filter({terms: {inside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+          elsif current_overseer.outside?
+            super.filter({terms: {outside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+          end
+      )
     end
 
     if search_filters.present?
