@@ -274,11 +274,11 @@
                   <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
                     <span style="color:#000000"><%= item.product.sku %></span></td>
                   <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"></span></td>
+                    <span style="color:#000000"><%= item.product.mpn %></span></td>
                   <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:left;" valign="top">
-                    <span style="color:#000000"><%= item.to_bp_catalog_s %><br></span></td>
+                    <span style="color:#000000"><%= item.to_bp_catalog_s || item.product.name %><br></span></td>
                   <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"></span></td>
+                    <span style="color:#000000"><%= item.product.brand.to_s %></span></td>
                   <td align="left" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
                     <span style="color:#000000"><%= item.tax_code.chapter %></span></td>
                   <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
