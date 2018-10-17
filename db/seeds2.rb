@@ -2,7 +2,7 @@ PaperTrail.request(enabled: false) do
   service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv')
   service.loop(nil) do |x|
     puts "#{x.get_column('quotation_item_id')}"
-    next if (x.get_column('quotation_item_id').to_i < 57021)
+    next if (x.get_column('quotation_item_id').to_i < 62590)
     quotation_id = x.get_column('quotation_id')
     product_id = x.get_column('product_id')
     supplier_uid = x.get_column('sup_code')
