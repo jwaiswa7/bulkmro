@@ -19,7 +19,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def new
     @sales_quote = SalesQuote.find(params[:sales_quote_id])
-
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
     authorize @sales_quote, :new_sales_order?
   end
