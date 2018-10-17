@@ -29,9 +29,9 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
           )
         end
       end
-      set_response("Sales Shipment created successfully.")
+      return_response("Sales Shipment created successfully.")
     rescue => e
-      set_response(e.message, 0)
+      return_response(e.message, 0)
     end
   end
 

@@ -4,7 +4,7 @@ class Services::Callbacks::Shared::BaseCallback < Services::Shared::BaseService
     @params = params
   end
 
-  def set_response(message, status=1)
+  def return_response(message, status=1)
     { success: status, status: status, message: message}
   end
 
