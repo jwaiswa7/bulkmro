@@ -230,7 +230,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'sysadmin@bulkmro.com'],
         ['left', 'rajani.ong@bulkmro.com'],
     ].each do |overseer|
-      Overseer.find_by_email!(overseer[1]).update_attributes(:role => overseer[0])
+      overseer = Overseer.find_by_email(overseer[1])
+      overseer.update_attributes(:role => overseer[0]) if overseer.present?
     end
   end
 
