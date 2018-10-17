@@ -274,9 +274,6 @@ class Inquiry < ApplicationRecord
     self.inquiry_products.maximum(:sr_no) || 0
   end
 
-  def sales_manager?
-    inside_sales_head? || outside_sales_head? || inside_sales_manager? || outside_sales_head? || admin?
-  end
 
   def to_s
     [
