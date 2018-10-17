@@ -184,151 +184,151 @@
           </table>
           <br clear="all">
           <div style="width: 100%;">
-            <table border="0" cellspacing="0" style="width: 100%;border-radius: 5px;border: 1px solid #3c3c3c;border-collapse: separate; text-align: center">
-              <thead style="background: #d3d3d3; font-size:10px;">
-              <tr style="border-bottom: 1px solid #3c3c3c;">
+            <table border="0" cellspacing="0" class="pdf-table">
+              <thead>
+              <tr>
                 <th align="center" style="padding:3px;border-top-left-radius: 5px;font-size:10px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="center">
-                  <b><span style="color:#000000">Sr.<br>
+                  <b><span>Sr.<br>
                     No.</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">SKU</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Mfr<br>
+                <th align="center" valign="center">
+                  <b><span>SKU</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Mfr<br>
                     Model</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Description</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Make</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">HSN/<br>
+                <th align="center" valign="center">
+                  <b><span>Description</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Make</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>HSN/<br>
                     SAC<br>
                     Code</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">UOM</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Qty</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Unit Price<br>
+                <th align="center" valign="center">
+                  <b><span>UOM</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Qty</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Unit Price<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Subtotal<br>
+                <th align="center" valign="center">
+                  <b><span>Subtotal<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Tax<br>
+                <th align="center" valign="center">
+                  <b><span>Tax<br>
                     Rate</span></b></th>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
                     (record.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">IGST<br>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">IGST<br>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
                     Amt</span></b></th>
                 <% else %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">CGST<br>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">CGST<br>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
                     Amt</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">SGST<br>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">SGST<br>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
                     Amt</span></b></th>
                 <% end %>
-                <th align="center" style="border-top-right-radius: 5px;padding:3px;border-bottom: 1px solid #3c3c3c;  " valign="center">
-                  <b><span style="color:#000000">Total<br>
+                <th align="center" valign="center">
+                  <b><span>Total<br>
                     (INR)</span></b></th>
               </tr>
               </thead>
               <tbody>
               <% record.rows.each do |item| %>
                 <tr>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.sr_no %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.sku %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:left;" valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="left" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.tax_code.chapter %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.measurement_unit.name %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.quantity %></span></td>
-                  <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;" valign="top">
-                    <span style="color:#000000"><%= item.unit_selling_price.round(2) %></span></td>
-                  <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                    <span style="color:#000000"><%= item.total_selling_price.round(2) %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.sr_no %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.product.sku %></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="left" style="padding-left: 3px;padding-bottom: 8px; text-align:left;" valign="top">
+                    <span><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="left" valign="top">
+                    <span><%= item.tax_code.chapter %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.product.measurement_unit.name %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.quantity %></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <span><%= item.unit_selling_price.round(2) %></span></td>
+                  <td align="right" style=" text-align:right;" valign="top">
+                    <span><%= item.total_selling_price.round(2) %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.tax_code.tax_percentage %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item.total_tax.round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= item.total_tax.round(2) %></span></td>
                   <% else %>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= (item.total_tax / 2).round(2) %></span></td>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= (item.total_tax / 2).round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %></span></td>
                   <% end %>
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span style="color:#000000"><%= item.total_selling_price_with_tax.round(2) %></span></td>
+                    <span><%= item.total_selling_price_with_tax.round(2) %></span></td>
                 </tr>
               <% end %>
 
-              <tr style="border-radius: 5px;background: #d3d3d3;">
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; border-bottom-left-radius: 5px;" valign="top">
-                  <span style="color:#000000">&nbsp;</span></td>
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; " valign="top">
-                  <span style="color:#000000"><b><span style="color:#000000">Total</span></b></span></td>
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; " valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                  <b><span style="color:#000000"><%= record.calculated_total %></span></b></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
+              <tr class="pdf-table-total-row">
+                <td align="center" style="" valign="top">
+                  <span>&nbsp;</span></td>
+                <td align="center" style="" valign="top">
+                  <span><b><span>Total</span></b></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
+                <td align="right" style="text-align: right;" valign="top">
+                  <b><span><%= record.calculated_total.round(2) %></span></b></td>
+                <td align="center" style="" valign="top">
+                  <span></span></td>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
                     (record.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax %></span></b></td>
+                  <td align="center" style="" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= record.calculated_total_tax.round(2) %></span></b></td>
                 <% else %>
-                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax / 2 %></span></b></td>
-                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax / 2 %></span></b></td>
+                  <td align="center" style="" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= (record.calculated_total_tax / 2).round(2) %></span></b></td>
+                  <td align="center" style="text-align: right;" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= (record.calculated_total_tax / 2).round(2) %></span></b></td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span style="color:#000000"><%= record.calculated_total_with_tax %></span></b></td>
+                  <b><span><%= record.calculated_total_with_tax.round(2) %></span></b></td>
               </tr>
 
               </tbody>
