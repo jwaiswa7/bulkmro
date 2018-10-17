@@ -213,7 +213,7 @@
                 <h3 class="title"><a href="#"><%= product.name %></a></h3>
                 <ul>
                   <li>SKU: <%= product.sku %></li>
-                  <li>Brand Name: <%= product.brand_name %></li>
+                  <li>Brand Name: <%#= product.brand_name %></li>
                   <li>Category: <%= product.category.name %></li>
                   <li>Created: <%= format_date(product.created_at) %></li>
                   <li>Approved: <%= format_date(product.approval.try(:created_at))%></li>
