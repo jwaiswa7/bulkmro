@@ -93,6 +93,10 @@ class Overseer < ApplicationRecord
     inside_sales_head? || outside_sales_head? || inside_sales_manager? || outside_sales_head? || admin?
   end
 
+  def sales_person?
+    sales_manager? || sales? || inside_sales? || outside_sales?
+  end
+
   def self.default_approver
     overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|
       overseer.first_name = "SAP"
