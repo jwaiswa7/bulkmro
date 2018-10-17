@@ -4,6 +4,6 @@ class Overseers::CategoryPolicy < Overseers::ApplicationPolicy
   end
 
   def index?
-    sales_manager?
+    manager?
   end
 end
