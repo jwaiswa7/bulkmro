@@ -25,7 +25,7 @@ class SalesOrder < ApplicationRecord
   has_one :currency, :through => :inquiry_currency
   has_many :rows, -> {joins(:inquiry_product).order('inquiry_products.sr_no ASC')}, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
   has_many :sales_order_rows, inverse_of: :sales_order
-  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['sales_quote_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
