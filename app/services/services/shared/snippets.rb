@@ -34,7 +34,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def set_roles
     [
-        ['admin', 'creative@bulkmro.com'],
+        ['cataloging', 'creative@bulkmro.com'],
         ['outside_sales_manager', 'jeetendra.sharma@bulkmro.com'],
         ['inside_sales', 'sarika.tanawade@bulkmro.com'],
         ['inside_sales_manager', 'swati.bhosale@bulkmro.com'],
@@ -175,8 +175,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['outside_sales', 'syed.tajudin@bulkmro.com'],
         ['sales', 'dinesh.kumar1@bulkmro.com'],
         ['sales', 'dinesh.kumar@bulkmro.com'],
-        ['admin', 'puja.tanawade@bulkmro.com'],
-        ['admin', 'chetan.utekar@bulkmro.com'],
+        ['cataloging', 'puja.tanawade@bulkmro.com'],
+        ['cataloging', 'chetan.utekar@bulkmro.com'],
         ['sales', 'content@bulkmro.com'],
         ['admin', 'gaurang.shah@bulkmro.com'],
         ['left', 'abhishek.shingane@bulkmro.com'],

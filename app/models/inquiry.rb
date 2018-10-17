@@ -93,6 +93,7 @@ class Inquiry < ApplicationRecord
       :regular => 40,
       :service => 50,
       :repeat => 60,
+      :list => 65,
       :route_through => 70,
       :tender => 80
   }
@@ -174,7 +175,7 @@ class Inquiry < ApplicationRecord
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_numericality_of :potential_amount, greater_than: 0.00, :if => :not_legacy?
 
-  validates_uniqueness_of :subject, :if => :not_legacy?
+  # validates_uniqueness_of :subject, :if => :not_legacy?
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
