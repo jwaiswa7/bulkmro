@@ -42,7 +42,7 @@
           </div>-->
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span style="color:#000000"><b>Sales Order #<%= record.order_number %></b></span>
+            <span style="color:#000000"><b>Sales Order <%= format_id(record.order_number) %></b></span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;">
@@ -79,7 +79,7 @@
                 <td align="left" colspan="5" height="15" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
                   <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.id %></span></td>
+                  <span style="color:#000000"><%= record.order_number %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
                   <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
