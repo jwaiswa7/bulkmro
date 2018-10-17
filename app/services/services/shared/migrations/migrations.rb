@@ -944,19 +944,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       # todo handle cancellation, etc
       request_status = x.get_column('request_status')
-      if request_status.in? %w(approved requested)
-        sales_order.create_approval(
-            :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
-            :overseer => Overseer.default,
-            :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
-        )
-      elsif request_status == 'rejected'
-        sales_order.create_rejection(
-            :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
-            :overseer => Overseer.default
-        )
-      else
-        sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+
+      if !sales_order.approved?
+        if request_status.in? %w(approved requested)
+          sales_order.create_approval(
+              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
+              :overseer => Overseer.default,
+              :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+          )
+        elsif request_status == 'rejected'
+          sales_order.create_rejection(
+              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
+              :overseer => Overseer.default
+          )
+        else
+          sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+        end
       end
     end
   end
