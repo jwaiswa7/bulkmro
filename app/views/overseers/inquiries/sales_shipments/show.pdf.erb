@@ -244,25 +244,25 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% @metadata[:ItemLine].each_with_index do |item, index|%>
+                <% @sales_shipment.rows.each_with_index do |item, index|%>
                   <tr>
                     <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
                       <span style="color:#000000"><%= index+1 %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                      <span style="color:#000000"><%= item[:sku] %></span></td>
+                      <span style="color:#000000"><%= item.sku %></span></td>
 
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                       <span style="color:#000000"></span></td>
                     <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: left;" valign="top">
-                      <span style="color:#000000"><%= item[:name] %></span></td>
+                      <span style="color:#000000"><%= item.name %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                      <span style="color:#000000"><%=  %></span></td>
+                      <span style="color:#000000"><%= item.brand %></span></td>
                     <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                      <span style="color:#000000"><%= item[:hsn] %></span></td>
+                      <span style="color:#000000"><%= item.hsn %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: center;" valign="top">
-                      <span style="color:#000000"><%= item[:uom] %></span></td>
+                      <span style="color:#000000"><%= item.uom %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; text-align:center;" valign="top">
-                      <span style="color:#000000"><%= item[:qty] %></span></td>
+                      <span style="color:#000000"><%= item.quantity %></span></td>
 
                   </tr>
                 <% end %>

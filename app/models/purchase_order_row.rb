@@ -45,7 +45,7 @@ class PurchaseOrderRow < ApplicationRecord
     self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
-  # private
+  private
   def get_product
     purchase_order.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == self.metadata['PopProductId'].to_i || supplier_row.product.legacy_id  == self.metadata['PopProductId'].to_i}.first
   end
