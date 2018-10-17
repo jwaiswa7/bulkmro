@@ -19,12 +19,12 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             end
           end
         end
-        set_response("Purchase Order created successfully.")
+        return_response("Purchase Order created successfully.")
       else
-        set_response("Inquiry not found.", 0)
+        return_response("Inquiry not found.", 0)
       end
     rescue => e
-      set_response(e.message, 0)
+      return_response(e.message, 0)
     end
   end
 

@@ -17,12 +17,12 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
               :metadata => params.to_json
           )
         end
-        set_response("Sales Receipt created successfully.")
+        return_response("Sales Receipt created successfully.")
       else
-        set_response("Sales Invoice not found.", 0)
+        return_response("Sales Invoice not found.", 0)
       end
     rescue => e
-      set_response(e.message, 0)
+      return_response(e.message, 0)
     end
   end
 

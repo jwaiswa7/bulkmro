@@ -20,12 +20,12 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
             end
           end
         end
-        set_response("Sales Invoice created successfully.")
+        return_response("Sales Invoice created successfully.")
       else
-        set_response("Sales Invoice not found.", 0)
+        return_response("Sales Invoice not found.", 0)
       end
     rescue => e
-      set_response(e.message, 0)
+      return_response(e.message, 0)
     end
   end
 
