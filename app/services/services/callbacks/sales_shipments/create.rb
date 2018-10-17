@@ -22,11 +22,10 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
       end
 
       params['TrackLine'].each do |remote_package|
-        sales_invoice = SalesInvoice.find_by_invoice_number(remote_package['invoice_number'])
         sales_shipment.packages.where(tracking_number: remote_package['track_number']).first_or_create! do |package|
           package.assign_attributes(
               :metadata => remote_package,
-              :sales_invoice => sales_invoice
+              :sales_order => sales_order
           )
         end
       end
