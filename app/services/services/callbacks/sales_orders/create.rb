@@ -17,14 +17,14 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
       case to_local_status(remote_status)
       when :'approved'
         if sales_order.approved?
-          set_response("Order Already Approved")
+          return_response("Order Already Approved")
         elsif sales_order.remote_status.blank?
           begin
             sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'approved', :order_number => order_number, :remote_uid => remote_uid)
             sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
-            set_response("Order Created Successfully")
+            return_response("Order Created Successfully")
           rescue => e
-            set_response(e.message, 0)
+            return_response(e.message, 0)
           end
         end
       when :'SAP Rejected'
@@ -33,13 +33,13 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
           comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
           sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
           sales_order.approval.destroy!
-          set_response("Order Rejected Successfully")
+          return_response("Order Rejected Successfully")
         rescue => e
-          set_response(e.message, 0)
+          return_response(e.message, 0)
         end
       end
     else
-      set_response("Order Not Processed", 0)
+      return_response("Order Not Processed", 0)
     end
   end
 
