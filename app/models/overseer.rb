@@ -37,7 +37,7 @@ class Overseer < ApplicationRecord
 
   scope :can_send_email, -> {where.not(:smtp_password => nil)}
   scope :cannot_send_email, -> {where(:smtp_password => nil)}
-  scope :role_and_obj, -> (role, obj) {where('role = ? OR id = ?', roles[role], obj.try(:id))}
+  scope :roles_and_obj, -> (roles, obj) {where('role IN (?) OR id = ?', roles.map { |role| Overseer.roles[role] }, obj.try(:id))}
 
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?

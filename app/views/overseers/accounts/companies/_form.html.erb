@@ -50,13 +50,13 @@
     <h6 class="text-uppercase text-black-50 mb-1 d-block mt-3">Default owners and managers</h6>
     <div class="form-row">
       <div class="col-6 col-md-4">
-        <%= f.association :inside_sales_owner, required: true, collection: Overseer.role_and_obj(:inside_sales, f.object.inside_sales_owner), include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :inside_sales_owner, required: true, collection: Overseer.roles_and_obj([:inside_sales, :inside_sales_manager, :inside_sales_head], f.object.inside_sales_owner).alphabetical, include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :outside_sales_owner, required: true, collection: Overseer.role_and_obj(:outside_sales, f.object.outside_sales_owner), include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
+        <%= f.association :outside_sales_owner, required: true, collection: Overseer.roles_and_obj([:outside_sales, :outside_sales_manager, :outside_sales_head], f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
       </div>
       <div class="col-12 col-md-4">
-        <%= f.association :sales_manager, required: true, collection: Overseer.role_and_obj(:sales_manager, f.object.sales_manager), include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
+        <%= f.association :sales_manager, required: true, collection: Overseer.roles_and_obj([:inside_sales_manager, :outside_sales_manager, :inside_sales_head, :outside_sales_head, :admin], f.object.sales_manager).alphabetical, include_blank: 'Select a Sales Manager', input_html: {class: "select2-single"} %>
       </div>
     </div>
 
