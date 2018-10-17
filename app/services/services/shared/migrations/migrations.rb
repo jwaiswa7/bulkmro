@@ -16,7 +16,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               elsif Rails.env.production?
                 %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w( sales_shipments purchase_orders sales_receipts)
               end
 
     PaperTrail.request(enabled: false) do
@@ -1063,7 +1063,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
         sales_shipment = SalesShipment.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |ss|
-          ss.assign_attributes(sales_order: sales_order, is_legacy: true, remote_uid: x.get_column('shipment_number'), metadata: x.get_row)
+          ss.assign_attributes(sales_order: sales_order, is_legacy: true, shipment_number: x.get_column('shipment_number'), metadata: x.get_row)
         end
         attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path'))
       end
