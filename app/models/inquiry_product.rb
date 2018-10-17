@@ -34,6 +34,10 @@ class InquiryProduct < ApplicationRecord
   end
 
   def to_bp_catalog_s
-    [bp_catalog_sku, bp_catalog_name ? bp_catalog_name : self.product.name].reject(&:blank?).compact.join(' - ')
+    if bp_catalog_sku.present? || bp_catalog_name.present?
+      [bp_catalog_sku, bp_catalog_name].reject(&:blank?).join(' - ')
+    else
+      self.product.name
+    end
   end
 end
