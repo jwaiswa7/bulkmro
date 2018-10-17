@@ -1,8 +1,10 @@
 <div class="page-header">
   <div class="">
     <h2>
-      <strong> Inquiry #<%= @inquiry.inquiry_number %></strong>
+      <strong>Inquiry #<%= @inquiry.inquiry_number %></strong>
+      <small class="text-black-50 mb-2 ml-2 float-right"><strong><%= format_date(@inquiry.created_at) %></strong></small>
     </h2>
+    <p class="mt-2 mt-md-0">Inquiry details for <strong>'<%= @inquiry.subject %>'</strong>.</p>
   </div>
 </div>
 
