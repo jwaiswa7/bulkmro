@@ -2,7 +2,7 @@ json.data (@pending_sales_orders) do |pending_sales_order|
   json.array! [
                   [
                       if policy(pending_sales_order).comments?
-                        row_action_button(overseers_inquiry_comments_path(pending_sales_order.inquiry, sales_order_id: pending_sales_order.to_param), 'comment-lines', pending_sales_order.inquiry.try(:last_comment).try(:message) || 'See Comments', 'dark')
+                        row_action_button(overseers_inquiry_comments_path(pending_sales_order.inquiry, sales_order_id: pending_sales_order.to_param), 'eye', pending_sales_order.inquiry.try(:last_comment).try(:message) || 'See Comments', 'dark')
                       end,
                       if policy(pending_sales_order).go_to_inquiry?
                         row_action_button(overseers_inquiry_sales_orders_path(pending_sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
