@@ -24,8 +24,8 @@ json.columnFilters [
     [],
     [],
     [],
-    Overseer.inside_sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-    Overseer.outside_sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+    Overseer.inside.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+    Overseer.outside.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
     [],
     []
 ]
