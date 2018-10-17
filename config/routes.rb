@@ -185,8 +185,12 @@ Rails.application.routes.draw do
     resources :inquiries, only: %i[index show] do
       scope module: 'inquiries' do
         resources :sales_quotes, only: %i[index show]
+        resources :sales_orders, only: %i[index show]
       end
     end
+    resources :sales_quotes, only: %i[index]
+    resources :sales_orders, only: %i[index]
+    resources :products, only: %i[index show]
   end
 
 end

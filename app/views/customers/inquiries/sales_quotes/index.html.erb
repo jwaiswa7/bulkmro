@@ -4,7 +4,7 @@
     <% provide :hide_table_heading, true %>
 
     <% content_for :header_row do %>
-      <th class="no-sort"></th>
+      <th class="no-sort">Actions</th>
       <th>Sent At</th>
       <th>Created By</th>
       <th>Line Items</th>
@@ -27,6 +27,5 @@
         <td><%= format_date(@final_sales_quote.created_at) %></td>
       </tr>
     <% end %>
-
   <% end %>
 </div>

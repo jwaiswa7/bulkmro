@@ -9,8 +9,9 @@
 <section class="pb-4 pb-lg-5">
   <ul class="nav nav-tabs nav-fill">
     <%= nav_item('Inquiry', customers_inquiry_path(@inquiry), true )%>
-    <%= nav_item('Sales Quotes', customers_inquiry_sales_quotes_path(@inquiry), true )%>
-    <%#= nav_item('Sales Orders', overseers_inquiry_sales_orders_path(@inquiry), policy(@inquiry).sales_orders?) %>  </ul>
+    <%= nav_item('Sales Quotes', customers_inquiry_sales_quotes_path(@inquiry), @inquiry.sales_quotes.present? )%>
+    <%= nav_item('Sales Orders', customers_inquiry_sales_orders_path(@inquiry), @inquiry.sales_orders.present? )%>
+  </ul>
   <div class="tab-content">
     <div class="tab-pane fade active show" role="tabpanel">
       <%= yield %>
