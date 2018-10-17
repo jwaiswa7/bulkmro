@@ -1,0 +1,115 @@
+<div class="col-12">
+  <%= render layout: 'customers/inquiries/tabs_layout' do %>
+    <%= simple_form_for(@final_sales_quote, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+
+
+      <% if f.object.errors.any? %>
+        <% f.object.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      <% end %>
+      <div class="card">
+        <div class="card-header">
+          <div class=form-row>
+            <div class="col-8 col-md-3">
+              <strong>SAP Quotation </strong>
+              <br> <%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+
+            <div class="col-6">
+              <strong>Currency</strong>
+              <br> <%= f.object.currency %>
+            </div>
+            <div class="col-6">
+              <strong>Conversion rate</strong>
+              <br> <%= f.object.inquiry_currency.conversion_rate %>
+            </div>
+
+          </div>
+          <div class="card-alternative mt-3">
+            <div class="form-row">
+              <div class="col-md-6">
+                <strong>Shipping Address</strong><br>
+                <%= @inquiry.shipping_address %>
+
+              </div>
+              <div class="col-md-6 mt-2 mt-md-0">
+                <strong>Billing Address</strong>
+                <br> <%= @inquiry.billing_address %>
+
+              </div>
+            </div>
+          </div>
+
+          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+            <%= row.hidden_field :sales_quote_id %>
+            <%= row.hidden_field :id %>
+            <div>
+              <h6 class="text-uppercase mb-0 mt-3">
+                <strong><%= row.object %></strong>
+                <p class="lead text-black-50 text-small d-block mt-1">#<%= row.object.sr_no %></p>
+              </h6>
+              <div class="form-row my-2">
+                <div class="col-md-3">
+                  <strong>Unit Selling Price</strong><br>
+                  <span><%= row.object.unit_selling_price %></span>
+                </div>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Unit Selling Price (in $)</strong><br>
+                  <span><%= row.object.converted_unit_selling_price %></span>
+                </div>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Unit Cost with Freight</strong><br>
+                  <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                </div>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Total Selling Price</strong><br>
+                  <span><%= row.object.total_selling_price %></span>
+                </div>
+              </div>
+              <div class="form-row my-2">
+                <div class="col-md-3">
+                  <strong>Total Selling Price with Tax</strong><br>
+                  <span><%= row.object.total_selling_price_with_tax %></span>
+                </div>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Margin Percentage</strong><br>
+                  <span><%= row.object.margin_percentage.round(2) %></span>
+                </div>
+                <div class="col-md-3 mt-2 mt-md-0">
+                  <strong>Tax Code</strong><br>
+                  <span><%= row.object.tax_code %></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+        </div>
+        <div class="card-footer">
+          <div class=form-row>
+            <div class="col-8 col-md-3">
+              Total Selling Price (Excl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total) %></strong>
+            </div>
+            <div class="col-4 col-md-3">
+              Total Tax<br>
+              <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+            </div>
+            <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
+              <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
+            </div>
+            <div class="col-4 col-md-3 mt-2 mt-md-0">Total Margin<br>
+              <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

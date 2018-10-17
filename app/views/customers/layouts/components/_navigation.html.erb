@@ -1,0 +1,57 @@
+<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
+  <!-- Drawer Toggle -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Drawer Toggle -->
+
+  <!-- Logo -->
+  <a class="navbar-brand" href="<%= customers_dashboard_path %>">
+    <img alt="BulkMRO" src="<%= image_path('BMIS_Logo_PNG.png') %>" height="22"/>
+  </a>
+  <!-- Logo -->
+
+  <!-- Settings Dropdown MOBILE -->
+  <div class="d-flex align-items-center">
+    <div class="d-block d-lg-none ml-2">
+      <div class="dropdown">
+        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fal fa-cog"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+          <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+            <i class="fal fa-power-off"></i>&nbsp;Sign Out
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Settings Dropdown MOBILE -->
+
+  <!-- Navigation Bar -->
+  <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
+    <ul class="navbar-nav">
+      <%= nav_item 'Dashboard', customers_dashboard_path, true %>
+      <%= nav_item 'Inquiries', customers_inquiries_path, true %>
+      <%= nav_item 'Sales Quotes', customers_sales_quotes_path, true %>
+      <%= nav_item 'Sales Orders', customers_sales_orders_path, true %>
+      <%= nav_item 'Products', customers_products_path, true %>
+    </ul>
+  </div>
+  <!-- Navigation Bar -->
+
+  <!-- Settings Dropdown DESKTOP -->
+  <div class="d-none d-lg-block">
+    <div class="dropdown">
+      <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fal fa-cog"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- Settings Dropdown DESKTOP -->
+</div>
