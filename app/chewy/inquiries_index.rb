@@ -7,9 +7,9 @@ class InquiriesIndex < BaseIndex
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
     field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
-    field :inside_sales_owner_id, value: -> (record) { record.id }
+    field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
-    field :outside_sales_owner_id, value: -> (record) { record.id }
+    field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
     field :inside_sales, value: -> (record) { record.inside_sales_owner_id }
     field :outside_sales, value: -> (record) { record.outside_sales_owner_id }
