@@ -33,7 +33,7 @@ class SalesOrder < ApplicationRecord
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
 
   delegate :conversion_rate, to: :inquiry_currency
-  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no
+  attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
 
   after_initialize :set_defaults, :if => :new_record?
 
