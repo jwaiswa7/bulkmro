@@ -30,6 +30,7 @@ class Overseer < ApplicationRecord
       procurement: 65,
       accounts: 70,
       logistics: 75,
+      cataloging: 80
   }
 
   enum status: {active: 10, inactive: 20}
