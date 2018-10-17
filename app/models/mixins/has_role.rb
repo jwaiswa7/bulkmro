@@ -20,39 +20,31 @@ module Mixins::HasRole
 
     scope :administrators, -> { admin }
 
-    scope :managers, -> { where('role IN (?)', manager_roles.map { |r| self.roles[r] }) }
-    scope :managers_and_obj, -> (obj) {where('role IN (?) OR id = ?', manager_roles.map { |r| Overseer.roles[r] }, obj.try(:id))}
+    scope :managers, -> { where('role IN (?)', MANAGER_ROLES.map { |r| self.roles[r] }) }
+    scope :managers_and_obj, -> (obj) {where('role IN (?) OR id = ?', MANAGER_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id))}
 
-    scope :people, -> { where('role NOT IN (?)', manager_roles.map { |r| self.roles[r] }) }
+    scope :people, -> { where('role NOT IN (?)', MANAGER_ROLES.map { |r| self.roles[r] }) }
 
-    scope :inside, -> { where('role IN (?)', inside_roles.map { |r| self.roles[r] }) }
-    scope :inside_and_obj, -> (obj) {where('role IN (?) OR id = ?', inside_roles.map { |r| Overseer.roles[r] }, obj.try(:id))}
+    scope :inside, -> { where('role IN (?)', INSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :inside_and_obj, -> (obj) {where('role IN (?) OR id = ?', INSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id))}
 
-    scope :outside, -> { where('role IN (?)', outside_roles.map { |r| self.roles[r] }) }
-    scope :outside_and_obj, -> (obj) {where('role IN (?) OR id = ?', outside_roles.map { |r| Overseer.roles[r] }, obj.try(:id))}
+    scope :outside, -> { where('role IN (?)', OUTSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :outside_and_obj, -> (obj) {where('role IN (?) OR id = ?', OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id))}
 
-    def manager_roles
-      %w(admin inside_sales_head outside_sales_head inside_sales_manager outside_sales_head)
-    end
-
-    def inside_roles
-      %w(inside_sales inside_sales_manager inside_sales_head)
-    end
-
-    def outside_roles
-      %w(outside_sales outside_sales_manager outside_sales_head)
-    end
+    MANAGER_ROLES = %w(admin inside_sales_head outside_sales_head inside_sales_manager outside_sales_head)
+    INSIDE_ROLES = %w(inside_sales inside_sales_manager inside_sales_head)
+    OUTSIDE_ROLES = %w(outside_sales outside_sales_manager outside_sales_head)
 
     def administrator?
       admin?
     end
 
     def manager?
-      role.in? sales_manager_roles
+      role.in? MANAGER_ROLES
     end
 
     def person?
-      !role.in? sales_manager_roles
+      true
     end
   end
 end

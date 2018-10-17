@@ -7,7 +7,7 @@ class Overseers::ApplicationPolicy
   end
 
   def admin?
-    overseer.adminstrator?
+    overseer.administrator?
   end
 
   def manager?
