@@ -35,13 +35,20 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
 
     authorize @purchase_order
     @metadata = @purchase_order.metadata.deep_symbolize_keys
-
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
     respond_to do |format|
       format.html {}
       format.pdf do
         render_pdf_for @purchase_order
       end
     end
+  end
+
+  def get_supplier(purchase_order, product_id)
+    product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
+
+    product_supplier.supplier if product_supplier.present?
+
   end
 
   private

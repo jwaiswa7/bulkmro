@@ -129,7 +129,7 @@
               <td style="width:48%;">
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;">
                     <span style="color:#000000">
-                      <%= (@sales_invoice.sales_order.inquiry.bill_from.name.to_s + '<br>').html_safe if @sales_invoice.sales_order.inquiry.bill_from.present? %>
+                      <%= (@sales_invoice.sales_order.inquiry.bill_from.address.name.to_s + '<br>').html_safe if @sales_invoice.sales_order.inquiry.bill_from.address.name.present? %>
                       <% if @sales_invoice.sales_order.inquiry.bill_from.present? %>
                         <%= @sales_invoice.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
                         GST No. : <%= @sales_invoice.sales_order.inquiry.bill_from.address.gst %><br>
@@ -145,7 +145,7 @@
               <td style="width:48%;">
                 <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;">
                     <span style="color:#000000">
-                      <%= (@sales_invoice.sales_order.inquiry.ship_from.name.to_s + '<br>').html_safe if @sales_invoice.sales_order.inquiry.ship_from.present? %>
+                      <%= (@sales_invoice.sales_order.inquiry.ship_from.address.name.to_s + '<br>').html_safe if @sales_invoice.sales_order.inquiry.ship_from.address.name.present? %>
                       <% if @sales_invoice.sales_order.inquiry.ship_from.present? %>
                         <%= @sales_invoice.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
                         GST No. : <%= @sales_invoice.sales_order.inquiry.ship_from.address.gst %><br>
