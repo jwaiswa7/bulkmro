@@ -261,49 +261,49 @@
               </tr>
               </thead>
               <tbody>
-              <% @metadata[:ItemLine].each_with_index do |item, index| %>
+              <% @sales_invoice.rows.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
                     <span style="color:#000000"><%= index + 1 %></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                    <span style="color:#000000"><%= item[:sku] %></span></td>
+                    <span style="color:#000000"><%= item.sku %></span></td>
 
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
                     <span style="color:#000000"></span></td>
                   <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: left;" valign="top">
-                    <span style="color:#000000"><%= item[:name] %></span></td>
+                    <span style="color:#000000"><%= item.name %></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                    <span style="color:#000000"><%= %></span></td>
+                    <span style="color:#000000"><%= item.brand %></span></td>
                   <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                    <span style="color:#000000"><%= item[:hsn] %></span></td>
+                    <span style="color:#000000"><%= item.hsn %></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: center;" valign="top">
-                    <span style="color:#000000"><%= item[:uom] %></span></td>
+                    <span style="color:#000000"><%= item.uom %></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
-                    <span style="color:#000000"><%= item[:qty] %></span></td>
+                    <span style="color:#000000"><%= item.metadata['qty'] %></span></td>
                   <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
-                    <span style="color:#000000"><%= item[:price] %></span></td>
+                    <span style="color:#000000"><%= item.metadata['price'].to_f.round(2) %></span></td>
                   <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
-                    <span style="color:#000000"><%= item[:row_total] %></span></td>
+                    <span style="color:#000000"><%= item.metadata['row_total'].to_f.round(2) %></span></td>
                   <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
-                    <span style="color:#000000"><%= item[:tax_rate] %>%</span></td>
+                    <span style="color:#000000"><%= item.tax_rate %>%</span></td>
                   <% if @sales_invoice.sales_order.sales_quote.tax_summary.to_i == 0 ||
                       (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item[:tax_rate].to_f.round(2) %>%</span></td>
+                      <span style="color:#000000"><%= item.tax_rate.to_f.round(2) %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item[:tax_amount].to_f.round(2) %></span></td>
+                      <span style="color:#000000"><%= item.metadata['tax_amount'].to_f.round(2) %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= (item[:tax_rate].to_f / 2).round(2) %>%</span></td>
+                      <span style="color:#000000"><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= (item[:tax_amount].to_f / 2).round(2) %></span></td>
+                      <span style="color:#000000"><%= (item.metadata['tax_amount'].to_f / 2).round(2) %></span></td>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
-                      <span style="color:#000000"><%= (item[:tax_rate].to_f / 2).round(2) %>%</span></td>
+                      <span style="color:#000000"><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
                     <td align="center" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
-                      <span style="color:#000000"><%= (item[:tax_amount].to_f / 2).round(2) %><br></span></td>
+                      <span style="color:#000000"><%= (item.metadata['tax_amount'].to_f / 2).round(2) %><br></span></td>
                   <% end %>
                   <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span style="color:#000000"><%= item[:row_total_incl_tax].to_f.round(2) %></span></td>
+                    <span style="color:#000000"><%= item.metadata['row_total_incl_tax'].to_f.round(2) %></span></td>
                 </tr>
               <% end %>
 
