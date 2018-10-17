@@ -21,9 +21,16 @@ class Resources::ApplicationResource
   end
 
   ENDPOINT = URI.parse('https://35.154.19.43:50000/b1s/v1')
-  DATABASE = 'SPRINT_TEST'
   USERNAME = 'manager'
   PASSWORD = 'vm1234'
+
+  if Rails.env.development?
+    DATABASE = 'SPRINT_TEST'
+  end
+
+  if Rails.env.production?
+    DATABASE = 'BULKMRO_PRODUCTION'
+  end
 
   ATTACHMENT_ENDPOINT = URI.parse('https://35.154.19.43:22')
   ATTACHMENT_USERNAME = 'b1service0'
@@ -38,14 +45,14 @@ class Resources::ApplicationResource
                            draft_base_type: 23
                        }) if Rails.env.development?
 
-  # SAP = OpenStruct.new({
-  #                          attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
-  #                          attachment_api: '172.31.13.105/b1_shf/Attachments',
-  #                          server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-  #                          login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
-  #                          draft_doc_object_code: 22,
-  #                          draft_base_type: 17
-  #                      }) if Rails.env.production?
+  SAP = OpenStruct.new({
+                           attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
+                           attachment_api: '172.31.13.105/b1_shf/Attachments',
+                           server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+                           login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
+                           draft_doc_object_code: 22,
+                           draft_base_type: 17
+                       }) if Rails.env.production?
 
   base_uri ENDPOINT.to_s
   debug_output($stdout)
