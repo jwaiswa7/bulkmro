@@ -40,12 +40,12 @@ class Inquiry < ApplicationRecord
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
   has_one :approved_final_sales_order, -> {approved}, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
-  has_many :sales_orders, :through => :sales_quotes
+  has_many :sales_orders, :through => :sales_quotes, dependent: :destroy
   has_many :shipments, :through => :sales_orders, class_name: 'SalesShipment', source: :shipments
   has_many :invoices, :through => :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, :through => :sales_orders
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
-  has_many :email_messages
+  has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
