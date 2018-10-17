@@ -5,7 +5,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    index? && sales_manager?
+    index? && manager?
   end
 
   def approve?
