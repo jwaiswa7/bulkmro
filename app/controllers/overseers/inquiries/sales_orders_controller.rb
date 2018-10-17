@@ -86,7 +86,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync
     authorize @sales_order
-
     if @sales_order.save_and_sync
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     end
