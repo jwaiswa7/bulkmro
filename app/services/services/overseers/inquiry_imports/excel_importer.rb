@@ -30,7 +30,7 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
       if /^[a-zA-Z_]{1}[_a-zA-Z]*$/i.match?(column) && column.downcase.in?(InquiryImport::HEADERS)
         column.downcase!
       else
-        import.errors.add(:base, ['invalid excel headers, column', column, 'should be one of', InquiryImport::HEADERS.to_sentence].join(' '))
+        import.errors.add(:base, ['Invalid excel upload; the columns should be', InquiryImport::HEADERS.to_sentence + '.'].join(' '))
         raise ExcelInvalidHeader
       end
     end

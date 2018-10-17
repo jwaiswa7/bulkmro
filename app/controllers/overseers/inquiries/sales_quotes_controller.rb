@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -35,10 +35,10 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect {|action| params[action]}
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
     end
@@ -53,15 +53,18 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(:overseer => current_overseer))
     authorize @sales_quote
 
-    callback_method = %w(save save_and_send).detect {|action| params[action]}
+    callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'edit'
     end
   end
 
+  def preview
+    authorize @sales_quote
+  end
 
   private
   def save
@@ -69,10 +72,15 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     service.call
   end
 
-  def save_and_send
-    @sales_quote.assign_attributes(:sent_at => Time.now)
+  def update_sent_at_field
+    @sales_quote.update_attributes(:sent_at => Time.now)
+    redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+  end
+
+  def save_and_preview
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
+    redirect_to preview_overseers_inquiry_sales_quote_path(@inquiry, @sales_quote), notice: flash_message(@inquiry, action_name) if @sales_quote.valid?
   end
 
   def set_sales_quote

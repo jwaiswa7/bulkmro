@@ -1,18 +1,18 @@
-class Services::Callbacks::SalesShipments::Create < Services::Shared::BaseService
+class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared::BaseCallback
 
   def initialize(params)
     @params = params
   end
 
   def call
-    remote_uid = params['increment_id']
+    shipment_number = params['increment_id']
     created_at = params['created_at'].to_datetime
     order_number = params['order_id']
     remote_rows = params['ItemLine']
     remote_packages = params['TrackLine']
 
     sales_order = SalesOrder.find_by_order_number!(order_number)
-    sales_shipment = sales_order.shipments.where(remote_uid: remote_uid).first_or_create! do |sales_shipment|
+    sales_shipment = sales_order.shipments.where(shipment_number: shipment_number).first_or_create! do |sales_shipment|
       sales_shipment.created_at = created_at
       sales_shipment.overseer = Overseer.default_approver
     end
@@ -30,10 +30,13 @@ class Services::Callbacks::SalesShipments::Create < Services::Shared::BaseServic
 
     remote_packages.each do |remote_package|
       tracking_number = remote_package['track_number']
+      invoice_number = remote_package['invoice_number']
+      sales_invoice = SalesInvoice.find_by_invoice_number(invoice_number)
 
       sales_shipment.packages.where(tracking_number: tracking_number).first_or_create! do |package|
         package.assign_attributes(
-            :metadata => remote_package
+            :metadata => remote_package,
+            :sales_invoice => sales_invoice
         )
       end
     end

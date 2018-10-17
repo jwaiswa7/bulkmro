@@ -17,6 +17,20 @@ json.data (@inquiries) do |inquiry|
               ]
 end
 
+json.columnFilters [
+    [],
+    [],
+    Inquiry.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
+    [],
+    [],
+    [],
+    Overseer.inside_sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+    Overseer.outside_sales.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
+    [],
+    []
+]
+
+
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
 # json.recordsTotal @inquiries.model.all.count

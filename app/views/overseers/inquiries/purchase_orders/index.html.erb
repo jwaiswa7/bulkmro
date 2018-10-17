@@ -14,9 +14,7 @@
       <% @purchase_orders.each do |purchase_order| %>
         <tr>
           <td>
-            <% #if purchase_order.legacy? %>
-              <%#= row_action_button(url_for(purchase_order.po_pdf), 'file-pdf', purchase_order.po_pdf.filename, 'dark', :_blank) %>
-            <% #end %>
+
             <% if policy(purchase_order).show? %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
