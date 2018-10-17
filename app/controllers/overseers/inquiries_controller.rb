@@ -37,7 +37,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @indexed_inquiries = service.indexed_records
     @inquiries = service.records.reverse
 
-    authorize @inquiries
+    authorize :inquiry
   end
 
   def show
