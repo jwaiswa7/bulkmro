@@ -4,7 +4,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
   end
 
   def all_records
-    if current_overseer.present? && !current_overseer.admin? && !current_overseer.sales_manager?
+    if current_overseer.present? && !(current_overseer.admin? || current_overseer.inside_sales_manager? || current_overseer.outside_sales_manager? || current_overseer.inside_sales_head? || current_overseer.outside_sales_head?)
       super.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}.compact})
     else
       indexed_records = super
