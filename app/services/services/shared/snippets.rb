@@ -33,8 +33,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def set_roles
-    overseers = [
-        ['cataloging', 'creative@bulkmro.com'],
+    [
+        ['admin', 'creative@bulkmro.com'],
         ['outside_sales_manager', 'jeetendra.sharma@bulkmro.com'],
         ['inside_sales', 'sarika.tanawade@bulkmro.com'],
         ['inside_sales_manager', 'swati.bhosale@bulkmro.com'],
@@ -159,7 +159,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['left', 'antim.patni@bulkmro.com'],
         ['sales', 'nitin.nabera@bulkmro.com'],
         ['sales', 'pravin.ganekar@bulkmro.com'],
-        ['sales_manager', 'lavanya.j@bulkmro.com'],
+        ['inside_sales_head', 'lavanya.j@bulkmro.com'],
         ['left', 'samidha.dhongade@bulkmro.com'],
         ['sales', 'nida.khan@bulkmro.com'],
         ['sales', 'uday.salvi@bulkmro.com'],
@@ -175,8 +175,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['outside_sales', 'syed.tajudin@bulkmro.com'],
         ['sales', 'dinesh.kumar1@bulkmro.com'],
         ['sales', 'dinesh.kumar@bulkmro.com'],
-        ['cataloging', 'puja.tanawade@bulkmro.com'],
-        ['cataloging', 'chetan.utekar@bulkmro.com'],
+        ['admin', 'puja.tanawade@bulkmro.com'],
+        ['admin', 'chetan.utekar@bulkmro.com'],
         ['sales', 'content@bulkmro.com'],
         ['admin', 'gaurang.shah@bulkmro.com'],
         ['left', 'abhishek.shingane@bulkmro.com'],
@@ -229,9 +229,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'sysadmin+test-api-user@bulkmro.com'],
         ['sales', 'sysadmin@bulkmro.com'],
         ['left', 'rajani.ong@bulkmro.com'],
-    ].each do |overseer|
-      overseer = Overseer.find_by_email(overseer[1])
-      overseer.update_attributes(:role => overseer[0]) if overseer.present?
+    ].each do |kv|
+      overseer = Overseer.find_by_email(kv[1])
+      overseer.update_attributes(:role => kv[0].to_sym) if overseer.present?
     end
   end
 
