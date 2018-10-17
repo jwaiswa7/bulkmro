@@ -37,9 +37,9 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if current_overseer.present? && !current_overseer.manager?
       indexed_records = indexed_records.filter(
           if current_overseer.inside?
-            super.filter({terms: {inside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+            {terms: {inside_sales_owner_id: current_overseer.self_and_descendant_ids}}
           elsif current_overseer.outside?
-            super.filter({terms: {outside_sales_owner_id: current_overseer.self_and_descendant_ids}})
+            {terms: {outside_sales_owner_id: current_overseer.self_and_descendant_ids}}
           end
       )
     end
