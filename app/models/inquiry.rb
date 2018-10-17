@@ -93,6 +93,7 @@ class Inquiry < ApplicationRecord
       :regular => 40,
       :service => 50,
       :repeat => 60,
+      :list => 65,
       :route_through => 70,
       :tender => 80
   }
