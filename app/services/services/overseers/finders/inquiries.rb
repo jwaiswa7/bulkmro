@@ -30,7 +30,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
                                             }
                                         })
 
-    indexed_records = indexed_records.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}}) if current_overseer.present? && !current_overseer.admin? && !current_overseer.sales_manager?
+    indexed_records = indexed_records.filter({terms: {created_by_id: current_overseer.self_and_descendant_ids}}) if current_overseer.present? && !current_overseer.sales_manager?
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

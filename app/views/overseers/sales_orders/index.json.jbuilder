@@ -1,6 +1,9 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
+                      if policy(sales_order).go_to_inquiry?
+                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'dark')
+                      end,
                       if policy(sales_order).comments?
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'dark')
                       end,

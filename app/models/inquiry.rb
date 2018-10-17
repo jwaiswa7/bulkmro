@@ -274,6 +274,7 @@ class Inquiry < ApplicationRecord
     self.inquiry_products.maximum(:sr_no) || 0
   end
 
+
   def to_s
     [
         ['#', self.inquiry_number].join,

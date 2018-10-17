@@ -4,7 +4,7 @@ require 'net/http'
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit, :custom_methods
 
-  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil)
+  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: false)
     @custom_methods = custom_methods
     @limit = limit
     @secondary_limit = secondary_limit
@@ -241,7 +241,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       id = x.get_column('id')
       next if id.in? %w(3275)
       account_name = x.get_column('aliasname')
-      Account.where(name: account_name).first_or_create! do |account|
+      account = Account.where(name: account_name).first_or_initialize! do |account|
         account.remote_uid = x.get_column('sap_id')
         account.name = account_name
         account.alias = account_name.titlecase.split.map(&:first).join
@@ -1024,7 +1024,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def inquiry_attachments
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv')
-    service.loop(limit) do |x|
+    service.loop(nil) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
       sheet_columns = [
@@ -1032,7 +1032,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
           ['supplier_quote_attachment', 'sqa_path', 'supplier_quotes'],
-          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'supplier_quotes']
+          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'final_supplier_quote']
       ]
 
       sheet_columns.each do |file|
