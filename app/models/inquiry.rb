@@ -271,10 +271,13 @@ class Inquiry < ApplicationRecord
     terms ? terms.split(/[\r\n]+/) : []
   end
 
+  def can_be_managed_by(overseer)
+    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
+  end
+
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
   end
-
 
   def to_s
     [

@@ -51,7 +51,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         'Sales Support' => :sales,
         'SalesExport' => :sales,
         'sales_supplier' => :sales,
-        'Sales Manager' => :outside_sales_manager,
+        'Sales Manager' => :outside_sales_team_leader,
         'HR' => :sales,
         'Creative' => :sales,
         'saleswithaccounts' => :sales,
@@ -79,11 +79,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overseer.role = case role_name
               when :sales
                 if identifier == 'inside'
-                  :inside_sales
+                  :inside_sales_executive
                 elsif identifier == 'outside'
-                  :outside_sales
+                  :outside_sales_executive
                 elsif identifier == 'outside/manager'
-                  :outside_sales_manager
+                  :outside_sales_team_leader
                 else
                   :sales
                 end

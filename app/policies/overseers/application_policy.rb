@@ -14,8 +14,16 @@ class Overseers::ApplicationPolicy
     overseer.manager?
   end
 
+  def admin_or_manager?
+    admin? || manager?
+  end
+
   def person?
     overseer.person?
+  end
+
+  def executive?
+    overseer.executive?
   end
 
   def index?
@@ -67,7 +75,11 @@ class Overseers::ApplicationPolicy
     end
 
     def resolve
-      scope
+      if  overseer.manager?
+        scope.all
+      else
+        scope.where(:created_by => overseer.self_and_descendants)
+      end
     end
   end
 end

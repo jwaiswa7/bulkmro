@@ -3,11 +3,11 @@ module Mixins::HasManagers
 
   included do
     # belongs_to :inside_sales_owner, ->(record) do
-    #   record.legacy? ? order(:first_name) : inside_sales.order(:first_name)
+    #   record.legacy? ? order(:first_name) : inside_sales_executive.order(:first_name)
     # end, class_name: 'Overseer', foreign_key: 'inside_sales_owner_id', required: false
     #
     # belongs_to :outside_sales_owner, ->(record) do
-    #   record.legacy? ? order(:first_name) : outside_sales.order(:first_name)
+    #   record.legacy? ? order(:first_name) : outside_sales_executive.order(:first_name)
     # end, class_name: 'Overseer', foreign_key: 'outside_sales_owner_id', required: false
     #
     # belongs_to :sales_manager, ->(record) do

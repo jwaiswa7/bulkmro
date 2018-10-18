@@ -1,3 +1,3 @@
-class Overseers::MeasurementUnitPolicy < Overseers::ApplicationPolicy
+class Overseers::MeasurementUnitPolicy < Overseers::ManagerPolicy
 
 end

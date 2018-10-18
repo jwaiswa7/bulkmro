@@ -15,8 +15,12 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     new_email_message?
   end
 
+  def can_manage_inquiry?
+    record.can_be_managed_by(overseer)
+  end
+
   def edit?
-    new?
+    can_manage_inquiry?
   end
 
   def new_list_import?
@@ -44,7 +48,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def imports?
-    show?
+    edit?
   end
 
   def edit_suppliers?
@@ -86,6 +90,26 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def sales_invoices?
     edit? && record.shipments.present?
   end
+
+  class Scope
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
+    end
+
+    def resolve
+      if overseer.manager?
+        scope.all
+      else
+        scope.where("inside_sales_owner_id IN :overseer OR outside_sales_owner_id IN :overseer", {overseer: overseer.self_and_descendant_ids })
+      end
+    end
+  end
+
+
+
 
   # def edit_rfqs?
   #   !record.rfqs_generated? && record.suppliers_selected?
