@@ -49,7 +49,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
       item.U_MPN = row.product.try(:mpn)
-      item.U_LeadTime = row.lead_time_option.name # Lead time ?
+      item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
       item.Currency = record.currency.name # CContactPersonurr
