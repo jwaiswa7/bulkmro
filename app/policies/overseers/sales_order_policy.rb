@@ -56,7 +56,16 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if overseer.manager?
+        scope.all
+      else
+        if overseer.inside?
+          scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+        elsif overseer.outside?
+          scope.joins(:inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+        end
+      end
+
     end
   end
 

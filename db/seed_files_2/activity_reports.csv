@@ -1,0 +1,48 @@
+legacy_id,created_at,overseer_legacy_id,company_contact_lagacy,subject,purpose,comment,actionrequired,activity,refno,inquiry_number,activitystatus
+9589,"2018-10-17 10:22:16",137,NULL,,Negotiation,"Meet Mr Jogender for closure of Breath Analyzer order. Visited on 16th OCT.","Need to Share revised Quote, and follow up for formal Purchase order.",Meeting,1539771736#1377,27934,"Pending Approval"
+9590,"2018-10-17 10:26:14",137,NULL,,"Follow up","Had meeing with Mr Parveen Dhiman, got clarification on list of items shared by Alok Jain, Get an idea for annual consumption for MRO items.","Need to share Proposal on Priority.",Meeting,1539771974#1377,28062,"Pending Approval"
+9591,"2018-10-17 10:53:40",64,NULL,,Closure,"The LMm unit was not working of which the charger was repaired. Went to Vivek Vihar and attended the complaint.
+The unit was brought to working stage. They are happy and the unit was taken in field for work.","Closed as of now.",Meeting,1539773620#645,27258,"Pending Approval"
+9593,"2018-10-17 11:59:38",137,NULL,,"Follow up","Had meeting with Ashish, he said proposal is shared with user. Visited On 16th Oct ","Need to follow up with Ashish for closure .",Meeting,1539777578#1379,27857,"Pending Approval"
+9594,"2018-10-17 12:30:56",137,NULL,,Closure,"Met Mr Anil for Sampling of Raymind Blanket.
+Sample is with Mr Anil, Receiving challan copy is  with me.","Need to keep follow up for Diwali Gifting order.",Meeting,1539779456#13710,28213,"Pending Approval"
+9595,"2018-10-17 12:37:54",137,NULL,,Closure,"Meet Mr Kapil Tyagi and collect sample from Vaishali Metro Station.","Need to return sample once it get approved.",Meeting,1539779874#1373,28213,"Pending Approval"
+9596,"2018-10-17 15:03:36",20,NULL,,"Follow up","As per discussed with user he need material via Pcard.It is repeated time inquiry","Got confirmation and PO proceed",Meeting,1539788616#205,28229,"Pending Approval"
+9597,"2018-10-17 15:04:28",20,NULL,,"Follow up","It is regarding Bearing locating ring Inquiry.Supplier Quote rcvd.","Order is expected",Meeting,1539788668#208,28250,"Pending Approval"
+9598,"2018-10-17 15:08:44",20,NULL,,"Follow up","As per discussed with user want NTN bearing 30305 via Pcard","Order proceed",Meeting,1539788924#209,27986,"Pending Approval"
+9599,"2018-10-17 16:32:41",129,8628,"Introduction Meeting","First Meeting/Intro Meeting","Met Mr. Gurpreet Matharu and briefed him on Bulk MRO Industrial Supply. He as asked to re-visit Heurtey in November and discuss the product line in detail.","Follow up with Gurpreet next month and fix a meeting again.",Meeting,1539793961#12910,28256,"Pending Approval"
+9600,"2018-10-17 16:55:23",175,3576,"follow up","Follow up","Went to meet Mr.Lalit In engineering Purchase as he has given us inquiries but we lost the order because of rates issues,need to discuss about vendor registration and further plans.","need to visit again as he was busy today.",Meeting,1539795323#1758,28257,"Pending Approval"
+9601,"2018-10-17 16:58:23",175,8401,meeting,"Follow up","I met Mr.Prashant,it was our second meeting. try to get some requirements from there side, he told me he will be contacting us next month with new requirements.","follow up required.",Meeting,1539795503#1755,28258,"Pending Approval"
+9602,"2018-10-17 17:21:33",25,NULL,,"Remarks on 16th October ","We\'ll get PO for partial items against this requirement within one to two weeks",Done,"Phone call",1539796893#258,27294,"Pending Approval"
+9603,"2018-10-17 17:25:28",25,NULL,,"Remarks on 16th October","We\'ll get PO for the said inquiry of fine test dust Jar",Done,Meeting,1539797128#259,28013,"Pending Approval"
+9604,"2018-10-17 17:29:01",25,NULL,,"Remarks on 16th October","Got following requirement
+Bug actuator driver cards - AMPLIFIER ELECTRONIC CONTOL - QC6200
+Qty required -2nos.
+
+Along with this sent quotation for bug actuator ultra motion- 
+Qty - 2nos.","Provide quotation as soon as possible",Email,1539797341#256,28214,"Pending Approval"
+9605,"2018-10-17 17:33:37",25,NULL,,Closure,"Got PO for the said inquiry of Johnson controls make fire alarm system value is 137668 INR","Acknowledge and execute properly",Meeting,1539797617#253,27154,"Pending Approval"
+9606,"2018-10-17 17:34:52",108,8629,"Gift Items.","First Meeting/Intro Meeting","They have seminar by end of November 2018. Discussed with him the detail requirement and tomorrow I will discussed with purchase person and the detail of list of items will send to HO.","Need to have further interaction.",Meeting,1539797692#1086,28259,"Pending Approval"
+9607,"2018-10-17 17:37:08",108,NULL,,"Follow up","She will get back to us in next 2 - 3 days.","Need to have further interaction.",Meeting,1539797828#1086,25685,"Pending Approval"
+9608,"2018-10-17 17:51:40",59,NULL,,"Remarks on 16 October","I met Mr- Phool Kumar regarding of inquiry status and he said our quotation send to purchase team and they process P.O.","Follow up with Nitin ghome
+",Meeting,1539798700#593,27173,"Pending Approval"
+9609,"2018-10-17 17:53:58",112,NULL,,"Follow up","To followup quotation he told quotation is in process.","To follow up for PO.",Meeting,1539798838#1125,27903,"Pending Approval"
+9610,"2018-10-17 17:55:17",59,NULL,,"Remarks on 16 October","Please send quotation panding line item client required quotation as soon as possible.","Send quotation tomorrow.","Phone call",1539798917#597,27653,"Pending Approval"
+9611,"2018-10-17 17:56:43",108,8215,"Inquire for Supply of specialized tools & machinery","Follow up","Discuss with the outcome of our quote. Ask me to contact him next week.","Need to have further interaction.",Meeting,1539799003#1083,28260,"Pending Approval"
+9612,"2018-10-17 18:01:02",59,NULL,,Closure,"Got inquiry of hopcop pump and he share Oli list and confirm flow of this pump or not.","Confirm on supplier as soon as possible ","Phone call",1539799262#599,27963,"Pending Approval"
+9613,"2018-10-17 18:11:39",59,NULL,,Closure,"Client required quotation at the earliest.","Please send quotation as soon as possible to get P.O.",Meeting,1539799899#593,28221,"Pending Approval"
+9614,"2018-10-17 18:13:25",59,NULL,,"Follow up","Talk to client and he said this quotation will be in process.","Inquiry follow up.","Phone call",1539800005#597,28206,"Pending Approval"
+9615,"2018-10-17 18:13:37",52,NULL,,"First Meeting/Intro Meeting","Visited ongc to explore the possibility of considering Cameron  and not Rockwin for this tender.
+T
+As per them it is difficult.
+Ankit and Gourav also visited ongc MH to explore further and discussed the solution for the remaining 125 seperators.
+
+","Meet Anchor on Friday to sell other products.",Meeting,1539800017#526,28075,"Pending Approval"
+9616,"2018-10-18 17:12:49",108,8025,"For current order and new inquiry.","Follow up","The following was the topic of discussion:-
+
+1) Current order billing required to be done from Delhi.
+
+2) He will send us new inquiry by today evening.","Need to have regular interaction.",Meeting,1539882770#1085,28263,"Pending Approval"
+9617,"2018-10-18 17:52:38",52,NULL,,"First Meeting/Intro Meeting","Met on Tuesday 16th Oct.and discussed about technical queries on various products.
+Majento was not working on that day.","Follow-up on friday",Meeting,1539885158#529,26718,"Pending Approval"
+9618,"2018-10-18 17:58:10",52,NULL,,"First Meeting/Intro Meeting","Discussed about the offer.The project is delayed.","Follow-up next week.",Meeting,1539885490#526,11165,"Pending Approval"

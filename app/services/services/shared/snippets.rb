@@ -19,6 +19,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def copy_inquiry_number_into_project_uid
+    Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
+  end
+
   def delete_inquiry_products
     SalesQuoteRow.delete_all
     SalesQuote.delete_all
