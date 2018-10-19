@@ -14,7 +14,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :is_service, :to => :sales_quote_row
   delegate :measurement_unit, :to => :sales_quote_row, allow_nil: true
   delegate :remote_uid, :to => :sales_quote_row
-  delegate :best_tax_code, :to => :sales_quote_row
+  delegate :best_tax_code, :to => :sales_quote_row, allow_nil: true
 
   attr_accessor :tax_percentage
 
