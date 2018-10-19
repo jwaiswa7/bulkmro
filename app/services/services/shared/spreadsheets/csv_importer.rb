@@ -1,7 +1,7 @@
 require 'csv'
 
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
-  def initialize(name, folder ,skip = 0, log_errors = false)
+  def initialize(name, folder, skip = 0, log_errors = false)
     @errors = []
     @skip = skip
     @log_errors = log_errors
@@ -16,9 +16,9 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
       set_current_row(row.to_h)
 
       # begin
-        yield self
+      yield self
       # rescue => error
-        # errors.push("#{error.inspect} - #{row.to_h}")
+      # errors.push("#{error.inspect} - #{row.to_h}")
       # end
 
       break if limit.present? && $..to_i > limit

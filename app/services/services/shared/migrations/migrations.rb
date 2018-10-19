@@ -874,7 +874,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
       inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_initialize
       if inquiry_product_supplier.new_record? || update_if_exists
-        inquiry_product_supplier.unit_cost_price = x.get_column('cost')
+        inquiry_product_supplier.unit_cost_price = x.get_column('cost').try(:to_i) || 0
         inquiry_product_supplier.save!
       end
 
@@ -1011,12 +1011,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         activity.contact = contact
         activity.subject = x.get_column('subject')
         activity.company_type = company_type
-        activity.purpose = purpose[x.get_column('purpose')]
+        activity.purpose = purpose[x.get_column('purpose')] || :'Others'
         activity.activity_type = activity_type[x.get_column('activity')]
         activity.activity_status = activity_status[x.get_column('activitystatus')]
         activity.points_discussed = x.get_column('comment')
         activity.actions_required = x.get_column('actionrequired')
-        activity.rference_number = x.get_column('refno')
+        activity.reference_number = x.get_column('refno')
         activity.created_at = (x.get_column('created_at').to_datetime if x.get_column('created_at').present?)
         activity.legacy_metadata = x.get_row
         activity.created_by = overseer
