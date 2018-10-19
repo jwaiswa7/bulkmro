@@ -12,6 +12,7 @@ json.data (@sales_orders) do |sales_order|
                       end
                   ].join(' '),
                   sales_order.order_number,
+                  sales_order.id,
                   sales_order.status,
                   format_enum(sales_order.remote_status),
                   format_date(sales_order.sent_at),
@@ -25,6 +26,7 @@ json.data (@sales_orders) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
