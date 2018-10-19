@@ -10,7 +10,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
       company = Company.find_by_remote_uid!(params['cmp_id'])
 
       if invoice.present?
-        SalesReceipt.where(:remote_uid => params['p_sap_reference_number']).first_or_create! do |sales_receipt|
+        SalesReceipt.where(:remote_reference => params['p_sap_reference_number']).first_or_create! do |sales_receipt|
           sales_receipt.assign_attributes(
               :sales_invoice => invoice,
               :company => company,
