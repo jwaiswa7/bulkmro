@@ -19,7 +19,7 @@ class Resources::Attachment < Resources::ApplicationResource
 
     Net::SSH.start(SAP.server[:host], SAP.attachment_username,  key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
-        if attachment.try(:key)
+        if attachment.present? && attachment.key.present?
           path = ActiveStorage::Blob.service.send(:path_for, attachment.key)
 
           if File.exist?(path)
