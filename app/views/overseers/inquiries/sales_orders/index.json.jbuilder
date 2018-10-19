@@ -37,19 +37,20 @@ end
 json.columnFilters [
                        [],
                        [],
-                       Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
                        [],
                        []
                    ]
 
 
-json.recordsTotal Inquiry.all.count
-json.recordsFiltered @indexed_inquiries.total_count
+
+json.recordsTotal SalesOrder.all.count
+json.recordsFiltered @indexed_sales_orders.total_count
 # json.recordsTotal @inquiries.model.all.count
 # json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
