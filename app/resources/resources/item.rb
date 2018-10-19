@@ -12,11 +12,11 @@ class Resources::Item < Resources::ApplicationResource
     params = {
         ItemCode: record.sku, #  BMRO Part#
         ItemName: record.name, # Product Name
-        ItemsGroupCode: record.category.remote_uid.present? ? record.category.remote_uid : 100, #record.category.remote_uid, # Product Category
+        ItemsGroupCode: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, #record.category.remote_uid, # Product Category
         PurchaseItem: "tYES", # TO BE CREATED IN MAGENTO
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
-        Manufacturer: record.brand.remote_uid.present? ? record.brand.remote_uid : nil, # Product Manufacturer
+        Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : nil, # Product Manufacturer
         Valid: "tYES", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
@@ -29,7 +29,7 @@ class Resources::Item < Resources::ApplicationResource
         MinOrderQuantity: 0, # Minimum Order Qty
         InventoryUOM: record.measurement_unit.try(:name), #
         InventoryWeight1: 0, # Weight
-        U_Category: record.category.remote_uid.present? ? record.category.remote_uid : 100, #record.category.remote_uid, # ????
+        U_Category: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, #record.category.remote_uid, # ????
         U_ProdID: record.to_param, # Product Id
         U_MRP: 0, # MRP Price
         U_DistAmt: 0, # Distributor Discount
@@ -47,12 +47,12 @@ class Resources::Item < Resources::ApplicationResource
         U_Meta_Key: record.meta_keyword, # Meta Keyword
         GSTRelevnt: "tYES",
         GSTTaxCategory: "gtc_Regular",
-        U_TaxClass: record.tax_code.tax_percentage.to_i, # Tax Class
+        U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class
     }
 
     if record.is_service
       params.merge!({
-                        SACEntry: record.tax_code.try(:remote_uid) * -1,
+                        SACEntry: record.best_tax_code.try(:remote_uid) * -1,
                         ManageBatchNumbers: "tNO",
                         InventoryItem: 'tNO',
                         MaterialType: "mt_FinishedGoods"
@@ -61,7 +61,7 @@ class Resources::Item < Resources::ApplicationResource
       params.merge!({
                         InventoryItem: 'tYES',
                         ManageBatchNumbers: 'tYES',
-                        ChapterID: record.tax_code.try(:remote_uid),
+                        ChapterID: record.best_tax_code.try(:remote_uid),
                         MaterialType: 3
                     })
     end
