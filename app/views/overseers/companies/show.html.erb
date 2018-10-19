@@ -180,9 +180,11 @@
     <div class="tab-content">
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
         <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Addresses</h3>
-          <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-            Address</a>
+          <% if policy(:address).new? %>
+            <h3 class="display-5 mb-1 d-none d-md-block">Addresses</h3>
+            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Address</a>
+          <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All addresses filterable in any way that we want under <strong><%= @company.name %></strong>.
@@ -203,8 +205,10 @@
       <div class="tab-pane fade" id="contacts" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
-          <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-            Contact</a>
+          <% if policy(:contact).new? %>
+            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Contact</a>
+          <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All contacts filterable in any way that we want under <strong><%= @company.name %></strong>.
@@ -228,8 +232,10 @@
       <div class="tab-pane fade" id="inquiries" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
-          <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-            Inquiry</a>
+          <% if policy(@company).new_inquiry? %>
+            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Inquiry</a>
+          <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All inquiries filterable in any way that we want under <strong><%= @company.name %></strong>.

@@ -29,8 +29,11 @@
       <div class="tab-pane fade active show" id="companies" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Companies</h3>
-          <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-            Company</a>
+
+          <% if policy(:company).new? %>
+            <a href="<%= new_overseers_account_company_path(@account) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Company</a>
+          <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All companies filterable in any way that we want under <strong><%= @account.name %></strong>.
