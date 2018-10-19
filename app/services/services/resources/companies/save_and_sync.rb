@@ -6,7 +6,7 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    if company.save!
+    if company.save
       perform_later(company)
     end
   end

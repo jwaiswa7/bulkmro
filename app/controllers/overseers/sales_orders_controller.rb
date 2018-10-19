@@ -9,5 +9,4 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     @sales_orders = ApplyDatatableParams.to(policy_scope(SalesOrder.all), params)
     authorize @sales_orders
   end
-
 end

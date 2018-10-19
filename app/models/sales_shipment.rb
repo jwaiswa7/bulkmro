@@ -29,4 +29,8 @@ class SalesShipment < ApplicationRecord
         ('pdf' if include_extension)
     ].compact.join('.')
   end
+
+  def self.syncable_identifiers
+    [:shipment_number]
+  end
 end

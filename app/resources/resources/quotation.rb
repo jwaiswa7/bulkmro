@@ -49,7 +49,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
       item.U_MPN = row.product.try(:mpn)
-      item.U_LeadTime = row.lead_time_option.name # Lead time ?
+      item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
       item.Currency = record.currency.name # CContactPersonurr
@@ -63,9 +63,9 @@ class Resources::Quotation < Resources::ApplicationResource
       item.LocationCode = record.inquiry.ship_from.location_uid
 
       if row.product.is_service
-        item.SACEntry = row.tax_code.remote_uid # HSN !!
+        item.SACEntry = row.best_tax_code.remote_uid # HSN !!
       else
-        item.HSNEntry = row.tax_code.remote_uid # HSN !!
+        item.HSNEntry = row.best_tax_code.remote_uid # HSN !!
       end
 
       item.U_MgntRemark = ""

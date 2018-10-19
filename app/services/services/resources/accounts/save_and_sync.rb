@@ -5,7 +5,7 @@ class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
   end
 
   def call
-    if account.save!
+    if account.save
       perform_later(account)
     end
   end

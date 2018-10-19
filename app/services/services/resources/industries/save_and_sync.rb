@@ -5,7 +5,7 @@ class Services::Resources::Industries::SaveAndSync < Services::Shared::BaseServi
   end
 
   def call
-    if industry.save!
+    if industry.save
       perform_later(industry)
     end
   end

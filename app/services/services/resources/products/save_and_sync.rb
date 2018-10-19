@@ -5,7 +5,7 @@ class Services::Resources::Products::SaveAndSync < Services::Shared::BaseService
   end
 
   def call
-    if product.save!
+    if product.save
       perform_later(product)
     end
   end

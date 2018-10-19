@@ -1,6 +1,6 @@
 class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def show?
-    record.persisted? && !record.document.attached?
+    record.persisted? && record.not_legacy? && !record.document.attached?
   end
 
   def show_document?
