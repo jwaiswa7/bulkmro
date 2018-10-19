@@ -1,0 +1,4 @@
+indices:
+  query:
+    bool:
+      max_clause_count: 10000

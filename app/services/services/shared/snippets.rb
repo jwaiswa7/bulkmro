@@ -19,6 +19,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def check_es
+    service = Services::Overseers::Finders::Products.new({})
+    service.manage_failed_skus('Painting Spray Gun Type - 68, Cap - 140 M', 4, 1)
+  end
+
   def copy_inquiry_number_into_project_uid
     Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
   end
