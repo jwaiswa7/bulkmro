@@ -28,7 +28,7 @@ class Overseers::InquiriesController < Overseers::BaseController
                 elsif current_overseer.outside?
                   inquiries.where(:outside_sales_owner_id => current_overseer.self_and_descendant_ids)
                 else
-                  []
+                  inquiries
                 end
 
     @inquiries = ApplyDatatableParams.to(inquiries, params)
