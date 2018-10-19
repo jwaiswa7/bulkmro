@@ -44,16 +44,16 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-1">
                       <div class="form-group">
                         <%= product.label :sku %>
                         <%= product.hidden_field :sku, readonly: true %>
                       </div>
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-1">
                       <div class="form-group">
                         <%= product.label :mpn, "MPN" %>
-                        <%= product.input :mpn %>
+                        <%= product.input :mpn, label: false%>
                       </div>
                     </div>
                     <div class="col-6 col-md-2">
@@ -67,7 +67,7 @@
                     <div class="col-6 col-md-2">
                       <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
                     </div>
-                    <div class="col-6 col-md-1">
+                    <div class="col-6 col-md-1 ">
                       <%= product.input :is_service, as: :select, wrapper: :custom_multi_select, label: 'Service', include_blank: false %>
                     </div>
                   </div>
@@ -97,10 +97,16 @@
                       <% end %>
                     </div>
                   </div>
-                  <div class="col-6 col-md-2">
+                  <div class="col-6 col-md-1">
                     <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
                       <span class="mt-2 d-block d-md-none"><strong>SKU</strong></span>
                       <%= approved_alternative.sku %>
+                    <% end %>
+                  </div>
+                  <div class="col-6 col-md-1">
+                    <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
+                      <span class="mt-2 d-block d-md-none"><strong>SKU</strong></span>
+                      <%= approved_alternative.mpn %>
                     <% end %>
                   </div>
                   <div class="col-6 col-md-2">
@@ -121,7 +127,7 @@
                       <%= approved_alternative.best_tax_code.to_s %>
                     <% end %>
                   </div>
-                  <div class="col-6 col-md-1">
+                  <div class="col-6 col-md-1 ">
                     <%= row.label :approved_alternative_id, class: 'mb-0', for: /id="([a-z\d_]*)"/.match(radio)[1] do %>
                       <span class="mt-2 d-block d-md-none"><strong>Service</strong></span>
                       <%= raw approved_alternative.is_service ? '<i class="fal fa-check text-success"></i>' : '<i class="fal fa-times text-danger"></i>' %>
