@@ -284,4 +284,8 @@ class Inquiry < ApplicationRecord
         self.company.name
     ].join(' ')
   end
+
+  def has_attachment?
+    self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
+  end
 end
