@@ -51,6 +51,12 @@
                       </div>
                     </div>
                     <div class="col-6 col-md-2">
+                      <div class="form-group">
+                        <%= product.label :mpn, "MPN" %>
+                        <%= product.input :mpn %>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-2">
                       <%= product.association :brand, collection: selected_option_or_nil(product, :brand), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
                     </div>
 
