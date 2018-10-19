@@ -221,7 +221,13 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.log_response(response)
-    @remote_request.update_attributes(:response => response, status: :success)
+
+    status = :success
+    if response[:error_message].present?
+      status = :failed
+    end
+
+    @remote_request.update_attributes(:response => response, status: status)
     @remote_request
   end
 end
