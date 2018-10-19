@@ -24,7 +24,7 @@ class SalesShipment < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ['shipment', remote_uid].join('_'),
+        ['shipment', shipment_number].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
   end
