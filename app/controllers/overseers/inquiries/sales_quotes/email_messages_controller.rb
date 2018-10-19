@@ -5,7 +5,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
         :subject => @inquiry.subject,
         :body => SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
         :auto_attach => true,
-        # to: current_overseer.email
+    # to: current_overseer.email
     )
 
     authorize @sales_quote, :new_email_message?
@@ -20,6 +20,8 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     )
 
     @email_message.assign_attributes(email_message_params)
+    @email_message.assign_attributes(:cc => email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
+    @email_message.assign_attributes(:bcc => email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
 
     authorize @sales_quote, :create_email_message?
 

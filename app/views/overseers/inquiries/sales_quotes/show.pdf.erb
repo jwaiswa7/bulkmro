@@ -284,7 +284,7 @@
                   <td align="center">
                     <span><%= item.lead_time_option.to_s %></span></td>
                   <td align="center">
-                    <span><%= item.product.measurement_unit.name %></span></td>
+                    <span><%= item.product.measurement_unit.name if item.product.measurement_unit.present? %></span></td>
                   <td align="center">
                     <span><%= item.quantity %></span></td>
                   <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
