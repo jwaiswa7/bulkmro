@@ -15,9 +15,9 @@ class Resources::Attachment < Resources::ApplicationResource
   def self.to_remote(record)
     remote_attachments = []
 
-    ssh_private_keys = [SAP.server[:ssh_key]]
+    ssh_private_keys = [SAP.ssh_key]
 
-    Net::SSH.start(SAP.server[:host], SAP.server[:attachment_username], :keys => [], key_data: ssh_private_keys, keys_only: true) do |ssh|
+    Net::SSH.start(SAP.server[:host], SAP.attachment_username,  key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
         if attachment.try(:key)
           path = ActiveStorage::Blob.service.send(:path_for, attachment.key)
@@ -40,7 +40,6 @@ class Resources::Attachment < Resources::ApplicationResource
         end
       end
     end
-
 
     {
         Attachments2_Lines: remote_attachments.as_json
