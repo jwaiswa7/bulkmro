@@ -61,6 +61,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_ProdBrand = row.product.brand.try(:name) # Brand
       item.WarehouseCode = record.inquiry.ship_from.remote_uid # ship_from_warehouse
       item.LocationCode = record.inquiry.ship_from.location_uid
+      item.U_Margin = row.margin_percentage
 
       if row.product.is_service
         item.SACEntry = row.best_tax_code.remote_uid # HSN !!
@@ -96,8 +97,8 @@ class Resources::Quotation < Resources::ApplicationResource
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: record.ancestors.size, #Quotation Revision ID
         DocDate: record.created_date, #Quote Create Date
-        DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
-        TaxDate: record.inquiry.customer_order_date, # record.created_date , #Tax Date??
+        DocDueDate: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime("%Y-%m-%d") : nil, #Quotation Valid Till ?
+        TaxDate: record.inquiry.customer_order_date.present? ? record.inquiry.customer_order_date.strftime("%Y-%m-%d") : nil, # record.created_date , #Tax Date??
         AttachmentEntry: record.inquiry.attachment_uid,
         DocumentLines: items, # [Products]
         U_Ovr_Margin: record.calculated_total_margin_percentage,
