@@ -86,9 +86,79 @@
       page-break-inside: avoid;
     }
 
-    div.alwaysbreak { page-break-before: always; }
-    div.nobreak:before { clear:both; }
-    div.nobreak { page-break-inside: avoid; }
+    .pdf-table {
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #3c3c3c;
+      border-collapse: separate;
+      text-align: center
+    }
+
+    .pdf-table, .pdf-table th, .pdf-table td {
+      color: #000;
+    }
+
+    .pdf-table thead {
+      background: #d3d3d3;
+    }
+
+    .pdf-table tr th {
+      padding: 3px;
+      border-right: 1px solid #3c3c3c;
+      border-bottom: 1px solid #3c3c3c;
+      font-size: 10px;
+    }
+
+    .pdf-table tr th:first-child {
+      border-top-left-radius: 5px;
+    }
+
+    .pdf-table tr th:last-child {
+      border-top-right-radius: 5px;
+      border-right: none;
+    }
+
+    .pdf-table tr td {
+      padding: 3px 3px 0;
+      border-right: 1px solid #3c3c3c;
+      border-bottom: 1px solid #3c3c3c;
+      font-size: 9px;
+      vertical-align: middle;
+    }
+
+    .pdf-table tr td:last-child {
+      border-right: none;
+    }
+
+    .pdf-table tr.pdf-table-total-row {
+      background: #d3d3d3;
+    }
+
+    .pdf-table tr.pdf-table-total-row td {
+      border-bottom: none;
+    }
+
+    .pdf-table tr.pdf-table-total-row td:first-child {
+      border-bottom-left-radius: 5px;
+    }
+
+    .pdf-table tr.pdf-table-total-row td:last-child {
+      border-bottom-right-radius: 5px;
+    }
+
+    div.alwaysbreak {
+      page-break-before: always;
+    }
+
+    div.nobreak:before {
+      clear: both;
+    }
+
+    div.nobreak {
+      page-break-inside: avoid;
+    }
+
+
   </style>
 </head>
 <body class=" bmropdfprint-index-orderpdf">
