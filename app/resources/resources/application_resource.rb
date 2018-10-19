@@ -31,8 +31,8 @@ class Resources::ApplicationResource
     ATTACHMENT_PASSWORD = 'b1service0@123'
 
     SAP = OpenStruct.new({
-                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
-                             attachment_api: '35.200.144.191/b1_shf/Attachments',
+                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Pradeep',
+                             attachment_api: '35.200.144.191/b1_shf/Pradeep',
                              server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
                              login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
                              draft_doc_object_code: 17,
