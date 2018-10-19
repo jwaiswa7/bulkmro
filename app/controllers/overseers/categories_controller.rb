@@ -13,7 +13,6 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   def show
-    redirect_to edit_overseers_category_path (@category)
     authorize @category
   end
 
