@@ -1071,9 +1071,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_invoice.metadata = x.get_row
           sales_invoice.save!
         end
-        attach_file(sales_invoice, filename: x.get_column('original_file_name'), field_name: 'original_invoice', file_url: x.get_column('original_file_path'))
-        attach_file(sales_invoice, filename: x.get_column('duplicate_file_name'), field_name: 'duplicate_invoice', file_url: x.get_column('duplicate_file_path'))
-        attach_file(sales_invoice, filename: x.get_column('triplicate_file_name'), field_name: 'triplicate_invoice', file_url: x.get_column('triplicate_file_path'))
+        attach_file(sales_invoice, filename: x.get_column('original_file_name'), field_name: 'original_invoice', file_url: x.get_column('original_file_path')) if !sales_invoice.original_invoice.attached?
+        attach_file(sales_invoice, filename: x.get_column('duplicate_file_name'), field_name: 'duplicate_invoice', file_url: x.get_column('duplicate_file_path')) if !sales_invoice.duplicate_invoice.attached?
+        attach_file(sales_invoice, filename: x.get_column('triplicate_file_name'), field_name: 'triplicate_invoice', file_url: x.get_column('triplicate_file_path')) if !sales_invoice.triplicate_invoice.attached?
       end
     end
   end
@@ -1091,7 +1091,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_shipment.metadata = x.get_row
           sales_shipment.save!
         end
-        attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path'))
+        attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path')) if !sales_shipment.shipment_pdf.attached?
       end
     end
   end
@@ -1111,7 +1111,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             purchase_order.metadata = x.get_row
             purchase_order.save!
           end
-          attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path'))
+          attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
         end
       rescue => e
         errors.push("#{e.inspect} - #{x.get_column('legacy_id')}")
