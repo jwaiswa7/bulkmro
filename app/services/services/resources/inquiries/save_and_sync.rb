@@ -5,7 +5,7 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    if inquiry.save!
+    if inquiry.save
       perform_later(inquiry)
     end
   end
