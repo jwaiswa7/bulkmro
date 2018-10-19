@@ -17,10 +17,14 @@ class Resources::Attachment < Resources::ApplicationResource
 
     ssh_private_keys = [SAP.ssh_key]
 
-    Net::SSH.start(SAP.server[:host], SAP.attachment_username,  key_data: ssh_private_keys, keys_only: true) do |ssh|
+    Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
         if attachment.try(:key)
-          path = ActiveStorage::Blob.service.send(:path_for, attachment.key)
+
+          path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
+          File.open(path, 'wb') do |file|
+            file.write(attachment.download)
+          end
 
           if File.exist?(path)
 
