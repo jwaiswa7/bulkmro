@@ -1381,7 +1381,7 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 1417,"GLIDE RITE",glide-rite1.jpg,glide-rite,NULL,NULL,0,1,1332,,,b:0;,glide-rite1.jpg,0,NULL
 1418,GLISTEN,glisten.jpg,glisten,NULL,NULL,0,1,1333,,,b:0;,,0,NULL
 1419,"GLO BRITE",glo-brite.jpg,glo-brite,NULL,NULL,0,1,1334,,,b:0;,glo-brite.jpg,0,NULL
-1420,GLOBAL,global.jpg,global,NULL,NULL,0,1,1335,,,b:0;,global.jpg,0,875
+1420,GLOBAL,NULL,global,NULL,NULL,0,1,1335,,,b:0;,global.jpg,0,875
 1421,"GLOBAL FINISHING SOLUTIONS",global-finishing-solutions.jpg,global-finishing-solutions,NULL,NULL,0,1,1336,,,b:0;,global-finishing-solutions.jpg,0,NULL
 1422,"GLOBAL STEEL",global-steel.jpg,global-steel,NULL,NULL,0,1,1337,,,b:0;,,0,NULL
 1423,"GLOBAL WATER",global-water.jpg,global-water,NULL,NULL,0,1,1338,,,b:0;,global-water.jpg,0,NULL
@@ -2403,7 +2403,7 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 2447,NYCOIL,nycoil.jpg,nycoil,NULL,NULL,0,1,2310,,,b:0;,nycoil.jpg,0,585
 2448,"NYLATRON NSM",NULL,nylatron-nsm,NULL,NULL,0,0,2311,,,,,NULL,NULL
 2449,NYLGLO,NULL,nylglo,NULL,NULL,0,0,2312,,,,,NULL,NULL
-2450,"O C KECKLEY COMPANY",o-c-keckley-company.jpg,o-c-keckley-company,NULL,NULL,0,1,2313,,,b:0;,,0,NULL
+2450,"O C KECKLEY COMPANY",o-c-keckley-company.jpg,o-c-keckley-company,NULL,NULL,0,1,2313,,,b:0;,,0,2146
 2451,OAKTON,oakton-.jpg,oakton,NULL,NULL,0,1,2314,,,b:0;,oakton-.jpg,0,NULL
 2452,OASIS,NULL,oasis,NULL,NULL,0,0,2315,,,,,NULL,NULL
 2453,OATEY,oatey.jpg,oatey,NULL,NULL,0,1,2316,,,b:0;,oatey.jpg,0,NULL
@@ -4599,7 +4599,7 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 5100,"3M MAKE",NULL,3m-make-5100,NULL,NULL,0,1,305792,,,,,NULL,NULL
 5101,ABBOT,NULL,abbot,NULL,NULL,0,1,307720,,,,,NULL,1216
 5102,abc_test,NULL,abc-test,NULL,NULL,0,1,305524,,,,,NULL,NULL
-5103,ABHINAV,NULL,abhinav,NULL,NULL,0,1,295964,,,,,NULL,NULL
+5103,ABHINAV,NULL,abhinav,NULL,NULL,0,1,295964,,,b:0;,,0,2137
 5104,ACCENT,NULL,accent,NULL,NULL,0,1,307727,,,,,NULL,747
 5105,ACCURATE,NULL,accurate,NULL,NULL,0,1,296032,,,,,NULL,1269
 5106,ACHIEVE,NULL,achieve,NULL,NULL,0,1,296336,,,,,NULL,2150
@@ -4952,7 +4952,7 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 5462,"FESTO ",NULL,festo-5462,NULL,NULL,0,1,292374,,,,,NULL,91
 5463,FEVICOL,NULL,fevicol,NULL,NULL,0,1,304868,,,,,NULL,660
 5464,FEVIKWIK,NULL,fevikwik,NULL,NULL,0,1,304869,,,,,NULL,NULL
-5465,FEVIQUICK,NULL,feviquick,NULL,NULL,0,1,305684,,,,,NULL,NULL
+5465,FEVIQUICK,NULL,feviquick,NULL,NULL,0,1,305684,,,,,NULL,2148
 5466,FIEBIG,NULL,fiebig,NULL,NULL,0,1,307749,,,,,NULL,798
 5467,FILTECH,NULL,filtech,NULL,NULL,0,1,296278,,,,,NULL,1215
 5468,"FINCH  MCCLAY FLOOR",NULL,finch-mcclay-floor,NULL,NULL,0,1,295872,,,,,NULL,NULL
@@ -6094,7 +6094,7 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 6947,MAGTRON,NULL,magtron,NULL,NULL,0,1,308671,,,,,NULL,NULL
 6948,MAHALAXMI,NULL,mahalaxmi,NULL,NULL,0,1,308370,,,,,NULL,1366
 6949,"MAK HYDROL",NULL,mak-hydrol,NULL,NULL,0,1,308567,,,,,NULL,NULL
-6950,MALLCOM,NULL,mallcom,NULL,NULL,0,1,308501,,,,,NULL,NULL
+6950,MALLCOM,NULL,mallcom,NULL,NULL,0,1,308501,,,,,NULL,2138
 6951,MASS,NULL,mass,NULL,NULL,0,1,308660,,,,,NULL,908
 6952,MASTERVOLT,NULL,mastervolt,NULL,NULL,0,1,308793,,,,,NULL,NULL
 6953,MAXFLOW,NULL,maxflow,NULL,NULL,0,1,308706,,,,,NULL,1307
@@ -6890,3 +6890,26 @@ manufacturer_id,name,image,identifier,website,description,is_featured,status,opt
 7750,"SOLAR CENTER",NULL,"Solar Center",NULL,NULL,0,0,0,,,b:0;,,0,2130
 7751,PREMIUM,NULL,Premium,NULL,NULL,0,0,0,,,b:0;,,0,2131
 7752,METROHM,NULL,Metrohm,NULL,NULL,0,0,0,,,b:0;,,0,2132
+7753,JLD,NULL,Jld,NULL,NULL,0,0,0,,,b:0;,,0,2134
+7754,HAGNLEONE,NULL,HagnLeone,NULL,NULL,0,0,0,,,b:0;,,0,2135
+7755,GANN,NULL,Gann,NULL,NULL,0,0,0,,,b:0;,,0,2136
+7756,VU,NULL,VU,NULL,NULL,0,0,0,,,b:0;,,0,2140
+7757,RECONNECT,NULL,Reconnect,NULL,NULL,0,0,0,,,b:0;,,0,2141
+7758,ATORN,NULL,"ATORN  ",NULL,NULL,0,0,0,,,b:0;,,0,2142
+7759,CROMA,NULL,Croma,NULL,NULL,0,0,0,,,b:0;,,0,2143
+7760,KODAK,NULL,Kodak,NULL,NULL,0,0,0,,,b:0;,,0,2144
+7761,GASTON,NULL,GASTON,NULL,NULL,0,0,0,,,b:0;,,0,2145
+7762,WENGLOR,NULL,wenglor,NULL,NULL,0,0,0,,,b:0;,,0,2147
+7763,RHP,NULL,RHP,NULL,NULL,0,0,0,,,b:0;,,0,2149
+7764,BW,NULL,Bw,NULL,NULL,0,0,0,,,b:0;,,0,2150
+7765,POLYWELL,NULL,Polywell,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7766,KOCHER,NULL,Kocher,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7767,PG,NULL,Pg,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7768,ZENNER,NULL,Zenner,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7769,TANAKA,NULL,Tanaka,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7770,ASC,NULL,ASC,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7771,SYCON,NULL,Sycon,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7772,BACHO,NULL,Bacho,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7773,SURE,NULL,SURE,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7774,X-SPARK,NULL,X-SPARK,NULL,NULL,0,0,0,,,b:0;,,0,NULL
+7775,"BLACK BURN",NULL,"BLACK BURN",NULL,NULL,0,0,0,,,b:0;,,0,NULL

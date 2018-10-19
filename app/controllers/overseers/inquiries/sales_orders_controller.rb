@@ -19,7 +19,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def new
     @sales_quote = SalesQuote.find(params[:sales_quote_id])
-
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
     authorize @sales_quote, :new_sales_order?
   end
@@ -86,7 +85,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync
     authorize @sales_order
-
     if @sales_order.save_and_sync
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     end

@@ -5,9 +5,13 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
   end
 
   def call
-    sales_invoice = SalesInvoice.find_by_invoice_number!(params['increment_id'])
-    sales_invoice.update_attributes(:status => params['state'])
-
+    sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
+    if sales_invoice.present?
+      sales_invoice.update_attributes(:status => params['state'])
+      return_response("Sales Invoice updated successfully.")
+    else
+      return_response("Sales Invoice not found.", 0)
+    end
     # todo comments
   end
 

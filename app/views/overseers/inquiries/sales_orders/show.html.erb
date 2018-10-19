@@ -1,3 +1,7 @@
+<% content_for :heading do %>
+  View Sales Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+<% end %>
+
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@sales_order, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
@@ -111,8 +115,8 @@
               </div>
             </div><br>
 
+            <strong>Supplier Quotes attachment</strong>
             <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-              <strong>Supplier Quotes attachment</strong>
               <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
                 <br><%= attachment.filename %>
               <% end %>

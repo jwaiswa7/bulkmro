@@ -11,7 +11,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @indexed_inquiries = service.indexed_records
-        @inquiries = service.records.reverse
+        @inquiries = service.records.try(:reverse)
       end
     end
   end
@@ -22,7 +22,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def smart_queue
-    self_and_descendant_ids = current_overseer.self_and_descendant_ids
+    # self_and_descendant_ids = current_overseer.self_and_descendant_ids
     # Inquiry.smart_queue.where(:created_by_id => self_and_descendant_ids)
 
     @inquiries = ApplyDatatableParams.to(Inquiry.smart_queue, params)
@@ -37,7 +37,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     @indexed_inquiries = service.indexed_records
     @inquiries = service.records.reverse
 
-    authorize @inquiries
+    authorize :inquiry
   end
 
   def show

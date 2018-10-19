@@ -1,6 +1,6 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def show?
-    record.persisted? && !record.serialized_pdf.attached?
+    record.persisted? && record.order_number.present? && !record.serialized_pdf.attached?
   end
 
   def show_serialized?
@@ -16,7 +16,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def create_confirmation?
-    sales?
+    person?
   end
 
   def new_revision?
@@ -28,7 +28,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    sales_manager?
+    manager?
   end
 
   def go_to_inquiry?

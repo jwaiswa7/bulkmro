@@ -186,7 +186,7 @@ Haresh Bhanderi +91 9427222000",24651001233,NULL,24151001233,NULL,AAACK7969BXM00
 166,216,"S B Corporation",27AABFS2963H1Z3,NULL,"Mittal Industrial Estate, Marol, Andheri East,"," Mumbai",505,Maharashtra,IN,400059,"022 2856 3644  /  91-9510373231",27580016410C,NULL,27580016410V,NULL,NULL,NULL,"0,1",NULL,NULL
 167,217,"M.M.Tools and Hardware",27ABAFM2434P1Z1,NULL,"Plot No 490, Near Bakul Cement Agency,  Janta Market Rd, Sector 20, Turbhe,","Navi Mumbai",505,Maharashtra,IN,400703,"022 2783 1966
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-168,218,"Max Spare Limited",27AADCS6349E1Z9,NULL,"Oil Seal House, A/403 Road. No.28, Wagle Estate, Thane",Mumbai,505,Maharashtra,IN,400604,"022 2580 0972  / 22225555",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+168,218,"Max Spare Limited",27AADCS6349E1Z9,NULL,"Oil Seal House, A/403 Road. No.28, Wagle Estate, Thane",Mumbai,505,Maharashtra,IN,400604,"022 2580 0972  / 22225555",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 170,220,"Meenaxi Chemicals",29AEVPP3992F1ZM,NULL,"63,Laxman Rao Road, B.V.K Iyenger Road Cross,",Bangalore,501,Karnataka,IN,560053,"080 2225 9599",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 171,221,"Sayali Electro Systems",27AERPG9836P1ZF,NULL,"Office No. 3, Building no 1, 1st Floor, Chintamani Commercial Complex, Babanrao Kulkarni Marg, Mulund (East) ",Mumbai,505,Maharashtra,IN,400081,9167835368,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 172,222,"Vaishanavi Engineers","No GST Number",NULL,"KHASRA NO-19, VILLAGE-HAYATPUR,  SECTOR-93, MAIN PATAUDI ROAD, NEAR SUMIT DHARAM KANTA,  ",Gurgaon,494,Delhi,IN,122001,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -297,8 +297,7 @@ muneer
 ",27750030333,NULL,27750030333V,NULL,NULL,NULL,"0,1",NULL,NULL
 271,325,"Ever Fresh",29AEVPP3992F1ZM,NULL,"63,Laxman Rao Road B.V.K Iyenger Road Cross",Bangalore,501,Karnataka,IN,560053,"91 80 22259599
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-272,326,"Dhiren Traders",24AAEFD8890K1Z0,NULL,"A-40, Shreeji State Opp. Telephone Exchange,GIDC, Naroda,",Ahmedabad,496,Gujarat,IN,380025,"079-22816121 - 9427241335
-",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+272,326,"Dhiren Traders",24AAEFD8890K1Z0,NULL,"A-40, Shreeji State Opp. Telephone Exchange,GIDC, Naroda,",Ahmedabad,496,Gujarat,IN,382350,"079-22816121 - 9427241335",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 273,327,"Swan Machine Tools Pvt. Ltd. ",24AAMCS3087J1ZY,NULL,NAVRANGPURA,AHMEDABAD,496,Gujarat,IN,"4 Mbps Unl",9099989274,24573605644,NULL,24073605644,NULL,NULL,NULL,"0,1",NULL,NULL
 274,328,"Sharad Industrial Products Pvt. Ltd. ",24AAKCS8184Q1ZE,NULL,"Neelmani Chambers, Behind Sales India Income-Tax, Ashram Road,",Ahmedabad,496,Gujarat,IN,380009,"079-2658 6602/04 / 9099016357 / 9825170224
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -322,7 +321,7 @@ muneer
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 287,342,"Essen Electrical Enterprise",27AAGFE0342G1ZY,NULL,"40, Babu Genu Road, Ashish Bldg. Gr. Floor, Off. Kalbadevi Road,",Mumbai,505,Maharashtra,IN,400002,"022-22010018 / 22064726
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-288,343,"Srp Laser",27ACSFS0206Q1ZJ,NULL,"Gala No. 3, Shanti Nagar CHSL., BLDG No. 1, Mahakali Caves Road, Andheri (E) ",Mumbai,505,Maharashtra,IN,400093,09619704567,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+288,343,"SRP Laser",27ACSFS0206Q1ZJ,NULL,"Gala No. 3, Shanti Nagar CHSL., BLDG No. 1, Mahakali Caves Road, Andheri (E) ",Mumbai,505,Maharashtra,IN,400093,09619704567,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 289,346,"Star Automation",34AQDPS3426P1ZF,NULL,"No. 12, 3rd Cross, Mohan Nagar Near Rajiv Gandhi Women & Children ",Pondicherry,511,Pondicherry,IN,605005,"91 - 413 - 4300077 / 95855 50109 | 95855 50104",34450013262C,NULL,34450013262V,NULL,NULL,NULL,"0,1",NULL,NULL
 290,347,"Just Mobile Ltd.","No GST Number",NULL,"21F,No.447, Sec. 3, Wenxin Rd Taichung, Taiwan  ",Taichung,833,"    Taichung",TW,40667,+886-4-22958558,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 291,348,"Jab Enterprises",27AHFPB3924Q1Z3,NULL," 84-A,   Mohammed Ali Road",Mumbai,505,Maharashtra,IN,400003,"09773752552, 022-23432553",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -815,7 +814,7 @@ Fax: (0124) 4425943/944
 724,821,"Suave Engineering","No GST Number",NULL,"202  ORNATE Aptts., Plot 29 & 30, Sector 28 Vashi,  Navi Mumbai","Navi Mumbai",505,Maharashtra,IN," 400703","Tel: 022 32987073, 27882525
 
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-725,822,"Care Safety",24ALFPV2774G1ZV,NULL,"E/962  Ajjinath Krupa Society Ambica Nagar Odhav, Ahmedabad",Ahmedabad,496,Gujarat,IN,382330,9825725475,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+725,822,"Care Safety",24ALFPV2774G1ZV,NULL,"E/962  Ajjinath Krupa Society, Ambica Nagar, Odhav",Ahmedabad,496,Gujarat,IN,382415,9825725475,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 726,823,"Gayatri Abrasives",24AAOFG5763E1ZA,NULL,"Nr,Rama Biscuit, Opp.Arya Samaj Mandir,  Saijpur, Bogha- ",Ahmedabad,496,Gujarat,IN,382345,"079 - 22843815,22843814. / 9825326187 
 ",24074207613C,NULL,24074207613V,NULL,NULL,NULL,"0,1",NULL,NULL
 727,824,"Dynatron Electronics Pvt. Ltd.","No GST Number",NULL,"54/A, Jyoti Estate, Proctor Rd,  Grant Rd (East),Mumbai - 400007",Mumbai,505,Maharashtra,IN,400007,"Tel/Fax: (022) 23891336 / 23840011  
@@ -983,8 +982,7 @@ shiv shankar : 022-28817023
 829,936,"V and T Enterprise",24AJFPT9253J1ZQ,NULL,"B1-203 Aagam Cross Road Building. Opp Star Galaxy, Near Shrungar Building Off VIP Road, Vesu, ",Surat,496,Gujarat,IN,382424,7600014811,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 830,937,"Jay Agenciez","No GST Number",NULL,"15, DHAMANWALA COMPLEX OPP. BATLIBOI, GIDC PANDESARA, SURAT",Ahmedabad,496,Gujarat,IN,394221,09825116952,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 831,938,"Taneja Complete Home Solutions Pvt. Ltd.",07AADCT3956C1ZF,NULL,"198/1,Ramesh Market,Sapna Cinema Crossing East Of Kailash","New Delhi",494,Delhi,IN,"110065 ","011-46440017,46440039,46440024",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-832,939,"Kwalitex Healthcare Pvt. Ltd.","No GST Number",NULL,"Krishna Estate, A Wing, 1st Floor, Behind Khandelwal Bus Stop,  Upwan Industrial Estate, Thane West",Mumbai,505,Maharashtra,IN,400606,"+91-9167793421
-",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+832,939,"Kwalitex Healthcare Pvt. Ltd.",27AAFCK8390P1ZN,NULL,"Krishna Estate, A Wing, 1st Floor, Behind Khandelwal Bus Stop,  Upwan Industrial Estate, Thane West",Mumbai,505,Maharashtra,IN,400606,+91-9167793421,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 833,940,"Hi-Tech Radiators Pvt. Ltd.","No GST Number",NULL,"Plot no R-603, T.T.C INDL AREA RABALE, P.O GHANSOLI ",MUMBAI,505,Maharashtra,IN,400701,"022-27601262, 27691887",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 835,942,"Himalaya Gases",02AAEFH3431N1ZL,NULL,"SCO G-1A, BLOCK-B CITY SQUARE, SAI ROAD, BADDI",Baddi,498,"Himachal Pradesh",IN,173205,"+91-9816688811
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -1000,7 +998,7 @@ shiv shankar : 022-28817023
 844,954,"Viven Transmission","No GST Number",NULL,"C-205, Manoshi Complex, Plot No. 5/6, Sector 3, Ghansoli, Navi Mumbai",Mumbai,505,Maharashtra,IN,400701,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 845,955,"Gesutra Gmbh","No GST Number",NULL,"Straubinger Straße 20 Bremen",Straubinger,Bremen,NULL,DE,28219,"+49 (0) 42133636206",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 848,958,"Gatilek Electricals and Automations","No GST Number",NULL,"514, Midas, Sahar Plaza Complex Sir MV Road, Andheri Kurla Road, Andheri East",Mumbai,505,Maharashtra,IN,400056,"08425876229 / 9867799513",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-849,959,"Jyoti Rubber Industries","No GST Number",NULL,"9-A, BIBIJAN STRRET Chippi Chawl, Kalbadevi",Mumbai,505,Maharashtra,IN,400003,09867811166,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+849,959,"Jyoti Rubber Industries",27AAFFJ9693K1ZK,NULL,"9-A, BIBIJAN STRRET Chippi Chawl, Kalbadevi",Mumbai,505,Maharashtra,IN,400003,09867811166,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 850,960,"Stewart RBrowne Mfg.CoInc.","No GST Number",NULL,"1165, Hightower Trail Atlanta, Georgia",Atlanta,19,Georgia,US,30350,"+1 770-993-9600",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 852,962,"Panam Engineers Pvt. Ltd. ","No GST Number",NULL,"203, Jaisingh Business Center Parsiwada, Sahar Road, Andheri (East)",Mumbai,505,Maharashtra,IN,400099,022-28315555,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 853,963,"Gsv Microtech Pvt. Ltd.","No GST Number",NULL,"3/531/A Kundrathur Road, Madanandapuram Oragadam Sriperumpudur Taluk, Kanchipuram ",Chennai,515,"Tamil Nadu",IN,600116,044-24827879,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -1362,7 +1360,7 @@ shailesh bhai - 98983 42429
 1258,1376,"Flow Point Technology","No GST Number",NULL,"5/B - 206, Sunrise C.H.S OPP.Samana Parivar,  A.K.Vaidya Marg, Dindoshi, Malad (E)",Mumbai,505,Maharashtra,IN,400097,"+ 91-9702657488 / 08108815663",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 1259,1377,"Banka Machines",24ABGPR6633P1Z2,NULL,"No 2 Samrat Industrial Area",Rajkot,496,Gujarat,IN,360004,+91-7210115804,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 1260,1378,"Skyking Instruments","No GST Number",NULL,"SKYKING CHAMBERS OFFICE NO-04 GROUND FLOOR, OR DADASAHEB BHADKAMKAR MARG,374 LAMINGTON ROAD,",Mumbai,505,Maharashtra,IN,"400007,",9820050055,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-1261,1379,"Victor Import",27AAMFV3839L1ZF,NULL,"3, Krishna Niwas Khetwadi 9th Lane",400004,505,Maharashtra,IN,Mumbai,"022 – 23851299",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+1261,1379,"Victor Import",27AAMFV3839L1ZF,NULL,"3, Krishna Niwas Khetwadi 9th Lane",Mumbai,505,Maharashtra,IN,400004,"022 – 23851299",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 1263,1381,"Lehry Instrumentation and Valves Pvt. Ltd.","No GST Number",NULL,"231, Dr DN Road Fort, III Floor Commissariat  Building",Mumbai,505,Maharashtra,IN,400001,"+91-8451099939 / 022- 22691055",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 1264,1382,"Premier Oilskim Systems Pvt. Ltd.",27AAGCP0113L1ZK,NULL,"Plot No. T-165/3/7 Priyadarshani Co. Op .Industrial Premises  MIDC Bhosari,",Pune,505,Maharashtra,IN,411026,"+91-7058571082 /8421837969/9422005688",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 1265,1383,"Tiger-Grip Engineering","No GST Number",NULL,"120 Rue Fornier Beauzelle",Beauzelle,213,Haute-Garonne,FR,31700,"+33 (0)5 34 60 56 56",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -2373,7 +2371,7 @@ Rohit Soni",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 2384,2511,"Neha Metals and Alloys","No GST Number",NULL,"No 104, 82-84-86 Millenium Bldg, CP Tank Road, ",Mumbai,505,Maharashtra,IN,,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2386,2513,"Fine Testing Machines Pvt. Ltd. ","No GST Number",NULL,"W-37, M.I.D.C. Area, , Plot No.73, M.I.D.C. Area, B-7/12, M.I.D.C. Area ","Miraj ",505,Maharashtra,IN,416410,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2388,2515,"Prompt Ups Sales and Services Pvt. Ltd. ","No GST Number",NULL,"23 Orient Shopping Plaza M.S.Ali Rd.Grant Road (E)",Mumbai,505,Maharashtra,IN,400007,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
-2389,2516,"Global Marketing",24AAJFG4509M1Z8,NULL,"6/236, Divyadarshan Colony, Gorwa Road ","Vadodara ",496,Gujarat,IN,390016,9824091174,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+2389,2516,"Global Marketing",24AAJFG4509M1Z8,NULL,"6/236, Divyadarshan Colony, Gorwa Road ","Vadodara ",496,Gujarat,IN,390003,9824091174,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 2390,2517,"Aum Enterprises","No GST Number",NULL,"Shop No11, 2nd Floor, Maharaja Chembar Verei Pada Pole,Khadia,Gadhi Road","Ahmedabad ",496,Gujarat,IN,380001,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2392,2519,"Saroj Enterprises","No GST Number",NULL,"NO.10, Saravana Nagar,Mettupalayam Road,Kavundampalayam,Coimbatore-641 030. ","Coimbatore ",515,"Tamil Nadu",IN,641030,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2393,2520,Mecabinets,"No GST Number",NULL,"A-25, Saraswati garden, kirti nagar, Delhi, 100015 ","New Delhi ",494,Delhi,IN,100015,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -2555,7 +2553,7 @@ silva - 09022666776
 2586,2713,"Safety Shoe Service","No GST Number",NULL,"Behind CID Crime Office, Dayasagar Hill Road Off. L.B.S Marg, Ghatkopar (W)",Mumbai,505,Maharashtra,IN,400086,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2587,2714,"Metro Machine Tools","No GST Number",NULL,"Shop No.5, Sangeet Plaza, Marol Maroshi Road, Marol, Andheri (E) ",Mumbai,505,Maharashtra,IN,400059,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2588,2715,"Vidhi Engineering Co","No GST Number",NULL,"17/21, Issaji Street,301, Parshva Chamers, 3 rd Floor, Vadgadi, Masjid Bunder (W) ",Mumbai,505,Maharashtra,IN,400003,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
-2589,2716,"Burhani House Of Tools","No GST Number",NULL,"232 Nagdevi Street & 149 Jhanjikar street, Rukaiya Chamber ",Mumbai,505,Maharashtra,IN,400003,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
+2589,2716,"Burhani House Of Tools",27ASHPB3594M1ZC,NULL,"232 Nagdevi Street & 149 Jhanjikar street, Rukaiya Chamber ",Mumbai,505,Maharashtra,IN,400003,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 2590,2717,"Techno Tools","No GST Number",NULL,"Kapadia Ind. Est.,Bldg. no. 1, Behind Domino's Pizza, Nr. Sangam Cinema, Andheri Kurla Rd., Chakala, Andheri (E), Mumbai-93 ",Mumbai,505,Maharashtra,IN,400093,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2591,2718,"New Zenith Trading","No GST Number",NULL,"38, Sarang Street, Mumbai-400003 ",Mumbai,505,Maharashtra,IN,400003,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2592,2719,"Burhani Traders","No GST Number",NULL,"Om Arcade, Plot No.1, Shop no.38, Opp. Turbhe Station, Nr. Janta Market, Vashi, Sector-20 ",Mumbai,505,Maharashtra,IN,400705,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -2646,7 +2644,7 @@ silva - 09022666776
 Dadar (W), ",Mumbai,505,Maharashtra,IN,400028,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2678,2806,"Taparia Tools Ltd.","No GST Number",NULL,"423/424, A/2, 4th Floor, Shah & Nahar Industrial Estate, Lower Parel West, Mumbai, Maharashtra 400013 ",Mumbai,505,Maharashtra,IN,400028,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2680,2808,"M.P Brothers","No GST Number",NULL,"Mahatma Gandhi Memorial Building Netaji Subash Road, Charni Road, ",Mumbai,505,Maharashtra,IN,400028,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
-2682,2810,"Hardcastle Petrofer Pvt. Ltd. ",27AABCH5032R1Z9,NULL,"87 Veer Nariman Road, Gate No 10, 1st Floor, Churchgate,  ",Mumbai,505,Maharashtra,IN,400020,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+2682,2810,"Hardcastle Petrofer Pvt. Ltd.",27AABCH5032R1Z9,NULL,"87 Veer Nariman Road, Gate No 10, 1st Floor, Churchgate,  ",Mumbai,505,Maharashtra,IN,400020,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 2683,2811,"Georg Fischer Piping Systems Pvt. Ltd.","No GST Number",NULL,"Prabhat Bhavan, 2nd floor, 96, L.B.S Marg ","Thane ",505,Maharashtra,IN,400083,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2684,2812,"Intaria Lightronics","No GST Number",NULL,"1487/2, First Floor, Shop Number 6 BMS, Centre, Chandni Chowk ","Delhi ",494,Delhi,IN,110006,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2687,2815,"Hibond Adhesives (India) Pvt. Ltd. ","No GST Number",NULL,"Block 84/4 L.B.S.Marg, Moti Nagar, Mulund Colony, Mulund West",Mumbai,505,Maharashtra,IN,400082,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -2825,7 +2823,7 @@ Jalna Road, Mondha Naka, ","Aurangabad ",505,Maharashtra,IN,431005,,NULL,NULL,,N
 2885,3014,"Kleenoil Filtration India Pvt. Ltd.","No GST Number",NULL,"537,Udyog Vihar Phase 5, Gurgaon  ","Haryana ",497,Haryana,IN,122016,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2887,3016,"SCope Industrial Products Pvt. Ltd. ","No GST Number",NULL,"B-101, Western Edge II, Off Western Express Highway, Borivali (East) ",Mumbai,505,Maharashtra,IN,400066,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2888,3017,"Gre Electronics Pvt. Ltd.","No GST Number",NULL,"Plot no.423, G.I.D.C-2 Dediyasan, Mehsana","Mehsana ",496,Gujarat,IN,384002,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
-2889,3018,"Workstore Ltd.","No GST Number",NULL,"6th Floor,Trade World Kamla Mill Compound,Lower parel",Mumbai,505,Maharashtra,IN,400013,NULL,NULL,NULL,27250590880V,NULL,NULL,NULL,"0,1",NULL,NULL
+2889,3018,"Work Store Ltd.",27AABCF0402F1ZC,NULL,"6th Floor, D Wing, Trade world Building, Kamala Mills compound, Senapati Bapat Marg, lower parel",Mumbai,505,Maharashtra,IN,400013,022-33738084,NULL,NULL,27250590880V,NULL,NULL,NULL,"0,1",1,NULL
 2890,3019,"DL TECH",27ALCPA4754C1ZL,NULL,Sr.No.119,PUNE,505,Maharashtra,IN,411033,7447277117,NULL,NULL,27791238446V,NULL,NULL,NULL,"0,1",NULL,NULL
 2891,3020,"Saishan Engineers","No GST Number",NULL,"No. 6B/462, Magathane Suryadarshan CHS,  Near Tata Receiving Station",Mumbai,505,Maharashtra,IN,400066,,NULL,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL
 2892,3021,"Sams Traders","No GST Number",NULL,"Retiwala Premises, Plot No. 44, S. V. Road,
@@ -3109,7 +3107,6 @@ Jalna Road, Mondha Naka, ","Aurangabad ",505,Maharashtra,IN,431005,,NULL,NULL,,N
 3269,3430,"Pratik Enterprises",27AIRPP1277F1ZV,NULL,"403, Priyadarshani, MMRDA Complex, Garodia Nagar,","Ghatkopar East",505,Maharashtra,IN,400077,"098191 50777
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3270,3431,"Bons Light Pvt. Ltd. ","No GST Number",NULL,"Plot No. 564, Phase II, Near Vatva  Railway Station,Vatva GIDC, Vatva,",Ahmedabad,496,Gujarat,IN,382445,"079 40085253, +91 79 25891197. / +91 9925244220",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-3271,3432,"Shreeji Marketing Corporation",24AAFFS9397F1ZR,NULL,"7,",AHMEDABAD,496,Gujarat,IN," 380009",079-26578401-8433-8466,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3273,3434,"Ener-Tex International Inc","No GST Number",NULL,"719 N Poast Oak Road, Suite 400,",Houston,57,Texas,US,77024,+1-713-263-8222,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3274,3435,"Envirotech Engineers","No GST Number",NULL,"Office No. 202, 2nd Floor, Vardhman Chamber-II, Community Centre, Block-G, Plot No. G-21, Vikas Puri,","New Delhi ",494,Delhi,IN,110018,"011-45033024, 45733024 /  9650372494, 9953573086",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3276,3437,"SiliCon Scientific",27BAKPN9136K1Z3,NULL,"A-7, Plot no 147, Jai Shree Laxmi CHS,  Gandhinagar,  Dombivli East",Mumbai,505,Maharashtra,IN,"421201 ",8898779957,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -3256,7 +3253,7 @@ Jalna Road, Mondha Naka, ","Aurangabad ",505,Maharashtra,IN,431005,,NULL,NULL,,N
 3434,3607,"Rajdeep Steel Industries",24AAVPA7848P1ZV,NULL,"Goodluck Barrel Market, Opposite PWD Store, Chandola, Narol Road NAROL, ",Ahmedabad,496,Gujarat,IN,380028,"079-25323245 / +91-9825557806",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3435,3608,"Sunnen India Pvt. Ltd. ",27AAUCS5022M1ZR,NULL,"SUNNEN India Pvt. Ltd.,Thane Belapur Road,","Navi Mumbai",505,Maharashtra,IN,"400705 ","9322715656   9819709561",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3437,3610,Anograph,"No GST Number",NULL,"ASHA ENDUSTRIAL ESTATE, SVS ROAD, VIRAR EAST, DIST. THANE.",MUMBAI,505,Maharashtra,IN,401305,9322549234,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-3439,3612,"Almonard Pvt. Ltd.","No GST Number",NULL,"305, Kakad Chambers, 3rd floor, 132, Dr. Annie Besant Road, Worli, ",Mumbai,505,Maharashtra,IN,"400 018",022-24903094/24902269,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+3439,3612,"Almonard Pvt. Ltd.","No GST Number",NULL,"305, Kakad Chambers, 3rd floor, 132, Dr. Annie Besant Road, Worli, ",Mumbai,505,Maharashtra,IN,"400 018",022-24903094/24902269,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 3440,3613,"Shanti Electric Co.","No GST Number",NULL,"ROOM NO 2 GOPAL BHUVAN OPP SAPNA HOTEL NEAR NL SCHOOL S V ROAD MALAD(W) Mumbai, Maharashtra - 400064",NULL,505,Maharashtra,IN,NULL,022-28090335,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3441,3614,"Shree Ganesh Trading Co.",24AXGPP6878C1Z7,NULL,"32, Royal Estate, Nr. Vishala Estate, Nr. Odhav Ring Circle, Odhav Ring Road Kathvada",Ahmedabad,496,Gujarat,IN,382430,"9898408141 - 9924745912
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -3413,7 +3410,7 @@ Jalna Road, Mondha Naka, ","Aurangabad ",505,Maharashtra,IN,431005,,NULL,NULL,,N
 3612,3795,"M/S. AURO PUMPS PVT. LTD.","No GST Number",NULL,"Regd. Office & Works : Plot Nos. 104/5 & 6, GIDC",Bharuch,496,Gujarat,IN,392220,"Mob : 9228007765, 9227227768
 Ph : (02642) 277665",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3613,3796,"AURO PUMPS PVT. LTD.","No GST Number",NULL,"Plot Nos. 104/5 & 6, GIDC Palej",Bharuch,496,Gujarat,IN,"392 220","02642) 277665 / 9228007765, 9227227768",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-3614,3797,"DewDry Industries ",27AGIPM6075H1Z2,NULL,"C-13, 103, Sector- 9,Gharonda Ghansoli,","Navi Mumbai",505,Maharashtra,IN,400701,9833099265,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+3614,3797,"DewDry Industries ",27BASPM0556L1Z4,NULL,"C-13, 103, Sector- 9,Gharonda Ghansoli,","Navi Mumbai",505,Maharashtra,IN,400701,9833099265,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 3615,3798,"Controls India Pvt. Ltd.",24AAFCC6538D1ZW,NULL,"3rd floor, Nandkutir Building, Behind Doctor House,",Ahmedabad,496,Gujarat,IN,380006,"(079) 2644 1242,2644 0748",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 3616,3811,"Alkali Chemicals Private Limited","No GST Number",NULL,"Gate No.44,Midc  Road,Savali,Opp. Latthe PolytechnicCollege.",Sangli,505,Maharashtra,IN,416410,9552551525,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 3617,3812,"K K FILTER SYSTEMS",24AMOPP7397K1Z4,NULL,"46 mahadev estate,part-4,ctm ramol road,ctm",ahmedabad,496,Gujarat,IN,382449,09428498045,24574101087,NULL,24074101087,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -3776,7 +3773,7 @@ Contact no: 80 40213600",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4069,4326,"ASGEE Innotech",24AKEPP0527D1ZN,NULL,"G-24, Aayana Complex, Nr. Shell Petrol Pump, Hebatpur Road, Thaltej",AHMEDABAD,496,Gujarat,IN,380059,9924368811,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4070,4327,"Rashme Foam",07AABFR0188F1ZD,NULL,"N-13,Shop No-12, Gurudwara Road Southex 1 Kotla",Delhi,494,Delhi,IN,110049,9555553951,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4071,4328,"Mangla Sanitary Emporium",07AAAPM5638C1ZZ,NULL,"100, Near Aggarwal Dharamshala, Samman Bazar Road, Bhogal, Jangpura","New Delhi",494,Delhi,IN,110014,"011-2437 4435",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-4072,4329,"Aaradhya Ventures",27CUZPS1818M1ZK,NULL,"Sho no. 45, Saiprasad Enclave CHS Ltd., Plot no. 27, Sec- 7, Kamothe, Navi Mumbai",Mumbai,505,Maharashtra,IN,410209,"9833260609 / 8108258000 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+4072,4329,"Aaradhya Ventures",27CUZPS1818M1ZK,NULL,"Shop no. 45, Saiprasad Enclave CHS Ltd., Plot no. 27, Sec- 7, Kamothe","Navi Mumbai",505,Maharashtra,IN,410209,"9833260609 / 8108258000 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 4073,4330,"Star Electronic System and Co.","No GST Number",NULL," S-3, Dutta Krupa Apartment, Vrindavan Road, Dahisar East",Mumbai,505,Maharashtra,IN,400068,"09322293002/7208043002. 022 65965953
 9222214039",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4074,4331,"Ratan Ancillaries",08AATPB8661P1ZT,NULL,"30-31, New Khailand Market",Ajmer,513,Rajasthan,IN,305001,"9928207301 / 0145-2421949",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -3805,7 +3802,7 @@ Contact no: 80 40213600",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4100,4358,"Elico Marketing Pvt. Ltd.",36AAACE4453G1ZU,NULL,"57, KPHB 5th Phase, Kukatpally Housing Board",Hyderabad,870,Telangana,IN,500072,"040-2315 3322",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4101,4359,"Sonit Electronics Co.","No GST Number",NULL," 2011 2nd Floor, Bhandup Industrial Estate, Lal Bahadur Shastri Marg, Bhandup",Mumbai,505,Maharashtra,IN,400078,"022 - 25968072 / 25968350",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4103,4361,"SGS Instruments Mfg Co.","No GST Number",NULL,"A-116, FF, Meera Bagh, Paschim Vihar",Delhi,494,Delhi,IN,111087,"9899480998 / 11-27374074/27371687",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-4104,4362,"W. W. Grainger Inc.","No GST Number",NULL,"7300 N Melvina Ave",Niles,33,Michigan,US,"IL 60714",60714-3998,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+4104,4362,"W. W. Grainger Inc.","No GST Number",NULL,"7300 N Melvina Ave",Niles,33,Michigan,US,"IL 60714",60714-3998,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
 4105,4363,"Korrect Enterprises",24AWUPG7302B1ZT,NULL,"18 Neminath Nagar Society, S.M.Road, Ambawadi,  18 Neminath Nagar Society, S.M.Road, Ambawadi,",Ahmedabad,496,Gujarat,IN,380015,"9099086663
 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 4106,4364,"Southern Hardware Pvt. Ltd.","No GST Number",NULL,"No. 21, Old No. 11, Errabaluchetty Street",Chennai,515,"Tamil Nadu",IN,600001,"044 25396528 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -4056,8 +4053,8 @@ Contact no: 80 40213600",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8317,2270,"Bch Electric Ltd.","No GST Number",NULL,"A-151 Mittal Tower, Nariman Point,",Mumbai,505,Maharashtra,IN,400021,"""022-22822947/22850162 / 98208-26236""",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8318,3771,"Boulton Trading Corporation",27AAAFB3134G1ZY,NULL,"6 & 7, Lentin Chambers, Dalal Street, Fort ",Mumbai,505,Maharashtra,IN,400001,9322241875,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
 8319,3503,"Creative Engineers","No GST Number",NULL,"1st floor ,Above Bhairavnath Post Office Society,Bhairavnath, Maninaqgar",Ahmadabad,496,Gujarat,IN,380028,8140179903,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
-8320,3033,"Gemini Power Hydraulics Pvt. Ltd.",27AAACG3661L1ZG,NULL,"Gemini House , Bus Ddepoti ane Deonar",Mumbai,505,Maharashtra,IN,400088,022-66819999,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
-8321,2810,"Hardcastle Petrofer Pvt. Ltd. ",24AABCH5032R1ZF,NULL,"Plot No 1906,1908,1910,1912 Phansa Road, GIDC Sarigam, Taluka-Umbergaon, ",Valsad,496,Gujarat,IN,396155,"079-26586203 / 7506404011",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
+8320,3033,"Gemini Power Hydraulics Pvt. Ltd.",27AAACG3661L1ZG,NULL,"Gemini House , Bus Ddepoti ane Deonar",Mumbai,505,Maharashtra,IN,400088,022-66819999,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+8321,2810,"Hardcastle Petrofer Pvt. Ltd.",24AABCH5032R1ZF,NULL,"Plot No 1906,1908,1910,1912 Phansa Road, GIDC Sarigam, Taluka-Umbergaon, ",Valsad,496,Gujarat,IN,396155,"079-26586203 / 7506404011",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 8322,3127,"Honeywell Automation India Ltd","No GST Number",NULL,"Jabel Ali Branch PO Box Jabel Ali ",Dubai,702,Dubai,AE,262263,9820438188,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
 8323,264,"Industrial Bearing Corporation","No GST Number",NULL," 56/9, Chakla Street, Above Janta Market, ",Mumbai,505,Maharashtra,IN,400003," 022 2343 7211",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",NULL,NULL
 8324,4061,"Ingersoll Rand Technologies and Services Pvt. Ltd.",27AACCS9663E1Z3,NULL,"VISHWANJALI No 4, Sagar Society, Wakdewadi, Off Mumbai-Pune Road",Pune,505,Maharashtra,IN,411003,"020-41005418 / +91-8451056732",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
@@ -4134,7 +4131,7 @@ Contact no: 80 40213600",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8402,4717,"Oriental Motor India Pvt. Ltd.",29AABCO5719N1ZW,NULL," No.810, 8th Floor, Prestige Meridian-1 No.29, M.G.Road",Bangalore,501,Karnataka,IN,560001,9663532888,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8403,4718,"Shailender Agarwal","No GST Number",NULL,"205 Kewal Industrial Estate, S. B. Marg, Lower Parel","Mumbai ",505,Maharashtra,IN,400013,9891115005,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8404,4720,"Jyoti Architectural Products Pvt. Ltd.",27AABCJ5792J1Z4,NULL,"A-111, Sagar Tech Plaza , Andheri-Kurla Road ,Sakinaka Junction, Sakinaka,Andheri ( East )",Mumbai,505,Maharashtra,IN,400072,022-42421000,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
-8405,1108,"Shah Electric Spare Product",27ALMPS5909H1ZK,NULL,"166/172 Lohar Chawl, K.M. Sharma Marg Vishwanath Building, 3rd Floor , Room No 4",Mumbai,505,Maharashtra,IN,400002,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
+8405,1108,"Shah Electric Spare Product",27ALMPS5909H1ZK,NULL,"166/172 Lohar Chawl, K.M. Sharma Marg Vishwanath Building, 3rd Floor , Room No 4",Mumbai,505,Maharashtra,IN,400002,022-22057029,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8406,4722,"Morse Manufacturing Co. Inc.","No GST Number",NULL,"727 West Manlius","St. East Syracuse",43,"New York",US,"NY, 13057",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8407,4723,"Solas Fire and Safety Corporation",27ARTPD4625J1ZG,NULL,"Office no 46, Sai Prasad Enclave CHS Ltd, Plot no 27,  Sector -07, Kamothe","Navi Mumbai",505,Maharashtra,IN,410209,9022976905,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
 8408,4724,"Sumit Lab Solutions",27ASEPT5506G1ZM,NULL,"B-301,Prasad Apartments, Opp. Your Ref No Date: Cosmos Eng.School, JanataMarket Bhandup (West)",Mumbai,505,Maharashtra,IN,400078,"022-25944854/25940157 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",NULL,NULL
@@ -4466,7 +4463,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 8738,5225,"Motherson Techno Tools Ltd.","No GST Number",NULL,"A-2 Sector 84",Noida,517,"Uttar Pradesh",IN,201301,"0120 - 6110214",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8739,5226,"Delta Flow",27AEGPC4173A1Z1,NULL,"Plot no,12 Lane no.3, Dnyanesh Park, Krishna Chowk, New Sasnghvi",Pune,505,Maharashtra,IN,411027,8087026952,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8740,5151,"Century Pharmaceuticals Ltd.",24AAACC7646K1ZJ,NULL,"406, World Trade Centre, Sayajigunj",Vadodara,496,Gujarat,IN,390005,079-2362509,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-8741,5153,"Aashapoora Traders",27ANFPD5239C1ZD,NULL,"Room No 3, 1st Floor, Kaushik Apartment,  Vakola Bridge, Santacruz East",Mumbai,505,Maharashtra,IN,400055,9833871077,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+8741,5153,"Aashapoora Traders",27ANFPD5239C1ZD,NULL,"3, Kaushik Apartment,  Vakola Bridge, Santacruz East",Mumbai,505,Maharashtra,IN,400055,9833871077,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8742,5227,"Carl Stuart Ltd.","No GST Number",NULL,"Tallaght Business Park Whitestown ",Dublin,900,Dublin,IE,"D24 RFK3","00353 1 4523432",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8743,1361,"Hill Equipment Inc.","No GST Number",NULL,"DBA LPT Systems 503 Industrial Ave",Greensboro,44,"North Carolina",US,"NC 27406",800-842-2831,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 8744,5229,"Asha Trading Corporation","No GST Number",NULL,"40, Aashish Building, Babu Genu Road, Princess Street",Mumbai,505,Maharashtra,IN,400002,022-22063407,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -4572,7 +4569,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 8845,5317,"Wesman Thermal Engg. Processes Pvt. Ltd.","19AAACW2786Q1ZF ",NULL,"B/702, Sagar Tech Plaza, Andheri-Kurla Road, Saki Naka",Mumbai,505,Maharashtra,IN,400070,8879055945,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8846,2161,"Madhav Fluid Solutions","No GST Number",NULL,"1802, Lodha Supremus, Opp. MTNL Exchange Saki-Vihar Road Powai",Mumbai,505,Maharashtra,IN,400072,9321141899,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 8847,5318,"Yokins Instruments Pvt Ltd",07AAACY3820D1ZO,NULL,"Khasra No. 291, Gali No. 2, Shalimar Village Industrial Area",Delhi,494,Delhi,IN,110088,911127492283,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-8848,5319,"Worldd AV Solution","No GST Number",NULL,"Shop No. 2/3, Ground Floor, Sterling Apartment, Church Road, Kalina, Santacruz East",Mumbai,505,Maharashtra,IN,400098,8433700582,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",0,NULL
+8848,5319,"Worldd AV Solution",27ALVPS2680Q1ZU,NULL,"Shop No. 2/3, Ground Floor, Sterling Apartment, Church Road, Kalina, Santacruz East",Mumbai,505,Maharashtra,IN,400098,8433700582,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 8849,5320,"Battery Power Center","No GST Number",NULL,"NO-01, 2nd Main Canara Bank Colony Main Road, Maruthi Nagar, Nagarbhavi Main Road",Bangalore,505,Maharashtra,IN,560072,9739817548,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",0,NULL
 8850,5320,"Battery Power Center","No GST Number",NULL,"NO-01, 2nd Main Canara Bank Colony Main Road, Maruthi Nagar, Nagarbhavi Main Road",Bangalore,505,Maharashtra,IN,560072,9739817548,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",0,NULL
 8851,5321,"Vosun Technology (HK) Co. Ltd","No GST Number",NULL,"F5; Building 8, Heng Mingzhu Hi-tech Industrial Park, Tong Fuyu Industrial District, Shajing, Bao'an District",Shenzhen,544,Shanghai,CN,518104,755-23340921,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",0,NULL
@@ -4810,7 +4807,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9088,5545,"Arwani Trading Company L.L.C.","No GST Number",NULL,"P.O. Box 8783",Dubai,702,Dubai,AE,8783,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9089,3256,"Trident Services Pvt. Ltd.","27AACCT0173G1ZJ ",NULL,"S. No 81/7A, Dangat Industrial  Estate, At post Shivane, Tal Haveli",Pune,505,Maharashtra,IN,411023,"020 25292790 ",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9090,5546,"Lead Instruments Pvt. Ltd.",29AAACL2431M1ZF,NULL,"No. 20/4, New Bamboo Bazaar Road",Bengaluru,501,Karnataka,IN,560051,"9845033359 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9091,5547,"Shabbir Trading Corporation ",27ADTPB2197D1ZH,NULL," 273, Ganesh Peth, Palav Sadan, Near Dulay Maruti Chowk ",Pune,505,Maharashtra,IN,411002,"9890065885 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9091,5547,"Shabbir Trading Corporation ",27ADTPB2197D1ZH,NULL," 273, Ganesh Peth, Palav Sadan, Near Dulay Maruti Chowk ",Pune,505,Maharashtra,IN,411001,"9890065885 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9092,5548,"Micromeg Enterprises Pvt Ltd",04AAACM9684M1ZX,NULL,"S.C.O 156-57 Sector 34-A",Chandigarh,490,Chandigarh,IN,160022,"(0172) 6530726",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9093,5549,"Param Associates",27AVCPS9638K1ZT,NULL,"B-22, Radhika Residency, Opp.Sandvik Co.,  Nr. Aai Mata Mandir, Fughewadi, Dapodi",Pune,505,Maharashtra,IN,411012,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9094,5553,"TCI House","No GST Number",NULL,"69, Institutional Area Sector-32",Gurgaon,497,Haryana,IN,122207,+91-8269532729,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -4996,7 +4993,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9279,5735,"Copaltite - Esco Products, Inc","No GST Number",NULL,"5325 Glenmont Dr",Houston,57,Texas,US,"TX 77081","(713) 661-5514",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9280,5736,"Exal Corporation",24AAAFE8764H1ZD,NULL,"AD, 462, G.I.D.C. Industrial Estate, P.B. No. 725, Makarpura","Vadodara ",496,Gujarat,IN,390010,"0265 2640970",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9281,4534,"PCI Pest Control Pvt. Ltd",27AABCJ9086F1ZA,NULL,"308, 3rd Floor, Pragati Indl. Est., N M Joshi Marg, Lower Parel",Mumbai,505,Maharashtra,IN,400011,(0)22-23065022,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9282,5738,"Lamtech Solutions LLP",06AAFFL2889P1ZK,NULL,"915A, Unitech Arcadia, Sector 49, South City-2",Gurgaon,497,Haryana,IN,122018,+91-124-4993070,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9282,5738,"Lamtech Solutions LLP",06AAFFL2889P1ZK,NULL,"915A, Unitech Arcadia, Sector 49, South City-2",Gurgaon,497,Haryana,IN,122018,"0124 4993070",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9283,5738,"Lamtech Solutions LLP",06AAFFL2889P1ZK,NULL,"Vatika India Next, E5, Plot 1, Ground Floor, Sec 82",Gurgaon,497,Haryana,IN,122004,+91-124-4993070,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9284,5739,"Nexus Electronics LLC","No GST Number",NULL,"1660 Lowa Ave. 400 ",Riverside,12,California,US,"CA 92507","714 245 0700",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9285,5740,"Shree Bhagwati Hydraulic Engineers",24AHXPP5236H1ZV,NULL,"PLOT N0.3722, PHASE-IV, NEW NIRMA, G.I.D.C VATVA",Ahmedabad,496,Gujarat,IN,382445,8128289807,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5027,7 +5024,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9310,5763,"M/s. Mani Electronics",34AAVPG6932A1ZS,NULL,"No. 271/2, Maraimalai Adigal Salai",Pondicherry,511,Pondicherry,IN,605001,"0413 -2335090",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9311,5764,"M/s. Sumer Metal Corporation","No GST Number",NULL,"Shop No.8,Lad Niwas Building, 44/62,Ardeshir Dady Street",Mumbai,505,Maharashtra,IN,400004,"022 23864527",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9312,5765,"IPA Pvt. Ltd.","No GST Number",NULL,"14/15, Bhagyodaya House, Opp.Krishna Cinema, Sidhanath Road",Vadodara,496,Gujarat,IN,390001,0265-2410283,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9313,5766,"S.H.M Tools and Hardware Mart",36AAUFS3449R1ZI,NULL,"4-3-132, Hill Street, Ranigunj",Secunderabad,870,Telangana,IN,500003,"+91-40 6690 1218",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9313,5766,"S.H.M Tools and Hardware Mart",36AAUFS3449R1Z1,NULL,"4-3-132, Hill Street, Ranigunj",Secunderabad,870,Telangana,IN,500003,"+91-40 6690 1218",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9314,4220,"Nilkamal Ltd.",09AAACN2329N1Z8,NULL,"Plot No. 49/59, Industrial Area Site - 4, Sahibabad","Ghaziabad ",517,"Uttar Pradesh",IN,"201010 ",NULL,NULL,NULL,NULL,NULL,NULL,NULL,"8,9",1,NULL
 9315,5767,"Oriental Tools Company","29AAAFO4012E1ZQ ",NULL,"85/2, OTCO Tower, Kumbharagundi Road, Opp SJP Police Station, New Kalasipalyam Extension","Bangalore ",501,Karnataka,IN,560002,080-22223622,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9316,5768,"Great Developers Info Tech Pvt. Ltd.",09AAECG8065C1ZL,NULL,"C 110, Sector 65",Noida,517,"Uttar Pradesh",IN,201301,"+91 9560 477 867 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5075,7 +5072,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9360,5808,"Stationery House",27ACXFS5752L1Z3,NULL,"253/255, Super Shopping Complex 3rd floor A.R.Street,",Mumbai,505,Maharashtra,IN,400003,9870927902,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9361,5809,"Meena Electronics",27AACPJ2795F1ZO,NULL,"Badiwala House, Shop no.2, Pushpa park, Daftari Road, Malad East",Mumbai,505,Maharashtra,IN,400097,8108538453,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9363,5810,"Just Print Solution",27AMOPP1570C1Z0,NULL,"A-2 / 12A, Shah and Nahar Ind. Estate, S.J. Marg, Lower Parel",Mumbai,505,Maharashtra,IN,400013,"+91 40048010",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9364,5811,"Patel Electric Work","No GST Number",NULL,"Dayamanti Apartement, Shop No.1, Momin Pada M.G. Road,Old Panvel",Mumbai,505,Maharashtra,IN,410206,09221489786,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9364,5811,"Patel Electric Work",27AQCPP3968N1Z3,NULL,"Dayamanti Apartement, Shop No.1, Momin Pada M.G. Road,Old Panvel",Mumbai,505,Maharashtra,IN,410206,09221489786,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9365,5812,"Elegant enterprise",24AABFE5589R1ZQ,NULL,"34,meldi estate, Nr. Meldi Mata mandir, B/H West Cost Pharma, Gota Bridge","Ahmedabad  ",496,Gujarat,IN,382481,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9366,5813,"Prolific Engineers",09AADFP3932F1ZB,NULL,"D 91, Sector 2","Noida ",517,"Uttar Pradesh",IN,201301,"120 3053325",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9367,5814,"Sangam Agencies",27ARQPS1246P1ZX,NULL,"554, Budhwar Peth",Pune,505,Maharashtra,IN,411002,9673003123,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5147,7 +5144,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9437,5878,"Ghanshyam Roadlines","No GST Number",NULL,"Gala No. 2, Gavtewadi, Thane Belapur Road, Near Thompsom press, Digha","Navi Mumbai ",505,Maharashtra,IN,400708,"022 64137920",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9438,5879,"Paharpur Cooling Towers Ltd.","No GST Number",NULL,"Plot No. 132 KV-1, Manjusar – Savli GIDC, Ta. : Savli",Vadodara,496,Gujarat,IN,391775,2667-264331,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9439,5879,"Paharpur Cooling Towers Ltd.","19AABCP8017C1ZM ",NULL,"Regd. Office : 8/1/B, Diamond Harbour Road",Kolkata,519,"West Bengal",IN,700027,2667-264331,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
-9440,5880,"Excel Rasayan Pvt. Ltd.","No GST Number",NULL,"123, DSIDC Complex, Okhla Industrial Area - Phase 1","New Delhi",494,Delhi,IN,110020,98110373739811037373,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9440,5880,"Excel Rasayan Pvt. Ltd.",07AAACE0521B1ZK,NULL,"123, DSIDC Complex, Okhla Industrial Area - Phase 1","New Delhi",494,Delhi,IN,110020,9811037373,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9441,35,"Shreenathji Welding And Safety Pvt. Ltd.","24AARCS8051P1ZJ ",NULL,"103 , ‘SYMMERS’ ,Nr. IBP Petrol Pump, Sarkhej-Sanand Road, Sarkhej",Ahmedabad,496,Gujarat,IN,382210,8690801248,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9442,5881,"Active Total Security","No GST Number",NULL,"40, Muthu Mariamman Koil St, Vallalar Colony, Anna Nagar",Chennai,515,"Tamil Nadu",IN,600040,9840846666,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9443,5882,"Crown Tapes","No GST Number",NULL,"B-201, Dynasty Business Park, Kanakia Spaces, Sir M.V.Road, J.B.Nagar P.O, Andheri East","Mumbai ",505,Maharashtra,IN,400059,9322404690,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5172,7 +5169,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9463,5899,"Durva Enterprise",24APBPB5946G1Z7,NULL,"D/6, Chandralay Appt, Nr. Naranpura Cross Road Naranpura","Ahmedabad ",496,Gujarat,IN,380013,"98255 91591",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9464,5900,"Vernay ","No GST Number",NULL,"2077 Convention Center Concourse College Park","College Park",19,Georgia,US,30337,"+1-404-994-2000 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9465,5901,"RK Enersol","No GST Number",NULL,"P.O. Box 513347, Saif Zone","Saif Zone",701,Sharjah,AE,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
-9467,5902,"Altaf H Vali Electronics Pvt. Ltd.",27AAGCA3587K1Z9,NULL,"Shop No.18  Tanksale Complex Temple bazar Road Sitabuldi ","Nagpur ",505,Maharashtra,IN,440012,"98901 79311",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9467,5902,"Altaf H Vali Electronics Pvt. Ltd.",27AAGCA3587K1Z9,NULL,"Shop No.18, Tanksale Complex, Temple bazar Road, Sitabuldi, Near Variety Square","Nagpur ",505,Maharashtra,IN,440012,"98901 79311",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9468,5903,"Trades Global",27ASOPM1017H1ZR,NULL,"301/302 Akshay villa, seven Bungalows,Andheri west  ","Mumbai ",505,Maharashtra,IN,400061,9820378675,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9469,5904,"ILA Trading Co.","No GST Number",NULL,"Shop No. 5, Anant Building, Ground Floor, No. 213 S. M. Gandhi Marg, Opposite Geeta Bhuvan Hotel","Mumbai ",505,Maharashtra,IN,400002,022-22062977,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9470,5905,"Integral Process Controls India Pvt. Ltd.",27AACCI3712J1ZO,NULL,"W-55, S Block, 411026, MIDC, Bhosari, Pimpri-Chinchwad",Pune,505,Maharashtra,IN,411026,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5213,7 +5210,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9505,5913,"Camfil Air Filtration India Pvt. Ltd.",06AADCC3500F1ZC,NULL,"62, IDC, Mehrauli Road","Gurgaon ",497,Haryana,IN,122001,"8800504134 ",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9506,5942,"Sumangal Relocations",27AANPU9798E1ZN,NULL,"8-Vimla Sadan Bldg, Office No. 4, Nana Chowk Grant Road (E)",Mumbai,505,Maharashtra,IN,400007,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9507,299,"Rajesh Trade Centre","27AABPB5684J1ZM ",NULL,"204, Gyan Darshan, S.V.P. Road, Next To Municipal Garden, Kandivali (West), Post Box No. : 3362","Mumbai ",505,Maharashtra,IN,400067,022-23425583,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
-9508,5945,"Sudershan Measuring and Engg Pvt. Ltd.",07AAKCS0963M1ZV,NULL,"4781, Hauz Qazi, Near Chawari Bazar Metro Station","Delhi ",505,Maharashtra,IN,110006,"011 43550688",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9508,5945,"Sudershan Measuring and Engg Pvt. Ltd.",07AAKCS0963M1ZV,NULL,"4781, Hauz Qazi, Near Chawari Bazar Metro Station","Delhi ",494,Delhi,IN,110006,"011 43550688",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9509,5946,"Aries Creation",27BCGPK7693L1ZU,NULL,"109/4, Pawar House, Sonapure Lane, Nr Manisha Plaza, M.N.Road, Kurla (W)",Mumbai,505,Maharashtra,IN,400070,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9510,5948,"Joister Infoserve Pvt. Ltd.",27AAJCS2264E2ZC,NULL,"Unit No 01/02 A Wing, Art Guild House, Phoenix Market City, Lbs Road Kurla",Mumbai,505,Maharashtra,IN,400070,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9511,5950,"Star Cool Services",27ARUPK9265E1Z5,NULL,"Sai Siddhi Chs Ltd. Shop NO. 37, Near Tilak Nagar, Police Station Tilak Nagar Chembur ( W ) Mumbai",Mumbai,505,Maharashtra,IN,400089,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5253,7 +5250,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9546,5983,"Mott Corporation ","No GST Number",NULL,"84 spring Lane  ",Farmington,14,Connecticut,US,06032,"860-793-3955 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
 9547,5984,"Multilinks ","27AAIFM4349J1ZX ",NULL,"Gala No.106 , A Wing. Mittal Industrial Estate No. 3, Andheri Kurla Road , Marol Naka, Andheri East","Mumbai ",505,Maharashtra,IN,400059,"09967002779   ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9548,5985,"Dev Safety Products",27AUIPC3656L1ZD,NULL,"Shop No-2,115,Radha Krishna Building, Dulya Maruti Chowk, Ganesh Peth","Pune ",505,Maharashtra,IN,411002,9922144423,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9549,3797,"DewDry Industries ","27AGIPM6075H1Z2 ",NULL,"A/185, Mahape MIDC, Mahape ","Navi Mumbai ",505,Maharashtra,IN,400710,9833099265,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9549,3797,"DewDry Industries ",27BASPM0556L1Z4,NULL,"A/185, Mahape MIDC, Mahape ","Navi Mumbai ",505,Maharashtra,IN,400710,9833099265,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9550,5986,"Yash Enterprises [Mumbai]","No GST Number",NULL,"Shop No.18, Laxmi narayan Tower 2, Sayani Road, Prabhadevi, Dadar West",Mumbai,505,Maharashtra,IN,400025,9819024014,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9551,5988,"Shivam Electronics",07AAEPG8090Q1Z4,NULL,"204, Triveni Complex,  2, Veer Savarkar Block,  Madhuban Road, Shakarpur","New Delhi",494,Delhi,IN,110092,011-22454242,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9552,5989,"Neobits Inc.","No GST Number",NULL,"3350 Scott Blvd, Suite 4601 ","Santa Clara",12,California,US,"CA 95054","+1 86663 62487",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
@@ -5326,7 +5323,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9625,6050,"Ingersoll Rand Climate Solutions Pvt. Ltd.",27AACCS9663E1Z3,NULL,"Unit 31,3rd Floor, 2nd level, Kalpataru Square, Andheri-Kurla Road, Andheri East ","Mumbai ",505,Maharashtra,IN,400059,"022 61540617",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9626,6051,"SVR ENTERPRISES",27ADNPR6750N1ZN,NULL,"B-201 Shreyas Ind. Est., Near Jaycoach,opp. W. E. Highway, Goregaon East","Mumbai ",505,Maharashtra,IN,400063,9820615700,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9627,6052,"Hiro Nisha Systems Pvt. Ltd.","No GST Number",NULL,"2112, Phase III, GIDC, Vatwa","Ahmedabad ",496,Gujarat,IN,382445,"79258 90853",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9628,6053,Cleantek,33AMCPB0547M1ZD,NULL,"SF No. 479/4, Site No. 22 & 23, Balaji Industrial Area, Kondayam Palayam Road, Saravanampatti (PO)","Coimbatore ",505,Maharashtra,IN,641035,0422-2984994,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9628,6053,Cleantek,33AMCPB0547M1ZD,NULL,"SF No. 479/4, Site No. 22 & 23, Balaji Industrial Area, Kondayam Palayam Road, Saravanampatti (PO)","Coimbatore ",515,"Tamil Nadu",IN,641035,0422-2984994,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9629,6054,"Laxmi Polymers",24ABCPK7450M1ZI,NULL,"6 &12 Maruti Estate Rajnager Patia, Near GEB Santej ",Ahmedabad,496,Gujarat,IN,382721,"9825215297 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9630,6056,"Yash Enterprises [Pune]","No GST Number",NULL,"Gate No.1369, Sonawane Wasti Chikhali, Near Komal Coating",Pune,505,Maharashtra,IN,411017,8793404137,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9631,6057,"Vac-Tech Marketing Services",27AADFV8125A1ZE,NULL,"Plot No.2, Rehal Compound, Opp State Bank Of India, Near Chaitanya Castings, LBS Marg, Bhandup West ","Mumbai ",505,Maharashtra,IN,400078,"98201 26925",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5358,7 +5355,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9658,6080,"Pradeep Sales and Service Pvt. Ltd.",27AAGCP7170H1Z6,NULL,"11, Star Ind. Estate, Near Saki Naka Tel Exch, Opp. Corporation bank, Kurla-Andheri Road",Mumbai,505,Maharashtra,IN,400072,"022 28593000",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9659,6081,"Ebony and Ivory Studios ",07AEVPJ0790F1Z8,NULL,"E-12, Hauz Khas Main Market","New Delhi ",494,Delhi,IN,110016,011-41828942,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9660,6082,"Global Enersol Technologies Pvt. Ltd.",27AAECC9245Q1ZY,NULL,"2D, 2nd Floor, Vijay Chambers, 1140 Tribhuvan Road, Opposite Dreamland Cinema","Mumbai ",505,Maharashtra,IN,400004,9820422960,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9661,6006,"S.S. Engineering Industries","24AACFM8074A1ZM ",NULL,"A-1, 922/19, Hindustan Fashion Compound, G.I.D.C. Makarpura","Vadodara ",496,Gujarat,IN,390010,0120-2423191,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9661,6006,"S. S. Engineers","24AACFM8074A1ZM ",NULL,"A-1, 922/19, Hindustan Fashion Compound, G.I.D.C. Makarpura","Vadodara ",496,Gujarat,IN,390010,0120-2423191,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9662,6083,"Sidhansh Electronics Pvt. Ltd.",27AARCS1762M1ZN,NULL,"HSU G11, Palladium, Pheonix Mall, High Street Phoenix, S B Marg, Lower Parel",Mumbai,505,Maharashtra,IN,400013,"022 24940192",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9663,6084,"Devyani Enterprises",27AOBPD6187Q1ZD,NULL,"Sector 27, Pradhikaran, Nigadi",Pune,505,Maharashtra,IN,411044,9763796437,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9664,6085,"Resoure Solution",24ANNPJ5953F1ZU,NULL,"1/92, Rajput Street, Tunda, Mundra","Kachchh  ",496,Gujarat,IN,370435,9998880125,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5397,7 +5394,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9697,3581,"Khanna Engineering",24AFVPK6851P1ZI,NULL,"78, Sahjanand Estate, Behind Laljimulji Transport, Sarkhej","Ahmedabad ",496,Gujarat,IN,382210,9824013470,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9698,6110,"Desmin Agencies",24AABFD1360M1ZO,NULL,"United House, 7, Near Sanskrut Building, Off. Ashram Road, Navrangpura",Ahmedabad,496,Gujarat,IN,380009,7624050888,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9699,6111,"Lucky Outfit and Accessories","07BTAPG6969A1ZT  ",NULL,"2407, Tota Ram Bazar, Ganeshpura, Tri Nagar","New Delhi",494,Delhi,IN,"110035  ",8802279973,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9700,6112,"Atal Hose and Engineering Works Pvt. Ltd.","No GST Number",NULL,"1407, MIE red Cross Road",Bahadurgarh,497,Haryana,IN,124507,9911144815,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9700,6112,"Atal Hose and Engineering Works Pvt. Ltd.",06AAACA7864R1Z1,NULL,"1407, MIE red Cross Road",Bahadurgarh,497,Haryana,IN,124507,9911144815,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9701,6113,"Sapcon Instruments Pvt. Ltd.",23AACCS4126N1ZC,NULL,"131, Palshikar Colony, Palsikar Colony",Indore,504,"Madhya Pradesh",IN,452004,7879998474,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9702,6114,"Aarti Chairs Pvt. Ltd.",27AAKCA5603Q1Z8,NULL,"015 Busa Industrial Estate, Shankarrao Naram Path, Near Peninsula Corporate Park, Lower Parel West",Mumbai,505,Maharashtra,IN,400013,"022 24927925",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9703,2387,"Kanti Enterprises","No GST Number",NULL,"308 Sudershan Park  Moti Nagar","New Delhi",494,Delhi,IN,110015,9990005564,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
@@ -5409,7 +5406,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9709,6119,"Dass studios",07AADFD3145L1ZH,NULL,"F-12, Connaught Place","New Delhi",494,Delhi,IN,110001,011-23310751,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9710,6069,"Kavitsu Automation",27AKEPP6956A1Z2,NULL,"N-481 ADDITIONAL MIDC ",Satara,505,Maharashtra,IN,415004,"02162 240809",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9711,4103,"Divine Engineering",27BVQPS4651F1Z2,NULL,"Shop No. 7, Italian Building, Ghas Galli, Near Mumbai ITI Opp. Huda Heights, Agripada","Mumbai ",505,Maharashtra,IN,400011,9987252340,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
-9712,6120,"Wildcraft India Pvt. Ltd.","No GST Number",NULL,"15th Cross Road, Outer Ring Road, J.P. Nagar, 4th Phase",Bangalore,501,Karnataka,IN,560078,7506512621,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9712,6120,"Wildcraft India Pvt. Ltd.",29AAACW1988L1ZM,NULL,"15th Cross Road, Outer Ring Road, J.P. Nagar, 4th Phase",Bangalore,501,Karnataka,IN,560078,7506512621,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9713,6121,"Everest Blowers Pvt. Ltd.","No GST Number",NULL,"B-44, Mayapuri Industrial Area, Phase-1","New Delhi",494,Delhi,IN,110064,"011 45457777",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9714,6121,"Everest Blowers Pvt. Ltd.","06AADCE0044J1Z0  ",NULL,"Plot No 82-83, Sector 16, HSIIDC ","Bahadurgarh ",497,Haryana,IN,124507,"011 45457777",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9715,6122,"Flow Point India",27AFDPY2220A1ZW,NULL,"4/5 Chanakya Nagar, Opp. Techweb Centre, Linkroad, Jogeshwari West","Mumbai ",505,Maharashtra,IN,"400102 ",8108324491,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5425,7 +5422,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9725,6068,"Growthpath Solutions Pvt. Ltd.",06AADCG8142P2Z6,NULL,"Warehouse No. 1, Opp. V-Mart, Tauru Road",Bilaspur,497,Haryana,IN,122413,972988886800,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9726,1845,"Unitek Valves Pvt. Ltd.",27AABCU9261B1ZE,NULL,"S No. 24, Uttarshiv Goteghar Sill Phata,Mumbra Panvel Road, New Mumbai",Thane,505,Maharashtra,IN,400612,022-66331210/7573,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9727,6131,"Master Pharma Machinery","No GST Number",NULL,"Madni Estate, Nair Wadi, ayyappa Mandir Road, Kherani Road, Sakinaka",Mumbai,505,Maharashtra,IN,400072,9819192085,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9728,6132,"Diamonds Services","No GST Number",NULL,"Shop no.6, Sadanand Road, Kankuwadi, Vile Parle West",Mumbai,505,Maharashtra,IN,400099,9768452649,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9728,6132,"Hiraram Choudhary","No GST Number",NULL,"Shop no.6, Sadanand Road, Kankuwadi, Vile Parle West",Mumbai,505,Maharashtra,IN,400099,9768452649,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9729,6133,"NuTech Sales and Support",24AISPS9530R1Z4,NULL,"301, Berry's Plaza, 11/A Shrinagar Soceity,  Nr. Shrenik Park Circle, Akota",Vadodara,496,Gujarat,IN,390020,8460500891,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9730,6134,"S. C. INDUSTRIES",27ABBPS4124P1ZA,NULL,"83, Nagdevi Cross Lane,1st Floor, Off No.07",Mumbai,505,Maharashtra,IN,400003,"98204 74434",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9731,1177,"New Pig India Pvt. Ltd.",27AAECN8785E1Z1,NULL,"Warehouse no I-5, Saidhara Complex, Near Bhoirpada village,Mumbai-Nasik Highway (NH3), Bhiwandi- Taluka",Thane,505,Maharashtra,IN,421302,9902063411,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
@@ -5457,7 +5454,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9757,6157,"Yoga Land",27AGKPJ0639E1ZJ,NULL,"4/31, Upper Floor, Prabodhan Krida Marg, Siddharth Nagar 05, Goregaon West",Mumbai,505,Maharashtra,IN,400104,9152223499,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9758,6158,"Shree Rupnath Enterprises","No GST Number",NULL,"Sr.No.33/2, Near Yuvraj Castal Building, Ramnager Canol Road, Dattanager, Warje",Pune,505,Maharashtra,IN,411058,8805389140,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9759,6159,"Gopal Electronics",24AAYPP0073E1ZL,NULL,"Plot-11, Part-3, Amarnath Estate, Naroda Dehgam Road, Post - Naroda",Ahmedabad,496,Gujarat,IN,382330,9427418028,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9760,6160,"SumConcepts Technologies (P) Ltd.","No GST Number",NULL,"Amelia 401, Off. Lakaki Road, Model Colony",Pune,505,Maharashtra,IN,411016,"020 6400 3330",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9760,6160,"SumConcepts Technologies (P) Ltd.",27AAMCS5375D1Z2,NULL,"Amelia 401, Off. Lakaki Road, Model Colony",Pune,505,Maharashtra,IN,411016,"020 6400 3330",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9761,6162,"OMNI Cans and Printers Pvt. Ltd.",27AAACO0547M1ZB,NULL,"195/196, Jawahar Industrial Estate, Kamothe, Panvel",Raigad,505,Maharashtra,IN,410209,9323289518,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9762,5153,"Aashapoora Traders",27ANFPD5239C1ZD,NULL,"Siddhi Emp., Shop No. 17, 2nd Hasnabad Lane, Nagree Mkt., Santacruz West",Mumbai,505,Maharashtra,IN,400054,9833871077,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9763,4527,"Esteem Group",27AEBPG7116E1ZX,NULL,"127, Nagdevi Street",Mumbai,505,Maharashtra,IN,400003,8879051271,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",1,NULL
@@ -5468,7 +5465,7 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9768,6166,"Suprimo Automation Pvt. Ltd.","No GST Number",NULL,"Plot No.3B/3, Part 33, D1 Block MIDC, Chinchwad",Pune,505,Maharashtra,IN,411019,"020 65118822",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9769,6093,"Millennium Instruments Ltd.",09AADCM7246C1ZJ,NULL,"F-12, Site-B UPSIDC Ind. Area, Surajpur, G.B. Nagar","Greater Noida",517,"Uttar Pradesh",IN,201306,"011 22014325",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9770,6167,"Vasanth And Co.",33AAAPV9883C1ZG,NULL,"2D/2D-2. Fort Station Road",Trichy,515,"Tamil Nadu",IN,620002,9940112565,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
-9771,6168,"Biolix Technologies",29AAKFB0259L1Z5,NULL,"No. 12, JR Arcade, 80 Ft. Road, 1st Block, Koramangala",Bangalore,505,Maharashtra,IN,560034,9900846627,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9771,6168,"Biolix Technologies",29AAKFB0259L1Z5,NULL,"No. 12, JR Arcade, 80 Ft. Road, 1st Block, Koramangala",Bangalore,501,Karnataka,IN,560034,9900846627,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9772,6169,"S. Zulficar Ali",33AACPZ6976G1Z6,NULL,"156, Jail Street, Madurai Road",Trichy,515,"Tamil Nadu",IN,620008,9443075919,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9773,2637,"S.R. Enterprises","27AALFS5707R1ZC ",NULL,"S. No. 37/2, Shed No. 3, Ashtavinayak Industrial Area, Narhegaon",Pune,505,Maharashtra,IN,411041,"020 66203871",NULL,NULL,NULL,NULL,NULL,NULL,"6,7",1,NULL
 9774,6170,"Landmarkcars Pvt. Ltd.",23AABCL1862B1Z4,NULL,"25 Mangal compound, MR11 link. Road, Ring road, Dewas Naka",Indore,504,"Madhya Pradesh",IN,452001,9099981903,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
@@ -5495,3 +5492,149 @@ Andheri (W)",Mumbai,505,Maharashtra,IN,"400053 ",NULL,NULL,NULL,NULL,NULL,NULL,N
 9796,6190,"Samtech Tools And Equipments",27AQPPG2415C1Z6,NULL,"10, Satya Sai Seva Society, Sanjay Nagar, Pandit Lal Tiwari Road, Kandivali West",Mumbai,505,Maharashtra,IN,400067,"99207 81947 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
 9797,4997,"Modern  Hydraulics","27AEQPM5973C1Z3 ",NULL,"S.No.58, Plot No, 83, Sai Industrial Estate, Behind Maharashtra Vakhar Maha Mandal, Bhosari, Near SHREENATH METALS, OFF Pune - Nashik, Highway, Choviswadi, Charholi, BU",Pune,505,Maharashtra,IN,412105,"09370277697 ",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
 9798,6191,"Bhuwal Insulation Cable Pvt. Ltd.",27AACCB7374B1ZU,NULL,"108, Ardeshir Dadi Street, Ravindra Villa Building, 1st Floor, Near C. P. Tank Circle, Khetwadi, Girgaon",Mumbai,505,Maharashtra,IN,400004,9833006364,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9799,6192,"Lohia Traders",29ABAPL6306R1Z6,NULL,"4/2, Silver Jubliee park road, 2nd cross",Bangalore,501,Karnataka,IN,560002,09886302450,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9800,6193,"Mohit World","No GST Number",NULL,"Office 3, 3rd Floor, Shahviri Building, 37/41, Picket Road, Kalbadevi",Mumbai,505,Maharashtra,IN,400002,"022 40223312",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9801,1864,"Pammvi Exports Pvt. Ltd.","27AAACP2468C1ZN ",NULL,"Gala No. 106, Building No.C-11, Parashnath Compund, Val, Bhiwandi",Thane,505,Maharashtra,IN,421302,"022 26791904",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9802,6161,"Appario Retail Pvt. Ltd.",27AALCA0171E1ZZ,NULL,"5/2, K-Square Industrial and Logistics Park, Near Pushkar Mela, Off National highway 3, Krurund, Bhiwandi ",Thane,505,Maharashtra,IN,421302,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9803,6194,"Weiss Technik India Pvt. Ltd. ","No GST Number",NULL,"F-3, Vasant Square Mall Plot No A, Sector B,  Pocket V, Vasant Kunj","New Delhi",494,Delhi,IN,110070,"011 40000374",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9804,6194,"Weiss Technik India Pvt. Ltd. ",36AABCW1245R1ZW,NULL,"3-6-271, 2nd Floor, Sudheer Tapani Towers, Near Hyderabad Stock Exchange, Himayat Nagar",Hyderabad,870,Telangana,IN,500029,"011 40000374",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9805,3250,"Festo India Pvt. Ltd.","29AAACF2940F1ZU ",NULL,"Plot No. 225 & 226, 237B Bommasandra Industrial Area",Bengaluru,501,Karnataka,IN,560099,8022894222,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9806,6195,"DYNATEK Systems and Controls Pvt. Ltd.","No GST Number",NULL,"125/327, Diamond Ind. Estate, Ketki Pada Road, Near Dahisar, Check Naka, Dahisar East",Mumbai,505,Maharashtra,IN,400068,09224384341,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9807,6196,"Genetix biotech Asia Pvt. Ltd.",07AABCG4572B1ZY,NULL,"71/1 first floor, Najafgarh Road, Shivaji Marg","New Delhi",494,Delhi,IN,110015,9821008441,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9808,6200,"Bhawani Electrical Works",06ABXPK6056A1ZK,NULL,"1C/8, B. P., NIT, NIT, ",Faridabad,497,Haryana,IN,121001,9310902246,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9809,6177,"Hinglaj Spring Ind.",24AJQPP8458E1ZP,NULL,"156/2/C-31 Kailashnagar Estate,  Opp. New Tele.  Exchange,  F- Road, Vatva G.I.D.C",Ahmedabad,496,Gujarat,IN,382445,9925365392,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9810,6201,"Capro Valves and Controls Pvt. Ltd.",27AACCC4119R1ZB,NULL,"Gala No. 5, Surat Singh Chawl Estate, Behind Agarwal, Industrial Estate, Off S. V. Road, Jogeshwari West","Mumbai  ",505,Maharashtra,IN,400102,09867322862,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9811,218,"Max Spare Limited","27AADCS6349E1Z9 ",NULL,"Sy. No. 50, Hissa No. 1/2/3B/2B, At Dahivali, Post Khopoli, Khalapur, Paliphata",Raigad,505,Maharashtra,IN,410203,"022 22225555",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9812,6202,"Prime Electrotech",09AARFP2780P1Z8,NULL,"E-65, 1st Floor, Sector 9 ",Noida,517,"Uttar Pradesh",IN,201301,9599687278,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9813,6203,"Omkar Nests Pvt. Ltd.",01AAACO5127B1ZA,NULL,"Sector-1A Satyam Road, Trikuta Nagar Extention",Jammu,499,"Jammu and Kashmir",IN,180012,"098713 84790",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9814,6204,"Minaxi Enterprise",24ABIFM0221E1ZX,NULL,"Office No. 127 Kutch Arcade Platinum, NH-8/A",Gandhidham,496,Gujarat,IN,370201,"079 2297 5444",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9815,6205,"Thread Check Inc.","No GST Number",NULL,"900 Marconi Avenue",Ronkonkoma,43,"New York",US,"11779  ","+1 800 767 7633",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
+9816,6206,"Synergy Engineering Solutions",29CTMPS5001A1ZT,NULL,"No.18/2, Ground Floor, West of Berlie Street,  Langford Road Cross,  Opp. Govt Hospital, Shanti Nagar","Bangalore ",501,Karnataka,IN,560027,9590422200,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9817,3437,"SiliCon Scientific","27BAKPN9136K1Z3 ",NULL,"JaiShree Laxmi CHS, Plot no 147, Gandhinagar, Dombivli East",Thane,505,Maharashtra,IN,421204,8898779957,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",1,NULL
+9818,6207,"Deltech Instruments Pvt. Ltd.",07AAACD0980B1Z6,NULL,"A-39, Swasthya Vihar, Vikas Marg","New Delhi ",494,Delhi,IN,110092,09560587963,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9820,6208,"Baroda Machine Tools",24AABFB6657K1ZC,NULL,"982, Lehripura New Road",Baroda,496,Gujarat,IN,390001,9825381369,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9821,6176,"M. R. Organisation Ltd.","24AAICM5394A1ZL ",NULL,"83, Swaminarayan Godown, Opp. Dariyapur Gate, Dariyapur",Ahmedabad,496,Gujarat,IN,380004,079-29098077,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",1,NULL
+9822,6209,"Caliber Gauges and Instrument Laboratory",27AGKPR6446D1Z4,NULL,"S.No. 14/1, Dattadigamber soc B, Warje Jakat Naka",Pune,505,Maharashtra,IN,411052,9403611403,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9823,6210,"OM Handling Material Pvt. Ltd.",27AACC03335R1ZZ,NULL,"Shramik Nagar, Part No.1,Room No.78,Behind Nav High School, Pimpri Gaon",Pune,505,Maharashtra,IN,411017,9420169433,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9824,6210,"OM Handling Material Pvt. Ltd.","27AACC03335R1ZZ ",NULL,"General Block, Plot No.95,Opp.Power House, Near Jayanand     Khira   Company, Unimech Industrial Shed, Bhosari",Pune,505,Maharashtra,IN,411026,9420169433,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9825,6210,"OM Handling Material Pvt. Ltd.",27AACC03335R1ZZ,NULL,"General Block, Plot No.95,Opp.Power House, Near Jayanand Khira Company,  Unimech Industrial Shed, Bhosari",Pune,505,Maharashtra,IN,411026,9420169433,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",1,NULL
+9826,6212,Zeebeetronics,"29AABPB0679H1ZU  ",NULL,"27, Krishna Reddy Colony Domlur Layout",Bangalore,501,Karnataka,IN,560071,09845056114,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9827,6213,"Newvik Teleservices ",07ACSPG6766B1ZE,NULL,"Plot No.18, Second Floor, Hargovind Enclave, Main Road Vikas Marg, Opp. Metro Pillar No.120","New Delhi",494,Delhi,IN,110092,"011 22377888",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9828,6214,"Biolinx Labsystems Pvt. Ltd.",27AAECB6291K1ZB,NULL,"203, Technocity, Plot No X-5/3, Opp Millennium Business Park,  Mahape","Navi Mumbai",505,Maharashtra,IN,400710,8879791690,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9829,5880,"Excel Rasayan Pvt. Ltd.",07AAACE0521B1ZK,NULL,"172, DSIDC Complex, Okhla Industrial Area - Phase 1 ","New Delhi ",494,Delhi,IN,110020,9811037373,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9830,6215,"Parivar Stores",27AABPP9352M1Z5,NULL,"Shop No 3, Prashant Apartments, Opp. I.I.T Main Gate, Powai",Mumbai,505,Maharashtra,IN,400076,9819676398,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9831,4362,"W. W. Grainger Inc.","No GST Number",NULL,"2710, Keystone Pacific Parkway",Patterson,12,California,US,95363,60714-3998,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",5,NULL
+9832,6216,"Nachiket Enterprise",24ALLPG2917N1ZW,NULL,"L-10, Kalpataru Apartment, Nava Vadaj",Ahmedabad,496,Gujarat,IN,380013,9909951557,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9833,6217,"Tube Products India",33ADOPJ4733C1ZT,NULL,"Old No.29,New No:59,Armeniam Street",Chennai,515,"Tamil Nadu",IN,600001,9444711736,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9834,6218,SportsfitMART,07AAGCB7343G1ZP,NULL," B-4, Ground Floor, Budha Tower, Sector 27",Noida,517,"Uttar Pradesh",IN,201301,9910701559,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9835,6219,"S A M Technologies",29AAZFS4074K1Z6,NULL,"No. 805/ I, Srinidhi, Ground Floor, 15th Cross, Kanakapura Main Road, Jayanagar VII Block West",Bangalore,501,Karnataka,IN,560070,"080 22442351",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9836,6220,"Vision Healthcare",27AAEFV2075J1ZX,NULL,"M-206, Rajlaxmi Industrial & Commercial Complex, Kalher",Thane,505,Maharashtra,IN,421301,9167181050,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9837,6221,"Future Retail Ltd.","24AADCB1093N1ZM ",NULL,"3rd Floor, 3rd Floor, City Gold Mall,  132 Feet Ring Road, Satellite",Ahmedabad,496,Gujarat,IN,380015,8866044435,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9838,6222,Transcal,29AACFT3663L1ZP,NULL,"100, 10th Cross, Between Sampige and Margosa Road, Malleswaram",Bangalore,501,Karnataka,IN,560003,080-43688889,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9839,4565,"Rajdeep Plastic Containers India Pvt Ltd","27AABCM9348R1ZL ",NULL,"Plot No. E-8, MIDC, Taloja Industrial Area, Panvel, Raigad, ",Taloja,505,Maharashtra,IN,410208,"022 25836346",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9840,6223,"Kemtech International Pvt. Ltd.","No GST Number",NULL,"505-506 Red Rose Building  49-50 Nehru Place","New Delhi",494,Delhi,IN,110019,"011 41881341",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9841,6224,"Joseph Leslie Dynamiks Mfg. Pvt. Ltd.",27AAACJ2779A1ZR,NULL,"Leslico House, Prof. V S Agashe Road, Dadar West",Mumbai,505,Maharashtra,IN,400028,022-24227198,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9842,6225,"Shri Girraj Jee Office Systems",07AYNPS2179M1ZK,NULL,"A-195 WHS Kirti Nagar","New Delhi",494,Delhi,IN,110015,8860009141,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9843,6164,"GBD Retail LLP",27AAFCG7444Q1ZW,NULL,"Room No. 3, Shree Seth Chawl, Ambechi Bharni, Tulsipada Pipe Line, Gaondevi Road, Bhandup West",Mumbai,505,Maharashtra,IN,400078,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9844,6226,"SR Enterprises",27BKPPS1878G1ZG,NULL,"12, SS/II/A, Sector-5, Koparkhairne","Navi Mumbai",505,Maharashtra,IN,400709,0986704139,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9845,6227,"Hagnleone Lighting","No GST Number",NULL,"Hagnloene Gmbh, Bobbleten 36",Dornbirn,103,Vorarlberg,AT,6850,"+43 5572 39 44 40 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
+9846,6228,Teknor,27AICPB0306L1ZR,NULL," 14/390E, Laxmi Bldg, Opp.Swastik Cinema, Lamington Road","Mumbai ",505,Maharashtra,IN,400004,9819725531,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9847,6229,"S. K. Equipments","No GST Number",NULL,"C 305, 1st Floor, Sector 10",Noida,517,"Uttar Pradesh",IN,201301,9818900247,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9848,6230,"Waliram Taneja Mines Pvt. Ltd.","No GST Number",NULL,"Godown No-1, Mohatta Compound Dr E. Moses Road, Worli",Mumbai,505,Maharashtra,IN,400018,7738052946,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9849,6231,"Mukesh Metal",36AAJFM5640F1ZA,NULL," 4/2/162, Old Bhoiguda, Hill Street",Secunderabad,870,Telangana,IN,500003,9396545325,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9850,4675,"Samsung India Electronics Pvt. Ltd.","No GST Number",NULL,"Waddhamana area B"" Deshonnati Press, Amrawati Road Near TNT Hub","Nagpur ",505,Maharashtra,IN,440023,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"4,5",1,NULL
+9851,4675,"Samsung India Electronics Pvt. Ltd.","No GST Number",NULL,"Plot No 3122-3127 Gindan khera naderganj industrial Area ",Lucknow,517,"Uttar Pradesh",IN,226012,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"6,7",1,NULL
+9852,6232,"Vishal Electricals",29ACAPC9644E1ZP,NULL,"No. 639, Bhandari Mansion, Chickpet",Bangalore,501,Karnataka,IN,560053,080-41222028,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9853,6233,"Shah Enterprises",27BEYPS2573F1ZS,NULL,"166/172, Lohar Chawl, K.M. Sharma Marg Vishwanath Building, 3rd Floor, Room No. 4",Mumbai,505,Maharashtra,IN,400002,022-22057029,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9854,6234,"Collective Trade Links Pvt. Ltd.",24AACCC4813C1ZB,NULL,"17, Aryan Corporate Park, Nr. Thaltej Railway Crossing, Thaltej",Ahmedabad,496,Gujarat,IN,380054,079-26474700,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9855,6235,"Rajshree Electro Systems",27BFVPS6877J1Z5,NULL,"Skylab Building, Gala No. 1, Arora Estate, Padval Nagar, Wagle Estate",Thane,505,Maharashtra,IN,400604,9820325382,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9856,6236,"Now Distribution India Pvt. Ltd.","No GST Number",NULL,"Office No. 509, Rupa Solitaire, Bldg. NO.A1, Sector-1, Millennium Business park, Mahape","Navi Mumbai",505,Maharashtra,IN,400710,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9857,6237,"Chetan Abrasives Pvt. Ltd.",24AAACC7613G1Z1,NULL,"0, Laheripura New Road, Laheri Pura",Vadodara,496,Gujarat,IN,390001,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9858,2215,"Pranav Engineering",27AAEPS4143E1ZT,NULL,"305, Doshi Chambers, Pune Street,   Masjid Bunder",Mumbai,505,Maharashtra,IN,400009,7303029380,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9859,5212,"Reliance Retail Ltd.",27AABCR1718E1ZP,NULL,"Ground Floor, Calcot House, Street no. 8/10, Tamrind Line 2/8. Bruce Street and 4 American Street, Fort",Mumbai,505,Maharashtra,IN,400001,022-22871941/42,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9860,3018,"Work Store Ltd.",27AABCF0402F1ZC,NULL," 2nd Floor, 10/76 Apte Properties, Nahar Industrial Estate, Off E. Moses Road, Worli",Mumbai,505,Maharashtra,IN,400018,9320653284,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9861,6221,"Future Retail Ltd.","24AADCB1093N1ZM ",NULL,"Big Bazaar Acropolis Mall, Opp Bhaikaka Nagar, Thaltej",Ahmedabad,496,Gujarat,IN,380054,8866044435,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9862,6239,"Fairmont Polymers (India) Pvt. Ltd.",27AABCF0484F1ZU,NULL,"Block No4,2nd Floor,maher, Bajiprabhu Deshpande Road, Naupada",Thane,505,Maharashtra,IN,400602,9323272139,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9863,6240,"Prasad Enterprises",27AFMPK4819E1ZC,NULL,"4 Block 2nd Floor Maher Bajiprabhu Deshpande Path Naupada",Thane,505,Maharashtra,IN,400602,9323272139,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9864,6208,"Baroda Machine Tools","24AABFB6657K1ZC ",NULL,"982 Lehripura New Road",Vadodara,496,Gujarat,IN,390001,9825381369,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9865,6241,"Matrix Technochem","No GST Number",NULL,"B7/401, Rajratna Park CHSL,  Brahmand, G B Road Thane West",Thane,505,Maharashtra,IN,400607,8097771186,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9866,5549,"Param Associates",27AVCPS9638K1ZT,NULL,"Shop No.6, Plot No. JP-114/1-114, J-Block,  Jaydeep Business Centre, Basement, Indrayani Chowk,  MIDC Bhosari",Pune,505,Maharashtra,IN,411026,9712638200,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9867,6242,"GS Creations",27AMYPM5066A1ZQ,NULL,"Shop No. 4, Vinit Plaza, Vallabhnagar, Pimpri",Pune,505,Maharashtra,IN,411018,9764228873,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9868,6243,"Minda Systems",27ADTPM7239H1ZX,NULL,"4 Lake View Apt., Opp. Dena Bank, Marol, Andheri (E)",Mumbai,505,Maharashtra,IN,400059,9920466377,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9869,6244,"Apex Precision Mechatronix Pvt. Ltd.",27AAACA3975B1ZY,NULL,"303-308, Krishna Bhuvan Annexe, 22-B, Govandi Station, Deonar",Mumbai,505,Maharashtra,IN,400088,"22 67973360",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9870,6244,"Apex Precision Mechatronix Pvt. Ltd.",27AAACA3975B1ZY,NULL,"B-22, Punit Ind. Estate, D10-11a,  Thane Belapur Rd.,  Turbhe","Navi Mumbai",505,Maharashtra,IN,400705,"22 67973360",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9871,6246,"Kaizen Engineering",27CSMPD3116J2ZQ,NULL,"PL No. 37, Laxminagar, Saswad-hivre road, Near Seva Engg. Saswad, tal. Purandar",Pune,505,Maharashtra,IN,412301,9850499096,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9872,6247,"Adhyalaxmi Industrial Rubber And Polymers Pvt. Ltd.",27AAQCA0578G1ZF,NULL,"199/A,DevjiOdhavjiBldg.,Room No.12, 2ndfloor,NarashiNatha Street, Bhat Bazar, Masjidbandar","Mumbai ",505,Maharashtra,IN,400099,"9833595684 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9873,6248,"DNS Creative Products",27AGXPK1680Q1ZG,NULL,"Sr. No. 17/10, Jatan Industrial Estate, Sinhgad Road, Phata",Pune,505,Maharashtra,IN,411068,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9874,6249,"Konark Micro Computers","No GST Number",NULL,"Indira Chambers, 5th Floor, Opp. Maharashtra Mandal,  Tilak Road",Pune,505,Maharashtra,IN,411030,"9823009709 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9875,6250,"Kishor Pumps Pvt. Ltd.",27AABCK0619B1Z4,NULL,"903-B, Ozone Tower, Vikram Sarabhai Marg,  Vadiwadi","Vadodara ",496,Gujarat,IN,390023,9909946221,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9876,6251,"Heidenhain Optics & Electronics India Pvt. Ltd.",33AACCH1005M1Z0,NULL,"No. 1, Vivekanandan Street, off Mayor Ramanathan Road, Chetpet",Chennai,515,"Tamil Nadu",IN,600031,"044 4023 4305",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9877,6252,"Wenglor Sensoric India Pvt. Ltd.",27AAACW8426F1Z8,NULL,"A 304 Technocity, Plot No. X-4/1, 4/2  TTC Industrial Area, Mahape","Navi Mumbai",505,Maharashtra,IN,400710,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9878,6253,"Sigma Search Lights Ltd.",19AAECS5074K1ZW,NULL,"P-27 , sagar manna road",kolkata,519,"West Bengal",IN,700060,"94330 15081",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9879,6254,Metastar,24ALCPN3615K1Z7,NULL,"559, Near Bank Of India, Opposite Indian Petrol Pump, Changodar Industrial Area, Rajkot Highway",Ahmedabad,496,Gujarat,IN,382213,9276767635,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9880,6255,"Himsan Polymer","No GST Number",NULL,"Gala B, 1st Floor, Vishal Industrial Estate, Ghodbunder Road, Near Organic Coating, Mira Road East, Thane","Mumbai ",505,Maharashtra,IN,401107,022-29451508,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9881,4329,"Aaradhya Ventures","27CUZPS1818M1ZK ",NULL,"J/202, Nargis Housing Board, Phase 1, Sector 20, Kharghar","Navi Mumbai",505,Maharashtra,IN,410210,"9833260609 ",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9882,3612,"Almonard Pvt. Ltd.",24AABCA0188R1ZF,NULL,"306 & 307, Videocon Arizona, Near Nav Gujarat Collage, Ashram Road, Income Tax",Ahmedabad,496,Gujarat,IN,380013,022-24903094,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9883,3856,"Kaizen Industries",24AKXPV0186D1ZR,NULL,"Plot No. 37, Laxminagar saswad-Hivre Road, Near seva engg., Saswad, Purandhar",Pune,505,Maharashtra,IN,412301,08866419009,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9884,6256,"Suchi Communication","24AECPB2087G2ZY ",NULL,"205, Rajkamal A,Opp. Sakar III Nr. Income Tax,Ashram Road",Ahmedabad,496,Gujarat,IN,380014,09426050612,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9885,343,"SRP Laser",27ACSFS0206Q1ZJ,NULL,"G-1, Plot No. 24, Steel House, Mahal Industrial Estate, Near Paper box, Mahakali Caves Road, Andheri East",Mumbai,505,Maharashtra,IN,400093,"022 2822 2827",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9886,6257,"Unique Industrial Products",36ABGPT6794F1Z2,NULL,"4-4-228/1 Lala Temple Street, Pan Bazar",Secunderabad,870,Telangana,IN,500003,09010580082,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9887,6258,"Sachchidanand Enterprises",36AGCPJ8094M1ZU,NULL,"5-4-23, Shop No. 110, Ispat Bhavan, Distillary Road, Ranigunj",Secunderabad,870,Telangana,IN,500003,040-27520069,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9888,6259,"Bigsmall Gifts Pvt. Ltd.",07AAHCB1284F1ZU,NULL,"D-89, 1st floor, 100 ft Road, Chattarpur","New Delhi",494,Delhi,IN,110074,09899309888,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9889,6260,"Qpoint Engineering Solutions Pvt. Ltd.",27AAACQ3094P1ZV,NULL,"S.No.23/13, VadgaonSheri, Opp Hyatt Regency Hotel, Nagar Road, Haveli",Pune,505,Maharashtra,IN,411014,020-2071769,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9890,6261,"Sky Blue Stationary","No GST Number",NULL,"Shop No 9 A, Virwani Plaza, 11 East Street, Camp",Pune,505,Maharashtra,IN,411001,9764483777,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9891,6262,"Simaco Elettromeccanica Srl","No GST Number",NULL,"SS235, N.16","Corte Palasio",742,Lodi,IT,"26834 ","+39 037159181 ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
+9892,6263,"Shanghai Fangli Motor Co. Ltd.","No GST Number",NULL,"Rm 1009, No. 1198 Defu Road",Jiading,544,Shanghai,CN,"201800 ",+8618017720327,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
+9893,6264,"Tata Teleservices",27AAACH1458C1ZZ,NULL,"D-26,TTC Industrial Area, MIDC Sanpada, P.O. Turbhe, Thane","Navi Mumbai",505,Maharashtra,IN,400703,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9894,6264,"Tata Teleservices","27AAACH1458C1ZZ ",NULL,"Voltas Premises, T. B. Kadam Marg, Chinchpokali",Mumbai,505,Maharashtra,IN,400033,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9896,6265,"R. H. Power Utilities Pvt. Ltd.",27AACCR1917N1Z4,NULL,"691/A2, Bay No. 1, Bibvewadi Industrial Estate, Pune - Satara Road",Pune,505,Maharashtra,IN,411037,9130097541,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9897,6266,"Yexis Solutions",33AABFY1684M1ZT,NULL,"No.17, 9th Street, Dr. R K Salai, Mylapore",Chennai,515,"Tamil Nadu",IN,600004,"044 42104253",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9898,6267,"Venus Enterprises",07AHXPV0827C1Z0,NULL,"298, Tagore Park, Ext. Model Town 1, Next To Firefox Showroom Or Anytime Fitness","New Delhi",494,Delhi,IN,110009,8076534006,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9899,6256,"Suchi Communication",24AECPB2087G2ZY,NULL,"Plot No. 1689-1, Sector 2-d","Gandhinagar ",496,Gujarat,IN,382007,"079- 27542018",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9900,6268,"Game Zone",09AIDPM6680P1ZG,NULL,"B-4 Ground Floor, Budha Tower, Sector 27",Noida,517,"Uttar Pradesh",IN,201301,9910701559,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9901,5454,"Troikaa Pharmaceuticals Ltd.",05AABCT6866H1Z4,NULL,"C-1,Sara Ind.Estate Ltd, Chota Rampur,Beyond Selaqui",Dehradun,518,Uttarakhand,IN,248197,01352698819,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9902,6269,"Gerand Engineering","No GST Number",NULL,"2300 Edgewood Ave. S.",Minneapolis,34,Minnesota,US,55426,"+1 952-374-1320",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",5,NULL
+9903,6270,"Kotak Mahindra Bank Ltd.",27AAACK4409J1ZK,NULL,"Shop No 1, Aum Saheel Tower, Kashinath Dhuru Compound, Opp. Kamala Mill, S B Marg, Lower Parel",Mumbai,505,Maharashtra,IN,400013,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9904,6271,"State Bank of India",27AAACS8577K2ZO,NULL,"Pedder Road Branch, Kalpataru - 39 Pedder Road",Mumbai,505,Maharashtra,IN,400026,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9905,6272,"ICICI Bank Ltd.",27AAACI1195H1ZM,NULL,"Ion House, Dr. E. Moses Road, Mahalaxmi",Mumbai,505,Maharashtra,IN,400011,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9906,6273,"Software Associates Information Technologies Pvt. Ltd.","No GST Number",NULL,"3/962, ”Mascot”, Zilla Bungalow Road, Nadakkavu",Calicut,502,Kerala,IN,673011,"+91 495 2765836",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9907,6275,"Credence Rewards",27AAKFC7629K2ZX,NULL,"Laxmi Shoppe, Shop No. 3, Opp. Neem Chhaya, Below Ramji Ashar School, M.G. Road, Ghatkopar East",Mumbai,505,Maharashtra,IN,400077,9920950509,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9908,5951,"A L M Engineering And Instrumentation Pvt. Ltd.",27AAGCA5373B1ZW,NULL,"304, Damji Shamji Industrial Complex, L. B. S. Road, Kurla West",Mumbai,505,Maharashtra,IN,400070,"022 25126500",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9909,6276,"P. G. Engineers","No GST Number",NULL,"24B/8, Industrial Area, Opp. Thermal Power House, Gate N.I.T.",Faridabad,497,Haryana,IN,121001,0129-4027592,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9910,6277,"Kochar Sung-up Acrylic Ltd.","No GST Number",NULL,"9/109, Shyam Block, Kailash Nagar, Pusta Road, Gandhi Nagar","New Delhi",494,Delhi,IN,110031,011-22079493,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9911,1379,"Victor Import",27AAMFV3839L1ZF,NULL,"D-1 and 2, Nidhi Darshan,Near Jakat naka,Jawahar Road,Dahanu Road ",Mumbai,505,Maharashtra,IN,401602,"022 23851299",NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9912,6278,"Sealexcel India Pvt. Ltd",27AAACS6420R1ZX,NULL,"56 & 61, Veena Dalvai Industrial Estate, S. V. Road, Oshiwara, Jogeshwari West",Mumbai,505,Maharashtra,IN,400102,022-26786885,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9913,6279,"Suntrac Sytems",27AAAPJ9613J1ZM,NULL,"15/16 Lamington Chambers, 2nd Floor  394 Lamington Road  opp. Imperial Cinema",Mumbai,505,Maharashtra,IN,400004,"022 6615 1559",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9919,6280,"Sharp Industries",24ADAFS6874P1ZD,NULL,"Survey No. 162, Plot No.-4,  S.I.D.C. Road, VIllage:Veraval (Shapar), Taluka Kotada Sangani",Rajkot,496,Gujarat,IN,360024,9099960200,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9920,6281,"Da Bella LLP",03AAMFD4392A1ZS,NULL,"C-88 2nd Floor Phase 7, Ind Area ",Mohali,512,Punjab,IN,160055,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9921,6282,"Modern Crane Service","No GST Number",NULL,"No. 1-7-1057, Industrial Area, Azamabad",Hyderabad,870,Telangana,IN,500020,"98490 12269",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9922,6283,"R S Battery & Inverter",27BJJPS3966G1ZN,NULL,"New Futala, Opp. Rasoighar Restaurant,, Amrawati Road",Nagpur,505,Maharashtra,IN,440033,9579034623,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9923,6284,"Shreeji Trading Co. (AFHPS8023F)",24AFHPS8023F1ZH,NULL,"805, J.B.Tower, Opp. Doordarshan Kendra, Thaltej",Ahmedabad,496,Gujarat,IN,380054,8849401822,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9924,6285,"Pooja Electrical Services","No GST Number",NULL,"KAY KAY Engineers Sector -10, Plot no.-127 (D), Near Times of India, PCNTDA, Bhosari ",Pune,505,Maharashtra,IN,411026,7507458981,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9925,6286,Flowtemp,"No GST Number",NULL,"3, Kakad Chambers, 132, Dr. Annie Besant Road, Worli",Mumbai,505,Maharashtra,IN,400018,9527884784,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9926,6287,"Shiraz C. Lalkaka Enterprises",27AAAPL1882B1Z2,NULL,"32/B, Bombay Timber Market. Opp. Britannia. Reay Road (E)",Mumbai,505,Maharashtra,IN,400010,9821307551,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9927,3432,"Shreeji Marketing Corporation","24AAFFS9397F1ZR ",NULL,"7, United House, Near Sanskrut Building, Old High Court Lane, Off. Ashram Road, Navrangpura","Ahmedabad ",496,Gujarat,IN,380009,079-26578401,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9928,3367,"Lecmec Sales and Service.","No GST Number",NULL,"39, Mantri Court, Dr Ambedkar Road, Next To RTO,, Camp",Pune,505,Maharashtra,IN,411001,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9929,6288,"Sure Resistors","No GST Number",NULL,"Unit No 116, Manish Ind Estate No.2  Navghar Road, Vasai East,",Palghar,505,Maharashtra,IN,401210,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9930,6289,"SVJ Corporation",19ACXPJ2453K1ZY,NULL,"169, Rajdanga Main Road, 2nd floor, Santipalli",Kolkata,519,"West Bengal",IN,700107,"033 4008 8209  ",NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9931,6120,"Wildcraft India Pvt. Ltd.",29AAACW1988L1ZM,NULL,"Survey No.47/2, 1st, Ground Floor, Srigandhadakavalu, Chennigappa Industrial Estate, Magadi Main Road, Sunkadakatte","Bangalore ",501,Karnataka,IN,560091,7506512621,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9932,6290,"Akhil Healthcare Pvt Ltd (M)",27AAECA3633Q1ZC,NULL," Manish Compound Bldg. No.1, Gala No. 264/44,rahnal Village, Anjur Phata,, Bhiwandi",Thane,505,Maharashtra,IN,421302,9712919520,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9933,6291,"G. H. VIRA and Co.",27AAAPV3341H1ZQ,NULL,"103/B, Ganpati Bhuvan,School Road, Malad West",Mumbai,505,Maharashtra,IN,400064,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9934,6292,"Jones Lang LaSalle Property Consultants India Pvt. Ltd.","No GST Number",NULL,"103, City Tower, Dhole Patil Road, Pune, Maharashtra ",Pune,505,Maharashtra,IN,411001,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9935,6293,"Classic Cargo Carriers",27AAAPA6826E1Z5,NULL,"OFFICE NO.1 SUKHSAGAR BLGDG. OPP. ACKRUTI CENTRE PO, MIDC ANDHERI (E)",Mumbai,505,Maharashtra,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9936,6295,"Avon Resorts and Hotels Pvt. Ltd.",27AAACA8907H1Z0,NULL,"87, Naigaum Cross Road, Dadar ( East ) Mumbai ",Mumbai,505,Maharashtra,IN,400014,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9937,2716,"Burhani House Of Tools","27ASHPB3594M1ZC ",NULL,"339, Dulya, Maruti Chowk, Ganesh Peth",Pune,505,Maharashtra,IN,411002,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9938,6296,"B S R & Co. LLP",27AAAFB9852F2ZE,NULL,NULL,NULL,505,Maharashtra,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9939,6298,"Trade Links Private Limited","No GST Number",NULL,NULL,NULL,496,Gujarat,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9940,6298,"Trade Links Private Limited","No GST Number",NULL,NULL,NULL,496,Gujarat,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9941,6299,"DNV Overseas Impex Pvt. Ltd.","No GST Number",NULL,NULL,NULL,494,Delhi,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9942,6300,"Hajrah Enterprises","No GST Number",NULL,"12/27 FALKE HOUSE KHATI MITTI LINE, GHASS BAZAR, KALYAN WEST",NULL,505,Maharashtra,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9943,6301,"Hiraram Chaudhary","No GST Number",NULL,NULL,NULL,505,Maharashtra,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9944,6302,"Ishwar Vaidya","No GST Number",NULL,NULL,NULL,505,Maharashtra,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9945,6304,"Nandkishore & Company",36AAAFN6750G1ZB,NULL,"4-3-161/19, Hill Street Ranigunj",Secunderabad,486,"Andhra Pradesh",IN,500003,040-27713617,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9946,6303,"AV Vision Equipments India Pvt. Ltd.",36AAGCA6049L1ZD,NULL,"1-20-248, IInd. Floor, (Next to Neelkamal Chairs) Rasoolpura",Secunderabad,486,"Andhra Pradesh",IN,"500 003",04067222555,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9947,6305,"United Technologies",27AHJPD5497L1ZR,NULL,"81/13, Raju Villa, 2nd Floor,  V.A.Oza Road,King-Circle,",Mumbai,505,Maharashtra,IN,400019,9821062767,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9948,6277,"Kochar Sung-up Acrylic Ltd.",03AAACK6435A1Z7,NULL,"Village Bala Chak Near Golwarh Raiway Station T.T Road",Amritsar,512,Punjab,IN,143001,9422503809,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL
+9949,6306,"BharatSinh MahipatSinh Parmar","No GST Number",NULL,NULL,NULL,496,Gujarat,IN,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9950,6307,"Flange Bureau",36ABZPJ3497J1ZQ,NULL,"5-4-23, Shop No. 12, Ispat Bhavan, Distillery Road, Secunderabad, Rani Gunj",Hyderabad,870,Telangana,IN,500003,8712798927,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9952,6312,"Premier Colorscan Instruments Pvt. Ltd.",27AAACP4757C1ZJ,NULL,"Plot No. EL-130, Electronic Zone, M.I.D.C., Mahape","Navi Mumbai",505,Maharashtra,IN,"400 710",9004054440,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL

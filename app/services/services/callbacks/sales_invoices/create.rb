@@ -5,23 +5,27 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
   end
 
   def call
-    sales_order_number = params['order_id']
-    invoice_number = params['increment_id']
-    remote_rows = params['ItemLine']
+    begin
+      sales_order = SalesOrder.find_by_order_number(params['order_id'])
 
-    sales_order = SalesOrder.find_by_order_number!(sales_order_number)
-
-    sales_order.invoices.where(invoice_number: invoice_number).first_or_create! do |invoice|
-      invoice.assign_attributes(:status => 1,:metadata => params)
-
-      remote_rows.each do |remote_row|
-        invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
-          row.assign_attributes(
-              quantity: remote_row['qty'],
-              metadata: remote_row
-          )
+      if sales_order.present?
+        sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
+          invoice.assign_attributes(:status => 1,:metadata => params)
+          params['ItemLine'].each do |remote_row|
+            invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
+              row.assign_attributes(
+                  quantity: remote_row['qty'],
+                  metadata: remote_row
+              )
+            end
+          end
         end
+        return_response("Sales Invoice created successfully.")
+      else
+        return_response("Sales Invoice not found.", 0)
       end
+    rescue => e
+      return_response(e.message, 0)
     end
   end
 

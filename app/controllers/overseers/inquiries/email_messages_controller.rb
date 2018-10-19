@@ -4,7 +4,7 @@ class Overseers::Inquiries::EmailMessagesController < Overseers::Inquiries::Base
     @email_message.assign_attributes(
         :subject => @inquiry.subject,
         :body => InquiryMailer.acknowledgement(@email_message).body.raw_source,
-        to: current_overseer.email
+        # to: current_overseer.email
     )
 
     authorize @inquiry, :new_email_message?

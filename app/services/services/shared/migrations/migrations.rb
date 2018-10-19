@@ -2,12 +2,13 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-  attr_accessor :limit, :secondary_limit, :custom_methods
+  attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists
 
-  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil)
+  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true)
     @custom_methods = custom_methods
     @limit = limit
     @secondary_limit = secondary_limit
+    @update_if_exists = update_if_exists
   end
 
   def call
@@ -16,7 +17,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               elsif Rails.env.production?
                 %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               elsif Rails.env.development?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w(categories products inquiries inquiry_terms inquiry_details)
               end
 
     PaperTrail.request(enabled: false) do
@@ -50,7 +51,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         'Sales Support' => :sales,
         'SalesExport' => :sales,
         'sales_supplier' => :sales,
-        'Sales Manager' => :sales_manager,
+        'Sales Manager' => :outside_sales_manager,
         'HR' => :sales,
         'Creative' => :sales,
         'saleswithaccounts' => :sales,
@@ -67,47 +68,46 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('admin_users.csv')
     service.loop(secondary_limit) do |x|
-      Overseer.where(email: x.get_column('email').strip.downcase).first_or_create! do |overseer|
-        password = Devise.friendly_token
-        identifier = x.get_column('identifier', downcase: true)
-        role_name = roles_mapping[x.get_column('role_name')]
-
-        overseer.assign_attributes(
-            parent: Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0]),
-            first_name: x.get_column('firstname'),
-            last_name: x.get_column('lastname'),
-            role: case role_name
-                  when :sales
-                    if identifier == 'inside'
-                      :inside_sales
-                    elsif identifier == 'outside'
-                      :outside_sales
-                    elsif identifier == 'outside/manager'
-                      :outside_sales_manager
-                    else
-                      :sales
-                    end
-                  else
-                    role_name
-                  end,
-            function: x.get_column('user_function'),
-            department: x.get_column('user_department'),
-            status: status_mapping[x.get_column('is_active')],
-            username: x.get_column('username'),
-            mobile: x.get_column('mobile'),
-            designation: x.get_column('designation'),
-            identifier: identifier,
-            geography: x.get_column('user_geography'),
-            salesperson_uid: x.get_column('sap_internal_code'),
-            employee_uid: x.get_column('employee_id'),
-            center_code_uid: x.get_column('user_id'),
-            legacy_id: x.get_column('user_id'),
-            password: password,
-            password_confirmation: password,
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created', to_datetime: true),
-            updated_at: x.get_column('modified', to_datetime: true),
-        )
+      overseer = Overseer.where(email: x.get_column('email').strip.downcase).first_or_initialize
+      password = Devise.friendly_token
+      identifier = x.get_column('identifier', downcase: true)
+      role_name = roles_mapping[x.get_column('role_name')]
+      if overseer.new_record? || update_if_exists
+        overseer.parent = Overseer.find_by_first_name(x.get_column('business_head_manager').split(' ')[0])
+        overseer.first_name = x.get_column('firstname')
+        overseer.last_name = x.get_column('lastname')
+        overseer.role = case role_name
+              when :sales
+                if identifier == 'inside'
+                  :inside_sales
+                elsif identifier == 'outside'
+                  :outside_sales
+                elsif identifier == 'outside/manager'
+                  :outside_sales_manager
+                else
+                  :sales
+                end
+              else
+                role_name
+              end
+        overseer.function = x.get_column('user_function')
+        overseer.department = x.get_column('user_department')
+        overseer.status = status_mapping[x.get_column('is_active')]
+        overseer.username = x.get_column('username')
+        overseer.mobile = x.get_column('mobile')
+        overseer.designation = x.get_column('designation')
+        overseer.identifier = identifier
+        overseer.geography = x.get_column('user_geography')
+        overseer.salesperson_uid = x.get_column('sap_internal_code')
+        overseer.employee_uid = x.get_column('employee_id')
+        overseer.center_code_uid = x.get_column('user_id')
+        overseer.legacy_id = x.get_column('user_id')
+        overseer.password = password
+        overseer.password_confirmation = password
+        overseer.legacy_metadata = x.get_row
+        overseer.created_at = x.get_column('created', to_datetime: true)
+        overseer.updated_at = x.get_column('modified', to_datetime: true)
+        overseer.save!
       end
     end
 
@@ -183,15 +183,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def states
     service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
     service.loop(secondary_limit) do |x|
-      AddressState.where(name: x.get_column('default_name').strip).first_or_create! do |state|
-        state.assign_attributes(
-            country_code: x.get_column('country_id'),
-            region_code: x.get_column('code'),
-            region_code_uid: x.get_column('sap_code'),
-            remote_uid: x.get_column('gst_state_code'),
-            legacy_id: x.get_column('region_id'),
-            legacy_metadata: x.get_row
-        )
+      state = AddressState.where(name: x.get_column('default_name').strip).first_or_initialize
+      if state.new_record? || update_if_exists
+        state.country_code = x.get_column('country_id')
+        state.region_code = x.get_column('code')
+        state.region_code_uid = x.get_column('sap_code')
+        state.remote_uid = x.get_column('gst_state_code')
+        state.legacy_id = x.get_column('region_id')
+        state.legacy_metadata = x.get_row
+        state.save!
       end
     end
   end
@@ -200,15 +200,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
     service.loop(secondary_limit) do |x|
       next if x.get_column('id').in? %w(123 146)
-      PaymentOption.where(name: x.get_column('value')).first_or_create! do |payment_option|
-        payment_option.assign_attributes(
-            remote_uid: x.get_column('group_code', nil_if_zero: true),
-            legacy_id: x.get_column('id'),
-            credit_limit: x.get_column('credit_limit').to_f,
-            general_discount: x.get_column('general_discount').to_f,
-            load_limit: x.get_column('load_limit').to_f,
-            legacy_metadata: x.get_row
-        )
+      payment_option = PaymentOption.where(name: x.get_column('value')).first_or_initialize
+      if payment_option.new_record? || update_if_exists
+        payment_option.remote_uid = x.get_column('group_code', nil_if_zero: true)
+        payment_option.legacy_id = x.get_column('id')
+        payment_option.credit_limit = x.get_column('credit_limit').to_f
+        payment_option.general_discount = x.get_column('general_discount').to_f
+        payment_option.load_limit = x.get_column('load_limit').to_f
+        payment_option.legacy_metadata = x.get_row
+        payment_option.save!
       end
     end
   end
@@ -216,13 +216,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def industries
     service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
     service.loop(secondary_limit) do |x|
-      Industry.where(name: x.get_column('industry_name')).first_or_create! do |industry|
-        industry.assign_attributes(
-            remote_uid: x.get_column('industry_sap_id'),
-            description: x.get_column('industry_description'),
-            legacy_id: x.get_column('idindustry'),
-            legacy_metadata: x.get_row
-        )
+      industry = Industry.where(name: x.get_column('industry_name')).first_or_initialize
+      if industry.new_record? || update_if_exists
+        industry.remote_uid = x.get_column('industry_sap_id')
+        industry.description = x.get_column('industry_description')
+        industry.legacy_id = x.get_column('idindustry')
+        industry.legacy_metadata = x.get_row
+        industry.save!
       end
     end
   end
@@ -241,7 +241,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       id = x.get_column('id')
       next if id.in? %w(3275)
       account_name = x.get_column('aliasname')
-      Account.where(name: account_name).first_or_create! do |account|
+      account = Account.where(name: account_name).first_or_initialize
+      if account.new_record? || update_if_exists
         account.remote_uid = x.get_column('sap_id')
         account.name = account_name
         account.alias = account_name.titlecase.split.map(&:first).join
@@ -250,6 +251,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         account.legacy_metadata = x.get_row
         account.created_at = x.get_column('created_at', to_datetime: true)
         account.updated_at = x.get_column('updated_at', to_datetime: true)
+        account.save!
       end
     end
   end
@@ -279,26 +281,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       account = alias_name ? Account.find_by_name!(x.get_column('aliasname')) : Account.legacy
 
-      Contact.where(email: email).first_or_create! do |contact|
-        password = Devise.friendly_token
-        contact.assign_attributes(
-            legacy_email: x.get_column('email', downcase: true, remove_whitespace: true),
-            account: account,
-            first_name: first_name,
-            last_name: last_name,
-            prefix: x.get_column('prefix'),
-            designation: x.get_column('designation'),
-            telephone: x.get_column('telephone'),
-            mobile: x.get_column('mobile'),
-            status: status_mapping[x.get_column('is_active').to_s],
-            contact_group: contact_group_mapping[x.get_column('group')],
-            password: password,
-            password_confirmation: password,
-            legacy_id: entity_id,
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created_at', to_datetime: true),
-            updated_at: x.get_column('updated_at', to_datetime: true),
-        )
+      contact = Contact.where(email: email).first_or_initialize
+      password = Devise.friendly_token
+      if contact.new_record? || update_if_exists
+        contact.legacy_email = x.get_column('email', downcase: true, remove_whitespace: true),
+        contact.account = account
+        contact.first_name = first_name
+        contact.last_name = last_name
+        contact.prefix = x.get_column('prefix')
+        contact.designation = x.get_column('designation')
+        contact.telephone = x.get_column('telephone')
+        contact.mobile = x.get_column('mobile')
+        contact.status = status_mapping[x.get_column('is_active').to_s]
+        contact.contact_group = contact_group_mapping[x.get_column('group')]
+        contact.password = password
+        contact.password_confirmation = password
+        contact.legacy_id = entity_id
+        contact.legacy_metadata = x.get_row
+        contact.created_at = x.get_column('created_at', to_datetime: true)
+        contact.updated_at = x.get_column('updated_at', to_datetime: true)
+        contact.save!
       end
     end
   end
@@ -337,7 +339,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       urd_mapping = {'N' => false, 'Y' => true}
 
       company_name = x.get_column('cmp_name')
-      Company.where(name: company_name || alias_name).first_or_create! do |company|
+      company = Company.where(name: company_name || alias_name).first_or_initialize
+      if company.new_record? || update_if_exists
         inside_sales_owner = Overseer.find_by_email(x.get_column('inside_sales_email'))
         outside_sales_owner = Overseer.find_by_email(x.get_column('outside_sales_email'))
         sales_manager = Overseer.find_by_email(x.get_column('manager_email'))
@@ -345,30 +348,29 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         company.assign_attributes(default_company_contact: CompanyContact.new(company: company, contact: account.contacts.find_by_email(x.get_column('email').strip.downcase))) if x.get_column('email').present?
 
-        company.assign_attributes(
-            account: account,
-            industry: Industry.find_by_name(x.get_column('cmp_industry')),
-            remote_uid: x.get_column('cmp_id'),
-            legacy_email: x.get_column('cmp_email', downcase: true),
-            default_payment_option: payment_option,
-            inside_sales_owner: inside_sales_owner,
-            outside_sales_owner: outside_sales_owner,
-            sales_manager: sales_manager,
-            site: x.get_column('cmp_website'),
-            company_type: company_type_mapping[x.get_column('company_type')],
-            priority: priority_mapping[x.get_column('is_strategic').to_s],
-            nature_of_business: nature_of_business_mapping[x.get_column('nature_of_business')],
-            credit_limit: x.get_column('creditlimit', default: 1, to_f: true),
-            is_msme: is_msme_mapping[x.get_column('msme')],
-            is_unregistered_dealer: urd_mapping[x.get_column('urd')],
-            tax_identifier: x.get_column('cmp_gst'),
-            is_customer: true,
-            attachment_uid: x.get_column('attachment_entry'),
-            legacy_id: x.get_column('cmp_id'),
-            pan: x.get_column('cmp_pan'),
-            tan: x.get_column('cmp_tan'),
-            legacy_metadata: x.get_row
-        )
+        company.account = account
+        company.industry = Industry.find_by_name(x.get_column('cmp_industry'))
+        company.remote_uid = x.get_column('cmp_id')
+        company.legacy_email = x.get_column('cmp_email', downcase: true)
+        company.default_payment_option = payment_option
+        company.inside_sales_owner =  inside_sales_owner
+        company.outside_sales_owner = outside_sales_owner
+        company.sales_manager = sales_manager
+        company.site = x.get_column('cmp_website')
+        company.company_type = company_type_mapping[x.get_column('company_type')]
+        company.priority = priority_mapping[x.get_column('is_strategic').to_s]
+        company.nature_of_business = nature_of_business_mapping[x.get_column('nature_of_business')]
+        company.credit_limit = x.get_column('creditlimit', default: 1, to_f: true)
+        company.is_msme = is_msme_mapping[x.get_column('msme')]
+        company.is_unregistered_dealer = urd_mapping[x.get_column('urd')]
+        company.tax_identifier = x.get_column('cmp_gst')
+        company.is_customer = true
+        company.attachment_uid = x.get_column('attachment_entry')
+        company.legacy_id = x.get_column('cmp_id')
+        company.pan = x.get_column('cmp_pan')
+        company.tan = x.get_column('cmp_tan')
+        company.legacy_metadata = x.get_row
+        company.save!
       end
     end
   end
@@ -385,14 +387,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = x.get_column('email', downcase: true)
       if contact_email && company_name
         company = Company.find_by_name(company_name)
-        company_contact = CompanyContact.find_or_create_by(
-            company: Company.find_by_name(company_name),
+        
+        if company.present?
+          company_contact = CompanyContact.find_or_create_by(
+            company: company,
             contact: Contact.find_by_email(contact_email),
             remote_uid: x.get_column('sap_id'),
             legacy_metadata: x.get_row
-        )
-
-        company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+          )
+          company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+        end
       end
     end
   end
@@ -422,27 +426,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if legacy_id.in? %w(1764)
 
       company = Company.find_by_legacy_id!(legacy_id)
-      address = Address.where(legacy_id: x.get_column('idcompany_gstinfo')).first_or_create! do |address|
-        address.assign_attributes(
-            remote_uid: x.get_column('idcompany_gstinfo'),
-            company: company,
-            name: company.name,
-            gst: x.get_column('gst_num'),
-            country_code: x.get_column('country'),
-            state: AddressState.find_by_name(x.get_column('state_name')) || legacy_state,
-            state_name: x.get_column('country') != "IN" ? x.get_column('state_name') : nil,
-            city_name: x.get_column('city'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('address'),
-            #street2:x.get_column('gst_num'),
-            cst: x.get_column('cst_num'),
-            vat: x.get_column('vat_num'),
-            excise: x.get_column('ed_num'),
-            telephone: x.get_column('telephone'),
-            #mobile:x.get_column('gst_num'),
-            gst_type: gst_type[x.get_column('gst_type').to_i],
-            legacy_metadata: x.get_row
-        )
+      address = Address.where(legacy_id: x.get_column('idcompany_gstinfo')).first_or_initialize
+      if address.new_record? || update_if_exists
+        address.remote_uid = x.get_column('idcompany_gstinfo')
+        address.company = company
+        address.name = company.name
+        address.gst = x.get_column('gst_num')
+        address.country_code = x.get_column('country')
+        address.state = AddressState.find_by_name(x.get_column('state_name')) || legacy_state
+        address.state_name = x.get_column('country') != "IN" ? x.get_column('state_name') : nil
+        address.city_name = x.get_column('city')
+        address.pincode = x.get_column('pincode')
+        address.street1 = x.get_column('address')
+        #address.street2 = x.get_column('gst_num')
+        address.cst = x.get_column('cst_num')
+        address.vat = x.get_column('vat_num')
+        address.excise = x.get_column('ed_num')
+        address.telephone = x.get_column('telephone')
+        #address.mobile = x.get_column('gst_num')
+        address.gst_type = gst_type[x.get_column('gst_type').to_i]
+        address.legacy_metadata = x.get_row
+        address.save!
       end
 
       address.update_attributes(
@@ -474,33 +478,33 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       is_msme_mapping = {"N" => false, "Y" => true}
       urd_mapping = {"N" => false, "Y" => true}
 
-      Company.where(remote_uid: x.get_column('sup_code')).first_or_create! do |company|
+      company = Company.where(remote_uid: x.get_column('sup_code')).first_or_initialize
+      if company.new_record? || update_if_exists
         inside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_person'))
         outside_sales_owner = Overseer.find_by_email(x.get_column('sup_sales_outside'))
         sales_manager = Overseer.find_by_email(x.get_column('sup_sales_manager'))
         payment_option = PaymentOption.find_by_name(x.get_column('payment_terms'))
 
-        company.assign_attributes(
-            account: account,
-            name: supplier_name,
-            default_payment_option: payment_option,
-            inside_sales_owner: inside_sales_owner,
-            outside_sales_owner: outside_sales_owner,
-            sales_manager: sales_manager,
-            site: x.get_column('cmp_website'),
-            company_type: (company_type_mapping[x.get_column('sup_type').split(',').first] if x.get_column('sup_type')),
-            credit_limit: x.get_column('creditlimit', default: 1),
-            is_msme: is_msme_mapping[x.get_column('msme')],
-            is_unregistered_dealer: urd_mapping[x.get_column('urd')],
-            tax_identifier: x.get_column('cmp_gst'),
-            is_supplier: true,
-            is_customer: false,
-            legacy_id: x.get_column('sup_id'),
-            pan: x.get_column('sup_pan'),
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created_at', to_datetime: true),
-            updated_at: x.get_column('updated_at', to_datetime: true)
-        )
+        company.account = account
+        company.name = supplier_name
+        company.default_payment_option = payment_option
+        company.inside_sales_owner = inside_sales_owner
+        company.outside_sales_owner = outside_sales_owner
+        company.sales_manager = sales_manager
+        company.site = x.get_column('cmp_website')
+        company.company_type = (company_type_mapping[x.get_column('sup_type').split(',').first] if x.get_column('sup_type'))
+        company.credit_limit = x.get_column('creditlimit', default: 1)
+        company.is_msme = is_msme_mapping[x.get_column('msme')]
+        company.is_unregistered_dealer = urd_mapping[x.get_column('urd')]
+        company.tax_identifier = x.get_column('cmp_gst')
+        company.is_supplier = true
+        company.is_customer = false
+        company.legacy_id = x.get_column('sup_id')
+        company.pan = x.get_column('sup_pan')
+        company.legacy_metadata = x.get_row
+        company.created_at = x.get_column('created_at', to_datetime: true)
+        company.updated_at = x.get_column('updated_at', to_datetime: true)
+        company.save!
       end
     end
   end
@@ -522,24 +526,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = [entity_id, '@bulkmro.com'].join if (!contact_email.present? || contact_email.match(Devise.email_regexp).blank?)
 
       # if contact_email && supplier_name
-      supplier_contact = Contact.where(email: contact_email).first_or_create! do |contact|
+      supplier_contact = Contact.where(email: contact_email).first_or_initialize
+      if supplier_contact.new_record? || update_if_exists
         password = Devise.friendly_token
-
-        contact.assign_attributes(
-            account: account,
-            legacy_email: x.get_column('pc_email', downcase: true, remove_whitespace: true),
-            first_name: x.get_column('pc_firstname', default: 'fname'),
-            last_name: x.get_column('pc_lastname', default: 'lname'),
-            prefix: x.get_column('prefix'),
-            designation: x.get_column('pc_function'),
-            telephone: x.get_column('pc_phone'),
-            mobile: x.get_column('pc_mobile'),
-            status: :active,
-            password: password,
-            password_confirmation: password,
-            legacy_id: x.get_column('pc_num'),
-            legacy_metadata: x.get_row
-        )
+        supplier_contact.account = account
+        supplier_contact.legacy_email = x.get_column('pc_email', downcase: true, remove_whitespace: true)
+        supplier_contact.first_name = x.get_column('pc_firstname', default: 'fname')
+        supplier_contact.last_name = x.get_column('pc_lastname', default: 'lname')
+        supplier_contact.prefix = x.get_column('prefix')
+        supplier_contact.designation = x.get_column('pc_function')
+        supplier_contact.telephone = x.get_column('pc_phone')
+        supplier_contact.mobile = x.get_column('pc_mobile')
+        supplier_contact.status = :active
+        supplier_contact.password = password
+        supplier_contact.password_confirmation = password
+        supplier_contact.legacy_id = x.get_column('pc_num')
+        supplier_contact.legacy_metadata = x.get_row
+        supplier_contact.save!
       end
 
       company = Company.find_by_remote_uid!(supplier_remote_uid)
@@ -564,26 +567,28 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       #next if x.get_column('NULL').nil?
 
       country_code = x.get_column('country')
-      address = Address.where(legacy_id: x.get_column('address_id')).first_or_create do |address|
-
-        address.assign_attributes(
-            company: company,
-            remote_uid: x.get_column('address_id'),
-            name: company.name,
-            gst: x.get_column('gst_num'),
-            country_code: country_code,
-            state: AddressState.find_by_name(x.get_column('state_name')),
-            state_name: country_code == 'IN' ? nil : x.get_column('state_name'),
-            city_name: x.get_column('city'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('address'),
-            cst: x.get_column('cst_num'),
-            vat: x.get_column('vat_num'),
-            excise: x.get_column('ed_num'),
-            telephone: x.get_column('telephone'),
-            gst_type: gst_type_mapping[x.get_column('gst_type').to_i],
-            legacy_metadata: x.get_row
-        )
+      address = Address.where(legacy_id: x.get_column('address_id')).first_or_initialize
+      if address.new_record? || update_if_exists
+        address.company = company
+        address.remote_uid = x.get_column('address_id')
+        address.name = company.name
+        address.gst = x.get_column('gst_num')
+        address.country_code = country_code
+        address.state = AddressState.find_by_name(x.get_column('state_name'))
+        if !address.state.present?
+          address.state = AddressState.find_by_name('Maharashtra')
+        end
+        address.state_name = country_code == 'IN' ? nil : x.get_column('state_name')
+        address.city_name = x.get_column('city')
+        address.pincode = x.get_column('pincode')
+        address.street1 = x.get_column('address')
+        address.cst = x.get_column('cst_num')
+        address.vat = x.get_column('vat_num')
+        address.excise = x.get_column('ed_num')
+        address.telephone = x.get_column('telephone')
+        address.gst_type = gst_type_mapping[x.get_column('gst_type').to_i]
+        address.legacy_metadata = x.get_row
+        address.save!
       end
 
       address.update_attributes(
@@ -606,26 +611,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def warehouse
     service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
     service.loop(limit) do |x|
-      Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create do |warehouse|
-        warehouse.assign_attributes(
-            :remote_uid => x.get_column('Warehouse Code'),
-            :legacy_id => x.get_column('Warehouse Code'),
-            :location_uid => x.get_column('Location'),
-            :remote_branch_name => x.get_column('Warehouse Name'),
-            :remote_branch_code => x.get_column('Business Place ID'),
-            :legacy_metadata => x.get_row
-        )
-
+      warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
+      if warehouse.new_record? || update_if_exists
+        warehouse.remote_uid = x.get_column('Warehouse Code')
+        warehouse.legacy_id = x.get_column('Warehouse Code')
+        warehouse.location_uid = x.get_column('Location')
+        warehouse.remote_branch_name = x.get_column('Warehouse Name')
+        warehouse.remote_branch_code = x.get_column('Business Place ID')
+        warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-            :name => x.get_column('Account Name'),
-            :street1 => x.get_column('Street'),
-            :street2 => x.get_column('Block'),
-            :pincode => x.get_column('Zip Code'),
-            :city_name => x.get_column('City'),
-            :country_code => x.get_column('Country'),
-            :gst => x.get_column('GST'),
-            :state => AddressState.find_by_region_code(x.get_column('State'))
+          :name => x.get_column('Account Name'),
+          :street1 => x.get_column('Street'),
+          :street2 => x.get_column('Block'),
+          :pincode => x.get_column('Zip Code'),
+          :city_name => x.get_column('City'),
+          :country_code => x.get_column('Country'),
+          :gst => x.get_column('GST'),
+          :state => AddressState.find_by_region_code(x.get_column('State'))
         )
+        warehouse.save!
       end
     end
   end
@@ -636,12 +640,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       name = x.get_column('name')
       next if name == nil
-
-      Brand.where(name: name).first_or_create! do |brand|
+      brand = Brand.where(name: name).first_or_initialize
+      if brand.new_record? || update_if_exists
         brand.legacy_id = x.get_column('manufacturer_id')
         brand.remote_uid = x.get_column('sap_code')
         brand.legacy_option_id = x.get_column('option_id')
         brand.legacy_metadata = x.get_row
+        brand.save!
       end
     end
   end
@@ -653,21 +658,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       tax_code = x.get_column('tax_code')
 
       if chapter && tax_code
-        TaxCode.where(legacy_id: x.get_column('idbmro_sap_hsn_mapping')).first_or_create!(
-            chapter: chapter,
-            remote_uid: x.get_column('internal_key'),
-            code: ((x.get_column('hsn') == "NULL") || (x.get_column('hsn') == nil) ? x.get_column('chapter') : x.get_column('hsn').gsub('.', '')),
-            description: x.get_column('description'),
-            is_service: x.get_column('is_service') == 'NULL' ? false : true,
-            tax_percentage: tax_code.match(/\d+/)[0].to_f,
-            legacy_metadata: x.get_row
-        )
+
+        tax = TaxCode.where(legacy_id: x.get_column('idbmro_sap_hsn_mapping')).first_or_initialize
+        if tax.new_record? || update_if_exists
+          tax.chapter = chapter
+          tax.remote_uid = x.get_column('internal_key')
+          tax.code = ((x.get_column('hsn') == "NULL") || (x.get_column('hsn') == nil) ? x.get_column('chapter') : x.get_column('hsn').gsub('.', ''))
+          tax.description = x.get_column('description')
+          tax.is_service = x.get_column('is_service') == 'NULL' ? false : true
+          tax.tax_percentage = tax_code.match(/\d+/)[0].to_f
+          tax.legacy_metadata = x.get_row
+          tax.save!
+        end
       end
     end
   end
 
   def categories
-
     service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
     service.loop(limit) do |x|
       parent_id = x.get_column('parent_id')
@@ -676,16 +683,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       name = x.get_column('name')
       legacy_id = x.get_column('id')
 
-      Category.where(legacy_id: legacy_id).first_or_create! do |category|
-        category.assign_attributes(
-            remote_uid: x.get_column('sap_code', nil_if_zero: true),
-            tax_code: tax_code || TaxCode.default,
-            parent: parent,
-            description: x.get_column('description'),
-            is_service: x.get_column('is_service'),
-            name: name,
-            legacy_metadata: x.get_row
-        )
+      category = Category.where(legacy_id: legacy_id).first_or_initialize
+      if category.new_record? || update_if_exists
+        category.remote_uid = x.get_column('sap_code', nil_if_zero: true)
+        category.tax_code = tax_code || TaxCode.default
+        category.parent = parent
+        category.description = x.get_column('description')
+        category.is_service = x.get_column('is_service')
+        category.name = name
+        category.legacy_metadata = x.get_row
+        category.save!
       end
     end
   end
@@ -702,25 +709,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if legacy_id.in? %w(677812 720307 736619 736662 736705)
       next if Product.where(:sku => sku).exists?
 
-      product = Product.where(legacy_id: legacy_id).first_or_create! do |product|
-        product.assign_attributes(
-            brand: brand,
-            category: Category.default,
-            sku: sku,
-            tax_code: tax_code || TaxCode.default,
-            mpn: x.get_column('mfr_model_number'),
-            description: x.get_column('description'),
-            meta_description: x.get_column('meta_description'),
-            meta_keyword: x.get_column('meta_keyword'),
-            meta_title: x.get_column('meta_title'),
-            name: name || "noname ##{legacy_id}",
-            remote_uid: x.get_column('sap_created') ? x.get_column('sku') : nil,
-            measurement_unit: measurement_unit,
-            weight: x.get_column('weight'),
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created', to_datetime: true),
-            updated_at: x.get_column('modified', to_datetime: true),
-        )
+      product = Product.where(legacy_id: legacy_id).first_or_initialize
+      if product.new_record? || update_if_exists
+        product.brand = brand
+        product.category = Category.default
+        product.sku = sku
+        product.tax_code = tax_code || TaxCode.default
+        product.mpn = x.get_column('mfr_model_number')
+        product.description = x.get_column('description')
+        product.meta_description = x.get_column('meta_description')
+        product.meta_keyword = x.get_column('meta_keyword')
+        product.meta_title = x.get_column('meta_title')
+        product.name = name || "noname ##{legacy_id}"
+        product.remote_uid = x.get_column('sap_created') ? x.get_column('sku') : nil
+        product.measurement_unit = measurement_unit
+        product.weight = x.get_column('weight')
+        product.legacy_metadata = x.get_row
+        product.created_at = x.get_column('created', to_datetime: true)
+        product.updated_at = x.get_column('modified', to_datetime: true)
+        product.save!
       end
       product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
     end
@@ -776,46 +783,45 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
 
-      inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_create! do |inquiry|
-        inquiry.assign_attributes(
-            company: company,
-            contact: contact,
-            legacy_contact_name: x.get_column('customer_name'),
-            status: x.get_column('bought').to_i,
-            opportunity_type: (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?),
-            potential_amount: x.get_column('potential_amount'),
-            opportunity_source: (opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?),
-            subject: x.get_column('caption'),
-            gross_profit_percentage: x.get_column('grossprofitp'),
-            inside_sales_owner: Overseer.find_by_username(x.get_column('manager', downcase: true)),
-            outside_sales_owner: Overseer.find_by_username(x.get_column('outside', downcase: true)),
-            sales_manager: Overseer.find_by_username(x.get_column('powermanager', downcase: true)),
-            quote_category: (quote_category[x.get_column('category').downcase] if x.get_column('category').present?),
-            billing_address: billing_address,
-            shipping_address: shipping_address,
-            opportunity_uid: x.get_column('op_code', nil_if_zero: true),
-            customer_po_number: x.get_column('customer_po_id'),
-            legacy_shipping_company: Company.find_by_remote_uid(x.get_column('customer_shipping_company')),
-            bill_from: Warehouse.find_by_legacy_id(x.get_column('warehouse')),
-            ship_from: Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse')),
-            attachment_uid: x.get_column('attachment_entry'),
-            legacy_id: legacy_id,
-            priority: x.get_column('is_prioritized'),
-            expected_closing_date: x.get_column('closing_date', to_datetime: true),
-            quotation_date: (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00"),
-            quotation_expected_date: x.get_column('quotation_expected_date', to_datetime: true),
-            valid_end_time: (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00"),
-            quotation_followup_date: x.get_column('quotation_followup_date', to_datetime: true),
-            customer_order_date: (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00"),
-            customer_committed_date: (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00"),
-            procurement_date: (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00"),
-            is_sez: x.get_column('sez'),
-            is_kit: x.get_column('is_kit'),
-            weight_in_kgs: x.get_column('weight'),
-            legacy_metadata: x.get_row,
-            created_at: x.get_column('created_time', to_datetime: true),
-            updated_at: x.get_column('update_time', to_datetime: true)
-        )
+      inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
+      if inquiry.new_record? || update_if_exists
+        inquiry.company = company
+        inquiry.contact = contact
+        inquiry.legacy_contact_name = x.get_column('customer_name')
+        inquiry.status = x.get_column('bought').to_i
+        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?)
+        inquiry.potential_amount = x.get_column('potential_amount')
+        inquiry.opportunity_source = (opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?)
+        inquiry.subject = x.get_column('caption')
+        inquiry.gross_profit_percentage = x.get_column('grossprofitp')
+        inquiry.inside_sales_owner = Overseer.find_by_username(x.get_column('manager', downcase: true))
+        inquiry.outside_sales_owner = Overseer.find_by_username(x.get_column('outside', downcase: true))
+        inquiry.sales_manager = Overseer.find_by_username(x.get_column('powermanager', downcase: true))
+        inquiry.quote_category = (quote_category[x.get_column('category').downcase] if x.get_column('category').present?)
+        inquiry.billing_address = billing_address
+        inquiry.shipping_address = shipping_address
+        inquiry.opportunity_uid = x.get_column('op_code', nil_if_zero: true)
+        inquiry.customer_po_number = x.get_column('customer_po_id')
+        inquiry.legacy_shipping_company = Company.find_by_remote_uid(x.get_column('customer_shipping_company'))
+        inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
+        inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
+        inquiry.attachment_uid = x.get_column('attachment_entry')
+        inquiry.legacy_id = legacy_id
+        inquiry.priority = x.get_column('is_prioritized')
+        inquiry.expected_closing_date = x.get_column('closing_date', to_datetime: true)
+        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00")
+        inquiry.quotation_expected_date = x.get_column('quotation_expected_date', to_datetime: true)
+        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00")
+        inquiry.quotation_followup_date = x.get_column('quotation_followup_date', to_datetime: true)
+        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00")
+        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00")
+        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00")
+        inquiry.is_sez = x.get_column('sez')
+        inquiry.is_kit = x.get_column('is_kit')
+        inquiry.weight_in_kgs = x.get_column('weight')
+        inquiry.legacy_metadata = x.get_row
+        inquiry.created_at = x.get_column('created_time', to_datetime: true)
+        inquiry.updated_at = x.get_column('update_time', to_datetime: true)
       end
       inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
       inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) if inquiry.inquiry_currency_id.blank?
@@ -855,23 +861,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product = Product.find_by_legacy_id(product_id)
       next if inquiry.blank? || product.blank?
 
-      inquiry_product = InquiryProduct.where(
-          inquiry: inquiry,
-          product: product,
-      ).first_or_create! do |ip|
-        ip.assign_attributes(
-            sr_no: x.get_column('order'),
-            quantity: x.get_column('qty', nil_if_zero: true) || 1,
-            bp_catalog_name: x.get_column('caption'),
-            bp_catalog_sku: x.get_column('bpcat'),
-            legacy_metadata: x.get_row,
-            legacy_id: x.get_column('quotation_item_id')
-        )
+      inquiry_product = InquiryProduct.where(inquiry: inquiry, product: product).first_or_initialize
+      if inquiry_product.new_record? || update_if_exists
+        inquiry_product.sr_no = x.get_column('order')
+        inquiry_product.quantity = x.get_column('qty', nil_if_zero: true) || 1
+        inquiry_product.bp_catalog_name = x.get_column('caption')
+        inquiry_product.bp_catalog_sku = x.get_column('bpcat')
+        inquiry_product.legacy_metadata = x.get_row
+        inquiry_product.legacy_id = x.get_column('quotation_item_id')
+        inquiry_product.save!
       end
 
       supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
-      inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_create! do |ips|
-        ips.unit_cost_price = x.get_column('cost')
+      inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_initialize
+      if inquiry_product_supplier.new_record? || update_if_exists
+        inquiry_product_supplier.unit_cost_price = x.get_column('cost')
+        inquiry_product_supplier.save!
       end
 
       quotation_uid = x.get_column('doc_entry')
@@ -886,18 +891,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_quote.update_attributes!(:sent_at => sales_quote.created_at)
       end
 
-      sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_create! do |row|
-        row.assign_attributes(
-            quantity: x.get_column('qty', nil_if_zero: true) || 1,
-            margin_percentage: ((x.get_column('price_ht', to_f: true) == 0 || x.get_column('cost', to_f: true) == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100)),
-            tax_code: TaxCode.find_by_chapter(x.get_column('hsncode')) || nil,
-            legacy_applicable_tax: x.get_column('tax_code'),
-            legacy_applicable_tax_class: x.get_column('tax_class_id'),
-            legacy_applicable_tax_percentage: (x.get_column('tax_code').match(/\d+/)[0].to_f if x.get_column('tax_code').present?),
-            unit_selling_price: x.get_column('price_ht', to_f: true),
-            converted_unit_selling_price: x.get_column('price_ht', to_f: true),
-            lead_time_option: LeadTimeOption.find_by_name(x.get_column('leadtime'))
-        )
+      row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+      if row.new_record? || update_if_exists
+        row.quantity = x.get_column('qty', nil_if_zero: true) || 1
+        row.margin_percentage = ((x.get_column('price_ht', to_f: true) == 0 || x.get_column('cost', to_f: true) == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100))
+        row.tax_code = TaxCode.find_by_chapter(x.get_column('hsncode')) || nil
+        row.legacy_applicable_tax = x.get_column('tax_code')
+        row.legacy_applicable_tax_class = x.get_column('tax_class_id')
+        row.legacy_applicable_tax_percentage = (x.get_column('tax_code').match(/\d+/)[0].to_f if x.get_column('tax_code').present?)
+        row.unit_selling_price = x.get_column('price_ht', to_f: true)
+        row.converted_unit_selling_price = x.get_column('price_ht', to_f: true)
+        row.lead_time_option = LeadTimeOption.find_by_name(x.get_column('leadtime'))
+        row.save!
       end
     end
   end
@@ -916,17 +921,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       sales_quote = inquiry.sales_quotes.last
       next if sales_quote.blank?
-      sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_create! do |so|
-        so.assign_attributes(
-            overseer: requested_by,
-            order_number: x.get_column('order_number'),
-            created_at: x.get_column('requested_time').to_datetime,
-            draft_uid: x.get_column('doc_num'),
-            legacy_request_status: legacy_request_status_mapping[x.get_column('request_status')],
-            remote_status: remote_status[x.get_column('remote_status')],
-            legacy_metadata: x.get_row,
-            :sent_at => sales_quote.created_at
-        )
+      sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_initialize
+      if sales_order.new_record? || update_if_exists
+        sales_order.overseer = requested_by
+        sales_order.order_number = x.get_column('order_number')
+        sales_order.created_at = x.get_column('requested_time').to_datetime
+        sales_order.draft_uid = x.get_column('doc_num')
+        sales_order.legacy_request_status = legacy_request_status_mapping[x.get_column('request_status')]
+        sales_order.remote_status = remote_status[x.get_column('remote_status')]
+        sales_order.legacy_metadata = x.get_row
+        sales_order.sent_at = sales_quote.created_at
+        sales_order.save!
       end
 
       product_skus = x.get_column('skus')
@@ -939,19 +944,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       # todo handle cancellation, etc
       request_status = x.get_column('request_status')
-      if request_status.in? %w(approved requested)
-        sales_order.create_approval(
-            :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
-            :overseer => Overseer.default,
-            :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
-        )
-      elsif request_status == 'rejected'
-        sales_order.create_rejection(
-            :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
-            :overseer => Overseer.default
-        )
-      else
-        sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+
+      if !sales_order.approved?
+        if request_status.in? %w(approved requested)
+          sales_order.create_approval(
+              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
+              :overseer => Overseer.default,
+              :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+          )
+        elsif request_status == 'rejected'
+          sales_order.create_rejection(
+              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
+              :overseer => Overseer.default
+          )
+        else
+          sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+        end
       end
     end
   end
@@ -996,24 +1004,24 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       overseer_legacy_id = x.get_column('overseer_legacy_id')
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
 
-      activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |activity|
-        activity.assign_attributes(
-            inquiry: inquiry,
-            company: company,
-            contact: contact,
-            subject: x.get_column('subject'),
-            company_type: company_type,
-            purpose: purpose[x.get_column('purpose')],
-            activity_type: activity_type[x.get_column('activity')],
-            activity_status: activity_status[x.get_column('activitystatus')],
-            points_discussed: x.get_column('comment'),
-            actions_required: x.get_column('actionrequired'),
-            reference_number: x.get_column('refno'),
-            created_at: (x.get_column('created_at').to_datetime if x.get_column('created_at').present?),
-            legacy_metadata: x.get_row,
-            created_by: overseer,
-            updated_by: overseer
-        )
+      activity = Activity.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+      if activity.new_record? || update_if_exists
+        activity.inquiry = inquiry
+        activity.company = company
+        activity.contact = contact
+        activity.subject = x.get_column('subject')
+        activity.company_type = company_type
+        activity.purpose = purpose[x.get_column('purpose')]
+        activity.activity_type = activity_type[x.get_column('activity')]
+        activity.activity_status = activity_status[x.get_column('activitystatus')]
+        activity.points_discussed = x.get_column('comment')
+        activity.actions_required = x.get_column('actionrequired')
+        activity.rference_number = x.get_column('refno')
+        activity.created_at = (x.get_column('created_at').to_datetime if x.get_column('created_at').present?)
+        activity.legacy_metadata = x.get_row
+        activity.created_by = overseer
+        activity.updated_by = overseer
+        activity.save!
       end
       # ActivityOverseer.create!(activity: activity, overseer: overseer) if overseer_legacy_id.present?
     end
@@ -1022,7 +1030,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def inquiry_attachments
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv')
-    service.loop(limit) do |x|
+    service.loop(nil) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
       sheet_columns = [
@@ -1030,7 +1038,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
           ['email_attachment', 'email_attachment_path', 'copy_of_email'],
           ['supplier_quote_attachment', 'sqa_path', 'supplier_quotes'],
-          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'supplier_quotes']
+          ['supplier_quote_attachment_additional', 'sqa_additional_path', 'final_supplier_quote']
       ]
 
       sheet_columns.each do |file|
@@ -1047,8 +1055,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
-        sales_invoice = SalesInvoice.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |si|
-          si.assign_attributes(sales_order: sales_order, is_legacy: true, invoice_number: x.get_column('invoice_number'), metadata: x.get_row)
+        sales_invoice = SalesInvoice.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+        if sales_invoice.new_record? || update_if_exists
+          sales_invoice.sales_order = sales_order
+          sales_invoice.is_legacy = true
+          sales_invoice.invoice_number = x.get_column('invoice_number')
+          sales_invoice.metadata = x.get_row
+          sales_invoice.save!
         end
         attach_file(sales_invoice, filename: x.get_column('original_file_name'), field_name: 'original_invoice', file_url: x.get_column('original_file_path'))
         attach_file(sales_invoice, filename: x.get_column('duplicate_file_name'), field_name: 'duplicate_invoice', file_url: x.get_column('duplicate_file_path'))
@@ -1062,8 +1075,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(limit) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
-        sales_shipment = SalesShipment.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |ss|
-          ss.assign_attributes(sales_order: sales_order, is_legacy: true, remote_uid: x.get_column('shipment_number'), metadata: x.get_row)
+        sales_shipment = SalesShipment.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+        if sales_shipment.new_record? || update_if_exists
+          sales_shipment.sales_order = sales_order
+          sales_shipment.is_legacy = true
+          sales_shipment.shipment_number = x.get_column('shipment_number')
+          sales_shipment.metadata = x.get_row
+          sales_shipment.save!
         end
         attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path'))
       end
@@ -1077,8 +1095,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       begin
         inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
         if inquiry
-          purchase_order = PurchaseOrder.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |po|
-            po.assign_attributes(inquiry: inquiry, is_legacy: true, po_number: x.get_column('po_number'), metadata: x.get_row)
+          purchase_order = PurchaseOrder.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+          if purchase_order.new_record? || update_if_exists
+            purchase_order.inquiry = inquiry
+            purchase_order.is_legacy = true
+            purchase_order.po_number = x.get_column('po_number')
+            purchase_order.metadata = x.get_row
+            purchase_order.save!
           end
           attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path'))
         end
@@ -1094,16 +1117,30 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv')
     service.loop(limit) do |x|
       sales_invoice = SalesInvoice.find_by_legacy_id(x.get_column('invoice_legacy_id'))
-      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |sr|
-        sr.assign_attributes(sales_invoice: sales_invoice, is_legacy: true, remote_reference: x.get_column('remote_reference'), metadata: x.get_row, payment_method: payment_method[x.get_column('payment_method')], payment_type: 20)
+      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+      if sales_receipt.new_record? || update_if_exists
+        sales_receipt.sales_invoice = sales_invoice
+        sales_receipt.is_legacy = true
+        sales_receipt.remote_reference = x.get_column('remote_reference')
+        sales_receipt.metadata = x.get_row
+        sales_receipt.payment_method = payment_method[x.get_column('payment_method')]
+        sales_receipt.payment_type = 20
+        sales_receipt.save!
       end
     end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv')
     service.loop(limit) do |x|
       company = Company.acts_as_customer.find_by_legacy_id(x.get_column('company'))
-      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_create! do |sr|
-        sr.assign_attributes(company: company, is_legacy: true, remote_reference: x.get_column('remote_reference'), metadata: x.get_row, payment_method: payment_method[x.get_column('payment_method')], payment_type: 10)
+      sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
+      if sales_receipt.new_record? || update_if_exists
+        sales_receipt.company = company
+        sales_receipt.is_legacy = true
+        sales_receipt.remote_reference = x.get_column('remote_reference')
+        sales_receipt.metadata = x.get_row
+        sales_receipt.payment_method = payment_method[x.get_column('payment_method')]
+        sales_receipt.payment_type = 10
+        sales_receipt.save!
       end
     end
   end

@@ -7,19 +7,19 @@ class Overseers::ApplicationPolicy
   end
 
   def admin?
-    overseer.admin?
+    overseer.administrator?
   end
 
-  def sales_manager?
-    overseer.inside_sales_head? || overseer.outside_sales_head? || overseer.outside_sales_manager? || overseer.inside_sales_manager? || admin?
+  def manager?
+    overseer.manager?
   end
 
-  def sales?
-    overseer.inside_sales? || overseer.outside_sales? || overseer.sales? || sales_manager?
+  def person?
+    overseer.person?
   end
 
   def index?
-    admin? || sales?
+    person?
   end
 
   def autocomplete?
@@ -47,7 +47,7 @@ class Overseers::ApplicationPolicy
   end
 
   def destroy?
-    sales_manager?
+    manager?
   end
 
   def dev?

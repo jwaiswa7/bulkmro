@@ -46,7 +46,7 @@ Rails.application.routes.draw do
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers
+    resources :overseers, except: [:show]
 
     resources :suppliers do
       collection do
@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contacts, except: [:show] do
+    resources :contacts, except: [:show, :index] do
       collection do
         get 'autocomplete'
       end
@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :measurement_units do
+    resources :measurement_units, except: [:show] do
       collection do
         get 'autocomplete'
       end
