@@ -61,6 +61,7 @@ GEM
     async-websocket (0.6.1)
       async-io
       websocket-driver (~> 0.7.0)
+    awesome_print (1.8.0)
     axlsx (2.0.0)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
@@ -472,6 +473,7 @@ PLATFORMS
 DEPENDENCIES
   activeresource
   async-websocket
+  awesome_print
   axlsx (= 2.0.0)
   axlsx_rails (= 0.1.5)
   azure-storage
