@@ -250,8 +250,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         account.legacy_id = id
         account.account_type = :is_customer
         account.legacy_metadata = x.get_row
-        account.created_at = x.get_column('created_at', to_datetime: true)
-        account.updated_at = x.get_column('updated_at', to_datetime: true)
+        account.created_at = x.get_column('created_at', to_datetime: true) if x.get_column('created_at').present?
+        account.updated_at = x.get_column('updated_at', to_datetime: true) if x.get_column('updated_at').present?
         account.save!
       end
     end
