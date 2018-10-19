@@ -1,0 +1,31 @@
+<div class="col-lg-12">
+  <%= render layout: 'customers/inquiries/tabs_layout' do %>
+    <% provide :hide_table_desc, true %>
+    <% provide :hide_table_heading, true %>
+
+    <% content_for :header_row do %>
+      <th class="no-sort">Actions</th>
+      <th>Sent At</th>
+      <th>Created By</th>
+      <th>Line Items</th>
+      <th>Total(Excl. Tax)</th>
+      <th>Total(Incl. Tax)</th>
+      <th>Created At</th>
+    <% end %>
+
+    <%= render layout: 'shared/layouts/datatable' do %>
+      <tr>
+        <td>
+          <%= row_action_button(customers_inquiry_sales_quote_path(@inquiry, @final_sales_quote, format: :html), 'fal fa-eye', 'View Sales Quote', 'dark') %>
+          <%= row_action_button(customers_inquiry_sales_quote_path(@inquiry, @final_sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+        </td>
+        <td><%= format_date(@final_sales_quote.sent_at) %></td>
+        <td><%= @final_sales_quote.created_by.to_s %></td>
+        <td><%= @final_sales_quote.rows.size %></td>
+        <td><%= format_currency(@final_sales_quote.calculated_total) %></td>
+        <td><%= format_currency(@final_sales_quote.calculated_total_with_tax) %></td>
+        <td><%= format_date(@final_sales_quote.created_at) %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</div>
