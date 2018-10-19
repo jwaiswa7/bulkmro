@@ -104,15 +104,18 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def filter_by_status(key, value)
+  def filter_by_status
     {
         bool: {
             should: [
                 {
-                    term: {key => value},
+                    term: {approval_status: 'pending'},
+                },
+                {
+                    term: {legacy_status: 'not_legacy'},
                 },
             ],
-            minimum_should_match: 1,
+            minimum_should_match: 2,
         },
     }
   end
