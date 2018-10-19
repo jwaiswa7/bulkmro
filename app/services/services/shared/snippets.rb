@@ -19,6 +19,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def update_password
+    Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(:password => 'abc123', :password_confirmation => 'abc123')
+  end
+
+  def check_es
+    service = Services::Overseers::Finders::Products.new({})
+    service.manage_failed_skus('Painting Spray Gun Type - 68, Cap - 140 M', 4, 1)
+  end
+
   def copy_inquiry_number_into_project_uid
     Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
   end
@@ -28,6 +37,28 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     SalesQuote.delete_all
     InquiryProductSupplier.delete_all
     InquiryProduct.delete_all
+  end
+
+  def make_admins
+    ['vignesh.gounder@bulkmro.com',
+              'gitesh.ganekar@bulkmro.com',
+              'ajay.rathod@bulkmro.com',
+              'sanchit.sharma@bulkmro.com',
+              'ovais.ansari@bulkmro.com',
+              'diksha.tambe@bulkmro.com',
+              'dinesh.kumar@bulkmro.com',
+              'ankur.gupta@bulkmro.com',
+              'sumit.sharma@bulkmro.com',
+              'farhan.ansari@bulkmro.com',
+              'bhargav.trivedi@bulkmro.com',
+              'ajay.kondal@bulkmro.com',
+              'pravin.ganekar@bulkmro.com',
+              'nida.khan@bulkmro.com',
+              'soni.pathre@bulkmro.com',
+              'vijay.manjrekar@bulkmro.com',
+    ].each do |email|
+      Overseer.find_by_email(email).admin! if Overseer.find_by_email(email).present?
+    end
   end
 
   def run_inquiry_details_migration
@@ -295,6 +326,35 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
       product = Product.find_by_legacy_id(x.get_column('entity_id'))
       product.update_attributes(:brand => brand)
+    end
+  end
+
+  def gst_tax_rate_fix
+    TaxCode.where('code LIKE ?', '%8424').size
+  end
+
+  def update_sales_managers_for_inquiries
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
+        inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
+        if inquiry.present?
+          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".") if x.get_column('manager', downcase: true).present?
+          inside_sales_owner_username =  inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
+          inquiry.inside_sales_owner = Overseer.find_by_username(legacy_inside_sales_owner_username) if legacy_inside_sales_owner_username != inside_sales_owner_username
+
+          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".") if x.get_column('outside', downcase: true).present?
+          outside_sales_owner_username = inquiry.outside_sales_owner.username if inquiry.outside_sales_owner.present?
+          inquiry.outside_sales_owner = Overseer.find_by_username(legacy_outside_sales_owner_username) if legacy_outside_sales_owner_username != outside_sales_owner_username
+
+          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".") if x.get_column('powermanager', downcase: true).present?
+          sales_manager_username = inquiry.sales_manager.username if inquiry.sales_manager.present?
+          inquiry.sales_manager = Overseer.find_by_username(legacy_sales_manager_username) if legacy_sales_manager_username != sales_manager_username
+          inquiry.save!
+        end
+      end
     end
   end
 

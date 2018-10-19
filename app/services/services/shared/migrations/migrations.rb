@@ -973,7 +973,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if product.present?
           sales_order_rows = sales_order.rows.joins(:inquiry_product).where(:inquiry_products => {:product_id => product.id})
           if sales_order_rows.present?
-            sales_order_rows.first.update_attributes(quantity: x.get_column('qty_ordered'))
+            if sales_order.id == 3195
+              sales_order_rows.first.update_attributes!(quantity: 1)
+            else
+              sales_order_rows.first.update_attributes!(quantity: x.get_column('qty_ordered'))
+            end
           end
         end
       end

@@ -63,9 +63,9 @@ class Resources::Quotation < Resources::ApplicationResource
       item.LocationCode = record.inquiry.ship_from.location_uid
 
       if row.product.is_service
-        item.SACEntry = row.tax_code.remote_uid # HSN !!
+        item.SACEntry = row.best_tax_code.remote_uid # HSN !!
       else
-        item.HSNEntry = row.tax_code.remote_uid # HSN !!
+        item.HSNEntry = row.best_tax_code.remote_uid # HSN !!
       end
 
       item.U_MgntRemark = ""

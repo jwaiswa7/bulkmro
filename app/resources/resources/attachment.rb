@@ -19,8 +19,7 @@ class Resources::Attachment < Resources::ApplicationResource
 
     Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
-        if attachment.try(:key)
-
+        if attachment.present? && attachment.key.present?
           path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
           File.open(path, 'wb') do |file|
             file.write(attachment.download)

@@ -5,7 +5,7 @@ class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseServ
   end
 
   def call
-    if sales_order.save!
+    if sales_order.save
       perform_later(sales_order)
     end
   end

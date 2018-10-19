@@ -1,5 +1,5 @@
 <div style="border:1px solid; border-radius: 5px;padding: 2px">
-  <% if record.inquiry.bill_from.legacy_id == 12 %>
+  <% if record.inquiry.bill_from.present? && record.inquiry.bill_from.legacy_id == 12 %>
     <table style="width: 100%;" cellspacing="0" border="0">
 
       <tr>
@@ -18,9 +18,8 @@
             <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email:
             sales@bulkmro.com</font></td>
       </tr>
-
     </table>
-  <% elsif (record.inquiry.bill_from.legacy_id == 16 || record.inquiry.bill_from.legacy_id == 3) %>
+  <% elsif record.inquiry.bill_from.legacy_id == 16 || record.inquiry.bill_from.legacy_id == 3 %>
     <table style="width: 100%;" cellspacing="0" border="0">
       <tr>
 
