@@ -3,23 +3,6 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     call_base
   end
 
-  def filter_by_owner(ids)
-    {
-        bool: {
-            should: [
-                {
-                    terms: {inside_sales_executive: ids},
-                },
-                {
-                    terms: {outside_sales_executive: ids}
-                }
-            ],
-            minimum_should_match: 1,
-        },
-
-    }
-  end
-
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.manager?
                         super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))

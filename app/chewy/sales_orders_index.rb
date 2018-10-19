@@ -7,6 +7,7 @@ class SalesOrdersIndex < BaseIndex
     field :order_number,  value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
+    field :approval_status, value: -> (record) { record.approved? ? 'approved' : 'pending' }
     field :remote_status_string, value: -> (record) { record.remote_status.to_s }, analyzer: 'substring'
     field :remote_status, value: -> (record) { remote_statuses[record.remote_status] }
     field :quote_total, value: -> (record) { record.sales_quote.calculated_total.to_i if record.sales_quote.calculated_total.present? }
@@ -25,6 +26,6 @@ class SalesOrdersIndex < BaseIndex
   end
 
   def self.fields
-    [:status, :status_string, :remote_status_string, :remote_status, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :sent_at, :created_by_id, :quote_total, :order_total, :updated_by_id, :order_number]
+    [:status, :status_string, :approval_status, :remote_status_string, :remote_status, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :sent_at, :created_by_id, :quote_total, :order_total, :updated_by_id, :order_number]
   end
 end

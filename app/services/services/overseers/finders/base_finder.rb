@@ -87,5 +87,35 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
+  def filter_by_owner(ids)
+    {
+        bool: {
+            should: [
+                {
+                    terms: {inside_sales_executive: ids},
+                },
+                {
+                    terms: {outside_sales_executive: ids}
+                }
+            ],
+            minimum_should_match: 1,
+        },
+
+    }
+  end
+
+  def filter_by_status(key, value)
+    {
+        bool: {
+            should: [
+                {
+                    term: {key => value},
+                },
+            ],
+            minimum_should_match: 1,
+        },
+    }
+  end
+
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
 end

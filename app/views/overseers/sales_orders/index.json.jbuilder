@@ -11,20 +11,37 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(overseers_inquiry_sales_orders_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end
                   ].join(' '),
-                  sales_order.inquiry.inquiry_number,
-                  sales_order.inquiry.inside_sales_owner.to_s,
-                  format_date(sales_order.created_at),
-                  sales_order.inquiry.company.to_s,
-                  sales_order.inquiry.outside_sales_owner.to_s,
-                  sales_order.inquiry.customer_po_number,
                   sales_order.order_number,
-                  sales_order.draft_uid,
-                  sales_order_format_label(sales_order.status.to_s),
-                  sales_order.remote_status.to_s,
-                  format_currency(sales_order.calculated_total_margin),
+                  sales_order.status,
+                  format_enum(sales_order.remote_status),
+                  format_date(sales_order.sent_at),
+                  sales_order.created_by.to_s,
+                  sales_order.inside_sales_owner.to_s,
+                  sales_order.outside_sales_owner.to_s,
+                  format_currency(sales_order.sales_quote.calculated_total),
+                  format_currency(sales_order.calculated_total),
+                  format_date(sales_order.created_at)
               ]
 end
 
-json.recordsTotal @sales_orders.model.all.count
-json.recordsFiltered @sales_orders.total_count
+json.columnFilters [
+                       [],
+                       [],
+                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
+                       []
+                   ]
+
+
+
+json.recordsTotal SalesOrder.all.count
+json.recordsFiltered @indexed_sales_orders.total_count
+# json.recordsTotal @inquiries.model.all.count
+# json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
