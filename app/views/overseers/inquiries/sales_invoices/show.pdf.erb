@@ -305,7 +305,7 @@
                   <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top">
                     <span style="color:#000000"><%= item.metadata['row_total_incl_tax'].to_f.round(2) %></span></td>
                 </tr>
-              <% end %>
+              <% end if @metadata[:ItemLine].present? %>
 
               <tr class="total-row">
                 <td align="center" style="" valign="top">

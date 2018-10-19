@@ -1,0 +1,7 @@
+idcompany_gstinfo,cmp_id,cmp_name,gst_num,gst_file,address,city,state_code,state_name,country,pincode,telephone,cst_num,cst_file,vat_num,vat_file,ed_num,ed_file,shippingfirstname,shippinglastname,sap_row_num,gst_type,tan_num,sap_row_num
+1798,196,"Jones Lang Lasalle Property Consultants India Pvt. Ltd.","No GST Number",NULL,"Insignia, 1St Floor, Plot 1D,
+ Sector-126, Noida - Gr. Noida Expressway",Noida,517,"Uttar Pradesh",IN,201301,NULL,,NULL,,NULL,,NULL,NULL,NULL,"0,1",NULL,NULL,"0,1"
+6472,196,"Jones Lang Lasalle Property Consultants India Pvt. Ltd.",29AAACL2089B1ZO,NULL,"Level 13 and 14, Prestige Khoday Towers, No. 5, Raj Bhavan Road",Bangalore,501,Karnataka,IN,560001,9148770818,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"2,3",1,NULL,"2,3"
+6688,1966,"Adani Electricity Mumbai Ltd.","No GST Number",NULL,"1st Floor, Devidas Lane, Village Eksar,  Off SVP Rd, Near MTNL, Borivali (W)"," Mumbai",505,Maharashtra,IN,"411 10",9323956244,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL,"0,1"
+6689,1967,"KBS Creations","No GST Number",NULL,"KBS House, Plot No. 98, Road No.16,  MIDC,  Andheri-East",Mumbai,505,Maharashtra,IN,400093,9769663301,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL,"0,1"
+6690,1968,"Atishay Indenture Private Limited",06AAPCA0340R1ZD,NULL,"K-2.1, SF, Unit 22, vatika inxt, sector 83",Gurgaon,494,Delhi,IN,122004,9891447178,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL,"0,1"

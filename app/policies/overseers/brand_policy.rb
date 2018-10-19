@@ -1,3 +1,3 @@
-class Overseers::BrandPolicy < Overseers::ApplicationPolicy
+class Overseers::BrandPolicy < Overseers::ManagerApplicationPolicy
 
 end

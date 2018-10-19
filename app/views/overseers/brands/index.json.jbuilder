@@ -1,7 +1,9 @@
 json.data (@brands) do |brand|
   json.array! [
                   [
-                      row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning'),
+                      if policy(brand).edit?
+                        row_action_button(edit_overseers_brand_path(brand), 'pencil', 'Edit Brand', 'warning')
+                      end,
                   ].join(' '),
                   brand.to_s,
                   brand.products.size,

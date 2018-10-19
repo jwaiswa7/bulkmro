@@ -7,10 +7,12 @@ class InquiriesIndex < BaseIndex
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
     field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
+    field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
+    field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
-    field :inside_sales, value: -> (record) { record.inside_sales_owner_id }
-    field :outside_sales, value: -> (record) { record.outside_sales_owner_id }
+    field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
+    field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
@@ -21,6 +23,6 @@ class InquiriesIndex < BaseIndex
   end
 
   def self.fields
-    [:status, :status_string, :inquiry_number_string, :inside_sales_owner, :outside_sales_owner, :inside_sales, :outside_sales, :company, :account, :contact, :created_by_id]
+    [:status, :status_string, :inquiry_number_string, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact, :created_by_id]
   end
 end
