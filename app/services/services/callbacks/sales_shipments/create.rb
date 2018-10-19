@@ -22,7 +22,7 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
       end
 
       params['TrackLine'].each do |remote_package|
-        if !remote_package['track_number'].blank?
+        if remote_package['track_number'].present?
           sales_shipment.packages.where(tracking_number: remote_package['track_number']).first_or_create! do |package|
             package.assign_attributes(
                 :metadata => remote_package,
@@ -33,6 +33,7 @@ class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared:
           return_response("Tracking Number is mandatory.", 0)
         end
       end
+
       return_response("Sales Shipment created successfully.")
     rescue => e
       return_response(e.message, 0)
