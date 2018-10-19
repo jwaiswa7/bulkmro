@@ -5,7 +5,7 @@ class Resources::Quotation < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |response|
-      update_associated_records(response)
+      update_associated_records(response['DocEntry'], force_find: true) if response['DocEntry'].present?
     end
 
     id
@@ -24,10 +24,10 @@ class Resources::Quotation < Resources::ApplicationResource
     return if response.blank?
 
     document_lines = response['DocumentLines']
-    inquiry = Inquiry.find_by_quotation_uid(id)
+    inquiry = Inquiry.find_by_inquiry_number(response['Project'])
 
     if inquiry.present? && inquiry.final_sales_quote.present?
-      final_sales_quote = Inquiry.find_by_quotation_uid(id).final_sales_quote
+      final_sales_quote = inquiry.final_sales_quote
 
       document_lines.each do |line|
         sales_quote_row = final_sales_quote.rows.select { |r| r.sku == line['ItemCode'] }[0]
