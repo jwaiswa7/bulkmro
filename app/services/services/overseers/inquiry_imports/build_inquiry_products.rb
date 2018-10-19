@@ -17,6 +17,7 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
                 inquiry_import_row: row,
                 name: row.metadata['name'],
                 sku: row.sku,
+                mpn: row.metadata['mpn'],
                 brand: Brand.find_by_name(row.metadata['brand']),
             ),
             quantity: row.metadata['quantity'].to_i
