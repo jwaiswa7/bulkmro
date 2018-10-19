@@ -150,10 +150,10 @@ class Inquiry < ApplicationRecord
   attr_accessor :force_has_sales_orders
 
   with_options if: :has_sales_orders? do |inquiry|
-    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
-    inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
-    inquiry.validates_presence_of :customer_po_number
+    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet, :if => :not_legacy?
+    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet, :if => :not_legacy?
+    inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes, :if => :not_legacy?
+    inquiry.validates_presence_of :customer_po_number, :if => :not_legacy?
   end
 
   def has_sales_orders?
