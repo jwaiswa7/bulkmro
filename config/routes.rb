@@ -75,6 +75,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :tax_codes, except: [:show] do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
     resources :addresses do
     end
 
@@ -82,12 +88,6 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'autocomplete_closure_tree'
-      end
-    end
-
-    resources :tax_codes do
-      collection do
-        get 'autocomplete'
       end
     end
 
