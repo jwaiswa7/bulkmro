@@ -1,0 +1,697 @@
+<div class="page fixed">
+  <div class="main-container col1-layout">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 30px">Quotation #<%= @final_sales_quote.inquiry.inquiry_number %></span></b>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 0px;padding: 2px">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
+                    <span style="color:#F58220">
+                      <%= @final_sales_quote.inquiry.bill_from.name if @final_sales_quote.inquiry.bill_from.present? %>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.bill_from.address.to_compact_multiline_s if @final_sales_quote.inquiry.bill_from.present? %>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center;">
+                  <span style="color:#000000" style="position: relative;top: -5px;">T: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>W: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>E: sales@bulkmro.com</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style="background: #d3d3d3; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <span style="color:#000000"><b>Quotation #<%= @final_sales_quote.inquiry.inquiry_number %></b></span>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 0;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Bulk MRO Sales Person</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" sdnum="16393;" sdval="1000" style="width:25%;padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.inside_sales_owner.full_name %>
+                  </span></td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Bulk MRO Contact #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" sdnum="16393;0;D MMM YY" sdval="42913" style="width:25%; padding-left: 10px;" valign="top">
+                  <span style="color:#000000">+91-22-4921-4921</span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Date of Inquiry</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" sdnum="16393;0;D MMM YY" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.created_at.strftime("%d-%b-%Y") if @final_sales_quote.inquiry.created_at.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Quotation Validity</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.created_at.strftime("%d-%b-%Y") if @final_sales_quote.inquiry.created_at.present? %>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" sdnum="16393;0;D MMM YY" sdval="42913" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.created_at.strftime("%d-%b-%Y") if @final_sales_quote.created_at.present? %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Customer Inquiry Reference</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="6" sdnum="16393;0;D MMM YY" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @final_sales_quote.inquiry.subject %></span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Freight</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.freight_option %>
+                  </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Price Quoted</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000">
+                    <%= @final_sales_quote.inquiry.price_type %>
+                  </span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Packing and Forwarding</span></b> <span style="float:right">:</span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @final_sales_quote.inquiry.packing_and_forwarding_option == 'added' ? 'Included' : 'Not Included' %></span>
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span style="color:#000000"><%= @final_sales_quote.inquiry.payment_option.name if @final_sales_quote.inquiry.payment_option.present? %></span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Supplier - Bill from:</span></b>
+          </div>
+          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px;text-align: center;">
+            <b><span style="color:#000000">Supplier - Ship from:</span></b>
+          </div>
+          <br clear="all">
+          <table border="0" cellspacing="0" style="width: 100%;">
+            <tbody>
+            <tr>
+              <td style="width:48%;">
+                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left; height: 140px;">
+                    <span style="color:#000000">
+                      <% if @final_sales_quote.inquiry.bill_from.present? %>
+                        <%= @final_sales_quote.inquiry.bill_from.name.to_s %><br>
+                      <% end %>
+                      <% if @final_sales_quote.inquiry.bill_from.present? %>
+                        <%= @final_sales_quote.inquiry.bill_from.address.to_multiline_s %><br>
+                        GST No.: <%= @final_sales_quote.inquiry.bill_from.address.gst %><br>
+                      <% end %>
+                      PAN No.: AAGCB7343G</span>
+                </div>
+              </td>
+              <td style="width:4%;"></td>
+              <td style="width:48%;">
+                <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left;">
+                    <span style="color:#000000">
+                      <% if @final_sales_quote.inquiry.ship_from.present? %>
+                        <% @final_sales_quote.inquiry.ship_from.name.to_s %><br>
+                      <% end %>
+                      <% if @final_sales_quote.inquiry.ship_from.present? %>
+                        <%= @final_sales_quote.inquiry.ship_from.address.to_multiline_s %><br>
+                        GST No.: <%= @final_sales_quote.inquiry.ship_from.address.gst %><br>
+                      <% end %>
+                      PAN No.: AAGCB7343G</span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br clear="all">
+          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Customer - Bill to:</span></b>
+          </div>
+          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 0;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <b><span style="color:#000000">Customer - Ship to:</span></b>
+          </div>
+          <br clear="all">
+          <table border="0" cellspacing="0" style="width: 100%;">
+            <tbody>
+            <tr>
+              <td style="width:48%;">
+                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left; height: 175px;">
+                  <%= @final_sales_quote.inquiry.contact.full_name %><br>
+                  <%= @final_sales_quote.inquiry.shipping_address.name %><br>
+
+                  <% if @final_sales_quote.inquiry.shipping_address.present? %>
+                    <%= @final_sales_quote.inquiry.shipping_address.to_multiline_s %>
+                  <% end %>
+                  <br>
+                  Tel: <%= @final_sales_quote.inquiry.shipping_address.telephone %><br>
+                  GST No.:<%= @final_sales_quote.inquiry.shipping_address.gst %><br>
+                </div>
+              </td>
+              <td style="width:4%;"></td>
+              <td style="width:48%;">
+                <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 0;text-align: left;">
+                  <%= @final_sales_quote.inquiry.contact.full_name %><br>
+                  <%= @final_sales_quote.inquiry.billing_address.name %><br>
+
+                  <% if @final_sales_quote.inquiry.billing_address.present? %>
+                    <%= @final_sales_quote.inquiry.billing_address.to_multiline_s %>
+                  <% end %>
+                  <br>
+                  Tel: <%= @final_sales_quote.inquiry.billing_address.telephone %><br>
+                  GST No.:<%= @final_sales_quote.inquiry.billing_address.gst %><br>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <br clear="all">
+          <div style="width: 100%;">
+            <table border="0" cellspacing="0" style="width: 100%;border-radius: 0;border-collapse: separate;">
+              <thead>
+              <tr>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-top-left-radius: 0;background: #d3d3d3;border-bottom:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Sr.<br>
+                    No.</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">SKU</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Mfr<br>
+                    Model</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Description</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Make</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">HSN/<br>
+                    SAC<br>
+                    Code</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Lead<br>
+                    Time</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">UOM</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Qty</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Unit Price<br>
+                    (INR)</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Subtotal<br>
+                    (INR)</span></b></th>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Tax<br>
+                    Rate</span></b></th>
+                <% if @final_sales_quote.tax_summary.to_i == 0 || (@final_sales_quote.tax_summary.to_s.include? "IGST") %>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">IGST<br>
+                    Rate</span></b></th>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">IGST<br>
+                    Amt</span></b></th>
+                <% else %>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">CGST<br>
+                  Rate</span></b></th>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">CGST<br>
+                  Amt</span></b></th>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">SGST<br>
+                    Rate</span></b></th>
+                  <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="center">
+                    <b><span style="color:#000000">SGST<br>
+                    Amt</span></b></th>
+                <% end %>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;border-top-right-radius: 0; background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Total<br>
+                    (INR)</span></b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @final_sales_quote.rows.each do |item| %>
+                <tr>
+                  <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.sr_no %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.product.sku %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:left;" valign="top">
+                    <span style="color:#000000"><%= item.to_bp_catalog_s %><br></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.tax_code.chapter %></span></td>
+                  <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.lead_time_option.name %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.product.measurement_unit.name %></span></td>
+                  <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"><%= item.quantity %></span></td>
+                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: right;" valign="top">
+                    <span style="color:#000000"><%= item.unit_selling_price %></span></td>
+                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                    <span style="color:#000000"><%= item.total_selling_price %></span></td>
+                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" valign="top">
+                    <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                  <% if @final_sales_quote.tax_summary.to_i == 0 ||
+                      (@final_sales_quote.tax_summary.to_s.include? "IGST") %>
+                    <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                      <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                    <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                      <span style="color:#000000"><%= item.total_tax %></span></td>
+                  <% else %>
+                    <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                      <span style="color:#000000"><%= item.total_tax / 2 %></span></td>
+                    <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                      <span style="color:#000000"><%= item.total_tax / 2 %></span></td>
+                  <% end %>
+                  <td align="right" style="border-right:1px solid #3c3c3c;font-size: 11px;border-left: 1px solid #3c3c3c; text-align: right" valign="top">
+                    <span style="color:#000000"><%= item.total_selling_price_with_tax %></span></td>
+                </tr>
+              <% end %>
+
+              <tr>
+                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"><b><span style="color:#000000">Total</span></b></span></td>
+                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                  <b><span style="color:#000000"><%= @final_sales_quote.calculated_total %></span></b></td>
+                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <span style="color:#000000"></span></td>
+                <% if @final_sales_quote.tax_summary.to_i == 0 ||
+                    (@final_sales_quote.tax_summary.to_s.include? "IGST") %>
+                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                    <b><span style="color:#000000"><%= @final_sales_quote.calculated_total_tax %></span></b></td>
+                <% else %>
+                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                    <b><span style="color:#000000"><%= @final_sales_quote.calculated_total_tax / 2 %></span></b></td>
+                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
+                    <span style="color:#000000"></span></td>
+                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                    <b><span style="color:#000000"><%= @final_sales_quote.calculated_total_tax / 2 %></span></b></td>
+                <% end %>
+                <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
+                  <b><span style="color:#000000"><%= @final_sales_quote.calculated_total_with_tax %></span></b></td>
+              </tr>
+              <tr>
+                <td style="border-bottom-left-radius: 0; font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <% if @final_sales_quote.tax_summary.to_i != 0 ||
+                    (!@final_sales_quote.tax_summary.to_s.include? "IGST") %>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
+                <% end %>
+                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 0;" valign="top"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="alwaysbreak"></div>
+
+          <div id="stamp" style="width:94%;position:absolute; padding-top: 1px;padding-bottom: 1px;">
+            <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
+              <%= wicked_pdf_image_tag 'signature.png', :width => "216", :height => "150" %></div>
+          </div>
+          <br clear="all">
+
+          <div id="commercial" style="border:1px solid; border-radius: 0;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="2" height="20" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" valign="top">
+                  <b><span style="color:#000000">Commercial Terms and Conditions: </span></b></td>
+              </tr>
+              <tr>
+                <td align="left" height="" style="padding-left:10px;" valign="top">
+                  <% @final_sales_quote.inquiry.terms_lines.each do |term| %>
+                    <span style="color:#000000"> <%= term %><br></span>
+                  <% end %>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div id="Otherinfo" style="border:1px solid; border-radius: 0;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
+                  <b><span style="color:#000000">Other Information:</span></b></td>
+              </tr>
+              <tr>
+                <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">1. Please reference Bulk MRO Invoice Number when remitting payment.<br>
+                    2. All Banking fees will be to Customer's account.<br>
+                    3. Late payment will attract Interest at the rate of 2% per month.</span></td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+            <% if @final_sales_quote.currency.name.present? %>
+              <% if @final_sales_quote.currency.name.to_s == 'USD' %>
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+                      <b><span style="color:#000000">Bank:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Address:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Name:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
+
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Number:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">9412666668</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Swift Code:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">KKBKINBB</span></td>
+
+                  </tr>
+                </table>
+              <% elsif @final_sales_quote.currency.name.to_s == 'GBP' %>
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+                      <b><span style="color:#000000">Bank:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Address:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Name:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
+
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Number:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">9412666675</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Swift Code:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">KKBKINBB</span></td>
+
+                  </tr>
+                </table>
+
+              <% elsif @final_sales_quote.currency.name.to_s == 'EUR' %>
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+                      <b><span style="color:#000000">Bank:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Address:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Name:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Number:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
+                      <span style="color:#000000">9412666682</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Swift Code:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">KKBKINBB</span></td>
+
+                  </tr>
+                </table>
+              <% else %>
+                <table style="width: 100%;" cellspacing="0" border="0">
+                  <tr style="background: #d3d3d3;">
+                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+                      <b><span style="color:#000000">Bank:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">State Bank of India </span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Address:</span></b></td>
+                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Name:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">Account Number:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">9412329433</span></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">35924122136</span></td>
+                  </tr>
+                  <tr>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+                      <b><span style="color:#000000">NEFT/RTGS Code:</span></b></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">KKBK0001411</span></td>
+                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+                      <span style="color:#000000">SBIN0000510 </span></td>
+                  </tr>
+                </table>
+              <% end %>
+            <% end %>
+          </div>
+          <br clear="all">
+          <div id="standard-terms-cond" style="border:1px solid; border-radius: 0;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                  <b><span style="color:#000000">STANDARD TERMS AND CONDITIONS:</span></b></td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">1.</td>
+
+                <td align="left" valign="top">
+                  <span style="color:#000000">All the prices are based on products and quantities quoted. Any changes to the products and/or quantities may result in different pricing.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">2.</td>
+                <td align="left" valign="top">
+                  <span style="color:#000000">  All discrepancies must be reported within 7-days of receipt of goods. No goods may be returned without prior written authorization from Bulk MRO. Bulk MRO will not be responsible for non-authorized returns. This transaction is subject to Warranty, Sales Terms and Conditions.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">3.</td>
+                <td align="left" valign="top">
+                  <span style="color:#000000">Bulk MRO shall not entertain any claim for any loss arising from damage, shortage, and/or non-delivery of goods as per invoice unless written intimation of such loss is given to the Company within seven (7) days from the date of receipt of goods.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">4.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">5.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    The goods quoted are subject to availability. Bulk MRO does not guarantee delivery of goods within any particular time frame. The customer acknowledges that Bulk MRO shall not be liable for any liquidated damages or un-liquidated damages or loss of business, penalty, etc, for any delay in delivery/supply of goods.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">6.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    The usage of the goods quoted and covered under the invoice is not meant for life saving and/or support equipment purpose, unless specifically provided for by the manufacturer.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">7.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    The terms as provided under Condition 5, 6, and 7 above, shall supersede any other terms and conditions inconsistent therewith.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">8.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    These terms and conditions inter-alia the pricing, terms of payment, etc of this transaction shall be kept confidential by the Customer and shall not be disclosed to any third party without prior written consent of Bulk MRO.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">9.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    All goods may be used by the Customer at its own risk and the Customer shall refer to the relevant technical advice, data, recommendations or services as specified by the manufacturer.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">10.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    The customer shall comply fully with all applicable anti-mafia, anti-bribery, anti-money laundering and anti-corruption statues, rules, or regulations of any national, federal, state, or local jurisdiction anywhere in the world, including the (Indian) Prevention of Corruption Act, 1988 and the (U.S.) Foreign Corrupt Practices Act of 1977.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">11.</td>
+                <td align="left" valign="top"><span style="color:#000000">
+                    The quotes given above are on the current foreign exchange rate. In event of significant Rupee depreciation on the date of PO or Order confirmation by customer, there could be upward revision of rates accordingly.</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div id="pdf_btn_details">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="22" style="position: relative;top:0px;">
+                  <span style="color:#000000">This is a Computer Generated Quotation.</span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

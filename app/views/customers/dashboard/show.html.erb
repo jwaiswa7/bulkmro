@@ -1,0 +1,45 @@
+<div class="col-12">
+  <div class="form-row mt-3 mt-lg-4">
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase text-black-50 mb-1"><strong>Quotes</strong>
+              </p>
+              <h3 class="mb-0"><%= @sales_quotes_count %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-success">See Quotes</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Orders</strong></p>
+              <h3 class="mb-0"><%= @sales_orders_count %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-success">See Orders</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Products</strong></p>
+              <h3 class="mb-0"><%= @products_count %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= customers_products_path %>" class="btn btn-lg btn-block btn-success">See Products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
