@@ -67,6 +67,7 @@ class SalesQuoteRow < ApplicationRecord
     self.freight_cost_subtotal ||= 0.0
     self.unit_freight_cost ||= 0.0
     self.lead_time_option ||= LeadTimeOption.default
+    self.measurement_unit ||= self.product.measurement_unit || MeasurementUnit.default
 
     if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity
