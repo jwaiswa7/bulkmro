@@ -4,6 +4,17 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+      end
+    end
   end
 
   def show
