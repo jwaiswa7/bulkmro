@@ -28,6 +28,9 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                               query: query,
                               operator: 'or',
                               fields: %w[name],
+                          },
+                          bool: {
+                              max_clause_count: 100000
                           }
                       }).page(page).per(per)
 
