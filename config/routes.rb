@@ -54,7 +54,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contacts, except: [:show, :index] do
+    resources :contacts, except: [:show] do
       collection do
         get 'autocomplete'
       end
