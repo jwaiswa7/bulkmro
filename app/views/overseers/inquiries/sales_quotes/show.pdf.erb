@@ -280,7 +280,7 @@
                   <td align="center">
                     <span><%= item.product.brand.to_s %></span></td>
                   <td align="left">
-                    <span><%= item.tax_code.try(:chapter) %></span></td>
+                    <span><%= item.best_tax_code.try(:chapter) %></span></td>
                   <td align="center">
                     <span><%= item.lead_time_option.to_s %></span></td>
                   <td align="center">
@@ -292,19 +292,19 @@
                   <td align="right" style="text-align:right;">
                     <span><%= item.total_selling_price.round(2) %></span></td>
                   <td align="center">
-                    <span><%= item.tax_code.try(:tax_percentage) %>%</span></td>
+                    <span><%= item.best_tax_code.try(:tax_percentage) %>%</span></td>
                   <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.tax_code.try(:tax_percentage) %>%</span></td>
+                      <span><%= item.best_tax_code.try(:tax_percentage) %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= item.total_tax.round(2) %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.tax_code.tax_percentage / 2 if item.tax_code.present? %>%</span></td>
+                      <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= (item.total_tax / 2).round(2) %></span></td>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.tax_code.tax_percentage / 2 if item.tax_code.present? %>%</span></td>
+                      <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= (item.total_tax / 2).round(2) %></span></td>
                   <% end %>
