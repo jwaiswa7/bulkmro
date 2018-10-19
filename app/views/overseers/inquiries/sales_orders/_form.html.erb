@@ -91,7 +91,7 @@
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Tax Code</strong><br>
-                <span><%= row.object.tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
+                <span><%= row.object.best_tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
                 <%= row.hidden_field :tax_percentage, value: row.object.best_tax_code.tax_percentage, "data-bind": "", disabled: true %>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">

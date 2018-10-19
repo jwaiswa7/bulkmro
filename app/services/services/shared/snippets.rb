@@ -23,6 +23,12 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(:password => 'abc123', :password_confirmation => 'abc123')
   end
 
+  def make_admin
+    Overseer.find_by_email('puja.tanawade@bulkmro.com').admin!
+    Overseer.find_by_email('chetan.utekar@bulkmro.com').admin!
+
+  end
+
   def check_es
     service = Services::Overseers::Finders::Products.new({})
     service.manage_failed_skus('Painting Spray Gun Type - 68, Cap - 140 M', 4, 1)

@@ -4,6 +4,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
+
+    respond_to do |format|
+      format.html {}
+    end
   end
 
   def show

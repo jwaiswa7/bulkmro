@@ -3,11 +3,18 @@
     <h2> Tax Codes</h2>
   </div>
 
-  <%= simple_form_for([:overseers, @tax_codes], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @tax_code], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
+    <%= f.input :remote_uid %>
     <%= f.input :code %>
+    <%= f.input :chapter %>
+    <%= f.input :description %>
     <%= f.input :tax_percentage %>
+    <%= f.input :is_service %>
+    <%= f.input :is_pre_gst %>
     <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-      <i class="fal fa-pen"></i> <%= submit_text(@tax_codes) %>
+      <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>
     <% end %>
   <% end %>
 </div>

@@ -6,14 +6,13 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
   include Mixins::CanBeRejected
-  include Mixins::HasApproveableStatus
   include Mixins::HasComments
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
   include Mixins::HasRowCalculations
 
+  update_index('sales_orders#sales_order') {self}
   pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
-
   has_closure_tree({name_column: :to_s})
 
   has_one_attached :serialized_pdf
@@ -34,6 +33,7 @@ class SalesOrder < ApplicationRecord
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
+  delegate :inside_sales_owner, :outside_sales_owner, to: :inquiry, allow_nil: true
 
   after_initialize :set_defaults, :if => :new_record?
 
@@ -83,6 +83,8 @@ class SalesOrder < ApplicationRecord
       :'Material Ready For Dispatch' => 33,
       :'Order Deleted' => 70
   }, _prefix: true
+
+  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
 
   def confirmed?
     self.confirmation.present?
