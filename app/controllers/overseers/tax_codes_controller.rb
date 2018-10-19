@@ -31,15 +31,38 @@ class Overseers::TaxCodesController < Overseers::BaseController
     end
   end
 
+  def new
+    @tax_code = TaxCode.new
+    authorize @tax_code
+  end
+
+  def create
+    @tax_code = TaxCode.new(tax_code_params)
+
+    authorize @tax_code
+
+    if @tax_code.save
+      redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
+    else
+      render 'new'
+    end
+  end
+
   private
+
   def set_tax_code
     @tax_code ||= TaxCode.find(params[:id])
   end
 
   def tax_code_params
     params.require(:tax_code).permit(
+        :remote_uid,
         :code,
-        :tax_percentage
+        :chapter,
+        :description,
+        :tax_percentage,
+        :is_service,
+        :is_pre_gst
     )
   end
 
