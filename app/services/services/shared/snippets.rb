@@ -329,19 +329,19 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     folders = ['seed_files', 'seed_files_2']
     folders.each do |folder|
       service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
-      service.loop(limit) do |x|
+      service.loop(nil) do |x|
         inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
         inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
         if inquiry.present?
-          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".")
+          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".") if x.get_column('manager', downcase: true).present?
           inside_sales_owner_username =  inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
           inquiry.inside_sales_owner = Overseer.find_by_username(legacy_inside_sales_owner_username) if legacy_inside_sales_owner_username != inside_sales_owner_username
 
-          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".")
+          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".") if x.get_column('outside', downcase: true).present?
           outside_sales_owner_username = inquiry.outside_sales_owner.username if inquiry.outside_sales_owner.present?
           inquiry.outside_sales_owner = Overseer.find_by_username(legacy_outside_sales_owner_username) if legacy_outside_sales_owner_username != outside_sales_owner_username
 
-          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".")
+          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".") if x.get_column('powermanager', downcase: true).present?
           sales_manager_username = inquiry.sales_manager.username if inquiry.sales_manager.present?
           inquiry.sales_manager = Overseer.find_by_username(legacy_sales_manager_username) if legacy_sales_manager_username != sales_manager_username
           inquiry.save!
