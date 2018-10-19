@@ -1,12 +1,12 @@
 require 'csv'
 
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
-  def initialize(name, skip = 0, log_errors = false)
+  def initialize(name, folder ,skip = 0, log_errors = false)
     @errors = []
     @skip = skip
     @log_errors = log_errors
 
-    set_files(name)
+    set_files(name, folder)
   end
 
   def loop(limit = nil)
@@ -29,8 +29,9 @@ class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseServic
     file
   end
 
-  def set_files(name)
-    @file = Rails.root.join('db', 'seed_files', name)
+  def set_files(name, folder)
+    folder = "seed_files" if !folder.present?
+    @file = Rails.root.join('db', folder, name)
     @errors_file = Rails.root.join('db', 'seed_errors_files', name)
   end
 
