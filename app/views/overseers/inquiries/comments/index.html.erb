@@ -13,33 +13,17 @@
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
 
     <% if @sales_order.present? %>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><%= @sales_order %></h5>
-          <div class="card-text">
-            <div class="form-row">
-              <div class="col-lg-6">Products: <strong><%= @sales_order.rows.size %></strong></div>
-              <div class="col-lg-6">Inside Sales Owner: <strong><%= @sales_order.inquiry.inside_sales_owner %></strong>
-              </div>
-              <div class="col-lg-6">Outside Sales Owner:
-                <strong><%= @sales_order.inquiry.outside_sales_owner %></strong></div>
-              <div class="col-lg-6">Sales Manager: <strong><%= @sales_order.inquiry.sales_manager %></strong></div>
-              <div class="col-lg-6">Total Selling Price (Excl. tax):
-                <strong><%= format_currency(@sales_order.calculated_total) %></strong></div>
-              <div class="col-lg-6">Total Tax:
-                <strong><%= format_currency(@sales_order.calculated_total_tax) %></strong></div>
-              <div class="col-lg-6">Total Selling Price (Incl. tax):
-                <strong><%= format_currency(@sales_order.calculated_total_with_tax) %></strong></div>
-              <div class="col-lg-6">Total Margin:
-                <strong><%= format_currency(@sales_order.calculated_total_margin) %></strong></div>
-              <div class="col-lg-6">Created On: <strong><%= @sales_order.created_at.strftime("%e %B, %Y") %></strong>
-              </div>
-              <div class="col-lg-6">Last Updated On:
-                <strong><%= @sales_order.updated_at.strftime("%e %B, %Y %T") %></strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <%= simple_form_for(@sales_order, url: "", method: :post) do |f| %>
+        <%= f.hidden_field :parent_id %>
+        <%= f.hidden_field :sales_quote_id %>
+
+        <% if f.object.errors.any? %>
+          <% f.object.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        <% end %>
+        <%= render 'overseers/inquiries/sales_orders/show_summary', f: f %>
+      <% end %>
     <% end %>
 
     <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
