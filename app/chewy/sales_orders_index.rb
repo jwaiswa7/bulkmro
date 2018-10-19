@@ -1,6 +1,7 @@
 class SalesOrdersIndex < BaseIndex
   statuses = SalesOrder.statuses
   remote_statuses = SalesOrder.remote_statuses
+
   define_type SalesOrder.all.with_includes do
     field :id, type: 'integer'
     field :order_number,  value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
