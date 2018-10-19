@@ -9,6 +9,7 @@ json.data (@inquiries) do |inquiry|
                   status_helper_format_label(inquiry.status),
                   inquiry.account.to_s,
                   inquiry.company.to_s,
+                  inquiry.subject,
                   inquiry.contact.to_s,
                   inquiry.inside_sales_owner.to_s,
                   inquiry.outside_sales_owner.to_s,
