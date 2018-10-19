@@ -15,9 +15,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     methods = if custom_methods.present?
                 custom_methods
               elsif Rails.env.production?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w(inquiry_attachments)
               elsif Rails.env.development?
-                %w(categories products inquiries inquiry_terms inquiry_details)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
     PaperTrail.request(enabled: false) do
@@ -51,7 +51,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         'Sales Support' => :sales,
         'SalesExport' => :sales,
         'sales_supplier' => :sales,
-        'Sales Manager' => :outside_sales_manager,
+        'Sales Manager' => :outside_sales_team_leader,
         'HR' => :sales,
         'Creative' => :sales,
         'saleswithaccounts' => :sales,
@@ -79,11 +79,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overseer.role = case role_name
               when :sales
                 if identifier == 'inside'
-                  :inside_sales
+                  :inside_sales_executive
                 elsif identifier == 'outside'
-                  :outside_sales
+                  :outside_sales_executive
                 elsif identifier == 'outside/manager'
-                  :outside_sales_manager
+                  :outside_sales_team_leader
                 else
                   :sales
                 end
@@ -1045,7 +1045,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         file_url = x.get_column(file[1])
         next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
         next if inquiry.send(file[2]).attached?
-        attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        begin
+          attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
       end
     end
   end

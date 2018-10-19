@@ -5,7 +5,9 @@ json.data (@accounts) do |account|
                       if policy(account).edit?;
                         row_action_button(edit_overseers_account_path(account), 'pencil', 'Edit Account', 'warning')
                       end,
-                      row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success'),
+                      if policy(account).edit?;
+                        row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success')
+                      end,
                   ].join(' '),
                   account.to_s,
                   account.companies.size,

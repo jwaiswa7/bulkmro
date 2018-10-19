@@ -2,7 +2,7 @@
   <% content_for :heading_button do %>
     <%= link_to overseers_inquiry_sales_orders_path(@inquiry), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
       <i class="fal fa-external-link mr-1"></i> Check Inquiry
-    <% end %>
+    <% end if policy(@inquiry).edit? %>
   <% end %>
 
   <% content_for :heading_byline do %>

@@ -22,11 +22,14 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def smart_queue
-    # self_and_descendant_ids = current_overseer.self_and_descendant_ids
-    # Inquiry.smart_queue.where(:created_by_id => self_and_descendant_ids)
+    inquiries = Inquiry.smart_queue
+    inquiries = if current_overseer.inside_sales?
+      inquiries.where(:inside_sales_owner_id => current_overseer.self_and_descendant_ids)
+    elsif current_overseer.outside_sales?
+      inquiries.where(:outside_sales_owner_id => current_overseer.self_and_descendant_ids)
+    end
 
-    @inquiries = ApplyDatatableParams.to(Inquiry.smart_queue, params)
-
+    @inquiries = ApplyDatatableParams.to(inquiries, params)
     authorize @inquiries
   end
 
