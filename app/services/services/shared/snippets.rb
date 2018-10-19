@@ -35,6 +35,28 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     InquiryProduct.delete_all
   end
 
+  def make_admins
+    ['vignesh.gounder@bulkmro.com',
+              'gitesh.ganekar@bulkmro.com',
+              'ajay.rathod@bulkmro.com',
+              'sanchit.sharma@bulkmro.com',
+              'ovais.ansari@bulkmro.com',
+              'diksha.tambe@bulkmro.com',
+              'dinesh.kumar@bulkmro.com',
+              'ankur.gupta@bulkmro.com',
+              'sumit.sharma@bulkmro.com',
+              'farhan.ansari@bulkmro.com',
+              'bhargav.trivedi@bulkmro.com',
+              'ajay.kondal@bulkmro.com',
+              'pravin.ganekar@bulkmro.com',
+              'nida.khan@bulkmro.com',
+              'soni.pathre@bulkmro.com',
+              'vijay.manjrekar@bulkmro.com',
+    ].each do |email|
+      Overseer.find_by_email(email).admin! if Overseer.find_by_email(email).present?
+    end
+  end
+
   def run_inquiry_details_migration
     PaperTrail.request(enabled: false) do
       Services::Shared::Migrations::Migrations.new(['activities']).call
