@@ -1,5 +1,5 @@
 <div style="border:1px solid; border-radius: 5px;padding: 2px">
-  <% if record.inquiry.bill_from.legacy_id == 12 %>
+  <% if record.inquiry.bill_from.present? && record.inquiry.bill_from.legacy_id == 12 %>
     <table style="width: 100%;" cellspacing="0" border="0">
 
       <tr>
