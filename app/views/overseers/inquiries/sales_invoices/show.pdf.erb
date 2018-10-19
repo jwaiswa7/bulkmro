@@ -201,7 +201,7 @@
           </table>
           <br clear="all">
           <div style="width: 100%;">
-            <table border="0" cellspacing="0" style="width: 100%;border-radius: 6px;border-collapse: separate;">
+            <table border="0" cellspacing="0" class="pdf-table">
               <thead>
               <tr>
                 <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-top-left-radius: 5px;background: #d3d3d3;border-bottom:1px solid #3c3c3c;" valign="center">
@@ -263,41 +263,41 @@
               <tbody>
               <% @sales_invoice.rows.each_with_index do |item, index| %>
                 <tr>
-                  <td align="center" style="border-left: 1px solid #3c3c3c;font-size: 11px; text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= index + 1 %></span></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.sku %></span></td>
 
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"></span></td>
-                  <td align="left" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: left;" valign="top">
+                  <td align="left" style="" valign="top">
                     <span style="color:#000000"><%= item.name %></span></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.brand %></span></td>
-                  <td align="center" style="border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.hsn %></span></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;text-align: center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.uom %></span></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.metadata['qty'] %></span></td>
-                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
+                  <td align="right" style="" valign="top">
                     <span style="color:#000000"><%= item.metadata['price'].to_f.round(2) %></span></td>
-                  <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c;  text-align:right;" valign="top">
+                  <td align="right" style="" valign="top">
                     <span style="color:#000000"><%= item.metadata['row_total'].to_f.round(2) %></span></td>
-                  <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
+                  <td align="center" style="" valign="top">
                     <span style="color:#000000"><%= item.tax_rate %>%</span></td>
                   <% if @sales_invoice.sales_order.sales_quote.tax_summary.to_i == 0 ||
                       (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                    <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
+                    <td align="center" style="" valign="top">
                       <span style="color:#000000"><%= item.tax_rate.to_f.round(2) %>%</span></td>
-                    <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
+                    <td align="right" style="" valign="top">
                       <span style="color:#000000"><%= item.metadata['tax_amount'].to_f.round(2) %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c;" valign="top">
                       <span style="color:#000000"><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
                     <td align="right" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align:right;" valign="top">
                       <span style="color:#000000"><%= (item.metadata['tax_amount'].to_f / 2).round(2) %></span></td>
-                    <td align="center" style="font-size: 11px;border-left: 1px solid #3c3c3c; text-align: center;" valign="top">
+                    <td align="center" style="" valign="top">
                       <span style="color:#000000"><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
                     <td align="center" style="padding-left: 3px;padding-bottom: 8px;font-size: 11px;border-left: 1px solid #3c3c3c; text-align:center;" valign="top">
                       <span style="color:#000000"><%= (item.metadata['tax_amount'].to_f / 2).round(2) %><br></span></td>
@@ -307,72 +307,49 @@
                 </tr>
               <% end %>
 
-              <tr>
-                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"><b><span style="color:#000000">Total</span></b></span></td>
-                <td align="center" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                  <b><span style="color:#000000"><%= @metadata[:subtotal].to_f.round(2) %></span></b></td>
-                <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                  <span style="color:#000000"></span></td>
+              <tr class="total-row">
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""><b><span style="">Total</span></b></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
+                <td align="right" style="" valign="top">
+                  <b><span style=""><%= @metadata[:subtotal].to_f.round(2) %></span></b></td>
+                <td align="center" style="" valign="top">
+                  <span style=""></span></td>
                 <% if @sales_invoice.sales_order.sales_quote.tax_summary.to_i == 0 ||
                     (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= @metadata[:tax_amount].to_f.round(2) %></span></b></td>
+                  <td align="center" style="" valign="top">
+                    <span style=""></span></td>
+                  <td align="right" style="" valign="top">
+                    <b><span style=""><%= @metadata[:tax_amount].to_f.round(2) %></span></b></td>
                 <% else %>
-                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: center;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
-                  <td align="center" style="background: #d3d3d3;border-left: 1px solid #3c3c3c; border-top: 1px solid #3c3c3c;text-align: center;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 11px;background: #d3d3d3;border-left: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                  <td align="center" style="" valign="top">
+                    <span style=""></span></td>
+                  <td align="right" style="" valign="top">
+                    <b><span style=""><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                  <td align="center" style="" valign="top">
+                    <span style=""></span></td>
+                  <td align="right" style="" valign="top">
+                    <b><span style=""><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
                 <% end %>
-                <td align="right" style="border-right:1px solid #3c3c3c;border-left:1px solid #3c3c3c;font-size: 11px;background: #d3d3d3;border-top: 1px solid #3c3c3c; text-align: right;" valign="top">
-                  <b><span style="color:#000000"><%= @metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
+                <td align="right" style="" valign="top">
+                  <b><span style=""><%= @metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
               </tr>
-              <tr>
-                <td style="border-bottom-left-radius: 5px; font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <% if @sales_invoice.sales_order.sales_quote.tax_summary.to_i == 0 ||
-                    (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <% else %>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                  <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;" valign="top"></td>
-                <% end %>
-                <td style=" font-size: 11px;background: #d3d3d3;border-bottom: 1px solid #3c3c3c;border-left: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c; border-bottom-right-radius: 5px;" valign="top"></td>
-              </tr>
+
               </tbody>
             </table>
           </div>

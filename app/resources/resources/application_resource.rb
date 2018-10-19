@@ -40,25 +40,25 @@ class Resources::ApplicationResource
                          })
   end
 
-  # if Rails.env.production?
-  #   ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
-  #   DATABASE = 'BULKMRO_PRODUCTION'
-  #   USERNAME = 'manager'
-  #   PASSWORD = 'vm1234'
-  #
-  #   ATTACHMENT_ENDPOINT = URI.parse('https://35.200.144.191')
-  #   ATTACHMENT_USERNAME = 'b1service0'
-  #   ATTACHMENT_PASSWORD = 'b1service0@123'
-  #
-  #   SAP = OpenStruct.new({
-  #                            attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
-  #                            attachment_api: '172.31.13.105/b1_shf/Attachments',
-  #                            server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
-  #                            login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
-  #                            draft_doc_object_code: 22,
-  #                            draft_base_type: 17
-  #                        })
-  # end
+  if Rails.env.production?
+    ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
+    DATABASE = 'BULKMRO_PRODUCTION'
+    USERNAME = 'manager'
+    PASSWORD = 'vm1234'
+
+    ATTACHMENT_ENDPOINT = URI.parse('https://35.200.144.191')
+    ATTACHMENT_USERNAME = 'b1service0'
+    ATTACHMENT_PASSWORD = 'b1service0@123'
+
+    SAP = OpenStruct.new({
+                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
+                             attachment_api: '172.31.13.105/b1_shf/Attachments',
+                             server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
+                             login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
+                             draft_doc_object_code: 22,
+                             draft_base_type: 17
+                         })
+  end
 
 
   base_uri ENDPOINT.to_s
