@@ -21,13 +21,13 @@ class Resources::ApplicationResource
   end
 
   if Rails.env.development?
-    ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
+    ENDPOINT = URI.parse('https://35.154.19.43:50000/b1s/v1')
     DATABASE = 'SPRINT_TEST'
     USERNAME = 'manager'
     PASSWORD = 'vm1234'
 
-    ATTACHMENT_ENDPOINT = URI.parse('https://35.200.144.191:22')
-    ATTACHMENT_USERNAME = 'pradeep'
+    ATTACHMENT_ENDPOINT = URI.parse('https://35.154.19.43:22')
+    ATTACHMENT_USERNAME = 'ec2-user'
     ATTACHMENT_PASSWORD = ''
     ATTACHMENT_SSH = '-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEA9bBug/z3ZxZnfS4sBNolGjq3+JFWb8odFtq55m7w+zsAe6uC
@@ -58,8 +58,8 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 -----END RSA PRIVATE KEY-----'
 
     SAP = OpenStruct.new({
-                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Sprint',
-                             attachment_api: '35.200.144.191/b1_shf/Sprint',
+                             attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
+                             attachment_api: '35.154.19.43/b1_shf/Attachments',
                              server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
                              login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
                              draft_doc_object_code: 17,

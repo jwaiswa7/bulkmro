@@ -16,7 +16,6 @@ class Resources::Attachment < Resources::ApplicationResource
     remote_attachments = []
 
     ssh_private_keys = [SAP.ssh_key]
-
     Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
         if attachment.present? && attachment.key.present?
