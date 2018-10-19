@@ -32,7 +32,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def go_to_inquiry?
-    admin?
+    record.inquiry.can_be_managed?(overseer)
   end
 
   def approve?
@@ -56,11 +56,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     end
 
     def resolve
-      if overseer.admin?
-        scope.all
-      else
-        scope.where(:created_by => overseer.self_and_descendants)
-      end
+      scope.all
     end
   end
 
