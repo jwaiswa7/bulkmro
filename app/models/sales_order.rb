@@ -84,6 +84,8 @@ class SalesOrder < ApplicationRecord
       :'Order Deleted' => 70
   }, _prefix: true
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
+
   def confirmed?
     self.confirmation.present?
   end
