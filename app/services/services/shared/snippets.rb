@@ -329,6 +329,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def gst_tax_rate_fix
+    TaxCode.where('code LIKE ?', '%8424').size
+  end
+
   def update_sales_managers_for_inquiries
     folders = ['seed_files', 'seed_files_2']
     folders.each do |folder|

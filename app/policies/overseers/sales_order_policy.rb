@@ -60,11 +60,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
         scope.all
       else
         if overseer.inside?
-          scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(:sales_quote => :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
         elsif overseer.outside?
-          scope.joins(:inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(:sales_quote => :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
         else
-          scope.joins(:inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(:sales_quote => :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
         end
       end
     end
