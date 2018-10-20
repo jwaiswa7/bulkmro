@@ -33,6 +33,25 @@
   <div class="card-body">
     <div class="form-row">
       <div class="col-6">
+        <strong>Company name</strong>
+        <br> <%= (@inquiry.company.name) %>
+      </div>
+      <div class="col-6">
+        <strong>GST no.</strong>
+        <br> <%= @inquiry.billing_address.gst or @inquiry.company.default_billing_address.gst %>
+      </div>
+    </div><br>
+
+    <div class="form-row">
+      <div class="col-12">
+        <strong>Contact</strong>
+        <br> <%= @inquiry.contact.mobile or @inquiry.contact.telephone %>
+      </div>
+    </div>
+
+    <hr style="margin:12px 0px;">
+    <div class="form-row">
+      <div class="col-6">
         <strong>Customer PO Number</strong>
         <br> <%= @inquiry.customer_po_number %>
       </div>
@@ -40,8 +59,7 @@
         <strong>Customer Order Date</strong>
         <br> <%= @inquiry.customer_order_date %>
       </div>
-    </div>
-    <br>
+    </div><br>
 
     <div class="form-row">
       <div class="col-6">
