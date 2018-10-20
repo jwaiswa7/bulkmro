@@ -38,14 +38,14 @@
       </div>
       <div class="col-6">
         <strong>GST no.</strong>
-        <br> <%= @inquiry.billing_address.gst or @inquiry.company.default_billing_address.gst %>
+        <br> <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %>
       </div>
-    </div><br>
+    </div>
 
     <div class="form-row">
       <div class="col-12">
         <strong>Contact</strong>
-        <br> <%= @inquiry.contact.mobile or @inquiry.contact.telephone %>
+        <br> <%= @inquiry.contact.mobile || @inquiry.contact.telephone %>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
         <strong>Customer Order Date</strong>
         <br> <%= @inquiry.customer_order_date %>
       </div>
-    </div><br>
+    </div>
 
     <div class="form-row">
       <div class="col-6">
@@ -71,7 +71,7 @@
         <br> <%= f.object.conversion_rate %>
       </div>
     </div>
-    <br>
+    
 
     <div class="" form-row>
       <strong>Payment Terms:</strong>&nbsp;
