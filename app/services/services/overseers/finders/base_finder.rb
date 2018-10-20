@@ -110,13 +110,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      terms: {status: [60]},
+                      term: {status: 60},
                   },
                   {
-                      term: {legacy_status: 'not_legacy'},
+                      term: {legacy_request_status: 60},
                   },
               ],
-              minimum_should_match: 2,
+              minimum_should_match: 1,
           },
       }
     else

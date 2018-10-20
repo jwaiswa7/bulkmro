@@ -1,5 +1,6 @@
 class SalesOrdersIndex < BaseIndex
   statuses = SalesOrder.statuses
+  legacy_request_statuses = SalesOrder.legacy_request_statuses
   remote_statuses = SalesOrder.remote_statuses
 
   define_type SalesOrder.all.with_includes do
@@ -7,6 +8,7 @@ class SalesOrdersIndex < BaseIndex
     field :order_number,  value: -> (record) { record.order_number.to_s }, analyzer: 'substring'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
+    field :legacy_request_status, value: -> (record) { legacy_request_statuses[record.legacy_request_status] }
     field :approval_status, value: -> (record) { record.approved? ? 'approved' : 'pending' }
     field :legacy_status, value: -> (record) { record.legacy? ? 'legacy' : 'not_legacy' }
     field :remote_status_string, value: -> (record) { record.remote_status.to_s }, analyzer: 'substring'
