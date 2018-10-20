@@ -200,7 +200,7 @@
             <table border="0" cellspacing="0" class="pdf-table">
               <thead>
               <tr>
-                <th align="center" >
+                <th align="center">
                   <b><span>Sr.<br>
                     No.</span></b></th>
                 <th align="center" valign="center">
@@ -272,7 +272,7 @@
                   <td align="left" valign="top">
                     <span><%= item.best_tax_code.chapter if item.best_tax_code.present? %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.sales_quote_row.product.measurement_unit.name %></span></td>
+                    <span><%= item.sales_quote_row.try(:measurement_unit) || item.sales_quote_row.product.try(:measurement_unit) || MeasurementUnit.default %></span>
                   <td align="center" valign="top">
                     <span><%= item.quantity %></span></td>
                   <td align="right" style="text-align: right;" valign="top">

@@ -132,6 +132,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :quotation_date,
         :customer_committed_date,
         :customer_order_date,
+        :valid_end_time,
         :quotation_followup_date,
         :procurement_date,
         :expected_closing_date,

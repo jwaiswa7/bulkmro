@@ -9,6 +9,7 @@ class Resources::Project < Resources::ApplicationResource
 
     log_request(:post, record)
     validated_response = get_validated_response(response)
+    log_response(validated_response)
 
     if validated_response[:error_message].present? && validated_response[:error_message] == 'This entry already exists in the following tables (ODBC -2035)'
       record.inquiry_number

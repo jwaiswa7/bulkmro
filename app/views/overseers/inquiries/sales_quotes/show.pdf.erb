@@ -68,7 +68,7 @@
                   <b><span style="color:#000000">Quotation Validity</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:11px;" valign="top">
                   <span style="color:#000000">
-                    <%= record.inquiry.created_at.strftime("%d-%b-%Y") if record.inquiry.created_at.present? %>
+                    <%= record.inquiry.valid_end_time.strftime("%d-%b-%Y") if record.inquiry.valid_end_time.present? %>
                   </span>
                 </td>
               </tr>

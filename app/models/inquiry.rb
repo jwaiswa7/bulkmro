@@ -220,6 +220,7 @@ class Inquiry < ApplicationRecord
       self.freight_option ||= :"Included"
       self.packing_and_forwarding_option ||= :"Included"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
+      self.valid_end_time ||= (Date.today + 1.month) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
