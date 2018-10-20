@@ -72,8 +72,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       ActiveRecord::Base.transaction do
         @confirmation.save!
         @sales_order.update_attributes(
-            :sent_at => Time.now,
-             :status => :"SAP Approval Pending"
+            :sent_at => Time.now
         )
       end
     else
@@ -95,6 +94,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   private
+
   def save
     @sales_order.save
   end

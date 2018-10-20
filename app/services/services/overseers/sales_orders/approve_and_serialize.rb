@@ -13,6 +13,10 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
           :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
+      @sales_order.update_attributes(
+          :status => :"SAP Approval Pending"
+      )
+
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
       @sales_order.save_and_sync
     end

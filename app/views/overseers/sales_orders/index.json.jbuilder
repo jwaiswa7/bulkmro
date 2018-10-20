@@ -13,8 +13,8 @@ json.data (@sales_orders) do |sales_order|
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.id,
-                  sales_order.status,
-                  format_enum(sales_order.remote_status),
+                  format_enum(sales_order.status || sales_order.legacy_request_status, humanize_text: false),
+                  format_enum(sales_order.remote_status, humanize_text: false),
                   format_date(sales_order.sent_at),
                   sales_order.created_by.to_s,
                   sales_order.inside_sales_owner.to_s,
@@ -39,7 +39,6 @@ json.columnFilters [
                        [],
                        []
                    ]
-
 
 
 json.recordsTotal SalesOrder.all.count

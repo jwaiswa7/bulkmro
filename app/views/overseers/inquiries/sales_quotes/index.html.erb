@@ -28,6 +28,7 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
+      <th>Doc ID</th>
       <th>Sent At</th>
       <th>Created By</th>
       <th>Line Items</th>
@@ -58,6 +59,7 @@
               <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
           </td>
+          <td><%= sales_quote.id %></td>
           <td><%= format_date(sales_quote.sent_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>
           <td><%= sales_quote.rows.size %></td>

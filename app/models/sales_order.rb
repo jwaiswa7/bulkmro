@@ -38,27 +38,27 @@ class SalesOrder < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'requested'
+    self.status ||= :'Requested'
   end
 
   enum legacy_request_status: {
-      :'requested' => 10,
+      :'Requested' => 10,
       :'SAP Approval Pending' => 20,
-      :'rejected' => 30,
+      :'Rejected' => 30,
       :'SAP Rejected' => 40,
       :'Cancelled' => 50,
-      :'approved' => 60,
+      :'Approved' => 60,
       :'Order Deleted' => 70,
       :'Hold by Finance' => 80
   }, _prefix: true
 
   enum status: {
-      :'requested' => 10,
+      :'Requested' => 10,
       :'SAP Approval Pending' => 20,
-      :'rejected' => 30,
+      :'Rejected' => 30,
       :'SAP Rejected' => 40,
       :'Cancelled' => 50,
-      :'approved' => 60,
+      :'Approved' => 60,
       :'Order Deleted' => 70,
       :'Hold by Finance' => 80
   }, _prefix: true
@@ -91,7 +91,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def remote_approved?
-    self.status == :'approved'
+    self.status == :'Approved'
   end
 
 
