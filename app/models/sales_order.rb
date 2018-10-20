@@ -94,6 +94,9 @@ class SalesOrder < ApplicationRecord
     self.status == :'Approved'
   end
 
+  def legacy?
+    self.legacy_request_status.present?
+  end
 
   def not_confirmed?
     !confirmed?
