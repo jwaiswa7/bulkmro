@@ -56,9 +56,5 @@ module Mixins::HasRole
     def outside?
       role.in? OUTSIDE_ROLES
     end
-
-    def person?
-      true
-    end
   end
 end

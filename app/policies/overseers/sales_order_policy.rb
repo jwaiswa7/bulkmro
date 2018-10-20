@@ -1,4 +1,9 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
+
+  def index?
+    super && !cataloging?
+  end
+
   def show?
     record.persisted? && record.order_number.present? && !record.serialized_pdf.attached?
   end
@@ -16,7 +21,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def create_confirmation?
-    person?
+    all_roles? && !cataloging?
   end
 
   def new_revision?
@@ -28,7 +33,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    manager?
+    all_roles? && !cataloging?
   end
 
   def go_to_inquiry?

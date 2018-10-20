@@ -1,3 +1,5 @@
-class Overseers::BrandPolicy < Overseers::ManagerApplicationPolicy
-
+class Overseers::BrandPolicy < Overseers::ApplicationPolicy
+  def new?
+    super && !sales?
+  end
 end

@@ -1,3 +1,5 @@
-class Overseers::MeasurementUnitPolicy < Overseers::ManagerApplicationPolicy
-
+class Overseers::MeasurementUnitPolicy < Overseers::ApplicationPolicy
+  def new?
+    super && !sales?
+  end
 end

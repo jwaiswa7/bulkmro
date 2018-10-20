@@ -1,5 +1,9 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
 
+  def new?
+    super && !sales?
+  end
+
   def comments?
     record.persisted?
   end

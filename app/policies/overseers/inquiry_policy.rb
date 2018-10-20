@@ -1,4 +1,8 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
+  def index?
+    super && !cataloging?
+  end
+
   def index_pg?
     index?
   end
