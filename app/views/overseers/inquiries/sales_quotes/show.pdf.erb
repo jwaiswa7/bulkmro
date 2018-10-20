@@ -172,15 +172,15 @@
               <td style="width:47%;">
                 <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 140px;line-height: 1.5;font-size:11px;">
                     <span style="color:#000000;font-size:11px;">
-                  <%= record.inquiry.contact.full_name %><br>
-                      <%= record.inquiry.shipping_address.name %><br>
+                      <%= record.inquiry.contact.full_name %><br>
+                      <%= record.inquiry.billing_address.name %><br>
 
-                      <% if record.inquiry.shipping_address.present? %>
-                    <%= record.inquiry.shipping_address.to_multiline_s %>
-                  <% end %>
+                      <% if record.inquiry.billing_address.present? %>
+                        <%= record.inquiry.billing_address.to_multiline_s %>
+                      <% end %>
                       <br>
-                  Tel: <%= record.inquiry.shipping_address.telephone %><br>
-                  GST No.:<%= record.inquiry.shipping_address.gst %><br>
+                      Tel: <%= record.inquiry.billing_address.telephone %><br>
+                      GST No.:<%= record.inquiry.billing_address.gst %><br>
                     </span>
                 </div>
               </td>
@@ -188,15 +188,15 @@
               <td style="width:47%;">
                 <div style="height: 140px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;line-height: 1.5;font-size:11px;">
                     <span style="color:#000000;font-size:11px;">
-                  <%= record.inquiry.contact.full_name %><br>
-                      <%= record.inquiry.billing_address.name %><br>
+                      <%= record.inquiry.contact.full_name %><br>
+                      <%= record.inquiry.shipping_address.name %><br>
 
-                      <% if record.inquiry.billing_address.present? %>
-                    <%= record.inquiry.billing_address.to_multiline_s %>
-                  <% end %>
+                      <% if record.inquiry.shipping_address.present? %>
+                        <%= record.inquiry.shipping_address.to_multiline_s %>
+                      <% end %>
                       <br>
-                  Tel: <%= record.inquiry.billing_address.telephone %><br>
-                  GST No.:<%= record.inquiry.billing_address.gst %><br>
+                      Tel: <%= record.inquiry.shipping_address.telephone %><br>
+                      GST No.:<%= record.inquiry.shipping_address.gst %><br>
                     </span>
                 </div>
               </td>
