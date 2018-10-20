@@ -23,7 +23,7 @@ class Services::Overseers::Finders::PendingSalesOrders < Services::Overseers::Fi
     if current_overseer.present? && !current_overseer.manager?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_status))
     else
-      indexed_records = indexed_records.filter(filter_by_status(:approval_status, 'pending').merge(filter_by_status))
+      indexed_records = indexed_records.filter(filter_by_status)
     end
 
     if search_filters.present?
