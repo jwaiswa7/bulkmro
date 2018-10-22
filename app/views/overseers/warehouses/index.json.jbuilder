@@ -4,6 +4,9 @@ json.data (@warehouses) do |warehouse|
                       if policy(warehouse).edit?
                         row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'dark')
                       end,
+                      if policy(warehouse).edit?
+                        row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning')
+                      end,
                   ].join(' '),
                   warehouse.name.to_s,
                   warehouse.address.state.name.to_s,
