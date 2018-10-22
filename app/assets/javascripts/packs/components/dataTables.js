@@ -144,7 +144,7 @@ let setup = () => {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
                             });
-                        } else if (filter == 'date') {
+                        } else if (filter == 'daterange') {
                             input = $('<div class="input-group" data-toggle="daterange">\n' +
                                         '<input type="text" class="input-sm form-control" name="start" placeholder="From" />\n' +
                                         '<span class="input-group-addon">to</span>\n' +

@@ -15,6 +15,7 @@
 //= require chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js
 //= require bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js
 //= require stickybits/dist/jquery.stickybits.min.js
+//= require daterangepicker/daterangepicker.js
 // https://github.com/twbs/bootstrap/issues/23381#issuecomment-322358996 to fix popper not found issue
 
 //= require select2/dist/js/select2.full.min.js
