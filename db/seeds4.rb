@@ -13,6 +13,6 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(inquiry_attachments))
 service.call
 
-service = Services::Shared::Migrations::Migrations.new(%w(sales_receipts))
-service.call
+service = Services::Shared::Migrations::Migrations.new
+service.perform_later
 
