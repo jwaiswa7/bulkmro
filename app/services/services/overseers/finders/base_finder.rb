@@ -130,10 +130,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       term: {legacy_status: 'not_legacy'},
                   },
                   {
-                      terms: {status: [10, 20, 30, 40, 50, 70, 80]},
+                      terms: {status: SalesOrder.statuses.except( :'Approved').values},
                   }
               ],
-              minimum_should_match: 2,
+              minimum_should_match: 3,
           },
       }
     end

@@ -80,6 +80,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
 
     @sales_order.touch
+
+    SalesOrdersIndex::SalSalesOrdersIndexesOrder.import [@sales_order.id] # Force import the following Object
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
