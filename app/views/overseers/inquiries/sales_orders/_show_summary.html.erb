@@ -63,13 +63,21 @@
       <div class="form-row">
         <div class="col-md-6">
           <strong>Supplier Shipping Address</strong><br>
-          <%= @inquiry.ship_from.address.name.to_s %>
-          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %>
+          <%= @inquiry.ship_from.address.name.to_s %><br>
+          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
+          <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+            Contact: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+          <% end %>
+          GST no: <%= @inquiry.ship_from.address.gst %><br>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.address.name.to_s %>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
+          <%= @inquiry.bill_from.address.name.to_s %><br>
+          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
+          <% if @inquiry.bill_from.address.mobile || @inquiry.bill_from.address.telephone %>
+            Contact: <%= @inquiry.bill_from.address.mobile || @inquiry.bill_from.address.telephone %><br>
+          <% end %>
+          GST no: <%= @inquiry.bill_from.address.gst %><br>
         </div>
       </div><br>
 
@@ -79,17 +87,21 @@
           <strong>Customer Shipping Address</strong><br>
           <strong><%= (@inquiry.company.name) %></strong><br>
           <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
-          Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+          <% end %>
           GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Customer Billing Address</strong><br>
           <strong><%= (@inquiry.company.name) %></strong><br>
           <%= @inquiry.billing_address.to_compact_multiline_s %><br>
-          Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+          <% end %>
           GST no: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
       </div>
     </div>
