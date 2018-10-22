@@ -29,5 +29,9 @@ module Mixins::HasRowCalculations
     def calculated_freight_cost_total
       rows.sum(:freight_cost_subtotal).to_f
     end
+
+    def calculated_total_qty
+      rows.map {|row| row.quantity}.sum
+    end
   end
 end
