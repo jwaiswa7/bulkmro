@@ -4,13 +4,14 @@ const datePicker = () => {
         format: 'dd-M-yyyy'
     });
     */
-
-    $('[data-toggle="datepicker"]').daterangepicker({
-        "singleDatePicker": true,
-        opens: "left",
-        locale: {
-            format: 'DD-MMM-YYYY'
-        }
+    $('body').on('click', '[data-toggle="datepicker"]', function() {
+        $(this).daterangepicker({
+            "singleDatePicker": true,
+            opens: "left",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            }
+        }).focus();
     });
 };
 
