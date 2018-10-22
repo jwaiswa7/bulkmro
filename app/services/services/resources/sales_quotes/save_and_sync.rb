@@ -6,7 +6,7 @@ class Services::Resources::SalesQuotes::SaveAndSync < Services::Shared::BaseServ
 
   def call
     if sales_quote.save
-      perform_later(sales_quote)
+      call_later
     end
   end
 
