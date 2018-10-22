@@ -145,11 +145,7 @@ let setup = () => {
                                 input.append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<div class="input-group" data-toggle="daterange">\n' +
-                                        '<input type="text" class="input-sm form-control" name="start" placeholder="From" />\n' +
-                                        '<span class="input-group-addon">to</span>\n' +
-                                        '<input type="text" class="input-sm form-control" name="end" placeholder="To" />\n' +
-                                      '</div>');
+                            input = $('<input class="form-control" data-toggle="daterangepicker" />');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
