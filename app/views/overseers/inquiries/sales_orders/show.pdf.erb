@@ -20,315 +20,328 @@
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
               <tr>
-                <td style="font-size: 12px;text-align: -webkit-center;font-weight: bold;">
+                <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                     <span style="color:#F58220">
-                      <%#= record.inquiry.bill_from.name if record.inquiry.bill_from.present? %>
+                      <%#= @inquiry.bill_from.address.name if @inquiry.bill_from.present? %>
                     </span></td>
               </tr>
               <tr>
                 <td style="text-align: center;">
-                    <span style="color:#000000">
-                      <%#= record.inquiry.bill_from.address.to_compact_multiline_s if record.inquiry.bill_from.present? %>
+                    <span >
+                      <%#= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
                     </span>
                 </td>
               </tr>
               <tr>
                 <td style="text-align: center;">
-                  <span style="color:#000000" style="position: relative;top: -5px;">Telephone: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email: sales@bulkmro.com</span>
+                  <span  style="position: relative;top: -5px;">Telephone: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email: sales@bulkmro.com</span>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>-->
           <br clear="all">
-          <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span style="color:#000000"><b>Sales Order <%= format_id(record.order_number) %></b></span>
+          <div class="information-section">
+            <div class="heading">
+              <span><b>Sales Order #<%= record.order_number %></b></span>
+            </div>
+            <br clear="all">
+            <div class="content-section">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="5" height="15" class="content" valign="top">
+                    <b><span>Quotation #</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="5" class="content" valign="top">
+                    <span><%= record.inquiry.inquiry_number %></span></td>
+                  <td align="left" colspan="5" class="content" valign="top">
+                    <b><span>Date of Quotation</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="6" class="content" valign="top">
+                    <span>
+                      <%= record.sales_quote.created_at.strftime("%d-%b-%Y") if record.sales_quote.created_at.present? %>
+                      </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" height="15" class="content content-with-border" valign="top">
+                    <b><span>Customer Purchase Order #</span></b>
+                    <span style="float:right">:</span></td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <span><%= record.inquiry.customer_po_number if record.inquiry.customer_po_number.present? %></span>
+                  </td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <b><span>Customer Purchase Order Date</span></b>
+                    <span style="float:right">:</span></td>
+                  <td align="left" colspan="6" class="content content-with-border" valign="top">
+                    <span><%= record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? %></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" height="15" class="content content-with-border" valign="top">
+                    <b><span>Sales Order #</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <span><%= record.order_number %></span></td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <b><span>Sales Order Date</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="6" class="content content-with-border" valign="top">
+                    <% if record.created_at.present? %>
+                      <span><%= record.created_at.strftime("%d-%b-%Y") %></span>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" colspan="5" height="15" class="content content-with-border" valign="top">
+                    <b><span>Payment Method</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <span>Bank Transfer</span></td>
+                  <td align="left" colspan="5" class="content content-with-border" valign="top">
+                    <b><span>Payment Terms</span></b> <span style="float:right">:</span></td>
+                  <td align="left" colspan="6" class="content content-with-border" valign="top">
+                    <span>
+                      <%= record.inquiry.payment_option.name if record.inquiry.payment_option.present? %>
+                    </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <br clear="all">
-          <div style="border:1px solid; border-radius: 5px;">
+          <div class="address-blocks">
+
+
+            <div style=" " class="heading heading-left">
+              <b><span>Supplier - Bill from:</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Supplier - Ship from:</span></b>
+            </div>
+
+            <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
               <tr>
-                <td align="left" colspan="5" height="15" style="width:25%; padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="5" style="width:25%;padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.inquiry.inquiry_number %></span></td>
-                <td align="left" colspan="5" style="width:25%;padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="6" style="width:25%; padding-left: 10px;font-size:10px;" valign="top">
-                    <span style="color:#000000">
-                      <%= record.sales_quote.created_at.strftime("%d-%b-%Y") if record.sales_quote.created_at.present? %>
-                      </span>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-left">
+
+                    <% if record.inquiry.bill_from.address.present? %>
+                      <%= record.inquiry.bill_from.address.name.to_s %><br>
+                    <% end %>
+                    <% if record.inquiry.bill_from.present? %>
+                      <%= record.inquiry.bill_from.address.to_multiline_s %><br>
+                      GST No.: <%= record.inquiry.bill_from.address.gst %><br>
+                    <% end %>
+                    PAN No.: AAGCB7343G</span>
+                  </div>
                 </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" height="15" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Customer Purchase Order #</span></b>
-                  <span style="float:right">:</span></td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.inquiry.customer_po_number if record.inquiry.customer_po_number.present? %></span>
-                </td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Customer Purchase Order Date</span></b>
-                  <span style="float:right">:</span></td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.inquiry.customer_order_date if record.inquiry.customer_order_date.present? %></span>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" height="15" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000"><%= record.order_number %></span></td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <% if record.created_at.present? %>
-                    <span style="color:#000000"><%= record.created_at.strftime("%d-%b-%Y") %></span>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <td align="left" colspan="5" height="15" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Payment Method</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
-                  <span style="color:#000000">Bank Transfer</span></td>
-                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;font-size:10px;" valign="top">
-                  <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
-                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;font-size:10px;" valign="top">
-                    <span style="color:#000000">
-                      <%= record.inquiry.payment_option.name if record.inquiry.payment_option.present? %>
-                    </span>
+                <td class="address-section-gap"></td>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-right">
+
+                    <% if record.inquiry.ship_from.present? %>
+                      <%= record.inquiry.ship_from.address.name.to_s %><br>
+                    <% end %>
+                    <% if record.inquiry.ship_from.present? %>
+                      <%= record.inquiry.ship_from.address.to_multiline_s %><br>
+                      GST No.: <%= record.inquiry.ship_from.address.gst %><br>
+                    <% end %>
+                    PAN No.: AAGCB7343G</span>
+                  </div>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
           <br clear="all">
-          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
-            <b><span style="color:#000000">Supplier - Bill from:</span></b>
+          <div class="address-blocks">
+
+
+            <div style=" " class="heading heading-left">
+              <b><span>Customer - Bill to:</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Customer - Ship to:</span></b>
+            </div>
+
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-left">
+
+                    <%= record.inquiry.contact.full_name %><br>
+                    <%= record.inquiry.billing_address.name %><br>
+                    <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
+                    <br>
+                    Tel: <%= record.inquiry.billing_address.telephone %><br>
+                    GST No.:<%= record.inquiry.billing_address.gst %><br>
+                  </div>
+                </td>
+                <td class="address-section-gap"></td>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-right">
+
+                    <%= record.inquiry.contact.full_name %><br>
+                    <%= record.inquiry.shipping_address.name %><br>
+                    <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
+                    <br>
+                    Tel: <%= record.inquiry.shipping_address.telephone %><br>
+                    GST No.:<%= record.inquiry.shipping_address.gst %><br>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
-          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px;text-align: center;font-size:11px;">
-            <b><span style="color:#000000">Supplier - Ship from:</span></b>
-          </div>
-          <br clear="all">
-          <table border="0" cellspacing="0" style="width: 100%;">
-            <tbody>
-            <tr>
-              <td style="width:47%;">
-                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 120px;line-height: 1.5;font-size:11px;">
-                    <span style="color:#000000;font-size:11px;">
-                      <%#= record.inquiry.bill_from  %>
-                      <% if record.inquiry.bill_from.address.present? %>
-                        <%= record.inquiry.bill_from.address.name.to_s %><br>
-                      <% end %>
-                      <% if record.inquiry.bill_from.present? %>
-                        <%= record.inquiry.bill_from.address.to_multiline_s %><br>
-                        GST No.: <%= record.inquiry.bill_from.address.gst %><br>
-                      <% end %>
-                      PAN No.: AAGCB7343G</span>
-                </div>
-              </td>
-              <td style="width:6%;"></td>
-              <td style="width:47%;">
-                <div style="height: 120px ;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;line-height: 1.5;font-size:11px;">
-                    <span style="color:#000000;font-size:11px;">
-                      <%#= record.inquiry.ship_from  %>
-                      <% if record.inquiry.ship_from.present? %>
-                        <%= record.inquiry.ship_from.address.name.to_s %><br>
-                      <% end %>
-                      <% if record.inquiry.ship_from.present? %>
-                        <%= record.inquiry.ship_from.address.to_multiline_s %><br>
-                        GST No.: <%= record.inquiry.ship_from.address.gst %><br>
-                      <% end %>
-                      PAN No.: AAGCB7343G</span>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <br clear="all">
-          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
-            <b><span style="color:#000000;font-size:11px;">Customer - Bill to:</span></b>
-          </div>
-          <div style="float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
-            <b><span style="color:#000000;font-size:11px;">Customer - Ship to:</span></b>
-          </div>
-          <br clear="all">
-          <table border="0" cellspacing="0" style="width: 100%;">
-            <tbody>
-            <tr>
-              <td style="width:47%;">
-                <div style="margin-top: 10px;float: left;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left; height: 175px;font-size:11px;line-height:1.5;">
-                  <%= record.inquiry.contact.full_name %><br>
-                  <%= record.inquiry.billing_address.name %><br>
-                  <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
-                  <br>
-                  Tel: <%= record.inquiry.billing_address.telephone %><br>
-                  GST No.:<%= record.inquiry.billing_address.gst %><br>
-                </div>
-              </td>
-              <td style="width:6%;"></td>
-              <td style="width:47%;">
-                <div style="height: 175px;margin-top: 10px;float: right;width: 98%;padding: 4px 10px;border: 1px solid;border-radius: 5px;text-align: left;font-size:11px;line-height:1.5;">
-                  <%= record.inquiry.contact.full_name %><br>
-                  <%= record.inquiry.shipping_address.name %><br>
-                  <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
-                  <br>
-                  Tel: <%= record.inquiry.shipping_address.telephone %><br>
-                  GST No.:<%= record.inquiry.shipping_address.gst %><br>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+
           <br clear="all">
           <div style="width: 100%;">
-            <table border="0" cellspacing="0" style="width: 100%;border-radius: 5px;border: 1px solid #3c3c3c;border-collapse: separate; text-align: center">
-              <thead style="background: #d3d3d3; font-size:10px;">
-              <tr style="border-bottom: 1px solid #3c3c3c;">
-                <th align="center" style="padding:3px;border-top-left-radius: 5px;font-size:10px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="center">
-                  <b><span style="color:#000000">Sr.<br>
+            <table border="0" cellspacing="0" class="pdf-table">
+              <thead>
+              <tr>
+                <th align="center" >
+                  <b><span>Sr.<br>
                     No.</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">SKU</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Mfr<br>
+                <th align="center" valign="center">
+                  <b><span>SKU</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Mfr<br>
                     Model</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Description</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Make</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">HSN/<br>
+                <th align="center" valign="center">
+                  <b><span>Description</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Make</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>HSN/<br>
                     SAC<br>
                     Code</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">UOM</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Qty</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Unit Price<br>
+                <th align="center" valign="center">
+                  <b><span>UOM</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Qty</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Unit Price<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Subtotal<br>
+                <th align="center" valign="center">
+                  <b><span>Subtotal<br>
                     (INR)</span></b></th>
-                <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                  <b><span style="color:#000000">Tax<br>
+                <th align="center" valign="center">
+                  <b><span>Tax<br>
                     Rate</span></b></th>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
                     (record.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">IGST<br>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">IGST<br>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
                     Amt</span></b></th>
                 <% else %>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">CGST<br>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">CGST<br>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
                     Amt</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">SGST<br>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
                     Rate</span></b></th>
-                  <th align="center" style="padding:3px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="center">
-                    <b><span style="color:#000000">SGST<br>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
                     Amt</span></b></th>
                 <% end %>
-                <th align="center" style="border-top-right-radius: 5px;padding:3px;border-bottom: 1px solid #3c3c3c;  " valign="center">
-                  <b><span style="color:#000000">Total<br>
+                <th align="center" valign="center">
+                  <b><span>Total<br>
                     (INR)</span></b></th>
               </tr>
               </thead>
               <tbody>
               <% record.rows.each do |item| %>
                 <tr>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.sr_no %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.sku %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.mpn %></span></td>
-                  <td align="left" style="padding-left: 3px;padding-bottom: 8px;font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:left;" valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.brand.to_s %></span></td>
-                  <td align="left" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.tax_code.chapter %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.sales_quote_row.product.measurement_unit.name %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.quantity %></span></td>
-                  <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;" valign="top">
-                    <span style="color:#000000"><%= item.unit_selling_price.round(2) %></span></td>
-                  <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                    <span style="color:#000000"><%= item.total_selling_price.round(2) %></span></td>
-                  <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; " valign="top">
-                    <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.sr_no %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.product.sku %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.product.brand.to_s %></span></td>
+                  <td align="left" valign="top">
+                    <span><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.product.brand.to_s %></span></td>
+                  <td align="left" valign="top">
+                    <span><%= item.tax_code.chapter %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sales_quote_row.product.measurement_unit.name %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.quantity %></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <span><%= item.unit_selling_price.round(2) %></span></td>
+                  <td align="right" style=" text-align:right;" valign="top">
+                    <span><%= item.total_selling_price.round(2) %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.tax_code.tax_percentage %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= item.total_tax.round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= item.total_tax.round(2) %></span></td>
                   <% else %>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= (item.total_tax / 2).round(2) %></span></td>
-                    <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;" valign="top">
-                      <span style="color:#000000"><%= item.tax_code.tax_percentage / 2 %>%</span></td>
-                    <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c; text-align:right;" valign="top">
-                      <span style="color:#000000"><%= (item.total_tax / 2).round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_code.tax_percentage / 2 %>%</span></td>
+                    <td align="right" style=" text-align:right;" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %></span></td>
                   <% end %>
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span style="color:#000000"><%= item.total_selling_price_with_tax.round(2) %></span></td>
+                    <span><%= item.total_selling_price_with_tax.round(2) %></span></td>
                 </tr>
               <% end %>
 
-              <tr style="border-radius: 5px;background: #d3d3d3;">
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; border-bottom-left-radius: 5px;" valign="top">
-                  <span style="color:#000000">&nbsp;</span></td>
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; " valign="top">
-                  <span style="color:#000000"><b><span style="color:#000000">Total</span></b></span></td>
-                <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; " valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
-                <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                  <b><span style="color:#000000"><%= record.calculated_total %></span></b></td>
-                <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                  <span style="color:#000000"></span></td>
+              <tr class="pdf-table-total-row">
+                <td align="center" valign="top">
+                  <span>&nbsp;</span></td>
+                <td align="center" valign="top">
+                  <span><b><span>Total</span></b></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="right" style="text-align: right;" valign="top">
+                  <b><span><%= record.calculated_total.round(2) %></span></b></td>
+                <td align="center" valign="top">
+                  <span></span></td>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
                     (record.sales_quote.tax_summary.to_s.include? "IGST") %>
-                  <td align="center" style="border-right: 1px solid #3c3c3c;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax %></span></b></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= record.calculated_total_tax.round(2) %></span></b></td>
                 <% else %>
-                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax / 2 %></span></b></td>
-                  <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <span style="color:#000000"></span></td>
-                  <td align="right" style="font-size: 9px; border-right: 1px solid #3c3c3c; text-align: right;" valign="top">
-                    <b><span style="color:#000000"><%= record.calculated_total_tax / 2 %></span></b></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= (record.calculated_total_tax / 2).round(2) %></span></b></td>
+                  <td align="center" style="text-align: right;" valign="top">
+                    <span></span></td>
+                  <td align="right" style="text-align: right;" valign="top">
+                    <b><span><%= (record.calculated_total_tax / 2).round(2) %></span></b></td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span style="color:#000000"><%= record.calculated_total_with_tax %></span></b></td>
+                  <b><span><%= record.calculated_total_with_tax.round(2) %></span></b></td>
               </tr>
 
               </tbody>
@@ -341,11 +354,11 @@
               <table style="width: 100%;" cellspacing="0" border="0">
                 <tr>
                   <td colspan="2" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" height="20" align="left" valign="top">
-                    <b><span style="color:#000000">Note:</span></b></td>
+                    <b><span>Note:</span></b></td>
                 </tr>
                 <tr>
                   <td style="padding-left:10px;" height="" align="left" valign="top">
-                    <span style="color:#000000">1. Order once confirmed cannot be cancelled or returned.<br>2. Delayed payments will attract 2% interest per month.<br>3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>4. Order once confirmed cannnot be cancelled.<br>5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.<br> </span>
+                    <span>1. Order once confirmed cannot be cancelled or returned.<br>2. Delayed payments will attract 2% interest per month.<br>3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>4. Order once confirmed cannnot be cancelled.<br>5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.<br> </span>
                     <br/>
                   </td>
                 </tr>
@@ -357,12 +370,12 @@
               <table style="width: 100%;" cellspacing="0" border="0">
                 <tr style="background: #d3d3d3;">
                   <td class="invoiceheader1" style=" border-bottom: 1px solid #3c3c3c; " colspan="16" height="20" align="left" valign="top">
-                    <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                    <b><span>Payment By Wire Transfer To:</span></b></td>
                 </tr>
 
                 <tr>
                   <td class="invoiceheader1" style=" border-right:1px solid black;border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c;" colspan="21" rowspan="6" height="105" align="left" valign="top">
-                    <span style="color:#000000"><b>First Republic Bank:</b><br>2274 EI Camino Real Palo Alto, CA 94306<br>Account Name: Bulk MRO Industrial Supply , INC ABA: 321081669<br>Account Number: 80003839610</span>
+                    <span><b>First Republic Bank:</b><br>2274 EI Camino Real Palo Alto, CA 94306<br>Account Name: Bulk MRO Industrial Supply , INC ABA: 321081669<br>Account Number: 80003839610</span>
                   </td>
 
                 </tr>
@@ -374,11 +387,11 @@
                 <tbody>
                 <tr>
                   <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius:5px;border-top-right-radius:5px;" valign="top">
-                    <b><span style="color:#000000">Other Information:</span></b></td>
+                    <b><span>Other Information:</span></b></td>
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top">
-                    <span style="color:#000000">
+                    <span>
                     1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
                     2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
                     </span>
@@ -393,47 +406,47 @@
                 <tbody>
                 <tr style="background: #d3d3d3;">
                   <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                    <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+                    <b><span>Payment By Wire Transfer To:</span></b></td>
                 </tr>
                 <tr>
                   <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Bank:</span></b></td>
+                    <b><span>Bank:</span></b></td>
                   <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Kotak Mahindra Bank Ltd</span></td>
+                    <span>Kotak Mahindra Bank Ltd</span></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">State Bank of India</span></td>
+                    <span>State Bank of India</span></td>
                 </tr>
                 <tr>
                   <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Address:</span></b></td>
+                    <b><span>Address:</span></b></td>
                   <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Aum Saheel Tower, Mumbai 400080.</span></td>
+                    <span>Aum Saheel Tower, Mumbai 400080.</span></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
+                    <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
                 </tr>
                 <tr>
                   <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Account Name:</span></b></td>
+                    <b><span>Account Name:</span></b></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                    <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                    <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
                 </tr>
                 <tr>
                   <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">Account Number:</span></b></td>
+                    <b><span>Account Number:</span></b></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">9412329433</span></td>
+                    <span>9412329433</span></td>
                   <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                    <span style="color:#000000">35924122136</span></td>
+                    <span>35924122136</span></td>
                 </tr>
                 <tr>
                   <td colspan="4" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                    <b><span style="color:#000000">NEFT/RTGS Code:</span></b></td>
+                    <b><span>NEFT/RTGS Code:</span></b></td>
                   <td colspan="6" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                    <span style="color:#000000">KKBK0001411</span></td>
+                    <span>KKBK0001411</span></td>
                   <td colspan="6" style=" padding-left: 10px;">
-                    <span style="color:#000000">SBIN0000510</span></td>
+                    <span>SBIN0000510</span></td>
                 </tr>
                 </tbody>
               </table>

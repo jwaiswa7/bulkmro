@@ -1,10 +1,12 @@
-json.data (@measurement_units) do |mu|
+json.data (@measurement_units) do |measurement_unit|
   json.array! [
                   [
-                      row_action_button(edit_overseers_measurement_unit_path(mu), 'pencil', 'Edit Measurement Units', 'warning'),
+                      if policy(measurement_unit).edit?
+                      row_action_button(edit_overseers_measurement_unit_path(measurement_unit), 'pencil', 'Edit Measurement Unit', 'warning')
+                      end,
                   ].join(' '),
-                  mu.to_s,
-                  format_date(mu.created_at)
+                  measurement_unit.to_s,
+                  format_date(measurement_unit.created_at)
               ]
 end
 

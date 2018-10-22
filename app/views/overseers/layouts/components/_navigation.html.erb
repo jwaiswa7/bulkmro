@@ -83,7 +83,7 @@
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
-      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? if Rails.env.development? %>
+      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
     </ul>
   </div>
   <!-- Navigation Bar -->

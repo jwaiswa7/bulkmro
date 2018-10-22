@@ -19,7 +19,7 @@ class SalesQuote < ApplicationRecord
   has_many :products, :through => :rows
   has_many :sales_orders, dependent: :destroy
   has_many :unique_products, -> {uniq}, through: :rows, class_name: 'Product'
-  has_many :email_messages
+  has_many :email_messages, dependent: :destroy
 
   delegate :ship_from, :bill_from, :billing_address, :shipping_address, :is_sez, :quotation_uid, to: :inquiry
 

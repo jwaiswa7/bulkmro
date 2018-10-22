@@ -5,8 +5,10 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    if inquiry.save!
+    if inquiry.save
       perform_later(inquiry)
+    else
+      raise
     end
   end
 
@@ -28,9 +30,9 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
     end
 
     if inquiry.attachment_uid.present?
-      Resources::Attachment.update(inquiry.attachment_uid, inquiry)
+      ::Resources::Attachment.update(inquiry.attachment_uid, inquiry)
     else
-      inquiry.update_attributes(:attachment_uid => Resources::Attachment.create(inquiry))
+      inquiry.update_attributes(:attachment_uid => ::Resources::Attachment.create(inquiry))
     end
 
     if inquiry.final_sales_quote.present?

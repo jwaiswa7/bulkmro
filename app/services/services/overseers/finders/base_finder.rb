@@ -56,7 +56,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
       indexed_records = indexed_records.filter({
                                                    term: {
-                                                       "#{search_filter[:name]}": search_filter[:search][:value]
+                                                       :"#{search_filter[:name]}" => search_filter[:search][:value]
                                                    }
                                                }) if (search_filter[:search][:value].present? && search_filter[:search][:value] != 'null')
     end
@@ -68,7 +68,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     range_filters.each do |range_filter|
       indexed_records = indexed_records.query({
                                                   range: {
-                                                      "#{range_filter[:name]}": {
+                                                      :"#{range_filter[:name]}"=> {
                                                           gte: range_filter[:search][:value],
                                                           lte: range_filter[:search][:value]
                                                       }

@@ -18,17 +18,17 @@ json.data (@inquiries) do |inquiry|
 end
 
 json.columnFilters [
-    [],
-    [],
-    Inquiry.statuses.map {|k, v| {"label": k, "value": v.to_s}}.as_json,
-    [],
-    [],
-    [],
-    Overseer.inside.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-    Overseer.outside.map {|s| {"label": s.full_name, "value": s.id.to_s}}.as_json,
-    [],
-    []
-]
+                       [],
+                       [],
+                       Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       []
+                   ]
 
 
 json.recordsTotal Inquiry.all.count
