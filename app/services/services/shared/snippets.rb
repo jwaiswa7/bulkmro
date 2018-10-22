@@ -364,4 +364,47 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def update_warehouse_and_inquiry
+    update_if_exists = true
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+    service.loop(nil) do |x|
+      warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
+      if warehouse.new_record? || update_if_exists
+        warehouse.remote_uid = x.get_column('Warehouse Code')
+        warehouse.legacy_id = x.get_column('Warehouse Code')
+        warehouse.location_uid = x.get_column('Location')
+        warehouse.remote_branch_name = x.get_column('Warehouse Name')
+        warehouse.remote_branch_code = x.get_column('Business Place ID')
+        warehouse.legacy_metadata = x.get_row
+        warehouse.build_address(
+            :name => x.get_column('Account Name'),
+            :street1 => x.get_column('Street'),
+            :street2 => x.get_column('Block'),
+            :pincode => x.get_column('Zip Code'),
+            :city_name => x.get_column('City'),
+            :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
+            :state => AddressState.find_by_region_code(x.get_column('State'))
+        )
+        warehouse.save!
+      end
+    end
+
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
+        next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+        inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
+        if inquiry.new_record? || update_if_exists
+          inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
+          inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
+          inquiry.save!
+        end
+      end
+    end
+  end
+
 end

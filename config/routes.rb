@@ -118,6 +118,10 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :purchase_orders
+    # resources :sales_invoices
+    # resources :sales_shipments
+
     resources :inquiries do
       member do
         get 'edit_suppliers'

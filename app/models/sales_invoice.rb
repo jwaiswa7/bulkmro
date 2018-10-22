@@ -11,6 +11,7 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,

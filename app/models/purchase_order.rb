@@ -6,6 +6,8 @@ class PurchaseOrder < ApplicationRecord
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
+
   def filename(include_extension: false)
     [
         ['po', po_number].join('_'),

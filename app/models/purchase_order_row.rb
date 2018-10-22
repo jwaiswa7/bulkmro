@@ -14,7 +14,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    get_product.tax_code.tax_percentage
+    get_product.best_tax_code.tax_percentage
   end
 
   def applicable_tax_percentage

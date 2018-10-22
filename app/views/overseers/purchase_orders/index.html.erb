@@ -1,0 +1,61 @@
+<!--<div class="col-lg-12">-->
+    <%# provide :hide_table_desc, true %>
+    <%# provide :hide_table_heading, true %>
+
+    <%# content_for :header_row do %>
+<!--      <th class="no-sort"></th>-->
+<!--      <th># PO </th>-->
+<!--      <th>Line Items</th>-->
+<!--      <th>Created At</th>-->
+    <%# end %>
+
+    <%#= render layout: 'shared/layouts/datatable' do %>
+      <%# @purchase_orders.each do |purchase_order| %>
+<!--        <tr>-->
+<!--          <td>-->
+
+            <%# if policy(purchase_order).show? %>
+              <%#= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <%# end %>
+            <%# if policy(purchase_order).show? %>
+              <%#= row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+            <%# end %>
+
+            <%# if policy(purchase_order).show_document? %>
+              <%#= row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank) %>
+            <%# end %>
+<!--          </td>-->
+<!--          <td><%#= purchase_order.po_number %></td>-->
+<!--          <td><%#= purchase_order.rows.size %></td>-->
+<!--          <td><%#= format_date(purchase_order.created_at) %></td>-->
+<!--        </tr>-->
+      <%# end %>
+    <%# end %>
+<!--</div>-->
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="no-sort all" data-name="purchase_order_number">Purchase #</th>
+    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop"></th>
+    <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
+    <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop">Created At</th>
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

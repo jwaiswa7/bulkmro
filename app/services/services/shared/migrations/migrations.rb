@@ -821,6 +821,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.legacy_metadata = x.get_row
         inquiry.created_at = x.get_column('created_time', to_datetime: true)
         inquiry.updated_at = x.get_column('update_time', to_datetime: true)
+        inquiry.save!
       end
       inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
       inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) if inquiry.inquiry_currency_id.blank?
