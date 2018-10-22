@@ -43,7 +43,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.inquiry_product. # Product Desc / NAME
+      item.ItemDescription = row.inquiry_product.to_bp_catalog_s  # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
