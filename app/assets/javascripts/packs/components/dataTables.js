@@ -124,6 +124,7 @@ let setup = () => {
                 let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
                 clear.on('click', function(e) {
                     $('[data-filter="dropdown"] select').val("").trigger('change');
+                    $('[data-filter="daterange"] input').val("").trigger('change');
                     $('.filter-list-input').val("");
                     e.preventDefault();
                 });
