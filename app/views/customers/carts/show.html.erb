@@ -1,0 +1,8 @@
+<% if @cart_items.any? %>
+  <% @cart_items.each do |item| %>
+    <p><%= item.product.name %> | <%= link_to "Delete", cart_item_path(item), :data => {:confirm => "You sure?", :method => "delete"} %></p>
+    <p> Quantity: <%= item.quantity %></p>
+  <% end %>
+<% else %>
+  <p>Your shopping cart is empty.</p>
+<% end %>

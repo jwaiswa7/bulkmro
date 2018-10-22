@@ -1,5 +1,15 @@
 class ApplicationController < ActionController::Base
   # before_action :set_raven_context, :if => :production?
+  helper_method :current_cart
+
+  def current_cart
+    if session[:cart_id]
+      Cart.find(session[:cart_id])
+    else
+      Cart.new
+    end
+  end
+
 
   private
   def production?
