@@ -83,7 +83,12 @@ class SalesQuoteRow < ApplicationRecord
     if legacy_applicable_tax_percentage.present? && legacy_applicable_tax_percentage > 0
       legacy_applicable_tax_percentage / 100
     else
-      self.best_tax_code ? self.best_tax_code.tax_percentage / 100.0 : 0
+      if self.inquiry.is_sez?
+        0
+      else
+        self.best_tax_code ? self.best_tax_code.tax_percentage / 100.0 : 0
+      end
+
     end
   end
 
