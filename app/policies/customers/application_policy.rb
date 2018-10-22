@@ -14,6 +14,10 @@ class Customers::ApplicationPolicy
     true
   end
 
+  def index?
+    true
+  end
+
   # def scope
   #   Pundit.policy_scope!(contact, record.class)
   # end
