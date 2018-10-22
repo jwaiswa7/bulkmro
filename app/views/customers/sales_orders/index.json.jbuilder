@@ -1,7 +1,7 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
-                      row_action_button(customers_order_path(sales_order), 'arrow-right', 'Go to Inquiry', 'dark')
+                      row_action_button(customers_order_path(sales_order), 'arrow-right', 'Go to Sales Order', 'dark')
                   ].join(' '),
                   sales_order.inquiry.inquiry_number,
                   sales_order.inquiry.inside_sales_owner.to_s,

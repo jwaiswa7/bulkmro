@@ -1,7 +1,7 @@
 json.data (@sales_quotes) do |sales_quote|
   json.array! [
                   [
-                      # row_action_button(overseers_inquiry_sales_quotes_path(sales_quote.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                      row_action_button(customers_quote_path(sales_quote), 'arrow-right', 'Go to Sales Quote', 'dark')
                   ].join(' '),
                   format_date(sales_quote.sent_at),
                   sales_quote.created_by.to_s,
