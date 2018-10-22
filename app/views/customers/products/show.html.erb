@@ -27,12 +27,24 @@
               </div>
             <% end %>
 
-            <% if @product.created_at.present? %>
+            <% if @product.brand.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Created</strong>
-                <%= format_date(@product.created_at) %>
+                <strong class="d-block">Brand</strong>
+                <%= @product.brand %>
               </div>
             <% end %>
+
+            <% if @product.mpn? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Manufacturer Part Number</strong>
+                <%= @product.mpn %>
+              </div>
+            <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Created</strong>
+              <%= format_date(@product.created_at) %>
+            </div>
 
           </div>
         </div>

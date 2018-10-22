@@ -1,8 +1,8 @@
 class Customers::ProductsController < Customers::BaseController
 
   def index
-  	@products = current_contact.account.products.approved
-    
+    account = current_contact.account
+    @products = ApplyDatatableParams.to(account.products.approved, params)
   end
 
   def show

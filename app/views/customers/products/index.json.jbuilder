@@ -1,8 +1,7 @@
 json.data (@products) do |product|
   json.array! [
-                  [   if policy(product).show?
-                        row_action_button(product_path(product), 'eye', 'View Product', 'dark')
-                      end
+                  [
+                      row_action_button(customers_product_path(product), 'arrow-right', 'View Product', 'dark')
                   ].join(' '),
                   product.name,
                   product.sku,
@@ -12,6 +11,6 @@ json.data (@products) do |product|
               ]
 end
 
-json.recordsTotal @products.model.all.count
-json.recordsFiltered @indexed_products.total_count
+json.recordsTotal @products.all.count
+json.recordsFiltered @products.total_count
 json.draw params[:draw]
