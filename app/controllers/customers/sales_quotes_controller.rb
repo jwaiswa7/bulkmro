@@ -7,6 +7,12 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   def show
     @sales_quote = SalesQuote.find(params[:id])
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for @sales_quote
+      end
+    end
   end
 
 end
