@@ -77,13 +77,11 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       end
     else
       @sales_order.update_attributes(:sent_at => Time.now)
-    end
 
-    @sales_order.save
-
-    if @sales_order.persisted?
-      @sales_order.touch
-      SalesOrdersIndex::SalesOrder.import [@sales_order.id] # Force import the following Object
+      if @sales_order.persisted?
+        @sales_order.touch
+        SalesOrdersIndex::SalesOrder.import [@sales_order.id] # Force import the following Object
+      end
     end
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
