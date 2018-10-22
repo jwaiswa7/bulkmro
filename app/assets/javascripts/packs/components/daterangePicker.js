@@ -3,7 +3,8 @@ const daterangePicker = () => {
         $('[data-toggle="daterangepicker"]').daterangepicker({
             opens: "left",
             locale: {
-                format: 'DD-MMM-YYYY'
+                format: 'DD-MMM-YYYY',
+                "separator": " ~ ",
             }
         }).focus();
     });
