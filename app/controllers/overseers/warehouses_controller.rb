@@ -10,14 +10,14 @@ class Overseers::WarehousesController < Overseers::BaseController
   #   @warehouses = ApplyParams.to(Warehouse.all, params)
   #   authorize @warehouses
   # end
-=begin
+
   def show
-    authorize @company
+    authorize @warehouses
   end
-=end
+
   private
   def set_company
-    @company ||= Warehouse.find(params[:id])
+    @warehouses ||= Warehouse.find(params[:id])
   end
 
 end

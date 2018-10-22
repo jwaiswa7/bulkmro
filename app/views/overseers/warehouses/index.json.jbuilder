@@ -2,7 +2,7 @@ json.data (@warehouses) do |warehouse|
   json.array! [
                   [
                       if policy(warehouse).edit?
-                        row_action_button(edit_overseers_brand_path(warehouse), 'pencil', 'Edit Brand', 'warning')
+                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'dark')
                       end,
                   ].join(' '),
                   warehouse.name.to_s,
