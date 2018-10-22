@@ -1,38 +1,64 @@
+limit=nil
+folder = 'seed_files_2'
+update_if_exists = true
 PaperTrail.request(enabled: false) do
 
-  service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv')
-  service.loop(nil) do |x|
-    inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-    next if inquiry.blank?
-    sheet_columns = [
-        ['calculation_sheet', 'calculation_sheet_path', 'calculation_sheet'],
-        ['customer_po_sheet', 'customer_po_sheet_path', 'customer_po_sheet'],
-        ['email_attachment', 'email_attachment_path', 'copy_of_email'],
-        ['supplier_quote_attachment', 'sqa_path', 'supplier_quotes'],
-        ['supplier_quote_attachment_additional', 'sqa_additional_path', 'final_supplier_quote']
-    ]
+  service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv', folder)
+  service.loop(limit) do |x|
+    puts "#{x.get_column('quotation_item_id')}"
+    #next if (x.get_column('quotation_item_id').to_i < 3189 )
+    quotation_id = x.get_column('quotation_id')
+    product_id = x.get_column('product_id')
+    supplier_uid = x.get_column('sup_code')
 
-    sheet_columns.each do |file|
-      file_url = x.get_column(file[1])
-      next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
-      next if inquiry.send(file[2]).attached?
-      attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+    next if quotation_id.in? %w(3529 123 8023)
+    inquiry = Inquiry.find_by_legacy_id(quotation_id)
+    product = Product.find_by_legacy_id(product_id)
+    next if inquiry.blank? || product.blank?
+
+    inquiry_product = InquiryProduct.where(inquiry: inquiry, product: product).first_or_initialize
+    if inquiry_product.new_record? || update_if_exists
+      inquiry_product.sr_no = x.get_column('order')
+      inquiry_product.quantity = x.get_column('qty', nil_if_zero: true) || 1
+      inquiry_product.bp_catalog_name = x.get_column('caption')
+      inquiry_product.bp_catalog_sku = x.get_column('bpcat')
+      inquiry_product.legacy_metadata = x.get_row
+      inquiry_product.legacy_id = x.get_column('quotation_item_id')
+      inquiry_product.save!
     end
-  end
-end
 
-def attach_file(inquiry, filename:, field_name:, file_url:)
-  if file_url.present? && filename.present?
-    url = URI.parse(file_url)
-    req = Net::HTTP.new(url.host, url.port)
-    req.use_ssl = true
-    res = req.request_head(url.path)
-    puts "---------------------------------"
-    if res.code == '200'
-      file = open(file_url)
-      inquiry.send(field_name).attach(io: file, filename: filename)
-    else
-      puts res.code
+    supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
+    inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_initialize
+    if inquiry_product_supplier.new_record? || update_if_exists
+      inquiry_product_supplier.unit_cost_price = x.get_column('cost').try(:to_i) || 0
+      inquiry_product_supplier.save!
+    end
+
+    quotation_uid = x.get_column('doc_entry')
+    sales_quote = inquiry.sales_quote
+
+    if sales_quote.blank?
+      inquiry.update_attributes(:quotation_uid => quotation_uid)
+      sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
+    end
+
+    if inquiry.status_before_type_cast >= 5
+      sales_quote.update_attributes!(:sent_at => sales_quote.created_at)
+    end
+
+    row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+    if row.new_record? || update_if_exists
+      row.measurement_unit = MeasurementUnit.default
+      row.quantity = x.get_column('qty', nil_if_zero: true) || 1
+      row.margin_percentage = ((x.get_column('price_ht', to_f: true) == 0 || x.get_column('cost', to_f: true) == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100))
+      row.tax_code = TaxCode.find_by_chapter(x.get_column('hsncode')) || nil
+      row.legacy_applicable_tax = x.get_column('tax_code')
+      row.legacy_applicable_tax_class = x.get_column('tax_class_id')
+      row.legacy_applicable_tax_percentage = (x.get_column('tax_code').match(/\d+/)[0].to_f if x.get_column('tax_code').present?)
+      row.unit_selling_price = x.get_column('price_ht', to_f: true)
+      row.converted_unit_selling_price = x.get_column('price_ht', to_f: true)
+      row.lead_time_option = LeadTimeOption.find_by_name(x.get_column('leadtime'))
+      row.save!
     end
   end
 end

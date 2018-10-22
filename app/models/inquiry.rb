@@ -149,15 +149,15 @@ class Inquiry < ApplicationRecord
 
   attr_accessor :force_has_sales_orders
 
-  with_options if: :has_sales_orders? do |inquiry|
+  with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
   end
 
-  def has_sales_orders?
-    self.sales_orders.present? || self.force_has_sales_orders == true
+  def has_sales_orders_and_not_legacy?
+    (self.sales_orders.present? || self.force_has_sales_orders == true) && not_legacy?
   end
 
   def valid_for_new_sales_order?
@@ -179,7 +179,6 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
-  validates_presence_of :subject, :if => :not_legacy?
   validates_presence_of :inside_sales_owner, :if => :not_legacy?
   validates_presence_of :outside_sales_owner, :if => :not_legacy?
   validates_presence_of :potential_amount, :if => :not_legacy?
@@ -216,11 +215,12 @@ class Inquiry < ApplicationRecord
       self.opportunity_type ||= :regular
       self.opportunity_source ||= :unsure
       self.quote_category ||= :bmro
-      self.potential_amount = 0.01
+      self.potential_amount ||= 0.0
       self.price_type ||= :"EXW"
       self.freight_option ||= :"Included"
       self.packing_and_forwarding_option ||= :"Included"
       self.expected_closing_date ||= (Date.today + 1.day) if self.not_legacy?
+      self.valid_end_time ||= (Date.today + 1.month) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
@@ -271,15 +271,22 @@ class Inquiry < ApplicationRecord
     terms ? terms.split(/[\r\n]+/) : []
   end
 
+  def can_be_managed?(overseer)
+    overseer.manager? || overseer.self_and_descendant_ids.include?(self.inside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.outside_sales_owner_id) || overseer.self_and_descendant_ids.include?(self.created_by_id) || false
+  end
+
   def last_sr_no
     self.inquiry_products.maximum(:sr_no) || 0
   end
-
 
   def to_s
     [
         ['#', self.inquiry_number].join,
         self.company.name
     ].join(' ')
+  end
+
+  def has_attachment?
+    self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
   end
 end

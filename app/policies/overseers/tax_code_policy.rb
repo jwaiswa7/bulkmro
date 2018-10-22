@@ -1,5 +1,3 @@
-class Overseers::TaxCodePolicy < Overseers::ApplicationPolicy
-  def autocomplete?
-    true
-  end
+class Overseers::TaxCodePolicy < Overseers::ManagerApplicationPolicy
+
 end

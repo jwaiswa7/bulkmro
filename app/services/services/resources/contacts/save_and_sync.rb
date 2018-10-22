@@ -5,7 +5,7 @@ class Services::Resources::Contacts::SaveAndSync < Services::Shared::BaseService
   end
 
   def call
-    if contact.save!
+    if contact.save
       perform_later(contact)
     end
   end

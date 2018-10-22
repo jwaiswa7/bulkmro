@@ -1,4 +1,5 @@
 require 'net/scp'
+require 'net/scp'
 
 class Resources::Attachment < Resources::ApplicationResource
   include Net
@@ -14,10 +15,14 @@ class Resources::Attachment < Resources::ApplicationResource
   def self.to_remote(record)
     remote_attachments = []
 
-    Net::SCP.start(SAP.server[:host], SAP.login[:user], :password => SAP.login[:password]) do |scp|
+    ssh_private_keys = [SAP.ssh_key]
+    Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
-        if attachment.try(:key)
-          path = ActiveStorage::Blob.service.send(:path_for, attachment.key)
+        if attachment.present? && attachment.try(:key)
+          path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
+          File.open(path, 'wb') do |file|
+            file.write(attachment.download)
+          end
 
           if File.exist?(path)
 
@@ -31,14 +36,12 @@ class Resources::Attachment < Resources::ApplicationResource
                 :UserID => "1"
             )
 
-            scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
-
+            ssh.scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
             remote_attachments.push(remote_attachment.marshal_dump)
           end
         end
       end
     end
-
 
     {
         Attachments2_Lines: remote_attachments.as_json

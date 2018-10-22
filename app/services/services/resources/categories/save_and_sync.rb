@@ -5,7 +5,7 @@ class Services::Resources::Categories::SaveAndSync < Services::Shared::BaseServi
   end
 
   def call
-    if category.save!
+    if category.save
       perform_later(category)
     end
   end

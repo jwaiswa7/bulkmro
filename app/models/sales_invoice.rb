@@ -1,4 +1,6 @@
 class SalesInvoice < ApplicationRecord
+  include Mixins::CanBeSynced
+
   belongs_to :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
@@ -35,4 +37,7 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
+  def self.syncable_identifiers
+    [:invoice_number]
+  end
 end

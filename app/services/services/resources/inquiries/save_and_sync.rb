@@ -5,7 +5,7 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
   end
 
   def call
-    if inquiry.save!
+    if inquiry.save
       perform_later(inquiry)
     end
   end
@@ -22,15 +22,15 @@ class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseServic
     end
 
     if inquiry.opportunity_uid.present?
-      # ::Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
+      #::Resources::SalesOpportunity.update(inquiry.opportunity_uid, inquiry)
     else
       inquiry.update_attributes(:opportunity_uid => ::Resources::SalesOpportunity.create(inquiry))
     end
 
     if inquiry.attachment_uid.present?
-      Resources::Attachment.update(inquiry.attachment_uid, inquiry)
-    else
-      inquiry.update_attributes(:attachment_uid => Resources::Attachment.create(inquiry))
+      ::Resources::Attachment.update(inquiry.attachment_uid, inquiry)
+    elsif inquiry.has_attachment?
+      inquiry.update_attributes(:attachment_uid => ::Resources::Attachment.create(inquiry))
     end
 
     if inquiry.final_sales_quote.present?

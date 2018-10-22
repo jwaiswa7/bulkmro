@@ -19,11 +19,52 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def update_password
+    Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(:password => 'abc123', :password_confirmation => 'abc123')
+  end
+
+  def make_admin
+    Overseer.find_by_email('puja.tanawade@bulkmro.com').admin!
+    Overseer.find_by_email('chetan.utekar@bulkmro.com').admin!
+
+  end
+
+  def check_es
+    service = Services::Overseers::Finders::Products.new({})
+    service.manage_failed_skus('Painting Spray Gun Type - 68, Cap - 140 M', 4, 1)
+  end
+
+  def copy_inquiry_number_into_project_uid
+    Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
+  end
+
   def delete_inquiry_products
     SalesQuoteRow.delete_all
     SalesQuote.delete_all
     InquiryProductSupplier.delete_all
     InquiryProduct.delete_all
+  end
+
+  def make_admins
+    ['vignesh.gounder@bulkmro.com',
+              'gitesh.ganekar@bulkmro.com',
+              'ajay.rathod@bulkmro.com',
+              'sanchit.sharma@bulkmro.com',
+              'ovais.ansari@bulkmro.com',
+              'diksha.tambe@bulkmro.com',
+              'dinesh.kumar@bulkmro.com',
+              'ankur.gupta@bulkmro.com',
+              'sumit.sharma@bulkmro.com',
+              'farhan.ansari@bulkmro.com',
+              'bhargav.trivedi@bulkmro.com',
+              'ajay.kondal@bulkmro.com',
+              'pravin.ganekar@bulkmro.com',
+              'nida.khan@bulkmro.com',
+              'soni.pathre@bulkmro.com',
+              'vijay.manjrekar@bulkmro.com',
+    ].each do |email|
+      Overseer.find_by_email(email).admin! if Overseer.find_by_email(email).present?
+    end
   end
 
   def run_inquiry_details_migration
@@ -35,9 +76,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def set_roles
     [
         ['cataloging', 'creative@bulkmro.com'],
-        ['outside_sales_manager', 'jeetendra.sharma@bulkmro.com'],
-        ['inside_sales', 'sarika.tanawade@bulkmro.com'],
-        ['inside_sales_manager', 'swati.bhosale@bulkmro.com'],
+        ['outside_sales_team_leader', 'jeetendra.sharma@bulkmro.com'],
+        ['inside_sales_executive', 'sarika.tanawade@bulkmro.com'],
+        ['outside_sales_team_leader', 'swati.bhosale@bulkmro.com'],
         ['left', 'virendra.tiwari@bulkmro.com'],
         ['left', 'davinder.singh@bulkmro.com'],
         ['left', 'suvidha.shinde@bulkmro.com'],
@@ -45,86 +86,86 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['left', 'parveen.bano@bulkmro.com'],
         ['left', 'apeksha.khambe@bulkmro.com'],
         ['left', 'saqib.shaikh@bulkmro.com'],
-        ['outside_sales', 'ketan.makwana@bulkmro.com'],
-        ['outside_sales', 'rahul.dhanani@bulkmro.com'],
+        ['outside_sales_executive', 'ketan.makwana@bulkmro.com'],
+        ['outside_sales_executive', 'rahul.dhanani@bulkmro.com'],
         ['left', 'tejasvi.bhosale@bulkmro.com'],
         ['left', 'mandakini.bhosale@bulkmro.com'],
         ['left', 'swapnil.bhogle@bulkmro.com'],
-        ['outside_sales', 'pune.sales@bulkmro.com'],
+        ['outside_sales_executive', 'pune.sales@bulkmro.com'],
         ['left', 'mp.felix@bulkmro.com'],
         ['left', 'sukriti.ranjan@bulkmro.com'],
         ['left', 'swati.gaikwad@bulkmro.com'],
         ['left', 'rutuja.yadav@bulkmro.com'],
         ['left', 'vrushali.lawangare@bulkmro.com'],
-        ['inside_sales', 'jigar.joshi@bulkmro.com'],
+        ['inside_sales_executive', 'jigar.joshi@bulkmro.com'],
         ['left', 'meenal.paradkar@bulkmro.com'],
         ['left', 'tenders@bulkmro.com'],
         ['left', 'paresh@dsnglobal.com'],
         ['left', 'pooja.egade@bulkmro.com'],
         ['left', 'mahendra.vaierkar@bulkmro.com'],
         ['left', 'sandeep.jannu@bulkmro.com'],
-        ['outside_sales', 'lalit.dhingra@bulkmro.com'],
-        ['inside_sales', 'neha.mundhe@bulkmro.com'],
+        ['outside_sales_executive', 'lalit.dhingra@bulkmro.com'],
+        ['inside_sales_executive', 'neha.mundhe@bulkmro.com'],
         ['left', 'mohit.sardana@bulkmro.com'],
         ['left', 'madhuri.vaja@bulkmro.com'],
         ['left', 'ali.shaikh@bulkmro.com'],
-        ['outside_sales', 'atul.thakur@bulkmro.com'],
-        ['outside_sales', 'rajesh.sharma@bulkmro.com'],
+        ['outside_sales_executive', 'atul.thakur@bulkmro.com'],
+        ['outside_sales_executive', 'rajesh.sharma@bulkmro.com'],
         ['left', 'akbar.mukadam@bulkmro.com'],
         ['left', 'suresh.singh@bulkmro.com'],
-        ['inside_sales', 'prit.patel@bulkmro.com'],
-        ['inside_sales', 'supriya.govalkar@bulkmro.com'],
+        ['inside_sales_executive', 'prit.patel@bulkmro.com'],
+        ['inside_sales_executive', 'supriya.govalkar@bulkmro.com'],
         ['left', 'swapnil.kadam@bulkmro.com'],
         ['left', 'nikhil.marathe@bulkmro.com'],
-        ['outside_sales', 'gourav.shinde@bulkmro.com'],
-        ['inside_sales', 'sajida.sayyed@bulkmro.com'],
+        ['outside_sales_executive', 'gourav.shinde@bulkmro.com'],
+        ['inside_sales_executive', 'sajida.sayyed@bulkmro.com'],
         ['left', 'henisha.patel@bulkmro.com'],
-        ['inside_sales', 'avni.shah@bulkmro.com'],
-        ['inside_sales', 'dipali.ghanvat@bulkmro.com'],
-        ['inside_sales', 'sheeba.shaikh@bulkmro.com'],
-        ['inside_sales_manager', 'piyush.yadav@bulkmro.com'],
+        ['inside_sales_executive', 'avni.shah@bulkmro.com'],
+        ['inside_sales_executive', 'dipali.ghanvat@bulkmro.com'],
+        ['inside_sales_executive', 'sheeba.shaikh@bulkmro.com'],
+        ['outside_sales_team_leader', 'piyush.yadav@bulkmro.com'],
         ['sales', 'sales@bulkmro.com'],
-        ['outside_sales', 'parth.patel@bulkmro.com'],
-        ['outside_sales', 'parvez.shaikh@bulkmro.com'],
-        ['outside_sales_head', 'ved.prakash@bulkmro.com'],
-        ['outside_sales_manager', 'madan.sharma@bulkmro.com'],
+        ['outside_sales_executive', 'parth.patel@bulkmro.com'],
+        ['outside_sales_executive', 'parvez.shaikh@bulkmro.com'],
+        ['outside_sales_manager', 'ved.prakash@bulkmro.com'],
+        ['outside_sales_team_leader', 'madan.sharma@bulkmro.com'],
         ['left', 'irshad.ahmed@bulkmro.com'],
         ['left', 'khan.noor@bulkmro.com'],
         ['left', 'hitesh.kumar@bulkmro.com'],
         ['left', 'rupesh.desai@bulkmro.com'],
-        ['outside_sales', 'vivek.syal@bulkmro.com'],
+        ['outside_sales_executive', 'vivek.syal@bulkmro.com'],
         ['left', 'shakti.sharan@bulkmro.com'],
         ['left', 'gurjeet.singh@bulkmro.com'],
         ['left', 'atul.bhartiya@bulkmro.com'],
-        ['outside_sales', 'harkesh.singh@bulkmro.com'],
+        ['outside_sales_executive', 'harkesh.singh@bulkmro.com'],
         ['left', 'ajay.dave@bulkmro.com'],
-        ['inside_sales', 'komal.nagar@bulkmro.com'],
+        ['inside_sales_executive', 'komal.nagar@bulkmro.com'],
         ['left', 'triveni.gawand@bulkmro.com'],
-        ['inside_sales', 'rajani.kyatham@bulkmro.com'],
+        ['inside_sales_executive', 'rajani.kyatham@bulkmro.com'],
         ['left', 'rehana.mulani@bulkmro.com'],
         ['left', 'asif.rajwadkar@bulkmro.com'],
         ['left', 'vinayak.deshpande@bulkmro.com'],
         ['left', 'sachin.thakur@bulkmro.com'],
-        ['inside_sales', 'sandeep.pal@bulkmro.com'],
-        ['inside_sales', 'rahul.sonawane@bulkmro.com'],
-        ['inside_sales', 'kartik.pai@bulkmro.com'],
-        ['inside_sales_manager', 'puja.pawar@bulkmro.com'],
-        ['outside_sales', 'nitish.srivastav@bulkmro.com'],
-        ['inside_sales', 'dhrumil.patel@bulkmro.com'],
-        ['outside_sales', 'mohammed.mujeebuddin@bulkmro.com'],
-        ['inside_sales', 'pravin.shinde@bulkmro.com'],
-        ['outside_sales', 'vishwajeet.chavan@bulkmro.com'],
+        ['inside_sales_executive', 'sandeep.pal@bulkmro.com'],
+        ['inside_sales_executive', 'rahul.sonawane@bulkmro.com'],
+        ['inside_sales_executive', 'kartik.pai@bulkmro.com'],
+        ['outside_sales_team_leader', 'puja.pawar@bulkmro.com'],
+        ['outside_sales_executive', 'nitish.srivastav@bulkmro.com'],
+        ['inside_sales_executive', 'dhrumil.patel@bulkmro.com'],
+        ['outside_sales_executive', 'mohammed.mujeebuddin@bulkmro.com'],
+        ['inside_sales_executive', 'pravin.shinde@bulkmro.com'],
+        ['outside_sales_executive', 'vishwajeet.chavan@bulkmro.com'],
         ['left', 'ranjit.kumar@bulkmro.com'],
-        ['inside_sales_manager', 'aditya.andankar@bulkmro.com'],
-        ['inside_sales', 'husna.khan@bulkmro.com'],
-        ['inside_sales', 'srinivas.joshi@bulkmro.com'],
-        ['inside_sales', 'mayur.salunke@bulkmro.com'],
+        ['outside_sales_team_leader', 'aditya.andankar@bulkmro.com'],
+        ['inside_sales_executive', 'husna.khan@bulkmro.com'],
+        ['inside_sales_executive', 'srinivas.joshi@bulkmro.com'],
+        ['inside_sales_executive', 'mayur.salunke@bulkmro.com'],
         ['left', 'sunil.shetty@bulkmro.com'],
-        ['inside_sales', 'mithun.trisule@bulkmro.com'],
-        ['outside_sales', 'jignesh.shah@bulkmro.com'],
-        ['outside_sales', 'vijay.narayan@bulkmro.com'],
+        ['inside_sales_executive', 'mithun.trisule@bulkmro.com'],
+        ['outside_sales_executive', 'jignesh.shah@bulkmro.com'],
+        ['outside_sales_executive', 'vijay.narayan@bulkmro.com'],
         ['left', 'vinit.nadkarni@bulkmro.com'],
-        ['inside_sales_manager', 'poonam.mohite@bulkmro.com'],
+        ['outside_sales_team_leader', 'poonam.mohite@bulkmro.com'],
         ['left', 'sales.support@bulkmro.com'],
         ['left', 'logistics@bulkmro.com'],
         ['sales', 'diksha.tambe@bulkmro.com'],
@@ -142,16 +183,16 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'prasad.hinge@bulkmro.com'],
         ['left', 'abid.shaikh@bulkmro.com'],
         ['sales', 'manoj.dakua@bulkmro.com'],
-        ['inside_sales', 'priyank.dosani@bulkmro.com'],
-        ['inside_sales', 'suhas.nair@bulkmro.com'],
-        ['inside_sales', 'jigar.patel@bulkmro.com'],
-        ['inside_sales', 'harsh.patel@bulkmro.com'],
-        ['inside_sales', 'neel.patel@bulkmro.com'],
-        ['outside_sales', 'ashish.dobariya@bulkmro.com'],
+        ['inside_sales_executive', 'priyank.dosani@bulkmro.com'],
+        ['inside_sales_executive', 'suhas.nair@bulkmro.com'],
+        ['inside_sales_executive', 'jigar.patel@bulkmro.com'],
+        ['inside_sales_executive', 'harsh.patel@bulkmro.com'],
+        ['inside_sales_executive', 'neel.patel@bulkmro.com'],
+        ['outside_sales_executive', 'ashish.dobariya@bulkmro.com'],
         ['left', 'mukund.sahay@bulkmro.com'],
         ['sales', 'farhan.ansari@bulkmro.com'],
-        ['outside_sales', 'ankit.shah@bulkmro.com'],
-        ['outside_sales', 'indore.sales@bulkmro.com'],
+        ['outside_sales_executive', 'ankit.shah@bulkmro.com'],
+        ['outside_sales_executive', 'indore.sales@bulkmro.com'],
         ['sales', 'vijay.manjrekar@bulkmro.com'],
         ['sales', 'accounts@bulkmro.com'],
         ['sales', 'bhargav.trivedi@dsnglobal.com'],
@@ -159,7 +200,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['left', 'antim.patni@bulkmro.com'],
         ['sales', 'nitin.nabera@bulkmro.com'],
         ['sales', 'pravin.ganekar@bulkmro.com'],
-        ['inside_sales_head', 'lavanya.j@bulkmro.com'],
+        ['inside_sales_manager', 'lavanya.j@bulkmro.com'],
         ['left', 'samidha.dhongade@bulkmro.com'],
         ['sales', 'nida.khan@bulkmro.com'],
         ['sales', 'uday.salvi@bulkmro.com'],
@@ -169,10 +210,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'hr@bulkmro.com'],
         ['procurement', 'subrata.baruah@bulkmro.com'],
         ['sales', 'asad.shaikh@bulkmro.com'],
-        ['outside_sales', 'vignesh.g@bulkmro.com'],
-        ['outside_sales', 'shahid.shaikh@bulkmro.com'],
-        ['outside_sales', 'rahul.dwivedi@bulkmro.com'],
-        ['outside_sales', 'syed.tajudin@bulkmro.com'],
+        ['outside_sales_executive', 'vignesh.g@bulkmro.com'],
+        ['outside_sales_executive', 'shahid.shaikh@bulkmro.com'],
+        ['outside_sales_executive', 'rahul.dwivedi@bulkmro.com'],
+        ['outside_sales_executive', 'syed.tajudin@bulkmro.com'],
         ['sales', 'dinesh.kumar1@bulkmro.com'],
         ['sales', 'dinesh.kumar@bulkmro.com'],
         ['cataloging', 'puja.tanawade@bulkmro.com'],
@@ -204,20 +245,20 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['sales', 'ankur.gupta@bulkmro.com'],
         ['admin', 'prikesh.savla@bulkmro.com'],
         ['sales', 'paresh.suvarna@bulkmro.com'],
-        ['outside_sales', 'sandeep.saini@bulkmro.com'],
+        ['outside_sales_executive', 'sandeep.saini@bulkmro.com'],
         ['sales', 'ashish.agarwal@bulkmro.com'],
         ['sales', 'gitesh.ganekar@bulkmro.com'],
-        ['outside_sales', 'chirag.arora@bulkmro.com'],
+        ['outside_sales_executive', 'chirag.arora@bulkmro.com'],
         ['admin', 'amit.goyal@bulkmro.com'],
         ['procurement', 'priyanka.rajpurkar@bulkmro.com'],
-        ['inside_sales', 'yash.gajjar@bulkmro.com'],
-        ['outside_sales', 'vinayak.degwekar@bulkmro.com'],
-        ['outside_sales', 'shishir.jain@bulkmro.com'],
+        ['inside_sales_executive', 'yash.gajjar@bulkmro.com'],
+        ['outside_sales_executive', 'vinayak.degwekar@bulkmro.com'],
+        ['outside_sales_executive', 'shishir.jain@bulkmro.com'],
         ['sales', 'sumit.sharma@bulkmro.com'],
-        ['inside_sales', 'mitesh.mandaliya@bulkmro.com'],
-        ['inside_sales', 'anand.negi@bulkmro.com'],
+        ['inside_sales_executive', 'mitesh.mandaliya@bulkmro.com'],
+        ['inside_sales_executive', 'anand.negi@bulkmro.com'],
         ['left', 'shailendra.trivedi@bulkmro.com'],
-        ['outside_sales_head', 'shailender.agarwal@bulkmro.com'],
+        ['outside_sales_manager', 'shailender.agarwal@bulkmro.com'],
         ['admin', 'malav.desai@bulkmro.com'],
         ['admin', 'shravan.agarwal@bulkmro.com'],
         ['sales', 'oindrilla.paul@bulkmro.com'],
@@ -291,6 +332,35 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
       product = Product.find_by_legacy_id(x.get_column('entity_id'))
       product.update_attributes(:brand => brand)
+    end
+  end
+
+  def gst_tax_rate_fix
+    TaxCode.where('code LIKE ?', '%8424').size
+  end
+
+  def update_sales_managers_for_inquiries
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
+        inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
+        if inquiry.present?
+          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".") if x.get_column('manager', downcase: true).present?
+          inside_sales_owner_username =  inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
+          inquiry.inside_sales_owner = Overseer.find_by_username(legacy_inside_sales_owner_username) if legacy_inside_sales_owner_username != inside_sales_owner_username
+
+          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".") if x.get_column('outside', downcase: true).present?
+          outside_sales_owner_username = inquiry.outside_sales_owner.username if inquiry.outside_sales_owner.present?
+          inquiry.outside_sales_owner = Overseer.find_by_username(legacy_outside_sales_owner_username) if legacy_outside_sales_owner_username != outside_sales_owner_username
+
+          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".") if x.get_column('powermanager', downcase: true).present?
+          sales_manager_username = inquiry.sales_manager.username if inquiry.sales_manager.present?
+          inquiry.sales_manager = Overseer.find_by_username(legacy_sales_manager_username) if legacy_sales_manager_username != sales_manager_username
+          inquiry.save!
+        end
+      end
     end
   end
 

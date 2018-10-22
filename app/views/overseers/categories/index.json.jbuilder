@@ -1,7 +1,12 @@
 json.data (@categories) do |category|
   json.array! [
                   [
-                      row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning'),
+                      if policy(category).edit?
+                        row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning')
+                      end,
+                      if policy(category).show?
+                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'dark')
+                      end,
                   ].join(' '),
                   category.to_s,
                   format_date(category.created_at)

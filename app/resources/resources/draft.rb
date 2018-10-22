@@ -26,7 +26,7 @@ class Resources::Draft < Resources::ApplicationResource
         CntctCode: record.inquiry.contact.full_name,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         DiscountPercent: 0, #hardcode
-        DocDueDate: record.inquiry.customer_committed_date.to_s, #estimated_shipping_date
+        DocDueDate: record.inquiry.customer_committed_date.present? ? record.inquiry.customer_committed_date.strftime("%Y-%m-%d") : nil, #estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
         DocCurrency: record.inquiry.inquiry_currency.currency.name,
         DocDate: record.created_date, #created_at
@@ -39,7 +39,7 @@ class Resources::Draft < Resources::ApplicationResource
         ProjectCode: record.inquiry.project_uid, #increment_id inq
         ShipToCode: record.inquiry.shipping_address.remote_uid, #record.inquiry.shipping_address.legacy_id, ------
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid,
-        U_CustComDt: record.inquiry.expected_closing_date.to_s, #not
+        U_CustComDt: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime("%Y-%m-%d") : nil, #not
         U_SalesMgr: record.inquiry.sales_manager.try(:full_name), #record.inquiry.sales_manager.full_name,
         U_ConsigneeAddr: record.inquiry.shipping_address.remote_uid,
         U_Freight_Cost: record.inquiry.freight_cost,
