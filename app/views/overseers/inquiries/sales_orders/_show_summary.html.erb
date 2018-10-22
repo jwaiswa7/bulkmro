@@ -85,7 +85,7 @@
       <div class="form-row">
         <div class="col-md-6">
           <strong>Customer Shipping Address</strong><br>
-          <strong><%= (@inquiry.company.name) %></strong><br>
+          <%= (@inquiry.company.name) %><br>
           <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
@@ -95,7 +95,7 @@
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Customer Billing Address</strong><br>
-          <strong><%= (@inquiry.company.name) %></strong><br>
+          <%= (@inquiry.company.name) %><br>
           <%= @inquiry.billing_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
