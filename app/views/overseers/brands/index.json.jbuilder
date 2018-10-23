@@ -6,8 +6,6 @@ json.data (@brands) do |brand|
                       end,
                   ].join(' '),
                   brand.to_s,
-                  brand.products.size,
-                  brand.suppliers.size,
                   format_date(brand.created_at)
               ]
 end

@@ -1,5 +1,4 @@
 class BrandSupplier < ApplicationRecord
-  include Mixins::HasSupplier
 
   belongs_to :brand
 

@@ -71,8 +71,8 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?,  to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :acts_as_supplier, -> { joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
-  scope :acts_as_customer, -> { joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
+  scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
+  scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
 
   # validates_presence_of :gst
   # validates_uniqueness_of :gst
