@@ -74,8 +74,6 @@ class Company < ApplicationRecord
   scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
   scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
 
-  # validates_presence_of :gst
-  # validates_uniqueness_of :gst
   validates_presence_of :name
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates_presence_of :pan
