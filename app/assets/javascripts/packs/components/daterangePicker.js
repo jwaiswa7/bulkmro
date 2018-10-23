@@ -10,6 +10,7 @@ const daterangePicker = () => {
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },
             opens: "left",
+            startDate: moment().subtract(30, 'days'),
             minDate: moment('2015-01-01'),
             maxDate: moment().endOf('year'),
             showDropdowns: true,
