@@ -21,6 +21,8 @@ module Mixins::CanBeSynced
       syncable_identifiers.each do |si|
         return true if self.send(si).present?
       end
+
+      return false
     end
 
     def not_synced?
