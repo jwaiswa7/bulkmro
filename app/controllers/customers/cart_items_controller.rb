@@ -1,4 +1,4 @@
-class Customers::CartItemsController < ApplicationController
+class Customers::CartItemsController < Customers::BaseController
 
   def create
     cart = current_cart

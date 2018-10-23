@@ -5,6 +5,17 @@ class Customers::BaseController < ApplicationController
   before_action :authenticate_contact!
   before_action :set_paper_trail_whodunnit
 
+  helper_method :current_cart
+
+  def current_cart
+    if session[:cart_id]
+      Cart.find(session[:cart_id])
+    else
+      Cart.new
+    end
+  end
+
+
   protected
 
   def pundit_user
