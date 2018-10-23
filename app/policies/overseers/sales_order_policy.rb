@@ -36,11 +36,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    pending? && record.sent? && record.not_approved? && !record.rejected?
+    pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
   def reject?
-    record.sent? && approve?
+    record.sent? && approve? || admin?
   end
 
   def resync?
