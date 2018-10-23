@@ -146,7 +146,7 @@ let setup = () => {
                                 input.append(option);
                             });
                         } else if (filter == 'daterange') {
-                            input = $('<input class="form-control" data-toggle="daterangepicker" />');
+                            input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
