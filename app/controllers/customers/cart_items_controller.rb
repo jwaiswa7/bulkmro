@@ -27,7 +27,7 @@ class Customers::CartItemsController < ApplicationController
     @item = @cart.cart_items.find(params[:id])
     @item.destroy
     @cart.save
-    redirect_to cart_path
+    redirect_to customers_cart_path
   end
 
   private

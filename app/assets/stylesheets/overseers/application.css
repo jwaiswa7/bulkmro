@@ -10430,3 +10430,23 @@ a.bg-highlight-dark:hover, a.bg-highlight-dark:focus,
 button.bg-highlight-dark:hover,
 button.bg-highlight-dark:focus {
   background-color: #7a8793 !important; }
+
+.badge {
+    background-color: #fd7e14;
+    border-radius: 10px;
+    color: white;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+    padding: 3px 7px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-left: 3px;
+    margin-bottom: 1px;
+}
+
+.cart-items {
+    display: block;
+    width: 90px;
+}
