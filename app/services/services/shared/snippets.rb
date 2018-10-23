@@ -80,12 +80,12 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def sync_unsynced_companies
+    Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").each do |company|
+      company.save_and_sync
+    end
+
     company = Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").first
 
-
-    # .each do |company|
-    #   company.save_and_sync
-    # end
   end
 
   def make_admin
@@ -101,6 +101,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def copy_inquiry_number_into_project_uid
     Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
+  end
+
+  def find_business_partner_by_name
+    ::Resources::BusinessPartner.custom_find('Subrata!!')
   end
 
   def delete_inquiry_products
