@@ -19,6 +19,10 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present?
   end
 
+  def qty_fulfill?
+    record.sales_quote_qty_fulfill?
+  end
+
   def preview?
     edit?
   end
