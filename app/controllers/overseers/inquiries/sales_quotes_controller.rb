@@ -70,6 +70,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
+    Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
   end
 
   def update_sent_at_field

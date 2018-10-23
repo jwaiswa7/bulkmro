@@ -20,6 +20,7 @@ class Overseers::Inquiries::EmailMessagesController < Overseers::Inquiries::Base
 
     if @email_message.save
       InquiryMailer.send_acknowledgement(@email_message).deliver_now
+      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new'

@@ -66,6 +66,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
       redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new'
@@ -81,6 +82,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit'
@@ -99,6 +101,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'
