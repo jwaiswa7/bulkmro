@@ -14,6 +14,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.inquiry_number,
                   sales_invoice.sales_order.order_number,
                   sales_invoice.rows.count,
+                  sales_invoice.status,
                   sales_invoice.inquiry.inside_sales_owner.to_s,
                   sales_invoice.inquiry.outside_sales_owner.to_s,
                   format_date(sales_invoice.created_at)
@@ -21,6 +22,7 @@ json.data (@sales_invoices) do |sales_invoice|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],
