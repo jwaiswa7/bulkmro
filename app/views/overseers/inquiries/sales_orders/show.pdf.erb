@@ -9,7 +9,13 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 30px">Sales Order #<%= record.order_number %></span></b>
+              <b><span style="color:#000; font-size: 30px">
+                <% if params['type'].present? %>
+                  Proforma Invoice #<%= record.order_number %>
+                <% else %>
+                  Sales Order #<%= record.order_number %>
+                <% end %>
+              </span></b>
             </div>
           </div>
           <br clear="all">
