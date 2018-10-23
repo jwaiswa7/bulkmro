@@ -33,7 +33,6 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def smart_queue
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.smart_queue), params)
-    puts "Lopesh"
     authorize @inquiries
   end
 
