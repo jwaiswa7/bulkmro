@@ -119,7 +119,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       term: {status: SalesOrder.statuses[:Approved]},
                   },
                   {
-                      term: {legacy_request_status: SalesOrder.legacy_request_status[:Approved]},
+                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[:Approved]},
                   },
                   {
                       term: {approval_status: 'approved'},
