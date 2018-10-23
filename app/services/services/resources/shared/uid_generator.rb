@@ -5,11 +5,11 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   end
 
   def self.company_uid(record)
-    "#{record.id + 100000}"
+    "#{record.id + 200000}"
   end
 
   def self.address_uid(record)
-    "A#{record.id + 100000}"
+    "A#{record.id + 200000}"
   end
 
   def self.product_sku(unpersisted_skus=[])
