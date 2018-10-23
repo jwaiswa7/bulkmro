@@ -116,10 +116,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {status: 60},
+                      term: {status: SalesOrder.statuses[:Approved]},
                   },
                   {
-                      term: {legacy_request_status: 60},
+                      term: {legacy_request_status: SalesOrder.legacy_request_status[:Approved]},
                   },
                   {
                       term: {approval_status: 'approved'},
@@ -136,14 +136,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       term: {legacy_status: 'not_legacy'},
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except( :'Approved').values},
+                      terms: {status: SalesOrder.statuses.except(:'Approved').values},
                   }
               ],
               minimum_should_match: 2,
           },
       }
     end
-
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
