@@ -13,7 +13,6 @@
 //= require vue/dist/vue.min.js
 //= require chart.js/dist/Chart.min.js
 //= require chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js
-//= require bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js
 //= require stickybits/dist/jquery.stickybits.min.js
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js
