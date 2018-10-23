@@ -31,8 +31,8 @@ class Address < ApplicationRecord
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true
+  # validates_presence_of :remote_uid
 
-  validates_presence_of :remote_uid
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :vat_proof, file_size_in_megabytes: 2
