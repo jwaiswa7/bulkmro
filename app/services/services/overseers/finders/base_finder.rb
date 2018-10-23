@@ -115,8 +115,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                   {
                       term: {legacy_request_status: 60},
                   },
+                  {
+                      term: {approval_status: 'approved'},
+                  },
               ],
-              minimum_should_match: 1,
+              minimum_should_match: 2,
           },
       }
     else
@@ -124,16 +127,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {approval_status: 'pending'},
-                  },
-                  {
                       term: {legacy_status: 'not_legacy'},
                   },
                   {
                       terms: {status: SalesOrder.statuses.except( :'Approved').values},
                   }
               ],
-              minimum_should_match: 3,
+              minimum_should_match: 2,
           },
       }
     end
