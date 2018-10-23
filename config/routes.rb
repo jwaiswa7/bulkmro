@@ -213,8 +213,8 @@ Rails.application.routes.draw do
         resources :sales_orders, only: %i[index show]
       end
     end
-    resources :sales_quotes, only: %i[index]
-    resources :sales_orders, only: %i[index]
+    resources :quotes, :controller => :sales_quotes, only: %i[index show]
+    resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :products, only: %i[index show]
   end
 

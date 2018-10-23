@@ -12,8 +12,7 @@
             <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @metadata[:PoNum] %></span></b>
           </div>
           <br clear="all">
-          <%= render 'overseers/inquiries/sales_orders/addresses', record: record %>
-
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
             <span><b>Purchase Order #<%= @metadata[:PoNum] %></b></span>
