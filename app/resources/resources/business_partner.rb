@@ -6,7 +6,10 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |response|
+      # persist company.remote_uid
       record.save!
+
+      # persist address.remote_uid
       record.addresses.each do |address| address.save! end
 
       update_associated_records(response)
