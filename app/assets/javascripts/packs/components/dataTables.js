@@ -124,6 +124,7 @@ let setup = () => {
                 let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
                 clear.on('click', function(e) {
                     $('[data-filter="dropdown"] select').val("").trigger('change');
+                    $('[data-filter="daterange"] input').val("").trigger('change');
                     $('.filter-list-input').val("");
                     e.preventDefault();
                 });
@@ -144,12 +145,8 @@ let setup = () => {
                                 let option = $('<option value="' + f.value + '">' + f.label + '</option>');
                                 input.append(option);
                             });
-                        } else if (filter == 'date') {
-                            input = $('<div class="input-group" data-toggle="daterange">\n' +
-                                        '<input type="text" class="input-sm form-control" name="start" placeholder="From" />\n' +
-                                        '<span class="input-group-addon">to</span>\n' +
-                                        '<input type="text" class="input-sm form-control" name="end" placeholder="To" />\n' +
-                                      '</div>');
+                        } else if (filter == 'daterange') {
+                            input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }
