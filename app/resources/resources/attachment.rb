@@ -19,25 +19,27 @@ class Resources::Attachment < Resources::ApplicationResource
     Net::SSH.start(SAP.server[:host], SAP.attachment_username, key_data: ssh_private_keys, keys_only: true) do |ssh|
       record.attachments.each do |attachment|
         if attachment.present? && attachment.try(:key)
-          path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
-          File.open(path, 'wb') do |file|
-            file.write(attachment.download)
-          end
+          if ActiveStorage::Blob.service.exist?(attachment.key)
+            path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
+            File.open(path, 'wb') do |file|
+              file.write(attachment.download)
+            end
 
-          if File.exist?(path)
+            if File.exist?(path)
 
-            filename = [record.inquiry_number, attachment.key, attachment.filename.base].join('_')
-            extension = attachment.filename.extension_without_delimiter
+              filename = [record.inquiry_number, attachment.key, attachment.filename.base].join('_')
+              extension = attachment.filename.extension_without_delimiter
 
-            remote_attachment = OpenStruct.new(
-                :FileExtension => extension,
-                :FileName => filename,
-                :SourcePath => SAP.attachment_directory,
-                :UserID => "1"
-            )
+              remote_attachment = OpenStruct.new(
+                  :FileExtension => extension,
+                  :FileName => filename,
+                  :SourcePath => SAP.attachment_directory,
+                  :UserID => "1"
+              )
 
-            ssh.scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
-            remote_attachments.push(remote_attachment.marshal_dump)
+              ssh.scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
+              remote_attachments.push(remote_attachment.marshal_dump)
+            end
           end
         end
       end

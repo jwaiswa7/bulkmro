@@ -14,7 +14,7 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
   def call_later
     if company.persisted?
       if account.remote_uid.blank?
-        remote_uid = ::Resources::BusinessPartnerGroup.create(account)
+        remote_uid = ::Resources::BusinessPartnerSupplierGroup.create(account)
         account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
 

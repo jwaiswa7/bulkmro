@@ -1,0 +1,64 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @warehouses.name %>
+      </h3>
+      <% if policy(@warehouses).edit? %>
+        <a href="<%= edit_overseers_warehouse_path(@warehouses) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+          Warehouse</a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Warehouse Details</h6>
+          <div class="form-row">
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Warehouse Code</strong>
+              <%= @warehouses.remote_uid %>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Warehouse Name</strong>
+              <%= @warehouses.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Address</strong>
+              <%= @warehouses.address %>
+            </div>
+
+
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">State</strong>
+              <%= @warehouses.address.state.name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Remote Branch Code</strong>
+              <%= @warehouses.remote_branch_name %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Location UID</strong>
+              <%= @warehouses.location_uid %>
+            </div>
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">GST</strong>
+              <% if @warehouses.address.gst==nil %>
+                Not Available
+              <% else %>
+                <% @warehouses.address.gst %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

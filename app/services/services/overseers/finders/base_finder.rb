@@ -1,11 +1,16 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
     @search_filters = []
+    @range_filters = []
 
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
-          search_filters << column
+          if column[:search][:value].include? '~'
+            range_filters << column
+          else
+            search_filters << column
+          end
         end
       end
     end
@@ -66,11 +71,12 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def range_query(indexed_records)
     range_filters.each do |range_filter|
+      range = range_filter[:search][:value].split("~")
       indexed_records = indexed_records.query({
                                                   range: {
                                                       :"#{range_filter[:name]}" => {
-                                                          gte: range_filter[:search][:value],
-                                                          lte: range_filter[:search][:value]
+                                                          gte: range[0].strip.to_date,
+                                                          lte: range[1].strip.to_date
                                                       }
                                                   }
                                               })
@@ -110,13 +116,16 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {status: 60},
+                      term: {status: SalesOrder.statuses[:Approved]},
                   },
                   {
-                      term: {legacy_request_status: 60},
+                      term: {legacy_request_status: SalesOrder.legacy_request_status[:Approved]},
+                  },
+                  {
+                      term: {approval_status: 'approved'},
                   },
               ],
-              minimum_should_match: 1,
+              minimum_should_match: 2,
           },
       }
     else
@@ -124,20 +133,16 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {approval_status: 'pending'},
-                  },
-                  {
                       term: {legacy_status: 'not_legacy'},
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except( :'Approved').values},
+                      terms: {status: SalesOrder.statuses.except(:'Approved').values},
                   }
               ],
-              minimum_should_match: 3,
+              minimum_should_match: 2,
           },
       }
     end
-
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters

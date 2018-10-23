@@ -229,8 +229,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts
-    Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier)
-    Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier)
+    Account.where(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier).first_or_create!
+    Account.where(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier).first_or_create!
 
     Account.where(:name => 'Legacy Account').first_or_create! do |account|
       account.remote_uid = 99999999

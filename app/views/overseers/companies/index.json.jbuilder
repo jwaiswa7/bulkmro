@@ -21,8 +21,8 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  format_boolean(company.is_supplier),
-                  format_boolean(company.is_customer),
+                  format_boolean(company.is_supplier?),
+                  format_boolean(company.is_customer?),
                   format_date(company.created_at)
               ]
 end
