@@ -82,6 +82,9 @@ Rails.application.routes.draw do
     end
 
     resources :addresses do
+      collection do
+        get 'autocomplete'
+      end
     end
 
     resources :categories do
@@ -201,6 +204,7 @@ Rails.application.routes.draw do
         resources :companies
       end
     end
+
     resources  :warehouses
   end
 end
