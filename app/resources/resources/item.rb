@@ -16,7 +16,7 @@ class Resources::Item < Resources::ApplicationResource
         PurchaseItem: "tYES", # TO BE CREATED IN MAGENTO
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
-        Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : nil, # Product Manufacturer
+        Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : -1, # Product Manufacturer
         Valid: "tYES", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
