@@ -67,25 +67,24 @@ class Company < ApplicationRecord
       dealer: 30
   }, _prefix: true
 
+  delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
+  delegate :account_type, :is_customer?, :is_supplier?,  to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :acts_as_supplier, -> { where(is_supplier: true) }
-  scope :acts_as_customer, -> { where(is_customer: true) }
+  scope :acts_as_supplier, -> { joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
+  scope :acts_as_customer, -> { joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
 
   # validates_presence_of :gst
   # validates_uniqueness_of :gst
   validates_presence_of :name
-  validates_uniqueness_of :name, scope: [:is_supplier, :is_customer]
+  validates_uniqueness_of :name
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates_presence_of :pan
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
 
-  delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
-
   after_initialize :set_defaults, :if => :new_record?
-
   def set_defaults
     self.company_type ||= :private_limited
     self.priority ||= :non_strategic

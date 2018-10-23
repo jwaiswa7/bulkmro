@@ -3,6 +3,14 @@
     <h2><%= action_name.capitalize %> Company</h2>
     <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
+
+    <p class="badge-danger">
+      <% if @account.is_supplier? %>
+        This company will be synced as a supplier because it's under a customer supplier.
+      <% elsif @account.is_customer? %>
+        This company will be synced as a customer because it's under a customer account.
+      <% end %>
+    </p>
   </div>
   <%= simple_form_for([:overseers, @account, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
 
@@ -74,12 +82,6 @@
       <div class="col-6">
         <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
       </div>
-      <div class="col-6">
-        <%= f.input :is_supplier, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is Supplier?' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :is_customer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is Customer?' %>
-      </div>
     </div>
 
     <div class="form-row">
@@ -92,27 +94,26 @@
     </div>
 
 
+    <!--    <div class="form-group">-->
+    <%#= f.label :product_ids, 'Products' %>
+    <!--      <div class="select2-wrapper">-->
+    <%#= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
+    <!--      </div>-->
+    <!--    </div>-->
 
-<!--    <div class="form-group">-->
-      <%#= f.label :product_ids, 'Products' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :product_ids, Product.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Products' %>
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="form-group">-->
+    <%#= f.label :category_ids, 'Category' %>
+    <!--      <div class="select2-wrapper">-->
+    <%#= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
+    <!--      </div>-->
+    <!--    </div>-->
 
-<!--    <div class="form-group">-->
-      <%#= f.label :category_ids, 'Category' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :category_ids, Category.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div class="form-group">-->
-      <%#= f.label :brand_ids, 'Brands' %>
-<!--      <div class="select2-wrapper">-->
-        <%#= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="form-group">-->
+    <%#= f.label :brand_ids, 'Brands' %>
+    <!--      <div class="select2-wrapper">-->
+    <%#= f.select :brand_ids, Brand.all.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Brands' %>
+    <!--      </div>-->
+    <!--    </div>-->
 
 
     <% if f.object.persisted? %>

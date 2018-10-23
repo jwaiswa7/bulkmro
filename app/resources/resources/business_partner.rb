@@ -239,7 +239,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     params = {
         CardCode: record.remote_uid,
         CardName: record.name,
-        CardType: record.is_supplier ? "cSupplier" : "cCustomer",
+        CardType: record.is_supplier? ? "cSupplier" : "cCustomer",
         GroupCode: record.account.remote_uid,
         #Address: record.default_billing_address.present? ? record.default_billing_address.to_s : nil,
         ZipCode: record.default_billing_address.present? ? record.default_billing_address.pincode : nil,
