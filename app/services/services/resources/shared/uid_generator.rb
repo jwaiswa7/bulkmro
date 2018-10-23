@@ -4,12 +4,12 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
     # Generates in Postgres sequences
   end
 
-  def self.company_uid
-    "#{(Company.maximum(:id) || 0) + 100000}"
+  def self.company_uid(record)
+    "#{record.id + 100000}"
   end
 
-  def self.address_uid
-    "A#{(Address.maximum(:id) || 0) + 10000}"
+  def self.address_uid(record)
+    "A#{record.id + 100000}"
   end
 
   def self.product_sku(unpersisted_skus=[])

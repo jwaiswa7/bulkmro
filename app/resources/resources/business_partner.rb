@@ -57,10 +57,12 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     bp_tax_collection = []
 
     if record.remote_uid.blank?
-      record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid)
+      record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid(record))
     end
 
     record.addresses.each do |address|
+      address.update_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid(address)) if address.remote_uid.blank?
+
       street_address = [address.street1, address.street2].compact.join(' ')
       street = street_address[0..99]
       address_name2 = street_address[100..149]
@@ -97,7 +99,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       addresses.push(address_row.marshal_dump)
 
       # Second Entry for Shipping Address
-      #
       address_row = OpenStruct.new
       address_row.AddressName = address.remote_uid
       address_row.BPCode = record.remote_uid
