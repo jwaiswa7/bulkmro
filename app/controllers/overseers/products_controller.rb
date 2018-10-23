@@ -11,6 +11,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def autocomplete
+    params[:page] = 1
     service = Services::Overseers::Finders::Products.new(params)
     service.call
 
