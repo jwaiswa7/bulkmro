@@ -104,7 +104,7 @@ class Product < ApplicationRecord
   end
 
   def bp_catalog_for_supplier(supplier)
-    self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first
+    self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
   end
 
   def brand_name
