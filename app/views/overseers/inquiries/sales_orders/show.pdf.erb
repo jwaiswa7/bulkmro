@@ -150,7 +150,7 @@
                     <%= record.inquiry.billing_address.name %><br>
                     <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
                     <br>
-                    Tel: <%= record.inquiry.billing_address.telephone %><br>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %><br>
                     GST No.:<%= record.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
@@ -162,7 +162,7 @@
                     <%= record.inquiry.shipping_address.name %><br>
                     <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
                     <br>
-                    Tel: <%= record.inquiry.shipping_address.telephone %><br>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %><br>
                     GST No.:<%= record.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>
@@ -256,19 +256,19 @@
                   <td align="right" style=" text-align:right;" valign="top">
                     <span><%= item.total_selling_price.round(2) %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.sales_quote_row.applicable_tax_percentage * 100  %>%</span></td>
+                    <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100  %>%</span></td>
+                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= item.total_tax.round(2) %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2  %>%</span></td>
+                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= (item.total_tax / 2).round(2) %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2  %>%</span></td>
+                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
                       <span><%= (item.total_tax / 2).round(2) %></span></td>
                   <% end %>

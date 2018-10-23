@@ -69,19 +69,18 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     if @sales_order.not_confirmed?
       @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
+
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(
-            :sent_at => Time.now
-        )
+        @sales_order.update_attributes(:sent_at => Time.now)
       end
     else
-      @sales_order.update_attributes(:sent_at => Time.now)
+      @sales_order.update_attributes(:sent_at => Time.now) if @sales_order.sent_at.blank?
+    end
 
-      if @sales_order.persisted?
-        @sales_order.touch
-        SalesOrdersIndex::SalesOrder.import [@sales_order.id] # Force import the following Object
-      end
+    if @sales_order.persisted?
+      @sales_order.touch
+      SalesOrdersIndex::SalesOrder.import([@sales_order.id])
     end
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
