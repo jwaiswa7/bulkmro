@@ -6,6 +6,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |response|
+      record.save!
+      record.addresses.each do |address| address.save! end
+
       update_associated_records(response)
     end
 
@@ -61,7 +64,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     end
 
     record.addresses.each do |address|
-      address.update_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid(address)) if address.remote_uid.blank?
+      address.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid(address)) if address.remote_uid.blank?
 
       street_address = [address.street1, address.street2].compact.join(' ')
       street = street_address[0..99]
