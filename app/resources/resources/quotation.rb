@@ -43,12 +43,12 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.inquiry_product.to_bp_catalog_s  # Product Desc / NAME
+      item.ItemDescription = row.product.name  # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
-      item.U_MPN = row.product.try(:mpn)
+      item.U_MPN = row.product.try(:mpn) || "NIL"
       item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
