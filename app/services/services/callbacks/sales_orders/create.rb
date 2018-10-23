@@ -33,7 +33,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             sales_order.update_attributes(:status => :'SAP Rejected')
             comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
             sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
-            sales_order.approval.destroy!
+            sales_order.approval.destroy! if sales_order.approval.present?
             return_response("Order Rejected Successfully")
           rescue => e
             return_response(e.message, 0)
