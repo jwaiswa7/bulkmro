@@ -5,7 +5,7 @@ class Resources::Quotation < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |response|
-      update_associated_records(response)
+      update_associated_records(response['DocEntry'], force_find: true) if response['DocEntry'].present?
     end
 
     id
@@ -24,10 +24,10 @@ class Resources::Quotation < Resources::ApplicationResource
     return if response.blank?
 
     document_lines = response['DocumentLines']
-    inquiry = Inquiry.find_by_quotation_uid(id)
+    inquiry = Inquiry.find_by_inquiry_number(response['Project'])
 
     if inquiry.present? && inquiry.final_sales_quote.present?
-      final_sales_quote = Inquiry.find_by_quotation_uid(id).final_sales_quote
+      final_sales_quote = inquiry.final_sales_quote
 
       document_lines.each do |line|
         sales_quote_row = final_sales_quote.rows.select { |r| r.sku == line['ItemCode'] }[0]
@@ -43,13 +43,13 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.product.name # Product Desc / NAME
+      item.ItemDescription = row.product.name  # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
-      item.U_MPN = row.product.try(:mpn)
-      item.U_LeadTime = row.lead_time_option.name # Lead time ?
+      item.U_MPN = row.product.try(:mpn) || "NIL"
+      item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
       item.Currency = record.currency.name # CContactPersonurr
@@ -61,11 +61,12 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_ProdBrand = row.product.brand.try(:name) # Brand
       item.WarehouseCode = record.inquiry.ship_from.remote_uid # ship_from_warehouse
       item.LocationCode = record.inquiry.ship_from.location_uid
+      item.U_Margin = row.margin_percentage
 
       if row.product.is_service
-        item.SACEntry = row.tax_code.remote_uid # HSN !!
+        item.SACEntry = row.best_tax_code.remote_uid # HSN !!
       else
-        item.HSNEntry = row.tax_code.remote_uid # HSN !!
+        item.HSNEntry = row.best_tax_code.remote_uid # HSN !!
       end
 
       item.U_MgntRemark = ""
@@ -96,8 +97,8 @@ class Resources::Quotation < Resources::ApplicationResource
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: record.ancestors.size, #Quotation Revision ID
         DocDate: record.created_date, #Quote Create Date
-        DocDueDate: record.inquiry.expected_closing_date, #Quotation Valid Till ?
-        TaxDate: record.inquiry.customer_order_date, # record.created_date , #Tax Date??
+        DocDueDate: record.inquiry.valid_end_time.present? ? record.inquiry.valid_end_time.strftime("%Y-%m-%d") : nil, #Quotation Valid Till ?
+        TaxDate: record.inquiry.customer_order_date.present? ? record.inquiry.customer_order_date.strftime("%Y-%m-%d") : nil, # record.created_date , #Tax Date??
         AttachmentEntry: record.inquiry.attachment_uid,
         DocumentLines: items, # [Products]
         U_Ovr_Margin: record.calculated_total_margin_percentage,
@@ -108,7 +109,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_PackFwd: record.inquiry.packing_and_forwarding_option,
         U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
         U_SQ_Status: Inquiry.statuses[record.inquiry.status], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
-        BPL_IDAssignedToInvoice: 1,
+        BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code,
         ShipToCode: record.inquiry.shipping_address.remote_uid,
         PayToCode: record.inquiry.billing_address.remote_uid,
         U_PmntMthd: "Bank Transfer",

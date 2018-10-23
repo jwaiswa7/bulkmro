@@ -3,7 +3,7 @@ class SalesQuoteRow < ApplicationRecord
 
   belongs_to :lead_time_option, required: false
   belongs_to :sales_quote
-  belongs_to :measurement_unit, required: true
+  belongs_to :measurement_unit, required: false
   has_one :inquiry, :through => :sales_quote
   has_one :inquiry_currency, :through => :inquiry
   belongs_to :inquiry_product_supplier
@@ -18,7 +18,7 @@ class SalesQuoteRow < ApplicationRecord
   delegate :sr_no, :legacy_id, to: :inquiry_product, allow_nil: true
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
   delegate :is_service, :to => :product
-  delegate :measurement_unit, :to => :product, allow_nil: true
+  # delegate :measurement_unit, :to => :product, allow_nil: true
   delegate :sku, :to => :product
 
   validates_uniqueness_of :inquiry_product_supplier, scope: :sales_quote
@@ -67,6 +67,7 @@ class SalesQuoteRow < ApplicationRecord
     self.freight_cost_subtotal ||= 0.0
     self.unit_freight_cost ||= 0.0
     self.lead_time_option ||= LeadTimeOption.default
+    self.measurement_unit ||= self.product.measurement_unit || MeasurementUnit.default
 
     if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity
@@ -82,7 +83,12 @@ class SalesQuoteRow < ApplicationRecord
     if legacy_applicable_tax_percentage.present? && legacy_applicable_tax_percentage > 0
       legacy_applicable_tax_percentage / 100
     else
-      self.best_tax_code ? self.best_tax_code.tax_percentage / 100.0 : 0
+      if self.persisted? && self.inquiry.is_sez?
+          0
+      else
+        self.best_tax_code ? self.best_tax_code.tax_percentage / 100.0 : 0
+      end
+
     end
   end
 

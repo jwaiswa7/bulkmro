@@ -21,7 +21,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def pending
-    @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)).group(:id).order('COUNT(inquiry_products.id) DESC'), params)
+    @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)), params)
     authorize @products
   end
 

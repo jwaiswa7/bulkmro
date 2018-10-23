@@ -4,6 +4,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   def index
     @sales_orders = @inquiry.sales_orders
     authorize @sales_orders
+
+    respond_to do |format|
+      format.html {}
+    end
   end
 
   def show
@@ -19,7 +23,6 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def new
     @sales_quote = SalesQuote.find(params[:sales_quote_id])
-
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@sales_quote, current_overseer).call
     authorize @sales_quote, :new_sales_order?
   end
@@ -69,12 +72,16 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       ActiveRecord::Base.transaction do
         @confirmation.save!
         @sales_order.update_attributes(
-            :sent_at => Time.now,
-             :status => :"SAP Approval Pending"
+            :sent_at => Time.now
         )
       end
     else
       @sales_order.update_attributes(:sent_at => Time.now)
+
+      if @sales_order.persisted?
+        @sales_order.touch
+        SalesOrdersIndex::SalesOrder.import [@sales_order.id] # Force import the following Object
+      end
     end
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -86,13 +93,13 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def resync
     authorize @sales_order
-
     if @sales_order.save_and_sync
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     end
   end
 
   private
+
   def save
     @sales_order.save
   end

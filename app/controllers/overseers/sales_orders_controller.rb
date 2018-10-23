@@ -1,13 +1,34 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
 
   def pending
-    @pending_sales_orders = ApplyDatatableParams.to(policy_scope(SalesOrder.all).not_legacy.not_rejected.left_joins(:approval).merge(SalesOrderApproval.where(sales_order_id: nil)), params, do_not_search: true)
-    authorize @pending_sales_orders
+    authorize :sales_order
+
+    respond_to do |format|
+      format.html { render 'index' }
+      format.json do
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+
+        render 'index'
+      end
+    end
   end
 
   def index
-    @sales_orders = ApplyDatatableParams.to(policy_scope(SalesOrder.all), params)
-    authorize @sales_orders
-  end
+    authorize :sales_order
 
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+      end
+    end
+  end
 end

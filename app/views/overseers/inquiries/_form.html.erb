@@ -47,7 +47,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount, input_html: {min:0.01} %>
+                <%= f.input :potential_amount, input_html: { min:0.01 } %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -165,14 +165,18 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-3">
             <%= f.input :customer_order_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-3">
             <%= f.input :customer_committed_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-3">
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
+          </div>
+          <div class="col-12 col-md-3">
+            <%= f.label :valid_end_time, "Quotation Validity Date" %>
+            <%= f.input :valid_end_time, as: :string,label: false, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
         </div>
       </div>

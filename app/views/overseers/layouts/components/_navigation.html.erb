@@ -48,6 +48,7 @@
           <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
           <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
           <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
+          <%= nav_dropdown_item 'Tax Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -66,7 +67,11 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'List', overseers_sales_orders_path, policy(:sales_order).index? %>
-          <%= nav_dropdown_item 'Pending', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+          <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
+          <%#= nav_dropdown_item 'Sales Invoices', overseers_inquiry_sales_invoices_path, policy(:sales_invoice).index? %>
+          <%#= nav_dropdown_item 'Sales Shipments', overseers_inquiry_sales_shipments_path, policy(:sales_shipments).index? %>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -83,7 +88,7 @@
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
-      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? if Rails.env.development? %>
+      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
     </ul>
   </div>
   <!-- Navigation Bar -->

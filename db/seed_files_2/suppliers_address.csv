@@ -1,0 +1,7 @@
+address_id,cmp_id,cmp_name,gst_num,gst_file,address,city,state,state_name,country,pincode,telephone,cst_num,cst_file,vat_num,vat_file,ed_num,ed_file,sap_row_num,gst_type,tan_num
+9953,6313,"Ravi Scientific Industries",07AADPC6567F1ZU,NULL,"14 UA Jawahar Nagar Near Malka Ganj Chowk","Delhi ",505,Maharashtra,IN,"110 007",9910475789,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9954,6314,"Western Steel Drums Pvt. Ltd.",27AAACW2392N1ZU,NULL,"Office 1, Jubilee View A , Yari Rd , Versova",Mumbai,505,Maharashtra,IN,400061,9920579468,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9955,6316,"Milan Safety.",27AAZFM3722A1Z8,NULL,"18,Ratan Mahal, Sharadanand road, Ghatkoper West",Mumbai,505,Maharashtra,IN,400086,9699953532,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9956,6318,"Kagzi Stationery Mart","No GST Number",NULL,"Opp State Bank ATM,  Limda Chowk, Lal Gate,",Surat,496,Gujarat,IN,395003,9898598330,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9957,6319,"Korea Pustak Sadan",23ABTPJ1669A1ZS,NULL,"614, M. Godhi Marg, Khajuri Bazaar",Indore,504,"Madhya Pradesh",IN,452002,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL
+9958,6320,"Jolly Containers.",25AAKFJ0632M1ZA,NULL,"104/5/6 Turf Estate,  Shakti Mill Lane, Mahalaxmi","Mumbai ",505,Maharashtra,IN,400011,9769814441,NULL,NULL,NULL,NULL,NULL,NULL,"0,1",1,NULL

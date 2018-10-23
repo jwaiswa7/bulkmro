@@ -1,4 +1,6 @@
 class SalesInvoice < ApplicationRecord
+  include Mixins::CanBeSynced
+
   belongs_to :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
@@ -9,6 +11,7 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -35,4 +38,7 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
+  def self.syncable_identifiers
+    [:invoice_number]
+  end
 end

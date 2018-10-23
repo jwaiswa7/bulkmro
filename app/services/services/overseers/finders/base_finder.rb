@@ -56,7 +56,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
       indexed_records = indexed_records.filter({
                                                    term: {
-                                                       "#{search_filter[:name]}": search_filter[:search][:value]
+                                                       :"#{search_filter[:name]}" => search_filter[:search][:value]
                                                    }
                                                }) if (search_filter[:search][:value].present? && search_filter[:search][:value] != 'null')
     end
@@ -68,7 +68,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     range_filters.each do |range_filter|
       indexed_records = indexed_records.query({
                                                   range: {
-                                                      "#{range_filter[:name]}": {
+                                                      :"#{range_filter[:name]}" => {
                                                           gte: range_filter[:search][:value],
                                                           lte: range_filter[:search][:value]
                                                       }
@@ -85,6 +85,59 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def index_klass
     [model_klass.to_s.pluralize, 'Index'].join.constantize
+  end
+
+  def filter_by_owner(ids)
+    {
+        bool: {
+            should: [
+                {
+                    terms: {inside_sales_executive: ids},
+                },
+                {
+                    terms: {outside_sales_executive: ids}
+                }
+            ],
+            minimum_should_match: 1,
+        },
+
+    }
+  end
+
+  def filter_by_status(only_remote_approved: false)
+    if only_remote_approved
+      {
+          bool: {
+              should: [
+                  {
+                      term: {status: 60},
+                  },
+                  {
+                      term: {legacy_request_status: 60},
+                  },
+                  {
+                      term: {approval_status: 'approved'},
+                  },
+              ],
+              minimum_should_match: 2,
+          },
+      }
+    else
+      {
+          bool: {
+              should: [
+                  {
+                      term: {legacy_status: 'not_legacy'},
+                  },
+                  {
+                      terms: {status: SalesOrder.statuses.except( :'Approved').values},
+                  }
+              ],
+              minimum_should_match: 2,
+          },
+      }
+    end
+
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters

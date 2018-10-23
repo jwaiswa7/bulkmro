@@ -5,7 +5,7 @@ class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
   end
 
   def call
-    if account.save!
+    if account.save
       perform_later(account)
     end
   end
@@ -15,8 +15,8 @@ class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
       if account.remote_uid.present?
         ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
       else
-        account.remote_uid = ::Resources::BusinessPartnerGroup.create(account)
-        account.save
+        remote_uid = ::Resources::BusinessPartnerGroup.create(account)
+        account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
     end
   end

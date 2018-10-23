@@ -5,9 +5,11 @@ class SalesShipment < ApplicationRecord
   belongs_to :sales_order
   has_many :rows, :class_name => 'SalesShipmentRow', inverse_of: :sales_shipment
   has_many :packages, :class_name => 'SalesShipmentPackage', inverse_of: :sales_shipment
+  has_many :comments, :class_name => 'SalesShipmentComment', inverse_of: :sales_shipment
 
   has_one_attached :shipment_pdf
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
   enum status: {
       default: 10,
       cancelled: 20
@@ -24,8 +26,12 @@ class SalesShipment < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ['shipment', remote_uid].join('_'),
+        ['shipment', shipment_number].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
+  end
+
+  def self.syncable_identifiers
+    [:shipment_number]
   end
 end

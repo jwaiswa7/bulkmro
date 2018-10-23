@@ -5,7 +5,7 @@ class Services::Resources::Brands::SaveAndSync < Services::Shared::BaseService
   end
 
   def call
-    if brand.save!
+    if brand.save
       perform_later(brand)
     end
   end

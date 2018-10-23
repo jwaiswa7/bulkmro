@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
-    resources :overseers
+    resources :overseers, except: [:show]
 
     resources :suppliers do
       collection do
@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :contacts, except: [:show] do
+    resources :contacts do
       collection do
         get 'autocomplete'
       end
@@ -71,7 +71,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :measurement_units do
+    resources :measurement_units, except: [:show] do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
+    resources :tax_codes, except: [:show] do
       collection do
         get 'autocomplete'
       end
@@ -84,12 +90,6 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'autocomplete_closure_tree'
-      end
-    end
-
-    resources :tax_codes do
-      collection do
-        get 'autocomplete'
       end
     end
 
@@ -119,6 +119,14 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
+
+    resources :purchase_orders do
+      collection do
+        get 'export_sheet'
+      end
+    end
+    # resources :sales_invoices
+    # resources :sales_shipments
 
     resources :inquiries do
       member do

@@ -21,12 +21,13 @@ class Account < ApplicationRecord
   enum :account_type => {
       :is_supplier => 10,
       :is_customer => 20,
-      :is_both => 30
   }
+
+  validates_presence_of :account_type
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.account_type ||= :is_both
+    self.account_type ||= :is_customer
   end
 
   def self.legacy

@@ -51,9 +51,9 @@ class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::
 
   def set_generated_skus
     rows.each do |row|
-      if Product.find_by_sku(row['sku']).blank?
+      if Product.find_by_sku(row['sku']).blank? || Product.find_by_sku(row['sku']).not_approved?
         if row['mpn'].to_s.strip.present?
-          row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map {|r| r['sku']})
+          row['sku'] = Services::Resources::Shared::UidGenerator.product_sku(rows.map {|r| r['sku'] || r.try(:sku)})
         else
           import.errors.add(:base, ['invalid excel rows, sku or mpn are mandatory for every row'].join(' '))
           raise ExcelInvalidRows

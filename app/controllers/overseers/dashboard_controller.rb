@@ -20,6 +20,7 @@ class Overseers::DashboardController < Overseers::BaseController
 
     # InquiryIndex.import
     InquiriesIndex.reset!
+    SalesOrdersIndex.reset!
 
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path

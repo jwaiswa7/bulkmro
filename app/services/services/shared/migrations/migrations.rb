@@ -2,22 +2,23 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-  attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists
+  attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
-  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true)
+  def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)
     @custom_methods = custom_methods
     @limit = limit
     @secondary_limit = secondary_limit
     @update_if_exists = update_if_exists
+    @folder = folder
   end
 
   def call
     methods = if custom_methods.present?
                 custom_methods
               elsif Rails.env.production?
-                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
+                %w(inquiry_attachments)
               elsif Rails.env.development?
-                %w(categories products inquiries inquiry_terms inquiry_details)
+                %w(overseers overseers_smtp_config measurement_unit lead_time_option currencies states payment_options industries accounts contacts companies_acting_as_customers company_contacts addresses companies_acting_as_suppliers supplier_contacts supplier_addresses warehouse brands tax_codes categories products inquiries inquiry_terms inquiry_details sales_order_drafts sales_order_items activities inquiry_attachments sales_invoices sales_shipments purchase_orders sales_receipts product_categories)
               end
 
     PaperTrail.request(enabled: false) do
@@ -51,7 +52,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         'Sales Support' => :sales,
         'SalesExport' => :sales,
         'sales_supplier' => :sales,
-        'Sales Manager' => :outside_sales_manager,
+        'Sales Manager' => :outside_sales_team_leader,
         'HR' => :sales,
         'Creative' => :sales,
         'saleswithaccounts' => :sales,
@@ -66,7 +67,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         '0' => :inactive
     }
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('admin_users.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('admin_users.csv', folder)
     service.loop(secondary_limit) do |x|
       overseer = Overseer.where(email: x.get_column('email').strip.downcase).first_or_initialize
       password = Devise.friendly_token
@@ -79,11 +80,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overseer.role = case role_name
               when :sales
                 if identifier == 'inside'
-                  :inside_sales
+                  :inside_sales_executive
                 elsif identifier == 'outside'
-                  :outside_sales
+                  :outside_sales_executive
                 elsif identifier == 'outside/manager'
-                  :outside_sales_manager
+                  :outside_sales_team_leader
                 else
                   :sales
                 end
@@ -127,7 +128,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def overseers_smtp_config
-    service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('smtp_conf.csv', folder)
     service.loop(secondary_limit) do |x|
       email = x.get_column('email')
       next if email.in? %w(shailesh.salekar@bulkmro.com service@bulkmro.com)
@@ -181,7 +182,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def states
-    service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('states.csv', folder)
     service.loop(secondary_limit) do |x|
       state = AddressState.where(name: x.get_column('default_name').strip).first_or_initialize
       if state.new_record? || update_if_exists
@@ -197,7 +198,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def payment_options
-    service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms.csv', folder)
     service.loop(secondary_limit) do |x|
       next if x.get_column('id').in? %w(123 146)
       payment_option = PaymentOption.where(name: x.get_column('value')).first_or_initialize
@@ -214,7 +215,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def industries
-    service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('industries.csv', folder)
     service.loop(secondary_limit) do |x|
       industry = Industry.where(name: x.get_column('industry_name')).first_or_initialize
       if industry.new_record? || update_if_exists
@@ -228,15 +229,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts
-    Account.first_or_create!(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier)
-    Account.first_or_create!(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier)
+    Account.where(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier).first_or_create!
+    Account.where(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier).first_or_create!
 
     Account.where(:name => 'Legacy Account').first_or_create! do |account|
       account.remote_uid = 99999999
       account.alias = 'LGA'
     end
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('accounts.csv', folder)
     service.loop(limit) do |x|
       id = x.get_column('id')
       next if id.in? %w(3275)
@@ -249,8 +250,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         account.legacy_id = id
         account.account_type = :is_customer
         account.legacy_metadata = x.get_row
-        account.created_at = x.get_column('created_at', to_datetime: true)
-        account.updated_at = x.get_column('updated_at', to_datetime: true)
+        account.created_at = x.get_column('created_at', to_datetime: true) if x.get_column('created_at').present?
+        account.updated_at = x.get_column('updated_at', to_datetime: true) if x.get_column('updated_at').present?
         account.save!
       end
     end
@@ -262,7 +263,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact.assign_attributes(account: Account.legacy, first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
     end
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv', folder)
 
     status_mapping = {'0' => 20, '1' => 10}
     contact_group_mapping = {'General' => 10, 'Company Top Manager' => 20, 'Retailer' => 30, 'Ador' => 40, 'Vmi_group' => 50, 'C-Form customer GROUP' => 60, 'Manager' => 70}
@@ -318,7 +319,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     legacy_company.company_contacts << company_contact
     legacy_company.update_attributes(:default_company_contact => company_contact)
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv', folder)
     service.loop(limit) do |x|
 
       id = x.get_column('Magento Id')
@@ -376,7 +377,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def company_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_contact_mapping.csv', folder)
 
     service.loop(limit) do |x|
       company_name = x.get_column('cmp_name')
@@ -386,15 +387,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       contact_email = x.get_column('email', downcase: true)
       if contact_email && company_name
-        company = Company.find_by_name(company_name)
+        company = Company.acts_as_customer.find_by_name(company_name)
         
         if company.present?
-          company_contact = CompanyContact.find_or_create_by(
-            company: company,
-            contact: Contact.find_by_email(contact_email),
-            remote_uid: x.get_column('sap_id'),
-            legacy_metadata: x.get_row
-          )
+          company_contact = CompanyContact.where(company: company, contact: Contact.find_by_email(contact_email)).first_or_initialize
+          company_contact.remote_uid = x.get_column('sap_id')
+          company_contact.legacy_metadata = x.get_row
+          company_contact.save!
           company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
         end
       end
@@ -403,7 +402,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def addresses
     legacy_state = AddressState.where(name: 'Legacy Indian State', country_code: 'IN').first_or_create
-    service = Services::Shared::Spreadsheets::CsvImporter.new('company_address.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_address.csv', folder)
     gst_type = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
 
     legacy_company = Company.legacy
@@ -467,7 +466,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def companies_acting_as_suppliers
-    supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv')
+    supplier_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers.csv', folder)
     supplier_service.loop(limit) do |x|
       account = x.get_column('alias_id') ? Account.non_trade : Account.trade
       supplier_name = x.get_column('sup_name')
@@ -510,7 +509,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def supplier_contacts
-    service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv', folder)
 
     service.loop(limit) do |x|
 
@@ -557,7 +556,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def supplier_addresses
-    supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv')
+    supplier_address_service = Services::Shared::Spreadsheets::CsvImporter.new('suppliers_address.csv', folder)
     gst_type_mapping = {1 => 10, 2 => 20, 3 => 30, 4 => 40, 5 => 50, 6 => 60}
 
     supplier_address_service.loop(limit) do |x|
@@ -609,7 +608,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def warehouse
-    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv', folder)
     service.loop(limit) do |x|
       warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
       if warehouse.new_record? || update_if_exists
@@ -636,7 +635,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def brands
     Brand.where(name: 'Legacy Brand').first_or_create!
-    service = Services::Shared::Spreadsheets::CsvImporter.new('brands.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('brands.csv', folder)
     service.loop(limit) do |x|
       name = x.get_column('name')
       next if name == nil
@@ -652,7 +651,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def tax_codes
-    service = Services::Shared::Spreadsheets::CsvImporter.new('hsn_codes.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('hsn_codes.csv', folder)
     service.loop(limit) do |x|
       chapter = x.get_column('chapter')
       tax_code = x.get_column('tax_code')
@@ -675,7 +674,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def categories
-    service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('categories.csv', folder)
     service.loop(limit) do |x|
       parent_id = x.get_column('parent_id')
       tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
@@ -698,7 +697,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def products
-    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv', folder)
     service.loop(limit) do |x|
       brand = Brand.find_by_legacy_option_id(x.get_column('product_brand'))
       measurement_unit = MeasurementUnit.find_by_name(x.get_column('uom_name'))
@@ -734,7 +733,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def product_categories
-    service = Services::Shared::Spreadsheets::CsvImporter.new('category_product_mapping.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('category_product_mapping.csv', folder)
     service.loop(limit) do |x|
       product = Product.find_by_legacy_id(x.get_column('product_legacy_id'))
       product.update_attributes(:category => Category.find_by_legacy_id(x.get_column('category_legacy_id'))) if product.present?
@@ -747,7 +746,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     quote_category = {'bmro' => 10, 'ong' => 20}
     opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
     service.loop(limit) do |x|
 
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
@@ -822,6 +821,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.legacy_metadata = x.get_row
         inquiry.created_at = x.get_column('created_time', to_datetime: true)
         inquiry.updated_at = x.get_column('update_time', to_datetime: true)
+        inquiry.save!
       end
       inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
       inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) if inquiry.inquiry_currency_id.blank?
@@ -833,7 +833,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     freight_option_mapping = {'Extra as per Actual' => 20, 'Included' => 10}
     packing_and_forwarding_option_mapping = {'Included' => 10, 'Not Included' => 20}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_terms.csv', folder)
     service.loop(limit) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
@@ -848,7 +848,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def inquiry_details
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv', folder)
     service.loop(limit) do |x|
       puts "#{x.get_column('quotation_item_id')}"
       #next if (x.get_column('quotation_item_id').to_i < 3189 )
@@ -875,7 +875,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
       inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_initialize
       if inquiry_product_supplier.new_record? || update_if_exists
-        inquiry_product_supplier.unit_cost_price = x.get_column('cost')
+        inquiry_product_supplier.unit_cost_price = x.get_column('cost').try(:to_i) || 0
         inquiry_product_supplier.save!
       end
 
@@ -893,6 +893,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
       if row.new_record? || update_if_exists
+        row.measurement_unit = MeasurementUnit.default
         row.quantity = x.get_column('qty', nil_if_zero: true) || 1
         row.margin_percentage = ((x.get_column('price_ht', to_f: true) == 0 || x.get_column('cost', to_f: true) == 0) ? 0 : ((1 - (x.get_column('cost').to_f / x.get_column('price_ht').to_f)) * 100))
         row.tax_code = TaxCode.find_by_chapter(x.get_column('hsncode')) || nil
@@ -910,7 +911,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def sales_order_drafts
     legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
     remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
     service.loop(limit) do |x|
       inquiry_number = x.get_column('inquiry_number').to_i
       next if inquiry_number == 11505
@@ -965,7 +966,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_order_items
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_items.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_items.csv', folder)
     service.loop(limit) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       product = Product.find_by_sku(x.get_column('sku'))
@@ -973,7 +974,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if product.present?
           sales_order_rows = sales_order.rows.joins(:inquiry_product).where(:inquiry_products => {:product_id => product.id})
           if sales_order_rows.present?
-            sales_order_rows.first.update_attributes(quantity: x.get_column('qty_ordered'))
+            if sales_order.id == 3195
+              sales_order_rows.first.update_attributes!(quantity: 1)
+            else
+              sales_order_rows.first.update_attributes!(quantity: x.get_column('qty_ordered'))
+            end
           end
         end
       end
@@ -986,7 +991,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     activity_type = {'Meeting' => 10, 'Phone call' => 20, 'Email' => 30, 'Quote/Tender Prep' => 40, 'Tender preparation' => 50}
     activity_status = {'Approved' => 10, 'Pending Approval' => 20, 'Rejected' => 30}
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv', folder)
     service.loop(limit) do |x|
 
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
@@ -1011,12 +1016,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         activity.contact = contact
         activity.subject = x.get_column('subject')
         activity.company_type = company_type
-        activity.purpose = purpose[x.get_column('purpose')]
+        activity.purpose = purpose[x.get_column('purpose')] || :'Others'
         activity.activity_type = activity_type[x.get_column('activity')]
         activity.activity_status = activity_status[x.get_column('activitystatus')]
         activity.points_discussed = x.get_column('comment')
         activity.actions_required = x.get_column('actionrequired')
-        activity.rference_number = x.get_column('refno')
+        activity.reference_number = x.get_column('refno')
         activity.created_at = (x.get_column('created_at').to_datetime if x.get_column('created_at').present?)
         activity.legacy_metadata = x.get_row
         activity.created_by = overseer
@@ -1029,7 +1034,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
 
   def inquiry_attachments
-    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_attachments.csv', folder)
     service.loop(nil) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       next if inquiry.blank?
@@ -1045,13 +1050,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         file_url = x.get_column(file[1])
         next if file_url.in? %w(https://bulkmro.com/media/quotation_attachment/tender_order_calc_308.xlsx)
         next if inquiry.send(file[2]).attached?
-        attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        begin
+          attach_file(inquiry, filename: x.get_column(file[0]), field_name: file[2], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
       end
     end
   end
 
   def sales_invoices
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice.csv', folder)
     service.loop(limit) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
@@ -1063,15 +1072,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_invoice.metadata = x.get_row
           sales_invoice.save!
         end
-        attach_file(sales_invoice, filename: x.get_column('original_file_name'), field_name: 'original_invoice', file_url: x.get_column('original_file_path'))
-        attach_file(sales_invoice, filename: x.get_column('duplicate_file_name'), field_name: 'duplicate_invoice', file_url: x.get_column('duplicate_file_path'))
-        attach_file(sales_invoice, filename: x.get_column('triplicate_file_name'), field_name: 'triplicate_invoice', file_url: x.get_column('triplicate_file_path'))
+        attach_file(sales_invoice, filename: x.get_column('original_file_name'), field_name: 'original_invoice', file_url: x.get_column('original_file_path')) if !sales_invoice.original_invoice.attached?
+        attach_file(sales_invoice, filename: x.get_column('duplicate_file_name'), field_name: 'duplicate_invoice', file_url: x.get_column('duplicate_file_path')) if !sales_invoice.duplicate_invoice.attached?
+        attach_file(sales_invoice, filename: x.get_column('triplicate_file_name'), field_name: 'triplicate_invoice', file_url: x.get_column('triplicate_file_path')) if !sales_invoice.triplicate_invoice.attached?
       end
     end
   end
 
   def sales_shipments
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_shipment.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_shipment.csv', folder)
     service.loop(limit) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
@@ -1083,13 +1092,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_shipment.metadata = x.get_row
           sales_shipment.save!
         end
-        attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path'))
+        attach_file(sales_shipment, filename: x.get_column('file_name'), field_name: 'shipment_pdf', file_url: x.get_column('file_path')) if !sales_shipment.shipment_pdf.attached?
       end
     end
   end
 
   def purchase_orders
-    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_orders.csv', folder)
     errors = []
     service.loop(limit) do |x|
       begin
@@ -1103,7 +1112,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             purchase_order.metadata = x.get_row
             purchase_order.save!
           end
-          attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path'))
+          attach_file(purchase_order, filename: x.get_column('file_name'), field_name: 'document', file_url: x.get_column('file_path')) if !purchase_order.document.attached?
         end
       rescue => e
         errors.push("#{e.inspect} - #{x.get_column('legacy_id')}")
@@ -1114,7 +1123,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def sales_receipts
     payment_method = {'banktransfer' => 10, 'Cheque' => 20, 'checkmo' => 30, 'razorpay' => 40, 'free' => 50, 'roundoff' => 60, 'bankcharges' => 70, 'cash' => 80, 'creditnote' => 85, 'writeoff' => 90, 'Transfer Acct' => 95}
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts.csv', folder)
     service.loop(limit) do |x|
       sales_invoice = SalesInvoice.find_by_legacy_id(x.get_column('invoice_legacy_id'))
       sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
@@ -1129,7 +1138,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_on_account.csv', folder)
     service.loop(limit) do |x|
       company = Company.acts_as_customer.find_by_legacy_id(x.get_column('company'))
       sales_receipt = SalesReceipt.where(legacy_id: x.get_column('legacy_id')).first_or_initialize

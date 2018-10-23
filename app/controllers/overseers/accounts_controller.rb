@@ -53,8 +53,9 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def account_params
     params.require(:account).permit(
-        :name, :alias,
-        :contacts_attributes => [:id, :first_name, :last_name]
+        :name,
+        :alias,
+        :account_type,
     )
   end
 

@@ -14,6 +14,8 @@ class Overseers::Inquiries::EmailMessagesController < Overseers::Inquiries::Base
     @email_message = @inquiry.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry)
     @email_message.assign_attributes(email_message_params)
 
+    @email_message.assign_attributes(:cc => email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:cc].present?
+    @email_message.assign_attributes(:bcc => email_message_params[:cc].split(',').map {|email| email.strip}) if email_message_params[:bcc].present?
     authorize @inquiry, :create_email_message?
 
     if @email_message.save
