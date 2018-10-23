@@ -20,8 +20,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     end
   end
 
-  def self.custom_find(company)
-    super(company, 'CardName')
+  def self.custom_find(company_name)
+    super(company_name, 'CardName')
   end
 
   def self.update_associated_records(response, force_find: false)

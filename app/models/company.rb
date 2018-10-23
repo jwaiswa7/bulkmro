@@ -77,7 +77,7 @@ class Company < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name, scope: [:is_supplier, :is_customer]
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  # validates_presence_of :pan, :if => :not_legacy?
+  validates_presence_of :pan
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof

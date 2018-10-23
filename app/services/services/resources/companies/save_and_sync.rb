@@ -14,16 +14,18 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
   def call_later
     if company.persisted?
       if account.remote_uid.blank?
-        account.update_attributes(:remote_uid => ::Resources::BusinessPartnerGroup.create(account))
+        remote_uid = ::Resources::BusinessPartnerGroup.create(account)
+        account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
 
       if company.remote_uid.blank?
-        remote_uid = ::Resources::BusinessPartner.custom_find(company)
+        remote_uid = ::Resources::BusinessPartner.custom_find(company.name)
         company.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
 
       if company.remote_uid.blank?
-        company.update_attributes(:remote_uid => ::Resources::BusinessPartner.create(company))
+        remote_uid = ::Resources::BusinessPartner.create(company)
+        company.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       else
         ::Resources::BusinessPartner.update(company.remote_uid, company)
       end
