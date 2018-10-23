@@ -6,10 +6,10 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
   def self.create(record)
     id = super(record) do |response|
-      # persist company.remote_uid
+      # persist company.remote_uid because find_by won't work in update_associated
       record.save!
 
-      # persist address.remote_uid
+      # persist address.remote_uid because find_by won't work in update_associated
       record.addresses.each do |address| address.save! end
 
       update_associated_records(response)
