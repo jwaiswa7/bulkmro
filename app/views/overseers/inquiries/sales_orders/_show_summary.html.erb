@@ -74,12 +74,13 @@
           <strong>Supplier Billing Address</strong><br>
           <%= @inquiry.bill_from.address.name.to_s %><br>
           <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
-          <% if @inquiry.bill_from.address.mobile || @inquiry.bill_from.address.telephone %>
-            Contact: <%= @inquiry.bill_from.address.mobile || @inquiry.bill_from.address.telephone %><br>
+          <% if @inquiry.bill_from.address.phone.present? %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
           <% end %>
           GST no: <%= @inquiry.bill_from.address.gst %><br>
         </div>
-      </div><br>
+      </div>
+      <br>
 
 
       <div class="form-row">
@@ -88,7 +89,7 @@
           <%= (@inquiry.company.name) %><br>
           <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
           Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
@@ -97,8 +98,8 @@
           <strong>Customer Billing Address</strong><br>
           <%= (@inquiry.company.name) %><br>
           <%= @inquiry.billing_address.to_compact_multiline_s %><br>
-          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.mobile || @inquiry.contact.telephone %><br>
+          <% if @inquiry.contact.phone.present? %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           GST no: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %><br>
           Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>

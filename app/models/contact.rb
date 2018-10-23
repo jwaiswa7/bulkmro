@@ -2,6 +2,7 @@ class Contact < ApplicationRecord
   include Mixins::IsAPerson
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
+  include Mixins::HasMobileAndTelephone
 
   pg_search_scope :locate, :against => [:first_name, :last_name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
 
@@ -32,8 +33,6 @@ class Contact < ApplicationRecord
 
   validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
   validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
-  phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
-  validates_plausible_phone :telephone, :mobile, allow_blank:true, if: :not_legacy?
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
