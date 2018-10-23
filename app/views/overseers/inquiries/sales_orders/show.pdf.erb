@@ -5,12 +5,12 @@
         <div id="compare-wrapper">
           <div class="compare_open" id="compare_popup"></div>
           <div id="header">
-            <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <div style=" float:left; width: 40%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
-            <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 30px">
-                <% if params['type'].present? %>
+            <div style="float:right;width:60%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+              <b><span style="font-size: 28px">
+                <% if params[:type].present? && params[:type] == 'proforma'  %>
                   Proforma Invoice #<%= record.order_number %>
                 <% else %>
                   Sales Order #<%= record.order_number %>
