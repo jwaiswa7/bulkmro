@@ -2,6 +2,7 @@ class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
 
   belongs_to :sales_order
+  has_one :inquiry, :through => :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
@@ -11,7 +12,11 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
 
-  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
+  update_index('sales_invoices#sales_invoice') {self}
+  #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
+  has_closure_tree({name_column: :to_s})
+
+  scope :with_includes, -> {includes(:sales_order)}
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -40,5 +45,16 @@ class SalesInvoice < ApplicationRecord
 
   def self.syncable_identifiers
     [:invoice_number]
+  end
+
+  def self.to_csv
+    start_at = Date.today - 5.day
+    end_at = Date.today
+    desired_columns = %w{inquiry_number inquiry_date company_name order_number order_date order_status invoice_number invoice_date customer_po_number}
+    CSV.generate(write_headers: true, headers: desired_columns) do |csv|
+      where(:created_at => start_at..end_at).map{|si| [si.inquiry.inquiry_number.to_s, si.inquiry.created_at.to_date.to_s, si.inquiry.company.name.to_s, si.sales_order.order_number.to_s , si.sales_order.created_at.to_date.to_s, si.sales_order.remote_status, si.invoice_number, si.created_at.to_date.to_s, si.inquiry.customer_po_number] }.each do |s_i|
+        csv << s_i
+      end
+    end
   end
 end

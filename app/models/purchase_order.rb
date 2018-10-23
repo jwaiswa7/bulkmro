@@ -22,9 +22,9 @@ class PurchaseOrder < ApplicationRecord
   def self.to_csv
     start_at = Date.today - 5.day
     end_at = Date.today
-    desired_columns = %w{id po_number inquiry_number inquiry_date procurement_date sales_order_number order_status payment_terms}
+    desired_columns = %w{id po_number inquiry_number purchase_order_date inquiry_date procurement_date sales_order_number order_status payment_terms}
     CSV.generate(write_headers: true, headers: desired_columns) do |csv|
-      where(:created_at => start_at..end_at).map{|po| [po.id.to_s, po.po_number.to_s, po.inquiry.inquiry_number.to_s, po.inquiry.created_at.to_date.to_s, (po.inquiry.procurement_date.to_date.to_s if po.inquiry.procurement_date.present?), (po.inquiry.final_sales_orders.first.order_number if po.inquiry.final_sales_orders.present?), (po.inquiry.final_sales_orders.first.remote_status if po.inquiry.final_sales_orders.present?), (po.inquiry.payment_option.name if po.inquiry.payment_option.present?)] }.each do |p_o|
+      where(:created_at => start_at..end_at).map{|po| [po.id.to_s, po.po_number.to_s, po.inquiry.inquiry_number.to_s, po.created_at.to_date.to_s , po.inquiry.created_at.to_date.to_s, (po.inquiry.procurement_date.to_date.to_s if po.inquiry.procurement_date.present?), (po.inquiry.final_sales_orders.first.order_number if po.inquiry.final_sales_orders.present?), (po.inquiry.final_sales_orders.first.remote_status if po.inquiry.final_sales_orders.present?), (po.inquiry.payment_option.name if po.inquiry.payment_option.present?)] }.each do |p_o|
         csv << p_o
       end
     end
