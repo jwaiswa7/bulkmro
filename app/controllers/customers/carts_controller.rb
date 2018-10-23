@@ -1,4 +1,4 @@
-class Customers::CartsController < ApplicationController
+class Customers::CartsController < Customers::BaseController
 
   def show
     @cart_items = current_cart.cart_items
