@@ -1,3 +1,44 @@
+<div class="col-lg-12">
+  <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
+    Smart Queue Summary
+  </a>
+  <% @status=Hash.new %>
+  <div id="summary" class="collapse show">
+    <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+
+      <% Inquiry.statuses.each do |status,v| %>
+          <% @status[status]=Inquiry.send(status).size%>
+       <% end %>
+
+       <%  @quotation= @status["New Inquiry"].to_i + @status["Acknowledgement Mail"].to_i+ @status["Cross Reference"].to_i+ @status["Preparing Quotation"].to_i+ @status["Quotation Sent"].to_i+ @status["Follow Up on Quotation"].to_i+ @status["Expected Order"].to_i+ @status["SO Not Created-Customer PO Awaited"].to_i
+           @order_won = @status["Order Won"]
+           @so_draft = @status["SO Rejected by Sales Manager"].to_i+@status["SO Draft: Pending Accounts Approval"].to_i
+           @so_rejected = @status["SO Rejected by Sales Manager"]
+           @summary_block_details=Hash.new
+           @summary_block_details["Quotation"]=@quotation
+           @summary_block_details["Order Won"]=@order_won
+           @summary_block_details["SO Draft"]=@so_draft
+           @summary_block_details["SO rejected"]=@so_rejected
+           @i=0
+           @block_color_array=["dark","success","warning","danger"]
+        %>
+      <% @summary_block_details.each do |status,index| %>
+        <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+          <div class="card w-100 mb-2 rim rim-bottom border-<%= @block_color_array[@i] %>">
+            <div class="card-body px-3 pt-3 pb-3">
+              <div class="text-center d-flex flex-column h-100">
+                <p class="mb-1 text-small"><strong><%= status %></strong></p>
+                <h5 class="mb-0 mt-auto text-<%= @block_color_array[@i] %>"><%= @summary_block_details[status]  %></h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% @i=@i+1 %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
