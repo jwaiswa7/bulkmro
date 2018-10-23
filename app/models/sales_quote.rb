@@ -57,8 +57,8 @@ class SalesQuote < ApplicationRecord
     self.rows.first.taxation.to_s
   end
 
-  def sales_quote_qty_fulfill?
-    self.calculated_total_qty > self.sales_orders.map {|row| row.calculated_total_qty.to_i if row.status != 'Rejected'}.compact.sum
+  def sales_quote_quantity_not_fulfilled?
+    self.calculated_total_quantity > self.sales_orders.map {|row| row.calculated_total_quantity.to_i if row.status != 'Rejected'}.compact.sum
   end
 
   def filename(include_extension: false)

@@ -30,7 +30,7 @@ module Mixins::HasRowCalculations
       rows.sum(:freight_cost_subtotal).to_f
     end
 
-    def calculated_total_qty
+    def calculated_total_quantity
       rows.map {|row| row.quantity}.sum
     end
   end
