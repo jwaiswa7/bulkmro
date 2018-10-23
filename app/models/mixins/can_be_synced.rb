@@ -24,7 +24,7 @@ module Mixins::CanBeSynced
     end
 
     def not_synced?
-      synced?
+      !synced?
     end
 
     def sync_id
