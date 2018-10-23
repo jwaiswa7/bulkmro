@@ -2,8 +2,7 @@ json.data (@products) do |product|
   json.array! [
                   [
                       row_action_button(customers_product_path(product), 'arrow-right', 'View Product', 'dark'),
-                      row_action_button(customers_cart_path(product), 'shopping-cart', 'Show Cart', 'dark'), 
-                      row_action_button(customers_cart_item_path(product), 'plus', 'Add to Cart', 'dark')   
+                      row_action_button(customers_cart_items_path(product_id: product.id, quantity: 1), 'plus', 'Add to Cart', 'dark', '_self', :post)
                   ].join(' '),
                   product.name,
                   product.sku,

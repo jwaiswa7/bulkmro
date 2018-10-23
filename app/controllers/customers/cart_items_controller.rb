@@ -6,10 +6,10 @@ class Customers::CartItemsController < ApplicationController
   
   def create
     @cart = current_cart
-    @item = @cart.cart_items.new(item_params)
+    @item = @cart.cart_items.new(quantity: params[:quantity].to_i, product_id: params[:product_id].to_i)
     @cart.save
     session[:cart_id] = @cart.id
-    redirect_to customers_products_path
+    redirect_to customers_cart_path
   end
 
   def destroy

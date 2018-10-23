@@ -208,7 +208,7 @@ Rails.application.routes.draw do
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :products, only: %i[index show]
-    resources :carts
+    resource  :cart, only: [:show]
     resources :cart_items, only: %i[new create destroy]
   end
 
