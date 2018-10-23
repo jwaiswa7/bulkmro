@@ -161,7 +161,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   def self.custom_find(id, by = nil)
     response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
 
-    log_request(:post, id, is_find: true)
+    log_request(:get, id, is_find: true)
     validated_response = get_validated_response(response)
     log_response(validated_response)
 

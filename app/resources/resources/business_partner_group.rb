@@ -4,9 +4,18 @@ class Resources::BusinessPartnerGroup < Resources::ApplicationResource
   end
 
   def self.to_remote(record)
-    {
-        Name: record.name[0..19],
-        Type: "bbpgt_CustomerGroup"
-    }
+    name = record.name[0..19]
+
+    if record.is_customer?
+      {
+          Name: name,
+          Type: "bbpgt_CustomerGroup"
+      }
+    elsif record.is_supplier?
+      {
+          Name: name,
+          Type: "bbpgt_VendorGroup"
+      }
+    end
   end
 end

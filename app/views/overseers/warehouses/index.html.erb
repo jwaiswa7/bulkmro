@@ -1,0 +1,17 @@
+<%= provide :container_fluid, true %>
+<%#- <% provide :can_be_directly_created,policy(:warehouse).new? %>
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort"></th>
+  <th data-name="name">Name</th>
+  <th data-name="name">State</th>
+  <th data-name="name">GST</th>
+  <th data-name="name">Warehouse Code</th>
+  <th data-name="name">Location</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

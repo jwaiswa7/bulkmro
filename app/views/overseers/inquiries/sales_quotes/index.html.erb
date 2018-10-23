@@ -13,12 +13,16 @@
       </div>
     <% end %>
 
-    <% if @sales_quotes.present? && @inquiry.sales_orders.blank? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
+    <% if @sales_quotes.present? && @inquiry.final_sales_quote.present? && !policy(@inquiry.final_sales_quote).new_sales_order? %>
       <ul class="list-group text-info mb-3">
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, please fulfill the following.</h5>
         </li>
+        <% if @inquiry.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
+        <% if @inquiry.final_sales_quote.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quotation has to be emailed; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
+        <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
+
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
         <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO sheet has to be uploaded.</li><% end %>
         <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
@@ -49,7 +53,7 @@
             <% elsif policy(sales_quote).new_revision? %>
               <%= row_action_button(new_revision_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'redo-alt', 'Create Sales Quote Revision', 'warning') %>
             <% end %>
-            <% if policy(sales_quote).new_sales_order? %>
+            <% if policy(sales_quote).new_sales_order? && policy(sales_quote).qty_fulfill? %>
               <%= row_action_button(new_overseers_inquiry_sales_order_path(@inquiry, sales_quote_id: sales_quote.to_param), 'external-link', 'Add to Order', 'success') %>
             <% end %>
             <% if policy(sales_quote).new_email_message? %>
