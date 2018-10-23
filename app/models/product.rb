@@ -31,6 +31,7 @@ class Product < ApplicationRecord
   has_one_attached :image
   attr_accessor :applicable_tax_percentage
 
+  has_many :cart_items
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
