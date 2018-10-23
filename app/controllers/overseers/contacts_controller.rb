@@ -12,6 +12,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def show
+    @inquiries = @contact.inquiries
     authorize @contact
   end
 
