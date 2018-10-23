@@ -69,18 +69,17 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     if @sales_order.not_confirmed?
       @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
+
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(
-            :sent_at => Time.now
-        )
+        @sales_order.update_attributes(:sent_at => Time.now)
       end
     else
       @sales_order.update_attributes(:sent_at => Time.now)
 
       if @sales_order.persisted?
         @sales_order.touch
-        SalesOrdersIndex::SalesOrder.import [@sales_order.id] # Force import the following Object
+        SalesOrdersIndex::SalesOrder.import([@sales_order.id])
       end
     end
 
