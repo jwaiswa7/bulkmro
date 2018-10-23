@@ -14,10 +14,9 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
       indexed_records = filter_query(indexed_records)
     end
 
-    # if range_filters.present?
-    #   indexed_records = range_query(indexed_records)
-    # end
-    #indexed_records = indexed_records.query({range: {created_at:{gte:'2018-05-10', lte: '2018-05-20'} }})
+    if range_filters.present?
+          indexed_records = range_query(indexed_records)
+    end
     indexed_records
   end
 
@@ -38,7 +37,9 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
       indexed_records = filter_query(indexed_records)
     end
 
-    # indexed_records = indexed_records.query({range: {created_at:{gte:'2018-05-10', lte: '2018-05-20'} }})
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
     indexed_records
   end
 
