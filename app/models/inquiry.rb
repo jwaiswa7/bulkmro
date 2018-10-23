@@ -15,6 +15,8 @@ class Inquiry < ApplicationRecord
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :contact, required: false
   belongs_to :company
+  belongs_to :billing_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, :class_name => 'Company', foreign_key: 'billing_company_id'
+  belongs_to :shipping_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) },  :class_name => 'Company', foreign_key: 'shipping_company_id'
   has_one :account, :through => :company
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
@@ -186,7 +188,9 @@ class Inquiry < ApplicationRecord
   validates_presence_of :quote_category, :if => :not_legacy?
   validates_presence_of :payment_option, :if => :not_legacy?
   validates_presence_of :billing_address, :if => :not_legacy?
+  validates_presence_of :billing_company, :if => :not_legacy?
   validates_presence_of :shipping_address, :if => :not_legacy?
+  validates_presence_of :shipping_company, :if => :not_legacy?
   validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
@@ -240,6 +244,14 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
+  end
+
+  after_initialize :set_global_defaults
+  def set_global_defaults
+    if self.company.present?
+      self.billing_company ||= self.company
+      self.shipping_company ||= self.company
+    end
   end
 
   def draft?
