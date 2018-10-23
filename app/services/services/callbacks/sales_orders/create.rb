@@ -7,7 +7,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
     remote_uid = params['DocEntry']
     order_number = params['DocNum']
     comment_message = [
-        ['SAP Status Updated', remote_status].join(': '),
+        ['SAP Status Updated', to_local_status(remote_status)].join(': '),
         ['Comment', remote_comment].join(': '),
     ].join(' | ')
 
