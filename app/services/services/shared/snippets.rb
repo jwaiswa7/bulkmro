@@ -80,9 +80,12 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def sync_unsynced_companies
-    Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where.not("pan IS NOT NULL AND pan != ''").each do |company|
-      company.save_and_sync
-    end
+    company = Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").first
+
+
+    # .each do |company|
+    #   company.save_and_sync
+    # end
   end
 
   def make_admin
