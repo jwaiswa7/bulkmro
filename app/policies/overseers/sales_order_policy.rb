@@ -1,6 +1,10 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def show?
-    record.persisted? && record.order_number.present? && !record.serialized_pdf.attached?
+    record.persisted?
+  end
+
+  def show_pdf?
+    record.persisted? && record.sent? && record.order_number.present?
   end
 
   def show_serialized?
