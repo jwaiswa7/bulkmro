@@ -1,19 +1,17 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
-                      row_action_button(customers_order_path(sales_order), 'arrow-right', 'Go to Sales Order', 'dark'),
-                      row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                      row_action_button(customers_order_path(sales_order), 'eye', 'View Sales Order', 'info'),
+                      row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Sales Order', 'dark', :_blank)
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,
                   format_date(sales_order.created_at),
                   sales_order.inquiry.customer_po_number,
                   sales_order.inquiry.company.to_s,
-                  sales_order.inquiry.inside_sales_owner.to_s,
-                  sales_order.inquiry.outside_sales_owner.to_s,
+                  "",
+                  "",
                   sales_order_format_label(sales_order.status.to_s),
-                  sales_order.remote_status.to_s,
-                  format_currency(sales_order.calculated_total_margin),
               ]
 end
 
