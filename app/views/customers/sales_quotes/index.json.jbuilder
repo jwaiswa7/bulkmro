@@ -4,6 +4,7 @@ json.data (@sales_quotes) do |sales_quote|
                       row_action_button(customers_quote_path(sales_quote), 'arrow-right', 'Go to Sales Quote', 'dark'),
                       row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                   ].join(' '),
+                  sales_quote.inquiry.inquiry_number,
                   format_date(sales_quote.sent_at),
                   sales_quote.created_by.to_s,
                   sales_quote.rows.size,
