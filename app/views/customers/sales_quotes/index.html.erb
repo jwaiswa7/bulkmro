@@ -7,13 +7,13 @@
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
-    <th></th>
-    <th>Sent At</th>
-    <th>Created By</th>
-    <th>Line Items</th>
-    <th>Total(Excl. Tax)</th>
-    <th>Total(Incl. Tax)</th>
-    <th>Created At</th>
+    <th class="no-sort all"></th>
+    <th class="no-sort">Sent At</th>
+    <th class="no-sort">Created By</th>
+    <th class="no-sort">Line Items</th>
+    <th class="no-sort">Total(Excl. Tax)</th>
+    <th class="no-sort">Total(Incl. Tax)</th>
+    <th class="no-sort">Created At</th>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
