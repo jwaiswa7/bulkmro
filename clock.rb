@@ -28,3 +28,7 @@ every(1.day, 'refresh_indices', :at => '06:00') do
   InquiriesIndex.reset!
   SalesOrdersIndex.reset!
 end
+
+every(1.hour, 'adjust_dynos') do
+  Services::Shared::Heroku::DynoAdjuster.new
+end
