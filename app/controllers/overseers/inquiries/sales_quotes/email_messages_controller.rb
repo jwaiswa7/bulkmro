@@ -32,7 +32,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
       @inquiry.update_attributes(:quotation_date => @sales_quote.created_at.to_date)
 
       SalesQuoteMailer.send_acknowledgement(@email_message).deliver_now
-      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry).call
+      Services::Overseers::Inquiries::SetInquiryStatus.new(@inquiry,"quotation sent").call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
     else
       render 'new'
