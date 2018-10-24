@@ -12,7 +12,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def show
     authorize @sales_order
-
+    if params.present? && params[:type].present?
+      @sales_order.assign_attributes(:show_as_proforma => true)
+    end
     respond_to do |format|
       format.html {}
       format.pdf do
