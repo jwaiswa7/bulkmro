@@ -49,6 +49,7 @@
           <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
           <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
           <%= nav_dropdown_item 'Tax Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
+          <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -87,7 +88,6 @@
         </div>
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <%= nav_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
       <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
 
