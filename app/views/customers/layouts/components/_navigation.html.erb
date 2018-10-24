@@ -1,9 +1,3 @@
-<script type="text/javascript">
-    function showList() {
-        $(".shopping-cart").fadeToggle(1000);
-    }
-</script>
-
 <div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
   <!-- Drawer Toggle -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +15,7 @@
   <div class="d-flex align-items-center">
     <div class="d-block d-lg-none ml-2">
       <div class="dropdown">
-        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="#" role="button" data-toggle="dropdown">
           <i class="fal fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -45,49 +39,49 @@
   </div>
   <!-- Navigation Bar -->
 
-  <!--  Cart Items List-->
-  <% if current_cart.present? %>
-    <div class="cart-items-list">
-      <a href="javascript:void(0)" id="cart" onclick="return showList()"><i class="fa fa-shopping-cart"></i> Cart <span class="badge"><%= current_cart.cart_items.count %></span></a></li>
-
-      <div class="container" id="carts-list">
-        <div class="shopping-cart">
-          <div class="shopping-cart-header">
-            <i class="fa fa-shopping-cart cart-icon"></i><span class="badge"><%= current_cart.cart_items.count %></span>
-<!--            <div class="shopping-cart-total">-->
-<!--              <span class="lighter-text">Total:</span>-->
-<!--              <span class="main-color-text">$2,229.97</span>-->
-<!--            </div>-->
-          </div>
-
-          <ul class="shopping-cart-items">
-            <% current_cart.cart_items.each do |cart_item| %>
-              <li class="clearfix">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg" alt="item1"/>
-                <span class="item-name"><%= truncate(Product.find(cart_item.product_id).try(:name), length: 20) %></span>
-                <span class="item-quantity">Quantity: <%= cart_item.quantity %></span>
-              </li>
-            <% end %>
-          </ul>
-          <%= link_to "View Cart", customers_cart_path, :class => "button1" %>
-          <a href="#" class="button2">Checkout</a>
-        </div>
-      </div>
-    </div>
-  <% end %>
-  <!--  Cart Items List-->
-
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
-    <div class="dropdown">
-      <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown d-inline mr-2">
+      <a href="#" role="button" data-toggle="dropdown">
+        <i class="fal fa-shopping-cart"></i> <span class="text-primary"><%= current_cart.cart_items.count %></span>
+      </a>
+      <% if current_cart.present? %>
+        <div class="dropdown-menu dropdown-menu-right cart-dropdown">
+          <h6 class="dropdown-header">Cart</h6>
+          <div class="cart-items">
+            <% current_cart.cart_items.each do |cart_item| %>
+              <div class="dropdown-item text-dark text-wrap">
+                <a class="ml-2 text-danger d-block float-right" href="#">
+                  <i class="fal fa-times"></i>
+                </a>
+                <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= Product.find(cart_item.product_id).try(:name) %></a></span>
+                <span class="d-block text-black-50">x <%= cart_item.quantity %></span>
+              </div>
+              <div class="dropdown-divider"></div>
+            <% end %>
+          </div>
+          <div class="cart-footer">
+            <a class="btn btn-dark btn-sm w-50" href="#">
+              Cart
+            </a>
+            <a class="btn btn-success btn-sm w-50" href="#">
+              Checkout
+            </a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="dropdown d-inline">
+      <a href="#" role="button" data-toggle="dropdown">
         <i class="fal fa-cog"></i>
       </a>
-      <div class="dropdown-menu dropdown-menu-right">
+      <span class="dropdown-menu dropdown-menu-right">
         <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
           <i class="fal fa-power-off"></i>&nbsp;Sign Out
         <% end %>
-      </div>
+      </span>
     </div>
   </div>
   <!-- Settings Dropdown DESKTOP -->
