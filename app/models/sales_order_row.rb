@@ -44,6 +44,8 @@ class SalesOrderRow < ApplicationRecord
     self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
+
+
   def calculated_tax
     (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end

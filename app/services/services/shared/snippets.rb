@@ -19,8 +19,73 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def set_non_trade_accounts
+    [
+        ['SC-7894', "InstaOffice Business Solutions Pvt. Ltd."],
+        ['SC-7952', "Emtex Engineering Pvt. Ltd."],
+        ['SC-7954', "Megan Impex Pvt. Ltd."],
+        ['SC-7960', "TCI Express Limited"],
+        ['SC-7964', "Indigo Airlines"],
+        ['SC-7969', "VRL Logistics Ltd"],
+        ['SC-7971', "Attune Offitech"],
+        ['SC-7972', "Twenty First Century Techno Products Pvt Ltd (FA)"],
+        ['SC-7975', "Nagesh Enterprises"],
+        ['SC-7976', "Prakruti Projects Pvt. Ltd."],
+        ['SC-7978', "Doshi & Shah"],
+        ['SC-7979', "Joule Consulting Pvt. Ltd."],
+        ['SC-7980', "KDK Softwares India Pvt. Ltd."],
+        ['SC-7981', "Membership Fee 18%"],
+        ['SC-7982', "Stone Wood Interior"],
+        ['SC-7983', "Vodafone Number 8291952385"],
+        ['SC-7984', "Advance-Vinod Shinde"],
+        ['SC-8113', "Shortlist Professional Services Pvt. Ltd."],
+        ['SC-8197', "Expeditors International (India) Pvt. Ltd."],
+        ['SC-8198', "Fedex Express Transportation And Supply Chain Services (India) Pvt. Ltd."],
+        ['SC-8199', "Griffin Products Pvt. Ltd."],
+        ['SC-8200', "Haqcom Software Pvt. Ltd."],
+        ['SC-8201', "Innovative Engineers"],
+        ['SC-8205', "LTI - LumiTronic Industries B.V."],
+        ['SC-8207', "Praxis Info Solutions Pvt. Ltd."],
+        ['SC-8208', "R.K. Infosys"],
+        ['SC-8212', "Reliance Retail Ltd."],
+        ['SC-8215', "Spine Technologies(I) Pvt. Ltd."],
+        ['SC-8218', "Subodh Network"],
+        ['SC-8219', "TCI Express Ltd."],
+        ['SC-8220', "The New India Assurance Company Ltd."],
+        ['SC-8222', "United India Insurance Co. Ltd."],
+        ['SC-8223', "V. A. Parikh & Co."],
+        ['SC-8384', "Dell International Services India Pvt. Ltd."],
+        ['SC-8531', "MothersonSumi Infotech & Designs Ltd."],
+        ['SC-8536', "Piping World Projects"],
+        ['SC-8540', "Print Studio Planet"],
+        ['SC-8541', "Nandan Mukhiya - UrbanClap"],
+        ['SC-8542', "Parduman Enterprises"],
+        ['SC-8549', "Param Associates"],
+        ['SC-8553', "TCI House"],
+        ['SC-8554', "Environnement SA India Pvt. Ltd."],
+        ['SC-8557', "Brainsearch Consulting Pvt. Ltd."],
+        ['SC-8925', "Kishor Kamble"],
+        ['SC-9288', "Sure Resistors"],
+    ].each do |company_array|
+      Company.find_by_remote_uid(company_array[0]).update_attribute(:account_id, Account.non_trade.id)
+    end
+  end
+
+  def set_is_customer_for_accounts
+    Account.where.not(:account_type => Account.account_types[:is_supplier]).update_all(:account_type => :is_customer)
+  end
+
   def update_password
     Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(:password => 'abc123', :password_confirmation => 'abc123')
+  end
+
+  def sync_unsynced_companies
+    Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").each do |company|
+      company.save_and_sync
+    end
+
+    company = Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").first
+
   end
 
   def make_admin
@@ -36,6 +101,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def copy_inquiry_number_into_project_uid
     Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
+  end
+
+  def find_business_partner_by_name
+    ::Resources::BusinessPartner.custom_find('Subrata!!')
   end
 
   def delete_inquiry_products
@@ -358,6 +427,49 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".") if x.get_column('powermanager', downcase: true).present?
           sales_manager_username = inquiry.sales_manager.username if inquiry.sales_manager.present?
           inquiry.sales_manager = Overseer.find_by_username(legacy_sales_manager_username) if legacy_sales_manager_username != sales_manager_username
+          inquiry.save!
+        end
+      end
+    end
+  end
+
+  def update_warehouse_and_inquiry
+    update_if_exists = true
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+    service.loop(nil) do |x|
+      warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
+      if warehouse.new_record? || update_if_exists
+        warehouse.remote_uid = x.get_column('Warehouse Code')
+        warehouse.legacy_id = x.get_column('Warehouse Code')
+        warehouse.location_uid = x.get_column('Location')
+        warehouse.remote_branch_name = x.get_column('Warehouse Name')
+        warehouse.remote_branch_code = x.get_column('Business Place ID')
+        warehouse.legacy_metadata = x.get_row
+        warehouse.build_address(
+            :name => x.get_column('Account Name'),
+            :street1 => x.get_column('Street'),
+            :street2 => x.get_column('Block'),
+            :pincode => x.get_column('Zip Code'),
+            :city_name => x.get_column('City'),
+            :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
+            :state => AddressState.find_by_region_code(x.get_column('State'))
+        )
+        warehouse.save!
+      end
+    end
+
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
+        next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+        inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
+        if inquiry.new_record? || update_if_exists
+          inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
+          inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
           inquiry.save!
         end
       end

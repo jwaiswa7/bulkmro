@@ -9,6 +9,7 @@ class SalesInvoiceRow < ApplicationRecord
     self.metadata['qty']
   end
 
+
   def hsn
     get_product.tax_code.chapter
   end
@@ -26,12 +27,13 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def tax_rate
-    get_product.tax_code.tax_percentage
+    ((self.metadata['tax_amount'].to_f / self.metadata['row_total'].to_f) * 100).round(2)
   end
 
   private
+
   def get_product
-    sales_invoice.sales_order.sales_quote.rows.select { | supplier_row | supplier_row.product.sku == self.sku}.first
+    sales_invoice.sales_order.sales_quote.rows.select {|supplier_row| supplier_row.product.sku == self.sku}.first
   end
 
 end

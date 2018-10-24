@@ -9,6 +9,7 @@
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
+            Original for Recipient
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
@@ -56,10 +57,10 @@
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @sales_invoice.sales_order.inquiry.inquiry_number %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <b><span style="color:#000000">Date of Quotation</span></b> <span style="float:right">:</span></td>
+                  <b><span style="color:#000000">Customer Inquiry Reference</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @sales_invoice.sales_order.sales_quote.created_at.strftime("%d-%b-%Y") if @sales_invoice.sales_order.sales_quote.created_at.present? %>
+                      <%= [@sales_invoice.sales_order.inquiry.inquiry_number,@sales_invoice.sales_order.inquiry.subject].join(" - ") %>
                     </span>
                 </td>
               </tr>
@@ -81,7 +82,7 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_invoice.sales_order.id %></span></td>
+                  <span style="color:#000000"><%= @sales_invoice.sales_order.order_number %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
@@ -480,7 +481,7 @@
                       <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
                         <b><span style="color:#000000">Bank :</span></b></td>
                       <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                        <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
+                        <span style="color:#000000">Kotak Mahindra Bank Limited </span>
                       </td>
                     </tr>
                     <tr>

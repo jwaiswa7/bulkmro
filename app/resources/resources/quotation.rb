@@ -43,12 +43,12 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.product.name # Product Desc / NAME
+      item.ItemDescription = row.product.name  # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
       item.MeasureUnit = row.product.measurement_unit.name # Unit of measure?
-      item.U_MPN = row.product.try(:mpn)
+      item.U_MPN = row.product.try(:mpn) || "NIL"
       item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
@@ -97,7 +97,7 @@ class Resources::Quotation < Resources::ApplicationResource
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: record.ancestors.size, #Quotation Revision ID
         DocDate: record.created_date, #Quote Create Date
-        DocDueDate: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime("%Y-%m-%d") : nil, #Quotation Valid Till ?
+        DocDueDate: record.inquiry.valid_end_time.present? ? record.inquiry.valid_end_time.strftime("%Y-%m-%d") : nil, #Quotation Valid Till ?
         TaxDate: record.inquiry.customer_order_date.present? ? record.inquiry.customer_order_date.strftime("%Y-%m-%d") : nil, # record.created_date , #Tax Date??
         AttachmentEntry: record.inquiry.attachment_uid,
         DocumentLines: items, # [Products]

@@ -11,12 +11,12 @@ class Resources::Item < Resources::ApplicationResource
   def self.to_remote(record)
     params = {
         ItemCode: record.sku, #  BMRO Part#
-        ItemName: record.name, # Product Name
+        ItemName: record.name[0..99], # Product Name
         ItemsGroupCode: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, #record.category.remote_uid, # Product Category
         PurchaseItem: "tYES", # TO BE CREATED IN MAGENTO
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
-        Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : nil, # Product Manufacturer
+        Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : -1, # Product Manufacturer
         Valid: "tYES", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
@@ -41,7 +41,7 @@ class Resources::Item < Resources::ApplicationResource
         U_Attribute: nil, # Attribute Set Name
         U_ShortName: nil, # Product Short Name
         U_MOQIncrement: 0, # MOQ Increment
-        U_Item_Descr: record.description, # Product Description
+        U_Item_Descr: record.name, # Product Description
         U_SubCat: nil, # Subcategory 1
         U_SubCat2: nil, # Subcategory 2
         U_Meta_Key: record.meta_keyword, # Meta Keyword

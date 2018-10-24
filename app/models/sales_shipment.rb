@@ -9,6 +9,7 @@ class SalesShipment < ApplicationRecord
 
   has_one_attached :shipment_pdf
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
   enum status: {
       default: 10,
       cancelled: 20

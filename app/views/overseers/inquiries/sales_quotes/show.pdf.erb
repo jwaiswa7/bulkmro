@@ -293,10 +293,10 @@
                   <td align="right" style="text-align:right;">
                     <span><%= item.total_selling_price.round(2) %></span></td>
                   <td align="center">
-                    <span><%= item.best_tax_code.try(:tax_percentage) %>%</span></td>
+                    <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                   <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.best_tax_code.try(:tax_percentage) %>%</span></td>
+                      <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= item.total_tax.round(2) %></span></td>
                   <% else %>
