@@ -44,12 +44,8 @@
             <% end %>
           </div>
           <div class="cart-footer">
-            <a class="btn btn-dark btn-sm w-50" href="#">
-              Cart
-            </a>
-            <a class="btn btn-success btn-sm w-50" href="#">
-              Checkout
-            </a>
+            <%= link_to "Cart", customers_cart_path, :class => "btn btn-dark btn-sm w-50" %>
+            <%= link_to "Checkout", customers_customer_orders_path(cart_id: current_cart.id, contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-sm w-50" %>
           </div>
         </div>
       <% end %>

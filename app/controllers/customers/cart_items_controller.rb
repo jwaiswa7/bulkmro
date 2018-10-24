@@ -4,6 +4,7 @@ class Customers::CartItemsController < Customers::BaseController
     @cart = current_cart
     product_id = params[:product_id].to_i
     quantity = params[:quantity].to_i
+    debugger
 
     if @cart.cart_items.present?
       product_ids = @cart.cart_items.map(&:product_id)
