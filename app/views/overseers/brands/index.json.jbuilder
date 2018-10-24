@@ -6,6 +6,7 @@ json.data (@brands) do |brand|
                       end,
                   ].join(' '),
                   brand.to_s,
+                  format_boolean_label(brand.synced?, 'synced'),
                   format_date(brand.created_at)
               ]
 end
