@@ -54,6 +54,7 @@ class Overseers::ContactsController < Overseers::BaseController
 
   def set_contact
     @contact ||= Contact.find(params[:id])
+    @inquiries = @contact.inquiries
   end
 
   def contact_params

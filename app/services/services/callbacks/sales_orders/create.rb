@@ -22,7 +22,9 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
           if sales_order.remote_status.blank?
             begin
               sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :order_number => order_number, :remote_uid => remote_uid)
+
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
+              sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
               return_response("Order Created Successfully")
             rescue => e
               return_response(e.message, 0)
