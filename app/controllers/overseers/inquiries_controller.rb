@@ -22,8 +22,18 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def smart_queue
-    @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.smart_queue), params)
-    authorize @inquiries
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::SmartQueues.new(params, current_overseer)
+        service.call
+
+       @indexed_inquiries = service.indexed_records
+        @inquiries = service.records.try(:reverse)
+      end
+    end
   end
 
   def autocomplete
