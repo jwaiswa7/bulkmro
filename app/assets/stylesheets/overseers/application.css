@@ -10136,7 +10136,7 @@ th {
     .cart-dropdown .cart-footer *:first-child {
       margin-right: 0.25rem; }
     .cart-dropdown .cart-footer *:last-child {
-      margin-right: 0.25rem; }
+      margin-left: 0.25rem; }
 
 .rim.rim-top {
   border-top: 4px solid transparent;

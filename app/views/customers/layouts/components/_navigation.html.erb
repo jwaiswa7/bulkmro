@@ -11,23 +11,6 @@
   </a>
   <!-- Logo -->
 
-  <!-- Settings Dropdown MOBILE -->
-  <div class="d-flex align-items-center">
-    <div class="d-block d-lg-none ml-2">
-      <div class="dropdown">
-        <a href="#" role="button" data-toggle="dropdown">
-          <i class="fal fa-cog"></i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right">
-          <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
-            <i class="fal fa-power-off"></i>&nbsp;Sign Out
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Settings Dropdown MOBILE -->
-
   <!-- Navigation Bar -->
   <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
     <ul class="navbar-nav">
@@ -40,7 +23,7 @@
   <!-- Navigation Bar -->
 
   <!-- Settings Dropdown DESKTOP -->
-  <div class="d-none d-lg-block">
+  <div class="d-block">
     <div class="dropdown d-inline mr-2">
       <a href="#" role="button" data-toggle="dropdown">
         <i class="fal fa-shopping-cart"></i> <span class="text-primary"><%= current_cart.cart_items.count %></span>
