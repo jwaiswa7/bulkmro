@@ -153,6 +153,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'new_confirmation'
+            get 'proforma'
             post 'create_confirmation'
             post 'resync'
           end
@@ -203,6 +204,7 @@ Rails.application.routes.draw do
         resources :companies
       end
     end
+    resources  :warehouses
   end
 
   namespace 'customers' do

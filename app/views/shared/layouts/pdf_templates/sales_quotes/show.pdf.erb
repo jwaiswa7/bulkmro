@@ -179,7 +179,8 @@
                         <%= record.inquiry.billing_address.to_multiline_s %>
                       <% end %>
                       <br>
-                      Tel: <%= record.inquiry.billing_address.telephone %><br>
+                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
+                      <br>
                       GST No.:<%= record.inquiry.billing_address.gst %><br>
                     </span>
                 </div>
@@ -195,7 +196,8 @@
                         <%= record.inquiry.shipping_address.to_multiline_s %>
                       <% end %>
                       <br>
-                      Tel: <%= record.inquiry.shipping_address.telephone %><br>
+                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                      <br>
                       GST No.:<%= record.inquiry.shipping_address.gst %><br>
                     </span>
                 </div>
