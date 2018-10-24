@@ -1,6 +1,6 @@
 <script type="text/javascript">
     function showList() {
-        $(".shopping-cart").fadeToggle("fast");
+        $(".shopping-cart").fadeToggle(1000);
     }
 </script>
 
@@ -54,10 +54,10 @@
         <div class="shopping-cart">
           <div class="shopping-cart-header">
             <i class="fa fa-shopping-cart cart-icon"></i><span class="badge"><%= current_cart.cart_items.count %></span>
-            <div class="shopping-cart-total">
-              <span class="lighter-text">Total:</span>
-              <span class="main-color-text">$2,229.97</span>
-            </div>
+<!--            <div class="shopping-cart-total">-->
+<!--              <span class="lighter-text">Total:</span>-->
+<!--              <span class="main-color-text">$2,229.97</span>-->
+<!--            </div>-->
           </div>
 
           <ul class="shopping-cart-items">
@@ -69,7 +69,7 @@
               </li>
             <% end %>
           </ul>
-          <a href="#" class="button1">View Cart</a>
+          <%= link_to "View Cart", customers_cart_path, :class => "button1" %>
           <a href="#" class="button2">Checkout</a>
         </div>
       </div>
