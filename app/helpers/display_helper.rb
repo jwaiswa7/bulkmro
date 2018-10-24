@@ -113,6 +113,10 @@ module DisplayHelper
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
 
+  def format_boolean_label(true_or_false)
+    (true_or_false ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>').html_safe
+  end
+
   def format_count(count, zero_if_nil: true)
     if count.present?
       count
