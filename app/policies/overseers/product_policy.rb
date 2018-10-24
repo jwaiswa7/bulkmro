@@ -31,4 +31,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def sku_purchase_history?
     index? && record.inquiry_products.any?
   end
+
+  def sync?
+    approve?
+  end
 end
