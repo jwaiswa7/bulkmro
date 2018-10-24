@@ -9,13 +9,15 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:60%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="font-size: 28px">
-                <%# if params[:type].present? && params[:type] == 'proforma'  %>
-<!--                  Proforma Invoice #<%#= record.order_number %>-->
-                <%# else %>
-                  Sales Order #<%= record.order_number %>
-                <%# end %>
-              </span></b>
+              <b>
+                <span style="font-size: 28px">
+                  <% if defined?(proforma) && proforma %>
+                    Proforma Invoice #<%= record.order_number %>
+                  <% else %>
+                    Sales Order #<%= record.order_number %>
+                  <% end %>
+                </span>
+              </b>
             </div>
           </div>
           <br clear="all">
@@ -156,7 +158,8 @@
                     <%= record.inquiry.billing_address.name %><br>
                     <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
                     <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %><br>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
+                    <br>
                     GST No.:<%= record.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
@@ -168,7 +171,8 @@
                     <%= record.inquiry.shipping_address.name %><br>
                     <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
                     <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %><br>
+                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                    <br>
                     GST No.:<%= record.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>

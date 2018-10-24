@@ -55,7 +55,6 @@ end
 -----
 
 # Features
-
 ## Margins
 - Margins are low
 - More than 10%, manual intervention for Devang
