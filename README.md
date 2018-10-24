@@ -50,3 +50,23 @@ end
 - Disable auto-increment index
 - Perform migration
 - Run calculations in clock process
+
+
+-----
+
+# Features
+
+## Margins
+- Margins are low
+- More than 10%, manual intervention for Devang
+- Less than 10% margin, only Devang can approve
+- Explanation for low margin, adding to order will require a comment
+
+## Payments
+- Template file for uploading bank
+- Payment checklist (not working)
+- Even assumed freight is fine
+- Some checklist-esque report in Sprint for payments
+
+## Payment requests
+- How are payments requested

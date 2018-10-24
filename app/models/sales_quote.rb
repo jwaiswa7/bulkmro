@@ -58,7 +58,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.status != 'Rejected'}.compact.sum
+    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.status != 'Rejected' || sales_order.status != 'SAP Rejected' }.compact.sum
   end
 
   def filename(include_extension: false)

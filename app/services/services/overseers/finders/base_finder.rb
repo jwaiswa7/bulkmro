@@ -127,6 +127,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
               ],
               minimum_should_match: 2,
           },
+
       }
     else
       {
@@ -137,9 +138,12 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                   },
                   {
                       terms: {status: SalesOrder.statuses.except(:'Approved').values},
-                  }
+                  },
+                  {
+                      exists: {field: 'sent_at'}
+                  },
               ],
-              minimum_should_match: 2,
+              minimum_should_match: 3,
           },
       }
     end
