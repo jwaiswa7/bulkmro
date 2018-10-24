@@ -26,8 +26,10 @@
       </div>
       <% if f.object.status || f.object.legacy_request_status == "Approved" %>
         <div class="col-3 col-md-3" style="text-align:right">
-          <%= link_to overseers_inquiry_sales_order_path(@inquiry, @sales_order, :type => 'proforma', format: :pdf), class:"btn btn-warning", target:"_blank" do %>
-            View Proforma Invoice
+          <% if policy(@sales_order).show_pdf? %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class:"btn btn-warning", target:"_blank" do %>
+              View Proforma Invoice
+            <% end %>
           <% end %>
         </div>
       <% end %>

@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :edit, :update, :new_confirmation, :create_confirmation, :resync]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -17,6 +17,16 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       format.html {}
       format.pdf do
         render_pdf_for @sales_order
+      end
+    end
+  end
+
+  def proforma
+    authorize @sales_order, :show_pdf?
+
+    respond_to do |format|
+      format.pdf do
+        render_pdf_for @sales_order, { proforma: true }
       end
     end
   end
