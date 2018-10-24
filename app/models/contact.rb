@@ -50,6 +50,11 @@ class Contact < ApplicationRecord
     end
   end
 
+
+  def syncable_identifiers
+    [:remote_uid]
+  end
+
   def self.legacy
     find_by_email('legacy@bulkmro.com')
   end
