@@ -10,11 +10,11 @@
             </div>
             <div style="float:right;width:60%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
               <b><span style="font-size: 28px">
-                <% if params[:type].present? && params[:type] == 'proforma'  %>
-                  Proforma Invoice #<%= record.order_number %>
-                <% else %>
+                <%# if params[:type].present? && params[:type] == 'proforma'  %>
+<!--                  Proforma Invoice #<%#= record.order_number %>-->
+                <%# else %>
                   Sales Order #<%= record.order_number %>
-                <% end %>
+                <%# end %>
               </span></b>
             </div>
           </div>
