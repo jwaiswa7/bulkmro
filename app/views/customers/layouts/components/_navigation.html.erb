@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    function showList() {
+        $(".shopping-cart").fadeToggle(1000);
+    }
+</script>
+
 <div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
   <!-- Drawer Toggle -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +44,38 @@
     </ul>
   </div>
   <!-- Navigation Bar -->
+
+  <!--  Cart Items List-->
+  <% if current_cart.present? %>
+    <div class="cart-items-list">
+      <a href="javascript:void(0)" id="cart" onclick="return showList()"><i class="fa fa-shopping-cart"></i> Cart <span class="badge"><%= current_cart.cart_items.count %></span></a></li>
+
+      <div class="container" id="carts-list">
+        <div class="shopping-cart">
+          <div class="shopping-cart-header">
+            <i class="fa fa-shopping-cart cart-icon"></i><span class="badge"><%= current_cart.cart_items.count %></span>
+<!--            <div class="shopping-cart-total">-->
+<!--              <span class="lighter-text">Total:</span>-->
+<!--              <span class="main-color-text">$2,229.97</span>-->
+<!--            </div>-->
+          </div>
+
+          <ul class="shopping-cart-items">
+            <% current_cart.cart_items.each do |cart_item| %>
+              <li class="clearfix">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg" alt="item1"/>
+                <span class="item-name"><%= truncate(Product.find(cart_item.product_id).try(:name), length: 20) %></span>
+                <span class="item-quantity">Quantity: <%= cart_item.quantity %></span>
+              </li>
+            <% end %>
+          </ul>
+          <%= link_to "View Cart", customers_cart_path, :class => "button1" %>
+          <a href="#" class="button2">Checkout</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <!--  Cart Items List-->
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">

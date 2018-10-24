@@ -20,8 +20,6 @@
 
       <div class="container<% if content_for?(:container_fluid) %>-fluid<% end %>">
         <div class="row justify-content-center">
-          <%= yield %>
-
           <% flash.each do |message_type, message| %>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
               <%= message %>
@@ -30,6 +28,7 @@
               </button>
             </div>
           <% end %>
+          <%= yield %>
         </div>
       </div>
     </div>
