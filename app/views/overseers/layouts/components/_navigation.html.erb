@@ -37,6 +37,7 @@
       <%= nav_item 'Dashboard', overseers_dashboard_path, policy(:dashboard).show? %>
       <%= nav_item 'Accounts', overseers_accounts_path, policy(:account).index? %>
       <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
+      <%= nav_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Products
@@ -88,6 +89,7 @@
         </div>
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+      <%= nav_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
       <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
       <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
 
