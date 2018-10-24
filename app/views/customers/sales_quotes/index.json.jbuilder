@@ -1,17 +1,16 @@
 json.data (@sales_quotes) do |sales_quote|
   json.array! [
                   [
-                      row_action_button(customers_quote_path(sales_quote), 'arrow-right', 'Go to Sales Quote', 'dark'),
-                      row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                      row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info'),
+                      row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download Quote', 'dark', :_blank)
                   ].join(' '),
                   sales_quote.inquiry.inquiry_number,
-                  sales_quote.inquiry.inside_sales_owner.to_s,
-                  format_date(sales_quote.sent_at),
-                  sales_quote.created_by.to_s,
+                  format_date(sales_quote.created_at),
                   sales_quote.rows.size,
                   format_currency(sales_quote.calculated_total),
-                  format_currency(sales_quote.calculated_total_with_tax),
-                  format_date(sales_quote.created_at)
+                  sales_quote.inquiry.inside_sales_owner.to_s,
+                  format_date(sales_quote.inquiry.valid_end_time),
+                  status_helper_format_label(sales_quote.inquiry.status),
               ]
 end
 

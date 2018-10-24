@@ -1,8 +1,8 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
-                      row_action_button(customers_order_path(sales_order), 'eye', 'View Sales Order', 'info'),
-                      row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Sales Order', 'dark', :_blank)
+                      row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info'),
+                      row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,

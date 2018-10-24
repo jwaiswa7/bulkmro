@@ -9,25 +9,14 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort" data-name="order_number">Quote #</th>
-    <th class="no-sort" data-name="">Inside Sales</th>
     <th class="no-sort">Date</th>
-    <th class="no-sort">Created By</th>
     <th class="no-sort">Line Items</th>
-    <th class="no-sort">Total(Excl. Tax)</th>
-    <th class="no-sort">Total(Incl. Tax)</th>
-    <th class="no-sort">Created At</th>
+    <th class="no-sort">Total</th>
+    <th class="no-sort">Sales Person</th>
+    <th class="no-sort">Valid Upto</th>
+    <th class="no-sort">Status</th>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
-    <% @sales_quotes.each do |sales_quote| %>
-      <tr>
-        <td><%= format_date(sales_quote.sent_at) %></td>
-        <td><%= sales_quote.created_by.to_s %></td>
-        <td><%= sales_quote.rows.size %></td>
-        <td><%= format_currency(sales_quote.calculated_total) %></td>
-        <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
-        <td><%= format_date(sales_quote.created_at) %></td>
-      </tr>
-    <% end %>
   <% end %>
 </div>
