@@ -1,6 +1,13 @@
 <div class="col-12">
-  <%= simple_form_for(@sales_order, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <div class="page-header">
+    <div class="">
+      <h2>
+        Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+      </h2>
+    </div>
+  </div>
 
+  <%= simple_form_for(@sales_order, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <% if f.object.errors.any? %>
       <% f.object.errors.full_messages.each do |message| %>
         <li><%= message %></li>
