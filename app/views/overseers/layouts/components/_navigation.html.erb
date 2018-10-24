@@ -15,7 +15,7 @@
   <div class="d-flex align-items-center">
     <div class="d-block d-lg-none ml-2">
       <div class="dropdown">
-        <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="#" role="button" data-toggle="dropdown">
           <i class="fal fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -38,7 +38,7 @@
       <%= nav_item 'Accounts', overseers_accounts_path, policy(:account).index? %>
       <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
           Products
         </a>
         <div class="dropdown-menu" aria-labelledby="productsDropdown">
@@ -53,7 +53,7 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
           Inquiries
         </a>
         <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
@@ -63,7 +63,7 @@
       </li>
 
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
           Sales Orders
         </a>
         <div class="dropdown-menu">
@@ -76,7 +76,7 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
           Reports
         </a>
         <div class="dropdown-menu">
@@ -88,9 +88,18 @@
         </div>
       </li>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <%= nav_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
-      <%= nav_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
 
+      <% if (policy(:dashboard).chewy? && Rails.env.development?) || policy(:remote_request).index? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Tools
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
+          <%= nav_dropdown_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index?  %>
+        </div>
+      </li>
+      <% end %>
     </ul>
   </div>
   <!-- Navigation Bar -->
@@ -105,7 +114,7 @@
       <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
         <i class="fal fa-user"></i>
       <% end %>
-      <a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a href="#" role="button" data-toggle="dropdown">
         <i class="fal fa-cog"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
