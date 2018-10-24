@@ -14,7 +14,7 @@ const select2s = () => {
             ajax: {
                 url: $(this).attr('data-source'),
                 dataType: 'json',
-                delay: 100
+                delay: 250
             },
             processResults: function(data, page) {
                 return { results: data };

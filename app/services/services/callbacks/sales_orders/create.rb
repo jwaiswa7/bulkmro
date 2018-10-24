@@ -7,7 +7,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
     remote_uid = params['DocEntry']
     order_number = params['DocNum']
     comment_message = [
-        ['SAP Status Updated', remote_status].join(': '),
+        ['SAP Status Updated', to_local_status(remote_status)].join(': '),
         ['Comment', remote_comment].join(': '),
     ].join(' | ')
 
@@ -23,6 +23,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             begin
               sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :order_number => order_number, :remote_uid => remote_uid)
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
+              sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
               return_response("Order Created Successfully")
             rescue => e
               return_response(e.message, 0)
@@ -33,7 +34,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             sales_order.update_attributes(:status => :'SAP Rejected')
             comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
             sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
-            sales_order.approval.destroy!
+            sales_order.approval.destroy! if sales_order.approval.present?
             return_response("Order Rejected Successfully")
           rescue => e
             return_response(e.message, 0)

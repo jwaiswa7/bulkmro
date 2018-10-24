@@ -6,5 +6,9 @@ module Mixins::HasMobileAndTelephone
     # validates_presence_of :mobile, if: -> {:not_legacy? && self.mobile.blank?}
     phony_normalize :telephone, :mobile, default_country_code: 'IN', if: :not_legacy?
     validates_plausible_phone :telephone, :mobile, allow_blank: true, if: :not_legacy?
+
+    def phone
+      self.mobile || self.telephone
+    end
   end
 end

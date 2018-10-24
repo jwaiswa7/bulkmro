@@ -5,7 +5,6 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
         :subject => @inquiry.subject,
         :body => SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
         :auto_attach => true,
-    # to: current_overseer.email
     )
 
     authorize @sales_quote, :new_email_message?

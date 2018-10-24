@@ -21,7 +21,7 @@
             button: {
                 icon: null,
                 label: 'Feedback? Bug? Help? Ping!',
-                position: 'bottomRight',
+                position: 'rightCenter',
             },
         });
         window.Usersnap = api;
@@ -37,6 +37,17 @@
 
         // Initialize widget
         // Usersnap.open();
+        document.addEventListener("turbolinks:before-visit", function() {
+            //var promise = api.hideButton();
+            //promise.then(function() {
+                api.destroy()
+            //})
+        });
+
+        document.addEventListener("turbolinks:load", function() {
+            api.init();
+        });
+
     }
 </script>
 <script src="//api.usersnap.com/load/c26bb476-aa15-443a-af95-0a3637b074d7.js?onload=onUsersnapLoad" async></script>

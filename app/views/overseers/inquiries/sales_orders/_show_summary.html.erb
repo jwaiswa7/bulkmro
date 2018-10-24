@@ -16,37 +16,27 @@
           <br> <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
         </div>
       <% end %>
-      <div class="col-3">
+      <div class="col-3 col-md-3">
         <strong>Status</strong>
         <br> <%= f.object.status || f.object.legacy_request_status %>
       </div>
-      <div class="col-3">
+      <div class="col-3 col-md-3">
         <strong>SAP Status</strong>
         <br> <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
       </div>
+      <% if f.object.status || f.object.legacy_request_status == "Approved" %>
+        <div class="col-3 col-md-3" style="text-align:right">
+          <% if policy(@sales_order).show_pdf? %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class:"btn btn-warning", target:"_blank" do %>
+              View Proforma Invoice
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
 
   </div>
   <div class="card-body">
-    <div class="form-row mb-1">
-      <div class="col-6">
-        <strong>Company name</strong>
-        <br> <%= (@inquiry.company.name) %>
-      </div>
-      <div class="col-6">
-        <strong>GST no.</strong>
-        <br> <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %>
-      </div>
-    </div>
-
-    <div class="form-row mb-1">
-      <div class="col-12">
-        <strong>Contact</strong>
-        <br> <%= @inquiry.contact.mobile || @inquiry.contact.telephone %>
-      </div>
-    </div>
-
-    <hr style="margin:12px 0px;">
     <div class="form-row mb-1">
       <div class="col-6">
         <strong>Customer PO Number</strong>
@@ -82,29 +72,46 @@
       <div class="form-row">
         <div class="col-md-6">
           <strong>Supplier Shipping Address</strong><br>
-          <%= @inquiry.ship_from.name.to_s %><br>
-          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %>
+          <%= @inquiry.ship_from.address.name.to_s %><br>
+          <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
+          <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+            Contact: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
+          <% end %>
+          GST no: <%= @inquiry.ship_from.address.gst %><br>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.name.to_s %><br>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
+          <%= @inquiry.bill_from.address.name.to_s %><br>
+          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
+          <% if @inquiry.bill_from.address.phone.present? %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+          <% end %>
+          GST no: <%= @inquiry.bill_from.address.gst %><br>
         </div>
       </div>
+      <br>
 
 
       <div class="form-row">
         <div class="col-md-6">
           <strong>Customer Shipping Address</strong><br>
-          <%= @inquiry.contact.full_name %><br>
-          <%= @inquiry.shipping_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <%= (@inquiry.company.name) %><br>
+          <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
+          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
+          <% end %>
+          GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
+          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Customer Billing Address</strong><br>
-          <%= @inquiry.contact.full_name %><br>
-          <%= @inquiry.billing_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <%= (@inquiry.company.name) %><br>
+          <%= @inquiry.billing_address.to_compact_multiline_s %><br>
+          <% if @inquiry.contact.phone.present? %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
+          <% end %>
+          GST no: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %><br>
+          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
       </div>
     </div>

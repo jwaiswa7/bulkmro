@@ -1,8 +1,11 @@
 class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseController
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
-
-    @comments = @sales_order.blank? ? @inquiry.comments.earliest : @inquiry.comments.where(:sales_order_id => [nil, @sales_order.id])
+    @comments = if @sales_order.present?
+                  @inquiry.comments.where(:sales_order_id => [nil, @sales_order.id])
+                else
+                  @inquiry.comments.earliest
+                end
 
     authorize @comments
   end
@@ -15,7 +18,6 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect {|action| params[action]}
       send(callback_method) if callback_method.present? && policy(@comment.sales_order).send([callback_method, '?'].join)
-
       redirect_to overseers_inquiry_comments_path(@inquiry, sales_order_id: @comment.sales_order.to_param), notice: flash_message(@comment, action_name)
     elsif @comment.save
       redirect_to overseers_inquiry_comments_path(@inquiry), notice: flash_message(@comment, action_name)

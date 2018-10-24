@@ -13,6 +13,7 @@ import tinyHtmlEditor from "./components/tinyHtmlEditor";
 import chartjs from "./components/chartjs";
 import datePicker from "./components/datePicker";
 import stickyBits from "./components/stickyBits";
+import daterangePicker from "./components/daterangePicker";
 
 // Namespacing all imports under app
 let app = {};
@@ -32,6 +33,7 @@ app.initializeComponents = () => {
     chartjs();
     datePicker();
     stickyBits();
+    daterangePicker();
 };
 
 // Turbolinks load event
