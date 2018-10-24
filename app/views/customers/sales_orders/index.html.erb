@@ -2,6 +2,10 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :heading do %>
+  Orders
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort"></th>
   <th class="no-sort" data-name="order_number">Inquiry #</th>
