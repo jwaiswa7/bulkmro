@@ -5,6 +5,7 @@ json.data (@sales_quotes) do |sales_quote|
                       row_action_button(customers_quote_path(sales_quote, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                   ].join(' '),
                   sales_quote.inquiry.inquiry_number,
+                  sales_quote.inquiry.inside_sales_owner.to_s,
                   format_date(sales_quote.sent_at),
                   sales_quote.created_by.to_s,
                   sales_quote.rows.size,
