@@ -19,5 +19,5 @@ json.data (@contacts) do |contact|
 end
 
 json.recordsTotal @contacts.model.all.count
-json.recordsFiltered @contacts.total_count
+json.recordsFiltered @indexed_contacts.total_count
 json.draw params[:draw]
