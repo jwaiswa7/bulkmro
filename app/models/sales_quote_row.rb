@@ -39,7 +39,7 @@ class SalesQuoteRow < ApplicationRecord
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
 
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
-    if converted_unit_selling_price.round != calculated_converted_unit_selling_price.round
+    if converted_unit_selling_price.round != converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
@@ -93,7 +93,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def conversion_rate
-    self.sales_quote.inquiry_currency.conversion_rate
+    self.sales_quote.inquiry_currency.conversion_rate || 1
   end
 
   def maximum_quantity
@@ -148,6 +148,22 @@ class SalesQuoteRow < ApplicationRecord
 
   def calculated_converted_unit_selling_price
     (self.unit_selling_price / conversion_rate).round(2) if unit_selling_price.present?
+  end
+
+  def converted_total_selling_price
+    (self.total_selling_price / conversion_rate).round(2) if unit_selling_price.present?
+  end
+
+  def converted_unit_cost_price_with_unit_freight_cost
+    (self.unit_cost_price_with_unit_freight_cost / conversion_rate).round(2) if unit_cost_price_with_unit_freight_cost.present?
+  end
+
+  def converted_total_selling_price_with_tax
+    (self.total_selling_price_with_tax / conversion_rate).round(2) if unit_selling_price.present?
+  end
+
+  def converted_total_tax
+    (total_tax / conversion_rate).round(2)
   end
 
   def taxation
