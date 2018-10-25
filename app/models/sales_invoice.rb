@@ -48,7 +48,7 @@ class SalesInvoice < ApplicationRecord
   end
 
   def self.to_csv
-    start_at = Date.today - 5.day
+    start_at = Date.today - 2.day
     end_at = Date.today
     desired_columns = %w{inquiry_number inquiry_date company_name order_number order_date order_status invoice_number invoice_date customer_po_number}
     CSV.generate(write_headers: true, headers: desired_columns) do |csv|

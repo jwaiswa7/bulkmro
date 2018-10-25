@@ -17,13 +17,13 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   def export_sheet
     # TODO: Custome Datepicker to generate Sales Invoice report
     authorize :sales_invoice
-    # start_at = Date.today - 1.day
-    # end_at = Date.today
+    start_at = Date.today - 2.day
+    end_at = Date.today
 
 
     respond_to do |format|
       format.html
-      format.csv { send_data SalesInvoice.to_csv, filename: "sales-invoices-#{Date.today}.csv" }
+      format.csv { send_data SalesInvoice.to_csv, filename: "sales-invoices-#{start_at}-#{end_at}.csv" }
     end
   end
 end
