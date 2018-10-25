@@ -110,7 +110,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
         U_SQ_Status: Inquiry.statuses[record.inquiry.status], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code,
-        ShipToCode: record.inquiry.shipping_address.remote_uid,
+        ShipToCode: record.inquiry.remote_shipping_uid, #record.inquiry.shipping_address.remote_uid,
         PayToCode: record.inquiry.billing_address.remote_uid,
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
@@ -122,7 +122,8 @@ class Resources::Quotation < Resources::ApplicationResource
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
         TaxExtension: sez,
-        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil
+        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
+        U_ConsigneeAddr: record.inquiry.remote_shipping_uid
     }
   end
 end

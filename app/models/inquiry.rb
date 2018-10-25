@@ -302,4 +302,8 @@ class Inquiry < ApplicationRecord
   def has_attachment?
     self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
   end
+
+  def remote_shipping_uid
+    self.billing_company == self.shipping_company ? self.shipping_address.remote_uid : self.billing_address.remote_uid
+  end
 end
