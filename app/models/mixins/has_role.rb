@@ -33,8 +33,8 @@ module Mixins::HasRole
     scope :outside_and_obj, -> (obj) {where('role IN (?) OR id = ?', OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id))}
 
     MANAGER_ROLES = %w(admin inside_sales_manager outside_sales_manager)
-    INSIDE_ROLES = %w(inside_sales_executive inside_sales_team_leader inside_sales_manager)
-    OUTSIDE_ROLES = %w(outside_sales_executive outside_sales_team_leader outside_sales_manager)
+    INSIDE_ROLES = %w(admin inside_sales_executive inside_sales_team_leader inside_sales_manager)
+    OUTSIDE_ROLES = %w(admin outside_sales_executive outside_sales_team_leader outside_sales_manager)
     EXECUTIVE_ROLES =  INSIDE_ROLES + OUTSIDE_ROLES
 
     def administrator?

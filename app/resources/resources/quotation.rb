@@ -40,9 +40,7 @@ class Resources::Quotation < Resources::ApplicationResource
     items = []
 
     record.rows.each_with_index do |row, index|
-
-      #Check and sync product
-      if !row.product.remote_uid.present?
+      if row.product.not_synced?
         row.product.update_attributes(:remote_uid => ::Resources::Item.create(row.product))
       end
 

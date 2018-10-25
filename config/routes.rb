@@ -96,7 +96,7 @@ Rails.application.routes.draw do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
-        get 'sync'
+        get 'resync'
       end
 
       collection do
