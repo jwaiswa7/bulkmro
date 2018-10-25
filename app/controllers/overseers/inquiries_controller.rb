@@ -122,7 +122,6 @@ class Overseers::InquiriesController < Overseers::BaseController
         :sales_manager_id,
         :billing_address_id,
         :billing_company_id,
-        :shipping_contact_id,
         :shipping_address_id,
         :shipping_company_id,
         :bill_from_id,
