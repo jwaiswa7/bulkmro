@@ -8,7 +8,7 @@ class SalesOrderRow < ApplicationRecord
   has_one :inquiry_product, :through => :sales_quote_row
   has_one :product, :through => :inquiry_product
 
-  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
+  delegate :unit_cost_price_with_unit_freight_cost, :unit_selling_price, :converted_unit_selling_price, :margin_percentage, :unit_freight_cost, :freight_cost_subtotal, :converted_unit_cost_price_with_unit_freight_cost, :converted_unit_selling_price, :converted_converted_unit_selling_price, :converted_margin_percentage, :converted_unit_freight_cost, :converted_freight_cost_subtotal, to: :sales_quote_row, allow_nil: true
   delegate :sr_no, to: :inquiry_product, allow_nil: true
   delegate :taxation, to: :sales_quote_row
   delegate :is_service, :to => :sales_quote_row
@@ -44,7 +44,13 @@ class SalesOrderRow < ApplicationRecord
     self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
   end
 
+  def converted_total_selling_price
+    (self.total_selling_price / sales_quote_row.conversion_rate).round(2)
+  end
 
+  def converted_total_selling_price_with_tax
+    (self.total_selling_price_with_tax / sales_quote_row.conversion_rate).round(2)
+  end
 
   def calculated_tax
     (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
