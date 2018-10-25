@@ -1,6 +1,6 @@
 class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
-
+  belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
