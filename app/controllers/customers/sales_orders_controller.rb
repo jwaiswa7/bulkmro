@@ -1,8 +1,16 @@
 class Customers::SalesOrdersController < Customers::BaseController
 
   def index
-    account = current_contact.account
-    @sales_orders = ApplyDatatableParams.to(account.sales_orders, params)
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Customers::Finders::SalesOrders.new(params, current_contact)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+      end
+    end
   end
 
   def show
