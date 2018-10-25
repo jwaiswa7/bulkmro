@@ -1,8 +1,11 @@
 class PurchaseOrder < ApplicationRecord
-  belongs_to :inquiry
+  include Mixins::HasConvertedCalculations
+
+  has_one :inquiry_currency, :through => :inquiry
+  has_one :currency, :through => :inquiry_currency
+  has_one :conversion_rate, :through => :inquiry_currency
   has_many :rows, class_name: 'PurchaseOrderRow', inverse_of: :purchase_order
   has_one_attached :document
-  include Mixins::HasRowCalculations
 
   update_index('purchase_orders#purchase_order') {self}
   #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
