@@ -23,6 +23,8 @@ class SalesQuote < ApplicationRecord
 
   delegate :ship_from, :bill_from, :billing_address, :shipping_address, :is_sez, :quotation_uid, to: :inquiry
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :parent, :inquiry)}
+
   attr_accessor :selected_suppliers
 
   # validates_length_of :rows, minimum: 1

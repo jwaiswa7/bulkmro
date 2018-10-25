@@ -14,6 +14,6 @@ json.data (@sales_quotes) do |sales_quote|
               ]
 end
 
-json.recordsTotal @sales_quotes.all.count
-json.recordsFiltered @sales_quotes.total_count
+json.recordsTotal @sales_quotes.count
+json.recordsFiltered @indexed_sales_quotes.total_count
 json.draw params[:draw]
