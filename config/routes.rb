@@ -125,8 +125,18 @@ Rails.application.routes.draw do
         get 'export_sheet'
       end
     end
-    # resources :sales_invoices
-    # resources :sales_shipments
+
+    resources :sales_invoices do
+      collection do
+        get 'export_sheet'
+      end
+    end
+
+    resources :sales_shipments do
+      collection do
+        get 'export_sheet'
+      end
+    end
 
     resources :inquiries do
       member do
