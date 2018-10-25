@@ -161,7 +161,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def to_s
-    product.to_s
+    inquiry_product.to_s
   end
 
   def to_remote_s
