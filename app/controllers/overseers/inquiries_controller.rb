@@ -124,6 +124,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         :billing_company_id,
         :shipping_address_id,
         :shipping_company_id,
+        :shipping_contact_id,
         :bill_from_id,
         :ship_from_id,
         :status,
