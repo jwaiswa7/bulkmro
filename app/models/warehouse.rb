@@ -9,6 +9,9 @@ class Warehouse < ApplicationRecord
   validates_presence_of :address
   validates_presence_of :name
 
+  #
+  scope :with_includes, -> {includes(:address)}
+
   def self.default
     find_by_name('Mumbai - Lower Parel')
   end

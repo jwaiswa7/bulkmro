@@ -22,5 +22,5 @@ json.data (@warehouses) do |warehouse|
 end
 
 json.recordsTotal @warehouses.model.all.count
-json.recordsFiltered @warehouses.total_count
+json.recordsFiltered @indexed_warehouses.total_count
 json.draw params[:draw]
