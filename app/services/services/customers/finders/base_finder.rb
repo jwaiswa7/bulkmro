@@ -93,12 +93,12 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
-  def filter_by_owner(id)
+  def filter_by_array(key, vals)
     {
         bool: {
             should: [
                 {
-                    term: {contact_id: id},
+                    terms: {"#{key}": vals},
                 }
             ]
         },
@@ -106,43 +106,17 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def filter_by_status(only_remote_approved: false)
-    if only_remote_approved
-      {
-          bool: {
-              should: [
-                  {
-                      term: {status: SalesOrder.statuses[:Approved]},
-                  },
-                  {
-                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[:Approved]},
-                  },
-                  {
-                      term: {approval_status: 'approved'},
-                  },
-              ],
-              minimum_should_match: 2,
-          },
+  def filter_by_value(key, val)
+    {
+        bool: {
+            should: [
+                {
+                    term: {"#{key}": val},
+                }
+            ]
+        },
 
-      }
-    else
-      {
-          bool: {
-              should: [
-                  {
-                      term: {legacy_status: 'not_legacy'},
-                  },
-                  {
-                      exists: {field: 'sent_at'}
-                  },
-                  {
-                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'SAP Rejected').values},
-                  },
-              ],
-              minimum_should_match: 3,
-          },
-      }
-    end
+    }
   end
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :search_filters, :range_filters
