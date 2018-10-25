@@ -160,6 +160,9 @@
                 <% f.object.supplier_quotes.attachments.each do |attachment| %>
                   <%= link_to url_for(attachment), class: 'ml-md-1 mr-md-0 mr-1 btn-sm btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
                     <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
                   <% end %>
                 <% end if f.object.supplier_quotes.attached? %>
               </div>
