@@ -112,4 +112,8 @@ class SalesOrder < ApplicationRecord
         ('pdf' if include_extension)
     ].compact.join('.')
   end
+
+  def to_s
+    ['#', order_number].join if order_number.present?
+  end
 end

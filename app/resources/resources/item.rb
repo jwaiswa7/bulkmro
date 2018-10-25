@@ -47,7 +47,7 @@ class Resources::Item < Resources::ApplicationResource
         U_Meta_Key: record.meta_keyword, # Meta Keyword
         GSTRelevnt: "tYES",
         GSTTaxCategory: "gtc_Regular",
-        U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class
+        U_TaxClass: record.best_tax_rate.tax_percentage.to_i, # Tax Class
     }
 
     if record.is_service

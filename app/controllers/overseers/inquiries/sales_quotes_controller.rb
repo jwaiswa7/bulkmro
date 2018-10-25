@@ -103,6 +103,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
             :id,
             :sales_quote_id,
             :tax_code_id,
+            :tax_rate_id,
             :inquiry_product_supplier_id,
             # :inquiry_product_id,
             :lead_time_option_id,
