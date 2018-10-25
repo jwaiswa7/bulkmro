@@ -1,19 +1,27 @@
 <div class="card">
   <div class="card-header">
     <div class=form-row>
+      <div class="col-12 col-md-1">
+        Products <br>
+        <strong><%= f.object.rows.size %></strong>
+      </div>
+      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
+        <strong><%= format_currency(f.object.calculated_total_cost) %></strong>
+      </div>
+      <div class="col-4 col-md-1 mt-2 mt-md-0">Total Margin<br>
+        <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+      </div>
       <div class="col-8 col-md-3">
         Total Selling Price (Excl. tax)<br>
         <strong><%= format_currency(f.object.calculated_total) %></strong>
       </div>
-      <div class="col-4 col-md-3">
-        Total Tax<br>
-        <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
-      </div>
       <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
         <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
       </div>
-      <div class="col-4 col-md-3 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+
+      <div class="col-4 col-md-2">
+        Total Tax<br>
+        <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
       </div>
     </div>
   </div>

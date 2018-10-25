@@ -18,6 +18,8 @@
         <li class="list-group-item">
           <h5 class="text-info mb-0">Before making a sales order, please fulfill the following.</h5>
         </li>
+        <% if @inquiry.customer_po_number.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
+        <% if @inquiry.customer_order_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
         <% if @inquiry.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quotation has to be emailed; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
