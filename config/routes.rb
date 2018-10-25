@@ -196,7 +196,16 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
-        resources :addresses
+        resources :addresses do
+          collection do
+            get 'autocomplete'
+          end
+        end
+        resources :contacts do
+          collection do
+            get 'autocomplete'
+          end
+        end
       end
     end
 

@@ -19,7 +19,8 @@
 
         <div class="form-row">
           <div class="col-4">
-            <%= f.association :contact, required: true, :wrapper => :custom_multi_select, collection: f.object.company.contacts, include_blank: "Select a contact" %>
+            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
+            <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-8">
             <%= f.input :subject, required: true %>
@@ -29,17 +30,14 @@
         <div class="form-row">
           <div class="col-md-8">
             <div class="form-row">
-              <div class="col-6 col-md-3">
-                <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
-                <!-- TODO commercial_status need to be added -->
-              </div>
-              <div class="col-6 col-md-3">
+
+              <div class="col-6 col-md-4">
                 <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
               </div>
-              <div class="col-6 col-md-3">
+              <div class="col-6 col-md-4">
                 <%= f.input :opportunity_source, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_sources) %>
               </div>
-              <div class="col-6 col-md-3">
+              <div class="col-6 col-md-4">
                 <%= f.input :is_sez, as: :select, :wrapper => :custom_multi_select, label: 'Is SEZ', required: true %>
               </div>
             </div>
@@ -47,7 +45,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount, input_html: {min: 0.01} %>
+                <%= f.input :potential_amount %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -77,7 +75,16 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_address, required: true, :wrapper => :custom_multi_select, collection: @inquiry.company.addresses.includes(:state), label_method: :to_s, include_blank: "Select a billing address" %>
+
+            <%= f.association :contact, :wrapper => :custom_multi_select, label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= f.association :shipping_contact, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <%= f.association :billing_address, required: true, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_address, required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.company_id)} %>
