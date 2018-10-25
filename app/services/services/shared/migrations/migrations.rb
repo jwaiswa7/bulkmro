@@ -1181,4 +1181,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
   end
+
+  def warehouse_update_remote_uids
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses_remote_uids.csv', folder)
+    service.loop(limit) do |x|
+      Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create.update(
+        remote_uid: x.get_column('Warehouse Code'),
+        legacy_id: x.get_column('Warehouse Code'),
+        location_uid: x.get_column('Location'),
+        remote_branch_name: x.get_column('Warehouse Name'),
+        remote_branch_code: x.get_column('Business Place ID')
+      )
+    end
+  end
 end

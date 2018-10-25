@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
