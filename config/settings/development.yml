@@ -38,3 +38,6 @@ msg91:
 
 wit:
   auth_token: E4C6GLQOFR4FPNUGUIUDCK3W6T4MWHON
+
+heroku:
+  dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3

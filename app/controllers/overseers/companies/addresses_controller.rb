@@ -28,6 +28,12 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     end
   end
 
+  def autocomplete
+    @addresses = ApplyParams.to(@company.addresses, params)
+    authorize @addresses
+  end
+
+
   def edit
     authorize @address
   end

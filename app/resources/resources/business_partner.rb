@@ -252,6 +252,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         ZipCode: record.default_billing_address.present? ? record.default_billing_address.pincode : nil,
         Country: record.default_billing_address.present? ? record.default_billing_address.country_code : nil,
         EmailAddress: record.default_company_contact.present? ? record.default_company_contact.contact.email : nil,
+        BillToState: record.default_billing_address.present? ? record.default_billing_address.state.try(:region_code_uid) : nil,
         City: record.default_billing_address.present? ? record.default_billing_address.city_name : nil,
         ContactPerson: record.default_company_contact.present? ? record.default_company_contact.contact.full_name : nil,
         OwnerCode: record.outside_sales_owner_id.present? ? record.outside_sales_owner.employee_uid : nil,

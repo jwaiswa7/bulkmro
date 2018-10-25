@@ -154,6 +154,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'new_confirmation'
+            get 'proforma'
             post 'create_confirmation'
             post 'resync'
           end
@@ -195,7 +196,16 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
-        resources :addresses
+        resources :addresses do
+          collection do
+            get 'autocomplete'
+          end
+        end
+        resources :contacts do
+          collection do
+            get 'autocomplete'
+          end
+        end
       end
     end
 

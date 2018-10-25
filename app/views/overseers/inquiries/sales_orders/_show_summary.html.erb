@@ -16,14 +16,23 @@
           <br> <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
         </div>
       <% end %>
-      <div class="col-3">
+      <div class="col-3 col-md-3">
         <strong>Status</strong>
         <br> <%= f.object.status || f.object.legacy_request_status %>
       </div>
-      <div class="col-3">
+      <div class="col-3 col-md-3">
         <strong>SAP Status</strong>
         <br> <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
       </div>
+      <% if f.object.status || f.object.legacy_request_status == "Approved" %>
+        <div class="col-3 col-md-3" style="text-align:right">
+          <% if policy(@sales_order).show_pdf? %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class:"btn btn-warning", target:"_blank" do %>
+              View Proforma Invoice
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
 
   </div>

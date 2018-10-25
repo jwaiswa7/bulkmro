@@ -1,5 +1,8 @@
+import newAction from "./new";
+
 const edit = () => {
-    //TODO
+
+    newAction();
 
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);

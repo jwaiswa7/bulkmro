@@ -195,7 +195,8 @@
           <tr>
             <th class="no-sort"></th>
             <th class="no-sort"><i class="fal fa-building"></i> Address</th>
-            <th data-name="created_at">Created</th>
+            <th class="no-sort desktop">SAP Status</th>
+            <th class="desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody></tbody>
@@ -217,10 +218,13 @@
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
           <thead>
           <tr>
-            <th class="no-sort"></th>
-            <th data-name="name">Name</th>
-            <th class="no-sort">Companies</th>
-            <th data-name="created_at">Created</th>
+            <th class="no-sort all"></th>
+            <th class="all" data-name="name">Name</th>
+            <th class="all" data-name="email">Email</th>
+            <th class="all" data-name="account_id">Account</th>
+            <th class="no-sort desktop">Inquiry</th>
+            <th class="no-sort desktop">SAP Status</th>
+            <th class="desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody>

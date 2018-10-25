@@ -39,7 +39,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_remote_s
     if is_sez
-      "0"
+      "IG@0"
     elsif is_igst
       "IG@%g" % ("%.2f" % tax_code.tax_percentage)
     else

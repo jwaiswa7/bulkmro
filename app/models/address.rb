@@ -39,12 +39,18 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
+  after_create :set_global_defaults # Do not remove IMP for SAP
+
   def set_defaults
     self.is_sez ||= false
     self.country_code ||= 'IN'
     if self.company.present?
       self.name ||= self.company.name
     end
+  end
+
+  def set_global_defaults
+    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid(self)
   end
 
   def self.legacy

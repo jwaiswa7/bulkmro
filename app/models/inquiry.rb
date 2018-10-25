@@ -16,7 +16,9 @@ class Inquiry < ApplicationRecord
   belongs_to :contact, required: false
   belongs_to :company
   belongs_to :billing_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, :class_name => 'Company', foreign_key: 'billing_company_id'
+
   belongs_to :shipping_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) },  :class_name => 'Company', foreign_key: 'shipping_company_id'
+  belongs_to :shipping_contact, -> (record) { where('id in (?)', record.shipping_company.contacts.pluck(:id)) },  :class_name => 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, :through => :company
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
@@ -228,6 +230,7 @@ class Inquiry < ApplicationRecord
       self.valid_end_time ||= (Date.today + 1.month) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
+      self.shipping_contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
@@ -297,6 +300,10 @@ class Inquiry < ApplicationRecord
         ['#', self.inquiry_number].join,
         self.company.name
     ].join(' ')
+  end
+
+  def billing_contact
+    self.contact
   end
 
   def has_attachment?

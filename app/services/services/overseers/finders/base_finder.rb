@@ -127,6 +127,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
               ],
               minimum_should_match: 2,
           },
+
       }
     else
       {
@@ -136,10 +137,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       term: {legacy_status: 'not_legacy'},
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except(:'Approved').values},
-                  }
+                      exists: {field: 'sent_at'}
+                  },
+                  {
+                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'SAP Rejected').values},
+                  },
               ],
-              minimum_should_match: 2,
+              minimum_should_match: 3,
           },
       }
     end
