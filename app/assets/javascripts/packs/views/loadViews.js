@@ -25,7 +25,6 @@ let loader = {
     imports: imports,
 
     inquiries: inquiries,
-
     products: products,
 
     salesOrders: salesOrders,
