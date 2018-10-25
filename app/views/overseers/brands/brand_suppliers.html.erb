@@ -1,0 +1,37 @@
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        <%= @brand.id %>
+      </h3>
+    </div>
+  </section>
+    <% if @brand_suppliers %>
+      <div class="d-md-flex justify-content-between mt-5">
+        <h3 class="display-5 mb-1">Suppliers List</h3>
+      </div>
+
+      <table class="datatable table table-bordered dt-responsive" style="width:100%;">
+        <thead>
+        <tr>
+          <th></th>
+          <th class="no-sort">ID</th>
+          <th class="no-sort">Supplier name</th>
+        </tr>
+        </thead>
+        <% @brand_suppliers.each do |bs| %>
+          <tbody>
+            <tr>
+              <td>
+                <% if policy(@brand).show? %>
+                  <%= row_action_button(summary_overseers_brand_path(@brand, bs), 'eye', 'View Supplier details', 'dark') %>
+                <% end %>
+              </td>
+              <td></td>
+              <td><%= bs %></td>
+            </tr>
+          </tbody>
+        <% end %>
+      </table>
+    <% end %>
+</div>

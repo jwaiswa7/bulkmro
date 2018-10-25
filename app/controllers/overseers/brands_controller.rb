@@ -1,5 +1,5 @@
 class Overseers::BrandsController < Overseers::BaseController
-  before_action :set_brand, only: [:edit, :update, :show]
+  before_action :set_brand, only: [:edit, :update, :show, :brand_suppliers, :supplier_summary]
 
   def autocomplete
     @brands = ApplyParams.to(Brand.all, params).order(:name)
@@ -13,6 +13,16 @@ class Overseers::BrandsController < Overseers::BaseController
 
   def show
     redirect_to edit_overseers_brand_path(@brand)
+    authorize @brand
+  end
+
+
+  def brand_suppliers
+    fetch_brand_suppliers(params[:supplier_name])
+    authorize @brand
+  end
+
+  def supplier_summary
     authorize @brand
   end
 
@@ -57,5 +67,9 @@ class Overseers::BrandsController < Overseers::BaseController
         :name,
         :company_ids => []
     )
+  end
+
+  def fetch_brand_suppliers(name)
+    @brand_suppliers = (Product.where(brand_id: @brand.id).map{ |p| p.suppliers.group(:id).order(created_at: :desc).limit('10').map{ |ps| ps.name}.compact.flatten.uniq}.compact.flatten.uniq)
   end
 end

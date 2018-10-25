@@ -64,6 +64,11 @@ Rails.application.routes.draw do
     end
 
     resources :brands do
+      member do
+        get 'brand_suppliers'
+        get 'summary/:supplier_name', :to => 'brands#supplier_summary', as: 'summary'
+      end
+
       collection do
         get 'autocomplete'
       end
