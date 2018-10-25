@@ -59,6 +59,10 @@ class Product < ApplicationRecord
     self.weight ||= 0.0
   end
 
+  def syncable_identifiers
+    [:remote_uid]
+  end
+
   def best_tax_code
     self.tax_code || self.category.try(:tax_code)
   end

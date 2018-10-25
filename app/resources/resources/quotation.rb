@@ -40,6 +40,12 @@ class Resources::Quotation < Resources::ApplicationResource
     items = []
 
     record.rows.each_with_index do |row, index|
+
+      #Check and sync product
+      if !row.product.remote_uid.present?
+        row.product.update_attributes(:remote_uid => ::Resources::Item.create(row.product))
+      end
+
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku

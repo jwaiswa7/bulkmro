@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :sync]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -91,6 +91,13 @@ class Overseers::ProductsController < Overseers::BaseController
   def sku_purchase_history
     authorize @product
     redirect_to overseers_product_path(@product)
+  end
+
+  def sync
+    authorize @product
+    if @product.approved? ? @product.save_and_sync : @product.save
+      render 'edit'
+    end
   end
 
   private
