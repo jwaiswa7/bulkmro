@@ -61,7 +61,7 @@
       <div class="form-row mt-2 mb-1">
         <div class="col-md-6">
           <strong>Customer Shipping Address</strong><br>
-          <%= @inquiry.contact.full_name %><br>
+          <%= @inquiry.shipping_contact.present? ? @inquiry.shipping_contact.full_name : @inquiry.contact.full_name %><br>
           <%= @inquiry.shipping_address %><br>
           <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
