@@ -39,7 +39,7 @@ class Resources::Item < Resources::ApplicationResource
         U_Meta_Dscrpt: record.meta_description, # Meta Description
         U_Meta_Title: record.meta_title, # Meta Title
         U_Attribute: nil, # Attribute Set Name
-        U_ShortName: nil, # Product Short Name
+        U_ShortName: record.name, # Product Short Name
         U_MOQIncrement: 0, # MOQ Increment
         U_Item_Descr: record.name, # Product Description
         U_SubCat: nil, # Subcategory 1
