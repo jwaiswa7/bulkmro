@@ -32,7 +32,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index? && record.inquiry_products.any?
   end
 
-  def sync?
-    approve?
+  def resync?
+    record.approved? && record.not_synced?
   end
 end
