@@ -36,6 +36,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
       )
 
       supplier = purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i)
+
       sales_order = inquiry.sales_orders.each do |sales_order|
         ids = []
 
@@ -44,10 +45,10 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
         end
 
         if ids.include?(supplier.id)
-          sales_order
-        else
-          nil
+          return sales_order
         end
+
+        return nil
       end if supplier.present?
 
       row.merge({
