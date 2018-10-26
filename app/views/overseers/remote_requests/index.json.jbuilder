@@ -8,7 +8,7 @@ json.data (@remote_requests) do |remote_request|
                   if remote_request.subject.present? && policy(remote_request.subject).show?
                     [remote_request.subject.class.name, remote_request.subject.to_s].join(' > ')
                   end,
-                  format_enum(remote_request.status),
+                  remote_request_format_label(remote_request.status),
                   format_enum(remote_request.method),
                   remote_request.resource,
                   format_date(remote_request.created_at)

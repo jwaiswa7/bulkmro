@@ -1,5 +1,5 @@
 module SalesOrderHelper
-  def status(status)
+  def sales_order_status(status)
     if status == "requested"
       "warning"
     elsif status == "SAP Approval Pending"
@@ -22,7 +22,7 @@ module SalesOrderHelper
   end
 
   def sales_order_format_label(status)
-    content_tag :span, class: "badge text-uppercase badge-#{status(status)}" do
+    content_tag :span, class: "badge text-uppercase badge-#{sales_order_status(status)}" do
       content_tag :strong, status.to_s.capitalize
     end
   end
