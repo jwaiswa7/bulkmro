@@ -13,8 +13,6 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :triplicate_invoice
 
   update_index('sales_invoices#sales_invoice') {self}
-  #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
-  has_closure_tree({name_column: :to_s})
 
   scope :with_includes, -> {includes(:sales_order)}
   enum status: {

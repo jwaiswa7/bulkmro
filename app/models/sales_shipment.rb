@@ -3,8 +3,6 @@ class SalesShipment < ApplicationRecord
   include Mixins::CanBeStamped
 
   update_index('sales_shipments#sales_shipment') {self}
-  #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
-  has_closure_tree({name_column: :to_s})
 
   belongs_to :sales_order
   has_one :inquiry, through: :sales_order
