@@ -3,8 +3,8 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.document.attached?
   end
 
-  def export_sheet?
-    true
+  def export_all?
+    admin?
   end
 
   def show_document?
