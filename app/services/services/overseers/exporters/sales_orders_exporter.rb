@@ -9,8 +9,10 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def call
     model.status_Approved.where(:created_at => start_at..end_at).each do |sales_order|
+      inquiry = sales_order.inquiry
+      
       rows.push({
-                    :inquiry => sales_order.inquiry,
+                    :inquiry => inquiry,
                     :order_number => sales_order.order_number,
                     :order_date => sales_order.created_at.to_date.to_s,
                     :quote_number => inquiry.inquiry_number,

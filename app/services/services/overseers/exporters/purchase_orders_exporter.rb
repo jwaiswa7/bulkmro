@@ -9,6 +9,8 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
   def call
     model.where(:created_at => start_at..end_at).each do |purchase_order|
+      inquiry = purchase_order.inquiry
+
       row = {
           :po_number => purchase_order.po_number.to_s,
           :po_date => purchase_order.created_at.to_date.to_s,
