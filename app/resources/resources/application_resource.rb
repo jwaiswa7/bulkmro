@@ -21,12 +21,12 @@ class Resources::ApplicationResource
   end
 
   if Rails.env.development?
-    ENDPOINT = URI.parse('https://35.154.19.43:50000/b1s/v1')
-    DATABASE = 'SPRINT_TEST'
+    ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
+    DATABASE = 'BMRO_20OCT'
     USERNAME = 'manager'
     PASSWORD = 'vm1234'
 
-    ATTACHMENT_ENDPOINT = URI.parse('https://35.154.19.43:22')
+    ATTACHMENT_ENDPOINT = URI.parse('https://35.200.144.191:22')
     ATTACHMENT_USERNAME = 'ec2-user'
     ATTACHMENT_PASSWORD = ''
     ATTACHMENT_SSH = '-----BEGIN RSA PRIVATE KEY-----
@@ -59,7 +59,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
     SAP = OpenStruct.new({
                              attachment_directory: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
-                             attachment_api: '35.154.19.43/b1_shf/Attachments',
+                             attachment_api: '35.200.144.191/b1_shf/Attachments',
                              server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
                              login: {user: ATTACHMENT_USERNAME, password: ATTACHMENT_PASSWORD},
                              draft_doc_object_code: 17,
@@ -126,7 +126,8 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   headers({
               :'Content-Type' => 'application/json',
               :'Access-Control-Allow-Origin' => '*',
-              :'Cookie' => get_sap_cookie
+              :'Cookie' => get_sap_cookie,
+              :'B1S-ReplaceCollectionsOnPatch' => 'true'
           })
 
 
