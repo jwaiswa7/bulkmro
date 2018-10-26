@@ -17,9 +17,8 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   def export_sheet
     # TODO: Custome Datepicker to generate Sales Invoice report
     authorize :sales_invoice
-    start_at = Date.today - 2.day
+    start_at = 'Fri, 19 Oct 2018'.to_date
     end_at = Date.today
-
 
     respond_to do |format|
       format.html

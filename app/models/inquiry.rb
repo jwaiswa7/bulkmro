@@ -291,4 +291,41 @@ class Inquiry < ApplicationRecord
   def has_attachment?
     self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
   end
+
+  def self.to_csv
+    start_at = 'Fri, 19 Oct 2018'.to_date
+    end_at = Date.today
+    desired_columns = ["inquiry_number", "order_number", "created_at", "quote_type", "opportunity_type", "inside_sales_owner", "ise_city", "outside_sales_owner", "ose_city", "company_alias", "company_name", "customer", "subject", "currency", "total (Exc. Tax)", "commercial_status", "comments", "reason"]
+
+    objects = [ ]
+    self.where(:created_at => start_at..end_at).each do |i|
+      inquiry_number = i.inquiry_number
+      order_number = i.sales_orders.pluck(:order_number).compact.join(",")
+      created_at = i.created_at.to_date.to_s
+      quote_type = i.quote_category
+      opportunity_type = i.opportunity_type
+      inside_sales_owner = i.inside_sales_owner.to_s
+      ise_city = i.inside_sales_owner.geography
+      outside_sales_owner = i.outside_sales_owner.to_s
+      ose_city = i.outside_sales_owner.geography
+      company_alias = i.account.name
+      company_name = i.company.name
+      customer = i.contact.to_s
+      subject = i.subject
+      currency = i.currency.name
+      total = i.final_sales_quote.try(:calculated_total)
+      commercial_status = i.commercial_status.to_s
+      comments = i.comments.pluck(:message).join(",")
+      reason = ""
+
+      o = [inquiry_number,order_number,created_at,quote_type,opportunity_type,inside_sales_owner,ise_city,outside_sales_owner,ose_city,company_alias,company_name,customer,subject,currency,total,commercial_status,comments,reason]
+      objects.push(o)
+    end
+
+    CSV.generate(write_headers: true, headers: desired_columns) do |csv|
+      objects.each do |i|
+        csv << i
+      end
+    end
+  end
 end

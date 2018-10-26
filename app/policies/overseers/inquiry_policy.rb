@@ -39,6 +39,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def export_sheet?
+    admin?
+  end
+
   def export?
     edit?
   end

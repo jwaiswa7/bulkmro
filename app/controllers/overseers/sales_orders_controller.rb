@@ -17,6 +17,19 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def export_sheet
+    # TODO: Custome Datepicker to generate Sales Orders report
+    authorize :sales_order
+    start_at = 'Fri, 19 Oct 2018'.to_date
+    end_at = Date.today
+
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data SalesOrder.to_csv, filename: "sales-orders-#{start_at}-#{end_at}.csv" }
+    end
+  end
+
   def index
     authorize :sales_order
 

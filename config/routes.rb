@@ -113,6 +113,7 @@ Rails.application.routes.draw do
     resources :sales_orders do
       collection do
         get 'pending'
+        get 'export_sheet'
       end
 
       scope module: 'sales_orders' do
@@ -150,6 +151,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
+        get 'export_sheet'
       end
 
       scope module: 'inquiries' do

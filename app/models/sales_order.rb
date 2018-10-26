@@ -112,4 +112,43 @@ class SalesOrder < ApplicationRecord
         ('pdf' if include_extension)
     ].compact.join('.')
   end
+
+  def self.to_csv
+    start_at = 'Fri, 19 Oct 2018'.to_date
+    end_at = Date.today
+    desired_columns = ["order_number", "order_date", "quote_number", "quote_type", "opportunity_type", "invoice_number", "inside_sales", "outside_sales", "company_alias", "company_name", "bill_to_name", "ship_to_name", "customer_po_number", "grand_total (Exc. Tax)", "grand_total (Inc.Tax)", "buying_cost (Exc. Tax)", "margin (Exc. tax)", "status"]
+
+    objects = [ ]
+    SalesOrder.status_Approved.where(:created_at => start_at..end_at).each do |so|
+      inquiry = so.inquiry
+      order_number = so.order_number
+      order_date = so.created_at.to_date.to_s
+      quote_number = inquiry.inquiry_number
+      quote_type =  inquiry.quote_category
+      opportunity_type = inquiry.opportunity_type
+      invoice_number = so.invoices.pluck(:invoice_number).join(",")
+      inside_sales = so.inside_sales_owner.to_s
+      outside_sales = so.outside_sales_owner.to_s
+      company_alias = inquiry.account.name
+      company_name = inquiry.company.name
+      bill_to_name = inquiry.contact.full_name
+      ship_to_name = inquiry.contact.full_name
+      customer_po_number = inquiry.customer_po_number
+      gt_exc = ('%.2f' % so.calculated_total)
+      gt_inc = ('%.2f' % so.calculated_total_with_tax)
+      buying_cost_exc = ('%.2f' % so.calculated_total_cost)
+      margin_exc = ('%.2f' % so.calculated_total_margin)
+      status = so.remote_status
+
+      o = [order_number,order_date,quote_number,quote_type,opportunity_type,invoice_number,inside_sales,outside_sales,company_alias,company_name,bill_to_name,ship_to_name,customer_po_number,gt_exc,gt_inc,buying_cost_exc,margin_exc,status]
+      objects.push(o)
+    end
+
+    CSV.generate(write_headers: true, headers: desired_columns) do |csv|
+      objects.each do |so|
+        csv << so
+      end
+    end
+  end
+
 end

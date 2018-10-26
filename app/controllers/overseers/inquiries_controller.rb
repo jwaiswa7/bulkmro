@@ -16,6 +16,18 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def export_sheet
+    # TODO: Custome Datepicker to generate Sales Invoice report
+    authorize :inquiry
+    start_at = 'Fri, 19 Oct 2018'.to_date
+    end_at = Date.today
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Inquiry.to_csv, filename: "inquiries-#{start_at}-#{end_at}.csv" }
+    end
+  end
+
   def index_pg
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
     authorize @inquiries

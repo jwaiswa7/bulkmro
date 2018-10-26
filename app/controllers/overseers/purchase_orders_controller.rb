@@ -17,7 +17,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def export_sheet
     # TODO: Custome Datepicker to generate Purchase Order report
     authorize :purchase_order
-    start_at = Date.today - 2.day
+    start_at = 'Fri, 19 Oct 2018'.to_date
     end_at = Date.today
 
     respond_to do |format|
