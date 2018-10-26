@@ -17,6 +17,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def export_all
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
   def index
     authorize :sales_order
 

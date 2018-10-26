@@ -13,9 +13,9 @@
         </a>
       <% end %>
 
-      <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_sheet? %>
-        <a href="<%= [request.path, '/', 'export_sheet.csv'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
-          <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+      <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
+        <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
         </a>
       <% end %>
     </div>
