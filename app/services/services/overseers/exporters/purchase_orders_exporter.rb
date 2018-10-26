@@ -1,5 +1,4 @@
 class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Overseers::Exporters::BaseExporter
-
   def initialize
     super
 
@@ -19,7 +18,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           :company_name => inquiry.company.name
       }
 
-      row.merge(
+      row.merge!(
           if inquiry.payment_option.present?
             {:payment_terms => inquiry.payment_option.name}
           else
@@ -27,7 +26,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           end
       )
 
-      row.merge(
+      row.merge!(
           if inquiry.procurement_date.present?
             {:procurement_date => inquiry.procurement_date.to_date.to_s}
           else
@@ -45,18 +44,29 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
         end
 
         if ids.include?(supplier.id)
-          return sales_order
+          sales_order
+        else
+          nil
         end
+      end.try(:first) if supplier.present?
 
-        return nil
-      end if supplier.present?
-
-      row.merge({
-                    :order_number => sales_order.order_number.to_s,
-                    :order_date => sales_order.created_at.to_date.to_s,
-                    :order_status => sales_order.status,
-                    :supplier_name => supplier.name
-                }) if supplier.present? && sales_order.present?
+      row.merge!(
+          if supplier.present? && sales_order.present?
+            {
+                :order_number => sales_order.order_number.to_s,
+                :order_date => sales_order.created_at.to_date.to_s,
+                :order_status => sales_order.status,
+                :supplier_name => supplier.name
+            }
+          else
+            {
+                :order_number => nil,
+                :order_date => nil,
+                :order_status => nil,
+                :supplier_name => nil
+            }
+          end
+      )
 
       rows.push(row)
     end
