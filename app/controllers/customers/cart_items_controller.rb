@@ -21,8 +21,7 @@ class Customers::CartItemsController < Customers::BaseController
     session[:cart_id] = @cart.id
     respond_to do |format|
       if @cart.save
-        flash[:success] = "Successfully added to the Cart!"
-        format.js { redirect_to customers_products_path }
+        format.js {}
       end
     end
   end
@@ -32,7 +31,11 @@ class Customers::CartItemsController < Customers::BaseController
     @item = @cart.cart_items.find(params[:id])
     @item.destroy
     @cart.save
-    redirect_to customers_cart_path
+    respond_to do |format|
+      format.html { redirect_to customers_products_path }
+      format.json { head :no_content }
+      format.js   { render :layout => false }
+    end
   end
 
   private
