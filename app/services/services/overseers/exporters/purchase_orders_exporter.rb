@@ -51,12 +51,23 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
         return nil
       end if supplier.present?
 
-      row.merge({
-                    :order_number => sales_order.order_number.to_s,
-                    :order_date => sales_order.created_at.to_date.to_s,
-                    :order_status => sales_order.status,
-                    :supplier_name => supplier.name
-                }) if supplier.present? && sales_order.present?
+      row.merge(
+          if supplier.present? && sales_order.present?
+            {
+                :order_number => sales_order.order_number.to_s,
+                :order_date => sales_order.created_at.to_date.to_s,
+                :order_status => sales_order.status,
+                :supplier_name => supplier.name
+            }
+          else
+            {
+                :order_number => nil,
+                :order_date => nil,
+                :order_status => nil,
+                :supplier_name => nil
+            }
+          end
+      )
 
       rows.push(row)
     end
