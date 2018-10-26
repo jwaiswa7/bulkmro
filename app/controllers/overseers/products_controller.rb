@@ -11,8 +11,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def autocomplete
-    params[:page] = 1
-    service = Services::Overseers::Finders::Products.new(params)
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
     service.call
 
     @indexed_products = service.indexed_records
