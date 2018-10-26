@@ -9,7 +9,6 @@ class PurchaseOrder < ApplicationRecord
 
   update_index('purchase_orders#purchase_order') {self}
   #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
-  has_closure_tree({name_column: :to_s})
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
