@@ -1,5 +1,5 @@
 json.data (@remote_requests) do |remote_request|
-  json.array! [
+  columns = [
                   [
                       if policy(remote_request).show?
                         row_action_button(overseers_remote_request_path(remote_request), 'eye', 'Show Remote Request', 'info')
@@ -13,6 +13,8 @@ json.data (@remote_requests) do |remote_request|
                   remote_request.resource,
                   format_date(remote_request.created_at)
               ]
+  columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
+  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + remote_status_color(remote_request.status)})
 end
 
 json.recordsTotal @remote_requests.model.all.count
