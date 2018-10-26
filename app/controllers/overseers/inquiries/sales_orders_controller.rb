@@ -26,7 +26,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     respond_to do |format|
       format.pdf do
-        render_pdf_for @sales_order, { proforma: true }
+        render_pdf_for @sales_order, {proforma: true}
       end
     end
   end
