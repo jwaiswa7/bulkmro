@@ -15,7 +15,6 @@ class Customers::BaseController < ApplicationController
     end
   end
 
-
   protected
 
   def pundit_user
