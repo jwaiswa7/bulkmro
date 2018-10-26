@@ -1,6 +1,6 @@
 class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
-
+  belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
@@ -9,7 +9,6 @@ class PurchaseOrder < ApplicationRecord
 
   update_index('purchase_orders#purchase_order') {self}
   #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
-  has_closure_tree({name_column: :to_s})
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
@@ -23,12 +22,38 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def self.to_csv
-    start_at = Date.today - 5.day
+    start_at = Date.today - 2.day
     end_at = Date.today
-    desired_columns = %w{id po_number inquiry_number inquiry_date procurement_date sales_order_number order_status payment_terms}
+    desired_columns = %w{po_number po_date inquiry_number inquiry_date payment_terms company_name procurement_date order_number order_date order_status supplier_name}
+    array_of_objects = [ ]
+    self.where(:created_at => start_at..end_at).each do |po|
+      inquiry = po.inquiry
+      supplier = get_supplier(po, po.rows.first.metadata['PopProductId'].to_i)
+      sales_orders = inquiry.sales_orders
+      sales_order = nil
+      if supplier.present?
+        if sales_orders.present?
+          sales_orders.each do |so|
+            ids = [ ]
+            if so.present?
+              so.rows.each do |r|
+                ids.push(r.sales_quote_row.inquiry_product_supplier.supplier.id)
+              end
+              sales_order = so if ids.include?(supplier.id)
+            end
+          end
+        end
+      end
+      order_number = sales_order.order_number.to_s if sales_order.present?
+      order_date = sales_order.created_at.to_date.to_s if sales_order.present?
+      order_status = sales_order.status if sales_order.present?
+      supplier_name = supplier.name if supplier.present?
+      array_of_objects.push([po.po_number.to_s, po.created_at.to_date.to_s, inquiry.inquiry_number.to_s, inquiry.created_at.to_date.to_s, (inquiry.payment_option.name if inquiry.payment_option.present?), inquiry.company.name, (inquiry.procurement_date.to_date.to_s if inquiry.procurement_date.present?), order_number, order_date, order_status, supplier_name])
+    end
+
     CSV.generate(write_headers: true, headers: desired_columns) do |csv|
-      where(:created_at => start_at..end_at).map{|po| [po.id.to_s, po.po_number.to_s, po.inquiry.inquiry_number.to_s, po.inquiry.created_at.to_date.to_s, (po.inquiry.procurement_date.to_date.to_s if po.inquiry.procurement_date.present?), (po.inquiry.final_sales_orders.first.order_number if po.inquiry.final_sales_orders.present?), (po.inquiry.final_sales_orders.first.remote_status if po.inquiry.final_sales_orders.present?), (po.inquiry.payment_option.name if po.inquiry.payment_option.present?)] }.each do |p_o|
-        csv << p_o
+      array_of_objects.each do |i|
+        writer << i
       end
     end
   end
