@@ -320,6 +320,5 @@ class Inquiry < ApplicationRecord
     else
       self.billing_company.remote_uid
     end
-
   end
 end

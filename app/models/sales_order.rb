@@ -111,4 +111,5 @@ class SalesOrder < ApplicationRecord
         ('pdf' if include_extension)
     ].compact.join('.')
   end
+
 end
