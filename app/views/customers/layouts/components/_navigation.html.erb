@@ -24,7 +24,7 @@
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
-    <div class="dropdown d-inline mr-2">
+    <div class="dropdown d-inline mr-2" id="cart_items">
       <a href="#" role="button" data-toggle="dropdown">
         <i class="fal fa-shopping-cart"></i> <span class="text-primary"><%= current_cart.cart_items.count %></span>
       </a>
@@ -33,19 +33,19 @@
           <h6 class="dropdown-header">Cart</h6>
           <div class="cart-items">
             <% current_cart.cart_items.each do |cart_item| %>
-              <div class="dropdown-item text-dark text-wrap">
-                <a class="ml-2 text-danger d-block float-right" href="#">
-                  <i class="fal fa-times"></i>
-                </a>
-                <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= Product.find(cart_item.product_id).try(:name) %></a></span>
+              <div class="dropdown-item text-dark text-wrap" id="cart_item_<%= cart_item.id %>">
+                <%= link_to customers_cart_item_path(cart_item), method: :delete, remote: true do %>
+                  <i class="fal fa-times ml-2 text-danger d-block float-right" id="delete_item"></i>
+                <% end %>
+                <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= truncate(Product.find(cart_item.product_id).try(:name), :length => 30 ) %></a></span>
                 <span class="d-block text-black-50">x <%= cart_item.quantity %></span>
+                <div class="dropdown-divider" id="divider_<%= cart_item.id %>"></div>
               </div>
-              <div class="dropdown-divider"></div>
             <% end %>
           </div>
           <div class="cart-footer">
             <%= link_to "Cart", customers_cart_path, :class => "btn btn-dark btn-sm w-50" %>
-            <%= link_to "Checkout", customers_customer_orders_path(cart_id: current_cart.id, contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-sm w-50" %>
+            <%= link_to "Checkout", checkout_customers_cart_path, :class => "btn btn-success btn-sm w-50" %>
           </div>
         </div>
       <% end %>

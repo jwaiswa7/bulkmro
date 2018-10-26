@@ -8,18 +8,10 @@ class Customers::BaseController < ApplicationController
   helper_method :current_cart
 
   def current_cart
-    debugger
     if session[:cart_id]
       Cart.find(session[:cart_id])
     else
       Cart.new
-    end
-  end
-
-  def current_customer_order
-    debugger
-    if session[:customer_order_id]
-      CustomerOrder.find(session[:customer_order_id])
     end
   end
 
