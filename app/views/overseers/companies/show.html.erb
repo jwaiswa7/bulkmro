@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <% if @company.legacy_metadata %>
+    <% if @company.legacy_metadata["sup_mail"] || @company.legacy_metadata["sup_tel"] || @company.legacy_metadata["sup_tel2"] || @company.legacy_metadata["sup_contact"] %>
       <a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4" type="button" data-toggle="collapse" data-target="#dump">
         Legacy Data
       </a>
