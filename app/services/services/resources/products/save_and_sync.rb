@@ -12,13 +12,8 @@ class Services::Resources::Products::SaveAndSync < Services::Shared::BaseService
 
   def call_later
     if product.persisted?
-      if product.remote_uid.blank?
-        remote_uid = ::Resources::Item.custom_find(product.sku)
-        product.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
-      elsif product.remote_uid.present?
-        remote_uid = ::Resources::Item.custom_find(product.sku)
-        product.update_attributes(:remote_uid => nil) if remote_uid.blank?
-      end
+      remote_uid = ::Resources::Item.custom_find(product.sku)
+      remote_uid.present? ? product.update_attributes(:remote_uid => remote_uid) : product.update_attributes(:remote_uid => nil)
 
       if product.remote_uid.present?
         ::Resources::Item.update(product.remote_uid, product)

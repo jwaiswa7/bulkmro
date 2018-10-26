@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'serializer'
@@ -98,6 +99,7 @@ Rails.application.routes.draw do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
+        get 'resync'
       end
 
       collection do
@@ -125,8 +127,18 @@ Rails.application.routes.draw do
         get 'export_sheet'
       end
     end
-    # resources :sales_invoices
-    # resources :sales_shipments
+
+    resources :sales_invoices do
+      collection do
+        get 'export_sheet'
+      end
+    end
+
+    resources :sales_shipments do
+      collection do
+        get 'export_sheet'
+      end
+    end
 
     resources :inquiries do
       member do

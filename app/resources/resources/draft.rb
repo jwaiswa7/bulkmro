@@ -28,7 +28,7 @@ class Resources::Draft < Resources::ApplicationResource
         DiscountPercent: 0, #hardcode
         DocDueDate: record.inquiry.customer_committed_date.present? ? record.inquiry.customer_committed_date.strftime("%Y-%m-%d") : nil, #estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
-        DocCurrency: record.inquiry.inquiry_currency.currency.name,
+        DocCurrency: "INR", #record.inquiry.inquiry_currency.currency.name
         DocDate: record.created_date, #created_at
         DocRate: record.conversion_rate.to_s,
         DocObjectCode: SAP.draft_doc_object_code, #hardcode

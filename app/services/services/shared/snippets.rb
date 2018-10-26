@@ -19,6 +19,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def best_products
+    inquiry_products = InquiryProduct.joins(:inquiry, :product).where('inquiries.company_id = ?', company.id)
+    best_products = inquiry_products.top(:product_id, 5)
+    best_product_ids = best_products.map {|best_product| best_product[0]}
+    inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
+
+
+  end
+
   def set_non_trade_accounts
     [
         ['SC-7894', "InstaOffice Business Solutions Pvt. Ltd."],
@@ -100,7 +109,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def copy_inquiry_number_into_project_uid
-    Inquiry.where.not(:opportunity_uid => nil).each do |inquiry| inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?; end
+    Inquiry.where.not(:opportunity_uid => nil).each do |inquiry|
+      inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?;
+    end
   end
 
   def find_business_partner_by_name
@@ -116,21 +127,21 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def make_admins
     ['vignesh.gounder@bulkmro.com',
-              'gitesh.ganekar@bulkmro.com',
-              'ajay.rathod@bulkmro.com',
-              'sanchit.sharma@bulkmro.com',
-              'ovais.ansari@bulkmro.com',
-              'diksha.tambe@bulkmro.com',
-              'dinesh.kumar@bulkmro.com',
-              'ankur.gupta@bulkmro.com',
-              'sumit.sharma@bulkmro.com',
-              'farhan.ansari@bulkmro.com',
-              'bhargav.trivedi@bulkmro.com',
-              'ajay.kondal@bulkmro.com',
-              'pravin.ganekar@bulkmro.com',
-              'nida.khan@bulkmro.com',
-              'soni.pathre@bulkmro.com',
-              'vijay.manjrekar@bulkmro.com',
+     'gitesh.ganekar@bulkmro.com',
+     'ajay.rathod@bulkmro.com',
+     'sanchit.sharma@bulkmro.com',
+     'ovais.ansari@bulkmro.com',
+     'diksha.tambe@bulkmro.com',
+     'dinesh.kumar@bulkmro.com',
+     'ankur.gupta@bulkmro.com',
+     'sumit.sharma@bulkmro.com',
+     'farhan.ansari@bulkmro.com',
+     'bhargav.trivedi@bulkmro.com',
+     'ajay.kondal@bulkmro.com',
+     'pravin.ganekar@bulkmro.com',
+     'nida.khan@bulkmro.com',
+     'soni.pathre@bulkmro.com',
+     'vijay.manjrekar@bulkmro.com',
     ].each do |email|
       Overseer.find_by_email(email).admin! if Overseer.find_by_email(email).present?
     end
@@ -417,7 +428,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
         if inquiry.present?
           legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".") if x.get_column('manager', downcase: true).present?
-          inside_sales_owner_username =  inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
+          inside_sales_owner_username = inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
           inquiry.inside_sales_owner = Overseer.find_by_username(legacy_inside_sales_owner_username) if legacy_inside_sales_owner_username != inside_sales_owner_username
 
           legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".") if x.get_column('outside', downcase: true).present?
@@ -465,7 +476,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
       service.loop(nil) do |x|
         inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
-        next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+        next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
         inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
         if inquiry.new_record? || update_if_exists
           inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))

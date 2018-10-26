@@ -30,7 +30,7 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true
+  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != "No GST Number"}
   # validates_presence_of :remote_uid
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
@@ -39,12 +39,18 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
+  after_create :set_global_defaults # Do not remove IMP for SAP
+
   def set_defaults
     self.is_sez ||= false
     self.country_code ||= 'IN'
     if self.company.present?
       self.name ||= self.company.name
     end
+  end
+
+  def set_global_defaults
+    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid(self)
   end
 
   def self.legacy

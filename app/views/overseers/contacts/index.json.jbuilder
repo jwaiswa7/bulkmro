@@ -10,7 +10,9 @@ json.data (@contacts) do |contact|
                       end,
                   ].join(' '),
                   contact.full_name,
-                  contact.companies.size,
+                  contact.email,
+                  contact.account.name,
+                  contact.inquiries.size,
                   format_boolean_label(contact.synced?, 'synced'),
                   format_date(contact.created_at)
               ]
