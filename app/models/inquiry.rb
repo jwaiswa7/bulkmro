@@ -15,10 +15,10 @@ class Inquiry < ApplicationRecord
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :contact, required: false
   belongs_to :company
-  belongs_to :billing_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, :class_name => 'Company', foreign_key: 'billing_company_id'
+  belongs_to :billing_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'billing_company_id'
 
-  belongs_to :shipping_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) },  :class_name => 'Company', foreign_key: 'shipping_company_id'
-  belongs_to :shipping_contact, -> (record) { where('id in (?)', record.shipping_company.contacts.pluck(:id)) },  :class_name => 'Contact', foreign_key: 'shipping_contact_id'
+  belongs_to :shipping_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'shipping_company_id'
+  belongs_to :shipping_contact, -> (record) {where('id in (?)', record.shipping_company.contacts.pluck(:id))}, :class_name => 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, :through => :company
   has_one :industry, :through => :company
   belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
@@ -184,7 +184,7 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
-  validates_presence_of :valid_end_time , :if => :not_legacy?
+  validates_presence_of :valid_end_time, :if => :not_legacy?
   validates_presence_of :inside_sales_owner, :if => :not_legacy?
   validates_presence_of :outside_sales_owner, :if => :not_legacy?
   validates_presence_of :potential_amount, :if => :not_legacy?
@@ -251,6 +251,7 @@ class Inquiry < ApplicationRecord
   end
 
   after_initialize :set_global_defaults
+
   def set_global_defaults
     if self.company.present?
       self.billing_company ||= self.company
@@ -311,7 +312,16 @@ class Inquiry < ApplicationRecord
     self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
   end
 
-  def remote_shipping_uid
+  def remote_shipping_address_uid
     self.billing_company == self.shipping_company ? self.shipping_address.remote_uid : self.billing_address.remote_uid
+  end
+
+  def remote_shipping_company_uid
+    if self.shipping_company.present?
+      self.billing_company == self.shipping_company ? self.billing_company.remote_uid : self.shipping_company.remote_uid
+    else
+      self.billing_company.remote_uid
+    end
+
   end
 end
