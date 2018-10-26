@@ -274,28 +274,28 @@
                   <td align="center">
                     <span><%= item.quantity %></span></td>
                   <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
-                    <span><%= item.converted_unit_selling_price.round(2) %></span></td>
+                    <span><%= format_currency(item.converted_unit_selling_price.round(2)) %></span></td>
                   <td align="right" style="text-align:right;">
-                    <span><%= item.converted_total_selling_price.round(2) %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price.round(2)) %></span></td>
                   <td align="center">
                     <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                   <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= item.converted_total_tax.round(2) %></span></td>
+                      <span><%= format_currency(item.converted_total_tax.round(2)) %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2).round(2) %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2).round(2)) %></span></td>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2).round(2) %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2).round(2)) %></span></td>
                   <% end %>
                   <td align="right">
-                    <span><%= item.converted_total_selling_price_with_tax.round(2) %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price_with_tax.round(2)) %></span></td>
                 </tr>
               <% end %>
 
@@ -321,7 +321,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" style="text-align: right;" valign="top">
-                  <b><span><%= record.converted_total %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total) %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if record.tax_summary.strip == '0' ||
@@ -329,19 +329,19 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax) %></span></b></td>
                 <% else %>
                   <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= (record.converted_total_tax / 2) %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax / 2) %></span></b></td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= (record.converted_total_tax / 2) %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax / 2) %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= record.converted_total_with_tax %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total_with_tax) %></span></b></td>
               </tr>
 
               </tbody>

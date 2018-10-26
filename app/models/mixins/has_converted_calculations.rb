@@ -34,6 +34,7 @@ module Mixins::HasConvertedCalculations
       rows.map {|row| row.quantity}.sum
     end
 
+    # Considers conversion rate for totals
     def converted_total
       (calculated_total / inquiry_currency.conversion_rate).round(2)
     end
