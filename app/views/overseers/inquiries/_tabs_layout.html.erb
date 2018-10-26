@@ -23,7 +23,7 @@
 </div>
 
 <section class="pb-4 pb-lg-5">
-  <ul class="nav nav-tabs nav-fill">
+  <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
     <%= nav_item('Inquiry', edit_overseers_inquiry_path(@inquiry), policy(@inquiry).edit?) %>
     <%= nav_item('Imports', overseers_inquiry_imports_path(@inquiry), policy(@inquiry).imports?) %>
     <%= nav_item('Suppliers', edit_suppliers_overseers_inquiry_path(@inquiry), policy(@inquiry).edit_suppliers?) %>
