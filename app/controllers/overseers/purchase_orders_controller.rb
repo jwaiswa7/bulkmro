@@ -14,15 +14,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
-  def export_sheet
-    # TODO: Custome Datepicker to generate Purchase Order report
+  def export_all
     authorize :purchase_order
-    start_at = Date.today - 2.day
-    end_at = Date.today
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
 
     respond_to do |format|
       format.html
-      format.csv { send_data PurchaseOrder.to_csv, filename: "purchase-orders-#{start_at}-#{end_at}.csv" }
+      format.csv { send_data service.call, filename: service.filename }
     end
   end
 end
