@@ -162,6 +162,41 @@
         <% end %>
       </div>
     </div>
+
+    <% if @company.legacy_metadata["sup_mail"] != "NULL" || @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" || @company.legacy_metadata["sup_contact"] != "NULL" %>
+      <a class="btn btn-light text-left btn-lg btn-block mt-1 mt-lg-4" type="button" data-toggle="collapse" data-target="#dump">
+        Legacy Data
+      </a>
+
+      <div id="dump" class="collapse">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-row">
+              <% if @company.legacy_metadata["sup_mail"] != "NULL" %>
+                <div class="col-6 col-md-4">
+                  <strong class="d-block">Email</strong>
+                  <%= @company.legacy_metadata["sup_mail"] %>
+                </div>
+              <% end %>
+
+              <% if @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" %>
+                <div class="col-6 col-md-4">
+                  <strong class="d-block">Telephone</strong>
+                  <%= (@company.legacy_metadata["sup_tel"] != "NULL" ? @company.legacy_metadata["sup_tel"] : '') + (@company.legacy_metadata["sup_tel2"] != "NULL" ? @company.legacy_metadata["sup_tel2"] : '') %>
+                </div>
+              <% end %>
+
+              <% if @company.legacy_metadata["sup_contact"] != "NULL" %>
+                <div class="col-6 col-md-4">
+                  <strong class="d-block">Contact</strong>
+                  <%= @company.legacy_metadata["sup_contact"] %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </section>
 
   <section class="pb-4 pb-lg-5">

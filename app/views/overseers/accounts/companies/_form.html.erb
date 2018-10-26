@@ -115,12 +115,12 @@
     <!--      </div>-->
     <!--    </div>-->
 
-
     <% if f.object.persisted? %>
       <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
       <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
     <% end %>
+
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
@@ -132,5 +132,4 @@
       <% end %>
     <% end %>
   <% end %>
-
 </div>
