@@ -6,4 +6,8 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def show_original_invoice?
     record.original_invoice.attached?
   end
+
+  def export_sheet?
+    true
+  end
 end

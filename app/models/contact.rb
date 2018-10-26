@@ -4,7 +4,7 @@ class Contact < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
-  pg_search_scope :locate, :against => [:first_name, :last_name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {:account => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable and :omniauthable
@@ -19,8 +19,8 @@ class Contact < ApplicationRecord
   has_one :company_contact
   has_one :company, :through => :company_contact
 
-  enum role: { customer: 10 }
-  enum status: { active: 10, inactive: 20 }
+  enum role: {customer: 10}
+  enum status: {active: 10, inactive: 20}
   enum contact_group: {
       general: 10,
       company_top_manager: 20,
@@ -31,10 +31,11 @@ class Contact < ApplicationRecord
       manager: 70,
   }
 
-  validates_presence_of :telephone, if: -> { !self.mobile.present? && not_legacy? }
-  validates_presence_of :mobile, if: -> { !self.telephone.present? && not_legacy? }
+  validates_presence_of :telephone, if: -> {!self.mobile.present? && not_legacy?}
+  validates_presence_of :mobile, if: -> {!self.telephone.present? && not_legacy?}
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.role ||= :customer
     self.status ||= :active
