@@ -3,7 +3,7 @@ class ProductsIndex < BaseIndex
     field :id
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring'
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
-    field :approved, value: -> (record) { record.approval.try(:created_at) }, type: 'date'
+    field :approved, value: -> (record) { record.approval.try(:created_at) }
 
     field :sku, analyzer: 'sku_substring'
     field :name, analyzer: 'substring'
