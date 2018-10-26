@@ -12,6 +12,6 @@ json.data (@products) do |product|
               ]
 end
 
-json.recordsTotal @products.all.count
-json.recordsFiltered @products.total_count
+json.recordsTotal @products.count
+json.recordsFiltered @indexed_products.total_count
 json.draw params[:draw]

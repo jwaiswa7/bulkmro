@@ -1,6 +1,7 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
 
+  update_index('sales_invoices#sales_invoice') {self}
   belongs_to :sales_order
   has_one :inquiry, :through => :sales_order
 
