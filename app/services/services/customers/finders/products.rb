@@ -14,6 +14,10 @@ class Services::Customers::Finders::Products < Services::Customers::Finders::Bas
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
@@ -32,6 +36,10 @@ class Services::Customers::Finders::Products < Services::Customers::Finders::Bas
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records

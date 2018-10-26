@@ -6,6 +6,7 @@ class SalesQuote < ApplicationRecord
 
   has_closure_tree({name_column: :to_s})
 
+  update_index('sales_quotes#sales_quote') {self}
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   accepts_nested_attributes_for :inquiry_currency
