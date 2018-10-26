@@ -113,6 +113,7 @@ Rails.application.routes.draw do
     resources :sales_orders do
       collection do
         get 'pending'
+        get 'drafts_pending'
       end
 
       scope module: 'sales_orders' do

@@ -35,6 +35,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager?
   end
 
+  def drafts_pending?
+    admin?
+  end
+
   def go_to_inquiry?
     record.inquiry.can_be_managed?(overseer)
   end
