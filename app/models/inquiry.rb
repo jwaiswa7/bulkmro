@@ -18,11 +18,9 @@ class Inquiry < ApplicationRecord
   belongs_to :billing_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'billing_company_id'
 
   belongs_to :shipping_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'shipping_company_id'
-  belongs_to :shipping_contact, -> (record) {where('id in (?)', record.shipping_company.contacts.pluck(:id))}, :class_name => 'Contact', foreign_key: 'shipping_contact_id'
+  belongs_to :shipping_contact, :class_name => 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   has_one :account, :through => :company
@@ -30,7 +28,7 @@ class Inquiry < ApplicationRecord
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   belongs_to :payment_option, required: false
   belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   has_many :products, :through => :inquiry_products
   has_many :approvals, :through => :products, :class_name => 'ProductApproval'
   has_many :inquiry_product_suppliers, :through => :inquiry_products

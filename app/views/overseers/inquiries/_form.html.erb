@@ -87,7 +87,7 @@
             <%= f.association :billing_address, required: true, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)} %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_address, required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.company_id)} %>
+            <%= f.association :shipping_address, required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)} %>
           </div>
         </div>
       </div>
