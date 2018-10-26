@@ -167,11 +167,17 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
 
-                    <%= record.inquiry.contact.full_name %><br>
+                    <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
+                    <br>
                     <%= record.inquiry.shipping_address.name %><br>
                     <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
                     <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                    <% if record.inquiry.shipping_contact.present? %>
+                      Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_contact.mobile || record.inquiry.shipping_address.telephone %>
+                    <% else %>
+                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                    <% end %>
+
                     <br>
                     GST No.:<%= record.inquiry.shipping_address.gst %><br>
                   </div>

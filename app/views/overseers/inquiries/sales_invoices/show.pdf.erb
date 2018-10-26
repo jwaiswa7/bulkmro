@@ -57,10 +57,11 @@
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <span style="color:#000000"><%= @sales_invoice.sales_order.inquiry.inquiry_number %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <b><span style="color:#000000">Customer Inquiry Reference</span></b> <span style="float:right">:</span></td>
+                  <b><span style="color:#000000">Customer Inquiry Reference</span></b>
+                  <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= [@sales_invoice.sales_order.inquiry.inquiry_number,@sales_invoice.sales_order.inquiry.subject].join(" - ") %>
+                      <%= [@sales_invoice.sales_order.inquiry.inquiry_number, @sales_invoice.sales_order.inquiry.subject].join(" - ") %>
                     </span>
                 </td>
               </tr>
@@ -195,11 +196,17 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
 
-                    <%= @sales_invoice.sales_order.inquiry.contact.full_name %><br>
+                    <%= @sales_invoice.sales_order.inquiry.shipping_contact.present? ? @sales_invoice.sales_order.inquiry.shipping_contact.full_name : @sales_invoice.sales_order.inquiry.contact.full_name %>
+                    <br>
                     <%= @sales_invoice.sales_order.inquiry.shipping_address.name %><br>
                     <%= @sales_invoice.sales_order.inquiry.shipping_address.to_multiline_s if @sales_invoice.sales_order.inquiry.shipping_address.present? %>
                     <br>
-                    Tel: <%= @sales_invoice.sales_order.inquiry.shipping_address.telephone %><br>
+                    <% if @sales_invoice.sales_order.inquiry.shipping_contact.present? %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.shipping_contact.phone || @sales_invoice.sales_order.inquiry.shipping_contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                    <% else %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                    <% end %> <br>
+
                     GST No.:<%= @sales_invoice.sales_order.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>

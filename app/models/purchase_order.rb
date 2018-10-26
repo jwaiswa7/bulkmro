@@ -1,14 +1,13 @@
 class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
+  update_index('purchase_orders#purchase_order') {self}
+
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
   has_many :rows, class_name: 'PurchaseOrderRow', inverse_of: :purchase_order
   has_one_attached :document
-
-  update_index('purchase_orders#purchase_order') {self}
-  #pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
