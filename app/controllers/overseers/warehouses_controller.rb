@@ -42,11 +42,6 @@ class Overseers::WarehousesController < Overseers::BaseController
     end
   end
 
-  # def autocomplete
-  #   @warehouses = ApplyParams.to(Warehouse.all, params)
-  #   authorize @warehouses
-  # end
-
   def show
     authorize @warehouses
   end
