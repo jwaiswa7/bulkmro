@@ -12,7 +12,8 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def create
-    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer))
+    password = Devise.friendly_token[0, 20]
+    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer, password: password, :password_confirmation => password))
     authorize @overseer
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
