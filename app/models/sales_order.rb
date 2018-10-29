@@ -105,6 +105,10 @@ class SalesOrder < ApplicationRecord
     [:draft_uid]
   end
 
+  def update_index
+    SalesOrdersIndex::SalesOrder.import([self.id])
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
