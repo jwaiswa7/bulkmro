@@ -16,7 +16,9 @@ json.data (@contacts) do |contact|
                   contact.email,
                   contact.account.name,
                   contact.inquiries.size,
+=begin
                   format_boolean_label(contact.synced?, 'synced'),
+=end
                   format_date(contact.created_at)
               ]
 end

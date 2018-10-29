@@ -4,7 +4,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin?
+    admin? || inside_sales_manager?
   end
 
   def show_document?
