@@ -14,17 +14,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
-  def export_sheet
+  def export_all
     authorize :purchase_order
-    start_at = Date.today - 1.day
-    end_at = Date.today
-
-    #service = Services::Shared::Spreadsheets::CsvExporter.new(controller_name.classify.singularize, start_at, end_at, fields, records)
-    #service.call
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
 
     respond_to do |format|
       format.html
-      format.csv { send_data PurchaseOrder.to_csv, filename: "po-#{Date.today}.csv" }
+      format.csv { send_data service.call, filename: service.filename }
     end
   end
 end

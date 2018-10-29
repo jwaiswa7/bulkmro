@@ -16,6 +16,16 @@ class Overseers::InquiriesController < Overseers::BaseController
     end
   end
 
+  def export_all
+    authorize :inquiry
+    service = Services::Overseers::Exporters::InquiriesExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
   def index_pg
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.all.with_includes), params)
     authorize @inquiries
@@ -122,7 +132,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         :outside_sales_owner_id,
         :sales_manager_id,
         :billing_address_id,
+        :billing_company_id,
         :shipping_address_id,
+        :shipping_company_id,
+        :shipping_contact_id,
         :bill_from_id,
         :ship_from_id,
         :status,

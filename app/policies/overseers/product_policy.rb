@@ -1,5 +1,4 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
-
   def comments?
     record.persisted?
   end
@@ -30,5 +29,9 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
 
   def sku_purchase_history?
     index? && record.inquiry_products.any?
+  end
+
+  def resync?
+    record.approved? && record.not_synced?
   end
 end

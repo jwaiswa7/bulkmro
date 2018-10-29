@@ -27,7 +27,7 @@
       <% if f.object.status || f.object.legacy_request_status == "Approved" %>
         <div class="col-3 col-md-3" style="text-align:right">
           <% if policy(@sales_order).show_pdf? %>
-            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class:"btn btn-warning", target:"_blank" do %>
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-warning", target: "_blank" do %>
               View Proforma Invoice
             <% end %>
           <% end %>
@@ -95,7 +95,7 @@
       <div class="form-row">
         <div class="col-md-6">
           <strong>Customer Shipping Address</strong><br>
-          <%= (@inquiry.company.name) %><br>
+          <%= (@inquiry.shipping_company.name) %><br>
           <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
@@ -223,25 +223,28 @@
   </div>
   <div class="card-footer">
     <div class=form-row>
-      <div class="col-12 col-md-2">
-        Products: <br>
+      <div class="col-12 col-md-1">
+        Products <br>
         <strong><%= f.object.rows.size %></strong>
+      </div>
+      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
+        <strong><%= format_currency(f.object.calculated_total_cost) %></strong>
+      </div>
+      <div class="col-4 col-md-1 mt-2 mt-md-0">Total Margin<br>
+        <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
       </div>
       <div class="col-8 col-md-3">
         Total Selling Price (Excl. tax)<br>
         <strong><%= format_currency(f.object.calculated_total) %></strong>
       </div>
+      <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
+        <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
+      </div>
+
       <div class="col-4 col-md-2">
         Total Tax<br>
         <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
       </div>
-      <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-        <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
-      </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
-      </div>
-
     </div>
   </div>
 </div>

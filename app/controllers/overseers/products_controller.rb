@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -11,8 +11,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def autocomplete
-    params[:page] = 1
-    service = Services::Overseers::Finders::Products.new(params)
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
     service.call
 
     @indexed_products = service.indexed_records
@@ -91,6 +90,13 @@ class Overseers::ProductsController < Overseers::BaseController
   def sku_purchase_history
     authorize @product
     redirect_to overseers_product_path(@product)
+  end
+
+  def resync
+    authorize @product
+    if @product.save_and_sync
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
+    end
   end
 
   private

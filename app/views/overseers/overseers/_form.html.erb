@@ -6,6 +6,8 @@
   </div>
 
   <%= simple_form_for([:overseers, @overseer], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+
     <div class="form-row">
       <div class="col-3 col-md-2">
         <%= f.input :legacy_id, label: 'Legacy ID', disabled: true %>

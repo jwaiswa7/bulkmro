@@ -13,6 +13,7 @@ json.data (@sales_orders) do |sales_order|
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.id,
+                  sales_order.inquiry.inquiry_number,
                   format_enum(sales_order.status || sales_order.legacy_request_status, humanize_text: false),
                   format_enum(sales_order.remote_status, humanize_text: false),
                   format_date(sales_order.sent_at),
@@ -26,6 +27,7 @@ json.data (@sales_orders) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],

@@ -12,7 +12,6 @@ class Product < ApplicationRecord
   include Mixins::CanBeSynced
 
   update_index('products#product') { self if self.approved? }
-  # pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand, required: false
@@ -57,6 +56,10 @@ class Product < ApplicationRecord
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
     self.weight ||= 0.0
+  end
+
+  def syncable_identifiers
+    [:remote_uid]
   end
 
   def best_tax_code
