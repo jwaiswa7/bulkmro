@@ -1,7 +1,6 @@
 class Customers::ProductsController < Customers::BaseController
 
   def index
-    params[:page] ||= 1
     @cart_item = current_cart.cart_items.new
     service = Services::Customers::Finders::Products.new(params, current_contact)
     service.call
