@@ -57,6 +57,6 @@
 </div>
 
 <div class="col-12">
-  <%= paginate @products_paginate, remote: true %>
+  <%= paginate @products_paginate, remote: true, :params => {:view => "grid_view"} %>
 </div>
 
