@@ -7,61 +7,151 @@
     </div>
   </div>
 
-  <%= simple_form_for(@sales_order, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <% if f.object.errors.any? %>
-      <% f.object.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    <% end %>
+ 
     <div class="card">
       <div class="card-header">
         <div class=form-row>
           <div class="col-8 col-md-3">
             <strong>Order Number</strong>
-            <br> <%= f.object.try(:order_number).blank? ? "SAP Request Pending" : f.object.order_number %>
+            <br> <%= @sales_order.try(:order_number).blank? ? "SAP Request Pending" : @sales_order.order_number %>
           </div>
-          <% if f.object.remote_approved? %>
+          <% if @sales_order.remote_approved? %>
             <div class="col-8 col-md-3">
               <strong>Doc Entry</strong>
-              <br> <%= f.object.draft_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
+              <br> <%= @sales_order.draft_uid.blank? ? "SAP Request Pending" : @sales_order.remote_uid %>
             </div>
             <div class="col-8 col-md-3">
               <strong>Draft Entry</strong>
-              <br> <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
+              <br> <%= @sales_order.remote_uid.blank? ? "SAP Request Pending" : @sales_order.remote_uid %>
             </div>
           <% end %>
-          <div class="col-3">
+          <!--  <div class="col-3">
             <strong>Status</strong>
-            <br> <%= f.object.status.to_s.humanize %>
+            <br> <%#<%= @sales_order.status.to_s.humanize %>
           </div>
-          <div class="col-3">
+         <!-- <div class="col-3">
             <strong>SAP Status</strong>
-            <br> <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
-          </div>
+            <br> <%#<%= @sales_order.remote_status.blank? ? "SAP Request Pending" : @sales_order.remote_status %>
+          </div>-->
         </div>
 
       </div>
       <div class="card-body">
-        <div class="form-row">
-
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Quotation</strong>
+            <br> <%= @sales_order.sales_quote_id %>
+          </div>
+          <div class="col-6">
+            <strong>Customer Order Date</strong>
+            <br> <%= format_date(@sales_order.sales_quote.sent_at)  %>
+          </div>
+        </div>
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Customer PO Number</strong>
+            <br> <%= @sales_order.inquiry.customer_po_number %>
+          </div>
+          <div class="col-6">
+            <strong>Customer Order Date</strong>
+            <br> <%= @sales_order.inquiry.customer_order_date %>
+          </div>
+        </div>
+        <div class="form-row mb-1">
           <div class="col-6">
             <strong>Currency</strong>
-            <br> <%= f.object.currency %>
+            <br> <%= @sales_order.currency %>
           </div>
           <div class="col-6">
             <strong>Conversion rate</strong>
-            <br> <%= f.object.conversion_rate %>
+            <br> <%= @sales_order.conversion_rate %>
           </div>
-
         </div>
 
-        <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-          <%= row.hidden_field :sales_order_id %>
-          <%= row.hidden_field :id %>
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Payment Terms</strong>
+            <br> <%= @sales_order.inquiry.payment_option.name %>
+          </div>
+        </div>
+        <div class="card-alternative mt-3">
+          <div class="form-row">
+            <div class="col-md-6">
+              <strong>Supplier Shipping Address</strong>
+              <%= @sales_order.inquiry.ship_from.address.name.to_s %><br>
+              <%= @sales_order.inquiry.ship_from.address.to_compact_multiline_s if @sales_order.inquiry.ship_from.present? %><br>
+              <% if @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %>
+                Contact: <%= @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %><br>
+              <% end %>
+              GST no: <%= @sales_order.inquiry.ship_from.address.gst %><br>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Supplier Billing Address</strong>
+              <%= @sales_order.inquiry.bill_from.address.name.to_s %><br>
+              <%= @sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_order.inquiry.bill_from.present? %><br>
+              <% if @sales_order.inquiry.bill_from.address.phone.present? %>
+                Contact: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.bill_from.address.phone %><br>
+              <% end %>
+              GST no: <%= @sales_order.inquiry.bill_from.address.gst %><br>
+            </div>
+          </div>
+          <br>
+
+
+          <div class="form-row">
+            <div class="col-md-6">
+              <strong>Customer Shipping Address</strong><br>
+              <%= (@sales_order.inquiry.company.name) %><br>
+              <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
+              <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
+                Contact: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %><br>
+              <% end %>
+              GST no: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %><br>
+              Email: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Customer Billing Address</strong><br>
+              <%= (@sales_order.inquiry.company.name) %><br>
+              <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
+              <% if @sales_order.inquiry.contact.phone.present? %>
+                Contact: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %><br>
+              <% end %>
+              GST no: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %><br>
+              Email: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>
+            </div>
+          </div>
+        </div>
+
+        <% if @sales_order.inquiry.attachments.present? %>
+          <div class="form-row  mt-3">
+            <div class="col-6">
+              <strong>Customer PO sheet</strong><br>
+              <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @sales_order.inquiry.customer_po_sheet.filename %>
+              <% end if @sales_order.inquiry.customer_po_sheet.attached? %>
+            </div>
+            <div class="col-6">
+              <strong>Email attachment</strong><br>
+              <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
+                <%= @sales_order.inquiry.copy_of_email.filename %>
+              <% end if @sales_order.inquiry.copy_of_email.attached? %>
+            </div>
+          </div>
+          <br>
+          <strong>Supplier Quotes attachment</strong>
+          <% @sales_order.inquiry.supplier_quotes.attachments.each do |attachment| %>
+            <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
+              <br><%= attachment.filename %>
+            <% end %>
+          <% end if @sales_order.inquiry.supplier_quotes.attached? %>
+        <% end %>
+
+        <% @sales_order.sales_order_rows.each do |row| %>
           <div>
+
             <h6 class="text-uppercase mb-0 mt-3">
-              <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
-              <strong><%= row.object.sales_quote_row %></strong>
+              <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
+              <strong><%= row.sales_quote_row %></strong>
             </h6>
             <div class="form-row my-2 text-small">
               <div class="col-12">
@@ -69,63 +159,88 @@
                   <thead>
                   <tr>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Quantity">Qty</span>
+                      <span data-toggle="tooltip" title="Product Code">Product</span><br>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+                      <span data-toggle="tooltip" title="Manufacturer Code">Mfr Model</span><br>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Unit Cost">UC</span><br>
+                      <span data-toggle="tooltip" title="Description">Description</span><br>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Margin Percentage">%</span>
+                      <span data-toggle="tooltip" title="Brand">Make</span>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+                      <span data-toggle="tooltip" title="Unit Of Measurement">UOM</span><br>
                     </th>
-                    <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                      <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>
+                    <th class="no-sort">
+                      <span data-toggle="tooltip" title="Quantity">Qty</span><br>
+                    </th>
+                    <th class="no-sort <%= @sales_order.currency.name == 'INR' ? 'd-none' : '' %>">
+                      <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= @sales_order.currency.sign %>
                         )</span>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+                      <span data-toggle="tooltip" title="Unit Price">Unit Price</span><br>
                     </th>
                     <th class="no-sort">
-                      <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+                      <span data-toggle="tooltip" title="Tax">Tax</span><br>
                     </th>
                     <th class="no-sort">
-                      <span>Tax Code</span><br>
+                      <span data-toggle="tooltip" title="Subtotal">Subtotal</span><br>
                     </th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr>
                     <td>
-                      <span><%= row.object.quantity %></span>
+                      <span>
+                          <%= row.sales_quote_row.product.remote_uid %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= row.object.measurement_unit %></span>
+                      <span>
+                              <%= row.sales_quote_row.product.mpn %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= row.object.unit_cost_price_with_unit_freight_cost %></span>
+                      <span>
+                              <%= row.sales_quote_row.product.description || "Not Available" %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+                      <span>
+                        <% if row.sales_quote_row.product.brand %>
+                          <%= row.sales_quote_row.product.brand.name %>
+                        <% else %>
+                          Not Available
+                        <% end %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= row.object.unit_selling_price %></span>
-                    </td>
-                    <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                      <span><%= row.object.converted_unit_selling_price %></span>
-                    </td>
-                    <td>
-                      <span><%= row.object.total_selling_price %></span>
+                      <span>
+                          <%= row.measurement_unit || row.product.measurement_unit || MeasurementUnit.default  %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= row.object.total_selling_price_with_tax %></span>
+                      <span>
+                          <%= row.quantity %>
+                      </span>
                     </td>
                     <td>
-                      <span><%= row.object.tax_code %></span>
+                      <span>
+                        <%= row.unit_selling_price %>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                          <%= row.best_tax_code %>
+                      </span>
+                    </td>
+                    <td>
+                      <span>
+                          <%= row.total_selling_price %>
+                      </span>
                     </td>
                   </tr>
                   </tbody>
@@ -133,28 +248,81 @@
               </div>
             </div>
           </div>
-        <% end %>
+          <% end %>
+          <hr class="my-2">
+
 
       </div>
       <div class="card-footer">
         <div class=form-row>
+          <div class="col-12 col-md-1">
+            Products <br>
+            <strong><%= @sales_order.rows.size %></strong>
+          </div>
+          <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
+            <strong><%= format_currency(@sales_order.calculated_total_cost) %></strong>
+          </div>
+          <div class="col-4 col-md-1 mt-2 mt-md-0">Total Margin<br>
+            <strong><%= format_currency(@sales_order.calculated_total_margin) %></strong>
+          </div>
           <div class="col-8 col-md-3">
             Total Selling Price (Excl. tax)<br>
-            <strong><%= format_currency(f.object.calculated_total) %></strong>
-          </div>
-          <div class="col-4 col-md-3">
-            Total Tax<br>
-            <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+            <strong><%= format_currency(@sales_order.calculated_total) %></strong>
           </div>
           <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-            <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
-          </div>
-          <div class="col-4 col-md-3 mt-2 mt-md-0">Total Margin<br>
-            <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+            <strong><%= format_currency(@sales_order.calculated_total_with_tax) %></strong>
           </div>
 
+          <div class="col-4 col-md-2">
+            Total Tax<br>
+            <strong><%= format_currency(@sales_order.calculated_total_tax) %></strong>
+          </div>
         </div>
       </div>
     </div>
-  <% end %>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50 mb-1"><strong>Other Information</strong></p>
+            </div>
+            <div class="card-body">
+              <ol>
+                <li>Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.</li>
+                <li>Bulk MRO Industrial Supply is not responsible for any banking fees.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card ">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50 mb-1"><strong>Payment By Wire Transfer To</strong></p>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <p class="text-black-50 mb-1"><strong>Kotak Mahindra Bank Ltd. :</strong></p>
+                  <p>Aum Saheel Tower, Mumbai 400080.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account Number: 9412329433<br/>NEFT / RTGS Code: KKBK0001411</p>
+                </div>
+                <div class="col-6">
+                  <p class="text-black-50 mb-1"><strong>State Bank Of India:</strong></p>
+                  <p>Kalpa Taru – 39, Pedder Road, Mumbai, 400026.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account Number: 35924122136<br/>NEFT / RTGS Code: SBIN0000510</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
