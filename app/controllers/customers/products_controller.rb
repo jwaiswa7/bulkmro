@@ -9,7 +9,6 @@ class Customers::ProductsController < Customers::BaseController
     @products = service.records.try(:reverse)
     @products_paginate = current_contact.account.products.approved.page(params[:page])
     respond_to do |format|
-      format.html {}
       if params[:view] == "grid_view"
         format.js { render 'index.js.erb' }
       else
@@ -18,6 +17,7 @@ class Customers::ProductsController < Customers::BaseController
           @products
         end
       end
+      format.html {}
     end
   end
 
