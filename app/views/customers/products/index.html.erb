@@ -2,11 +2,10 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<div class="buttons">
-  <br>
-  <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-info">List View</a>
-  <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-info">Grid View</a>
-</div>
+<% content_for :heading_buttons do %>
+  <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+  <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+<% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>
