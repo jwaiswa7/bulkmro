@@ -15,10 +15,12 @@ class Inquiry < ApplicationRecord
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :contact, required: false
   belongs_to :company
+  belongs_to :billing_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'billing_company_id'
+
+  belongs_to :shipping_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'shipping_company_id'
+  belongs_to :shipping_contact, :class_name => 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, :through => :company
   has_one :industry, :through => :company
-  belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
   belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   has_one :account, :through => :company
@@ -26,7 +28,7 @@ class Inquiry < ApplicationRecord
   accepts_nested_attributes_for :inquiry_products, reject_if: lambda {|attributes| attributes['product_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   belongs_to :payment_option, required: false
   belongs_to :billing_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) {where(company_id: record.company.id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
+  belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   has_many :products, :through => :inquiry_products
   has_many :approvals, :through => :products, :class_name => 'ProductApproval'
   has_many :inquiry_product_suppliers, :through => :inquiry_products
@@ -180,14 +182,16 @@ class Inquiry < ApplicationRecord
   validates_presence_of :inquiry_currency
   validates_presence_of :company
   validates_presence_of :expected_closing_date, :if => :not_legacy?
-  validates_presence_of :valid_end_time , :if => :not_legacy?
+  validates_presence_of :valid_end_time, :if => :not_legacy?
   validates_presence_of :inside_sales_owner, :if => :not_legacy?
   validates_presence_of :outside_sales_owner, :if => :not_legacy?
   validates_presence_of :potential_amount, :if => :not_legacy?
   validates_presence_of :quote_category, :if => :not_legacy?
   validates_presence_of :payment_option, :if => :not_legacy?
   validates_presence_of :billing_address, :if => :not_legacy?
+  validates_presence_of :billing_company, :if => :not_legacy?
   validates_presence_of :shipping_address, :if => :not_legacy?
+  validates_presence_of :shipping_company, :if => :not_legacy?
   validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
@@ -225,6 +229,7 @@ class Inquiry < ApplicationRecord
       self.valid_end_time ||= (Date.today + 1.month) if self.not_legacy?
       self.freight_cost ||= 0
       self.contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
+      self.shipping_contact ||= self.company.default_company_contact.contact if self.company.default_company_contact.present?
       self.payment_option ||= self.company.default_payment_option
       self.billing_address ||= self.company.default_billing_address
       self.shipping_address ||= self.company.default_shipping_address
@@ -241,6 +246,15 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
+  end
+
+  after_initialize :set_global_defaults
+
+  def set_global_defaults
+    if self.company.present?
+      self.billing_company ||= self.company
+      self.shipping_company ||= self.company
+    end
   end
 
   def draft?
@@ -288,7 +302,23 @@ class Inquiry < ApplicationRecord
     ].join(' ')
   end
 
+  def billing_contact
+    self.contact
+  end
+
   def has_attachment?
     self.customer_po_sheet.attached? || self.copy_of_email.attached? || self.supplier_quotes.attached? || self.final_supplier_quote.attached? || self.calculation_sheet.attached?
+  end
+
+  def remote_shipping_address_uid
+    self.billing_company == self.shipping_company ? self.shipping_address.remote_uid : self.billing_address.remote_uid
+  end
+
+  def remote_shipping_company_uid
+    if self.shipping_company.present?
+      self.billing_company == self.shipping_company ? self.billing_company.remote_uid : self.shipping_company.remote_uid
+    else
+      self.billing_company.remote_uid
+    end
   end
 end

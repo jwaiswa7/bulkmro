@@ -27,7 +27,7 @@ class Resources::ApplicationResource
     PASSWORD = 'vm1234'
 
     ATTACHMENT_ENDPOINT = URI.parse('https://35.200.144.191:22')
-    ATTACHMENT_USERNAME = 'ec2-user'
+    ATTACHMENT_USERNAME = 'pradeep'
     ATTACHMENT_PASSWORD = ''
     ATTACHMENT_SSH = '-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEA9bBug/z3ZxZnfS4sBNolGjq3+JFWb8odFtq55m7w+zsAe6uC
