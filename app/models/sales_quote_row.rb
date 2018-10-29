@@ -129,17 +129,17 @@ class SalesQuoteRow < ApplicationRecord
       if self.margin_percentage >= 100
         self.unit_cost_price_with_unit_freight_cost
       else
-        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0))).round(2)
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0)))
       end
     end
   end
 
   def calculated_tax
-    (self.calculated_unit_selling_price * (self.applicable_tax_percentage)).round(2)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage))
   end
 
   def calculated_unit_selling_price_with_tax
-    (self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage))).round(2)
+    (self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage)))
   end
 
   def unit_selling_price_with_tax
@@ -147,23 +147,23 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_converted_unit_selling_price
-    (self.unit_selling_price / conversion_rate).round(2) if unit_selling_price.present?
+    (self.unit_selling_price / conversion_rate) if unit_selling_price.present?
   end
 
   def converted_total_selling_price
-    (self.total_selling_price / conversion_rate).round(2) if unit_selling_price.present?
+    (self.total_selling_price / conversion_rate) if unit_selling_price.present?
   end
 
   def converted_unit_cost_price_with_unit_freight_cost
-    (self.unit_cost_price_with_unit_freight_cost / conversion_rate).round(2) if unit_cost_price_with_unit_freight_cost.present?
+    (self.unit_cost_price_with_unit_freight_cost / conversion_rate) if unit_cost_price_with_unit_freight_cost.present?
   end
 
   def converted_total_selling_price_with_tax
-    (self.total_selling_price_with_tax / conversion_rate).round(2) if unit_selling_price.present?
+    (self.total_selling_price_with_tax / conversion_rate) if unit_selling_price.present?
   end
 
   def converted_total_tax
-    (total_tax / conversion_rate).round(2)
+    (total_tax / conversion_rate)
   end
 
   def taxation

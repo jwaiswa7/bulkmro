@@ -52,7 +52,7 @@ class Resources::Item < Resources::ApplicationResource
 
     if record.is_service
       params.merge!({
-                        SACEntry: record.best_tax_code.try(:remote_uid) * -1,
+                        SACEntry: record.best_tax_code.try(:remote_uid),
                         ManageBatchNumbers: "tNO",
                         InventoryItem: 'tNO',
                         MaterialType: "mt_FinishedGoods"

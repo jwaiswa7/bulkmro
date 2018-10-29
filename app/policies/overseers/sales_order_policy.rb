@@ -36,7 +36,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    manager?
+    manager? || inside_sales_manager?
   end
 
   def go_to_inquiry?
