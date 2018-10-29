@@ -2,7 +2,7 @@ json.data (@warehouses) do |warehouse|
   json.array! [
                   [
                       if policy(warehouse).edit?
-                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'dark')
+                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info')
                       end,
                       if policy(warehouse).edit?
                         row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning')
