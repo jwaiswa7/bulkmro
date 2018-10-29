@@ -17,7 +17,7 @@ json.data (@inquiries) do |inquiry|
       format_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] } ]
-  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + priority_color(inquiry.priority)})
+  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + smart_queue_priority_color(inquiry.priority)})
 end
 
 json.recordsTotal Inquiry.all.count
