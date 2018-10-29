@@ -230,8 +230,13 @@ Rails.application.routes.draw do
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :products, only: %i[index show]
-    resource  :cart, only: [:show]
+    resource  :cart, only: [:show] do
+      collection do
+        get 'checkout'
+      end
+    end
     resources :cart_items, only: %i[new create destroy]
+    resources :customer_orders, only: %i[create show]
   end
 
 

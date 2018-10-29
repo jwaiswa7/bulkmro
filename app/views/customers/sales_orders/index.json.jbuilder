@@ -15,6 +15,18 @@ json.data (@sales_orders) do |sales_order|
               ]
 end
 
-json.recordsTotal @sales_orders.all.count
-json.recordsFiltered @sales_orders.total_count
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json
+                   ]
+
+json.recordsTotal @sales_orders.count
+json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]

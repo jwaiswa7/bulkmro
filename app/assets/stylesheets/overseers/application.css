@@ -9984,6 +9984,8 @@ th {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center; }
+.card .card-body img {
+  max-width: 100%; }
 .card .card-body .card-alternative {
   background-color: #f7f7f7;
   margin-left: -1.5rem;
