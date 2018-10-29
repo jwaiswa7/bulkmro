@@ -7,7 +7,7 @@ module Mixins::IsAPerson
 
     def full_name
       if first_name.present?
-        [first_name, last_name].compact.join(' ')
+        [first_name, last_name].compact.join(' ').titleize
       end
     end
 
