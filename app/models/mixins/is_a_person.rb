@@ -8,9 +8,11 @@ module Mixins::IsAPerson
     def full_name
       if first_name.present?
         [first_name, last_name].compact.join(' ')
-      else
-        ["Contact", id].compact.join(' #')
       end
+    end
+
+    def name
+      ["Contact", id].compact.join(' #')
     end
   end
 end
