@@ -36,8 +36,8 @@
 
 <div class="form-row">
   <% @products_paginate.each do |product| %>
-    <div class="col-2" style="margin-bottom: 50px;">
-      <div class="card" style="height: 475px;">
+    <div class="col-2">
+      <div class="card mb-2">
         <div class="card-body">
           <img src="https://images.homedepot-static.com/productImages/40844572-aeb6-4397-a347-5b1c2e5b44ac/svn/sharkbite-ball-valves-22222-0000lf-64_1000.jpg" />
           <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
@@ -56,7 +56,7 @@
   <% end %>
 </div>
 
-<div class="col-12 align-items-center text-center">
+<div class="col-12">
   <%= paginate @products_paginate, remote: true %>
 </div>
 
