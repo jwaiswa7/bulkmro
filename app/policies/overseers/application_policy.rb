@@ -14,6 +14,10 @@ class Overseers::ApplicationPolicy
     overseer.manager?
   end
 
+  def inside_sales_manager?
+    overseer.inside_sales_manager?
+  end
+
   def admin_or_manager?
     admin? || manager?
   end
