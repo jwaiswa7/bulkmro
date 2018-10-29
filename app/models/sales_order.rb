@@ -9,8 +9,8 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
-  include Mixins::HasRowCalculations
-  #include Mixins::HasConvertedCalculations
+  #include Mixins::HasRowCalculations
+  include Mixins::HasConvertedCalculations
 
   update_index('sales_orders#sales_order') {self}
   pg_search_scope :locate, :against => [], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
