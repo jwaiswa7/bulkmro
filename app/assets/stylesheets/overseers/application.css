@@ -10128,13 +10128,14 @@ th {
 .cart-dropdown {
   width: 15rem; }
   .cart-dropdown .cart-items {
-    height: 15rem;
+    max-height: 15rem;
     overflow: auto; }
+    .cart-dropdown .cart-items > * {
+      padding: 0.25rem 0.5rem; }
   .cart-dropdown .cart-footer {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex;
-    margin-top: 0.5rem; }
+    display: flex; }
     .cart-dropdown .cart-footer *:first-child {
       margin-right: 0.25rem; }
     .cart-dropdown .cart-footer *:last-child {
