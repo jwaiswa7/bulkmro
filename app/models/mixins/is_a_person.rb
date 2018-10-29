@@ -5,10 +5,12 @@ module Mixins::IsAPerson
     has_many :email_messages
     has_many :text_messages
 
-    validates_presence_of :first_name # :last_name
-
     def full_name
-      [first_name, last_name].compact.join(' ')
+      if first_name.present?
+        [first_name, last_name].compact.join(' ')
+      else
+        ["Contact", id].compact.join(' #')
+      end
     end
   end
 end
