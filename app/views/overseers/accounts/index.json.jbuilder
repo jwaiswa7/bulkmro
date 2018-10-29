@@ -1,7 +1,7 @@
 json.data (@accounts) do |account|
   json.array! [
                   [
-                      row_action_button(overseers_account_path(account), 'eye', 'View Account', 'dark'),
+                      row_action_button(overseers_account_path(account), 'eye', 'View Account', 'info'),
                       if policy(account).edit?;
                         row_action_button(edit_overseers_account_path(account), 'pencil', 'Edit Account', 'warning')
                       end,

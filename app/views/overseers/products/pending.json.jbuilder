@@ -2,7 +2,7 @@ json.data (@products) do |product|
   json.array! [
       [
           if policy(product).show?
-            row_action_button(overseers_product_path(product), 'eye', 'View Product', 'dark')
+            row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info')
           end,
           if policy(product).edit?
             row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
