@@ -4,7 +4,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode], :associated_against => { :state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -30,7 +30,7 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true
+  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != "No GST Number"}
   # validates_presence_of :remote_uid
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2

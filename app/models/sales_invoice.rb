@@ -1,7 +1,9 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
+  update_index('sales_invoices#sales_invoice') {self}
 
   belongs_to :sales_order
+  has_one :inquiry, :through => :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
@@ -11,7 +13,6 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
 
-  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -24,6 +25,8 @@ class SalesInvoice < ApplicationRecord
       :'Material Ready For Dispatch' => 206,
       :'Material Rejected' => 207
   }
+
+  scope :with_includes, -> {includes(:sales_order)}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2

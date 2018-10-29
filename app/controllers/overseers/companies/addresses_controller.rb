@@ -1,5 +1,11 @@
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
   before_action :set_address, only: [:show, :edit, :update]
+
+  def autocomplete
+    @addresses = ApplyParams.to(@company.addresses, params)
+    authorize @addresses
+  end
+
   def show
     authorize @address
   end
@@ -46,6 +52,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   end
 
   private
+
   def set_address
     @address ||= Address.find(params[:id])
   end

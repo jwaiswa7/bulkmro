@@ -47,16 +47,16 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.product.name  # Product Desc / NAME
+      item.ItemDescription = row.to_bp_catalog_s  # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
-      item.MeasureUnit = row.try(:measurement_unit) || row.product.try(:measurement_unit) || MeasurementUnit.default # Unit of measure?
+      item.MeasureUnit = row.measurement_unit.try(:to_s) || row.product.measurement_unit.try(:to_s) || MeasurementUnit.default # Unit of measure?
       item.U_MPN = row.product.try(:mpn) || "NIL"
       item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
-      item.Currency = record.currency.name # CContactPersonurr
+      item.Currency = "INR" # CContactPersonurr #record.currency.name
       item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.remote_uid # Supplier
       item.U_BuyCost = row.unit_cost_price_with_unit_freight_cost
@@ -96,7 +96,7 @@ class Resources::Quotation < Resources::ApplicationResource
         ProjectCode: record.inquiry.project_uid, #Project Code
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid, #record.inside_sales_owner, # Inside Sales Owner
         NumAtCard: record.inquiry.subject, #Comment on Quote?
-        DocCurrency: record.currency.name,
+        DocCurrency: "INR", #record.currency.name
         DocEntry: record.quotation_uid,
         ImportEnt: record.inquiry.customer_po_number, # Customer PO ID Not Available Yet
         U_RevNo: record.ancestors.size, #Quotation Revision ID
@@ -114,7 +114,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_BM_BillFromTo: record.inquiry.billing_address.remote_uid, #Bill FROM Address
         U_SQ_Status: Inquiry.statuses[record.inquiry.status], # Commercial Status (Preparing Quotation, Quotation Sent, Follow-up etc)
         BPL_IDAssignedToInvoice: record.inquiry.ship_from.remote_branch_code,
-        ShipToCode: record.inquiry.shipping_address.remote_uid,
+        ShipToCode: record.inquiry.remote_shipping_address_uid, #record.inquiry.shipping_address.remote_uid,
         PayToCode: record.inquiry.billing_address.remote_uid,
         U_PmntMthd: "Bank Transfer",
         CreationDate: record.created_date, # Quote date time
@@ -126,7 +126,9 @@ class Resources::Quotation < Resources::ApplicationResource
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
         TaxExtension: sez,
-        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil
+        BPChannelCode:record.inquiry.remote_shipping_company_uid,
+        ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
+        U_ConsigneeAddr: record.inquiry.shipping_address.remote_uid
     }
   end
 end

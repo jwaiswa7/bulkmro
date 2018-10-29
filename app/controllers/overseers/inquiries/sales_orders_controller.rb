@@ -26,7 +26,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     respond_to do |format|
       format.pdf do
-        render_pdf_for @sales_order, { proforma: true }
+        render_pdf_for @sales_order, {proforma: true}
       end
     end
   end
@@ -90,7 +90,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     if @sales_order.persisted?
       @sales_order.touch
-      SalesOrdersIndex::SalesOrder.import([@sales_order.id])
+      @sales_order.update_index
     end
 
     redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)

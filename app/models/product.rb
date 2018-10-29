@@ -13,7 +13,6 @@ class Product < ApplicationRecord
   include Mixins::CanHaveTaxes
 
   update_index('products#product') { self if self.approved? }
-  # pg_search_scope :locate, :against => [ [:name, "B"],[:sku, "A"]], :using => { :tsearch => { :prefix => true, :any_word => true } }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand, required: false

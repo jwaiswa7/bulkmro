@@ -2,14 +2,17 @@ class SalesShipment < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanBeStamped
 
+  update_index('sales_shipments#sales_shipment') {self}
+
   belongs_to :sales_order
+  has_one :inquiry, through: :sales_order
   has_many :rows, :class_name => 'SalesShipmentRow', inverse_of: :sales_shipment
   has_many :packages, :class_name => 'SalesShipmentPackage', inverse_of: :sales_shipment
   has_many :comments, :class_name => 'SalesShipmentComment', inverse_of: :sales_shipment
 
   has_one_attached :shipment_pdf
 
-  scope :with_includes, -> {includes(:created_by, :updated_by, :sales_order)}
+  scope :with_includes, -> {includes(:sales_order)}
   enum status: {
       default: 10,
       cancelled: 20

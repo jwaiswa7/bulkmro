@@ -35,6 +35,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager?
   end
 
+  def export_all?
+    manager?
+  end
+
   def go_to_inquiry?
     record.inquiry.can_be_managed?(overseer)
   end
