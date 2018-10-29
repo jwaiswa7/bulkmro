@@ -5,7 +5,7 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   end
 
   def self.company_uid(record)
-    "#{record.id + 200000}"
+    record.is_supplier? ? "SC-#{record.id + 200000}" : "#{record.id + 200000}"
   end
 
   def self.address_uid(record)

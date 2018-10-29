@@ -2,7 +2,7 @@ json.data (@remote_requests) do |remote_request|
   json.array! [
                   [
                       if policy(remote_request).show?
-                        row_action_button(overseers_remote_request_path(remote_request), 'eye', 'Show remote request', 'warning')
+                        row_action_button(overseers_remote_request_path(remote_request), 'eye', 'Show Remote Request', 'info')
                       end,
                   ].join(' '),
                   if remote_request.subject.present? && policy(remote_request.subject).show?

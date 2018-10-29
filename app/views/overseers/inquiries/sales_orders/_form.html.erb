@@ -86,7 +86,7 @@
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Tax Code</strong><br>
                 <span><%= row.object.best_tax_code %> <%= upcase(row.object.hsn_or_sac) %></span>
-                <%= row.hidden_field :tax_percentage, value: row.object.sales_quote_row.applicable_tax_percentage, "data-bind": "", disabled: true %>
+                <%= row.hidden_field :tax_percentage, value: (row.object.sales_quote_row.applicable_tax_percentage * 100), "data-bind": "", disabled: true %>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
                 <strong>Taxation</strong><br>

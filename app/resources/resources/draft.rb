@@ -20,7 +20,7 @@ class Resources::Draft < Resources::ApplicationResource
     company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
 
     {
-        AttachmentEntry:  record.inquiry.attachment_uid, #6383, #$quote['attachment_entry'] ------------
+        AttachmentEntry: record.inquiry.attachment_uid, #6383, #$quote['attachment_entry'] ------------
         BPL_IDAssignedToInvoice: record.inquiry.bill_from.remote_branch_code, #record.inquiry.bill_from.remote_uid, #record.warehouser.remote_branch_code ----------
         CardCode: record.inquiry.company.remote_uid, #record.inquiry.contact.remote_uid, #customer_id ------
         CntctCode: record.inquiry.contact.full_name,
@@ -37,7 +37,7 @@ class Resources::Draft < Resources::ApplicationResource
         PayToCode: record.inquiry.billing_address.remote_uid, #record.inquiry.billing_address.legacy_id, -----
         PaymentGroupCode: record.inquiry.payment_option.remote_uid,
         ProjectCode: record.inquiry.project_uid, #increment_id inq
-        ShipToCode: record.inquiry.shipping_address.remote_uid, #record.inquiry.shipping_address.legacy_id, ------
+        ShipToCode: record.inquiry.remote_shipping_address_uid, #record.inquiry.shipping_address.legacy_id, ------
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid,
         U_CustComDt: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime("%Y-%m-%d") : nil, #not
         U_SalesMgr: record.inquiry.sales_manager.try(:full_name), #record.inquiry.sales_manager.full_name,
@@ -52,7 +52,7 @@ class Resources::Draft < Resources::ApplicationResource
         U_CnfrmTax: "P", #hardcode
         U_SO_Status: 32, #hardcode
         U_CnfrmGross: "P", #hardcode
-        U_MgntDocID: record.id ,
+        U_MgntDocID: record.id,
         U_Rate_Rmks: "", #hardcode
         U_Qty_Rmks: "", #hardcode
         U_Tax_Rmks: "", #hardcode
@@ -61,6 +61,7 @@ class Resources::Draft < Resources::ApplicationResource
         U_Bill_Rmks: "", #hardcode
         U_PostBy: "Magento", #hardcode
         U_PostMagento: "Y", #hardcode
+        BPChannelCode: record.inquiry.remote_shipping_company_uid,
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin
     }

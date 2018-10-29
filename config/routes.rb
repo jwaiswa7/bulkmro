@@ -85,6 +85,9 @@ Rails.application.routes.draw do
     end
 
     resources :addresses do
+      collection do
+        get 'autocomplete'
+      end
     end
 
     resources :categories do
@@ -115,6 +118,7 @@ Rails.application.routes.draw do
     resources :sales_orders do
       collection do
         get 'pending'
+        get 'export_all'
       end
 
       scope module: 'sales_orders' do
@@ -124,19 +128,19 @@ Rails.application.routes.draw do
 
     resources :purchase_orders do
       collection do
-        get 'export_sheet'
+        get 'export_all'
       end
     end
 
     resources :sales_invoices do
       collection do
-        get 'export_sheet'
+        get 'export_all'
       end
     end
 
     resources :sales_shipments do
       collection do
-        get 'export_sheet'
+        get 'export_all'
       end
     end
 
@@ -152,6 +156,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
+        get 'export_all'
       end
 
       scope module: 'inquiries' do
@@ -207,7 +212,16 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
-        resources :addresses
+        resources :addresses do
+          collection do
+            get 'autocomplete'
+          end
+        end
+        resources :contacts do
+          collection do
+            get 'autocomplete'
+          end
+        end
       end
     end
 
@@ -216,6 +230,7 @@ Rails.application.routes.draw do
         resources :companies
       end
     end
+
     resources  :warehouses
   end
 

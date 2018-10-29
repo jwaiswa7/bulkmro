@@ -1,21 +1,23 @@
 json.data (@inquiries) do |inquiry|
-  json.array! [
-                  [
-                      if policy(inquiry).edit?
-                        row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
-                      end,
-                  ].join(' '),
-                  inquiry.inquiry_number,
-                  status_helper_format_label(inquiry.status),
-                  inquiry.account.to_s,
-                  inquiry.company.to_s,
-                  inquiry.subject,
-                  inquiry.contact.to_s,
-                  inquiry.inside_sales_owner.to_s,
-                  inquiry.outside_sales_owner.to_s,
-                  format_currency(inquiry.final_sales_quote.try(:calculated_total)),
-                  format_date(inquiry.created_at)
-              ]
+  columns = [
+      [
+          if policy(inquiry).edit?
+            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
+          end,
+      ].join(' '),
+      inquiry.inquiry_number,
+      status_helper_format_label(inquiry.status),
+      inquiry.account.to_s,
+      inquiry.company.to_s,
+      inquiry.subject,
+      inquiry.contact.to_s,
+      inquiry.inside_sales_owner.to_s,
+      inquiry.outside_sales_owner.to_s,
+      format_currency(inquiry.final_sales_quote.try(:calculated_total)),
+      format_date(inquiry.created_at)
+  ]
+  columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
+  json.merge! columns.merge({"DT_RowClass": inquiry.status == 'Order Won' ? "bg-highlight-success" : ''})
 end
 
 json.columnFilters [

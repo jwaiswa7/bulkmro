@@ -1,5 +1,6 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
+  update_index('sales_invoices#sales_invoice') {self}
 
   update_index('sales_invoices#sales_invoice') {self}
   belongs_to :sales_order
@@ -13,9 +14,6 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
 
-  update_index('sales_invoices#sales_invoice') {self}
-
-  scope :with_includes, -> {includes(:sales_order)}
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
@@ -28,6 +26,8 @@ class SalesInvoice < ApplicationRecord
       :'Material Ready For Dispatch' => 206,
       :'Material Rejected' => 207
   }
+
+  scope :with_includes, -> {includes(:sales_order)}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -44,16 +44,5 @@ class SalesInvoice < ApplicationRecord
 
   def self.syncable_identifiers
     [:invoice_number]
-  end
-
-  def self.to_csv
-    start_at = Date.today - 2.day
-    end_at = Date.today
-    desired_columns = %w{inquiry_number inquiry_date company_name order_number order_date order_status invoice_number invoice_date customer_po_number}
-    CSV.generate(write_headers: true, headers: desired_columns) do |csv|
-      where(:created_at => start_at..end_at).map{|si| [si.inquiry.inquiry_number.to_s, si.inquiry.created_at.to_date.to_s, si.inquiry.company.name.to_s, si.sales_order.order_number.to_s , si.sales_order.created_at.to_date.to_s, si.sales_order.remote_status, si.invoice_number, si.created_at.to_date.to_s, si.inquiry.customer_po_number] }.each do |s_i|
-        csv << s_i
-      end
-    end
   end
 end

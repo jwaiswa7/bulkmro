@@ -95,7 +95,7 @@
       <div class="form-row">
         <div class="col-md-6">
           <strong>Customer Shipping Address</strong><br>
-          <%= (@inquiry.company.name) %><br>
+          <%= (@inquiry.shipping_company.name) %><br>
           <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>

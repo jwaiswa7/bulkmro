@@ -1,5 +1,4 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
-
   def comments?
     record.persisted?
   end

@@ -33,5 +33,5 @@ class SalesOrdersIndex < BaseIndex
     field :created_by_id
     field :updated_by_id, value: -> (record) {record.updated_by.to_s}, analyzer: 'substring'
   end
-  
+
 end
