@@ -18,10 +18,8 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
         account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
 
-      if company.remote_uid.blank?
-        remote_uid = ::Resources::BusinessPartner.custom_find(company.name)
-        company.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
-      end
+      remote_uid = ::Resources::BusinessPartner.custom_find(company.name)
+      remote_uid.present? ? company.update_attributes(:remote_uid => remote_uid) : company.update_attributes(:remote_uid => nil)
 
       if company.remote_uid.blank?
         remote_uid = ::Resources::BusinessPartner.create(company)
