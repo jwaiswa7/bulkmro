@@ -2,7 +2,7 @@ json.data (@companies) do |company|
   json.array! [
                   [
                       if policy(company).show?;
-                        row_action_button(overseers_company_path(company), 'eye', 'View Company', 'dark')
+                        row_action_button(overseers_company_path(company), 'eye', 'View Company', 'info')
                       end,
                       if policy(company).edit?;
                         row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit Company', 'warning')
