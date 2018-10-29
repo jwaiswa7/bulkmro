@@ -1,5 +1,5 @@
 module SmartQueueHelper
-  def priority_color(priority)
+  def smart_queue_priority_color(priority)
      if priority >= 107
       "danger"
      elsif priority >= 104
@@ -15,7 +15,7 @@ module SmartQueueHelper
     end
   end
 
-  def priority_state(priority)
+  def smart_queue_priority_state(priority)
     if priority >= 107
       "Extreme"
     elsif priority >= 104
@@ -32,8 +32,8 @@ module SmartQueueHelper
   end
 
   def priority_helper_format_label(priority)
-    content_tag :span, class: "badge text-uppercase badge-#{priority_color(priority)}" do
-      content_tag :strong, priority_state(priority)
+    content_tag :span, class: "badge text-uppercase badge-#{smart_queue_priority_color(priority)}" do
+      content_tag :strong, smart_queue_priority_state(priority)
     end
   end
 end

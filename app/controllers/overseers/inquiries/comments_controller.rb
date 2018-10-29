@@ -43,5 +43,6 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
   def reject
     @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
     @comment.sales_order.update_attributes(:status => :'Rejected')
+    @comment.sales_order.update_index
   end
 end

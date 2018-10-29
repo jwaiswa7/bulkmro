@@ -40,7 +40,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin?
+    inside_sales_manager? || admin?
   end
 
   def export?

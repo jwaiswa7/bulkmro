@@ -256,7 +256,7 @@
                   <td align="center" valign="top">
                     <span><%= item.sales_quote_row.product.sku %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.product.brand.to_s %></span></td>
+                    <span><%= item.product.try(:mpn) %></span></td>
                   <td align="left" valign="top">
                     <span><%= item.sales_quote_row.to_bp_catalog_s %><br></span></td>
                   <td align="center" valign="top">

@@ -99,6 +99,10 @@ class Company < ApplicationRecord
     self.default_shipping_address ||= set_default_company_shipping_address
   end
 
+  def syncable_identifiers
+    [:remote_uid]
+  end
+
   def set_default_company_contact
     self.company_contacts.first
   end
