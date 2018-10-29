@@ -26,6 +26,10 @@ class Account < ApplicationRecord
     self.account_type ||= :is_customer
   end
 
+  def syncable_identifiers
+    [:remote_uid]
+  end
+
   def self.legacy
     find_by_name('Legacy Account')
   end
