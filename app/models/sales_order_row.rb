@@ -33,27 +33,27 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    (self.sales_quote_row.unit_cost_price / (1 - (self.sales_quote_row.margin_percentage / 100.0))).round(2) if self.sales_quote_row.unit_cost_price.present? && self.sales_quote_row if self.sales_quote_row.present?.margin_percentage.present? if self.sales_quote_row.present?
+    (self.sales_quote_row.unit_cost_price / (1 - (self.sales_quote_row.margin_percentage / 100.0))) if self.sales_quote_row.unit_cost_price.present? && self.sales_quote_row if self.sales_quote_row.present?.margin_percentage.present? if self.sales_quote_row.present?
   end
 
   def calculated_unit_selling_price_with_tax
-    self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
+    self.sales_quote_row.calculated_unit_selling_price + (self.sales_quote_row.calculated_unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
   end
 
   def unit_selling_price_with_tax
-    self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
+    self.sales_quote_row.unit_selling_price + (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
   end
 
   def converted_total_selling_price
-    (self.total_selling_price / sales_quote_row.conversion_rate).round(2)
+    (self.total_selling_price / sales_quote_row.conversion_rate)
   end
 
   def converted_total_selling_price_with_tax
-    (self.total_selling_price_with_tax / sales_quote_row.conversion_rate).round(2)
+    (self.total_selling_price_with_tax / sales_quote_row.conversion_rate)
   end
 
   def calculated_tax
-    (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)).round(2) if self.sales_quote_row.present?
+    (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
   end
 
   def total_selling_price_with_tax
