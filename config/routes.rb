@@ -229,7 +229,11 @@ Rails.application.routes.draw do
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
-    resources :products, only: %i[index show]
+    resources :products, only: %i[index show] do
+      collection  do
+        get 'grid_view'
+      end
+    end
     resource  :cart, only: [:show] do
       collection do
         get 'checkout'
