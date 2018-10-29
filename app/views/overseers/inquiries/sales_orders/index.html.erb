@@ -22,7 +22,7 @@
           <td>
 
             <% if policy(sales_order).show? %>
-              <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'dark') %>
+              <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
             <% if policy(sales_order).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'pencil', 'Edit Sales Order', 'warning') %>

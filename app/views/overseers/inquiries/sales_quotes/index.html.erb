@@ -48,7 +48,7 @@
         <tr>
           <td>
             <% if policy(sales_quote).show? %>
-              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'eye', 'View Sales Quote', 'dark') %>
+              <%= row_action_button(overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'eye', 'View Sales Quote', 'info') %>
             <% end %>
             <% if policy(sales_quote).edit? %>
               <%= row_action_button(edit_overseers_inquiry_sales_quote_path(@inquiry, sales_quote), 'pencil', 'Edit Sales Quote', 'warning') %>
