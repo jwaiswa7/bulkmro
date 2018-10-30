@@ -22,7 +22,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     respond_to do |format|
       format.html
-      format.csv { send_data service.call, filename: service.filename }
+      format.csv {send_data service.call, filename: service.filename}
     end
   end
 
@@ -33,6 +33,9 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def smart_queue
     @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.smart_queue), params)
+
+    service = Services::Overseers::Inquiries::SmartQueueSummary.new
+    @statuses = service.call
     authorize @inquiries
   end
 
