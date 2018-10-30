@@ -22,8 +22,6 @@ module SalesOrderHelper
   end
 
   def sales_order_format_label(status)
-    content_tag :span, class: "badge text-uppercase badge-#{sales_order_status(status)}" do
-      content_tag :strong, status.to_s.capitalize
-    end
+    format_badge(status, sales_order_status(status))
   end
 end

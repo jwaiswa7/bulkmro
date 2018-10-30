@@ -32,8 +32,6 @@ module SmartQueueHelper
   end
 
   def priority_helper_format_label(priority)
-    content_tag :span, class: "badge text-uppercase badge-#{smart_queue_priority_color(priority)}" do
-      content_tag :strong, smart_queue_priority_state(priority)
-    end
+    format_badge(smart_queue_priority_state(priority), smart_queue_priority_color(priority))
   end
 end

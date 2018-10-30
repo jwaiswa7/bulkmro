@@ -1,5 +1,5 @@
-module StatusHelper
-  def status_helper_color(status)
+module InquiryHelper
+  def inquiry_status_color(status)
     case status.to_sym
     when :'Lead by O/S'
       'secondary'
@@ -44,9 +44,7 @@ module StatusHelper
     end
   end
 
-  def status_helper_format_label(status)
-    content_tag :span, class: "badge text-uppercase badge-#{status_helper_color(status)}" do
-      content_tag :strong, capitalize(status)
-    end
+  def inquiry_status_badge(status)
+    format_badge(status, inquiry_status_color(status))
   end
 end

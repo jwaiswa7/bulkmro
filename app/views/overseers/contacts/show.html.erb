@@ -31,20 +31,28 @@
               <%= @contact.companies.pluck(:name).to_sentence %>
             </div>
 
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Designation</strong>
-              <%= @contact.designation %>
-            </div>
+            <% if @contact.designation %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Designation</strong>
+                <%= @contact.designation %>
+              </div>
+            <% end %>
 
+
+            <% if @contact.telephone %>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Telephone</strong>
               <%= @contact.telephone %>
             </div>
+            <% end %>
 
+
+            <% if @contact.mobile %>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Mobile</strong>
               <%= @contact.mobile %>
             </div>
+            <% end %>
 
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Email</strong>
@@ -53,7 +61,7 @@
 
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Status</strong>
-              <%= @contact.status %>
+              <%= contact_format_badge(@contact.status) %>
             </div>
           </div>
         </div>
