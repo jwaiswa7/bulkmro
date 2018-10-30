@@ -119,6 +119,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :suppliers_selected).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'
