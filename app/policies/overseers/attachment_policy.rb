@@ -1,5 +1,5 @@
 class Overseers::AttachmentPolicy < Overseers::ApplicationPolicy
   def destroy?
-    true
+    all_roles?
   end
 end
