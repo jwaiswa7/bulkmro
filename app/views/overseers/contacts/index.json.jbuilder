@@ -12,7 +12,7 @@ json.data (@contacts) do |contact|
                         row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success')
                       end,
                   ].join(' '),
-                  contact.full_name,
+                  contact.name,
                   contact.email,
                   contact.account.name,
                   contact.inquiries.size,
