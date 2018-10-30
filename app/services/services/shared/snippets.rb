@@ -19,6 +19,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def inquiry
+    Inquiry.find_each(batch_size: 100) do |i|
+      i.update_attributes(:shipping_company => i.company) if i.shipping_company.blank?;
+      i.update_attributes(:shipping_contact => i.contact) if i.shipping_contact.blank?;
+    end
+
+  end
+
   def best_products
     inquiry_products = InquiryProduct.joins(:inquiry, :product).where('inquiries.company_id = ?', company.id)
     best_products = inquiry_products.top(:product_id, 5)
