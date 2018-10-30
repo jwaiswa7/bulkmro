@@ -20,6 +20,20 @@ json.data (@inquiries) do |inquiry|
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + smart_queue_priority_color(inquiry.priority)})
 end
 
-json.recordsTotal Inquiry.all.count
-json.recordsFiltered @inquiries.total_count
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       []
+                   ]
+
+json.recordsTotal Inquiry.smart_queue.count
+json.recordsFiltered @indexed_inquiries.total_count
 json.draw params[:draw]

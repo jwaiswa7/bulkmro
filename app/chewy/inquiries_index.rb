@@ -17,6 +17,9 @@ class InquiriesIndex < BaseIndex
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
+    field :priority, type: 'integer'
+    field :calculated_total_i, type: 'integer', value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
+    field :quotation_followup_date, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :created_by_id
