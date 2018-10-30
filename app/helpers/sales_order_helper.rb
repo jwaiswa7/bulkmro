@@ -10,7 +10,7 @@ module SalesOrderHelper
       "warning"
     elsif status == "Cancelled"
       "dark"
-    elsif status == "approved"
+    elsif status == "Approved"
       "success"
     elsif status == "Order Deleted"
       "dark"
