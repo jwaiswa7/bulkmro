@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-
+  before_action :set_sales_order, only: [ :resync]
   def pending
     authorize :sales_order
 
@@ -40,5 +40,32 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @sales_orders = service.records.try(:reverse)
       end
     end
+  end
+
+  def drafts_pending
+    authorize :sales_order
+
+    sales_orders = SalesOrder.where.not(:sent_at => nil).where(:draft_uid => nil , :status => :'SAP Approval Pending').not_legacy
+    respond_to do |format|
+      format.html {}
+      format.json do
+        @drafts_pending_count = sales_orders.count
+        @sales_orders = ApplyDatatableParams.to(sales_orders, params)
+        render 'drafts_pending'
+      end
+    end
+  end
+
+  def resync
+    authorize :sales_order
+    if @sales_order.save_and_sync
+      redirect_to drafts_pending_overseers_sales_orders_path
+    end
+  end
+
+  private
+
+  def set_sales_order
+    @sales_order = SalesOrder.find(params[:id])
   end
 end

@@ -117,6 +117,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         get 'export_all'
+        get 'drafts_pending'
       end
 
       scope module: 'sales_orders' do

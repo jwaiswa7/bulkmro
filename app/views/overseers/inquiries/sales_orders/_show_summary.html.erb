@@ -192,22 +192,19 @@
                   <span><%= row.object.measurement_unit %></span>
                 </td>
                 <td>
-                  <span><%= format_currency(row.object.unit_cost_price_with_unit_freight_cost) %></span>
+                  <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
                 </td>
                 <td>
                   <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
                 </td>
                 <td>
-                  <span><%= format_currency(row.object.unit_selling_price) %></span>
-                </td>
-                <td class="<%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
                   <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
                 </td>
                 <td>
-                  <span><%= format_currency(row.object.total_selling_price) %></span>
+                  <span><%= format_currency(row.object.converted_total_selling_price) %></span>
                 </td>
                 <td>
-                  <span><%= format_currency(row.object.total_selling_price_with_tax) %></span>
+                  <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
                 </td>
                 <td>
                   <span><%= row.object.best_tax_code %></span>
@@ -228,22 +225,22 @@
         <strong><%= f.object.rows.size %></strong>
       </div>
       <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
-        <strong><%= format_currency(f.object.calculated_total_cost) %></strong>
+        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
       </div>
       <div class="col-4 col-md-1 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.calculated_total_margin) %></strong>
+        <strong><%= format_currency(f.object.converted_total_margin) %></strong>
       </div>
       <div class="col-8 col-md-3">
         Total Selling Price (Excl. tax)<br>
-        <strong><%= format_currency(f.object.calculated_total) %></strong>
+        <strong><%= format_currency(f.object.converted_total) %></strong>
       </div>
       <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-        <strong><%= format_currency(f.object.calculated_total_with_tax) %></strong>
+        <strong><%= format_currency(f.object.converted_total_with_tax) %></strong>
       </div>
 
       <div class="col-4 col-md-2">
         Total Tax<br>
-        <strong><%= format_currency(f.object.calculated_total_tax) %></strong>
+        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
       </div>
     </div>
   </div>
