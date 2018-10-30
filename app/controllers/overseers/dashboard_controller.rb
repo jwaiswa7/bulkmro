@@ -14,11 +14,8 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def chewy
     authorize :dashboard
-    ProductsIndex.delete
-    ProductsIndex.create!
-    ProductsIndex.reset!
 
-    # InquiryIndex.import
+    ProductsIndex.reset!
     InquiriesIndex.reset!
     SalesOrdersIndex.reset!
 
