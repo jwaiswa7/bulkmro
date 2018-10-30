@@ -2,7 +2,7 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if policy(sales_order).show?
-                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'dark')
+                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info')
                       end,
                       if policy(sales_order).resync?
                         row_action_button(resync_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post)
