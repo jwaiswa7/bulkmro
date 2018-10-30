@@ -8,7 +8,7 @@ json.data (@contacts) do |contact|
                       if policy(contact).edit?
                         row_action_button(edit_overseers_contact_path(contact), 'pencil', 'Edit Contact', 'warning')
                       end,
-                      if policy(contact.company).new_inquiry?
+                      if contact.company.present? && policy(contact.company).new_inquiry?
                         row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success')
                       end,
                   ].join(' '),
