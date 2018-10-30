@@ -38,6 +38,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :sales_quote_saved).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
@@ -70,6 +71,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def save
     service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
     service.call
+
   end
 
   def update_sent_at_field
