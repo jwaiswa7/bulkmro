@@ -45,11 +45,11 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def converted_total_selling_price
-    (self.total_selling_price / sales_quote_row.conversion_rate)
+    sales_quote_row.present? ? (self.total_selling_price / sales_quote_row.conversion_rate) : 0.0
   end
 
   def converted_total_selling_price_with_tax
-    (self.total_selling_price_with_tax / sales_quote_row.conversion_rate)
+    sales_quote_row.present? ? (self.total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
   end
 
   def calculated_tax

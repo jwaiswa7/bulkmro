@@ -2,23 +2,23 @@ class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
 
   def sku
-    get_product.sku
+    get_product.sku if get_product.present?
   end
 
   def uom
-    get_product.measurement_unit.name if get_product.measurement_unit.present?
+    get_product.measurement_unit.name if get_product.present? && get_product.measurement_unit.present?
   end
 
   def brand
-    get_product.product.brand.name if get_product.product.brand.present?
+    get_product.product.brand.name if get_product.present? && get_product.product.brand.present?
   end
 
   def tax_rate
-    get_product.best_tax_code.tax_percentage
+    get_product.best_tax_code.tax_percentage if get_product.present?
   end
 
   def applicable_tax_percentage
-    get_product.applicable_tax_percentage
+    get_product.applicable_tax_percentage if get_product.present?
   end
 
   def quantity
