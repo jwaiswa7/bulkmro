@@ -65,10 +65,6 @@ Rails.application.routes.draw do
     end
 
     resources :brands do
-      member do
-        get 'brand_suppliers'
-      end
-
       collection do
         get 'autocomplete'
       end
