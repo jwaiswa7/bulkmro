@@ -1205,4 +1205,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       )
     end
   end
+
+  def brand_remote_uids
+    Brand.update_all remote_uid: nil
+    service = Services::Shared::Spreadsheets::CsvImporter.new('brand_remote_uids.csv', folder)
+    service.loop(nil) do |x|
+      name = x.get_column('Manufacturer Name')
+      brand = Brand.find_by_name(name)
+      if brand.present?
+        brand.remote_uid = x.get_column('Code')
+        brand.save_and_sync
+      end
+      next if name == nil
+    end
+  end
 end
