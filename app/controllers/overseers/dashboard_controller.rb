@@ -14,10 +14,18 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def chewy
     authorize :dashboard
-
+    ProductsIndex.delete
+    ProductsIndex.create!
     ProductsIndex.reset!
+
+    # InquiryIndex.import
     InquiriesIndex.reset!
     SalesOrdersIndex.reset!
+
+
+    InquiriesIndex.delete
+    InquiriesIndex.create!
+    InquiriesIndex.reset!
 
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path

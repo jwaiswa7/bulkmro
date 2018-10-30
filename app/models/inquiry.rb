@@ -16,7 +16,6 @@ class Inquiry < ApplicationRecord
   belongs_to :contact, required: false
   belongs_to :company
   belongs_to :billing_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'billing_company_id'
-
   belongs_to :shipping_company, -> (record) {where('id in (?)', record.account.companies.pluck(:id))}, :class_name => 'Company', foreign_key: 'shipping_company_id'
   belongs_to :shipping_contact, :class_name => 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, :through => :company
