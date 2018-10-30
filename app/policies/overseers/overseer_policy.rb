@@ -4,6 +4,6 @@ class Overseers::OverseerPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    admin? || record == overseer
+    admin? || record != overseer
   end
 end
