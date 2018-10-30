@@ -40,7 +40,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|_, v| v.blank?})
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|k, v| (k == :password || k == :password_confirmation) && v.blank?})
     authorize @contact
 
     if @contact.save_and_sync
