@@ -8,17 +8,14 @@ json.data (@contacts) do |contact|
                       if policy(contact).edit?
                         row_action_button(edit_overseers_contact_path(contact), 'pencil', 'Edit Contact', 'warning')
                       end,
-                      if contact.company.present? &&  policy(contact.company).new_inquiry?
-                        row_action_button(new_overseers_inquiry_path(company_id: contact.last_company.to_param), 'plus-circle', 'New Inquiry', 'success')
+                      if contact.company.present? && policy(contact.company).new_inquiry?
+                        row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success')
                       end,
                   ].join(' '),
                   contact.name,
                   contact.email,
                   contact.account.name,
                   contact.inquiries.size,
-=begin
-                  format_boolean_label(contact.synced?, 'synced'),
-=end
                   format_date(contact.created_at)
               ]
 end
