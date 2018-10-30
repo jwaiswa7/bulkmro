@@ -10,7 +10,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       record.save!
 
       # persist address.remote_uid because find_by won't work in update_associated
-      record.addresses.each do |address| address.save! end
+      record.addresses.each do |address|
+        address.save!
+      end
 
       update_associated_records(response)
     end
@@ -26,8 +28,19 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     end
   end
 
-  def self.custom_find(company_name)
-    super(company_name, 'CardName')
+  def self.custom_find(company_name, company_type)
+
+    response = get("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+
+    log_request(:get, company_name, is_find: true)
+    validated_response = get_validated_response(response)
+    log_response(validated_response)
+
+    if validated_response['value'].present?
+      remote_record = validated_response['value'][0]
+      yield remote_record if block_given?
+      remote_record[self.identifier.to_s]
+    end
   end
 
   def self.update_associated_records(response, force_find: false)
