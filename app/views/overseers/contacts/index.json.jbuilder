@@ -9,7 +9,7 @@ json.data (@contacts) do |contact|
                         row_action_button(edit_overseers_contact_path(contact), 'pencil', 'Edit Contact', 'warning')
                       end,
                   ].join(' '),
-                  contact.full_name,
+                  contact.name,
                   contact.email,
                   contact.account.name,
                   contact.inquiries.size,
