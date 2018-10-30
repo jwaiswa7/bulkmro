@@ -6,7 +6,7 @@ json.data (@inquiries) do |inquiry|
           end,
       ].join(' '),
       inquiry.inquiry_number,
-      status_helper_format_label(inquiry.status),
+      inquiry_status_badge(inquiry.status),
       inquiry.account.to_s,
       inquiry.company.to_s,
       inquiry.subject,
