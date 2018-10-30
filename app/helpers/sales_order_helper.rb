@@ -1,5 +1,5 @@
 module SalesOrderHelper
-  def sales_order_status(status)
+  def sales_order_status_color(status)
     if status == "requested"
       "warning"
     elsif status == "SAP Approval Pending"
@@ -10,7 +10,7 @@ module SalesOrderHelper
       "warning"
     elsif status == "Cancelled"
       "dark"
-    elsif status == "approved"
+    elsif status == "Approved"
       "success"
     elsif status == "Order Deleted"
       "dark"
@@ -21,7 +21,7 @@ module SalesOrderHelper
     end
   end
 
-  def sales_order_format_label(status)
-    format_badge(status, sales_order_status(status))
+  def sales_order_status_badge(status)
+    format_badge(status, sales_order_status_color(status))
   end
 end
