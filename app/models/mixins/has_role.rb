@@ -30,6 +30,7 @@ module Mixins::HasRole
     MANAGER_ROLES = %w(admin inside_sales_manager outside_sales_manager)
     INSIDE_ROLES = %w(inside_sales_executive inside_sales_team_leader inside_sales_manager outside_sales_manager admin)
     OUTSIDE_ROLES = %w(outside_sales_executive outside_sales_team_leader outside_sales_manager inside_sales_manager  admin)
+    OTHER_ROLES = %w(procurement accounts logistics sales)
 
     def manager?
       role.in? MANAGER_ROLES
@@ -41,6 +42,10 @@ module Mixins::HasRole
 
     def outside?
       role.in? OUTSIDE_ROLES
+    end
+
+    def others?
+      role.in? OTHER_ROLES
     end
   end
 end
