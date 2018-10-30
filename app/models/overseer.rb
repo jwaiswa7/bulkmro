@@ -31,7 +31,7 @@ class Overseer < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.role ||= :sales
+    self.role ||= :inside_sales_executive
     self.status ||= :active
   end
 
