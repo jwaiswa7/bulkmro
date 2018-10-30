@@ -8,8 +8,6 @@ module ContactHelper
   end
 
   def contact_format_badge(status)
-    content_tag :span, class: "badge text-uppercase badge-#{contact_color(status)}" do
-      content_tag :strong, status.to_s.capitalize
-    end
+    format_badge(status, contact_color(status))
   end
 end
