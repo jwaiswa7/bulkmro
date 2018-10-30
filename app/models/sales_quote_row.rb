@@ -17,7 +17,7 @@ class SalesQuoteRow < ApplicationRecord
   delegate :unit_cost_price, to: :inquiry_product_supplier, allow_nil: true
   delegate :sr_no, :legacy_id, to: :inquiry_product, allow_nil: true
   delegate :tax_percentage, :gst_rate, to: :tax_code, allow_nil: true
-  delegate :is_service, :to => :product
+  delegate :is_service, :is_kit?, :to => :product
   # delegate :measurement_unit, :to => :product, allow_nil: true
   delegate :sku, :to => :product
 

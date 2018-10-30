@@ -26,7 +26,7 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
-
+  has_one :kit
   has_one_attached :image
   attr_accessor :applicable_tax_percentage
 
@@ -108,6 +108,10 @@ class Product < ApplicationRecord
 
   def bp_catalog_for_supplier(supplier)
     self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
+  end
+
+  def is_kit?
+    self.kit.present?
   end
 
   def brand_name

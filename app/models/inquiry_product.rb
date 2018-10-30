@@ -15,7 +15,7 @@ class InquiryProduct < ApplicationRecord
 
   scope :with_suppliers, -> {left_outer_joins(:inquiry_product_suppliers).where.not(:inquiry_product_suppliers => {id: nil})}
 
-  delegate :approved?, to: :product
+  delegate :approved?, :is_kit?, to: :product
 
   #attr_accessor :product_catalog_name
 
