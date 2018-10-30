@@ -45,8 +45,6 @@ module StatusHelper
   end
 
   def status_helper_format_label(status)
-    content_tag :span, class: "badge text-uppercase badge-#{status_helper_color(status)}" do
-      content_tag :strong, capitalize(status)
-    end
+    format_badge(status, status_helper_color(status))
   end
 end
