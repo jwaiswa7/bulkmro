@@ -140,6 +140,7 @@ let initVueJS = () => {
 
             rowUpdated(index) {
                 this.updateConvertedSellingPriceFor(index);
+                this.updateTaxPercentage(index)
                 this.recalculateRowTotals(index);
             },
             recalculateRowTotals(index) {
@@ -197,8 +198,16 @@ let initVueJS = () => {
                 this.triggerFreightChangeFor(index, 'quantity');
             },
 
+            taxRateIdChangedFor(index) {
+            },
+
             selectSupplierChangedFor(index) {
 
+            },
+
+            updateTaxPercentage(index) {
+                let row = this.getRow(index)
+                row.tax_percentage = this.getAttribute('tax_rates')[parseInt(row.tax_rate_id)];
             },
 
             freightCostSubtotalChangedFor(index) {
@@ -334,6 +343,10 @@ let initVueJS = () => {
                     destroySelect();
                     $('form [name*=tax_code_id]').addClass('select2-ajax');
                     select2s();
+
+                    /*
+                    // Old code removed for new Tax Code Overhaul TODO
+
                     $('select.select2-ajax').each(function (k, v) {
                         $(this).select2({
                             theme: "bootstrap",
@@ -356,10 +369,10 @@ let initVueJS = () => {
                             //vj.$emit('input', this.value) // emitting Vue change event
 
                             let optionSelected = $("option:selected", this);
-                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
-                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*/gm)[0])
+                            //console.log(optionSelected[0].text.match(/\w[\d]\.[\d]*!/gm)[0])
+                            vj.$data.rows[currentRowIndex]["tax_percentage"] = parseFloat(optionSelected[0].text.match(/\w[\d]\.[\d]*!/gm)[0])
                         });
-                    });
+                    });*/
                 }, 1000);
 
             }
@@ -501,7 +514,15 @@ let assignEventsAndGetAttributes = () => {
 
 
     });
+    let tax_rates = {};
+    $($('form [name*=tax_rate_id]')[0]).children().each(function () {
+        if (this.value.trim != "") {
+            tax_rates[this.value] = parseFloat($(this).data('tax_rate'))
+        }
+    });
+
     data.rows = rows;
+    data.tax_rates = tax_rates;
     return data;
 };
 

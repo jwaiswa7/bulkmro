@@ -29,6 +29,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def tax_rate_migration
     TaxRate.where(:tax_percentage => 0).first_or_create
     TaxRate.where(:tax_percentage => 5).first_or_create
+    TaxRate.where(:tax_percentage => 12).first_or_create
     TaxRate.where(:tax_percentage => 18).first_or_create
     TaxRate.where(:tax_percentage => 28).first_or_create
 
