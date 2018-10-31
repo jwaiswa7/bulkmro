@@ -3,6 +3,9 @@
     <div class="">
       <h2>
         Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+        <% if @sales_order.serialized_pdf.attachment %>
+          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i> Download PDF</a>
+        <% end %>
       </h2>
     </div>
   </div>
