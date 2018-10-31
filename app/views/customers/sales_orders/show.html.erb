@@ -49,7 +49,7 @@
       </div>
       <div class="card-alternative mt-3 pb-3">
         <div class="form-row">
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <strong class="d-block">Supplier - Billing Address</strong>
             <%= @sales_order.inquiry.bill_from.address.name.to_s %><br>
             <%= @sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_order.inquiry.bill_from.present? %>
@@ -59,7 +59,8 @@
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.bill_from.address.gst %></span>
           </div>
-          <div class="col-6">
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Supplier - Shipping Address</strong>
             <%= @sales_order.inquiry.ship_from.address.name.to_s %><br>
             <%= @sales_order.inquiry.ship_from.address.to_compact_multiline_s if @sales_order.inquiry.ship_from.present? %>
@@ -71,7 +72,7 @@
         </div>
 
         <div class="form-row mt-2">
-          <div class="col-md-6 mt-2 mt-md-0">
+          <div class="col-12 col-md-6">
             <strong class="d-block">Customer - Billing Address</strong>
             <%= @sales_order.inquiry.billing_contact.full_name %><br>
             <%= @sales_order.inquiry.company.name %><br>
@@ -82,7 +83,8 @@
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
             <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
-          <div class="col-md-6">
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
             <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %><br>
             <%= @sales_order.inquiry.company.name %><br>
@@ -97,7 +99,7 @@
       </div>
 
       <% if @sales_order.inquiry.attachments.present? %>
-        <div class="form-row  mt-3">
+        <div class="form-row mt-3">
           <div class="col-6">
             <strong>Customer PO sheet</strong><br>
             <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
