@@ -226,15 +226,15 @@
           <strong class="d-block"><%= @sales_order.rows.size %></strong>
         </div>
         <div class="col-6 col-md-3">
-          Total Selling Price (Excl. tax)
+          Subtotal
           <strong class="d-block"><%= format_currency(@sales_order.calculated_total) %></strong>
         </div>
-        <div class="col-6 col-md-3">
-          Total Tax
+        <div class="col-6 col-md-3 mt-2 mt-md-0">
+          Tax
           <strong class="d-block"><%= format_currency(@sales_order.calculated_total_tax) %></strong>
         </div>
-        <div class="col-6 col-md-3">
-          Total Selling Price (Incl. tax)
+        <div class="col-6 col-md-3 mt-2 mt-md-0">
+          Grand Total
           <strong class="d-block"><%= format_currency(@sales_order.calculated_total_with_tax) %></strong>
         </div>
       </div>
