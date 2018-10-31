@@ -107,7 +107,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def update_index
-    SalesOrdersIndex::SalesOrder.import([self.id])
+    #SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
   def filename(include_extension: false)
