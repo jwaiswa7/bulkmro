@@ -120,7 +120,6 @@
 
       <% @sales_order.sales_order_rows.each do |row| %>
         <div>
-
           <h6 class="text-uppercase mb-0 mt-3">
             <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
             <strong><%= row.sales_quote_row %></strong>
@@ -131,35 +130,35 @@
                 <thead>
                 <tr>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Product Code">Product</span><br>
+                    <span data-toggle="tooltip" title="Product Code">Product</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Manufacturer Code">Mfr Model</span><br>
+                    <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Description">Description</span><br>
+                    <span data-toggle="tooltip" title="Description">Description</span>
                   </th>
                   <th class="no-sort">
                     <span data-toggle="tooltip" title="Brand">Make</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Of Measurement">UOM</span><br>
+                    <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Quantity">Qty</span><br>
+                    <span data-toggle="tooltip" title="Quantity">Qty</span>
                   </th>
                   <th class="no-sort <%= @sales_order.currency.name == 'INR' ? 'd-none' : '' %>">
                       <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= @sales_order.currency.sign %>
                         )</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Price">Unit Price</span><br>
+                    <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Tax">Tax</span><br>
+                    <span data-toggle="tooltip" title="Tax">Tax</span>
                   </th>
                   <th class="no-sort">
-                    <span data-toggle="tooltip" title="Subtotal">Subtotal</span><br>
+                    <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
                   </th>
                 </tr>
                 </thead>
