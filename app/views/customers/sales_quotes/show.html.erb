@@ -1,15 +1,13 @@
 <div class="col-12">
-    
+  <div class="page-header">
+    <div class="">
+      <h2>
+        Quotes
+      </h2>
+    </div>
+  </div>
     <div class="card">
-      <div class="card-header">
-        <div class=form-row>
-          <div class="col-8 col-md-3">
-            <strong>SAP Quotation </strong>
-            <br> <%= @sales_quote.quotation_uid.blank? ? "SAP Request Pending" : @sales_quote.quotation_uid %>
-          </div>
-        </div>
 
-      </div>
       <div class="card-body">
         <div class="form-row">
           <div class="col-6">
@@ -22,48 +20,213 @@
           </div>
 
         </div>
+        <div class="card-alternative mt-3">
+          <div class="form-row">
+            <div class="col-md-6">
+              <strong>Supplier - Bill From</strong>
+              <%= @sales_quote.inquiry.ship_from.address.name.to_s %><br>
+              <%= @sales_quote.inquiry.ship_from.address.to_compact_multiline_s if @sales_quote.inquiry.ship_from.present? %><br>
+              <% if @sales_quote.inquiry.ship_from.address.mobile || @sales_quote.inquiry.ship_from.address.telephone %>
+                Contact: <%= @sales_quote.inquiry.ship_from.address.mobile || @sales_quote.inquiry.ship_from.address.telephone %><br>
+              <% end %>
+              GST no: <%= @sales_quote.inquiry.ship_from.address.gst %><br>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Supplier - Ship From</strong>
+              <%= @sales_quote.inquiry.bill_from.address.name.to_s %><br>
+              <%= @sales_quote.inquiry.bill_from.address.to_compact_multiline_s if @sales_quote.inquiry.bill_from.present? %><br>
+              <% if @sales_quote.inquiry.bill_from.address.phone.present? %>
+                Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.bill_from.address.phone %><br>
+              <% end %>
+              GST no: <%= @sales_quote.inquiry.bill_from.address.gst %><br>
+            </div>
+          </div>
+          <br>
 
-        <% @sales_quote.rows.each do |row| %>
+
+          <div class="form-row">
+            <div class="col-md-6">
+              <strong>Customer Bill To</strong><br>
+              <%= (@sales_quote.inquiry.company.name) %><br>
+              <%= @sales_quote.inquiry.shipping_address.to_compact_multiline_s %><br>
+              <% if @sales_quote.inquiry.contact.mobile || @sales_quote.inquiry.contact.telephone %>
+                Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %><br>
+              <% end %>
+              GST no: <%= @sales_quote.inquiry.shipping_address.gst || @sales_quote.inquiry.company.default_shipping_address.gst %><br>
+              Email: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong>Customer Ship To</strong><br>
+              <%= (@sales_quote.inquiry.company.name) %><br>
+              <%= @sales_quote.inquiry.billing_address.to_compact_multiline_s %><br>
+              <% if @sales_quote.inquiry.contact.phone.present? %>
+                Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %><br>
+              <% end %>
+              GST no: <%= @sales_quote.inquiry.billing_address.gst || @sales_quote.inquiry.company.default_billing_address.gst %><br>
+              Email: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row mb-1 mt-3">
+          <div class="col-6">
+            <strong>Bulk MRO Sales Person</strong>
+            <br><%= @sales_quote.inquiry.inside_sales_owner.first_name %> <%= @sales_quote.inquiry.inside_sales_owner.last_name %>
+          </div>
+          <div class="col-6">
+            <strong>Bulkmro Contact No</strong>
+            <br> +91-22-4921-4921
+          </div>
+        </div>
+
+        <div class="form-row mb-1 mt-3">
+          <div class="col-6">
+            <strong>Date of Inquiry</strong>
+            <br><%= format_date(@sales_quote.inquiry.created_at) %>
+          </div>
+          <div class="col-6">
+            <strong>Quotation Validity</strong>
+            <br><%= format_date(@sales_quote.inquiry.valid_end_time) %>
+          </div>
+        </div>
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Date of Inquiry</strong><br/>
+            <%= format_date(@sales_quote.inquiry.quotation_date) %>
+          </div>
+          <div class="col-6">
+            <strong>Customer Inquiry Ref</strong><br/>
+            <p><%= @sales_quote.inquiry.subject %></p>
+          </div>
+        </div>
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Freight</strong><br/>
+            <%= @sales_quote.inquiry.freight_option %>
+          </div>
+          <div class="col-6">
+            <strong>Price Quoted</strong><br/>
+            <p><%= @sales_quote.inquiry.calculated_total %></p>
+          </div>
+        </div>
+        <div class="form-row mb-1">
+          <div class="col-6">
+            <strong>Packing & Forwarding</strong><br/>
+            <%= @sales_quote.inquiry.packing_and_forwarding_option %>
+          </div>
+          <div class="col-6">
+            <strong>Payment Terms</strong><br/>
+            <%= @sales_quote.inquiry.payment_option.name %>
+          </div>
+        </div>
+        <% @sales_quote.sales_quote_rows.each do |row| %>
           <div>
             <h6 class="text-uppercase mb-0 mt-3">
+              <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
               <strong><%= row %></strong>
-              <p class="lead text-black-50 text-small d-block mt-1">#<%= row.sr_no %></p>
             </h6>
             <div class="form-row my-2">
               <div class="col-md-3">
-                <strong>Unit Selling Price</strong><br>
-                <span><%= row.unit_selling_price %></span>
+                <strong>SKU</strong><br>
+                <span><%= row.product.sku %></span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Unit Selling Price (in $)</strong><br>
-                <span><%= row.converted_unit_selling_price %></span>
+                <strong>Mfr Model</strong><br>
+                <span>
+                  <% if row.product.mpn %>
+                    <%= row.product.mpn %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Unit Cost with Freight</strong><br>
-                <span><%= row.unit_cost_price_with_unit_freight_cost %></span>
+                <strong>Description</strong><br>
+                <span>
+                  <% if row.product.description %>
+                    <%= row.product.description %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Total Selling Price</strong><br>
-                <span><%= row.total_selling_price %></span>
+                <strong>Make</strong><br>
+                <span>
+                  <% if row.product.brand %>
+                    <%= row.product.brand %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
               </div>
             </div>
             <div class="form-row my-2">
-              <div class="col-md-3">
-                <strong>Total Selling Price with Tax</strong><br>
-                <span><%= row.total_selling_price_with_tax %></span>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>HSN/SAC Code</strong><br>
+                <span>
+                  <% if row.product.remote_uid %>
+                    <%= row.product.remote_uid %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Margin Percentage</strong><br>
-                <span><%= row.margin_percentage.round(2) %></span>
+                <strong>Lead Time</strong><br>
+                <span>
+                  <% if row.lead_time_option %>
+                    <%= row.lead_time_option %>
+                  <% else %>
+                    -
+                  <% end %>
+                 </span>
               </div>
               <div class="col-md-3 mt-2 mt-md-0">
-                <strong>Tax Code</strong><br>
-                <span><%= row.tax_code %></span>
+                <strong>UOM</strong><br>
+                <span>
+                  <% if row.product.measurement_unit %>
+                    <%= row.product.measurement_unit %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
+              </div>
+
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Qty</strong><br>
+                <span>
+                  <% if row.quantity %>
+                    <%= row.quantity %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
+              </div>
+            </div>
+            <div class="form-row my-2">
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Unit Price (INR)</strong><br>
+                <span>
+                  <% if row.unit_selling_price %>
+                    <%= row.unit_selling_price %>
+                  <% else %>
+                    -
+                  <% end %>
+                </span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Tax</strong><br>
+                <span><%= row.best_tax_code %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Total (INR)</strong><br>
+                <span><%= row.total_selling_price %></span>
               </div>
             </div>
           </div>
+          <hr class="my-2">
         <% end %>
-
       </div>
       <div class="card-footer">
         <div class=form-row>
@@ -71,6 +234,9 @@
             Total Selling Price (Excl. tax)<br>
             <strong><%= format_currency(@sales_quote.calculated_total) %></strong>
           </div>
+          <!--<div class="col-8 col-md-3 mt-2 mt-md-0">Shipping Cost<br>
+            <strong></strong>
+          </div>-->
           <div class="col-4 col-md-3">
             Total Tax<br>
             <strong><%= format_currency(@sales_quote.calculated_total_tax) %></strong>
@@ -78,11 +244,103 @@
           <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
             <strong><%= format_currency(@sales_quote.calculated_total_with_tax) %></strong>
           </div>
-          <div class="col-4 col-md-3 mt-2 mt-md-0">Total Margin<br>
-            <strong><%= format_currency(@sales_quote.calculated_total_margin) %></strong>
-          </div>
 
         </div>
       </div>
     </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50"><strong>Commercial Terms & Conditions</strong></p>
+            </div>
+            <div class="card-body">
+              <p><strong>Note</strong></p>
+              <ol>
+                <li>Cost does not include any additional certification if required as per Indian regulations.</li>
+                <li>Any errors in Quotation including HSN codes, GST Tax rate must be notified before placing order.</li>
+                <li>Order once placed cannot be changed.</li>
+                <li>Bulk MRO does not accept any financial penalties for late deliveries.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50 "><strong>Other Information</strong></p>
+            </div>
+            <div class="card-body">
+              <ol>
+                <li>Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.</li>
+                <li>Bulk MRO Industrial Supply is not responsible for any banking fees.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card ">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50"><strong>Payment By Wire Transfer To</strong></p>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <p class="text-black-50 mb-1"><strong>Kotak Mahindra Bank Ltd. :</strong></p>
+                  <p>Aum Saheel Tower, Mumbai 400080.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account Number: 9412329433<br/>NEFT / RTGS Code: KKBK0001411</p>
+                </div>
+                <div class="col-6">
+                  <p class="text-black-50 mb-1"><strong>State Bank Of India:</strong></p>
+                  <p>Kalpa Taru – 39, Pedder Road, Mumbai, 400026.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account Number: 35924122136<br/>NEFT / RTGS Code: SBIN0000510</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <p class="text-uppercase text-black-50 "><strong>STANDARD TERMS AND CONDITIONS</strong></p>
+            </div>
+            <div class="card-body">
+              <ol>
+                <li>All the prices are based on products and quantities quoted. Any changes to the products and/or quantities may result in different pricing.</li>
+                <li>All discrepancies must be reported within 7-days of receipt of goods. No goods may be returned without prior written authorization from Bulk MRO Industrial Supply. Bulk MRO Industrial Supply will not be responsible for\nnon-authorized returns. This transaction is subject to Warranty, Sales Terms and Conditions.</li>
+                <li>Exemption from local sales tax, will apply only if the appropriate declaration form in the name of Bulk MRO Industrial Supply is received along with the PO. Exemption in Central Sales Tax (CST) is only applicable with specific prior written approval/acceptance of Bulk MRO Industrial Supply and in case on non-submission of CST form within thirty (30) days from the date of invoice a supplementary bill for the differential sales tax will follow.</li>
+                <li>Bulk MRO Industrial Supply shall not entertain any claim for any loss arising from damage, shortage, and/or non-delivery of goods as per invoice unless written intimation of such loss is given to the Company within seven (7) days from the date of receipt of goods. In the absence of such intimation, it will be presumed that the goods have been received in good order & condition</li>
+                <li>Bulk MRO Industrial Supply shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO Industrial Supply indemnified from/against all such claims.</li>
+                <li>The goods quoted are subject to availability. Bulk MRO Industrial Supply does not guarantee delivery of goods within any particular time frame. The customer acknowledges that Bulk MRO Industrial Supply shall not be liable for any liquidated damages or un-liquidated damages or loss of business, penalty, etc, for any delay in delivery/supply of goods.</li>
+                <li>The usage of the goods quoted and covered under the invoice is not meant for life saving and/or support equipment purpose, unless specifically provided for by the manufacturer.</li>
+                <li>The terms as provided under Condition 5, 6, and 7 above, shall supersede any other terms and conditions inconsistent therewith.</li>
+                <li>These terms and conditions inter-alia the pricing, terms of payment, etc of this transaction shall be kept confidential by the Customer and shall not be disclosed to any third party without prior written consent of Bulk MRO Industrial Supply.</li>
+                <li>All goods may be used by the Customer at its own risk and the Customer shall refer to the relevant technical advice, data, recommendations or services as specific by the manufacturer.</li>
+                <li>The customer shall comply fully with all applicable anti-mafia, anti-bribery, anti-money laundering and anti-corruption statues, rules, or regulations of any national, federal, state, or local jurisdiction anywhere in the world, including the (Indian) Prevention of Corruption Act, 1988 and the (U.S.) Foreign Corrupt Practices Act of 1977.</li>
+                <li>The quotes given above are on the current foreign exchange rate. In event of significant Rupee depreciation on the date of PO or Order confirmation by customer, there could be upward revision of rates accordingly.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
