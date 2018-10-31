@@ -26,10 +26,12 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+  has_many :customer_order_rows
 
   has_one_attached :image
   attr_accessor :applicable_tax_percentage
 
+  has_many :cart_items
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers

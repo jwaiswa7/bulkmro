@@ -4,8 +4,10 @@ Rails.application.routes.draw do
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
+  get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
+  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -58,6 +60,7 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
+        get 'login_as_contact'
       end
     end
 
@@ -231,5 +234,29 @@ Rails.application.routes.draw do
     end
 
     resources  :warehouses
+  end
+
+  namespace 'customers' do
+    resource :dashboard, :controller => :dashboard
+    resources :inquiries, only: %i[index show] do
+      scope module: 'inquiries' do
+        resources :sales_quotes, only: %i[index show]
+        resources :sales_orders, only: %i[index show]
+      end
+    end
+    resources :quotes, :controller => :sales_quotes, only: %i[index show]
+    resources :orders, :controller => :sales_orders, only: %i[index show]
+    resources :products, only: %i[index show] do
+      collection  do
+        get 'grid_view'
+      end
+    end
+    resource  :cart, only: [:show] do
+      collection do
+        get 'checkout'
+      end
+    end
+    resources :cart_items, only: %i[new create destroy]
+    resources :customer_orders, only: %i[create show]
   end
 end

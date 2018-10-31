@@ -1,0 +1,67 @@
+<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
+  <!-- Drawer Toggle -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Drawer Toggle -->
+
+  <!-- Logo -->
+  <a class="navbar-brand" href="<%= customers_dashboard_path %>">
+    <img alt="BulkMRO" src="<%= image_path('BMIS_Logo_PNG.png') %>" height="22"/>
+  </a>
+  <!-- Logo -->
+
+  <!-- Navigation Bar -->
+  <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
+    <ul class="navbar-nav">
+      <%= nav_item 'Dashboard', customers_dashboard_path, true %>
+      <%= nav_item 'Quotes', customers_quotes_path, true %>
+      <%= nav_item 'Orders', customers_orders_path, true %>
+      <%= nav_item 'Products', customers_products_path, true %>
+    </ul>
+  </div>
+  <!-- Navigation Bar -->
+
+  <!-- Settings Dropdown DESKTOP -->
+  <div class="d-block">
+    <div class="dropdown d-inline mr-2" id="cart_items">
+      <a href="#" role="button" data-toggle="dropdown">
+        <i class="fal fa-shopping-cart"></i> <span class="text-primary"><%= current_cart.cart_items.count %></span>
+      </a>
+      <% if current_cart.present? %>
+        <div class="dropdown-menu dropdown-menu-right cart-dropdown">
+          <h6 class="dropdown-header d-none">Cart</h6>
+          <div class="cart-items">
+            <% current_cart.cart_items.each do |cart_item| %>
+              <div class="text-dark text-wrap" id="cart_item_<%= cart_item.id %>">
+                <%= link_to customers_cart_item_path(cart_item), method: :delete, remote: true do %>
+                  <i class="fal fa-times ml-2 text-danger d-block float-right" id="delete_item"></i>
+                <% end %>
+                <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= truncate(Product.find(cart_item.product_id).try(:name), :length => 30 ) %></a></span>
+                <span class="d-block text-black-50">x <%= cart_item.quantity %></span>
+                <div class="dropdown-divider" id="divider_<%= cart_item.id %>"></div>
+              </div>
+            <% end %>
+          </div>
+          <div class="cart-footer">
+            <%= link_to "Cart", customers_cart_path, :class => "btn btn-dark btn-sm w-50" %>
+            <%= link_to "Checkout", checkout_customers_cart_path, :class => "btn btn-success btn-sm w-50" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <div class="dropdown d-inline">
+      <a href="#" role="button" data-toggle="dropdown">
+        <i class="fal fa-cog"></i>
+      </a>
+      <span class="dropdown-menu dropdown-menu-right">
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <!-- Settings Dropdown DESKTOP -->
+</div>

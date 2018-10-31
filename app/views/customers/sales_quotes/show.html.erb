@@ -1,0 +1,88 @@
+<div class="col-12">
+    
+    <div class="card">
+      <div class="card-header">
+        <div class=form-row>
+          <div class="col-8 col-md-3">
+            <strong>SAP Quotation </strong>
+            <br> <%= @sales_quote.quotation_uid.blank? ? "SAP Request Pending" : @sales_quote.quotation_uid %>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="col-6">
+            <strong>Currency</strong>
+            <br> <%= @sales_quote.currency %>
+          </div>
+          <div class="col-6">
+            <strong>Conversion rate</strong>
+            <br> <%= @sales_quote.inquiry_currency.conversion_rate %>
+          </div>
+
+        </div>
+
+        <% @sales_quote.rows.each do |row| %>
+          <div>
+            <h6 class="text-uppercase mb-0 mt-3">
+              <strong><%= row %></strong>
+              <p class="lead text-black-50 text-small d-block mt-1">#<%= row.sr_no %></p>
+            </h6>
+            <div class="form-row my-2">
+              <div class="col-md-3">
+                <strong>Unit Selling Price</strong><br>
+                <span><%= row.unit_selling_price %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Unit Selling Price (in $)</strong><br>
+                <span><%= row.converted_unit_selling_price %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Unit Cost with Freight</strong><br>
+                <span><%= row.unit_cost_price_with_unit_freight_cost %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Total Selling Price</strong><br>
+                <span><%= row.total_selling_price %></span>
+              </div>
+            </div>
+            <div class="form-row my-2">
+              <div class="col-md-3">
+                <strong>Total Selling Price with Tax</strong><br>
+                <span><%= row.total_selling_price_with_tax %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Margin Percentage</strong><br>
+                <span><%= row.margin_percentage.round(2) %></span>
+              </div>
+              <div class="col-md-3 mt-2 mt-md-0">
+                <strong>Tax Code</strong><br>
+                <span><%= row.tax_code %></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+      <div class="card-footer">
+        <div class=form-row>
+          <div class="col-8 col-md-3">
+            Total Selling Price (Excl. tax)<br>
+            <strong><%= format_currency(@sales_quote.calculated_total) %></strong>
+          </div>
+          <div class="col-4 col-md-3">
+            Total Tax<br>
+            <strong><%= format_currency(@sales_quote.calculated_total_tax) %></strong>
+          </div>
+          <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
+            <strong><%= format_currency(@sales_quote.calculated_total_with_tax) %></strong>
+          </div>
+          <div class="col-4 col-md-3 mt-2 mt-md-0">Total Margin<br>
+            <strong><%= format_currency(@sales_quote.calculated_total_margin) %></strong>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
