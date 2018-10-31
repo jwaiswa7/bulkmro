@@ -72,8 +72,9 @@
 
         <div class="form-row mt-2">
           <div class="col-md-6 mt-2 mt-md-0">
-            <strong>Customer - Billing Address</strong><br>
-            <%= (@sales_order.inquiry.company.name) %><br>
+            <strong class="d-block">Customer - Billing Address</strong>
+            <%= @sales_order.inquiry.billing_contact.full_name %><br>
+            <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
               <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
@@ -82,8 +83,9 @@
             <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
           <div class="col-md-6">
-            <strong>Customer - Shipping Address</strong><br>
-            <%= (@sales_order.inquiry.company.name) %><br>
+            <strong class="d-block">Customer - Shipping Address</strong>
+            <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %><br>
+            <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
@@ -109,13 +111,6 @@
             <% end if @sales_order.inquiry.copy_of_email.attached? %>
           </div>
         </div>
-        <br>
-        <strong>Supplier Quotes attachment</strong>
-        <% @sales_order.inquiry.supplier_quotes.attachments.each do |attachment| %>
-          <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
-            <br><%= attachment.filename %>
-          <% end %>
-        <% end if @sales_order.inquiry.supplier_quotes.attached? %>
       <% end %>
 
       <% @sales_order.sales_order_rows.each do |row| %>
