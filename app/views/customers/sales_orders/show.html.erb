@@ -47,58 +47,49 @@
           <%= @sales_order.inquiry.payment_option.name %>
         </div>
       </div>
-      <div class="card-alternative mt-3">
+      <div class="card-alternative mt-3 pb-3">
         <div class="form-row">
-          <div class="col-md-6">
-            <strong>Supplier Shipping Address</strong>
-            <%= @sales_order.inquiry.ship_from.address.name.to_s %><br>
-            <%= @sales_order.inquiry.ship_from.address.to_compact_multiline_s if @sales_order.inquiry.ship_from.present? %>
-            <br>
-            <% if @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %>
-              Contact: <%= @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %>
-              <br>
-            <% end %>
-            GST no: <%= @sales_order.inquiry.ship_from.address.gst %><br>
-          </div>
-          <div class="col-md-6 mt-2 mt-md-0">
-            <strong>Supplier Billing Address</strong>
+          <div class="col-6">
+            <strong class="d-block">Supplier - Billing Address</strong>
             <%= @sales_order.inquiry.bill_from.address.name.to_s %><br>
             <%= @sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_order.inquiry.bill_from.present? %>
-            <br>
             <% if @sales_order.inquiry.bill_from.address.phone.present? %>
-              Contact: <%= @sales_order.inquiry.contact.full_name %>
+              <span class="d-block"><em>Contact</em>:  <%= @sales_order.inquiry.contact.full_name %></span>
               - <%= @sales_order.inquiry.bill_from.address.phone %><br>
             <% end %>
-            GST no: <%= @sales_order.inquiry.bill_from.address.gst %><br>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.bill_from.address.gst %></span>
+          </div>
+          <div class="col-6">
+            <strong class="d-block">Supplier - Shipping Address</strong>
+            <%= @sales_order.inquiry.ship_from.address.name.to_s %><br>
+            <%= @sales_order.inquiry.ship_from.address.to_compact_multiline_s if @sales_order.inquiry.ship_from.present? %>
+            <% if @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.ship_from.address.mobile || @sales_order.inquiry.ship_from.address.telephone %></span>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.ship_from.address.gst %></span>
           </div>
         </div>
-        <br>
 
-
-        <div class="form-row">
-          <div class="col-md-6">
-            <strong>Customer Shipping Address</strong><br>
-            <%= (@sales_order.inquiry.company.name) %><br>
-            <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
-            <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              Contact: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %><br>
-            <% end %>
-            GST
-            no: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %>
-            <br>
-            Email: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>
-          </div>
+        <div class="form-row mt-2">
           <div class="col-md-6 mt-2 mt-md-0">
-            <strong>Customer Billing Address</strong><br>
+            <strong>Customer - Billing Address</strong><br>
             <%= (@sales_order.inquiry.company.name) %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              Contact: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %><br>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
-            GST
-            no: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %>
-            <br>
-            Email: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
+            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
+          </div>
+          <div class="col-md-6">
+            <strong>Customer - Shipping Address</strong><br>
+            <%= (@sales_order.inquiry.company.name) %><br>
+            <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
+            <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
+              <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
         </div>
       </div>
