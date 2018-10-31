@@ -56,7 +56,9 @@ class Overseers::CategoriesController < Overseers::BaseController
     params.require(:category).permit(
         :parent_id,
         :name,
-        :is_service
+        :is_service,
+        :tax_code_id,
+        :tax_rate_id
     )
   end
 

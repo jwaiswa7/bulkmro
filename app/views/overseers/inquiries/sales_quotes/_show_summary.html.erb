@@ -145,7 +145,7 @@
                   <span><%= row.object.best_tax_code.chapter %></span>
                 </td>
                 <td>
-                  <span><%= row.object.best_tax_code.tax_percentage %></span>
+                  <span><%= percentage(row.object.best_tax_rate.tax_percentage) %></span>
                 </td>
               </tr>
               </tbody>

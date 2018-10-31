@@ -41,6 +41,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             return_response(e.message, 0)
           end
         end
+        sales_order.update_index
       else
         return_response("Order Not Processed", 0)
       end
