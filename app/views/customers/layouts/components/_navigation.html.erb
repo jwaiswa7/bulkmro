@@ -24,9 +24,9 @@
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
-    <div class="dropdown d-inline mr-2" id="cart_items">
-      <a href="#" role="button" data-toggle="dropdown">
-        <i class="fal fa-shopping-cart"></i> <span class="text-primary"><%= current_cart.cart_items.count %></span>
+    <div class="dropdown d-inline mr-2" id="cart">
+      <a href="#" role="button" data-toggle="dropdown" id="cart-count">
+        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.cart_items.count %></span>
       </a>
       <% if current_cart.present? %>
         <div class="dropdown-menu dropdown-menu-right cart-dropdown">
@@ -50,7 +50,6 @@
         </div>
       <% end %>
     </div>
-
 
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown">
