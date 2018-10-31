@@ -1,4 +1,9 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
+
+  def index?
+    manager_or_sales?
+  end
+
   def show?
     record.persisted?
   end
@@ -20,7 +25,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def create_confirmation?
-    person?
+    manager_or_sales?
   end
 
   def new_revision?
@@ -32,11 +37,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    manager?
+    manager_or_sales?
   end
 
   def export_all?
-    manager? || inside_sales_manager?
+    admin_or_manager?
+  end
+
+  def drafts_pending?
+    admin?
   end
 
   def go_to_inquiry?

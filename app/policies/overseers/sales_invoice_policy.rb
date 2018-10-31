@@ -8,6 +8,6 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin? || inside_sales_manager?
+    admin_or_manager?
   end
 end

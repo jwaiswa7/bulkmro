@@ -1,4 +1,8 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
+  def new?
+    manager_or_cataloging?
+  end
+
   def comments?
     record.persisted?
   end

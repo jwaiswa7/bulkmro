@@ -14,7 +14,7 @@ module Mixins::CanBeSynced
     end
 
     def syncable_identifiers
-      []
+      [:remote_uid]
     end
 
     def synced?

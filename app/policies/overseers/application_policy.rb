@@ -6,36 +6,56 @@ class Overseers::ApplicationPolicy
     @record = record
   end
 
-  def admin?
-    overseer.administrator?
-  end
-
-  def manager?
-    overseer.manager?
-  end
-
-  def inside_sales_manager?
-    overseer.inside_sales_manager?
+  def all_roles?
+    admin_or_manager? || cataloging? || sales? || others?
   end
 
   def admin_or_manager?
     admin? || manager?
   end
 
-  def person?
-    overseer.person?
+  def not_sales?
+    admin_or_manager? || cataloging?
   end
 
-  def executive?
-    overseer.executive?
+  def admin_or_cataloging?
+    admin? || cataloging?
+  end
+
+  def manager_or_cataloging?
+    admin_or_manager? || cataloging?
+  end
+
+  def manager_or_sales?
+    admin_or_manager? || sales?
+  end
+
+  def admin?
+    overseer.admin?
+  end
+
+  def manager?
+    overseer.manager?
+  end
+
+  def sales?
+    overseer.inside? || overseer.outside?
+  end
+
+  def others?
+    overseer.others?
+  end
+
+  def cataloging?
+    overseer.cataloging?
   end
 
   def index?
-    person?
+    all_roles?
   end
 
   def autocomplete?
-    true
+    index?
   end
 
   def show?
@@ -79,7 +99,7 @@ class Overseers::ApplicationPolicy
     end
 
     def resolve
-      if  overseer.manager?
+      if overseer.manager?
         scope.all
       else
         scope.where(:created_by => overseer.self_and_descendants)
