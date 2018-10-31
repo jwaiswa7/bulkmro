@@ -104,13 +104,13 @@
       <% if @sales_order.inquiry.attachments.present? %>
         <div class="form-row mt-3">
           <div class="col-6">
-            <strong>PO Sheet</strong><br>
+            <strong class="d-block">PO Sheet</strong>
             <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
               <%= @sales_order.inquiry.customer_po_sheet.filename %>
             <% end if @sales_order.inquiry.customer_po_sheet.attached? %>
           </div>
           <div class="col-6">
-            <strong>Email Attachment</strong><br>
+            <strong class="d-block">Email Attachment</strong>
             <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
               <%= @sales_order.inquiry.copy_of_email.filename %>
             <% end if @sales_order.inquiry.copy_of_email.attached? %>
