@@ -1,5 +1,9 @@
-class Overseers::CompanyPolicy < Overseers::AccountPolicy
+class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?
-    record.contacts.any? && record.addresses.any?
+    record.contacts.any? && record.addresses.any? && manager_or_sales?
+  end
+
+  def new?
+    manager_or_cataloging?
   end
 end

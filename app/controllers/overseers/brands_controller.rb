@@ -12,7 +12,9 @@ class Overseers::BrandsController < Overseers::BaseController
   end
 
   def show
-    redirect_to edit_overseers_brand_path(@brand)
+    @brand_products = Product.where(brand_id: @brand.id)
+    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps}.compact.flatten.uniq}.compact.flatten.uniq)
+
     authorize @brand
   end
 

@@ -36,7 +36,7 @@ class Services::Overseers::Inquiries::HandleSmartQueue < Services::Shared::BaseS
     final_score = (value_score * stage_multiplier) + client_score
     final_score += 100 if inquiry.quotation_followup_date.present? && 1770.minutes.from_now >= inquiry.quotation_followup_date
 
-    inquiry.update_attributes(:priority => final_score)
+    inquiry.update_attributes!(:priority => final_score)
   end
 
   attr_accessor :inquiry

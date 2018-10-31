@@ -109,6 +109,12 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
+  def format_badge(text, color)
+    content_tag :span, class: "badge text-uppercase badge-#{color}" do
+      content_tag :strong, text.to_s.capitalize
+    end
+  end
+
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end

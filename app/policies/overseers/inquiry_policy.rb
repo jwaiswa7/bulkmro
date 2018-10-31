@@ -1,4 +1,8 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
+  def index?
+    manager_or_sales?
+  end
+
   def index_pg?
     index?
   end
@@ -40,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    inside_sales_manager? || admin?
+    admin_or_manager?
   end
 
   def export?
@@ -111,44 +115,4 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       end
     end
   end
-
-
-
-
-  # def edit_rfqs?
-  #   !record.rfqs_generated? && record.suppliers_selected?
-  # end
-  #
-  # def update_rfqs?
-  #   edit_rfqs?
-  # end
-
-  # def edit_rfqs_mailer_preview?
-  #   edit_rfqs?
-  # end
-
-  # def edit_quotations?
-  #   record.suppliers_selected? && record.rfqs_generated? && !record.sales_quote.present?
-  # end
-  #
-  # def update_quotations?
-  #   edit_quotations?
-  # end
-  #
-  # def new_sales_approval?
-  #   record.sales_quote.present? && !record.sales_approval.present?
-  # end
-  #
-  # def create_sales_approval?
-  #   new_sales_approval?
-  # end
-  #
-  # def new_sales_order?
-  #   record.sales_approval.present? && !record.sales_order.present?
-  # end
-  #
-  # def create_sales_order?
-  #   new_sales_order?
-  # end
-  #
 end
