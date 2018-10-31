@@ -134,12 +134,12 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_code, collection: selected_option_or_nil(row, :tax_code), input_html: {:'data-source' => autocomplete_overseers_tax_codes_path, "data-bind": ""} %></div>
+                          <div class="col-md-2"><%= row.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , input_html: { "data-bind": ""} %></div>
                           <%= row.hidden_field :unit_cost_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :unit_cost_price_with_unit_freight_cost, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price, "data-bind": "", disabled: true %>
                           <%= row.hidden_field :total_selling_price_with_tax, "data-bind": "", disabled: true %>
-                          <%= row.hidden_field :tax_percentage, "data-bind": "", disabled: true %>
                           <div class="col-md-2"><%= row.association :lead_time_option, wrapper: :custom_multi_select %></div>
                           <div class="col-md-2"><%= row.association :measurement_unit, wrapper: :custom_multi_select, required: true %></div>
                           <%= link_to_remove_association row, {class: 'btn btn-danger align-self-center d-none', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>

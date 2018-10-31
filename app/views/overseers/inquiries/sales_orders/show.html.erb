@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-  View Sales Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+  View Sales Order <%= @sales_order.to_s %>
 <% end %>
 
 <div class="col-12">
