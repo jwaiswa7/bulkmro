@@ -11,6 +11,7 @@ json.data (@contacts) do |contact|
                       if contact.company.present? && policy(contact.company).new_inquiry?
                         row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success')
                       end,
+                      row_action_button(login_as_contact_overseers_contacts_path(contact_id: contact.id), 'fal fa-sign-in', 'Login as Contact', 'success', '_blank'),
                   ].join(' '),
                   contact.name,
                   contact.email,

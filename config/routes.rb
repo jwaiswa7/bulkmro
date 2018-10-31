@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
+        get 'login_as_contact'
       end
     end
 

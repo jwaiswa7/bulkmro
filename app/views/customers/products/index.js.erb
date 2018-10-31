@@ -1,1 +1,1 @@
-$("#products_index").html("<%= j render(partial: 'shared/layouts/grid') %>");
+$("#products_index").html("<%= escape_javascript(render(partial: 'shared/layouts/grid')) %>");
