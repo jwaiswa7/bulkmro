@@ -78,7 +78,8 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
+                - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
             <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
@@ -86,14 +87,16 @@
 
           <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
-            <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %><br>
+            <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %>
+            <br>
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
+                - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
-              <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
         </div>
       </div>
@@ -101,13 +104,13 @@
       <% if @sales_order.inquiry.attachments.present? %>
         <div class="form-row mt-3">
           <div class="col-6">
-            <strong>Customer PO sheet</strong><br>
+            <strong>PO Sheet</strong><br>
             <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
               <%= @sales_order.inquiry.customer_po_sheet.filename %>
             <% end if @sales_order.inquiry.customer_po_sheet.attached? %>
           </div>
           <div class="col-6">
-            <strong>Email attachment</strong><br>
+            <strong>Email Attachment</strong><br>
             <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
               <%= @sales_order.inquiry.copy_of_email.filename %>
             <% end if @sales_order.inquiry.copy_of_email.attached? %>
@@ -243,49 +246,37 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="form-row mt-3 mt-lg-4">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Other Information</strong></p>
-            </div>
-            <div class="card-body">
-              <ol>
-                <li>Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.
-                </li>
-                <li>Bulk MRO Industrial Supply is not responsible for any banking fees.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+      <p class="mb-0">
+        - Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.<br>
+        - Bulk MRO Industrial Supply is not responsible for any banking fees.
+      </p>
     </div>
   </div>
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="form-row mt-3 mt-lg-4">
-        <div class="col-md-12">
-          <div class="card ">
-            <div class="card-header">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Payment By Wire Transfer To</strong></p>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-6">
-                  <p class="text-black-50 mb-1"><strong>Kotak Mahindra Bank Ltd. :</strong></p>
-                  <p>Aum Saheel Tower, Mumbai 400080.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account
-                    Number: 9412329433<br/>NEFT / RTGS Code: KKBK0001411</p>
-                </div>
-                <div class="col-6">
-                  <p class="text-black-50 mb-1"><strong>State Bank Of India:</strong></p>
-                  <p>Kalpa Taru – 39, Pedder Road, Mumbai, 400026.<br/>Account Name: Bulk MRO Industrial Supply Pvt.
-                    Ltd.<br/>Account Number: 35924122136<br/>NEFT / RTGS Code: SBIN0000510</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+      <div class="form-row">
+        <div class="col-md-6">
+          <p class="mb-0">
+            <strong class="d-block">Kotak Mahindra Bank Ltd</strong>
+            Address: Aum Saheel Tower, Mumbai - 400 080<br>
+            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
+            Account Number: 9412329433<br>
+            NEFT / RTGS Code: KKBK0001411
+          </p>
+        </div>
+        <div class="col-md-6 mt-2 mt-md-0">
+          <p class="mb-0">
+            <strong class="d-block">State Bank Of India</strong>
+            Address: Kalpa Taru – 39, Pedder Road, Mumbai - 400 026<br>
+            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
+            Account Number: 35924122136<br>
+            NEFT / RTGS Code: SBIN0000510
+          </p>
         </div>
       </div>
     </div>
