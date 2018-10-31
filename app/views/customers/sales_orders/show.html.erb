@@ -1,10 +1,13 @@
+<% provide :container_fluid, true %>
+
 <div class="col-12">
   <div class="page-header">
     <div class="">
       <h2>
         Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
         <% if @sales_order.serialized_pdf.attachment %>
-          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i> Download PDF</a>
+          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i>
+            Download PDF</a>
         <% end %>
       </h2>
     </div>
@@ -107,12 +110,12 @@
       <% if @sales_order.inquiry.attachments.present? %>
         <div class="form-row mt-3">
           <% if @sales_order.inquiry.customer_po_sheet.attached? %>
-          <div class="col-6">
-            <strong class="d-block">PO Sheet</strong>
-            <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
-              <%= @sales_order.inquiry.customer_po_sheet.filename %>
-            <% end %>
-          </div>
+            <div class="col-6">
+              <strong class="d-block">PO Sheet</strong>
+              <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @sales_order.inquiry.customer_po_sheet.filename %>
+              <% end %>
+            </div>
           <% end %>
 
           <% if @sales_order.inquiry.copy_of_email.attached? %>
@@ -126,52 +129,52 @@
         </div>
       <% end %>
 
-      <% @sales_order.sales_order_rows.each do |row| %>
-        <div>
-          <h6 class="text-uppercase mb-0 mt-3">
-            <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
-            <strong><%= row.sales_quote_row %></strong>
-          </h6>
-          <div class="form-row my-2 text-small">
-            <div class="col-12">
-              <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-                <thead>
+      <div>
+        <div class="form-row my-2 text-small">
+          <div class="col-12">
+            <table class="datatable table table-bordered dt-responsive" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Product Number">Product</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
+                </th>
+                <th class="no-sort">
+                  <span>Description</span>
+                </th>
+                <th class="no-sort">
+                  <span>Make</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Quantity">Qty</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Tax">Tax</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @sales_order.sales_order_rows.each do |row| %>
                 <tr>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Product Code">Product</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Description">Description</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Brand">Make</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Quantity">Qty</span>
-                  </th>
-                  <th class="no-sort <%= @sales_order.currency.name == 'INR' ? 'd-none' : '' %>">
-                      <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= @sales_order.currency.sign %>
-                        )</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Tax">Tax</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
+                  <td>
+                      <span>
+                          #<%= row.sr_no %>
+                      </span>
+                  </td>
                   <td>
                       <span>
                           <%= row.sales_quote_row.product.remote_uid %>
@@ -208,28 +211,26 @@
                   </td>
                   <td>
                       <span>
-                        <%= row.unit_selling_price %>
+                        <%= format_currency(row.unit_selling_price) %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.best_tax_code %>
+                          <%= row.best_tax_code.tax_percentage %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.total_selling_price %>
+                          <%= format_currency(row.total_selling_price) %>
                       </span>
                   </td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
-      <% end %>
-      <hr class="my-2">
-
+      </div>
     </div>
     <div class="card-footer">
       <div class=form-row>
