@@ -10,7 +10,7 @@ json.data (@sales_quotes) do |sales_quote|
                   format_currency(sales_quote.calculated_total),
                   sales_quote.inquiry.inside_sales_owner.to_s,
                   format_date(sales_quote.inquiry.valid_end_time),
-                  status_helper_format_label(sales_quote.inquiry.status),
+                  inquiry_status_badge(sales_quote.inquiry.status),
               ]
 end
 

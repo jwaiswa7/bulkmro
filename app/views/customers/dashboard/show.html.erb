@@ -13,7 +13,7 @@
               <div class="list-group list-group-flush">
                 <% @recent_sales_quotes.each do |sales_quote| %>
                   <a href="<%= customers_quote_path(sales_quote) %>" class="list-group-item list-group-item-action p-1">
-                    <span class="float-right"><%= status_helper_format_label(sales_quote.inquiry.status) %></span>
+                    <span class="float-right"><%= inquiry_status_badge(sales_quote.inquiry.status) %></span>
                     <strong>#<%= sales_quote.inquiry.inquiry_number %></strong> - <%= sales_quote.inquiry.subject.truncate(40) %>
                   </a>
                 <% end %>
@@ -38,7 +38,7 @@
               <div class="list-group list-group-flush">
                 <% @recent_sales_orders.each do |sales_order| %>
                   <a href="<%= customers_order_path(sales_order) %>" class="list-group-item list-group-item-action p-1">
-                    <span class="float-right"><%= status_helper_format_label(sales_order.inquiry.status) %></span>
+                    <span class="float-right"><%= inquiry_status_badge(sales_order.inquiry.status) %></span>
                     <strong>#<%= sales_order.inquiry.inquiry_number %></strong> - <%= sales_order.inquiry.subject.truncate(40) %>
                   </a>
                 <% end %>
