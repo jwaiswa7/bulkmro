@@ -11,47 +11,33 @@
     <div class="card">
       <div class="card-header">
         <div class=form-row>
-          <div class="col-8 col-md-3">
-            <strong>Order Number</strong>
-            <br> <%= @sales_order.try(:order_number).blank? ? "SAP Request Pending" : @sales_order.order_number %>
+          <div class="col-4 col-md-3">
+            <strong class="d-block">Quotation Number</strong>
+            #<%= @sales_order.sales_quote_id %>
           </div>
-          <% if @sales_order.remote_approved? %>
-            <div class="col-8 col-md-3">
-              <strong>Doc Entry</strong>
-              <br> <%= @sales_order.draft_uid.blank? ? "SAP Request Pending" : @sales_order.remote_uid %>
-            </div>
-            <div class="col-8 col-md-3">
-              <strong>Draft Entry</strong>
-              <br> <%= @sales_order.remote_uid.blank? ? "SAP Request Pending" : @sales_order.remote_uid %>
-            </div>
-          <% end %>
-          <!--  <div class="col-3">
-            <strong>Status</strong>
-            <br> <%#<%= @sales_order.status.to_s.humanize %>
+          <div class="col-4 col-md-3">
+            <strong class="d-block">Customer PO</strong>
+            #<%= @sales_order.inquiry.customer_po_number %>
           </div>
-         <!-- <div class="col-3">
-            <strong>SAP Status</strong>
-            <br> <%#<%= @sales_order.remote_status.blank? ? "SAP Request Pending" : @sales_order.remote_status %>
-          </div>-->
+          <div class="col-4 col-md-3">
+            <strong class="d-block">Payment Method</strong>
+            Bank Transfer
+          </div>
+          <div class="col-4 col-md-3">
+            <strong class="d-block">Payment Terms</strong>
+            <%= @sales_order.inquiry.payment_option.name %>
+          </div>
         </div>
 
       </div>
       <div class="card-body">
         <div class="form-row mb-1">
           <div class="col-6">
-            <strong>Quotation</strong>
-            <br> <%= @sales_order.sales_quote_id %>
-          </div>
-          <div class="col-6">
             <strong>Customer Order Date</strong>
             <br> <%= format_date(@sales_order.sales_quote.sent_at)  %>
           </div>
         </div>
         <div class="form-row mb-1">
-          <div class="col-6">
-            <strong>Customer PO Number</strong>
-            <br> <%= @sales_order.inquiry.customer_po_number %>
-          </div>
           <div class="col-6">
             <strong>Customer Order Date</strong>
             <br> <%= @sales_order.inquiry.customer_order_date %>
@@ -68,12 +54,6 @@
           </div>
         </div>
 
-        <div class="form-row mb-1">
-          <div class="col-6">
-            <strong>Payment Terms</strong>
-            <br> <%= @sales_order.inquiry.payment_option.name %>
-          </div>
-        </div>
         <div class="card-alternative mt-3">
           <div class="form-row">
             <div class="col-md-6">
