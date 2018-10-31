@@ -9,6 +9,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
+  #include Mixins::HasRowCalculations
   include Mixins::HasConvertedCalculations
 
   update_index('sales_orders', urgent: true) { self }
@@ -117,4 +118,7 @@ class SalesOrder < ApplicationRecord
     ].compact.join('.')
   end
 
+  def to_s
+    ['#', order_number].join if order_number.present?
+  end
 end

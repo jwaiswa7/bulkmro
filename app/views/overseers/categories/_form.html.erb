@@ -7,11 +7,13 @@
   <%= simple_form_for([:overseers, @category], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.input :name %>
     <%= f.input :is_service %>
+    <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
+    <%= f.association :tax_rate, include_blank: 'Select a Tax Rate' %>
 
     <% if @category.persisted? %>
-      <%= f.association :parent, :label_method => :to_s, collection: selected_option_or_nil(f,:parent), input_html: { class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: @category.to_param) } %>
+      <%= f.association :parent, :label_method => :to_s, collection: selected_option_or_nil(f, :parent), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: @category.to_param)} %>
     <% else %>
-      <%= f.association :parent, :label_method => :to_s, input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path }  %>
+      <%= f.association :parent, :label_method => :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
     <% end %>
 
     <% if action_name.capitalize == "New" %>

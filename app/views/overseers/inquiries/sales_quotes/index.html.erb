@@ -22,7 +22,7 @@
         <% if @inquiry.customer_order_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer order date has to be defined.</li><% end %>
         <% if @inquiry.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Inquiry must be synced with SAP.</li><% end %>
         <% if @inquiry.final_sales_quote.not_synced? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote must be synced with SAP.</li><% end %>
-        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quotation has to be emailed; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
+        <% if @inquiry.final_sales_quote.email_messages.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Quotation has to be emailed to Customer; make sure your SMTP settings and phone number are updated in your profile.</li><% end %>
         <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
 
         <% if @inquiry.customer_po_number.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO number must be present.</li><% end %>
