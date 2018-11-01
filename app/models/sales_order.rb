@@ -9,10 +9,9 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
-  #include Mixins::HasRowCalculations
   include Mixins::HasConvertedCalculations
 
-  update_index('sales_orders', urgent: true) { self }
+  update_index('sales_orders#sales_order') {self}
   pg_search_scope :locate, :against => [:status, :id, :order_number], :associated_against => {:company => [:name], :inquiry => [:inquiry_number, :customer_po_number]}, :using => {:tsearch => {:prefix => true}}
   has_closure_tree({name_column: :to_s})
 
@@ -108,7 +107,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def update_index
-    #SalesOrdersIndex::SalesOrder.import([self.id])
+    SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
   def filename(include_extension: false)
