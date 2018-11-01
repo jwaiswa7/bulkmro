@@ -9,7 +9,6 @@ class SalesOrder < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeSent
   include Mixins::CanBeSynced
-  #include Mixins::HasRowCalculations
   include Mixins::HasConvertedCalculations
 
   update_index('sales_orders#sales_order') {self}
