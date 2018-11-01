@@ -61,7 +61,15 @@
           <div class="flex-fill">
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <% if @sales_order.present? %>
-              <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+              <% if @sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
+                <% if current_overseer.email == 'devang.shah@bulkmro.com' %>
+                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+                <% else %>
+                  <label>Needs Devang Shah's Approval for a Order Less than 10% Margin</label>
+                <% end %>
+              <% else %>
+                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+              <% end %>
               <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
             <% end %>
           </div>
