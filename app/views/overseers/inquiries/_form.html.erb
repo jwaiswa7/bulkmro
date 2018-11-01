@@ -13,15 +13,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
-          <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-plus-circle"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% end %>
+          <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
     </div>
@@ -387,15 +379,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
-          <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-plus-circle"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% end %>
+          <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
     </div>

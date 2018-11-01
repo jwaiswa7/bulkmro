@@ -8,14 +8,6 @@
   <%= simple_form_for([:overseers, @measurement_units], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.input :name %>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@measurement_units) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@measurement_units) %>
-      <% end %>
-    <% end %>
+    <%= action_button(action_name, @measurement_units) %>
   <% end %>
 </div>

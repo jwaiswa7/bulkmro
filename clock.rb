@@ -27,6 +27,10 @@ every(1.day, 'refresh_indices', :at => '06:00') do
   ProductsIndex.reset!
   InquiriesIndex.reset!
   SalesOrdersIndex.reset!
+  SalesQuotesIndex.reset!
+  SalesInvoicesIndex.reset!
+  SalesShipmentsIndex.reset!
+  PurchaseOrdersIndex.reset!
 end
 
 every(1.hour, 'adjust_dynos') do
