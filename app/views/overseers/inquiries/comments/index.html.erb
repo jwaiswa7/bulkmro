@@ -56,7 +56,7 @@
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <% if @sales_order.present? %>
               <% if @sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
-                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com'].include? current_overseer.email  %>
+                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com'].include? current_overseer.email  %>
                   <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
                 <% else %>
                 <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
