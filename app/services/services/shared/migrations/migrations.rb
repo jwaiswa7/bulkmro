@@ -1206,35 +1206,113 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def brand_remote_uids
-    Brand.update_all remote_uid: nil
-    service = Services::Shared::Spreadsheets::CsvImporter.new('brand_remote_uids.csv', folder)
+  def target_reports
+    target_type = {'1' => 10, '4' => 20, '7' => 30, '2' => 40, '3' => 50, '6' => 60}
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('target_reports.csv', 'seed_files')
     service.loop(nil) do |x|
-      name = x.get_column('Manufacturer Name')
-      brand = Brand.find_by_name(name)
-      if brand.present?
-        brand.remote_uid = x.get_column('Code')
-        brand.save_and_sync
+      beginning_of_month = "#{x.get_column('period_month')}-01".to_date
+      target_period = TargetPeriod.where(period_month: beginning_of_month).first_or_initialize
+      if target_period.new_record? || update_if_exists
+        target_period.save!
       end
-      next if name == nil
+
+      overseer = Overseer.find_by_legacy_id(x.get_column('legacy_overseer_id'))
+
+      target = Target.where(overseer: overseer, target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
+      if target.new_record? || update_if_exists
+        target.target_value = x.get_column('target')
+        target.legacy_id = x.get_column('target_legacy_id')
+        target.created_by_id = Overseer.default.id
+        target.updated_by_id = Overseer.default.id
+        target.save!
+      end
     end
   end
 
-  def product_images
-    service = Services::Shared::Spreadsheets::CsvImporter.new('product_images.csv', 'seed_files')
-    service.loop(nil) do |x|
-      product = Product.find_by_legacy_id(x.get_column('legacy_id'))
-      next if product.blank?
-      sheet_columns = [
-          ['image_path', 'images']
-      ]
-      sheet_columns.each do |file|
-        file_url = x.get_column(file[0])
-        begin
-          attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
-        rescue URI::InvalidURIError => e
-          puts "Help! #{e} did not migrate."
+  def update_sales_orders_for_legacy_inquiries
+    objects = []
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+
+      legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+      remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
+      service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('inquiry_number').to_i
+        next if inquiry_number == 11505
+        inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
+        next if inquiry.blank?
+
+        requested_by = Overseer.find_by_legacy_id!(x.get_column('requested_by')) || Overseer.default
+
+        sales_quote = inquiry.sales_quotes.last
+        next if sales_quote.blank?
+        sales_orders_legacy_metadata = inquiry.sales_orders.pluck(:legacy_metadata)
+        if (!sales_orders_legacy_metadata.include?(x.get_row))
+          sales_order = sales_quote.sales_orders.new
+          sales_order.remote_uid = x.get_column('remote_uid')
+          sales_order.overseer = requested_by
+          sales_order.order_number = x.get_column('order_number')
+          sales_order.created_at = x.get_column('requested_time').to_datetime
+          sales_order.draft_uid = x.get_column('doc_num')
+          sales_order.legacy_request_status = legacy_request_status_mapping[x.get_column('request_status')]
+          sales_order.status = legacy_request_status_mapping[x.get_column('request_status')]
+          sales_order.remote_status = remote_status[x.get_column('remote_status')]
+          sales_order.legacy_metadata = x.get_row
+          sales_order.sent_at = sales_quote.created_at
+          sales_order.save!
+
+          product_skus = x.get_column('skus')
+
+          sales_quote.rows.each do |row|
+            if product_skus.include? row.product.sku
+              sales_order.rows.where(:sales_quote_row => row).first_or_create!
+            end
+          end
+
+          # todo handle cancellation, etc
+          request_status = x.get_column('request_status')
+
+          if !sales_order.approved?
+            if request_status.in? %w(approved requested)
+              sales_order.create_approval(
+                  :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
+                  :overseer => Overseer.default,
+                  :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+              )
+            elsif request_status == 'rejected'
+              sales_order.create_rejection(
+                  :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
+                  :overseer => Overseer.default
+              )
+            else
+              sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+            end
+          end
         end
+      end
+    end
+  end
+
+  def sales_invoice_callback_data
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice_callback_data.csv', 'seed_files')
+    service.loop(nil) do |x|
+      next if (x.get_column('increment_id').in? %w(20210348 20200030 20200031 20200038 20200052 20200054 20400024 20200188 20200196 20200206 20200209 20200214 20210056 20210107 20210150))
+      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
+      if sales_invoice.present?
+        sales_invoice.assign_attributes(:status => 1,:metadata => x.get_row)
+        meta_data = JSON.parse(x.get_column('meta_data'))
+        puts meta_data['ItemLine'].count
+        puts "<---------------------------------------------->"
+        # params['ItemLine'].each do |remote_row|
+        #   sales_invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
+        #     row.assign_attributes(
+        #         quantity: remote_row['qty'],
+        #         metadata: remote_row
+        #     )
+        #   end
+        # end
       end
     end
   end
