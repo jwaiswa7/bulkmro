@@ -6,17 +6,8 @@
 <%= render layout: 'shared/layouts/form' do %>
   <%= simple_form_for([:overseers, @brand], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-
     <%= f.input :name %>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@brand) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@brand) %>
-      <% end %>
-    <% end %>
+    <%= action_button(action_name, @brand) %>
   <% end %>
 <% end %>
