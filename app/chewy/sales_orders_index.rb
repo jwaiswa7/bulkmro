@@ -20,6 +20,8 @@ class SalesOrdersIndex < BaseIndex
     field :customer_po_number, value: -> (record) {record.inquiry.customer_po_number}
     field :customer_po_number_string, value: -> (record) {record.inquiry.customer_po_number.to_s}, analyzer: 'substring'
     field :contact_id, value: -> (record) { record.inquiry.contact_id }, type: 'integer'
+    field :company_id, value: -> (record) { record.inquiry.company.id }, type: 'integer'
+    field :account_id, value: -> (record) { record.inquiry.contact.account.id }, type: 'integer'
     field :company, value: -> (record) {record.inquiry.company.to_s}, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) {record.inquiry.inside_sales_owner.id if record.inquiry.inside_sales_owner.present?}
     field :inside_sales_owner, value: -> (record) {record.inquiry.inside_sales_owner.to_s}, analyzer: 'substring'

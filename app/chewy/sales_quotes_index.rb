@@ -13,6 +13,8 @@ class SalesQuotesIndex < BaseIndex
     field :quote_total, value: -> (record) {record.calculated_total.to_i if record.calculated_total.present?}
     field :quote_total_string, value: -> (record) {record.calculated_total.to_s if record.calculated_total.present?}, analyzer: 'substring'
     field :contact_id, value: -> (record) { record.inquiry.contact_id }, type: 'integer'
+    field :company_id, value: -> (record) { record.inquiry.company.id }, type: 'integer'
+    field :account_id, value: -> (record) { record.inquiry.account.id }, type: 'integer'
     field :created_at, type: 'date'
   end
   

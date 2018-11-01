@@ -36,6 +36,8 @@ class Company < ApplicationRecord
 
   has_many :inquiries
   has_many :inquiry_product_suppliers, :through => :inquiries
+  has_many :inquiry_products, :through => :inquiries
+  has_many :sales_orders, :through => :inquiries
   has_many :addresses, dependent: :destroy
 
   has_one_attached :tan_proof
