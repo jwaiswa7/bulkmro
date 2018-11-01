@@ -123,7 +123,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
                 :inquiry_id,
                 :quantity,
                 :sr_no,
-                :product_attributes => [:inquiry_import_row_id, :name, :sku, :mpn, :is_service, :brand_id, :tax_code_id, :category_id]
+                :product_attributes => [:inquiry_import_row_id, :name, :sku, :mpn, :is_service, :brand_id, :tax_code_id,:tax_rate_id, :category_id]
             ],
         ]
     ) : {}

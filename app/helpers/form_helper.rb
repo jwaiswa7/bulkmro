@@ -55,4 +55,19 @@ module FormHelper
 			[]
 		end
 	end
+
+  def action_button(action, entity)
+		if action.capitalize == 'New'
+			i = 'fa-plus-circle'
+			color = 'success'
+		else
+			i = 'fa-pen'
+			color = 'warning'
+		end
+
+		button_tag(type: "submit", class: "btn btn-#{color} btn-block") do
+			concat content_tag :i, nil, class: "fal #{i} mr-1"
+			concat content_tag :span, submit_text(entity)
+		end
+	end
 end

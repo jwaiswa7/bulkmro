@@ -1,3 +1,4 @@
+<%= provide :container_fluid, true %>
 <% content_for :heading_byline do %>
   This will <em>'<%= submit_text(@inquiry).downcase %>'</em> and log it under
   <strong><%= current_overseer.full_name %></strong>.
@@ -64,8 +65,11 @@
                       <%= product.association :category, collection: selected_option_or_nil(product, :category), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
 
                     </div>
-                    <div class="col-6 col-md-2">
+                    <div class="col-6 col-md-1">
                       <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
+                    </div>
+                    <div class="col-6 col-md-1">
+                      <%= product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false %>
                     </div>
                     <div class="col-6 col-md-1 ">
                       <%= product.input :is_service, as: :select, wrapper: :custom_multi_select, label: 'Service', include_blank: false %>
