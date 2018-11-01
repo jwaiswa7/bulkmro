@@ -59,7 +59,7 @@
                 <% if current_overseer.email == 'devang.shah@bulkmro.com' %>
                   <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
                 <% else %>
-                  <label>Needs Devang Shah's Approval for a Order Less than 10% Margin</label>
+                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true, :"data-toggle" => 'tooltip', title: "Margin is below 10%; need Devang Shah's approval to move forward" %>
                 <% end %>
               <% else %>
                 <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
