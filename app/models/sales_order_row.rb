@@ -15,6 +15,7 @@ class SalesOrderRow < ApplicationRecord
   delegate :measurement_unit, :to => :sales_quote_row, allow_nil: true
   delegate :remote_uid, :to => :sales_quote_row
   delegate :best_tax_code, :to => :sales_quote_row, allow_nil: true
+  delegate :best_tax_rate, :to => :sales_quote_row, allow_nil: true
   attr_accessor :tax_percentage
 
   validates_presence_of :quantity
@@ -45,16 +46,19 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def converted_total_selling_price
-    (self.total_selling_price / sales_quote_row.conversion_rate)
+    sales_quote_row.present? ? (self.total_selling_price / sales_quote_row.conversion_rate) : 0.0
   end
 
+
+
   def converted_total_selling_price_with_tax
-    (self.total_selling_price_with_tax / sales_quote_row.conversion_rate)
+    sales_quote_row.present? ? (self.total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
   end
 
   def calculated_tax
     (self.sales_quote_row.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage)) if self.sales_quote_row.present?
   end
+
 
   def total_selling_price_with_tax
     self.sales_quote_row.unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.unit_selling_price.present?
@@ -62,6 +66,10 @@ class SalesOrderRow < ApplicationRecord
 
   def total_tax
     total_selling_price_with_tax - total_selling_price
+  end
+
+  def converted_total_tax
+    converted_total_selling_price_with_tax - converted_total_selling_price
   end
 
   def total_selling_price

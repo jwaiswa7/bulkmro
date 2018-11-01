@@ -2,29 +2,21 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
   def initialize
     super
 
-    @columns = %w(po_number po_date inquiry_number inquiry_date company_name payment_terms procurement_date order_number order_date order_status supplier_name)
+    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date)
     @model = PurchaseOrder
   end
 
   def call
-    model.where(:created_at => start_at..end_at).each do |purchase_order|
+    model.where(:created_at => start_at..end_at).order(po_number: :asc).each do |purchase_order|
       inquiry = purchase_order.inquiry
 
       row = {
           :po_number => purchase_order.po_number.to_s,
-          :po_date => purchase_order.created_at.to_date.to_s,
           :inquiry_number => inquiry.inquiry_number.to_s,
           :inquiry_date => inquiry.created_at.to_date.to_s,
-          :company_name => inquiry.company.name
+          :company_name => inquiry.company.name,
+          :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.to_s : nil )
       }
-
-      row.merge!(
-          if inquiry.payment_option.present?
-            {:payment_terms => inquiry.payment_option.name}
-          else
-            {:payment_terms => nil}
-          end
-      )
 
       row.merge!(
           if inquiry.procurement_date.present?
@@ -55,7 +47,9 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
             {
                 :order_number => sales_order.order_number.to_s,
                 :order_date => sales_order.created_at.to_date.to_s,
-                :order_status => sales_order.status,
+                :order_status => sales_order.remote_status,
+                :po_date => purchase_order.created_at.to_date.to_s,
+                :po_status => nil,
                 :supplier_name => supplier.name
             }
           else
@@ -63,10 +57,25 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
                 :order_number => nil,
                 :order_date => nil,
                 :order_status => nil,
+                :po_date => purchase_order.created_at.to_date.to_s,
+                :po_status => nil,
                 :supplier_name => nil
             }
           end
       )
+
+      row.merge!(
+          if inquiry.payment_option.present?
+            {:payment_terms => inquiry.payment_option.name}
+          else
+            {:payment_terms => nil}
+          end
+      )
+
+      row.merge!(
+             {:committed_customer_date => ( inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil )}
+      )
+
 
       rows.push(row)
     end

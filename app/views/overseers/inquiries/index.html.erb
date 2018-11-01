@@ -12,11 +12,11 @@
     <div class="mt-2 form-row d-flex flex-row align-content-stretch">
       <% Inquiry.statuses.each do |status, v| %>
         <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-          <div class="card w-100 mb-2 rim rim-bottom border-<%= status_helper_color(status) %>">
+          <div class="card w-100 mb-2 rim rim-bottom border-<%= inquiry_status_color(status) %>">
             <div class="card-body px-3 pt-3 pb-3">
               <div class="text-center d-flex flex-column h-100">
                 <p class="mb-1 text-small"><strong><%= status %></strong></p>
-                <h5 class="mb-0 mt-auto text-<%= status_helper_color(status) %>"><%= Inquiry.send(status).size %></h5>
+                <h5 class="mb-0 mt-auto text-<%= inquiry_status_color(status) %>"><%= Inquiry.send(status).size %></h5>
               </div>
             </div>
           </div>

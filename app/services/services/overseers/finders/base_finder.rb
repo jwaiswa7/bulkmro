@@ -140,7 +140,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       exists: {field: 'sent_at'}
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'SAP Rejected').values},
+                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected').values},
                   },
               ],
               minimum_should_match: 3,

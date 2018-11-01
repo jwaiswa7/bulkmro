@@ -19,13 +19,48 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def inquiry
+    Inquiry.find_each(batch_size: 100) do |i|
+      i.update_attributes(:shipping_company => i.company) if i.shipping_company.blank?;
+      i.update_attributes(:shipping_contact => i.contact) if i.shipping_contact.blank?;
+    end
+
+  end
+
   def best_products
     inquiry_products = InquiryProduct.joins(:inquiry, :product).where('inquiries.company_id = ?', company.id)
     best_products = inquiry_products.top(:product_id, 5)
     best_product_ids = best_products.map {|best_product| best_product[0]}
     inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
+  end
 
+  def tax_rate_migration
+    TaxRate.where(:tax_percentage => 0).first_or_create
+    TaxRate.where(:tax_percentage => 5).first_or_create
+    TaxRate.where(:tax_percentage => 12).first_or_create
+    TaxRate.where(:tax_percentage => 18).first_or_create
+    TaxRate.where(:tax_percentage => 28).first_or_create
 
+    Category.all.each do |record|
+      if record.tax_code.present? && record.tax_rate.blank?
+        record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
+        record.save!
+      end
+    end
+
+    Product.all.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
+      if record.tax_code.present? && record.tax_rate.blank?
+        record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
+        record.save!
+      end
+    end
+
+    SalesQuoteRow.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
+      if record.tax_code.present? && record.tax_rate.blank?
+        record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
+        record.save!
+      end
+    end
   end
 
   def set_non_trade_accounts

@@ -22,7 +22,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     respond_to do |format|
       format.html
-      format.csv { send_data service.call, filename: service.filename }
+      format.csv {send_data service.call, filename: service.filename}
     end
   end
 
@@ -32,8 +32,22 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def smart_queue
-    @inquiries = ApplyDatatableParams.to(policy_scope(Inquiry.smart_queue), params)
-    authorize @inquiries
+    authorize :inquiry
+
+    respond_to do |format|
+      format.html do
+        summary_service = Services::Overseers::Inquiries::SmartQueueSummary.new
+        @statuses = summary_service.call
+      end
+
+      format.json do
+        service = Services::Overseers::Finders::SmartQueues.new(params, current_overseer)
+        service.call
+
+        @indexed_inquiries = service.indexed_records
+        @inquiries = service.records.try(:reverse)
+      end
+    end
   end
 
   def autocomplete
@@ -109,6 +123,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :suppliers_selected).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'

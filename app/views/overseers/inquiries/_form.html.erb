@@ -41,6 +41,7 @@
         <div class="form-row">
           <div class="col-4">
             <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
+            <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-8">
@@ -51,7 +52,6 @@
         <div class="form-row">
           <div class="col-md-8">
             <div class="form-row">
-
               <div class="col-6 col-md-4">
                 <%= f.input :opportunity_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Inquiry.opportunity_types) %>
               </div>

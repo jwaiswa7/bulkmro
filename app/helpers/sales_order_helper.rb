@@ -1,16 +1,16 @@
 module SalesOrderHelper
-  def sales_order_status(status)
-    if status == "requested"
+  def sales_order_status_color(status)
+    if status == "Requested"
       "warning"
     elsif status == "SAP Approval Pending"
       "warning"
-    elsif status == "rejected"
+    elsif status == "Rejected"
       "danger"
     elsif status == "SAP Rejected"
       "warning"
     elsif status == "Cancelled"
       "dark"
-    elsif status == "approved"
+    elsif status == "Approved"
       "success"
     elsif status == "Order Deleted"
       "dark"
@@ -21,9 +21,7 @@ module SalesOrderHelper
     end
   end
 
-  def sales_order_format_label(status)
-    content_tag :span, class: "badge text-uppercase badge-#{sales_order_status(status)}" do
-      content_tag :strong, status.to_s.capitalize
-    end
+  def sales_order_status_badge(status)
+    format_badge(status, sales_order_status_color(status))
   end
 end

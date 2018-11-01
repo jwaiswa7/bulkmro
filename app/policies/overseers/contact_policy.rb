@@ -1,3 +1,2 @@
-class Overseers::ContactPolicy < Overseers::ManagerApplicationPolicy
-
+class Overseers::ContactPolicy < Overseers::ApplicationPolicy
 end
