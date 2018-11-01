@@ -25,7 +25,7 @@
         <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
       </div>
       <div class="col-4">
-        <%= f.association :tax_rate, include_blank: 'Select a Tax Rate' %>
+        <%= f.association :tax_rate, include_blank: 'Select a Tax Rate', :wrapper => :custom_multi_select %>
       </div>
       <div class="col-4">
         <%= f.input :best_tax_code, disabled: true %>
@@ -37,10 +37,10 @@
         <%= f.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :brand, collection: selected_option_or_nil(f, :brand), :wrapper => :custom_multi_select, include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
+        <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
+        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
       </div>
     </div>
 
