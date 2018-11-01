@@ -35,6 +35,12 @@ class Report < ApplicationRecord
     end
   end
 
+  def self.target
+    where(name: 'TargetReport').first_or_create do |report|
+      report.uid = 'target_report'
+    end
+  end
+
   def start_date
     start_at.to_date
   end
