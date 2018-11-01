@@ -59,7 +59,9 @@
                 <% if current_overseer.email == 'devang.shah@bulkmro.com' %>
                   <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
                 <% else %>
-                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true, :"data-toggle" => 'tooltip', title: "Margin is below 10%; need Devang Shah's approval to move forward" %>
+                <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
+                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true %>
+                </span>
                 <% end %>
               <% else %>
                 <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
