@@ -1,3 +1,9 @@
 var id = $(document)[0].activeElement.parentElement.id
 $('#' + id).fadeOut();
 $("#cart-count").load(window.location.href + " #cart-count > *");
+
+$.notify({
+    message: 'Product was removed from the cart.'
+},{
+    type: 'danger'
+});

@@ -14,6 +14,7 @@ import chartjs from "./components/chartjs";
 import datePicker from "./components/datePicker";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
+import notify from "./components/notify";
 
 // Namespacing all imports under app
 let app = {};
@@ -34,6 +35,7 @@ app.initializeComponents = () => {
     datePicker();
     stickyBits();
     daterangePicker();
+    notify();
 };
 
 // Turbolinks load event
