@@ -48,14 +48,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
 
-    Product.all.each do |record|
+    Product.all.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
       if record.tax_code.present? && record.tax_rate.blank?
         record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
         record.save!
       end
     end
 
-    SalesQuoteRow.all.each do |record|
+    SalesQuoteRow.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
       if record.tax_code.present? && record.tax_rate.blank?
         record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
         record.save!
