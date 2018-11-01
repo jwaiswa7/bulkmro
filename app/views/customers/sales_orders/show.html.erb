@@ -1,8 +1,14 @@
+<% provide :container_fluid, true %>
+
 <div class="col-12">
   <div class="page-header">
     <div class="">
       <h2>
         Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+        <% if @sales_order.serialized_pdf.attachment %>
+          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i>
+            Download PDF</a>
+        <% end %>
       </h2>
     </div>
   </div>
@@ -49,7 +55,7 @@
       </div>
       <div class="card-alternative mt-3 pb-3">
         <div class="form-row">
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <strong class="d-block">Supplier - Billing Address</strong>
             <%= @sales_order.inquiry.bill_from.address.name.to_s %><br>
             <%= @sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_order.inquiry.bill_from.present? %>
@@ -59,7 +65,8 @@
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.bill_from.address.gst %></span>
           </div>
-          <div class="col-6">
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Supplier - Shipping Address</strong>
             <%= @sales_order.inquiry.ship_from.address.name.to_s %><br>
             <%= @sales_order.inquiry.ship_from.address.to_compact_multiline_s if @sales_order.inquiry.ship_from.present? %>
@@ -71,95 +78,103 @@
         </div>
 
         <div class="form-row mt-2">
-          <div class="col-md-6 mt-2 mt-md-0">
+          <div class="col-12 col-md-6">
             <strong class="d-block">Customer - Billing Address</strong>
             <%= @sales_order.inquiry.billing_contact.full_name %><br>
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
+                - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
             <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
-          <div class="col-md-6">
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
-            <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %><br>
+            <%= @sales_order.inquiry.shipping_contact.try(:full_name) || (@sales_order.inquiry.billing_contact.full_name) %>
+            <br>
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
+                - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
-              <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
           </div>
         </div>
       </div>
 
       <% if @sales_order.inquiry.attachments.present? %>
-        <div class="form-row  mt-3">
-          <div class="col-6">
-            <strong>Customer PO sheet</strong><br>
-            <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
-              <%= @sales_order.inquiry.customer_po_sheet.filename %>
-            <% end if @sales_order.inquiry.customer_po_sheet.attached? %>
-          </div>
-          <div class="col-6">
-            <strong>Email attachment</strong><br>
-            <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
-              <%= @sales_order.inquiry.copy_of_email.filename %>
-            <% end if @sales_order.inquiry.copy_of_email.attached? %>
-          </div>
+        <div class="form-row mt-3">
+          <% if @sales_order.inquiry.customer_po_sheet.attached? %>
+            <div class="col-6">
+              <strong class="d-block">PO Sheet</strong>
+              <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @sales_order.inquiry.customer_po_sheet.filename %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if @sales_order.inquiry.copy_of_email.attached? %>
+            <div class="col-6">
+              <strong class="d-block">Email Attachment</strong>
+              <%= link_to @sales_order.inquiry.copy_of_email, target: '_blank' do %>
+                <%= @sales_order.inquiry.copy_of_email.filename %>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       <% end %>
 
-      <% @sales_order.sales_order_rows.each do |row| %>
-        <div>
-
-          <h6 class="text-uppercase mb-0 mt-3">
-            <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
-            <strong><%= row.sales_quote_row %></strong>
-          </h6>
-          <div class="form-row my-2 text-small">
-            <div class="col-12">
-              <table class="w-100 datatable table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-                <thead>
+      <div>
+        <div class="form-row my-2 text-small">
+          <div class="col-12">
+            <table class="datatable table table-bordered dt-responsive" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Product Number">Product</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
+                </th>
+                <th class="no-sort">
+                  <span>Description</span>
+                </th>
+                <th class="no-sort">
+                  <span>Make</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Quantity">Qty</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Tax">Tax</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @sales_order.sales_order_rows.each do |row| %>
                 <tr>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Product Code">Product</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Manufacturer Code">Mfr Model</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Description">Description</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Brand">Make</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Of Measurement">UOM</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Quantity">Qty</span><br>
-                  </th>
-                  <th class="no-sort <%= @sales_order.currency.name == 'INR' ? 'd-none' : '' %>">
-                      <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= @sales_order.currency.sign %>
-                        )</span>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Unit Price">Unit Price</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Tax">Tax</span><br>
-                  </th>
-                  <th class="no-sort">
-                    <span data-toggle="tooltip" title="Subtotal">Subtotal</span><br>
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
+                  <td>
+                      <span>
+                          #<%= row.sr_no %>
+                      </span>
+                  </td>
                   <td>
                       <span>
                           <%= row.sales_quote_row.product.remote_uid %>
@@ -196,28 +211,26 @@
                   </td>
                   <td>
                       <span>
-                        <%= row.unit_selling_price %>
+                        <%= format_currency(row.unit_selling_price) %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.best_tax_code %>
+                          <%= row.best_tax_code.tax_percentage %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.total_selling_price %>
+                          <%= format_currency(row.total_selling_price) %>
                       </span>
                   </td>
                 </tr>
-                </tbody>
-              </table>
-            </div>
+              <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
-      <% end %>
-      <hr class="my-2">
-
+      </div>
     </div>
     <div class="card-footer">
       <div class=form-row>
@@ -241,49 +254,37 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="form-row mt-3 mt-lg-4">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Other Information</strong></p>
-            </div>
-            <div class="card-body">
-              <ol>
-                <li>Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.
-                </li>
-                <li>Bulk MRO Industrial Supply is not responsible for any banking fees.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+      <p class="mb-0">
+        - Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.<br>
+        - Bulk MRO Industrial Supply is not responsible for any banking fees.
+      </p>
     </div>
   </div>
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="form-row mt-3 mt-lg-4">
-        <div class="col-md-12">
-          <div class="card ">
-            <div class="card-header">
-              <p class="text-uppercase text-black-50 mb-1"><strong>Payment By Wire Transfer To</strong></p>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-6">
-                  <p class="text-black-50 mb-1"><strong>Kotak Mahindra Bank Ltd. :</strong></p>
-                  <p>Aum Saheel Tower, Mumbai 400080.<br/>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br/>Account
-                    Number: 9412329433<br/>NEFT / RTGS Code: KKBK0001411</p>
-                </div>
-                <div class="col-6">
-                  <p class="text-black-50 mb-1"><strong>State Bank Of India:</strong></p>
-                  <p>Kalpa Taru – 39, Pedder Road, Mumbai, 400026.<br/>Account Name: Bulk MRO Industrial Supply Pvt.
-                    Ltd.<br/>Account Number: 35924122136<br/>NEFT / RTGS Code: SBIN0000510</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+  <div class="card mt-3">
+    <div class="card-body">
+      <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+      <div class="form-row">
+        <div class="col-md-6">
+          <p class="mb-0">
+            <strong class="d-block">Kotak Mahindra Bank Ltd</strong>
+            Address: Aum Saheel Tower, Mumbai - 400 080<br>
+            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
+            Account Number: 9412329433<br>
+            NEFT / RTGS Code: KKBK0001411
+          </p>
+        </div>
+        <div class="col-md-6 mt-2 mt-md-0">
+          <p class="mb-0">
+            <strong class="d-block">State Bank Of India</strong>
+            Address: Kalpa Taru – 39, Pedder Road, Mumbai - 400 026<br>
+            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
+            Account Number: 35924122136<br>
+            NEFT / RTGS Code: SBIN0000510
+          </p>
         </div>
       </div>
     </div>

@@ -286,11 +286,11 @@
                       <span><%= format_currency(item.converted_total_tax) %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
+                      <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
-                      <span><%= item.best_tax_code.tax_percentage / 2 if item.best_tax_code.present? %>%</span></td>
+                      <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
                       <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
                   <% end %>

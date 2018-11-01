@@ -9946,7 +9946,7 @@ th {
   z-index: 10000;
   position: fixed;
   margin: 0;
-  width: 100%;
+  width: 100% !important;
   left: 0;
   -webkit-box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);

@@ -110,6 +110,7 @@ class Overseers::ProductsController < Overseers::BaseController
         :brand_id,
         :category_id,
         :tax_code_id,
+        :tax_rate_id,
         :measurement_unit_id
     )
   end

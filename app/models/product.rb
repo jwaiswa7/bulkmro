@@ -10,13 +10,13 @@ class Product < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
   include Mixins::CanBeSynced
+  include Mixins::CanHaveTaxes
 
   update_index('products#product') { self if self.approved? }
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
 
   belongs_to :brand, required: false
   belongs_to :category
-  belongs_to :tax_code, required: false
   belongs_to :inquiry_import_row, required: false
   belongs_to :measurement_unit, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
@@ -29,7 +29,6 @@ class Product < ApplicationRecord
   has_many :customer_order_rows
 
   has_one_attached :image
-  attr_accessor :applicable_tax_percentage
 
   has_many :cart_items
   # Start ignore
@@ -68,8 +67,8 @@ class Product < ApplicationRecord
     self.tax_code || self.category.try(:tax_code)
   end
 
-  def applicable_tax_percentage
-    self.best_tax_code.tax_percentage if self.best_tax_code.present?
+  def best_tax_rate
+    self.tax_rate || self.category.try(:tax_rate)
   end
 
   def to_s

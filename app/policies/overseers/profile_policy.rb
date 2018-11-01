@@ -1,6 +1,6 @@
 class Overseers::ProfilePolicy < Overseers::ApplicationPolicy
   def edit?
-    all_roles?
+    true
   end
 
   def update?

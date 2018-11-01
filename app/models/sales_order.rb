@@ -117,4 +117,7 @@ class SalesOrder < ApplicationRecord
     ].compact.join('.')
   end
 
+  def to_s
+    ['#', order_number].join if order_number.present?
+  end
 end

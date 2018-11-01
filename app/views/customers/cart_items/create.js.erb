@@ -1,1 +1,7 @@
-$( "#cart_items" ).load(window.location.href + " #cart_items" );
+$("#cart").load(window.location.href + " #cart > *" );
+
+$.notify({
+    message: 'Product was successfully added to cart.'
+},{
+    type: 'success'
+});
