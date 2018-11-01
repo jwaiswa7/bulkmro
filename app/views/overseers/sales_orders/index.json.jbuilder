@@ -8,7 +8,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
                       end,
                       if policy(sales_order).go_to_inquiry?
-                        row_action_button(overseers_inquiry_sales_orders_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end
                   ].join(' '),
                   sales_order.order_number,
