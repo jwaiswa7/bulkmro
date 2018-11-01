@@ -38,10 +38,19 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     overseers.each do |overseer_id, count|
 
       @data.entries[overseer_id] ||= {}
+      @data.entries[overseer_id] = { :inquiry_target => 0, :inquiry_achieved => 0, :inquiry_achieved_percentage => 0,
+                                     :order_target => 0, :order_achieved => 0, :order_achieved_percentage => 0,
+                                     :order_margin_targets_percentage => 0, :order_margin_achieved => 0, :order_margin_achieved_percentage => 0,
+                                     :invoice_target => 0, :invoice_achieved => 0, :invoice_achieved_percentage => 0,
+                                     :invoice_margin_target_percentage => 0,:invoice_margin_achieved => 0,:invoice_margin_achieved_percentage => 0 }
 
       targets = targets_records.where(overseer_id: overseer_id).group_by(&:target_type)
       targets.each do |target_type, values|
         if fields.keys.include?(target_type)
+          @data.entries[overseer_id][fields[target_type][0]] ||= 0
+          @data.entries[overseer_id][fields[target_type][1]] ||= 0
+          @data.entries[overseer_id][fields[target_type][2]] ||= 0
+
           if target_type == 'Inquiry'
             records = inquiries.where(inside_sales_owner_id: overseer_id).order(inquiry_number: :desc).map{|i| i.final_sales_quote.try(:calculated_total).to_f}
           elsif target_type == 'Order'
