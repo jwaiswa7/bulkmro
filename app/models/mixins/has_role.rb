@@ -9,7 +9,6 @@ module Mixins::HasRole
         inside_sales_manager: 25,
         outside_sales_executive: 30,
         outside_sales_manager: 35,
-        sales: 40,
         outside_sales_team_leader: 50,
         inside_sales_team_leader: 60,
         procurement: 65,
