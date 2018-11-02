@@ -1,6 +1,6 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
-    manager_or_sales?
+    manager_or_sales? || cataloging?
   end
 
   def index_pg?
@@ -24,7 +24,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    can_manage_inquiry?
+    can_manage_inquiry? || cataloging?
   end
 
   def new_list_import?
