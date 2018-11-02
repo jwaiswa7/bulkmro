@@ -63,3 +63,11 @@ function camelizeAndSkipLastWord(text) {
 
     return camelized.join('');
 }
+
+function searchsubmit(val){
+    // window.location = self.location.href.split('?')[0]+'?q='+val
+    $.ajax({
+        url: self.location.href.split('?')[0],
+        data: {q: val}
+    });
+}

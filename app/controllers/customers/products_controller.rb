@@ -2,20 +2,14 @@ class Customers::ProductsController < Customers::BaseController
 
   def index
     @cart_item = current_cart.cart_items.new
-    @products_paginate = current_contact.account.products.approved.page(params[:page])
-    respond_to do |format|
-      if params[:view] == "grid_view"
-        format.js { render 'index.js.erb' }
-      else
-        format.json do
-          service = Services::Customers::Finders::Products.new(params, current_contact)
-          service.call
-          @indexed_products = service.indexed_records
-          @products = service.records.try(:reverse)
-        end
-      end
-      format.html {}
-    end
+    params[:page] = 1 if (!params[:page].present? && params[:view] != "list_view")
+    params[:per] = 24 if params[:view] != "list_view"
+    service = Services::Customers::Finders::Products.new(params, current_contact)
+    service.call
+    @indexed_products = service.indexed_records
+    @products = service.records.try(:reverse)
+    @products_paginate = @indexed_products.page(params[:page]) if params[:page].present?
+
   end
 
   def show

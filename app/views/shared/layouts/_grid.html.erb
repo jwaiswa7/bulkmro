@@ -34,7 +34,14 @@
 <% end %>
 
 <div class="form-row">
-  <% @products_paginate.each do |product| %>
+  <div class="input-group input-group-round">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="material-icons">filter_list</i></span>
+    </div>
+    <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything" value="<%= params[:q] %>" onkeyup="searchsubmit(this.value)">
+  </div>
+
+  <% @products.each do |product| %>
     <div class="col-2">
       <div class="card mb-2">
         <div class="card-body">
@@ -56,6 +63,6 @@
 </div>
 
 <div class="col-12">
-  <%= paginate @products_paginate, remote: true, :params => {:view => "grid_view"} %>
+  <%= paginate @products_paginate, remote: true, :params => {:view => "grid_view", :q => params[:q]} %>
 </div>
 
