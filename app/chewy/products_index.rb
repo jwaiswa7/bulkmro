@@ -6,7 +6,7 @@ class ProductsIndex < BaseIndex
 
     field :sku, analyzer: 'sku_substring'
     field :name, analyzer: 'substring'
-
+    field :mpn, value: -> (record) { record.mpn.to_s },analyzer: 'substring'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :created_by_, value: -> (record) { record.created_by.to_s }
