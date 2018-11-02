@@ -15,7 +15,7 @@ const manageFailedSkus = () => {
         onRadioChange(this);
     });
     $('body').on('change','select[id*=inquiry_product_attributes_product_attributes_is_service]',function(e){
-        onIsSelectChange(this)
+        onIsServiceChange(e.target)
     });
 };
 
@@ -29,12 +29,9 @@ let onRadioChange = (radio) => {
     }
 };
 
-let onIsSelectChange = (event) => {
-    var common_id_text = $(event).attr('id').replace("_inquiry_product_attributes_product_attributes_is_service","");
-    var is_service_val = $(event).val();
-    var tax_code_id = common_id_text+'_inquiry_product_attributes_product_attributes_tax_code_id';
-    $('#'+tax_code_id).val(null).trigger("change");
-    $('#'+tax_code_id).attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": is_service_val})).select2('destroy');
+let onIsServiceChange = (element) => {
+    var tax_code_id = $(element).attr('id').replace("is_service","tax_code_id");
+    $('#'+tax_code_id).val(null).trigger("change").attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": $(element).val()})).select2('destroy');
     select2s();
 };
 

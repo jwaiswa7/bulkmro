@@ -10,8 +10,8 @@ const newAction = () => {
     })
 };
 
-let onIsServiceChecked = (element) => {
-    $('#category_tax_code_id').attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": element})).select2('destroy');
+let onIsServiceChecked = (is_service_status) => {
+    $('#category_tax_code_id').attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": is_service_status})).select2('destroy');
     select2s();
 }
 
