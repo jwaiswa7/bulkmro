@@ -1,8 +1,8 @@
 class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
 
-  def autocomplete(is_service:nil)
-      @tax_codes = ApplyParams.to(TaxCode.all.where(:is_service => params[:data]), params)
+  def autocomplete
+      @tax_codes = ApplyParams.to(TaxCode.all.where(:is_service => params[:is_service] || false), params)
       authorize :tax_code
   end
 
