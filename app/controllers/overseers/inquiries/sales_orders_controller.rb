@@ -84,6 +84,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         @confirmation.save!
         @sales_order.update_attributes(:sent_at => Time.now)
       end
+      chat_message = Services::Overseers::ChatMessages::SendChat.new
+      message = chat_message.message_body(
+          fallback: "New Order for approval",
+          pretext: "New Order for approval",
+          author_name: "Created by: " + @sales_order.created_by.full_name,
+          inquiry_number: @sales_order.inquiry_id,
+          order_no: @sales_order.id
+          )
+      chat_message.send_chat_message(@inquiry.sales_manager.slack_uid, message)
     else
       @sales_order.update_attributes(:sent_at => Time.now) if @sales_order.sent_at.blank?
     end

@@ -3,22 +3,47 @@ class Services::Shared::ChatMessages::BaseService < Services::Shared::BaseServic
     @client = Slack::Web::Client.new
   end
 
-  def send_chat_message(to, message, attachments)
-    puts "IN BASE"
+  def send_chat_message(to, message)
     client.chat_postMessage(
         channel: to,
-        text: message,
         icon_emoji: Settings.slack.icon_emoji,
         username: Settings.slack.username,
-        attachments: attachments,
-        as_user: false
+        attachments: message,
+        as_user: true
     )
+    #
+    ChatMessage.create!(to: to, from: Settings.slack.username, message: message)
+  end
 
-    ChatMessage.create!(to: to, from: Settings.slack.username, message: message, metadata: attachments)
+
+  def message_body(fallback: nil, pretext: nil, author_name: nil, inquiry_number: nil, order_no: nil)
+     [
+         {
+            "fallback": fallback,
+            "color": "warning",
+            "pretext": pretext,
+            "author_name": author_name,
+            "title": "Order Details",
+            "fields": [
+                {
+                    "title": "Inquiry",
+                    "value": inquiry_number,
+                    "short": true
+                },
+                {
+                    "title": "Order Number",
+                    "value": order_no,
+                    "short": true
+                }
+            ],
+            # "image_url": "http://my-website.com/path/to/image.jpg",
+            # "thumb_url": "http://example.com/path/to/thumb.png",
+            "footer": "For issues, usersnap us"
+            # "footer_icon": "",
+            # "ts": Time.now()
+         }
+     ]
   end
 
   attr_accessor :client
 end
-
-
-# curl -X POST -H 'Authorization: Bearer xoxb-395906857286-467196181812-vQamBs539SJOj14FCakTtd58' -H 'Content-type: application/json' --data '{"channel":"test-channel","text":"I hope the tour went well, Mr. Wonka.","attachments": [{"text":"Who wins the lifetime supply of chocolate?","fallback":"You could be telling the computer exactly what it can do with a lifetime supply of chocolate.","color":"#3AA3E3","attachment_type":"default","callback_id":"select_simple_1234","actions":[{"name":"winners_list","text":"Who should win?","type":"select","data_source":"users"}]}]}' https://slack.com/api/chat.postMessage
