@@ -1,19 +1,19 @@
 import select2s from "../../components/select2s";
 
 const newAction = () => {
-    product_Tax_Identification();
-    if($("#product_is_service").is(":checked")){
-        product_Tax_Identification();
-    }
-    $("#product_is_service").click(function(event){
-        product_Tax_Identification();
+    $('form').on('change', '[name*=is_service]', function (event) {
         $("#product_tax_code_id").val(null).trigger("change");
+        onIsServiceChecked(event.target);
+    }).find('[name*=is_service]').each(function (element) {
+        onIsServiceChecked(element);
     });
 
-    function product_Tax_Identification(){
-        $('#product_tax_code_id').attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"data": $("#product_is_service").is(":checked")})).select2('destroy');
-        select2s();
-    }
+
 };
+
+let onIsServiceChecked = (element) => {
+    $('#product_tax_code_id').attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": $(element).is(":checked")})).select2('destroy');
+    select2s();
+}
 
 export default newAction
