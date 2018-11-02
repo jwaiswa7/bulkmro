@@ -7,6 +7,10 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
+  def show?
+    super || logistics?
+  end
+
   def pending?
     index? && cataloging?
   end

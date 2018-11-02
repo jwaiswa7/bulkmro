@@ -1,6 +1,6 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
-    manager_or_sales? || cataloging?
+    manager_or_sales? || cataloging? || logistics?
   end
 
   def index_pg?
@@ -8,7 +8,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def smart_queue?
-    index?
+    manager_or_sales?
   end
 
   def new_email_message?

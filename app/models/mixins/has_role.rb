@@ -44,8 +44,16 @@ module Mixins::HasRole
       role.in? OUTSIDE_ROLES
     end
 
+    def logistics?
+      role == 'logistics'
+    end
+
     def cataloging?
       role == 'cataloging'
+    end
+
+    def allow_inquiries?
+      manager? || cataloging? || logistics?
     end
 
     def manager_or_cataloging?
