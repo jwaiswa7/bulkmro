@@ -12,36 +12,36 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
   end
 
   def show
-    redirect_to overseers_measurement_units_edit_path(@measurement_units)
-    authorize @measurement_units
+    redirect_to overseers_measurement_units_edit_path(@measurement_unit)
+    authorize @measurement_unit
   end
 
   def new
-    @measurement_units = MeasurementUnit.new()
-    authorize @measurement_units
+    @measurement_unit = MeasurementUnit.new()
+    authorize @measurement_unit
   end
 
   def create
-    @measurement_units = MeasurementUnit.new(measurement_unit_params)
-    authorize @measurement_units
+    @measurement_unit = MeasurementUnit.new(measurement_unit_params)
+    authorize @measurement_unit
 
-    if @measurement_units.save
-      redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_units, action_name)
+    if @measurement_unit.save
+      redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
       render 'new'
     end
   end
 
   def edit
-    authorize @measurement_units
+    authorize @measurement_unit
   end
 
   def update
-    @measurement_units.assign_attributes(measurement_unit_params)
-    authorize @measurement_units
+    @measurement_unit.assign_attributes(measurement_unit_params)
+    authorize @measurement_unit
 
-    if @measurement_units.save
-      redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_units, action_name)
+    if @measurement_unit.save
+      redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
       render 'edit'
     end
@@ -49,7 +49,7 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
 
   private
   def set_measurement_unit
-    @measurement_units ||= MeasurementUnit.find(params[:id])
+    @measurement_unit ||= MeasurementUnit.find(params[:id])
   end
 
   def measurement_unit_params
