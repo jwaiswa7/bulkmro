@@ -11,10 +11,9 @@ class Services::Shared::ChatMessages::BaseService < Services::Shared::BaseServic
         attachments: message,
         as_user: true
     )
-    #
+
     ChatMessage.create!(to: to, from: Settings.slack.username, message: message)
   end
-
 
   def message_body(fallback: nil, pretext: nil, author_name: nil, inquiry_number: nil, order_no: nil)
      [
