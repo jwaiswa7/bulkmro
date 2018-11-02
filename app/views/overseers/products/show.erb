@@ -62,10 +62,10 @@
               </div>
             <% end %>
 
-              <% if @product.tax_code.tax_percentage.present? %>
+              <% if @product.tax_rate.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Tax Rate</strong>
-                  <%= @product.tax_code.tax_percentage %>%
+                  <%= @product.tax_rate %>
               </div>
               <% end %>
 
