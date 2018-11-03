@@ -1,4 +1,4 @@
-\class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseService
+class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseService
 
   def initialize(company)
     @company = company
@@ -18,7 +18,7 @@
         account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
       end
 
-      remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? "cSupplier" : "cCustomer") || company.remote_uid
+      remote_uid = ::Resources::BusinessPartner.custom_find(company.name, company.is_supplier? ? "cSupplier" : "cCustomer")
       remote_uid.present? ? company.update_attributes(:remote_uid => remote_uid) : company.update_attributes(:remote_uid => nil)
 
       if company.remote_uid.blank?
