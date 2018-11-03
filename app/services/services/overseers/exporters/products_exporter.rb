@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   def initialize
     super
 
-    @columns = ['product_id', 'bm_number', 'product_name', 'category_name', 'brand_name']
+    @columns = ['id', 'SKU', 'Name', 'Category', 'Brand']
     @model = Product
   end
 
