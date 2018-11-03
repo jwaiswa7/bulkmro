@@ -25,7 +25,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice, {triplicate: true}
+        render_pdf_for @sales_invoice, {duplicate: true}
       end
     end
   end
@@ -37,7 +37,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice, {duplicate: true}
+        render_pdf_for @sales_invoice, {triplicate: true}
       end
     end
   end
