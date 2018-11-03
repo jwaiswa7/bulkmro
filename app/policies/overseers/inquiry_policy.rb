@@ -92,11 +92,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_shipments?
-    edit? && record.invoices.present?
+    edit? && record.shipments.present?
   end
 
   def sales_invoices?
-    edit? && record.shipments.present?
+    edit? && record.invoices.present?
   end
 
   class Scope
