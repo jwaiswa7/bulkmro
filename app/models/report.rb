@@ -4,6 +4,8 @@ class Report < ApplicationRecord
   validates_date :start_at
   validates_date :end_at, :after => :start_at
 
+  attr_accessor :filters
+
   enum date_range: {
       :custom => 10,
       :this_month => 20,
