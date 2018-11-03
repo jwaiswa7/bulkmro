@@ -106,6 +106,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'pending'
+        get 'export_all'
       end
 
       scope module: 'products' do
@@ -214,6 +215,7 @@ Rails.application.routes.draw do
     resources :companies do
       collection do
         get 'autocomplete'
+        get 'export_all'
       end
 
       scope module: 'companies' do

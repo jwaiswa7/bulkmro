@@ -38,4 +38,8 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def resync?
     record.approved? && record.not_synced?
   end
+
+  def export_all?
+    admin_or_manager?
+  end
 end
