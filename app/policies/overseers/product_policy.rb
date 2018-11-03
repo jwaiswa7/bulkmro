@@ -1,14 +1,18 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
-    manager_or_cataloging?
+    cataloging?
   end
 
   def comments?
     record.persisted?
   end
 
+  def show?
+    super || logistics?
+  end
+
   def pending?
-    index? && manager?
+    index? && cataloging?
   end
 
   def approve?
