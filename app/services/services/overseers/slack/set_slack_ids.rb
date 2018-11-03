@@ -1,10 +1,10 @@
-class Services::Overseers::SlackOperations::SetSlackIds < Services::Shared::BaseService
+class Services::Overseers::Slack::SetSlackIds < Services::Shared::BaseService
   def initialize
     @client = Slack::Web::Client.new
   end
 
   def call
-    Overseer.all.each do |overseer|
+    Overseer.all.where(:slack_uid => nil).each do |overseer|
       begin
         slack_uid = client.users_lookupByEmail(email: overseer.email).user.id
       rescue
