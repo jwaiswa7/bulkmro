@@ -1296,24 +1296,31 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_invoice_callback_data
+    errors = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice_callback_data.csv', 'seed_files')
     service.loop(nil) do |x|
-      next if (x.get_column('increment_id').in? %w(20210348 20200030 20200031 20200038 20200052 20200054 20400024 20200188 20200196 20200206 20200209 20200214 20210056 20210107 20210150))
-      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
-      if sales_invoice.present?
-        sales_invoice.assign_attributes(:status => 1,:metadata => x.get_row)
-        meta_data = JSON.parse(x.get_column('meta_data'))
-        puts meta_data['ItemLine'].count
-        puts "<---------------------------------------------->"
-        # params['ItemLine'].each do |remote_row|
-        #   sales_invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
-        #     row.assign_attributes(
-        #         quantity: remote_row['qty'],
-        #         metadata: remote_row
-        #     )
-        #   end
-        # end
+      begin
+        # next if (x.get_column('increment_id').in? %w(20210348 20200030 20200031 20200038 20200052 20200054 20400024 20200188 20200196 20200206 20200209 20200214 20210056 20210107 20210150 20610026 21010017 21210001 21210003 21210005 20610084 20910005 20610091 20210250 20210257 20210266 20210301 21210009 20210327))
+
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
+        if sales_invoice.present?
+          meta_data = JSON.parse(x.get_column('meta_data'))
+          sales_invoice.update_attributes(:status => 1,:metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
+          puts meta_data['ItemLine'].count
+          puts '<---------------------------------------------->'
+          meta_data['ItemLine'].each do |remote_row|
+            sales_invoice.rows.where(sku: remote_row['sku']).first_or_create! do |row|
+              row.assign_attributes(
+                  quantity: remote_row['qty'],
+                  metadata: remote_row
+              )
+            end
+          end
+        end
+      rescue => e
+        errors.push("#{x.get_column('increment_id')}")
       end
     end
+    puts errors
   end
 end
