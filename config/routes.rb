@@ -157,13 +157,19 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-
+``
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
         resources :sales_shipments
-        resources :sales_invoices
         resources :purchase_orders
+
+        resources :sales_invoices do
+          member do
+            get 'duplicate'
+            get 'triplicate'
+          end
+        end
 
         resources :sales_orders do
           member do
