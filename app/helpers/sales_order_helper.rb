@@ -1,10 +1,10 @@
 module SalesOrderHelper
   def sales_order_status_color(status)
-    if status == "requested"
+    if status == "Requested"
       "warning"
     elsif status == "SAP Approval Pending"
       "warning"
-    elsif status == "rejected"
+    elsif status == "Rejected"
       "danger"
     elsif status == "SAP Rejected"
       "warning"

@@ -6,13 +6,34 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
 
   def call
     sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
+    remote_coment = params['comment']
+    remote_status = params['state'].to_i
+    comment_message = [
+        ["Invoice ##{params['increment_id']} Updated", SalesInvoice.statuses.key(remote_status)].join(': '),
+        ['Comment', remote_coment].join(': '),
+    ].join(' | ')
+
     if sales_invoice.present?
-      sales_invoice.update_attributes(:status => params['state'].to_i)
+      if params['state'].present?
+        sales_invoice.update_attributes(:status => params['state'].to_i)
+      end
+
+      sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
       return_response("Sales Invoice updated successfully.")
     else
       return_response("Sales Invoice not found.", 0)
     end
-    # todo comments
+  end
+
+  def to_local_status(remote_status)
+    case remote_status
+    when '1'
+      :'Approved'
+    when '2'
+      :'SAP Rejected'
+    when '3'
+      :'SAP Rejected'
+    end
   end
 
   attr_accessor :params

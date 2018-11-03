@@ -1,10 +1,4 @@
 <div class="col-lg-12">
-  <% content_for :heading_button do %>
-    <%= link_to overseers_inquiry_sales_orders_path(@inquiry), target: '_blank', class: "d-sm-block btn btn-dark btn-rounded align-self-center btn-block-sm-down" do %>
-      <i class="fal fa-external-link mr-1"></i> Check Inquiry
-    <% end if policy(@inquiry).edit? %>
-  <% end %>
-
   <% content_for :heading_byline do %>
     This will <em>'update/approve/reject <%= @inquiry %>'</em> and log it under
     <strong><%= current_overseer.full_name %></strong>.
@@ -61,7 +55,17 @@
           <div class="flex-fill">
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <% if @sales_order.present? %>
-              <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+              <% if @sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
+                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com'].include? current_overseer.email  %>
+                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+                <% else %>
+                <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
+                  <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true %>
+                </span>
+                <% end %>
+              <% else %>
+                <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
+              <% end %>
               <%= f.submit 'Reply and Reject', name: 'reject', class: 'btn btn-danger' if policy(@sales_order).reject? %>
             <% end %>
           </div>

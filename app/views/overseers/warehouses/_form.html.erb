@@ -8,14 +8,7 @@
     <div class="form-group">
       <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
     </div>
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@warehouses) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@warehouses) %>
-      <% end %>
-    <% end %>
+
+    <%= action_button(action_name, @warehouses) %>
   <% end %>
 </div>
