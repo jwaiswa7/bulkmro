@@ -15,6 +15,16 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @company
   end
 
+  def export_all
+    authorize :inquiry
+    service = Services::Overseers::Exporters::CompaniesExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv {send_data service.call, filename: service.filename}
+    end
+  end
+
   private
   def set_company
     @company ||= Company.find(params[:id])

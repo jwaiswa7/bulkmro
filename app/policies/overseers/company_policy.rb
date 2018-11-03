@@ -6,4 +6,8 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new?
     manager_or_cataloging? || logistics?
   end
+
+  def export_all?
+    admin_or_manager?
+  end
 end
