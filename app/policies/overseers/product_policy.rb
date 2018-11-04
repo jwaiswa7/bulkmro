@@ -1,6 +1,6 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
-    cataloging?
+    cataloging? || admin?
   end
 
   def comments?
