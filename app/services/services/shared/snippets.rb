@@ -34,6 +34,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
   end
 
+  def comments
+    overseer = Overseer.find_by_first_name('Husna')
+    Inquiry.find_by_inquiry_number('28597').comments.last.update_attributes(:created_by => overseer, :updated_by => overseer)
+  end
+
   def tax_rate_migration
     TaxRate.where(:tax_percentage => 0).first_or_create
     TaxRate.where(:tax_percentage => 5).first_or_create

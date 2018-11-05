@@ -25,7 +25,7 @@ class SalesQuote < ApplicationRecord
 
   attr_accessor :selected_suppliers
 
-  # validates_length_of :rows, minimum: 1
+  validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
   # validate :every_product_only_has_one_supplier?
   # def every_product_only_has_one_supplier?

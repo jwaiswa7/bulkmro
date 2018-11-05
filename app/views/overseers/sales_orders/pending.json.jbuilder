@@ -26,7 +26,7 @@ json.data (@sales_orders) do |sales_order|
   ]
 
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
-  json.merge! columns.merge({"DT_RowClass": sales_order.calculated_total_margin_percentage <= 10 ? "bg-highlight-danger" : ''})
+  json.merge! columns.merge({"DT_RowClass": sales_order.calculated_total_margin_percentage.to_f < 10 ? "bg-highlight-danger" : ''})
 end
 
 json.columnFilters [
