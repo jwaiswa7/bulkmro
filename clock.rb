@@ -41,3 +41,8 @@ every(1.day, 'set_slack_ids', :at => '07:00') do
   service = Services::Overseers::Slack::SetSlackIds.new
   service.call
 end
+
+every(1.day, 'gcloud_run_backups', :at => '23:00') do
+  service = Services::Shared::Gcloud::RunBackups.new
+  service.call
+end
