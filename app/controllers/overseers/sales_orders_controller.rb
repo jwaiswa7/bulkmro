@@ -4,7 +4,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize :sales_order
 
     respond_to do |format|
-      format.html { render 'index' }
+      format.html { render 'pending' }
       format.json do
         service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
         service.call
@@ -12,7 +12,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        render 'index'
+        render 'pending'
       end
     end
   end

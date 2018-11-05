@@ -23,6 +23,8 @@
             <% end %>
             <% if policy(sales_invoice).show? %>
               <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
           </td>
           <td><%= sales_invoice.invoice_number %></td>
