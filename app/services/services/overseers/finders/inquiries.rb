@@ -4,7 +4,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.manager?
+    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
                         super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
                       else
                         super
@@ -29,7 +29,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
                                             }
                                         })
 
-    if current_overseer.present? && !current_overseer.manager?
+    if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
 

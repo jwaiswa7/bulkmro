@@ -36,3 +36,8 @@ end
 every(1.hour, 'adjust_dynos') do
   Services::Shared::Heroku::DynoAdjuster.new
 end
+
+every(1.day, 'set_slack_ids', :at => '07:00') do
+  service = Services::Overseers::Slack::SetSlackIds.new
+  service.call
+end

@@ -28,7 +28,7 @@ class Product < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
 
-  has_one_attached :image
+  has_many_attached :images
 
   has_many :cart_items
   # Start ignore
@@ -50,7 +50,7 @@ class Product < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
-  validates_with FileValidator, attachment: :image
+  #validates_with MultipleFilePresenceValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults

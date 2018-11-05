@@ -1,9 +1,9 @@
 class Overseers::RemoteRequestPolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    admin? || cataloging?
   end
 
   def show?
-    admin?
+    admin? || cataloging?
   end
 end

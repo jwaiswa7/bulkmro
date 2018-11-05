@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   def initialize
     super
 
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'quote_type', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'commercial_status', 'comments', 'reason']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'commercial_status', 'comments', 'reason']
     @model = Inquiry
   end
 
@@ -14,6 +14,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                        :order_number => record.sales_orders.pluck(:order_number).compact.join(','),
                        :created_at => record.created_at.to_date.to_s,
                        :quote_type => record.quote_category,
+                       :status => record.status,
                        :opportunity_type => record.opportunity_type,
                        :inside_sales_owner => record.inside_sales_owner.to_s,
                        :ise_city => record.inside_sales_owner.geography,
