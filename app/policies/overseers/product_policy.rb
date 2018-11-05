@@ -1,6 +1,6 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
-    cataloging?
+    cataloging? || admin?
   end
 
   def comments?
@@ -12,7 +12,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    index? && cataloging?
+    index? || cataloging?
   end
 
   def approve?
