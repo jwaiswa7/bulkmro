@@ -13,15 +13,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
-          <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-plus-circle"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% end %>
+          <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
     </div>
@@ -168,16 +160,16 @@
             <%= f.input :customer_po_number, label: 'Customer PO number' %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.customer_po_sheet.filename}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+            <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.copy_of_email.filename}".html_safe) : false %>
           </div>
 
           <div class="col-12 col-md-6">
             <div class="d-flex flex-row">
               <div class="flex-grow-1">
-                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank'}".html_safe) : false %>
+                <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.calculation_sheet.filename}".html_safe) : false %>
               </div>
               <% if f.object.persisted? %>
                 <a class="btn btn-sm text-success ml-1 mt-2 align-self-center" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
@@ -193,9 +185,9 @@
               </div>
               <div class="form-group">
                 <% f.object.supplier_quotes.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 mr-md-0 mr-1 btn-sm btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
                     <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), method: :delete, data: {confirm: 'Are you sure?'} do %>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                       <i class="fal fa-trash-alt"></i>
                     <% end if attachment.present? && policy(:attachment).destroy? %>
                   <% end %>
@@ -387,15 +379,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
-          <% if action_name.capitalize == "New" %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-plus-circle"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> <%= submit_text(@inquiry) %>
-            <% end %>
-          <% end %>
+          <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
     </div>
