@@ -12,13 +12,11 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def create
-    # @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
     @warehouses = Warehouse.new(warehouse_params)
     authorize @warehouses
 
     if @warehouses.save
       redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
-      # render 'show'
     else
         puts warehouse_params
     end
@@ -33,8 +31,6 @@ class Overseers::WarehousesController < Overseers::BaseController
   def update
     @warehouses.assign_attributes(warehouse_params)
     authorize @warehouses
-
-
     if @warehouses.save
       redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
     else
@@ -50,9 +46,11 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   def warehouse_params
     params.require(:warehouse).permit(
-        :name
+        :name,
+        :address_attributes => [:id,:street1,:street2,:country_code,:address_state_id,:city_name,:pincode]
     )
   end
+
   def set_company
     @warehouses ||= Warehouse.find(params[:id])
   end
