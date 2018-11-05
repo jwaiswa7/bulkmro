@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   def initialize
     super
 
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'commercial_status', 'comments', 'reason']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'comments', 'reason']
     @model = Inquiry
   end
 
@@ -26,7 +26,6 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                        :subject => record.subject,
                        :currency => record.currency.name,
                        :total => record.final_sales_quote.try(:calculated_total),
-                       :commercial_status => record.commercial_status.to_s,
                        :comments => record.comments.pluck(:message).join(','),
                        :reason => ''
                    })
