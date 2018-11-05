@@ -4,7 +4,7 @@ class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finder
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.manager?
+    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
                         super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
                       else
                         super
@@ -20,7 +20,7 @@ class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finder
   def perform_query(query_string)
     indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[shipment_number^3 sales_order_id sales_order_number status inquiry_number shipment_grn packing_remarks]}})
 
-    if current_overseer.present? && !current_overseer.manager?
+    if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
 

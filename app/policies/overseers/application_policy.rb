@@ -7,7 +7,7 @@ class Overseers::ApplicationPolicy
   end
 
   def all_roles?
-    admin_or_manager? || cataloging? || sales? || others?
+    admin_or_manager? || cataloging? || sales? || others? || logistics?
   end
 
   def admin_or_manager?
@@ -15,7 +15,7 @@ class Overseers::ApplicationPolicy
   end
 
   def not_sales?
-    admin_or_manager? || cataloging?
+    admin_or_manager? || cataloging? || logistics?
   end
 
   def admin_or_cataloging?
@@ -48,6 +48,10 @@ class Overseers::ApplicationPolicy
 
   def cataloging?
     overseer.cataloging?
+  end
+
+  def logistics?
+    overseer.logistics?
   end
 
   def index?

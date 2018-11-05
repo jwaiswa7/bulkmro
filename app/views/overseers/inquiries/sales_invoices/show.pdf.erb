@@ -9,7 +9,15 @@
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
-            Original for Recipient
+            <span style="color:#000; font-weight: bold; font-size: 20px">
+            <% if defined?(triplicate) && triplicate %>
+              Triplicate for Supplier
+            <% elsif defined?(duplicate) && duplicate %>
+              Duplicate for Transporter
+            <% else %>
+              Original for Recipient
+            <% end %>
+            </span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
@@ -188,7 +196,11 @@
                     <%= @sales_invoice.sales_order.inquiry.billing_address.name %><br>
                     <%= @sales_invoice.sales_order.inquiry.billing_address.to_multiline_s if @sales_invoice.sales_order.inquiry.billing_address.present? %>
                     <br>
-                    Tel: <%= @sales_invoice.sales_order.inquiry.billing_address.telephone %><br>
+                    <% if @sales_invoice.sales_order.inquiry.billing_contact.present? %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.billing_contact.phone || @sales_invoice.sales_order.inquiry.billing_contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                    <% else %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                    <% end %> <br>
                     GST No.:<%= @sales_invoice.sales_order.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
@@ -277,7 +289,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @sales_invoice.rows.each_with_index do |item, index| %>
+              <% @sales_invoice.rows.reverse.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
                     <span><%= index + 1 %></span></td>

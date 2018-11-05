@@ -7,7 +7,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
   end
 
   def filename
-    "#{model.name.pluralize.downcase}-#{start_at}-#{end_at}.csv"
+    "#{model.name.pluralize.downcase}-#{end_at}.csv"
   end
 
   def generate_csv

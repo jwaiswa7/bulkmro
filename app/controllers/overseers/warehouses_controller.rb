@@ -7,14 +7,13 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def new
-    @warehouses = Warehouse.new
-    authorize @warehouses
+    @warehouse = Warehouse.new
+    authorize @warehouse
   end
 
   def create
     @warehouses = Warehouse.new(warehouse_params)
     authorize @warehouses
-
     if @warehouses.save
       redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
     else
@@ -23,7 +22,7 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   end
   def edit
-    authorize @warehouses
+    authorize @warehouse
   end
 
 
@@ -39,7 +38,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def show
-    authorize @warehouses
+    authorize @warehouse
   end
 
   private
@@ -52,7 +51,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def set_company
-    @warehouses ||= Warehouse.find(params[:id])
+    @warehouse ||= Warehouse.find(params[:id])
   end
 
 end

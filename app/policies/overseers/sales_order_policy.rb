@@ -1,7 +1,7 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def index?
-    manager_or_sales?
+    manager_or_sales? || logistics?
   end
 
   def show?

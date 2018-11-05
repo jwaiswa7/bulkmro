@@ -9,7 +9,6 @@ module Mixins::HasRole
         inside_sales_manager: 25,
         outside_sales_executive: 30,
         outside_sales_manager: 35,
-        sales: 40,
         outside_sales_team_leader: 50,
         inside_sales_team_leader: 60,
         procurement: 65,
@@ -42,6 +41,22 @@ module Mixins::HasRole
 
     def outside?
       role.in? OUTSIDE_ROLES
+    end
+
+    def logistics?
+      role == 'logistics'
+    end
+
+    def cataloging?
+      role == 'cataloging'
+    end
+
+    def allow_inquiries?
+      manager? || cataloging? || logistics?
+    end
+
+    def manager_or_cataloging?
+      manager? || cataloging?
     end
 
     def others?
