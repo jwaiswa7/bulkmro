@@ -9,7 +9,15 @@
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
-            Original for Recipient
+            <span style="color:#000; font-weight: bold; font-size: 20px">
+            <% if defined?(triplicate) && triplicate %>
+              Triplicate for Supplier
+            <% elsif defined?(duplicate) && duplicate %>
+              Duplicate for Transporter
+            <% else %>
+              Original for Recipient
+            <% end %>
+            </span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
