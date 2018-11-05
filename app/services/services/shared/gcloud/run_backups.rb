@@ -11,7 +11,9 @@ class Services::Shared::Gcloud::RunBackups < Services::Shared::BaseService
     client.authorization = authorizer
 
     client.list_snapshots(project)
+  end
 
+  def call
     run
   end
 
