@@ -19,7 +19,7 @@ class Contact < ApplicationRecord
   has_one :company_contact
   has_one :company, :through => :company_contact
 
-  enum role: {customer: 10}
+  enum role: {customer: 10, account_manager: 20}
   enum status: {active: 10, inactive: 20}
   enum contact_group: {
       general: 10,

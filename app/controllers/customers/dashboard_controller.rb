@@ -5,11 +5,11 @@ class Customers::DashboardController < Customers::BaseController
     @account = contact.account
 
 
-    @products = Inquiry.joins(:inquiry_products).where(:company => @contact.companies).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Won'])
+    @products = Inquiry.joins(:inquiry_products).where(:company => @contact.companies)
 
     @products_count = @products.top(:product_id).size
     @sales_quotes = SalesQuote.joins(:inquiry).where('inquiries.company_id in (?)',@contact.company_ids).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Lost']).where.not(:sent_at => nil).distinct(:inquiry_id).latest.uniq {|p| p.inquiry_id}
-    @sales_orders = SalesOrder.joins(:inquiry,:company).where('inquiries.company_id in (?)',@contact.company_ids).where.not(:order_number => nil).distinct(:inquiry_id).latest
+    @sales_orders = SalesOrder.joins(:inquiry,:company).where('inquiries.company_id in (?)',@contact.company_ids).where.not(:order_number => nil).not_rejected.latest
 
     @sales_quotes_count = @sales_quotes.count
     @sales_orders_count = @sales_orders.count

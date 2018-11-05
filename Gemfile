@@ -194,11 +194,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Preview emails instead of sending them
   gem 'letter_opener'
-
-
-  gem 'better_errors'
-  gem 'binding_of_caller'
-
+  
 end
 
 group :test do
