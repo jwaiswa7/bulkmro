@@ -12,10 +12,10 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def create
-    @warehouses = Warehouse.new(warehouse_params)
-    authorize @warehouses
-    if @warehouses.save
-      redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
+    @warehouse = Warehouse.new(warehouse_params)
+    authorize @warehouse
+    if @warehouse.save
+      redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
         puts warehouse_params
     end
@@ -28,10 +28,10 @@ class Overseers::WarehousesController < Overseers::BaseController
 
 
   def update
-    @warehouses.assign_attributes(warehouse_params)
-    authorize @warehouses
-    if @warehouses.save
-      redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
+    @warehouse.assign_attributes(warehouse_params)
+    authorize @warehouse
+    if @warehouse.save
+      redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
       render 'edit'
     end
