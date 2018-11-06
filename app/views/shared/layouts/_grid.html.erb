@@ -1,4 +1,5 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
+
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>
@@ -33,14 +34,14 @@
   </section>
 <% end %>
 
-<div class="form-row">
-  <div class="input-group input-group-round">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="material-icons">filter_list</i></span>
-    </div>
-    <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything" value="<%= params[:q] %>" onkeyup="searchsubmit(this.value)">
+<div class="input-group input-group-round">
+  <div class="input-group-prepend">
+    <span class="input-group-text"><i class="material-icons">filter_list</i></span>
   </div>
+  <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything [press ENTER]" value="<%= params[:q] %>" onchange="searchsubmit(this.value)">
+</div>
 
+<div class="form-row" id="grid_container">
   <% @products.each do |product| %>
     <div class="col-2">
       <div class="card mb-2">

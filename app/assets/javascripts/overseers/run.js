@@ -65,9 +65,28 @@ function camelizeAndSkipLastWord(text) {
 }
 
 function searchsubmit(val){
-    // window.location = self.location.href.split('?')[0]+'?q='+val
     $.ajax({
         url: self.location.href.split('?')[0],
-        data: {q: val}
-    });
+        data: {q: val},
+        beforeSend: function(){
+            $("#loader").show();
+            $("#grid_container").addClass("blur");
+            $(".card-body").addClass("blink");
+        },
+        success: function(x) {
+
+            var pro_ind = $("#products_index", x).html();
+            if (pro_ind != null && pro_ind.length > 0)
+                $("#products_index").html(pro_ind);
+            else
+            {
+                $("#empty-result").show();
+            }
+        },
+        complete:function(){
+            $("#loader").hide();
+            $("#grid_container").removeClass("blur");
+            $(".card-body").removeClass("blink");
+        }
+    })
 }
