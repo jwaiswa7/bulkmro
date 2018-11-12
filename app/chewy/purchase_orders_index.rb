@@ -1,9 +1,15 @@
 class PurchaseOrdersIndex < BaseIndex
+  status =  PurchaseOrder.statuses
+
   define_type PurchaseOrder.all.with_includes do
     field :id
 
     field :inquiry_id, value: -> (record) { record.inquiry.id if record.inquiry.present? }
     field :inquiry, value: -> (record) { record.inquiry.to_s }, analyzer: 'substring'
+
+    field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
+    field :po_status, value: -> (record) { record.metadata['PoStatus'].to_i }, type: 'integer'
+    field :po_status_string, value: -> (record) { status.key(record.metadata['PoStatus']).to_s  }, analyzer: 'substring'
 
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
     field :inside_sales_owner_id, value: -> (record) { record.inquiry.inside_sales_owner.id if record.inquiry.inside_sales_owner.present? }
