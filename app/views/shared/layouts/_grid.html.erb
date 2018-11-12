@@ -42,6 +42,7 @@
 </div>
 
 <div class="form-row" id="grid_container">
+<% if @products.count > 0 %>
   <% @products.each do |product| %>
     <div class="col-2">
       <div class="card mb-2">
@@ -61,6 +62,17 @@
       </div>
     </div>
   <% end %>
+<% else %>
+    <div class="col-12">
+      <div class="card mb-12">
+        <div class="card-body">
+          <p class="text-small text-black-50 ">
+            <strong class="d-block ">No matching record found</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+<% end %>
 </div>
 
 <div class="col-12">
