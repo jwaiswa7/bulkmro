@@ -78,19 +78,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overseer.first_name = x.get_column('firstname')
         overseer.last_name = x.get_column('lastname')
         overseer.role = case role_name
-              when :sales
-                if identifier == 'inside'
-                  :inside_sales_executive
-                elsif identifier == 'outside'
-                  :outside_sales_executive
-                elsif identifier == 'outside/manager'
-                  :outside_sales_team_leader
-                else
-                  :sales
-                end
-              else
-                role_name
-              end
+                        when :sales
+                          if identifier == 'inside'
+                            :inside_sales_executive
+                          elsif identifier == 'outside'
+                            :outside_sales_executive
+                          elsif identifier == 'outside/manager'
+                            :outside_sales_team_leader
+                          else
+                            :sales
+                          end
+                        else
+                          role_name
+                        end
         overseer.function = x.get_column('user_function')
         overseer.department = x.get_column('user_department')
         overseer.status = status_mapping[x.get_column('is_active')]
@@ -286,7 +286,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       password = Devise.friendly_token
       if contact.new_record? || update_if_exists
         contact.legacy_email = x.get_column('email', downcase: true, remove_whitespace: true),
-        contact.account = account
+            contact.account = account
         contact.first_name = first_name
         contact.last_name = last_name
         contact.prefix = x.get_column('prefix')
@@ -354,7 +354,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         company.remote_uid = x.get_column('cmp_id')
         company.legacy_email = x.get_column('cmp_email', downcase: true)
         company.default_payment_option = payment_option
-        company.inside_sales_owner =  inside_sales_owner
+        company.inside_sales_owner = inside_sales_owner
         company.outside_sales_owner = outside_sales_owner
         company.sales_manager = sales_manager
         company.site = x.get_column('cmp_website')
@@ -388,7 +388,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = x.get_column('email', downcase: true)
       if contact_email && company_name
         company = Company.acts_as_customer.find_by_name(company_name)
-        
+
         if company.present?
           company_contact = CompanyContact.where(company: company, contact: Contact.find_by_email(contact_email)).first_or_initialize
           company_contact.remote_uid = x.get_column('sap_id')
@@ -619,14 +619,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-          :name => x.get_column('Account Name'),
-          :street1 => x.get_column('Street'),
-          :street2 => x.get_column('Block'),
-          :pincode => x.get_column('Zip Code'),
-          :city_name => x.get_column('City'),
-          :country_code => x.get_column('Country'),
-          :gst => x.get_column('GST'),
-          :state => AddressState.find_by_region_code(x.get_column('State'))
+            :name => x.get_column('Account Name'),
+            :street1 => x.get_column('Street'),
+            :street2 => x.get_column('Block'),
+            :pincode => x.get_column('Zip Code'),
+            :city_name => x.get_column('City'),
+            :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
+            :state => AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -780,7 +780,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
       legacy_id = x.get_column('quotation_id', downcase: true, remove_whitespace: true)
 
-      next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+      next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
       if inquiry.new_record? || update_if_exists
@@ -1231,9 +1231,41 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[0])
         begin
+          puts "<-------------------------->"
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    overseer = Overseer.default
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+      inquiry_products.each do |inquiry_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :sku => inquiry_product.product.sku).first_or_create do |customer_product|
+          customer_product.product_id = inquiry_product.product_id
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = inquiry_product.product.name
+
+          # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+          customer_product.created_by = overseer
         end
       end
     end

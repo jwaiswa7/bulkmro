@@ -543,4 +543,36 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten if customer_companies.present?
+      if inquiry_products.present?
+        inquiry_products.each do |inquiry_product|
+          CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :sku => inquiry_product.product.sku).first_or_create do |customer_product|
+            customer_product.product_id = inquiry_product.product_id
+            customer_product.category_id = inquiry_product.product.category_id
+            customer_product.brand_id = inquiry_product.product.brand_id
+            customer_product.name = inquiry_product.product.name
+
+            # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+            customer_product.created_by = customer
+          end
+        end
+      end
+    end
+  end
+
 end

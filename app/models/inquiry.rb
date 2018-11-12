@@ -247,7 +247,7 @@ class Inquiry < ApplicationRecord
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 
-  after_initialize :set_global_defaults
+  # after_initialize :set_global_defaults
 
   def set_global_defaults
     if self.company.present?
