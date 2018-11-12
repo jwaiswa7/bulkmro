@@ -11,7 +11,7 @@ class Customers::ApplicationPolicy
   end
 
   def manager?
-    contact.manager?
+    contact.account_manager?
   end
 
   def show?

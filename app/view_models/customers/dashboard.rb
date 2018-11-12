@@ -5,15 +5,15 @@ class Customers::Dashboard
   end
 
   def products(top: nil)
-    Inquiry.joins(:inquiry_products).where(:company => contact.companies).top(:product_id, top) # nil top returns all
+    Inquiry.joins(:inquiry_products).where(:company => record.companies).top(:product_id, top) # nil top returns all
   end
 
   def sales_orders
-    SalesOrder.joins(:inquiry, :company).where('inquiries.company_id in (?)', contact.company_ids).where.not(:order_number => nil).not_rejected.latest
+    SalesOrder.joins(:inquiry, :company).where('inquiries.company_id in (?)', record.companies.pluck(:id)).where.not(:order_number => nil).approved.not_rejected.latest
   end
 
   def sales_quotes
-    SalesQuote.joins(:inquiry).where('inquiries.company_id in (?)', contact.company_ids).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Lost']).where.not(:sent_at => nil).distinct(:inquiry_id).latest.uniq {|p| p.inquiry_id}
+    SalesQuote.joins(:inquiry).where('inquiries.company_id in (?)', record.companies.pluck(:id)).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Lost']).where.not(:sent_at => nil).distinct(:inquiry_id).latest.uniq {|p| p.inquiry_id}
   end
 
   def recent_sales_quotes
@@ -26,6 +26,10 @@ class Customers::Dashboard
 
   def most_ordered_products
     products(top: 5).map {|id, c| [Product.find(id), [c, 'times'].join(' ')]}
+  end
+
+  def record
+    contact.account_manager? ? account : contact
   end
 
   attr_reader :contact, :account
