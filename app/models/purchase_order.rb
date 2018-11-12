@@ -47,8 +47,7 @@ class PurchaseOrder < ApplicationRecord
       :'Supplier PI delayed' => 67,
       :'Payment to Supplier Delayed' => 68,
       :'Cancelled' => 95,
-      :'Closed' => 96,
-
+      :'Closed' => 96
   }
 
   def get_supplier(product_id)
