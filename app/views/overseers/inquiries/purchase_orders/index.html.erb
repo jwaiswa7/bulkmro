@@ -6,6 +6,7 @@
     <% content_for :header_row do %>
       <th class="no-sort"></th>
       <th># PO </th>
+      <th>Status</th>
       <th>Line Items</th>
       <th>Created At</th>
     <% end %>
@@ -23,6 +24,7 @@
             <% end %>
           </td>
           <td><%= purchase_order.po_number %></td>
+          <td><%= purchase_order.status || purchase_order.metadata_status  %></td>
           <td><%= purchase_order.rows.size %></td>
           <td><%= format_date(purchase_order.created_at) %></td>
         </tr>
