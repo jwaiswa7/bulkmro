@@ -5,8 +5,8 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
 
   def all_records
     indexed_records = if current_contact.present?
-                        super.filter(filter_by_value('contact_id',current_contact.id))
-                        # super.filter(filter_by_array('id',current_contact.account.sales_orders.ids))
+                        super.filter(filter_by_array('company_id',current_contact.companies.pluck(:id)))
+                        #super.filter(filter_by_value('account_id',current_contact.account.id))
                       else
                         super
                       end

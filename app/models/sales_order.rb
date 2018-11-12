@@ -35,6 +35,7 @@ class SalesOrder < ApplicationRecord
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
   delegate :inside_sales_owner, :outside_sales_owner, to: :inquiry, allow_nil: true
 
+  validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row"
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
@@ -104,6 +105,10 @@ class SalesOrder < ApplicationRecord
 
   def syncable_identifiers
     [:draft_uid]
+  end
+
+  def order_status
+    self.status || self.legacy_request_status
   end
 
   def update_index

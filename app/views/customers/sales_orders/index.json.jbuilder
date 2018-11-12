@@ -11,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inquiry.company.to_s,
                   "-",
                   format_currency(sales_order.calculated_total),
-                  sales_order_status_badge(sales_order.status.to_s),
+                  sales_order_status_badge(sales_order.order_status.to_s),
               ]
 end
 

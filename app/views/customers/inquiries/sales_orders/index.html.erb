@@ -23,7 +23,7 @@
             <%= row_action_button(customers_inquiry_sales_order_path(@inquiry, final_sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
           </td>
           <td><%= format_date(final_sales_order.order_number) %></td>
-          <td><%= format_enum(final_sales_order.status) %></td>
+          <td><%= format_enum(final_sales_order.order_status) %></td>
           <td><%= format_date(final_sales_order.sent_at) %></td>
           <td><%= final_sales_order.created_by.to_s %></td>
           <td><%= final_sales_order.rows.size %></td>

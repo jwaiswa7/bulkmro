@@ -8,15 +8,15 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(resync_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post)
                       end,
                       if policy(sales_order).comments?
-                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'dark')
+                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
                       end,
                       if policy(sales_order).go_to_inquiry?
-                        row_action_button(overseers_inquiry_sales_orders_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end
                   ].join(' '),
                   sales_order.id,
                   sales_order.inquiry.inquiry_number,
-                  sales_order_status_badge(format_enum(sales_order.status || sales_order.legacy_request_status, humanize_text: false)),
+                  sales_order_status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
                   format_date(sales_order.sent_at),
                   sales_order.created_by.to_s,
                   sales_order.inside_sales_owner.to_s,

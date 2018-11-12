@@ -34,6 +34,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
   end
 
+  def comments
+    overseer = Overseer.find_by_first_name('Husna')
+    Inquiry.find_by_inquiry_number('28597').comments.last.update_attributes(:created_by => overseer, :updated_by => overseer)
+  end
+
   def tax_rate_migration
     TaxRate.where(:tax_percentage => 0).first_or_create
     TaxRate.where(:tax_percentage => 5).first_or_create
@@ -475,6 +480,22 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         end
       end
     end
+  end
+
+  def resend_failed_remote_requests(start_at: Date.today.beginning_of_day, end_at: Date.today.end_of_day)
+
+    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
+    requested = []
+    requests.each do |request|
+      new_request = [request.subject_type, request.subject_id].join('-')
+      if !requested.include? new_request
+        Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
+        requested << new_request
+      end
+
+    end
+    #Object.const_get(RemoteRequest.last.subject_type).find(RemoteRequest.last.subject_id)
+    [requested.sort, requested.size]
   end
 
   def update_warehouse_and_inquiry

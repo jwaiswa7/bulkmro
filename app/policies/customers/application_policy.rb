@@ -10,6 +10,10 @@ class Customers::ApplicationPolicy
     contact.customer?
   end
 
+  def manager?
+    contact.manager?
+  end
+
   def show?
     true
   end
@@ -18,20 +22,20 @@ class Customers::ApplicationPolicy
     true
   end
 
-  # def scope
-  #   Pundit.policy_scope!(contact, record.class)
-  # end
-  #
-  # class Scope
-  #   attr_reader :contact, :scope
-  #
-  #   def initialize(contact, scope)authorize :dashboard, :show?
-  #   @contact = contact
-  #   @scope = scope
-  #   end
-  #
-  #   def resolve
-  #     scope
-  #   end
-  # end
+  def scope
+    Pundit.policy_scope!(contact, record.class)
+  end
+
+  class Scope
+    attr_reader :contact, :scope
+
+    def initialize(contact, scope)authorize :dashboard, :show?
+    @contact = contact
+    @scope = scope
+    end
+
+    def resolve
+      scope
+    end
+  end
 end
