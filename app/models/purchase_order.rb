@@ -20,8 +20,43 @@ class PurchaseOrder < ApplicationRecord
     ].compact.join('.')
   end
 
+  enum status: {
+      :'Supplier PO Created' => 35,
+      :'PO Sent to Supplier' => 36,
+      :'Supplier Order Confirmation Delayed' => 38,
+      :'Material Readiness: Follow-Up' => 39,
+      :'Material Readiness: Delayed' => 41,
+      :'Shipment Booked: Under Process' => 42,
+      :'Shipment Booking Delayed' => 43,
+      :'Freight Forwarder: Requested Quote' => 49,
+      :'Freight Forwarder: Requested Quote Delayed' => 50,
+      :'Freight Forwarder: PO Sent' => 51,
+      :'Freight Forwarder: PO Sent Delayed' => 52,
+      :'HBL / HAWB Received' => 53,
+      :'HBL / HAWB Delayed' => 54,
+      :'HAZ Declaration' => 55,
+      :'HAZ Declaration Delayed' => 56,
+      :'Pre-Clearance Checklist Follow Up' => 57,
+      :'Pre-Clearance Checklist Delayed' => 58,
+      :'Pre-Clearance Checklist Approved' => 59,
+      :'Bill of Entry Filing: Delayed' => 60,
+      :'Duty Invoice Payment Request' => 61,
+      :'Duty Invoice Payment Delayed' => 62,
+      :'Supplier Pro Forma Invoice / Invoice Awaited' => 63,
+      :'Supplier PI Pending Finance Approval' => 64,
+      :'Supplier PI delayed' => 67,
+      :'Payment to Supplier Delayed' => 68,
+      :'Cancelled' => 95,
+      :'Closed' => 96,
+
+  }
+
   def get_supplier(product_id)
     product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
     product_supplier.supplier if product_supplier.present?
+  end
+
+  def metadata_status
+    PurchaseOrder.statuses.key(self.metadata['PoStatus'].to_i).to_s if self.metadata.present?
   end
 end
