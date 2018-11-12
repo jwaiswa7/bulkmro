@@ -19,13 +19,11 @@ class Overseers::WarehousesController < Overseers::BaseController
     else
         puts warehouse_params
     end
-
   end
+
   def edit
     authorize @warehouse
   end
-
-
 
   def update
     @warehouse.assign_attributes(warehouse_params)

@@ -491,8 +491,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     requests.each do |request|
       new_request = [request.subject_type, request.subject_id].join('-')
       if !requested.include? new_request
-        Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
-        requested << new_request
+        if request.subject_type.present? && request.subject_id.present?
+          begin
+            Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
+            requested << new_request
+          rescue
+            puts request
+          end
+        end
       end
 
     end
