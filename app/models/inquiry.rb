@@ -48,6 +48,7 @@ class Inquiry < ApplicationRecord
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
+  has_many :inquiry_status_records
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
 
