@@ -12,6 +12,9 @@ const manageFailedSkus = () => {
     $('body').on('change', 'input[name*=approved_alternative_id]:radio', function (e) {
         onRadioChange(this);
     });
+    $('body').on('click', 'button[name*=next-approved-alternatives]:button', function (e) {
+        console.log("link clicked");
+    });
 };
 
 let onRadioChange = (radio) => {
