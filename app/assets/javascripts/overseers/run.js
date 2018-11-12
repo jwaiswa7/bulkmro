@@ -69,7 +69,6 @@ function searchsubmit(val){
         url: self.location.href.split('?')[0],
         data: {q: val},
         beforeSend: function(){
-            $("#loader").show();
             $("#grid_container").addClass("blur");
             $(".card-body").addClass("blink");
         },
@@ -84,7 +83,6 @@ function searchsubmit(val){
             }
         },
         complete:function(){
-            $("#loader").hide();
             $("#grid_container").removeClass("blur");
             $(".card-body").removeClass("blink");
         }
