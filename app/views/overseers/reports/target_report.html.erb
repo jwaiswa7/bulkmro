@@ -1,4 +1,5 @@
 <% provide :container_fluid, true %>
+<% provide :overseer_filters, true %>
 
 <div class="col-lg-12 mb-0">
   <div class="page-header mb-0">
@@ -14,63 +15,45 @@
       <thead data-toggle="sticky">
       <tr>
         <th></th>
-        <th class="text-uppercase text-black-50" colspan="3">Inquiries</th>
-        <th class="text-uppercase text-black-50" colspan="3">Orders</th>
-        <th class="text-uppercase text-black-50" colspan="3">Order Margins</th>
-        <th class="text-uppercase text-black-50" colspan="3">Invoices</th>
-        <th class="text-uppercase text-black-50" colspan="3">Invoice Margins</th>
+        <th></th>
+        <th></th>
+        <% @data.summary_entries.each do |k,v| %>
+          <th class="text-uppercase text-black-50" colspan="3"><%= capitalize(k.to_s) %></th>
+        <% end %>
       </tr>
       <tr>
         <th></th>
-        <% @data.summary_entries[:inquiries].each do |key, value| %>
-          <td><h5 class="mb-0 text-black-50"><%= key %></h5></td>
-        <% end %>
-        <% @data.summary_entries[:orders].each do |key, value| %>
-          <td><h5 class="mb-0 text-black-50"><%= key %></h5></td>
-        <% end %>
-        <% @data.summary_entries[:order_margins].each do |key, value| %>
-          <td><h5 class="mb-0 text-black-50"><%= key %></h5></td>
-        <% end %>
-        <% @data.summary_entries[:invoices].each do |key, value| %>
-          <td><h5 class="mb-0 text-black-50"><%= key %></h5></td>
-        <% end %>
-        <% @data.summary_entries[:invoice_margins].each do |key, value| %>
-          <td><h5 class="mb-0 text-black-50"><%= key %></h5></td>
+        <th></th>
+        <th></th>
+        <% @data.summary_entries.each do |k,v| %>
+          <% v.each do |key,value| %>
+            <td><h5 class="mb-0 text-black-50"><%= key.to_s.split('_').join(' ') %></h5></td>
+          <% end %>
         <% end %>
       </tr>
       <tr>
-        <th class="text-right no-sort"></th>
-        <% @data.summary_entries[:inquiries].each do |key, value| %>
-          <td data-toggle="tooltip">
-            <strong><%= value %></strong>
-          </td>
-        <% end %>
-        <% @data.summary_entries[:orders].each do |key, value| %>
-          <td data-toggle="tooltip">
-            <strong><%= value %></strong>
-          </td>
-        <% end %>
-        <% @data.summary_entries[:order_margins].each do |key, value| %>
-          <td data-toggle="tooltip">
-            <strong><%= value %></strong>
-          </td>
-        <% end %>
-        <% @data.summary_entries[:invoices].each do |key, value| %>
-          <td data-toggle="tooltip">
-            <strong><%= value %></strong>
-          </td>
-        <% end %>
-        <% @data.summary_entries[:invoice_margins].each do |key, value| %>
-          <td data-toggle="tooltip">
-            <strong><%= value %></strong>
-          </td>
+        <td data-toggle="tooltip">
+          <strong>Sales Executive</strong>
+        </td>
+        <td data-toggle="tooltip">
+          <strong>Manager</strong>
+        </td>
+        <td data-toggle="tooltip">
+          <strong>Business Head</strong>
+        </td>
+        <% @data.summary_entries.each do |k,v| %>
+          <% v.each do |key, value| %>
+            <td data-toggle="tooltip">
+              <strong><%= value %></strong>
+            </td>
+          <% end %>
         <% end %>
       </tr>
       </thead>
       <tbody>
+
         <% @data.entries.each do |overseer , value| %>
           <tr>
-            <td class="text-right"><strong><%= Overseer.find(overseer).full_name %></strong></td>
             <% @data.entries[overseer].each do |target, target_value| %>
               <td><%= target_value %></td>
             <% end %>
