@@ -6,6 +6,8 @@ json.data (@inquiries) do |inquiry|
           end,
       ].join(' '),
       inquiry.inquiry_number,
+      inquiry.sales_orders.map(&:order_number).compact.join(', '),
+      inquiry.invoices.map(&:invoice_number).compact.join(', '),
       inquiry_status_badge(inquiry.status),
       inquiry.account.to_s,
       inquiry.company.to_s,
@@ -21,6 +23,8 @@ json.data (@inquiries) do |inquiry|
 end
 
 json.columnFilters [
+                       [],
+                       [],
                        [],
                        [],
                        Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
