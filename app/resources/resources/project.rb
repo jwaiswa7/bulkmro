@@ -26,7 +26,7 @@ class Resources::Project < Resources::ApplicationResource
 
     {
       Code: record.inquiry_number,
-      Name: ["#{record.inquiry_number} - ",record.subject].join
+      Name: ["#{record.inquiry_number} - ",record.subject[0..50]].join
     }
   end
 end

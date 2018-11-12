@@ -23,6 +23,6 @@ class InquiryImportRow < ApplicationRecord
 
   def approved_alternatives(page=1)
     service = Services::Overseers::Finders::Products.new({})
-    service.manage_failed_skus(metadata['name'], 4, page)
+    service.manage_failed_skus([metadata['mpn'],metadata['name']].map(&:strip).compact.join(" "), 4, page)
   end
 end
