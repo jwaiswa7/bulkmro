@@ -4,20 +4,20 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
     super
 
     @columns = %w(
-        inquiry_number
-        bm_number
-        invoice_number
-        invoice_date
-        order_number
-        order_date
-        customer_name
-        invoice_net_amount
-        freight_and_packaging
-        total_with_freight
-        tax_amount
-        gross_amount
-        branch(bill from)
-        invoice_status
+        Inquiry Number
+        BM Number
+        Invoice Number
+        Invoice Date
+        Order Number
+        Order Date
+        Customer Name
+        Invoice Net Amount
+        Freight / Packing
+        Total Net Amount Including Freight
+        Invoice Tax Amount
+        Invoice Gross Amount
+        Branch (Bill From)
+        Invoice Status
     )
     @model = SalesInvoiceRow
   end
@@ -26,6 +26,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
     model.where(:created_at => start_at..end_at).order(invoice_number: :asc).each do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
+      inquiry = sales_invoice.inquiry
       rows.push({
                     :inquiry_number => sales_invoice.inquiry.inquiry_number.to_s,
                     :bm_number => row.sku,
@@ -39,7 +40,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
                     :total_with_freight => "",
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
-                    :bill_from_branch => sales_invoice.metadata['state'], #hasstateid
+                    :bill_from_branch => inquiry.bill_from.address.state.name,
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end

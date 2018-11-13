@@ -4,19 +4,19 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
     super
 
     @columns = %w(
-        inquiry_number
-        invoice_number
-        invoice_date
-        order_number
-        order_date
-        customer_name
-        invoice_net_amount
-        freight_and_packaging
-        total_with_freight
-        tax_amount
-        gross_amount
-        bill_from_branch
-        invoice_status
+        Inquiry Number
+        Invoice Number
+        Invoice Date
+        Order Number
+        Order Date
+        Customer Name
+        Invoice Net Amount
+        Freight / Packing
+      	Total Net Amount Including Freight
+        Invoice Tax Amount
+        Invoice Gross Amount
+        Branch (Bill From)
+        Invoice Status
     )
     @model = SalesInvoice
   end
@@ -24,6 +24,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
   def call
     model.where(:created_at => start_at..end_at).order(invoice_number: :asc).each do |sales_invoice|
       sales_order = sales_invoice.sales_order
+      inquiry = sales_invoice.inquiry
       rows.push({
                     :inquiry_number => sales_invoice.inquiry.inquiry_number.to_s,
                     :invoice_number => sales_invoice.invoice_number,
@@ -36,7 +37,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :total_with_freight => ('%.2f' % sales_order.calculated_total_cost), #Doubt
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
-                    :bill_from_branch => sales_invoice.metadata['state'], #hasstateid
+                    :bill_from_branch => inquiry.bill_from.address.state.name,
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end
