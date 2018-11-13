@@ -44,6 +44,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     admin_or_manager?
   end
 
+  def export_rows?
+    admin_or_manager?
+  end
+
   def drafts_pending?
     admin?
   end

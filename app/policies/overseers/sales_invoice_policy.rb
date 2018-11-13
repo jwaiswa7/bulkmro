@@ -10,4 +10,9 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def export_all?
     admin_or_manager?
   end
+
+  def export_rows?
+    admin_or_manager?
+  end
+
 end

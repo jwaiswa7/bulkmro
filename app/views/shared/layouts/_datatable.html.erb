@@ -19,7 +19,12 @@
             <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
               <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
             </a>
-          <% end %>
+            <% if policy(current_model.singularize.to_sym).export_rows? %>
+              <a href="<%= [request.path, '/', 'export_rows.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
+                <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %> Rows
+              </a>
+            <% end %>
+        <% end %>
         </div>
       <% end %>
 
