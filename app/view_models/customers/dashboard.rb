@@ -29,7 +29,11 @@ class Customers::Dashboard
   end
 
   def record
-    contact.account_manager? ? account : contact
+    if contact.account_manager?
+      account
+    else
+      contact
+    end
   end
 
   attr_reader :contact, :account

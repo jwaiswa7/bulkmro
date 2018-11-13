@@ -17,11 +17,10 @@
 <% end %>
 
 <div class="col-lg-12" id="products_index">
-  <% if params[:view] == "list_view" %>
+  <% if params[:view] == 'list_view' %>
     <%= render partial: 'shared/layouts/datatable' %>
   <% else %>
     <%= render layout: 'shared/layouts/grid' do %>
-
 
       <div class="input-group input-group-round">
         <div class="input-group-prepend">

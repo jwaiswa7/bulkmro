@@ -5,11 +5,11 @@ class Services::Customers::Finders::Products < Services::Customers::Finders::Bas
   end
 
   def all_records
-    # indexed_records = if current_contact.account_manager?
-    #                     super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
-    #                   else
-    #                     super.filter(filter_by_array('company_id', [current_contact.company.id]))
-    #                   end
+    indexed_records = if current_contact.account_manager?
+                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+                      else
+                        super.filter(filter_by_array('company_id', [current_contact.company.id]))
+                      end
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end

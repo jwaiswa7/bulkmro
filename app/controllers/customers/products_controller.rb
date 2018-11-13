@@ -15,7 +15,6 @@ class Customers::ProductsController < Customers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records.try(:reverse)
-
     @products_paginate = @indexed_products.page(params[:page]) if params[:page].present?
   end
 
