@@ -5,7 +5,7 @@ class Customers::ProductsController < Customers::BaseController
 
     if params[:view] == 'list_view'
       params[:per] = 20
-    elsif params[:view] == 'grid_view'
+    else
       params[:page] = 1 unless params[:page].present?
       params[:per] = 24
     end
