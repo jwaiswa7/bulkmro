@@ -1257,12 +1257,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       customer_companies = customer.companies
       inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
       inquiry_products.each do |inquiry_product|
-        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :sku => inquiry_product.product.sku).first_or_create do |customer_product|
-          customer_product.product_id = inquiry_product.product_id
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
-          customer_product.name = inquiry_product.product.name
-
+          customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
+          customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
           # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
 
           customer_product.created_by = overseer
@@ -1271,3 +1270,4 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 end
+
