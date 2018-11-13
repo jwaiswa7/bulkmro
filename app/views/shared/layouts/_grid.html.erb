@@ -1,4 +1,5 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
+
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>

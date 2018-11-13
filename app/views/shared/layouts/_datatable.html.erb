@@ -36,7 +36,7 @@
   <table class="datatable table table-bordered dt-responsive
     <% if content_for?(:wrap_whitespace) %> wrap-whitespace
     <% end %>" data-search="Filter by anything"
-         <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"
+         <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
          <% end %>>
     <thead>
     <tr>

@@ -1,25 +1,30 @@
 class Customers::ProductsController < Customers::BaseController
-
+  before_action :set_product, only: [:show]
   def index
-    @cart_item = current_cart.cart_items.new
-    @products_paginate = current_contact.account.products.approved.page(params[:page])
-    respond_to do |format|
-      if params[:view] == "grid_view"
-        format.js { render 'index.js.erb' }
-      else
-        format.json do
-          service = Services::Customers::Finders::Products.new(params, current_contact)
-          service.call
-          @indexed_products = service.indexed_records
-          @products = service.records.try(:reverse)
-        end
-      end
-      format.html {}
+    authorize :product
+
+    if params[:view] == 'list_view'
+      params[:per] = 20
+    elsif params[:view] == 'grid_view'
+      params[:page] = 1 unless params[:page].present?
+      params[:per] = 24
     end
+
+    service = Services::Customers::Finders::Products.new(params, current_contact)
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records.try(:reverse)
+
+    @products_paginate = @indexed_products.page(params[:page]) if params[:page].present?
   end
 
   def show
-  	@product = Product.find(params[:id])
+    authorize @product
   end
 
+  private
+  def set_product
+    @product = Product.find(params[:id])
+  end
 end
