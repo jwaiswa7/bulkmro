@@ -114,4 +114,8 @@ class Product < ApplicationRecord
   def brand_name
     self.brand.name
   end
+
+  def self.get_product_name(product_id)
+    self.find(product_id).try(:name)
+  end
 end

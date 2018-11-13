@@ -246,7 +246,11 @@ Rails.application.routes.draw do
   namespace 'customers' do
     resource :dashboard, :controller => :dashboard
     resources :cart_items, only: %i[new create destroy]
-    resources :customer_orders, only: %i[create show]
+    resources :customer_orders, only: %i[index create show] do
+      member do
+        get 'order_confirmed'
+      end
+    end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :products, only: %i[index show]

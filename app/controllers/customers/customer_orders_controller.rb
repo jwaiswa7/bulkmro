@@ -1,5 +1,5 @@
 class Customers::CustomerOrdersController < Customers::BaseController
-  before_action :set_customer_order, only: [:show]
+  before_action :set_customer_order, only: [:show, :order_confirmed]
 
   def create
     authorize :customer_order
@@ -17,11 +17,20 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    redirect_to customers_customer_order_path(@customer_order)
+    redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
 
   def show
     authorize @customer_order
+  end
+
+  def order_confirmed
+    authorize @customer_order
+  end
+
+  def index
+    @customer_orders = current_contact.customer_orders
+    authorize @customer_orders
   end
 
   private
