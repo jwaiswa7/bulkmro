@@ -23,7 +23,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       params
                     else
                       ''
-                    end.strip
+                    end.try(:strip)
+
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
