@@ -10,6 +10,7 @@ json.data (@purchase_orders) do |purchase_order|
                   ].join(' '),
                   purchase_order.po_number,
                   purchase_order.inquiry.inquiry_number,
+                  purchase_order.status || purchase_order.metadata_status,
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
