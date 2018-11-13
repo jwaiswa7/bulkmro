@@ -52,7 +52,7 @@ module Mixins::HasRole
     end
 
     def allow_inquiries?
-      cataloging? || logistics?
+      admin? || cataloging? || logistics?
     end
 
     def manager_or_cataloging?
