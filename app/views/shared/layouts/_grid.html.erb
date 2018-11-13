@@ -47,7 +47,11 @@
       <div class="col-2">
         <div class="card mb-2">
           <div class="card-body">
-            <img src="https://images.homedepot-static.com/productImages/40844572-aeb6-4397-a347-5b1c2e5b44ac/svn/sharkbite-ball-valves-22222-0000lf-64_1000.jpg" />
+            <% if product.images.first.present? %>
+              <img src="<%= url_for(product.images.first) %>" />
+            <% else %>
+              <img src="<%= image_path('coming_soon.png') %>" />
+            <% end %>
             <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
             <h5 class="mb-0 mt-1 text-small text-black-50"><strong>₹20,400</strong></h5>
             <hr class="my-2">

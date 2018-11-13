@@ -121,7 +121,8 @@ class Overseers::ProductsController < Overseers::BaseController
         :category_id,
         :tax_code_id,
         :tax_rate_id,
-        :measurement_unit_id
+        :measurement_unit_id,
+        :images => []
     )
   end
 
