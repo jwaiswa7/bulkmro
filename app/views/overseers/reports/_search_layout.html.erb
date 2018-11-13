@@ -41,10 +41,14 @@
             </div>
           </div>
         <% end %>
-        <div class="col-12">
+        <div class="col-6">
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-redo mr-2"></i>Refresh
           <% end %>
+        </div>
+        <div class="col-6">
+          <a href="<%= overseers_report_path(@report) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0">
+            Reset</a>
         </div>
       </div>
     </div>
