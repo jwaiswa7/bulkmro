@@ -51,7 +51,7 @@ class Address < ApplicationRecord
   end
 
   def set_remote_uid
-    self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) && self.remote_uid.blank?
+    self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
   end
 
   def self.legacy
