@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
   def initialize
     super
 
-    @columns = ['order_number', 'order_date', 'quote_number', 'quote_type', 'opportunity_type', 'invoice_number', 'inside_sales', 'outside_sales', 'company_alias', 'company_name', 'bill_to_name', 'ship_to_name', 'customer_po_number', 'grand_total (Exc. Tax)', 'grand_total (Inc.Tax)', 'buying_cost (Exc. Tax)', 'margin (Exc. tax)', 'status']
+    @columns = ['order_number', 'order_date', 'quote_number', 'quote_type', 'opportunity_type', 'invoice_number', 'inside_sales', 'outside_sales', 'company_alias', 'company_name', 'bill_to_name', 'ship_to_name', 'customer_po_number', 'grand_total (Exc. Tax)', 'grand_total (Inc.Tax)', 'buying_cost (Exc. Tax)', 'margin (Exc. tax)', 'status', 'customer_committed_date']
     @model = SalesOrder
   end
 
@@ -30,6 +30,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
                     :buying_cost_exc => ('%.2f' % sales_order.calculated_total_cost),
                     :margin_exc => ('%.2f' % sales_order.calculated_total_margin),
                     :status => sales_order.remote_status,
+                    :customer_committed_date => ( inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil ),
                 })
     end
 

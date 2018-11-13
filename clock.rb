@@ -48,6 +48,6 @@ every(1.day, 'gcloud_run_backups', :at => '23:00') do
 end
 
 every(1.day, 'gcloud_run_backups_alt', :at => '23:30') do
-  service = Services::Shared::Gcloud::RunBackups.new
+  service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
 end
