@@ -12,8 +12,8 @@ class Product < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanHaveTaxes
 
-  update_index('products#product') { self if self.approved? }
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
+  update_index('products#product') {self if self.approved?}
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :brand, required: false
   belongs_to :category
@@ -40,10 +40,10 @@ class Product < ApplicationRecord
   # end
   # End ignore
 
-  enum product_type: { item: 10, service: 20 }
+  enum product_type: {item: 10, service: 20}
 
-  scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
-  scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, :category => [:tax_code]) }
+  scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
+  scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
@@ -51,10 +51,16 @@ class Product < ApplicationRecord
   #validates_with MultipleFilePresenceValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
     self.weight ||= 0.0
+    self.sku ||= generate_sku
+  end
+
+  def generate_sku
+    Services::Resources::Shared::UidGenerator.product_sku
   end
 
   def syncable_identifiers
