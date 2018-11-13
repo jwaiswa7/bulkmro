@@ -50,6 +50,10 @@ class Address < ApplicationRecord
     end
   end
 
+  def syncable_identifiers
+    [:billing_address_uid,:shipping_address_uid]
+  end
+
   def set_remote_uid
     self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
   end
