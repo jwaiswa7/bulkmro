@@ -12,7 +12,7 @@
   <%= render layout: 'shared/layouts/datatable' do %>
     <% @customer_orders.each do |customer_order| %>
       <tr>
-        <td><%= customer_order.id %></td>
+        <td>Order Number <%= customer_order.id %></td>
         <td><%= Product.where(id: customer_order.rows.pluck(:product_id)).pluck(:name).join(", ") %></td>
         <td><%= customer_order.rows.sum(:quantity) %></td>
         <td><%= format_date(customer_order.created_at) %></td>
