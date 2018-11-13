@@ -1,6 +1,9 @@
 class Customers::SalesQuotesController < Customers::BaseController
+  before_action :set_sales_quote, only: [:show]
 
   def index
+    authorize :sales_quote
+
     respond_to do |format|
       format.html {}
       format.json do
@@ -11,11 +14,11 @@ class Customers::SalesQuotesController < Customers::BaseController
         @sales_quotes = service.records.try(:reverse)
       end
     end
-
   end
 
   def show
-    @sales_quote = SalesQuote.find(params[:id])
+    authorize @sales_quote
+
     respond_to do |format|
       format.html {}
       format.pdf do
@@ -24,5 +27,9 @@ class Customers::SalesQuotesController < Customers::BaseController
     end
   end
 
+  private
+  def set_sales_quote
+    @sales_quote = current_contact.account.sales_quotes.find(params[:id])
+  end
 end
 

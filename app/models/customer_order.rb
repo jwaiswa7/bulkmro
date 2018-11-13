@@ -1,3 +1,4 @@
 class CustomerOrder < ApplicationRecord
-  has_many :customer_order_rows, dependent: :destroy
+  belongs_to :contact
+  has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
 end

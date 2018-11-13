@@ -9,15 +9,15 @@
       </div>
     </div>
     <p class="lead mt-1">
-      You have <strong><%= current_cart.cart_items.count %></strong> products in your cart.
+      You have <strong><%= current_cart.items.count %></strong> products in your cart.
     </p>
   </section>
 
   <div class="card mb-2">
     <div class="card-body py-2">
       <div class="text-left">
-        <% @cart_items.each do |cart_item| %>
-          <div class="<% if cart_item != @cart_items.last %>border-bottom <% end %>py-2 d-flex flex-row align-items-center">
+        <% current_cart.items.each do |cart_item| %>
+          <div class="<% if cart_item != current_cart.items.last %>border-bottom <% end %>py-2 d-flex flex-row align-items-center">
             <img class="" src="https://images.homedepot-static.com/productImages/40844572-aeb6-4397-a347-5b1c2e5b44ac/svn/sharkbite-ball-valves-22222-0000lf-64_1000.jpg" width="60" />
             <div class="ml-3 flex-grow-1">
               <%= link_to customers_cart_item_path(cart_item), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
@@ -33,12 +33,12 @@
 
     <div class="card-footer">
       <div class="form-row">
-        <div class="col-md-6">
-          <a href="#" class="btn btn-danger btn-block">
-            <i class="fal fa-minus mr-1"></i> Clear
-          </a>
-        </div>
-        <div class="col-md-6">
+<!--        <div class="col-md-6">-->
+<!--          <a href="#" class="btn btn-danger btn-block">-->
+<!--            <i class="fal fa-minus mr-1"></i> Clear-->
+<!--          </a>-->
+<!--        </div>-->
+        <div class="col-md-12">
           <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
             <i class="fal fa-shopping-cart mr-1"></i> Checkout
           <% end %>

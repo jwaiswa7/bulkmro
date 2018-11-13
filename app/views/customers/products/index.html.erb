@@ -18,10 +18,37 @@
 
 <div class="col-lg-12" id="products_index">
   <% if params[:view] == "list_view" %>
-    <%= render layout: 'shared/layouts/datatable' do %>
-    <% end %>
+    <%= render partial: 'shared/layouts/datatable' %>
   <% else %>
     <%= render layout: 'shared/layouts/grid' do %>
+
+
+      <div class="form-row">
+        <% @products.each do |product| %>
+          <div class="col-2">
+            <div class="card mb-2">
+              <div class="card-body">
+                <img src="https://images.homedepot-static.com/productImages/40844572-aeb6-4397-a347-5b1c2e5b44ac/svn/sharkbite-ball-valves-22222-0000lf-64_1000.jpg"/>
+                <h5 class="mb-0 text-small">
+                  <strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
+                <h5 class="mb-0 mt-1 text-small text-black-50"><strong>₹20,400</strong></h5>
+                <hr class="my-2">
+                <p class="mb-0 text-small text-black-50">
+                  <strong class="d-block"><%= product.brand.try(:name) %> #71-670</strong>
+                  <em class="d-block">MOQ - 50</em>
+                </p>
+              </div>
+              <div class="card-footer p-2">
+                <%= link_to "Add to Cart", customers_cart_items_path(product_id: product.id, quantity: 1), method: :post, remote: true, class: "btn btn-block btn-success" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="col-12">
+        <%= paginate @products, remote: true, :params => {:view => "grid_view"} %>
+      </div>
     <% end %>
   <% end %>
 </div>

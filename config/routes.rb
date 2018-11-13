@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -246,25 +245,16 @@ Rails.application.routes.draw do
 
   namespace 'customers' do
     resource :dashboard, :controller => :dashboard
-    resources :inquiries, only: %i[index show] do
-      scope module: 'inquiries' do
-        resources :sales_quotes, only: %i[index show]
-        resources :sales_orders, only: %i[index show]
-      end
-    end
+    resources :cart_items, only: %i[new create destroy]
+    resources :customer_orders, only: %i[create show]
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
-    resources :products, only: %i[index show] do
-      collection  do
-        get 'grid_view'
-      end
-    end
-    resource  :cart, only: [:show] do
+    resources :products, only: %i[index show]
+
+    resource  :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end
     end
-    resources :cart_items, only: %i[new create destroy]
-    resources :customer_orders, only: %i[create show]
   end
 end

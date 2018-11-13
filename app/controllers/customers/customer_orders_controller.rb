@@ -1,25 +1,32 @@
 class Customers::CustomerOrdersController < Customers::BaseController
+  before_action :set_customer_order, only: [:show]
 
   def create
-    @cart = current_cart
+    authorize :customer_order
+
     ActiveRecord::Base.transaction do
-      @customer_order = CustomerOrder.new(contact_id: params[:contact_id])
-      @customer_order.save
-      @cart.cart_items.each do |cart_item|
-        customer_order = CustomerOrderRow.new(customer_order_id: @customer_order.id, product_id: cart_item.product_id, quantity: cart_item.quantity)
-        customer_order.save
+      @customer_order = current_contact.customer_orders.create
+
+      current_cart.items.each do |cart_item|
+        @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
+          row.customer_order_id = @customer_order.id
+          row.quantity = cart_item.quantity
+        end
       end
+
+      current_cart.destroy
     end
 
-    if @customer_order.save
-      session[:cart_id] = nil
-      @cart.destroy
-      redirect_to customers_customer_order_path(@customer_order)
-    end
+    redirect_to customers_customer_order_path(@customer_order)
   end
 
   def show
-    @customer_order = CustomerOrder.find(params[:id])
+    authorize @customer_order
   end
 
+  private
+
+  def set_customer_order
+    @customer_order = current_contact.customer_orders.find(params[:id])
+  end
 end
