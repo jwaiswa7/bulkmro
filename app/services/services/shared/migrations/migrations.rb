@@ -1218,8 +1218,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       overseer = Overseer.find_by_legacy_id(x.get_column('legacy_overseer_id'))
+      manager = overseer.parent.present? ? overseer.parent : overseer
+      business_head = manager.parent.present? ? manager.parent : manager
 
-      target = Target.where(overseer: overseer, target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
+      target = Target.where(overseer: overseer, manager: manager, business_head: business_head ,target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
       if target.new_record? || update_if_exists
         target.target_value = x.get_column('target')
         target.legacy_id = x.get_column('target_legacy_id')
