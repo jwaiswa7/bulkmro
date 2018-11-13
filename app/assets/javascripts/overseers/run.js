@@ -70,7 +70,6 @@ function searchsubmit(val){
         data: {q: val},
         beforeSend: function(){
             $("#grid_container").addClass("blur");
-            $(".card-body").addClass("blink");
         },
         success: function(x) {
 
@@ -84,7 +83,6 @@ function searchsubmit(val){
         },
         complete:function(){
             $("#grid_container").removeClass("blur");
-            $(".card-body").removeClass("blink");
         }
     })
 }
