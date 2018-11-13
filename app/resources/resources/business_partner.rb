@@ -65,7 +65,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].strip.downcase).first
+      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
       company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
     end if contacts.present?
   end
