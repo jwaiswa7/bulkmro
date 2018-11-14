@@ -10,8 +10,8 @@ class Customers::Inquiries::BaseController < Customers::BaseController
   def render_pdf_for(record)
     render(
         pdf: record.filename,
-        template: ['customers', 'inquiries', record.class.name.pluralize.underscore, 'show'].join('/'),
-        layout: 'customers/inquiries/layouts/show',
+        template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+        layout: 'shared/layouts/pdf_templates/show',
         page_size: 'Legal',
         footer: {
             center: '[page] of [topage]'
