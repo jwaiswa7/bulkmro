@@ -3,6 +3,7 @@ class SalesQuotesIndex < BaseIndex
   define_type SalesQuote.all.with_includes do
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i}, type: 'integer'
+    field :sent_at, type: 'date'
     field :inquiry_number_string, value: -> (record) {record.inquiry.inquiry_number.to_s}, analyzer: 'substring'
     field :line_items, value: -> (record) {record.rows.size.to_s}, analyzer: 'substring'
     field :inside_sales_owner, value: -> (record) { record.inquiry.inside_sales_owner.to_s }, analyzer: 'substring'

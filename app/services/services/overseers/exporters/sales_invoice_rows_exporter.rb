@@ -19,6 +19,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
+
     @model = SalesInvoiceRow
   end
 

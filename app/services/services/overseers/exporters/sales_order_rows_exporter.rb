@@ -85,6 +85,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         'Landed (Usd Million)',
         'Margin (Usd Million)'
     ]
+
     @model = SalesOrderRow
   end
 
@@ -139,11 +140,11 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Domestic_Outward_Logistics => "",
                     :Type_Of_Customer => inquiry.company.company_type,
                     :Customer_Industry => inquiry.company.industry.try(:name),
-                    :Customer => if inquiry.company.default_billing_address.country_code == "IN" then "Domestic" else "Exports" end,
+                    :Customer => ((if inquiry.company.default_billing_address.country_code == "IN" then "Domestic" else "Exports" end) if inquiry.company.default_billing_address.present?),
                     :product_category => ( row.product.category.name if row.product.category.present? ),
                     :brand => (row.product.brand.name if row.product.brand.present?),
                     :Type_Of_Supplier => row.sales_quote_row.supplier.company_type,
-                    :Supplier_Domestic_Imports => if (inquiry.company.default_shipping_address.country_code == "IN" || sales_quote_row.supplier.addresses.first.country_code == "IN") then "Domestic" else "Imports" end,
+                    :Supplier_Domestic_Imports => ((if (inquiry.company.default_shipping_address.country_code == "IN" || sales_quote_row.supplier.addresses.first.country_code == "IN") then "Domestic" else "Imports" end) if inquiry.company.default_shipping_address.present?),
                     :Oem_Non_Oem => "",
                     :Revenue_Stream => "",
                     :Business_Vertical => "",
