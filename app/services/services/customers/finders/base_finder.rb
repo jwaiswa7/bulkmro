@@ -112,7 +112,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
             should: [
                 {
                     term: {"#{key}": val},
-                }
+                },
             ]
         },
 
