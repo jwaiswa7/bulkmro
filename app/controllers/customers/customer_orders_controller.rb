@@ -5,6 +5,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
     authorize :customer_order
 
     ActiveRecord::Base.transaction do
+      if params[:page] == "edit_cart"
+        current_cart.assign_attributes(cart_params)
+        current_cart.save
+      end
       @customer_order = current_contact.customer_orders.create
 
       current_cart.items.each do |cart_item|
@@ -13,7 +17,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.quantity = cart_item.quantity
         end
       end
-
       current_cart.destroy
     end
 
@@ -37,5 +40,9 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
   def set_customer_order
     @customer_order = current_contact.customer_orders.find(params[:id])
+  end
+
+  def cart_params
+    params.require(:cart).permit(items_attributes: [:quantity,:id])
   end
 end

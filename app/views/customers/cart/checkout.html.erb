@@ -2,11 +2,13 @@
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 mb-1">Checkout</h1>
-      <div>
-        <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-          <i class="fal fa-shopping-cart mr-1"></i> Checkout
-        <% end %>
-      </div>
+      <% unless current_cart.items.size.zero? %>
+        <div>
+          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+            <i class="fal fa-shopping-cart mr-1"></i> Checkout
+          <% end %>
+        </div>
+      <% end %>
     </div>
     <p class="lead mt-1">
       You have <strong><%= current_cart.items.count %></strong> products in your cart.
@@ -28,8 +30,19 @@
       </div>
     </div>
     <div class="card-footer">
-      <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-        <i class="fal fa-shopping-cart mr-1"></i> Checkout
+      <% if current_cart.items.size.zero? %>
+        <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
+          <i class="fal fa-shopping-cart mr-1"></i> Add Products
+        <% end %>
+      <% else %>
+        <div style="width: 100%;">
+          <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
+            <i class="fal fa-pen"></i> Edit Quantity
+          <% end %>
+          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+            <i class="fal fa-shopping-cart mr-1"></i> Checkout
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
