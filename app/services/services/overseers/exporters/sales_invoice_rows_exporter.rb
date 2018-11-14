@@ -23,7 +23,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   end
 
   def call
-    model.where(:created_at => start_at..end_at).order(invoice_number: :asc).each do |row|
+    model.where(:created_at => start_at..end_at).order(sales_invoice_id: :asc).each do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
