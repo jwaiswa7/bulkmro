@@ -33,8 +33,8 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
                     :invoice_net_amount => ('%.2f' % sales_order.calculated_total),
-                    :freight_and_packaging => ('%.2f' % sales_order.calculated_freight_cost_total), #Doubt
-                    :total_with_freight => ('%.2f' % sales_order.calculated_total_cost), #Doubt
+                    :freight_and_packaging => ('%.2f' % sales_order.calculated_freight_cost_total || sales_invoice.metadata['shipping_amount']),
+                    :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
                     :bill_from_branch => if inquiry.bill_from then inquiry.bill_from.address.state.name else "" end,
