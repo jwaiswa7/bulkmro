@@ -18,8 +18,10 @@ class Contact < ApplicationRecord
   accepts_nested_attributes_for :company_contacts
   has_one :company_contact
   has_one :company, :through => :company_contact
+  has_one :cart
+  has_many :customer_orders
 
-  enum role: {customer: 10}
+  enum role: {customer: 10, account_manager: 20}
   enum status: {active: 10, inactive: 20}
   enum contact_group: {
       general: 10,
@@ -53,5 +55,9 @@ class Contact < ApplicationRecord
 
   def self.legacy
     find_by_email('legacy@bulkmro.com')
+  end
+
+  def current_cart
+    self.cart || self.create_cart
   end
 end

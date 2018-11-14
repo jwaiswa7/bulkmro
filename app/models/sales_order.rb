@@ -107,6 +107,10 @@ class SalesOrder < ApplicationRecord
     [:draft_uid]
   end
 
+  def order_status
+    self.status || self.legacy_request_status
+  end
+
   def update_index
     SalesOrdersIndex::SalesOrder.import([self.id])
   end

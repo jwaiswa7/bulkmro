@@ -48,6 +48,13 @@
       <div class="col-12 col-md-4">
         <%= f.input :is_service %>
       </div>
+      <div class="col-12 col-md-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
+          </div>
+        </div>
+      </div>
     </div>
 
     <%= action_button(action_name, @product) %>

@@ -50,6 +50,13 @@ class Overseers::ContactsController < Overseers::BaseController
     end
   end
 
+  def login_as_contact
+    contact = Contact.find(params[:contact_id])
+    become(contact)
+    redirect_to customer_root_url
+    authorize contact
+  end
+
   private
 
   def set_contact
@@ -74,6 +81,10 @@ class Overseers::ContactsController < Overseers::BaseController
         :contact_group,
         :company_ids => []
     )
+  end
+
+  def become(contact)
+    sign_in(:contact, contact)
   end
 
 end

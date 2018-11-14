@@ -26,9 +26,11 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+  has_many :customer_order_rows
 
   has_many_attached :images
 
+  has_many :cart_items
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
@@ -117,5 +119,9 @@ class Product < ApplicationRecord
 
   def brand_name
     self.brand.name
+  end
+
+  def self.get_product_name(product_id)
+    self.find(product_id).try(:name)
   end
 end

@@ -1,6 +1,22 @@
 class ApplicationController < ActionController::Base
   before_action :set_raven_context, :if => :production?
 
+  def render_pdf_for(record)
+    render(
+        pdf: record.filename,
+        template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+        layout: 'shared/layouts/pdf_templates/show',
+        page_size: 'Legal',
+        footer: {
+            center: '[page] of [topage]'
+        },
+        locals: {
+            record: record
+        }
+    )
+  end
+
+
   private
   def production?
     Rails.env.production?
