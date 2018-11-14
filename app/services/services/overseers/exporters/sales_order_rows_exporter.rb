@@ -112,10 +112,10 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :unit_price => row.unit_selling_price,
                     :freight => row.freight_cost_subtotal,
                     :tax_type => "", #remaining
-                    :tax_rate => row.sales_quote_row.tax_rate,
+                    :tax_rate => row.sales_quote_row.tax_rate.tax_percentage,
                     :tax_amount => "",
                     :gross_total_selling => "",
-                    :buying_rate => "", #remaining
+                    :buying_rate => row.sales_quote_row.unit_cost_price,
                     :buying_total => "",
                     :invoice_value => "",
                     :invoice_value_with_tax => "",
@@ -127,7 +127,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :AR_Invoice => "",
                     :AR_Invoice_Date => "",
                     :AR_Month_Code => "",
-                    :Supplier_PO => "",
+                    :Supplier_PO => "", #po?
                     :AP_Invoice => "",
                     :Qty => "",
                     :AP_Invoice_not_for_margin_calculation => "",
@@ -139,11 +139,11 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Domestic_Outward_Logistics => "",
                     :Type_Of_Customer => inquiry.company.company_type,
                     :Customer_Industry => inquiry.company.industry.try(:name),
-                    :Customer => "", #Doubt
+                    :Customer => if inquiry.currency.name == "INR" then "Domestic" else "Exports" end,
                     :product_category => ( row.product.category.name if row.product.category.present? ),
                     :brand => (row.product.brand.name if row.product.brand.present?),
-                    :Type_Of_Supplier => "",
-                    :Supplier_Domestic_Imports => "",
+                    :Type_Of_Supplier => row.sales_quote_row.supplier.company_type,
+                    :Supplier_Domestic_Imports => "", #supp country?
                     :Oem_Non_Oem => "",
                     :Revenue_Stream => "",
                     :Business_Vertical => "",

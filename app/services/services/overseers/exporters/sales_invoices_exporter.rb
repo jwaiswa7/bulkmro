@@ -32,7 +32,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :order_number => sales_invoice.sales_order.order_number.to_s,
                     :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
-                    :invoice_net_amount => ('%.2f' % sales_order.calculated_total), #Doubt
+                    :invoice_net_amount => ('%.2f' % sales_order.calculated_total),
                     :freight_and_packaging => ('%.2f' % sales_order.calculated_freight_cost_total), #Doubt
                     :total_with_freight => ('%.2f' % sales_order.calculated_total_cost), #Doubt
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
