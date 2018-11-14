@@ -8,5 +8,4 @@ class Customers::CartController < Customers::BaseController
     authorize current_cart
   end
 
-  private
 end
