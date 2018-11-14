@@ -3,7 +3,6 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   def initialize
     super
 
-<<<<<<< HEAD
     @columns = [
         'Inquiry Number',
         'BM Number',
@@ -20,24 +19,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
-=======
-    @columns = %w(
-        Inquiry\ Number
-        BM\ Number
-        Invoice\ Number
-        Invoice\ Date
-        Order\ Number
-        Order\ Date
-        Customer\ Name
-        Invoice\ Net\ Amount
-        Freight\ /\ Packing
-        Total\ Net\ Amount\ Including\ Freight
-        Invoice\ Tax\ Amount
-        Invoice\ Gross\ Amount
-        Branch\ (Bill\ From)
-        Invoice\ Status
-    )
->>>>>>> sals invoice exporter fixed and column names issue for export files resolved
+
     @model = SalesInvoiceRow
   end
 
