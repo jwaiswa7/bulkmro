@@ -4,19 +4,19 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
     super
 
     @columns = %w(
-        Inquiry Number
-        Invoice Number
-        Invoice Date
-        Order Number
-        Order Date
-        Customer Name
-        Invoice Net Amount
-        Freight / Packing
-      	Total Net Amount Including Freight
-        Invoice Tax Amount
-        Invoice Gross Amount
-        Branch (Bill From)
-        Invoice Status
+        Inquiry\ Number
+        Invoice\ Number
+        Invoice\ Date
+        Order\ Number
+        Order\ Date
+        Customer\ Name
+        Invoice\ Net\ Amount
+        Freight\ /\ Packing
+      	Total\ Net\ Amount\ Including\ Freight
+        Invoice\ Tax\ Amount
+        Invoice\ Gross\ Amount
+        Branch\ (Bill\ From)
+        Invoice\ Status
     )
     @model = SalesInvoice
   end
@@ -37,7 +37,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :total_with_freight => ('%.2f' % sales_order.calculated_total_cost), #Doubt
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
-                    :bill_from_branch => inquiry.bill_from.address.state.name,
+                    :bill_from_branch => (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end

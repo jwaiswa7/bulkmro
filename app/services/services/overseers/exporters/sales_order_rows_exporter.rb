@@ -4,86 +4,86 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
     super
 
     @columns = %w(
-        Inside Sales Person
-        Inquiry Number
-        Bm #
+        Inside\ Sales\ Person
+        Inquiry\ Number
+        Bm\ #
         Description
-        Company Alias
-        Order Date
-        Order Number
+        Company\ Alias
+        Order\ Date
+        Order\ Number
         Qty
-        Selling Price (As Per So / Ar Invoice)
-        Supplier Name
-        Total Landed Cost
+        Selling\ Price\ (As\ Per\ So\ /\ Ar\ Invoice)
+        Supplier\ Name
+        Total\ Landed\ Cost
         Margin
-        Margin (In %)
-        Client Order #
-        Client Order Date
-        Unit Price
+        Margin\ (In\ %)
+        Client\ Order\ #
+        Client\ Order\ Date
+        Unit\ Price
         Freight
-        Tax Type
-        Tax Rate
-        Tax Amount
-        Gross Total Selling
-        Buying Rate
-        Buying Total
-        Invoice Value
-        Invoice Value With Tax
-        So Month Code
-        quote_type
-        Price Currency
-        Document Rate
-        Company Name
-        AR Invoice #
-        AR Invoice Date
-        Ar Month Code
-        Supplier Po #
-        AP Invoice #
+        Tax\ Type
+        Tax\ Rate
+        Tax\ Amount
+        Gross\ Total\ Selling
+        Buying\ Rate
+        Buying\ Total
+        Invoice\ Value
+        Invoice\ Value\ With\ Tax
+        So\ Month\ Code
+        Quote\ Type
+        Price\ Currency
+        Document\ Rate
+        Company\ Name
+        AR\ Invoice\ #
+        AR\ Invoice\ Date
+        Ar\ Month\ Code
+        Supplier\ Po\ #
+        AP\ Invoice\ #
         Qty
-        Ap Invoice Value (Not For Margin Calculation)
-        Cost Of Good Sold (Viz. Sales Qty)
+        Ap\ Invoice\ Value\ (Not\ For\ Margin\ Calculation)
+        Cost\ Of\ Good\ Sold\ (Viz.\ Sales\ Qty)
         Customs
-        International Freight
-        Domestic Inward Logistics
-        Domestic Warehouse
-        Domestic Outward Logistics
-        Type Of Customer
-        Customer Industry
-        Customer - Domestic / Exports
-        Product Category
+        International\ Freight
+        Domestic\ Inward\ Logistics
+        Domestic\ Warehouse
+        Domestic\ Outward\ Logistics
+        Type\ Of\ Customer
+        Customer\ Industry
+        Customer\ -\ Domestic\ /\ Exports
+        Product\ Category
         Brand
-        Type Of Supplier (Dvs)
-        Supplier - Domestic / Imports
-        Oem / Non Oem
-        Revenue Stream
-        Business Vertical
-        High Value / Low Value
-        Top 30
-        Month Cohort First Order
-        Quarter Cohort First Order
-        Month Cohort Last Order
-        Quarter Cohort Last Order
-        Year Cohort (So Fy)_First Order
-        Year Cohort (So Fy)_Last Order
-        Repeat / Churn / New
-        So Month Code
-        So Financial Year
-        So Quarter
-        Ar Month Code
-        Ar Financial Year
-        Supplier Month Cohort First Order
-        Supplier Quarter Cohort First Order
-        Supplier Month Cohort Last Order
-        Supplier Quarter Cohort Last Order
-        Supplier Year Cohort (So Fy)_First Order
-        Supplier Year Cohort (So Fy)_Last Order
-        Supplier Repeat / Churn / New
-        So Ranking
-        Magento Company Alias Ranking
-        Magento Supplier Ranking
-        Selling Price (Usd Million)
-        Landed (Usd Million)
-        Margin (Usd Million)
+        Type\ Of\ Supplier\ (Dvs)
+        Supplier\ -\ Domestic\ /\ Imports
+        Oem\ /\ Non\ Oem
+        Revenue\ Stream
+        Business\ Vertical
+        High\ Value\ /\ Low\ Value
+        Top\ 30
+        Month\ Cohort\ First\ Order
+        Quarter\ Cohort\ First\ Order
+        Month\ Cohort\ Last\ Order
+        Quarter\ Cohort\ Last\ Order
+        Year\ Cohort\ (So\ Fy)\ First\ Order
+        Year\ Cohort\ (So\ Fy)\ Last\ Order
+        Repeat\ /\ Churn\ /\ New
+        So\ Month\ Code
+        So\ Financial\ Year
+        So\ Quarter
+        Ar\ Month\ Code
+        Ar\ Financial\ Year
+        Supplier\ Month\ Cohort\ First\ Order
+        Supplier\ Quarter\ Cohort\ First\ Order
+        Supplier\ Month\ Cohort\ Last\ Order
+        Supplier\ Quarter\ Cohort\ Last\ Order
+        Supplier\ Year\ Cohort\ (So\ Fy)\ First\ Order
+        Supplier\ Year\ Cohort\ (So\ Fy)\ Last\ Order
+        Supplier\ Repeat\ /\ Churn\ /\ New
+        So\ Ranking
+        Magento\ Company\ Alias\ Ranking
+        Magento\ Supplier\ Ranking
+        Selling\ Price\ (Usd\ Million)
+        Landed\ (Usd\ Million)
+        Margin\ (Usd\ Million)
     )
     @model = SalesOrderRow
   end

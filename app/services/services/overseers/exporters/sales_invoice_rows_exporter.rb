@@ -4,20 +4,20 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
     super
 
     @columns = %w(
-        Inquiry Number
-        BM Number
-        Invoice Number
-        Invoice Date
-        Order Number
-        Order Date
-        Customer Name
-        Invoice Net Amount
-        Freight / Packing
-        Total Net Amount Including Freight
-        Invoice Tax Amount
-        Invoice Gross Amount
-        Branch (Bill From)
-        Invoice Status
+        Inquiry\ Number
+        BM\ Number
+        Invoice\ Number
+        Invoice\ Date
+        Order\ Number
+        Order\ Date
+        Customer\ Name
+        Invoice\ Net\ Amount
+        Freight\ /\ Packing
+        Total\ Net\ Amount\ Including\ Freight
+        Invoice\ Tax\ Amount
+        Invoice\ Gross\ Amount
+        Branch\ (Bill\ From)
+        Invoice\ Status
     )
     @model = SalesInvoiceRow
   end
