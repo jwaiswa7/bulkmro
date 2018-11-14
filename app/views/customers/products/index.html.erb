@@ -20,50 +20,6 @@
   <% if params[:view] == "list_view" %>
     <%= render partial: 'shared/layouts/datatable' %>
   <% else %>
-    <%= render layout: 'shared/layouts/grid' do %>
-      <br/>
-      <div class="form-row" id="grid_container">
-        <% if @products.count > 0 %>
-          <% @products.each do |product| %>
-            <div class="col-2">
-              <div class="card mb-2">
-                <div class="card-body">
-                  <% if product.images.first.present? %>
-                    <img src="<%= url_for(product.images.first) %>"/>
-                  <% else %>
-                    <img src="<%= image_path('coming_soon.png') %>"/>
-                  <% end %>
-                  <h5 class="mb-0 text-small">
-                    <strong><%= truncate(product.name, :length => 25) %> (#<%= product.sku %>)</strong></h5>
-                  <h5 class="mb-0 mt-1 text-small text-black-50 d-none"><strong><!-- ₹20,400 --></strong></h5>
-                  <hr class="my-2">
-                  <p class="mb-0 text-small text-black-50">
-                    <strong class="d-block"><%= product.brand.try(:name) %> <!--#71-670--></strong>
-                    <em class="d-block"><!--MOQ - 50--></em>
-                  </p>
-                </div>
-                <div class="card-footer p-2">
-                  <%= link_to "Add to Cart", customers_cart_items_path(product_id: product.id, quantity: 1), method: :post, remote: true, class: "btn btn-block btn-success" %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        <% else %>
-          <div class="col-12">
-            <div class="card mb-12">
-              <div class="card-body">
-                <p class="text-small text-black-50 ">
-                  <strong class="d-block ">No matching record found</strong>
-                </p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="col-12">
-        <%= paginate @products_paginate, remote: true, :params => {:view => "grid_view", :q => params[:q]} %>
-      </div>
-    <% end %>
+    <%= render partial: 'shared/layouts/grid' %>
   <% end %>
 </div>
