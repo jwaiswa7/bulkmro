@@ -8,6 +8,30 @@
     <div class="form-group">
       <%= f.input :name, label: 'Warehouse Name', :placeholder => 'e.g. Reliance Industries', :required => 'true', :class => 'form-control' %>
     </div>
+    <%= f.simple_fields_for :address do |address| %>
+       <div class="form-group">
+          <%= address.input :street1, label:"Street1"  %>
+        </div>
+        <div class="form-group">
+          <%= address.input :street2, label:"Street2"  %>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-md-3">
+            <%= address.input :country_code, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+          </div>
+
+            <div class="col-6 col-md-3">
+              <%= address.association :state, :wrapper => :custom_multi_select, collection: AddressState.indian %>
+            </div>
+
+          <div class="col-6 col-md-3">
+            <%= address.input :city_name %>
+          </div>
+          <div class="col-6 col-md-3">
+            <%= address.input :pincode %>
+          </div>
+        </div>
+    <% end %>
 
     <%= action_button(action_name, @warehouse) %>
   <% end %>
