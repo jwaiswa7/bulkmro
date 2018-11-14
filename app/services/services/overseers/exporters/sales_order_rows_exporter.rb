@@ -89,7 +89,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def call
-    model.status_Approved.where(:created_at => start_at..end_at).each do |row|
+    model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
 
@@ -112,7 +112,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :unit_price => row.unit_selling_price,
                     :freight => row.freight_cost_subtotal,
                     :tax_type => "", #remaining
-                    :tax_rate => sales_quote_row.tax_rate,
+                    :tax_rate => row.sales_quote_row.tax_rate,
                     :tax_amount => "",
                     :gross_total_selling => "",
                     :buying_rate => "", #remaining
@@ -138,10 +138,10 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Domestic_Warehouse => "",
                     :Domestic_Outward_Logistics => "",
                     :Type_Of_Customer => inquiry.company.company_type,
-                    :Customer_Industry => inquiry.company.industry.name,
+                    :Customer_Industry => inquiry.company.industry.try(:name),
                     :Customer => "", #Doubt
-                    :product_category => row.product.category.name,
-                    :brand => row.product.brand.name,
+                    :product_category => ( row.product.category.name if row.product.category.present? ),
+                    :brand => (row.product.brand.name if row.product.brand.present?),
                     :Type_Of_Supplier => "",
                     :Supplier_Domestic_Imports => "",
                     :Oem_Non_Oem => "",
