@@ -7,7 +7,7 @@ class Overseers::ApplicationPolicy
   end
 
   def all_roles?
-    admin_or_manager? || cataloging? || sales? || others? || logistics?
+    admin_or_manager? || cataloging? || sales? || others? || logistics? || hr?
   end
 
   def admin_or_manager?
@@ -54,8 +54,12 @@ class Overseers::ApplicationPolicy
     overseer.logistics?
   end
 
+  def hr?
+    overseer.hr?
+  end
+
   def index?
-    all_roles?
+    all_roles? && !hr?
   end
 
   def autocomplete?
