@@ -3,88 +3,88 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   def initialize
     super
 
-    @columns = %w(
-        Inside Sales Person
-        Inquiry Number
-        Bm #
-        Description
-        Company Alias
-        Order Date
-        Order Number
-        Qty
-        Selling Price (As Per So / Ar Invoice)
-        Supplier Name
-        Total Landed Cost
-        Margin
-        Margin (In %)
-        Client Order #
-        Client Order Date
-        Unit Price
-        Freight
-        Tax Type
-        Tax Rate
-        Tax Amount
-        Gross Total Selling
-        Buying Rate
-        Buying Total
-        Invoice Value
-        Invoice Value With Tax
-        So Month Code
-        quote_type
-        Price Currency
-        Document Rate
-        Company Name
-        AR Invoice #
-        AR Invoice Date
-        Ar Month Code
-        Supplier Po #
-        AP Invoice #
-        Qty
-        Ap Invoice Value (Not For Margin Calculation)
-        Cost Of Good Sold (Viz. Sales Qty)
-        Customs
-        International Freight
-        Domestic Inward Logistics
-        Domestic Warehouse
-        Domestic Outward Logistics
-        Type Of Customer
-        Customer Industry
-        Customer - Domestic / Exports
-        Product Category
-        Brand
-        Type Of Supplier (Dvs)
-        Supplier - Domestic / Imports
-        Oem / Non Oem
-        Revenue Stream
-        Business Vertical
-        High Value / Low Value
-        Top 30
-        Month Cohort First Order
-        Quarter Cohort First Order
-        Month Cohort Last Order
-        Quarter Cohort Last Order
-        Year Cohort (So Fy)_First Order
-        Year Cohort (So Fy)_Last Order
-        Repeat / Churn / New
-        So Month Code
-        So Financial Year
-        So Quarter
-        Ar Month Code
-        Ar Financial Year
-        Supplier Month Cohort First Order
-        Supplier Quarter Cohort First Order
-        Supplier Month Cohort Last Order
-        Supplier Quarter Cohort Last Order
-        Supplier Year Cohort (So Fy)_First Order
-        Supplier Year Cohort (So Fy)_Last Order
-        Supplier Repeat / Churn / New
-        So Ranking
-        Magento Company Alias Ranking
-        Magento Supplier Ranking
-        Selling Price (Usd Million)
-        Landed (Usd Million)
-        Margin (Usd Million)
-    )
+    @columns = [
+        'Inside Sales Person',
+        'Inquiry Number',
+        'Bm #',
+        'Description',
+        'Company Alias',
+        'Order Date',
+        'Order Number',
+        'Qty',
+        'Selling Price (As Per So / Ar Invoice)',
+        'Supplier Name',
+        'Total Landed Cost',
+        'Margin',
+        'Margin (In %)',
+        'Client Order #',
+        'Client Order Date',
+        'Unit Price',
+        'Freight',
+        'Tax Type',
+        'Tax Rate',
+        'Tax Amount',
+        'Gross Total Selling',
+        'Buying Rate',
+        'Buying Total',
+        'Invoice Value',
+        'Invoice Value With Tax',
+        'So Month Code',
+        'quote_type',
+        'Price Currency',
+        'Document Rate',
+        'Company Name',
+        'AR Invoice #',
+        'AR Invoice Date',
+        'Ar Month Code',
+        'Supplier Po #',
+        'AP Invoice #',
+        'Qty',
+        'Ap Invoice Value (Not For Margin Calculation)',
+        'Cost Of Good Sold (Viz. Sales Qty)',
+        'Customs',
+        'International Freight',
+        'Domestic Inward Logistics',
+        'Domestic Warehouse',
+        'Domestic Outward Logistics',
+        'Type Of Customer',
+        'Customer Industry',
+        'Customer - Domestic / Exports',
+        'Product Category',
+        'Brand',
+        'Type Of Supplier (Dvs)',
+        'Supplier - Domestic / Imports',
+        'Oem / Non Oem',
+        'Revenue Stream',
+        'Business Vertical',
+        'High Value / Low Value',
+        'Top 30',
+        'Month Cohort First Order',
+        'Quarter Cohort First Order',
+        'Month Cohort Last Order',
+        'Quarter Cohort Last Order',
+        'Year Cohort (So Fy)_First Order',
+        'Year Cohort (So Fy)_Last Order',
+        'Repeat / Churn / New',
+        'So Month Code',
+        'So Financial Year',
+        'So Quarter',
+        'Ar Month Code',
+        'Ar Financial Year',
+        'Supplier Month Cohort First Order',
+        'Supplier Quarter Cohort First Order',
+        'Supplier Month Cohort Last Order',
+        'Supplier Quarter Cohort Last Order',
+        'Supplier Year Cohort (So Fy)_First Order',
+        'Supplier Year Cohort (So Fy)_Last Order',
+        'Supplier Repeat / Churn / New',
+        'So Ranking',
+        'Magento Company Alias Ranking',
+        'Magento Supplier Ranking',
+        'Selling Price (Usd Million)',
+        'Landed (Usd Million)',
+        'Margin (Usd Million)'
+    ]
     @model = SalesOrderRow
   end
 
@@ -112,10 +112,10 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :unit_price => row.unit_selling_price,
                     :freight => row.freight_cost_subtotal,
                     :tax_type => "", #remaining
-                    :tax_rate => row.sales_quote_row.tax_rate,
+                    :tax_rate => row.sales_quote_row.tax_rate.tax_percentage,
                     :tax_amount => "",
                     :gross_total_selling => "",
-                    :buying_rate => "", #remaining
+                    :buying_rate => row.sales_quote_row.unit_cost_price,
                     :buying_total => "",
                     :invoice_value => "",
                     :invoice_value_with_tax => "",
@@ -127,7 +127,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :AR_Invoice => "",
                     :AR_Invoice_Date => "",
                     :AR_Month_Code => "",
-                    :Supplier_PO => "",
+                    :Supplier_PO => "", #po?
                     :AP_Invoice => "",
                     :Qty => "",
                     :AP_Invoice_not_for_margin_calculation => "",
@@ -139,11 +139,11 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Domestic_Outward_Logistics => "",
                     :Type_Of_Customer => inquiry.company.company_type,
                     :Customer_Industry => inquiry.company.industry.try(:name),
-                    :Customer => "", #Doubt
+                    :Customer => if inquiry.company.default_billing_address.country_code == "IN" then "Domestic" else "Exports" end,
                     :product_category => ( row.product.category.name if row.product.category.present? ),
                     :brand => (row.product.brand.name if row.product.brand.present?),
-                    :Type_Of_Supplier => "",
-                    :Supplier_Domestic_Imports => "",
+                    :Type_Of_Supplier => row.sales_quote_row.supplier.company_type,
+                    :Supplier_Domestic_Imports => if (inquiry.company.default_shipping_address.country_code == "IN" || sales_quote_row.supplier.addresses.first.country_code == "IN") then "Domestic" else "Imports" end,
                     :Oem_Non_Oem => "",
                     :Revenue_Stream => "",
                     :Business_Vertical => "",
