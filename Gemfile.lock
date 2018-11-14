@@ -434,6 +434,9 @@ GEM
       rack-protection (= 2.0.4)
       tilt (~> 2.0)
     sixarm_ruby_unaccent (1.2.0)
+    slack-ruby-bot (0.11.1)
+      hashie
+      slack-ruby-client (>= 0.6.0)
     slack-ruby-client (0.13.1)
       activesupport
       faraday (>= 0.9)
@@ -564,6 +567,7 @@ DEPENDENCIES
   sidekiq
   simple_form
   simple_xlsx_reader
+  slack-ruby-bot
   slack-ruby-client
   spreadsheet
   spring
