@@ -11,5 +11,5 @@ json.data (@tax_codes) do |tax_code|
 end
 
 json.recordsTotal @tax_codes.model.all.count
-json.recordsFiltered @indexed_taxcodes.total_count
+json.recordsFiltered @tax_codes.total_count
 json.draw params[:draw]
