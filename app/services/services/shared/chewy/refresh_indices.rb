@@ -1,9 +1,8 @@
+require "rake"
+
 class Services::Shared::Chewy::RefreshIndices < Services::Shared::BaseService
   def initialize
-    @indices = Chewy.create_indices
-    @indices.each do |index|
-      next if index.to_s.include? "::"
-      index.reset!
-    end
+    Rails.application.class.load_tasks
+    Rake::Task['chewy:reset'].invoke
   end
 end
