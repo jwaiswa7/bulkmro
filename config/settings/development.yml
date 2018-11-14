@@ -10,8 +10,7 @@ email_messages:
   reply_to_name: Bulk MRO Support
 
 slack:
-  bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF  # Sita
-#   bot_user_access_token: xoxb-395906857286-467196181812-vQamBs539SJOj14FCakTtd58  # Notification Bot
+  bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
   username: notification_bot
   icon_emoji: ':moneybag:'
 
