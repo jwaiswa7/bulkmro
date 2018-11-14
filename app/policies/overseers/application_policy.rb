@@ -94,6 +94,10 @@ class Overseers::ApplicationPolicy
     Pundit.policy_scope!(overseer, record.class)
   end
 
+  def export_rows?
+    false
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
