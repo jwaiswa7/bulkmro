@@ -2,10 +2,11 @@ class Overseers::OverseersController < Overseers::BaseController
   before_action :set_overseer, only: [:edit, :update]
 
   def index
-    service = Services::Overseers::Finders::Overseers.new(params)
-    service.call
-    @indexed_Overseers = service.indexed_records
-    @overseers = service.records
+    # service = Services::Overseers::Finders::Overseers.new(params)
+    # service.call
+    # @indexed_overseers = service.indexed_records
+    # @overseers = service.records
+    @overseers = ApplyDatatableParams.to(Overseer.all, params)
     authorize @overseers
   end
 
@@ -40,6 +41,7 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   private
+
   def overseer_params
     params.require(:overseer).permit(
         :first_name,

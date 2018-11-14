@@ -18,14 +18,13 @@ module DisplayHelper
     klass.class.name
   end
 
-  def format_enum(val,humanize_text: true)
+  def format_enum(val, humanize_text: true)
     val.to_s.truncate(17) if val.present?
     if humanize_text
       val.humanize
     else
       val
-    end
-
+    end if val.present?
   end
 
   def day_count(val)

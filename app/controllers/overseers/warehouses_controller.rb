@@ -2,11 +2,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   before_action :set_company, only: [:edit,:show,:update]
 
   def index
-    #@warehouses = ApplyDatatableParams.to(Warehouse.all, params)
-    service = Services::Overseers::Finders::Warehouses.new(params)
-    service.call
-    @indexed_warehouses = service.indexed_records
-    @warehouses = service.records
+    @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
     authorize @warehouses
   end
 

@@ -12,5 +12,5 @@ json.data (@overseers) do |overseer|
 end
 
 json.recordsTotal @overseers.model.all.count
-json.recordsFiltered @indexed_Overseers.total_count
+json.recordsFiltered @overseers.total_count
 json.draw params[:draw]
