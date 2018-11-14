@@ -18,6 +18,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         'Branch (Bill From)',
         'Invoice Status'
     ]
+
     @model = SalesInvoice
   end
 
@@ -37,7 +38,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
-                    :bill_from_branch => if inquiry.bill_from then inquiry.bill_from.address.state.name else "" end,
+                    :bill_from_branch => (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end

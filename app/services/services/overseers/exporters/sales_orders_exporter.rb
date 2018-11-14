@@ -18,6 +18,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Quote Type',
         'Opportunity Type'
     ]
+
     @model = SalesOrder
   end
 
