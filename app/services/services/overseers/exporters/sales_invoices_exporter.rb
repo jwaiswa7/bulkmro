@@ -3,21 +3,21 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
   def initialize
     super
 
-    @columns = %w(
-        Inquiry Number
-        Invoice Number
-        Invoice Date
-        Order Number
-        Order Date
-        Customer Name
-        Invoice Net Amount
-        Freight / Packing
-      	Total Net Amount Including Freight
-        Invoice Tax Amount
-        Invoice Gross Amount
-        Branch (Bill From)
-        Invoice Status
-    )
+    @columns = [
+        'Inquiry Number',
+        'Invoice Number',
+        'Invoice Date',
+        'Order Number',
+        'Order Date',
+        'Customer Name',
+        'Invoice Net Amount',
+        'Freight / Packing',
+        'Total Net Amount Including Freight',
+        'Invoice Tax Amount',
+        'Invoice Gross Amount',
+        'Branch (Bill From)',
+        'Invoice Status'
+    ]
     @model = SalesInvoice
   end
 

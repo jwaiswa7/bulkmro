@@ -3,21 +3,21 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
   def initialize
     super
 
-    @columns = %w(
-        Inquiry Number
-        Order Number
-        Order Date
-        Company Name
-        Company Alias
-        Order Net Amount
-        Order Tax Amount
-        Order Total Amount
-        Order Status
-        Inside Sales
-        Outside Sales
-        Quote Type
-        Opportunity Type
-    )
+    @columns = [
+        'Inquiry Number',
+        'Order Number',
+        'Order Date',
+        'Company Name',
+        'Company Alias',
+        'Order Net Amount',
+        'Order Tax Amount',
+        'Order Total Amount',
+        'Order Status',
+        'Inside Sales',
+        'Outside Sales',
+        'Quote Type',
+        'Opportunity Type'
+    ]
     @model = SalesOrder
   end
 
