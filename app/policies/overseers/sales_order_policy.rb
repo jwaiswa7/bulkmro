@@ -41,11 +41,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export?
   end
 
   def export_rows?
-    admin_or_manager?
+    allow_export?
   end
 
   def drafts_pending?
