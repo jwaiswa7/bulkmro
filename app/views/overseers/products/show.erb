@@ -62,6 +62,13 @@
               </div>
             <% end %>
 
+              <% if @product.tax_rate.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Tax Rate</strong>
+                  <%= @product.tax_rate %>
+              </div>
+              <% end %>
+
             <% if @product.measurement_unit %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Unit of Measurement</strong>
