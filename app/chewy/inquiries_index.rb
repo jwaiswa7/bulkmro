@@ -7,7 +7,7 @@ class InquiriesIndex < BaseIndex
     field :subject, analyzer: 'substring'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
-    field :sales_orders_ids, value: -> (record) { record.sales_orders.map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
+    field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number:nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
     field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
     field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
     field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }

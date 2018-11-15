@@ -2,6 +2,12 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_contact, only: [:show, :edit, :update]
 
   def index
+    # service = Services::Overseers::Finders::Contacts.new(params)
+    # service.call
+    # @indexed_contacts = service.indexed_records
+    # @contacts = service.records
+    # authorize @contacts
+
     @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
     authorize @contacts
   end

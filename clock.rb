@@ -24,13 +24,7 @@ every(20.minutes, 'refresh_smart_queue', :at => '06:00') do
 end
 
 every(1.day, 'refresh_indices', :at => '06:00') do
-  ProductsIndex.reset!
-  InquiriesIndex.reset!
-  SalesOrdersIndex.reset!
-  SalesQuotesIndex.reset!
-  SalesInvoicesIndex.reset!
-  SalesShipmentsIndex.reset!
-  PurchaseOrdersIndex.reset!
+  Services::Shared::Chewy::RefreshIndices.new
 end
 
 every(1.hour, 'adjust_dynos') do
@@ -48,6 +42,6 @@ every(1.day, 'gcloud_run_backups', :at => '23:00') do
 end
 
 every(1.day, 'gcloud_run_backups_alt', :at => '23:30') do
-  service = Services::Shared::Gcloud::RunBackups.new
+  service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
 end

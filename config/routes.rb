@@ -121,6 +121,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'export_all'
         get 'drafts_pending'
+        get 'export_rows'
       end
 
       scope module: 'sales_orders' do
@@ -137,6 +138,7 @@ Rails.application.routes.draw do
     resources :sales_invoices do
       collection do
         get 'export_all'
+        get 'export_rows'
       end
     end
 
@@ -253,6 +255,7 @@ Rails.application.routes.draw do
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
+    resources :invoices, :controller => :sales_invoices, only: %i[index show]
     resources :products, only: %i[index show]
 
     resource  :cart, :controller => :cart, only: [:show] do

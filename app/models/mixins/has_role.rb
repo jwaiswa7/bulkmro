@@ -14,7 +14,8 @@ module Mixins::HasRole
         procurement: 65,
         accounts: 70,
         logistics: 75,
-        cataloging: 80
+        cataloging: 80,
+        hr: 90
     }
 
     scope :managers, -> {where('role IN (?)', MANAGER_ROLES.map {|r| self.roles[r]})}
@@ -52,7 +53,7 @@ module Mixins::HasRole
     end
 
     def allow_inquiries?
-      manager? || cataloging? || logistics?
+      admin? || cataloging? || logistics?
     end
 
     def manager_or_cataloging?
