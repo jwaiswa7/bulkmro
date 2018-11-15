@@ -8,10 +8,10 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
 
   def show
     authorize @remote_request
-    render json: {
+    render json: JSON.pretty_generate({
         request: @remote_request.request,
         response: @remote_request.response
-    }
+    })
   end
 
   private
