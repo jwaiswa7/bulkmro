@@ -19,6 +19,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
+
     @model = SalesInvoiceRow
   end
 
@@ -35,8 +36,8 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
                     :order_number => sales_invoice.sales_order.order_number.to_s,
                     :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
-                    :invoice_net_amount => ('%.2f' % sales_order.calculated_total),
-                    :freight_and_packaging => ('%.2f' % sales_order.calculated_freight_cost_total || sales_invoice.metadata['shipping_amount']),
+                    :invoice_net_amount => (('%.2f' % sales_order.calculated_total_cost - sales_invoice.metadata['shipping_amount']) || '%.2f' % sales_order.calculated_total_cost_without_freight),
+                    :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
                     :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
                     :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
