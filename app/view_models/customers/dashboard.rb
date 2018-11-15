@@ -17,7 +17,7 @@ class Customers::Dashboard
   end
 
   def recent_sales_quotes
-    sales_quotes.first(5)
+    sales_quotes.last(5)
   end
 
   def recent_sales_orders
