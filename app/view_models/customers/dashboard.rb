@@ -25,7 +25,7 @@ class Customers::Dashboard
   end
 
   def recent_sales_invoices
-    sales_invoices.first(5)
+    sales_invoices.first(4)
   end
 
   def record
