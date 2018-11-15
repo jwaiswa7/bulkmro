@@ -18,5 +18,4 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def export_for_logistics?
     allow_logistics_format_export?
   end
-
 end

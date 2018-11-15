@@ -3,6 +3,20 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 
+<% provide :heading_buttons do %>
+  <% if policy(:sales_order).export_for_logistics? %>
+    <a href="<%= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
+      <i class="fal fa-download mr-1"></i>Export Sales Orders (For Logistics)
+    </a>
+  <% end %>
+
+  <% if policy(:sales_order).export_rows? %>
+    <a href="<%= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
+      <i class="fal fa-download mr-1"></i>Export Sales Order Rows
+    </a>
+  <% end %>
+<% end %>
+
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
