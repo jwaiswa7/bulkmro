@@ -1,80 +1,127 @@
-<div class="col-12">
-  <div class="form-row mt-3 mt-lg-4">
-      <div class="col-md-6">
-        <div class="card mb-2">
-          <div class="card-body">
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mb-0"><strong>Quotes</strong></p>
-              <h1 class="mb-0 display-4"><%= @dashboard.sales_quotes.count %></h1>
-            </div>
+<% provide :container_fluid, true %>
 
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mt-3"><strong>Recent Quotes</strong>
-              <div class="list-group list-group-flush">
-                <% @dashboard.recent_sales_quotes.each do |sales_quote| %>
-                  <a href="<%= customers_quote_path(sales_quote) %>" class="list-group-item list-group-item-action p-1">
-                    <span class="float-right"><%= inquiry_status_badge(sales_quote.inquiry.status) %></span>
-                    <strong>#<%= sales_quote.inquiry.inquiry_number %></strong> - <%= sales_quote.inquiry.subject.truncate(40) %>
-                  </a>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i> All Quotes</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="card mb-2">
-          <div class="card-body">
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mb-0"><strong>Orders</strong></p>
-              <h1 class="mb-0 display-4"><%= @dashboard.sales_orders.count %></h1>
-            </div>
+<div class="container-fluid" style="padding-top: 70px;">
+   <div class="card mb-2">
+     <div class="card-body">
+       <div class="text-left">
+         <p class="text-uppercase text-black-50 mb-0" style="font-size: 20px;"><strong>Recent Quotes</strong></p>
+       </div>
 
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mt-3"><strong>Recent Orders</strong>
-              <div class="list-group list-group-flush">
-                <% @dashboard.recent_sales_orders.each do |sales_order| %>
-                  <a href="<%= customers_order_path(sales_order) %>" class="list-group-item list-group-item-action p-1">
-                    <span class="float-right"><%= inquiry_status_badge(sales_order.remote_status) %></span>
-                    <strong>#<%= sales_order.order_number %></strong> - <%= sales_order.inquiry.subject.truncate(40) %>
-                  </a>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i> All Orders</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mb-0"><strong>Products</strong></p>
-              <h1 class="mb-0 display-4"><%= @dashboard.products.count %></h1>
-            </div>
+       <div class="text-left">
+         <div class="list-group list-group-flush">
+           <table class="table table-striped">
+             <thead>
+             <th scope="col">Quote #</th>
+             <th scope="col">Date</th>
+             <th scope="col">Line Items</th>
+             <th scope="col">Total</th>
+             <th scope="col">Sales Person</th>
+             <th scope="col">Valid Upto</th>
+             <th scope="col">Status</th>
+             </thead>
+             <tbody>
+             <% @dashboard.recent_sales_quotes.each do |sales_quote| %>
+               <tr>
+                 <td><%= sales_quote.inquiry.inquiry_number %></td>
+                 <td><%= format_date(sales_quote.created_at) %></td>
+                 <td><%= sales_quote.rows.size %></td>
+                 <td><%= format_currency(sales_quote.calculated_total) %></td>
+                 <td><%= sales_quote.inquiry.inside_sales_owner.to_s %></td>
+                 <td><%= format_date(sales_quote.inquiry.valid_end_time) %></td>
+                 <td><%= inquiry_status_badge(sales_quote.inquiry.status) %></td>
+               </tr>
+             <% end %>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+     <div class="card-footer">
+       <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View More</a>
+     </div>
+   </div>
 
-            <div class="text-left">
-              <p class="text-uppercase text-black-50 mt-3"><strong>Most Ordered Products</strong>
-              <div class="list-group list-group-flush">
-                <% @dashboard.most_ordered_products.each do |product, count| %>
-                  <div  class="list-group-item list-group-item-action p-1">
-                    <span class="float-right"><%= count %></span>
-                    <strong><%= product.name.truncate(40) %></strong>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer">
-            <a href="<%= customers_products_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i> All Products</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+   <div class="card mb-2" style="margin-top: 50px;">
+     <div class="card-body">
+       <div class="text-left">
+         <p class="text-uppercase text-black-50 mb-0" style="font-size: 20px;"><strong>Recent Orders</strong></p>
+       </div>
+
+       <div class="text-left">
+         <div class="list-group list-group-flush">
+           <table class="table table-striped">
+             <thead>
+               <th scope="col">Order #</th>
+               <th scope="col">Quote #</th>
+               <th scope="col">Order Date</th>
+               <th scope="col">PO #</th>
+               <th scope="col">Company</th>
+               <th scope="col">PO Number</th>
+               <th scope="col">Order Total</th>
+               <th scope="col">Order Status</th>
+             </thead>
+             <tbody>
+               <% @dashboard.recent_sales_orders.each do |sales_order| %>
+                 <tr>
+                   <td><%= sales_order.order_number %></td>
+                   <td><%= sales_order.inquiry.inquiry_number %></td>
+                   <td><%= format_date(sales_order.created_at) %></td>
+                   <td><%= sales_order.inquiry.customer_po_number %></td>
+                   <td><%= sales_order.inquiry.company.to_s %></td>
+                   <td>-</td>
+                   <td><%= format_currency(sales_order.calculated_total_with_tax) %></td>
+                   <td><%= sales_order_status_badge(sales_order.order_status.to_s) %></td>
+                 </tr>
+               <% end %>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+     <div class="card-footer">
+       <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i> View More</a>
+     </div>
+   </div>
+
+   <div class="card mb-2" style="margin-top: 50px;">
+     <div class="card-body">
+       <div class="text-left">
+         <p class="text-uppercase text-black-50 mb-0" style="font-size: 20px;"><strong>Recent Invoices</strong></p>
+       </div>
+
+       <div class="text-left">
+         <div class="list-group list-group-flush">
+           <table class="table table-striped">
+             <thead>
+               <th scope="col">Invoice #</th>
+               <th scope="col">Inquiry #</th>
+               <th scope="col">Order #</th>
+               <th scope="col">Line Items</th>
+               <th scope="col">Status</th>
+               <th scope="col">Inside Sales</th>
+               <th scope="col">Outside Sales</th>
+               <th scope="col">Created At</th>
+             </thead>
+             <tbody>
+               <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
+                 <tr>
+                   <td><%= sales_invoice.invoice_number %></td>
+                   <td><%= sales_invoice.inquiry.inquiry_number %></td>
+                   <td><%= sales_invoice.sales_order.order_number %></td>
+                   <td><%= sales_invoice.rows.count %></td>
+                   <td><%= sales_invoice.status %></td>
+                   <td><%= sales_invoice.inquiry.inside_sales_owner.to_s %></td>
+                   <td><%= sales_invoice.inquiry.outside_sales_owner.to_s %></td>
+                   <td><%= format_date(sales_invoice.created_at) %></td>
+                 </tr>
+               <% end %>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+     <div class="card-footer">
+       <a href="<%= customers_invoices_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i> View More</a>
+     </div>
+   </div>
+ </div>
