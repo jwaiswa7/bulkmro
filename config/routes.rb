@@ -98,6 +98,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :customer_products do
+      collection do
+        get 'autocomplete'
+      end
+    end
+
     resources :products do
       member do
         get 'customer_bp_catalog'
@@ -223,11 +229,6 @@ Rails.application.routes.draw do
 
       scope module: 'companies' do
         resources :addresses do
-          collection do
-            get 'autocomplete'
-          end
-        end
-        resources :customer_products, only: [:index, :show, :edit, :update] do
           collection do
             get 'autocomplete'
           end
