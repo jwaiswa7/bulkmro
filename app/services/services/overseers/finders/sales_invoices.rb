@@ -32,7 +32,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def sort_definition
-    {:invoice_number => :desc}
+    {:created_at => :desc}
   end
 
   def model_klass
