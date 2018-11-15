@@ -13,6 +13,7 @@ class SalesInvoicesIndex < BaseIndex
     field :inside_sales_owner, value: -> (record) {record.inquiry.inside_sales_owner.to_s}, analyzer: 'substring'
     field :outside_sales_owner_id, value: -> (record) {record.inquiry.outside_sales_owner.id if record.inquiry.outside_sales_owner.present?}
     field :outside_sales_owner, value: -> (record) {record.inquiry.outside_sales_owner.to_s}, analyzer: 'substring'
+    field :company_id, value: -> (record) { record.inquiry.company.id }, type: 'integer'
     field :inside_sales_executive, value: -> (record) {record.inquiry.inside_sales_owner_id}
     field :outside_sales_executive, value: -> (record) {record.inquiry.outside_sales_owner_id}
 

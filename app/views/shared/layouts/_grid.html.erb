@@ -54,10 +54,11 @@
             <% end %>
             <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
             <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(product.latest_unit_cost_price.to_f) %></strong></h5>
+
             <hr class="my-2">
             <p class="mb-0 text-small text-black-50">
-              <strong class="d-block"><%= product.brand.try(:name) %> #71-670</strong>
-              <em class="d-block">MOQ - 50</em>
+              <strong class="d-block"><%= product.brand.try(:name) %></strong>
+<!--              <em class="d-block">MOQ - 50</em>-->
             </p>
           </div>
           <div class="card-footer p-2">
