@@ -1303,7 +1303,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def sales_invoices_reporting_data
     service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
-    service.loop(limit) do |x|
+    service.loop(nil) do |x|
 
       sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
 
@@ -1323,6 +1323,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       else
         sales_invoice = SalesInvoice.new
         sales_invoice.is_legacy = true
+        sales_invoice.invoice_number = x.get_column('invoice_number')
         if sales_invoice.report_total.present?
           sales_invoice.report_total = sales_invoice.report_total + x.get_column('report_total').to_f
         else

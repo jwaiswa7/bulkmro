@@ -23,7 +23,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
   end
 
   def call
-    model.where(:created_at => start_at..end_at).order(invoice_number: :asc).each do |sales_invoice|
+    model.where(:created_at => start_at..end_at).where.not(is_legacy: true).order(invoice_number: :asc).each do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
       rows.push({
@@ -35,9 +35,9 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
                     :invoice_net_amount => (('%.2f' % (sales_order.calculated_total_cost.to_f - sales_invoice.metadata['shipping_amount'].to_f) ) || '%.2f' % sales_order.calculated_total_cost_without_freight),
                     :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
-                    :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
-                    :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
-                    :gross_amount => ('%.2f' % sales_order.calculated_total_with_tax),
+                    :total_with_freight => ('%.2f' % sales_invoice.metadata['subtotal']),
+                    :tax_amount => ('%.2f' % sales_invoice.metadata['tax_amount']),
+                    :gross_amount => ('%.2f' % sales_invoice.metadata['grand_total']),
                     :bill_from_branch => (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
