@@ -156,6 +156,7 @@ class Inquiry < ApplicationRecord
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
+    inquiry.validates_presence_of :customer_committed_date
   end
 
   def has_sales_orders_and_not_legacy?
