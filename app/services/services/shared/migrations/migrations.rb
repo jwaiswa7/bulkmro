@@ -78,19 +78,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overseer.first_name = x.get_column('firstname')
         overseer.last_name = x.get_column('lastname')
         overseer.role = case role_name
-              when :sales
-                if identifier == 'inside'
-                  :inside_sales_executive
-                elsif identifier == 'outside'
-                  :outside_sales_executive
-                elsif identifier == 'outside/manager'
-                  :outside_sales_team_leader
-                else
-                  :sales
-                end
-              else
-                role_name
-              end
+                        when :sales
+                          if identifier == 'inside'
+                            :inside_sales_executive
+                          elsif identifier == 'outside'
+                            :outside_sales_executive
+                          elsif identifier == 'outside/manager'
+                            :outside_sales_team_leader
+                          else
+                            :sales
+                          end
+                        else
+                          role_name
+                        end
         overseer.function = x.get_column('user_function')
         overseer.department = x.get_column('user_department')
         overseer.status = status_mapping[x.get_column('is_active')]
@@ -286,7 +286,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       password = Devise.friendly_token
       if contact.new_record? || update_if_exists
         contact.legacy_email = x.get_column('email', downcase: true, remove_whitespace: true),
-        contact.account = account
+            contact.account = account
         contact.first_name = first_name
         contact.last_name = last_name
         contact.prefix = x.get_column('prefix')
@@ -354,7 +354,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         company.remote_uid = x.get_column('cmp_id')
         company.legacy_email = x.get_column('cmp_email', downcase: true)
         company.default_payment_option = payment_option
-        company.inside_sales_owner =  inside_sales_owner
+        company.inside_sales_owner = inside_sales_owner
         company.outside_sales_owner = outside_sales_owner
         company.sales_manager = sales_manager
         company.site = x.get_column('cmp_website')
@@ -388,7 +388,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       contact_email = x.get_column('email', downcase: true)
       if contact_email && company_name
         company = Company.acts_as_customer.find_by_name(company_name)
-        
+
         if company.present?
           company_contact = CompanyContact.where(company: company, contact: Contact.find_by_email(contact_email)).first_or_initialize
           company_contact.remote_uid = x.get_column('sap_id')
@@ -619,14 +619,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-          :name => x.get_column('Account Name'),
-          :street1 => x.get_column('Street'),
-          :street2 => x.get_column('Block'),
-          :pincode => x.get_column('Zip Code'),
-          :city_name => x.get_column('City'),
-          :country_code => x.get_column('Country'),
-          :gst => x.get_column('GST'),
-          :state => AddressState.find_by_region_code(x.get_column('State'))
+            :name => x.get_column('Account Name'),
+            :street1 => x.get_column('Street'),
+            :street2 => x.get_column('Block'),
+            :pincode => x.get_column('Zip Code'),
+            :city_name => x.get_column('City'),
+            :country_code => x.get_column('Country'),
+            :gst => x.get_column('GST'),
+            :state => AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -780,7 +780,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
       legacy_id = x.get_column('quotation_id', downcase: true, remove_whitespace: true)
 
-      next if ( inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+      next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
       if inquiry.new_record? || update_if_exists
@@ -1238,4 +1238,100 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+
+  def legacy_sales_order_reporting_data
+    service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
+
+    skips = []
+    total = 0
+    service.loop(nil) do |x|
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_no').to_i)
+      sales_order = SalesOrder.where(order_number: x.get_column('order_number').to_i) || SalesOrder.find_by_remark(x.get_column('order_number'))
+      if sales_order.blank?
+        sales_quote = nil
+        if inquiry.present?
+          sales_quote = inquiry.final_sales_quote.present? ? inquiry.final_sales_quote : inquiry.sales_quotes.last
+        end
+
+        sales_order = SalesOrder.new
+        sales_order.sales_quote = sales_quote
+        begin
+          sales_order.save(validate: false)
+        rescue
+
+          puts "-----------------------"
+          puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
+          puts "-----------------------"
+        end
+        sales_order.order_number = x.get_column('order_number').is_a?(Numeric) ? x.get_column('order_number') : sales_order.id
+        sales_order.remark = x.get_column('order_number')
+        sales_order.report_total = x.get_column('report_total').to_f
+        sales_order.mis_date = x.get_column('mis_date')
+        sales_order.status = "Approved"
+        begin
+          sales_order.save(validate: false)
+        rescue
+          skips << x.get_column('order_number')
+          puts "-----------------------"
+          puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
+          puts "-----------------------"
+        end
+      else
+        sales_order.each do |so|
+
+          so.report_total = so.report_total.present? ? so.report_total + x.get_column('report_total').to_f : x.get_column('report_total').to_f
+          so.mis_date = x.get_column('mis_date')
+          begin
+            so.save(validate: false)
+          rescue
+            skips << x.get_column('order_number')
+            puts "-----------------------"
+            puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
+            puts "-----------------------"
+          end
+        end
+      end
+
+    end
+  end
+
+
+  def sales_order_mis_date
+
+  end
+
+  def sales_invoices_reporting_data
+    service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
+    service.loop(limit) do |x|
+
+      sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
+
+
+      if sales_invoice.present?
+
+        sales_invoice.each do |si|
+          si.is_legacy = true
+          if si.report_total.present?
+            si.report_total = si.report_total + x.get_column('report_total').to_f
+          else
+            si.report_total = x.get_column('report_total')
+          end
+          si.mis_date = x.get_column('mis_date')
+          si.save(validate: false)
+        end
+      else
+        sales_invoice = SalesInvoice.new
+        sales_invoice.is_legacy = true
+        if sales_invoice.report_total.present?
+          sales_invoice.report_total = sales_invoice.report_total + x.get_column('report_total').to_f
+        else
+          sales_invoice.report_total = x.get_column('report_total')
+        end
+        sales_invoice.mis_date = x.get_column('mis_date')
+        sales_invoice.save(validate: false)
+      end
+    end
+  end
+
 end
