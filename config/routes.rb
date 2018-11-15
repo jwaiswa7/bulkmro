@@ -113,6 +113,16 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :kits do
+      member do
+      end
+
+      collection do
+        get 'autocomplete'
+      end
+
+    end
+
     resources :sales_orders do
       collection do
         get 'pending'

@@ -47,22 +47,31 @@ class Resources::Item < Resources::ApplicationResource
         U_Meta_Key: record.meta_keyword, # Meta Keyword
         GSTRelevnt: "tYES",
         GSTTaxCategory: "gtc_Regular",
-        U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class
+        U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class,
+        MaterialType: "mt_FinishedGoods",
+        Excisable: "tNO"
     }
 
     if record.is_service
       params.merge!({
                         SACEntry: record.best_tax_code.try(:remote_uid),
                         ManageBatchNumbers: "tNO",
-                        InventoryItem: 'tNO',
-                        MaterialType: "mt_FinishedGoods"
+                        InventoryItem: "tNO"
                     })
     else
       params.merge!({
-                        InventoryItem: 'tYES',
-                        ManageBatchNumbers: 'tYES',
-                        ChapterID: record.best_tax_code.try(:remote_uid),
-                        MaterialType: 3
+                        InventoryItem: "tYES",
+                        ManageBatchNumbers: "tYES",
+                        ChapterID: record.best_tax_code.try(:remote_uid)
+                    })
+    end
+
+    if record.is_kit
+      params.merge!({
+                        InventoryItem: "tNO",
+                        ManageBatchNumbers: "tNO",
+                        PurchaseItem: "tNO",
+                        SalesItem: "tYES"
                     })
     end
 

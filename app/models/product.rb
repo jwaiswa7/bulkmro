@@ -110,8 +110,12 @@ class Product < ApplicationRecord
     self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
   end
 
-  def is_kit?
+  def is_kit
     self.kit.present?
+  end
+
+  def is_kit_product
+    self.kit_product_row.present?
   end
 
   def brand_name

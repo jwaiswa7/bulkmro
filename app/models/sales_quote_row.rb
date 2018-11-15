@@ -166,7 +166,7 @@ class SalesQuoteRow < ApplicationRecord
     (total_tax / conversion_rate)
   end
 
-  def taxation
+  def  taxation
     service = Services::Overseers::SalesQuotes::Taxation.new(self)
     service.call
     service
