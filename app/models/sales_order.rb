@@ -85,6 +85,11 @@ class SalesOrder < ApplicationRecord
       :'Order Deleted' => 70
   }, _prefix: true
 
+  enum customer_status: {
+      :'Delivered' => 1,
+      :'Not Delivered' => 0
+  }, _prefix: true
+
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
 
   def confirmed?
@@ -113,6 +118,10 @@ class SalesOrder < ApplicationRecord
 
   def update_index
     SalesOrdersIndex::SalesOrder.import([self.id])
+  end
+
+  def customer_status
+    self.remote_status == 'Partially Delivered: GRN Received' ? 1 : 0
   end
 
   def filename(include_extension: false)
