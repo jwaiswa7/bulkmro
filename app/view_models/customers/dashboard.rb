@@ -9,7 +9,7 @@ class Customers::Dashboard
   end
 
   def sales_quotes
-    SalesQuote.joins(:inquiry).where('inquiries.company_id in (?)', record.companies.pluck(:id)).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Lost']).where.not(:sent_at => nil).distinct(:inquiry_id).latest.uniq {|p| p.inquiry_id}
+    SalesQuote.includes(:inquiry).joins(:inquiry).where('inquiries.company_id in (?)', record.companies.pluck(:id)).where('inquiries.status not in (?)', Inquiry.statuses[:'Order Lost']).where.not(:sent_at => nil).order("inquiries.inquiry_number").distinct(:inquiry_id).uniq {|p| p.inquiry_id}
   end
 
   def sales_invoices

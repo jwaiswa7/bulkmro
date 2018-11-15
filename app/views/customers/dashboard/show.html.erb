@@ -28,7 +28,7 @@
                 <td><%= format_currency(sales_quote.calculated_total) %></td>
                 <td><%= sales_quote.inquiry.inside_sales_owner.to_s %></td>
                 <td><%= format_date(sales_quote.inquiry.valid_end_time) %></td>
-                <td><%= inquiry_status_badge(sales_quote.inquiry.status) %></td>
+                <td><%= inquiry_status_badge(sales_quote.changed_status(sales_quote.inquiry.status)) %></td>
               </tr>
             <% end %>
             </tbody>
