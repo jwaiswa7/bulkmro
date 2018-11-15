@@ -32,7 +32,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def index
-    @customer_orders = current_contact.customer_orders
+    @customer_orders = ApplyDatatableParams.to(current_contact.customer_orders, params)
     authorize @customer_orders
   end
 
