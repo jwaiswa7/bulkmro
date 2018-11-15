@@ -119,5 +119,31 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def filter_by_status(only_remote_approved: false)
+    if only_remote_approved
+      {
+          bool: {
+              should: [
+                  {
+                      term: {status: Inquiry.statuses[:Approved]},
+                  },
+              ],
+          },
+
+      }
+    else
+      {
+          bool: {
+              should: [
+                  {
+                      terms: {status: Inquiry.statuses.except(:'SO Rejected by Sales Manager', :'Rejected by Accounts', :'Regret', :'Order Lost').values},
+                  },
+              ],
+          },
+      }
+    end
+  end
+
+
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :search_filters, :range_filters
 end
