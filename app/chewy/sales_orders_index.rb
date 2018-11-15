@@ -15,6 +15,7 @@ class SalesOrdersIndex < BaseIndex
     field :legacy_status, value: -> (record) {record.legacy? ? 'legacy' : 'not_legacy'}
     field :remote_status_string, value: -> (record) {record.remote_status.to_s}, analyzer: 'substring'
     field :remote_status, value: -> (record) {remote_statuses[record.remote_status]}
+    field :customer_status, value: -> (record) {record.customer_status.to_s}
     field :quote_total, value: -> (record) {record.sales_quote.calculated_total.to_i if record.sales_quote.calculated_total.present?}
     field :order_total, value: -> (record) {record.calculated_total.to_i if record.calculated_total.present?}
     field :customer_po_number, value: -> (record) {record.inquiry.customer_po_number}

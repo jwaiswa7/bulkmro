@@ -115,6 +115,10 @@ class SalesOrder < ApplicationRecord
     SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
+  def customer_status
+    self.remote_status == 'Partially Delivered: GRN Received' ? 'Delivered' : 'Not delivered'
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
