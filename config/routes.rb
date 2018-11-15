@@ -122,6 +122,7 @@ Rails.application.routes.draw do
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
+        get 'export_for_logistics'
       end
 
       scope module: 'sales_orders' do
@@ -139,6 +140,7 @@ Rails.application.routes.draw do
       collection do
         get 'export_all'
         get 'export_rows'
+        get 'export_for_logistics'
       end
     end
 
