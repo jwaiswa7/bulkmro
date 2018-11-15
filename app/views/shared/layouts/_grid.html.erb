@@ -44,7 +44,7 @@
 <div class="form-row" id="grid_container">
   <% if @products.count > 0 %>
     <% @products.each do |product| %>
-      <div class="col-2">
+      <div class="col-md-2 col-sm-6 col-xs-12">
         <div class="card mb-2">
           <div class="card-body">
             <% if product.images.first.present? %>
