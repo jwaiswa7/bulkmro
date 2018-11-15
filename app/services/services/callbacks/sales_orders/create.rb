@@ -25,6 +25,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
 
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
               sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
+              sales_order.update_index
               return_response("Order Created Successfully")
             rescue => e
               return_response(e.message, 0)
@@ -36,12 +37,12 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
             sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
             sales_order.approval.destroy! if sales_order.approval.present?
+            sales_order.update_index
             return_response("Order Rejected Successfully")
           rescue => e
             return_response(e.message, 0)
           end
         end
-        sales_order.update_index
       else
         return_response("Order Not Processed", 0)
       end

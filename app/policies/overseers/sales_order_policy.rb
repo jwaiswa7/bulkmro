@@ -41,7 +41,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export?
+  end
+
+  def export_rows?
+    allow_export?
+  end
+
+  def export_for_logistics?
+    allow_logistics_format_export?
   end
 
   def drafts_pending?

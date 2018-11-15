@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
   def initialize
     super
 
-    @columns = ['name', 'comapny_alias', 'industry', 'remote_uid', 'state_name' ,'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
+    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name' ,'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
     @model = Company
   end
 

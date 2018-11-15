@@ -5,11 +5,11 @@ class RenderPdfToFile < BaseFunction
 
     pdf_string = WickedPdf.new.pdf_from_string(
         action_view.render(
-            :template => ['overseers', 'inquiries', record.class.name.pluralize.underscore, 'show.pdf'].join('/'),
+            template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
             :locals => {
                 :record => record,
             },
-            :layout => 'overseers/inquiries/layouts/show.pdf',
+            layout: 'shared/layouts/pdf_templates/show',
         ),
         :pdf => record.filename,
         :layout => false,

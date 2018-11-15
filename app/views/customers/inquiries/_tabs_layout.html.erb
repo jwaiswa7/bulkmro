@@ -1,0 +1,22 @@
+<div class="page-header">
+  <div class="">
+    <h2>
+      <strong>Inquiry #<%= @inquiry.inquiry_number %></strong>
+      <small class="text-black-50 mb-2 ml-2 float-right"><strong><%= format_date(@inquiry.created_at) %></strong></small>
+    </h2>
+    <p class="mt-2 mt-md-0">Inquiry details for <strong>'<%= @inquiry.subject %>'</strong>.</p>
+  </div>
+</div>
+
+<section class="pb-4 pb-lg-5">
+  <ul class="nav nav-tabs nav-fill">
+    <%= nav_item('Inquiry', customers_inquiry_path(@inquiry), true )%>
+    <%= nav_item('Sales Quotes', customers_inquiry_sales_quotes_path(@inquiry), @inquiry.sales_quotes.present? )%>
+    <%= nav_item('Sales Orders', customers_inquiry_sales_orders_path(@inquiry), @inquiry.sales_orders.present? )%>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane fade active show" role="tabpanel">
+      <%= yield %>
+    </div>
+  </div>
+</section>

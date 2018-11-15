@@ -7,7 +7,7 @@ class Overseers::ApplicationPolicy
   end
 
   def all_roles?
-    admin_or_manager? || cataloging? || sales? || others? || logistics?
+    admin_or_manager? || cataloging? || sales? || others? || logistics? || hr?
   end
 
   def admin_or_manager?
@@ -54,8 +54,12 @@ class Overseers::ApplicationPolicy
     overseer.logistics?
   end
 
+  def hr?
+    overseer.hr?
+  end
+
   def index?
-    all_roles?
+    all_roles? && !hr?
   end
 
   def autocomplete?
@@ -92,6 +96,22 @@ class Overseers::ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(overseer, record.class)
+  end
+
+  def allow_export?
+    ['vijay.manjrekar@bulkmro.com','bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com' ].include? overseer.email
+  end
+
+  def allow_logistics_format_export?
+    ['bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','shravan.agarwal@bulkmro.com' ].include? overseer.email
+  end
+
+  def export_rows?
+    false
+  end
+
+  def export_for_logistics?
+    false
   end
 
   class Scope

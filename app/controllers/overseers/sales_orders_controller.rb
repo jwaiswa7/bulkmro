@@ -27,6 +27,26 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def export_rows
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
+  def export_for_logistics
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
   def index
     authorize :sales_order
 
