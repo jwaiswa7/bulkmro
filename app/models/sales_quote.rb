@@ -72,4 +72,18 @@ class SalesQuote < ApplicationRecord
         ('pdf' if include_extension)
     ].compact.join('.')
   end
+
+  def changed_status(status)
+    if status == 'New Inquiry' || status == 'Acknowledgement Mail'
+      'Inquiry Sent'
+    elsif status == 'Cross Reference' || status == 'Preparing Quotation' || status == 'Supplier RFQ Sent'
+      'Preparing Quotation'
+    elsif status == 'Quotation Sent' || status == 'Follow Up on Quotation' || status == 'Expected Order'
+      'Quotation Received'
+    elsif status == 'SO Draft: Pending Accounts Approval' || status == 'SO Rejected by Sales Manager' || status == 'Order Won' || status == 'Draft SO for Approval by Sales Manager'
+      'Purchase Order Issued'
+    elsif status == 'SO Not Created-Pending Customer PO Revision'
+      'Purchase Order Revision Pending'
+    end
+  end
 end
