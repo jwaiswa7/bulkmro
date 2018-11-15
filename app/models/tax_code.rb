@@ -4,9 +4,8 @@ class TaxCode < ApplicationRecord
   has_many :products
 
   validates_presence_of :code
-
   validates_presence_of :remote_uid
-
+  scope :with_includes, -> {includes(:products)}
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_service ||= false
@@ -18,10 +17,6 @@ class TaxCode < ApplicationRecord
   end
 
   def to_s
-    "#{self.code} (#{self.gst_rate})"
-  end
-
-  def gst_rate
-    self.tax_percentage ? "GST #{self.tax_percentage}%" : ' GST N/A'
+    "#{self.code}"
   end
 end

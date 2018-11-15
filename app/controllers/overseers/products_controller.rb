@@ -99,6 +99,16 @@ class Overseers::ProductsController < Overseers::BaseController
     end
   end
 
+  def export_all
+    authorize :inquiry
+    service = Services::Overseers::Exporters::ProductsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv {send_data service.call, filename: service.filename}
+    end
+  end
+
   private
 
   def product_params
@@ -110,7 +120,9 @@ class Overseers::ProductsController < Overseers::BaseController
         :brand_id,
         :category_id,
         :tax_code_id,
-        :measurement_unit_id
+        :tax_rate_id,
+        :measurement_unit_id,
+        :images => []
     )
   end
 

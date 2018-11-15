@@ -1,4 +1,5 @@
 <%= provide :container_fluid, true %>
+<% provide :can_be_directly_exported, true %>
 <% provide :can_be_ajaxed, true %>
 
 <% content_for :header_row do %>
@@ -7,8 +8,8 @@
   <th class="no-sort desktop">Addresses</th>
   <th class="no-sort desktop">Contacts</th>
   <th class="no-sort desktop">Inquiries</th>
-  <th class="desktop" data-name="is_supplier">Is Supplier</th>
-  <th class="desktop" data-name="is_customer">Is Customer</th>
+  <th class="no-sort desktop" data-name="is_supplier">Is Supplier</th>
+  <th class="no-sort desktop" data-name="is_customer">Is Customer</th>
   <th class="no-sort desktop">SAP Status</th>
   <th class="desktop" data-name="created_at">Created</th>
 <% end %>

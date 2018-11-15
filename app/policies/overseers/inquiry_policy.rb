@@ -1,10 +1,14 @@
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
+  def index?
+    manager_or_sales? || cataloging? || logistics?
+  end
+
   def index_pg?
     index?
   end
 
   def smart_queue?
-    index?
+    manager_or_sales?
   end
 
   def new_email_message?
@@ -20,7 +24,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    can_manage_inquiry?
+    can_manage_inquiry? || cataloging?
   end
 
   def new_list_import?
@@ -40,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    inside_sales_manager? || admin?
+    allow_export?
   end
 
   def export?
@@ -88,11 +92,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_shipments?
-    edit? && record.invoices.present?
+    edit? && record.shipments.present?
   end
 
   def sales_invoices?
-    edit? && record.shipments.present?
+    edit? && record.invoices.present?
   end
 
   class Scope
@@ -111,44 +115,4 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       end
     end
   end
-
-
-
-
-  # def edit_rfqs?
-  #   !record.rfqs_generated? && record.suppliers_selected?
-  # end
-  #
-  # def update_rfqs?
-  #   edit_rfqs?
-  # end
-
-  # def edit_rfqs_mailer_preview?
-  #   edit_rfqs?
-  # end
-
-  # def edit_quotations?
-  #   record.suppliers_selected? && record.rfqs_generated? && !record.sales_quote.present?
-  # end
-  #
-  # def update_quotations?
-  #   edit_quotations?
-  # end
-  #
-  # def new_sales_approval?
-  #   record.sales_quote.present? && !record.sales_approval.present?
-  # end
-  #
-  # def create_sales_approval?
-  #   new_sales_approval?
-  # end
-  #
-  # def new_sales_order?
-  #   record.sales_approval.present? && !record.sales_order.present?
-  # end
-  #
-  # def create_sales_order?
-  #   new_sales_order?
-  # end
-  #
 end

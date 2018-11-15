@@ -1,10 +1,18 @@
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
+  def new?
+    cataloging? || admin?
+  end
+
   def comments?
     record.persisted?
   end
 
+  def show?
+    super || logistics?
+  end
+
   def pending?
-    index? && manager?
+    cataloging?
   end
 
   def approve?
@@ -35,4 +43,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     record.approved? && record.not_synced?
   end
 
+  def export_all?
+    allow_export?
+  end
 end

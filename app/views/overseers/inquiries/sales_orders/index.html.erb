@@ -20,7 +20,6 @@
       <% @sales_orders.each do |sales_order| %>
         <tr>
           <td>
-
             <% if policy(sales_order).show? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order), 'eye', 'View Sales Order', 'info') %>
             <% end %>
@@ -46,7 +45,7 @@
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
-          <td><%= sales_order.status %></td>
+          <td><%= sales_order_status_badge(sales_order.order_status) %></td>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
           <td><%= sales_order.rows.size %></td>

@@ -1,5 +1,5 @@
 module ContactHelper
-  def contact_color(status)
+  def contact_status_color(status)
     if status == "active"
       "success"
     else
@@ -7,7 +7,7 @@ module ContactHelper
     end
   end
 
-  def contact_format_badge(status)
-    format_badge(status, contact_color(status))
+  def contact_status_badge(status)
+    format_badge(status, contact_status_color(status))
   end
 end

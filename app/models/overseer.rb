@@ -23,7 +23,7 @@ class Overseer < ApplicationRecord
 
   scope :can_send_email, -> {where.not(:smtp_password => nil)}
   scope :cannot_send_email, -> {where(:smtp_password => nil)}
-
+  scope :with_includes, -> {includes(:activities)}
   validates_presence_of :email
   validates_presence_of :password, :if => :new_record?
   validates_presence_of :password_confirmation, :if => :new_record?
@@ -31,7 +31,7 @@ class Overseer < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.role ||= :sales
+    self.role ||= :inside_sales_executive
     self.status ||= :active
   end
 

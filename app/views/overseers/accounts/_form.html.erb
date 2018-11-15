@@ -11,18 +11,10 @@
     </div>
 
     <div class="form-group">
-      <%= f.input :account_type, as: :select, collection: enum_to_collection(Account.account_types) %>
+      <%= f.input :account_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Account.account_types) %>
     </div>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@account) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@account) %>
-      <% end %>
-    <% end %>
+    <%= action_button(action_name, @account) %>
   <% end %>
 </div>
 

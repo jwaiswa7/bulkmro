@@ -6,6 +6,7 @@ class SalesQuote < ApplicationRecord
 
   has_closure_tree({name_column: :to_s})
 
+  update_index('sales_quotes#sales_quote') {self}
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   accepts_nested_attributes_for :inquiry_currency
@@ -23,9 +24,11 @@ class SalesQuote < ApplicationRecord
 
   delegate :ship_from, :bill_from, :billing_address, :shipping_address, :is_sez, :quotation_uid, to: :inquiry
 
+  scope :with_includes, -> {includes(:created_by, :updated_by, :parent, :inquiry)}
+
   attr_accessor :selected_suppliers
 
-  # validates_length_of :rows, minimum: 1
+  validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
   # validate :every_product_only_has_one_supplier?
   # def every_product_only_has_one_supplier?
@@ -58,7 +61,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.status != 'Rejected' || sales_order.status != 'SAP Rejected'}.compact.sum
+    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.order_status != 'Rejected' || sales_order.order_status != 'SAP Rejected'}.compact.sum
   end
 
   def filename(include_extension: false)

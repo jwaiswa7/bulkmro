@@ -19,7 +19,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def calculated_total_margin_percentage
-      (((calculated_total - calculated_total_cost) / calculated_total) * 100).round(2)
+      (((calculated_total - calculated_total_cost) / calculated_total) * 100).round(2) if calculated_total > 0
     end
 
     def calculated_total_cost
@@ -28,6 +28,10 @@ module Mixins::HasConvertedCalculations
 
     def calculated_freight_cost_total
       rows.sum(:freight_cost_subtotal).round(2)
+    end
+
+    def calculated_total_cost_without_freight
+      calculated_total_cost - calculated_freight_cost_total
     end
 
     def calculated_total_quantity

@@ -2,23 +2,23 @@ class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
 
   def sku
-    get_product.sku
+    get_product.sku if get_product.present?
   end
 
   def uom
-    get_product.measurement_unit.name if get_product.measurement_unit.present?
+    get_product.measurement_unit.name if get_product.present? && get_product.measurement_unit.present?
   end
 
   def brand
-    get_product.product.brand.name if get_product.product.brand.present?
+    get_product.brand.name if get_product.present? && get_product.brand.present?
   end
 
   def tax_rate
-    get_product.best_tax_code.tax_percentage
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
   end
 
   def applicable_tax_percentage
-    get_product.applicable_tax_percentage
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
   end
 
   def quantity
@@ -30,7 +30,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage))
+    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage || 0))
   end
 
   def total_tax
@@ -47,7 +47,7 @@ class PurchaseOrderRow < ApplicationRecord
 
   private
   def get_product
-    purchase_order.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == self.metadata['PopProductId'].to_i || supplier_row.product.legacy_id  == self.metadata['PopProductId'].to_i}.first
+    Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
   end
 
 end

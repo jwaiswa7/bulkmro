@@ -22,6 +22,11 @@ class Overseers::DashboardController < Overseers::BaseController
     InquiriesIndex.reset!
     SalesOrdersIndex.reset!
 
+
+    InquiriesIndex.delete
+    InquiriesIndex.create!
+    InquiriesIndex.reset!
+
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path
   end

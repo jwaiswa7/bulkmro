@@ -11,6 +11,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def call
     @tax_code = sales_quote_row.best_tax_code
+    @tax_rate = sales_quote_row.best_tax_rate
     @is_sez = sales_quote.is_sez || sales_quote.billing_address.is_sez
     @is_service = sales_quote_row.is_service # || tax_code.is_service
 
@@ -31,9 +32,9 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     if is_sez
       "0"
     elsif is_igst
-      "IGST #{tax_code.tax_percentage}%"
+      "IGST #{tax_rate.tax_percentage}%"
     else
-      "CGST + SGST #{tax_code.tax_percentage}%"
+      "CGST + SGST #{tax_rate.tax_percentage}%"
     end
   end
 
@@ -41,19 +42,19 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     if is_sez
       "IG@0"
     elsif is_igst
-      "IG@%g" % ("%.2f" % tax_code.tax_percentage)
+      "IG@%g" % ("%.2f" % tax_rate.tax_percentage)
     else
-      "CSG@%g" % ("%.2f" % tax_code.tax_percentage)
+      "CSG@%g" % ("%.2f" % tax_rate.tax_percentage)
     end
   end
 
   def calculated_cgst
-    tax_code.tax_percentage / 2 if !is_igst
+    tax_rate.tax_percentage / 2 if !is_igst
   end
 
   def calculated_sgst
-    tax_code.tax_percentage / 2 if !is_igst
+    tax_rate.tax_percentage / 2 if !is_igst
   end
 
-  attr_accessor :sales_quote, :sales_quote_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :is_service, :is_sez, :is_cgst_sgst, :is_igst
+  attr_accessor :sales_quote, :sales_quote_row, :bill_to, :ship_to, :ship_from, :bill_from, :tax_code, :tax_rate, :is_service, :is_sez, :is_cgst_sgst, :is_igst
 end

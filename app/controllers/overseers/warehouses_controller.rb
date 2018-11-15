@@ -7,54 +7,49 @@ class Overseers::WarehousesController < Overseers::BaseController
   end
 
   def new
-    @warehouses = Warehouse.new
-    authorize @warehouses
+    @warehouse = Warehouse.new
+    authorize @warehouse
   end
 
   def create
-    # @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
-    @warehouses = Warehouse.new(warehouse_params)
-    authorize @warehouses
-
-    if @warehouses.save
-      redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
-      # render 'show'
+    @warehouse = Warehouse.new(warehouse_params)
+    authorize @warehouse
+    if @warehouse.save
+      redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
         puts warehouse_params
     end
-
   end
+
   def edit
-    authorize @warehouses
+    authorize @warehouse
   end
-
-
 
   def update
-    @warehouses.assign_attributes(warehouse_params)
-    authorize @warehouses
-
-
-    if @warehouses.save
-      redirect_to overseers_warehouse_path(@warehouses), notice: flash_message(@warehouses, action_name)
+    @warehouse.assign_attributes(warehouse_params)
+    authorize @warehouse
+    if @warehouse.save
+      redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
       render 'edit'
     end
   end
 
   def show
-    authorize @warehouses
+    authorize @warehouse
   end
 
   private
 
   def warehouse_params
     params.require(:warehouse).permit(
-        :name
+        :name,
+        :address_attributes => [:id,:street1,:street2,:country_code,:address_state_id,:city_name,:pincode]
     )
   end
+
   def set_company
-    @warehouses ||= Warehouse.find(params[:id])
+    @warehouse ||= Warehouse.find(params[:id])
   end
 
 end

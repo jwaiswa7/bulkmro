@@ -10,13 +10,13 @@ class Product < ApplicationRecord
   include Mixins::HasApproveableStatus
   include Mixins::HasComments
   include Mixins::CanBeSynced
+  include Mixins::CanHaveTaxes
 
-  update_index('products#product') { self if self.approved? }
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => { brand: [:name] }, :using => { :tsearch => { :prefix => true } }
+  update_index('products#product') {self if self.approved?}
+  pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :brand, required: false
   belongs_to :category
-  belongs_to :tax_code, required: false
   belongs_to :inquiry_import_row, required: false
   belongs_to :measurement_unit, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
@@ -26,10 +26,12 @@ class Product < ApplicationRecord
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+  has_many :customer_order_rows
   has_one :kit
   has_one_attached :image
   attr_accessor :applicable_tax_percentage
 
+  has_many :cart_items
   # Start ignore
   # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
   # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
@@ -41,21 +43,27 @@ class Product < ApplicationRecord
   # end
   # End ignore
 
-  enum product_type: { item: 10, service: 20 }
+  enum product_type: {item: 10, service: 20}
 
-  scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
-  scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, :category => [:tax_code]) }
+  scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
+  scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
 
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
-  validates_with FileValidator, attachment: :image
+  #validates_with MultipleFilePresenceValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
     self.is_service ||= false
     self.weight ||= 0.0
+    self.sku ||= generate_sku
+  end
+
+  def generate_sku
+    Services::Resources::Shared::UidGenerator.product_sku
   end
 
   def syncable_identifiers
@@ -66,8 +74,8 @@ class Product < ApplicationRecord
     self.tax_code || self.category.try(:tax_code)
   end
 
-  def applicable_tax_percentage
-    self.best_tax_code.tax_percentage if self.best_tax_code.present?
+  def best_tax_rate
+    self.tax_rate || self.category.try(:tax_rate)
   end
 
   def to_s
@@ -120,5 +128,9 @@ class Product < ApplicationRecord
 
   def brand_name
     self.brand.name
+  end
+
+  def self.get_product_name(product_id)
+    self.find(product_id).try(:name)
   end
 end

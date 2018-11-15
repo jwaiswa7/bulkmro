@@ -26,15 +26,17 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     return [] if query.blank?
     query = query[0, 35]
 
-    indexed_records = index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'or',
-                              fields: %w[name],
-                          }
-                      }).page(page).per(per)
+    search_query = {
+        multi_match: {
+            query: query,
+            operator: 'or',
+            fields: %w[name mpn^3  ],
+        }
+    }
 
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).approved.with_includes
+    indexed_records = index_klass.query(search_query).page(page).per(per)
+
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).approved.with_includes.reverse
   end
 
 end

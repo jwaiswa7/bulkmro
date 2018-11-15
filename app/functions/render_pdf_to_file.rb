@@ -1,12 +1,15 @@
 class RenderPdfToFile < BaseFunction
   def self.for(record)
+    action_view = ActionView::Base.new(ActionController::Base.view_paths, {})
+    action_view.class.send(:include, DisplayHelper)
+
     pdf_string = WickedPdf.new.pdf_from_string(
-        ActionController::Base.new.render_to_string(
-            :template => ['overseers', 'inquiries', record.class.name.pluralize.underscore, 'show.pdf'].join('/'),
+        action_view.render(
+            template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
             :locals => {
                 :record => record,
             },
-            :layout => 'overseers/inquiries/layouts/show.pdf',
+            layout: 'shared/layouts/pdf_templates/show',
         ),
         :pdf => record.filename,
         :layout => false,

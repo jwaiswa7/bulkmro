@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
+  get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
+  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
+        get 'login_as_contact'
       end
     end
 
@@ -106,6 +108,7 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'pending'
+        get 'export_all'
       end
 
       scope module: 'products' do
@@ -128,6 +131,7 @@ Rails.application.routes.draw do
         get 'pending'
         get 'export_all'
         get 'drafts_pending'
+        get 'export_rows'
       end
 
       scope module: 'sales_orders' do
@@ -144,6 +148,7 @@ Rails.application.routes.draw do
     resources :sales_invoices do
       collection do
         get 'export_all'
+        get 'export_rows'
       end
     end
 
@@ -167,13 +172,19 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-
+``
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
         resources :sales_shipments
-        resources :sales_invoices
         resources :purchase_orders
+
+        resources :sales_invoices do
+          member do
+            get 'duplicate'
+            get 'triplicate'
+          end
+        end
 
         resources :sales_orders do
           member do
@@ -218,6 +229,7 @@ Rails.application.routes.draw do
     resources :companies do
       collection do
         get 'autocomplete'
+        get 'export_all'
       end
 
       scope module: 'companies' do
@@ -241,5 +253,24 @@ Rails.application.routes.draw do
     end
 
     resources  :warehouses
+  end
+
+  namespace 'customers' do
+    resource :dashboard, :controller => :dashboard
+    resources :cart_items, only: %i[new create destroy]
+    resources :customer_orders, only: %i[index create show] do
+      member do
+        get 'order_confirmed'
+      end
+    end
+    resources :quotes, :controller => :sales_quotes, only: %i[index show]
+    resources :orders, :controller => :sales_orders, only: %i[index show]
+    resources :products, only: %i[index show]
+
+    resource  :cart, :controller => :cart, only: [:show] do
+      collection do
+        get 'checkout'
+      end
+    end
   end
 end
