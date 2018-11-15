@@ -104,6 +104,10 @@ module DisplayHelper
     end
   end
 
+  def format_month_without_date(month)
+    month.to_date.strftime('%b, %Y')
+  end
+
   def format_collection(kollection)
     kollection.map(&:to_s).to_sentence
   end

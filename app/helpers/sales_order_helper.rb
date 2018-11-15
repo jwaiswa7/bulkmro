@@ -21,7 +21,19 @@ module SalesOrderHelper
     end
   end
 
+  def sales_order_customer_status_color(status)
+    if status == "Delivered"
+      "success"
+    else
+      "warning"
+    end
+  end
+
   def sales_order_status_badge(status)
     format_badge(status, sales_order_status_color(status))
+  end
+
+  def sales_order_customer_status_badge(status)
+    format_badge(status, sales_order_customer_status_color(status))
   end
 end

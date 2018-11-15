@@ -102,7 +102,15 @@ class Overseers::ApplicationPolicy
     ['vijay.manjrekar@bulkmro.com','bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com' ].include? overseer.email
   end
 
+  def allow_logistics_format_export?
+    ['bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','shravan.agarwal@bulkmro.com' ].include? overseer.email
+  end
+
   def export_rows?
+    false
+  end
+
+  def export_for_logistics?
     false
   end
 

@@ -7,11 +7,8 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,
                   format_date(sales_order.created_at),
-                  sales_order.inquiry.customer_po_number,
                   sales_order.inquiry.company.to_s,
-                  "-",
                   format_currency(sales_order.calculated_total),
-                  sales_order_status_badge(sales_order.order_status.to_s),
               ]
 end
 
@@ -22,9 +19,6 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
-                       [],
-                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json
                    ]
 
 json.recordsTotal @sales_orders.count

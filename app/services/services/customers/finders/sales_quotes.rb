@@ -5,9 +5,9 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
 
   def all_records
     indexed_records = if current_contact.account_manager?
-                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)).merge(filter_by_status(only_remote_approved: false)))
                       else
-                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)).merge(filter_by_status(only_remote_approved: false)))
                       end
 
     indexed_records.filter({bool: {should: [{exists: {field: 'sent_at'}}]}})
@@ -32,9 +32,9 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
 
     indexed_records.filter({bool: {should: [{exists: {field: 'sent_at'}}]}})
     if current_contact.account_manager?
-      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)).merge(filter_by_status(only_remote_approved: false)))
     else
-      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)).merge(filter_by_status(only_remote_approved: false)))
     end
 
     if current_contact.present? && !current_contact.account_manager?

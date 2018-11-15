@@ -1,7 +1,8 @@
 class Customers::CartController < Customers::BaseController
 
   def show
-    authorize current_cart
+    @cart = current_cart
+    authorize @cart
   end
 
   def checkout
