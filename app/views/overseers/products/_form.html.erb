@@ -22,7 +22,7 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
+        <%= f.association :tax_code,collection: selected_option_or_nil(f, :tax_code ), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: f.object.is_service)} %>
       </div>
       <div class="col-4">
         <%= f.association :tax_rate, include_blank: 'Select a Tax Rate', :wrapper => :custom_multi_select %>
@@ -47,6 +47,13 @@
     <div class="form-row">
       <div class="col-12 col-md-4">
         <%= f.input :is_service %>
+      </div>
+      <div class="col-12 col-md-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
+          </div>
+        </div>
       </div>
     </div>
 

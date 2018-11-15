@@ -134,13 +134,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
 
     company = Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").first
-
   end
 
   def make_admin
     Overseer.find_by_email('puja.tanawade@bulkmro.com').admin!
     Overseer.find_by_email('chetan.utekar@bulkmro.com').admin!
-
   end
 
   def check_es

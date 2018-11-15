@@ -1,0 +1,50 @@
+<div class="col-lg-12">
+  <%= render layout: 'customers/inquiries/tabs_layout' do %>
+    <section class="mb-6">
+      <div class="card">
+        <div class="card-body">
+          <div>
+            <h6 class="text-uppercase text-black-50 mb-1">Inquiry Details</h6>
+            <div class="form-row">
+              <% if @inquiry.subject.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Subject</strong>
+                  <%= @inquiry.subject %>
+                </div>
+              <% end %>
+
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inquiry Number</strong>
+                #<%= @inquiry.inquiry_number %>
+              </div>
+
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Date</strong>
+                <%= format_date(@inquiry.created_at) %>
+              </div>
+
+              <% if @inquiry.company.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Company</strong>
+                  <%= @inquiry.company.to_s %>
+                </div>
+              <% end %>
+
+              <% if @inquiry.inside_sales_owner.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Sales Person</strong>
+                  <%= @inquiry.inside_sales_owner.to_s %>
+                </div>
+              <% end %>
+
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Total</strong>
+                <%= format_currency(@inquiry.final_sales_quote.try(:calculated_total)) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

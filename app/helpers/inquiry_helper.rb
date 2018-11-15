@@ -45,6 +45,6 @@ module InquiryHelper
   end
 
   def inquiry_status_badge(status)
-    format_badge(status, inquiry_status_color(status))
+    format_badge(status, inquiry_status_color(status)) if status
   end
 end
