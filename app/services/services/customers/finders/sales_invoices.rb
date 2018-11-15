@@ -29,9 +29,9 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
 
     indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[invoice_number^3 sales_order_id sales_order_number status inquiry_number]}})
 
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
+    # if current_overseer.present? && !current_overseer.allow_inquiries?
+    #   indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    # end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
