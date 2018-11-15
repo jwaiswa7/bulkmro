@@ -227,6 +227,11 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+        resources :customer_products, only: [:index, :show, :edit, :update] do
+          collection do
+            get 'autocomplete'
+          end
+        end
         resources :contacts do
           collection do
             get 'autocomplete'
