@@ -1,5 +1,8 @@
 class Customers::BaseController < ApplicationController
   include Pundit
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   layout 'customers/layouts/application'
 
   before_action :authenticate_contact!
@@ -7,6 +10,14 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized
 
   helper_method :current_cart
+
+  private
+
+  def user_not_authorized
+    message = "You are not authorized to perform this action."
+    set_flash_message(message, :warning, now: false)
+    redirect_to(request.referrer || root_path)
+  end
 
   protected
   def policy!(user, record)
