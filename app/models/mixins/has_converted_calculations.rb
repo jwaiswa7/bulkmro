@@ -30,6 +30,10 @@ module Mixins::HasConvertedCalculations
       rows.sum(:freight_cost_subtotal).round(2)
     end
 
+    def calculated_total_cost_without_freight
+      calculated_total_cost - calculated_freight_cost_total
+    end
+
     def calculated_total_quantity
       rows.map {|row| row.quantity}.sum.round(2)
     end
