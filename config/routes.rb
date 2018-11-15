@@ -256,7 +256,11 @@ Rails.application.routes.draw do
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
-    resources :products, only: %i[index show]
+    resources :products, only: %i[index show] do
+      collection do
+        get 'most_ordered_products'
+      end
+    end
 
     resource  :cart, :controller => :cart, only: [:show] do
       collection do
