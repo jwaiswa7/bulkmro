@@ -134,4 +134,8 @@ class SalesOrder < ApplicationRecord
   def to_s
     ['#', order_number].join if order_number.present?
   end
+
+  def total_quantities
+    self.rows.pluck(:quantity).inject(0){|sum,x| sum + x }
+  end
 end
