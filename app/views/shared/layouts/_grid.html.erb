@@ -52,7 +52,8 @@
             <% else %>
               <img src="<%= image_path('coming_soon.png') %>" />
             <% end %>
-            <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
+            <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 25) %></strong></h5>
+            <h5 class="mb-0 text-small"><strong>(#<%= product.sku %>)</strong></h5>
             <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(product.latest_unit_cost_price.to_f) %></strong></h5>
 
             <hr class="my-2">

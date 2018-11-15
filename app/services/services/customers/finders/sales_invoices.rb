@@ -5,10 +5,10 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
 
   def all_records
     indexed_records = if current_contact.account_manager?
-                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)).merge(filter_by_value("legacy", false)))
                         #super.filter(filter_by_value('account_id',current_contact.account.id))
                       else
-                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)).merge(filter_by_value("legacy", false)))
                       end
 
 
