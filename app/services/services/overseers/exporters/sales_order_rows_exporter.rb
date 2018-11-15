@@ -144,7 +144,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :product_category => ( row.product.category.name if row.product.category.present? ),
                     :brand => (row.product.brand.name if row.product.brand.present?),
                     :Type_Of_Supplier => row.sales_quote_row.supplier.company_type,
-                    :Supplier_Domestic_Imports => if (row.sales_quote_row.supplier.default_shipping_address.country_code == "IN" || row.sales_quote_row.supplier.addresses.first.country_code == "IN") then "Domestic" else "Imports" end,
+                    :Supplier_Domestic_Imports => if (row.sales_quote_row.supplier.default_shipping_address.try(:country_code) == "IN" || row.sales_quote_row.supplier.addresses.first.try(:country_code) == "IN") then "Domestic" else "Imports" end,
                     :Oem_Non_Oem => "",
                     :Revenue_Stream => "",
                     :Business_Vertical => "",
