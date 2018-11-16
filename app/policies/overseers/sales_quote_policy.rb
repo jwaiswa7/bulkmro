@@ -19,6 +19,10 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled?
   end
 
+  def reset_quote?
+    ['shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com','pradeep.ketkale@bulkmro.com','lopesh.durugkar@bulkmro.com'].include? overseer.email
+  end
+
   def preview?
     edit?
   end
