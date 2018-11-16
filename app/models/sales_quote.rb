@@ -82,7 +82,7 @@ class SalesQuote < ApplicationRecord
       'Quotation Received'
     elsif status == 'SO Draft: Pending Accounts Approval' || status == 'SO Rejected by Sales Manager' || status == 'Order Won' || status == 'Draft SO for Approval by Sales Manager'
       'Purchase Order Issued'
-    elsif status == 'SO Not Created-Pending Customer PO Revision'
+    elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
       'Purchase Order Revision Pending'
     end
   end

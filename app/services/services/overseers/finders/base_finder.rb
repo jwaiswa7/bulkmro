@@ -111,6 +111,44 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def filter_must_exist(key)
+    {
+        bool: {
+            should: [
+                {
+                    exists: {field: "#{key}"}
+                },
+            ],
+        },
+    }
+  end
+
+  def filter_by_array(key, vals)
+    {
+        bool: {
+            should: [
+                {
+                    terms: {"#{key}": vals},
+                }
+            ]
+        },
+
+    }
+  end
+
+  def filter_by_value(key, val)
+    {
+        bool: {
+            should: [
+                {
+                    term: {"#{key}": val},
+                },
+            ]
+        },
+
+    }
+  end
+
   def filter_by_status(only_remote_approved: false)
     if only_remote_approved
       {
