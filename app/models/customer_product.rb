@@ -11,11 +11,13 @@ class CustomerProduct < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :sku
-
+  validates_numericality_of :unit_selling_price, greater_than: 0.00
   validates :company_id, uniqueness: {scope: :sku}
 
-  def price
-    price!
+  after_initialize :set_unit_selling_price
+
+  def set_unit_selling_price
+    self.unit_selling_price ||= price!
   end
 
   def price!
@@ -35,7 +37,6 @@ class CustomerProduct < ApplicationRecord
         end
       end
     end
-
   end
 
 end

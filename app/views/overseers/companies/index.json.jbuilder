@@ -8,7 +8,7 @@ json.data (@companies) do |company|
                         row_action_button(edit_overseers_account_company_path(company.account, company), 'pencil', 'Edit Company', 'warning')
                       end,
                       if policy(company).edit?;
-                        row_action_button(overseers_company_customer_products_path(company), 'list', 'Company Products', 'success', '_blank')
+                        row_action_button(overseers_customer_products_path(company), 'list', 'Company Products', 'success', '_blank')
                       end,
                       if policy(company).edit?;
                         row_action_button(new_overseers_contact_path(company_id: company.to_param), 'user', 'New Contact', 'success')
