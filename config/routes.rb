@@ -192,6 +192,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'preview'
+            get 'reset_quote'
           end
 
           scope module: 'sales_quotes' do
