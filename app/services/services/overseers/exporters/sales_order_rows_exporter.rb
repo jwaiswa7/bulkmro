@@ -90,7 +90,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def call
-    model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).each do |row|
+    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
 
@@ -113,7 +113,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :unit_price => row.unit_selling_price,
                     :freight => row.freight_cost_subtotal,
                     :tax_type => "", #remaining
-                    :tax_rate => row.sales_quote_row.tax_rate.tax_percentage,
+                    :tax_rate => row.sales_quote_row.try(:tax_rate).try(:tax_percentage),
                     :tax_amount => "",
                     :gross_total_selling => "",
                     :buying_rate => row.sales_quote_row.unit_cost_price,
