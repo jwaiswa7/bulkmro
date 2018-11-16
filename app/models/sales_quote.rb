@@ -28,7 +28,7 @@ class SalesQuote < ApplicationRecord
 
   attr_accessor :selected_suppliers
 
-  validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
+  #validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
   # validate :every_product_only_has_one_supplier?
   # def every_product_only_has_one_supplier?
@@ -71,5 +71,19 @@ class SalesQuote < ApplicationRecord
         ].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
+  end
+
+  def changed_status(status)
+    if status == 'New Inquiry' || status == 'Acknowledgement Mail'
+      'Inquiry Sent'
+    elsif status == 'Cross Reference' || status == 'Preparing Quotation' || status == 'Supplier RFQ Sent'
+      'Preparing Quotation'
+    elsif status == 'Quotation Sent' || status == 'Follow Up on Quotation' || status == 'Expected Order'
+      'Quotation Received'
+    elsif status == 'SO Draft: Pending Accounts Approval' || status == 'SO Rejected by Sales Manager' || status == 'Order Won' || status == 'Draft SO for Approval by Sales Manager'
+      'Purchase Order Issued'
+    elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
+      'Purchase Order Revision Pending'
+    end
   end
 end

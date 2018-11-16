@@ -44,7 +44,7 @@
 <div class="form-row" id="grid_container">
   <% if @products.count > 0 %>
     <% @products.each do |product| %>
-      <div class="col-2">
+      <div class="col-md-2 col-sm-6 col-xs-12">
         <div class="card mb-2">
           <div class="card-body">
             <% if product.images.first.present? %>
@@ -52,12 +52,14 @@
             <% else %>
               <img src="<%= image_path('coming_soon.png') %>" />
             <% end %>
-            <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 20) %> (#<%= product.sku %>)</strong></h5>
-            <h5 class="mb-0 mt-1 text-small text-black-50"><strong>₹20,400</strong></h5>
+            <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 25) %></strong></h5>
+            <h5 class="mb-0 text-small"><strong>(#<%= product.sku %>)</strong></h5>
+            <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(product.latest_unit_cost_price.to_f) %></strong></h5>
+
             <hr class="my-2">
             <p class="mb-0 text-small text-black-50">
-              <strong class="d-block"><%= product.brand.try(:name) %> #71-670</strong>
-              <em class="d-block">MOQ - 50</em>
+              <strong class="d-block"><%= product.brand.try(:name) %></strong>
+<!--              <em class="d-block">MOQ - 50</em>-->
             </p>
           </div>
           <div class="card-footer p-2">

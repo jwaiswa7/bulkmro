@@ -8,7 +8,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
   end
 
   def call
-    model.status_Approved.where(:created_at => start_at..end_at).each do |sales_order|
+    model.status_Approved.where(:created_at => start_at..end_at).where.not(sales_quote_id: nil).each do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push({

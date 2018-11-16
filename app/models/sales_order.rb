@@ -35,7 +35,7 @@ class SalesOrder < ApplicationRecord
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
   delegate :inside_sales_owner, :outside_sales_owner, to: :inquiry, allow_nil: true
 
-  validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row"
+  #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
@@ -85,6 +85,11 @@ class SalesOrder < ApplicationRecord
       :'Order Deleted' => 70
   }, _prefix: true
 
+  enum customer_status: {
+      :'Delivered' => 1,
+      :'Not Delivered' => 0
+  }, _prefix: true
+
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
 
   def confirmed?
@@ -115,6 +120,10 @@ class SalesOrder < ApplicationRecord
     SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
+  def customer_status
+    self.remote_status == 'Partially Delivered: GRN Received' ? 1 : 0
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
@@ -124,5 +133,9 @@ class SalesOrder < ApplicationRecord
 
   def to_s
     ['#', order_number].join if order_number.present?
+  end
+
+  def total_quantities
+    self.rows.pluck(:quantity).inject(0){|sum,x| sum + x }
   end
 end

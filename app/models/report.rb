@@ -35,6 +35,12 @@ class Report < ApplicationRecord
     end
   end
 
+  def self.monthly_sales
+    where(name: 'MonthlySalesReport').first_or_create do |report|
+      report.uid = 'monthly_sales_report'
+    end
+  end
+
   def start_date
     start_at.to_date
   end
