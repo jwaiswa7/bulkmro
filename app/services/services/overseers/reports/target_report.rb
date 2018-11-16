@@ -7,7 +7,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     # report.end_at = Date.today.end_of_day
 
 
-    # data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
+    data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
 
     headers = [:target, :achieved, :"achieved %"]
 
@@ -140,7 +140,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     end
 
     data
-    # end
+     end
 
     data
   end
