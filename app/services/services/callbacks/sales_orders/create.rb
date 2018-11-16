@@ -30,6 +30,8 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             rescue => e
               return_response(e.message, 0)
             end
+          else
+            return_response("Order Already Synced : " + sales_order.remote_status)
           end
         when :'SAP Rejected'
           begin
