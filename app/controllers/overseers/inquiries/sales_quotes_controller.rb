@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -65,6 +65,12 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def preview
     authorize @sales_quote
+  end
+
+  def reset_quote
+    authorize @sales_quote
+    @inquiry.update_attributes(:quotation_uid => "")
+    redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
   private
