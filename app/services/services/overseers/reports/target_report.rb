@@ -62,9 +62,9 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     data.filters[:executives] ||= []
     data.filters[:managers] ||= []
     data.filters[:business_head] ||= []
-    data.filters[:executives] = all_sales_executives.map {|o| [o.full_name, o.id]}
-    data.filters[:managers] = all_sales_executives.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq
-    data.filters[:business_head] = all_sales_executives.map {|o| [o.parent.parent.full_name, o.parent.parent.id] if o.parent.parent.present? if o.parent.present?}.compact.uniq
+    data.filters[:executives] = all_sales_executives.map {|o| [o.full_name, o.id]}.sort
+    data.filters[:managers] = all_sales_executives.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort
+    data.filters[:business_head] = all_sales_executives.map {|o| [o.parent.parent.full_name, o.parent.parent.id] if o.parent.parent.present? if o.parent.present?}.compact.uniq.sort
 
     date_range = report.start_at.beginning_of_month..report.end_at.end_of_month
 
@@ -89,7 +89,11 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
       targets.each do |target|
 
         target_type = target.target_type
-        date_range = target.start_month.to_datetime.beginning_of_month..target.start_month.to_datetime.end_of_month
+
+        start_date = start_month.to_datetime.beginning_of_month < report.start_at ? report.start_at : start_month.to_datetime.beginning_of_month
+        end_date = end_month.to_datetime.beginning_of_month < report.start_at ? report.start_at : start_month.to_datetime.beginning_of_month
+
+        date_range = target.start_month.to_datetime.beginning_of_month..target.end_month.to_datetime.end_of_month
         overseer_hash_key = "#{overseer_id}-#{target.manager_id}-#{target.business_head_id}"
 
         data.entries[overseer_hash_key] ||= {:executive => "", :manager => "", :business_head => "", :inquiry_target => 0, :inquiry_achieved => 0, :"inquiry_achieved %" => 0, :order_target => 0, :order_achieved => 0, :"order_achieved %" => 0, :invoice_target => 0, :invoice_achieved => 0, :"invoice_achieved %" => 0}
