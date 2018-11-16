@@ -11,7 +11,6 @@ class Overseers::KitPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
-
   def customer_bp_catalog?
     index?
   end
