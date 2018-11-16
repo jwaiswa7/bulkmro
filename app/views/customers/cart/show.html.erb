@@ -22,7 +22,7 @@
       <div class="text-left">
         <%= cart.simple_fields_for :items do |cart_item| %>
           <div class="<% if cart_item.object != cart.object.items.last %>border-bottom <% end %> py-2 d-flex flex-row align-items-center">
-            <img class="" src="<%= url_for(cart_item.object.product.images.first) %>" width="60" />
+            <img class="" src="<%= url_for(cart_item.object.product.images.first)%>" width="60" />
             <div class="ml-3 flex-grow-1">
               <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
                 <i class="fal fa-times"></i>
