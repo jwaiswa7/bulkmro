@@ -9,6 +9,8 @@
   </div>
 </div>
 
+
+
 <div class="col-12">
 
 
@@ -43,9 +45,9 @@
             <td data-toggle="tooltip">
               <strong>Business Head</strong>
             </td>
-            <% @data.summary_entries.each do |k, v| %>
+            <% @data.summary_entries.each do | k, v| %>
               <% v.each do |key, value| %>
-                <td data-toggle="tooltip">
+                <td data-toggle="tooltip" id="<%= [k,key].join("_") %>">
                   <strong><%= "%g" % ("%.2f" % value) %></strong>
                 </td>
               <% end %>
@@ -57,7 +59,7 @@
           <% @data.entries.each do |overseer, value| %>
             <tr>
               <% @data.entries[overseer].each do |target, target_value| %>
-                <td id="<%= [overseer,target].join("-") %>"><%= target_value.is_a?(Numeric) ? "%g" % ("%.2f" % target_value) : target_value %></td>
+                <td id="<%= [overseer,target].join("_") %>"><%= target_value.is_a?(Numeric) ? "%g" % ("%.2f" % target_value) : target_value %></td>
               <% end %>
             </tr>
           <% end %>

@@ -9,12 +9,14 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
 
     # data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
 
+    headers = [:target, :achieved, :"achieved %"]
+
     data = OpenStruct.new(
         {
             statuses: [],
             entries: {},
             filters: {},
-            headers: [:target, :achieved, :"achieved %", :target, :achieved, :"achieved %", :target, :achieved, :"achieved %"],
+            headers: headers + headers + headers,
             selected_filters: {},
             summary_entries: {},
             dump: []
@@ -90,10 +92,10 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
 
         target_type = target.target_type
 
-        start_date = start_month.to_datetime.beginning_of_month < report.start_at ? report.start_at : start_month.to_datetime.beginning_of_month
-        end_date = end_month.to_datetime.beginning_of_month < report.start_at ? report.start_at : start_month.to_datetime.beginning_of_month
+        start_date = target.start_month.to_datetime.beginning_of_month < report.start_at ? report.start_at : target.start_month.to_datetime.beginning_of_month
+        end_date = target.end_month.to_datetime.end_of_month > report.end_at ? report.end_at : target.end_month.to_datetime.end_of_month
 
-        date_range = target.start_month.to_datetime.beginning_of_month..target.end_month.to_datetime.end_of_month
+        date_range = start_date..end_date
         overseer_hash_key = "#{overseer_id}-#{target.manager_id}-#{target.business_head_id}"
 
         data.entries[overseer_hash_key] ||= {:executive => "", :manager => "", :business_head => "", :inquiry_target => 0, :inquiry_achieved => 0, :"inquiry_achieved %" => 0, :order_target => 0, :order_achieved => 0, :"order_achieved %" => 0, :invoice_target => 0, :invoice_achieved => 0, :"invoice_achieved %" => 0}
