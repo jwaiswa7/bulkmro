@@ -4,7 +4,7 @@ class ProductsIndex < BaseIndex
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring'
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
     field :approved, value: -> (record) { record.approval.try(:created_at) }
-    field :has_images, value: -> (record) { record.images.attached? }
+    field :has_images, value: -> (record) { record.image.attached? }
     field :sku, analyzer: 'sku_substring'
     field :name, analyzer: 'substring'
     field :mpn, value: -> (record) { record.mpn.to_s },analyzer: 'substring'
