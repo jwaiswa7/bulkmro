@@ -1,29 +1,10 @@
 class Overseers::KitsController < Overseers::BaseController
   before_action :set_kit, only: [:edit, :update]
 
-  # def index
-  #   service = Services::Overseers::Finders::Products.new(params)
-  #   service.call
-  #
-  #   @indexed_products = service.indexed_records
-  #   @products = service.records
-  #   authorize @products
-  # end
-
   def index
     @kits = ApplyDatatableParams.to(Kit.all, params)
     authorize @kits
   end
-
-  # def autocomplete
-  #   service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
-  #   service.call
-  #
-  #   @indexed_products = service.indexed_records
-  #   @products = service.records
-  #
-  #   authorize @products
-  # end
 
   def new
     @kit = Kit.new(:overseer => current_overseer)
