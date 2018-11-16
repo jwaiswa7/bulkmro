@@ -1,9 +1,13 @@
 class Overseers::KitsController < Overseers::BaseController
-  before_action :set_kit, only: [:edit, :update]
+  before_action :set_kit, only: [:show, :edit, :update]
 
   def index
     @kits = ApplyDatatableParams.to(Kit.all, params)
     authorize @kits
+  end
+
+  def show
+    authorize @kit
   end
 
   def new
