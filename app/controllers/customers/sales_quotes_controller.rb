@@ -29,7 +29,7 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   private
   def set_sales_quote
-    @sales_quote = current_contact.account.sales_quotes.find(params[:id])
+    @sales_quote = SalesQuote.find(params[:id])
   end
 end
 

@@ -22,7 +22,7 @@ class Resources::ApplicationResource
 
   if Rails.env.development?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
-    DATABASE = 'BMRO_20OCT'
+    DATABASE = 'BMRO_15NOV'
     USERNAME = 'manager'
     PASSWORD = 'vm1234'
 

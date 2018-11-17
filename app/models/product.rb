@@ -27,8 +27,9 @@ class Product < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
-
-  has_many_attached :images
+  has_one :kit
+  has_one_attached :image
+  attr_accessor :applicable_tax_percentage
 
   has_many :cart_items
   # Start ignore
@@ -50,7 +51,7 @@ class Product < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
-  validates_with MultipleImageFileValidator, attachments: :images
+  #validates_with MultipleImageFileValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
 
@@ -115,6 +116,14 @@ class Product < ApplicationRecord
 
   def bp_catalog_for_supplier(supplier)
     self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
+  end
+
+  def is_kit
+    self.kit.present?
+  end
+
+  def is_kit_product
+    self.kit_product_row.present?
   end
 
   def brand_name

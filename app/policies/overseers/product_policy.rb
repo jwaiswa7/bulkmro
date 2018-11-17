@@ -12,7 +12,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    cataloging?
+    cataloging? || admin?
   end
 
   def approve?
