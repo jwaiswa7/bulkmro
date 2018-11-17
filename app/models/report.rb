@@ -37,9 +37,16 @@ class Report < ApplicationRecord
     end
   end
 
+
   def self.target
     where(name: 'TargetReport').first_or_create do |report|
       report.uid = 'target_report'
+    end
+  end
+
+  def self.monthly_sales
+    where(name: 'MonthlySalesReport').first_or_create do |report|
+      report.uid = 'monthly_sales_report'
     end
   end
 

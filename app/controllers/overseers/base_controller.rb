@@ -1,10 +1,21 @@
 class Overseers::BaseController < ApplicationController
 	include Pundit
+
+	rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
 	layout 'overseers/layouts/application'
 
 	before_action :authenticate_overseer!
 	before_action :set_paper_trail_whodunnit
 	after_action :verify_authorized
+
+	private
+
+	def user_not_authorized
+		message = "You are not authorized to perform this action."
+		set_flash_message(message, :warning, now: false)
+		redirect_to(request.referrer || root_path)
+	end
 
 	protected
 	def policy!(user, record)

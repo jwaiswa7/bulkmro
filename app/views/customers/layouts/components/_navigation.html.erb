@@ -18,6 +18,15 @@
       <%= nav_item 'Quotes', customers_quotes_path, true %>
       <%= nav_item 'Orders', customers_orders_path, true %>
       <%= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, true%>
+        </div>
+      </li>
       <%= nav_item 'Customer Orders', customers_customer_orders_path, true %>
     </ul>
   </div>

@@ -4,6 +4,8 @@ class Overseers::ReportsController < Overseers::BaseController
     Report.activity
     Report.pipeline
     Report.target
+    Report.monthly_sales
+
     @reports = ApplyDatatableParams.to(Report.all, params)
     authorize @reports
   end

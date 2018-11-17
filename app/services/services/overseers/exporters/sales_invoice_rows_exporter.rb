@@ -24,7 +24,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
   end
 
   def call
-    model.where(:created_at => start_at..end_at).order(sales_invoice_id: :asc).each do |row|
+    model.where(:created_at => start_at..end_at).order(sales_invoice_id: :asc).where("sales_invoices.sales_order_id IS NOT NULL").joins(:sales_invoice).each do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
@@ -36,7 +36,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
                     :order_number => sales_invoice.sales_order.order_number.to_s,
                     :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
-                    :invoice_net_amount => (('%.2f' % sales_order.calculated_total_cost - sales_invoice.metadata['shipping_amount']) || '%.2f' % sales_order.calculated_total_cost_without_freight),
+                    :invoice_net_amount => ('%.2f' % (sales_order.calculated_total_cost - sales_invoice.metadata['shipping_amount'].to_f)) || '%.2f' % sales_order.calculated_total_cost_without_freight,
                     :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
                     :total_with_freight => ('%.2f' % sales_order.calculated_total), #cross-check
                     :tax_amount => ('%.2f' % sales_order.calculated_total_tax),

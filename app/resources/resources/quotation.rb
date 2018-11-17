@@ -30,7 +30,7 @@ class Resources::Quotation < Resources::ApplicationResource
       final_sales_quote = inquiry.final_sales_quote
 
       document_lines.each do |line|
-        sales_quote_row = final_sales_quote.rows.select { |r| r.sku == line['ItemCode'] }[0]
+        sales_quote_row = final_sales_quote.rows.select {|r| r.sku == line['ItemCode']}[0]
         sales_quote_row.update_attributes!(:remote_uid => line['LineNum']) if sales_quote_row.present?
       end
     end
@@ -47,7 +47,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item = OpenStruct.new
       item.DiscountPercent = 0
       item.ItemCode = row.product.sku
-      item.ItemDescription = row.to_bp_catalog_s  # Product Desc / NAME
+      item.ItemDescription = row.to_bp_catalog_s # Product Desc / NAME
       item.Quantity = row.quantity # Quantity
       item.ProjectCode = record.inquiry.project_uid # Project Code
       item.LineNum = row.sr_no # Row Number
@@ -56,7 +56,7 @@ class Resources::Quotation < Resources::ApplicationResource
       item.U_LeadTime = row.lead_time_option.try(:name) # Lead time ?
       item.Comments = nil # Inquiry Comment
       item.UnitPrice = row.unit_selling_price # Row Unit Price
-      item.Currency = "INR" # CContactPersonurr #record.currency.name
+      item.Currency = "INR" #record.currency.name
       item.TaxCode = row.taxation.to_remote_s # Code? Comes from Tax Label IG  = IGST
       item.U_Vendor = row.supplier.remote_uid # Supplier
       item.U_BuyCost = row.unit_cost_price_with_unit_freight_cost
@@ -75,7 +75,39 @@ class Resources::Quotation < Resources::ApplicationResource
 
       item.U_MgntRemark = ""
       item.U_Rmks = ""
-      items.push(item.marshal_dump)
+      if row.product.is_kit
+        item.TreeType = "iSalesTree"
+        items.push(item.marshal_dump)
+
+        line_num = row.sr_no + 1
+
+        row.product.kit.kit_product_rows.each do |kit_product|
+          kit_item = OpenStruct.new
+          kit_item.TreeType = "iIngredient"
+          kit_item.ItemCode = kit_product.product.sku
+          kit_item.ItemDescription = kit_product.product.name
+          kit_item.Quantity = kit_product.quantity
+          kit_item.ProjectCode = record.inquiry.project_uid
+          kit_item.WarehouseCode = record.inquiry.ship_from.remote_uid
+          kit_item.LocationCode = record.inquiry.ship_from.location_uid
+
+          if kit_product.product.is_service
+            kit_item.SACEntry = row.best_tax_code.remote_uid
+          else
+            kit_item.HSNEntry = row.best_tax_code.remote_uid
+          end
+
+          # kit_item.U_ProdBrand = kit_product.product.brand.try(:name)
+          # kit_item.U_BuyCost = row.unit_cost_price_with_unit_freight_cost
+          # kit_item.U_Vendor_Name = row.supplier.name
+
+          kit_item.LineNum = line_num
+          line_num = line_num + 1
+          items.push(kit_item.marshal_dump)
+        end
+      else
+        items.push(item.marshal_dump)
+      end
     end
 
     sez = if record.inquiry.is_sez
@@ -126,7 +158,7 @@ class Resources::Quotation < Resources::ApplicationResource
         U_QuotType: record.inquiry.opportunity_type,
         Project: record.inquiry.project_uid,
         TaxExtension: sez,
-        BPChannelCode:record.inquiry.remote_shipping_company_uid,
+        BPChannelCode: record.inquiry.remote_shipping_company_uid,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         U_ConsigneeAddr: record.inquiry.shipping_address.remote_uid
     }
