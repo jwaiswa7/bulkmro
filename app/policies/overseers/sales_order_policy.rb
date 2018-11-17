@@ -60,6 +60,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.inquiry.can_be_managed?(overseer)
   end
 
+  def can_request_po?
+    !record.has_purchase_order_request
+  end
+
   def approve?
     pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end

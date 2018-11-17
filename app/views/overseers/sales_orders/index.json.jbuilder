@@ -9,6 +9,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                      end,
+                      if policy(sales_order).can_request_po?
+                        row_action_button( new_purchase_order_overseers_sales_order_path(sales_order), 'external-link', 'Request PO', 'info')
                       end
                   ].join(' '),
                   sales_order.order_number,
