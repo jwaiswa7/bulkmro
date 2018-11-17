@@ -6,7 +6,6 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     # report.start_at = Date.new(2018, 10, 19)
     # report.end_at = Date.today.end_of_day
 
-
     data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
 
     headers = [:target, :achieved, :"achieved %"]
@@ -46,16 +45,27 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
         'Invoice' => [:invoice_target, :invoice_achieved, :"invoice_achieved %"],
     }
 
-
     targets_records = Target.joins(:target_period).where('target_periods.period_month' => report.start_at.beginning_of_month..report.end_at.end_of_month).where(target_type: ['Inquiry', 'Invoice', 'Order']).where.not(target_value: 0)
-    targets_records_overseers = targets_records.pluck(:overseer_id).uniq
+    overseer = params[:overseer]
+
+    if overseer.admin?
+      child_overseer_ids = targets_records.pluck(:overseer_id).uniq
+    elsif overseer.manager?
+      child_overseer_ids = overseer.find_all_by_generation(2).pluck(:id) + overseer.find_all_by_generation(1).pluck(:id) + [overseer.id]
+    elsif overseer.leader?
+      child_overseer_ids = overseer.children.pluck(:id) + [overseer.id]
+    else
+      child_overseer_ids = [overseer.id]
+    end
+
+    targets_records_overseers = child_overseer_ids.uniq
 
 
     sales_executives = Overseer.send(designation.downcase).where(id: targets_records_overseers)
     sales_executives_filter_ids = sales_executives.pluck(:id)
     sales_executives = sales_executives.where(id: executive_id) if executive_id.present?
-    sales_executives = manager_id.present? ? sales_executives.where(parent_id: manager_id) : sales_executives
-    sales_executives = business_head_id.present? ? sales_executives.ancestors.where(id: business_head_id) : sales_executives
+    sales_executives = manager_id.present? ? sales_executives.map{|o| o if (o.parent_id == manager_id)}.compact : sales_executives
+    sales_executives = business_head_id.present? ? sales_executives.map{|o| o if (o.parent.parent_id == business_head_id || o.parent_id == business_head_id) if o.parent.present?}.compact : sales_executives
     sales_executive_ids = sales_executives.pluck(:id)
     all_sales_executives = Overseer.where(id: sales_executives_filter_ids)
 
@@ -66,7 +76,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     data.filters[:business_head] ||= []
     data.filters[:executives] = all_sales_executives.map {|o| [o.full_name, o.id]}.sort
     data.filters[:managers] = all_sales_executives.map {|o| [o.parent.full_name, o.parent.id] if o.parent.present?}.compact.uniq.sort
-    data.filters[:business_head] = all_sales_executives.map {|o| [o.parent.parent.full_name, o.parent.parent.id] if o.parent.parent.present? if o.parent.present?}.compact.uniq.sort
+    data.filters[:business_head] = all_sales_executives.map {|o| ( o.parent.present? ? ( o.parent.parent.present? ? [o.parent.parent.full_name, o.parent.parent.id] : [o.parent.full_name, o.parent.id] ) : [o.full_name, o.id] ) }.compact.uniq.sort
 
     date_range = report.start_at.beginning_of_month..report.end_at.end_of_month
 

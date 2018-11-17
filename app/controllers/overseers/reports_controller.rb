@@ -11,6 +11,7 @@ class Overseers::ReportsController < Overseers::BaseController
   def show
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
+    params[:overseer] = current_overseer
     # @report.designation = 'Inside'
     service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @data = service.call
