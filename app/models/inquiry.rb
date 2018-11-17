@@ -249,13 +249,14 @@ class Inquiry < ApplicationRecord
     self.inquiry_currency ||= self.build_inquiry_currency
   end
 
-  # after_initialize :set_global_defaults
-  #
-  # def set_global_defaults
-  #   if self.shipping_company_id.blank? && self.company.present?
-  #     self.shipping_company ||= self.company
-  #   end
-  # end
+  after_initialize :set_global_defaults
+
+  def set_global_defaults
+    if self.company.present?
+      self.billing_company ||= self.company
+      self.shipping_company ||= self.company
+    end
+  end
 
   def draft?
     !inquiry_products.any?
