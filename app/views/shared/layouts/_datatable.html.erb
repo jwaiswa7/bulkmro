@@ -4,7 +4,7 @@
       <% if content_for?(:heading) %>
         <h1 class="display-5 mb-1"><%= yield :heading %></h1>
       <% else %>
-        <h1 class="display-5 mb-1"><%= current_model.titleize %></h1>
+        <h1 class="display-5 mb-1"><%= current_model.humanize.titleize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
       <% if content_for?(:can_be_directly_created) || content_for?(:can_be_directly_exported) || content_for?(:heading_buttons) %>
         <div>
