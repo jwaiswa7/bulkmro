@@ -37,7 +37,7 @@
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-2">
-            <button type="button" class="btn btn-info btn-m" data-toggle="modal" data-target="#myModal" style="margin-top: 25px;">Update Status</button>
+            <button type="button" class="btn btn-m btn-success" data-toggle="modal" data-target="#myModal" style="margin-top: 25px;">Update Status</button>
             <div class="modal fade" id="myModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -46,7 +46,7 @@
                     <h4 class="modal-title">Select Status</h4>
                   </div>
                   <div class="modal-body">
-                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: [["Order Lost", "Order Lost"], ["Regret", "Regret"]], selected: @inquiry.status || 'Order Lost' %>
+                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: [["Order Lost", "Order Lost"], ["Regret", "Regret"]], selected: 'Order Lost'  %>
                   </div>
                   <div class="modal-footer">
 <!--                    <a href="<%#= update_inquiry_status_overseers_inquiry_path(@inquiry, status) %>" class="btn-block btn btn-dark">Update</a>-->
