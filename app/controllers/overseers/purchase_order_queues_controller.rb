@@ -11,10 +11,8 @@ class Overseers::PurchaseOrderQueuesController < Overseers::BaseController
   end
 
   def new
-    @purchase_order_queue = PurchaseOrderQueue.new(:sales_order => params[:sales_order], :overseer => current_overseer)
-    raise
-    # @purchase_order_queue.inquiry =
-    authorize @purchase_order_queue
+    # @purchase_order_queue = PurchaseOrderQueue.new(:sales_order => params[:sales_order], :overseer => current_overseer
+    # authorize @purchase_order_queue
   end
 
   def create
