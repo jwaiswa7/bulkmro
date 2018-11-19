@@ -15,7 +15,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
 
     @indexed_products = service.indexed_records
-    @products = service.records.where(:is_active => true)
+    @products = service.records
 
     authorize @products
   end
