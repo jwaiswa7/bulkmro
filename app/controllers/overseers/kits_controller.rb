@@ -11,7 +11,7 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   def new
-    @kit = Kit.new(:overseer => current_overseer)
+    @kit = Kit.new(:overseer => current_overseer, :inquiry_id => params[:inquiry_id].present? ? params[:inquiry_id] : nil)
     @kit.build_product
 
     authorize @kit
@@ -22,6 +22,17 @@ class Overseers::KitsController < Overseers::BaseController
 
     authorize @kit
     if @kit.save
+
+      if @kit.inquiry.present?
+        @kit.inquiry.inquiry_products.each do |ip|
+          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_initialize do |kp|
+            kp.assign_attributes(
+                quantity: ip.quantity
+            )
+          end
+        end
+      end
+
       redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)
     else
       render 'new'
@@ -35,7 +46,7 @@ class Overseers::KitsController < Overseers::BaseController
   def update
     @kit.assign_attributes(kit_params.merge(overseer: current_overseer))
     authorize @kit
-    if @kit.save_and_sync #@kit.product.approved? ? @kit.save_and_sync : @kit.save
+    if @kit.product.approved? ? @kit.save_and_sync : @kit.save
       redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)
     else
       render 'edit'
