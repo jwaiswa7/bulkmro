@@ -7,7 +7,7 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   def autocomplete
-    @companies = ApplyParams.to(Company.all, params)
+    @companies = ApplyParams.to(Company.all.where(:is_active => true), params)
     authorize @companies
   end
 

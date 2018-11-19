@@ -13,7 +13,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def autocomplete
-    @contacts = ApplyParams.to(Contact.all, params)
+    @contacts = ApplyParams.to(Contact.all.where(:is_active => true), params)
     authorize @contacts
   end
 
@@ -85,6 +85,7 @@ class Overseers::ContactsController < Overseers::BaseController
         :role,
         :status,
         :contact_group,
+        :is_active,
         :company_ids => []
     )
   end
