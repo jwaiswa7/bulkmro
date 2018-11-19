@@ -44,7 +44,12 @@ Rails.application.routes.draw do
       get 'console'
     end
 
-    resources :remote_requests
+    resources :remote_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]

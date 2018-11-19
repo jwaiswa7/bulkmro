@@ -58,14 +58,26 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
       child_overseer_ids = [overseer.id]
     end
 
-    targets_records_overseers = child_overseer_ids.uniq
+    target_child_overseer_ids = targets_records.where('manager_id = ? OR business_head_id = ?', overseer.id , overseer.id).pluck(:overseer_id)
+    targets_records_overseers = (child_overseer_ids + target_child_overseer_ids).uniq
 
 
-    sales_executives = Overseer.send(designation.downcase).where(id: targets_records_overseers)
+    sales_executives = Overseer.send("target_#{designation.downcase}").where(id: targets_records_overseers)
     sales_executives_filter_ids = sales_executives.pluck(:id)
-    sales_executives = sales_executives.where(id: executive_id) if executive_id.present?
-    sales_executives = manager_id.present? ? sales_executives.map{|o| o if (o.parent_id == manager_id)}.compact : sales_executives
-    sales_executives = business_head_id.present? ? sales_executives.map{|o| o if (o.parent.parent_id == business_head_id || o.parent_id == business_head_id) if o.parent.present?}.compact : sales_executives
+    if executive_id.present?
+      sales_executives = sales_executives.where(id: executive_id)
+    end
+
+    if manager_id.present?
+      sales_executives = sales_executives.map{|o| o if (o.parent_id == manager_id)}.compact
+      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, manager_id: manager_id).map{|t| t.overseer if (t.overseer.send("target_#{designation}?".downcase))}.compact).uniq
+    end
+
+    if business_head_id.present?
+      sales_executives = sales_executives.map{|o| o if (o.parent.parent_id == business_head_id || o.parent_id == business_head_id) if o.parent.present?}.compact
+      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, business_head_id: business_head_id).map{|t| t.overseer if (t.overseer.send("target_#{designation}?".downcase))}.compact).uniq
+    end
+
     sales_executive_ids = sales_executives.pluck(:id)
     all_sales_executives = Overseer.where(id: sales_executives_filter_ids)
 

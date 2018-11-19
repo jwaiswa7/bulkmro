@@ -12,6 +12,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     @folder = folder
   end
 
+  def generate_csv(array_of_ids, object_type)
+    file = "#{Rails.root}/public/#{object_type}_data.csv"
+    column_headers = ["ID"]
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      array_of_ids.each do |i|
+        writer << [i]
+      end
+    end
+  end
+
   def call
     methods = if custom_methods.present?
                 custom_methods
@@ -828,6 +838,103 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def legacy_inquiries
+    errors = []
+    opportunity_type = {'amazon' => 10, 'rate_contract' => 20, 'financing' => 30, 'regular' => 40, 'service' => 50, 'repeat' => 60, 'route_through' => 70, 'tender' => 80}
+    quote_category = {'bmro' => 10, 'ong' => 20}
+    opportunity_source = {1 => 10, 2 => 20, 3 => 30, 4 => 40}
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
+    service.loop(limit) do |x|
+
+      start_date = Date.new(2018, 04, 01)
+      inquiry_updated_date = Date.new(2018, 10, 19)
+
+      next if x.get_column('created_time', to_datetime: true) < start_date
+
+      company = Company.find_by_remote_uid(x.get_column('customer_company'))
+      contact_legacy_id = x.get_column('customer_id')
+      contact_email = x.get_column('email', downcase: true)
+
+      contact = Contact.find_by_legacy_id(contact_legacy_id) || Contact.find_by_email(contact_email) || company.contacts.first
+
+      # if company.industry.blank?
+      #   industry_uid = x.get_column('industry_sap_id')
+      #
+      #   if industry_uid
+      #     industry = Industry.find_by_remote_uid(industry_uid)
+      #     company.update_attributes!(:industry => industry) if industry.present?
+      #   end
+      # end
+
+
+      shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
+      billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
+
+
+      # if company == legacy_company && shipping_address.blank?
+      #   shipping_address = company.addresses.first
+      # end
+      #
+      # if company == legacy_company && billing_address.blank?
+      #   billing_address = company.addresses.first
+      # end
+
+      inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
+      legacy_id = x.get_column('quotation_id', downcase: true, remove_whitespace: true)
+
+      # next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+
+      inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
+
+       next if inquiry.updated_at > inquiry_updated_date
+      debugger
+
+      if inquiry.new_record? || update_if_exists
+        inquiry.company = company
+        inquiry.contact = contact
+        inquiry.legacy_contact_name = x.get_column('customer_name')
+        inquiry.status = x.get_column('bought').to_i
+        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?)
+        inquiry.potential_amount = x.get_column('potential_amount')
+        inquiry.opportunity_source = (opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?)
+        inquiry.subject = x.get_column('caption')
+        inquiry.gross_profit_percentage = x.get_column('grossprofitp')
+        inquiry.inside_sales_owner = Overseer.find_by_username(x.get_column('manager', downcase: true))
+        inquiry.outside_sales_owner = Overseer.find_by_username(x.get_column('outside', downcase: true))
+        inquiry.sales_manager = Overseer.find_by_username(x.get_column('powermanager', downcase: true))
+        inquiry.quote_category = (quote_category[x.get_column('category').downcase] if x.get_column('category').present?)
+        inquiry.billing_address = billing_address
+        inquiry.shipping_address = shipping_address
+        inquiry.opportunity_uid = x.get_column('op_code', nil_if_zero: true)
+        inquiry.customer_po_number = x.get_column('customer_po_id')
+        inquiry.legacy_shipping_company = Company.find_by_remote_uid(x.get_column('customer_shipping_company'))
+        inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
+        inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
+        inquiry.attachment_uid = x.get_column('attachment_entry')
+        inquiry.legacy_id = legacy_id
+        inquiry.priority = x.get_column('is_prioritized')
+        inquiry.expected_closing_date = x.get_column('closing_date', to_datetime: true)
+        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00")
+        inquiry.quotation_expected_date = x.get_column('quotation_expected_date', to_datetime: true)
+        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00")
+        inquiry.quotation_followup_date = x.get_column('quotation_followup_date', to_datetime: true)
+        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00")
+        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00")
+        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00")
+        inquiry.is_sez = x.get_column('sez')
+        inquiry.is_kit = x.get_column('is_kit')
+        inquiry.weight_in_kgs = x.get_column('weight')
+        inquiry.legacy_metadata = x.get_row
+        inquiry.created_at = x.get_column('created_time', to_datetime: true)
+        inquiry.updated_at = x.get_column('update_time', to_datetime: true)
+        inquiry.save!
+      end
+      inquiry.update_attributes!(legacy_bill_to_contact: company.contacts.where('first_name ILIKE ? AND last_name ILIKE ?', "%#{x.get_column('billing_name').split(' ').first}%", "%#{x.get_column('billing_name').split(' ').last}%").first) if x.get_column('billing_name').present? && inquiry.legacy_bill_to_contact_id.blank?
+      inquiry.update_attributes!(inquiry_currency: InquiryCurrency.create!(inquiry: inquiry, currency: Currency.find_by_legacy_id(x.get_column('currency')))) if inquiry.inquiry_currency_id.blank?
+    end
+  end
+
   def inquiry_terms
     price_type_mapping = {'CIF' => 30, 'CIP Mumbai Airport' => 80, 'DAP' => 50, 'DD' => 60, 'Door Delivery' => 60, 'EXW' => 10, 'FCA Mumbai' => 70, 'FOB' => 20, 'CFR' => 40}
     freight_option_mapping = {'Extra as per Actual' => 20, 'Included' => 10}
@@ -1429,6 +1536,31 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice.mis_date = x.get_column('mis_date')
         sales_invoice.save(validate: false)
       end
+    end
+  end
+
+  def update_products_with_legacy_brand
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products_data_with_legacy_brand.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find(x.get_column('product_id'))
+      brand = Brand.find_by_name(x.get_column('brand_name').upcase)
+      if !brand.present?
+        brand = Brand.new(name: x.get_column('brand_name').upcase)
+        brand.save_and_sync
+      end
+      if product.present?
+        product.name = x.get_column('product_name')
+        product.brand = brand
+        product.save
+      end
+    end
+  end
+
+  def save_and_sync_products_with_legacy_brand
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products_data_with_legacy_brand.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find(x.get_column('product_id'))
+      product.save_and_sync
     end
   end
 
