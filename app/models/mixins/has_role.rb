@@ -22,15 +22,19 @@ module Mixins::HasRole
     scope :managers_and_obj, -> (obj) {where('role IN (?) OR id = ?', MANAGER_ROLES.map {|r| Overseer.roles[r]}, obj.try(:id))}
 
     scope :inside, -> {where('role IN (?)', INSIDE_ROLES.map {|r| self.roles[r]})}
+    scope :target_inside, -> {where('role IN (?)', TARGET_INSIDE_ROLES.map {|r| self.roles[r]})}
     scope :inside_and_obj, -> (obj) {where('role IN (?) OR id = ?', INSIDE_ROLES.map {|r| Overseer.roles[r]}, obj.try(:id))}
 
     scope :outside, -> {where('role IN (?)', OUTSIDE_ROLES.map {|r| self.roles[r]})}
+    scope :target_outside, -> {where('role IN (?)', TARGET_OUTSIDE_ROLES.map {|r| self.roles[r]})}
     scope :outside_and_obj, -> (obj) {where('role IN (?) OR id = ?', OUTSIDE_ROLES.map {|r| Overseer.roles[r]}, obj.try(:id))}
 
     MANAGER_ROLES = %w(admin inside_sales_manager outside_sales_manager)
     LEADER_ROLES = %w(inside_sales_team_leader outside_sales_team_leader)
     INSIDE_ROLES = %w(inside_sales_executive inside_sales_team_leader inside_sales_manager outside_sales_manager admin)
     OUTSIDE_ROLES = %w(outside_sales_executive outside_sales_team_leader outside_sales_manager inside_sales_manager admin)
+    TARGET_INSIDE_ROLES = %w(inside_sales_executive inside_sales_team_leader inside_sales_manager)
+    TARGET_OUTSIDE_ROLES = %w(outside_sales_executive outside_sales_team_leader outside_sales_manager)
     OTHER_ROLES = %w(procurement accounts logistics sales)
 
     def manager?
@@ -47,6 +51,14 @@ module Mixins::HasRole
 
     def outside?
       role.in? OUTSIDE_ROLES
+    end
+
+    def target_inside?
+      role.in? TARGET_INSIDE_ROLES
+    end
+
+    def target_outside?
+      role.in? TARGET_OUTSIDE_ROLES
     end
 
     def logistics?
