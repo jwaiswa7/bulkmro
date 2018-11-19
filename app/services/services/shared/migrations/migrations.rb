@@ -1231,7 +1231,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
 
-      target = Target.where(overseer: overseer, manager: manager, business_head: business_head ,target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
+      target = Target.where(overseer: overseer, manager: manager, business_head: business_head, target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
       if target.new_record? || update_if_exists
         target.target_value = x.get_column('target')
         target.legacy_id = x.get_column('target_legacy_id')
@@ -1317,7 +1317,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
         if sales_invoice.present?
           meta_data = JSON.parse(x.get_column('meta_data'))
-          sales_invoice.update_attributes(:status => 1,:metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
+          sales_invoice.update_attributes(:status => 1, :metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
           puts meta_data['ItemLine'].count
           puts '<---------------------------------------------->'
           meta_data['ItemLine'].each do |remote_row|
@@ -1431,5 +1431,40 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def brand_remote_uids
+    Brand.update_all remote_uid: nil
+    service = Services::Shared::Spreadsheets::CsvImporter.new('brand_remote_uids.csv', folder)
+    service.loop(nil) do |x|
+      name = x.get_column('Manufacturer Name')
+      brand = Brand.find_by_name(name)
+      if brand.present?
+        brand.remote_uid = x.get_column('Code')
+        brand.save_and_sync
+      end
+      next if name == nil
+    end
+  end
+
+  def product_images
+    service = Services::Shared::Spreadsheets::CsvImporter.new('product_images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_legacy_id(x.get_column('legacy_id'))
+      next if product.blank?
+      sheet_columns = [
+          ['image_path', 'images']
+      ]
+      sheet_columns.each do |file|
+        file_url = x.get_column(file[0])
+        begin
+          attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+
 
 end
