@@ -99,6 +99,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit? && record.invoices.present?
   end
 
+  def stages?
+    edit?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

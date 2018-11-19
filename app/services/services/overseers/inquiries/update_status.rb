@@ -14,11 +14,11 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     when :suppliers_selected then add_inquiry_status('Cross Reference', inquiry, nil, update_inquiry ) if status == 'Acknowledgement Mail' && inquiry.products.present?
     when :sales_quote_saved then add_inquiry_status('Preparing Quotation', inquiry, nil, update_inquiry ) if status == 'Cross Reference' && inquiry.sales_quote.present?
     when :quotation_email_sent then add_inquiry_status('Quotation Sent', inquiry, nil, update_inquiry ) if status == 'Preparing Quotation'
-    when :expected_order then add_inquiry_status('Expected Order', inquiry, sales_order, update_inquiry )
-    when :order_confirmed then add_inquiry_status('Draft SO for Approval by Sales Manager', inquiry, sales_order, update_inquiry )
-    when :order_rejected_by_sales_manager then add_inquiry_status('SO Rejected by Sales Manager', inquiry, sales_order, update_inquiry )
-    when :order_won then add_inquiry_status('Order Won', inquiry, sales_order, update_inquiry )
-    when :sap_rejected then add_inquiry_status('SAP Rejected', inquiry, sales_order, update_inquiry )
+    when :expected_order then add_inquiry_status('Expected Order', inquiry, subject, update_inquiry )
+    when :order_confirmed then add_inquiry_status('Draft SO for Approval by Sales Manager', inquiry, subject, update_inquiry )
+    when :order_rejected_by_sales_manager then add_inquiry_status('SO Rejected by Sales Manager', inquiry, subject, update_inquiry )
+    when :order_won then add_inquiry_status('Order Won', inquiry, subject, update_inquiry )
+    when :sap_rejected then add_inquiry_status('SAP Rejected', inquiry, subject, update_inquiry )
     else nil
     end
   end
@@ -29,7 +29,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     if update_inquiry
       inquiry.update_attributes(:status => status)
     end
-    InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.id).first_or_create do |inquiry_status_record|
+    InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.try(:class).try(:name), subject_id: subject.try(:id)).first_or_create do |inquiry_status_record|
       inquiry_status_record.remote_uid = status
     end
   end

@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages]
 
   def index
     authorize :inquiry
@@ -128,6 +128,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     else
       render 'edit_suppliers'
     end
+  end
+
+  def stages
+    @stages = @inquiry.inquiry_status_records.order("created_at ASC")
+    authorize @inquiry
   end
 
   private
