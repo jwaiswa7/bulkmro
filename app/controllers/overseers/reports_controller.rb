@@ -3,7 +3,9 @@ class Overseers::ReportsController < Overseers::BaseController
   def index
     Report.activity
     Report.pipeline
+    Report.target
     Report.monthly_sales
+
     @reports = ApplyDatatableParams.to(Report.all, params)
     authorize @reports
   end
@@ -11,7 +13,9 @@ class Overseers::ReportsController < Overseers::BaseController
   def show
     @report = Report.find_by_uid(params[:id])
     @report.assign_attributes(report_params)
-    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report)
+    params[:overseer] = current_overseer
+    # @report.designation = 'Inside'
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @data = service.call
 
     authorize @report
@@ -26,7 +30,8 @@ class Overseers::ReportsController < Overseers::BaseController
       params.require(:report).permit(
           :date_range,
           :start_at,
-          :end_at
+          :end_at,
+          :filters
       )
     else
       {}

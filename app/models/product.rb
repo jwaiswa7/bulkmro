@@ -28,7 +28,7 @@ class Product < ApplicationRecord
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
   has_one :kit
-  has_one_attached :image
+  has_many_attached :images
   attr_accessor :applicable_tax_percentage
 
   has_many :cart_items

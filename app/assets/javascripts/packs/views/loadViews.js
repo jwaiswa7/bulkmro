@@ -21,8 +21,6 @@ import salesOrders from "./salesOrders/init";
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
 
-// Category
-import categories from "./categories/init";
 
 let loader = {
     imports: imports,
@@ -33,7 +31,6 @@ let loader = {
     salesOrders: salesOrders,
 
     salesQuotes: salesQuotes,
-    categories: categories
 };
 
 // Imports

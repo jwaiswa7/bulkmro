@@ -30,12 +30,15 @@ class SalesOrder < ApplicationRecord
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
+  has_one :purchase_order_queue
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
-  delegate :inside_sales_owner, :outside_sales_owner, to: :inquiry, allow_nil: true
+  delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, to: :inquiry, allow_nil: true
+
 
   #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
+
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
@@ -137,5 +140,9 @@ class SalesOrder < ApplicationRecord
 
   def total_quantities
     self.rows.pluck(:quantity).inject(0){|sum,x| sum + x }
+  end
+
+  def has_purchase_order_request
+    self.purchase_order_queue.present?
   end
 end
