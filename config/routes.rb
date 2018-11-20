@@ -133,12 +133,18 @@ Rails.application.routes.draw do
 
     resources :purchase_order_queues do
       member do
+        post 'new_comment'
       end
 
       collection do
         get 'autocomplete'
       end
 
+    end
+
+    resources :purchase_order_comments do
+      member do
+      end
     end
 
     resources :sales_orders do
@@ -153,6 +159,7 @@ Rails.application.routes.draw do
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'autocomplete'
       end
 
       scope module: 'sales_orders' do
@@ -163,6 +170,7 @@ Rails.application.routes.draw do
     resources :purchase_orders do
       collection do
         get 'export_all'
+        get 'autocomplete'
       end
     end
 

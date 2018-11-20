@@ -1,14 +1,18 @@
 class Overseers::PurchaseOrderQueuePolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    true
   end
 
   def new_purchase_order?
-    admin?
+    true
   end
 
   def new?
-    admin?
+    true
+  end
+
+  def new_comment?
+    true
   end
 
 end

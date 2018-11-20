@@ -2,10 +2,10 @@ json.data (@purchase_order_queues) do |purchase_order_queue|
   json.array! [
                   [
                       if policy(purchase_order_queue).show?
-                        row_action_button(overseers_inquiry_sales_order_path(purchase_order_queue.sales_order.inquiry, purchase_order_queue.sales_order), 'eye', 'View Sales Order', 'info')
+                        row_action_button(overseers_purchase_order_queue_path(purchase_order_queue), 'eye', 'View Sales Order', 'info')
                       end,
                       if policy(purchase_order_queue).edit?
-                        #row_action_button(edit_overseers_purchase_order_queue_path(purchase_order_queue), 'pencil', 'Edit purchase_order_queue', 'warning')
+                        row_action_button(edit_overseers_purchase_order_queue_path(purchase_order_queue), 'pencil', 'Edit purchase_order_queue', 'warning')
                       end
                   ].join(' '),
                   purchase_order_queue.id,

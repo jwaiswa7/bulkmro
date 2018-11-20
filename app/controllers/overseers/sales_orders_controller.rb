@@ -21,9 +21,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     sales_order = SalesOrder.find(params[:id])
     @purchase_order_queue = PurchaseOrderQueue.new(sales_order:sales_order, inquiry: sales_order.inquiry, overseer: current_overseer)
     authorize @purchase_order_queue
-    if @purchase_order_queue.save
-      redirect_to overseers_sales_orders_path, notice: flash_message(@purchase_order_queue, action_name)
-    end
+    render new_overseers_purchase_order_queue_path()
   end
 
   def export_all
@@ -69,6 +67,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @sales_orders = service.records.try(:reverse)
       end
     end
+  end
+
+  def autocomplete
+    service = Services::Overseers::Finders::SalesOrders.new(params)
+    service.call
+
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records.reverse
+
+    authorize :sales_order
   end
 
   def drafts_pending
