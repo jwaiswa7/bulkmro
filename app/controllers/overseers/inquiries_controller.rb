@@ -51,7 +51,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def autocomplete
-    service = Services::Overseers::Finders::Inquiries.new(params)
+    service = Services::Overseers::Finders::Inquiries.new(params.merge(page: 1))
     service.call
 
     @indexed_inquiries = service.indexed_records
