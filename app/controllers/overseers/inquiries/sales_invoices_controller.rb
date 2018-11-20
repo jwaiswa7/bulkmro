@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -42,6 +42,24 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
   end
 
+  def make_zip
+    authorize @sales_invoice, :show?
+    @metadata = @sales_invoice.metadata.deep_symbolize_keys
+
+    files = File.open(RenderPdfToFile.for(@sales_invoice)), @sales_invoice.filename
+    files.save
+    respond_to do |format|
+      format.html {}
+      format.zip do
+        compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+          zos.put_next_entry files
+        end
+        compressed_filestream.rewind
+        send_data compressed_filestream.read, filename: "invoice.zip"
+      end
+    end
+  end
+
   private
 
   def set_sales_invoice
@@ -49,4 +67,3 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
 end
-

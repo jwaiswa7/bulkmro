@@ -7,6 +7,10 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     record.original_invoice.attached?
   end
 
+  def make_zip?
+    show?
+  end
+
   def export_all?
     allow_export?
   end
