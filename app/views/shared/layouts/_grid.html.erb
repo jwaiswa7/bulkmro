@@ -41,7 +41,7 @@
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything [press ENTER to SEARCH]" value="<%= params[:q] %>" onchange="searchsubmit(this.value)">
 </div>
 
-<div class="form-row" id="grid_container">
+<div class="form-row mt-2" id="grid_container">
   <% if @products.count > 0 %>
     <% @products.each do |product| %>
       <div class="col-md-2 col-sm-6 col-xs-12">
