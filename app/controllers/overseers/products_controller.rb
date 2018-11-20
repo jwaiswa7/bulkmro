@@ -117,6 +117,7 @@ class Overseers::ProductsController < Overseers::BaseController
         :sku,
         :mpn,
         :is_service,
+        :is_active,
         :brand_id,
         :category_id,
         :tax_code_id,

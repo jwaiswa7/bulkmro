@@ -62,7 +62,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     targets_records_overseers = (child_overseer_ids + target_child_overseer_ids).uniq
 
 
-    sales_executives = Overseer.send(designation.downcase).where(id: targets_records_overseers)
+    sales_executives = Overseer.send("target_#{designation.downcase}").where(id: targets_records_overseers)
     sales_executives_filter_ids = sales_executives.pluck(:id)
     if executive_id.present?
       sales_executives = sales_executives.where(id: executive_id)
@@ -70,12 +70,12 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
 
     if manager_id.present?
       sales_executives = sales_executives.map{|o| o if (o.parent_id == manager_id)}.compact
-      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, manager_id: manager_id).map{|t| t.overseer if (t.overseer.send("#{designation}?".downcase))}.compact).uniq
+      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, manager_id: manager_id).map{|t| t.overseer if (t.overseer.send("target_#{designation}?".downcase))}.compact).uniq
     end
 
     if business_head_id.present?
       sales_executives = sales_executives.map{|o| o if (o.parent.parent_id == business_head_id || o.parent_id == business_head_id) if o.parent.present?}.compact
-      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, business_head_id: business_head_id).map{|t| t.overseer if (t.overseer.send("#{designation}?".downcase))}.compact).uniq
+      sales_executives = (sales_executives + targets_records.includes(:overseer).where(overseer_id: targets_records_overseers, business_head_id: business_head_id).map{|t| t.overseer if (t.overseer.send("target_#{designation}?".downcase))}.compact).uniq
     end
 
     sales_executive_ids = sales_executives.pluck(:id)

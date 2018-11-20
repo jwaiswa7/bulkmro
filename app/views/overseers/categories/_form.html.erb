@@ -24,7 +24,15 @@
       <%= f.association :parent, :label_method => :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
     <% end %>
 
-    <%= f.input :is_service %>
+    <div class="form-row">
+      <div class="col-12 col-md-4">
+        <%= f.input :is_service %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :is_active %>
+      </div>
+    </div>
+
 
     <%= action_button(action_name, @category) %>
   <% end %>
