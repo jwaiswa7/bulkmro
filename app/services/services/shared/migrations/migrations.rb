@@ -1338,7 +1338,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
 
-      target = Target.where(overseer: overseer, manager: manager, business_head: business_head ,target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
+      target = Target.where(overseer: overseer, manager: manager, business_head: business_head, target_period: target_period, target_type: target_type[x.get_column('legacy_type_id')]).first_or_initialize
       if target.new_record? || update_if_exists
         target.target_value = x.get_column('target')
         target.legacy_id = x.get_column('target_legacy_id')
@@ -1424,7 +1424,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
         if sales_invoice.present?
           meta_data = JSON.parse(x.get_column('meta_data'))
-          sales_invoice.update_attributes(:status => 1,:metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
+          sales_invoice.update_attributes(:status => 1, :metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
           puts meta_data['ItemLine'].count
           puts '<---------------------------------------------->'
           meta_data['ItemLine'].each do |remote_row|
@@ -1563,5 +1563,90 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product.save_and_sync
     end
   end
+
+  def brand_remote_uids
+    Brand.update_all remote_uid: nil
+    service = Services::Shared::Spreadsheets::CsvImporter.new('brand_remote_uids.csv', folder)
+    service.loop(nil) do |x|
+      name = x.get_column('Manufacturer Name')
+      brand = Brand.find_by_name(name)
+      if brand.present?
+        brand.remote_uid = x.get_column('Code')
+        brand.save_and_sync
+      end
+      next if name == nil
+    end
+  end
+
+  def product_images
+    service = Services::Shared::Spreadsheets::CsvImporter.new('product_images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_legacy_id(x.get_column('legacy_id'))
+      next if product.blank?
+      sheet_columns = [
+          ['image_path', 'images']
+      ]
+      sheet_columns.each do |file|
+        file_url = x.get_column(file[0])
+        begin
+          attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+  def chandan_products
+    skus = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Chandan Steel NEW.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('BM'))
+      if !product.present?
+        brand = Brand.find_by_name(x.get_column('Make'))
+        category = Category.find_by_name(x.get_column('Category'))
+        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
+        name = x.get_column('Client Description')
+        sku = x.get_column('BM')
+        tax_code = TaxCode.find_by_chapter(x.get_column('HSN Code'))
+
+        next if Product.where(:sku => sku).exists?
+
+        product = Product.new
+        product.brand = brand
+        product.category = category
+        product.sku = sku || product.generate_sku
+        product.tax_code = tax_code || TaxCode.default
+        product.mpn = x.get_column('MFR')
+        product.description = x.get_column('BULK MRO Description')
+        product.name = name
+        product.measurement_unit = measurement_unit
+        product.legacy_metadata = x.get_row
+        product.save_and_sync
+
+        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+      end
+
+      sheet_columns = [
+          ['img_links', 'images']
+      ]
+
+      sheet_columns.each do |file|
+        file_url = x.get_column(file[0])
+        begin
+          sleep(1.5)
+          puts "-------------------------------------------"
+          attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
+      end
+      skus.push product.sku
+    end
+
+    puts skus
+  end
+
+
 
 end
