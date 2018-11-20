@@ -133,7 +133,6 @@ Rails.application.routes.draw do
 
     resources :purchase_order_queues do
       member do
-        post 'new_comment'
       end
 
       collection do

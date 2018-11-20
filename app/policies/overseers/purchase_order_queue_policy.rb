@@ -11,8 +11,4 @@ class Overseers::PurchaseOrderQueuePolicy < Overseers::ApplicationPolicy
     true
   end
 
-  def new_comment?
-    true
-  end
-
 end

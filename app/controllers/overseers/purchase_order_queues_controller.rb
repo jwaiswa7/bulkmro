@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrderQueuesController < Overseers::BaseController
-  before_action :set_purchase_order_queue, only: [:show, :edit, :update, :new_comment]
+  before_action :set_purchase_order_queue, only: [:show, :edit, :update]
 
   def index
     @purchase_order_queues = ApplyDatatableParams.to(PurchaseOrderQueue.all.order('id DESC'), params)
@@ -17,20 +17,6 @@ class Overseers::PurchaseOrderQueuesController < Overseers::BaseController
       authorize @purchase_order_queue
     else
       redirect_to overseers_purchase_order_queues_path
-    end
-  end
-
-  def new_comment
-    if params[:purchase_order_queue][:message].present?
-      @purchase_order_comment = PurchaseOrderComment.new(:message => params[:purchase_order_queue][:message], :purchase_order_queue => @purchase_order_queue, :overseer => current_overseer)
-      authorize @purchase_order_comment
-      if @purchase_order_comment.save
-        redirect_to overseers_purchase_order_queues_path, notice: flash_message(@purchase_order_queue, action_name)
-      else
-        redirect_to overseers_purchase_order_queues_path, notice: flash_message(@purchase_order_queue, action_name)
-      end
-    else
-      redirect_to overseers_purchase_order_queues_path, notice: flash_message(@purchase_order_queue, action_name)
     end
   end
 
