@@ -17,13 +17,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
-  def new_purchase_order
-    sales_order = SalesOrder.find(params[:id])
-    @purchase_order_queue = PurchaseOrderQueue.new(sales_order:sales_order, inquiry: sales_order.inquiry, overseer: current_overseer)
-    authorize @purchase_order_queue
-    render new_overseers_purchase_order_queue_path()
-  end
-
   def export_all
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
