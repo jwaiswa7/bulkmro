@@ -284,6 +284,11 @@ Rails.application.routes.draw do
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
+        get 'approve_order'
+      end
+
+      collection do
+        get 'pending_orders'
       end
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
