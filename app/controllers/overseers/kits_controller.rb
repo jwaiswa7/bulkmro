@@ -11,7 +11,7 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   def new
-    @kit = Kit.new(:overseer => current_overseer, :inquiry_id => params[:inquiry_id].present? ? params[:inquiry_id] : nil)
+    @kit = Kit.new(:overseer => current_overseer, :inquiry_id => inquiry)
     @kit.build_product
 
     authorize @kit
@@ -24,11 +24,9 @@ class Overseers::KitsController < Overseers::BaseController
     if @kit.save
 
       if @kit.inquiry.present?
-        @kit.inquiry.inquiry_products.each do |ip|
-          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_initialize do |kp|
-            kp.assign_attributes(
-                quantity: ip.quantity
-            )
+        @kit.inquiry.inquiry_products.each do |inquiry_product|
+          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_create do |row|
+            row.quantity = inquiry_product.quantity
           end
         end
       end
@@ -54,6 +52,9 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   private
+  def inquiry
+    params[:inquiry_id].present? ? params[:inquiry_id] : nil
+  end
 
   def kit_params
     params.require(:kit).permit(
