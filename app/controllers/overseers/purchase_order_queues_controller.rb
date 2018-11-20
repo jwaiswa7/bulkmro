@@ -47,6 +47,7 @@ class Overseers::PurchaseOrderQueuesController < Overseers::BaseController
   end
 
   def edit
+    @purchase_order_comment = PurchaseOrderComment.new(:purchase_order_queue => @purchase_order_queue)
     authorize @purchase_order_queue
   end
 
@@ -73,7 +74,9 @@ class Overseers::PurchaseOrderQueuesController < Overseers::BaseController
         :inquiry_id,
         :sales_order_id,
         :purchase_order_number,
-        :status
+        :status,
+        :purchase_order_comments_attributes => [:id, :message, :created_by_id],
+        :attachments => []
     )
   end
 

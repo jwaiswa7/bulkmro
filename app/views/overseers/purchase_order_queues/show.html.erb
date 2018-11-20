@@ -11,7 +11,7 @@
   </section>
 
   <section class="mb-3">
-    <div class="card">
+    <div class="card mb-2">
       <div class="card-body">
         <div>
           <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
@@ -43,41 +43,49 @@
                 <%= @purchase_order_queue.purchase_order_number %>
               </div>
             <% end %>
-
-            <% if @purchase_order_queue.attachments.attached? %>
-              <div class="col-6 col-md-3 mb-2">
+          </div>
+          <% if @purchase_order_queue.attachments.attached? %>
+            <div class="form-row">
+              <div class="col-12 col-md-3 mb-2">
                 <strong class="d-block">Attachments </strong>
-                <%#= @purchase_order_queue.status %>
+                <% @purchase_order_queue.attachments.each do |attachment| %>
+                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+                    <i class="fal fa-download"></i>
+                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                      <i class="fal fa-trash-alt"></i>
+                    <% end if attachment.present? && policy(:attachment).destroy? %>
+                  <% end %>
+                <% end %>
               </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <div class="flex-fill">
-            <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-          </div>
-
-          <% if @purchase_order_queue.purchase_order_comments.persisted.size > 0 %>
-            <div class="chats mb-3">
-              <% @purchase_order_queue.purchase_order_comments.each do |comment| %>
-                <div class="media chat-item">
-                  <div class="media-body">
-                    <div class="chat-item-title">
-                      <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
-                      <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
-                    </div>
-                    <div class="chat-item-body">
-                      <p><%= comment.message %></p>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
             </div>
           <% end %>
         </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="flex-fill">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+        </div>
+
+        <% if @purchase_order_queue.purchase_order_comments.persisted.size > 0 %>
+          <div class="chats mb-3">
+            <% @purchase_order_queue.purchase_order_comments.each do |comment| %>
+              <div class="media chat-item">
+                <div class="media-body">
+                  <div class="chat-item-title">
+                    <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
+                    <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
+                  </div>
+                  <div class="chat-item-body">
+                    <p><%= comment.message %></p>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>

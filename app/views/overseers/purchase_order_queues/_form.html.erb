@@ -22,26 +22,49 @@
         <%#= f.association :purchase_order_number, collection: [PurchaseOrder.find_by_po_number(:purchase_order_number)], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Purchase Order Number" %>
       </div>
       <div class="col-6">
-        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrderQueue.statuses) %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrderQueue.statuses, alphabetical: false), :include_blank => false %>
       </div>
+
+      <div class="col-12 col-md-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+          </div>
+          <div class="form-group">
+            <% f.object.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                  <i class="fal fa-trash-alt"></i>
+                <% end if attachment.present? && policy(:attachment).destroy? %>
+              <% end %>
+            <% end if f.object.attachments.attached? %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <%= f.nested_fields_for :purchase_order_comments, f.object.purchase_order_comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
+          <%= purchase_order_comment.hidden_field :created_by_id %>
+          <%= purchase_order_comment.hidden_field :updated_by_id %>
+          <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        <% end %>
+      </div>
+
     </div>
 
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@purchase_order_queue) %>
+        <i class="fal fa-plus-circle"></i> Create PO Request
       <% end %>
     <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@purchase_order_queue) %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+        <i class="fal fa-pen"></i> Update PO Request
       <% end %>
     <% end %>
   <% end %>
 
   <% if action_name.capitalize != "New" %>
-  <%= simple_form_for @purchase_order_queue, :url => new_comment_overseers_purchase_order_queue_path, :method => 'post', :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''} do |f| %>
-
-    <%#= render 'shared/snippets/form_errors', f: f %>
-
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
@@ -51,28 +74,24 @@
         <% if @purchase_order_queue.purchase_order_comments.persisted.size > 0 %>
           <div class="chats mb-3">
             <% @purchase_order_queue.purchase_order_comments.each do |comment| %>
-              <div class="media chat-item">
-                <div class="media-body">
-                  <div class="chat-item-title">
-                    <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
-                    <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
-                  </div>
-                  <div class="chat-item-body">
-                    <p><%= comment.message %></p>
+              <% if comment.persisted? %>
+                <div class="media chat-item">
+                  <div class="media-body">
+                    <div class="chat-item-title">
+                      <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
+                      <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
+                    </div>
+                    <div class="chat-item-body">
+                      <p><%= comment.message %></p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
+
             <% end %>
           </div>
         <% end %>
-
-        <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-
-        <div class="flex-fill">
-          <%= f.submit 'Comment', name: 'reply', class: 'btn btn-dark' %>
-        </div>
       </div>
     </div>
-  <% end %>
   <% end %>
 </div>

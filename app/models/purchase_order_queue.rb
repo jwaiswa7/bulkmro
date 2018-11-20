@@ -22,5 +22,4 @@ class PurchaseOrderQueue < ApplicationRecord
     self.status = 10
   end
 
-  attr_accessor :message
 end
