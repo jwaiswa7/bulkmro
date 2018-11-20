@@ -25,10 +25,8 @@ class Overseers::KitsController < Overseers::BaseController
 
       if @kit.inquiry.present?
         @kit.inquiry.inquiry_products.each do |inquiry_product|
-          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_initialize do |row|
-            row.assign_attributes(
-                quantity: inquiry_product.quantity
-            )
+          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_create do |row|
+            row.quantity = inquiry_product.quantity
           end
         end
       end
