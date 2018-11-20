@@ -173,6 +173,7 @@ Rails.application.routes.draw do
 
         resources :sales_invoices do
           member do
+            get 'mis_date_edit'
             get 'duplicate'
             get 'triplicate'
           end
