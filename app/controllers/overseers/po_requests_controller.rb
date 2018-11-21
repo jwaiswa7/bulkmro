@@ -41,7 +41,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request_comment.save!
       end
 
-      redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
+      redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
       render 'new'
     end
