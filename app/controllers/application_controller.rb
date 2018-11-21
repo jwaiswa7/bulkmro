@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def flash_message(object, action)
-    class_name = object.class.name
+    class_name = object.class.name.titleize
 
     case action.to_sym
     when :create

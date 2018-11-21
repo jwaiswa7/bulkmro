@@ -44,7 +44,12 @@ Rails.application.routes.draw do
       get 'console'
     end
 
-    resources :remote_requests
+    resources :remote_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
@@ -116,13 +121,35 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :kits do
+      member do
+      end
+
+      collection do
+        get 'autocomplete'
+      end
+
+    end
+
+    resources :po_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+      end
+    end
+
     resources :sales_orders do
+      member do
+        get 'new_purchase_order'
+      end
+
       collection do
         get 'pending'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'autocomplete'
       end
 
       scope module: 'sales_orders' do
@@ -133,6 +160,7 @@ Rails.application.routes.draw do
     resources :purchase_orders do
       collection do
         get 'export_all'
+        get 'autocomplete'
       end
     end
 
@@ -194,6 +222,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'preview'
+            get 'reset_quote'
           end
 
           scope module: 'sales_quotes' do
@@ -250,6 +279,12 @@ Rails.application.routes.draw do
   end
 
   namespace 'customers' do
+    resources :reports do
+      member do
+
+      end
+    end
+
     resource :dashboard, :controller => :dashboard
     resources :cart_items, only: %i[new create destroy]
     resources :customer_orders, only: %i[index create show] do

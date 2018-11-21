@@ -62,6 +62,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def autocomplete
+    service = Services::Overseers::Finders::SalesOrders.new(params.merge(page: 1))
+    service.call
+
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records.reverse
+
+    authorize :sales_order
+  end
+
   def drafts_pending
     authorize :sales_order
 

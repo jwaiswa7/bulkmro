@@ -2,7 +2,7 @@ class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
   def autocomplete
-    @brands = ApplyParams.to(Brand.all, params).order(:name)
+    @brands = ApplyParams.to(Brand.all.where(:is_active => true), params).order(:name)
     authorize @brands
   end
 
@@ -57,6 +57,7 @@ class Overseers::BrandsController < Overseers::BaseController
   def brand_params
     params.require(:brand).permit(
         :name,
+        :is_active,
         :company_ids => []
     )
   end

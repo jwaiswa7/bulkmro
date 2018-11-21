@@ -9,6 +9,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                      end,
+                      if policy(sales_order).can_request_po?
+                        row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'Request PO', 'info')
                       end
                   ].join(' '),
                   sales_order.order_number,
@@ -41,6 +44,4 @@ json.columnFilters [
 
 json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
-# json.recordsTotal @inquiries.model.all.count
-# json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]

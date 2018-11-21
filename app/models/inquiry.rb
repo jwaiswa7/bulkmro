@@ -36,6 +36,7 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
+  has_many :po_requests
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
@@ -243,6 +244,7 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
+      self.shipping_company ||= self.company
       self.commercial_terms_and_conditions ||= [
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
