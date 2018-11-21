@@ -39,6 +39,16 @@ module InquiryHelper
       'danger'
     when :'Regret'
       'danger'
+    when :'Inquiry Sent'
+      'dark'
+    when :'Preparing Quotation'
+      'warning'
+    when :'Quotation Received'
+      'warning'
+    when :'Purchase Order Issued'
+      'success'
+    when :'Purchase Order Revision Pending'
+      'danger'
     else
       'warning'
     end
@@ -46,5 +56,52 @@ module InquiryHelper
 
   def inquiry_status_badge(status)
     format_badge(status, inquiry_status_color(status)) if status
+  end
+
+  def sales_order_status_color(status)
+    case status.to_sym
+    when :'Supplier PO: Request Pending'
+      'dark'
+    when :'Supplier PO: Partially Created'
+      'dark'
+    when :'Partially Shipped'
+      'warning'
+    when :'Partially Invoiced'
+      'warning'
+    when :'Partially Delivered: GRN Pending'
+      'danger'
+    when :'Partially Delivered: GRN Received'
+      'warning'
+    when :'Supplier PO: Created'
+      'dark'
+    when :'Shipped'
+      'warning'
+    when :'Invoiced'
+      'warning'
+    when :'Delivered: GRN Pending'
+      'danger'
+    when :'Delivered: GRN Received'
+      'warning'
+    when :'Partial Payment Received'
+      'warning'
+    when :'Payment Received (Closed)'
+      'success'
+    when :'Cancelled by SAP'
+      'dark'
+    when :'Short Close'
+      'danger'
+    when :'Processing'
+      'dark'
+    when :'Material Ready For Dispatch'
+      'warning'
+    when :'Order Deleted'
+      'danger'
+    else
+      'warning'
+    end
+  end
+
+  def sales_order_status_badge(status)
+    format_badge(status, sales_order_status_color(status)) if status
   end
 end
