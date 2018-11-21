@@ -80,7 +80,7 @@
                   <td><%= sales_order.inquiry.company.to_s %></td>
                   <td><%= format_currency(sales_order.calculated_total) %></td>
                   <td><%= format_date(sales_order.inquiry.customer_committed_date) %></td>
-                  <td><%= sales_order.status %></td>
+                  <td><%= sales_order_status_badge(sales_order.effective_customer_status) %></td>
                 </tr>
               <% end %>
               </tbody>
