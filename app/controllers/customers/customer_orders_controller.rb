@@ -45,6 +45,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
   def order_confirmed
     authorize @customer_order
+    if @customer_order.status == "pending"
+      render :template => 'customers/customer_orders/approval_pending'
+    else
+      render :template => 'customers/customer_orders/order_confirmed'
+    end
   end
 
   def index
