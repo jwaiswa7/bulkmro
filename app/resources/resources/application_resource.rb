@@ -156,7 +156,8 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.find(id, quotes: false)
-    OpenStruct.new(get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})").parsed_response)
+    response = get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})")
+    OpenStruct.new(response.parsed_response) if response.present?
   end
 
   def self.custom_find(id, by = nil)

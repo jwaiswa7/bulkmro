@@ -11,7 +11,14 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
                         super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
                       end
 
-
+    indexed_records = indexed_records.query({
+                                                range: {
+                                                    :"created_at" => {
+                                                        gte: Date.new(2018, 04, 01),
+                                                        lte: Date.today
+                                                    }
+                                                }
+                                            })
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -36,7 +43,14 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.query({
+                                                range: {
+                                                    :"created_at" => {
+                                                        gte: Date.new(2018, 04, 01),
+                                                        lte: Date.today
+                                                    }
+                                                }
+                                            })
     indexed_records
   end
 
