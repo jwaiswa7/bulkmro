@@ -46,10 +46,9 @@
                     <h4 class="modal-title">Select Status</h4>
                   </div>
                   <div class="modal-body">
-                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: [["Order Lost", "Order Lost"], ["Regret", "Regret"]], selected: 'Order Lost'  %>
+                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| i.match("Order Lost") || i.match("Regret") }, selected: @inquiry.status  %>
                   </div>
                   <div class="modal-footer">
-<!--                    <a href="<%#= update_inquiry_status_overseers_inquiry_path(@inquiry, status) %>" class="btn-block btn btn-dark">Update</a>-->
                     <%= action_button(action_name, @inquiry) %>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
