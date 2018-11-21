@@ -89,8 +89,8 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   enum customer_status: {
-      :'Delivered' => 1,
-      :'Not Delivered' => 0
+      :'Delivered' => 10,
+      :'Not Delivered' => 20
   }, _prefix: true
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
@@ -125,8 +125,45 @@ class SalesOrder < ApplicationRecord
     SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
-  def customer_status
-    self.remote_status == 'Partially Delivered: GRN Received' ? 1 : 0
+  def effective_customer_status
+    case self.remote_status.to_sym
+    when :'Supplier PO: Request Pending'
+      'Processing'
+    when :'Supplier PO: Partially Created'
+      'Processing'
+    when :'Partially Shipped'
+      'Partially Shipped'
+    when :'Partially Invoiced'
+      'Partially Invoiced'
+    when :'Partially Delivered: GRN Pending'
+      'Partially Delivered: GRN Pending'
+    when :'Partially Delivered: GRN Received'
+      'Partially Delivered: GRN Received'
+    when :'Supplier PO: Created'
+      'Processing'
+    when :'Shipped'
+      'Shipped'
+    when :'Invoiced'
+      'Invoiced'
+    when :'Delivered: GRN Pending'
+      'Delivered: GRN Pending'
+    when :'Delivered: GRN Received'
+      'Delivered: GRN Received'
+    when :'Partial Payment Received'
+      'Partial Payment Received'
+    when :'Payment Received (Closed)'
+      'Full Payment Received'
+    when :'Cancelled by SAP'
+      'Processing'
+    when :'Short Close'
+      'Short Closed'
+    when :'Processing'
+      'Processing'
+    when :'Material Ready For Dispatch'
+      'Material Ready For Dispatch'
+    when :'Order Deleted'
+      'Cancelled'
+    end
   end
 
   def filename(include_extension: false)
