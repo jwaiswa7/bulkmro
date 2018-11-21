@@ -277,6 +277,15 @@ Rails.application.routes.draw do
   end
 
   namespace 'customers' do
+    resources :reports do
+      member do
+      end
+
+      collection do
+        get 'quarterly_purchase_data'
+      end
+    end
+
     resource :dashboard, :controller => :dashboard
     resources :cart_items, only: %i[new create destroy]
     resources :customer_orders, only: %i[index create show] do
