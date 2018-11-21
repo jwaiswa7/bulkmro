@@ -2,10 +2,10 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        PO Request for Sales Order #<%= @purchase_order_queue.sales_order.order_number %>
+        PO Request for Sales Order #<%= @po_request.sales_order.order_number %>
       </h3>
-      <% if policy(@purchase_order_queue).edit? %>
-        <a href="<%= edit_overseers_purchase_order_queue_path(@purchase_order_queue) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+      <% if policy(@po_request).edit? %>
+        <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
     </div>
   </section>
@@ -16,39 +16,39 @@
         <div>
           <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
           <div class="form-row">
-            <% if @purchase_order_queue.sales_order.present? %>
+            <% if @po_request.sales_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Sales Order #</strong>
-                <%= @purchase_order_queue.sales_order.order_number %>
+                <%= @po_request.sales_order.order_number %>
               </div>
             <% end %>
 
-            <% if @purchase_order_queue.inquiry.present? %>
+            <% if @po_request.inquiry.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Inquiry #</strong>
-                <%= @purchase_order_queue.inquiry.inquiry_number %>
+                <%= @po_request.inquiry.inquiry_number %>
               </div>
             <% end %>
 
-            <% if @purchase_order_queue.status.present? %>
+            <% if @po_request.status.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Status</strong>
-                <%= @purchase_order_queue.status %>
+                <%= @po_request.status %>
               </div>
             <% end %>
 
-            <% if @purchase_order_queue.purchase_order_number.present? %>
+            <% if @po_request.purchase_order_number.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">PO #</strong>
-                <%= @purchase_order_queue.purchase_order_number %>
+                <%= @po_request.purchase_order_number %>
               </div>
             <% end %>
           </div>
-          <% if @purchase_order_queue.attachments.attached? %>
+          <% if @po_request.attachments.attached? %>
             <div class="form-row">
               <div class="col-12 col-md-3 mb-2">
                 <strong class="d-block">Attachments </strong>
-                <% @purchase_order_queue.attachments.each do |attachment| %>
+                <% @po_request.attachments.each do |attachment| %>
                   <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
                     <i class="fal fa-download"></i>
                     <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', attachment.filename, '?'].join('') do %>
@@ -69,9 +69,9 @@
           <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
         </div>
 
-        <% if @purchase_order_queue.purchase_order_comments.persisted.size > 0 %>
+        <% if @po_request.comments.persisted.size > 0 %>
           <div class="chats mb-3">
-            <% @purchase_order_queue.purchase_order_comments.each do |comment| %>
+            <% @po_request.comments.each do |comment| %>
               <div class="media chat-item">
                 <div class="media-body">
                   <div class="chat-item-title">

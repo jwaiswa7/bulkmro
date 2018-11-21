@@ -131,23 +131,14 @@ Rails.application.routes.draw do
 
     end
 
-    resources :purchase_order_queues do
-      member do
-      end
-
+    resources :po_requests do
       collection do
         get 'autocomplete'
-      end
-
-    end
-
-    resources :purchase_order_comments do
-      member do
+        get 'pending'
       end
     end
 
     resources :sales_orders do
-
       member do
         get 'new_purchase_order'
       end
