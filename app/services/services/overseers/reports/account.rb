@@ -22,8 +22,8 @@ class Services::Overseers::Reports::Account
     ActiveRecord::Base.default_timezone = :utc
 
     companies = @account.companies
-    sales_orders = @account.sales_orders.includes([rows: :sales_quote_row]).where(:mis_date => start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
-    months = sales_orders.group_by_month('sales_orders.mis_date', default_value: nil).count
+    sales_orders = @account.sales_orders.includes([rows: :sales_quote_row]).where(:created_at => start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
+    months = sales_orders.group_by_month('sales_orders.created_at', default_value: nil).count
     @data.columns = months
 
     @data.summaries['total'] ||= {}
@@ -34,7 +34,7 @@ class Services::Overseers::Reports::Account
       months.each do |month, value|
         @data.entries[company.name][month.to_s] ||= 0
         @data.summaries['total'][month.to_s] ||= 0
-        @data.entries[company.name][month.to_s] = company_sales_orders.where(:mis_date => month.to_date.beginning_of_month..month.to_date.end_of_month ).map{|s| s.report_total}.inject(0){|sum,x| sum + x }.to_f.round(2)
+        @data.entries[company.name][month.to_s] = company_sales_orders.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month ).map{|s| s.calculated_total}.compact.inject(0){|sum,x| sum + x }.to_f.round(2)
         @data.summaries['total'][month.to_s] = @data.summaries['total'][month.to_s] + @data.entries[company.name][month.to_s]
       end
     end
