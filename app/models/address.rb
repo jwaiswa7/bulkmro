@@ -30,10 +30,8 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  # validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != "No GST Number"}
+  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
-
-  validate :gst_limit
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :cst_proof, file_size_in_megabytes: 2
@@ -41,25 +39,6 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
-  after_create :set_remote_uid, :if => :persisted? # Do not remove IMP for SAP
-  after_initialize :set_remote_uid, :if => :persisted?
-  before_save :set_valid_gst
-
-  def set_valid_gst
-    if self.gst != "No GST Number" || self.gst != nil
-      self.gst = self.gst.delete(' ')
-    end
-  end
-
-  def gst_limit
-    if self.gst != "No GST Number" || self.gst != nil
-      gst = self.gst.delete(' ')
-      if gst.length != 15
-        errors.add(:gst, 'number must be 15 characters in length.')
-      end
-    end
-  end
-
   def set_defaults
     self.is_sez ||= false
     self.country_code ||= 'IN'
@@ -68,12 +47,20 @@ class Address < ApplicationRecord
     end
   end
 
-  def syncable_identifiers
-    [:billing_address_uid,:shipping_address_uid]
-  end
-
+  after_create :set_remote_uid, :if => :persisted? # Do not remove IMP for SAP
+  after_initialize :set_remote_uid, :if => :persisted?
   def set_remote_uid
     self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
+  end
+
+  def remove_gst_whitespace
+    if self.gst != "No GST Number" || self.gst != nil
+      self.gst = self.gst.delete(' ')
+    end
+  end
+
+  def syncable_identifiers
+    [:billing_address_uid,:shipping_address_uid]
   end
 
   def self.legacy
