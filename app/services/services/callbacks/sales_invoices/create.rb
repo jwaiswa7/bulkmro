@@ -10,13 +10,62 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
 
       if sales_order.present?
         sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
-          invoice.assign_attributes(:status => 1,:metadata => params)
-          params['ItemLine'].each do |remote_row|
-            invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
+          invoice.assign_attributes(:status => 1, :metadata => params)
+
+          if params['is_kit'].to_i == 1
+            sales_order_row = sales_order.sales_order_rows.first
+
+            invoice.rows.where(sku: sales_order_row.product.sku).first_or_initialize do |row|
+
+              qty_kit = params['qty_kit'].to_i
+              unitprice_kit = params['unitprice_kit'].to_f
+
+              kit_meta_data = {
+                :qty =>  qty_kit,
+                :sku =>  sales_order_row.product.sku,
+                :name =>  params['desc_kit'],
+                :price =>  unitprice_kit,
+                :base_cost => nil,
+                :row_total => unitprice_kit * qty_kit,
+                :base_price =>  unitprice_kit,
+                :product_id =>  sales_order_row.product.id.to_param,
+                :tax_amount =>  sales_order_row.calculated_tax * qty_kit,
+                :description =>  params['desc_kit'],
+                :order_item_id =>  nil,
+                :base_row_total =>  unitprice_kit * qty_kit,
+                :price_incl_tax => nil,
+                :additional_data => nil,
+                :base_tax_amount => sales_order_row.calculated_tax * qty_kit,
+                :discount_amount =>  nil,
+                :weee_tax_applied => nil,
+                :hidden_tax_amount => nil,
+                :row_total_incl_tax => (unitprice_kit * qty_kit) + (sales_order_row.calculated_tax * qty_kit),
+                :base_price_incl_tax => nil,
+                :base_discount_amount =>  nil,
+                :weee_tax_disposition => nil,
+                :base_hidden_tax_amount => nil,
+                :base_row_total_incl_tax => nil,
+                :weee_tax_applied_amount => nil,
+                :weee_tax_row_disposition => nil,
+                :base_weee_tax_disposition => nil,
+                :weee_tax_applied_row_amount => nil,
+                :base_weee_tax_applied_amount => nil,
+                :base_weee_tax_row_disposition => nil,
+                :base_weee_tax_applied_row_amnt => nil
+              }
               row.assign_attributes(
-                  quantity: remote_row['qty'],
-                  metadata: remote_row
+                  quantity: qty_kit,
+                  metadata: kit_meta_data
               )
+            end if sales_order_row.present?
+          else
+            params['ItemLine'].each do |remote_row|
+              invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
+                row.assign_attributes(
+                    quantity: remote_row['qty'],
+                    metadata: remote_row
+                )
+              end
             end
           end
         end
