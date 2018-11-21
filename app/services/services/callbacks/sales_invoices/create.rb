@@ -18,28 +18,28 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
             invoice.rows.where(sku: sales_order_row.product.sku).first_or_initialize do |row|
 
               qty_kit = params['qty_kit'].to_i
-              unitprice_kit = params['unitprice_kit'].to_f
+              unit_price_kit = params['unitprice_kit'].to_f
 
               kit_meta_data = {
                 :qty =>  qty_kit,
                 :sku =>  sales_order_row.product.sku,
                 :name =>  params['desc_kit'],
-                :price =>  unitprice_kit,
+                :price =>  unit_price_kit,
                 :base_cost => nil,
-                :row_total => unitprice_kit * qty_kit,
-                :base_price =>  unitprice_kit,
+                :row_total => unit_price_kit * qty_kit,
+                :base_price =>  unit_price_kit,
                 :product_id =>  sales_order_row.product.id.to_param,
                 :tax_amount =>  sales_order_row.calculated_tax * qty_kit,
                 :description =>  params['desc_kit'],
                 :order_item_id =>  nil,
-                :base_row_total =>  unitprice_kit * qty_kit,
+                :base_row_total =>  unit_price_kit * qty_kit,
                 :price_incl_tax => nil,
                 :additional_data => nil,
                 :base_tax_amount => sales_order_row.calculated_tax * qty_kit,
                 :discount_amount =>  nil,
                 :weee_tax_applied => nil,
                 :hidden_tax_amount => nil,
-                :row_total_incl_tax => (unitprice_kit * qty_kit) + (sales_order_row.calculated_tax * qty_kit),
+                :row_total_incl_tax => (unit_price_kit * qty_kit) + (sales_order_row.calculated_tax * qty_kit),
                 :base_price_incl_tax => nil,
                 :base_discount_amount =>  nil,
                 :weee_tax_disposition => nil,

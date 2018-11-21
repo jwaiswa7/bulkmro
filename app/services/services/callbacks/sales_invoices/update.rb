@@ -13,15 +13,14 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
         ['Comment', remote_coment].join(': '),
     ].join(' | ')
 
-    if sales_invoice.present?
+    if sales_invoice.present? && sales_invoice.sales_order.present?
       if params['state'].present?
         sales_invoice.update_attributes(:status => params['state'].to_i)
       end
-
       sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
       return_response("Sales Invoice updated successfully.")
     else
-      return_response("Sales Invoice not found.", 0)
+      return_response("Sales Invoice or Sales Order for this invoice not found.", 0)
     end
   end
 
