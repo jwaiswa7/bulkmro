@@ -66,10 +66,10 @@
           </div>
           <div class="card-footer p-2">
             <div class="form-row">
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder="1" id="quantity_<%= product.id %>" />
-              </div>
-              <div class="col-8">
+<!--              <div class="col-4">-->
+<!--                <input type="text" class="form-control" placeholder="1" id="quantity_<%#= product.id %>" />-->
+<!--              </div>-->
+              <div class="col-12">
                 <%= link_to "Add to Cart", customers_cart_items_path(product_id: product.id, quantity: 1), method: :post, remote: true, class: "btn btn-block btn-success" %>
               </div>
             </div>
