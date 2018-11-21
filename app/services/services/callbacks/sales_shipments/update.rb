@@ -7,19 +7,24 @@ class Services::Callbacks::SalesShipments::Update < Services::Callbacks::Shared:
   def call
     begin
       shipment = SalesShipment.find_by_shipment_number(params['increment_id'])
-      message = params['comment']
 
-      shipment.update_attributes!(
-          :status => params['state'].blank? ? nil : to_local_status(params['state'].to_i),
-          :delivery_date => params['ship_delivery_date'],
-          :followup_date => params['ship_follow_up_date'],
-          :shipment_grn => params['shp_grn'],
-          :metadata => params,
-          :packing_remarks => params['pick_pack_remartk']
-      )
+      if shipment.present?
+        message = params['comment']
 
-      shipment.comments.create!({:message => message, :metadata => params})
-      return_response("Sales Shipment updated successfully.")
+        shipment.update_attributes!(
+            :status => params['state'].blank? ? nil : to_local_status(params['state'].to_i),
+            :delivery_date => params['ship_delivery_date'],
+            :followup_date => params['ship_follow_up_date'],
+            :shipment_grn => params['shp_grn'],
+            :metadata => params,
+            :packing_remarks => params['pick_pack_remartk']
+        )
+
+        shipment.comments.create!({:message => message, :metadata => params})
+        return_response("Sales Shipment updated successfully.")
+      else
+        return_response("Sales Shipment not found.", 0)
+      end
     rescue => e
       return_response(e.message, 0)
     end

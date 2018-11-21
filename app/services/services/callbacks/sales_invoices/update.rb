@@ -5,22 +5,26 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
   end
 
   def call
-    sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
-    remote_coment = params['comment']
-    remote_status = params['state'].to_i
-    comment_message = [
-        ["Invoice ##{params['increment_id']} Updated", SalesInvoice.statuses.key(remote_status)].join(': '),
-        ['Comment', remote_coment].join(': '),
-    ].join(' | ')
+    begin
+      sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
+      remote_coment = params['comment']
+      remote_status = params['state'].to_i
+      comment_message = [
+          ["Invoice ##{params['increment_id']} Updated", SalesInvoice.statuses.key(remote_status)].join(': '),
+          ['Comment', remote_coment].join(': '),
+      ].join(' | ')
 
-    if sales_invoice.present? && sales_invoice.sales_order.present?
-      if params['state'].present?
-        sales_invoice.update_attributes(:status => params['state'].to_i)
+      if sales_invoice.present? && sales_invoice.sales_order.present?
+        if params['state'].present?
+          sales_invoice.update_attributes(:status => params['state'].to_i)
+        end
+        sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
+        return_response("Sales Invoice updated successfully.")
+      else
+        return_response("Sales Invoice or Sales Order for this invoice not found.", 0)
       end
-      sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
-      return_response("Sales Invoice updated successfully.")
-    else
-      return_response("Sales Invoice or Sales Order for this invoice not found.", 0)
+    rescue => e
+      return_response(e.message, 0)
     end
   end
 
