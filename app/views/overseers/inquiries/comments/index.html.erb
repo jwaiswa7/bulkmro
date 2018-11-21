@@ -36,8 +36,8 @@
                       <span class="chat-item-author"><%= comment.created_by.full_name %></span>
                       <span>
                         <span class="mr-1"><strong>
-                          <% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
-                          <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %>
+                          <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
+                          <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present?%></span><% end %>
                         </strong></span>
                         <%= time_ago_in_words(comment.created_at) %> ago</span>
                     </div>
