@@ -30,7 +30,6 @@ class SalesOrdersIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) {record.inquiry.outside_sales_owner.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) {record.inquiry.inside_sales_owner_id if record.inquiry.present?}
     field :outside_sales_executive, value: -> (record) {record.inquiry.outside_sales_owner_id if record.inquiry.present?}
-    field :customer_status, value: -> (record) {record.customer_status}
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :sent_at, type: 'date'

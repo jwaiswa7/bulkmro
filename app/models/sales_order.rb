@@ -88,11 +88,6 @@ class SalesOrder < ApplicationRecord
       :'Order Deleted' => 70
   }, _prefix: true
 
-  enum customer_status: {
-      :'Delivered' => 10,
-      :'Not Delivered' => 20
-  }, _prefix: true
-
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
 
   scope :remote_approved, -> {where('status = ? AND remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved'))}
