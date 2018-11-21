@@ -30,7 +30,7 @@ class SalesOrder < ApplicationRecord
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
-  has_one :purchase_order_queue
+  has_one :po_request
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
@@ -145,6 +145,6 @@ class SalesOrder < ApplicationRecord
   end
 
   def has_purchase_order_request
-    self.purchase_order_queue.present?
+    self.po_request.present?
   end
 end

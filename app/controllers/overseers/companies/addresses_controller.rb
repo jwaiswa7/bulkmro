@@ -23,6 +23,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   def create
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
     authorize @address
+    @address.remove_gst_whitespace
 
     if @address.save_and_sync
       @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
@@ -41,6 +42,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
   def update
     @address.assign_attributes(address_params.merge(overseer: current_overseer))
     authorize @address
+    @address.remove_gst_whitespace
 
     if @address.save_and_sync
       @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?

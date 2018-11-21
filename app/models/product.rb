@@ -49,6 +49,7 @@ class Product < ApplicationRecord
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
 
   validates_presence_of :name
+  validates_uniqueness_of :name, :if => :not_rejected?
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
   #validates_with MultipleImageFileValidator, attachments: :images
