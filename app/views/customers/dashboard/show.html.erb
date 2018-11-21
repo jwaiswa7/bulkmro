@@ -11,6 +11,7 @@
         <div class="list-group list-group-flush">
           <table class="table table-striped">
             <thead>
+            <th scope="col">Action</th>
             <th scope="col">Quote #</th>
             <th scope="col">Date</th>
             <th scope="col">Line Items</th>
@@ -22,6 +23,7 @@
             <tbody>
             <% @dashboard.recent_sales_quotes.each do |sales_quote| %>
               <tr>
+                <td><%= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info') %></td>
                 <td><%= sales_quote.inquiry.inquiry_number %></td>
                 <td><%= format_date(sales_quote.inquiry.created_at) %></td>
                 <td><%= sales_quote.rows.size %></td>
@@ -53,6 +55,7 @@
           <div class="list-group list-group-flush">
             <table class="table table-striped">
               <thead>
+              <th scope="col">Action</th>
               <th scope="col">Order #</th>
               <th scope="col">Quote #</th>
               <th scope="col">Order Date</th>
@@ -63,6 +66,7 @@
               <tbody>
               <% @dashboard.recent_sales_orders.each do |sales_order| %>
                 <tr>
+                  <td><%= row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info') %></td>
                   <td><%= sales_order.order_number %></td>
                   <td><%= sales_order.inquiry.inquiry_number %></td>
                   <td><%= format_date(sales_order.created_at) %></td>
@@ -95,6 +99,7 @@
           <div class="list-group list-group-flush">
             <table class="table table-striped">
               <thead>
+              <th scope="col">Action</th>
               <th scope="col">Invoice #</th>
               <th scope="col">Inquiry #</th>
               <th scope="col">Order #</th>
@@ -107,6 +112,9 @@
               <tbody>
               <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
                 <tr>
+                  <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
+                    <td><%= row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %></td>
+                  <% end %>
                   <td><%= sales_invoice.invoice_number %></td>
                   <td><%= sales_invoice.inquiry.inquiry_number %></td>
                   <td><%= sales_invoice.sales_order.order_number %></td>
