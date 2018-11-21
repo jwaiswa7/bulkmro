@@ -39,7 +39,7 @@
 
             <% if @po_request.inquiry.present? && @po_request.inquiry.inside_sales_owner.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Status</strong>
+                <strong class="d-block">Inside Sales</strong>
                 <%= @po_request.inquiry.inside_sales_owner.to_s %>
               </div>
             <% end %>
