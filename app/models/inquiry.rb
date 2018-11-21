@@ -196,6 +196,14 @@ class Inquiry < ApplicationRecord
 
   validate :every_product_is_only_added_once?
 
+  validate :company_is_active, :if => :new_record?
+
+  def company_is_active
+    if !self.company.is_active
+      errors.add(:company, 'must be active to make a inquiry')
+    end
+  end
+
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')

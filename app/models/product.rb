@@ -51,8 +51,22 @@ class Product < ApplicationRecord
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
   validates_with MultipleImageFileValidator, attachments: :images
+  validates_presence_of :tax_code_id
+
+  validate :service_product
 
   after_initialize :set_defaults, :if => :new_record?
+
+  def service_product
+    if self.is_service && !self.category.is_service
+      errors.add(:category, ' should be a service category')
+    end
+
+    if self.is_service && !self.tax_code.is_service
+      errors.add(:tax_code, 'Tax Code should be a service tax code')
+    end
+
+  end
 
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
