@@ -5,7 +5,7 @@ class TaxCode < ApplicationRecord
 
   validates_presence_of :code
   validates_presence_of :remote_uid
-
+  scope :with_includes, -> {includes(:products)}
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.is_service ||= false

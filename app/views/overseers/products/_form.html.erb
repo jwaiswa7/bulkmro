@@ -22,7 +22,7 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
+        <%= f.association :tax_code,collection: selected_option_or_nil(f, :tax_code ), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: f.object.is_service)} %>
       </div>
       <div class="col-4">
         <%= f.association :tax_rate, include_blank: 'Select a Tax Rate', :wrapper => :custom_multi_select %>
@@ -47,6 +47,26 @@
     <div class="form-row">
       <div class="col-12 col-md-4">
         <%= f.input :is_service %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :is_active %>
+      </div>
+      <div class="col-12 col-md-12">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1">
+            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product Images' %>
+          </div>
+          <div class="form-group">
+            <% f.object.images.each do |image| %>
+              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => image.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', image.filename, '?'].join('') do %>
+                  <i class="fal fa-trash-alt"></i>
+                  <% end if image.present? && policy(:attachment).destroy? %>
+              <% end %>
+            <% end if f.object.images.attached? %>
+          </div>
+        </div>
       </div>
     </div>
 

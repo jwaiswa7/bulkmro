@@ -28,7 +28,14 @@
         <%= f.input :tax_percentage, label: 'Tax %' %>
       </div>
     </div>
-    <%= f.input :is_service %>
+    <div class="form-row">
+      <div class="col-12 col-md-4">
+        <%= f.input :is_service %>
+      </div>
+      <div class="col-12 col-md-4">
+        <%= f.input :is_active %>
+      </div>
+    </div>
     <%= f.input :is_pre_gst %>
     <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
       <i class="fal fa-pen"></i> <%= submit_text(@tax_code) %>

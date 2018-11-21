@@ -5,14 +5,14 @@ class Company < ApplicationRecord
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
-  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :account
-  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) {where(company_id: record.id)}, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, :through => :default_company_contact, source: :contact
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
 
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
@@ -36,6 +36,10 @@ class Company < ApplicationRecord
 
   has_many :inquiries
   has_many :inquiry_product_suppliers, :through => :inquiries
+  has_many :inquiry_products, :through => :inquiries
+  has_many :products, :through => :inquiry_products
+  has_many :sales_orders, :through => :inquiries
+  has_many :invoices, :through => :inquiries
   has_many :addresses, dependent: :destroy
 
   has_one_attached :tan_proof
@@ -68,20 +72,21 @@ class Company < ApplicationRecord
   }, _prefix: true
 
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
-  delegate :account_type, :is_customer?, :is_supplier?,  to: :account
+  delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
-  scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
-  scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
+  scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
+  scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
   validates_presence_of :name
-  validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
 
   validate :name_is_conditionally_unique?
+
   def name_is_conditionally_unique?
     if Company.joins(:account).where(:name => self.name).where.not(:id => self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
       errors.add :name, 'has to be unique'
@@ -89,6 +94,7 @@ class Company < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.company_type ||= :private_limited
     self.priority ||= :non_strategic

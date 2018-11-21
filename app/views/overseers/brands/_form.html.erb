@@ -7,7 +7,7 @@
   <%= simple_form_for([:overseers, @brand], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
     <%= f.input :name %>
-
+    <%= f.input :is_active %>
     <%= action_button(action_name, @brand) %>
   <% end %>
 <% end %>

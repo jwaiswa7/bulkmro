@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   def initialize
     super
 
-    @columns = ['id', 'SKU', 'Name', 'Category', 'Brand']
+    @columns = ['id', 'SKU', 'Name', 'Category','Sub Category 1', 'Sub Category 2','Brand']
     @model = Product
   end
 
@@ -13,7 +13,11 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
                     :id => record.id,
                     :sku => record.sku,
                     :name => record.name,
-                    :category => (record.category.name if record.category.present?),
+                    :category => (record.category.ancestors_to_s.first if record.category.present? && record.category.ancestors_to_s.first.present?),
+                    :sub_category_1 => (record.category.ancestors_to_s.second if record.category.present? && record.category.ancestors_to_s.second.present?),
+                    :sub_category_2 => (record.category.ancestors_to_s.third if record.category.present? && record.category.ancestors_to_s.third.present?),
+
+
                     :brand => (record.brand.name if record.brand.present?)
                 })
     end

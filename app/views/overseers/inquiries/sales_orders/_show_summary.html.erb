@@ -70,39 +70,33 @@
 
     <div class="card-alternative mt-3">
       <div class="form-row">
+        <div class="col-md-6 mt-2 mt-md-0">
+          <strong>Supplier Billing Address</strong><br>
+          <%= @inquiry.bill_from.address.name.to_s %>
+          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
+          <% if @inquiry.bill_from.address.phone.present? %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+          <% end %>
+          <% if @inquiry.bill_from.address.gst %>
+              GST no: <%= @inquiry.bill_from.address.gst %><br>
+          <% end %>
+        </div>
         <div class="col-md-6">
-          <strong>Supplier Shipping Address</strong><br>
+          <strong>Supplier Shipping Address</strong>
           <%= @inquiry.ship_from.address.name.to_s %><br>
           <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %><br>
           <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
             Contact: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %><br>
           <% end %>
-          GST no: <%= @inquiry.ship_from.address.gst %><br>
-        </div>
-        <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.address.name.to_s %><br>
-          <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %><br>
-          <% if @inquiry.bill_from.address.phone.present? %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.bill_from.address.phone %><br>
+          <% if @inquiry.ship_from.address.gst %>
+              GST no: <%= @inquiry.ship_from.address.gst %><br>
           <% end %>
-          GST no: <%= @inquiry.bill_from.address.gst %><br>
         </div>
       </div>
       <br>
 
 
       <div class="form-row">
-        <div class="col-md-6">
-          <strong>Customer Shipping Address</strong><br>
-          <%= (@inquiry.shipping_company.name) %><br>
-          <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
-          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
-            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
-          <% end %>
-          GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
-          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-        </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong>Customer Billing Address</strong><br>
           <%= (@inquiry.company.name) %><br>
@@ -111,6 +105,16 @@
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           GST no: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %><br>
+          Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+        </div>
+        <div class="col-md-6">
+          <strong>Customer Shipping Address</strong><br>
+          <%= (@inquiry.shipping_company.name) %><br>
+          <%= @inquiry.shipping_address.to_compact_multiline_s %><br>
+          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+            Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
+          <% end %>
+          GST no: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %><br>
           Email: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
         </div>
       </div>
@@ -125,10 +129,12 @@
           <% end if @inquiry.customer_po_sheet.attached? %>
         </div>
         <div class="col-6">
+          <% if @inquiry.copy_of_email.attached?  %>
           <strong>Email attachment</strong><br>
-          <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
-            <%= @inquiry.copy_of_email.filename %>
-          <% end if @inquiry.copy_of_email.attached? %>
+            <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+              <%= @inquiry.copy_of_email.filename %>
+            <% end %>
+          <% end %>
         </div>
       </div>
       <br>
@@ -226,21 +232,21 @@
   </div>
   <div class="card-footer">
     <div class=form-row>
-      <div class="col-12 col-md-1">
+      <div class="col-12 col-md-2">
         Products <br>
         <strong><%= f.object.rows.size %></strong>
       </div>
       <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
         <strong><%= format_currency(f.object.converted_total_tax) %></strong>
       </div>
-      <div class="col-4 col-md-1 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.converted_total_margin) %></strong>
+      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
+        <strong><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
       </div>
-      <div class="col-8 col-md-3">
+      <div class="col-8 col-md-2">
         Total Selling Price (Excl. tax)<br>
         <strong><%= format_currency(f.object.converted_total) %></strong>
       </div>
-      <div class="col-8 col-md-3 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
+      <div class="col-8 col-md-2 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
         <strong><%= format_currency(f.object.converted_total_with_tax) %></strong>
       </div>
 

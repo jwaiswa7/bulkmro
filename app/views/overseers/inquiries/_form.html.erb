@@ -291,7 +291,6 @@
                 <label>Quantity</label>
               </div>
             </div>
-
           </div>
           <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
             <div class="form-row flex-row align-items-start">
@@ -373,18 +372,21 @@
             <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
           <% else %>
             <div class="form-row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <a href="<%= new_excel_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-success btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
                   products using excel</a>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <a href="<%= new_list_import_overseers_inquiry_imports_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Add
                   products through list</a>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <%= f.add_nested_fields_link :inquiry_products, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
                   <i class="fal fa-plus-circle mr-1"></i>Add a product
                 <% end %>
+              </div>
+              <div class="col-md-3">
+                <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Create Kit</a>
               </div>
             </div>
           <% end %>

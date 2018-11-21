@@ -44,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export?
   end
 
   def export?

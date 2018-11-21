@@ -11,7 +11,7 @@ email_messages:
 
 slack:
   bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
-  username: Sprint Bot
+  username: notification_bot
   icon_emoji: ':moneybag:'
 
 sendgrid:

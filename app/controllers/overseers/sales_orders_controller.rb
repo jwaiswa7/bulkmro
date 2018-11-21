@@ -17,9 +17,38 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def new_purchase_order
+    sales_order = SalesOrder.find(params[:id])
+    @purchase_order_queue = PurchaseOrderQueue.new(sales_order:sales_order, inquiry: sales_order.inquiry, overseer: current_overseer)
+    authorize @purchase_order_queue
+    if @purchase_order_queue.save
+      redirect_to overseers_sales_orders_path, notice: flash_message(@purchase_order_queue, action_name)
+    end
+  end
+
   def export_all
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
+  def export_rows
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
+  def export_for_logistics
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
 
     respond_to do |format|
       format.html

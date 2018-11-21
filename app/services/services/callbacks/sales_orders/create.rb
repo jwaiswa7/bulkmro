@@ -21,14 +21,17 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
         when :'Approved'
           if sales_order.remote_status.blank?
             begin
-              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :order_number => order_number, :remote_uid => remote_uid, :approved_date => DateTime.now)
+              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :mis_date => Date.today, :order_number => order_number, :remote_uid => remote_uid, :approved_date => DateTime.now)
               Services::Overseers::Inquiries::UpdateStatus.new(sales_order, sales_order.inquiry, :order_won, update_inquiry: true).call
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
               sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
+              sales_order.update_index
               return_response("Order Created Successfully")
             rescue => e
               return_response(e.message, 0)
             end
+          else
+            return_response("Order Already Synced : " + sales_order.remote_status)
           end
         when :'SAP Rejected'
           begin
@@ -37,12 +40,12 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, sales_order.inquiry, :sap_rejected, update_inquiry: false).call
             sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
             sales_order.approval.destroy! if sales_order.approval.present?
+            sales_order.update_index
             return_response("Order Rejected Successfully")
           rescue => e
             return_response(e.message, 0)
           end
         end
-        sales_order.update_index
       else
         return_response("Order Not Processed", 0)
       end

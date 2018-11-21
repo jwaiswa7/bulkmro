@@ -9,15 +9,16 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
+                      end,
+                      if policy(sales_order).can_request_po?
+                        row_action_button( new_purchase_order_overseers_sales_order_path(sales_order), 'external-link', 'Request PO', 'info')
                       end
                   ].join(' '),
                   sales_order.order_number,
-                  sales_order.id,
                   sales_order.inquiry.inquiry_number,
-                  sales_order_status_badge(format_enum(sales_order.status || sales_order.legacy_request_status, humanize_text: false)),
+                  sales_order_status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   format_enum(sales_order.remote_status, humanize_text: false),
-                  format_date(sales_order.sent_at),
-                  sales_order.created_by.to_s,
+                  sales_order.inquiry.company.account.name,
                   sales_order.inside_sales_owner.to_s,
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
@@ -30,10 +31,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
                        SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
-                       [],
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
