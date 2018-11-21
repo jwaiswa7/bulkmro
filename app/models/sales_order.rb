@@ -126,6 +126,10 @@ class SalesOrder < ApplicationRecord
   end
 
   def effective_customer_status
+    if self.remote_status.blank?
+      return 'Processing'
+    end
+
     case self.remote_status.to_sym
     when :'Supplier PO: Request Pending'
       'Processing'
