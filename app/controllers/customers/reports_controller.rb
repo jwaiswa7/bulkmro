@@ -1,7 +1,7 @@
 class Customers::ReportsController < Customers::BaseController
 
-  def show
-    authorize :show
+  def quarterly_purchase_data
+    authorize :report, :show?
   end
 
 end

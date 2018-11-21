@@ -282,6 +282,7 @@ Rails.application.routes.draw do
 
       end
     end
+
     resource :dashboard, :controller => :dashboard
     resources :cart_items, only: %i[new create destroy]
     resources :customer_orders, only: %i[index create show] do
