@@ -27,8 +27,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
                        []
                    ]
 

@@ -20,9 +20,9 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        [],
-                       Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json
+                       [],
+                       []
                    ]
 
 json.recordsTotal @sales_quotes.count
