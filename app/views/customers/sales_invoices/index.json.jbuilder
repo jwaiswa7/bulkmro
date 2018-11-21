@@ -1,9 +1,7 @@
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [
-                      if policy(sales_invoice).show? && sales_invoice.inquiry.present?
-                        row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
-                      end
+                      row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                   ].join(' '),
                   sales_invoice.invoice_number,
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inquiry_number: "",
