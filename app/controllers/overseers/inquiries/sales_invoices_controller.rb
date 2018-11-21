@@ -1,4 +1,6 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
+  require 'zip/zip'
+  # include Zip
   before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :make_zip]
 
   def index
@@ -43,21 +45,27 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def make_zip
+
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
-    files = File.open(RenderPdfToFile.for(@sales_invoice)), @sales_invoice.filename
-    files.save
-    respond_to do |format|
-      format.html {}
-      format.zip do
-        compressed_filestream = Zip::OutputStream.write_buffer do |zos|
-          zos.put_next_entry files
-        end
-        compressed_filestream.rewind
-        send_data compressed_filestream.read, filename: "invoice.zip"
-      end
+    tf = Tempfile.new('archive.zip')
+
+    temp_file = Tempfile.new('invoice')
+    temp_file.puts File.open(RenderPdfToFile.for(@sales_invoice))
+    temp_file.close
+    # Zip < Zip
+    Zip::ZipFile.open(tf, Zip::ZipFile::CREATE) do |z|
+      z.add(temp_file, temp_file.path)
     end
+
+    #Read the binary data from the file
+    zip_data = File.read(tf.path)
+
+    send_data(zip_data, :type => 'application/zip', :filename => "tf")
+
+    tf.close
+    tf.unlink
   end
 
   private
