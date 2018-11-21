@@ -1,11 +1,12 @@
 class PoRequest < ApplicationRecord
+  COMMENTS_CLASS = 'PoRequestComment'
+
   include Mixins::CanBeStamped
+  include Mixins::HasComments
 
   belongs_to :sales_order
   belongs_to :inquiry
-  has_many :comments, class_name: 'PoRequestComment'
   has_many_attached :attachments
-  accepts_nested_attributes_for :comments, reject_if: lambda {|attributes| attributes['message'].blank?}, allow_destroy: true
 
   enum status: {
       :'Requested' => 10,
