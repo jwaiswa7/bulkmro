@@ -18,7 +18,7 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
 
         begin
           sales_order.update_attributes(:remote_status => remote_status.to_i)
-          InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver) if sales_order.inquiry.present?
+          InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver , sales_order: sales_order) if sales_order.inquiry.present?
           sales_order.update_index
           return_response("Order Updated Successfully")
         rescue => e

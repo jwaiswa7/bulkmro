@@ -887,7 +887,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
 
-       next if inquiry.updated_at > inquiry_updated_date
+      next if inquiry.updated_at > inquiry_updated_date
       debugger
 
       if inquiry.new_record? || update_if_exists
@@ -1647,6 +1647,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts skus
   end
 
+  def sales_invoices_reporting_data_update_mis_date
+    service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
+    service.loop(nil) do |x|
 
+      sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
+      if sales_invoice.present?
+        sales_invoice.each do |si|
+          si.mis_date = x.get_column('mis_date')
+          si.save(validate: false)
+          puts si.mis_date
+        end
+      end
+
+    end
+  end
 
 end
