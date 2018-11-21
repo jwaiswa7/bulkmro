@@ -54,9 +54,9 @@
 
 
     <%= f.input :email, required: true %>
-    <%= f.input :legacy_email, disabled: true %>
-    <%#= f.input :password, required: true %>
-    <%#= f.input :password_confirmation, required: true %>
+    <%= f.input :legacy_email, disabled: false %>
+    <%= f.input :password, required: true %>
+    <%= f.input :password_confirmation, required: true %>
 
     <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses) %>
 
