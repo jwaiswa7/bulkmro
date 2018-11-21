@@ -17,6 +17,7 @@ class SalesQuotesIndex < BaseIndex
     field :company_id, value: -> (record) { record.inquiry.company.id }, type: 'integer'
     field :account_id, value: -> (record) { record.inquiry.account.id }, type: 'integer'
     field :created_at, type: 'date'
+    field :inquiry_created_at, value: -> (record) { record.inquiry.created_at }, type: 'date'
   end
   
 end
