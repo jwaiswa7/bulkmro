@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :mis_date_edit]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -110,8 +110,19 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
   end
 
-  def mis_date_edit
+  def edit_mis_date
     authorize @sales_order
+  end
+
+  def update_mis_date
+    @sales_order.assign_attributes(mis_date_params.merge(:overseer => current_overseer))
+    authorize @sales_order
+
+    if @sales_order.save
+      redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit'
+    end
   end
 
   def resync
@@ -151,6 +162,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
             :quantity,
             :_destroy
         ]
+    )
+  end
+
+  def mis_date_params
+    params.require(:sales_order).permit(
+        :mis_date,
     )
   end
 end

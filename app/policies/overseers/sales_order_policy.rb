@@ -12,8 +12,12 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
-  def mis_date_edit?
+  def edit_mis_date?
     record.persisted?
+  end
+
+  def update_mis_date?
+    edit_mis_date?
   end
 
   def show_pdf?
