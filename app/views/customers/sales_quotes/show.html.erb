@@ -7,16 +7,33 @@
     </div>
   </div>
   <div class="card">
-
+    <div class="card-header">
+      <div class=form-row>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Quotation Number</strong>
+          #<%= @sales_quote.id %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">PO Number</strong>
+          #<%= @sales_quote.inquiry.customer_po_number %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Currency</strong>
+          <%= @sales_quote.currency %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Conversion rate</strong>
+          <%= @sales_quote.inquiry_currency.conversion_rate %>
+        </div>
+      </div>
+    </div>
     <div class="card-body">
       <div class="form-row">
         <div class="col-6">
           <strong>Currency</strong>
-          <br> <%= @sales_quote.currency %>
         </div>
         <div class="col-6">
           <strong>Conversion rate</strong>
-          <br> <%= @sales_quote.inquiry_currency.conversion_rate %>
         </div>
 
       </div>
@@ -83,57 +100,6 @@
         </div>
       </div>
 
-      <div class="form-row mb-1 mt-3">
-        <div class="col-6">
-          <strong>Bulk MRO Sales Person</strong>
-          <br><%= @sales_quote.inquiry.inside_sales_owner.first_name %> <%= @sales_quote.inquiry.inside_sales_owner.last_name %>
-        </div>
-        <div class="col-6">
-          <strong>Bulkmro Contact No</strong>
-          <br> +91-22-4921-4921
-        </div>
-      </div>
-
-      <div class="form-row mb-1 mt-3">
-        <div class="col-6">
-          <strong>Date of Inquiry</strong>
-          <br><%= format_date(@sales_quote.inquiry.created_at) %>
-        </div>
-        <div class="col-6">
-          <strong>Quotation Validity</strong>
-          <br><%= format_date(@sales_quote.inquiry.valid_end_time) %>
-        </div>
-      </div>
-      <div class="form-row mb-1">
-        <div class="col-6">
-          <strong>Date of Inquiry</strong><br/>
-          <%= format_date(@sales_quote.inquiry.quotation_date) %>
-        </div>
-        <div class="col-6">
-          <strong>Customer Inquiry Ref</strong><br/>
-          <p><%= @sales_quote.inquiry.subject %></p>
-        </div>
-      </div>
-      <div class="form-row mb-1">
-        <div class="col-6">
-          <strong>Freight</strong><br/>
-          <%= @sales_quote.inquiry.freight_option %>
-        </div>
-        <div class="col-6">
-          <strong>Price Quoted</strong><br/>
-          <p><%= @sales_quote.inquiry.calculated_total %></p>
-        </div>
-      </div>
-      <div class="form-row mb-1">
-        <div class="col-6">
-          <strong>Packing & Forwarding</strong><br/>
-          <%= @sales_quote.inquiry.packing_and_forwarding_option %>
-        </div>
-        <div class="col-6">
-          <strong>Payment Terms</strong><br/>
-          <%= @sales_quote.inquiry.payment_option.try(:name) %>
-        </div>
-      </div>
       <% @sales_quote.sales_quote_rows.each do |row| %>
         <div>
           <h6 class="text-uppercase mb-0 mt-3">
