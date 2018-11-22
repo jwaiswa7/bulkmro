@@ -15,28 +15,56 @@
           #<%= @sales_quote.id %>
         </div>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">PO Number</strong>
-          #<%= @sales_quote.inquiry.customer_po_number %>
+          <strong class="d-block">Sales Person</strong>
+          <%= @sales_quote.inquiry.inside_sales_owner.first_name %> <%= @sales_quote.inquiry.inside_sales_owner.last_name %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Contact Number</strong>
+          <a href="tel:+912249214921">+91 22 4921 4921</a>
         </div>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
           <strong class="d-block">Currency</strong>
-          <%= @sales_quote.currency %>
-        </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Conversion rate</strong>
-          <%= @sales_quote.inquiry_currency.conversion_rate %>
+          <%= @sales_quote.currency %> (<%= @sales_quote.inquiry_currency.conversion_rate %>)
         </div>
       </div>
     </div>
     <div class="card-body">
-      <div class="form-row">
-        <div class="col-6">
-          <strong>Currency</strong>
+      <div class="form-row mb-0 mb-md-2">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Inquiry Reference</strong>
+          <%= @sales_quote.inquiry.subject %>
         </div>
-        <div class="col-6">
-          <strong>Conversion rate</strong>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Date of Inquiry</strong>
+          <%= format_date(@sales_quote.inquiry.created_at) %>
         </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Date of Quotation</strong>
+          <%= format_date(@sales_quote.inquiry.created_at) %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Quotation Validity</strong>
+          <%= format_date(@sales_quote.inquiry.valid_end_time) %>
+        </div>
+      </div>
 
+      <div class="form-row">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Freight</strong>
+          <%= @sales_quote.inquiry.freight_option %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Price Quoted</strong>
+          <%= @sales_quote.inquiry.calculated_total %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Packing & Forwarding</strong>
+          <%= @sales_quote.inquiry.packing_and_forwarding_option %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Payment Terms</strong>
+          <%= @sales_quote.inquiry.payment_option.try(:name) %>
+        </div>
       </div>
       <div class="card-alternative mt-3">
         <div class="form-row">
