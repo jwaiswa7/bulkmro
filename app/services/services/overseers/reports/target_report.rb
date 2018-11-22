@@ -3,7 +3,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     call_base
 
 
-    # report.start_at = Date.new(2018, 10, 19)
+    report.start_at = Date.new(2018, 11, 1) if report.start_at < Date.new(2018, 11, 1)
     # report.end_at = Date.today.end_of_day
 
     data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
