@@ -31,12 +31,32 @@
         </div>
 
         <div class="form-row">
-          <div class="col-4">
-            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses) %>
+          <div class="col-3">
+            <%= f.input :status, as: :string, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
-          <div class="col-8">
+          <div class="col-3">
+            <button type="button" class="btn btn-m btn-block btn-danger" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Order Lost / Regret</button>
+            <div class="modal fade" id="statusModal" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Select Status</h4>
+                  </div>
+                  <div class="modal-body">
+                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| i.match("Order Lost") || i.match("Regret") }, selected: @inquiry.status  %>
+                  </div>
+                  <div class="modal-footer">
+                    <%= action_button(action_name, @inquiry) %>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
             <%= f.input :subject, required: true %>
           </div>
         </div>
