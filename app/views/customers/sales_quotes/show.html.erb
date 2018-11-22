@@ -70,6 +70,18 @@
         <div class="form-row">
           <div class="col-md-6">
             <strong class="d-block">Supplier - Billing Address</strong>
+            <%= @sales_quote.inquiry.bill_from.address.name.to_s %>
+            <%= @sales_quote.inquiry.bill_from.address.try(:to_compact_multiline_s) if @sales_quote.inquiry.bill_from.present? %>
+            <br>
+            <% if @sales_quote.inquiry.bill_from.address.phone.present? %>
+              <span class="d-block"><em>Contact</em>:<%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.bill_from.address.phone %></span>>
+            <% end %>
+            <% if @sales_quote.inquiry.bill_from.address.try(:gst) %>
+              <span class="d-block"><em>GST Number</em>: <%= @sales_quote.inquiry.bill_from.address.try(:gst) %></span>
+            <% end %>
+          </div>
+          <div class="col-md-6 mt-2 mt-md-0">
+            <strong class="d-block">Supplier - Shipping Address</strong>
             <%= @sales_quote.inquiry.ship_from.address.name.to_s %>
             <%= @sales_quote.inquiry.ship_from.address.try(:to_compact_multiline_s) if @sales_quote.inquiry.ship_from.present? %>
             <br>
@@ -79,18 +91,6 @@
             <% end %>
             <% if @sales_quote.inquiry.ship_from.address.try(:gst) %>
               <span class="d-block"><em>GST Number</em>: <% @sales_quote.inquiry.ship_from.address.try(:gst) %></span>
-            <% end %>
-          </div>
-          <div class="col-md-6 mt-2 mt-md-0">
-            <strong class="d-block">Supplier - Shipping Address</strong>
-            <%= @sales_quote.inquiry.bill_from.address.name.to_s %>
-            <%= @sales_quote.inquiry.bill_from.address.try(:to_compact_multiline_s) if @sales_quote.inquiry.bill_from.present? %>
-            <br>
-            <% if @sales_quote.inquiry.bill_from.address.phone.present? %>
-              <span class="d-block"><em>Contact</em>:<%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.bill_from.address.phone %></span>>
-            <% end %>
-            <% if @sales_quote.inquiry.bill_from.address.try(:gst) %>
-              <span class="d-block"><em>GST Number</em>: <%= @sales_quote.inquiry.bill_from.address.try(:gst) %></span>
             <% end %>
           </div>
         </div>
