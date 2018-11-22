@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -45,7 +44,12 @@ Rails.application.routes.draw do
       get 'console'
     end
 
-    resources :remote_requests
+    resources :remote_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
@@ -123,11 +127,35 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :kits do
+      member do
+      end
+
+      collection do
+        get 'autocomplete'
+      end
+
+    end
+
+    resources :po_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+      end
+    end
+
     resources :sales_orders do
+      member do
+        get 'new_purchase_order'
+      end
+
       collection do
         get 'pending'
         get 'export_all'
         get 'drafts_pending'
+        get 'export_rows'
+        get 'export_for_logistics'
+        get 'autocomplete'
       end
 
       scope module: 'sales_orders' do
@@ -138,12 +166,15 @@ Rails.application.routes.draw do
     resources :purchase_orders do
       collection do
         get 'export_all'
+        get 'autocomplete'
       end
     end
 
     resources :sales_invoices do
       collection do
         get 'export_all'
+        get 'export_rows'
+        get 'export_for_logistics'
       end
     end
 
@@ -195,6 +226,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'preview'
+            get 'reset_quote'
           end
 
           scope module: 'sales_quotes' do
@@ -251,26 +283,35 @@ Rails.application.routes.draw do
   end
 
   namespace 'customers' do
+    resources :reports do
+      member do
+      end
+
+      collection do
+        get 'quarterly_purchase_data'
+      end
+    end
+
     resource :dashboard, :controller => :dashboard
-    resources :inquiries, only: %i[index show] do
-      scope module: 'inquiries' do
-        resources :sales_quotes, only: %i[index show]
-        resources :sales_orders, only: %i[index show]
+    resources :cart_items, only: %i[new create destroy]
+    resources :customer_orders, only: %i[index create show] do
+      member do
+        get 'order_confirmed'
       end
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
+    resources :invoices, :controller => :sales_invoices, only: %i[index show]
     resources :products, only: %i[index show] do
-      collection  do
-        get 'grid_view'
+      collection do
+        get 'most_ordered_products'
       end
     end
-    resource  :cart, only: [:show] do
+
+    resource  :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end
     end
-    resources :cart_items, only: %i[new create destroy]
-    resources :customer_orders, only: %i[create show]
   end
 end

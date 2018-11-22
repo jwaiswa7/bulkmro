@@ -11,6 +11,7 @@ class ApplicationRecord < ActiveRecord::Base
   scope :latest_record, -> { latest.first }
   scope :earliest, -> { order(:created_at => :asc) }
   scope :today, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today) }
+  scope :updated_today, -> { where("DATE(#{self.model_name.collection}.updated_at) = ?", Date.today) }
   scope :yesterday, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today - 1) }
   scope :tomorrow, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today + 1) }
   scope :before_datetime, -> (time) { where('created_at < ?', time) }

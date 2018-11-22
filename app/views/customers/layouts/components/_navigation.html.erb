@@ -18,6 +18,17 @@
       <%= nav_item 'Quotes', customers_quotes_path, true %>
       <%= nav_item 'Orders', customers_orders_path, true %>
       <%= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, true%>
+          <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true%>
+        </div>
+      </li>
+      <%= nav_item 'Customer Orders', customers_customer_orders_path, true %>
     </ul>
   </div>
   <!-- Navigation Bar -->
@@ -26,34 +37,16 @@
   <div class="d-block">
     <div class="dropdown d-inline mr-2" id="cart">
       <a href="#" role="button" data-toggle="dropdown" id="cart-count">
-        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.cart_items.count %></span>
+        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.items.count %></span>
       </a>
       <% if current_cart.present? %>
-        <div class="dropdown-menu dropdown-menu-right cart-dropdown">
-          <h6 class="dropdown-header d-none">Cart</h6>
-          <div class="cart-items">
-            <% current_cart.cart_items.each do |cart_item| %>
-              <div class="text-dark text-wrap" id="cart_item_<%= cart_item.id %>">
-                <%= link_to customers_cart_item_path(cart_item), method: :delete, remote: true do %>
-                  <i class="fal fa-times ml-2 text-danger d-block float-right" id="delete_item"></i>
-                <% end %>
-                <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= truncate(Product.find(cart_item.product_id).try(:name), :length => 30 ) %></a></span>
-                <span class="d-block text-black-50">x <%= cart_item.quantity %></span>
-                <div class="dropdown-divider" id="divider_<%= cart_item.id %>"></div>
-              </div>
-            <% end %>
-          </div>
-          <div class="cart-footer">
-            <%= link_to "Cart", customers_cart_path, :class => "btn btn-dark btn-sm w-50" %>
-            <%= link_to "Checkout", checkout_customers_cart_path, :class => "btn btn-success btn-sm w-50" %>
-          </div>
-        </div>
+        <%= render(partial: 'customers/layouts/components/cart') %>
       <% end %>
     </div>
 
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown">
-        <i class="fal fa-cog"></i>
+        <%= current_contact.full_name %> <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
         <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>

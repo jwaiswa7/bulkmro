@@ -1,6 +1,9 @@
 class Customers::SalesOrdersController < Customers::BaseController
+  before_action :set_sales_order, only: [:show]
 
   def index
+    authorize :sales_order
+
     respond_to do |format|
       format.html {}
       format.json do
@@ -14,7 +17,8 @@ class Customers::SalesOrdersController < Customers::BaseController
   end
 
   def show
-    @sales_order = SalesOrder.find(params[:id])
+    authorize @sales_order
+
     respond_to do |format|
       format.html {}
       format.pdf do
@@ -23,4 +27,8 @@ class Customers::SalesOrdersController < Customers::BaseController
     end
   end
 
+  private
+  def set_sales_order
+    @sales_order = current_contact.account.sales_orders.find(params[:id])
+  end
 end

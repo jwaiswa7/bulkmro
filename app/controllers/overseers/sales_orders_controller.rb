@@ -27,6 +27,26 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def export_rows
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
+  def export_for_logistics
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data service.call, filename: service.filename }
+    end
+  end
+
   def index
     authorize :sales_order
 
@@ -40,6 +60,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @sales_orders = service.records.try(:reverse)
       end
     end
+  end
+
+  def autocomplete
+    service = Services::Overseers::Finders::SalesOrders.new(params.merge(page: 1))
+    service.call
+
+    @indexed_sales_orders = service.indexed_records
+    @sales_orders = service.records.reverse
+
+    authorize :sales_order
   end
 
   def drafts_pending

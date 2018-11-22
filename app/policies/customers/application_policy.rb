@@ -11,7 +11,7 @@ class Customers::ApplicationPolicy
   end
 
   def manager?
-    contact.manager?
+    contact.account_manager?
   end
 
   def show?
@@ -22,6 +22,26 @@ class Customers::ApplicationPolicy
     true
   end
 
+  def new?
+    true
+  end
+
+  def create?
+    new?
+  end
+
+  def edit?
+    true
+  end
+
+  def update?
+    edit?
+  end
+
+  def destroy?
+    update?
+  end
+
   def scope
     Pundit.policy_scope!(contact, record.class)
   end
@@ -29,9 +49,9 @@ class Customers::ApplicationPolicy
   class Scope
     attr_reader :contact, :scope
 
-    def initialize(contact, scope)authorize :dashboard, :show?
-    @contact = contact
-    @scope = scope
+    def initialize(contact, scope)
+      @contact = contact
+      @scope = scope
     end
 
     def resolve

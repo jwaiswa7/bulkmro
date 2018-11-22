@@ -23,7 +23,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
                       params
                     else
                       ''
-                    end
+                    end.strip
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -112,12 +112,38 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
             should: [
                 {
                     term: {"#{key}": val},
-                }
+                },
             ]
         },
 
     }
   end
+
+  def filter_by_status(only_remote_approved: false)
+    if only_remote_approved
+      {
+          bool: {
+              should: [
+                  {
+                      term: {status: Inquiry.statuses[:Approved]},
+                  },
+              ],
+          },
+
+      }
+    else
+      {
+          bool: {
+              should: [
+                  {
+                      terms: {status: Inquiry.statuses.except(:'SO Rejected by Sales Manager', :'Rejected by Accounts', :'Regret', :'Order Lost').values},
+                  },
+              ],
+          },
+      }
+    end
+  end
+
 
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :search_filters, :range_filters
 end

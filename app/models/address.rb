@@ -4,7 +4,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
-  pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode], :associated_against => { :state => [:name]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -30,7 +30,7 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != "No GST Number"}
+  validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
 
   validates_with FileValidator, attachment: :gst_proof, file_size_in_megabytes: 2
@@ -39,8 +39,6 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
-  after_create :set_global_defaults # Do not remove IMP for SAP
-
   def set_defaults
     self.is_sez ||= false
     self.country_code ||= 'IN'
@@ -49,8 +47,20 @@ class Address < ApplicationRecord
     end
   end
 
-  def set_global_defaults
-    self.remote_uid ||= Services::Resources::Shared::UidGenerator.address_uid(self)
+  after_create :set_remote_uid, :if => :persisted? # Do not remove IMP for SAP
+  after_initialize :set_remote_uid, :if => :persisted?
+  def set_remote_uid
+    self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
+  end
+
+  def remove_gst_whitespace
+    if self.gst != "No GST Number" || self.gst != nil
+      self.gst = self.gst.delete(' ')
+    end
+  end
+
+  def syncable_identifiers
+    [:billing_address_uid,:shipping_address_uid]
   end
 
   def self.legacy

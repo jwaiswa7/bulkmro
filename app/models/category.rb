@@ -16,6 +16,14 @@ class Category < ApplicationRecord
     self.is_service ||= false
   end
 
+  def default_ancestors
+    ["Root Catalog", "Default Category"]
+  end
+
+  def ancestors_to_s
+    self.ancestry_path - default_ancestors
+  end
+
   def self.default
     first
   end

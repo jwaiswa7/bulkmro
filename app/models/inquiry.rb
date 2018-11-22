@@ -36,6 +36,7 @@ class Inquiry < ApplicationRecord
   has_many :imports, :class_name => 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
+  has_many :po_requests
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
@@ -59,25 +60,25 @@ class Inquiry < ApplicationRecord
   has_one_attached :calculation_sheet
 
   enum status: {
+      :'Lead by O/S' => 11,
       :'New Inquiry' => 0,
       :'Acknowledgement Mail' => 2,
       :'Cross Reference' => 3,
+      :'Supplier RFQ Sent' => 12,
       :'Preparing Quotation' => 4,
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
-      :'SO Draft: Pending Accounts Approval' => 8,
-      :'Order Lost' => 9,
-      :'Regret' => 10,
-      :'Lead by O/S' => 11,
-      :'Supplier RFQ Sent' => 12,
-      :'SO Not Created-Customer PO Awaited' => 13,
+      :'SO Not Created-Customer PO Awaited' => 13, # todo SO not created to order won is all Order Won
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
-      :'SO Rejected by Sales Manager' => 17,
+      :'SO Draft: Pending Accounts Approval' => 8,
       :'Order Won' => 18,
+      :'SO Rejected by Sales Manager' => 17,
       :'Rejected by Accounts' => 19,
       :'Hold by Accounts' => 20,
+      :'Order Lost' => 9,
+      :'Regret' => 10,
   }
 
   enum stage: {
@@ -156,6 +157,7 @@ class Inquiry < ApplicationRecord
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
+    inquiry.validates_presence_of :customer_committed_date
   end
 
   def has_sales_orders_and_not_legacy?
@@ -234,6 +236,7 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
+      self.shipping_company ||= self.company
       self.commercial_terms_and_conditions ||= [
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',

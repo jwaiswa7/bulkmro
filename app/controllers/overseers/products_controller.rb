@@ -117,11 +117,13 @@ class Overseers::ProductsController < Overseers::BaseController
         :sku,
         :mpn,
         :is_service,
+        :is_active,
         :brand_id,
         :category_id,
         :tax_code_id,
         :tax_rate_id,
-        :measurement_unit_id
+        :measurement_unit_id,
+        :images => []
     )
   end
 
