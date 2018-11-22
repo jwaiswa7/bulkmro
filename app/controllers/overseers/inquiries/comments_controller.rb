@@ -37,6 +37,7 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
 
   def approve
     service = Services::Overseers::SalesOrders::ApproveAndSerialize.new(@comment.sales_order, @comment)
+    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, @comment.sales_order.inquiry, :order_approved_by_sales_manager, true).call
     service.call
   end
 

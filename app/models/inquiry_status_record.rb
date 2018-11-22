@@ -1,4 +1,5 @@
 class InquiryStatusRecord < ApplicationRecord
+  belongs_to :subject, polymorphic: true, required: false
 
   enum status: {
       :'New Inquiry' => 0,
@@ -42,6 +43,20 @@ class InquiryStatusRecord < ApplicationRecord
       :'Hold by Accounts' => 23,
       :'SAP Rejected' => 24
   }, _prefix: true
+
+  def color
+    if self.subject.present?
+      if self.subject_type == "SalesOrder"
+        "warning"
+      else
+        "warning"
+      end
+
+    else
+      "warning"
+    end
+
+  end
 
   belongs_to :inquiry
 end

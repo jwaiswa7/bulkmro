@@ -49,8 +49,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     authorize @sales_order
 
     callback_method = %w(save save_and_confirm).detect {|action| params[action]}
-    Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, @sales_order.inquiry, :expected_order, true).call
+
     if callback_method.present? && send(callback_method)
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, @sales_order.inquiry, :expected_order, true).call
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
@@ -82,6 +83,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, @sales_order.inquiry, :order_confirmed, true).call
       ActiveRecord::Base.transaction do
         @confirmation.save!
+        @sales_order.update_attributes(:status => 'Requested')
         @sales_order.update_attributes(:sent_at => Time.now)
       end
       # chat_message = Services::Overseers::ChatMessages::SendChat.new

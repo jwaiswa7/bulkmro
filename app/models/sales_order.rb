@@ -42,7 +42,7 @@ class SalesOrder < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'Requested'
+    #self.status ||= :'Requested'
   end
 
   enum legacy_request_status: {

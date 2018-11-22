@@ -31,7 +31,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     if @email_message.save
       @inquiry.update_attributes(:quotation_date => @sales_quote.created_at.to_date)
       SalesQuoteMailer.send_acknowledgement(@email_message).deliver_now
-      Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :quotation_email_sent, true).call
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, @inquiry, :quotation_email_sent, true).call
 
       @sales_quote.save_and_sync
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)

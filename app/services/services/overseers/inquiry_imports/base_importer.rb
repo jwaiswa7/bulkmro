@@ -13,6 +13,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
 
     ActiveRecord::Base.transaction do
       set_existing_products
+      Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :cross_reference, true).call if @inquiry.inquiry_products.present?
     end
 
     import

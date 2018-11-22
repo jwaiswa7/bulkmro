@@ -21,7 +21,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
         when :'Approved'
           if sales_order.remote_status.blank?
             begin
-              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :mis_date => Date.today, :order_number => order_number, :remote_uid => remote_uid, :approved_date => DateTime.now)
+              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :mis_date => Date.today, :order_number => order_number, :remote_uid => remote_uid)
               Services::Overseers::Inquiries::UpdateStatus.new(sales_order, sales_order.inquiry, :order_won, update_inquiry: true).call
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
               sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
@@ -64,12 +64,12 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
   end
 end
 
-# {
-#     "U_MgntDocID":"942",
-#     "Status":"1",
-#     "comment":"",
-#     "DocNum":"10300008",
-#     "DocEntry":"609",
-#     "UserEmail":"35",
-#     "SapReject":""
-# }
+{
+    "U_MgntDocID":"942",
+    "Status":"1",
+    "comment":"",
+    "DocNum":"10300008",
+    "DocEntry":"609",
+    "UserEmail":"35",
+    "SapReject":""
+}
