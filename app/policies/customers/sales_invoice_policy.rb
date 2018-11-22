@@ -1,9 +1,9 @@
 class Customers::SalesInvoicePolicy < Customers::ApplicationPolicy
   def show_original_invoice?
-    Overseers::SalesInvoicePolicy.new(contact, record).show_original_invoice?
+    record.original_invoice.attached?
   end
 
   def show?
-    Overseers::SalesInvoicePolicy.new(contact, record).show?
+    record.persisted? && record.not_legacy? && !record.original_invoice.attached?
   end
 end
