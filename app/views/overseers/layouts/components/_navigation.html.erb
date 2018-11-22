@@ -79,7 +79,7 @@
             <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
             <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
-            <%= nav_dropdown_item 'Handled PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
+            <%= nav_dropdown_item 'Completed PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
             <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
           </div>
