@@ -12,6 +12,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
+  def mis_date_edit?
+    record.persisted?
+  end
+
   def show_pdf?
     record.persisted? && record.sent? && record.order_number.present?
   end
@@ -21,7 +25,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved?
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? 
+  end
+
+  def update?
+    edit? || admin?
   end
 
   def new_confirmation?

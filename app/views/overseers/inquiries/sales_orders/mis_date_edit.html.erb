@@ -1,0 +1,30 @@
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <%= simple_form_for([:overseers, @inquiry, @sales_order], :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :sales_quote_id %>
+      <%= render 'shared/snippets/form_errors', f: f %>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="form-row">
+            <div class="col-8 col-md-3">
+              <strong>Order Number</strong><br>
+              <span data-v-html="calculated_total"><%= f.object.order_number %></span>
+            </div>
+
+            <div class="col-12 col-md-4">
+            <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+          </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+     </div>
+     <%= button_tag(type: "submit", name: "save", class: "btn btn-warning btn-block") do %>
+                <i class="fal fa-pen mr-1"></i> Update MIS Date
+              <% end %>
+    <% end %>
+    <% end %>

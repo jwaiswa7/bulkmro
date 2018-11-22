@@ -3,6 +3,10 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?
   end
 
+  def mis_date_edit?
+    record.persisted?
+  end
+
   def show_original_invoice?
     record.original_invoice.attached?
   end
