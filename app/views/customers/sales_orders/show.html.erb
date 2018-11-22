@@ -1,15 +1,16 @@
 <% provide :container_fluid, true %>
 
 <div class="col-12">
-  <div class="page-header">
-    <div class="">
-      <h2>
-        Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %></h1>
+      <div>
         <% if @sales_order.serialized_pdf.attachment %>
-          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i>
-            Download PDF</a>
+          <a href="<%= url_for(@sales_order.serialized_pdf) %>" class=" btn btn-info btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+            <i class="fal fa-download mr-1"></i>Download PDF
+          </a>
         <% end %>
-      </h2>
+      </div>
     </div>
   </div>
 
