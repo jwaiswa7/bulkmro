@@ -69,7 +69,7 @@
       <div class="card-alternative mt-3">
         <div class="form-row">
           <div class="col-md-6">
-            <strong class="d-block">Supplier - Bill From</strong>
+            <strong class="d-block">Supplier - Billing Address</strong>
             <%= @sales_quote.inquiry.ship_from.address.name.to_s %>
             <%= @sales_quote.inquiry.ship_from.address.try(:to_compact_multiline_s) if @sales_quote.inquiry.ship_from.present? %>
             <br>
@@ -78,55 +78,50 @@
               <br>
             <% end %>
             <% if @sales_quote.inquiry.ship_from.address.try(:gst) %>
-              <%= ['GST: ', @sales_quote.inquiry.ship_from.address.try(:gst)].join %><br>
+              <span class="d-block"><em>GST Number</em>: <% @sales_quote.inquiry.ship_from.address.try(:gst) %></span>
             <% end %>
           </div>
           <div class="col-md-6 mt-2 mt-md-0">
-            <strong class="d-block">Supplier - Ship From</strong>
+            <strong class="d-block">Supplier - Shipping Address</strong>
             <%= @sales_quote.inquiry.bill_from.address.name.to_s %>
             <%= @sales_quote.inquiry.bill_from.address.try(:to_compact_multiline_s) if @sales_quote.inquiry.bill_from.present? %>
             <br>
             <% if @sales_quote.inquiry.bill_from.address.phone.present? %>
-              Contact: <%= @sales_quote.inquiry.contact.full_name %>
-              - <%= @sales_quote.inquiry.bill_from.address.phone %><br>
+              <span class="d-block"><em>Contact</em>:<%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.bill_from.address.phone %></span>>
             <% end %>
             <% if @sales_quote.inquiry.bill_from.address.try(:gst) %>
-              <%= ['GST: ', @sales_quote.inquiry.bill_from.address.try(:gst)].join %><br>
+              <span class="d-block"><em>GST Number</em>: <%= @sales_quote.inquiry.bill_from.address.try(:gst) %></span>
             <% end %>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="col-md-6">
-            <strong class="d-block">Customer Bill To</strong>
-            <%= (@sales_quote.inquiry.company.name) %><br>
-            <%= @sales_quote.inquiry.shipping_address.try(:to_compact_multiline_s) %><br>
-            <% if @sales_quote.inquiry.contact.mobile || @sales_quote.inquiry.contact.telephone %>
-              Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %><br>
-            <% end %>
-            <% if @sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst) %>
-              <%= ['GST: ', @sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst)].join %>
-            <% end %>
-            <br>
-            Email: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>
-          </div>
-          <div class="col-md-6 mt-2 mt-md-0">
-            <strong class="d-block">Customer Ship To</strong>
+        <div class="form-row mt-2">
+          <div class="col-12 col-md-6">
+            <strong class="d-block">Customer - Billing Address</strong>
             <%= (@sales_quote.inquiry.company.name) %><br>
             <%= @sales_quote.inquiry.billing_address.try(:to_compact_multiline_s) %><br>
             <% if @sales_quote.inquiry.contact.phone.present? %>
               Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %><br>
             <% end %>
-
             <% if @sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst) %>
-              <%= ['GST: ', @sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst)].join %>
+              <span class="d-block"><em>GST Number</em>: <% [@sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst)].join %></span>
             <% end %>
-            <br>
-            Email: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>
+            <span class="d-block"><em>Email</em>:  <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></span>
+          </div>
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <strong class="d-block">Customer - Shipping Address</strong>
+            <%= (@sales_quote.inquiry.company.name) %><br>
+            <%= @sales_quote.inquiry.shipping_address.try(:to_compact_multiline_s) %><br>
+            <% if @sales_quote.inquiry.contact.mobile || @sales_quote.inquiry.contact.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %></span>
+            <% end %>
+            <% if @sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst) %>
+              <span class="d-block"><em>GST Number</em>: <%= [@sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst)].join %></span>
+            <% end %>
+            <span class="d-block"><em>Email</em>: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></span>
           </div>
         </div>
       </div>
-
 
       <div>
         <div class="form-row my-2 text-small">
