@@ -51,7 +51,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     callback_method = %w(save save_and_confirm).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, @sales_order.inquiry, :expected_order, true).call
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :expected_order).call
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
@@ -80,7 +80,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
     if @sales_order.not_confirmed?
       @confirmation = @sales_order.build_confirmation(:overseer => current_overseer)
-      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, @sales_order.inquiry, :order_confirmed, true).call
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :order_confirmed).call
       ActiveRecord::Base.transaction do
         @confirmation.save!
         @sales_order.update_attributes(:status => 'Requested')

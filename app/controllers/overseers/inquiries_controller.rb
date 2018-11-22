@@ -90,7 +90,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :new_inquiry, true).call if @inquiry.persisted?
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
       redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'new'
@@ -106,11 +106,11 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :cross_reference, true).call if @inquiry.inquiry_products.present?
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
-        Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :order_lost, true).call
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
       elsif @inquiry.status == 'Regret'
-        Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :regret, true).call
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
@@ -131,7 +131,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     if @inquiry.save_and_sync
-      Services::Overseers::Inquiries::UpdateStatus.new(nil, @inquiry, :cross_reference, true).call
+      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'

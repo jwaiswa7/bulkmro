@@ -31,14 +31,14 @@
         </div>
 
         <div class="form-row">
-          <div class="col-4">
+          <div class="col-3">
             <%= f.input :status, as: :string, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
-          <div class="col-2">
-            <button type="button" class="btn btn-m btn-success" data-toggle="modal" data-target="#myModal" style="margin-top: 25px;">Update Status</button>
-            <div class="modal fade" id="myModal" role="dialog">
+          <div class="col-3">
+            <button type="button" class="btn btn-m btn-block btn-danger" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Order Lost / Regret</button>
+            <div class="modal fade" id="statusModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">

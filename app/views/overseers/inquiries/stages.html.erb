@@ -19,7 +19,7 @@
       <% @stages.each_with_index do |stage, index| %>
         <tr>
           <td>
-            <% if stage.subject_id.present? %>
+            <% if stage.subject_type.present? && stage.subject_type != "Inquiry"  %>
               <%= link_to "#{stage.subject_type} ##{stage.subject_id}", stage.subject_type == "SalesOrder" ? overseers_inquiry_sales_order_path(stage.inquiry, stage.subject) : overseers_inquiry_sales_quote_path(stage.inquiry, stage.subject) %>
             <% else %>
               <%= "Inquiry ##{stage.inquiry.inquiry_number}" %>
