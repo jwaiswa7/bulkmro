@@ -9,7 +9,7 @@ json.data (@po_requests) do |po_request|
                       end
                   ].join(' '),
                   po_request.id,
-                  format_date(po_request.created_at),
+                  format_date_time_meridiem(po_request.created_at),
                   po_request.inquiry.inquiry_number,
                   po_request.sales_order.order_number,
                   po_request.inquiry.inside_sales_owner.to_s,
