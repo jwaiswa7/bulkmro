@@ -86,6 +86,14 @@ module DisplayHelper
   end
 
 
+  def format_date_time_meridiem(date)
+    if date.present?
+      date.strftime("%d-%b-%Y, %I:%M %p")
+    else
+      "-"
+    end
+  end
+
   def format_date_without_time(date)
     if date.present?
       date.strftime("%d-%b-%Y")

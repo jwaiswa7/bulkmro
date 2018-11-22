@@ -9,7 +9,7 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort all">Quote #</th>
-    <th class="no-sort all" data-name="created_at">Date</th>
+    <th class="no-sort all" data-name="inquiry_created_at">Date</th>
     <th class="no-sort desktop">Line Items</th>
     <th class="no-sort desktop">Total</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Sales Person</th>
@@ -20,12 +20,12 @@
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="daterange"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
-    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
