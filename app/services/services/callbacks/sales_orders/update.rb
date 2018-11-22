@@ -12,13 +12,15 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
       sales_order = SalesOrder.find_by_order_number!(order_number)
 
       if sales_order.present?
-        message = [
-            ["SAP Status Updated: ", sales_order.remote_status].join
-        ].join('\n')
+        ex_comment = InquiryComment.order(created_at: :desc).limit(1).find_by_sales_order_id_and_created_by_id(sales_order.id,Overseer.default_approver.id)
+        ex_message = ex_comment.message if ex_comment.present?
 
         begin
           sales_order.update_attributes(:remote_status => remote_status.to_i)
-          InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver , sales_order: sales_order) if sales_order.inquiry.present?
+          message = [
+              ["SAP Status Updated: ", sales_order.remote_status].join
+          ].join('\n')
+          InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver , sales_order: sales_order) if sales_order.inquiry.present? && ex_message != message
           sales_order.update_index
           return_response("Order Updated Successfully")
         rescue => e
