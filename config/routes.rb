@@ -279,7 +279,10 @@ Rails.application.routes.draw do
   namespace 'customers' do
     resources :reports do
       member do
+      end
 
+      collection do
+        get 'quarterly_purchase_data'
       end
     end
 

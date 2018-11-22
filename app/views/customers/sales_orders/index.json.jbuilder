@@ -25,6 +25,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       []
+
                    ]
 
 json.recordsTotal @sales_orders.count

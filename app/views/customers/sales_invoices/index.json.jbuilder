@@ -8,12 +8,16 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank)
                       end
                   ].join(' '),
+                  sales_invoice.inquiry.customer_po_number,
+                  format_date(sales_invoice.inquiry.customer_order_date),
                   sales_invoice.invoice_number,
-                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.inquiry_number : "",
-                  sales_invoice.inquiry.present? ? sales_invoice.sales_order.order_number : "",
-                  sales_invoice.inquiry.present? ? sales_invoice.rows.count : "",
-                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : "",
-                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : "",
+                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.inquiry_number: "",
+                  sales_invoice.inquiry.present? ? sales_invoice.sales_order.order_number: "",
+                  sales_invoice.inquiry.inquiry_number,
+                  sales_invoice.inquiry.present? ? sales_invoice.rows.count: "",
+                  sales_invoice.status,
+                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s: "",
+                  sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s: "",
                   format_date(sales_invoice.created_at)
               ]
 end
@@ -23,8 +27,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
                        []
                    ]
 

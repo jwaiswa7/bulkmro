@@ -23,7 +23,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
   end
 
   def call
-    model.remote_approved.where(:created_at => start_at..end_at).where.not(sales_quote_id: nil).each do |sales_order|
+    model.remote_approved.where(:mis_date => start_at..end_at).where.not(sales_quote_id: nil).each do |sales_order|
       inquiry = sales_order.inquiry
       
       rows.push({

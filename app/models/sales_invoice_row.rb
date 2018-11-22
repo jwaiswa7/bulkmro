@@ -11,7 +11,7 @@ class SalesInvoiceRow < ApplicationRecord
 
 
   def hsn
-    get_product.tax_code.chapter
+    get_product.best_tax_code.chapter
   end
 
   def name
