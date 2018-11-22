@@ -95,8 +95,6 @@
             <% end %>
           </div>
         </div>
-        <br>
-
 
         <div class="form-row">
           <div class="col-md-6">
@@ -129,114 +127,122 @@
         </div>
       </div>
 
-      <% @sales_quote.sales_quote_rows.each do |row| %>
-        <div>
-          <h6 class="text-uppercase mb-0 mt-3">
-            <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.sr_no %></span>
-            <strong><%= row %></strong>
-          </h6>
-          <div class="form-row my-2">
-            <div class="col-md-3">
-              <strong class="d-block">SKU</strong>
-              <span><%= row.product.sku %></span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong>Mfr Model</strong><br>
-              <span>
-                  <% if row.product.mpn %>
-                    <%= row.product.mpn %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Description</strong>
-              <span>
-                  <% if row.product.description %>
-                    <%= row.product.description %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Make</strong>
-              <span>
-                  <% if row.product.brand %>
-                    <%= row.product.brand %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
-          </div>
-          <div class="form-row my-2">
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">HSN/SAC Code</strong>
-              <span>
-                  <% if row.product.remote_uid %>
-                    <%= row.product.remote_uid %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Lead Time</strong>
-              <span>
-                  <% if row.lead_time_option %>
-                    <%= row.lead_time_option %>
-                  <% else %>
-                    -
-                  <% end %>
-                 </span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">UOM</strong>
-              <span>
-                  <% if row.product.measurement_unit %>
-                    <%= row.product.measurement_unit %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
 
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Qty</strong>
-              <span>
-                  <% if row.quantity %>
-                    <%= row.quantity %>
-                  <% else %>
-                    -
-                  <% end %>
-                </span>
-            </div>
-          </div>
-          <div class="form-row my-2">
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Unit Price (INR)</strong>
-              <span>
+      <div>
+        <div class="form-row my-2 text-small">
+          <div class="col-12">
+            <table class="datatable table table-bordered dt-responsive" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Product Number">Product</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
+                </th>
+                <th class="no-sort">
+                  <span>Description</span>
+                </th>
+                <th class="no-sort">
+                  <span>Make</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Quantity">Qty</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Tax">Tax</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @sales_quote.sales_quote_rows.each do |row| %>
+                <tr>
+                  <td>
+                      <span>
+                          #<%= row.sr_no %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.product.sku %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                              <%= row.product.description || "-" %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                      <% if row.product.brand %>
+                        <%= row.product.brand %>
+                      <% else %>
+                        -
+                      <% end %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                      <% if row.product.measurement_unit %>
+                        <%= row.product.measurement_unit %>
+                      <% else %>
+                        -
+                      <% end %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                         <% if row.quantity %>
+                            <%= row.quantity %>
+                          <% else %>
+                            -
+                          <% end %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+
                   <% if row.unit_selling_price %>
-                    <%= row.unit_selling_price %>
+                    <%= format_currency(row.unit_selling_price) %>
                   <% else %>
                     -
                   <% end %>
-                </span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Tax</strong>
-              <span><%= row.best_tax_code %></span>
-            </div>
-            <div class="col-md-3 mt-2 mt-md-0">
-              <strong class="d-block">Subtotal</strong>
-              <span><%= row.total_selling_price %></span>
-            </div>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= [row.best_tax_code.tax_percentage, '%'].join('') %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                        <%= format_currency(row.total_selling_price) %>
+                      </span>
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
-        <hr class="my-2">
-      <% end %>
+      </div>
     </div>
     <div class="card-footer">
       <div class=form-row>
