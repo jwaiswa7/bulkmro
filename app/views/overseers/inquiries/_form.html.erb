@@ -72,10 +72,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from" %>
+            <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from",input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path }%>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from" %>
+            <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from",input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path }%>
           </div>
         </div>
         <div class="form-row">
