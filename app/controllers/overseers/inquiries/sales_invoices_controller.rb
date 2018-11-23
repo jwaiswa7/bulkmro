@@ -44,20 +44,48 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   def make_zip
     authorize @sales_invoice, :show?
+    # service = Services::Overseers::Inquiries::ZipEntries.new(@sales_invoice)
+    # service.call
 
+    input_filenames = pdf_content = []
+    folder = Rails.root.join('tmp')
 
-    temp_invoice_file = Tempfile.new('temp_invoice.pdf')
-    temp_invoice_file.puts(File.open(RenderPdfToFile.for(@sales_invoice)))
-    temp_invoice_file.close
+    # temp file paths
+    file_paths = [
+        RenderPdfToFile.for(@sales_invoice),
+        RenderPdfToFile.for(@sales_invoice,{duplicate: true}),
+        RenderPdfToFile.for(@sales_invoice,{triplicate: true})
+    ]
+
+    # temp file names
+    file_paths.each do |file_path|
+      input_filenames.push(File.basename(file_path))
+    end
 
     temp_zip_file = 'tmp/archive.zip'
+    # Zip::OutputStream.open(temp_zip_file) { |zos| }
 
+    # pdf string for each temp invoice file
+    file_paths.each do |file_path|
+      pdf_content.push(File.open(File.open(file_path)))
+    end
+
+    # updates zip
     Zip::File.open(temp_zip_file, Zip::File::CREATE) do |zip_file|
-      zip_file.add(temp_invoice_file, temp_invoice_file.path)
+      input_filenames.each_with_index do |filename, index|
+
+        # temp invoice creation
+        temp_invoice_file = Tempfile.new()
+        temp_invoice_file.puts(pdf_content[index])
+        temp_invoice_file.close
+
+        # adds file
+        zip_file.add(filename, File.join(folder,filename))
+      end
     end
 
     zip_data = File.read(temp_zip_file)
-    send_data(zip_data, :type => 'application/zip', :filename => "tf")
+    send_data(zip_data, :type => 'application/zip', :filename => "Invoice - " + @sales_invoice.invoice_number.to_s)
   end
 
   private

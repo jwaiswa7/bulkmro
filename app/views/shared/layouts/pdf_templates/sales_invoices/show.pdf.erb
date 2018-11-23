@@ -53,7 +53,7 @@
           </div>
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span style="color:#000000"><b>Tax Invoice #<%= record.metadata[:increment_id] %></b></span>
+            <span style="color:#000000"><b>Tax Invoice #<%= record.metadata['increment_id'] %></b></span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;">
@@ -109,7 +109,7 @@
                   <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= Date.parse(record.metadata[:created_at]).strftime("%d-%b-%Y") if record.metadata[:created_at].present? %>
+                      <%= Date.parse(record.metadata['created_at']).strftime("%d-%b-%Y") if record.metadata['created_at'].present? %>
                     </span></td>
               </tr>
               <tr>
@@ -289,6 +289,7 @@
               </tr>
               </thead>
               <tbody>
+
               <% record.rows.reverse.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
@@ -333,7 +334,7 @@
                   <td align="right" valign="top">
                     <span><%= item.metadata['row_total_incl_tax'].to_f.round(2) %></span></td>
                 </tr>
-              <% end if record.metadata[:ItemLine].present? %>
+              <% end if record.metadata['ItemLine'].present? %>
 
               <tr class="pdf-table-total-row">
                 <td align="center" valign="top">
@@ -355,7 +356,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= record.metadata[:subtotal].to_f.round(2) %></span></b></td>
+                  <b><span><%= record.metadata['subtotal'].to_f.round(2) %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -363,19 +364,19 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= record.metadata[:tax_amount].to_f.round(2) %></span></b></td>
+                    <b><span><%= record.metadata['tax_amount'].to_f.round(2) %></span></b></td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (record.metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= (record.metadata['tax_amount'].to_f / 2).round(2) %></span></b></td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (record.metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= (record.metadata['tax_amount'].to_f / 2).round(2) %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= record.metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
+                  <b><span><%= record.metadata['subtotal_incl_tax'].to_f.round(2) %></span></b></td>
               </tr>
 
               </tbody>
@@ -414,7 +415,7 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
-                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= record.metadata[:increment_id] %>
+                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= record.metadata['increment_id'] %>
                     when remitting Wire Transfer payment<br>
                     2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</span></td>
                 </tr>
@@ -476,7 +477,7 @@
                 <tr>
                   <td class="invoiceheader1" style=" " colspan="16" rowspan="2" height="39" align="left" valign="top">
                     <span style="color:#000000">1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice
-                      #<%= record.metadata[:increment_id] %> when remitting Wire Transfer payment.<br>2. Bulk MRO Industrial Supply
+                      #<%= record.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>2. Bulk MRO Industrial Supply
                       Pvt. Ltd. is not reponsible for any banking fees.</span><br/>
                     <!-- commercial terms -->
                   </td>
