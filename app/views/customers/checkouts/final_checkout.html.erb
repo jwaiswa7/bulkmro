@@ -25,7 +25,14 @@
           <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
             <% current_contact_companies.each do |company| %>
               <% if company.default_billing_address_id.present? %>
-                <%= f.radio_button :default_billing_address_id, company.default_billing_address_id %><%= company.default_billing_address.try(:to_multiline_s) %><br /><br />
+                <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :default_billing_address_id, company.default_billing_address_id %>
+                    </span>
+                    <span class="flex-grow-1 ml-2">
+                      <%= company.default_billing_address.try(:to_multiline_s) %>
+                    </span>
+                </label>
               <% end %>
             <% end %>
             <%= f.button :submit, 'Continue' %>
