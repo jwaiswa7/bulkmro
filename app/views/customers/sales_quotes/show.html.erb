@@ -419,7 +419,12 @@
                     <div class="media chat-item">
                       <div class="media-body">
                         <div class="chat-item-title">
-                          <span class="chat-item-author"><%= comment.author.full_name if comment.author.present? %></span>
+                          <span class="chat-item-author">
+                            <%= comment.author.full_name if comment.author.present? %>
+                            <span class="mr-1"><strong>
+                              <span class="badge badge-secondary"><%= comment.author_role %></span>
+                            </strong></span>
+                          </span>
                           <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
                         </div>
                         <div class="chat-item-body">
