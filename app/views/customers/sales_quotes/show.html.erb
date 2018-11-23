@@ -103,7 +103,7 @@
             <% if @sales_quote.inquiry.contact.phone.present? %>
               Contact: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %><br>
             <% end %>
-            <span class="d-block"><em>Email</em>:  <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>"><%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></a></span>
             <% if @sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst) %>
               <span class="d-block"><em>GST Number</em>: <% [@sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst)].join %></span>
             <% end %>
@@ -115,7 +115,7 @@
             <% if @sales_quote.inquiry.contact.mobile || @sales_quote.inquiry.contact.telephone %>
               <span class="d-block"><em>Contact</em>: <%= @sales_quote.inquiry.contact.full_name %> - <%= @sales_quote.inquiry.contact.phone %></span>
             <% end %>
-            <span class="d-block"><em>Email</em>: <%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>"><%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></a></span>
             <% if @sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst) %>
               <span class="d-block"><em>GST Number</em>: <%= [@sales_quote.inquiry.shipping_address.try(:gst) || @sales_quote.inquiry.company.default_shipping_address.try(:gst)].join %></span>
             <% end %>

@@ -88,7 +88,7 @@
               <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
                 - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
            </div>
 
@@ -102,7 +102,7 @@
               <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
                 - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
            </div>
         </div>
