@@ -184,6 +184,7 @@ Rails.application.routes.draw do
         post 'update_suppliers'
         get 'calculation_sheet'
         get 'export'
+        get 'stages'
       end
 
       collection do
