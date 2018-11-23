@@ -51,6 +51,7 @@
 
       <div id="checkout-shipping" class="collapse" data-parent="#checkout">
         <div class="card-body">
+          <p>Select a shipping address from your address book.</p>
           <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
             <% current_contact_companies.each do |company| %>
               <% if company.default_shipping_address_id.present? %>
@@ -73,14 +74,14 @@
     <div class="card">
       <div class="card-header">
         <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-reference">
-          <h5 class="mb-0"><strong>Add Purchase Order Reference</strong></h5>
+          <h5 class="mb-0"><strong>Purchase Order Details</strong></h5>
         </a>
       </div>
       <div id="checkout-reference" class="collapse" data-parent="#checkout">
         <div class="card-body">
           <%= simple_form_for [:customers, @cart], :url => add_po_number_customers_cart_path, :method => :patch do |f| %>
-            <%= f.text_field :po_reference %><br/><br/>
-            <%= f.button :submit, 'Continue' %>
+            <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. 4591519126' %>
+            <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
           <% end %>
         </div>
       </div>
