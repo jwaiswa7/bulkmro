@@ -62,13 +62,14 @@ GEM
       async-io
       websocket-driver (~> 0.7.0)
     awesome_print (1.8.0)
-    axlsx (2.0.0)
-      htmlentities (~> 4.3.1)
-      nokogiri (>= 1.4.1)
-      rubyzip (= 0.9.9)
-    axlsx_rails (0.1.5)
-      axlsx
-      rails (>= 3.1)
+    axlsx (3.0.0.pre)
+      htmlentities (~> 4.3, >= 4.3.4)
+      mimemagic (~> 0.3)
+      nokogiri (~> 1.8, >= 1.8.2)
+      rubyzip (~> 1.2, >= 1.2.1)
+    axlsx_rails (0.5.2)
+      actionpack (>= 3.1)
+      axlsx (>= 2.0.1)
     azure-core (0.1.14)
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
@@ -399,7 +400,7 @@ GEM
     ruby-ole (1.2.12.1)
     ruby_dep (1.5.0)
     ruby_http_client (3.3.0)
-    rubyzip (0.9.9)
+    rubyzip (1.2.2)
     sass (3.7.2)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -520,8 +521,8 @@ DEPENDENCIES
   activeresource
   async-websocket
   awesome_print
-  axlsx (= 2.0.0)
-  axlsx_rails (= 0.1.5)
+  axlsx (= 3.0.0.pre)
+  axlsx_rails (= 0.5.2)
   azure-storage
   bonsai-elasticsearch-rails (~> 7)
   bootsnap (>= 1.1.0)
@@ -568,7 +569,7 @@ DEPENDENCIES
   pundit
   rails (~> 5.2.0)
   rotp
-  rubyzip (= 0.9.9)
+  rubyzip (~> 1.2)
   sass-rails (~> 5.0)
   seed_dump
   sendgrid-ruby
@@ -590,7 +591,6 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webpacker (~> 3.5)
   wicked_pdf
-
 
 BUNDLED WITH
    1.17.1

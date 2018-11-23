@@ -95,10 +95,9 @@ gem 'spreadsheet', require: false
 gem 'simple_xlsx_reader'
 
 # Render XLSX files
-gem 'axlsx', '2.0.0'
-gem 'axlsx_rails', '0.1.5'
-gem 'rubyzip', '0.9.9'
-# gem 'archive-zip', '~> 0.7.0'
+gem 'axlsx', '3.0.0.pre'
+gem 'axlsx_rails', '0.5.2'
+gem 'rubyzip', '~> 1.2'
 
 # Validate file uploads
 gem 'file_validators'
