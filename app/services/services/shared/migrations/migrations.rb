@@ -1656,11 +1656,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice.each do |si|
           si.mis_date = x.get_column('mis_date')
           si.save(validate: false)
-          puts si.mis_date
         end
       end
 
     end
   end
+
+  def sales_orders_reporting_data_update_mis_date
+    service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
+    service.loop(nil) do |x|
+
+      sales_order = SalesOrder.where(order_number: x.get_column('order_number'))
+      if sales_order.present?
+        sales_order.each do |so|
+          so.mis_date = x.get_column('mis_date')
+          so.save(validate: false)
+        end
+      end
+
+    end
+  end
+
 
 end
