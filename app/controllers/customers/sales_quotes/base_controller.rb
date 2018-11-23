@@ -4,7 +4,7 @@ class Customers::SalesQuotes::BaseController < Customers::BaseController
   private
 
   def set_sales_quote
-    @sales_quote = SalesQuote.find(params[:id])
+    @sales_quote = SalesQuote.find(params[:quote_id])
     @inquiry = @sales_quote.inquiry
   end
 

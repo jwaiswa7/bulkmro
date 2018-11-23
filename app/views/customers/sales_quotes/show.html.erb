@@ -413,13 +413,13 @@
                 <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
               </div>
 
-              <% if @comments.persisted.size > 0 %>
+              <% if @sales_quote.comments.persisted.size > 0 %>
                 <div class="chats mb-3">
-                  <% @comments.each do |comment| %>
+                  <% @sales_quote.comments.each do |comment| %>
                     <div class="media chat-item">
                       <div class="media-body">
                         <div class="chat-item-title">
-                          <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
+                          <span class="chat-item-author"><%= comment.author.full_name if comment.author.present? %></span>
                           <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
                         </div>
                         <div class="chat-item-body">
@@ -431,12 +431,11 @@
                 </div>
               <% end %>
 
-              <%= simple_form_for(@sales_quote, url: customers_quote_comments_path(@sales_quote), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+              <%= simple_form_for(@sales_quote.comments.build, url: customers_quote_comments_path(@sales_quote), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                 <%= render 'shared/snippets/form_errors', f: f %>
                   <div class="col-12">
-                      <%= f.hidden_field :created_by_id %>
-                      <%= f.hidden_field :updated_by_id %>
                       <%= f.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                      <%= f.submit %>
                   </div>
               <% end %>
             </div>

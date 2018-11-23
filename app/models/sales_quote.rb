@@ -8,6 +8,8 @@ class SalesQuote < ApplicationRecord
 
   update_index('sales_quotes#sales_quote') {self}
   belongs_to :inquiry
+  has_many :comments, -> {where(:show_to_customer => true)}, :through => :inquiry
+  accepts_nested_attributes_for :comments
   has_one :inquiry_currency, :through => :inquiry
   accepts_nested_attributes_for :inquiry_currency
   has_one :currency, :through => :inquiry_currency

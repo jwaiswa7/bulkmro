@@ -33,7 +33,7 @@
                 <div class="media chat-item">
                   <div class="media-body">
                     <div class="chat-item-title">
-                      <span class="chat-item-author"><%= comment.created_by.full_name %></span>
+                      <span class="chat-item-author"><%= comment.author.full_name %></span>
                       <span>
                         <span class="mr-1"><strong>
                           <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
