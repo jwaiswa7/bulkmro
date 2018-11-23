@@ -887,7 +887,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
 
-       next if inquiry.updated_at > inquiry_updated_date
+      next if inquiry.updated_at > inquiry_updated_date
       debugger
 
       if inquiry.new_record? || update_if_exists
@@ -1597,6 +1597,70 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def chandan_products
+    skus = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Chandan Steel NEW.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('BM'))
+      if !product.present?
+        brand = Brand.find_by_name(x.get_column('Make'))
+        category = Category.find_by_name(x.get_column('Category'))
+        measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
+        name = x.get_column('Client Description')
+        sku = x.get_column('BM')
+        tax_code = TaxCode.find_by_chapter(x.get_column('HSN Code'))
 
+        next if Product.where(:sku => sku).exists?
+
+        product = Product.new
+        product.brand = brand
+        product.category = category
+        product.sku = sku || product.generate_sku
+        product.tax_code = tax_code || TaxCode.default
+        product.mpn = x.get_column('MFR')
+        product.description = x.get_column('BULK MRO Description')
+        product.name = name
+        product.measurement_unit = measurement_unit
+        product.legacy_metadata = x.get_row
+        product.save_and_sync
+
+        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+      end
+
+      sheet_columns = [
+          ['img_links', 'images']
+      ]
+
+      sheet_columns.each do |file|
+        file_url = x.get_column(file[0])
+        begin
+          sleep(1.5)
+          puts "-------------------------------------------"
+          attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+        rescue URI::InvalidURIError => e
+          puts "Help! #{e} did not migrate."
+        end
+      end
+      skus.push product.sku
+    end
+
+    puts skus
+  end
+
+  def sales_invoices_reporting_data_update_mis_date
+    service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
+    service.loop(nil) do |x|
+
+      sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
+      if sales_invoice.present?
+        sales_invoice.each do |si|
+          si.mis_date = x.get_column('mis_date')
+          si.save(validate: false)
+          puts si.mis_date
+        end
+      end
+
+    end
+  end
 
 end

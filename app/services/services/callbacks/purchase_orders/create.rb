@@ -5,7 +5,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
   end
 
   def call
-    inquiry = Inquiry.find_by_inquiry_number!(params['PoEnquiryId'])
+    inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     begin
       if inquiry.present?
         inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
@@ -21,7 +21,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
         end
         return_response("Purchase Order created successfully.")
       else
-        return_response("Inquiry not found.", 0)
+        return_response("Inquiry #{params['PoEnquiryId']} not found." , 0)
       end
     rescue => e
       return_response(e.message, 0)

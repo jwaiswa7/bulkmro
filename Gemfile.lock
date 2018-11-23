@@ -494,8 +494,8 @@ GEM
     unicode_utils (1.4.0)
     validates_timeliness (5.0.0.alpha3)
       timeliness (~> 0.3.8)
-    warden (1.2.8)
-      rack (>= 2.0.6)
+    warden (1.2.7)
+      rack (>= 1.0)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -591,8 +591,6 @@ DEPENDENCIES
   webpacker (~> 3.5)
   wicked_pdf
 
-RUBY VERSION
-   ruby 2.5.1p57
 
 BUNDLED WITH
    1.17.1
