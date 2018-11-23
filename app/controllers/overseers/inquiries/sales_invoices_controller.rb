@@ -47,7 +47,8 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     # service = Services::Overseers::Inquiries::ZipEntries.new(@sales_invoice)
     # service.call
 
-    input_filenames = pdf_content = []
+    input_filenames = []
+    pdf_content = []
     folder = Rails.root.join('tmp')
 
     # temp file paths
@@ -86,6 +87,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
     zip_data = File.read(temp_zip_file)
     send_data(zip_data, :type => 'application/zip', :filename => "Invoice - " + @sales_invoice.invoice_number.to_s)
+    FileUtils.rm_rf(Dir.glob(Rails.root.join('tmp/archive.zip')))
   end
 
   private
