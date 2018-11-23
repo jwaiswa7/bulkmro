@@ -17,7 +17,7 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
           message = [
               ["SAP Status Updated: ", sales_order.remote_status].join
           ].join('\n')
-          InquiryComment.where(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver , sales_order: sales_order).first_or_create if sales_order.inquiry.present? 
+          InquiryComment.where(message: message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver , updated_by: Overseer.default_approver , sales_order: sales_order).first_or_create if sales_order.inquiry.present?
           sales_order.update_index
           return_response("Order Updated Successfully")
         rescue => e
