@@ -435,7 +435,7 @@
                 <%= render 'shared/snippets/form_errors', f: f %>
                   <div class="col-12">
                       <%= f.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-                      <%= f.submit %>
+                      <%= f.submit 'Comment', name: 'Comment', class: 'btn btn-danger' %>
                   </div>
               <% end %>
             </div>
