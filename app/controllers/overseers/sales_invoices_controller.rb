@@ -15,8 +15,8 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   end
 
   def autocomplete
-    @salesinvoice=ApplyParams.to(SalesInvoice.all, params)
-    authorize @salesinvoice
+    @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
+    authorize @sales_invoices
   end
 
   def export_all
