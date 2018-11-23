@@ -98,42 +98,46 @@
         <div class="card-body">
           <div class="col-12">
             <div class="text-left">
-              <div class="list-group list-group-flush">
-                <table class="table table-striped">
-                  <thead>
+              <table class="table table-striped mb-0">
+                <thead>
+                <tr>
                   <th scope="col">Image</th>
                   <th scope="col">Info</th>
                   <th scope="col">Price</th>
                   <th scope="col">Qty</th>
                   <th scope="col">Subtotal</th>
-                  </thead>
-                  <tbody>
-                  <% current_cart.items.each do |cart_item| %>
-                    <tr>
-                      <td><img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60"/></td>
-                      <td><%= cart_item.product.name.truncate(80) %></td>
-                      <td><%= cart_item.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.product.latest_unit_cost_price.to_f) %></td>
-                      <td>x <%= cart_item.quantity %></td>
-                      <td><%= format_currency(cart_item.product.latest_unit_cost_price.to_f * cart_item.quantity) %></td>
-                    </tr>
-                  <% end %>
+                </tr>
+                </thead>
+                <tbody>
+                <% current_cart.items.each do |cart_item| %>
                   <tr>
-                    <td colspan="5" style="text-align: right;">
-                      <strong>Subtotal:</strong> <%= format_currency(order_total(current_cart.items)) %></td>
+                    <td><img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60"/></td>
+                    <td><%= cart_item.product.name.truncate(80) %></td>
+                    <td><%= cart_item.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.product.latest_unit_cost_price.to_f) %></td>
+                    <td>x <%= cart_item.quantity %></td>
+                    <td><%= format_currency(cart_item.product.latest_unit_cost_price.to_f * cart_item.quantity) %></td>
                   </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="card-footer">
-                <div>
-                  <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-                    Place Order
-                  <% end %>
-                  <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
-                    <i class="fal fa-pen"></i> Edit Cart
-                  <% end %>
-                </div>
-              </div>
+                <% end %>
+                <tr>
+                  <td colspan="5" style="text-align: right;">
+                    <strong>Subtotal:</strong> <%= format_currency(order_total(current_cart.items)) %></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="form-row">
+            <div class="col-12 col-md-6 mt-2 mt-md-0">
+              <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
+                Modify Cart
+              <% end %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+                Checkout
+              <% end %>
             </div>
           </div>
         </div>
