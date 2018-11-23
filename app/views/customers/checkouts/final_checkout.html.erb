@@ -1,18 +1,26 @@
-<div class="container-fluid"><!--Accordion wrapper-->
-  <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+<div class="col-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Checkout</h1>
+    </div>
+    <p class="lead mt-1">
+      You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth <strong><%= format_currency(order_total(current_cart.items)) %></strong>.
+    </p>
+  </section>
 
+
+  <div class="accordion" id="checkout">
     <!-- Accordion card -->
     <div class="card">
       <!-- Card header -->
-      <div class="card-header" role="tab" id="headingOne1">
-        <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true"
-           aria-controls="collapseOne1">
+      <div class="card-header" role="tab">
+        <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing">
           <h5 class="mb-0">Billing Information</h5>
         </a>
       </div>
 
       <!-- Card body -->
-      <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+      <div id="checkout-billing" class="collapse show" role="tabpanel" data-parent="#checkout">
         <div class="card-body">
           <p>Select a billing address from your address book.</p>
           <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
@@ -32,14 +40,14 @@
     <div class="card">
       <!-- Card header -->
       <div class="card-header" role="tab" id="headingTwo2">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2"
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseTwo2"
            aria-expanded="false" aria-controls="collapseTwo2">
           <h5 class="mb-0">Shipping Information</h5>
         </a>
       </div>
 
       <!-- Card body -->
-      <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+      <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#checkout">
         <div class="card-body">
           <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
             <% current_contact_companies.each do |company| %>
@@ -58,7 +66,7 @@
     <div class="card">
       <!-- Card header -->
       <div class="card-header" role="tab" id="headingThree3">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3"
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseThree3"
            aria-expanded="false" aria-controls="collapseThree3">
           <h5 class="mb-0">Add Purchase Order Reference</i>
           </h5>
@@ -66,7 +74,7 @@
       </div>
 
       <!-- Card body -->
-      <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
+      <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#checkout">
         <div class="card-body">
           <%= simple_form_for [:customers, @cart], :url => add_po_number_customers_cart_path, :method => :patch do |f| %>
             <%= f.text_field  :po_reference %><br /><br />
@@ -81,7 +89,7 @@
     <div class="card">
       <!-- Card header -->
       <div class="card-header" role="tab" id="headingFour4">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFour4"
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseFour4"
            aria-expanded="false" aria-controls="collapseFour4">
           <h5 class="mb-0">Order Summary</i>
           </h5>
@@ -89,7 +97,7 @@
       </div>
 
       <!-- Card body -->
-      <div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#accordionEx">
+      <div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#checkout">
         <div class="card-body">
           <div class="col-12">
             <div class="text-left">
