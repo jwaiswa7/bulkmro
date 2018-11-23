@@ -3,7 +3,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     call_base
 
 
-    # report.start_at = Date.new(2018, 10, 19)
+    report.start_at = Date.new(2018, 11, 1) if report.start_at < Date.new(2018, 11, 1)
     # report.end_at = Date.today.end_of_day
 
     data =  Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/data", expires_in: 10.minutes) do
@@ -98,10 +98,10 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
     sales_orders = SalesOrder.
         joins(:inquiry).
         includes(:rows).
-        where('created_at' => date_range).
+        where('mis_date' => date_range).
         where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
     sales_invoices = SalesInvoice.joins(:inquiry).
-        where('created_at' => date_range)
+        where('mis_date' => date_range)
 
     overseer_ids.each do |overseer_id|
       overseer = Overseer.find(overseer_id)
@@ -137,14 +137,14 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
             records = sales_orders.
                 where('inquiries.inside_sales_owner_id = ?', overseer_id).
                 or(sales_orders.where('inquiries.outside_sales_owner_id = ?', overseer_id)).
-                where('created_at' => date_range).
+                where('mis_date' => date_range).
                 compact.
                 map {|i| (i.try(:calculated_total).to_f)}.flatten
           elsif target_type == 'Invoice'
             records = sales_invoices.
                 where('inquiries.inside_sales_owner_id = ?', overseer_id).
                 or(sales_invoices.where('inquiries.outside_sales_owner_id = ?', overseer_id)).
-                where('created_at' => date_range).
+                where('mis_date' => date_range).
                 map {|s| s.metadata['subtotal'].to_f}.compact
           end
 

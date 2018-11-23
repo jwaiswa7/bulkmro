@@ -4,6 +4,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def autocomplete?
+    manager_or_sales? || logistics?
+  end
+
   def show?
     record.persisted?
   end
@@ -61,7 +65,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_po?
-    !record.has_purchase_order_request
+    true #!record.has_purchase_order_request
   end
 
   def approve?
