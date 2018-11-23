@@ -85,8 +85,7 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
@@ -99,8 +98,7 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
             <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
@@ -112,7 +110,7 @@
         <div class="form-row mt-3">
           <% if @sales_order.inquiry.customer_po_sheet.attached? %>
             <div class="col-6">
-              <strong class="d-block">PO Sheet</strong>
+              <strong class="d-block">Purchase Order</strong>
               <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
                 <%= @sales_order.inquiry.customer_po_sheet.filename %>
               <% end %>
