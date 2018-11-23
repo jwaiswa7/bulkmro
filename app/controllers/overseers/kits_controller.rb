@@ -29,6 +29,7 @@ class Overseers::KitsController < Overseers::BaseController
             row.quantity = inquiry_product.quantity
           end
         end
+        @kit.save
       end
 
       redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)
