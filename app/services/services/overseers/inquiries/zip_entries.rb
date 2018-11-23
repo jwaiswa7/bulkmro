@@ -5,9 +5,9 @@ class Services::Overseers::Inquiries::ZipEntries < Services::Shared::BaseService
 
   def call
     file_paths = [
-                  { name: "#{record.filename}", path: RenderPdfToFile.for(record) },
-                  { name: "duplicate" + "#{record.filename}", path: RenderPdfToFile.for(record,{duplicate: true}) },
-                  { name: "triplicate" + "#{record.filename}", path: RenderPdfToFile.for(record,{triplicate: true}) }
+                  { name: "original_#{record.filename}.pdf", path: RenderPdfToFile.for(record) },
+                  { name: "duplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record,{duplicate: true}) },
+                  { name: "triplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record,{triplicate: true}) }
                  ]
 
     invoice_zip = Rails.root.join('tmp/archive.zip')
@@ -19,7 +19,7 @@ class Services::Overseers::Inquiries::ZipEntries < Services::Shared::BaseService
         temp_invoice_file.puts(File.open(file_path[:path]))
         temp_invoice_file.close
 
-        zip_file.add(File.basename(file_path[:path]), File.join(Rails.root.join('tmp'), File.basename(file_path[:path])))
+        zip_file.add((file_path[:name]), File.join(Rails.root.join('tmp'), File.basename(file_path[:path])))
       end
     end
 
