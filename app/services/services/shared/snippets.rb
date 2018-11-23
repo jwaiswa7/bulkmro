@@ -796,4 +796,30 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def inquiry_status_update
+
+    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where( inquiry_status_records: {inquiry_id: nil} ).with_includes.each do |inquiry|
+      if inquiry.inquiry_status_records.blank?
+        subject = inquiry
+        status = inquiry.status
+        if (inquiry.final_sales_quote.present?)
+          subject = inquiry.final_sales_quote
+          status = 'Quotation Sent'
+        end
+
+        if inquiry.sales_orders.any?
+          subject = inquiry.sales_orders.last
+          status = 'Expected Order'
+        end
+
+        if inquiry.sales_orders.remote_approved.any?
+          subject = inquiry.sales_orders.remote_approved.last
+          status = 'Order Won'
+        end
+        inquiry.update_attribute(:status ,status)
+        InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create if inquiry.inquiry_status_records.blank?
+      end
+    end
+  end
+
 end
