@@ -1,5 +1,7 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate]
+  require 'zip/zip'
+  # include Zip
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -42,6 +44,30 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
   end
 
+  def make_zip
+
+    authorize @sales_invoice, :show?
+    @metadata = @sales_invoice.metadata.deep_symbolize_keys
+
+    tf = Tempfile.new('archive.zip')
+
+    temp_file = Tempfile.new('invoice')
+    temp_file.puts File.open(RenderPdfToFile.for(@sales_invoice))
+    temp_file.close
+    # Zip < Zip
+    Zip::ZipFile.open(tf, Zip::ZipFile::CREATE) do |z|
+      z.add(temp_file, temp_file.path)
+    end
+
+    #Read the binary data from the file
+    zip_data = File.read(tf.path)
+
+    send_data(zip_data, :type => 'application/zip', :filename => "tf")
+
+    tf.close
+    tf.unlink
+  end
+
   private
 
   def set_sales_invoice
@@ -49,4 +75,3 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
 end
-

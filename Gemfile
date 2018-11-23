@@ -3,6 +3,7 @@ git_source(:github) {|repo| "https://github.com/#{repo}.git"}
 
 # ruby '2.5.3'
 
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
 
@@ -97,6 +98,7 @@ gem 'simple_xlsx_reader'
 gem 'axlsx', '2.0.0'
 gem 'axlsx_rails', '0.1.5'
 gem 'rubyzip', '0.9.9'
+# gem 'archive-zip', '~> 0.7.0'
 
 # Validate file uploads
 gem 'file_validators'
@@ -221,3 +223,4 @@ gem 'webpacker', '~> 3.5'
 
 # For Notification bot
 gem 'slack-ruby-bot'
+

@@ -8,7 +8,7 @@
             <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-            <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
+            <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= record.metadata['increment_id'] %></span></b>
             <span style="color:#000; font-weight: bold; font-size: 20px">
             <% if defined?(triplicate) && triplicate %>
               Triplicate for Supplier
@@ -26,13 +26,13 @@
               <tr>
                 <td style="font-size: 16px;text-align: -webkit-center;font-weight: bold;">
                   <span style="color:#F58220">
-                    <%= @sales_invoice.sales_order.inquiry.bill_from.name if @sales_invoice.sales_order.inquiry.bill_from.present? %>
+                    <%= record.sales_order.inquiry.bill_from.name if record.sales_order.inquiry.bill_from.present? %>
                   </span></td>
               </tr>
               <tr>
                 <td style="text-align: center;">
                     <span style="color:#000000">
-                       <%= @sales_invoice.sales_order.inquiry.bill_from.address.to_compact_multiline_s if @sales_invoice.sales_order.inquiry.bill_from.present? %>
+                       <%= record.sales_order.inquiry.bill_from.address.to_compact_multiline_s if record.sales_order.inquiry.bill_from.present? %>
                     </span>
                 </td>
               </tr>
@@ -41,7 +41,7 @@
                   <span style="color:#000000" style="position: relative;top: -5px;">Telephone: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email: sales@bulkmro.com</span>
                 </td>
               </tr>
-              <% if @sales_invoice.sales_order.sales_quote.is_sez %>
+              <% if record.sales_order.sales_quote.is_sez %>
                 <tr>
                   <td style="text-align: -webkit-center;">
                     <span style="color:#000000">* Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST</span>
@@ -53,7 +53,7 @@
           </div>
           <br clear="all">
           <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span style="color:#000000"><b>Tax Invoice #<%= @metadata[:increment_id] %></b></span>
+            <span style="color:#000000"><b>Tax Invoice #<%= record.metadata[:increment_id] %></b></span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;">
@@ -63,13 +63,13 @@
                 <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Quotation #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_invoice.sales_order.inquiry.inquiry_number %></span></td>
+                  <span style="color:#000000"><%= record.sales_order.inquiry.inquiry_number %></span></td>
                 <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer Inquiry Reference</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= [@sales_invoice.sales_order.inquiry.inquiry_number, @sales_invoice.sales_order.inquiry.subject].join(" - ") %>
+                      <%= [record.sales_order.inquiry.inquiry_number, record.sales_order.inquiry.subject].join(" - ") %>
                     </span>
                 </td>
               </tr>
@@ -78,25 +78,25 @@
                   <b><span style="color:#000000">Customer Purchase Order #</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_invoice.sales_order.inquiry.customer_po_number if @sales_invoice.sales_order.inquiry.customer_po_number.present? %></span>
+                  <span style="color:#000000"><%= record.sales_order.inquiry.customer_po_number if record.sales_order.inquiry.customer_po_number.present? %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer Purchase Order Date</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_invoice.sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if @sales_invoice.sales_order.inquiry.customer_order_date.present? %></span>
+                  <span style="color:#000000"><%= record.sales_order.inquiry.customer_order_date.strftime("%d-%b-%Y") if record.sales_order.inquiry.customer_order_date.present? %></span>
                 </td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Sales Order #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @sales_invoice.sales_order.order_number %></span></td>
+                  <span style="color:#000000"><%= record.sales_order.order_number %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Sales Order Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @sales_invoice.sales_order.created_at.strftime("%d-%b-%Y") if @sales_invoice.sales_order.created_at.present? %>
+                      <%= record.sales_order.created_at.strftime("%d-%b-%Y") if record.sales_order.created_at.present? %>
                         </span></td>
               </tr>
               `
@@ -104,12 +104,12 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:increment_id] %></span></td>
+                  <span style="color:#000000"><%= record.metadata[:increment_id] %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= Date.parse(@metadata[:created_at]).strftime("%d-%b-%Y") if @metadata[:created_at].present? %>
+                      <%= Date.parse(record.metadata[:created_at]).strftime("%d-%b-%Y") if record.metadata[:created_at].present? %>
                     </span></td>
               </tr>
               <tr>
@@ -121,7 +121,7 @@
                   <b><span style="color:#000000">Payment Terms</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <span style="color:#000000">
-                  <%= @sales_invoice.sales_order.inquiry.payment_option.name if @sales_invoice.sales_order.inquiry.payment_option.present? %>
+                  <%= record.sales_order.inquiry.payment_option.name if record.sales_order.inquiry.payment_option.present? %>
                   </span></td>
               </tr>
               </tbody>
@@ -145,12 +145,12 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-left">
 
-                    <% if @sales_invoice.sales_order.inquiry.bill_from.address.present? %>
-                      <%= @sales_invoice.sales_order.inquiry.bill_from.address.name.to_s %><br>
+                    <% if record.sales_order.inquiry.bill_from.address.present? %>
+                      <%= record.sales_order.inquiry.bill_from.address.name.to_s %><br>
                     <% end %>
-                    <% if @sales_invoice.sales_order.inquiry.bill_from.present? %>
-                      <%= @sales_invoice.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
-                      GST No.: <%= @sales_invoice.sales_order.inquiry.bill_from.address.gst %><br>
+                    <% if record.sales_order.inquiry.bill_from.present? %>
+                      <%= record.sales_order.inquiry.bill_from.address.to_multiline_s %><br>
+                      GST No.: <%= record.sales_order.inquiry.bill_from.address.gst %><br>
                     <% end %>
                     PAN No.: AAGCB7343G</span>
                   </div>
@@ -159,12 +159,12 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
 
-                    <% if @sales_invoice.sales_order.inquiry.ship_from.present? %>
-                      <%= @sales_invoice.sales_order.inquiry.ship_from.address.name.to_s %><br>
+                    <% if record.sales_order.inquiry.ship_from.present? %>
+                      <%= record.sales_order.inquiry.ship_from.address.name.to_s %><br>
                     <% end %>
-                    <% if @sales_invoice.sales_order.inquiry.ship_from.present? %>
-                      <%= @sales_invoice.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
-                      GST No.: <%= @sales_invoice.sales_order.inquiry.ship_from.address.gst %><br>
+                    <% if record.sales_order.inquiry.ship_from.present? %>
+                      <%= record.sales_order.inquiry.ship_from.address.to_multiline_s %><br>
+                      GST No.: <%= record.sales_order.inquiry.ship_from.address.gst %><br>
                     <% end %>
                     PAN No.: AAGCB7343G</span>
                   </div>
@@ -192,34 +192,34 @@
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-left">
 
-                    <%= @sales_invoice.sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.billing_address.name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.billing_address.to_multiline_s if @sales_invoice.sales_order.inquiry.billing_address.present? %>
+                    <%= record.sales_order.inquiry.contact.full_name %><br>
+                    <%= record.sales_order.inquiry.billing_address.name %><br>
+                    <%= record.sales_order.inquiry.billing_address.to_multiline_s if record.sales_order.inquiry.billing_address.present? %>
                     <br>
-                    <% if @sales_invoice.sales_order.inquiry.billing_contact.present? %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.billing_contact.phone || @sales_invoice.sales_order.inquiry.billing_contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                    <% if record.sales_order.inquiry.billing_contact.present? %>
+                      Tel: <%= record.sales_order.inquiry.billing_contact.phone || record.sales_order.inquiry.billing_contact.mobile || record.sales_order.inquiry.billing_address.telephone %>
                     <% else %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.inquiry.billing_address.telephone %>
                     <% end %> <br>
-                    GST No.:<%= @sales_invoice.sales_order.inquiry.billing_address.gst %><br>
+                    GST No.:<%= record.sales_order.inquiry.billing_address.gst %><br>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
 
-                    <%= @sales_invoice.sales_order.inquiry.shipping_contact.present? ? @sales_invoice.sales_order.inquiry.shipping_contact.full_name : @sales_invoice.sales_order.inquiry.contact.full_name %>
+                    <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
-                    <%= @sales_invoice.sales_order.inquiry.shipping_address.name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.shipping_address.to_multiline_s if @sales_invoice.sales_order.inquiry.shipping_address.present? %>
+                    <%= record.sales_order.inquiry.shipping_address.name %><br>
+                    <%= record.sales_order.inquiry.shipping_address.to_multiline_s if record.sales_order.inquiry.shipping_address.present? %>
                     <br>
-                    <% if @sales_invoice.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.shipping_contact.phone || @sales_invoice.sales_order.inquiry.shipping_contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                    <% if record.sales_order.inquiry.shipping_contact.present? %>
+                      Tel: <%= record.sales_order.inquiry.shipping_contact.phone || record.sales_order.inquiry.shipping_contact.mobile || record.sales_order.inquiry.shipping_address.telephone %>
                     <% else %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                      Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.sales_order.inquiry.shipping_address.telephone %>
                     <% end %> <br>
 
-                    GST No.:<%= @sales_invoice.sales_order.inquiry.shipping_address.gst %><br>
+                    GST No.:<%= record.sales_order.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>
               </tr>
@@ -261,8 +261,8 @@
                   <b><span>Tax<br>
                     Rate</span></b></th>
 
-                <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
-                    (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
+                    (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                   <th align="center" style="" valign="center">
                     <b><span>IGST<br>
                     Rate</span></b></th>
@@ -289,7 +289,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @sales_invoice.rows.reverse.each_with_index do |item, index| %>
+              <% record.rows.reverse.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
                     <span><%= index + 1 %></span></td>
@@ -314,8 +314,8 @@
                     <span><%= item.metadata['row_total'].to_f.round(2) %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate %>%</span></td>
-                  <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
-                      (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                  <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
+                      (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
@@ -333,7 +333,7 @@
                   <td align="right" valign="top">
                     <span><%= item.metadata['row_total_incl_tax'].to_f.round(2) %></span></td>
                 </tr>
-              <% end if @metadata[:ItemLine].present? %>
+              <% end if record.metadata[:ItemLine].present? %>
 
               <tr class="pdf-table-total-row">
                 <td align="center" valign="top">
@@ -355,27 +355,27 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= @metadata[:subtotal].to_f.round(2) %></span></b></td>
+                  <b><span><%= record.metadata[:subtotal].to_f.round(2) %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
-                <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
-                    (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+                <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
+                    (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= @metadata[:tax_amount].to_f.round(2) %></span></b></td>
+                    <b><span><%= record.metadata[:tax_amount].to_f.round(2) %></span></b></td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= (record.metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= (record.metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= @metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
+                  <b><span><%= record.metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
               </tr>
 
               </tbody>
@@ -383,7 +383,7 @@
           </div>
           <br clear="all">
 
-          <% if @sales_invoice.sales_order.inquiry.bill_from.present? && @sales_invoice.sales_order.inquiry.bill_from.legacy_id == 12 %>
+          <% if record.sales_order.inquiry.bill_from.present? && record.sales_order.inquiry.bill_from.legacy_id == 12 %>
             <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
               <table border="0" cellspacing="0" style="width: 100%;">
                 <tbody>
@@ -414,7 +414,7 @@
                 </tr>
                 <tr>
                   <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">
-                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= @metadata[:increment_id] %>
+                    1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= record.metadata[:increment_id] %>
                     when remitting Wire Transfer payment<br>
                     2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</span></td>
                 </tr>
@@ -476,7 +476,7 @@
                 <tr>
                   <td class="invoiceheader1" style=" " colspan="16" rowspan="2" height="39" align="left" valign="top">
                     <span style="color:#000000">1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice
-                      #<%= @metadata[:increment_id] %> when remitting Wire Transfer payment.<br>2. Bulk MRO Industrial Supply
+                      #<%= record.metadata[:increment_id] %> when remitting Wire Transfer payment.<br>2. Bulk MRO Industrial Supply
                       Pvt. Ltd. is not reponsible for any banking fees.</span><br/>
                     <!-- commercial terms -->
                   </td>
@@ -487,8 +487,8 @@
               </table>
             </div>
             <br clear="all"/>
-            <% if @sales_invoice.sales_order.currency.name.present? %>
-              <% if @sales_invoice.sales_order.currency.name.to_s == 'USD' %>
+            <% if record.sales_order.currency.name.present? %>
+              <% if record.sales_order.currency.name.to_s == 'USD' %>
                 <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
                   <table style="width: 100%;" cellspacing="0" border="0">
                     <tr style="background: #d3d3d3;">
@@ -532,7 +532,7 @@
                   </table>
                 </div>
                 <br clear="all"/>
-              <% elsif @sales_invoice.sales_order.currency.name.to_s == 'EUR' %>
+              <% elsif record.sales_order.currency.name.to_s == 'EUR' %>
                 <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
                   <table style="width: 100%;" cellspacing="0" border="0">
                     <tr style="background: #d3d3d3;">
@@ -576,7 +576,7 @@
                   </table>
                 </div>
                 <br clear="all"/>
-              <% elsif @sales_invoice.sales_order.currency.name.to_s == 'GBP' %>
+              <% elsif record.sales_order.currency.name.to_s == 'GBP' %>
                 <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
                   <table style="width: 100%;" cellspacing="0" border="0">
                     <tr style="background: #d3d3d3;">

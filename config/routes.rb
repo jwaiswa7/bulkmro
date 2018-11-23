@@ -193,7 +193,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -204,6 +204,7 @@ Rails.application.routes.draw do
           member do
             get 'duplicate'
             get 'triplicate'
+            get 'make_zip'
           end
         end
 
