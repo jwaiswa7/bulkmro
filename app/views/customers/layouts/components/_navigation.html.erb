@@ -46,7 +46,7 @@
 
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown">
-        <%= current_contact.full_name %> <i class="fal fa-cog"></i>
+        <span class="d-none d-md-inline"><%= current_contact.full_name %></span> <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
         <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
