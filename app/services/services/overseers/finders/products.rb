@@ -4,8 +4,21 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     call_base
   end
 
-  def model_klass
-    Product
+  def all_records
+    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
+                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+                      else
+                        super
+                      end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+    indexed_records
   end
 
   def perform_query(query)
@@ -20,6 +33,18 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                           }
                       })
 
+    if current_overseer.present? && !current_overseer.allow_inquiries?
+      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    end
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+    indexed_records
   end
 
   def manage_failed_skus(query, per, page)
@@ -37,6 +62,11 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     indexed_records = index_klass.query(search_query).page(page).per(per)
 
     @records = model_klass.where(:id => indexed_records.pluck(:id)).approved.with_includes.reverse
+  end
+
+
+  def model_klass
+    Product
   end
 
 end

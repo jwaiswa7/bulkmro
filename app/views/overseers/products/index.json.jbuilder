@@ -24,6 +24,17 @@ json.data (@products) do |product|
                   format_date(product.approval.try(:created_at))
               ]
 end
+json.columnFilters [
+                    [],
+                    [{"source": autocomplete_overseers_products_path}],
+                    [],
+                    [{"source": autocomplete_overseers_brands_path}],
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                   ]
 
 json.recordsTotal @products.model.all.count
 json.recordsFiltered @indexed_products.total_count
