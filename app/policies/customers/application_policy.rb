@@ -49,9 +49,9 @@ class Customers::ApplicationPolicy
   class Scope
     attr_reader :contact, :scope
 
-    def initialize(contact, scope)authorize :dashboard, :show?
-    @contact = contact
-    @scope = scope
+    def initialize(contact, scope)
+      @contact = contact
+      @scope = scope
     end
 
     def resolve
