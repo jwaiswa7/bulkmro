@@ -40,7 +40,7 @@
                           <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present?%></span><% end %>
                         </strong></span>
 
-                        <% if comment.show_to_customer %>
+                        <% if comment.show_in_portal %>
                         <span class="mr-1"><strong>
                           <span class="badge badge-info">Visible To Customer</span>
                         </strong></span>
@@ -57,7 +57,7 @@
           <% end %>
 
           <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-          <%= f.input :show_to_customer, label: "Show in Customer Portal" %>
+          <%= f.input :show_in_portal, label: "Show in Customer Portal" %>
           <div class="flex-fill">
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <% if @sales_order.present? %>

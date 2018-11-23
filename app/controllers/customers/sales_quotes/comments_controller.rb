@@ -1,4 +1,4 @@
-class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseController
+class Customers::SalesQuotes::CommentsController < Customers::SalesQuotes::BaseController
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
@@ -32,20 +32,18 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
     params.require(:inquiry_comment).permit(
         :message,
         :sales_order_id,
-        :show_to_customer
+        :show_in_portal
     )
   end
 
   def approve
     service = Services::Overseers::SalesOrders::ApproveAndSerialize.new(@comment.sales_order, @comment)
-    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_approved_by_sales_manager).call
     service.call
   end
 
   def reject
     @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
     @comment.sales_order.update_attributes(:status => :'Rejected')
-    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_rejected_by_sales_manager).call
     @comment.sales_order.update_index
   end
 end
