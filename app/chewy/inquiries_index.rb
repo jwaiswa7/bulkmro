@@ -18,6 +18,7 @@ class InquiriesIndex < BaseIndex
     field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
     field :company_id, value: -> (record) { record.company_id }
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
+    field :account_id, value: -> (record) { record.account_id }
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
     field :priority, type: 'integer'
