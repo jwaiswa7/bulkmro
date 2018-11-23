@@ -64,7 +64,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
 
     temp_zip_file = 'tmp/archive.zip'
-    # Zip::OutputStream.open(temp_zip_file) { |zos| }
+    Zip::OutputStream.open(temp_zip_file) { |zos| }
 
     # pdf string for each temp invoice file
     file_paths.each do |file_path|
@@ -86,7 +86,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
 
     zip_data = File.read(temp_zip_file)
-    send_data(zip_data, :type => 'application/zip', :filename => "Invoice - " + @sales_invoice.invoice_number.to_s)
+    send_data(zip_data, :type => 'application/zip', :filename => "Invoice - " + @sales_invoice.invoice_number.to_s + ".zip")
     FileUtils.rm_rf(Dir.glob(Rails.root.join('tmp/archive.zip')))
   end
 
