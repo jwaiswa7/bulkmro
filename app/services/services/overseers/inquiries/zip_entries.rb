@@ -1,29 +1,29 @@
 class Services::Overseers::Inquiries::ZipEntries < Services::Shared::BaseService
-
   def initialize(record)
     @record = record
   end
 
   def call
-    folder = Rails.root.join('tmp')
-    # input_filenames = ["invoice.pdf","duplicate.pdf","triplicate.pdf"]
+    file_paths = [
+                  { name: "#{record.filename}", path: RenderPdfToFile.for(record) },
+                  { name: "duplicate" + "#{record.filename}", path: RenderPdfToFile.for(record,{duplicate: true}) },
+                  { name: "triplicate" + "#{record.filename}", path: RenderPdfToFile.for(record,{triplicate: true}) }
+                 ]
 
-    temp_invoice_file = Tempfile.new()
-    temp_invoice_file.puts(File.open(RenderPdfToFile.for(record)))
-    temp_invoice_file.close
+    invoice_zip = Rails.root.join('tmp/archive.zip')
+    Zip::OutputStream.open(invoice_zip) { |zos| }
 
-    puts "Tempfilename", File.basename(RenderPdfToFile.for(record))
+    Zip::File.open(invoice_zip, Zip::File::CREATE) do |zip_file|
+      file_paths.each do |file_path|
+        temp_invoice_file = Tempfile.new()
+        temp_invoice_file.puts(File.open(file_path[:path]))
+        temp_invoice_file.close
 
-    temp_zip_file = 'tmp/archive.zip'
-
-    Zip::File.open(temp_zip_file, Zip::File::CREATE) do |zip_file|
-      # input_filenames.each do |filename|
-      zip_file.add(File.basename(RenderPdfToFile.for(record)), File.join(folder,File.basename(RenderPdfToFile.for(record))))
-      # end
+        zip_file.add(File.basename(file_path[:path]), File.join(Rails.root.join('tmp'), File.basename(file_path[:path])))
+      end
     end
 
-    zip_data = File.read(temp_zip_file)
-    send_data(zip_data, :type => 'application/zip', :filename => "Invoice - "+record.invoice_number.to_s)
+    File.read(invoice_zip)
   end
 
   attr_accessor :record
