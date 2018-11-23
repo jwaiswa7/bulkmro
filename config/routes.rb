@@ -105,6 +105,8 @@ Rails.application.routes.draw do
     resources :customer_products do
       collection do
         get 'autocomplete'
+        get 'generate_products'
+        get 'remove_products'
       end
     end
 
@@ -198,7 +200,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -297,6 +299,11 @@ Rails.application.routes.draw do
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
+      end
+    end
+    resources :customer_products, only: %i[index create show] do
+      collection do
+        get 'generate_all'
       end
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]

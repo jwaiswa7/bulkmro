@@ -42,6 +42,7 @@ class Company < ApplicationRecord
   has_many :invoices, :through => :inquiries
   has_many :addresses, dependent: :destroy
   has_many :customer_products, dependent: :destroy
+  has_many :company_products, :through => :customer_products
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -122,6 +123,16 @@ class Company < ApplicationRecord
     self.addresses.first if !self.addresses.blank?
   end
 
+  def billing_address
+    self.update_attributes(:default_billing_address => self.set_default_company_billing_address) if self.default_billing_address.blank?
+    self.default_billing_address
+  end
+
+  def shipping_address
+    self.update_attributes(:default_shipping_address => self.set_default_company_shipping_address) if self.default_shipping_address.blank?
+    self.default_shipping_address
+  end
+
   def to_contextual_s(product)
     s = [self.to_s]
 
@@ -134,6 +145,29 @@ class Company < ApplicationRecord
     end
 
     s.join(' ')
+  end
+
+  def generate_products(overseer)
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => self.id).map {|i| i.inquiry_products}.flatten
+    inquiry_products.each do |inquiry_product|
+      if inquiry_product.product.synced?
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create! do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = ( inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name ) || inquiry_product.product.name
+          customer_product.sku = ( inquiry_product.bp_catalog_sku == "" ? nil : inquiry_product.bp_catalog_sku ) || inquiry_product.product.sku
+          customer_product.tax_code = inquiry_product.product.best_tax_code
+          customer_product.tax_rate = inquiry_product.best_tax_rate
+          customer_product.measurement_unit = inquiry_product.product.measurement_unit
+          customer_product.moq = 1
+          customer_product.created_by = overseer
+        end
+      end
+    end
+  end
+
+  def remove_products
+    self.customer_products.destroy_all
   end
 
   def self.legacy

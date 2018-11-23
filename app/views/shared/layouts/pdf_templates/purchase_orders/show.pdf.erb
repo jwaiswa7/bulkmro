@@ -99,34 +99,24 @@
               <tr>
                 <td style="" class="address-section-holder">
                   <div style="" class="address-wrapper address-wrapper-left">
-
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <% if @supplier.default_billing_address.present? %>
-                        <%= @supplier.default_billing_address.to_multiline_s %>
-                      <% elsif @supplier.addresses.any? %>
-                        <%= @supplier.addresses.first.to_multiline_s %>
-                      <% end %>
+                      <%= @supplier.default_billing_address.to_multiline_s %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. :<%= @supplier.gst if @supplier.gst.present? %><br>
+                      GST No. :<%= @supplier.default_billing_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
-
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <% if @supplier.default_shipping_address.present? %>
-                        <%= @supplier.default_shipping_address.to_multiline_s %>
-                      <% elsif @supplier.addresses.any? %>
-                        <%= @supplier.addresses.first.to_multiline_s %>
-                      <% end %>
+                      <%= @supplier.default_shipping_address.to_multiline_s %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. :<%= @supplier.gst if @supplier.gst.present? %><br>
+                      GST No. :<%= @supplier.default_shipping_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
