@@ -16,9 +16,13 @@ class Customers::SalesQuotesController < Customers::BaseController
     end
   end
 
+  def inquiry_comments
+
+  end
+
   def show
     authorize @sales_quote
-
+    @comments = @sales_quote.inquiry.comments.where(:show_in_portal => true)
     respond_to do |format|
       format.html {}
       format.pdf do

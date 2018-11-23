@@ -192,7 +192,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -273,7 +273,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources  :warehouses
+    resources :warehouses
   end
 
   namespace 'customers' do
@@ -293,7 +293,14 @@ Rails.application.routes.draw do
         get 'order_confirmed'
       end
     end
-    resources :quotes, :controller => :sales_quotes, only: %i[index show]
+    resources :quotes, :controller => :sales_quotes, only: %i[index show] do
+      member do
+        post 'inquiry_comments'
+      end
+      scope module: 'sales_quotes' do
+        resources :comments
+      end
+    end
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
     resources :products, only: %i[index show] do
@@ -302,10 +309,17 @@ Rails.application.routes.draw do
       end
     end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end
     end
+
+    resources :inquiries do
+      scope module: 'inquiries' do
+        resources :comments
+      end
+    end
+
   end
 end

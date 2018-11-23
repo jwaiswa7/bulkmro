@@ -1,4 +1,4 @@
-class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseController
+class Customers::SalesQuotes::CommentsController < Customers::SalesQuotes::BaseController
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
@@ -32,7 +32,7 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
     params.require(:inquiry_comment).permit(
         :message,
         :sales_order_id,
-        :show_to_customer
+        :show_in_portal
     )
   end
 
