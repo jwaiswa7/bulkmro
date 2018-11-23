@@ -4,22 +4,23 @@
       <h1 class="display-5 mb-1">Checkout</h1>
     </div>
     <p class="lead mt-1">
-      You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth <strong><%= format_currency(order_total(current_cart.items)) %></strong>.
+      You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth
+      <strong><%= format_currency(order_total(current_cart.items)) %></strong>.
     </p>
   </section>
 
 
   <div class="accordion" id="checkout">
     <div class="card">
-      <div class="card-header" role="tab">
+      <div class="card-header">
         <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing">
           <h5 class="mb-0">
-            <strong>Billing Information</strong>
+            <strong>Billing Details</strong>
           </h5>
         </a>
       </div>
 
-      <div id="checkout-billing" class="collapse show" role="tabpanel" data-parent="#checkout">
+      <div id="checkout-billing" class="collapse show" data-parent="#checkout">
         <div class="card-body">
           <p>Select a billing address from your address book.</p>
           <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
@@ -29,7 +30,7 @@
                     <span class="h-100">
                       <%= f.radio_button :default_billing_address_id, company.default_billing_address_id %>
                     </span>
-                    <span class="flex-grow-1 ml-2">
+                  <span class="flex-grow-1 ml-2">
                       <%= company.default_billing_address.try(:to_multiline_s) %>
                     </span>
                 </label>
@@ -45,20 +46,20 @@
     <!-- Accordion card -->
     <div class="card">
       <!-- Card header -->
-      <div class="card-header" role="tab" id="headingTwo2">
-        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseTwo2"
-           aria-expanded="false" aria-controls="collapseTwo2">
-          <h5 class="mb-0">Shipping Information</h5>
+      <div class="card-header">
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping">
+          <h5 class="mb-0"><strong>Shipping Details</strong></h5>
         </a>
       </div>
 
       <!-- Card body -->
-      <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#checkout">
+      <div id="checkout-shipping" class="collapse" data-parent="#checkout">
         <div class="card-body">
           <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
             <% current_contact_companies.each do |company| %>
               <% if company.default_billing_address_id.present? %>
-                <%= f.radio_button :default_shipping_address_id, company.default_shipping_address_id %><%= company.default_shipping_address.try(:to_multiline_s) %><br /><br />
+                <%= f.radio_button :default_shipping_address_id, company.default_shipping_address_id %><%= company.default_shipping_address.try(:to_multiline_s) %>
+                <br/><br/>
               <% end %>
             <% end %>
             <%= f.button :submit, 'Continue' %>
@@ -71,19 +72,17 @@
     <!-- Accordion card -->
     <div class="card">
       <!-- Card header -->
-      <div class="card-header" role="tab" id="headingThree3">
-        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseThree3"
-           aria-expanded="false" aria-controls="collapseThree3">
-          <h5 class="mb-0">Add Purchase Order Reference</i>
-          </h5>
+      <div class="card-header">
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-reference">
+          <h5 class="mb-0"><strong>Add Purchase Order Reference</strong></h5>
         </a>
       </div>
 
       <!-- Card body -->
-      <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#checkout">
+      <div id="checkout-reference" class="collapse" data-parent="#checkout">
         <div class="card-body">
           <%= simple_form_for [:customers, @cart], :url => add_po_number_customers_cart_path, :method => :patch do |f| %>
-            <%= f.text_field  :po_reference %><br /><br />
+            <%= f.text_field :po_reference %><br/><br/>
             <%= f.button :submit, 'Continue' %>
           <% end %>
         </div>
@@ -94,32 +93,30 @@
     <!-- Accordion card -->
     <div class="card">
       <!-- Card header -->
-      <div class="card-header" role="tab" id="headingFour4">
-        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#collapseFour4"
-           aria-expanded="false" aria-controls="collapseFour4">
-          <h5 class="mb-0">Order Summary</i>
-          </h5>
+      <div class="card-header">
+        <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-summary">
+          <h5 class="mb-0"><strong>Order Summary</strong></h5>
         </a>
       </div>
 
       <!-- Card body -->
-      <div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#checkout">
+      <div id="checkout-summary" class="collapse" data-parent="#checkout">
         <div class="card-body">
           <div class="col-12">
             <div class="text-left">
               <div class="list-group list-group-flush">
                 <table class="table table-striped">
                   <thead>
-                    <th scope="col">Image</th>
-                    <th scope="col">Info</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Subtotal</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Info</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Subtotal</th>
                   </thead>
                   <tbody>
                   <% current_cart.items.each do |cart_item| %>
                     <tr>
-                      <td><img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60" /></td>
+                      <td><img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60"/></td>
                       <td><%= cart_item.product.name.truncate(80) %></td>
                       <td><%= cart_item.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.product.latest_unit_cost_price.to_f) %></td>
                       <td>x <%= cart_item.quantity %></td>
@@ -127,13 +124,14 @@
                     </tr>
                   <% end %>
                   <tr>
-                    <td colspan="5" style="text-align: right;"><strong>Subtotal:</strong> <%= format_currency(order_total(current_cart.items)) %></td>
+                    <td colspan="5" style="text-align: right;">
+                      <strong>Subtotal:</strong> <%= format_currency(order_total(current_cart.items)) %></td>
                   </tr>
                   </tbody>
                 </table>
               </div>
               <div class="card-footer">
-                <div >
+                <div>
                   <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
                     Place Order
                   <% end %>
