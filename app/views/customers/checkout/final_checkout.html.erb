@@ -10,6 +10,49 @@
   </section>
 
   <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0"><strong>Your Checkout Progress</strong></h5>
+        </div>
+        <% if @cart.default_billing_address_id.present? %>
+          <div class="card-body">
+            <div id="billing-info">
+              <strong class="d-block">Billing Address | <a href="#checkout-billing">Change</a></strong>
+              <div id="billing_address">
+                <br/>
+                <p class="mb-0">
+                  <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="flex-grow-1 ml-2">
+                      <%= current_contact.name %><br/>
+                      <%= billing_address(@cart.default_billing_address_id) %>
+                    </span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <% if @cart.default_shipping_address_id.present? %>
+          <div class="card-body">
+            <div id="shipping-info">
+              <strong class="d-block">Shipping Address | <a href="#checkout-shipping">Change</a></strong>
+              <div id="shipping_address">
+                <br/>
+                <p class="mb-0">
+                  <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="flex-grow-1 ml-2">
+                      <%= current_contact.name %><br/>
+                      <%= shipping_address(@cart.default_shipping_address_id) %>
+                    </span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
     <div class="accordion col-md-9" id="checkout">
       <div class="card">
         <div class="card-header">
@@ -142,49 +185,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="mb-0"><strong>Your Checkout Progress</strong></h5>
-        </div>
-        <% if @cart.default_billing_address_id.present? %>
-          <div class="card-body">
-            <div id="billing-info">
-              <strong class="d-block">Billing Address | <a href="#checkout-billing">Change</a></strong>
-              <div id="billing_address">
-                <br/>
-                <p class="mb-0">
-                  <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="flex-grow-1 ml-2">
-                      <%= current_contact.name %><br/>
-                      <%= billing_address(@cart.default_billing_address_id) %>
-                    </span>
-                  </label>
-                </p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <% if @cart.default_shipping_address_id.present? %>
-          <div class="card-body">
-            <div id="shipping-info">
-              <strong class="d-block">Shipping Address | <a href="#checkout-shipping">Change</a></strong>
-              <div id="shipping_address">
-                <br/>
-                <p class="mb-0">
-                  <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="flex-grow-1 ml-2">
-                      <%= current_contact.name %><br/>
-                      <%= shipping_address(@cart.default_shipping_address_id) %>
-                    </span>
-                  </label>
-                </p>
-              </div>
-            </div>
-          </div>
-        <% end %>
       </div>
     </div>
   </div>
