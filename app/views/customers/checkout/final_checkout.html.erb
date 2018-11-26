@@ -15,33 +15,22 @@
         <div class="card-header">
           <h5 class="mb-0"><strong>Summary</strong></h5>
         </div>
-        <% if @cart.default_billing_address_id.present? %>
-          <div class="card-body">
+        <div class="card-body">
+          <% if @cart.default_billing_address_id.present? %>
             <strong class="d-block">Billing Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
             <em class="d-block mt-1"><%= current_contact.name %></em>
             <%= billing_address(@cart.default_billing_address_id) %>
-          </div>
-        <% end %>
-        <% if @cart.default_shipping_address_id.present? %>
-          <div class="card-body">
-            <div id="shipping-info">
-              <strong class="d-block">Shipping Address | <a href="#checkout-shipping">Change</a></strong>
-              <div id="shipping_address">
-                <br/>
-                <p class="mb-0">
-                  <label class="d-flex justify-content-center align-items-center flex-row">
-                    <span class="flex-grow-1 ml-2">
-                      <%= current_contact.name %><br/>
-                      <%= shipping_address(@cart.default_shipping_address_id) %>
-                    </span>
-                  </label>
-                </p>
-              </div>
-            </div>
-          </div>
-        <% end %>
+          <% end %>
+          <% if @cart.default_shipping_address_id.present? %>
+            <hr>
+            <strong class="d-block">Shipping Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a></strong>
+            <em class="d-block mt-1"><%= current_contact.name %></em>
+            <%= shipping_address(@cart.default_shipping_address_id) %>
+          <% end %>
+        </div>
       </div>
     </div>
+
     <div class="accordion col-md-9" id="checkout">
       <div class="card">
         <div class="card-header">
