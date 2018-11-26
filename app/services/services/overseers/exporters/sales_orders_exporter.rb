@@ -2,6 +2,8 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def initialize
     super
+    @start_at = Date.new(2018, 04, 01)
+    @end_at = Date.today.end_of_day
 
     @columns = [
         'Inquiry Number',
