@@ -7,6 +7,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def change_billing_shipping_details?
+    record.persisted? && record.quotation_uid.present?
+  end
+
   def smart_queue?
     manager_or_sales?
   end
