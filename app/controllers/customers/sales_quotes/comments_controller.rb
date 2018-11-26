@@ -19,7 +19,7 @@ class Customers::SalesQuotes::CommentsController < Customers::SalesQuotes::BaseC
 
   def comment_params
     params.require(:inquiry_comment).permit(
-        :message,
+        :message
     )
   end
 end
