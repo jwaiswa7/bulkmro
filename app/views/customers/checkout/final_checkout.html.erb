@@ -116,33 +116,29 @@
         </div>
 
         <div id="checkout-summary" class="collapse <%= show_if(params[:next_step] == 'summary') %>" data-parent="#checkout">
-          <div class="card-body">
+          <div class="card-body pt-0">
             <div class="col-12">
               <div class="text-left">
-                <table class="table table-striped mb-0">
+                <table class="datatable table table-bordered dt-responsive wrap-whitespace" style="width: 100%;">
                   <thead>
                   <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Info</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Subtotal</th>
+                    <th class="no-sort desktop">Image</th>
+                    <th class="no-sort all">Product</th>
+                    <th class="all">Price</th>
+                    <th class="all">Qty</th>
+                    <th class="all">Subtotal</th>
                   </tr>
                   </thead>
                   <tbody>
                   <% current_cart.items.each do |cart_item| %>
                     <tr>
-                      <td><img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60"/></td>
+                      <td><img src="<%= url_for(cart_item.product.images.first) %>" alt="<%= cart_item.product.sku %>" /></td>
                       <td><%= cart_item.product.name.truncate(80) %></td>
                       <td><%= cart_item.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.product.latest_unit_cost_price.to_f) %></td>
                       <td>x <%= cart_item.quantity %></td>
                       <td><%= format_currency(cart_item.product.latest_unit_cost_price.to_f * cart_item.quantity) %></td>
                     </tr>
                   <% end %>
-                  <tr>
-                    <td colspan="5" style="text-align: right;">
-                      <strong>Subtotal:</strong> <%= format_currency(order_total(current_cart.items)) %></td>
-                  </tr>
                   </tbody>
                 </table>
               </div>
