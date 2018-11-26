@@ -20,10 +20,10 @@
           </a>
         </div>
 
-        <div id="checkout-billing" class="collapse show" data-parent="#checkout">
+        <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
           <div class="card-body">
             <p>Select a billing address from your address book.</p>
-            <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
+            <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path(next_step: 'shipping'), :method => :patch do |f| %>
               <% current_contact_companies.each do |company| %>
                 <% if company.default_billing_address_id.present? %>
                   <label class="d-flex justify-content-center align-items-center flex-row">
@@ -49,10 +49,10 @@
           </a>
         </div>
 
-        <div id="checkout-shipping" class="collapse" data-parent="#checkout">
+        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step]  == 'shipping') %>" data-parent="#checkout">
           <div class="card-body">
             <p>Select a shipping address from your address book.</p>
-            <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
+            <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path(next_step: 'po_reference'), :method => :patch do |f| %>
               <% current_contact_companies.each do |company| %>
                 <% if company.default_shipping_address_id.present? %>
                   <label class="d-flex justify-content-center align-items-center flex-row">
@@ -77,9 +77,9 @@
             <h5 class="mb-0"><strong>Purchase Order Details</strong></h5>
           </a>
         </div>
-        <div id="checkout-reference" class="collapse" data-parent="#checkout">
+        <div id="checkout-reference" class="collapse <%= show_if(params[:next_step]  == 'po_reference') %>" data-parent="#checkout">
           <div class="card-body">
-            <%= simple_form_for [:customers, @cart], :url => add_po_number_customers_cart_path, :method => :patch do |f| %>
+            <%= simple_form_for [:customers, @cart], :url => add_po_number_customers_cart_path(next_step: 'summary'), :method => :patch do |f| %>
               <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. 4591519126' %>
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
@@ -94,7 +94,7 @@
           </a>
         </div>
 
-        <div id="checkout-summary" class="collapse" data-parent="#checkout">
+        <div id="checkout-summary" class="collapse <%= show_if(params[:next_step]  == 'summary') %>" data-parent="#checkout">
           <div class="card-body">
             <div class="col-12">
               <div class="text-left">
