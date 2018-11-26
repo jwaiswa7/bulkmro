@@ -297,7 +297,7 @@ Rails.application.routes.draw do
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
-    resources :checkouts do
+    resource :checkout, :controller => :checkout do
       collection do
         get 'final_checkout'
       end
