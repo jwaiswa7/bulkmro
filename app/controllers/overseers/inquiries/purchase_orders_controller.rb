@@ -36,6 +36,8 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   def get_packing(metadata)
     if metadata[:PoShippingCost].present?
       metadata[:PoShippingCost].to_f > 0 ? (metadata[:PoShippingCost].to_f + ' Amount Extra') : 'Included'
+      else
+      'Included'
     end
   end
 
