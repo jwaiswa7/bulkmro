@@ -37,7 +37,7 @@
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-3">
-            <button type="button" class="btn btn-m btn-block btn-danger" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Order Lost / Regret</button>
+            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
             <div class="modal fade" id="statusModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -46,7 +46,11 @@
                     <h4 class="modal-title">Select Status</h4>
                   </div>
                   <div class="modal-body">
-                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| i.match("Order Lost") || i.match("Regret") }, selected: @inquiry.status  %>
+                    <% if current_overseer.admin? %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort, selected: @inquiry.status %>
+                    <% else %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| ["Order Lost", "Regret", "Expected Order"].include? i } %>
+                    <% end %>
                   </div>
                   <div class="modal-footer">
                     <%= action_button(action_name, @inquiry) %>
