@@ -43,12 +43,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def make_zip
-    authorize @sales_invoice, :show?
+    authorize @sales_invoice
 
-    service = Services::Overseers::Inquiries::ZipEntries.new(@sales_invoice)
-    zip_data = service.call
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice)
+    zip = service.call
 
-    send_data(zip_data, :type => 'application/zip', :filename => "Invoice - " + @sales_invoice.invoice_number.to_s + ".zip")
+    send_data(zip, :type => 'application/zip', :filename => @sales_invoice.zipped_filename(include_extension: true))
   end
 
   private
@@ -56,5 +56,4 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def set_sales_invoice
     @sales_invoice = @inquiry.invoices.find(params[:id])
   end
-
 end

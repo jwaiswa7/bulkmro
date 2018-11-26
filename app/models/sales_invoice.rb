@@ -41,6 +41,13 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
+  def zipped_filename(include_extension: false)
+    [
+        ['invoices', invoice_number].join('_'),
+        ('zip' if include_extension)
+    ].compact.join('.')
+  end
+
   def self.syncable_identifiers
     [:invoice_number]
   end
