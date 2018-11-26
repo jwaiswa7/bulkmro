@@ -658,14 +658,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
-  def resend_failed_remote_requests(start_at: Date.today.beginning_of_day, end_at: Date.today.end_of_day)
+  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
 
     requests = RemoteRequest.where(:created_at => start_at..end_at).failed
     requested = []
     requests.each do |request|
-      new_request = [request.subject_type, request.subject_id].join('-')
+      new_request = [request.subject_type, request.subject_id].join('~')
       if !requested.include? new_request
-        if request.subject_type.present? && request.subject_id.present?
+        if request.subject_type.present? && request.subject_id.present? && request.latest_status == 'failed'
           begin
             Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
             requested << new_request
@@ -676,6 +676,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
 
     end
+    ResyncRequest.create(:request => requested)
     #Object.const_get(RemoteRequest.last.subject_type).find(RemoteRequest.last.subject_id)
     [requested.sort, requested.size]
   end
