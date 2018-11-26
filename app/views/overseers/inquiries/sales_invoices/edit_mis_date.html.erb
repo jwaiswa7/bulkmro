@@ -5,10 +5,17 @@
       <div class="card">
         <div class="card-header">
           <div class="form-row">
-            <div class="col-8 col-md-3">
-              <strong>Invoice Number</strong><br>
-              <span data-v-html="calculated_total"><%= f.object.invoice_number %></span>
+            <div class="col-8 col-md-4">
+              <div class="form-group string required disabled sales_invoice_invoice_number form-group-valid">
+                <label class="form-control-label string required disabled" for="sales_invoice_invoice_number">Order
+                  #</label>
+                <input class="form-control is-valid string required disabled" disabled="disabled" required="required" aria-required="true" type="text" value="<%= f.object.sales_order.order_number %>" name="sales_invoice[order_number]" id="sales_invoice_invoice_number">
+              </div>
             </div>
+            <div class="col-8 col-md-4">
+              <%= f.input :invoice_number, as: :string, disabled: true, label: "Invoice #" %>
+            </div>
+
 
             <div class="col-12 col-md-4">
               <%= f.input :mis_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>

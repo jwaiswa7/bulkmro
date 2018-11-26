@@ -9,11 +9,13 @@
       <th>Doc ID</th>
       <th>Status</th>
       <th>Sent At</th>
-      <th>Created By</th>
+
       <th>Line Items</th>
       <th>Quote Total</th>
       <th>Order Total</th>
+      <th>Order Date</th>
       <th>Created At</th>
+      <th>Created By</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
@@ -32,6 +34,10 @@
               <%= row_action_button(overseers_inquiry_comments_path(@inquiry, sales_order_id: sales_order.to_param), 'comment-lines', 'See Comments', 'success') %>
             <% end %>
 
+            <% if policy(sales_order).edit_mis_date? %>
+              <%= row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(id: sales_order), 'calendar-alt', 'Update MIS Date', 'success') %>
+            <% end %>
+
             <% if policy(sales_order).resync? %>
               <%= row_action_button(resync_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post) %>
             <% end %>
@@ -47,11 +53,12 @@
           <td><%= sales_order.id %></td>
           <td><%= sales_order_status_badge(sales_order.order_status) %></td>
           <td><%= format_date(sales_order.sent_at) %></td>
-          <td><%= sales_order.created_by.to_s %></td>
           <td><%= sales_order.rows.size %></td>
           <td><%= format_currency(sales_order.sales_quote.calculated_total) %></td>
           <td><%= format_currency(sales_order.calculated_total) %></td>
+          <td><%= format_date(sales_order.mis_date) %></td>
           <td><%= format_date(sales_order.created_at) %></td>
+          <td><%= sales_order.created_by.to_s %></td>
         </tr>
       <% end %>
     <% end %>

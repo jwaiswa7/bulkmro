@@ -13,7 +13,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted?
+    record.persisted? && record.status == 'Approved'
   end
 
   def update_mis_date?

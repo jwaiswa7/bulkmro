@@ -113,6 +113,10 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
   end
 
   def edit_mis_date
+    if @sales_order.mis_date.blank?
+      @sales_order.mis_date = @sales_order.created_at.strftime("%d-%b-%Y")
+    end
+
     authorize @sales_order
   end
 

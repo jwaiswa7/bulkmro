@@ -10,6 +10,9 @@ json.data (@sales_orders) do |sales_order|
                       if policy(sales_order).go_to_inquiry?
                         row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end,
+                      if policy(sales_order).edit_mis_date?
+                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success')
+                      end,
                       if policy(sales_order).can_request_po?
                         row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'Request PO', 'info')
                       end

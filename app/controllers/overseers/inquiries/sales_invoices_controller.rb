@@ -43,11 +43,15 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   def edit_mis_date
+    if @sales_invoice.mis_date.blank?
+      @sales_invoice.mis_date = @sales_invoice.created_at.strftime("%d-%b-%Y")
+    end
+
     authorize @sales_invoice
   end
 
   def update_mis_date
-    @sales_invoice.assign_attributes(sales_invoice_params.merge(:overseer => current_overseer))
+    @sales_invoice.assign_attributes(sales_invoice_params)
     authorize @sales_invoice
 
     if @sales_invoice.save
