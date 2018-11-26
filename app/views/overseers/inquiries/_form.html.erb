@@ -103,10 +103,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", disabled: f.object.quotation_uid.present?  %>
+            <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", disabled: policy(@inquiry).change_billing_shipping_details?  %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", disabled: f.object.quotation_uid.present? %>
+            <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
         </div>
         <div class="form-row">
@@ -114,23 +114,23 @@
             <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, disabled: true %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping company", disabled: f.object.quotation_uid.present? %>
+            <%= f.association :shipping_company, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a shipping company", disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)}, disabled: f.object.quotation_uid.present? %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)}, disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)}, disabled: f.object.quotation_uid.present? %>
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)}, disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)}, disabled: f.object.quotation_uid.present? %>
+            <%= f.association :billing_address, collection: selected_option_or_nil(f, :billing_address), required: true, label_method: :to_s, include_blank: "Select a billing address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.company)}, disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)}, disabled: f.object.quotation_uid.present? %>
+            <%= f.association :shipping_address, collection: selected_option_or_nil(f, :shipping_address), required: true, label_method: :to_s, include_blank: "Select a shipping address", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_addresses_path(company_id: f.object.shipping_company_id)}, disabled: policy(@inquiry).change_billing_shipping_details? %>
           </div>
         </div>
       </div>
