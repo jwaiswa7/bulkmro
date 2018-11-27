@@ -62,5 +62,7 @@ module Mixins::HasConvertedCalculations
     def converted_freight_cost_total
       (calculated_freight_cost_total / inquiry_currency.conversion_rate).round(2)
     end
+
+
   end
 end
