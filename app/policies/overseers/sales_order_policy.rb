@@ -13,7 +13,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && record.status == 'Approved'
+    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
