@@ -41,31 +41,39 @@
       <strong>Filters</strong>
     </a>
     <div id="filters" class="collapse show" data-parent="#product-filters">
-      <form class="card-body py-2">
-        <p class="text-uppercase text-black-50 mb-2">Categories</p>
-        <div class="form-row">
-          <%= simple_form_for :fake do |f| %>
-          <div class="col-md-3 col-sm-4 col-lg-2">
+      <%= simple_form_for :fake do |f| %>
+        <div class='card-body'>
+          <p class="text-uppercase text-black-50 mb-2">Categories</p>
+          <div class="form-row">
+            <div class="col-md-3 col-sm-4 col-lg-2">
               <%= f.input :office_supplies, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :travel, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :utilities, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :stationery, as: :boolean, wrapper: :custom_boolean %>
-          </div>
+            </div>
             <div class="col-md-3 col-sm-4 col-lg-2">
               <%= f.input :health, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :cleaning_equipment, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :networking, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :security, as: :boolean, wrapper: :custom_boolean %>
-          </div>
+            </div>
             <div class="col-md-3 col-sm-4 col-lg-2">
               <%= f.input :kitchen_supplies, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :manufacturing, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :machinery, as: :boolean, wrapper: :custom_boolean %>
               <%= f.input :lighting, as: :boolean, wrapper: :custom_boolean %>
+            </div>
           </div>
-          <% end %>
+          <div class="form-row mt-2">
+            <div class="col-4 col-lg-2 col-md-3">
+              <a href="#" class="btn btn-outline-danger btn-block">Clear</a>
+            </div>
+            <div class="col-8 col-lg-10 col-md-0">
+              <a href="#" class="btn btn-success btn-block">Filter products</a>
+            </div>
+          </div>
         </div>
-      </form>
+      <% end %>
     </div>
   </div>
 </div>
