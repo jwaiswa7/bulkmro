@@ -1,7 +1,9 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
-
+<% content_for :heading do %>
+  Invoices
+<% end %>
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all">Action</th>
