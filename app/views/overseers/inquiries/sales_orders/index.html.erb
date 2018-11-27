@@ -8,6 +8,9 @@
       <th>Order #</th>
       <th>Doc ID</th>
       <th>Status</th>
+      <% if @sales_orders.where(status: "Approved").count > 1 %>
+        <th> SAP Status</th>
+      <% end %>
       <th>Sent At</th>
 
       <th>Line Items</th>
@@ -47,11 +50,14 @@
             <% elsif policy(sales_order).show_pdf? %>
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
-          <% end %>
+            <% end %>
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
           <td><%= sales_order_status_badge(sales_order.order_status) %></td>
+          <% if @sales_orders.where(status: "Approved").count > 1 %>
+            <td> <%=  sales_order.remote_status || "-" %></td>
+          <% end %>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.rows.size %></td>
           <td><%= format_currency(sales_order.sales_quote.calculated_total) %></td>
