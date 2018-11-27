@@ -48,27 +48,29 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(product) %>">
-              <% if product.images.first.present? %>
-                <img src="<%= url_for(product.images.first) %>" alt="#<%= product.sku %>" />
+              <% if product.images.present? %>
+                <img src="<%= url_for_image(product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="#<%= product.sku %>" />
               <% else %>
                 <img src="<%= image_path('coming_soon.png') %>" alt="#<%= product.sku %>" />
               <% end %>
               <h5 class="mb-0 text-small"><strong><%= truncate(product.name, :length => 25) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= product.sku %>)</strong></h5>
-              <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(product.latest_unit_cost_price.to_f) %></strong></h5>
+              <h5 class="mb-0 mt-1 text-small text-black-50">
+                <strong><%= product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(product.latest_unit_cost_price.to_f) %></strong>
+              </h5>
 
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
                 <strong class="d-block"><%= product.brand.try(:name) ? product.brand.try(:name) : '-' %></strong>
-  <!--              <em class="d-block">MOQ - 50</em>-->
+                <!--              <em class="d-block">MOQ - 50</em>-->
               </p>
             </a>
           </div>
           <div class="card-footer p-2">
             <div class="form-row">
-<!--              <div class="col-4">-->
-<!--                <input type="text" class="form-control" placeholder="1" id="quantity_<%#= product.id %>" />-->
-<!--              </div>-->
+              <!--              <div class="col-4">-->
+              <!--                <input type="text" class="form-control" placeholder="1" id="quantity_<%#= product.id %>" />-->
+              <!--              </div>-->
               <div class="col-12">
                 <%= link_to "Add to Cart", customers_cart_items_path(product_id: product.id, quantity: 1), method: :post, remote: true, class: "btn btn-block btn-success" %>
               </div>

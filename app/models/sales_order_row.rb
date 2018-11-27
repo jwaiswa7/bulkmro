@@ -81,7 +81,7 @@ class SalesOrderRow < ApplicationRecord
   end
 
   def total_cost_price
-    self.sales_quote_row.unit_cost_price * self.quantity if self.sales_quote_row.present?
+    self.sales_quote_row.unit_cost_price_with_unit_freight_cost * self.quantity if self.sales_quote_row.present?
   end
 
   def hsn_or_sac

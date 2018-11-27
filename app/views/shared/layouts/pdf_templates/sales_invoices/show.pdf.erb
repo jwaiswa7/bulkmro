@@ -10,6 +10,7 @@
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
             <b><span style="color:#000; font-size: 30px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
             <span style="color:#000; font-weight: bold; font-size: 20px">
+              <br>
             <% if defined?(triplicate) && triplicate %>
               Triplicate for Supplier
             <% elsif defined?(duplicate) && duplicate %>
@@ -99,7 +100,7 @@
                       <%= @sales_invoice.sales_order.created_at.strftime("%d-%b-%Y") if @sales_invoice.sales_order.created_at.present? %>
                         </span></td>
               </tr>
-              `
+
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
@@ -193,15 +194,15 @@
                   <div class="address-wrapper address-wrapper-left">
 
                     <%= @sales_invoice.sales_order.inquiry.contact.full_name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.billing_address.name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.billing_address.to_multiline_s if @sales_invoice.sales_order.inquiry.billing_address.present? %>
+                    <%= @sales_invoice.billing_address.name %><br>
+                    <%= @sales_invoice.billing_address.to_multiline_s if @sales_invoice.billing_address.present? %>
                     <br>
                     <% if @sales_invoice.sales_order.inquiry.billing_contact.present? %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.billing_contact.phone || @sales_invoice.sales_order.inquiry.billing_contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.billing_contact.phone || @sales_invoice.sales_order.inquiry.billing_contact.mobile || @sales_invoice.billing_address.telephone %>
                     <% else %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.billing_address.telephone %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.billing_address.telephone %>
                     <% end %> <br>
-                    GST No.:<%= @sales_invoice.sales_order.inquiry.billing_address.gst %><br>
+                    GST No.:<%= @sales_invoice.billing_address.gst %><br>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
@@ -210,16 +211,16 @@
 
                     <%= @sales_invoice.sales_order.inquiry.shipping_contact.present? ? @sales_invoice.sales_order.inquiry.shipping_contact.full_name : @sales_invoice.sales_order.inquiry.contact.full_name %>
                     <br>
-                    <%= @sales_invoice.sales_order.inquiry.shipping_address.name %><br>
-                    <%= @sales_invoice.sales_order.inquiry.shipping_address.to_multiline_s if @sales_invoice.sales_order.inquiry.shipping_address.present? %>
+                    <%= @sales_invoice.shipping_address.name %><br>
+                    <%= @sales_invoice.shipping_address.to_multiline_s if @sales_invoice.shipping_address.present? %>
                     <br>
                     <% if @sales_invoice.sales_order.inquiry.shipping_contact.present? %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.shipping_contact.phone || @sales_invoice.sales_order.inquiry.shipping_contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.shipping_contact.phone || @sales_invoice.sales_order.inquiry.shipping_contact.mobile || @sales_invoice.shipping_address.telephone %>
                     <% else %>
-                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.sales_order.inquiry.shipping_address.telephone %>
+                      Tel: <%= @sales_invoice.sales_order.inquiry.contact.phone || @sales_invoice.sales_order.inquiry.contact.mobile || @sales_invoice.shipping_address.telephone %>
                     <% end %> <br>
 
-                    GST No.:<%= @sales_invoice.sales_order.inquiry.shipping_address.gst %><br>
+                    GST No.:<%= @sales_invoice.shipping_address.gst %><br>
                   </div>
                 </td>
               </tr>
