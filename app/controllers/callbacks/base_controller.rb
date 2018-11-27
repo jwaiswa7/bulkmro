@@ -5,13 +5,13 @@ class Callbacks::BaseController < ApplicationController
 
   def create
     service_class = ['Services', 'Callbacks', controller_name.classify.pluralize, 'Create'].join('::').constantize
-    service = service_class.new(params)
+    service = service_class.new(params, @callback_request)
     render json: service.call || {}, status: :ok
   end
 
   def update
     service_class = ['Services', 'Callbacks', controller_name.classify.pluralize, 'Update'].join('::').constantize
-    service = service_class.new(params)
+    service = service_class.new(params, @callback_request)
     render json: service.call || {}, status: :ok
   end
 
@@ -24,14 +24,24 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def log_request
-    CallbackRequest.where(:method => :callback, :resource => self.class.name, :request => params).first_or_create do |callback_request|
-      callback_request.update_attributes!(
-          method: :callback,
-          resource: self.class.name,
+    @callback_request=  CallbackRequest.where(:method => self.to_callback_request(request.method.to_s), :resource => controller_name.classify, :request => params).first_or_create do |callback_request|
+      callback_request.update(
+          method: self.to_callback_request(request.method.to_s),
+          resource: controller_name.classify,
           request: params,
           url: request.url,
           status: :pending
       )
+    end
+    @callback_request
+  end
+
+  def to_callback_request(request_type)
+    case request_type
+    when "POST"
+      :post
+    else
+      :patch
     end
   end
 
