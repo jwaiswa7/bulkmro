@@ -24,13 +24,15 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def log_request
-    CallbackRequest.create({
-                             method: :callback,
-                             resource: self.class.name,
-                             request: params,
-                             url: request.url,
-                             status: :pending
-                         })
+    CallbackRequest.where(:method => :callback, :resource => self.class.name, :request => params).first_or_create do |callback_request|
+      callback_request.update_attributes!(
+          method: :callback,
+          resource: self.class.name,
+          request: params,
+          url: request.url,
+          status: :pending
+      )
+    end
   end
 
   private
