@@ -52,7 +52,6 @@ class Contact < ApplicationRecord
     end
   end
 
-
   def self.legacy
     find_by_email('legacy@bulkmro.com')
   end

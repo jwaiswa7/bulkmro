@@ -1,15 +1,22 @@
 class Customers::CustomerOrdersController < Customers::BaseController
-  before_action :set_customer_order, only: [:show, :order_confirmed]
+  before_action :set_customer_order, only: [:show, :order_confirmed, :approve_order]
 
   def create
     authorize :customer_order
 
+    @customer_order = current_contact.customer_orders.build(
+        default_billing_address_id: current_cart.default_billing_address_id,
+        default_shipping_address_id: current_cart.default_shipping_address_id,
+        po_reference: current_cart.po_reference
+    )
+
+
     ActiveRecord::Base.transaction do
-      if params[:page] == "edit_cart"
-        current_cart.assign_attributes(cart_params)
-        current_cart.save
+      @customer_order.save!
+
+      if current_contact.account_manager?
+        @customer_order.create_approval(contact: current_contact)
       end
-      @customer_order = current_contact.customer_orders.create
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
@@ -17,22 +24,41 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.quantity = cart_item.quantity
         end
       end
-      current_cart.destroy
-    end
 
-    redirect_to order_confirmed_customers_customer_order_path(@customer_order)
+      current_cart.destroy
+
+      redirect_to order_confirmed_customers_customer_order_path(@customer_order), notice: flash_message(@customer_order, action_name)
+    end
   end
 
   def show
     authorize @customer_order
   end
 
+  def pending
+    customer_orders = CustomerOrder.not_approved
+    authorize customer_orders
+    @customer_orders = ApplyDatatableParams.to(customer_orders, params)
+  end
+
+  def approve_order
+    authorize @customer_order
+    if @customer_order.create_approval(contact: current_contact)
+      redirect_to customers_customer_orders_path, notice: flash_message(@customer_order, action_name)
+    end
+  end
+
   def order_confirmed
     authorize @customer_order
+    if @customer_order.not_approved?
+      render :template => 'customers/customer_orders/approval_pending'
+    else
+      render :template => 'customers/customer_orders/order_confirmed'
+    end
   end
 
   def index
-    @customer_orders = ApplyDatatableParams.to(current_contact.customer_orders, params)
+    @customer_orders = ApplyDatatableParams.to(current_contact.customer_orders.approved, params)
     authorize @customer_orders
   end
 
@@ -40,9 +66,5 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
   def set_customer_order
     @customer_order = current_contact.customer_orders.find(params[:id])
-  end
-
-  def cart_params
-    params.require(:cart).permit(items_attributes: [:quantity,:id])
   end
 end
