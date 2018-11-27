@@ -197,7 +197,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+      ``
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -278,7 +278,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources  :warehouses
+    resources :warehouses
   end
 
   namespace 'customers' do
@@ -296,6 +296,11 @@ Rails.application.routes.draw do
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
+        get 'approve_order'
+      end
+
+      collection do
+        get 'pending'
       end
     end
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
@@ -312,7 +317,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
         patch 'update_billing_address'

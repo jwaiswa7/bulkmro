@@ -18,8 +18,6 @@ class SalesOrder < ApplicationRecord
   has_one_attached :serialized_pdf
 
   belongs_to :sales_quote
-
-
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -35,7 +33,6 @@ class SalesOrder < ApplicationRecord
   has_one :po_request
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
-
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments

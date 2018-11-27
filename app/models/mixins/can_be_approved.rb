@@ -14,7 +14,5 @@ module Mixins::CanBeApproved
     def not_approved?
       !approved?
     end
-
-
   end
 end
