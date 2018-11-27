@@ -46,11 +46,31 @@
       <strong>Filters</strong>
     </a>
     <div id="filters" class="collapse show" data-parent="#product-filters">
-      <div class="card-body">
+      <form class="card-body py-2">
+        <p class="text-uppercase text-black-50 mb-2">Categories</p>
         <div class="form-row">
-
+          <%= simple_form_for :fake do |f| %>
+          <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :office_supplies, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :travel, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :utilities, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :stationery, as: :boolean, wrapper: :custom_boolean %>
+          </div>
+            <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :health, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :cleaning_equipment, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :networking, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :security, as: :boolean, wrapper: :custom_boolean %>
+          </div>
+            <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :kitchen_supplies, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :manufacturing, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :machinery, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :lighting, as: :boolean, wrapper: :custom_boolean %>
+          </div>
+          <% end %>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>
