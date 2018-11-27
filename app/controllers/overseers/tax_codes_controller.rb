@@ -3,7 +3,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
 
   def autocomplete
     # @tax_codes = ApplyParams.to(TaxCode.all.where(:is_service => params[:is_service] || false), params)
-    @tax_codes = ApplyParams.to(TaxCode.all.where(:is_active => true), params).order(:code)
+    @tax_codes = ApplyParams.to(TaxCode.active, params).order(:code)
     authorize :tax_code
   end
 

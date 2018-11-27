@@ -1,6 +1,8 @@
 class TaxCode < ApplicationRecord
   pg_search_scope :locate, :against => [:code, :description, :tax_percentage], :using => { :tsearch => { :prefix => true, :any_word => true } }
 
+  include Mixins::CanBeActivated
+
   has_many :products
 
   validates_presence_of :code

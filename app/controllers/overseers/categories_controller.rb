@@ -2,7 +2,7 @@ class Overseers::CategoriesController < Overseers::BaseController
   before_action :set_category, :only => [:edit, :update, :show]
 
   def autocomplete
-    @categories = ApplyParams.to(Category.leaves.where(:is_active => true), params)
+    @categories = ApplyParams.to(Category.leaves.active, params)
     authorize @categories
   end
 
