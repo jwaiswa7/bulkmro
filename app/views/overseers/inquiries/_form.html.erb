@@ -12,7 +12,10 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
+        <div class="mt-1 mt-md-0
+          <% if policy(@inquiry).new_email_message? %>col-md-6
+          <% else %>col-md-12
+          <% end %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
@@ -37,7 +40,9 @@
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-3">
-            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
+            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update
+              Status
+            </button>
             <div class="modal fade" id="statusModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -48,8 +53,10 @@
                   <div class="modal-body">
                     <% if current_overseer.admin? %>
                       <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort, selected: @inquiry.status %>
+                    <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort, selected: @inquiry.status %>
                     <% else %>
-                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| ["Order Lost", "Regret", "Expected Order"].include? i } %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort, disabled: Inquiry.statuses.keys.sort.reject {|i| ["Order Lost", "Regret", "Expected Order"].include? i} %>
                     <% end %>
                   </div>
                   <div class="modal-footer">
@@ -389,7 +396,8 @@
                 <% end %>
               </div>
               <div class="col-md-3">
-                <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Create Kit</a>
+                <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Create
+                  Kit</a>
               </div>
             </div>
           <% end %>
@@ -404,7 +412,10 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
+        <div class="mt-1 mt-md-0
+          <% if policy(@inquiry).new_email_message? %>col-md-6
+          <% else %>col-md-12
+          <% end %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
