@@ -1,5 +1,4 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
-
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>
@@ -36,9 +35,24 @@
 
 <div class="input-group input-group-round">
   <div class="input-group-prepend">
-    <span class="input-group-text"><i class="material-icons">filter_list</i></span>
+    <span class="input-group-text"><i class="material-icons"></i></span>
   </div>
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything [press ENTER to SEARCH]" value="<%= params[:q] %>" onchange="searchsubmit(this.value)">
+</div>
+
+<div class="accordion mt-2" id="product-filters">
+  <div class="card">
+    <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
+      <strong>Filters</strong>
+    </a>
+    <div id="filters" class="collapse show" data-parent="#product-filters">
+      <div class="card-body">
+        <div class="form-row">
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="form-row mt-2" id="grid_container">
