@@ -5,7 +5,7 @@
     </div>
     <p class="lead mt-1">
       You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth
-      <strong><%= format_currency(order_total(current_cart.items)) %></strong>.
+      <strong><%= format_currency(get_order_total(current_cart.items)) %></strong>.
     </p>
   </section>
 
@@ -19,13 +19,22 @@
           <% if @cart.default_billing_address_id.present? %>
             <strong class="d-block">Billing Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
             <em class="d-block mt-1"><%= current_contact.name %></em>
-            <%= billing_address(@cart.default_billing_address_id) %>
+            <%= get_billing_address(@cart.default_billing_address_id) %><br/>
+            T: <%= current_contact.telephone %><br/>
+            GST No: <%= get_gst_no(@cart.default_billing_address_id) %>
           <% end %>
           <% if @cart.default_shipping_address_id.present? %>
             <hr>
             <strong class="d-block">Shipping Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a></strong>
             <em class="d-block mt-1"><%= current_contact.name %></em>
-            <%= shipping_address(@cart.default_shipping_address_id) %>
+            <%= get_shipping_address(@cart.default_shipping_address_id) %><br/>
+            T: <%= current_contact.telephone %><br/>
+            GST No: <%= get_gst_no(@cart.default_shipping_address_id) %>
+          <% end %>
+          <% if @cart.po_reference.present? %>
+            <hr>
+            <strong class="d-block">Purchase Order Details<a data-toggle="collapse" data-parent="#checkout" href="#checkout-reference" class="float-right">Change</a></strong>
+            <%= @cart.po_reference %>
           <% end %>
         </div>
       </div>
@@ -52,7 +61,9 @@
                       <%= f.radio_button :default_billing_address_id, company.default_billing_address_id %>
                     </span>
                     <span class="flex-grow-1 ml-2">
-                      <%= company.default_billing_address.try(:to_multiline_s) %>
+                      <%= company.default_billing_address.try(:to_multiline_s) %><br/>
+                      T: <%= current_contact.telephone %><br/>
+                      GST No: <%= company.default_billing_address.gst %>
                     </span>
                   </label>
                 <% end %>
@@ -81,7 +92,9 @@
                       <%= f.radio_button :default_shipping_address_id, company.default_shipping_address_id %>
                     </span>
                     <span class="flex-grow-1 ml-2">
-                      <%= company.default_shipping_address.try(:to_multiline_s) %>
+                      <%= company.default_shipping_address.try(:to_multiline_s) %><br/>
+                      T: <%= current_contact.telephone %><br/>
+                      GST No: <%= company.default_shipping_address.gst %>
                     </span>
                   </label>
                 <% end %>
@@ -139,6 +152,10 @@
                       <td><%= format_currency(cart_item.product.latest_unit_cost_price.to_f * cart_item.quantity) %></td>
                     </tr>
                   <% end %>
+                  <tr>
+                    <td colspan="5" style="text-align: right;">
+                      <strong>Subtotal:</strong> <%= format_currency(get_order_total(current_cart.items)) %></td>
+                  </tr>
                   </tbody>
                 </table>
               </div>
