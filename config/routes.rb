@@ -166,7 +166,7 @@ Rails.application.routes.draw do
 
     resources :sales_invoices do
       member do
-        get 'add_pod'
+        get 'edit_pod'
         patch 'update_pod'
       end
       collection do

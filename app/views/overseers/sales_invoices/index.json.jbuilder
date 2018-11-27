@@ -5,16 +5,20 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download Invoice PDF', 'dark', :_blank)
                       end,
                       if policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
-                        [row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank),
-                         row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank),
-                         row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank)]
+                        [
+                            row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank),
+                            row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank),
+                            row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank)
+                        ]
                       end,
-                      if sales_invoice.inquiry.present? && !sales_invoice.pod_attachment.attached?
-                        row_action_button(add_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success')
+                      if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success')
                       end,
-                      if sales_invoice.pod_attachment.attached?
-                        [row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank),
-                         row_action_button(add_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
+
+                      if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
+                        [
+                            if sales_invoice.pod_attachment.attached?; row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank); end,
+                            row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
                         ]
                       end,
                   ].join(' '),
@@ -25,7 +29,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.status,
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : "",
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : "",
-                  format_date(sales_invoice.pod_date),
+                  format_date(sales_invoice.delivery_date),
                   format_date(sales_invoice.created_at)
               ]
 end

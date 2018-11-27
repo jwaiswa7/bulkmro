@@ -13,10 +13,10 @@
       <%= f.input :pod_attachment, as: :file, wrapper: :custom_file, required: false, label: 'Proof of Delivery', hint: f.object.pod_attachment.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.pod_attachment), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.pod_attachment.filename}".html_safe) : false %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.input :pod_date, label: "Delivery Date", as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+        <%= f.input :delivery_date, label: "Delivery Date", as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
       </div>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> Add/Update
+        <i class="fal fa-plus-circle"></i> Update POD
       <% end %>
     </div>
   <% end %>

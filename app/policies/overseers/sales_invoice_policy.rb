@@ -19,11 +19,11 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     allow_logistics_format_export?
   end
 
-  def add_pod?
-    record.persisted? && record.not_legacy? && !record.original_invoice.attached?
+  def edit_pod?
+    record.persisted? && record.not_legacy?
   end
 
   def update_pod?
-    record.persisted? && record.not_legacy? && !record.original_invoice.attached?
+    edit_pod?
   end
 end

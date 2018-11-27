@@ -1,5 +1,5 @@
 class Overseers::SalesInvoicesController < Overseers::BaseController
-  before_action :set_invoice, only: [:add_pod, :update_pod]
+  before_action :set_invoice, only: [:edit_pod, :update_pod]
 
   def index
     authorize :sales_invoice
@@ -15,7 +15,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     end
   end
 
-  def add_pod
+  def edit_pod
     authorize @invoice
   end
 
@@ -24,7 +24,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     @invoice.assign_attributes(invoice_params)
 
     if @invoice.save
-      redirect_to add_pod_overseers_sales_invoice_path, notice: flash_message(@invoice, action_name)
+      redirect_to edit_pod_overseers_sales_invoice_path, notice: flash_message(@invoice, action_name)
     end
   end
 
@@ -67,7 +67,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   def invoice_params
     params.require(:sales_invoice).permit(
         :pod_attachment,
-        :pod_date
+        :delivery_date
     )
   end
 
