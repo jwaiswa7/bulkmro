@@ -121,6 +121,16 @@ class Company < ApplicationRecord
     self.addresses.first if !self.addresses.blank?
   end
 
+  def billing_address
+    self.update_attributes(:default_billing_address => self.set_default_company_billing_address) if self.default_billing_address.blank?
+    self.default_billing_address
+  end
+
+  def shipping_address
+    self.update_attributes(:default_shipping_address => self.set_default_company_shipping_address) if self.default_shipping_address.blank?
+    self.default_shipping_address
+  end
+
   def to_contextual_s(product)
     s = [self.to_s]
 

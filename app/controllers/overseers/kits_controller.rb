@@ -25,10 +25,11 @@ class Overseers::KitsController < Overseers::BaseController
 
       if @kit.inquiry.present?
         @kit.inquiry.inquiry_products.each do |inquiry_product|
-          @kit.kit_product_rows.where(:product_id => ip.product.id).first_or_create do |row|
+          @kit.kit_product_rows.where(:product_id => inquiry_product.product.id).first_or_create do |row|
             row.quantity = inquiry_product.quantity
           end
         end
+        @kit.save
       end
 
       redirect_to overseers_kits_path, notice: flash_message(@kit, action_name)

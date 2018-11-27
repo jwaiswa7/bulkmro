@@ -2,6 +2,8 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def initialize
     super
+    @start_at = Date.new(2018, 04, 01)
+    @end_at = Date.today.end_of_day
 
     @columns = [
         'Inquiry Number',
@@ -23,9 +25,9 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
   end
 
   def call
-    model.remote_approved.where(:mis_date => start_at..end_at).where.not(sales_quote_id: nil).each do |sales_order|
+    model.remote_approved.where.not(sales_quote_id: nil).where(:mis_date => start_at..end_at).each do |sales_order|
       inquiry = sales_order.inquiry
-      
+
       rows.push({
                     :inquiry_number => inquiry.try(:inquiry_number) || "",
                     :order_number => sales_order.order_number,
@@ -33,14 +35,14 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
                     :company_alias => inquiry.try(:account).try(:name),
                     :company_name => inquiry.try(:company).try(:name) ? inquiry.try(:company).try(:name).gsub(/;/, ' ') : "",
                     :gt_exc => (sales_order.calculated_total == 0) ? (sales_order.calculated_total == nil ? 0 : '%.2f' % sales_order.calculated_total) : ('%.2f' % sales_order.calculated_total),
-                    :tax_amount => ('%.2f' % sales_order.calculated_total_tax),
-                    :gt_inc => ('%.2f' % sales_order.calculated_total_with_tax),
+                    :tax_amount => ('%.2f' % sales_order.calculated_total_tax if sales_order.inquiry.present?),
+                    :gt_inc => ('%.2f' % sales_order.calculated_total_with_tax if sales_order.inquiry.present?),
                     :status => sales_order.remote_status,
                     :inside_sales => sales_order.inside_sales_owner.to_s,
                     :outside_sales => sales_order.outside_sales_owner.to_s,
                     :quote_type => inquiry.try(:quote_category) || "",
                     :opportunity_type => inquiry.try(:opportunity_type) || "",
-                })
+                }) if inquiry.present?
     end
 
     generate_csv
