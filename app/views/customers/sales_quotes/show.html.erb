@@ -55,7 +55,7 @@
         </div>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
           <strong class="d-block">Price Quoted</strong>
-          <%= @sales_quote.inquiry.calculated_total %>
+          <%= format_currency(@sales_quote.inquiry.calculated_total) %>
         </div>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
           <strong class="d-block">Packing & Forwarding</strong>
@@ -90,7 +90,7 @@
               <br>
             <% end %>
             <% if @sales_quote.inquiry.ship_from.address.try(:gst) %>
-              <span class="d-block"><em>GST Number</em>: <% @sales_quote.inquiry.ship_from.address.try(:gst) %></span>
+              <span class="d-block"><em>GST Number</em>: <%= @sales_quote.inquiry.ship_from.address.try(:gst) %></span>
             <% end %>
           </div>
         </div>
@@ -105,7 +105,8 @@
             <% end %>
             <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %>"><%= @sales_quote.inquiry.contact.email if @sales_quote.inquiry.contact.email.present? %></a></span>
             <% if @sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst) %>
-              <span class="d-block"><em>GST Number</em>: <% [@sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst)].join %></span>
+              <span class="d-block"><em>GST Number</em>: <%= [@sales_quote.inquiry.billing_address.try(:gst) || @sales_quote.inquiry.company.default_billing_address.try(:gst)].join %></span>
+
             <% end %>
           </div>
           <div class="col-12 col-md-6 mt-2 mt-md-0">
@@ -181,7 +182,7 @@
                   </td>
                   <td>
                       <span>
-                              <%= row.product.description || "-" %>
+                        <%= row.product.description || "-" %>
                       </span>
                   </td>
                   <td>
