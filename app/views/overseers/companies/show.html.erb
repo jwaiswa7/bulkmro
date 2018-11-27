@@ -294,13 +294,15 @@
             <a href="<%= new_overseers_customer_product_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Customer Product</a>
           <% end %>
-          <% if policy(:customer_product).generate_products? %>
-            <a href="<%= generate_products_overseers_customer_products_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate
-              Customer Product</a>
-          <% end %>
-          <% if policy(:customer_product).remove_products? %>
-            <a href="<%= remove_products_overseers_customer_products_path(company_id: @company.to_param) %>" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Remove
-              Product</a>
+          <%# if policy(:customer_product).generate_products? %>
+<!--            <a href="<%#= generate_products_overseers_customer_products_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate-->
+<!--              Customer Product</a>-->
+          <%# end %>
+          <% if Rails.env.development? %>
+            <% if policy(:customer_product).remove_products? %>
+              <a href="<%= remove_products_overseers_customer_products_path(company_id: @company.to_param) %>" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Remove
+                Product</a>
+            <% end %>
           <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">

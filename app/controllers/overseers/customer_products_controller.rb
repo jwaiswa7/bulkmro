@@ -1,7 +1,7 @@
 class Overseers::CustomerProductsController < Overseers::BaseController
 
-  before_action :set_customer_product, only: [:show, :edit, :update]
-  before_action :set_company, only: [:new, :generate_products, :remove_products]
+  before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_company, only: [:new, :generate_products, :remove_products, :destroy]
 
   def index
     @products = ApplyDatatableParams.to(CustomerProduct.all, params)
@@ -64,6 +64,13 @@ class Overseers::CustomerProductsController < Overseers::BaseController
     else
       render 'edit'
     end
+  end
+
+  def destroy
+    authorize @customer_product
+    @customer_product.destroy!
+
+    redirect_to overseers_company_path(@company)
   end
 
   private
