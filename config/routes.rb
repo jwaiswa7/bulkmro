@@ -193,7 +193,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+    
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -202,6 +202,9 @@ Rails.application.routes.draw do
 
         resources :sales_invoices do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'duplicate'
             get 'triplicate'
           end
@@ -209,6 +212,9 @@ Rails.application.routes.draw do
 
         resources :sales_orders do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -274,7 +280,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources  :warehouses
+    resources :warehouses
   end
 
   namespace 'customers' do
@@ -303,7 +309,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end
