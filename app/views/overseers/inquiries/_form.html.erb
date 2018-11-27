@@ -13,9 +13,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0
-          <% if policy(@inquiry).new_email_message? %>col-md-6
-          <% else %>col-md-12
-          <% end %>">
+          <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
@@ -413,9 +411,7 @@
           </div>
         <% end %>
         <div class="mt-1 mt-md-0
-          <% if policy(@inquiry).new_email_message? %>col-md-6
-          <% else %>col-md-12
-          <% end %>">
+          <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
