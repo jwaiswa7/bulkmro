@@ -28,19 +28,17 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
     if resync_request.present?
       requests = resync_request.request
       total = requests.count
-      success = 0
-      failed = 0
-      pending = 0
+      success = 0; failed = 0; pending = 0
       requests.each do |request|
         parsed_request = request.split('~')
         status =  RemoteRequest.find_by_subject_type_and_subject_id(parsed_request[0],parsed_request[1]).latest_status
         case status
-        when 'pending'
-          pending += 1
-        when 'success'
-          success += 1
-        else
-          failed += 1
+          when 'pending'
+            pending += 1
+          when 'success'
+            success += 1
+          else
+            failed += 1
         end
       end
       message = [
