@@ -155,4 +155,12 @@ module DisplayHelper
       nil
     end
   end
+
+  def url_for_image(image,fallback_url: "")
+    if image.present? && ActiveStorage::Blob.service.exist?(image.key)
+      url_for(image)
+    else
+      fallback_url
+    end
+  end
 end
