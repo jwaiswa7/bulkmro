@@ -1,9 +1,5 @@
 class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
       sales_order = SalesOrder.find_by_order_number(params['order_id'])
