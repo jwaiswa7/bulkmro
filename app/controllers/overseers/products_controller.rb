@@ -17,7 +17,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @indexed_products = service.indexed_records
     @products = service.records
 
-    authorize @products
+    authorize :product
   end
 
   def pending
