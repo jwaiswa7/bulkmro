@@ -103,6 +103,9 @@ Rails.application.routes.draw do
     end
 
     resources :products do
+      collection do
+        get 'autocomplete'
+      end
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
@@ -275,6 +278,9 @@ Rails.application.routes.draw do
     end
 
     resources :accounts do
+      collection do
+        get 'autocomplete'
+      end
       scope module: 'accounts' do
         resources :companies
       end
