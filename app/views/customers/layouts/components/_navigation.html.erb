@@ -1,0 +1,75 @@
+<div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
+  <!-- Drawer Toggle -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!-- Drawer Toggle -->
+
+  <!-- Logo -->
+  <a class="navbar-brand" href="<%= customers_dashboard_path %>">
+    <img alt="BulkMRO" src="<%= image_path('BMIS_Logo_PNG.png') %>" height="22"/>
+  </a>
+  <!-- Logo -->
+
+  <!-- Navigation Bar -->
+  <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
+    <ul class="navbar-nav">
+      <%= nav_item 'Dashboard', customers_dashboard_path, true %>
+      <%= nav_item 'Quotes', customers_quotes_path, true %>
+      <%= nav_item 'Orders', customers_orders_path, true %>
+      <%= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, true%>
+          <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true%>
+        </div>
+      </li>
+      <%= nav_item 'Customer Orders', customers_customer_orders_path, true %>
+    </ul>
+  </div>
+  <!-- Navigation Bar -->
+
+  <!-- Settings Dropdown DESKTOP -->
+  <div class="d-block">
+    <div class="dropdown d-inline mr-2" id="cart">
+      <a href="#" role="button" data-toggle="dropdown" id="cart-count">
+        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.items.count %></span>
+      </a>
+      <% if current_cart.present? %>
+        <%= render(partial: 'customers/layouts/components/cart') %>
+      <% end %>
+    </div>
+
+    <div class="dropdown d-inline">
+      <a href="#" role="button" data-toggle="dropdown">
+        <%= current_contact.full_name %> <i class="fal fa-cog"></i>
+      </a>
+      <span class="dropdown-menu dropdown-menu-right">
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+          <i class="fal fa-power-off"></i>&nbsp;Sign Out
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <!-- Settings Dropdown DESKTOP -->
+</div>
+
+<div class="alert alert-success collapse">
+  Product was successfully added to the cart.
+
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="alert alert-danger collapse">
+  Product was successfully removed from the cart.
+
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

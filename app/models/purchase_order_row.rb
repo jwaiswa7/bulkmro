@@ -47,7 +47,7 @@ class PurchaseOrderRow < ApplicationRecord
 
   private
   def get_product
-    Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'].to_i)
+    Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
   end
 
 end

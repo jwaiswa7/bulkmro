@@ -3,8 +3,12 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.document.attached?
   end
 
+  def autocomplete?
+    manager_or_sales? || logistics?
+  end
+
   def export_all?
-    admin_or_manager?
+    allow_export?
   end
 
   def show_document?

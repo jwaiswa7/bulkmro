@@ -4,6 +4,8 @@ class Report < ApplicationRecord
   validates_date :start_at
   validates_date :end_at, :after => :start_at
 
+  attr_accessor :filters
+
   enum date_range: {
       :custom => 10,
       :this_month => 20,
@@ -32,6 +34,19 @@ class Report < ApplicationRecord
   def self.pipeline
     where(name: 'PipelineReport').first_or_create do |report|
       report.uid = 'pipeline_report'
+    end
+  end
+
+
+  def self.target
+    where(name: 'TargetReport').first_or_create do |report|
+      report.uid = 'target_report'
+    end
+  end
+
+  def self.monthly_sales
+    where(name: 'MonthlySalesReport').first_or_create do |report|
+      report.uid = 'monthly_sales_report'
     end
   end
 

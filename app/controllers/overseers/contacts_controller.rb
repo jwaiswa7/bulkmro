@@ -2,12 +2,18 @@ class Overseers::ContactsController < Overseers::BaseController
   before_action :set_contact, only: [:show, :edit, :update]
 
   def index
+    # service = Services::Overseers::Finders::Contacts.new(params)
+    # service.call
+    # @indexed_contacts = service.indexed_records
+    # @contacts = service.records
+    # authorize @contacts
+
     @contacts = ApplyDatatableParams.to(Contact.all.includes(:companies), params)
     authorize @contacts
   end
 
   def autocomplete
-    @contacts = ApplyParams.to(Contact.all, params)
+    @contacts = ApplyParams.to(Contact.all.where(:is_active => true), params)
     authorize @contacts
   end
 
@@ -50,6 +56,13 @@ class Overseers::ContactsController < Overseers::BaseController
     end
   end
 
+  def login_as_contact
+    contact = Contact.find(params[:contact_id])
+    become(contact)
+    redirect_to customer_root_url
+    authorize contact
+  end
+
   private
 
   def set_contact
@@ -72,8 +85,13 @@ class Overseers::ContactsController < Overseers::BaseController
         :role,
         :status,
         :contact_group,
+        :is_active,
         :company_ids => []
     )
+  end
+
+  def become(contact)
+    sign_in(:contact, contact)
   end
 
 end

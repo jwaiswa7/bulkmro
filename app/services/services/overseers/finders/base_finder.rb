@@ -23,7 +23,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       params
                     else
                       ''
-                    end
+                    end.try(:strip)
+
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -105,6 +106,44 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                 }
             ],
             minimum_should_match: 1,
+        },
+
+    }
+  end
+
+  def filter_must_exist(key)
+    {
+        bool: {
+            should: [
+                {
+                    exists: {field: "#{key}"}
+                },
+            ],
+        },
+    }
+  end
+
+  def filter_by_array(key, vals)
+    {
+        bool: {
+            should: [
+                {
+                    terms: {"#{key}": vals},
+                }
+            ]
+        },
+
+    }
+  end
+
+  def filter_by_value(key, val)
+    {
+        bool: {
+            should: [
+                {
+                    term: {"#{key}": val},
+                },
+            ]
         },
 
     }

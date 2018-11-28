@@ -7,7 +7,17 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def show
+    if (@account.is_customer?)
+      service = ['Services', 'Overseers', 'Reports', 'Account'].join('::').constantize.send(:new, @account, params)
+      @data = service.call
+    end
+
     authorize @account
+  end
+
+  def autocomplete
+    @accounts = ApplyParams.to(Account.all, params)
+    authorize @accounts
   end
 
   def new

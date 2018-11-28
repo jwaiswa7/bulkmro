@@ -1,0 +1,3 @@
+class Overseers::Dashboard
+
+end

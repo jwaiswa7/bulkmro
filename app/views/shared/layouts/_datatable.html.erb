@@ -4,19 +4,24 @@
       <% if content_for?(:heading) %>
         <h1 class="display-5 mb-1"><%= yield :heading %></h1>
       <% else %>
-        <h1 class="display-5 mb-1"><%= current_model.humanize %></h1>
+        <h1 class="display-5 mb-1"><%= current_model.titleize %></h1>
       <% end unless content_for?(:hide_table_heading) %>
-
-      <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
-        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
-          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
-        </a>
-      <% end %>
-
-      <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
-        <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
-          <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
-        </a>
+      <% if content_for?(:can_be_directly_created) || content_for?(:can_be_directly_exported) || content_for?(:heading_buttons) %>
+        <div>
+          <% if content_for?(:heading_buttons)%>
+            <%= yield :heading_buttons %>
+          <% end %>
+          <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
+            <a href="<%= [request.path, '/', 'new'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+              <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
+            </a>
+          <% end %>
+          <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
+            <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
+              <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            </a>
+          <% end %>
+        </div>
       <% end %>
     </div>
 
@@ -28,16 +33,20 @@
   </section>
 <% end %>
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered dt-responsive <% if content_for?(:wrap_whitespace) %> wrap-whitespace<% end %>" data-search="Filter by anything"<% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.path %>"<% end %>>
+  <table class="datatable table table-bordered dt-responsive
+    <% if content_for?(:wrap_whitespace) %> wrap-whitespace
+    <% end %>" data-search="Filter by anything"
+         <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
+         <% end %>>
     <thead>
-      <tr>
-        <%= yield :header_row %>
+    <tr>
+      <%= yield :header_row %>
+    </tr>
+    <% if content_for?(:filter_row) %>
+      <tr class="filters d-none d-lg-table-row">
+        <%= yield :filter_row %>
       </tr>
-      <% if content_for?(:filter_row) %>
-        <tr class="filters d-none d-lg-table-row">
-          <%= yield :filter_row %>
-        </tr>
-      <% end %>
+    <% end %>
     </thead>
     <tbody>
     <%= yield %>

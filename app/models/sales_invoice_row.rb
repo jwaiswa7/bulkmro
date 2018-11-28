@@ -11,7 +11,11 @@ class SalesInvoiceRow < ApplicationRecord
 
 
   def hsn
-    get_product.tax_code.chapter
+    get_product.best_tax_code.chapter
+  end
+
+  def mpn
+    get_product.product.mpn
   end
 
   def name
@@ -19,7 +23,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def uom
-    get_product.measurement_unit.name if get_product.measurement_unit.present?
+    get_product.measurement_unit.try(:name) || get_product.product.measurement_unit.try(:name) || MeasurementUnit.default
   end
 
   def brand
@@ -33,7 +37,7 @@ class SalesInvoiceRow < ApplicationRecord
   private
 
   def get_product
-    sales_invoice.sales_order.sales_quote.rows.select {|supplier_row| supplier_row.product.sku == self.sku}.first
+    sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: {sku: self.sku}).first
   end
 
 end

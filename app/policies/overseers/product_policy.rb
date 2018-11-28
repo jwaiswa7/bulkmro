@@ -12,7 +12,7 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
-    index? || cataloging?
+    cataloging? || admin?
   end
 
   def approve?
@@ -44,6 +44,6 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export? || ['priyanka.rajpurkar@bulkmro.com','subrata.baruah@bulkmro.com'].include?(overseer.email)
   end
 end
