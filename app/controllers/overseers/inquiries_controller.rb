@@ -85,6 +85,28 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def new_from_customer_order
+    @company = Company.find(params[:company_id])
+    @inquiry = @company.inquiries.build(overseer: current_overseer)
+
+    if params[:customer_order_id]
+      @inquiry.save
+      @customer_order = CustomerOrder.find(params[:customer_order_id])
+      if @customer_order.present?
+        @customer_order.rows.each do |customer_order_row|
+          @inquiry.inquiry_products.build(
+              sr_no: nil,
+              quantity: customer_order_row.quantity,
+              bp_catalog_name: nil,
+              bp_catalog_sku: nil,
+              product: customer_order_row.product
+          )
+        end
+      end
+    end
+    authorize @inquiry
+  end
+
   def create
     @inquiry = Inquiry.new(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry

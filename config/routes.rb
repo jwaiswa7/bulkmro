@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  namespace :overseers do
+    get 'customer_orders/index'
+    get 'customer_orders/view'
+    get 'customer_orders/convert'
+  end
+  namespace :overseers do
+    get 'customer_orders/index'
+    get 'customer_orders/view'
+  end
+  get 'customer_orders/index'
+  get 'customer_orders/view'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -189,6 +200,7 @@ Rails.application.routes.draw do
 
     resources :inquiries do
       member do
+        get 'new_from_customer_order'
         get 'edit_suppliers'
         post 'update_suppliers'
         get 'calculation_sheet'

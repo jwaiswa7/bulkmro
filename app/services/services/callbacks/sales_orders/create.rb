@@ -63,13 +63,3 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
     end
   end
 end
-
-# {
-#     "U_MgntDocID":"942",
-#     "Status":"1",
-#     "comment":"",
-#     "DocNum":"10300008",
-#     "DocEntry":"609",
-#     "UserEmail":"35",
-#     "SapReject":""
-# }
