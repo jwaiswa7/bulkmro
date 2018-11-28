@@ -20,7 +20,7 @@ class Resources::ApplicationResource
     end
   end
 
-  if Rails.env.development?
+  if Rails.env.development? || Rails.env.staging?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
     DATABASE = 'BMRO_15NOV'
     USERNAME = 'manager'

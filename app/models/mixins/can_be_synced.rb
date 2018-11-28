@@ -10,6 +10,9 @@ module Mixins::CanBeSynced
       elsif Rails.env.production?
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
         service.call
+      elsif Rails.env.staging?
+        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
+        service.call
       end
     end
 
