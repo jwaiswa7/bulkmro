@@ -265,7 +265,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @sales_invoice.rows.reverse.each_with_index do |item, index| %>
+              <% @sales_invoice.rows.each_with_index do |item, index| %>
                 <tr>
                   <td align="center" valign="top">
                     <span><%= index + 1 %></span></td>
