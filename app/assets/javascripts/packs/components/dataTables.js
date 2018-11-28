@@ -123,6 +123,7 @@ let setup = () => {
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
                 let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters">Clear</a>');
                 clear.on('click', function(e) {
+                    $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
                     $('.filter-list-input').val("");
@@ -147,6 +148,12 @@ let setup = () => {
                             });
                         } else if (filter == 'daterange') {
                             input = $('<input class="form-control" data-toggle="daterangepicker" placeholder="' + 'Pick a date range" />');
+                        } else if (filter == 'ajax') {
+                            let source = "";
+                            json.columnFilters[this.index()].forEach(function(f) {
+                                source = f.source;
+                            });
+                            input = $('<select class="form-control select2-ajax" data-source=' + source + '></select>');
                         } else {
                             input = $('<input type="text" class="form-control" placeholder="' + 'Filter ' + $(column.header()).text() + '" />');
                         }

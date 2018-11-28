@@ -69,3 +69,7 @@ end
 
 ## Payment requests
 - How are payments requested
+
+## Restore Heroku database
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev c9e1361f-7236-44fd-9fda-028f93f2225e
+
