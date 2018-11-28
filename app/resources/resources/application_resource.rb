@@ -20,7 +20,7 @@ class Resources::ApplicationResource
     end
   end
 
-  if Rails.env.development?
+  if Rails.env.production?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
     DATABASE = 'BMRO_15NOV'
     USERNAME = 'manager'
@@ -69,7 +69,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
                          })
   end
 
-  if Rails.env.production?
+  if Rails.env.development?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
     DATABASE = 'BULKMRO_PRODUCTION'
     USERNAME = 'manager'
