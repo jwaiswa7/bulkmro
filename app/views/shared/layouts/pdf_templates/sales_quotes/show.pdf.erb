@@ -288,11 +288,11 @@
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2) %></span></td>
+                      <span><%= (item.converted_total_tax.to_f.round(2)/ 2) %></span></td>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2) %></span></td>
+                      <span><%= (item.converted_total_tax.to_f.round(2) / 2) %></span></td>
                   <% end %>
                   <td align="right">
                     <span><%= item.converted_total_selling_price_with_tax.to_f.round(2) %></span></td>
@@ -329,19 +329,19 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax %></span></b></td>
+                    <b><span><%= record.converted_total_tax.to_f.round(2) %></span></b></td>
                 <% else %>
                   <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax / 2 %></span></b></td>
+                    <b><span><%= record.converted_total_tax.to_f.round(2) / 2 %></span></b></td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax / 2 %></span></b></td>
+                    <b><span><%= record.converted_total_tax.to_f.round(2) / 2 %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= record.converted_total_with_tax %></span></b></td>
+                  <b><span><%= record.converted_total_with_tax.to_f.round(2) %></span></b></td>
               </tr>
 
               </tbody>
