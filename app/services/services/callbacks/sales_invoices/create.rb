@@ -10,7 +10,7 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
 
       if sales_order.present?
         sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
-          invoice.assign_attributes(:status => 1, :metadata => params)
+          invoice.assign_attributes(:status => 1, :metadata => params, mis_date: params['created_at'])
 
           if params['is_kit'].to_i == 1
             sales_order_row = sales_order.sales_order_rows.first
