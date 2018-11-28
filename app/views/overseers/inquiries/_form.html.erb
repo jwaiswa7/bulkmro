@@ -338,18 +338,14 @@
                 </div>
               </div>
 
-              <div class="col-1">
-                <div class="d-flex flex-row align-items-center">
-                  <div>
-                    <% if inquiry_product.object.persisted? %>
-                      <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
-                    <% else %>
-                      <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
-                        <i class="far fa-ban"></i>
-                      </span>
-                    <% end %>
-                  </div>
-                </div>
+              <div class="col-1 text-center">
+                <% if inquiry_product.object.persisted? %>
+                  <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
+                <% else %>
+                  <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
+                    <i class="far fa-ban"></i>
+                  </span>
+                <% end %>
               </div>
 
               <div class="col-1">
