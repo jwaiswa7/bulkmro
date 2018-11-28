@@ -31,19 +31,12 @@
   <div class="card-body">
     <div class="form-row">
       <div class="col-6">
-        <strong>Currency</strong>
-        <br> <%= f.object.currency %>
+        <strong class="d-block">SAP Quotation</strong>
+        <%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
       </div>
       <div class="col-6">
-        <strong>Conversion rate</strong>
-        <br> <%= f.object.inquiry_currency.conversion_rate %>
-      </div>
-    </div><br>
-
-    <div class="form-row">
-      <div class="col-12">
-        <strong>SAP Quotation </strong><br>
-        <%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
+        <strong class="d-block">Currency</strong>
+        <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
       </div>
     </div>
 
