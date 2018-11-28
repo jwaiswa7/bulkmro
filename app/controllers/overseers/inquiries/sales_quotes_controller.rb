@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: [:edit, :update, :show, :preview]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -38,7 +38,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     callback_method = %w(save update_sent_at_field save_and_preview).detect {|action| params[action]}
 
     if callback_method.present? && send(callback_method)
-      Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :sales_quote_saved).call
+      Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, :sales_quote_saved).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'new'
@@ -65,6 +65,12 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def preview
     authorize @sales_quote
+  end
+
+  def reset_quote
+    authorize @sales_quote
+    @inquiry.update_attributes(:quotation_uid => "")
+    redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
   private

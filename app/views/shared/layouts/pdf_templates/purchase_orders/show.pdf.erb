@@ -1,0 +1,405 @@
+<div class="page fixed">
+  <div class="main-container col1-layout">
+    <div class="main">
+      <div class="col-main">
+        <div id="compare-wrapper">
+          <div class="compare_open" id="compare_popup"></div>
+
+          <div style=" float:left; width: 49%; padding-top: 1px;padding-bottom: 10px; text-align: left;">
+            <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
+          </div>
+          <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
+            <b><span style="color:#000; font-size: 30px">Purchase Order #<%= @metadata[:PoNum] %></span></b>
+          </div>
+          <br clear="all">
+          <%= render 'shared/layouts/pdf_templates/sales_orders/addresses', record: record %>
+          <br clear="all">
+          <div style="background: #d3d3d3; border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
+            <span><b>Purchase Order #<%= @metadata[:PoNum] %></b></span>
+          </div>
+          <br clear="all">
+          <div style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="5" height="20" style="width:25%; padding-left: 10px;" valign="top">
+                  <b><span>Bulk MRO Reference #</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:PoEnquiryId] %></span></td>
+                <td align="left" colspan="5" style="width:25%;padding-left: 10px;" valign="top">
+                  <b><span>Date of Quotation</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="width:25%; padding-left: 10px;" valign="top">
+                    <span>
+                      <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Contact Name</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span></span>Mr. Kaushik Banglorkar
+                </td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Contact #</span></b>
+                  <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span>+91-9322833445</span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Committed Delivery Date</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                    <span>
+                      <%= Date.parse(@metadata[:PoSupplyDate]).strftime("%d-%b-%Y") if @metadata[:PoSupplyDate].present? %>
+                    </span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Freight</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:PoFreight] %></span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Packing & Forwarding</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:packing] %></span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Mode of Transport</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:PoModeOfTrasport] %></span></td>
+              </tr>
+              <tr>
+                <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <b><span>Delivery Terms </span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:PoDeliveryTerms] %></span></td>
+                <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
+                  <b><span>Payment Terms</span></b> <span style="float:right">:</span></td>
+                <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
+                  <span><%= @metadata[:PoPaymentTerms] %></span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+
+
+            <div style=" " class="heading heading-left">
+              <b><span>Supplier - Bill to :</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Supplier - Ship to :</span></b>
+            </div>
+
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td style="" class="address-section-holder">
+                  <div style="" class="address-wrapper address-wrapper-left">
+                    <% if @supplier.present? %>
+                      <%= @supplier.name if @supplier.name.present? %><br>
+                      <%= @supplier.billing_address.to_multiline_s %>
+                      <br>
+                      Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
+                      GST No. : <%= @supplier.billing_address.try(:gst) %><br>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="address-section-gap"></td>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-right">
+
+                    <% if @supplier.present? %>
+                      <%= @supplier.name if @supplier.name.present? %><br>
+                      <%= @supplier.shipping_address.to_multiline_s %>
+                      <br>
+                      Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
+                      GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div class="address-blocks">
+
+
+            <div style=" " class="heading heading-left">
+              <b><span>Bulk MRO - Bill to :</span></b>
+            </div>
+            <div class="heading heading-right">
+              <b><span>Bulk MRO - Ship to :</span></b>
+            </div>
+
+            <br clear="all">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td style="" class="address-section-holder">
+                  <div style="" class="address-wrapper address-wrapper-left">
+                    <span>
+                      <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
+                      <% if @inquiry.bill_from.present? %>
+                        <%= @inquiry.bill_from.address.to_multiline_s %><br>
+                        GST No. : <%= @inquiry.bill_from.address.gst %><br>
+                      <% end %>
+                      PAN No. : AAGCB7343G</span>
+                  </div>
+                </td>
+                <td class="address-section-gap"></td>
+                <td class="address-section-holder">
+                  <div class="address-wrapper address-wrapper-right">
+                    <span>
+                      <%= (@inquiry.ship_from.address.name.to_s + '<br>').html_safe if @inquiry.ship_from.address.name.present? %>
+                      <% if @inquiry.ship_from.present? %>
+                        <%= @inquiry.ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= @inquiry.ship_from.address.gst %><br>
+                      <% end %>
+                      PAN No. : AAGCB7343G</span>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div style="width: 100%;">
+            <table border="0" cellspacing="0" class="pdf-table">
+              <thead>
+              <tr>
+                <th align="center" valign="center">
+                  <b><span>Sr.<br>
+                    No.</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>SKU</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Mfr<br>
+                    Model</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Description</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Make</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>HSN/<br>
+                    SAC<br>
+                    Code</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>UOM</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Qty</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Unit Price<br>
+                    (INR)</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Subtotal<br>
+                    (INR)</span></b></th>
+                <th align="center" valign="center">
+                  <b><span>Tax<br>
+                    Rate</span></b></th>
+                <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>IGST<br>
+                    Amt</span></b></th>
+                <% else %>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>CGST<br>
+                    Amt</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
+                    Rate</span></b></th>
+                  <th align="center" valign="center">
+                    <b><span>SGST<br>
+                    Amt</span></b></th>
+
+                <% end %>
+                <th align="center" style="text-align: center;border-top: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;border-top-right-radius: 5px; background: #d3d3d3;border-bottom:1px solid #3c3c3c;border-left:1px solid #3c3c3c;" valign="center">
+                  <b><span style="color:#000000">Total<br>
+                    (INR)</span></b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @purchase_order.rows.each_with_index do |item, index| %>
+                <tr>
+                  <td align="center" valign="top">
+                    <span><%= index + 1 %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.sku %></span></td>
+
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="left" valign="top">
+                    <span><%= item.metadata['PopProductName'] %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.brand %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.metadata['PopHsn'] %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.uom %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.quantity %></span></td>
+                  <td align="right" valign="top">
+                    <span><%= item.unit_selling_price %></span></td>
+                  <td align="right" valign="top">
+                    <span><%= item.total_selling_price %></span></td>
+                  <td align="center" valign="top">
+                    <span><%= item.tax_rate %>%</span></td>
+                  <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                    <td align="center" valign="top">
+                      <span><%= item.tax_rate %>%</span></td>
+                    <td align="right" valign="top">
+                      <span><%= item.total_tax %></span></td>
+                  <% else %>
+                    <td align="center" valign="top">
+                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                    <td align="right" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %></span></td>
+                    <td align="center" valign="top">
+                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                    <td align="center" valign="top">
+                      <span><%= (item.total_tax / 2).round(2) %><br></span></td>
+                  <% end %>
+                  <td align="right" valign="top">
+                    <span><%= item.total_selling_price_with_tax %></span></td>
+                </tr>
+              <% end %>
+
+              <tr class="pdf-table-total-row">
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span><b><span>Total</span></b></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="right" valign="top">
+                  <b><span><%= @purchase_order.calculated_total.to_f.round(2) %></span></b></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <td align="center" valign="top">
+                  <span></span></td>
+                <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                  <td align="right" valign="top">
+                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) %></span></b></td>
+                <% else %>
+                  <td align="right" valign="top">
+                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) / 2 %></span></b></td>
+                  <td align="center" valign="top">
+                    <span></span></td>
+                  <td align="right" valign="top">
+                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) / 2 %></span></b></td>
+                <% end %>
+                <td align="right" valign="top">
+                  <b><span><%= @purchase_order.calculated_total_with_tax.to_f.round(2) %></span></b></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+          <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr>
+                <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c" valign="top">
+                  <b><span>Commercial Terms and Conditions :</span></b></td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">1.</td>
+
+                <td align="left" valign="top">
+                      <span>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.
+                      </span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">2.</td>
+                <td align="left" valign="top">
+                      <span> In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.
+                    </span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">3.</td>
+                <td align="left" valign="top">
+                  <span>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">4.</td>
+                <td align="left" valign="top"><span>
+                      Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
+                </td>
+              </tr>
+              <tr>
+                <td height="" style="padding-left:10px;" valign="top">5.</td>
+                <td align="left" valign="top"><span>
+                      Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr style="background: #d3d3d3;">
+                <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                  <b><span>Other Information :</span></b></td>
+              </tr>
+              <tr>
+                <td align="left" style=" padding-left: 10px;" valign="top"><span>
+                      <% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
+                      1. Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %>
+                    when shipping goods.
+                        <% else %>
+                      1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %>
+                    when shipping goods.
+                      <% end %>
+
+                        </span></td>
+              </tr>
+
+
+              </tbody>
+            </table>
+            <table border="0" cellspacing="0" style="width: 100%;">
+              <tbody>
+              <tr style="background: #d3d3d3;">
+                <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                  <b><span>Note :</span></b></td>
+              </tr>
+              <tr>
+                <td align="left" style=" padding-left: 10px;" valign="top"><span>
+                  <%= simple_format @inquiry.commercial_terms_and_conditions %>
+                        </span></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <br clear="all">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

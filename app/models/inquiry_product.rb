@@ -15,13 +15,13 @@ class InquiryProduct < ApplicationRecord
 
   scope :with_suppliers, -> {left_outer_joins(:inquiry_product_suppliers).where.not(:inquiry_product_suppliers => {id: nil})}
 
-  delegate :approved?, to: :product
+  delegate :approved?, :is_kit?, to: :product
 
   #attr_accessor :product_catalog_name
 
   validates_presence_of :quantity, :sr_no
   validates_uniqueness_of :product_id, scope: :inquiry_id
-  validates_uniqueness_of :sr_no, scope: :inquiry_id, if: :not_legacy?
+  #validates_uniqueness_of :sr_no, scope: :inquiry_id, if: :not_legacy?
   # validates_numericality_of :quantity, :greater_than => 0
   after_initialize :set_defaults, :if => :new_record?
 

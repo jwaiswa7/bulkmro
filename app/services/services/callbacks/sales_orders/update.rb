@@ -10,25 +10,24 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
 
     if order_number && remote_status
       sales_order = SalesOrder.find_by_order_number!(order_number)
-      message = [
-          ["SAP Status Updated: ", sales_order.remote_status].join
-      ].join('\n')
-      # if remote_status == 30
-      #   comment = InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-      #   sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
-      #   sales_order.approval.destroy!
-      # elsif new_remote_status != sales_order.remote_status
-      #   sales_order.update_attributes(:remote_status => new_remote_status)
-      #   InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-      # end
 
-      begin
-        sales_order.update_attributes(:remote_status => remote_status.to_i)
-        InquiryComment.create(message: message, inquiry: sales_order.inquiry, overseer: Overseer.default_approver)
-        sales_order.update_index
-        return_response("Order Updated Successfully")
-      rescue => e
-        return_response(e.message, 0)
+      if sales_order.present?
+        begin
+          sales_order.update_attributes(:remote_status => remote_status.to_i)
+          message = [
+              ["SAP Status Updated: ", sales_order.remote_status].join
+          ].join('\n')
+          InquiryComment.where(message: message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create if sales_order.inquiry.present?
+          sales_order.update_attributes(:status => "Cancelled") if sales_order.remote_status == "Cancelled by SAP"
+
+          sales_order.update_index
+
+          return_response("Order Updated Successfully")
+        rescue => e
+          return_response(e.message, 0)
+        end
+      else
+        return_response("Order Number not found.", 0)
       end
     else
       return_response("Order Number or Status blank.", 0)

@@ -37,12 +37,14 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
 
   def approve
     service = Services::Overseers::SalesOrders::ApproveAndSerialize.new(@comment.sales_order, @comment)
+    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_approved_by_sales_manager).call
     service.call
   end
 
   def reject
     @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
     @comment.sales_order.update_attributes(:status => :'Rejected')
+    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_rejected_by_sales_manager).call
     @comment.sales_order.update_index
   end
 end

@@ -1,6 +1,6 @@
 class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?
-    record.contacts.any? && record.addresses.any? && manager_or_sales?
+    record.contacts.any? && record.addresses.any? && manager_or_sales? && record.is_active?
   end
 
   def new?
@@ -8,6 +8,6 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export?
   end
 end

@@ -4,4 +4,8 @@ class Services::Overseers::ChatMessages::SendChat < Services::Shared::ChatMessag
     super
   end
 
+  def send_chat_message(to, message)
+    super(to, message)
+  end
+
 end

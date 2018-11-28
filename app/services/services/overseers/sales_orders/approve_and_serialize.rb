@@ -18,9 +18,21 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
+
+      @sales_order.billing_address =  make_duplicate_address(@sales_order.inquiry.billing_address)
+      @sales_order.shipping_address = make_duplicate_address(@sales_order.inquiry.shipping_address)
+
       @sales_order.update_index
       @sales_order.save_and_sync
     end
+  end
+
+  private
+  def make_duplicate_address(address)
+    duplicate_address = address.dup
+    duplicate_address.company_id = nil
+    duplicate_address.save
+    duplicate_address
   end
 
   attr_reader :sales_order, :overseer, :comment

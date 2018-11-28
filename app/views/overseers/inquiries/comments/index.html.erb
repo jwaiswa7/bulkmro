@@ -36,8 +36,8 @@
                       <span class="chat-item-author"><%= comment.created_by.full_name %></span>
                       <span>
                         <span class="mr-1"><strong>
-                          <% if comment.approval.present? %><span class="badge badge-success">Approved</span><% end %>
-                          <% if comment.rejection.present? %><span class="badge badge-danger">Rejected</span><% end %>
+                          <% if comment.approval.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-success">Approved <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present? %></span><% end %>
+                          <% if comment.rejection.present? && @sales_order.present? && comment.sales_order_id == @sales_order.id %><span class="badge badge-danger">Rejected <%= "(Doc ID #{comment.sales_order_id}  )" if comment.sales_order_id.present?%></span><% end %>
                         </strong></span>
                         <%= time_ago_in_words(comment.created_at) %> ago</span>
                     </div>
@@ -56,7 +56,7 @@
             <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
             <% if @sales_order.present? %>
               <% if @sales_order.calculated_total_margin_percentage.to_f < 10.0 %>
-                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com'].include? current_overseer.email  %>
+                <% if ['devang.shah@bulkmro.com','gaurang.shah@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com','vijay.manjrekar@bulkmro.com','akshay.jindal@bulkmro.com'].include? current_overseer.email  %>
                   <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' if policy(@sales_order).approve? %>
                 <% else %>
                 <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">

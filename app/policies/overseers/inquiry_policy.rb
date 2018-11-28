@@ -44,7 +44,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    admin_or_manager?
+    allow_export?
   end
 
   def export?
@@ -97,6 +97,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def sales_invoices?
     edit? && record.invoices.present?
+  end
+
+  def stages?
+    edit?
   end
 
   class Scope

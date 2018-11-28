@@ -1,6 +1,22 @@
 class ApplicationController < ActionController::Base
   before_action :set_raven_context, :if => :production?
 
+  def render_pdf_for(record)
+    render(
+        pdf: record.filename,
+        template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+        layout: 'shared/layouts/pdf_templates/show',
+        page_size: 'Legal',
+        footer: {
+            center: '[page] of [topage]'
+        },
+        locals: {
+            record: record
+        }
+    )
+  end
+
+
   private
   def production?
     Rails.env.production?
@@ -17,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def flash_message(object, action)
-    class_name = object.class.name
+    class_name = object.class.name.titleize
 
     case action.to_sym
     when :create

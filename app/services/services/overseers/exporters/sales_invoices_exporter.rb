@@ -3,23 +3,43 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
   def initialize
     super
 
-    @columns = %w(inquiry_number inquiry_date company_name inside_sales order_number order_date order_status invoice_number invoice_date committed_customer_date)
+    @columns = [
+        'Inquiry Number',
+        'Invoice Number',
+        'Invoice Date',
+        'Order Number',
+        'Order Date',
+        'Customer Name',
+        'Invoice Net Amount',
+        'Freight / Packing',
+        'Total Net Amount Including Freight',
+        'Invoice Tax Amount',
+        'Invoice Gross Amount',
+        'Branch (Bill From)',
+        'Invoice Status'
+    ]
+
     @model = SalesInvoice
   end
 
   def call
-    model.where(:created_at => start_at..end_at).order(invoice_number: :asc).each do |sales_invoice|
+    model.where(:created_at => start_at..end_at).where.not(sales_order_id: nil).order(invoice_number: :asc).each do |sales_invoice|
+      sales_order = sales_invoice.sales_order
+      inquiry = sales_invoice.inquiry
       rows.push({
                     :inquiry_number => sales_invoice.inquiry.inquiry_number.to_s,
-                    :inquiry_date => sales_invoice.inquiry.created_at.to_date.to_s,
-                    :company_name => sales_invoice.inquiry.company.name.to_s,
-                    :inside_sales => ( sales_invoice.inquiry.inside_sales_owner.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : nil ),
-                    :order_number => sales_invoice.sales_order.order_number.to_s,
-                    :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
-                    :order_status => sales_invoice.sales_order.remote_status,
                     :invoice_number => sales_invoice.invoice_number,
                     :invoice_date => sales_invoice.created_at.to_date.to_s,
-                    :committed_customer_date => ( sales_invoice.inquiry.customer_committed_date.present? ? sales_invoice.inquiry.customer_committed_date.to_date.to_s : nil )
+                    :order_number => sales_invoice.sales_order.order_number.to_s,
+                    :order_date => sales_invoice.sales_order.created_at.to_date.to_s,
+                    :customer_name => sales_invoice.inquiry.company.name.to_s,
+                    :invoice_net_amount => (('%.2f' % (sales_order.calculated_total_cost.to_f - sales_invoice.metadata['shipping_amount'].to_f) ) || '%.2f' % sales_order.calculated_total_cost_without_freight),
+                    :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
+                    :total_with_freight => ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal']),
+                    :tax_amount => ('%.2f' % sales_invoice.metadata['tax_amount']),
+                    :gross_amount => ('%.2f' % sales_invoice.metadata['grand_total']),
+                    :bill_from_branch => (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
+                    :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end
 
