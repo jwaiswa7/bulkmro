@@ -214,6 +214,7 @@
                     <%= @sales_invoice.shipping_address.name %><br>
                     <%= @sales_invoice.shipping_address.to_multiline_s if @sales_invoice.shipping_address.present? %>
                     <br>
+
                     <% if @sales_invoice.sales_order.inquiry.shipping_contact.present? %>
                       Tel: <%= @sales_invoice.sales_order.inquiry.shipping_contact.phone || @sales_invoice.sales_order.inquiry.shipping_contact.mobile || @sales_invoice.shipping_address.telephone %>
                     <% else %>
