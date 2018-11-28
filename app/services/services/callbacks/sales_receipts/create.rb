@@ -25,3 +25,15 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
   attr_accessor :params
 end
 
+# {
+#     "p_method":"TransferAcct",
+#     "p_amount_received":"",
+#     "p_received_date":"2018-04-03",
+#     "p_invoice_no":"",
+#     "p_sap_reference_number":"70200002",
+#     "p_comments":"GEINDIAINDUSTRIALPRIVATELIMITEDThroughUTRNOHSBCN18093855265invno3000556",
+#     "p_amount_currency":"INR",
+#     "on_account":"163077.18",
+#     "cmp_id":"1"
+# }
+

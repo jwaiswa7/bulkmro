@@ -37,3 +37,13 @@ class Services::Callbacks::SalesShipments::Update < Services::Callbacks::Shared:
 
   attr_accessor :params
 end
+
+# {
+#     "increment_id": "30210923",
+#     "state": "",
+#     "comment": "BasedOnSalesQuotations2242.BasedOnSalesOrders10210825.",
+#     "ship_follow_up_date": "1899-12-30",
+#     "ship_delivery_date": "2018-08-30",
+#     "shp_grn": "",
+#     "pick_pack_remark": ""
+# }

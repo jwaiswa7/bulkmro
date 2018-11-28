@@ -37,3 +37,9 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
 
   attr_accessor :params
 end
+
+# {
+#     "increment_id":"20610329",
+#     "state":"206",
+#     "comment":"BasedOnSalesQuotations1731.BasedOnSalesOrders10610269.BasedOnDeliveries30610471."
+# }

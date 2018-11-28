@@ -32,3 +32,23 @@ class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::Ba
 
   attr_accessor :params
 end
+
+# {
+#     "U_MgntDocID":"942",
+#     "Status":"1",
+#     "comment":"",
+#     "DocNum":"10300008",
+#     "DocEntry":"609",
+#     "UserEmail":"35",
+#     "SapReject":""
+# }
+
+# {
+#     "increment_id":"2001656",
+#     "sap_order_status":"30",
+#     "comment":"",
+#     "DocNum":"2001656",
+#     "DocEntry":"2169",
+#     "UserEmail":"35",
+#     "SapReject":""
+# }

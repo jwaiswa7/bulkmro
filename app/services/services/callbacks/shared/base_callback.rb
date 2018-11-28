@@ -10,7 +10,7 @@ class Services::Callbacks::Shared::BaseCallback < Services::Shared::BaseService
     @callback_request.update(
         response: response.to_json ,
         status: self.to_callback_status(status),
-        hits: @callback_request.hits.nil? ? 1 : @callback_request.hits.to_i + 1,
+        hits: @callback_request.hits.to_i + 1,
     ) if @callback_request.present?
     response
   end
