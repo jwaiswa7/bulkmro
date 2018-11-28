@@ -43,13 +43,6 @@
                   <span style="color:#000000" style="position: relative;top: -5px;">Telephone: +91-22-4921-4921 <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Website: www.bulkmro.com <span style="padding-left: 1%;padding-right: 1%;font-weight:bold;font-size: 20px;position: relative;top: -2px;">.</span>Email: sales@bulkmro.com</span>
                 </td>
               </tr>
-              <% if @sales_invoice.sales_order.sales_quote.is_sez %>
-                <tr>
-                  <td style="text-align: -webkit-center;">
-                    <span style="color:#000000">* Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST</span>
-                  </td>
-                </tr>
-              <% end %>
               </tbody>
             </table>
           </div>
@@ -431,7 +424,13 @@
                   <td align="left" style=" padding-left: 10px;" valign="top"><span>
                     1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= @metadata[:increment_id] %>
                     when remitting Wire Transfer payment<br>
-                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</span></td>
+                    2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees. <br>
+                    <% if @sales_invoice.sales_order.sales_quote.is_sez %>
+                      3. Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
+                    <% end %>
+                  </span>
+
+                  </td>
                 </tr>
                 </tbody>
               </table>
@@ -491,8 +490,12 @@
                 <tr>
                   <td class="invoiceheader1" style=" " colspan="16" rowspan="2" height="39" align="left" valign="top">
                     <span>1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice
-                      #<%= @metadata[:increment_id] %> when remitting Wire Transfer payment.<br>2. Bulk MRO Industrial Supply
+                      #<%= @metadata[:increment_id] %> when remitting Wire Transfer payment.<br>
+                      2. Bulk MRO Industrial Supply
                       Pvt. Ltd. is not reponsible for any banking fees.</span><br/>
+                    <% if @sales_invoice.sales_order.sales_quote.is_sez %>
+                      3. Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
+                    <% end %>
                     <!-- commercial terms -->
                   </td>
                 </tr>
