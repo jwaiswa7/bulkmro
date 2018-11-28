@@ -351,7 +351,7 @@
                     <b><span><%= number_to_currency((@metadata[:tax_amount].to_f / 2), precision: 2, unit: '') %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency((@metadata[:subtotal_incl_tax].to_f / 2), precision: 2, unit: '') %></span></b></td>
+                  <b><span><%= number_to_currency((@metadata[:subtotal_incl_tax].to_f ), precision: 2, unit: '') %></span></b></td>
               </tr>
 
               </tbody>
