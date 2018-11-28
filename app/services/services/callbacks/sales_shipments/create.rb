@@ -1,12 +1,8 @@
 class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
-      sales_order = SalesOrder.find_by_order_number!(params['order_id'])
+      sales_order = SalesOrder.find_by_order_number(params['order_id'])
 
       if sales_order.present?
         sales_shipment = sales_order.shipments.where(shipment_number: params['increment_id']).first_or_create! do |sales_shipment|

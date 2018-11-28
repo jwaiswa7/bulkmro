@@ -1,9 +1,5 @@
 class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     begin

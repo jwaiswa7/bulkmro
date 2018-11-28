@@ -1,9 +1,5 @@
 class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
       sales_invoice = SalesInvoice.find_by_invoice_number(params['increment_id'])
