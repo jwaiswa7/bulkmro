@@ -3,11 +3,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         <img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @company.name %>
-
-
-
       </h3>
-
 
       <% if policy(@company).edit? %>
         <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
@@ -226,6 +222,9 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -275,6 +274,44 @@
             <th class="all" data-name="account_id">Account</th>
             <th class="no-sort desktop">Inquiry</th>
             <!--<th class="no-sort desktop">SAP Status</th>-->
+            <th class="desktop" data-name="created_at">Created</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="products" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Products</h3>
+          <% if policy(:customer_product).new? %>
+            <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Customer Product</a>
+          <% end %>
+
+          <% if Rails.env.development? %>
+            <% if policy(:customer_product).generate_catalog? %>
+              <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
+            <% end %>
+
+            <% if policy(:customer_product).destroy_all? %>
+              <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Destroy All</a>
+            <% end %>
+          <% end %>
+        </div>
+        <p class="mt-md-1 d-none d-md-block">
+          All products filterable in any way that we want under <strong><%= @company.name %></strong>.
+        </p>
+
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort"></th>
+            <th class="no-sort"><i class="fal fa-building"></i>Name</th>
+            <th class="no-sort"><i class="fal fa-building"></i>SKU</th>
+            <th class="no-sort desktop">Customer Price</th>
+            <th class="no-sort desktop">SAP Status</th>
             <th class="desktop" data-name="created_at">Created</th>
           </tr>
           </thead>

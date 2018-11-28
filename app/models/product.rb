@@ -27,6 +27,7 @@ class Product < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
+  has_many :customer_products
   has_one :kit
   has_many_attached :images
   attr_accessor :applicable_tax_percentage
@@ -144,5 +145,9 @@ class Product < ApplicationRecord
 
   def self.get_product_name(product_id)
     self.find(product_id).try(:name)
+  end
+
+  def get_customer_company_product(company_id)
+    self.customer_products.where(company_id: company_id).first
   end
 end
