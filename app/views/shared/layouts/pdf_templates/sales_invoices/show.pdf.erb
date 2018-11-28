@@ -284,9 +284,9 @@
                   <td align="center" valign="top">
                     <span><%= item.metadata['qty'] %></span></td>
                   <td align="right" valign="top">
-                    <span><%= item.metadata['price'].to_f.round(2) %></span></td>
+                    <span><%= number_to_currency(item.metadata['price'], precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
-                    <span><%= item.metadata['row_total'].to_f.round(2) %></span></td>
+                    <span><%= number_to_currency(item.metadata['row_total'], precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                   <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -294,19 +294,19 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= item.metadata['tax_amount'].to_f.round(2) %></span></td>
+                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= (item.metadata['tax_amount'].to_f / 2).round(2) %></span></td>
+                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).to_f.round(0) %>%</span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.metadata['tax_amount'].to_f / 2).round(2) %><br></span></td>
+                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %><br></span></td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= item.metadata['row_total_incl_tax'].to_f.round(2) %></span></td>
+                    <span><%= number_to_currency(item.metadata['row_total_incl_tax'], precision: 2, unit: '') %></span></td>
                 </tr>
               <% end if @metadata[:ItemLine].present? %>
 
@@ -330,7 +330,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= @metadata[:subtotal].to_f.round(2) %></span></b></td>
+                  <b><span><%= number_to_currency(@metadata[:subtotal], precision: 2, unit: '') %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -338,19 +338,19 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= @metadata[:tax_amount].to_f.round(2) %></span></b></td>
+                    <b><span><%= number_to_currency(@metadata[:tax_amount], precision: 2, unit: '') %></span></b></td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= number_to_currency((@metadata[:tax_amount].to_f / 2), precision: 2, unit: '') %></span></b></td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= (@metadata[:tax_amount].to_f / 2).round(2) %></span></b></td>
+                    <b><span><%= number_to_currency((@metadata[:tax_amount].to_f / 2), precision: 2, unit: '') %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= @metadata[:subtotal_incl_tax].to_f.round(2) %></span></b></td>
+                  <b><span><%= number_to_currency((@metadata[:subtotal_incl_tax].to_f / 2), precision: 2, unit: '') %></span></b></td>
               </tr>
 
               </tbody>
