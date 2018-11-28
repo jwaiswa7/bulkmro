@@ -31,7 +31,7 @@ class Resources::Invoice < Resources::ApplicationResource
             metadata: {
                 :qty => quantity,
                 :sku => sku,
-                :name => remote_row['ItemDescription'],
+                :name => remote_row['U_Item_Descr'] != "" ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
                 :price => unit_price,
                 :base_cost => nil,
                 :row_total => unit_price * quantity,
