@@ -23,4 +23,3 @@ class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseServ
   attr_accessor :sales_order
 end
 
-Services::Resources::Invoice.set_invoice_items(invoice)
