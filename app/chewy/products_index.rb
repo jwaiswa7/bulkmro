@@ -1,6 +1,8 @@
 class ProductsIndex < BaseIndex
   define_type Product.approved.with_includes do
     field :id
+    field :product_id, value: -> (record) { record.id }
+    field :brand_id,value: -> (record) { record.brand_id }
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring'
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
     field :approved, value: -> (record) { record.approval.try(:created_at) }
