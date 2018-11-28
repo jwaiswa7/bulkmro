@@ -159,8 +159,7 @@ class Resources::Quotation < Resources::ApplicationResource
         Project: record.inquiry.project_uid,
         TaxExtension: sez,
         BPChannelCode: record.inquiry.remote_shipping_company_uid,
-        BPChCode: record.inquiry.remote_shipping_company_uid,
-        BPChCntc: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
+        BPChannelContact: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         U_ConsigneeAddr: record.inquiry.shipping_address.remote_uid
     }

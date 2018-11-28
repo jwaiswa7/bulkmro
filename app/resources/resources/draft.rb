@@ -65,8 +65,7 @@ class Resources::Draft < Resources::ApplicationResource
         BPChannelCode: record.inquiry.remote_shipping_company_uid,
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin,
-        BPChCode: record.inquiry.remote_shipping_company_uid,
-        BPChCntc: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
+        BPChannelContact: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
     }
   end
 end
