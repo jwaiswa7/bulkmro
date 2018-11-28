@@ -1,27 +1,30 @@
 <div class="card">
   <div class="card-header">
     <div class=form-row>
-      <div class="col-12 col-md-2">
-        Products <br>
-        <strong><%= f.object.rows.size %></strong>
+      <div class="col-6 col-md-2">
+        Products
+        <strong class="d-block"><%= f.object.rows.size %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Cost<br>
-        <strong><%= format_currency(f.object.converted_total_cost) %></strong>
+      <div class="col-6 col-md-2">
+        Cost
+        <strong class="d-block"><%= format_currency(f.object.converted_total_cost) %></strong>
       </div>
-      <div class="col-4 col-md-2 mt-2 mt-md-0">Total Margin<br>
-        <strong><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Margin
+        <strong class="d-block"><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
       </div>
-      <div class="col-8 col-md-2">
-        Total Selling Price (Excl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (E. tax)
+        <strong class="d-block"><%= format_currency(f.object.converted_total) %></strong>
       </div>
-      <div class="col-8 col-md-2 mt-2 mt-md-0">Total Selling Price (Incl. tax)<br>
-        <strong><%= format_currency(f.object.converted_total_with_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Selling Price (I. tax)
+        <strong class="d-block"><%= format_currency(f.object.converted_total_with_tax) %></strong>
       </div>
 
-      <div class="col-4 col-md-2">
-        Total Tax<br>
-        <strong><%= format_currency(f.object.converted_total_tax) %></strong>
+      <div class="col-6 col-md-2 mt-2 mt-md-0">
+        Tax
+        <strong class="d-block"><%= format_currency(f.object.converted_total_tax) %></strong>
       </div>
     </div>
   </div>
