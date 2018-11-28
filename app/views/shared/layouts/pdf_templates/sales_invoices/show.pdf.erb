@@ -288,20 +288,20 @@
                   <td align="right" valign="top">
                     <span><%= item.metadata['row_total'].to_f.round(2) %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.tax_rate %>%</span></td>
+                    <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                   <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
                       (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate.to_f.round(2) %>%</span></td>
+                      <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= item.metadata['tax_amount'].to_f.round(2) %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= (item.metadata['tax_amount'].to_f / 2).round(2) %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
                     <td align="center" valign="top">
                       <span><%= (item.metadata['tax_amount'].to_f / 2).round(2) %><br></span></td>
                   <% end %>
@@ -653,7 +653,7 @@
                     <tbody>
                     <tr>
                       <td align="center" colspan="22" style="position: relative;top:0px;">
-                        <span style="color:#000000">This is a Computer Generated Quotation.</span></td>
+                        <span style="color:#000000">This is a Computer Generated Invoice.</span></td>
                     </tr>
                     </tbody>
                   </table>
