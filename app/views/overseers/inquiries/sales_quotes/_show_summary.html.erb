@@ -32,7 +32,7 @@
     <div class="form-row">
       <div class="col-6">
         <strong class="d-block">SAP Quotation</strong>
-        <%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
+        #<%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
       </div>
       <div class="col-6">
         <strong class="d-block">Currency</strong>
@@ -43,32 +43,73 @@
     <div class="card-alternative mt-3">
       <div class="form-row">
         <div class="col-md-6">
-          <strong>Supplier Shipping Address</strong><br>
-          <%= @inquiry.ship_from.name.to_s %><br>
+          <strong class="d-block">Supplier - Shipping Address</strong>
+          <span class="d-block"><%= @inquiry.ship_from.name.to_s %></span>
           <%= @inquiry.ship_from.address.to_compact_multiline_s if @inquiry.ship_from.present? %>
+          <% if @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %>
+            <span class="d-block"><em>Contact</em>: <%= @inquiry.ship_from.address.mobile || @inquiry.ship_from.address.telephone %></span>
+          <% end %>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.ship_from.address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Supplier Billing Address</strong><br>
-          <%= @inquiry.bill_from.name.to_s %><br>
+          <strong class="d-block">Supplier - Billing Address</strong>
+          <span class="d-block"><%= @inquiry.bill_from.name.to_s %></span>
           <%= @inquiry.bill_from.address.to_compact_multiline_s if @inquiry.bill_from.present? %>
+          <% if @inquiry.bill_from.address.phone.present? %>
+            <span class="d-block"><em>Contact</em>:  <%= @inquiry.contact.full_name %></span>
+            - <%= @inquiry.bill_from.address.phone %><br>
+          <% end %>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.bill_from.address.gst %></span>
         </div>
       </div>
 
       <div class="form-row mt-2 mb-1">
         <div class="col-md-6">
-          <strong>Customer Shipping Address</strong><br>
-          <%= @inquiry.shipping_contact.present? ? @inquiry.shipping_contact.full_name : @inquiry.contact.full_name %><br>
-          <%= @inquiry.shipping_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <strong class="d-block">Customer - Shipping Address</strong>
+          <span class="d-block"><%= @inquiry.shipping_contact.present? ? @inquiry.shipping_contact.full_name : @inquiry.contact.full_name %></span>
+          <span class="d-block"><%= @inquiry.shipping_address %></span>
+          <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
+                - <%= @inquiry.contact.phone %></span>
+          <% end %>
+          <span class="d-block"><em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
-          <strong>Customer Billing Address</strong><br>
-          <%= @inquiry.contact.full_name %><br>
-          <%= @inquiry.billing_address %><br>
-          <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
+          <strong class="d-block">Customer - Billing Address</strong>
+          <span class="d-block"><%= @inquiry.contact.full_name %></span>
+          <span class="d-block"><%= @inquiry.billing_address %></span>
+          <% if @inquiry.contact.phone.present? %>
+              <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
+                - <%= @inquiry.contact.phone %></span>
+          <% end %>
+          <span class="d-block"><em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
       </div>
     </div>
+
+    <% if @inquiry.attachments.present? %>
+      <div class="form-row mt-3">
+        <% if @inquiry.customer_po_sheet.attached? %>
+          <div class="col-6">
+            <strong class="d-block">PO Sheet</strong>
+            <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+              <%= @inquiry.customer_po_sheet.filename %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @inquiry.copy_of_email.attached? %>
+          <div class="col-6">
+            <strong class="d-block">Email Attachment</strong>
+            <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+              <%= @inquiry.copy_of_email.filename %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
 
     <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
       <%= row.hidden_field :id %>
