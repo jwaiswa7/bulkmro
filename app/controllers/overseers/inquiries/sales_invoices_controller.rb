@@ -1,6 +1,6 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
   before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date]
-  before_action :update_invoice_items, only: [:show, :duplicate, :triplicate]
+  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -63,18 +63,16 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   private
-
   def save
     @sales_invoice.save
   end
-
 
   def set_sales_invoice
     @sales_invoice = @inquiry.invoices.find(params[:id])
   end
 
-  def update_invoice_items
-    Resources::Invoice.update_invoice_items(@sales_invoice)
+  def set_invoice_items
+    Resources::Invoice.set_invoice_items(@sales_invoice)
   end
 
   def sales_invoice_params
