@@ -1,4 +1,5 @@
-<div class="row text-small form-row border-top">
+<% approved_alternatives.each do |approved_alternative| %>
+  <div class="row text-small form-row border-top">
   <div class="col-6 col-md-3">
     <div class="d-flex flex-row">
       <div class="custom-control custom-radio custom-control-inline align-self-center">
@@ -49,3 +50,4 @@
     <% end %>
   </div>
 </div>
+<% end %>

@@ -248,6 +248,7 @@ Rails.application.routes.draw do
           member do
             get 'manage_failed_skus'
             patch 'create_failed_skus'
+            get 'load_more_alternatives'
           end
 
           collection do

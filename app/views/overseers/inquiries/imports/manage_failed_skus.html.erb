@@ -80,9 +80,7 @@
 
             <%= row.hidden_field :approved_alternative_id %>
             <div class="approved-alternatives">
-              <% row.object.approved_alternatives.each do |approved_alternative| %>
-                <%= render 'approved_alternatives', row:row, approved_alternative: approved_alternative %>
-              <% end %>
+              <%= render 'approved_alternatives', row:row, approved_alternatives: row.object.approved_alternatives %>
             </div>
 
           </div>
@@ -90,7 +88,7 @@
             <%= link_to_remove_association row, {class: 'btn btn-danger', wrapper_class: 'option-wrapper'} do %>
               Skip
             <% end %>
-            <button class="btn btn-success" name="next-approved-alternatives">Next</button>
+            <button class="btn btn-success" type="button" name="load-more-approved-alternatives" data-import-row-id="<%= row.object.id %>">Next</button>
           </div>
         </div>
       <% end %>

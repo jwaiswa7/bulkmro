@@ -1,6 +1,6 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
-  before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
+  before_action :set_excel_import, only: [:load_more_alternatives, :manage_failed_skus, :create_failed_skus]
 
   def index
     @imports = @inquiry.imports
@@ -74,6 +74,16 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
     service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
     service.call
+  end
+
+  def load_more_alternatives
+    authorize @excel_import
+
+    import_row = InquiryImportRow.find(params[:import_row_id])
+    next_alternatives = import_row.approved_alternatives(2)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def create_failed_skus
