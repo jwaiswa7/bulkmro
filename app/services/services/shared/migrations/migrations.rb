@@ -1678,4 +1678,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     added.uniq
   end
 
+  def update_products_description
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      is_duplicate = x.get_column('IS Duplicate')
+      if product.present?
+        if is_duplicate == 'TRUE'
+          product.is_active = false
+          product.save_and_sync
+        else
+          product.name = x.get_column('New Discription')
+          product.save_and_sync
+        end
+      end
+    end
+  end
+
 end
