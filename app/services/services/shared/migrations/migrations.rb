@@ -1443,6 +1443,38 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts errors
   end
 
+  def purchase_order_callback_data
+    errors = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    i = 0
+    service.loop(nil) do |x|
+      i = i + 1
+      begin
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        if purchase_order.present?
+          puts x.get_column('purchase_order_number')
+          meta_data = JSON.parse(x.get_column('meta_data'))
+          puts meta_data['ItemLine'].count
+          inquiry = Inquiry.find_by_inquiry_number(meta_data['PoEnquiryId'])
+          purchase_order.assign_attributes(:metadata => meta_data, :created_at => meta_data['PoDate'])
+
+          meta_data['ItemLine'].each do |remote_row|
+            purchase_order.rows.build do |row|
+              row.assign_attributes(
+                  metadata: remote_row
+              )
+            end
+          end
+          purchase_order.save!
+        end
+      rescue => e
+        errors.push("#{x.get_column('purchase_order_number')} - #{e}")
+      end
+    end
+    puts errors
+    puts errors.count
+  end
+
 
   def legacy_sales_order_reporting_data
     service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
