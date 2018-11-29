@@ -280,6 +280,10 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+
+        resources :purchase_orders do
+
+        end
       end
     end
 
