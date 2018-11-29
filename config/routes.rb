@@ -50,6 +50,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :callback_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
@@ -103,6 +109,9 @@ Rails.application.routes.draw do
     end
 
     resources :products do
+      collection do
+        get 'autocomplete'
+      end
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
@@ -194,7 +203,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+    
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -203,6 +212,9 @@ Rails.application.routes.draw do
 
         resources :sales_invoices do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'duplicate'
             get 'triplicate'
           end
@@ -210,6 +222,9 @@ Rails.application.routes.draw do
 
         resources :sales_orders do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -270,12 +285,15 @@ Rails.application.routes.draw do
     end
 
     resources :accounts do
+      collection do
+        get 'autocomplete'
+      end
       scope module: 'accounts' do
         resources :companies
       end
     end
 
-    resources  :warehouses
+    resources :warehouses
   end
 
   namespace 'customers' do
@@ -304,7 +322,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end

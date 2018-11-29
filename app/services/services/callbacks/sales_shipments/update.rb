@@ -1,9 +1,5 @@
 class Services::Callbacks::SalesShipments::Update < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
       shipment = SalesShipment.find_by_shipment_number(params['increment_id'])

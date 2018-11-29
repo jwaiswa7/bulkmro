@@ -16,7 +16,6 @@
               <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
             </a>
           <% end %>
-
           <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
             <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
               <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>

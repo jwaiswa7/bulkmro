@@ -258,7 +258,7 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= item.total_tax %></span></td>
+                      <span><%= item.total_tax.to_f.round(2) %></span></td>
                   <% else %>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
@@ -270,7 +270,7 @@
                       <span><%= (item.total_tax / 2).round(2) %><br></span></td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= item.total_selling_price_with_tax %></span></td>
+                    <span><%= item.total_selling_price_with_tax.to_f.round(2) %></span></td>
                 </tr>
               <% end %>
 
