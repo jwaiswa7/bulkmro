@@ -25,10 +25,10 @@
         <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
       </div>
       <% if f.object.status || f.object.legacy_request_status == "Approved" %>
-        <div class="col-6 col-md-3 text-right mt-2 mt-md-0">
+        <div class="col-6 col-md-3 mt-2 mt-md-0 text-right">
           <% if policy(@sales_order).show_pdf? %>
-            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-warning", target: "_blank" do %>
-              View Proforma Invoice
+            <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-info btn-sm", target: "_blank" do %>
+              <i class="fal fa-eye mr-1"></i>Proforma I.
             <% end %>
           <% end %>
         </div>
@@ -51,7 +51,7 @@
         <%= f.object.currency %> (<%= f.object.conversion_rate %>)
       </div>
       <div class="col-6 col-md-3">
-        <strong class="d-block">Payment Terms</strong>&nbsp
+        <strong class="d-block">Payment Terms</strong>
         <%= @inquiry.payment_option %>
       </div>
     </div>
@@ -82,7 +82,7 @@
         </div>
       </div>
 
-      <div class="form-row">
+      <div class="form-row mt-0 mt-md-2">
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>
           <%= (@inquiry.company.name) %><br>
@@ -134,89 +134,86 @@
       </div>
     <% end %>
 
-    <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-      <%= row.hidden_field :sales_order_id %>
-      <%= row.hidden_field :id %>
-      <div>
-        <h6 class="text-uppercase mb-0 mt-3">
-          <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
-          <strong><%= row.object.sales_quote_row %></strong>
-        </h6>
-        <div class="form-row my-2 text-small">
-          <div class="col-12">
-            <table class="w-100 table table-bordered dt-responsive table-unstyled" data-fixed-header="false">
-              <thead>
-              <tr>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Quantity">Qty</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Cost">UC</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Margin Percentage">%</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
-                </th>
-                <th class="no-sort <%= f.object.currency.name == 'INR' ? 'd-none' : '' %>">
-                        <span data-toggle="tooltip" title="Unit Selling Price in currency">USP (in <%= f.object.currency.sign %>
-                          )</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>Tax Code</span><br>
-                </th>
-                <th class="no-sort">
-                  <span>Tax Rate</span><br>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>
-                  <span><%= row.object.quantity %></span>
-                </td>
-                <td>
-                  <span><%= row.object.measurement_unit %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
-                </td>
-                <td>
-                  <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price) %></span>
-                </td>
-                <td>
-                  <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
-                </td>
-                <td>
-                  <span><%= row.object.best_tax_code %></span>
-                </td>
-                <td>
-                  <span><%= row.object.best_tax_rate %></span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <hr class="my-2">
-    <% end %>
+    <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+      <thead>
+      <tr>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+        </th>
+        <th class="no-sort">
+          <span>Product</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Quantity">Qty</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Cost">UC</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Margin Percentage">%</span>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Code">T. Code</span><br>
+        </th>
+        <th class="no-sort">
+          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span><br>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+        <%= row.hidden_field :sales_order_id %>
+        <%= row.hidden_field :id %>
+        <tr>
+          <td>
+            <span>#<%= row.object.sr_no %></span>
+          </td>
+          <td>
+            <span><%= row.object.sales_quote_row %></span>
+          </td>
+          <td>
+            <span><%= row.object.quantity %></span>
+          </td>
+          <td>
+            <span><%= row.object.measurement_unit %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
+          </td>
+          <td>
+            <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.object.converted_total_selling_price) %></span>
+          </td>
+          <td>
+            <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
+          </td>
+          <td>
+            <span><%= row.object.best_tax_code %></span>
+          </td>
+          <td>
+            <span><%= row.object.best_tax_rate %></span>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
   <div class="card-footer">
     <div class=form-row>
@@ -230,7 +227,8 @@
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
-        <strong class="d-block"><%= format_currency(f.object.converted_total_margin) %> (<%= f.object.calculated_total_margin_percentage %>%)</strong>
+        <strong class="d-block"><%= format_currency(f.object.converted_total_margin) %>
+          (<%= f.object.calculated_total_margin_percentage %>%)</strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (E. tax)
