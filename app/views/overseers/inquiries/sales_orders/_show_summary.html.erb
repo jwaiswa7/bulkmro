@@ -127,7 +127,7 @@
           <strong class="d-block">Supplier quotes attachment</strong>
           <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
             <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
-              <%= attachment.filename %>
+              <span class="d-block"><%= attachment.filename %></span>
             <% end %>
           <% end if @inquiry.supplier_quotes.attached? %>
         </div>
