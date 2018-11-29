@@ -18,6 +18,8 @@ class SalesOrder < ApplicationRecord
   has_one_attached :serialized_pdf
 
   belongs_to :sales_quote
+
+
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -30,16 +32,22 @@ class SalesOrder < ApplicationRecord
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
+  has_one :po_request
+  belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
+  belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
+
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
-  delegate :inside_sales_owner, :outside_sales_owner, to: :inquiry, allow_nil: true
+  delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, to: :inquiry, allow_nil: true
 
-  validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row"
+
+  #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
+
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'Requested'
+    #self.status ||= :'Requested'
   end
 
   enum legacy_request_status: {
@@ -87,6 +95,8 @@ class SalesOrder < ApplicationRecord
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
 
+  scope :remote_approved, -> {where('status = ? AND remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved'))}
+
   def confirmed?
     self.confirmation.present?
   end
@@ -115,6 +125,51 @@ class SalesOrder < ApplicationRecord
     SalesOrdersIndex::SalesOrder.import([self.id])
   end
 
+  def effective_customer_status
+    if self.remote_status.blank?
+      return 'Processing'
+    end
+
+    case self.remote_status.to_sym
+    when :'Supplier PO: Request Pending'
+      'Processing'
+    when :'Supplier PO: Partially Created'
+      'Processing'
+    when :'Partially Shipped'
+      'Partially Shipped'
+    when :'Partially Invoiced'
+      'Partially Invoiced'
+    when :'Partially Delivered: GRN Pending'
+      'Partially Delivered: GRN Pending'
+    when :'Partially Delivered: GRN Received'
+      'Partially Delivered: GRN Received'
+    when :'Supplier PO: Created'
+      'Processing'
+    when :'Shipped'
+      'Shipped'
+    when :'Invoiced'
+      'Invoiced'
+    when :'Delivered: GRN Pending'
+      'Delivered: GRN Pending'
+    when :'Delivered: GRN Received'
+      'Delivered: GRN Received'
+    when :'Partial Payment Received'
+      'Partial Payment Received'
+    when :'Payment Received (Closed)'
+      'Full Payment Received'
+    when :'Cancelled by SAP'
+      'Processing'
+    when :'Short Close'
+      'Short Closed'
+    when :'Processing'
+      'Processing'
+    when :'Material Ready For Dispatch'
+      'Material Ready For Dispatch'
+    when :'Order Deleted'
+      'Cancelled'
+    end
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
@@ -124,5 +179,13 @@ class SalesOrder < ApplicationRecord
 
   def to_s
     ['#', order_number].join if order_number.present?
+  end
+
+  def total_quantities
+    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
+  end
+
+  def has_purchase_order_request
+    self.po_request.present?
   end
 end

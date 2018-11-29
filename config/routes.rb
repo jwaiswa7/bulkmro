@@ -44,7 +44,18 @@ Rails.application.routes.draw do
       get 'console'
     end
 
-    resources :remote_requests
+    resources :remote_requests do
+      member do
+        get 'show'
+      end
+    end
+
+    resources :callback_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
@@ -98,6 +109,9 @@ Rails.application.routes.draw do
     end
 
     resources :products do
+      collection do
+        get 'autocomplete'
+      end
       member do
         get 'customer_bp_catalog'
         get 'best_prices_and_supplier_bp_catalog'
@@ -116,13 +130,35 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :kits do
+      member do
+      end
+
+      collection do
+        get 'autocomplete'
+      end
+
+    end
+
+    resources :po_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+      end
+    end
+
     resources :sales_orders do
+      member do
+        get 'new_purchase_order'
+      end
+
       collection do
         get 'pending'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'autocomplete'
       end
 
       scope module: 'sales_orders' do
@@ -133,6 +169,7 @@ Rails.application.routes.draw do
     resources :purchase_orders do
       collection do
         get 'export_all'
+        get 'autocomplete'
       end
     end
 
@@ -156,6 +193,7 @@ Rails.application.routes.draw do
         post 'update_suppliers'
         get 'calculation_sheet'
         get 'export'
+        get 'stages'
       end
 
       collection do
@@ -164,7 +202,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-``
+    
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -173,6 +211,9 @@ Rails.application.routes.draw do
 
         resources :sales_invoices do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'duplicate'
             get 'triplicate'
           end
@@ -180,6 +221,9 @@ Rails.application.routes.draw do
 
         resources :sales_orders do
           member do
+            get 'edit_mis_date'
+            patch 'update_mis_date'
+
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -192,6 +236,7 @@ Rails.application.routes.draw do
           member do
             get 'new_revision'
             get 'preview'
+            get 'reset_quote'
           end
 
           scope module: 'sales_quotes' do
@@ -239,15 +284,27 @@ Rails.application.routes.draw do
     end
 
     resources :accounts do
+      collection do
+        get 'autocomplete'
+      end
       scope module: 'accounts' do
         resources :companies
       end
     end
 
-    resources  :warehouses
+    resources :warehouses
   end
 
   namespace 'customers' do
+    resources :reports do
+      member do
+      end
+
+      collection do
+        get 'quarterly_purchase_data'
+      end
+    end
+
     resource :dashboard, :controller => :dashboard
     resources :cart_items, only: %i[new create destroy]
     resources :customer_orders, only: %i[index create show] do
@@ -258,9 +315,13 @@ Rails.application.routes.draw do
     resources :quotes, :controller => :sales_quotes, only: %i[index show]
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
-    resources :products, only: %i[index show]
+    resources :products, only: %i[index show] do
+      collection do
+        get 'most_ordered_products'
+      end
+    end
 
-    resource  :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
       end

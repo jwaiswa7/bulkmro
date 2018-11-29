@@ -52,13 +52,19 @@
       </div>
     </div>
 
+
     <%= f.input :email, required: true %>
-    <%= f.input :legacy_email, disabled: true %>
-    <%#= f.input :password, required: true %>
-    <%#= f.input :password_confirmation, required: true %>
+    <%= f.input :legacy_email, disabled: false %>
+    <%= f.input :password, required: true %>
+    <%= f.input :password_confirmation, required: true %>
 
     <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses) %>
 
+    <div class="form-row">
+      <div class="col-4">
+        <%= f.input :is_active %>
+      </div>
+    </div>
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> <%= submit_text(@contact) %>

@@ -27,8 +27,9 @@ class Product < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
-
+  has_one :kit
   has_many_attached :images
+  attr_accessor :applicable_tax_percentage
 
   has_many :cart_items
   # Start ignore
@@ -48,11 +49,23 @@ class Product < ApplicationRecord
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
 
   validates_presence_of :name
+  validates_uniqueness_of :name, :if => :not_rejected?
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
-  validates_with MultipleImageFileValidator, attachments: :images
+  #validates_with MultipleImageFileValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
+
+  def service_product
+    if self.is_service && !self.category.is_service
+      errors.add(:category, ' should be a service category')
+    end
+
+    if self.is_service && !self.tax_code.is_service
+      errors.add(:tax_code, 'Tax Code should be a service tax code')
+    end
+
+  end
 
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
@@ -115,6 +128,14 @@ class Product < ApplicationRecord
 
   def bp_catalog_for_supplier(supplier)
     self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
+  end
+
+  def is_kit
+    self.kit.present?
+  end
+
+  def is_kit_product
+    self.kit_product_row.present?
   end
 
   def brand_name

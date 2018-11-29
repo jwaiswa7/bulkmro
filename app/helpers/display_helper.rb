@@ -76,6 +76,24 @@ module DisplayHelper
     end
   end
 
+  def format_date_with_time(date)
+    if date.present?
+      #date.strftime("%e %b, %Y %H:%M")
+      date.strftime("%d-%b-%Y %H:%M")
+    else
+      "-"
+    end
+  end
+
+
+  def format_date_time_meridiem(date)
+    if date.present?
+      date.strftime("%d-%b-%Y, %I:%M %p")
+    else
+      "-"
+    end
+  end
+
   def format_date_without_time(date)
     if date.present?
       date.strftime("%d-%b-%Y")
@@ -102,6 +120,10 @@ module DisplayHelper
     else
       date.to_s.titleize
     end
+  end
+
+  def format_month_without_date(month)
+    month.to_date.strftime('%b, %Y')
   end
 
   def format_collection(kollection)
@@ -131,6 +153,14 @@ module DisplayHelper
       0
     else
       nil
+    end
+  end
+
+  def url_for_image(image,fallback_url: "")
+    if image.present? && ActiveStorage::Blob.service.exist?(image.key)
+      url_for(image)
+    else
+      fallback_url
     end
   end
 end

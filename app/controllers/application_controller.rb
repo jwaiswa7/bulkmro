@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
-        page_size: 'Legal',
+        page_size: 'A4',
         footer: {
             center: '[page] of [topage]'
         },
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def flash_message(object, action)
-    class_name = object.class.name
+    class_name = object.class.name.titleize
 
     case action.to_sym
     when :create

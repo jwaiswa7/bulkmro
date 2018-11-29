@@ -5,13 +5,16 @@ json.data (@sales_orders) do |sales_order|
                       row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
                   ].join(' '),
                   sales_order.order_number,
-                  sales_order.inquiry.inquiry_number,
                   format_date(sales_order.created_at),
                   sales_order.inquiry.customer_po_number,
+                  format_date(sales_order.inquiry.customer_order_date),
+                  sales_order.inquiry.inquiry_number,
+                  sales_order.inquiry.shipping_contact.try(:name) || sales_order.inquiry.billing_contact.try(:name),
                   sales_order.inquiry.company.to_s,
-                  "-",
                   format_currency(sales_order.calculated_total),
-                  sales_order_status_badge(sales_order.order_status.to_s),
+                  format_date(sales_order.inquiry.customer_committed_date),
+                  "-",
+                  sales_order_status_badge(sales_order.effective_customer_status)
               ]
 end
 
@@ -24,7 +27,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json
+                       [],
+                       [],
+                       [],
+                       []
+
                    ]
 
 json.recordsTotal @sales_orders.count

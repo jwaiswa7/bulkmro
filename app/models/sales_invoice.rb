@@ -2,7 +2,6 @@ class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
   update_index('sales_invoices#sales_invoice') {self}
 
-  update_index('sales_invoices#sales_invoice') {self}
   belongs_to :sales_order
   has_one :inquiry, :through => :sales_order
 
@@ -40,6 +39,14 @@ class SalesInvoice < ApplicationRecord
         ['invoice', invoice_number].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
+  end
+
+  def billing_address
+    sales_order.billing_address || sales_order.inquiry.billing_address
+  end
+
+  def shipping_address
+    sales_order.shipping_address || sales_order.inquiry.shipping_address
   end
 
   def self.syncable_identifiers

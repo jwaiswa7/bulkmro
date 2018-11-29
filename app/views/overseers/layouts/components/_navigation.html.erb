@@ -47,6 +47,7 @@
             <%= nav_dropdown_item 'List', overseers_products_path, policy(:product).index? %>
             <%= nav_dropdown_item 'Queue', pending_overseers_products_path, policy(:product).pending? %>
             <div class="dropdown-divider"></div>
+            <%= nav_dropdown_item 'Kits', overseers_kits_path, policy(:kit).index? %>
             <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
             <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
             <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
@@ -77,6 +78,8 @@
             <%= nav_dropdown_item 'SAP Draft Pending', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
             <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
+            <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
+            <%= nav_dropdown_item 'Completed PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
             <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
           </div>
@@ -103,8 +106,11 @@
             Tools
           </a>
           <div class="dropdown-menu">
-            <%= nav_dropdown_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
-            <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? if Rails.env.development? %>
+            <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+            <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+            <% if Rails.env.development? %>
+            <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
+            <% end %>
           </div>
         </li>
       <% end %>

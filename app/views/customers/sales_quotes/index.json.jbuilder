@@ -10,7 +10,7 @@ json.data (@sales_quotes) do |sales_quote|
                   format_currency(sales_quote.calculated_total),
                   sales_quote.inquiry.inside_sales_owner.to_s,
                   format_date(sales_quote.inquiry.valid_end_time),
-                  inquiry_status_badge(sales_quote.inquiry.status),
+                  inquiry_status_badge(sales_quote.changed_status(sales_quote.inquiry.status)),
               ]
 end
 
@@ -20,9 +20,9 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        [],
-                       Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json
+                       [],
+                       []
                    ]
 
 json.recordsTotal @sales_quotes.count

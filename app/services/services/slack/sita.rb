@@ -2,6 +2,22 @@ require 'slack-ruby-bot'
 include DisplayHelper
 
 class Services::Slack::Sita < SlackRubyBot::Bot
+  help do
+    title 'Sita'
+    desc 'She is the sister you always wanted.'
+
+    command 'inquiries today' do
+      desc 'Tells you how many inquiries were handled today.'
+    end
+
+    command 'inquiry <inquiry number>' do
+      desc 'Tells you about a particular inquiry.'
+    end
+
+    command 'sales order <order number>' do
+      desc 'Tells you about a particular sales order.'
+    end
+  end
 
   def self.set_user(data)
     @user = "<@#{data.user}>"

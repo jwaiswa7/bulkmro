@@ -2,9 +2,9 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
 
   def autocomplete
-    # @tax_codes = ApplyParams.to(TaxCode.all.where(:is_service => params[:is_service] || false), params)
-    @tax_codes = ApplyParams.to(TaxCode.all, params).order(:code)
+    @tax_codes = ApplyParams.to(TaxCode.all.where("is_service = ? AND is_active = ?",params[:is_service],true), params)
     authorize :tax_code
+
   end
 
   def index
@@ -67,6 +67,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
         :description,
         :tax_percentage,
         :is_service,
+        :is_active,
         :is_pre_gst
     )
   end

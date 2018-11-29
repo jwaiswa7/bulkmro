@@ -214,7 +214,7 @@
                     <%= @sales_shipment.sales_order.inquiry.billing_address.name %><br>
                     <%= @sales_shipment.sales_order.inquiry.billing_address.to_multiline_s %>
                     <br>
-                    <% if @sales_shipment.sales_order.inquiry.shipping_contact.presenSat? %>
+                    <% if @sales_shipment.sales_order.inquiry.shipping_contact.present? %>
                       Tel: <%= @sales_shipment.sales_order.inquiry.shipping_contact.phone || @sales_shipment.sales_order.inquiry.shipping_contact.mobile || @sales_shipment.sales_order.inquiry.shipping_address.telephone %>
                     <% else %>
                       Tel: <%= @sales_shipment.sales_order.inquiry.contact.phone || @sales_shipment.sales_order.inquiry.contact.mobile || @sales_shipment.sales_order.inquiry.shipping_address.telephone %>

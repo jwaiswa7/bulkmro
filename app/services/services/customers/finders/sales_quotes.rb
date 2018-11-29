@@ -10,7 +10,17 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
                         super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
                       end
 
+
+    indexed_records.filter(filter_by_status(only_remote_approved: false))
     indexed_records.filter({bool: {should: [{exists: {field: 'sent_at'}}]}})
+    indexed_records = indexed_records.query({
+                                                range: {
+                                                    :"inquiry_created_at" => {
+                                                        gte: Date.new(2018, 04, 01),
+                                                        lte: Date.today
+                                                    }
+                                                }
+                                            })
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -22,7 +32,6 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
 
     indexed_records
   end
-
 
 
   def perform_query(query_string)
@@ -41,6 +50,17 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
       indexed_records = indexed_records.filter(filter_by_value('contact_id', current_contact.id))
       # indexed_records = indexed_records.filter(filter_by_array('id',current_contact.account.sales_quotes.ids))
     end
+
+    indexed_records.filter(filter_by_status(only_remote_approved: false))
+    indexed_records.filter({bool: {should: [{exists: {field: 'sent_at'}}]}})
+    indexed_records = indexed_records.query({
+                                                range: {
+                                                    :"inquiry_created_at" => {
+                                                        gte: Date.new(2018, 04, 01),
+                                                        lte: Date.today
+                                                    }
+                                                }
+                                            })
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

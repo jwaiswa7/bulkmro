@@ -28,7 +28,7 @@ class SalesQuote < ApplicationRecord
 
   attr_accessor :selected_suppliers
 
-  validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
+  #validates_length_of :rows, minimum: 1, :message => "must have at least one sales quote row"
   validates_presence_of :parent_id, :if => :inquiry_has_many_sales_quotes?
   # validate :every_product_only_has_one_supplier?
   # def every_product_only_has_one_supplier?
@@ -61,7 +61,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.order_status != 'Rejected' || sales_order.order_status != 'SAP Rejected'}.compact.sum
+    self.calculated_total_quantity > self.sales_orders.remote_approved.persisted.map {|sales_order| sales_order.calculated_total_quantity }.compact.sum
   end
 
   def filename(include_extension: false)
@@ -71,5 +71,21 @@ class SalesQuote < ApplicationRecord
         ].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
+  end
+
+  def changed_status(status)
+    if status == 'New Inquiry' || status == 'Acknowledgement Mail'
+      'Inquiry Sent'
+    elsif status == 'Cross Reference' || status == 'Preparing Quotation' || status == 'Supplier RFQ Sent'
+      'Preparing Quotation'
+    elsif status == 'Quotation Sent' || status == 'Follow Up on Quotation' || status == 'Expected Order'
+      'Quotation Received'
+    elsif status == 'SO Draft: Pending Accounts Approval' || status == 'SO Rejected by Sales Manager' || status == 'Order Won' || status == 'Draft SO for Approval by Sales Manager'
+      'Purchase Order Issued'
+    elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
+      'Purchase Order Revision Pending'
+    elsif status == 'Regret' || status == 'Order Lost'
+      'Order Lost'
+    end
   end
 end

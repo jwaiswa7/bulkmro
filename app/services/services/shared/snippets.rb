@@ -19,6 +19,182 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def update_amat_statuses
+    invoices = Contact.find_by_email('bhupali_pawar@contractor.amat.com').account.invoices
+
+    invoices.all.each do |i|
+      i.update_attributes(:status => :Unpaid)
+    end
+
+
+    statuses = [
+        ['0201/16.17', 'Paid'],
+        ['0143/16.17', 'Paid'],
+        ['0221/16.17', 'Paid'],
+        ['0313/16.17', 'Paid'],
+        ['Takeover', 'Paid'],
+        ['200024', 'Paid'],
+        ['200126', 'Paid'],
+        ['200126-A', 'Paid'],
+        ['201208', 'Paid'],
+        ['300269', 'Paid'],
+        ['300285', 'Paid'],
+        ['300292', 'Paid'],
+        ['300302', 'Paid'],
+        ['300319', 'Paid'],
+        ['300342', 'Paid'],
+        ['300343', 'Paid'],
+        ['300345', 'Paid'],
+        ['300362', 'Paid'],
+        ['300363', 'Paid'],
+        ['300364', 'Paid'],
+        ['3000275', 'Paid'],
+        ['3000687', 'Paid'],
+        ['3000717', 'Paid'],
+        ['20200049', 'Paid'],
+        ['20200064', 'Paid'],
+        ['20200074', 'Paid'],
+        ['20200084', 'Paid'],
+        ['20200100', 'Paid'],
+        ['20200108', 'Paid'],
+        ['20200109', 'Paid'],
+        ['20200120', 'Paid'],
+        ['20210030', 'Paid'],
+        ['20210066', 'Paid'],
+        ['20210080', 'Paid'],
+        ['20210081', 'Paid'],
+        ['20210100', 'Paid'],
+        ['20210126', 'Paid'],
+        ['20210143', 'Paid'],
+        ['20210145', 'Paid'],
+        ['20210146', 'Paid'],
+        ['20210147', 'Paid'],
+        ['20210160', 'Paid'],
+        ['20210177', 'Paid'],
+        ['20210183', 'Paid'],
+        ['20210186', 'Paid'],
+        ['20210201', 'Paid'],
+        ['20210215', 'Paid'],
+        ['20210224', 'Paid'],
+        ['20210225', 'Paid'],
+        ['20210236', 'Paid'],
+        ['20210237', 'Paid'],
+        ['20210240', 'Paid'],
+        ['20210245', 'Unpaid'],
+        ['20210261', 'Paid'],
+        ['20210303', 'Paid'],
+        ['20210304', 'Paid'],
+        ['20210319', 'Unpaid'],
+        ['20210325', 'Paid'],
+        ['20210326', 'Paid'],
+        ['20210344', 'Paid'],
+        ['20210350', 'Paid'],
+        ['20210355', 'Paid'],
+        ['20210356', 'Paid'],
+        ['20210348', 'Paid'],
+        ['20210391', 'Paid'],
+        ['20210408', 'Paid'],
+        ['20210428', 'Paid'],
+        ['20210429', 'Paid'],
+        ['20210430', 'Paid'],
+        ['20210441', 'Paid'],
+        ['20210462', 'Paid'],
+        ['20210476', 'Paid'],
+        ['20210493', 'Paid'],
+        ['20210496', 'Paid'],
+        ['20210500', 'Paid'],
+        ['20210497', 'Paid'],
+        ['20210498', 'Paid'],
+        ['20210506', 'Paid'],
+        ['20210536', 'Paid'],
+        ['20210567', 'Paid'],
+        ['20210584', 'Paid'],
+        ['20210585', 'Paid'],
+        ['20210597', 'Paid'],
+        ['20210609', 'Paid'],
+        ['20210614', 'Paid'],
+        ['20210625', 'Paid'],
+        ['20210626', 'Paid'],
+        ['20210637', 'Paid'],
+        ['20210639', 'Paid'],
+        ['20210642', 'Paid'],
+        ['20210651', 'Paid'],
+        ['20210652', 'Paid'],
+        ['20210673', 'Paid'],
+        ['20210689', 'Paid'],
+        ['20210688', 'Unpaid'],
+        ['20210687', 'Paid'],
+        ['20210690', 'Paid'],
+        ['20210696', 'Paid'],
+        ['20210701', 'Paid'],
+        ['20210719', 'Paid'],
+        ['20210731', 'Paid'],
+        ['20210740', 'Paid'],
+        ['20210744', 'Paid'],
+        ['20210745', 'Paid'],
+        ['20210751', 'Paid'],
+        ['20210768', 'Paid'],
+        ['20210770', 'Unpaid'],
+        ['20210785', 'Paid'],
+        ['20210789', 'Unpaid'],
+        ['20210791', 'Paid'],
+        ['20210801', 'Paid'],
+        ['20210821', 'Paid'],
+        ['20210826', 'Paid'],
+        ['20210827', 'Paid'],
+        ['20210830', 'Paid'],
+        ['20210843', 'Paid'],
+        ['20210855', 'Paid'],
+        ['20210866', 'Paid'],
+        ['20210871', 'Paid'],
+        ['20210872', 'Paid'],
+        ['20210874', 'Unpaid'],
+        ['20210881', 'Paid'],
+        ['20210891', 'Paid'],
+        ['20210897', 'Unpaid'],
+        ['20210898', 'Unpaid'],
+        ['20210901', 'Paid'],
+        ['20210906', 'Paid'],
+        ['20210928', 'Paid'],
+        ['20210929', 'Unpaid'],
+        ['20210939', 'Paid'],
+        ['20210940', 'Paid'],
+        ['20210944', 'Paid'],
+        ['20210952', 'Paid'],
+        ['20210953', 'Paid'],
+        ['20210978', 'Paid'],
+        ['20210979', 'Paid'],
+        ['20211025', 'Unpaid'],
+        ['20211030', 'Unpaid'],
+        ['20211084', 'Unpaid'],
+        ['20211085', 'Unpaid'],
+        ['20211099', 'Unpaid'],
+        ['20211114', 'Unpaid'],
+        ['20211117', 'Unpaid'],
+        ['20211122', 'Unpaid'],
+        ['20211125', 'Unpaid'],
+        ['20211141', 'Unpaid'],
+        ['20211150', 'Unpaid'],
+        ['20211157', 'Unpaid'],
+        ['20211158', 'Unpaid'],
+        ['20211202', 'Unpaid'],
+        ['20211247', 'Unpaid'],
+        ['20211265', 'Unpaid'],
+        ['20211271', 'Unpaid'],
+        ['20211272', 'Unpaid'],
+        ['20211273', 'Unpaid'],
+        ['20211291', 'Unpaid'],
+        ['20211298', 'Unpaid'],
+        ['20211344', 'Unpaid'],
+        ['20211345', 'Unpaid'],
+    ]
+
+    statuses.each do |status|
+      invoice = invoices.find_by_invoice_number(status[0])
+      invoice.update_attributes(:status => status[1]) if invoice.present?
+    end
+  end
+
   def inquiry
     Inquiry.find_each(batch_size: 100) do |i|
       i.update_attributes(:shipping_company => i.company) if i.shipping_company.blank?;
@@ -543,6 +719,105 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
           inquiry.save!
         end
+      end
+    end
+  end
+
+  def update_and_remove_sales_quote_rows
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv', folder)
+      service.loop(nil) do |x|
+        # TODO: remove sales quote rows which are excluded in magento and not considered in total sales quote value
+      end
+    end
+
+  end
+
+  def update_sales_orders_for_legacy_inquiries
+    folders = ['seed_files', 'seed_files_2']
+    folders.each do |folder|
+      legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
+      remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
+      service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
+      service.loop(nil) do |x|
+        inquiry_number = x.get_column('inquiry_number').to_i
+        next if inquiry_number == 11505
+        inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
+        next if inquiry.blank?
+
+        requested_by = Overseer.find_by_legacy_id!(x.get_column('requested_by')) || Overseer.default
+
+        sales_quote = inquiry.sales_quotes.last
+        next if sales_quote.blank?
+        sales_orders_legacy_metadata = inquiry.sales_orders.pluck(:legacy_metadata)
+        puts "<-------------------###########################33------------------>" if sales_orders_legacy_metadata.include?(x.get_row)
+        # sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_initialize
+        # if sales_order.new_record? || update_if_exists
+        #   sales_order.overseer = requested_by
+        #   sales_order.order_number = x.get_column('order_number')
+        #   sales_order.created_at = x.get_column('requested_time').to_datetime
+        #   sales_order.draft_uid = x.get_column('doc_num')
+        #   sales_order.legacy_request_status = legacy_request_status_mapping[x.get_column('request_status')]
+        #   sales_order.remote_status = remote_status[x.get_column('remote_status')]
+        #   sales_order.legacy_metadata = x.get_row
+        #   sales_order.sent_at = sales_quote.created_at
+        #   sales_order.save!
+        # end
+        #
+        # product_skus = x.get_column('skus')
+        #
+        # sales_quote.rows.each do |row|
+        #   if product_skus.include? row.product.sku
+        #     sales_order.rows.where(:sales_quote_row => row).first_or_create!
+        #   end
+        # end
+        #
+        # # todo handle cancellation, etc
+        # request_status = x.get_column('request_status')
+        #
+        # if !sales_order.approved?
+        #   if request_status.in? %w(approved requested)
+        #     sales_order.create_approval(
+        #         :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
+        #         :overseer => Overseer.default,
+        #         :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+        #     )
+        #   elsif request_status == 'rejected'
+        #     sales_order.create_rejection(
+        #         :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
+        #         :overseer => Overseer.default
+        #     )
+        #   else
+        #     sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+        #   end
+        # end
+      end
+    end
+  end
+
+  def inquiry_status_update
+
+    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where( inquiry_status_records: {inquiry_id: nil} ).with_includes.each do |inquiry|
+      if inquiry.inquiry_status_records.blank?
+        subject = inquiry
+        status = inquiry.status
+        if (inquiry.final_sales_quote.present?)
+          subject = inquiry.final_sales_quote
+          status = 'Quotation Sent'
+        end
+
+        if inquiry.sales_orders.any?
+          subject = inquiry.sales_orders.last
+          status = 'Expected Order'
+        end
+
+        if inquiry.sales_orders.remote_approved.any?
+          subject = inquiry.sales_orders.remote_approved.last
+          status = 'Order Won'
+        end
+        inquiry.update_attribute(:status ,status)
+        InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create if inquiry.inquiry_status_records.blank?
       end
     end
   end
