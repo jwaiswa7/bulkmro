@@ -14,12 +14,16 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
   def perform_query(query_string)
 
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[po_number^3 inquiry inside_sales_owner outside_sales_owner]}})
+    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[ po_number_string^3 inquiry inside_sales_owner outside_sales_owner ]}})
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
@@ -27,6 +31,10 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records
