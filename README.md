@@ -53,24 +53,3 @@ end
 # Restoring PG Admin database
 ## Windows
 "<PATH TO POSTGRESQL's BIN FOLDER>\pg_restore" --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev "<PATH TO DUMP>"
-
------
-
-# Features
-## Margins
-- Margins are low
-- More than 10%, manual intervention for Devang
-- Less than 10% margin, only Devang can approve
-- Explanation for low margin, adding to order will require a comment
-
-## Payments
-- Template file for uploading bank
-- Payment checklist (not working)
-- Even assumed freight is fine
-- Some checklist-esque report in Sprint for payments
-
-## Payment requests
-- How are payments requested
-
-## Restore Heroku database
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev c9e1361f-7236-44fd-9fda-028f93f2225e
