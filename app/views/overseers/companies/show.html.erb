@@ -230,12 +230,18 @@
 
     <div class="tab-content">
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
+        <div>
           <% if policy(:address).new? %>
-            <h3 class="display-5 mb-1 d-none d-md-block">Addresses</h3>
-            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-              Address</a>
+          <a href="<%= new_overseers_company_address_path(@company) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+            <i class="fal fa-plus-circle mr-1"></i>New Address
+          </a>
           <% end %>
+
+          <% if @company.is_supplier? %>
+          <a href="<%= overseers_company_purchase_orders_path(@company) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0">
+            <i class="fal fa-plus-circle mr-1"></i>Purchase Orders
+          </a>
+          <% end  %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All addresses filterable in any way that we want under <strong><%= @company.name %></strong>.
