@@ -310,7 +310,7 @@
                   <td align="center" valign="top">
                     <span><%= item.uom %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.metadata['qty'] %></span></td>
+                    <span><%= number_to_currency(item.metadata['qty'], precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
                     <span><%= number_to_currency(item.metadata['price'], precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
