@@ -320,6 +320,8 @@ Rails.application.routes.draw do
         patch 'update_billing_address'
         patch 'update_shipping_address'
         patch 'add_po_number'
+        get 'empty_cart'
+        get 'update_cart'
       end
     end
   end

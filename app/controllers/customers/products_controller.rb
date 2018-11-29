@@ -1,5 +1,7 @@
 class Customers::ProductsController < Customers::BaseController
   before_action :set_product, only: [:show]
+  before_action :create_new_cart_item, only: [:index, :show]
+
   def index
     authorize :product
 
@@ -32,6 +34,10 @@ class Customers::ProductsController < Customers::BaseController
   private
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def create_new_cart_item
+    @cart_item = CartItem.new
   end
 
   def products(top: nil)

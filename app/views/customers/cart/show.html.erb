@@ -13,34 +13,46 @@
   <div class="card mb-2">
     <div class="card-body py-2">
       <div class="text-left">
-        <%= cart.simple_fields_for :items do |cart_item| %>
-          <div class="<% if cart_item.object != cart.object.items.last %>border-bottom <% end %> py-2 d-flex flex-row align-items-center">
-
-            <a href="<%= customers_product_path(cart_item.object.product) %>"><img class="" src="<%= url_for(cart_item.object.product.images.first)%>" width="60" /></a>
-            <div class="ml-3 flex-grow-1">
-              <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
-                <i class="fal fa-times"></i>
-              <% end %>
-              <p class="text-black-50 m-0 p-0"><strong>
-                <a href="<%= customers_product_path(cart_item.object.product) %>">
-                  <%= cart_item.object.product.name %></strong>
-                </a>
-              </p>
-              <div class="form-row mt-1">
-                <div class="col-md-1 col-4">
-                  <%= cart_item.input_field :quantity, :class => 'form-control'  %>
-                </div>
-              </div>
+        <table class="datatable table table-bordered dt-responsive wrap-whitespace" style="width: 100%;">
+          <thead>
+          <tr>
+            <th class="no-sort desktop">Image</th>
+            <th class="no-sort all">Product</th>
+            <th class="all">Price</th>
+            <th class="all">Qty</th>
+            <th class="all">Subtotal</th>
+          </tr>
+          </thead>
+          <tbody>
+          <%= cart.simple_fields_for :items do |cart_item| %>
+            <tr>
+              <td><img src="<%= url_for(cart_item.object.product.images.first) %>" alt="<%= cart_item.object.product.sku %>" /></td>
+              <td><a href="<%= customers_product_path(cart_item.object.product) %>">
+                <%= cart_item.object.product.name.truncate(80) %></strong>
+              </a></td>
+              <td><%= cart_item.object.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.object.product.latest_unit_cost_price.to_f) %></td>
+              <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control'  %></td>
+              <td><%= format_currency(cart_item.object.product.latest_unit_cost_price.to_f * cart_item.object.quantity) %></td>
+              <td>
+                <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
+                  <i class="fal fa-times"></i>
+                <% end %>
+              </td>
               <%= hidden_field_tag 'contact_id', current_contact.id %>
               <%= hidden_field_tag 'page', 'edit_cart' %>
-            </div>
-          </div>
-        <% end %>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <div class="card-footer">
       <div class="form-row">
+        <div class="cart-delete-update-container">
+          <div class="empty-cart-button"><%= link_to "Empty Cart", empty_cart_customers_cart_path, class: "btn btn-md, btn-danger" %></div>
+          <div class="update-cart-button"><%= link_to "Update Cart", update_cart_customers_cart_path, class: "btn btn-md, btn-warning" %></div>
+        </div>
         <div class="col-md-12">
           <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
             Add Products

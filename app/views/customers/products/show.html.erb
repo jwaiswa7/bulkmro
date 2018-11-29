@@ -13,6 +13,14 @@
         <div>
           <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
           <div class="form-row">
+            <% if @product.images.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Image</strong>
+                <%= @product.sku %>
+                <img class="" src="<%= url_for(@product.images.first)%>" width="60" />
+              </div>
+            <% end %>
+
             <% if @product.sku? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">BM Number</strong>
@@ -46,6 +54,24 @@
               <%= format_date(@product.created_at) %>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Add Product to Cart</h6>
+          <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
+            <div class="form-row">
+              <div class="col-2">
+                <%= f.input :quantity %>
+                <%= f.hidden_field :product_id, value: @product.id %>
+              </div>
+              <div class="col-2" style="margin-top: 25px">
+                <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

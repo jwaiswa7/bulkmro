@@ -23,3 +23,24 @@
     <%= render partial: 'shared/layouts/grid' %>
   <% end %>
 </div>
+
+<div class="modal fade" id="quantityModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Quantity</h4>
+      </div>
+      <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
+        <div class="modal-body">
+          <%= f.input :quantity %>
+          <%#= f.hidden_field :product_id, value: product.id %>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit 'Add to Cart', class: "btn btn-block btn-success"%>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

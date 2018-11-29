@@ -10246,3 +10246,24 @@ div.blur {
         opacity: 0;
     }
 }
+
+.empty-cart {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+.cart-subtotal-container {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.cart-delete-update-container {
+    width:100%;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.update-cart-button, .empty-cart-button {
+    display: inline-block;
+}

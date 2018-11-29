@@ -1,17 +1,13 @@
 class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]
+  before_action :cart_item_params, only: [:create]
 
   def create
-    @cart_item = current_cart.items.where(:product_id => params[:product_id]).first_or_initialize do |cart_item|
-      cart_item.quantity = params[:quantity]
-    end
+    authorize CartItem
+    @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id]).first_or_create.update(quantity: cart_item_params[:quantity])
 
-    authorize @cart_item
-
-    if @cart_item.save
-      respond_to do |format|
-        format.js {}
-      end
+    respond_to do |format|
+      format.js {}
     end
   end
 
@@ -29,5 +25,9 @@ class Customers::CartItemsController < Customers::BaseController
   private
   def set_cart_item
     @cart_item = current_cart.items.find(params[:id])
+  end
+
+  def cart_item_params
+    params.require(:cart_item).permit(:quantity, :product_id)
   end
 end

@@ -3,6 +3,10 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
     show?
   end
 
+  def empty_cart?
+    true
+  end
+
   def update_billing_address?
     true
   end
