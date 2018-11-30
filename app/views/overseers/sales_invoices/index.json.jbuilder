@@ -14,6 +14,9 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
 
+                      if policy(sales_invoice).edit_mis_date?
+                        row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success')
+                      end,
                   ].join(' '),
                   sales_invoice.invoice_number,
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inquiry_number : "",
@@ -22,6 +25,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.status,
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : "",
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : "",
+                  format_date(sales_invoice.mis_date),
                   format_date(sales_invoice.created_at)
               ]
 end

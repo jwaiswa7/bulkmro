@@ -1,12 +1,8 @@
 class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     begin
-      invoice = SalesInvoice.find_by_invoice_number!(params['p_invoice_no'])
+      invoice = SalesInvoice.find_by_invoice_number(params['p_invoice_no'])
       company = Company.find_by_remote_uid!(params['cmp_id'])
 
       if invoice.present?
