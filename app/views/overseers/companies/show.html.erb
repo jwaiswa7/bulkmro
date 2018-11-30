@@ -290,15 +290,14 @@
             <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Customer Product</a>
           <% end %>
 
-          <% if Rails.env.development? %>
-            <% if policy(:customer_product).generate_catalog? %>
-              <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
-            <% end %>
-
-            <% if policy(:customer_product).destroy_all? %>
-              <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Destroy All</a>
-            <% end %>
+          <% if policy(:customer_product).generate_catalog? %>
+            <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
           <% end %>
+
+          <% if policy(:customer_product).destroy_all? %>
+            <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Destroy All</a>
+          <% end %>
+
         </div>
         <p class="mt-md-1 d-none d-md-block">
           All products filterable in any way that we want under <strong><%= @company.name %></strong>.

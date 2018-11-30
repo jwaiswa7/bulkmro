@@ -1,9 +1,9 @@
 class Overseers::CustomerProductPolicy < Overseers::ApplicationPolicy
   def generate_catalog?
-    admin?
+    developer?
   end
 
   def destroy_all?
-    admin?
+    developer?
   end
 end

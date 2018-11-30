@@ -30,6 +30,10 @@ class Overseers::ApplicationPolicy
     admin_or_manager? || sales?
   end
 
+  def developer?
+    ['ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com'].include? overseer.email
+  end
+
   def admin?
     overseer.admin?
   end
