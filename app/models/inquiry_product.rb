@@ -33,6 +33,10 @@ class InquiryProduct < ApplicationRecord
     self.product.tax_code.code if self.product.tax_code.present?
   end
 
+  def best_tax_rate
+    self.product.best_tax_rate if self.product.best_tax_rate.present?
+  end
+
   def to_s
     [bp_catalog_sku.present? ? bp_catalog_sku : self.product.sku, bp_catalog_name.present? ? bp_catalog_name : self.product.name].reject(&:blank?).compact.join(' - ')
   end
