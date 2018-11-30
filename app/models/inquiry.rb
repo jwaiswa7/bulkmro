@@ -82,6 +82,10 @@ class Inquiry < ApplicationRecord
       :'Regret' => 10,
   }
 
+  def regrettable_statuses
+    Inquiry.statuses.keys.sort.reject {|status| ["Order Lost", "Regret", "Expected Order"].include?(status)}
+  end
+
   enum stage: {
       inquiry_number_assigned: 1,
       prepare_quotation: 5,

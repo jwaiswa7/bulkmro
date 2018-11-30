@@ -41,6 +41,13 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
+  def zipped_filename(include_extension: false)
+    [
+        ['invoices', invoice_number].join('_'),
+        ('zip' if include_extension)
+    ].compact.join('.')
+  end
+
   def billing_address
     sales_order.billing_address || sales_order.inquiry.billing_address
   end

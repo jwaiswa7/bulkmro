@@ -20,6 +20,16 @@ class Customers::ProductsController < Customers::BaseController
     @products_paginate = @indexed_products.page(params[:page]) if params[:page].present?
   end
 
+  def autocomplete
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
+    authorize @products
+  end
+
+
   def show
     authorize @product
   end
