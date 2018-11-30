@@ -20,11 +20,13 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def new
+    @tags = Tag.all
     @customer_product = @company.customer_products.new(:overseer => current_overseer)
     authorize @customer_product
   end
 
   def edit
+    @tags = Tag.all
     authorize @customer_product
   end
 
@@ -91,8 +93,8 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
         :customer_price,
         :sku,
         :brand_id,
-        :category_id,
         :moq,
+        :tag_ids => [],
         :images => []
     )
   end

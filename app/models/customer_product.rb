@@ -12,6 +12,8 @@ class CustomerProduct < ApplicationRecord
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
   has_many :cart_items
+  has_many :customer_product_tags
+  has_many :tags, :through => :customer_product_tags
 
   has_many_attached :images
 
