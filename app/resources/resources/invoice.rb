@@ -6,63 +6,65 @@ class Resources::Invoice < Resources::ApplicationResource
 
   def self.set_invoice_items(sales_invoice)
     remote_response = self.custom_find(sales_invoice.invoice_number)
-    remote_rows = remote_response['DocumentLines']
-    sales_order = sales_invoice.sales_order
+    if remote_response.present?
+      remote_rows = remote_response['DocumentLines']
+      sales_order = sales_invoice.sales_order
 
-    metadata_changes = {
-        :subtotal => remote_response['DocTotal'] - remote_response['VatSum'],
-        :tax_amount => remote_response['VatSum'],
-        :subtotal_incl_tax => remote_response['DocTotal']
-    }
+      metadata_changes = {
+          :subtotal => remote_response['DocTotal'] - remote_response['VatSum'],
+          :tax_amount => remote_response['VatSum'],
+          :subtotal_incl_tax => remote_response['DocTotal']
+      }
 
-    ActiveRecord::Base.transaction do
-      sales_invoice.rows.destroy_all
-      sales_invoice.update_attributes!(:metadata => sales_invoice.metadata.merge!(metadata_changes))
+      ActiveRecord::Base.transaction do
+        sales_invoice.rows.destroy_all
+        sales_invoice.update_attributes!(:metadata => sales_invoice.metadata.merge!(metadata_changes))
 
-      remote_rows.each do |remote_row|
-        unit_price = remote_row['Price'].to_f
-        sku = remote_row['ItemCode']
-        product = Product.find_by_sku(sku)
-        sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
-        quantity = remote_row['Quantity'].to_i
+        remote_rows.each do |remote_row|
+          unit_price = remote_row['Price'].to_f
+          sku = remote_row['ItemCode']
+          product = Product.find_by_sku(sku)
+          sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
+          quantity = remote_row['Quantity'].to_i
 
-        sales_invoice.rows.create!(
-            quantity: quantity,
-            metadata: {
-                :qty => quantity,
-                :sku => sku,
-                :name => remote_row['U_Item_Descr'] != "" ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
-                :price => unit_price,
-                :base_cost => nil,
-                :row_total => unit_price * quantity,
-                :base_price => unit_price,
-                :product_id => product.id.to_param,
-                :tax_amount => sales_order_row.calculated_tax * quantity,
-                :description => remote_row['ItemDescription'],
-                :order_item_id => nil,
-                :base_row_total => unit_price * quantity,
-                :price_incl_tax => nil,
-                :additional_data => nil,
-                :base_tax_amount => sales_order_row.calculated_tax * quantity,
-                :discount_amount => nil,
-                :weee_tax_applied => nil,
-                :hidden_tax_amount => nil,
-                :row_total_incl_tax => (unit_price * quantity) + (sales_order_row.calculated_tax * quantity),
-                :base_price_incl_tax => nil,
-                :base_discount_amount => nil,
-                :weee_tax_disposition => nil,
-                :base_hidden_tax_amount => nil,
-                :base_row_total_incl_tax => nil,
-                :weee_tax_applied_amount => nil,
-                :weee_tax_row_disposition => nil,
-                :base_weee_tax_disposition => nil,
-                :weee_tax_applied_row_amount => nil,
-                :base_weee_tax_applied_amount => nil,
-                :base_weee_tax_row_disposition => nil,
-                :base_weee_tax_applied_row_amnt => nil
-            }
-        )
-      end if remote_rows.present?
+          sales_invoice.rows.create!(
+              quantity: quantity,
+              metadata: {
+                  :qty => quantity,
+                  :sku => sku,
+                  :name => remote_row['U_Item_Descr'] != "" ? remote_row['U_Item_Descr'] : remote_row['ItemDescription'],
+                  :price => unit_price,
+                  :base_cost => nil,
+                  :row_total => unit_price * quantity,
+                  :base_price => unit_price,
+                  :product_id => product.id.to_param,
+                  :tax_amount => sales_order_row.calculated_tax * quantity,
+                  :description => remote_row['ItemDescription'],
+                  :order_item_id => nil,
+                  :base_row_total => unit_price * quantity,
+                  :price_incl_tax => nil,
+                  :additional_data => nil,
+                  :base_tax_amount => sales_order_row.calculated_tax * quantity,
+                  :discount_amount => nil,
+                  :weee_tax_applied => nil,
+                  :hidden_tax_amount => nil,
+                  :row_total_incl_tax => (unit_price * quantity) + (sales_order_row.calculated_tax * quantity),
+                  :base_price_incl_tax => nil,
+                  :base_discount_amount => nil,
+                  :weee_tax_disposition => nil,
+                  :base_hidden_tax_amount => nil,
+                  :base_row_total_incl_tax => nil,
+                  :weee_tax_applied_amount => nil,
+                  :weee_tax_row_disposition => nil,
+                  :base_weee_tax_disposition => nil,
+                  :weee_tax_applied_row_amount => nil,
+                  :base_weee_tax_applied_amount => nil,
+                  :base_weee_tax_row_disposition => nil,
+                  :base_weee_tax_applied_row_amnt => nil
+              }
+          )
+        end if remote_rows.present?
+      end
     end
   end
 
