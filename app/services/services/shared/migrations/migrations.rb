@@ -1452,7 +1452,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       i = i + 1
       begin
-        next if i <= 7000
         puts "<----------------------- #{i}"
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         if purchase_order.present?
