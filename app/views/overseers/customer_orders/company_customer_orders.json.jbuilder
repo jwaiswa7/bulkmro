@@ -2,13 +2,10 @@ json.data (@customer_orders) do |customer_order|
   json.array! [
                   [
                       if policy(customer_order).show?
-                        row_action_button(overseers_customer_order_path(customer_order), 'eye', 'View Customer Order', 'info')
+                        row_action_button(overseers_customer_orders_view_path(customer_order), 'eye', 'View customer_order', 'info')
                       end,
-                      if policy(customer_order).can_create_inquiry?
+                      if policy(customer_order).edit?
                         row_action_button(new_from_customer_order_overseers_inquiries_path(company_id: customer_order.company.to_param, customer_order_id: customer_order.to_param), 'plus-circle', 'Create Inquiry', 'success')
-                      end,
-                      if !policy(customer_order).can_create_inquiry?
-                        row_action_button(edit_overseers_inquiry_path(customer_order.inquiry), 'eye', 'View Inquiry', 'warning')
                       end
                   ].join(' '),
                   customer_order.contact.account.name,

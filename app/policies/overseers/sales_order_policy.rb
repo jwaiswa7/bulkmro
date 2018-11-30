@@ -4,6 +4,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def company_converted_orders?
+    manager_or_sales? || logistics?
+  end
+
   def autocomplete?
     manager_or_sales? || logistics?
   end
