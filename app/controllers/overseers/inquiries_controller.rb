@@ -100,7 +100,6 @@ class Overseers::InquiriesController < Overseers::BaseController
           customer_po_number: @customer_order.po_reference,
           overseer: current_overseer
       )
-      raise
       @inquiry.save
       @customer_order.inquiry = @inquiry
       @customer_order.save
