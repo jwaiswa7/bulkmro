@@ -179,6 +179,7 @@ gem 'memcachier'
 # Heroku platform API
 gem 'platform-api'
 
+gem 'pry'
 # Google Cloud API
 gem 'googleauth'
 gem 'google-api-client', '~> 0.11'

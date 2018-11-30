@@ -99,6 +99,7 @@ GEM
       activerecord (>= 4.2.10)
       with_advisory_lock (>= 4.0.0)
     cocoon (1.2.12)
+    coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -344,6 +345,9 @@ GEM
     platform-api (2.2.0)
       heroics (~> 0.0.25)
       moneta (~> 1.0.0)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     public_suffix (3.0.3)
     puma (3.12.0)
     pundit (2.0.0)
@@ -565,6 +569,7 @@ DEPENDENCIES
   pg_search
   phony_rails
   platform-api
+  pry
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)
