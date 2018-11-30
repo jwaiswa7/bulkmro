@@ -13,7 +13,7 @@
         <%= f.input :company, as: :string, disabled: true %>
       </div>
       <div class="col-6 col-md-6">
-        <%= f.association :product, collection: [f.object.product], include_blank: "Type SKU number, name, or brand", label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}%>
+        <%= f.association :product, collection: [f.object.product], include_blank: "Type SKU number, name, or brand", label_method: :with_images_to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_customers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
       </div>
       <div class="col-12">
         <%= f.input :name %>
@@ -28,10 +28,10 @@
         <%= f.input :moq, label: "Minimum Ordered Quantity" %>
       </div>
       <div class="col-4">
-        <%= f.association :tax_code,collection: selected_option_or_nil(f, :tax_code ), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: nil)} %>
+        <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_for_product_overseers_tax_codes_path(product_id: f.object.product.id)} %>
       </div>
       <div class="col-4">
-        <%= f.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]} , input_html: { "data-bind": ""} %>
+        <%= f.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]}, input_html: {"data-bind": ""} %>
       </div>
       <div class="col-4">
         <%= f.association :measurement_unit, wrapper: :custom_multi_select, required: false %>
@@ -45,7 +45,7 @@
       <div class="col-6 col-md-6">
         <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
       </div>
-      <div class="col-12 col-md-12 d-none">
+      <div class="col-12 col-md-12 ">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
             <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Customer Product Images' %>

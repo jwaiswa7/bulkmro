@@ -20,6 +20,7 @@ import salesOrders from "./salesOrders/init";
 //
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
+import customerProducts from "./customerProducts/init";
 
 
 let loader = {
@@ -31,6 +32,7 @@ let loader = {
     salesOrders: salesOrders,
 
     salesQuotes: salesQuotes,
+    customerProducts: customerProducts
 };
 
 // Imports
