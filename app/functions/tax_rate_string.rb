@@ -1,5 +1,5 @@
-module TaxationHelper
-  def is_csgst_igst(bill_to, bill_from, ship_from, tax_rate)
+class TaxRateString < BaseFunction
+  def self.for(bill_to, bill_from, ship_from, tax_rate)
     tax_rate = tax_rate
     is_cgst_sgst = ( bill_to.country_code == 'IN' && bill_from.present? && ship_from.present? ) ? ship_from.state == bill_to.state : false
 

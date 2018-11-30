@@ -1,6 +1,5 @@
 require 'csv'
 require 'net/http'
-include TaxationHelper
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
@@ -1453,6 +1452,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       i = i + 1
       begin
+        next if i <= 7000
         puts "<----------------------- #{i}"
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         if purchase_order.present?
@@ -1468,14 +1468,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               )
               tax = nil
               if remote_row['PopTaxRate'].to_i >= 14
-                supplier = purchase_order.get_supplier(row['PopProductId'].to_i)
+                supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
                 if supplier.present?
                   bill_from = supplier.billing_address
                   ship_from = supplier.shipping_address
                   bill_to = purchase_order.inquiry.bill_from.address
 
                   if bill_from.present? && ship_from.present? && bill_to.present?
-                    row.metadata['PopTaxRate'] = is_csgst_igst(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
                   end
                 end
               end
