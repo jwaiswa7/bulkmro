@@ -1638,9 +1638,40 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[0])
         begin
+          puts "<-------------------------->"
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    overseer = Overseer.default
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+      inquiry_products.each do |inquiry_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
+          customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
+          # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+          customer_product.created_by = overseer
         end
       end
     end
@@ -1728,3 +1759,4 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
 end
+
