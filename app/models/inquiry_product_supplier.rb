@@ -12,7 +12,6 @@ class InquiryProductSupplier < ApplicationRecord
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
   validates_numericality_of :unit_cost_price, :greater_than_or_equal_to => 0
-
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.unit_cost_price ||= 0
