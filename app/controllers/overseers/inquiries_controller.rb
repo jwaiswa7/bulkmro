@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers,:mass_suppliers, :export, :calculation_sheet, :stages]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages]
 
   def index
     authorize :inquiry
@@ -104,6 +104,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   def update
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
     authorize @inquiry
+
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'
@@ -126,7 +127,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update_suppliers
-
     @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
 
@@ -135,14 +135,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       render 'edit_suppliers'
-      #redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
     end
-    callback_method = %w(mass_suppliers).detect {|action| params[action]}
-    send(callback_method) if callback_method.present?
-  end
-
-  def mass_suppliers
-    Services::Overseers::Inquiries::MassSupplier.new(params).call
   end
 
   def stages

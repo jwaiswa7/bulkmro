@@ -12,16 +12,6 @@ const editSuppliers = () => {
         .each(function (e) {
             onSupplierChange(this);
         });
-
-        $('#select_all_suppliers').change(function(){
-            $('input[name="inquiry_product_checkbox[]"]').each(function(index,elem){
-                $(this).prop('checked', $('#select_all_suppliers').prop( "checked" ));
-            });
-        });
-
-
-
-
 };
 
 let onSupplierChange = (container) => {

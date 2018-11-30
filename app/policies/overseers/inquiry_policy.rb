@@ -67,9 +67,6 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit_suppliers?
   end
 
-  def mass_suppliers?
-    edit_suppliers?
-  end
   def sales_quotes?
     edit? && (new_sales_quote? || record.sales_quotes.present?)
   end
