@@ -14,6 +14,10 @@ class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::
       indexed_records = filter_query(indexed_records)
     end
 
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
+    end
+
     indexed_records
   end
 
@@ -28,6 +32,10 @@ class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if range_filters.present?
+      indexed_records = range_query(indexed_records)
     end
 
     indexed_records

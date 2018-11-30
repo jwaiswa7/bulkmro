@@ -8,10 +8,10 @@ class Services::Shared::Heroku::DynoAdjuster < Services::Shared::BaseService
     processes = client.formation.list(app_name)
     process = processes.select {|process| process['type'] == 'web'}[0]
 
-    if Time.now.wday.in?(1..5) && '8:00 AM'.to_time < Time.now && Time.now < '7:30 PM'.to_time
-      scale(process, 'Performance-M', 2)
+    if Time.now.wday.in?(1..5) && '9:45 AM'.to_time < Time.now && Time.now < '7:30 PM'.to_time
+      scale(process, '2X', 3)
     elsif Time.now.wday == 6 && '9:00 AM'.to_time < Time.now && Time.now < '4:30 PM'.to_time
-      scale(process, 'Performance-M', 2)
+      scale(process, '2X', 3)
     else
       scale(process, '2X', 1)
     end

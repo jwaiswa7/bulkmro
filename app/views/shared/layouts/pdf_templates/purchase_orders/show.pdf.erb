@@ -39,13 +39,13 @@
                   <b><span>Contact Name</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span></span>Mr. Kaushik Banglorkar
+                  <span></span>Mr. Amit Rawool
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span>Contact #</span></b>
                   <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span>+91-9322833445</span></td>
+                  <span>+91-7506033466</span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
@@ -99,34 +99,24 @@
               <tr>
                 <td style="" class="address-section-holder">
                   <div style="" class="address-wrapper address-wrapper-left">
-
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <% if @supplier.default_billing_address.present? %>
-                        <%= @supplier.default_billing_address.to_multiline_s %>
-                      <% elsif @supplier.addresses.any? %>
-                        <%= @supplier.addresses.first.to_multiline_s %>
-                      <% end %>
+                      <%= @supplier.billing_address.to_multiline_s %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. :<%= @supplier.gst if @supplier.gst.present? %><br>
+                      GST No. : <%= @supplier.billing_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-right">
-
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <% if @supplier.default_shipping_address.present? %>
-                        <%= @supplier.default_shipping_address.to_multiline_s %>
-                      <% elsif @supplier.addresses.any? %>
-                        <%= @supplier.addresses.first.to_multiline_s %>
-                      <% end %>
+                      <%= @supplier.shipping_address.to_multiline_s %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
-                      GST No. :<%= @supplier.gst if @supplier.gst.present? %><br>
+                      GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
                     <% end %>
                   </div>
                 </td>
@@ -267,7 +257,7 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= item.total_tax %></span></td>
+                      <span><%= item.total_tax.to_f.round(2) %></span></td>
                   <% else %>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
@@ -279,7 +269,7 @@
                       <span><%= (item.total_tax / 2).round(2) %><br></span></td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= item.total_selling_price_with_tax %></span></td>
+                    <span><%= item.total_selling_price_with_tax.to_f.round(2) %></span></td>
                 </tr>
               <% end %>
 

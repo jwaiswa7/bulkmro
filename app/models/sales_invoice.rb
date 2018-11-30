@@ -41,6 +41,14 @@ class SalesInvoice < ApplicationRecord
     ].compact.join('.')
   end
 
+  def billing_address
+    sales_order.billing_address || sales_order.inquiry.billing_address
+  end
+
+  def shipping_address
+    sales_order.shipping_address || sales_order.inquiry.shipping_address
+  end
+
   def self.syncable_identifiers
     [:invoice_number]
   end
