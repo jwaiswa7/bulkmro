@@ -284,6 +284,10 @@ Rails.application.routes.draw do
         resources :purchase_orders do
 
         end
+
+        resources :products do
+
+        end
       end
     end
 
