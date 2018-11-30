@@ -147,6 +147,14 @@ class Product < ApplicationRecord
     self.find(product_id).try(:name)
   end
 
+  def with_images_to_s
+    ["#{self.to_s}",has_images? ? " - Has #{self.images.count} Image(s)" : ""].join
+  end
+
+  def has_images?
+    self.images.attached?
+  end
+
   def get_customer_company_product(company_id)
     self.customer_products.where(company_id: company_id).first
   end

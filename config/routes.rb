@@ -92,6 +92,7 @@ Rails.application.routes.draw do
     resources :tax_codes, except: [:show] do
       collection do
         get 'autocomplete'
+        get 'autocomplete_for_product'
       end
     end
 
@@ -333,6 +334,7 @@ Rails.application.routes.draw do
     resources :products, only: %i[index show] do
       collection do
         get 'most_ordered_products'
+        get 'autocomplete'
       end
     end
 
