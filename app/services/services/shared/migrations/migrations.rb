@@ -1686,7 +1686,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if product.present?
         if is_duplicate == 'TRUE'
           product.is_active = false
-          product.save_and_sync
+          product.save
         else
           product.name = x.get_column('New Discription')
           product.save_and_sync
