@@ -50,7 +50,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   def destroy_all
     authorize :customer_product
-    @company.destroy_all
+    @company.customer_products.destroy_all
 
     redirect_to overseers_company_path(@company)
   end
@@ -92,7 +92,8 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
         :sku,
         :brand_id,
         :category_id,
-        :moq
+        :moq,
+        :images => []
     )
   end
 end
