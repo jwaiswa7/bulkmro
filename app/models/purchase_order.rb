@@ -51,7 +51,6 @@ class PurchaseOrder < ApplicationRecord
   }
 
   def get_supplier(product_id)
-
     if self.metadata['PoSupNum'].present?
       product_supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
       return product_supplier if self.inquiry.suppliers.include? product_supplier
