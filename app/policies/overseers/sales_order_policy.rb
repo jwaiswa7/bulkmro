@@ -84,6 +84,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
+  def approve_low_margin?
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com).include?(overseer.email)
+  end
+
   def reject?
     record.sent? && approve? || admin?
   end
