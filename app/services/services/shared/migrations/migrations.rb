@@ -1663,19 +1663,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_orders_reporting_data_update_mis_date
-    service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
-    service.loop(nil) do |x|
-
+    service = Services::Shared::Spreadsheets::CsvImporter.new('order_mis_date.csv', 'seed_files')
+    added = []
+    service.loop(2000) do |x|
       sales_order = SalesOrder.where(order_number: x.get_column('order_number'))
       if sales_order.present?
         sales_order.each do |so|
           so.mis_date = x.get_column('mis_date')
+          added << so.order_number
           so.save(validate: false)
         end
       end
-
     end
+    added.uniq
   end
-
 
 end

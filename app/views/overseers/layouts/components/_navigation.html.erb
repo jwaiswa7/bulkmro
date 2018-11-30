@@ -106,7 +106,8 @@
             Tools
           </a>
           <div class="dropdown-menu">
-            <%= nav_dropdown_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+            <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+            <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
             <% if Rails.env.development? %>
             <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
             <% end %>

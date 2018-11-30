@@ -9,7 +9,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/deb.html
 https://www.java.com/en/download/
 https://www.elastic.co/guide/en/elasticsearch/reference/current/windows.html
 
-# To configure Elasticsearch to start automatically when the system boots up, run the following commands:
+# To configure Elastic Search to start automatically when the system boots up, run the following commands:
 #### Ubuntu
 sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable elasticsearch.service
@@ -17,7 +17,7 @@ sudo /bin/systemctl enable elasticsearch.service
 #### Windows
 Install it as a service; will auto-start when Windows boots up.
 
-# Elasticsearch can be started and stopped as follows:
+# Elastic Search can be started and stopped as follows:
 #### Ubuntu
 sudo systemctl start elasticsearch.service
 sudo systemctl stop elasticsearch.service
@@ -25,7 +25,7 @@ sudo systemctl stop elasticsearch.service
 #### Windows
 Restart service using the service manager.
 
-# To browse Elasticsearch (OPTIONAL)
+# To browse Elastic Search (OPTIONAL)
 sudo snap install docker
 docker run -p 1358:1358 -d appbaseio/dejavu
 open http://localhost:1358/
@@ -46,26 +46,10 @@ Dir.chdir(APP_ROOT) do
   end
 end
 
-
 - Disable auto-increment index
 - Perform migration
 - Run calculations in clock process
 
-
------
-
-# Features
-## Margins
-- Margins are low
-- More than 10%, manual intervention for Devang
-- Less than 10% margin, only Devang can approve
-- Explanation for low margin, adding to order will require a comment
-
-## Payments
-- Template file for uploading bank
-- Payment checklist (not working)
-- Even assumed freight is fine
-- Some checklist-esque report in Sprint for payments
-
-## Payment requests
-- How are payments requested
+# Restoring PG Admin database
+## Windows
+"<PATH TO POSTGRESQL's BIN FOLDER>\pg_restore" --verbose --clean --no-acl --no-owner -h localhost -U rails -d sprint_dev "<PATH TO DUMP>"
