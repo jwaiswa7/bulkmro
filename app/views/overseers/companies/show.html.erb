@@ -232,15 +232,21 @@
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
         <div>
           <% if policy(:address).new? %>
-          <a href="<%= new_overseers_company_address_path(@company) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+          <a href="<%= new_overseers_company_address_path(@company) %>" class=" btn btn-success btn-rounded btn float-right btn-block-sm-down mr-md-1 mb-md-0 mb-1">
             <i class="fal fa-plus-circle mr-1"></i>New Address
           </a>
           <% end %>
 
           <% if @company.is_supplier? %>
-          <a href="<%= overseers_company_purchase_orders_path(@company) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0">
+          <a href="<%= overseers_company_purchase_orders_path(@company) %>" class="btn btn-success btn-rounded btn float-right btn-block-sm-down mb-2 mb-md-0">
             <i class="fal fa-plus-circle mr-1"></i>Purchase Orders
           </a>
+          <% end  %>
+
+          <% if @company.is_supplier? %>
+            <a href="<%= overseers_company_products_path(@company) %>" class=" btn btn-success btn-rounded btn float-right btn-block-sm-down mb-2 mb-md-0">
+              <i class="fal fa-plus-circle mr-1"></i>Supplied Products
+            </a>
           <% end  %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
