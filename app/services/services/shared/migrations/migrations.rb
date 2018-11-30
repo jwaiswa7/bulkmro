@@ -2,6 +2,7 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
+
   attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
   def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)
@@ -1441,6 +1442,54 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
     puts errors
+  end
+
+  def purchase_order_callback_data
+    tax_rates = { '14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5 }
+    errors = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    i = 0
+    service.loop(nil) do |x|
+      i = i + 1
+      begin
+        puts "<----------------------- #{i}"
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        if purchase_order.present?
+          puts x.get_column('purchase_order_number')
+          meta_data = JSON.parse(x.get_column('meta_data'))
+
+          purchase_order.assign_attributes(:metadata => meta_data, :created_at => meta_data['PoDate'])
+
+          meta_data['ItemLine'].each do |remote_row|
+            purchase_order.rows.build do |row|
+              row.assign_attributes(
+                  metadata: remote_row
+              )
+              tax = nil
+              if remote_row['PopTaxRate'].to_i >= 14
+                supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
+                if supplier.present?
+                  bill_from = supplier.billing_address
+                  ship_from = supplier.shipping_address
+                  bill_to = purchase_order.inquiry.bill_from.address
+
+                  if bill_from.present? && ship_from.present? && bill_to.present?
+                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                  end
+                end
+              end
+              puts tax
+              puts "\n\n"
+            end
+          end
+          purchase_order.save!
+        end
+      rescue => e
+        errors.push("#{x.get_column('purchase_order_number')} - #{e}")
+      end
+    end
+    puts errors
+    puts errors.count
   end
 
 

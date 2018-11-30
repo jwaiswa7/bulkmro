@@ -92,9 +92,9 @@ class Resources::Quotation < Resources::ApplicationResource
           kit_item.LocationCode = record.inquiry.ship_from.location_uid
 
           if kit_product.product.is_service
-            kit_item.SACEntry = row.best_tax_code.remote_uid
+            kit_item.SACEntry = kit_product.best_tax_code.remote_uid
           else
-            kit_item.HSNEntry = row.best_tax_code.remote_uid
+            kit_item.HSNEntry = kit_product.best_tax_code.remote_uid
           end
 
           # kit_item.U_ProdBrand = kit_product.product.brand.try(:name)
