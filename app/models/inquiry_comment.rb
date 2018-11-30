@@ -15,6 +15,6 @@ class InquiryComment < ApplicationRecord
   end
 
   def author_role
-    author.role.titelize
+    author.role.titleize
   end
 end
