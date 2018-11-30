@@ -1,15 +1,11 @@
 class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
 
-  def initialize(params)
-    @params = params
-  end
-
   def call
     order_number = params['increment_id']
     remote_status = params['sap_order_status']
 
     if order_number && remote_status
-      sales_order = SalesOrder.find_by_order_number!(order_number)
+      sales_order = SalesOrder.find_by_order_number(order_number)
 
       if sales_order.present?
         begin

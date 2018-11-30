@@ -50,6 +50,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :callback_requests do
+      member do
+        get 'show'
+      end
+    end
+
     resources :reports
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]

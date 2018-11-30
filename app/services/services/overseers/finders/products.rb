@@ -5,11 +5,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+    indexed_records = super
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -32,10 +28,6 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                                                 minimum_should_match: '100%'
                                             }
                                         })
-
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
