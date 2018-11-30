@@ -18,7 +18,6 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   def show
     authorize @sales_quote
-
     respond_to do |format|
       format.html {}
       format.pdf do
