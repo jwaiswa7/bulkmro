@@ -2,7 +2,7 @@ json.data (@products) do |product|
   json.array! [
                   [
                       row_action_button(customers_product_path(product), 'eye', 'View Product', 'info'),
-                      link_to("","#quantityModal", :title => 'Add to Cart', :class => "btn btn-sm btn-success fal fa-shopping-cart", "data-toggle" => "modal")
+                      link_to("", to_cart_customers_product_path(product), :title => 'Add to Cart', :class => "btn btn-sm btn-success fal fa-shopping-cart", remote: true)
                   ].join(' '),
                   product.name,
                   product.sku,

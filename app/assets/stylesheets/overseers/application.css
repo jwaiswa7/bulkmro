@@ -10261,7 +10261,7 @@ div.blur {
 .cart-delete-update-container {
     width:100%;
     text-align: center;
-    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .update-cart-button, .empty-cart-button {

@@ -8,6 +8,10 @@ class Customers::CheckoutController < Customers::BaseController
       @cart.assign_attributes(cart_params)
       @cart.save
     end
+
+    if params["show_cart"]
+      redirect_to customers_cart_path
+    end
   end
 
   private

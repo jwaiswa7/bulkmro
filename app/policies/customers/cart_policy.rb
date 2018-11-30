@@ -7,6 +7,10 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
     true
   end
 
+  def update_cart?
+    true
+  end
+
   def update_billing_address?
     true
   end
