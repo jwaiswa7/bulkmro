@@ -21,13 +21,13 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     query = query[0, 35]
 
     indexed_records = index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'and',
-                              fields: %w[sku^3 sku_edge name brand category],
-                              minimum_should_match: '100%'
-                          }
-                      })
+                                            multi_match: {
+                                                query: query,
+                                                operator: 'and',
+                                                fields: %w[sku^3 sku_edge name brand category],
+                                                minimum_should_match: '100%'
+                                            }
+                                        })
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

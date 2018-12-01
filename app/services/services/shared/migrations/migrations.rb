@@ -2,6 +2,7 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
+
   attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
   def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)
@@ -1443,6 +1444,54 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts errors
   end
 
+  def purchase_order_callback_data
+    tax_rates = { '14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5 }
+    errors = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    i = 0
+    service.loop(nil) do |x|
+      i = i + 1
+      begin
+        puts "<----------------------- #{i}"
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        if purchase_order.present?
+          puts x.get_column('purchase_order_number')
+          meta_data = JSON.parse(x.get_column('meta_data'))
+
+          purchase_order.assign_attributes(:metadata => meta_data, :created_at => meta_data['PoDate'])
+
+          meta_data['ItemLine'].each do |remote_row|
+            purchase_order.rows.build do |row|
+              row.assign_attributes(
+                  metadata: remote_row
+              )
+              tax = nil
+              if remote_row['PopTaxRate'].to_i >= 14
+                supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
+                if supplier.present?
+                  bill_from = supplier.billing_address
+                  ship_from = supplier.shipping_address
+                  bill_to = purchase_order.inquiry.bill_from.address
+
+                  if bill_from.present? && ship_from.present? && bill_to.present?
+                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                  end
+                end
+              end
+              puts tax
+              puts "\n\n"
+            end
+          end
+          purchase_order.save!
+        end
+      rescue => e
+        errors.push("#{x.get_column('purchase_order_number')} - #{e}")
+      end
+    end
+    puts errors
+    puts errors.count
+  end
+
 
   def legacy_sales_order_reporting_data
     service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
@@ -1589,9 +1638,40 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[0])
         begin
+          puts "<-------------------------->"
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    overseer = Overseer.default
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+      inquiry_products.each do |inquiry_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
+          customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
+          # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+          customer_product.created_by = overseer
         end
       end
     end
@@ -1678,4 +1758,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     added.uniq
   end
 
+  def update_products_description
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      is_duplicate = x.get_column('IS Duplicate')
+      if product.present?
+        if is_duplicate == 'TRUE'
+          product.is_active = false
+          product.save
+        else
+          product.name = x.get_column('New Discription')
+          product.save_and_sync
+        end
+      end
+    end
+  end
+
 end
+

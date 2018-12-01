@@ -72,8 +72,8 @@ function searchsubmit(val){
             $("#grid_container").addClass("blur");
         },
         success: function(x) {
-            var pro_ind = $("#products_index", x).html();
-            $("#products_index").html(pro_ind);
+            var pro_ind = $("#customer_products_index", x).html();
+            $("#customer_products_index").html(pro_ind);
         },
         complete:function(){
             $("#grid_container").removeClass("blur");
