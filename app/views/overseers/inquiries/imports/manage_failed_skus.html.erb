@@ -80,7 +80,7 @@
 
             <%= row.hidden_field :approved_alternative_id %>
             <div class="approved-alternatives">
-              <%= render 'approved_alternatives', row:row, approved_alternatives: row.object.approved_alternatives %>
+              <%= render 'approved_alternatives', row_object: row.object, row:row, page: 1 %>
             </div>
 
           </div>
@@ -88,7 +88,11 @@
             <%= link_to_remove_association row, {class: 'btn btn-danger', wrapper_class: 'option-wrapper'} do %>
               Skip
             <% end %>
-            <button class="btn btn-success" type="button" name="load-more-approved-alternatives" data-import-row-id="<%= row.object.id %>">Next</button>
+            <%#= link_to 'Next', load_more_alternatives_overseers_inquiry_import_path(row, row.object.id), class: "btn btn-success", :name =>"load-more-approved-alternatives", remote: true %>
+
+            <i class="fas fa-chevron-left" type="button" name="load-more-approved-alternatives" data-row="<%= row %>" data-row-object="<%= row.object.id %>" ></i>
+            <button type="button" name="load-more-approved-alternatives" data-row="<%= row %>" data-row-object="<%= row.object.id %>" ><i class="fas fa-chevron-right"></i></button>
+<!--            <button class="btn btn-success" type="button" name="load-more-approved-alternatives" data-row="<%#= row %>" data-row-object="<%#= row.object.id %>" >Next</button>-->
           </div>
         </div>
       <% end %>

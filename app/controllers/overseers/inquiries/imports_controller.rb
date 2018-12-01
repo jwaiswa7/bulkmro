@@ -76,13 +76,11 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service.call
   end
 
-  def load_more_alternatives
+  def load_more_alternatives()
     authorize @excel_import
 
-    import_row = InquiryImportRow.find(params[:import_row_id])
-    next_alternatives = import_row.approved_alternatives(2)
     respond_to do |format|
-      format.js
+      format.js {render :partial => "load_more_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: 2 }}
     end
   end
 

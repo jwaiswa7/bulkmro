@@ -18,14 +18,24 @@ const manageFailedSkus = () => {
     $('body').on('change','select[id*=inquiry_product_attributes_product_attributes_is_service]',function(e){
         onIsServiceChange(e.target)
     });
-    $('body').on('click', 'button[name*=load-more-approved-alternatives]:button', function (e) {
-        refreshPartial($(this).data("import-row-id"))
+    $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
+        showPrevious($(this).data("row-object"));
+    });
+    $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
+        showNext($(this).data("row-object"));
     });
 };
 
-let refreshPartial = (row_id) => {
+let showPrevious = (row_object) => {
     $.ajax({
-        data: {import_row_id : row_id},
+        data: {row_object : row_object},
+        url: "load_more_alternatives",
+    })
+}
+
+let showNext = (row_object) => {
+    $.ajax({
+        data: {row_object : row_object},
         url: "load_more_alternatives",
     })
 }
