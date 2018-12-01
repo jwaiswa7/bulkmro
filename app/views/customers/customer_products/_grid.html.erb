@@ -49,7 +49,7 @@
 
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
-                <strong class="d-block"><%= customer_product.best_brand.name %></strong>
+                <strong class="d-block"><%= customer_product.best_brand.name if  customer_product.best_brand.present? %></strong>
                 <!--              <em class="d-block">MOQ - 50</em>-->
               </p>
             </a>

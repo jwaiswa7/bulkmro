@@ -53,7 +53,7 @@ class PurchaseOrder < ApplicationRecord
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
       product_supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
-      return product_supplier if self.inquiry.suppliers.include? product_supplier
+      return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
     end
 
     product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
