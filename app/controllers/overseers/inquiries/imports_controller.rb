@@ -78,11 +78,9 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def load_alternatives
     authorize @excel_import
-    page = 1
-    load_page = page + params[:increment_by].to_i
-    puts "PAGE NUMBER", load_page
+
     respond_to do |format|
-      format.js {render :partial => "load_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: load_page }}
+      format.js {render :partial => "load_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page] }}
     end
   end
 

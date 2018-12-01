@@ -1,6 +1,7 @@
 import select2s from "../../components/select2s";
 
 const manageFailedSkus = () => {
+    var page = 1;
     $(':input:visible:radio:checked').each(function (e) {
         onRadioChange(this);
     });
@@ -19,25 +20,28 @@ const manageFailedSkus = () => {
         onIsServiceChange(e.target)
     });
     $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
-        showPrevious($(this).data("row-object"));
+        if(--page < 1){
+            $(this).addClass('disabled');
+        }else{
+            $(this).removeClass('disabled');
+            showPrevious($(this).data("row-object"), --page);
+        }
     });
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
-        showNext($(this).data("row-object"));
+        showNext($(this).data("row-object"), ++page);
     });
 };
 
-let showPrevious = (row_object) => {
-    var increment_by = -1;
+let showPrevious = (row_object, page) => {
     $.ajax({
-        data: {row_object : row_object, increment_by: increment_by},
+        data: {row_object : row_object, page: page},
         url: "load_alternatives",
     })
 }
 
-let showNext = (row_object) => {
-    var increment_by = 1;
+let showNext = (row_object, page) => {
     $.ajax({
-        data: {row_object : row_object, increment_by: increment_by},
+        data: {row_object : row_object, page: page},
         url: "load_alternatives",
     })
 }
