@@ -38,7 +38,7 @@
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-3">
-            <button type="button" class="btn btn-m btn-block btn-danger" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Order Lost / Regret</button>
+            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
             <div class="modal fade" id="statusModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -184,10 +184,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_number, label: 'Customer PO number' %>
+            <%= f.input :customer_po_number, label: 'Customer Purchase Order No.' %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.customer_po_sheet.filename}".html_safe) : false %>
+            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer Purchase Order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.customer_po_sheet.filename}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.copy_of_email.filename}".html_safe) : false %>

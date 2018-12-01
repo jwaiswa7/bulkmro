@@ -94,7 +94,7 @@
       <div class="form-row mt-3">
         <% if @inquiry.customer_po_sheet.attached? %>
           <div class="col-6">
-            <strong class="d-block">PO Sheet</strong>
+            <strong class="d-block">Customer Purchase Order</strong>
             <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
               <%= @inquiry.customer_po_sheet.filename %>
             <% end %>
