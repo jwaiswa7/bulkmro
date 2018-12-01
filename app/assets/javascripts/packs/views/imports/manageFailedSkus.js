@@ -27,16 +27,18 @@ const manageFailedSkus = () => {
 };
 
 let showPrevious = (row_object) => {
+    var increment_by = -1;
     $.ajax({
-        data: {row_object : row_object},
-        url: "load_more_alternatives",
+        data: {row_object : row_object, increment_by: increment_by},
+        url: "load_alternatives",
     })
 }
 
 let showNext = (row_object) => {
+    var increment_by = 1;
     $.ajax({
-        data: {row_object : row_object},
-        url: "load_more_alternatives",
+        data: {row_object : row_object, increment_by: increment_by},
+        url: "load_alternatives",
     })
 }
 

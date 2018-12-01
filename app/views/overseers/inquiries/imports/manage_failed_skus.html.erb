@@ -88,11 +88,10 @@
             <%= link_to_remove_association row, {class: 'btn btn-danger', wrapper_class: 'option-wrapper'} do %>
               Skip
             <% end %>
-            <%#= link_to 'Next', load_more_alternatives_overseers_inquiry_import_path(row, row.object.id), class: "btn btn-success", :name =>"load-more-approved-alternatives", remote: true %>
 
-            <i class="fas fa-chevron-left" type="button" name="load-more-approved-alternatives" data-row="<%= row %>" data-row-object="<%= row.object.id %>" ></i>
-            <button type="button" name="load-more-approved-alternatives" data-row="<%= row %>" data-row-object="<%= row.object.id %>" ><i class="fas fa-chevron-right"></i></button>
-<!--            <button class="btn btn-success" type="button" name="load-more-approved-alternatives" data-row="<%#= row %>" data-row-object="<%#= row.object.id %>" >Next</button>-->
+            <button class="btn btn-info" type="button" name="load-previous-approved-alternatives" data-row-object="<%= row.object.id %>" ><i class="fas fa-chevron-left"></i></button>
+            <button class="btn btn-info" type="button" name="load-next-approved-alternatives" data-row-object="<%= row.object.id %>" ><i class="fas fa-chevron-right"></i></button>
+
           </div>
         </div>
       <% end %>
@@ -102,3 +101,8 @@
   <% end %>
 
 </div>
+
+
+
+<%#= link_to 'Next', load_more_alternatives_overseers_inquiry_import_path(row, row.object.id), class: "btn btn-success", :name =>"load-more-approved-alternatives", remote: true %>
+<!--            <button class="btn btn-success" type="button" name="load-more-approved-alternatives" data-row="<%#= row %>" data-row-object="<%#= row.object.id %>" >Next</button>-->

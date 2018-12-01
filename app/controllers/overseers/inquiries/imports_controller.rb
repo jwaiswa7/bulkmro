@@ -1,6 +1,6 @@
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
-  before_action :set_excel_import, only: [:load_more_alternatives, :manage_failed_skus, :create_failed_skus]
+  before_action :set_excel_import, only: [:load_alternatives, :manage_failed_skus, :create_failed_skus]
 
   def index
     @imports = @inquiry.imports
@@ -76,11 +76,13 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service.call
   end
 
-  def load_more_alternatives()
+  def load_alternatives
     authorize @excel_import
-
+    page = 1
+    load_page = page + params[:increment_by].to_i
+    puts "PAGE NUMBER", load_page
     respond_to do |format|
-      format.js {render :partial => "load_more_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: 2 }}
+      format.js {render :partial => "load_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: load_page }}
     end
   end
 
