@@ -1,6 +1,6 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date]
-  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
+  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -43,6 +43,15 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
   end
 
+  def make_zip
+    authorize @sales_invoice
+
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice)
+    zip = service.call
+
+    send_data(zip, :type => 'application/zip', :filename => @sales_invoice.zipped_filename(include_extension: true))
+  end
+
   def edit_mis_date
     if @sales_invoice.mis_date.blank?
       @sales_invoice.mis_date = @sales_invoice.created_at.strftime("%d-%b-%Y")
@@ -79,4 +88,3 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     params.require(:sales_invoice).permit(:mis_date)
   end
 end
-

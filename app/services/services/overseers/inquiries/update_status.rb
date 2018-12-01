@@ -47,7 +47,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     when :regret then
       log_inquiry_status('Regret')
     else
-      nil
+      log_inquiry_status(inquiry.status)
     end
   end
 
