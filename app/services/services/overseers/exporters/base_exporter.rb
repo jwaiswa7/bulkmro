@@ -1,7 +1,7 @@
 class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseService
 
   def initialize
-    @start_at = Date.new(2018, 04, 01)
+    @start_at = Date.new(2018, 10, 19)
     @end_at = Date.today.end_of_day
     @rows = []
   end
