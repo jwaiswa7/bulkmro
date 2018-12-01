@@ -1,7 +1,7 @@
 module CheckoutHelper
 
   def get_order_total(cart_items)
-    cart_items.inject(0){|sum, cart_item| sum + cart_item.product.latest_unit_cost_price.to_f * cart_item.quantity}
+    cart_items.inject(0){|sum, cart_item| sum + cart_item.customer_product.customer_price.to_f * cart_item.quantity}
   end
 
   def get_billing_address(billing_address_id)

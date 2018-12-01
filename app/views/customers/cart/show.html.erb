@@ -43,13 +43,13 @@
               <tbody>
                 <%= cart.simple_fields_for :items do |cart_item| %>
                   <tr>
-                    <td><img src="<%= url_for(cart_item.object.product.images.first) %>" alt="<%= cart_item.object.product.sku %>" /></td>
-                    <td><a href="<%= customers_product_path(cart_item.object.product) %>">
-                      <%= cart_item.object.product.name.truncate(80) %></strong>
+                    <td><img src="<%= url_for(cart_item.object.customer_product.images.first) %>" alt="<%= cart_item.object.product.sku %>" /></td>
+                    <td><a href="<%= customers_product_path(cart_item.object.customer_product.product) %>">
+                      <%= cart_item.object.customer_product.product.name.truncate(80) %></strong>
                     </a></td>
-                    <td><%= cart_item.object.product.latest_unit_cost_price.to_f == 0.0 ? '-' : format_currency(cart_item.object.product.latest_unit_cost_price.to_f) %></td>
+                    <td><%= cart_item.object.customer_product.customer_price.to_f %></td>
                     <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control'  %></td>
-                    <td><%= format_currency(cart_item.object.product.latest_unit_cost_price.to_f * cart_item.object.quantity) %></td>
+                    <td><%= format_currency(cart_item.object.customer_product.customer_price.to_f * cart_item.object.quantity) %></td>
                     <td>
                       <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
                         <i class="fal fa-times"></i>

@@ -4,7 +4,7 @@ class Customers::CartItemsController < Customers::BaseController
 
   def create
     authorize :cart_item
-    @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id]).first_or_create.update(quantity: cart_item_params[:quantity])
+    @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id], customer_product_id: cart_item_params[:customer_product_id]).first_or_create.update(quantity: cart_item_params[:quantity])
 
     respond_to do |format|
       format.js {}
@@ -32,6 +32,6 @@ class Customers::CartItemsController < Customers::BaseController
   end
 
   def cart_item_params
-    params.require(:cart_item).permit(:quantity, :product_id)
+    params.require(:cart_item).permit(:quantity, :product_id, :customer_product_id)
   end
 end

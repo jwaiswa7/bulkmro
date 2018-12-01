@@ -12,6 +12,18 @@
         <a href="<%= customers_customer_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
         <a href="<%= customers_customer_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
       </div>
+
+      <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
+        <a href="<%= [request.path, '/', 'new'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.upcase %>
+        </a>
+      <% end %>
+
+      <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_sheet? %>
+        <a href="<%= [request.path, '/', 'export_sheet.csv'].join %>" class="d-sm-block btn btn-success btn-rounded align-self-center btn-block-sm-down">
+          <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+        </a>
+      <% end %>
     </div>
 
     <% unless content_for?(:hide_table_desc) %>
@@ -35,17 +47,17 @@
       <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12">
         <div class="card mb-2">
           <div class="card-body">
-            <a href="<%= customers_customer_product_path(customer_product) %>">
-              <% if customer_product.images.first.present? %>
-                <img src="<%= url_for(customer_product.images.first) %>" />
-              <% elsif customer_product.product.images.first.present? %>
-                <img src="<%= url_for(customer_product.product.images.first) %>" />
+            <a href="<%= customers_product_path(customer_product.product) %>">
+              <% if customer_product.images.present? %>
+                <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>"/>
               <% else %>
-                <img src="<%= image_path('coming_soon.png') %>" />
+                <img src="<%= image_path('coming_soon.png') %>"/>
               <% end %>
-              <h5 class="mb-0 text-small"><strong><%= truncate(customer_product.name, :length => 25) %></strong></h5>
+              <h5 class="mb-0 text-small"><strong><%= truncate(customer_product.product.name, :length => 25) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
-              <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= format_currency(customer_product.customer_price) %></strong></h5>
+              <h5 class="mb-0 mt-1 text-small text-black-50">
+                <strong><%= format_currency(customer_product.customer_price) %></strong>
+              </h5>
 
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
@@ -55,14 +67,18 @@
             </a>
           </div>
           <div class="card-footer p-2">
-            <div class="form-row">
-              <!--              <div class="col-4">-->
-              <!--                <input type="text" class="form-control" placeholder="1" id="quantity_<%#= product.id %>" />-->
-              <!--              </div>-->
-              <div class="col-12">
-                <%= link_to "Add to Cart", customers_cart_items_path(customer_product_id: customer_product.id, product_id: customer_product.product.id, quantity: 1), method: :post, remote: true, class: "btn btn-block btn-success" %>
+            <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
+              <div class="form-row">
+                <div class="col-3">
+                  <%= f.input :quantity %>
+                  <%= f.hidden_field :product_id, value: customer_product.product_id %>
+                  <%= f.hidden_field :customer_product_id, value: customer_product.id %>
+                </div>
+                <div class="col-9" style="margin-top: 25px">
+                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
         </div>
       </div>
