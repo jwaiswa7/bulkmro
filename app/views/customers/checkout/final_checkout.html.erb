@@ -162,7 +162,6 @@
                   <% end %>
                   <tr>
                     <td colspan="5" style="text-align: right;"><strong>Subtotal:</strong> <%= format_currency(get_order_total(current_cart.items)) %><br/>
-                    <strong>Shipping & Handling:</strong> <%= format_currency(0.00) %><br/>
                     <% calculate_tax(current_cart.items).each do |key, value| %>
                       <strong>IGST <%=key%>%(<%=key%>):</strong> <%= format_currency(value) %><br/>
                     <% end %>

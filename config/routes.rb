@@ -350,6 +350,10 @@ Rails.application.routes.draw do
         get 'most_ordered_products'
         get 'autocomplete'
       end
+
+      member do
+        get 'to_cart'
+      end
     end
 
     resource :cart, :controller => :cart, only: [:show] do

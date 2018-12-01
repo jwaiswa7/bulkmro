@@ -3,7 +3,7 @@ class Customers::CartItemsController < Customers::BaseController
   before_action :cart_item_params, only: [:create]
 
   def create
-    authorize CartItem
+    authorize :cart_item
     @cart_item = current_cart.items.where(product_id: cart_item_params[:product_id]).first_or_create.update(quantity: cart_item_params[:quantity])
 
     respond_to do |format|
@@ -11,13 +11,17 @@ class Customers::CartItemsController < Customers::BaseController
     end
   end
 
+  def update
+    authorize :cart_item
+  end
+
   def destroy
     authorize @cart_item
 
     if @cart_item.destroy
       respond_to do |format|
-        format.html {redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name)}
-        format.js {render :layout => false}
+        format.html { redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
+        format.js { render :layout => false }
       end
     end
   end
