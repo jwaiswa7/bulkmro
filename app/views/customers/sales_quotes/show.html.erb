@@ -334,6 +334,7 @@
       </div>
     </div>
   </div>
+
   <div class="row justify-content-center">
     <div class="col-12">
       <div class="form-row mt-3 mt-lg-4">
@@ -395,6 +396,53 @@
                   rates accordingly.
                 </li>
               </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="form-row mt-3 mt-lg-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="flex-fill">
+                <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+              </div>
+
+              <% if @sales_quote.comments.persisted.size > 0 %>
+                <div class="chats mb-3">
+                  <% @sales_quote.comments.each do |comment| %>
+                    <div class="media chat-item">
+                      <div class="media-body">
+                        <div class="chat-item-title">
+                          <span class="chat-item-author">
+                            <%= comment.author.full_name if comment.author.present? %>
+                            <span class="mr-1"><strong>
+                              <span class="badge badge-secondary"><%= comment.author_role %></span>
+                            </strong></span>
+                          </span>
+                          <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
+                        </div>
+                        <div class="chat-item-body">
+                          <p><%= comment.message %></p>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <%= simple_form_for(@sales_quote.comments.build, url: customers_quote_comments_path(@sales_quote), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                <%= render 'shared/snippets/form_errors', f: f %>
+                  <div class="col-12">
+                      <%= f.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+                      <%= f.submit 'Comment', name: 'Comment', class: 'btn btn-danger' %>
+                  </div>
+              <% end %>
             </div>
           </div>
         </div>

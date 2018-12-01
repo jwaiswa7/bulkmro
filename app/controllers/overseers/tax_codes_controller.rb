@@ -4,6 +4,19 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def autocomplete
     @tax_codes = ApplyParams.to(TaxCode.all.where("is_service = ? AND is_active = ?",params[:is_service],true), params)
     authorize :tax_code
+  end
+
+  def autocomplete_for_product
+    @product = Product.find(params[:product_id])
+    @is_service = @product.try(:is_service) || false
+    @tax_codes = ApplyParams.to(TaxCode.all.where("is_service = ? AND is_active = ?",@is_service,true), params)
+    authorize @tax_codes
+    respond_to do |format|
+      format.html {}
+      format.json do
+        render 'autocomplete'
+      end
+    end
 
   end
 

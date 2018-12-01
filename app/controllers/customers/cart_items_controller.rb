@@ -2,7 +2,7 @@ class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]
 
   def create
-    @cart_item = current_cart.items.where(:product_id => params[:product_id]).first_or_initialize do |cart_item|
+    @cart_item = current_cart.items.where(:product_id => params[:product_id], :customer_product_id => params[:customer_product_id]).first_or_initialize do |cart_item|
       cart_item.quantity = params[:quantity]
     end
 

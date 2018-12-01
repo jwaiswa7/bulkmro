@@ -9,7 +9,7 @@
               <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
             </div>
             <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-              <b><span style="color:#000; font-size: 25px">Tax Invoice #<%= @metadata[:increment_id] %></span></b>
+              <b><span style="color:#000; font-size: 25px">Tax Invoice #<%= record.metadata['increment_id'] %></span></b>
               <span style="color:#000; font-weight: bold; font-size: 17.5px">
                 <br>
                 <% if defined?(triplicate) && triplicate %>
@@ -325,13 +325,13 @@
                       <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
+                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).to_f.round(0) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %><br></span>
+                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %><br></span>
                     </td>
                   <% end %>
                   <td align="right" valign="top">
