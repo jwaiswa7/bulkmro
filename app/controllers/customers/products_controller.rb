@@ -1,5 +1,7 @@
 class Customers::ProductsController < Customers::BaseController
-  before_action :set_product, only: [:show]
+  before_action :set_product, only: [:show, :to_cart]
+  before_action :create_new_cart_item, only: [:index, :to_cart, :show]
+
   def index
     authorize :product
 
@@ -27,6 +29,13 @@ class Customers::ProductsController < Customers::BaseController
     authorize @products
   end
 
+  def to_cart
+    authorize @product
+
+    respond_to do |format|
+      format.js {render :partial => "customers/cart/add_to_cart.js.erb"}
+    end
+  end
 
   def show
     authorize @product
@@ -42,6 +51,10 @@ class Customers::ProductsController < Customers::BaseController
   private
   def set_product
     @product = Product.find(params[:id])
+  end
+
+  def create_new_cart_item
+    @cart_item = CartItem.new
   end
 
   def products(top: nil)

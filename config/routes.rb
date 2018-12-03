@@ -354,6 +354,10 @@ Rails.application.routes.draw do
         get 'most_ordered_products'
         get 'autocomplete'
       end
+
+      member do
+        get 'to_cart'
+      end
     end
 
     resource :cart, :controller => :cart, only: [:show] do
@@ -362,6 +366,8 @@ Rails.application.routes.draw do
         patch 'update_billing_address'
         patch 'update_shipping_address'
         patch 'add_po_number'
+        get 'empty_cart'
+        get 'update_cart'
       end
     end
 
