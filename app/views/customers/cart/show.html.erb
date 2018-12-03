@@ -20,7 +20,7 @@
           <div class="card-body">
             <strong>Subtotal:</strong> <%= format_currency(get_order_total(current_cart.items)) %><br/>
             <% calculate_tax(current_cart.items).each do |key, value| %>
-              <strong>IGST <%=key%>%(<%=key%>):</strong> <%= format_currency(value) %><br/>
+              <strong>GST <%=key%>%(<%=key%>):</strong> <%= format_currency(value) %><br/>
             <% end %>
             <strong>Tax:</strong> <%= format_currency(total_tax(current_cart.items)) %><br/>
             <h5>Grand Total: <%= format_currency(grand_total(current_cart.items)) %></h5>

@@ -324,9 +324,15 @@ Rails.application.routes.draw do
         get 'order_confirmed'
       end
     end
-    resources :customer_products, only: %i[index create show] do
+    resources :products, :controller => :customer_products, only: %i[index create show] do
       collection do
         get 'generate_all'
+        get 'most_ordered_products'
+        get 'autocomplete'
+      end
+
+      member do
+        get 'to_cart'
       end
     end
 
@@ -345,16 +351,16 @@ Rails.application.routes.draw do
         get 'final_checkout'
       end
     end
-    resources :products, only: %i[index show] do
-      collection do
-        get 'most_ordered_products'
-        get 'autocomplete'
-      end
-
-      member do
-        get 'to_cart'
-      end
-    end
+    # resources :products, only: %i[index show] do
+    #   collection do
+    #     get 'most_ordered_products'
+    #     get 'autocomplete'
+    #   end
+    #
+    #   member do
+    #     get 'to_cart'
+    #   end
+    # end
 
     resource :cart, :controller => :cart, only: [:show] do
       collection do
