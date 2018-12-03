@@ -84,7 +84,7 @@
             </div>
 
           </div>
-          <div class="card-footer text-left" data-page = '1'>
+          <div class="card-footer text-left" data-page = '1' data-index = <%= row.index %>>
             <%= link_to_remove_association row, {class: 'btn btn-danger', wrapper_class: 'option-wrapper'} do %>
               Skip
             <% end %>

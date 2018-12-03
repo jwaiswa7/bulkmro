@@ -24,24 +24,24 @@ const manageFailedSkus = () => {
             $(this).addClass('disabled');
         }else{
             $(this).removeClass('disabled');
-            showPrevious($(this).data("row-object"), --page);
+            showPrevious($(this).data("row-object"), --page, $(this).parent().data("index"));
         }
     });
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
-        showNext($(this).data("row-object"), ++page);
+        showNext($(this).data("row-object"), ++page, $(this).parent().data("index"));
     });
 };
 
-let showPrevious = (row_object, page) => {
+let showPrevious = (row_object, page, index) => {
     $.ajax({
-        data: {row_object : row_object, page: page},
+        data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
     })
 }
 
-let showNext = (row_object, page) => {
+let showNext = (row_object, page, index) => {
     $.ajax({
-        data: {row_object : row_object, page: page},
+        data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
     })
 }

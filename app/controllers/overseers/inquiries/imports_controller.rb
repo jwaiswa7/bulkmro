@@ -80,7 +80,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @excel_import
 
     respond_to do |format|
-      format.js {render :partial => "load_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page] }}
+      format.js {render :partial => "load_alternatives.js.erb", locals: { row_object: InquiryImportRow.find(params[:row_object]), page: params[:page], item_index: params[:index] }}
     end
   end
 
