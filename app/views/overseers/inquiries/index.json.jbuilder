@@ -2,7 +2,7 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if policy(inquiry).edit?
-            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
+            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning', target: '_blank')
           end,
       ].join(' '),
       inquiry.inquiry_number,
