@@ -15,10 +15,6 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
     authorize @customer_order
   end
 
-  def convert
-    authorize @customer_order
-  end
-
   private
 
   def set_customer_order

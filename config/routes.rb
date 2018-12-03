@@ -192,7 +192,6 @@ Rails.application.routes.draw do
     resources :customer_orders do
       member do
         get 'show'
-        get 'convert'
       end
 
       collection do
