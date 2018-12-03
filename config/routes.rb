@@ -160,7 +160,6 @@ Rails.application.routes.draw do
         get 'export_rows'
         get 'export_for_logistics'
         get 'autocomplete'
-        get 'company_converted_orders'
       end
 
       scope module: 'sales_orders' do
@@ -308,6 +307,12 @@ Rails.application.routes.draw do
         end
 
         resources :sales_quotes do
+          collection do
+            get 'index'
+          end
+        end
+
+        resources :sales_orders do
           collection do
             get 'index'
           end
