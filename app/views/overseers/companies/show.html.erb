@@ -225,6 +225,18 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#customerorders" role="tab">Customer Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -352,29 +364,10 @@
           </table>
         </div>
       <% end %>
-    </div>
-  </section>
 
-  <section class="pb-4 pb-lg-5">
-    <ul class="nav nav-tabs nav-fill">
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#customerorders" role="tab">Customer Orders</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane fade active show" id="customerorders" role="tabpanel">
+      <div class="tab-pane fade" id="customerorders" role="tabpanel">
         <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Customer Orders</h3>
+          <h3 class="display-5 mb-1 d-none d-md-block">Customer Orders</h3>
         </div>
 
         <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= company_customer_orders_overseers_customer_orders_path(company_id: @company.id) %>">
@@ -397,16 +390,17 @@
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Quotes</h3>
         </div>
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= company_customer_orders_overseers_customer_orders_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_sales_quotes_path(:company_id => @company.id.to_param) %>">
           <thead>
           <tr>
             <th class="no-sort all" data-width="70px"></th>
-            <th class="no-sort all">Customer Name</th>
+            <th class="no-sort all">Doc ID</th>
+            <th class="no-sort all">Sent At</th>
+            <th class="no-sort all">Created By</th>
             <th class="no-sort all">Line Items</th>
-            <th class="no-sort all">Inside Sales</th>
-            <th class="no-sort all">Outside Sales</th>
-            <th class="no-sort all">Manager</th>
-            <th class="no-sort desktop" data-name="created_at">Created</th>
+            <th class="no-sort all">Total(Excl. Tax)</th>
+            <th class="no-sort all">Total(Incl. Tax)</th>
+            <th class="no-sort all">Created At</th>
           </tr>
           </thead>
           <tbody>
@@ -445,7 +439,7 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Invoices</h3>
         </div>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_sales_invoices_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_sales_invoices_path(company_id: @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
@@ -454,8 +448,6 @@
             <th class="no-sort desktop" data-name="order_number">Order #</th>
             <th class="no-sort desktop">Line Items</th>
             <th class="no-sort desktop">Status</th>
-            <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
-            <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
             <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
             <th class="no-sort desktop">Created At</th>
           </tr>

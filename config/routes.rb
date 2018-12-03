@@ -306,6 +306,18 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+
+        resources :sales_quotes do
+          collection do
+            get 'index'
+          end
+        end
+
+        resources :sales_invoices do
+          collection do
+            get 'index'
+          end
+        end
       end
     end
 
