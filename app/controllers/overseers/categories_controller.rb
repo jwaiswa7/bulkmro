@@ -7,9 +7,21 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   def autocomplete_closure_tree
-    calling_category = Category.find(params[:calling_category_id]) if params[:calling_category_id].present?
-    @categories = ApplyParams.to(Category.except_self_and_children(calling_category).leaves, params)
-    authorize @categories
+    @categories = Rails.cache.fetch("#{Digest::MD5.hexdigest params.to_s}/categories", expires_in: 10.minutes) do
+      @categories = []
+      Category.all.where(:parent_id => 2).each do |grandparent|
+        @categories << get_category_hash(grandparent, :grandparent)
+        grandparent.children.each do |parent|
+          @categories << get_category_hash(parent, :parent)
+          parent.children.each do |child|
+            @categories << get_category_hash(child, :child)
+          end
+        end
+      end
+      @categories
+    end
+
+    authorize :category
   end
 
   def show
@@ -51,6 +63,15 @@ class Overseers::CategoriesController < Overseers::BaseController
   end
 
   private
+
+  def get_category_hash(category, level = :child)
+
+
+    {
+        :id => category.id,
+        :text => category.autocomplete_to_s(level)
+    }
+  end
 
   def category_params
     params.require(:category).permit(
