@@ -395,11 +395,13 @@
           </div>
           <br clear="all">
           <div class="bottom-info" style="position: relative">
-            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
-              <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-                <%= wicked_pdf_image_tag 'signature.png', :width => "165", :height => "115" %>
+            <% if stamp %>
+              <div id="stamp" style="position:absolute;top:0px; right:0px; padding-top: 1px;padding-bottom: 1px;">
+                <div id="inner-stamp" style="float: right; position: relative; ">
+                  <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+                </div>
               </div>
-            </div>
+            <% end %>
             <% if record.sales_order.inquiry.bill_from.present? && record.sales_order.inquiry.bill_from.legacy_id == 12 %>
               <div id="noteInvoiceContainer" style="border:1px solid; border-radius: 5px;">
                 <table border="0" cellspacing="0" style="width: 100%;">
