@@ -4,7 +4,7 @@ class PoRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id, :po_number], :associated_against => {:inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:id], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :sales_order
   belongs_to :inquiry
