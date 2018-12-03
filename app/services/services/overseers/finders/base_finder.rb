@@ -16,8 +16,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
 
     if params[:base_filter_key].present? && params[:base_filter_value].present?
+      if params[:base_filter_value].kind_of?(Array)
+        #filter_By_array
+       @base_filter = filter_by_array(params[:base_filter_key], params[:base_filter_value])
+      else
+        #filter by value
+        @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
 
-      @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
+      end
 
     end
 
