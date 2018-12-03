@@ -12,10 +12,12 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0
-          <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
-          <%= action_button(action_name, @inquiry) %>
-        </div>
+        <% if policy(@inquiry).not_logistics? %>
+          <div class="mt-1 mt-md-0
+            <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+            <%= action_button(action_name, @inquiry) %>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="card-body">
@@ -37,32 +39,34 @@
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
-          <div class="col-3">
-            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
-            <div class="modal fade" id="statusModal" role="dialog">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Select Status</h4>
-                  </div>
-                  <div class="modal-body">
-                    <% if current_overseer.admin? %>
-                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
-                    <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
-                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
-                    <% else %>
-                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), disabled: @inquiry.regrettable_statuses %>
-                    <% end %>
-                  </div>
-                  <div class="modal-footer">
-                    <%= action_button(action_name, @inquiry) %>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <% if policy(@inquiry).not_logistics? %>
+            <div class="col-3">
+              <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
+              <div class="modal fade" id="statusModal" role="dialog">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Select Status</h4>
+                    </div>
+                    <div class="modal-body">
+                      <% if current_overseer.admin? %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
+                      <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
+                      <% else %>
+                        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), disabled: @inquiry.regrettable_statuses %>
+                      <% end %>
+                    </div>
+                    <div class="modal-footer">
+                      <%= action_button(action_name, @inquiry) %>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          <% end %>
           <div class="col-12 col-md-6">
             <%= f.input :subject, required: true %>
           </div>
@@ -370,7 +374,7 @@
 
             </div>
           <% end %>
-          <% if !f.object.persisted? %>
+          <% if !f.object.persisted? || policy(@inquiry).logistics? %>
             <%#= f.add_nested_fields_link :inquiry_products, 'Add a product', class: 'btn btn-outline-success btn-block' %>
           <% else %>
             <div class="form-row">
@@ -404,9 +408,11 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
-          <%= action_button(action_name, @inquiry) %>
-        </div>
+        <% if policy(@inquiry).not_logistics? %>
+          <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
+            <%= action_button(action_name, @inquiry) %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

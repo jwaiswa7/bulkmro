@@ -24,7 +24,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    can_manage_inquiry? || cataloging?
+    can_manage_inquiry? || cataloging? || logistics?
   end
 
   def new_list_import?
@@ -56,7 +56,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def imports?
-    edit?
+    edit? && not_logistics?
   end
 
   def edit_suppliers?
@@ -68,7 +68,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def sales_quotes?
-    edit? && (new_sales_quote? || record.sales_quotes.present?)
+    edit? && (new_sales_quote? || record.sales_quotes.present?) && not_logistics?
   end
 
   def new_sales_quote?
