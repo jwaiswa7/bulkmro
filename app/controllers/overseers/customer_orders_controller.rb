@@ -1,5 +1,5 @@
 class Overseers::CustomerOrdersController < Overseers::BaseController
-  before_action :set_customer_order, only: [:show, :convert]
+  before_action :set_customer_order, only: [:show]
 
   def index
     @customer_orders = ApplyDatatableParams.to(CustomerOrder.all, params)
