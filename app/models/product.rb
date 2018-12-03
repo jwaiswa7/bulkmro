@@ -50,12 +50,18 @@ class Product < ApplicationRecord
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
 
   validates_presence_of :name
-  validates_uniqueness_of :name, :if => :not_rejected?
+
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
   #validates_with MultipleImageFileValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
+  validate :unique_name?
+  def unique_name?
+    if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
+      errors.add(:name, " name must be unique")
+    end
+  end
 
   def service_product
     if self.is_service && !self.category.is_service

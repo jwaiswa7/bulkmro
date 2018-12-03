@@ -175,6 +175,10 @@ Rails.application.routes.draw do
     end
 
     resources :sales_invoices do
+      member do
+        get 'edit_pod'
+        patch 'update_pod'
+      end
       collection do
         get 'export_all'
         get 'export_rows'
