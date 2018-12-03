@@ -45,3 +45,13 @@ every(1.day, 'gcloud_run_backups_alt', :at => '23:30') do
   service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
 end
+
+every(1.day, 'resync_failed_requests', :at => '03:00') do
+  service = Services::Overseers::FailedRemoteRequests::Resync.new
+  service.call
+end
+
+every(1.day, 'resync_requests_status', :at => '06:00') do
+  service = Services::Overseers::FailedRemoteRequests::Resync.new
+  service.verify
+end
