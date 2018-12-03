@@ -231,6 +231,7 @@ Rails.application.routes.draw do
 
             get 'duplicate'
             get 'triplicate'
+            get 'make_zip'
           end
         end
 

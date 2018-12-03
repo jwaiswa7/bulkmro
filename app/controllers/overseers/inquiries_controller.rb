@@ -149,6 +149,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
       elsif @inquiry.status == 'Regret'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
+      else
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)

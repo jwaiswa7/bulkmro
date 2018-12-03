@@ -26,7 +26,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   def get_supplier(purchase_order, product_id)
     if purchase_order.metadata['PoSupNum'].present?
       product_supplier = Company.find_by_remote_uid(purchase_order.metadata['PoSupNum'])
-      return product_supplier if purchase_order.inquiry.suppliers.include? product_supplier
+      return product_supplier if ( purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy? )
     end
 
     product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first

@@ -1758,5 +1758,85 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     added.uniq
   end
 
+  def update_products_description
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      is_duplicate = x.get_column('IS Duplicate')
+      if product.present?
+        if is_duplicate == 'TRUE'
+          product.is_active = false
+          product.save
+        else
+          product.name = x.get_column('New Discription')
+          product.save_and_sync
+        end
+      end
+    end
+  end
+
+  def create_customer_product(company, product, x)
+    product_name = x.get_column('New Description')
+    customer_cost = x.get_column('Cost').to_f
+
+    puts product_name, customer_cost
+    puts "<--------------->"
+    CustomerProduct.where(:company_id => company.id, :product_id => product.id).first_or_create! do |customer_product|
+      customer_product.category_id = product.category_id
+      customer_product.brand_id = product.brand_id
+      customer_product.name = product_name
+      customer_product.sku = product.sku
+      customer_product.customer_price = customer_cost
+      customer_product.measurement_unit_id = product.measurement_unit_id
+      customer_product.tax_rate_id = product.tax_rate_id
+      customer_product.tax_code_id = product.tax_code_id
+      customer_product.moq = 1
+      customer_product.created_by = Overseer.default
+    end
+  end
+
+  def add_products_and_customer_products_to_company
+    company = Company.find_by_name('Piramal Enterprises Ltd.')
+    products = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Piramal BulkMRO 121118 .csv', 'seed_files')
+    service.loop(nil) do |x|
+      sku = x.get_column('SKU')
+
+      if sku.present?
+        product = Product.find_by_sku(sku)
+        if product.present?
+          create_customer_product(company, product, x)
+        end
+      else
+        name = x.get_column('New Description')
+        product = Product.find_by_name(name)
+        if product.blank?
+          category_3 = Category.find_by_name(x.get_column('Category 3')) if x.get_column('Category 3').present?
+          category_2 = Category.find_by_name(x.get_column('Category 2')) if x.get_column('Category 2').present?
+          category_1 = Category.find_by_name(x.get_column('Category 1')) if x.get_column('Category 1').present?
+          brand = Brand.find_by_name(x.get_column('Brand'))
+
+          category = category_3 || category_2 || category_1
+          measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
+          tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+
+          product = Product.new
+          product.brand = brand
+          product.category = category
+          product.sku = product.generate_sku
+          product.tax_code = tax_code || TaxCode.default
+          product.mpn = x.get_column('MFR')
+          product.description = x.get_column('New Description')
+          product.name = name
+          product.measurement_unit = measurement_unit
+          product.legacy_metadata = x.get_row
+          product.save!
+
+          product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+        end
+        create_customer_product(company, product, x)
+      end
+    end
+  end
 end
 
