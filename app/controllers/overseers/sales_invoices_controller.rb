@@ -28,13 +28,18 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     end
   end
 
+  def autocomplete
+    @sales_invoices = ApplyParams.to(SalesInvoice.all, params)
+    authorize @sales_invoices
+  end
+
   def export_all
     authorize :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoicesExporter.new
 
     respond_to do |format|
       format.html
-      format.csv {send_data service.call, filename: service.filename}
+      format.csv { send_data service.call, filename: service.filename }
     end
   end
 
@@ -44,7 +49,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     respond_to do |format|
       format.html
-      format.csv {send_data service.call, filename: service.filename}
+      format.csv { send_data service.call, filename: service.filename }
     end
   end
 
@@ -54,7 +59,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
     respond_to do |format|
       format.html
-      format.csv {send_data service.call, filename: service.filename}
+      format.csv { send_data service.call, filename: service.filename }
     end
   end
 

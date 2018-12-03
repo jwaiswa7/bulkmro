@@ -8,7 +8,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    allow_export?
+    allow_export? || allow_logistics_format_export?
   end
 
   def show_document?

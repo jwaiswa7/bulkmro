@@ -31,6 +31,7 @@ en:
         sr_no: 'Serial Number'
         bp_catalog_name: 'Customer Material Name'
         bp_catalog_sku: 'Customer Material Code'
+        quantity: 'Qty'
       inquiry_product_suppliers:
         bp_catalog_name: 'Supplier Material Name'
         bp_catalog_sku: 'Supplier Material Code'

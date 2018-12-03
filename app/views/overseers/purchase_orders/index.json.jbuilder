@@ -8,8 +8,10 @@ json.data (@purchase_orders) do |purchase_order|
                       row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                     end,
                   ].join(' '),
-                  purchase_order.po_number,
-                  purchase_order.inquiry.inquiry_number,
+                  link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: "_blank"),
+                  link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: "_blank"),
+                  ( purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? ),
+                  ( purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present? ),
                   purchase_order.status || purchase_order.metadata_status,
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
@@ -21,6 +23,9 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [],
+                       [{"source": autocomplete_overseers_companies_path}],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,

@@ -16,13 +16,13 @@ class SalesOrdersIndex < BaseIndex
     field :remote_status_string, value: -> (record) {record.remote_status.to_s}, analyzer: 'substring'
     field :remote_status, value: -> (record) {remote_statuses[record.remote_status]}
     field :quote_total, value: -> (record) {record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present?}
-    field :order_total, value: -> (record) {record.calculated_total.to_i if record.rows.present? &&  record.calculated_total.present?}
+    field :order_total, value: -> (record) {record.calculated_total.to_i if record.rows.present? && record.calculated_total.present?}
     field :customer_po_number, value: -> (record) {record.inquiry.customer_po_number if record.inquiry.present?}
     field :customer_po_number_string, value: -> (record) {record.inquiry.customer_po_number.to_s if record.inquiry.present?}, analyzer: 'substring'
-    field :contact_id, value: -> (record) { record.inquiry.contact_id if record.inquiry.present?}, type: 'integer'
-    field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present?}, type: 'integer'
-    field :account_id, value: -> (record) { record.inquiry.contact.account.id if record.inquiry.present?}, type: 'integer'
-    field :account_name, value: -> (record) { record.inquiry.contact.account.name.to_s if record.inquiry.present?}, analyzer: 'substring'
+    field :contact_id, value: -> (record) {record.inquiry.contact_id if record.inquiry.present?}, type: 'integer'
+    field :company_id, value: -> (record) {record.inquiry.company.id if record.inquiry.present?}, type: 'integer'
+    field :account_id, value: -> (record) {record.inquiry.contact.account.id if record.inquiry.present?}, type: 'integer'
+    field :account_name, value: -> (record) {record.inquiry.contact.account.name.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :company, value: -> (record) {record.inquiry.company.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :inside_sales_owner_id, value: -> (record) {record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present?}
     field :inside_sales_owner, value: -> (record) {record.inquiry.inside_sales_owner.to_s if record.inquiry.present?}, analyzer: 'substring'
@@ -30,6 +30,7 @@ class SalesOrdersIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) {record.inquiry.outside_sales_owner.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) {record.inquiry.inside_sales_owner_id if record.inquiry.present?}
     field :outside_sales_executive, value: -> (record) {record.inquiry.outside_sales_owner_id if record.inquiry.present?}
+    field :mis_date, value: -> (record) {record.mis_date}, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :sent_at, type: 'date'

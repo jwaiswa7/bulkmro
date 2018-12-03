@@ -1,5 +1,6 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
+  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -42,11 +43,48 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     end
   end
 
+  def make_zip
+    authorize @sales_invoice
+
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice)
+    zip = service.call
+
+    send_data(zip, :type => 'application/zip', :filename => @sales_invoice.zipped_filename(include_extension: true))
+  end
+
+  def edit_mis_date
+    if @sales_invoice.mis_date.blank?
+      @sales_invoice.mis_date = @sales_invoice.created_at.strftime("%d-%b-%Y")
+    end
+
+    authorize @sales_invoice
+  end
+
+  def update_mis_date
+    @sales_invoice.assign_attributes(sales_invoice_params)
+    authorize @sales_invoice
+
+    if @sales_invoice.save
+      redirect_to overseers_inquiry_sales_invoices_path(@inquiry), notice: flash_message(@inquiry, action_name)
+    else
+      render 'edit'
+    end
+  end
+
   private
+  def save
+    @sales_invoice.save
+  end
 
   def set_sales_invoice
     @sales_invoice = @inquiry.invoices.find(params[:id])
   end
 
-end
+  def set_invoice_items
+    Resources::Invoice.set_invoice_items(@sales_invoice)
+  end
 
+  def sales_invoice_params
+    params.require(:sales_invoice).permit(:mis_date)
+  end
+end

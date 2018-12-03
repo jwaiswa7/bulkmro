@@ -3,8 +3,20 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?
   end
 
+  def edit_mis_date?
+    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
+  end
+
+  def update_mis_date?
+    edit_mis_date?
+  end
+
   def show_original_invoice?
     record.original_invoice.attached?
+  end
+
+  def make_zip?
+    show?
   end
 
   def export_all?

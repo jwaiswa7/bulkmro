@@ -56,7 +56,7 @@ class Address < ApplicationRecord
   end
 
   def remove_gst_whitespace
-    if self.gst != "No GST Number" || self.gst != nil
+    if self.gst != "No GST Number" && self.gst != nil
       self.gst = self.gst.delete(' ')
     end
   end
