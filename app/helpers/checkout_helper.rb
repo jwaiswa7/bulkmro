@@ -5,7 +5,7 @@ module CheckoutHelper
   end
 
   def get_billing_address(billing_address_id)
-    Address.find(billing_address_id).to_multiline_s
+    Address.find(billing_address_id)
   end
 
   def get_shipping_address(shipping_address_id)
@@ -18,14 +18,12 @@ module CheckoutHelper
 
   #refactoring pending
   def calculate_tax(cart_items)
-    items = cart_items.joins(:product).select("tax_rate_id as tax_rate_id, product_id as product_id, quantity as quantity")
+    items = cart_items.joins(:customer_product).group(:tax_rate_id).select("tax_rate_id as id, sum(customer_price * quantity) as total_price")
     items.each_with_object({}) do |item, hash|
-      if item.tax_rate_id.present?
-        if hash.has_key? item.tax_rate_id
-          hash[get_tax_percentage(item.tax_rate_id)] += ((item.product.latest_unit_cost_price.to_f * item.quantity) * get_tax_percentage(item.tax_rate_id) / 100)
-        else
-          hash[get_tax_percentage(item.tax_rate_id)] = ((item.product.latest_unit_cost_price.to_f * item.quantity) * get_tax_percentage(item.tax_rate_id) / 100)
-        end
+      if hash.has_key? item.id
+        hash[get_tax_percentage(item.id)] += (item.total_price * get_tax_percentage(item.id) / 100)
+      else
+        hash[get_tax_percentage(item.id)] = (item.total_price * get_tax_percentage(item.id) / 100)
       end
     end
   end
@@ -44,5 +42,9 @@ module CheckoutHelper
 
   def get_tax_percentage(tax_rate_id)
     TaxRate.find(tax_rate_id).tax_percentage.to_f
+  end
+
+  def mumbai_warehouse_address
+    Warehouse.find(8).address
   end
 end

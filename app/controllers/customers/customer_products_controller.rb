@@ -1,5 +1,5 @@
 class Customers::CustomerProductsController < Customers::BaseController
-  before_action :set_product, only: [:show, :to_cart]
+  before_action :set_customer_product, only: [:show, :to_cart]
   before_action :create_new_cart_item, only: [:index, :to_cart, :show]
 
   def index
