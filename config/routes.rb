@@ -189,13 +189,10 @@ Rails.application.routes.draw do
     end
 
     resources :customer_orders do
-      member do
-        get 'show'
-      end
+      scope module: 'customer_orders' do
+        resources :inquiries do
 
-      collection do
-        get 'index'
-        get 'company_customer_orders'
+        end
       end
     end
 
@@ -273,7 +270,6 @@ Rails.application.routes.draw do
             post 'create_list_import'
           end
         end
-
       end
     end
 
@@ -284,6 +280,8 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
+        resources :customer_orders
+
         resources :customer_products do
           collection do
             post 'generate_catalog'
@@ -305,23 +303,9 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :sales_quotes do
-          collection do
-            get 'index'
-          end
-        end
-
-        resources :sales_orders do
-          collection do
-            get 'index'
-          end
-        end
-
-        resources :sales_invoices do
-          collection do
-            get 'index'
-          end
-        end
+        resources :sales_quotes
+        resources :sales_orders
+        resources :sales_invoices
       end
     end
 

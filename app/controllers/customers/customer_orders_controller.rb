@@ -9,7 +9,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
         current_cart.assign_attributes(cart_params)
         current_cart.save
       end
-      @customer_order = current_contact.customer_orders.create
+      @customer_order = current_contact.customer_orders.create(:company => current_contact.company)
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|

@@ -5,9 +5,8 @@ json.data (@customer_orders) do |customer_order|
                         row_action_button(overseers_customer_order_path(customer_order), 'eye', 'View Customer Order', 'info')
                       end,
                       if policy(customer_order).can_create_inquiry?
-                        row_action_button(new_from_customer_order_overseers_inquiries_path(company_id: customer_order.company.to_param, customer_order_id: customer_order.to_param), 'plus-circle', 'Create Inquiry', 'success')
-                      end,
-                      if !policy(customer_order).can_create_inquiry?
+                        row_action_button(new_overseers_customer_order_inquiry_path(customer_order), 'plus-circle', 'Create Inquiry', 'success')
+                      else
                         row_action_button(edit_overseers_inquiry_path(customer_order.inquiry), 'pencil', 'View Inquiry', 'warning')
                       end
                   ].join(' '),
