@@ -20,6 +20,7 @@ class Contact < ApplicationRecord
   has_one :company, :through => :company_contact
   has_one :cart
   has_many :customer_orders
+  has_many :customer_products, :through => :companies
 
   enum role: {customer: 10, account_manager: 20}
   enum status: {active: 10, inactive: 20}
@@ -59,5 +60,26 @@ class Contact < ApplicationRecord
 
   def current_cart
     self.cart || self.create_cart
+  end
+
+  def generate_products
+    overseer = Overseer.default
+    customer_companies = self.companies.pluck(:id)
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+    inquiry_products.each do |inquiry_product|
+      if inquiry_product.product.synced?
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create! do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = ( inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name ) || inquiry_product.product.name
+          customer_product.sku = ( inquiry_product.bp_catalog_sku == "" ? nil : inquiry_product.bp_catalog_sku ) || inquiry_product.product.sku
+          customer_product.tax_code = inquiry_product.product.best_tax_code
+          customer_product.tax_rate = inquiry_product.best_tax_rate
+          customer_product.measurement_unit = inquiry_product.product.measurement_unit
+          customer_product.moq = 1
+          customer_product.created_by = overseer
+        end
+      end
+    end
   end
 end

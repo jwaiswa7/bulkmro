@@ -6,6 +6,10 @@ class Customers::ApplicationPolicy
     @record = record
   end
 
+  def autocomplete?
+    true
+  end
+
   def customer?
     contact.customer?
   end

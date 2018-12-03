@@ -5,11 +5,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   end
 
   def all_records
-    indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+    indexed_records = super
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
@@ -24,18 +20,14 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'and',
-                              fields: %w[sku^3 sku_edge name brand category],
-                              minimum_should_match: '100%'
-                          }
-                      })
-
-    if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-    end
+    indexed_records = index_klass.query({
+                                            multi_match: {
+                                                query: query,
+                                                operator: 'and',
+                                                fields: %w[sku^3 sku_edge name brand category],
+                                                minimum_should_match: '100%'
+                                            }
+                                        })
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

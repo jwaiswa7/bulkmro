@@ -12,6 +12,7 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
+  has_one_attached :pod_attachment
 
   enum status: {
       :'Open' => 1,
@@ -38,6 +39,13 @@ class SalesInvoice < ApplicationRecord
     [
         ['invoice', invoice_number].join('_'),
         ('pdf' if include_extension)
+    ].compact.join('.')
+  end
+
+  def zipped_filename(include_extension: false)
+    [
+        ['invoices', invoice_number].join('_'),
+        ('zip' if include_extension)
     ].compact.join('.')
   end
 
