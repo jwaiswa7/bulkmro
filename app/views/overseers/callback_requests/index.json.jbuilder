@@ -6,7 +6,7 @@ json.data (@callback_requests) do |callback_request|
                       end,
                   ].join(' '),
                   remote_request_status_badge(callback_request.status),
-                  callback_request.hits,
+                  callback_request.hits.present? ? callback_request.hits.to_i : nil ,
                   format_enum(callback_request.method),
                   callback_request.resource,
                   callback_request.response.to_s[0..120],
