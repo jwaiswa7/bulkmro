@@ -18,7 +18,9 @@ json.data (@sales_invoices) do |sales_invoice|
                       end,
                       if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
                         [
-                            if sales_invoice.pod_attachment.attached?; row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank); end,
+                            if sales_invoice.pod_attachment.attached?;
+                              row_action_button(url_for(sales_invoice.pod_attachment), 'certificate', 'Download Proof of Delivery', 'dark', :_blank);
+                            end,
                             row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'pencil', 'Edit Proof of Delivery', 'info')
                         ]
                       end,
@@ -46,11 +48,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
-                       [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       []
+                       [],
+                       [],
+                       [],
                    ]
 
 json.recordsTotal SalesInvoice.all.count

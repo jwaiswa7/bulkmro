@@ -272,9 +272,11 @@
                   <td align="center">
                     <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span></td>
                   <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
-                    <span><%= number_to_currency(item.converted_unit_selling_price, precision: 2, unit: '')  %></span></td>
+                    <span><%= number_to_currency(item.converted_unit_selling_price, precision: 2, unit: '') %></span>
+                  </td>
                   <td align="right" style="text-align:right;">
-                    <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '')  %></span></td>
+                    <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
+                  </td>
                   <td align="center">
                     <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                   <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
@@ -344,7 +346,7 @@
                   </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(record.converted_total_with_tax , precision: 2, unit: '') %></span></b>
+                  <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
                 </td>
               </tr>
 
@@ -357,9 +359,10 @@
 
           <br clear="all">
           <div class="bottom-info" style="position:relative;">
-            <div id="stamp" style="width:94%;position:absolute;top:600px; padding-top: 1px;padding-bottom: 1px;">
+            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
               <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %></div>
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+              </div>
             </div>
             <div id="commercial" style="border:1px solid; border-radius: 0;">
               <table border="0" cellspacing="0" style="width: 100%;">
