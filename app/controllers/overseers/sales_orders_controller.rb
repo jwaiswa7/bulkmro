@@ -17,22 +17,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
-  def company_converted_orders
-    authorize :sales_order
-    respond_to do |format|
-      format.html {render 'pending'}
-      format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
-        service.call
-
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
-
-        render 'pending'
-      end
-    end
-  end
-
   def export_all
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
