@@ -309,6 +309,7 @@ Rails.application.routes.draw do
     end
 
     resources :warehouses
+    resources :payment_options
   end
 
   namespace 'customers' do
