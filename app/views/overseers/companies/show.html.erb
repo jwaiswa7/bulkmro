@@ -226,6 +226,18 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
       </li>
+
+      <% if @company.is_supplier? %>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#purchase-orders" role="tab">Purchase Orders</a>
+      </li>
+        <% end  %>
+
+      <% if @company.is_supplier? %>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#supplier-products" role="tab">Supplied Products</a>
+      </li>
+        <% end %>
     </ul>
 
     <div class="tab-content">
@@ -235,18 +247,6 @@
           <a href="<%= new_overseers_company_address_path(@company) %>" class=" btn btn-success btn-rounded btn float-right btn-block-sm-down mr-md-1 mb-md-0 mb-1">
             <i class="fal fa-plus-circle mr-1"></i>New Address
           </a>
-          <% end %>
-
-          <% if @company.is_supplier? %>
-          <a href="<%= overseers_company_purchase_orders_path(@company) %>" class="btn btn-success btn-rounded btn float-right btn-block-sm-down mb-2 mb-md-0">
-            <i class="fal fa-plus-circle mr-1"></i>Purchase Orders
-          </a>
-          <% end  %>
-
-          <% if @company.is_supplier? %>
-            <a href="<%= overseers_company_products_path(@company) %>" class=" btn btn-success btn-rounded btn float-right btn-block-sm-down mb-2 mb-md-0">
-              <i class="fal fa-plus-circle mr-1"></i>Supplied Products
-            </a>
           <% end  %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
@@ -320,6 +320,70 @@
               <th class="no-sort">Outside Sales</th>
               <th class="no-sort">Total</th>
               <th data-name="created_at">Created</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+
+      <% if @company.is_supplier? %>
+        <div class="tab-pane fade" id="purchase-orders" role="tabpanel">
+          <div class="d-md-flex justify-content-between">
+            <h3 class="display-5 mb-1 d-none d-md-block">Purchase Orders</h3>
+
+          </div>
+<!--          <p class="mt-md-1 d-none d-md-block">-->
+<!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
+<!--          </p>-->
+
+          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_purchase_orders_path(company_id: @company.id) %>">
+            <thead>
+            <tr>
+              <th class="no-sort all"></th>
+              <th class="no-sort desktop" data-name="po_number">Purchase #</th>
+              <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+              <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
+              <th class="no-sort desktop" data-name="customer_id">Customer</th>
+              <th class="no-sort all" data-name="po_status">Status</th>
+              <th class="no-sort desktop">Line Items</th>
+              <th class="no-sort desktop" data-name="inside_sales_executive" >Inside Sales</th>
+              <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+              <th class="no-sort desktop" data-name="created_at">Created</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+
+      <% if @company.is_supplier? %>
+        <div class="tab-pane fade" id="supplier-products" role="tabpanel">
+          <div class="d-md-flex justify-content-between">
+            <h3 class="display-5 mb-1 d-none d-md-block">Supplied Products</h3>
+
+          </div>
+<!--          <p class="mt-md-1 d-none d-md-block">-->
+<!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
+<!--          </p>-->
+
+          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_products_path(company_id: @company.id) %>">
+            <thead>
+            <tr>
+              <th class="no-sort all" data-width="70px"></th>
+              <th class="no-sort desktop" data-name="product_id">Name</th>
+              <th class="no-sort all" data-name="sku">SKU</th>
+              <th class="no-sort desktop" data-name="brand_id">Brand</th>
+              <th class="no-sort desktop">Category</th>
+              <th class="no-sort desktop">MPN</th>
+              <th class="no-sort desktop" data-name="is_active"> Active</th>
+              <th class="no-sort desktop">SAP</th>
+              <th class="no-sort desktop" data-name="created_at">Created</th>
+              <th class="no-sort desktop">Approved</th>
             </tr>
             </thead>
             <tbody>
