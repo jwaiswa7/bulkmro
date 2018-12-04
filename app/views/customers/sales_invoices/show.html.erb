@@ -141,13 +141,13 @@
                   <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
                 </th>
                 <th class="no-sort">
-                  <span data-toggle="tooltip" title="Product Number">Product</span>
+                  <span data-toggle="tooltip" title="Product Number">SKU</span>
                 </th>
                 <th class="no-sort">
                   <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
                 </th>
                 <th class="no-sort">
-                  <span>Description</span>
+                  <span>Product</span>
                 </th>
                 <th class="no-sort">
                   <span>Make</span>
@@ -162,7 +162,7 @@
                   <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
                 </th>
                 <th class="no-sort">
-                  <span data-toggle="tooltip" title="Tax">Tax</span>
+                  <span data-toggle="tooltip" title="Tax">Tax(%)</span>
                 </th>
                 <th class="no-sort">
                   <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
@@ -170,40 +170,36 @@
               </tr>
               </thead>
               <tbody>
-              <% @sales_invoice.sales_order.sales_order_rows.each do |row| %>
+              <% @sales_invoice.rows.each_with_index do |row, index| %>
                 <tr>
                   <td>
                       <span>
-                          #<%= row.sr_no %>
+                          <%= index+1 %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.sales_quote_row.product.remote_uid %>
+                          <%= row.sku %>
                       </span>
                   </td>
                   <td>
                       <span>
-                              <%= row.sales_quote_row.product.mpn %>
+                              <%= @sales_invoice.sales_order.sales_order_rows[index].product.try('mpn') || "" %>
                       </span>
                   </td>
                   <td>
                       <span>
-                              <%= row.sales_quote_row.product.description || "Not Available" %>
+                        <%= row.name %>
                       </span>
                   </td>
                   <td>
                       <span>
-                        <% if row.sales_quote_row.product.brand %>
-                          <%= row.sales_quote_row.product.brand.name %>
-                        <% else %>
-                          Not Available
-                        <% end %>
+                          <%= row.brand %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.measurement_unit || row.product.measurement_unit || MeasurementUnit.default %>
+                          <%= row.uom %>
                       </span>
                   </td>
                   <td>
@@ -213,17 +209,17 @@
                   </td>
                   <td>
                       <span>
-                        <%= format_currency(row.unit_selling_price) %>
+                        <%= number_to_currency(row.metadata['row_total'], precision: 2, unit: '') %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= row.best_tax_code.tax_percentage %>
+                          <%= @sales_invoice.sales_order.sales_order_rows[index].best_tax_code.tax_percentage %>
                       </span>
                   </td>
                   <td>
                       <span>
-                          <%= format_currency(row.total_selling_price) %>
+                          <%= number_to_currency((row.metadata['row_total_incl_tax'].to_f), precision: 2, unit: '') %>
                       </span>
                   </td>
                 </tr>
