@@ -24,9 +24,12 @@ class Overseers::KitsController < Overseers::BaseController
     if @kit.save
 
       if @kit.inquiry.present?
-        @kit.inquiry.inquiry_products.each do |inquiry_product|
-          @kit.kit_product_rows.where(:product_id => inquiry_product.product.id).first_or_create do |row|
-            row.quantity = inquiry_product.quantity
+        @kit_products = @kit.inquiry.try(:final_sales_quote).try(:sales_quote_rows) || @kit.inquiry.inquiry_products
+        @kit_products.each do |kit_product|
+          @kit.kit_product_rows.where(:product_id => kit_product.product.id).first_or_create! do |row|
+            row.quantity = kit_product.quantity
+            row.tax_code = kit_product.try(:tax_code) || kit_product.product.tax_code
+            row.tax_rate = kit_product.try(:tax_rate) || kit_product.product.tax_rate
           end
         end
         @kit.save
@@ -53,6 +56,7 @@ class Overseers::KitsController < Overseers::BaseController
   end
 
   private
+
   def inquiry
     params[:inquiry_id].present? ? params[:inquiry_id] : nil
   end
@@ -61,7 +65,7 @@ class Overseers::KitsController < Overseers::BaseController
     params.require(:kit).permit(
         :inquiry_id,
         :product_attributes => [:id, :name, :sku, :mpn, :is_service, :brand_id, :category_id, :tax_code_id, :measurement_unit_id, :overseer],
-        :kit_product_rows_attributes => [:id, :product_id, :quantity]
+        :kit_product_rows_attributes => [:id, :product_id, :quantity, :tax_code_id, :tax_rate_id]
     )
   end
 

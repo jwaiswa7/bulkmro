@@ -12,7 +12,8 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
+        <div class="mt-1 mt-md-0
+          <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
@@ -23,7 +24,7 @@
         <%= f.input :company, as: :string, disabled: true %>
         <div class="form-row">
           <div class="col-4">
-            <%= f.input :inquiry_number, disabled: true %>
+            <%= f.input :inquiry_number, label: 'Inquiry #', disabled: true %>
           </div>
           <div class="col-8">
             <%= f.input :legacy_contact_name, disabled: true %>
@@ -31,13 +32,13 @@
         </div>
 
         <div class="form-row">
-          <div class="col-3">
+          <div class="col-6 col-md-3">
             <%= f.input :status, as: :string, disabled: true %>
             <%# #, :disabled => ['Lead by O/S','New Inquiry','Acknowledgement Mail','Cross Reference','Supplier RFQ Sent','Preparing Quotation','Draft SO for Approval by Sales Manager','SO Rejected by Sales Manager','SO Draft: Pending Accounts Approval','Rejected by Accounts','Hold by Accounts','Order Won','Quotation Sent'] %>
             <!-- TODO commercial_status need to be added -->
           </div>
           <div class="col-3">
-            <button type="button" class="btn btn-m btn-block btn-danger" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Order Lost / Regret</button>
+            <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
             <div class="modal fade" id="statusModal" role="dialog">
               <div class="modal-dialog">
                 <!-- Modal content-->
@@ -46,7 +47,13 @@
                     <h4 class="modal-title">Select Status</h4>
                   </div>
                   <div class="modal-body">
-                    <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: Inquiry.statuses.keys.sort , disabled: Inquiry.statuses.keys.sort.reject { |i| i.match("Order Lost") || i.match("Regret") }, selected: @inquiry.status  %>
+                    <% if current_overseer.admin? %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
+                    <% elsif ["Order Lost", "Regret"].include?(@inquiry.status) %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), selected: @inquiry.status %>
+                    <% else %>
+                      <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.statuses), disabled: @inquiry.regrettable_statuses %>
+                    <% end %>
                   </div>
                   <div class="modal-footer">
                     <%= action_button(action_name, @inquiry) %>
@@ -56,7 +63,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <%= f.input :subject, required: true %>
           </div>
         </div>
@@ -177,10 +184,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_number, label: 'Customer PO number' %>
+            <%= f.input :customer_po_number, label: 'Customer Purchase Order No.' %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer PO sheet', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.customer_po_sheet.filename}".html_safe) : false %>
+            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer Purchase Order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.customer_po_sheet.filename}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => f.object.copy_of_email.filename}".html_safe) : false %>
@@ -294,7 +301,7 @@
           <%= f.nested_fields_for :inquiry_products, wrapper_tag: :div do |inquiry_product| %>
             <div class="form-row flex-row align-items-start">
               <%= inquiry_product.hidden_field :id %>
-              <div class="col-1">
+              <div class="col-3 col-md-1">
                 <div class="d-flex flex-row">
                   <div class="form-group align-self-center mr-1">
                     <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
@@ -322,12 +329,12 @@
 
                 </div>
               </div>
-              <div class="col-5">
+              <div class="col-9 col-md-5">
                 <div class="select2-wrap">
                   <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
               </div>
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <div class="form-row">
                   <div class="col-6">
                     <%= inquiry_product.input :bp_catalog_name, as: :string, :label => false, placeholder: placeholder_for(inquiry_product, :bp_catalog_name), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
@@ -338,21 +345,17 @@
                 </div>
               </div>
 
-              <div class="col-1">
-                <div class="d-flex flex-row align-items-center">
-                  <div>
-                    <% if inquiry_product.object.persisted? %>
-                      <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
-                    <% else %>
-                      <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
-                        <i class="far fa-ban"></i>
-                      </span>
-                    <% end %>
-                  </div>
-                </div>
+              <div class="col-2 col-md-1 text-center">
+                <% if inquiry_product.object.persisted? %>
+                  <%= format_boolean_label(inquiry_product.object.product.synced?, 'synced') %>
+                <% else %>
+                  <span class="text-warning" data-toggle="tooltip" title="Save to see sync status">
+                    <i class="far fa-ban"></i>
+                  </span>
+                <% end %>
               </div>
 
-              <div class="col-1">
+              <div class="col-4 col-md-1">
                 <div class="d-flex flex-row align-items-center">
                   <div>
                     <%= inquiry_product.input :quantity, :label => false, placeholder: placeholder_for(inquiry_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
@@ -385,7 +388,8 @@
                 <% end %>
               </div>
               <div class="col-md-3">
-                <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Create Kit</a>
+                <a href="<%= new_overseers_kit_path(@inquiry) %>" class="btn btn-outline-success btn-block mb-2 mb-md-0"><i class="fal fa-clipboard-list mr-1"></i>Create
+                  Kit</a>
               </div>
             </div>
           <% end %>
@@ -400,7 +404,7 @@
               Acknowledgement</a>
           </div>
         <% end %>
-        <div class="mt-1 mt-md-0 <% if policy(@inquiry).new_email_message? %>col-md-6<% else %>col-md-12<% end %>">
+        <div class="mt-1 mt-md-0 <%= policy(@inquiry).new_email_message? ? "col-md-6" : "col-md-12" %>">
           <%= action_button(action_name, @inquiry) %>
         </div>
       </div>
