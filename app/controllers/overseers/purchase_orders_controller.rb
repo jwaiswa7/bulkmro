@@ -15,10 +15,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def autocomplete
-    service = Services::Overseers::Finders::PurchaseOrders.new(params.merge(page: 1), current_overseer)
+    service = Services::Overseers::Finders::PurchaseOrders.new(params.merge(page: 1))
     service.call
     @indexed_purchase_orders = service.indexed_records
-    @purchase_orders = service.records.try(:reverse)
+    @purchase_orders = service.records.reverse
     authorize :purchase_order
   end
 

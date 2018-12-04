@@ -82,11 +82,29 @@
             <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
             <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
             <%= nav_dropdown_item 'Completed PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
+            <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
           </div>
         </li>
       <% end %>
+
+      <% if policy(:sales_order).index? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+            Invoice Requests
+          </a>
+          <div class="dropdown-menu">
+            <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'grpo_pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'AP Invoice Pending', pending_overseers_invoice_requests_path(:status => 'ap_invoice_pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Delivery Pending', pending_overseers_invoice_requests_path(:status => 'delivery_pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'AR Invoice Pending', pending_overseers_invoice_requests_path(:status => 'ar_invoice_pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+          </div>
+        </li>
+      <% end %>
+
       <% if policy(:report).index? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">

@@ -148,6 +148,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :invoice_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+        get 'completed'
+      end
+    end
+
     resources :sales_orders do
       member do
         get 'new_purchase_order'
