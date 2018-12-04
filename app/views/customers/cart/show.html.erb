@@ -1,16 +1,9 @@
 <div class="col-12">
-  <%= simple_form_for([:customers, @cart], :url => customers_customer_orders_path, :method => :post) do |cart| %>
+  <%= simple_form_for([:customers, @cart], :url => final_checkout_customers_checkouts_path, :method => :get) do |cart| %>
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 mb-1">Cart</h1>
       <%= cart.hidden_field 'id' %>
-      <% unless cart.object.items.size.zero? %>
-        <div>
-          <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-            <i class="fal fa-shopping-cart mr-1"></i> Checkout
-          <% end %>
-        </div>
-      <% end %>
     </div>
     <p class="lead mt-1">
       You have <strong><%= cart.object.items.size %></strong> product(s) in your cart.
@@ -49,14 +42,11 @@
     <div class="card-footer">
       <div class="form-row">
         <div class="col-md-12">
-          <% if cart.object.items.size.zero? %>
-            <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
-              <i class="fal fa-shopping-cart mr-1"></i> Add Products
-            <% end %>
-          <% else %>
-            <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-              <i class="fal fa-shopping-cart mr-1"></i> Checkout
-            <% end %>
+          <%= link_to customers_products_path, :class => "btn btn-success btn-block" do %>
+            Add Products
+          <% end %>
+          <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+            <i class="fal fa-shopping-cart mr-1"></i>Proceed to Checkout
           <% end %>
         </div>
       </div>

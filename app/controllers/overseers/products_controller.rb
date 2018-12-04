@@ -16,7 +16,6 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records
-
     authorize @products
   end
 
@@ -79,7 +78,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @company = Company.find(params[:company_id])
     authorize @product
 
-    bp_catalog =  @product.bp_catalog_for_customer(@company)
+    bp_catalog = @product.bp_catalog_for_customer(@company)
 
     render json: bp_catalog ? {
         bp_catalog_name: bp_catalog[0],

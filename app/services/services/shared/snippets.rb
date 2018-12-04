@@ -588,7 +588,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def fix_product_brands
     PaperTrail.request(enabled: false) do
-      service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+      service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv', 'seed_files')
       service.loop(nil) do |x|
         next if x.get_column('entity_id').to_i < 677812
         brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
@@ -611,7 +611,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def activities_migration_fix_2
-    service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv', 'seed_files')
     service.loop(nil) do |x|
       overseer_legacy_id = x.get_column('overseer_legacy_id')
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
@@ -621,7 +621,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def product_brands_fix
-    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('products.csv', 'seed_files')
     service.loop(nil) do |x|
       brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
       product = Product.find_by_legacy_id(x.get_column('entity_id'))
@@ -683,7 +683,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def update_warehouse_and_inquiry
     update_if_exists = true
 
-    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv', 'seed_files')
     service.loop(nil) do |x|
       warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
       if warehouse.new_record? || update_if_exists
@@ -718,6 +718,39 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
           inquiry.ship_from = Warehouse.find_by_legacy_id(x.get_column('ship_from_warehouse'))
           inquiry.save!
+        end
+      end
+    end
+  end
+
+
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten if customer_companies.present?
+      if inquiry_products.present?
+        inquiry_products.each do |inquiry_product|
+          CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :sku => inquiry_product.product.sku).first_or_create do |customer_product|
+            customer_product.product_id = inquiry_product.product_id
+            customer_product.category_id = inquiry_product.product.category_id
+            customer_product.brand_id = inquiry_product.product.brand_id
+            customer_product.name = inquiry_product.product.name
+
+            # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+            customer_product.created_by = customer
+          end
         end
       end
     end
@@ -773,7 +806,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         #   end
         # end
         #
-        # # todo handle cancellation, etc
+        # todo handle cancellation, etc
         # request_status = x.get_column('request_status')
         #
         # if !sales_order.approved?
@@ -796,4 +829,29 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def inquiry_status_update
+
+    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where( inquiry_status_records: {inquiry_id: nil} ).with_includes.each do |inquiry|
+      if inquiry.inquiry_status_records.blank?
+        subject = inquiry
+        status = inquiry.status
+        if (inquiry.final_sales_quote.present?)
+          subject = inquiry.final_sales_quote
+          status = 'Quotation Sent'
+        end
+
+        if inquiry.sales_orders.any?
+          subject = inquiry.sales_orders.last
+          status = 'Expected Order'
+        end
+
+        if inquiry.sales_orders.remote_approved.any?
+          subject = inquiry.sales_orders.remote_approved.last
+          status = 'Order Won'
+        end
+        inquiry.update_attribute(:status ,status)
+        InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create if inquiry.inquiry_status_records.blank?
+      end
+    end
+  end
 end

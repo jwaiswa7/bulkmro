@@ -18,6 +18,8 @@ class SalesOrder < ApplicationRecord
   has_one_attached :serialized_pdf
 
   belongs_to :sales_quote
+
+
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -31,6 +33,9 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
   has_one :po_request
+  belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
+  belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
+
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
@@ -42,7 +47,7 @@ class SalesOrder < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'Requested'
+    #self.status ||= :'Requested'
   end
 
   enum legacy_request_status: {
@@ -177,7 +182,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def total_quantities
-    self.rows.pluck(:quantity).inject(0){|sum,x| sum + x }
+    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
   def has_purchase_order_request

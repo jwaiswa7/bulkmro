@@ -18,9 +18,9 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect {|action| params[action]}
       send(callback_method) if callback_method.present? && policy(@comment.sales_order).send([callback_method, '?'].join)
-      redirect_to overseers_inquiry_comments_path(@inquiry, sales_order_id: @comment.sales_order.to_param), notice: flash_message(@comment, action_name)
+      redirect_to overseers_inquiry_comments_path(@inquiry, sales_order_id: @comment.sales_order.to_param, :show_to_customer => inquiry_comment_params[:show_to_customer]), notice: flash_message(@comment, action_name)
     elsif @comment.save
-      redirect_to overseers_inquiry_comments_path(@inquiry), notice: flash_message(@comment, action_name)
+      redirect_to overseers_inquiry_comments_path(@inquiry, :show_to_customer => inquiry_comment_params[:show_to_customer]), notice: flash_message(@comment, action_name)
     else
       render 'new'
     end
@@ -31,18 +31,21 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
   def inquiry_comment_params
     params.require(:inquiry_comment).permit(
         :message,
-        :sales_order_id
+        :sales_order_id,
+        :show_to_customer
     )
   end
 
   def approve
     service = Services::Overseers::SalesOrders::ApproveAndSerialize.new(@comment.sales_order, @comment)
+    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_approved_by_sales_manager).call
     service.call
   end
 
   def reject
     @comment.sales_order.create_rejection(:comment => @comment, :overseer => current_overseer)
     @comment.sales_order.update_attributes(:status => :'Rejected')
+    Services::Overseers::Inquiries::UpdateStatus.new(@comment.sales_order, :order_rejected_by_sales_manager).call
     @comment.sales_order.update_index
   end
 end

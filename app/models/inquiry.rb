@@ -49,6 +49,7 @@ class Inquiry < ApplicationRecord
   has_many :final_sales_orders, -> {where.not(:sent_at => nil).latest}, :through => :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
+  has_many :inquiry_status_records
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
 
@@ -80,6 +81,10 @@ class Inquiry < ApplicationRecord
       :'Order Lost' => 9,
       :'Regret' => 10,
   }
+
+  def regrettable_statuses
+    Inquiry.statuses.keys.sort.reject {|status| ["Order Lost", "Regret", "Expected Order"].include?(status)}
+  end
 
   enum stage: {
       inquiry_number_assigned: 1,
@@ -196,6 +201,14 @@ class Inquiry < ApplicationRecord
   validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
+
+  validate :company_is_active, :if => :new_record?
+
+  def company_is_active
+    if !self.company.is_active
+      errors.add(:company, 'must be active to make a inquiry')
+    end
+  end
 
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size

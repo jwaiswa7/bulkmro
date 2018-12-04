@@ -28,7 +28,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       supplier = purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i)
 
-      sales_order = inquiry.sales_orders.each do |sales_order|
+       sales_order = inquiry.sales_orders.remote_approved.each do |sales_order|
         ids = []
 
         sales_order.rows.each do |r|

@@ -12,6 +12,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.persisted?
   end
 
+  def edit_mis_date?
+    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
+  end
+
+  def update_mis_date?
+    edit_mis_date?
+  end
+
   def show_pdf?
     record.persisted? && record.sent? && record.order_number.present?
   end
@@ -21,7 +29,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved?
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? 
+  end
+
+  def update?
+    edit? || admin?
   end
 
   def new_confirmation?
@@ -70,6 +82,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def approve?
     pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
+  end
+
+  def approve_low_margin?
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com).include?(overseer.email)
   end
 
   def reject?

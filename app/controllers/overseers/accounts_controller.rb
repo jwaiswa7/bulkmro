@@ -15,6 +15,11 @@ class Overseers::AccountsController < Overseers::BaseController
     authorize @account
   end
 
+  def autocomplete
+    @accounts = ApplyParams.to(Account.all, params)
+    authorize @accounts
+  end
+
   def new
     @account = Account.new(overseer: current_overseer)
     authorize @account

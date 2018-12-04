@@ -9,7 +9,7 @@ class Customers::BaseController < ApplicationController
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
 
-  helper_method :current_cart
+  helper_method :current_cart, :current_contact_companies
 
   private
 
@@ -38,6 +38,10 @@ class Customers::BaseController < ApplicationController
 
   def current_cart
     current_contact.current_cart
+  end
+
+  def current_contact_companies
+    current_contact.companies
   end
 
   def pundit_user

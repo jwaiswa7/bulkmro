@@ -8,6 +8,8 @@ class Address < ApplicationRecord
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
+  belongs_to :cart, required: false
+  belongs_to :customer_order, required: false
   has_one :warehouse
   has_one :as_default_billing_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_billing_address, foreign_key: :default_billing_address_id
   has_one :as_default_shipping_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_shipping_address, foreign_key: :default_shipping_address_id
@@ -54,7 +56,7 @@ class Address < ApplicationRecord
   end
 
   def remove_gst_whitespace
-    if self.gst != "No GST Number" || self.gst != nil
+    if self.gst != "No GST Number" && self.gst != nil
       self.gst = self.gst.delete(' ')
     end
   end
