@@ -14,10 +14,41 @@ const manageFailedSkus = () => {
     $('body').on('change', 'input[name*=approved_alternative_id]:radio', function (e) {
         onRadioChange(this);
     });
+
     $('body').on('change','select[id*=inquiry_product_attributes_product_attributes_is_service]',function(e){
         onIsServiceChange(e.target)
     });
+    $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
+        var page = $(this).parent().attr('data-page');
+        if(page <= 1){
+            $(this).addClass('disabled');
+        }else{
+            $(this).removeClass('disabled');
+            showPrevious($(this).data("row-object"), --page, $(this).parent().data("index"));
+        }
+    });
+    $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
+        var page = $(this).parent().attr('data-page');
+        if(page > 1){
+            $(this).siblings().removeClass('disabled');
+        }
+        showNext($(this).data("row-object"), ++page, $(this).parent().data("index"));
+    });
 };
+
+let showPrevious = (row_object, page, index) => {
+    $.ajax({
+        data: {row_object : row_object, page: page, index:index},
+        url: "load_alternatives",
+    })
+}
+
+let showNext = (row_object, page, index) => {
+    $.ajax({
+        data: {row_object : row_object, page: page, index:index},
+        url: "load_alternatives",
+    })
+}
 
 let onRadioChange = (radio) => {
     let newProductForm = $(radio).closest('div.option-wrapper').find('div.nested');
