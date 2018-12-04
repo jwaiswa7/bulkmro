@@ -1,15 +1,16 @@
 <% provide :container_fluid, true %>
 
 <div class="col-12">
-  <div class="page-header">
-    <div class="">
-      <h2>
-        Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %></h1>
+      <div>
         <% if @sales_order.serialized_pdf.attachment %>
-          <a class="btn btn-dark" href="<%= url_for(@sales_order.serialized_pdf) %>"><i class="fal fa-file-pdf"></i>
-            Download PDF</a>
+          <a href="<%= url_for(@sales_order.serialized_pdf) %>" class=" btn btn-info btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
+            <i class="fal fa-download mr-1"></i>Download PDF
+          </a>
         <% end %>
-      </h2>
+      </div>
     </div>
   </div>
 
@@ -84,12 +85,11 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.billing_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.phone.present? %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.billing_address.gst || @sales_order.inquiry.company.default_billing_address.gst %></span>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
-          </div>
+           </div>
 
           <div class="col-12 col-md-6 mt-2 mt-md-0">
             <strong class="d-block">Customer - Shipping Address</strong>
@@ -98,12 +98,11 @@
             <%= @sales_order.inquiry.company.name %><br>
             <%= @sales_order.inquiry.shipping_address.to_compact_multiline_s %><br>
             <% if @sales_order.inquiry.contact.mobile || @sales_order.inquiry.contact.telephone %>
-              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %>
-                - <%= @sales_order.inquiry.contact.phone %></span>
+              <span class="d-block"><em>Contact</em>: <%= @sales_order.inquiry.contact.full_name %> - <%= @sales_order.inquiry.contact.phone %></span>
             <% end %>
+            <span class="d-block"><em>Email</em>: <a href="mailto:<%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %>"><%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></a></span>
             <span class="d-block"><em>GST Number</em>: <%= @sales_order.inquiry.shipping_address.gst || @sales_order.inquiry.company.default_shipping_address.gst %></span>
-            <span class="d-block"><em>Email</em>: <%= @sales_order.inquiry.contact.email if @sales_order.inquiry.contact.email.present? %></span>
-          </div>
+           </div>
         </div>
       </div>
 
@@ -111,7 +110,7 @@
         <div class="form-row mt-3">
           <% if @sales_order.inquiry.customer_po_sheet.attached? %>
             <div class="col-6">
-              <strong class="d-block">Customer Purchase Order Sheet</strong>
+              <strong class="d-block">Purchase Order</strong>
               <%= link_to @sales_order.inquiry.customer_po_sheet, target: '_blank' do %>
                 <%= @sales_order.inquiry.customer_po_sheet.filename %>
               <% end %>
@@ -187,7 +186,7 @@
                   </td>
                   <td>
                       <span>
-                              <%= row.sales_quote_row.product.description || "Not Available" %>
+                            <%= row.sales_quote_row.product.name || "-" %>
                       </span>
                   </td>
                   <td>
@@ -195,7 +194,7 @@
                         <% if row.sales_quote_row.product.brand %>
                           <%= row.sales_quote_row.product.brand.name %>
                         <% else %>
-                          Not Available
+                          -
                         <% end %>
                       </span>
                   </td>
@@ -216,7 +215,7 @@
                   </td>
                   <td>
                       <span>
-                          <%= row.best_tax_code.tax_percentage %>
+                          <%= [row.best_tax_code.tax_percentage, '%'].join('') %>
                       </span>
                   </td>
                   <td>
