@@ -47,7 +47,7 @@
       <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <div class="card mb-2">
           <div class="card-body">
-            <a href="<%= customers_product_path(customer_product.product) %>">
+            <a href="<%= customers_product_path(customer_product) %>">
               <% if customer_product.images.present? %>
                 <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>"/>
               <% else %>

@@ -27,31 +27,42 @@
                 <%= @product.sku %>
               </div>
             <% end %>
+          </div>
+          <div class="col-12 col-md-8">
+            <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+            <div class="form-row">
+              <% if @product.sku? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">BM Number</strong>
+                  <%= @product.sku %>
+                </div>
+              <% end %>
 
-            <% if @product.category.present? %>
+              <% if @product.category.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Category</strong>
+                  <%= @product.category %>
+                </div>
+              <% end %>
+
+              <% if @product.brand.present? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Brand</strong>
+                  <%= @product.brand %>
+                </div>
+              <% end %>
+
+              <% if @product.mpn? %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Manufacturer Part Number</strong>
+                  <%= @product.mpn %>
+                </div>
+              <% end %>
+
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Category</strong>
-                <%= @product.category %>
+                <strong class="d-block">Created</strong>
+                <%= format_date(@product.created_at) %>
               </div>
-            <% end %>
-
-            <% if @product.brand.present? %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Brand</strong>
-                <%= @product.brand %>
-              </div>
-            <% end %>
-
-            <% if @product.mpn? %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Manufacturer Part Number</strong>
-                <%= @product.mpn %>
-              </div>
-            <% end %>
-
-            <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Created</strong>
-              <%= format_date(@product.created_at) %>
             </div>
           </div>
         </div>
