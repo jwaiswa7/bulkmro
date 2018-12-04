@@ -1,7 +1,6 @@
 import select2s from "../../components/select2s";
 
 const manageFailedSkus = () => {
-    var page = 1;
     $(':input:visible:radio:checked').each(function (e) {
         onRadioChange(this);
     });
@@ -20,7 +19,8 @@ const manageFailedSkus = () => {
         onIsServiceChange(e.target)
     });
     $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
-        if(--page < 1){
+        var page = $(this).parent().attr('data-page');
+        if(page <= 1){
             $(this).addClass('disabled');
         }else{
             $(this).removeClass('disabled');
@@ -28,6 +28,10 @@ const manageFailedSkus = () => {
         }
     });
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
+        var page = $(this).parent().attr('data-page');
+        if(page > 1){
+            $(this).siblings().removeClass('disabled');
+        }
         showNext($(this).data("row-object"), ++page, $(this).parent().data("index"));
     });
 };
