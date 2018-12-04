@@ -15,8 +15,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
           row.customer_order_id = @customer_order.id
           row.quantity = cart_item.quantity
+          row.customer_product = cart_item.customer_product
         end
       end
+
       current_cart.destroy
     end
 

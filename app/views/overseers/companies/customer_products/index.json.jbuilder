@@ -20,6 +20,6 @@ json.data (@products) do |customer_product|
               ]
 end
 
-json.recordsTotal @products.model.all.count
+json.recordsTotal @company.customer_products.count
 json.recordsFiltered @products.total_count
 json.draw params[:draw]

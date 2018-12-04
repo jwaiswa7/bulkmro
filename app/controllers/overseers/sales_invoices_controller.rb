@@ -8,6 +8,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
+
         @indexed_sales_invoices = service.indexed_records
         @sales_invoices = service.records.try(:reverse)
       end

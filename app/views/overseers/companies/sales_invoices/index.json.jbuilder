@@ -39,6 +39,7 @@ json.columnFilters [
                        []
                    ]
 
-json.recordsTotal @sales_invoices.count
+
+json.recordsTotal @company.invoices.count
 json.recordsFiltered @sales_invoices.total_count
 json.draw params[:draw]

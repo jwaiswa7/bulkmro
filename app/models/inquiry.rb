@@ -52,6 +52,7 @@ class Inquiry < ApplicationRecord
   has_many :inquiry_status_records
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
+  has_one :customer_order, dependent: :nullify
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email

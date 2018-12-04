@@ -6,7 +6,7 @@ json.data (@customer_orders) do |customer_order|
                       end,
                       if policy(customer_order).can_create_inquiry?
                         row_action_button(new_overseers_customer_order_inquiry_path(customer_order), 'plus-circle', 'Create Inquiry', 'success')
-                      else
+                      elsif policy(customer_order.inquiry).edit?
                         row_action_button(edit_overseers_inquiry_path(customer_order.inquiry), 'pencil', 'View Inquiry', 'warning')
                       end
                   ].join(' '),
