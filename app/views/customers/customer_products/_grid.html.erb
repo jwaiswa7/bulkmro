@@ -36,13 +36,13 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_customer_product_path(customer_product) %>">
-              <span class="text-center">
+              <span class="text-center d-block">
                 <% if customer_product.images.first.present? %>
-                  <img src="<%= url_for(customer_product.images.first) %>" style="max-height: 300px;" />
+                  <img src="<%= url_for(customer_product.images.first) %>" style="max-height: 180px;" />
                 <% elsif customer_product.product.images.first.present? %>
-                  <img src="<%= url_for(customer_product.product.images.first) %>" style="max-height: 300px;" />
+                  <img src="<%= url_for(customer_product.product.images.first) %>" style="max-height: 180px;" />
                 <% else %>
-                  <img src="<%= image_path('coming_soon.png') %>" style="max-height: 300px;" />
+                  <img src="<%= image_path('coming_soon.png') %>" />
                 <% end %>
               </span>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 25) %></strong></h5>
