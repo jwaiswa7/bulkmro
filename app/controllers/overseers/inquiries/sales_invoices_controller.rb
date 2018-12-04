@@ -24,7 +24,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge({duplicate: true})
+    locals.merge!({duplicate: true})
     respond_to do |format|
       format.html {}
       format.pdf do
@@ -36,7 +36,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge({triplicate: true})
+    locals.merge!({triplicate: true})
     respond_to do |format|
       format.html {}
       format.pdf do
