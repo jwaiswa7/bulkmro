@@ -27,7 +27,7 @@
               <hr class="my-1">
               <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(grand_total(current_cart.items)) %></strong>
             <% else %>
-              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><i class="fal fa-info-circle mr-1 text-small"></i><strong class="float-left">Total Tax:</strong> 0.00</span>
+              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
               <hr class="my-1">
               <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(get_order_total(current_cart.items)) %></span>
             <% end %>
