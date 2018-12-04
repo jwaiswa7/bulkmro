@@ -184,7 +184,7 @@
                   </td>
                   <td>
                       <span>
-                              <%= @sales_invoice.sales_order.sales_order_rows[index].product.try('mpn') || "" %>
+                              <%= row.mpn || "" %>
                       </span>
                   </td>
                   <td>
@@ -214,7 +214,7 @@
                   </td>
                   <td>
                       <span>
-                          <%= @sales_invoice.sales_order.sales_order_rows[index].best_tax_code.tax_percentage %>
+                          <%= row.tax_rate %>
                       </span>
                   </td>
                   <td>
