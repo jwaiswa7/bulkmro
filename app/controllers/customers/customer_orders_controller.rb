@@ -58,9 +58,15 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def index
-    @customer_orders = ApplyDatatableParams.to(current_contact.customer_orders.approved, params)
+    @customer_orders = if current_contact.account_manager?
+                         CustomerOrder.where(contact_id: current_contact.account.contact_ids).approved
+                       else
+                         current_contact.customer_orders.approved
+                       end
+    @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
     authorize @customer_orders
   end
+
 
   private
 
