@@ -175,6 +175,10 @@ Rails.application.routes.draw do
     end
 
     resources :sales_invoices do
+      member do
+        get 'edit_pod'
+        patch 'update_pod'
+      end
       collection do
         get 'export_all'
         get 'export_rows'
@@ -319,7 +323,7 @@ Rails.application.routes.draw do
     end
 
     resource :dashboard, :controller => :dashboard
-    resources :cart_items, only: %i[new create destroy]
+    resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
@@ -341,6 +345,11 @@ Rails.application.routes.draw do
     end
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
+    resource :checkout, :controller => :checkout do
+      collection do
+        get 'final_checkout'
+      end
+    end
     resources :products, only: %i[index show] do
       collection do
         get 'most_ordered_products'
@@ -351,6 +360,9 @@ Rails.application.routes.draw do
     resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
+        patch 'update_billing_address'
+        patch 'update_shipping_address'
+        patch 'add_po_number'
       end
     end
 
