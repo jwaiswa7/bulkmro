@@ -36,14 +36,16 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_customer_product_path(customer_product) %>">
-              <% if customer_product.images.first.present? %>
-                <img src="<%= url_for(customer_product.images.first) %>" />
-              <% elsif customer_product.product.images.first.present? %>
-                <img src="<%= url_for(customer_product.product.images.first) %>" />
-              <% else %>
-                <img src="<%= image_path('coming_soon.png') %>" />
-              <% end %>
-              <h5 class="mb-0 text-small"><strong><%= truncate(customer_product.name, :length => 25) %></strong></h5>
+              <span class="text-center d-block">
+                <% if customer_product.images.first.present? %>
+                  <img src="<%= url_for(customer_product.images.first) %>" style="max-height: 180px;" />
+                <% elsif customer_product.product.images.first.present? %>
+                  <img src="<%= url_for(customer_product.product.images.first) %>" style="max-height: 180px;" />
+                <% else %>
+                  <img src="<%= image_path('coming_soon.png') %>" />
+                <% end %>
+              </span>
+              <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 25) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50"><strong><%= format_currency(customer_product.customer_price) %></strong></h5>
 
