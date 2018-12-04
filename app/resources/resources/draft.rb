@@ -18,6 +18,7 @@ class Resources::Draft < Resources::ApplicationResource
     end
 
     company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
+    company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
 
     {
         AttachmentEntry: record.inquiry.attachment_uid, #6383, #$quote['attachment_entry'] ------------
@@ -63,7 +64,8 @@ class Resources::Draft < Resources::ApplicationResource
         U_PostMagento: "Y", #hardcode
         BPChannelCode: record.inquiry.remote_shipping_company_uid,
         U_Ovr_Margin: record.calculated_total_margin_percentage,
-        U_Over_Marg_Amnt: record.calculated_total_margin
+        U_Over_Marg_Amnt: record.calculated_total_margin,
+        BPChannelContact: company_shipping_contact.present? ? company_shipping_contact.remote_uid : nil,
     }
   end
 end

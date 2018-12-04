@@ -5,11 +5,11 @@ class Customers::CustomerOrdersController < Customers::BaseController
     authorize :customer_order
 
     ActiveRecord::Base.transaction do
-      if params[:page] == "edit_cart"
-        current_cart.assign_attributes(cart_params)
-        current_cart.save
-      end
       @customer_order = current_contact.customer_orders.create
+      @customer_order.assign_attributes(default_billing_address_id: current_cart.default_billing_address_id,
+                                        default_shipping_address_id: current_cart.default_shipping_address_id,
+                                        po_reference: current_cart.po_reference)
+      @customer_order.save
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
@@ -40,9 +40,5 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
   def set_customer_order
     @customer_order = current_contact.customer_orders.find(params[:id])
-  end
-
-  def cart_params
-    params.require(:cart).permit(items_attributes: [:quantity,:id])
   end
 end

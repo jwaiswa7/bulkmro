@@ -82,6 +82,10 @@ class Inquiry < ApplicationRecord
       :'Regret' => 10,
   }
 
+  def regrettable_statuses
+    Inquiry.statuses.keys.sort.reject {|status| ["Order Lost", "Regret", "Expected Order"].include?(status)}
+  end
+
   enum stage: {
       inquiry_number_assigned: 1,
       prepare_quotation: 5,
@@ -197,6 +201,14 @@ class Inquiry < ApplicationRecord
   validates_presence_of :contact, :if => :not_legacy?
 
   validate :every_product_is_only_added_once?
+
+  validate :company_is_active, :if => :new_record?
+
+  def company_is_active
+    if !self.company.is_active
+      errors.add(:company, 'must be active to make a inquiry')
+    end
+  end
 
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size

@@ -1,3 +1,5 @@
+<%= render 'overseers/layouts/components/headway' %>
+
 <div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
   <!-- Drawer Toggle -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +108,8 @@
             Tools
           </a>
           <div class="dropdown-menu">
-            <%= nav_dropdown_item 'Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+            <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+            <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
             <% if Rails.env.development? %>
             <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
             <% end %>
@@ -124,6 +127,9 @@
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
     <div class="dropdown">
+      <a class="d-inline">
+        <span class="headway mr-2" style="z-index: 1030;"></span>
+      </a>
       <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
         <i class="fal fa-user"></i>
       <% end %>
