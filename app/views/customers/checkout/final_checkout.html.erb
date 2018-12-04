@@ -47,7 +47,7 @@
     <div class="accordion col-lg-9" id="checkout">
       <div class="card">
         <div class="card-header">
-          <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing">
+          <a data-toggle="collapse" data-parent="#checkout" href="<%= @cart.default_billing_address_id? ? "#checkout-billing" : "" %>">
             <h5 class="mb-0">
               <strong>Billing Details</strong>
             </h5>
@@ -82,7 +82,7 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= @cart.default_billing_address_id? ? "#checkout-shipping" : "" %>">
             <h5 class="mb-0"><strong>Shipping Details</strong></h5>
           </a>
         </div>
@@ -115,7 +115,8 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-reference">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.default_billing_address_id? &&
+              @cart.default_shipping_address_id?) ? "#checkout-reference" : "" %>">
             <h5 class="mb-0"><strong>Purchase Order Details</strong></h5>
           </a>
         </div>
@@ -131,7 +132,8 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-summary">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.default_billing_address_id? &&
+              @cart.default_shipping_address_id?) ? "#checkout-summary" : "" %>">
             <h5 class="mb-0"><strong>Products Summary</strong></h5>
           </a>
         </div>
@@ -161,17 +163,41 @@
                     </tr>
                   <% end %>
                   <tr>
-                    <td colspan="5" style="text-align: right;"><strong>Subtotal:</strong> <%= format_currency(get_order_total(current_cart.items)) %><br/>
-                      <% if @cart.default_billing_address_id? %>
-                        <% calculate_tax(current_cart.items).each do |key, value| %>
-                          <strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), mumbai_warehouse_address, mumbai_warehouse_address, key) %>
-                            (<%=key%>):</strong> <%= format_currency(value) %><br/>
+                    <table style="width: 100%;">
+                      <tbody style="float: right">
+                        <tr>
+                          <td><strong>Subtotal:</strong></td>
+                          <td style="float: right"><%= format_currency(get_order_total(current_cart.items)) %></td>
+                        </tr>
+                        <% if @cart.default_billing_address_id? %>
+                          <% calculate_tax(current_cart.items).each do |key, value| %>
+                            <tr>
+                              <td><strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id ), default_warehouse_address, default_warehouse_address, key) %>:</strong></td>
+                              <td style="float: right"><%= format_currency(value) %></td>
+                            </tr>
+                          <% end %>
+                          <tr>
+                            <td><strong>Total Tax:</strong></td>
+                            <td style="float: right"><%= format_currency(total_tax(current_cart.items)) %></td>
+                          </tr>
+                          <tr>
+                            <h5>
+                              <td><h5>Grand Total:</h5></td>
+                              <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
+                            </h5>
+                          </tr>
+                        <% else %>
+                          <tr>
+                            <td><i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total Tax:</strong></td>
+                            <td style="float: right">-</td>
+                          </tr>
+                          <tr>
+                            <td><h5>Grand Total:</h5></td>
+                            <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
+                          </tr>
                         <% end %>
-                        <strong>Tax:</strong> <%= format_currency(total_tax(current_cart.items)) %><br/>
-                        <strong>Grand Total: <%= format_currency(grand_total(current_cart.items)) %></strong></td>
-                      <% else %>
-                        <strong>Select billing address to get Tax info</strong>
-                      <% end %>
+                      </tbody>
+                    </table>
                   </tr>
                   </tbody>
                 </table>
@@ -180,15 +206,23 @@
           </div>
           <div class="card-footer">
             <div class="form-row">
-              <div class="col-12 <%= (@cart.default_billing_address_id? && @cart.default_shipping_address_id?) ? "col-md-6" : "col-md-12" %>">
-                <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
-                  Modify Cart
+              <% if @cart.items.any? %>
+                <div class="col-12 <%= (@cart.default_billing_address_id? && @cart.default_shipping_address_id?) ? "col-md-6" : "col-md-12" %>">
+                  <%= link_to customers_cart_path, :class => "btn btn-warning btn-block" do %>
+                    Modify Cart
+                  <% end %>
+                </div>
+                <% if @cart.default_billing_address_id? && @cart.default_shipping_address_id? %>
+                  <div class="col-12 col-md-6 mt-2 mt-md-0">
+                    <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+                      Place Order
+                    <% end %>
+                  </div>
                 <% end %>
-              </div>
-              <% if @cart.default_billing_address_id? && @cart.default_shipping_address_id? %>
-                <div class="col-12 col-md-6 mt-2 mt-md-0">
-                  <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-                    Place Order
+              <% else %>
+                <div class="col-12 col-md-12">
+                  <%= link_to customers_products_path, :class => "mt-2 btn btn-outline-success btn-block btn-sm" do %>
+                    Add Products
                   <% end %>
                 </div>
               <% end %>

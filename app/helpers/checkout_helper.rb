@@ -16,7 +16,6 @@ module CheckoutHelper
     Address.find(address_id).gst
   end
 
-  #refactoring pending
   def calculate_tax(cart_items)
     items = cart_items.joins(:customer_product).group(:tax_rate_id).select("tax_rate_id as id, sum(customer_price * quantity) as total_price")
     items.each_with_object({}) do |item, hash|
@@ -29,11 +28,7 @@ module CheckoutHelper
   end
 
   def total_tax(cart_items)
-    if calculate_tax(cart_items).empty?
-      0
-    else
-      calculate_tax(cart_items).values.inject{|a,b| a + b}
-    end
+    calculate_tax(cart_items).empty? ? 0 : calculate_tax(cart_items).values.inject{|a,b| a + b}
   end
 
   def grand_total(cart_items)
@@ -44,7 +39,7 @@ module CheckoutHelper
     TaxRate.find(tax_rate_id).tax_percentage.to_f
   end
 
-  def mumbai_warehouse_address
-    Warehouse.find(8).address
+  def default_warehouse_address
+    Warehouse.default.address
   end
 end
