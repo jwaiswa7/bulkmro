@@ -12,24 +12,24 @@
 
     <div class="row flex-lg-row-reverse">
       <div class="col-lg-3">
-        <div class="card text-lg-right">
+        <div class="card text-right">
           <div class="card-header">
             <h5 class="mb-0"><strong>Summary</strong></h5>
           </div>
           <div class="card-body">
-            <span class="d-block"><strong>Subtotal</strong>: <%= format_currency(get_order_total(current_cart.items)) %></span>
+            <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(get_order_total(current_cart.items)) %></strong></span>
             <% if @cart.default_billing_address_id? %>
+              <hr class="my-1">
               <% calculate_tax(current_cart.items).each do |key, value| %>
-                <strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %></strong>
-                <%= format_currency(value) %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
               <% end %>
-              <%= format_currency(total_tax(current_cart.items)) %>
-              <hr>
-              <span class="d-block">Grand Total: <%= format_currency(grand_total(current_cart.items)) %></span>
+              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(total_tax(current_cart.items)) %></strong>
+              <hr class="my-1">
+              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(grand_total(current_cart.items)) %></strong>
             <% else %>
-              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><i class="fal fa-info-circle mr-1 text-small"></i><strong>Total Tax</strong>: 0.00</span>
-              <hr class="my-2">
-              <span class="d-block"><strong>Grand Total</strong>: <%= format_currency(get_order_total(current_cart.items)) %></span>
+              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><i class="fal fa-info-circle mr-1 text-small"></i><strong class="float-left">Total Tax:</strong> 0.00</span>
+              <hr class="my-1">
+              <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(get_order_total(current_cart.items)) %></span>
             <% end %>
           </div>
         </div>

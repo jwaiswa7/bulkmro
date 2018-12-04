@@ -16,6 +16,11 @@
           <h5 class="mb-0"><strong>Summary</strong></h5>
         </div>
         <div class="card-body">
+          <% if @cart.po_reference.present? && @cart.po_reference != 0 %>
+            <strong class="d-block">PO Reference<a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
+            <%= @cart.po_reference %>
+            <hr>
+          <% end %>
           <% if @cart.default_billing_address_id.present? %>
             <strong class="d-block">Billing Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
             <em class="d-block mt-1"><%= current_contact.name %></em>
@@ -34,11 +39,6 @@
               T: <%= current_contact.telephone %><br/>
             <% end %>
             GST No: <%= get_gst_no(@cart.default_shipping_address_id) %>
-          <% end %>
-          <% if @cart.po_reference.present? %>
-            <hr>
-            <strong class="d-block">Purchase Order Details<a data-toggle="collapse" data-parent="#checkout" href="#checkout-reference" class="float-right">Change</a></strong>
-            <%= @cart.po_reference %>
           <% end %>
         </div>
       </div>
@@ -140,68 +140,66 @@
 
         <div id="checkout-summary" class="collapse <%= show_if(params[:next_step] == 'summary') %>" data-parent="#checkout">
           <div class="card-body pt-0">
-            <div class="col-12">
-              <div class="text-left">
-                <table class="datatable table table-bordered dt-responsive wrap-whitespace" style="width: 100%;">
-                  <thead>
+            <div class="text-left">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th class="no-sort desktop">Image</th>
+                  <th class="no-sort all">Product</th>
+                  <th class="all">Price</th>
+                  <th class="all">Qty</th>
+                  <th class="all">Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% current_cart.items.each do |cart_item| %>
                   <tr>
-                    <th class="no-sort desktop">Image</th>
-                    <th class="no-sort all">Product</th>
-                    <th class="all">Price</th>
-                    <th class="all">Qty</th>
-                    <th class="all">Subtotal</th>
+                    <td><img src="<%= url_for(cart_item.customer_product.images.first) %>" alt="<%= cart_item.product.sku %>"/></td>
+                    <td><%= cart_item.product.name.truncate(80) %></td>
+                    <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
+                    <td>x <%= cart_item.quantity %></td>
+                    <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
                   </tr>
-                  </thead>
-                  <tbody>
-                  <% current_cart.items.each do |cart_item| %>
+                <% end %>
+                <tr>
+                  <table style="width: 100%;">
+                    <tbody style="float: right">
                     <tr>
-                      <td><img src="<%= url_for(cart_item.customer_product.images.first) %>" alt="<%= cart_item.product.sku %>" /></td>
-                      <td><%= cart_item.product.name.truncate(80) %></td>
-                      <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
-                      <td>x <%= cart_item.quantity %></td>
-                      <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
+                      <td><strong>Subtotal:</strong></td>
+                      <td style="float: right"><%= format_currency(get_order_total(current_cart.items)) %></td>
                     </tr>
-                  <% end %>
-                  <tr>
-                    <table style="width: 100%;">
-                      <tbody style="float: right">
+                    <% if @cart.default_billing_address_id? %>
+                      <% calculate_tax(current_cart.items).each do |key, value| %>
                         <tr>
-                          <td><strong>Subtotal:</strong></td>
-                          <td style="float: right"><%= format_currency(get_order_total(current_cart.items)) %></td>
+                          <td><strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %>:</strong></td>
+                          <td style="float: right"><%= format_currency(value) %></td>
                         </tr>
-                        <% if @cart.default_billing_address_id? %>
-                          <% calculate_tax(current_cart.items).each do |key, value| %>
-                            <tr>
-                              <td><strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id ), default_warehouse_address, default_warehouse_address, key) %>:</strong></td>
-                              <td style="float: right"><%= format_currency(value) %></td>
-                            </tr>
-                          <% end %>
-                          <tr>
-                            <td><strong>Total Tax:</strong></td>
-                            <td style="float: right"><%= format_currency(total_tax(current_cart.items)) %></td>
-                          </tr>
-                          <tr>
-                            <h5>
-                              <td><h5>Grand Total:</h5></td>
-                              <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
-                            </h5>
-                          </tr>
-                        <% else %>
-                          <tr>
-                            <td><i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total Tax:</strong></td>
-                            <td style="float: right">-</td>
-                          </tr>
-                          <tr>
-                            <td><h5>Grand Total:</h5></td>
-                            <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
-                          </tr>
-                        <% end %>
-                      </tbody>
-                    </table>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
+                      <% end %>
+                      <tr>
+                        <td><strong>Total Tax:</strong></td>
+                        <td style="float: right"><%= format_currency(total_tax(current_cart.items)) %></td>
+                      </tr>
+                      <tr>
+                        <h5>
+                          <td><h5>Grand Total:</h5></td>
+                          <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
+                        </h5>
+                      </tr>
+                    <% else %>
+                      <tr>
+                        <td><i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total Tax:</strong></td>
+                        <td style="float: right">-</td>
+                      </tr>
+                      <tr>
+                        <td><h5>Grand Total:</h5></td>
+                        <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="card-footer">
