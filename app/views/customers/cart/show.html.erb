@@ -12,53 +12,30 @@
 
     <div class="row flex-lg-row-reverse">
       <div class="col-lg-3">
-        <div class="card mb-3">
+        <div class="card text-lg-right">
           <div class="card-header">
             <h5 class="mb-0"><strong>Summary</strong></h5>
           </div>
           <div class="card-body">
-            <table style="width: 100%" class="table-responsive">
-              <tr>
-                <td><strong>Subtotal:</strong></td>
-                <td style="float: right"><%= format_currency(get_order_total(current_cart.items)) %></td>
-              </tr>
-              <% if @cart.default_billing_address_id? %>
-                <% calculate_tax(current_cart.items).each do |key, value| %>
-                  <tr>
-                    <td>
-                      <strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %></strong>
-                    </td>
-                    <td style="float: right"><%= format_currency(value) %></td>
-                  </tr>
-                <% end %>
-                <tr>
-                  <td><strong>Total Tax:</strong></td>
-                  <td style="float: right"><%= format_currency(total_tax(current_cart.items)) %></td>
-                </tr>
-                <tr>
-                  <h5>
-                    <td><h5>Grand Total:</h5></td>
-                    <td style="float: right"><h5><%= format_currency(grand_total(current_cart.items)) %></h5></td>
-                  </h5>
-                </tr>
-              <% else %>
-                <tr>
-                  <td>
-                    <i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total
-                    Tax:</strong></td>
-                  <td style="float: right">-</td>
-                </tr>
-                <tr>
-                  <td><h5>Grand Total:</h5></td>
-                  <td style="float: right"><h5><%= format_currency(get_order_total(current_cart.items)) %></h5></td>
-                </tr>
+            <span class="d-block"><strong>Subtotal</strong>: <%= format_currency(get_order_total(current_cart.items)) %></span>
+            <% if @cart.default_billing_address_id? %>
+              <% calculate_tax(current_cart.items).each do |key, value| %>
+                <strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %></strong>
+                <%= format_currency(value) %>
               <% end %>
-            </table>
+              <%= format_currency(total_tax(current_cart.items)) %>
+              <hr>
+              <span class="d-block">Grand Total: <%= format_currency(grand_total(current_cart.items)) %></span>
+            <% else %>
+              <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><i class="fal fa-info-circle mr-1 text-small"></i><strong>Total Tax</strong>: 0.00</span>
+              <hr class="my-2">
+              <span class="d-block"><strong>Grand Total</strong>: <%= format_currency(get_order_total(current_cart.items)) %></span>
+            <% end %>
           </div>
         </div>
       </div>
       <div class="col-lg-9">
-        <div class="card">
+        <div class="card mt-2 mt-lg-0">
           <div class="card-body py-2">
             <div class="text-left">
               <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100">
