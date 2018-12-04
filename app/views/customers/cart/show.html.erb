@@ -25,7 +25,9 @@
               <% if @cart.default_billing_address_id? %>
                 <% calculate_tax(current_cart.items).each do |key, value| %>
                   <tr>
-                    <td><strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id ), default_warehouse_address, default_warehouse_address, key) %></strong></td>
+                    <td>
+                      <strong><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %></strong>
+                    </td>
                     <td style="float: right"><%= format_currency(value) %></td>
                   </tr>
                 <% end %>
@@ -41,7 +43,9 @@
                 </tr>
               <% else %>
                 <tr>
-                  <td><i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total Tax:</strong></td>
+                  <td>
+                    <i class="fas fa-info-circle" title="Taxes will be displayed after you select a billing address"></i><strong>Total
+                    Tax:</strong></td>
                   <td style="float: right">-</td>
                 </tr>
                 <tr>
@@ -57,37 +61,37 @@
         <div class="card">
           <div class="card-body py-2">
             <div class="text-left">
-              <table class="datatable table table-bordered dt-responsive wrap-whitespace" style="width: 100%;">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100">
                 <thead>
-                  <tr>
-                    <th class="no-sort desktop">Image</th>
-                    <th class="no-sort all">Product</th>
-                    <th class="all">Price</th>
-                    <th class="all">Qty</th>
-                    <th class="all">Subtotal</th>
-                  </tr>
+                <tr>
+                  <th class="no-sort desktop">Image</th>
+                  <th class="no-sort all">Product</th>
+                  <th class="all">Price</th>
+                  <th class="all">Quantity</th>
+                  <th class="all">Subtotal</th>
+                </tr>
                 </thead>
                 <tbody>
-                  <%= cart.simple_fields_for :items do |cart_item| %>
-                    <tr>
-                      <td>
-                        <img src="<%= url_for(cart_item.object.customer_product.images.first) %>" alt="<%= cart_item.object.product.sku %>"/>
-                      </td>
-                      <td><a href="<%= customers_product_path(cart_item.object.customer_product.product) %>">
-                        <%= cart_item.object.customer_product.product.name.truncate(80) %></strong>
-                      </a></td>
-                      <td><%= cart_item.object.customer_product.customer_price.to_f %></td>
-                      <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control' %></td>
-                      <td><%= format_currency(cart_item.object.customer_product.customer_price.to_f * cart_item.object.quantity) %></td>
-                      <td>
-                        <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
-                          <i class="fal fa-times"></i>
-                        <% end %>
-                      </td>
-                      <%= hidden_field_tag 'contact_id', current_contact.id %>
-                      <%= hidden_field_tag 'page', 'edit_cart' %>
-                    </tr>
-                  <% end %>
+                <%= cart.simple_fields_for :items do |cart_item| %>
+                  <tr>
+                    <td>
+                      <img src="<%= url_for(cart_item.object.customer_product.images.first) %>" alt="<%= cart_item.object.product.sku %>"/>
+                    </td>
+                    <td><a href="<%= customers_product_path(cart_item.object.customer_product.product) %>">
+                      <%= cart_item.object.customer_product.product.name.truncate(80) %></strong>
+                    </a></td>
+                    <td><%= format_currency(cart_item.object.customer_product.customer_price, precision: 2, symbol: '') %></td>
+                    <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control' %></td>
+                    <td><%= format_currency(cart_item.object.customer_product.customer_price.to_f * cart_item.object.quantity, precision: 2) %></td>
+                    <td>
+                      <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
+                        <i class="fal fa-times"></i>
+                      <% end %>
+                    </td>
+                    <%= hidden_field_tag 'contact_id', current_contact.id %>
+                    <%= hidden_field_tag 'page', 'edit_cart' %>
+                  </tr>
+                <% end %>
                 </tbody>
               </table>
             </div>
@@ -121,5 +125,6 @@
         </div>
       </div>
   <% end %>
+  </div>
 </div>
 
