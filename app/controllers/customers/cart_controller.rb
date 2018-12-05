@@ -5,6 +5,22 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
   end
 
+  def update
+    authorize @cart
+
+    @cart.assign_attributes(cart_params)
+
+    if @cart.save
+      if params['show_cart']
+        redirect_to customers_cart_path
+      else
+        redirect_to final_checkout_customers_checkout_path
+      end
+    else
+      render 'show'
+    end
+  end
+
   def checkout
     authorize @cart
   end
@@ -16,28 +32,16 @@ class Customers::CartController < Customers::BaseController
     redirect_to customers_products_path
   end
 
-  def update_cart
-    authorize @cart
-
-    @cart.assign_attributes(cart_params)
-    @cart.save
-    if params["show_cart"]
-      redirect_to customers_cart_path
-    else
-      redirect_to final_checkout_customers_checkout_path
-    end
-  end
-
   def update_billing_address
     authorize @cart
-    @cart.update_attributes(default_billing_address_id: params[:cart][:default_billing_address_id].to_i)
+    @cart.update_attributes(billing_address_id: params[:cart][:billing_address_id].to_i)
 
     redirect_to final_checkout_customers_checkout_path(next_step: 'shipping')
   end
 
   def update_shipping_address
     authorize @cart
-    @cart.update_attributes(default_shipping_address_id: params[:cart][:default_shipping_address_id].to_i)
+    @cart.update_attributes(shipping_address_id: params[:cart][:shipping_address_id].to_i)
 
     redirect_to final_checkout_customers_checkout_path(next_step: 'po_reference')
   end
@@ -50,7 +54,6 @@ class Customers::CartController < Customers::BaseController
   end
 
   private
-
   def set_cart
     @cart = current_cart
   end

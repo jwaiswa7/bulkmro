@@ -1,45 +1,4 @@
 module CheckoutHelper
 
-  def get_order_total(cart_items)
-    cart_items.inject(0){|sum, cart_item| sum + cart_item.customer_product.customer_price.to_f * cart_item.quantity}
-  end
 
-  def get_billing_address(billing_address_id)
-    Address.find(billing_address_id)
-  end
-
-  def get_shipping_address(shipping_address_id)
-    Address.find(shipping_address_id).to_multiline_s
-  end
-
-  def get_gst_no(address_id)
-    Address.find(address_id).gst
-  end
-
-  def calculate_tax(cart_items)
-    items = cart_items.joins(:customer_product).group(:tax_rate_id).select("tax_rate_id as id, sum(customer_price * quantity) as total_price")
-    items.each_with_object({}) do |item, hash|
-      if hash.has_key? item.id
-        hash[get_tax_percentage(item.id)] += (item.total_price * get_tax_percentage(item.id) / 100)
-      else
-        hash[get_tax_percentage(item.id)] = (item.total_price * get_tax_percentage(item.id) / 100)
-      end
-    end
-  end
-
-  def total_tax(cart_items)
-    calculate_tax(cart_items).empty? ? 0 : calculate_tax(cart_items).values.inject{|a,b| a + b}
-  end
-
-  def grand_total(cart_items)
-    get_order_total(cart_items) + total_tax(cart_items)
-  end
-
-  def get_tax_percentage(tax_rate_id)
-    TaxRate.find(tax_rate_id).tax_percentage.to_f
-  end
-
-  def default_warehouse_address
-    Warehouse.default.address
-  end
 end

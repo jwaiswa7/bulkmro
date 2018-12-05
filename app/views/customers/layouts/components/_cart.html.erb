@@ -1,6 +1,6 @@
 <% if current_cart.items.present? %>
   <div class="dropdown-menu dropdown-menu-right cart-dropdown">
-    <%= simple_form_for(current_cart, :url => update_cart_customers_cart_path, :method => :get) do |f| %>
+    <%= simple_form_for(current_cart, :url => customers_cart_path, :method => :patch) do |f| %>
       <h6 class="dropdown-header d-none">Cart</h6>
       <div class="cart-items">
         <%= f.simple_fields_for :items do |cart_item| %>
@@ -19,7 +19,7 @@
 
       <div class="cart-subtotal-container">
         <div>
-          <strong>Subtotal: <%= format_currency(get_order_total(f.object.items)) %></strong>
+          <strong>Subtotal: <%= format_currency(current_cart.calculated_total(f.object.items)) %></strong>
         </div>
       </div>
       <div class="cart-footer">
