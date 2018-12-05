@@ -43,30 +43,35 @@
                 <tr>
                   <th class="no-sort desktop">Image</th>
                   <th class="no-sort all">Product</th>
-                  <th class="all">Price</th>
-                  <th class="all">Quantity</th>
+                  <th class="no-sort all">Price</th>
+                  <th class="all" data-toggle="tooltip" title="Minimum Order Quantity">MOQ</th>
+                  <th class="no-sort all">Quantity</th>
                   <th class="all">Subtotal</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <%= cart.simple_fields_for :items do |cart_item| %>
                   <tr>
                     <td>
+                      <%= hidden_field_tag 'contact_id', current_contact.id %>
+                      <%= hidden_field_tag 'page', 'edit_cart' %>
                       <img src="<%= url_for(cart_item.object.customer_product.images.first) %>" alt="<%= cart_item.object.product.sku %>"/>
                     </td>
-                    <td><a href="<%= customers_product_path(cart_item.object.customer_product.product) %>">
-                      <%= cart_item.object.customer_product.product.name.truncate(80) %></strong>
-                    </a></td>
+                    <td>
+                      <a href="<%= customers_product_path(cart_item.object.customer_product.product) %>">
+                        <%= cart_item.object.customer_product.product.name.truncate(80) %>
+                      </a>
+                    </td>
                     <td><%= format_currency(cart_item.object.customer_product.customer_price, precision: 2, symbol: '') %></td>
-                    <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control' %></td>
+                    <td><%= cart_item.object.customer_product.moq %></td>
+                    <td style="width: 90px"><%= cart_item.input_field :quantity, :class => 'form-control', placeholder: 'Quantity', step: cart_item.object.customer_product.moq, min: cart_item.object.customer_product.moq %></td>
                     <td><%= format_currency(cart_item.object.customer_product.customer_price.to_f * cart_item.object.quantity, precision: 2) %></td>
                     <td>
                       <%= link_to customers_cart_item_path(cart_item.object), :class => 'text-danger float-right', :data => {:method => "delete"} do %>
                         <i class="fal fa-times"></i>
                       <% end %>
                     </td>
-                    <%= hidden_field_tag 'contact_id', current_contact.id %>
-                    <%= hidden_field_tag 'page', 'edit_cart' %>
                   </tr>
                 <% end %>
                 </tbody>
