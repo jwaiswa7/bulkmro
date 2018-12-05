@@ -2,22 +2,14 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   before_action :set_invoice_request, only: [:show, :edit, :update]
 
   def pending
-    if params[:status].present?
-      case
-      when params[:status] == 'grpo_pending'
-        invoice_request = InvoiceRequest.all.grpo_pending.order(id: :desc)
-      when params[:status] == 'ap_invoice_pending'
-        invoice_request = InvoiceRequest.all.ap_invoice_pending.order(id: :desc)
-      when params[:status] == 'delivery_pending'
-        invoice_request = InvoiceRequest.all.delivery_pending.order(id: :desc)
-      when params[:status] == 'ar_invoice_pending'
-        invoice_request = InvoiceRequest.all.ar_invoice_pending.order(id: :desc)
-      else
-        invoice_request = InvoiceRequest.all.grpo_pending.order(id: :desc)
-      end
-    else
-      invoice_request = InvoiceRequest.all.grpo_pending.order(id: :desc)
-    end
+
+    invoice_request =
+        if params[:status].present?
+          @title = params[:status]
+          InvoiceRequest.where(:status => params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_request, params)
     authorize @invoice_requests

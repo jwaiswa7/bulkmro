@@ -97,10 +97,10 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'grpo_pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AP Invoice Pending', pending_overseers_invoice_requests_path(:status => 'ap_invoice_pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Delivery Pending', pending_overseers_invoice_requests_path(:status => 'delivery_pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AR Invoice Pending', pending_overseers_invoice_requests_path(:status => 'ar_invoice_pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'AP Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AP Invoice Pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Delivery Pending', pending_overseers_invoice_requests_path(:status => 'Delivery Pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'AR Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AR Invoice Pending'), policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
           </div>
         </li>

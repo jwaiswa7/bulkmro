@@ -2,6 +2,13 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :heading do %>
+  Invoice Requests
+  <% if @title .present? %>
+    <%= ": #{@title}" %>
+  <% end %>
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
   <th class="no-sort desktop">Sr. No.</th>

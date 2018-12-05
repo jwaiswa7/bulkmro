@@ -31,6 +31,8 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :sales_order
   validates_presence_of :inquiry
 
+  validate :grpo_number_validation?
+
   with_options if: :"AP Invoice Pending?" do |invoice_request|
     invoice_request.validates_presence_of :grpo_number
   end
@@ -44,9 +46,13 @@ class InvoiceRequest < ApplicationRecord
     invoice_request.validates_presence_of :ar_invoice_number
   end
 
-
   def set_defaults
     self.status = :'GRPO Pending'
   end
 
+  def grpo_number_validation?
+    if self.grpo_number.present? && self.grpo_number <= 50000000
+      errors.add(:grpo_number, " must be 8 digits starting with 5")
+    end
+  end
 end
