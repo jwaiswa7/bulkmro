@@ -31,6 +31,16 @@ class Overseers::DashboardController < Overseers::BaseController
     redirect_back fallback_location: overseers_dashboard_path
   end
 
+   def reset_indices
+     authorize :dashboard
+
+
+
+
+     # Fix for failure when no shards are found
+     redirect_back fallback_location: overseers_dashboard_path
+   end
+
   def console
     authorize :dashboard
 

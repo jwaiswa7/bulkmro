@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'reset_indices'
       get 'serializer'
       get 'migrations'
       get 'console'
