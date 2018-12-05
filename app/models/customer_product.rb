@@ -53,6 +53,16 @@ class CustomerProduct < ApplicationRecord
     self.category || self.product.category
   end
 
+  def best_images
+    if self.images.present?
+      self.images
+    elsif self.product.images.present?
+      self.product.images
+    else
+      nil
+    end
+  end
+
   def update_index
     CustomerProductsIndex::CustomerProduct.import([self.id])
   end

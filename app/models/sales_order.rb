@@ -166,6 +166,8 @@ class SalesOrder < ApplicationRecord
       'Material Ready For Dispatch'
     when :'Order Deleted'
       'Cancelled'
+    when :'Order Lost'
+      'Closed'
     end
   end
 
