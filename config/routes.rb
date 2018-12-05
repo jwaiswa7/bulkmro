@@ -92,6 +92,7 @@ Rails.application.routes.draw do
     resources :tax_codes, except: [:show] do
       collection do
         get 'autocomplete'
+        get 'autocomplete_for_product'
       end
     end
 
@@ -174,6 +175,10 @@ Rails.application.routes.draw do
     end
 
     resources :sales_invoices do
+      member do
+        get 'edit_pod'
+        patch 'update_pod'
+      end
       collection do
         get 'export_all'
         get 'export_rows'
@@ -202,7 +207,7 @@ Rails.application.routes.draw do
         get 'smart_queue'
         get 'export_all'
       end
-    
+
       scope module: 'inquiries' do
         resources :comments
         resources :email_messages
@@ -216,6 +221,7 @@ Rails.application.routes.draw do
 
             get 'duplicate'
             get 'triplicate'
+            get 'make_zip'
           end
         end
 
@@ -270,11 +276,21 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
+        resources :customer_products do
+          collection do
+            post 'generate_catalog'
+            post 'destroy_all'
+
+            get 'autocomplete'
+          end
+        end
+
         resources :addresses do
           collection do
             get 'autocomplete'
           end
         end
+
         resources :contacts do
           collection do
             get 'autocomplete'
@@ -314,25 +330,54 @@ Rails.application.routes.draw do
     end
 
     resource :dashboard, :controller => :dashboard
-    resources :cart_items, only: %i[new create destroy]
+    resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
       end
     end
-    resources :quotes, :controller => :sales_quotes, only: %i[index show]
+    resources :customer_products, only: %i[index create show] do
+      collection do
+        get 'generate_all'
+      end
+    end
+
+    resources :quotes, :controller => :sales_quotes, only: %i[index show] do
+      member do
+        post 'inquiry_comments'
+      end
+      scope module: 'sales_quotes' do
+        resources :comments
+      end
+    end
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
+    resource :checkout, :controller => :checkout do
+      collection do
+        get 'final_checkout'
+      end
+    end
     resources :products, only: %i[index show] do
       collection do
         get 'most_ordered_products'
+        get 'autocomplete'
       end
     end
 
     resource :cart, :controller => :cart, only: [:show] do
       collection do
         get 'checkout'
+        patch 'update_billing_address'
+        patch 'update_shipping_address'
+        patch 'add_po_number'
       end
     end
+
+    resources :inquiries do
+      scope module: 'inquiries' do
+        resources :comments
+      end
+    end
+
   end
 end

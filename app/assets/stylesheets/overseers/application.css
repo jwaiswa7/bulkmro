@@ -10226,23 +10226,27 @@ button.bg-highlight-dark:hover,
 button.bg-highlight-dark:focus {
   background-color: #7a8793 !important; }
 
-div.blur {
-    opacity: 0.65;
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -o-filter: blur(3px);
-    -ms-filter: blur(3px); }
+.headway {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 2.65rem 0 0; }
 
-.blink{
-    animation:blink 700ms infinite alternate;
-}
+.HW_visible {
+  display: inline-block;
+  z-index: 1500; }
 
-@keyframes blink {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
+#HW_frame_cont.HW_visible {
+  z-index: 1500; }
+
+.headway > *:after {
+  content: 'Updates';
+  display: inline-block;
+  color: #fd7e14;
+  text-transform: uppercase;
+  font-size: 10px;
+  vertical-align: middle;
+  line-height: 32px;
+  padding-left: 2.75em; }
+
+#HW_badge.HW_softHidden {
+  background-color: #fd7e14 !important; }

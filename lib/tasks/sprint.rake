@@ -7,7 +7,8 @@ namespace :sprint do
   # Pull
   task :pull, [:repo] do |t,args|
     args.with_defaults(:repo => "master")
-    system  "git pull origin #{args.repo}"
+    system  "git pull "
+    system  "git checkout #{args.repo}"
     system 'yarn install'
     system 'bundle'
     Rake::Task["db:migrate"].invoke

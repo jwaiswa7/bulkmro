@@ -1,20 +1,22 @@
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date]
-  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
+  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
     authorize @sales_invoices
+
   end
 
   def show
     authorize @sales_invoice
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
+
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice
+        render_pdf_for @sales_invoice, locals
       end
     end
   end
@@ -22,11 +24,11 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-
+    locals.merge!({duplicate: true})
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice, {duplicate: true}
+        render_pdf_for @sales_invoice, locals
       end
     end
   end
@@ -34,13 +36,22 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-
+    locals.merge!({triplicate: true})
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice, {triplicate: true}
+        render_pdf_for @sales_invoice, locals
       end
     end
+  end
+
+  def make_zip
+    authorize @sales_invoice
+
+    service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
+    zip = service.call
+
+    send_data(zip, :type => 'application/zip', :filename => @sales_invoice.zipped_filename(include_extension: true))
   end
 
   def edit_mis_date
@@ -63,12 +74,17 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   end
 
   private
+
   def save
     @sales_invoice.save
   end
 
   def set_sales_invoice
     @sales_invoice = @inquiry.invoices.find(params[:id])
+    @locals = {stamp: false}
+    if params[:stamp].present?
+      @locals = {stamp: true}
+    end
   end
 
   def set_invoice_items
@@ -78,5 +94,6 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def sales_invoice_params
     params.require(:sales_invoice).permit(:mis_date)
   end
-end
 
+  attr_accessor :locals
+end
