@@ -28,7 +28,7 @@ class SalesInvoicesIndex < BaseIndex
     field :invoice_number_s, value: -> (record) { record.invoice_number.to_s if record.invoice_number.present? }, analyzer: 'substring'
     field :inquiry_number_s, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
     field :order_number_s, value: -> (record) { record.sales_order.order_number.to_s if record.sales_order.present? }, analyzer: 'substring'
-    field :status_s, value: -> (record) {statuses[record.status]}, analyzer: 'substring'
+    field :status_s, value: -> (record) {record.status}, analyzer: 'substring'
 
   end
 end

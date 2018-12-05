@@ -44,6 +44,7 @@ class SalesOrdersIndex < BaseIndex
     field :cp_calculated_total_s, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present?}, analyzer: 'substring'
     field :cp_quote_id_s, value: -> (record) { record.id.to_s if record.id.present?}, analyzer: 'substring'
     field :cp_subject_s, value: -> (record) { record.inquiry.subject.to_s if record.inquiry.subject.present?}, analyzer: 'substring'
+    field :cp_ship_to_s, value: -> (record) { record.inquiry.shipping_contact.try(:name) || record.inquiry.billing_contact.try(:name)}, analyzer: 'substring'
     field :cp_company_s, value: -> (record) { record.inquiry.company.name.to_s if record.inquiry.company.name.present?}, analyzer: 'substring'
     field :cp_contact_email_s, value: -> (record) { record.inquiry.contact.email.to_s if record.inquiry.contact.email.present?}, analyzer: 'substring'
     field :cp_billing_city_s, value: -> (record) { record.inquiry.billing_address.city_name.to_s if record.inquiry.billing_address.present?}, analyzer: 'substring'
