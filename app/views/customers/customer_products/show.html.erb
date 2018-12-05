@@ -70,7 +70,7 @@
           <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
             <div class="form-row">
               <div class="col-2">
-                <%= f.input :quantity, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq} %>
+                <%= f.input :quantity, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @customer_product.moq} %>
                 <%= f.hidden_field :product_id, value: @customer_product.product.id %>
                 <%= f.hidden_field :customer_product_id, value: @customer_product.id %>
               </div>
