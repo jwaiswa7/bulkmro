@@ -17,6 +17,6 @@ class Customers::CheckoutController < Customers::BaseController
   private
 
   def cart_params
-    params.require(:cart).permit(items_attributes: [:quantity, :id])
+    params.require(:cart).permit(:id, items_attributes: [:quantity, :id])
   end
 end
