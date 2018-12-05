@@ -33,7 +33,7 @@ class Customers::CustomerProductsController < Customers::BaseController
   end
 
   def most_ordered_products
-    authorize :product
+    authorize :customer_product
 
     @total_products = products.size
     @most_ordered_products = products(top: 55).drop(5).map {|id, c| [Product.find(id), [c, 'times'].join(' ')]}
