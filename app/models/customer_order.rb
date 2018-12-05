@@ -1,7 +1,7 @@
 class CustomerOrder < ApplicationRecord
   pg_search_scope :locate, :against => [:id], :associated_against => {company: [:name] }, :using => {:tsearch => {:prefix => true}}
 
-  belongs_to :contact
+  belongs_to :contact, required: false
   belongs_to :company, required: false
   belongs_to :inquiry, required: false
   has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
