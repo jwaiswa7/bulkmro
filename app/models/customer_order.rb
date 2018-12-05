@@ -2,7 +2,7 @@ class CustomerOrder < ApplicationRecord
   pg_search_scope :locate, :against => [:id], :associated_against => {company: [:name] }, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :contact
-  belongs_to :company
+  belongs_to :company, required: false
   belongs_to :inquiry, required: false
   has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
   belongs_to :billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false

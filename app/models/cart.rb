@@ -14,10 +14,10 @@ class Cart < ApplicationRecord
     tax_items = {}
 
     grouped_items.each do |tax_rate, items|
-      tax_items[tax_rate.id] ||= 0
+      tax_items[tax_rate.tax_percentage.to_f] ||= 0
 
-      tax_items[tax_rate.id] += items.map do |item|
-        item.quantity * item.customer_product.customer_price * tax_rate.tax_percentage / 100
+      tax_items[tax_rate.tax_percentage.to_f] += items.map do |item|
+        item.quantity * item.customer_product.customer_price * tax_rate.tax_percentage.to_f / 100
       end.sum
     end
 
