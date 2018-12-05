@@ -4,7 +4,7 @@ class InvoiceRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :sales_order
   belongs_to :inquiry
