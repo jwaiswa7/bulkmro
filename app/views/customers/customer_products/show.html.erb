@@ -60,14 +60,14 @@
               <% end %>
 
               <% if @customer_product.best_measurement_unit.present? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3">
                   <strong class="d-block">Measurement Unit</strong>
                   <%= @customer_product.best_measurement_unit.name %>
                 </div>
               <% end %>
 
               <% if @customer_product.moq? %>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-md-3">
                   <strong class="d-block">Minimum Order Quantity</strong>
                   <%= @customer_product.moq %>
                 </div>
