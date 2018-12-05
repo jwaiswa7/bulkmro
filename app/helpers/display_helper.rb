@@ -156,8 +156,8 @@ module DisplayHelper
     end
   end
 
-  def url_for_image(image,fallback_url: "")
-    if image.present? && ActiveStorage::Blob.service.exist?(image.key)
+  def url_for_image(image, fallback_url: "", check_remote: true)
+    if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
     else
       fallback_url
