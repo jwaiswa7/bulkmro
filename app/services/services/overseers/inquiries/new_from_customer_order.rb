@@ -14,6 +14,7 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
         potential_amount: 0.1,
         billing_address: Address.find(customer_order.default_billing_address_id || company.default_billing_address_id || company.addresses.first),
         shipping_address: Address.find(customer_order.default_shipping_address_id || company.default_shipping_address_id || company.addresses.first),
+        shipping_contact: customer_order.contact,
         customer_po_number: customer_order.po_reference,
         overseer: overseer
     )
