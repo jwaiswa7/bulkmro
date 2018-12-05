@@ -9,6 +9,10 @@ class CustomerOrder < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
 
+  def to_s
+    super.gsub!('CustomerOrder', 'Order')
+  end
+
   def total_quantities
     self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
