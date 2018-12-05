@@ -154,10 +154,18 @@
                 <tbody>
                 <% current_cart.items.each do |cart_item| %>
                   <tr>
-                    <td><img src="<%= url_for(cart_item.customer_product.images.first) %>" alt="<%= cart_item.product.sku %>"/></td>
+                    <td>
+                      <% if cart_item.customer_product.images.present? %>
+                        <img src="<%= url_for_image(cart_item.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
+                      <% elsif cart_item.customer_product.images.present? %>
+                        <img src="<%= url_for_image(cart_item.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
+                      <% else %>
+                        <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
+                      <% end %>  
+                    </td>
                     <td><%= cart_item.product.name.truncate(80) %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
-                    <td>x <%= cart_item.quantity %></td>
+                    <td><%= cart_item.quantity %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
                   </tr>
                 <% end %>
