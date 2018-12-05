@@ -50,6 +50,8 @@
             <a href="<%= customers_product_path(customer_product) %>">
               <% if customer_product.images.present? %>
                 <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= customer_product.sku %>"/>
+              <% elsif customer_product.product.images.present? %>
+                  <img src="<%= url_for_image(customer_product.product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= customer_product.sku %>"/>
               <% else %>
                 <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" />
               <% end %>
@@ -60,7 +62,7 @@
               </h5>
               <hr class="my-2">
               <p class="mb-0 text-small text-black-50">
-                <strong class="d-block"><%= customer_product.best_brand.name if  customer_product.best_brand.present? %></strong>
+                <strong class="d-block"><%= customer_product.best_brand.name if customer_product.best_brand.present? %></strong>
                 <em class="d-block">MOQ - <%= customer_product.moq %></em>
               </p>
             </a>

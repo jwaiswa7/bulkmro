@@ -56,7 +56,13 @@
                     <td>
                       <%= cart_item.hidden_field :id %>
                       <%= hidden_field_tag 'page', 'edit_cart' %>
-                      <img src="<%= url_for(cart_item.object.customer_product.images.first) %>" alt="<%= cart_item.object.product.sku %>"/>
+                      <% if cart_item.object.customer_product.images.present? %>
+                        <img src="<%= url_for_image(cart_item.object.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
+                      <% elsif cart_item.object.customer_product.images.present? %>
+                        <img src="<%= url_for_image(cart_item.object.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.object.customer_product.sku %>"/>
+                      <% else %>
+                        <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.object.customer_product.sku %>" />
+                      <% end %>
                     </td>
                     <td>
                       <a href="<%= customers_product_path(cart_item.object.customer_product) %>">
