@@ -192,6 +192,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :customer_orders do
+      scope module: 'customer_orders' do
+        resources :inquiries do
+
+        end
+      end
+    end
+
     resources :inquiries do
       member do
         get 'edit_suppliers'
@@ -202,6 +210,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'new_from_customer_order'
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
@@ -265,7 +274,6 @@ Rails.application.routes.draw do
             post 'create_list_import'
           end
         end
-
       end
     end
 
@@ -276,7 +284,9 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
-        resources :customer_products do
+        resources :customer_orders
+
+        resources :customer_products, except: [:index] do
           collection do
             post 'generate_catalog'
             post 'destroy_all'
@@ -296,6 +306,10 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+
+        resources :sales_quotes
+        resources :sales_orders
+        resources :sales_invoices
       end
     end
 

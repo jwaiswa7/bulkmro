@@ -23,6 +23,8 @@ class CustomerProduct < ApplicationRecord
 
   scope :with_includes, -> {includes(:brand, :category)}
 
+  after_save :update_index
+
   def best_brand
     self.brand || self.product.brand
   end
@@ -41,6 +43,10 @@ class CustomerProduct < ApplicationRecord
 
   def best_category
     self.category || self.product.category
+  end
+
+  def update_index
+    CustomerProductsIndex::CustomerProduct.import([self.id])
   end
 
   # def set_unit_selling_price
