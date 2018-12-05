@@ -286,7 +286,7 @@ Rails.application.routes.draw do
       scope module: 'companies' do
         resources :customer_orders
 
-        resources :customer_products do
+        resources :customer_products, except: [:index] do
           collection do
             post 'generate_catalog'
             post 'destroy_all'

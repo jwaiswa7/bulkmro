@@ -15,20 +15,14 @@ class CustomerProduct < ApplicationRecord
 
   has_many_attached :images
 
-  # validates_presence_of :name
-  # validates_presence_of :sku
+  validates_presence_of :name
+  validates_presence_of :sku
   validates_presence_of :customer_price
   validates_uniqueness_of :sku, scope: :company_id
   validates_uniqueness_of :product_id, scope: :company_id
 
   scope :with_includes, -> {includes(:brand, :category)}
 
-  before_save :set_name_sku
-
-  def set_name_sku
-    self.name ||= self.product.name
-    self.sku ||= self.product.sku
-  end
 
   def best_brand
     self.brand || self.product.brand
