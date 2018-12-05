@@ -1,8 +1,16 @@
 $("#cart").load(window.location.href + " #cart > *");
 $('#quantityModal').modal('hide');
 
-$.notify({
-    message: 'Product was successfully added to cart.'
-}, {
-    type: 'success'
-});
+<% if @cart_item.errors.empty? %>
+  $.notify({
+      message: 'Product was successfully added to cart.'
+  }, {
+      type: 'success'
+  });
+<% else %>
+  $.notify({
+      message: 'Quantity should be in multiples of the product MOQ'
+  }, {
+      type: 'danger'
+  });
+<% end %>
