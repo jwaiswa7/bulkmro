@@ -9,16 +9,16 @@
 
       <div class="text-left">
         <div class="list-group list-group-flush">
-          <table class="table table-striped">
+          <table class="table datatable w-100 wrap-whitespace">
             <thead>
-            <th scope="col">Action</th>
-            <th scope="col">Quote #</th>
-            <th scope="col">Date</th>
-            <th scope="col">Line Items</th>
-            <th scope="col">Total</th>
-            <th scope="col">Sales Person</th>
-            <th scope="col">Valid Upto</th>
-            <th scope="col">Status</th>
+            <th class="no-sort">Action</th>
+            <th class="no-sort">Quote #</th>
+            <th class="no-sort">Date</th>
+            <th class="no-sort">Line Items</th>
+            <th class="no-sort">Total</th>
+            <th class="no-sort">Sales Person</th>
+            <th class="no-sort">Valid Upto</th>
+            <th class="no-sort">Status</th>
             </thead>
             <tbody>
             <% @dashboard.recent_sales_quotes.each do |sales_quote| %>
@@ -53,19 +53,19 @@
 
         <div class="text-left">
           <div class="list-group list-group-flush">
-            <table class="table table-striped">
+            <table class="table datatable w-100 wrap-whitespace">
               <thead>
-              <th scope="col">Action</th>
-              <th scope="col">Order #</th>
-              <th scope="col">Order Date</th>
-              <th scope="col">PO #</th>
-              <th scope="col">PO Date</th>
-              <th scope="col">Quote #</th>
-              <th scope="col">Ship To</th>
-              <th scope="col">Company</th>
-              <th scope="col">Order Total</th>
-              <th scope="col">Delivery Date</th>
-              <th scope="col">Status</th>
+              <th class="no-sort">Action</th>
+              <th class="no-sort">Order #</th>
+              <th class="no-sort">Order Date</th>
+              <th class="no-sort">PO #</th>
+              <th class="no-sort">PO Date</th>
+              <th class="no-sort">Quote #</th>
+              <th class="no-sort">Ship To</th>
+              <th class="no-sort">Company</th>
+              <th class="no-sort">Order Total</th>
+              <th class="no-sort">Delivery Date</th>
+              <th class="no-sort">Status</th>
               </thead>
               <tbody>
               <% @dashboard.recent_sales_orders.each do |sales_order| %>
@@ -105,20 +105,19 @@
 
         <div class="text-left">
           <div class="list-group list-group-flush">
-            <table class="table table-striped">
+            <table class="table datatable w-100 wrap-whitespace">
               <thead>
-              <th scope="col">Action</th>
-              <th scope="col">PO #</th>
-              <th scope="col">PO Date</th>
-              <th scope="col">Invoice #</th>
-              <th scope="col">Inquiry #</th>
-              <th scope="col">Order #</th>
-              <th scope="col">Quote #</th>
-              <th scope="col">Line Items</th>
-              <th scope="col">Inside Sales</th>
-              <th scope="col">Outside Sales</th>
-              <th scope="col">Created At</th>
-              <th scope="col">Status</th>
+              <th class="no-sort">PO #</th>
+              <th class="no-sort">PO Date</th>
+              <th class="no-sort">Invoice #</th>
+              <th class="no-sort">Inquiry #</th>
+              <th class="no-sort">Order #</th>
+              <th class="no-sort">Quote #</th>
+              <th class="no-sort">Line Items</th>
+              <th class="no-sort">Inside Sales</th>
+              <th class="no-sort">Outside Sales</th>
+              <th class="no-sort">Created At</th>
+              <th class="no-sort">Status</th>
               </thead>
               <tbody>
               <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
