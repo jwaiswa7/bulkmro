@@ -13,7 +13,8 @@ json.data (@po_requests) do |po_request|
                   po_request.inquiry.inquiry_number,
                   po_request.sales_order.order_number,
                   po_request.inquiry.inside_sales_owner.to_s,
-                  po_request.status
+                  po_request.status,
+                  po_request.last_comment.message
               ]
 end
 
