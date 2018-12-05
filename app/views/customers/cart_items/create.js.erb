@@ -1,5 +1,8 @@
-$("#cart").load(window.location.href + " #cart > *");
-$('#quantityModal').modal('hide');
+//$("#cart").load(window.location.href + " #cart > *");
+//$('#quantityModal').modal('hide');
+
+var quantityInput = $('.cart-items-count');
+quantityInput.html(<%= current_cart.items.size %>);
 
 <% if @cart_item.errors.empty? %>
   $.notify({
