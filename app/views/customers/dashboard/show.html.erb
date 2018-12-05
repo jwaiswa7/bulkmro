@@ -8,10 +8,11 @@
   <div class="card mt-1">
     <div class="card-body">
       <h5 class="text-uppercase text-black-50 mb-0">Recent Quotes</h5>
-      <table class="table datatable w-100 wrap-whitespace">
+      <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
         <thead>
         <tr>
           <th class="no-sort">Action</th>
+          <th class="no-sort">Inquiry #</th>
           <th class="no-sort">Quote #</th>
           <th class="no-sort">Date</th>
           <th class="no-sort">Line Items</th>
@@ -26,6 +27,7 @@
           <tr>
             <td><%= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info') %></td>
             <td><%= sales_quote.inquiry.inquiry_number %></td>
+            <td><%= sales_quote.id %></td>
             <td><%= format_date(sales_quote.inquiry.created_at) %></td>
             <td><%= sales_quote.rows.size %></td>
             <td><%= format_currency(sales_quote.calculated_total) %></td>
@@ -46,7 +48,7 @@
     <div class="card mt-4">
       <div class="card-body">
         <h5 class="text-uppercase text-black-50 mb-0">Recent Orders</h5>
-        <table class="table datatable w-100 wrap-whitespace">
+        <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort">Action</th>
@@ -54,9 +56,8 @@
             <th class="no-sort">Order Date</th>
             <th class="no-sort">PO #</th>
             <th class="no-sort">PO Date</th>
-            <th class="no-sort">Quote #</th>
+            <th class="no-sort">Inquiry #</th>
             <th class="no-sort">Ship To</th>
-            <th class="no-sort">Company</th>
             <th class="no-sort">Order Total</th>
             <th class="no-sort">Delivery Date</th>
             <th class="no-sort">Status</th>
@@ -72,7 +73,6 @@
               <td><%= format_date(sales_order.inquiry.customer_order_date) %></td>
               <td><%= sales_order.inquiry.inquiry_number %></td>
               <td><%= sales_order.inquiry.shipping_contact.try(:name) || sales_order.inquiry.billing_contact.try(:name) %></td>
-              <td><%= sales_order.inquiry.company.to_s %></td>
               <td><%= format_currency(sales_order.calculated_total) %></td>
               <td><%= format_date(sales_order.inquiry.customer_committed_date) %></td>
               <td><%= sales_order_status_badge(sales_order.effective_customer_status) %></td>
@@ -91,7 +91,7 @@
     <div class="card mt-4">
       <div class="card-body">
         <h5 class="text-uppercase text-black-50 mb-0">Recent Invoices</h5>
-        <table class="table datatable w-100 wrap-whitespace">
+        <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
           <thead>
           <tr>
             <th class="no-sort">PO #</th>
