@@ -4,20 +4,24 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     begin
       if inquiry.present?
-        inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
-          purchase_order.assign_attributes(:metadata => params)
+        if !PurchaseOrder.find_by_po_number(params['PoNum']).present?
+          inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
+            purchase_order.assign_attributes(:metadata => params)
 
-          params['ItemLine'].each do |remote_row|
-            purchase_order.rows.build do |row|
-              row.assign_attributes(
-                  metadata: remote_row
-              )
+            params['ItemLine'].each do |remote_row|
+              purchase_order.rows.build do |row|
+                row.assign_attributes(
+                    metadata: remote_row
+                )
+              end
             end
           end
+          return_response("Purchase Order created successfully.")
+        else
+          return_response("Purchase Order already created.")
         end
-        return_response("Purchase Order created successfully.")
       else
-        return_response("Inquiry #{params['PoEnquiryId']} not found." , 0)
+        return_response("Inquiry #{params['PoEnquiryId']} not found.", 0)
       end
     rescue => e
       return_response(e.message, 0)
