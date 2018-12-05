@@ -1,5 +1,6 @@
 <div class="col-12">
-  <%= simple_form_for([:customers, @cart], :url => final_checkout_customers_checkout_path, :method => :get) do |cart| %>
+  <%= simple_form_for([:customers, @cart], :url => customers_cart_path, :method => :patch) do |cart| %>
+
     <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
       <div class="d-md-flex justify-content-between">
         <h1 class="display-5 mb-1">Cart</h1>
@@ -7,6 +8,8 @@
       </div>
       <p class="lead mt-1">
         You have <strong><%= cart.object.items.size %></strong> product(s) in your cart.
+        <%= render 'shared/snippets/form_errors', f: cart %>
+
       </p>
     </section>
 
@@ -17,19 +20,19 @@
             <h5 class="mb-0"><strong>Summary</strong></h5>
           </div>
           <div class="card-body">
-            <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(get_order_total(current_cart.items)) %></strong></span>
-            <% if @cart.default_billing_address_id? %>
+            <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(current_cart.calculated_total) %></strong></span>
+            <% if @cart.billing_address.present? %>
               <hr class="my-1">
-              <% calculate_tax(current_cart.items).each do |key, value| %>
-                <span class="d-block"><em class="float-left"><%= TaxRateString.for(get_billing_address(@cart.default_billing_address_id), default_warehouse_address, default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
+              <% current_cart.tax_line_items.each do |key, value| %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(current_cart.billing_address, current_cart.default_warehouse_address, current_cart.default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
               <% end %>
-              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(total_tax(current_cart.items)) %></strong>
+              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(current_cart.calculated_total_tax) %></strong>
               <hr class="my-1">
-              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(grand_total(current_cart.items)) %></strong>
+              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(current_cart.grand_total) %></strong>
             <% else %>
               <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
               <hr class="my-1">
-              <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(get_order_total(current_cart.items)) %></span>
+              <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(current_cart.calculated_total) %></span>
             <% end %>
           </div>
         </div>
@@ -55,7 +58,6 @@
                   <tr>
                     <td>
                       <%= cart_item.hidden_field :id %>
-                      <%= hidden_field_tag 'page', 'edit_cart' %>
                       <% if cart_item.object.customer_product.images.present? %>
                         <img src="<%= url_for_image(cart_item.object.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
                       <% elsif cart_item.object.customer_product.images.present? %>
