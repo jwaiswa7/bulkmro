@@ -4,19 +4,32 @@
     <div class="card">
       <div class="card-body">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <% if @customer_product.images.present? %>
               <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= @customer_product.sku %>"/>
             <% else %>
               <img src="<%= image_path('coming_soon.png') %>" alt="<%= @customer_product.sku %>"/>
             <% end %>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-9">
             <h4 class="display-5 mb-1 text-black-50 mt-2 mt-md-0"><%= @customer_product.product.name %></h4>
             <% if @customer_product.customer_price? %>
               <h4 class="mb-3"><%= format_currency(@customer_product.customer_price) %></h4>
             <% end %>
-            <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
+            <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
+              <div class="form-row">
+                <div class="col-4 col-md-2">
+                  <%= f.input :quantity, label: false, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @customer_product.moq} %>
+                  <%= f.hidden_field :product_id, value: @customer_product.product.id %>
+                  <%= f.hidden_field :customer_product_id, value: @customer_product.id %>
+                </div>
+                <div class="col-8 col-md-4">
+                  <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
+                </div>
+              </div>
+            <% end %>
+
+            <h6 class="text-uppercase text-black-50 mb-1 mt-2">Product Details</h6>
             <div class="form-row">
               <% if @customer_product.best_brand.present? %>
                 <div class="col-6 col-md-3 mb-2">
@@ -61,25 +74,6 @@
               <% end %>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-body">
-        <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Add Product to Cart</h6>
-          <%= simple_form_for([:customers, @cart_item], :url => customers_cart_items_path(), :method => :post, :remote => true) do |f| %>
-            <div class="form-row">
-              <div class="col-2">
-                <%= f.input :quantity, :class => 'form-control', input_html: {placeholder: 'Quantity', step: @customer_product.moq, min: @customer_product.moq, value: @customer_product.moq} %>
-                <%= f.hidden_field :product_id, value: @customer_product.product.id %>
-                <%= f.hidden_field :customer_product_id, value: @customer_product.id %>
-              </div>
-              <div class="col-2" style="margin-top: 25px">
-                <%= f.submit 'Add to Cart', class: "btn btn-block btn-success" %>
-              </div>
-            </div>
-          <% end %>
         </div>
       </div>
     </div>
