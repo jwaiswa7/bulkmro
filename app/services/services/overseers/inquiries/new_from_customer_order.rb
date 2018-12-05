@@ -27,8 +27,8 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
         inquiry.inquiry_products.where(product_id: row.product.id).first_or_create(
             sr_no: index,
             quantity: row.quantity,
-            bp_catalog_name: row.customer_product.name,
-            bp_catalog_sku: row.customer_product.sku,
+            bp_catalog_name: row.customer_product.present? ? row.customer_product.name : nil,
+            bp_catalog_sku: row.customer_product.present? ? row.customer_product.sku : nil,
             product: row.product
         )
       end
