@@ -4,7 +4,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     begin
       if inquiry.present?
-        if !PurchaseOrder.find_by_po_number(params['PoNum']).present?
+        if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
             purchase_order.assign_attributes(:metadata => params)
 
