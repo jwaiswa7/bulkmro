@@ -27,9 +27,9 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   def create
     @product = Product.find(customer_product_params[:product_id])
     @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product.assign_attributes(customer_product_params)
     @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
     @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
-    @customer_product.assign_attributes(customer_product_params)
 
     authorize @customer_product
 
