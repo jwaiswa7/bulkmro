@@ -11,8 +11,6 @@ import inquiries from './inquiries/init'
 //
 // Products
 import products from "./products/init";
-
-
 //
 // Sales Orders
 import salesOrders from "./salesOrders/init";
@@ -21,6 +19,7 @@ import salesOrders from "./salesOrders/init";
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
 import customerProducts from "./customerProducts/init";
+import kits from "./kits/init"
 
 
 let loader = {
@@ -32,7 +31,8 @@ let loader = {
     salesOrders: salesOrders,
 
     salesQuotes: salesQuotes,
-    customerProducts: customerProducts
+    customerProducts: customerProducts,
+    kits: kits
 };
 
 // Imports
