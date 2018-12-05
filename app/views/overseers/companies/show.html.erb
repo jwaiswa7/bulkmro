@@ -240,7 +240,7 @@
           All addresses filterable in any way that we want under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_addresses_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_addresses_path(company_id: @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -265,7 +265,7 @@
           All contacts filterable in any way that we want under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
@@ -303,7 +303,7 @@
           All products filterable in any way that we want under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -331,7 +331,7 @@
             All inquiries filterable in any way that we want under <strong><%= @company.name %></strong>.
           </p>
 
-          <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(company_id: @company.id) %>">
+          <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(company_id: @company.id) %>">
             <thead>
             <tr>
               <th class="no-sort"></th>

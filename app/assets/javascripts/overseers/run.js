@@ -63,20 +63,3 @@ function camelizeAndSkipLastWord(text) {
 
     return camelized.join('');
 }
-
-function searchsubmit(val){
-    $.ajax({
-        url: self.location.href.split('?')[0],
-        data: {q: val},
-        beforeSend: function(){
-            $("#grid_container").addClass("blur");
-        },
-        success: function(x) {
-            var pro_ind = $("#customer_products_index", x).html();
-            $("#customer_products_index").html(pro_ind);
-        },
-        complete:function(){
-            $("#grid_container").removeClass("blur");
-        }
-    })
-}

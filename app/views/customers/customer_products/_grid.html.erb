@@ -38,10 +38,10 @@
   <div class="input-group-prepend">
     <span class="input-group-text"><i class="material-icons">filter_list</i></span>
   </div>
-  <input type="search" name="q" class="form-control filter-list-input" placeholder="Filter by anything [press ENTER to SEARCH]" value="<%= params[:q] %>" onchange="searchsubmit(this.value)">
+  <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
 </div>
 
-<div class="form-row mt-2" id="grid_container">
+<div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
     <% @customer_products.each do |customer_product| %>
       <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-12 d-flex">
