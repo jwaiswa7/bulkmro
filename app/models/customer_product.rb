@@ -23,6 +23,7 @@ class CustomerProduct < ApplicationRecord
 
   scope :with_includes, -> {includes(:brand, :category)}
 
+
   def best_brand
     self.brand || self.product.brand
   end
