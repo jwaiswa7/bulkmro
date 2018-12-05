@@ -44,7 +44,7 @@
 <div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
     <% @customer_products.each do |customer_product| %>
-      <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-12 d-flex">
+      <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12 d-flex">
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
