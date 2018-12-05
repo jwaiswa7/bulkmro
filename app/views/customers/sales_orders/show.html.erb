@@ -1,5 +1,8 @@
 <% provide :container_fluid, true %>
 <% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+  Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+<% end %>
 
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
