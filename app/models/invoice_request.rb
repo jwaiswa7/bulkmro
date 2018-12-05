@@ -14,15 +14,13 @@ class InvoiceRequest < ApplicationRecord
   enum status: {
       :'GRPO Pending' => 10,
       :'AP Invoice Pending' => 20,
-      :'Delivery Pending' => 30,
-      :'AR Invoice Pending' => 40,
-      :'AR Invoice Generated' => 50,
-      :'AR Invoice Cancelled' => 60
+      :'AR Invoice Pending' => 30,
+      :'AR Invoice Generated' => 40,
+      :'AR Invoice Cancelled' => 50
   }
 
   scope :grpo_pending, -> {where(:status => :'GRPO Pending')}
   scope :ap_invoice_pending, -> {where(:status => :'AP Invoice Pending')}
-  scope :delivery_pending, -> {where(:status => :'Delivery Pending')}
   scope :ar_invoice_pending, -> {where(:status => :'AR Invoice Pending')}
   scope :ar_invoice_generated, -> {where(:status => :'AR Invoice Generated')}
 
@@ -32,14 +30,10 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :inquiry
 
   validate :grpo_number_validation?
+  validate :shipment_number_validate?
 
   with_options if: :"AP Invoice Pending?" do |invoice_request|
     invoice_request.validates_presence_of :grpo_number
-  end
-
-  with_options if: :"Delivery Pending?" do |invoice_request|
-    invoice_request.validates_presence_of :grpo_number
-    invoice_request.validates_presence_of :ap_invoice_number
   end
 
   with_options if: :"AR Invoice Generated?" do |invoice_request|
@@ -53,6 +47,12 @@ class InvoiceRequest < ApplicationRecord
   def grpo_number_validation?
     if self.grpo_number.present? && self.grpo_number <= 50000000
       errors.add(:grpo_number, " must be 8 digits starting with 5")
+    end
+  end
+
+  def shipment_number_validate?
+    if self.shipment_number.present? && self.shipment_number <= 30000000
+      errors.add(:shipment_number, " must be 8 digits starting with 3")
     end
   end
 end
