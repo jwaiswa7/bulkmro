@@ -20,10 +20,11 @@ const manageFailedSkus = () => {
     });
     $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
         var page = $(this).parent().attr('data-page');
+        if(page > 1){
+            showPrevious($(this).data("row-object"), --page, $(this).parent().data("index"));
+        }
         if(page < 2){
             $(this).addClass('disabled');
-        }else{
-            showPrevious($(this).data("row-object"), --page, $(this).parent().data("index"));
         }
     });
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
