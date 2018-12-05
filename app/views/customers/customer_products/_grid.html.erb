@@ -49,9 +49,9 @@
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
               <% if customer_product.images.present? %>
-                <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>"/>
+                <img src="<%= url_for_image(customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= customer_product.sku %>"/>
               <% else %>
-                <img src="<%= image_path('coming_soon.png') %>"/>
+                <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" />
               <% end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.product.name, :length => 100) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
