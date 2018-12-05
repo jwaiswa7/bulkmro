@@ -1,7 +1,7 @@
 const index = () => {
     $('.filter-list-input').bindWithDelay('keyup', (e) => {
         searchSubmit(e.target.value)
-    }, 300);
+    }, 500);
 };
 
 const searchSubmit = (val) => {
