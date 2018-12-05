@@ -5,6 +5,13 @@ class Cart < ApplicationRecord
   belongs_to :billing_address, foreign_key: :billing_address_id, :class_name => 'Address', required: false
   belongs_to :shipping_address, foreign_key: :shipping_address_id, :class_name => 'Address', required: false
 
+  after_initialize :set_global_defaults
+
+  def set_global_defaults
+    self.billing_address ||= Address.joins(:company).where('companies.id in (?)', contact.companies.map(&:id)).first
+    self.shipping_address ||= Address.joins(:company).where('companies.id in (?)', contact.companies.map(&:id)).first
+  end
+
   def calculated_total
     items.inject(0) {|sum, cart_item| sum + cart_item.customer_product.customer_price.to_f * cart_item.quantity}
   end

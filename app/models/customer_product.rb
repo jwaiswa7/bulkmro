@@ -20,8 +20,15 @@ class CustomerProduct < ApplicationRecord
   validates_presence_of :customer_price
   validates_uniqueness_of :sku, scope: :company_id
   validates_uniqueness_of :product_id, scope: :company_id
+  validates_presence_of :moq
 
   scope :with_includes, -> {includes(:brand, :category)}
+
+  after_initialize :set_defaults, :if => :new_record?
+
+  def set_defaults
+    self.moq ||= 1
+  end
 
   after_save :update_index
 
@@ -50,7 +57,7 @@ class CustomerProduct < ApplicationRecord
   end
 
   # def set_unit_selling_price
-    # self.unit_selling_price ||= price!
+  # self.unit_selling_price ||= price!
   # end
 
   # def price
