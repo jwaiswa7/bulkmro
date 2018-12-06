@@ -24,13 +24,22 @@ class InvoiceRequest < ApplicationRecord
   scope :ar_invoice_pending, -> {where(:status => :'AR Invoice Pending')}
   scope :ar_invoice_generated, -> {where(:status => :'AR Invoice Generated')}
 
-  after_initialize :set_defaults, :if => :new_record?
-
   validates_presence_of :sales_order
   validates_presence_of :inquiry
 
-  validate :grpo_number_validation?
-  validate :shipment_number_validate?
+  validate :grpo_number_valid?
+  def grpo_number_valid?
+    if self.grpo_number.present? && self.grpo_number <= 50000000
+      errors.add(:grpo_number, "must be 8 digits starting with 5")
+    end
+  end
+
+  validate :shipment_number_valid?
+  def shipment_number_valid?
+    if self.shipment_number.present? && self.shipment_number <= 30000000
+      errors.add(:shipment_number, "must be 8 digits starting with 3")
+    end
+  end
 
   with_options if: :"AP Invoice Pending?" do |invoice_request|
     invoice_request.validates_presence_of :grpo_number
@@ -40,19 +49,8 @@ class InvoiceRequest < ApplicationRecord
     invoice_request.validates_presence_of :ar_invoice_number
   end
 
+  after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.status = :'GRPO Pending'
-  end
-
-  def grpo_number_validation?
-    if self.grpo_number.present? && self.grpo_number <= 50000000
-      errors.add(:grpo_number, " must be 8 digits starting with 5")
-    end
-  end
-
-  def shipment_number_validate?
-    if self.shipment_number.present? && self.shipment_number <= 30000000
-      errors.add(:shipment_number, " must be 8 digits starting with 3")
-    end
   end
 end
