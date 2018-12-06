@@ -111,22 +111,26 @@
             <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
             <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
             <% if Rails.env.development? %>
-            <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
+              <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
             <% end %>
           </div>
         </li>
       <% end %>
 
-
+      <% if Rails.env.development? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
             Chewy
           </a>
           <div class="dropdown-menu">
 
+            <% chewy_indices.each do |chewy_index| %>
+              <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+            <% end %>
+            <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
           </div>
         </li>
-
+      <% end %>
     </ul>
   </div>
   <!-- Navigation Bar -->
