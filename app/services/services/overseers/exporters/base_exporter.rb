@@ -11,7 +11,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
   end
 
   def generate_csv
-    CSV.generate(write_headers: true, headers: columns) do |csv|
+    CSV.open("/tmp/" + filename, 'w',write_headers: true, headers: columns) do |csv|
       rows.each do |row|
         csv << row.values
       end

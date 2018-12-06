@@ -3,11 +3,17 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   def initialize
     super
 
-    @columns = ['id', 'SKU', 'Name', 'Category','Sub Category 1', 'Sub Category 2','Brand']
     @model = Product
+    @path = Rails.root.join("public/exports/#{filename}")
+    @columns = ['id', 'SKU', 'Name', 'Category','Sub Category 1', 'Sub Category 2','Brand']
+
   end
 
   def call
+    perform_export_later('ProductsExporter')
+  end
+
+  def build_csv
     model.includes(:category, :brand).all.each do |record|
       rows.push({
                     :id => record.id,
@@ -21,7 +27,6 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
                     :brand => (record.brand.name if record.brand.present?)
                 })
     end
-
     generate_csv
   end
 end

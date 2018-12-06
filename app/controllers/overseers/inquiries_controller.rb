@@ -19,10 +19,11 @@ class Overseers::InquiriesController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new
+    service.call
 
     respond_to do |format|
       format.html
-      format.csv {send_data service.call, filename: service.filename}
+      format.csv {send_file url_for(Export.inquiries.last.report)}
     end
   end
 
