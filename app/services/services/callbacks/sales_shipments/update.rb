@@ -13,7 +13,7 @@ class Services::Callbacks::SalesShipments::Update < Services::Callbacks::Shared:
             :followup_date => params['ship_follow_up_date'],
             :shipment_grn => params['shp_grn'],
             :metadata => params,
-            :packing_remarks => params['pick_pack_remartk']
+            :packing_remarks => params['pick_pack_remark']
         )
 
         shipment.comments.create!({:message => message, :metadata => params})

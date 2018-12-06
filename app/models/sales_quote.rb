@@ -90,4 +90,8 @@ class SalesQuote < ApplicationRecord
       'Order Lost'
     end
   end
+
+  def to_s
+    ['#', inquiry.inquiry_number].join
+  end
 end

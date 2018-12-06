@@ -15,6 +15,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).can_request_po?
                         row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'Request PO', 'info')
+                      end,
+                      if policy(sales_order).can_request_invoice?
+                        row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'file-invoice', 'Invoice Request', 'warning')
                       end
                   ].join(' '),
                   sales_order.order_number,
