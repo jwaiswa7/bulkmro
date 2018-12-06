@@ -25,14 +25,17 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
   def verify
     title = "*Resync requests status at* "+ Time.now.to_s
     resync_request = ResyncRequest.initiated_today.last
+    validated_requests = []
     if resync_request.present?
       requests = resync_request.request
       total = requests.count
       success = 0; failed = 0; pending = 0
       requests.each do |request|
-        parsed_request = request.split('~')
-        status =  RemoteRequest.find_by_subject_type_and_subject_id(parsed_request[0],parsed_request[1]).latest_status
-        case status
+        status = ''
+        old_request = RemoteRequest.find(request)
+        new_request =  RemoteRequest.find_by_subject_type_and_subject_id(old_request.subject_type,old_request.subject_id).latest_request
+        validated_requests << new_request.id
+        case new_request.status
           when 'pending'
             pending += 1
           when 'success'
@@ -64,10 +67,11 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
               }
           ]
       resync_request.update_attribute(:status, "addressed")
+      resync_request.update_attribute(:validated_requests, validated_requests) if validated_requests.present?
     else
       message = [
           {
-              "title": "Requests not found",
+              "title": "No pending resync requests found for today",
               "color": "#439FE0"
           }
       ]
