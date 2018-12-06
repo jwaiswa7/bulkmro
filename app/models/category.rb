@@ -4,7 +4,7 @@ class Category < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanHaveTaxes
 
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true, :any_word => true}}
 
   has_many :category_suppliers
   has_many :suppliers, :through => :category_suppliers
