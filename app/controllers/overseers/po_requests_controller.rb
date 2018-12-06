@@ -38,6 +38,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
       ActiveRecord::Base.transaction do
         @po_request.save!
         @po_request_comment = PoRequestComment.new(:message => "PO Request submitted.", :po_request => @po_request, :overseer => current_overseer)
+
+        @so_products = @po_request.sales_order.rows
+        @so_products .each do |so_product|
+          @po_request.po_request_products.where(:sales_order_row => so_product).first_or_create! do |row|
+            row.product = so_product.product
+            row.quantity = so_product.quantity
+            row.sales_quote_row = so_product.sales_quote_row
+          end
+        end
+        @po_request.save
         @po_request_comment.save!
       end
 
@@ -81,6 +91,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :sales_order_id,
         :purchase_order_number,
         :status,
+        :po_request_products_attributes => [:id, :product, :sales_order_row, :sales_quote_row, :quantity],
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
