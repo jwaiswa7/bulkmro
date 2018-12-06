@@ -84,6 +84,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     true #!record.has_purchase_order_request
   end
 
+  def can_request_invoice?
+    true #!record.has_purchase_order_request
+  end
+
   def approve?
     pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
