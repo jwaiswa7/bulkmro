@@ -14,32 +14,23 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def chewy
     authorize :dashboard
-    ProductsIndex.delete
-    ProductsIndex.create!
-    ProductsIndex.reset!
-
-    # InquiryIndex.import
-    InquiriesIndex.reset!
-    SalesOrdersIndex.reset!
-
-
-    InquiriesIndex.delete
-    InquiriesIndex.create!
-    InquiriesIndex.reset!
-
+    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
+      path.gsub(".rb", "").gsub("app/chewy/", "").classify.constantize.reset!
+    end
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path
   end
 
-   def reset_indices
-     authorize :dashboard
-
-
-
-
-     # Fix for failure when no shards are found
-     redirect_back fallback_location: overseers_dashboard_path
-   end
+  def reset_index
+    authorize :dashboard
+    if params.present? && params[:index].present?
+      index_class = params[:index].to_s.classify.constantize
+      if index_class <= BaseIndex
+        index_class.reset!
+      end
+    end
+    redirect_back fallback_location: overseers_dashboard_path
+  end
 
   def console
     authorize :dashboard
