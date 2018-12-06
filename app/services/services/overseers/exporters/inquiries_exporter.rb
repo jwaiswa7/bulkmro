@@ -3,7 +3,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   def initialize
     super
     @model = Inquiry
-    @path = Rails.root.join("tmp/exports/#{filename}")
+    @path = Rails.root.join('tmp', filename)
     @columns = ['inquiry_number', 'order_number', 'created_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'comments', 'reason']
   end
 
@@ -35,7 +35,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                 })
     end
 
-    generate_csv
-    Export.create!(export_type: 1, report: @path)
+    file = generate_csv
+    Export.create!(export_type: 1, report: file)
   end
 end
