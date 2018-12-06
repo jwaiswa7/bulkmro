@@ -7,7 +7,7 @@ class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
     admin?
   end
 
-  def reset_indices?
+  def reset_index?
     admin?
   end
 
