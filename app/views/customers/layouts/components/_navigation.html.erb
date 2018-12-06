@@ -17,7 +17,7 @@
       <%= nav_item 'Dashboard', customers_dashboard_path, true %>
       <%= nav_item 'Quotes', customers_quotes_path, true %>
       <%= nav_item 'Orders', customers_orders_path, true %>
-      <%#= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Products', customers_products_path, true %>
       <%= nav_item 'Invoices', customers_invoices_path, true %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
@@ -29,7 +29,6 @@
         </div>
       </li>
       <%= nav_item 'Online Orders', customers_customer_orders_path, true %>
-      <%= nav_item 'Customer Products', customers_customer_products_path, true %>
     </ul>
   </div>
   <!-- Navigation Bar -->
@@ -37,12 +36,9 @@
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
     <div class="dropdown d-inline mr-2" id="cart">
-      <a href="#" role="button" data-toggle="dropdown" id="cart-count">
-        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.items.count %></span>
+      <a href="<%= customers_cart_path %>" role="button" id="cart-count">
+        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
       </a>
-      <% if current_cart.present? %>
-        <%= render(partial: 'customers/layouts/components/cart') %>
-      <% end %>
     </div>
 
     <div class="dropdown d-inline">

@@ -3,6 +3,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || cataloging? || logistics?
   end
 
+  def new_from_customer_order?
+    manager_or_sales? || cataloging? || logistics?
+  end
+
   def index_pg?
     index?
   end
