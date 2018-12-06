@@ -94,9 +94,9 @@
     </div>
 
     <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
     <% end %>
     <div class="form-row">
       <div class="col-12 col-md-6">
