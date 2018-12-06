@@ -51,6 +51,6 @@ class InvoiceRequest < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.status = :'GRPO Pending'
+    self.status ||= :'GRPO Pending'
   end
 end
