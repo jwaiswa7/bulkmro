@@ -139,10 +139,8 @@
                 <% current_cart.items.each do |cart_item| %>
                   <tr>
                     <td>
-                      <% if cart_item.customer_product.images.present? %>
-                        <img src="<%= url_for_image(cart_item.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
-                      <% elsif cart_item.customer_product.images.present? %>
-                        <img src="<%= url_for_image(cart_item.customer_product.images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
+                      <% if cart_item.customer_product.best_images.present? %>
+                        <img src="<%= url_for_image(cart_item.customer_product.best_images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
                       <% else %>
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40" />
                       <% end %>  
