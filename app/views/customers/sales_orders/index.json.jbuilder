@@ -1,8 +1,12 @@
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
-                      row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info', :_blank),
-                      row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
+                      if policy(sales_order).index?
+                        row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info')
+                      end,
+                      if policy(sales_order).index?
+                        row_action_button(customers_order_path(sales_order, format: :pdf), 'file-pdf', 'Download Order', 'dark', :_blank)
+                      end
                   ].join(' '),
                   sales_order.order_number,
                   format_date(sales_order.created_at),

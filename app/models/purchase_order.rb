@@ -2,6 +2,8 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('purchase_orders#purchase_order') {self}
 
+  pg_search_scope :locate, :against => [:id, :po_number], :using => {:tsearch => {:prefix => true}}
+
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency

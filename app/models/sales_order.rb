@@ -33,6 +33,7 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
   has_one :po_request
+  has_many :invoice_requests
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
 

@@ -1,5 +1,5 @@
 class Overseers::WarehousesController < Overseers::BaseController
-  before_action :set_company, only: [:edit,:show,:update]
+  before_action :set_warehouse, only: [:edit,:show,:update]
 
   def index
     @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
@@ -48,7 +48,7 @@ class Overseers::WarehousesController < Overseers::BaseController
     )
   end
 
-  def set_company
+  def set_warehouse
     @warehouse ||= Warehouse.find(params[:id])
   end
 

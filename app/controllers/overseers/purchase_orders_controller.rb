@@ -15,10 +15,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def autocomplete
-    service = Services::Overseers::Finders::PurchaseOrders.new(params.merge(page: 1), current_overseer)
-    service.call
-    @indexed_purchase_orders = service.indexed_records
-    @purchase_orders = service.records.try(:reverse)
+    if params[:inquiry_number].present?
+      @purchase_orders = ApplyParams.to(PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]}), params)
+    else
+      @purchase_orders = ApplyParams.to(PurchaseOrder.all, params)
+    end
+
     authorize :purchase_order
   end
 
