@@ -11,7 +11,7 @@
 
   <div class="row flex-lg-row-reverse">
     <div class="col-lg-3">
-      <div class="card mb-3">
+      <div class="card mb-3" data-toggle="sticky">
         <div class="card-header">
           <h5 class="mb-0"><strong>Summary</strong></h5>
         </div>
@@ -143,10 +143,10 @@
           </a>
         </div>
 
-        <div id="checkout-summary" class="collapse <%= show_if(params[:next_step] == 'summary') %>" data-parent="#checkout" data-toggle="sticky">
+        <div id="checkout-summary" class="collapse <%= show_if(params[:next_step] == 'summary') %>" data-parent="#checkout">
           <div class="card-body pt-0">
             <div class="text-left">
-              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
                 <thead>
                 <tr>
                   <th class="no-sort desktop">Image</th>
