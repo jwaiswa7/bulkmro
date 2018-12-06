@@ -5,7 +5,7 @@ json.data (@inquiries) do |inquiry|
             row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning',:_blank)
           end,
       ].join(' '),
-      inquiry.inquiry_number,
+      link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       inquiry.sales_orders.where.not(order_number:nil).map{ |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: "_blank") }.compact.join(' '),
       inquiry.invoices.map{ |invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(inquiry), target: "_blank") }.compact.join(' '),
       inquiry_status_badge(inquiry.status),
