@@ -14,11 +14,11 @@
 
     <div class="row flex-lg-row-reverse">
       <div class="col-lg-3">
-        <div class="card text-right">
+        <div class="card" data-toggle="sticky">
           <div class="card-header">
             <h5 class="mb-0"><strong>Summary</strong></h5>
           </div>
-          <div class="card-body">
+          <div class="card-body text-right">
             <span class="d-block"><strong class="float-left">Subtotal:</strong> <strong><%= format_currency(current_cart.calculated_total) %></strong></span>
             <% if @cart.billing_address.present? %>
               <hr class="my-1">
@@ -40,7 +40,7 @@
         <div class="card mt-2 mt-lg-0">
           <div class="card-body py-2">
             <div class="text-left">
-              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100">
+              <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
                 <thead>
                 <tr>
                   <th class="no-sort desktop">Image</th>
