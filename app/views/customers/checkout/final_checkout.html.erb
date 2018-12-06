@@ -137,8 +137,7 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.billing_address.present? &&
-              @cart.shipping_address.present?) ? "#checkout-summary" : "" %>">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="<%= (@cart.billing_address.present? && @cart.shipping_address.present?) ? "#checkout-summary" : "" %>">
             <h5 class="mb-0"><strong>Products Summary</strong></h5>
           </a>
         </div>
@@ -151,7 +150,7 @@
                 <tr>
                   <th class="no-sort desktop">Image</th>
                   <th class="no-sort all">Product</th>
-                  <th class="all">Price</th>
+                  <th class="no-sort">Price</th>
                   <th class="all">Quantity</th>
                   <th class="all">Subtotal</th>
                 </tr>
