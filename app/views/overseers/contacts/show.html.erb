@@ -76,7 +76,7 @@
     <% end %>
   </div>
   <p class="mt-md-1 d-none d-md-block">
-    All inquiries filterable in any way that we want under <strong><%= @contact.company.name %></strong>.
+    All inquiries searchable with relevant term/keywords under <strong><%= @contact.company.name %></strong>.
   </p>
 
   <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(contact_id: @contact.id) %>">
