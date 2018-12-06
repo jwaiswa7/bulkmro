@@ -21,10 +21,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::Exporters::InquiriesExporter.new
     service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_file url_for(Export.inquiries.last.report)}
-    end
+    redirect_to url_for(Export.inquiries.last.report)
   end
 
   def index_pg

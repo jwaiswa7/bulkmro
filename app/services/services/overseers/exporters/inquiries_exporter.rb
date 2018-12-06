@@ -34,8 +34,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                     :reason => ''
                 })
     end
-
-    file = generate_csv
-    Export.create!(export_type: 1, report: file)
+    export = Export.create!(export_type: 1)
+    generate_csv(export)
   end
 end
