@@ -37,11 +37,13 @@
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
+    <% if policy(:customer_product).index? %>
     <div class="dropdown d-inline mr-2" id="cart">
       <a href="<%= customers_cart_path %>" role="button" id="cart-count">
         <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
       </a>
     </div>
+    <% end %>
 
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown">
