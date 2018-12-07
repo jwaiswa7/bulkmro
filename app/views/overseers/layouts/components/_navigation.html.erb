@@ -134,7 +134,7 @@
         </li>
       <% end %>
 
-      <% if Rails.env.development? || policy(:dashboard).chewy %>
+      <% if Rails.env.development? || policy(:dashboard).chewy? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
             Chewy
