@@ -4,6 +4,14 @@ class Customers::CustomerProductPolicy < Customers::ApplicationPolicy
   end
 
   def most_ordered_products?
-    true
+    contact.customer_products.exists?
+  end
+
+  def index?
+    contact.customer_products.exists?
+  end
+
+  def online_orders?
+    contact.customer_products.exists?
   end
 end
