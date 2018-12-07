@@ -26,7 +26,7 @@ class Resources::Invoice < Resources::ApplicationResource
           sku = remote_row['ItemCode']
           product = Product.find_by_sku(sku)
           # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
-          quantity = remote_row['Quantity'].to_i
+          quantity = remote_row['Quantity'].to_f
           tax_amount = remote_row['NetTaxAmount'].to_f
 
           sales_invoice.rows.create!(
