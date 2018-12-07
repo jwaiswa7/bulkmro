@@ -122,7 +122,7 @@
         </li>
       <% end %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <% if (policy(:dashboard).chewy? && Rails.env.development?) || policy(:remote_request).index? %>
+      <% if (Rails.env.development?) || policy(:remote_request).index? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
             Tools
@@ -130,9 +130,6 @@
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
             <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
-            <% if Rails.env.development? %>
-              <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
-            <% end %>
           </div>
         </li>
       <% end %>
