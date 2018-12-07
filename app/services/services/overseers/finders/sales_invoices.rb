@@ -22,7 +22,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[invoice_number^3 sales_order_id sales_order_number status inquiry_number]}})
+    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[invoice_number_s^3 sales_order_number_s inside_sales_owner outside_sales_owner inquiry_number_s^4 status_s]}})
 
     indexed_records = indexed_records.filter(filter_by_value("inquiry_present", true))
 
