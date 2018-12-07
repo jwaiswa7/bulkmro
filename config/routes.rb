@@ -337,6 +337,7 @@ Rails.application.routes.draw do
   namespace 'customers' do
     resources :reports do
       member do
+        get 'chart'
       end
 
       collection do
