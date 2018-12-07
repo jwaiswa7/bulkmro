@@ -2,7 +2,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
     @search_filters = []
     @range_filters = []
-
+    @sort_by = "created_at"
+    @sort_order = "desc"
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
@@ -12,6 +13,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
             search_filters << column
           end
         end
+      end
+      if params[:order].values.first['column'].present?
+        @sort_by = params[:columns][params[:order].values.first['column']][:name]
+        @sort_order =params[:order].values.first['dir']
       end
     end
 
@@ -87,7 +92,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def sort_definition
-    {:created_at => :desc}
+    {"#{sort_by}" => "#{sort_order}"}
   end
 
   def index_klass
@@ -188,5 +193,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :sort_by, :sort_order
 end

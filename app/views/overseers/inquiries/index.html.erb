@@ -30,7 +30,7 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort all" data-name="inquiry_number">#</th>
+  <th class="sort all" data-name="inquiry_number">#</th>
   <th class="no-sort desktop">Sales Orders</th>
   <th class="no-sort desktop">Sales Invoices</th>
   <th class="no-sort all" data-name="status">Status</th>
@@ -40,8 +40,8 @@
   <th class="no-sort desktop" data-name="contact_id">Contact</th>
   <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
   <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-  <th class="no-sort desktop">Total</th>
-  <th class="no-sort desktop" data-name="created_at">Created</th>
+  <th class="sort desktop" data-name="calculated_total_i">Total</th>
+  <th class="sort desktop" data-name="created_at">Created</th>
 <% end %>
 
 <% content_for :filter_row do %>
