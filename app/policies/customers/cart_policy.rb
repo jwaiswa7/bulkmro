@@ -1,4 +1,8 @@
 class Customers::CartPolicy < Customers::ApplicationPolicy
+  def show?
+    contact.customer_products.exists?
+  end
+
   def checkout?
     show?
   end
