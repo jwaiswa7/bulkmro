@@ -99,9 +99,9 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AP Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AP Invoice Pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AR Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AR Invoice Pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
           </div>
         </li>
