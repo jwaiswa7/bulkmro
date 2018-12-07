@@ -1,4 +1,8 @@
 <% provide :container_fluid, true %>
+<% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+  Order <%= ['#', @sales_order.order_number].join if @sales_order.order_number.present? %>
+<% end %>
 
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
@@ -18,18 +22,18 @@
     <div class="card-header">
       <div class=form-row>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Inquiry Number</strong>
+          #<%= @sales_order.inquiry.inquiry_number %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
           <strong class="d-block">Quotation Number</strong>
           #<%= @sales_order.sales_quote_id %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0 mb-md-0">
           <strong class="d-block">PO Number</strong>
           #<%= @sales_order.inquiry.customer_po_number %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Payment Method</strong>
-          Bank Transfer
-        </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0 mb-md-0">
           <strong class="d-block">Currency</strong>
           <%= @sales_order.currency %>
         </div>
@@ -37,21 +41,25 @@
     </div>
     <div class="card-body">
       <div class="form-row mb-1">
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-2">
           <strong class="d-block">PO Date</strong>
           <%= format_date(@sales_order.inquiry.customer_order_date) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-2">
           <strong class="d-block">Date of Quotation</strong>
           <%= format_date(@sales_order.sales_quote.sent_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-2">
           <strong class="d-block">Sales Order Date</strong>
           <%= format_date(@sales_order.approval.created_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-2">
           <strong class="d-block">Payment Terms</strong>
           <%= @sales_order.inquiry.payment_option.name %>
+        </div>
+        <div class="col-6 col-md-3 mb-0">
+          <strong class="d-block">Payment Method</strong>
+          Bank Transfer
         </div>
       </div>
       <div class="card-alternative mt-3 pb-3">
