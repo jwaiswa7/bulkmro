@@ -31,6 +31,7 @@
       </li>
       <% end %>
       <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
+      <%= link_to 'Playment', customers_playments_path, method: :post %>
     </ul>
   </div>
   <!-- Navigation Bar -->
