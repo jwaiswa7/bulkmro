@@ -13,7 +13,8 @@ class Resources::Invoice < Resources::ApplicationResource
       metadata_changes = {
           :subtotal => remote_response['DocTotal'] - remote_response['VatSum'],
           :tax_amount => remote_response['VatSum'],
-          :subtotal_incl_tax => remote_response['DocTotal']
+          :subtotal_incl_tax => remote_response['DocTotal'],
+          :rate => remote_response['DocRate']
       }
 
       ActiveRecord::Base.transaction do
@@ -27,7 +28,7 @@ class Resources::Invoice < Resources::ApplicationResource
           product = Product.find_by_sku(sku)
           # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
           quantity = remote_row['Quantity'].to_f
-          tax_amount = remote_row['NetTaxAmount'].to_f
+          tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ?  remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f
 
           sales_invoice.rows.create!(
               quantity: quantity,
