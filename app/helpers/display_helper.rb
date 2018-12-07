@@ -163,4 +163,10 @@ module DisplayHelper
       fallback_url
     end
   end
+
+  def chewy_indices
+    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
+      path.gsub(".rb", "").gsub("app/chewy/", "") if !path.include? "base_index"
+    end.compact
+  end
 end
