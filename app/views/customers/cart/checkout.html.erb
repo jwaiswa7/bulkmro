@@ -20,7 +20,7 @@
       <div class="text-left">
           <% current_cart.items.each do |cart_item| %>
             <div class="<% if cart_item != current_cart.items.last %>border-bottom <% end %>py-2 d-flex flex-row align-items-center">
-              <img class="" src="<%= url_for(cart_item.product.images.first) %>" width="60" />
+              <img alt="<%= %>" src="<%= url_for(cart_item.product.best_images.first) %>" width="60" />
               <div class="ml-3">
                 <p class="text-black-50 m-0 p-0"><strong><%= cart_item.product.name %></strong></p>
                 <span class="text-black-50 d-block">x <%= cart_item.quantity %></span>

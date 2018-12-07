@@ -6,4 +6,5 @@ let categories = {
     new: categoriesNew
 }
 
+
 export default categories

@@ -33,7 +33,7 @@
 
     <% unless content_for?(:hide_table_desc) %>
       <p class="lead mt-1">
-        All <%= current_model.humanize.downcase %> filterable in any way that we want.
+        All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
       </p>
     <% end %>
   </section>
@@ -41,7 +41,7 @@
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered dt-responsive
     <% if content_for?(:wrap_whitespace) %> wrap-whitespace
-    <% end %>" data-search="Filter by anything"
+    <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
          <% end %>>
     <thead>
