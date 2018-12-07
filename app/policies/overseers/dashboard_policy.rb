@@ -7,6 +7,10 @@ class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
     admin?
   end
 
+  def reset_index?
+    admin?
+  end
+
   def migrations?
     admin?
   end
