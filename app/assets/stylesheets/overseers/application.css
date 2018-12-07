@@ -9587,7 +9587,8 @@ label[class*='col'] {
   margin-bottom: 0; }
 
 .input-group-prepend .input-group-text {
-  padding-right: 0; }
+  padding-right: 0;
+  border: 0 transparent; }
   .input-group-prepend .input-group-text .material-icons {
     font-size: 1.125rem; }
 .input-group-prepend + .form-control {
@@ -10226,48 +10227,6 @@ button.bg-highlight-dark:hover,
 button.bg-highlight-dark:focus {
   background-color: #7a8793 !important; }
 
-div.blur {
-    opacity: 0.65;
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -o-filter: blur(3px);
-    -ms-filter: blur(3px); }
-
-.blink{
-    animation:blink 700ms infinite alternate;
-}
-
-@keyframes blink {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-.empty-cart {
-    margin: auto;
-    width: 50%;
-    padding: 10px;
-}
-
-.cart-subtotal-container {
-    text-align: center;
-    padding-bottom: 10px;
-}
-
-.cart-delete-update-container {
-    width:100%;
-    text-align: center;
-    padding-top: 20px;
-}
-
-.update-cart-button, .empty-cart-button {
-    display: inline-block;
-}
-
 .headway {
   display: inline-block;
   vertical-align: middle;
@@ -10279,6 +10238,9 @@ div.blur {
 
 #HW_frame_cont.HW_visible {
   z-index: 1500; }
+@media (max-width: 991.98px) {
+  #HW_frame_cont {
+    display: none; } }
 
 .headway > *:after {
   content: 'Updates';
@@ -10292,3 +10254,107 @@ div.blur {
 
 #HW_badge.HW_softHidden {
   background-color: #fd7e14 !important; }
+
+.badge-blue {
+  color: #fff;
+  background-color: #007bff; }
+  .badge-blue[href]:hover, .badge-blue[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0062cc; }
+
+.badge-indigo {
+  color: #fff;
+  background-color: #6610f2; }
+  .badge-indigo[href]:hover, .badge-indigo[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #510bc4; }
+
+.badge-purple {
+  color: #fff;
+  background-color: #6f42c1; }
+  .badge-purple[href]:hover, .badge-purple[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #59339d; }
+
+.badge-pink {
+  color: #fff;
+  background-color: #e83e8c; }
+  .badge-pink[href]:hover, .badge-pink[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #d91a72; }
+
+.badge-red {
+  color: #fff;
+  background-color: #dc3545; }
+  .badge-red[href]:hover, .badge-red[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #bd2130; }
+
+.badge-orange {
+  color: #212529;
+  background-color: #fd7e14; }
+  .badge-orange[href]:hover, .badge-orange[href]:focus {
+    color: #212529;
+    text-decoration: none;
+    background-color: #dc6502; }
+
+.badge-yellow {
+  color: #212529;
+  background-color: #ffc107; }
+  .badge-yellow[href]:hover, .badge-yellow[href]:focus {
+    color: #212529;
+    text-decoration: none;
+    background-color: #d39e00; }
+
+.badge-green {
+  color: #fff;
+  background-color: #28a745; }
+  .badge-green[href]:hover, .badge-green[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #1e7e34; }
+
+.badge-teal {
+  color: #fff;
+  background-color: #20c997; }
+  .badge-teal[href]:hover, .badge-teal[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #199d76; }
+
+.badge-cyan {
+  color: #fff;
+  background-color: #17a2b8; }
+  .badge-cyan[href]:hover, .badge-cyan[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #117a8b; }
+
+.badge-white {
+  color: #212529;
+  background-color: #fff; }
+  .badge-white[href]:hover, .badge-white[href]:focus {
+    color: #212529;
+    text-decoration: none;
+    background-color: #e6e6e6; }
+
+.badge-gray {
+  color: #fff;
+  background-color: #6c757d; }
+  .badge-gray[href]:hover, .badge-gray[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #545b62; }
+
+.badge-gray-dark {
+  color: #fff;
+  background-color: #343a40; }
+  .badge-gray-dark[href]:hover, .badge-gray-dark[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #1d2124; }

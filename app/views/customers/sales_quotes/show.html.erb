@@ -18,10 +18,6 @@
           <strong class="d-block">Inquiry Number</strong>
           #<%= @sales_quote.inquiry.inquiry_number %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Quotation Number</strong>
-          #<%= @sales_quote.id %>
-        </div>
         <div class="col-6 col-md-3 mb-0">
           <strong class="d-block">Sales Person</strong>
           <%= @sales_quote.inquiry.inside_sales_owner.first_name %> <%= @sales_quote.inquiry.inside_sales_owner.last_name %>
