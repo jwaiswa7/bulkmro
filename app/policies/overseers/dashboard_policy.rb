@@ -4,11 +4,11 @@ class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   end
 
   def chewy?
-    admin?
+    developer?
   end
 
   def reset_index?
-    admin?
+    developer?
   end
 
   def migrations?
