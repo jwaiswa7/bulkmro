@@ -15,7 +15,7 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
   end
 
   def build_csv
-    model.includes(:category, :brand).all.each do |record|
+    model.includes(:category, :brand).all.order(created_at: :desc).each do |record|
       rows.push({
                     :id => record.id,
                     :sku => record.sku,

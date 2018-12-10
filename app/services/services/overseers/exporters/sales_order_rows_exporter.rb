@@ -94,7 +94,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def build_csv
-    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).each do |row|
+    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).order(created_at: :desc).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
 

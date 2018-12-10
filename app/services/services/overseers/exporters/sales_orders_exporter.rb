@@ -27,7 +27,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
   end
 
   def build_csv
-    model.remote_approved.where.not(sales_quote_id: nil).where(:mis_date => start_at..end_at).each do |sales_order|
+    model.remote_approved.where.not(sales_quote_id: nil).where(:mis_date => start_at..end_at).order(mis_date: :desc).each do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push({

@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   end
 
   def build_csv
-    model.where(:created_at => start_at..end_at).each do |record|
+    model.where(:created_at => start_at..end_at).order(created_at: :desc).each do |record|
       rows.push({
                     :inquiry_number => record.inquiry_number,
                     :order_number => record.sales_orders.pluck(:order_number).compact.join(','),

@@ -13,7 +13,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
   end
 
   def build_csv
-    model.includes( {addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.each do |record|
+    model.includes( {addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc).each do |record|
       rows.push({
                   :name => record.name,
                   :comapny_alias => record.account.name,
