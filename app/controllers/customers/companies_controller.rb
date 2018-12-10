@@ -1,9 +1,13 @@
 class Customers::CompaniesController < Customers::BaseController
   def choose_company
-    @@current_company = nil
     @contact = current_contact
+    if current_contact.companies.size <= 1
+      session[:current_company_id] = current_contact.companies.first.id
+      redirect_to customers_dashboard_path
+    else
+      render 'shared/layouts/choose_company'
+    end
     authorize @contact
-    render 'shared/layouts/choose_company'
   end
 
   def contact_companies

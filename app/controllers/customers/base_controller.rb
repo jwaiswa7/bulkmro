@@ -10,16 +10,18 @@ class Customers::BaseController < ApplicationController
   after_action :verify_authorized
   before_action :check_company
 
-  helper_method :current_cart, :current_contact_companies
+  helper_method :current_cart, :current_contact_companies, :current_company
 
   def check_company
     if params[:session_company_id].present?
-      @@current_company = params[:session_company_id]
-      @current_company = Company.find(@@current_company)
-    elsif @@current_company.nil?
-      render 'shared/layouts/choose_company'
-    else
-      @current_company = Company.find(@@current_company)
+      session[:current_company_id] = params[:session_company_id]
+    elsif session[:current_company_id].nil?
+      if current_contact.companies.size <= 1
+        session[:current_company_id] = current_contact.companies.first.id
+        redirect_to customers_dashboard_path
+      else
+        render 'shared/layouts/choose_company'
+      end
     end
   end
 
@@ -54,6 +56,10 @@ class Customers::BaseController < ApplicationController
 
   def current_contact_companies
     current_contact.companies
+  end
+
+  def current_company
+    Company.find(session[:current_company_id]) if session[:current_company_id].present?
   end
 
   def pundit_user
