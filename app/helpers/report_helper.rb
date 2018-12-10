@@ -1,15 +1,15 @@
 module ReportHelper
-#   def chart_data(x_axis_data, y_axis_data, legend_names)
-#     color = chart_colors
-#     data  = { labels: x_axis_data, datasets: [] }
-#
-#     y_axis_data.each_with_index do |level, i|
-#       data[:datasets] << { label: legend_names[i],         fill: false, borderColor: color[i],
-#                            pointBorderColor: color[i], data: level, backgroundColor: color[i]}
-#     end
-#
-#     data
-#   end
+  # def chart_data(x_axis_data, y_axis_data, legend_names)
+  #   color = chart_colors
+  #   data  = { labels: x_axis_data, datasets: [] }
+  #
+  #   y_axis_data.each_with_index do |level, i|
+  #     data[:datasets] << { label: legend_names[i],         fill: false, borderColor: color[i],
+  #                          pointBorderColor: color[i], data: level, backgroundColor: color[i]}
+  #   end
+  #
+  #   data
+  # end
 #
 #   def chart_colors
 #     [

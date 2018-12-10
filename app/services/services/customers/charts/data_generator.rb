@@ -1,50 +1,53 @@
 class Services::Customers::Charts::DataGenerator < Services::Shared::BaseService
-
   def initialize()
     super
   end
 
-  def get_multi_axis_mixed_chart(revenue_data, quarter_months)
+  def get_multi_axis_mixed_chart(revenue_data, products_count, months)
     @chart = []
     @data = {
-        labels: quarter_months,
+        labels: months,
         datasets: [{
-                       label: "Orders",
-                       type: "bar",
-                       borderColor: "#8e5ea2",
-                       backgroundColor: '#50BB70',
-                       data: [],
-                       yAxisID: 'revenue',
-                       fill: false,
-                   },
-                   {
-                       label: "Products",
-                       type: "line",
-                       borderColor: "#47A7D4",
-                       backgroundColor: "#47A7D4",
-                       data: [9, 7, 3],
-                       yAxisID: 'products_count',
-                       fill: false
-                   }]
+            label: "Products",
+            type: "line",
+            borderColor: "#ff0000",
+            backgroundColor: "#ff0000",
+            data: [],
+            yAxisID: 'products_count',
+            fill: false
+          },
+          {
+            label: "Orders",
+            type: "bar",
+            borderColor: "#8e5ea2",
+            backgroundColor: '#50BB70',
+            data: [],
+            yAxisID: 'revenue',
+            fill: false,
+        }]
     }
+
     @options = {
         scales: {
             yAxes: [{
-                        id: 'revenue',
-                        type: 'linear',
-                        position: 'left',
-                    }, {
                         id: 'products_count',
                         type: 'linear',
                         position: 'right',
-
+                    }, {
+                        id: 'revenue',
+                        type: 'linear',
+                        position: 'left',
                     }]
-        }
+        },
+        # title: {
+        #     display: true,
+        #     text: 'Order and Products Report'
+        # },
     }
-    quarter_months.each_with_index do |m, index|
-      @data[:datasets][0][:data].push(revenue_data[index])
+    months.each_with_index do |m, index|
+      @data[:datasets][0][:data].push(products_count[index])
+      @data[:datasets][1][:data].push(revenue_data[index])
     end
     @chart.push(@data, @options)
   end
-
 end
