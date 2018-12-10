@@ -9536,7 +9536,20 @@ button, button:link, button:visited, button:hover, button:active, button:focus {
 
 .btn {
   font-size: 0.85rem;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  position: relative; }
+  .btn[data-badge]:after {
+    content: attr(data-badge);
+    position: absolute;
+    right: 0;
+    font-size: 0.7em;
+    padding: 0.25em 0.45em;
+    border-radius: 10em;
+    color: #343a40;
+    background-color: #fff;
+    bottom: -0.9em;
+    line-height: 1em;
+    text-transform: none; }
 
 .btn-rounded {
   border-radius: 100rem; }
