@@ -1,58 +1,8 @@
 <div class="col-lg-12">
   <div class="page-header">
-    <h2>Monthly Purchase Data</h2>
+    <h2>Quarterly Purchase Data</h2>
 
-    <%= @data %>
-    <%= bar_chart @data, @options%>
-<!--    <canvas id="mixed-chart" width="800" height="450"></canvas>-->
+    <%= @chart %>
+    <%= bar_chart @chart[0], @chart[1] %>
   </div>
 </div>
-
-
-
-
-
-<!--<script>-->
-<!--    new Chart(document.getElementById("mixed-chart"), {-->
-<!--        type: 'bar',-->
-<!--        data: {-->
-<!--            labels: ["1900", "1950", "1999", "2050"],-->
-<!--            datasets: [{-->
-<!--                label: ["Europe","Test"],-->
-<!--                type: "line",-->
-<!--                borderColor: "#8e5ea2",-->
-<!--                data: [408,847,275,34],-->
-<!--                fill: false-->
-<!--            },-->
-<!--                {-->
-<!--                label: "Europe",-->
-<!--                type: "bar",-->
-<!--                backgroundColor: "#fd7e14",-->
-<!--                data: [168,178,190],-->
-<!--            },-->
-<!--            ]-->
-<!--        },-->
-<!--        options: {-->
-<!--            scales: {-->
-<!--                yAxes: [{-->
-<!--                    id: 'A',-->
-<!--                    type: 'linear',-->
-<!--                    position: 'left',-->
-<!--                }, {-->
-<!--                    id: 'B',-->
-<!--                    type: 'linear',-->
-<!--                    position: 'right',-->
-<!--                    ticks: {-->
-<!--                        max: 100,-->
-<!--                        min: 10-->
-<!--                    }-->
-<!--                }]-->
-<!--            },-->
-<!--            title: {-->
-<!--                display: true,-->
-<!--                text: 'Population growth (millions): Europe & Africa'-->
-<!--            },-->
-<!--            legend: { display: true }-->
-<!--        }-->
-<!--    });-->
-</script>

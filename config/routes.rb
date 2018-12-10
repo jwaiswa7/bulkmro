@@ -39,7 +39,6 @@ Rails.application.routes.draw do
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
-      get 'reset_index'
       get 'serializer'
       get 'migrations'
       get 'console'
@@ -341,6 +340,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'quarterly_purchase_data'
       end
     end
 
