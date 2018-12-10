@@ -5,13 +5,13 @@
 <% provide :heading_buttons do %>
   <% if policy(:sales_invoice).export_for_logistics? %>
     <a href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Invoices (For Logistics)
+      <i class="fal fa-download mr-1"></i>Export Sales Invoices (For Logistics) <%= 'From ' + time_ago_in_words(Export.sales_invoice_logistics.last.created_at) + ' ago' if Export.sales_invoice_logistics.last.present? %>
     </a>
   <% end %>
 
   <% if policy(:sales_invoice).export_rows? %>
     <a href="<%= export_rows_overseers_sales_invoices_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Invoice Rows
+      <i class="fal fa-download mr-1"></i>Export Sales Invoice Rows <%= 'From ' + time_ago_in_words(Export.sales_invoice_rows.last.created_at) + ' ago' if Export.sales_invoice_rows.last.present? %>
     </a>
   <% end %>
 <% end %>
