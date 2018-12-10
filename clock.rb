@@ -18,12 +18,12 @@ every(1.day, 'refresh_calculated_totals', :at => '03:00') do
   service.call
 end
 
-every(20.minutes, 'refresh_smart_queue', :at => '06:00') do
+every(20.minutes, 'refresh_smart_queue') do
   service = Services::Overseers::Inquiries::RefreshSmartQueue.new
   service.call
 end
 
-every(1.hour, 'generate_exports_hourly', :at => '06:00') do
+every(1.hour, 'generate_exports_hourly') do
   Services::Overseers::Exporters::GenerateExportsHourly.new
 end
 
