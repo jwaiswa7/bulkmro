@@ -13,7 +13,7 @@
 </head>
 
 <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>">
-  <%= navigation %>
+  <%= navigation if local_assigns[:navigation].present? %>
   <div class="layout layout-nav-top">
     <div class="main-container">
       <%= render 'shared/layouts/components/breadcrumbs' %>

@@ -18,7 +18,7 @@
 
     <div class="form-row">
       <div class="col-12">
-        <%= f.input :companies, input_html: { value: format_collection(f.object.companies) }, disabled: true %>
+        <%= f.input :companies, input_html: {value: format_collection(f.object.companies)}, disabled: true %>
       </div>
     </div>
 
@@ -55,8 +55,8 @@
 
     <%= f.input :email, required: true %>
     <%= f.input :legacy_email, disabled: false %>
-    <%= f.input :password, required: true %>
-    <%= f.input :password_confirmation, required: true %>
+    <%= f.input :password, required: false %>
+    <%= f.input :password_confirmation, required: false %>
 
     <%= f.input :status, wrapper: :custom_multi_select, as: :select, collection: enum_to_collection(Contact.statuses) %>
 

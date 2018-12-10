@@ -1,0 +1,11 @@
+<div class="col-xl-5 col-lg-6 col-md-7">
+
+  <p class="">Choose Company</p>
+  <div class="form-group">
+
+    <%= simple_form_for(@contact, url: update_current_company_customers_sign_in_steps_path, method: :PATCH) do |f| %>
+      <%= f.input :company_id, as: :select, collection: @contact.companies, include_blank: false %>
+      <%= f.submit 'Pick Company' %>
+    <% end %>
+  </div>
+</div>
