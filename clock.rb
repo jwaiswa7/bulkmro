@@ -23,6 +23,14 @@ every(20.minutes, 'refresh_smart_queue', :at => '06:00') do
   service.call
 end
 
+every(1.hour, 'generate_exports_hourly', :at => '06:00') do
+  Services::Overseers::Exporters::GenerateExportsHourly.new
+end
+
+every(1.day, 'generate_exports_daily', :at => '05:00') do
+  Services::Overseers::Exporters::GenerateExportsDaily.new
+end
+
 every(1.day, 'refresh_indices', :at => '06:00') do
   Services::Shared::Chewy::RefreshIndices.new
 end

@@ -6,13 +6,13 @@
 <% provide :heading_buttons do %>
   <% if policy(:sales_order).export_for_logistics? %>
     <a href="<%= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Orders (For Logistics)
+      <i class="fal fa-download mr-1"></i>Export Sales Orders (For Logistics) <%= 'From ' + time_ago_in_words(Export.sales_order_logistics.last.created_at) + ' ago' if Export.sales_order_logistics.last.present? %>
     </a>
   <% end %>
 
   <% if policy(:sales_order).export_rows? %>
     <a href="<%= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Order Rows
+      <i class="fal fa-download mr-1"></i>Export Sales Order Rows <%= 'From ' + time_ago_in_words(Export.sales_order_rows.last.created_at) + ' ago' if Export.sales_order_rows.last.present? %>
     </a>
   <% end %>
 <% end %>
