@@ -159,7 +159,7 @@ class Inquiry < ApplicationRecord
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+    # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
