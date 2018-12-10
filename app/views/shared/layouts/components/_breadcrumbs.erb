@@ -1,7 +1,7 @@
 <div class="navbar bg-white breadcrumb-bar">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) %>
+      <%= raw breadcrumbs(yield(:page_title), yield(:controller_is_aliased)) if local_assigns[:navigation].present? %>
     </ol>
   </nav>
 </div>

@@ -1,6 +1,5 @@
 class Customers::BaseController < ApplicationController
   include Pundit
-  @@current_company = nil
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout 'customers/layouts/application'
@@ -8,24 +7,26 @@ class Customers::BaseController < ApplicationController
   before_action :authenticate_contact!
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
-  before_action :check_company
+  before_action :redirect_if_required
 
-  helper_method :current_cart, :current_contact_companies, :current_company
-
-  def check_company
-    if params[:session_company_id].present?
-      session[:current_company_id] = params[:session_company_id]
-    elsif session[:current_company_id].nil?
-      if current_contact.companies.size <= 1
-        session[:current_company_id] = current_contact.companies.first.id
-        redirect_to customers_dashboard_path
-      else
-        render 'shared/layouts/choose_company'
-      end
-    end
-  end
+  helper_method :current_cart, :current_company
 
   private
+
+  def redirect_if_required
+    redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
+                         edit_current_company_customers_sign_in_steps_path
+                       elsif session[:current_company_id].present? && current_company.present?
+                         if current_contact.companies.exclude?(current_company)
+                           session[:current_company_id] = nil
+                           edit_current_company_customers_sign_in_steps_path
+                         elsif controller_name == 'sign_in_steps'
+                           customers_dashboard_path
+                         end
+                       end
+
+    redirect_to(redirect_to_path) if redirect_to_path.present? && request.path != redirect_to_path && request.method == 'GET'
+  end
 
   def user_not_authorized
     message = "You are not authorized to perform this action."
@@ -34,6 +35,7 @@ class Customers::BaseController < ApplicationController
   end
 
   protected
+
   def policy!(user, record)
     CustomPolicyFinder.new(record, namespace).policy!.new(user, record)
   end
@@ -54,12 +56,10 @@ class Customers::BaseController < ApplicationController
     current_contact.current_cart
   end
 
-  def current_contact_companies
-    current_contact.companies
-  end
-
   def current_company
-    Company.find(session[:current_company_id]) if session[:current_company_id].present?
+    if session[:current_company_id].present?
+      @current_company ||= Company.find(session[:current_company_id])
+    end
   end
 
   def pundit_user

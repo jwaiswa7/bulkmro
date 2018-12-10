@@ -1,9 +1,13 @@
 class Customers::ContactPolicy < Customers::ApplicationPolicy
-  def choose_company?
+  def edit_current_company?
     true
   end
 
-  def reset_company?
-    true
+  def update_current_company?
+    edit_current_company?
+  end
+
+  def reset_current_company?
+    edit_current_company? && contact.companies.size > 1
   end
 end
