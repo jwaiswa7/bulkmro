@@ -24,5 +24,4 @@
 //= require js-routes
 
 //= require overseers/run
-//= require chartkick
-//= require highcharts
+//= require Chart.bundle.min

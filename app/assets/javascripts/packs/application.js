@@ -10,20 +10,11 @@ import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
-// import chartjs from "./components/chartjs";
 import datePicker from "./components/datePicker";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
-
-// External Component Imports
-// import Chartkick from "chartkick";
-// window.Chartkick = Chartkick;
-//
-// // for Chart.js
-// import Chart from "chart.js";
-// Chartkick.addAdapter(Chart);
 
 // Namespacing all imports under app
 let app = {};
@@ -40,7 +31,6 @@ app.initializeComponents = () => {
     parselyValidations();
     dataTables();
     tinyHtmlEditor();
-    // chartjs();
     datePicker();
     stickyBits();
     daterangePicker();

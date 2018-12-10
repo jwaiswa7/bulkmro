@@ -2,22 +2,15 @@
   <div class="page-header">
     <h2>Monthly Purchase Data</h2>
 
-    <!--    <div class="card mb-2">-->
-    <!--      <div class="card-body">-->
-    <!--        <img src="/AMAT-Revenue-and-SKU-Chart.png"/>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-<!--    <div id="chartjs" width="800" height="450">-->
-<!--      <canvas></canvas>-->
-<!--    </div>-->
-<!--    id="mixed-chart"-->
-    <%#= @data %>
-    <%= bar_chart SalesQuoteRow.group(:sales_quote_id).sum(:unit_selling_price) %>
-
-
+    <%= @data %>
+    <%= bar_chart @data, @options%>
+<!--    <canvas id="mixed-chart" width="800" height="450"></canvas>-->
   </div>
 </div>
+
+
+
+
 
 <!--<script>-->
 <!--    new Chart(document.getElementById("mixed-chart"), {-->
@@ -25,29 +18,18 @@
 <!--        data: {-->
 <!--            labels: ["1900", "1950", "1999", "2050"],-->
 <!--            datasets: [{-->
-<!--                label: "Europe",-->
+<!--                label: ["Europe","Test"],-->
 <!--                type: "line",-->
 <!--                borderColor: "#8e5ea2",-->
-<!--                data: [408,547,675,734],-->
+<!--                data: [408,847,275,34],-->
 <!--                fill: false-->
-<!--            }, {-->
-<!--                label: "Africa",-->
-<!--                type: "line",-->
-<!--                borderColor: "#3e95cd",-->
-<!--                data: [133,221,783,2478],-->
-<!--                fill: false-->
-<!--            }, {-->
+<!--            },-->
+<!--                {-->
 <!--                label: "Europe",-->
 <!--                type: "bar",-->
-<!--                backgroundColor: "rgba(0,0,0,0.2)",-->
-<!--                data: [408,547,675,734],-->
-<!--            }, {-->
-<!--                label: "Africa",-->
-<!--                type: "bar",-->
-<!--                backgroundColor: "rgba(0,0,0,0.2)",-->
-<!--                backgroundColorHover: "#3e95cd",-->
-<!--                data: [133,221,783,2478]-->
-<!--            }-->
+<!--                backgroundColor: "#fd7e14",-->
+<!--                data: [168,178,190],-->
+<!--            },-->
 <!--            ]-->
 <!--        },-->
 <!--        options: {-->
@@ -73,28 +55,4 @@
 <!--            legend: { display: true }-->
 <!--        }-->
 <!--    });-->
-
-<!--</script>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--{:labels=>[48667, 48074, 48752, 36253, 38169, 29847, 48667, 38108, 38107, 39404, 39093, 39093, 22550, 39092, 39054, 38944, 39092, 43982, 39107, 39078, 38754, 39107, 22550, 3257, 39169],
- :datasets=>[{:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.2e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.2e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e3, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.2e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.3e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.5e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.3e2, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}, {:label=>"Product", :fill=>false, :borderColor=>"#50BB70", :pointBorderColor=>"#47A7D4", :data=>0.1e1, :backgroundColor=>"#50BB70"}]}-->
+</script>
