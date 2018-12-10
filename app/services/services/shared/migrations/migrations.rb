@@ -16,7 +16,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def generate_csv(array_of_ids, object_type)
     file = "#{Rails.root}/public/#{object_type}_data.csv"
     column_headers = ["ID"]
-    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+    calculated_total(file, 'w', write_headers: true, headers: column_headers) do |writer|
       array_of_ids.each do |i|
         writer << [i]
       end

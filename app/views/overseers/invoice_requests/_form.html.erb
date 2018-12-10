@@ -33,15 +33,11 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :ap_invoice_number, label: "AP Invoice Number" %>
+        <%= f.input :ap_invoice_number, label: "AP Invoice Number", :input_html => {:maxlength => 8, :size => 8} %>
       </div>
 
       <div class="col-6">
-        <%= f.input :shipment_number, label: "Shipment/Delivery Number", :input_html => {:maxlength => 8, :size => 8} %>
-      </div>
-
-      <div class="col-6">
-        <%= f.input :ar_invoice_number, label: "AR Invoice Number" %>
+        <%= f.input :ar_invoice_number, label: "AR Invoice Number", :input_html => {:maxlength => 8, :size => 8} %>
       </div>
 
       <div class="col-12 col-md-12">

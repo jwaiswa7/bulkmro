@@ -101,11 +101,9 @@ class Overseers::ProductsController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::ProductsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_data service.call, filename: service.filename}
-    end
+    redirect_to url_for(Export.products.last.report)
   end
 
   private

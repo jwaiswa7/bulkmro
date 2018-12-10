@@ -43,7 +43,7 @@
           <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All companies filterable in any way that we want under <strong><%= @account.name %></strong>.
+          All companies searchable with relevant term/keywords under <strong><%= @account.name %></strong>.
         </p>
 
         <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_companies_path(account_id: @account.id) %>">
@@ -70,7 +70,7 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All contacts filterable in any way that we want under <strong><%= @account.name %></strong>.
+          All contacts searchable with relevant term/keywords under <strong><%= @account.name %></strong>.
         </p>
 
         <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(account_id: @account.id) %>">

@@ -17,29 +17,33 @@
       <%= nav_item 'Dashboard', customers_dashboard_path, true %>
       <%= nav_item 'Quotes', customers_quotes_path, true %>
       <%= nav_item 'Orders', customers_orders_path, true %>
-      <%= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
       <%= nav_item 'Invoices', customers_invoices_path, true %>
+      <% if policy(:customer_product).most_ordered_products? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
           Reports
         </a>
         <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, true%>
-          <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true%>
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
+          <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true %>
         </div>
       </li>
-      <%= nav_item 'Online Orders', customers_customer_orders_path, true %>
+      <% end %>
+      <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
     </ul>
   </div>
   <!-- Navigation Bar -->
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
+    <% if policy(:cart).show? %>
     <div class="dropdown d-inline mr-2" id="cart">
       <a href="<%= customers_cart_path %>" role="button" id="cart-count">
         <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
       </a>
     </div>
+    <% end %>
 
     <div class="dropdown d-inline">
 

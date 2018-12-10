@@ -2,7 +2,9 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
 
   def initialize
     super
-
+    @model = SalesOrder
+    @export_name = 'sales_orders'
+    @path = Rails.root.join('tmp', filename)
     @columns = [
         'Inquiry Number',
         'Order Number',
@@ -18,12 +20,14 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Quote Type',
         'Opportunity Type'
     ]
-
-    @model = SalesOrder
   end
 
   def call
-    model.remote_approved.where.not(sales_quote_id: nil).where(:mis_date => start_at..end_at).each do |sales_order|
+    perform_export_later('SalesOrdersExporter')
+  end
+
+  def build_csv
+    model.remote_approved.where.not(sales_quote_id: nil).where(:mis_date => start_at..end_at).order(mis_date: :desc).each do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push({
@@ -42,7 +46,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
                     :opportunity_type => inquiry.try(:opportunity_type) || "",
                 }) if inquiry.present?
     end
-
-    generate_csv
+    export = Export.create!(export_type: 40)
+    generate_csv(export)
   end
 end
