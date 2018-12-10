@@ -99,9 +99,9 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'GRPO Pending', pending_overseers_invoice_requests_path(:status => 'GRPO Pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AP Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AP Invoice Pending'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'AR Invoice Pending', pending_overseers_invoice_requests_path(:status => 'AR Invoice Pending'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+            <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
           </div>
         </li>
@@ -122,7 +122,7 @@
         </li>
       <% end %>
       <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <% if (policy(:dashboard).chewy? && Rails.env.development?) || policy(:remote_request).index? %>
+      <% if (Rails.env.development?) || policy(:remote_request).index? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
             Tools
@@ -130,9 +130,21 @@
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
             <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
-            <% if Rails.env.development? %>
-            <%= nav_dropdown_item 'Chewy', chewy_overseers_dashboard_path, policy(:dashboard).chewy? %>
+          </div>
+        </li>
+      <% end %>
+
+      <% if Rails.env.development? || policy(:dashboard).chewy? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
+            Chewy
+          </a>
+          <div class="dropdown-menu">
+            <% chewy_indices.each do |chewy_index| %>
+              <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
             <% end %>
+            <div class="dropdown-divider"></div>
+            <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
           </div>
         </li>
       <% end %>
