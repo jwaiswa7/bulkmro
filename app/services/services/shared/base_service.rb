@@ -21,7 +21,7 @@ class Services::Shared::BaseService
 		if Rails.env.production? || Rails.env.staging?
 			ApplicationExportJob.perform_later(arg)
 		else
-			ApplicationExportJob.perform_later(arg)
+			ApplicationExportJob.perform_now(arg)
 		end
 	end
 end

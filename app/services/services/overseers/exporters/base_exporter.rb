@@ -7,7 +7,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
   end
 
   def filename
-    "#{model.name.pluralize.downcase}.csv"
+    "#{export_name}.csv"
   end
 
   def generate_csv(object)
@@ -28,5 +28,5 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
     end
   end
 
-  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path
+  attr_accessor :start_at, :end_at, :columns, :model, :rows, :path, :export_name
 end

@@ -4,7 +4,8 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
     super
 
     @model = Product
-    @path = Rails.root.join("public/exports/#{filename}")
+    @export_name = 'products'
+    @path = Rails.root.join('tmp', filename)
     @columns = ['id', 'SKU', 'Name', 'Category','Sub Category 1', 'Sub Category 2','Brand']
 
   end
@@ -22,11 +23,10 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
                     :category => (record.category.ancestors_to_s.first if record.category.present? && record.category.ancestors_to_s.first.present?),
                     :sub_category_1 => (record.category.ancestors_to_s.second if record.category.present? && record.category.ancestors_to_s.second.present?),
                     :sub_category_2 => (record.category.ancestors_to_s.third if record.category.present? && record.category.ancestors_to_s.third.present?),
-
-
                     :brand => (record.brand.name if record.brand.present?)
                 })
     end
-    generate_csv
+    export = Export.create!(export_type: 5)
+    generate_csv(export)
   end
 end
