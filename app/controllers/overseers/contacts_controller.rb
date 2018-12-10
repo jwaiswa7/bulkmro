@@ -59,7 +59,7 @@ class Overseers::ContactsController < Overseers::BaseController
   def login_as_contact
     contact = Contact.find(params[:contact_id])
     become(contact)
-    redirect_to customer_root_url
+    redirect_to choose_company_customers_companies_path
     authorize contact
   end
 

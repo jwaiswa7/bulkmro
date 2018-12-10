@@ -21,6 +21,7 @@ import salesOrders from "./salesOrders/init";
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
 import customerProducts from "./customerProducts/init";
+import shared from "./shared/init";
 
 
 let loader = {
@@ -65,6 +66,8 @@ const loadViews = () => {
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
 
+    shared.chooseCompany();
+
     if (controller in loader && controllerAction in loader[controller]) {
         loader[controller][controllerAction]();
         console.log("loader[" + controller + "][" + controllerAction + "]")
@@ -72,6 +75,7 @@ const loadViews = () => {
         loader[controller][controllerAction + 'Action']();
         console.log("loader[" + controller + "][" + controllerAction + "]")
     }
+
 };
 
 export default loadViews
