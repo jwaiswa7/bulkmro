@@ -401,5 +401,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
+      end
+    end
+
   end
 end

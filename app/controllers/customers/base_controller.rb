@@ -1,6 +1,6 @@
 class Customers::BaseController < ApplicationController
   include Pundit
-
+  @@current_company = nil
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout 'customers/layouts/application'
@@ -8,8 +8,20 @@ class Customers::BaseController < ApplicationController
   before_action :authenticate_contact!
   before_action :set_paper_trail_whodunnit
   after_action :verify_authorized
+  before_action :check_company
 
   helper_method :current_cart, :current_contact_companies
+
+  def check_company
+    if params[:session_company_id].present?
+      @@current_company = params[:session_company_id]
+      @current_company = Company.find(@@current_company)
+    elsif @@current_company.nil?
+      render 'shared/layouts/choose_company'
+    else
+      @current_company = Company.find(@@current_company)
+    end
+  end
 
   private
 

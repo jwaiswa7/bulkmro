@@ -1,0 +1,20 @@
+<div class="col-xl-5 col-lg-6 col-md-7">
+
+  <p class="">Choose Company</p>
+  <div class="form-group">
+    <%= select_tag("choose-company", options_for_select(current_contact.companies.collect {|u| [u.name, u.id]})) %>
+    <%= hidden_field_tag "contact_id", current_contact.id %>
+    <%= button_tag("Login", class: "btn btn-success btn-block", id: "redirect-login") do %>
+      <i class="fal fa-plus-circle"></i>Login
+    <% end %>
+  </div>
+
+  <script>
+    $('#redirect-login').click(function () {
+        window.location.href = "/customers/dashboard?session_company_id=" + $('#choose-company').val();
+    });
+
+    $('#choose-company').select2();
+
+  </script>
+</div>

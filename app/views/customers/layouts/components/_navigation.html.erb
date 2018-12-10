@@ -42,6 +42,13 @@
     </div>
 
     <div class="dropdown d-inline">
+
+      <% if @current_company.present? %>
+        <a href="<%= choose_company_customers_companies_path%>" role="button">
+          <span class="d-none d-md-inline"><%= @current_company.name %></span> <i class="fal fa-cog"></i>
+        </a>
+      <% end %>
+
       <a href="#" role="button" data-toggle="dropdown">
         <span class="d-none d-md-inline"><%= current_contact.full_name %></span> <i class="fal fa-cog"></i>
       </a>

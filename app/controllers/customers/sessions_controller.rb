@@ -1,6 +1,16 @@
 class Customers::SessionsController < Devise::SessionsController
   layout 'shared/layouts/sign_in'
 
+  #TODO Reset selected company on sign out
+=begin
+  before_action reset_company, only: [:new]
+
+  private
+  def reset_company
+    @@current_company = nil
+  end
+=end
+
   private
   def after_sign_in_path_for(resource_or_scope)
     customers_dashboard_path
