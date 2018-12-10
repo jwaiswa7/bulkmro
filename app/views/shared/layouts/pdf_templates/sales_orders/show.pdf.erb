@@ -411,41 +411,41 @@
                     <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
                       <b><span>Bank:</span></b></td>
                     <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Kotak Mahindra Bank Ltd</span></td>
+                      <span><%= Settings.primary_bank.name %></span></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>State Bank of India</span></td>
+                      <span><%= Settings.secondry_bank.name %></span></td>
                   </tr>
                   <tr>
                     <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
                       <b><span>Address:</span></b></td>
                     <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Aum Saheel Tower, Mumbai 400080.</span></td>
+                      <span><%= Settings.primary_bank.address %></span></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
+                      <span><%= Settings.secondry_bank.address %></span></td>
                   </tr>
                   <tr>
                     <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
                       <b><span>Account Name:</span></b></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                      <span><%= Settings.primary_bank.account_name %></span></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
+                      <span><%= Settings.secondry_bank.account_name %></span></td>
                   </tr>
                   <tr>
                     <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
                       <b><span>Account Number:</span></b></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>9412329433</span></td>
+                      <span><%= Settings.primary_bank.account_number%></span></td>
                     <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>35924122136</span></td>
+                      <span><%= Settings.secondry_bank.account_number %></span></td>
                   </tr>
                   <tr>
                     <td colspan="4" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
                       <b><span>NEFT/RTGS Code:</span></b></td>
                     <td colspan="6" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                      <span>KKBK0001411</span></td>
+                      <span><%= Settings.primary_bank.neft_code %></span></td>
                     <td colspan="6" style=" padding-left: 10px;">
-                      <span>SBIN0000510</span></td>
+                      <span><%= Settings.secondry_bank.neft_code %></span></td>
                   </tr>
                   </tbody>
                 </table>
