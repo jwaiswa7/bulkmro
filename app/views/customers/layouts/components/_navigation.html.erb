@@ -46,18 +46,15 @@
     <% end %>
 
     <div class="dropdown d-inline">
-
-
       <a href="#" role="button" data-toggle="dropdown">
         <span class="d-none d-md-inline"><%= current_contact.full_name %></span> in <span class="d-none d-md-inline"><%= current_company.name %></span></i>
         <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
-        <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'ml-lg-2' do %>
-          <i class="fal fa-power-off"></i>&nbsp;Choose Different Company
+        <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
+          <i class="fal fa-building"></i>&nbsp;Choose Another Company
         <% end if policy(current_contact).reset_current_company? %>
-        <br />
-        <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
           <i class="fal fa-power-off"></i>&nbsp;Sign Out
         <% end %>
       </span>
