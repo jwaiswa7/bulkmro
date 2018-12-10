@@ -400,6 +400,10 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
-    resources :playments
+    resources :playments do
+      collection do
+        get 'get_data'
+      end
+    end
   end
 end

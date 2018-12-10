@@ -1,15 +1,19 @@
-require 'httparty'
 class Customers::PlaymentsController < Customers::BaseController
+  require 'httparty'
   protect_from_forgery with: :null_session
 
   def create
     authorize :Playment
-    response = HTTParty.post("http://localhost:3000/api/v1/articles", body: {"reference_id":  {"title": "Hello", "content": "loowweerr ddoowwnn", "slug": "hello1"}})
-    response.parsed_response
+    request = Services::Customers::Playments::PlaymentCreate.new.call
   end
 
-  def index
-    response = HTTParty.get("http://localhost:3000/api/v1/articles")
-    response.parsed_response
-  end
+  # def get_data
+  #   authorize :Playment
+  #   debugger
+  # end
+
+  # def index
+  #   response = HTTParty.get("https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline", body: {})
+  #   response.parsed_response
+  # end
 end
