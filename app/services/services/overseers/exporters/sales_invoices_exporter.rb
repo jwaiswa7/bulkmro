@@ -27,7 +27,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
   end
 
   def build_csv
-    model.where(:created_at => start_at..end_at).where.not(sales_order_id: nil).order(invoice_number: :asc).each do |sales_invoice|
+    model.where(:created_at => start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).each do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
       rows.push({
