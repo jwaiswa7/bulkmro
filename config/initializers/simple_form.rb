@@ -274,7 +274,7 @@ SimpleForm.setup do |config|
   # bootstrap custom forms
   #
   # custom input for boolean
-  config.wrappers :custom_boolean, tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
+  config.wrappers :custom_boolean, tag: 'fieldset', class: 'form-group mb-1', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
     b.wrapper :form_check_wrapper, tag: 'div', class: 'custom-control custom-checkbox' do |bb|

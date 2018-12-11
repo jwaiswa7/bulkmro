@@ -1,5 +1,4 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
-
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>
@@ -36,9 +35,52 @@
 
 <div class="input-group input-group-round">
   <div class="input-group-prepend">
-    <span class="input-group-text"><i class="material-icons">filter_list</i></span>
+    <span class="input-group-text"><i class="material-icons"></i></span>
   </div>
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
+</div>
+
+<div class="accordion mt-2" id="product-filters">
+  <div class="card">
+    <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
+      <strong>Filters</strong>
+    </a>
+    <div id="filters" class="collapse show" data-parent="#product-filters">
+      <%= simple_form_for :fake do |f| %>
+        <div class='card-body'>
+          <p class="text-uppercase text-black-50 mb-2">Categories</p>
+          <div class="form-row">
+            <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :office_supplies, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :travel, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :utilities, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :stationery, as: :boolean, wrapper: :custom_boolean %>
+            </div>
+            <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :health, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :cleaning_equipment, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :networking, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :security, as: :boolean, wrapper: :custom_boolean %>
+            </div>
+            <div class="col-md-3 col-sm-4 col-lg-2">
+              <%= f.input :kitchen_supplies, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :manufacturing, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :machinery, as: :boolean, wrapper: :custom_boolean %>
+              <%= f.input :lighting, as: :boolean, wrapper: :custom_boolean %>
+            </div>
+          </div>
+          <div class="form-row mt-2">
+            <div class="col-4 col-lg-2 col-md-3">
+              <a href="#" class="btn btn-outline-danger btn-block">Clear</a>
+            </div>
+            <div class="col-8 col-lg-10 col-md-0">
+              <a href="#" class="btn btn-success btn-block">Filter products</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <div class="form-row mt-2" id="product-grid">
@@ -51,7 +93,7 @@
               <% if customer_product.best_images.present? %>
                 <img src="<%= url_for_image(customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%= customer_product.sku %>"/>
               <% else %>
-                <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" />
+                <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>"/>
               <% end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.product.name, :length => 100) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
