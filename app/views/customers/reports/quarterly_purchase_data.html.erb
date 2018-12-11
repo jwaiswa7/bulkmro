@@ -5,7 +5,6 @@
   </div>
 </div>
 
-
 <script>
     $( document ).ready(function() {
         var barChartOptions = {
@@ -22,8 +21,8 @@
                         display: true,
                         userCallback: function(value) {
                             value = value.toString();
-                            value = value.replace(/(\d)(?=(\d{2})+\d\.)/g, ',');
-                            return 'Rs. ' + value;
+                            value = value.replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                            return '₹ ' + value;
                         }
                     },
                     scaleLabel: {
