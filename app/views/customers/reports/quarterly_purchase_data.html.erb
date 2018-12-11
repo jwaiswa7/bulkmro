@@ -20,9 +20,7 @@
                     ticks: {
                         display: true,
                         userCallback: function(value) {
-                            value = value.toString();
-                            value = value.replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
-                            return '₹ ' + value;
+                            return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                         }
                     },
                     scaleLabel: {
