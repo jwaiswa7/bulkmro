@@ -1,9 +1,10 @@
 class SalesQuotesIndex < BaseIndex
   statuses = Inquiry.statuses
-  define_type SalesQuote.all.with_includes do
+  define_type SalesQuote.limit(1).with_includes do
     witchcraft!
     field :id, type: 'integer'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i}, type: 'integer'
+    field :is_final, value: -> (record) {record.is_final if record.id.present?}, type: 'boolean'
     field :sent_at, type: 'date'
     field :inquiry_number_string, value: -> (record) {record.inquiry.inquiry_number.to_s}, analyzer: 'substring'
     field :line_items, value: -> (record) {record.rows.size.to_s}, analyzer: 'substring'
@@ -39,5 +40,5 @@ class SalesQuotesIndex < BaseIndex
       field :mpn, value: -> (record, sales_quote_row) { sales_quote_row.product.mpn if sales_quote_row.product.mpn.present?}, analyzer: 'substring'
     end
   end
-  
+
 end

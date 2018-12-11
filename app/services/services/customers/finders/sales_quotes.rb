@@ -16,6 +16,7 @@ class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::
     indexed_records.filter(filter_by_status(only_remote_approved: false))
     indexed_records.filter({bool: {should: [{exists: {field: 'sent_at'}}]}})
 
+    indexed_records = indexed_records.filter(filter_by_value('is_final', true))
     indexed_records = indexed_records.query({
                                                 range: {
                                                     :"inquiry_created_at" => {
