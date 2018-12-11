@@ -39,16 +39,15 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6 col-md-6">
+      <div class="col-12">
         <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
       </div>
-      <div class="col-6 col-md-6 d-none">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: @customer_product.to_param)} %>
-      </div>
-      <div class="col-12 col-md-12">
-        <%= f.label :tag_ids, 'Tags' %>
-        <div class="select2-wrapper">
-          <%= f.select :tag_ids, @tags.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Tags' %>
+      <div class="col-12">
+        <div class="form-group">
+          <%= f.label :tag_ids, 'Categories' %>
+          <div class="select2-wrapper">
+            <%= f.select :tag_ids, @tags.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select Categories' %>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-12 ">

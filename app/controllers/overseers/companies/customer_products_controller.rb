@@ -59,7 +59,6 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   def edit
     authorize @customer_product
     @tags = Tag.all
-    authorize @customer_product
   end
 
   def update
