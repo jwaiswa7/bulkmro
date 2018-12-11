@@ -27,7 +27,7 @@ const newAction = () => {
 let onIsServiceChecked = (is_service_status) => {
     $("#"+$('select[name*=tax_code_id]')[0].id).attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": is_service_status})).select2('destroy');
     if(categoryStatus==1){
-        $("#"+$('select[name*=category_id]')[0].id).attr('data-source', Routes.autocomplete_closure_tree_overseers_categories_path({"is_service_categories": is_service_status})).select2('destroy');
+        $("#"+$('select[name*=category_id]')[0].id).attr('data-source', Routes.autocomplete_closure_tree_overseers_categories_path({"is_service": is_service_status})).select2('destroy');
     }
     select2s();
 };

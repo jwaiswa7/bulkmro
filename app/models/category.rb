@@ -41,6 +41,9 @@ class Category < ApplicationRecord
     end
   end
 
+  def self.root
+    self.find_by_id(1)
+  end
 
   def self.default
     first

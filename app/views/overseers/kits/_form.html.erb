@@ -47,7 +47,7 @@
             <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: product.to_param)} %>
+            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service =>false)} %>
           </div>
         </div>
 
