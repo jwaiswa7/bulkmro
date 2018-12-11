@@ -519,12 +519,16 @@
               <% if record.sales_order.currency.name.present? %>
                 <% if record.sales_order.currency.name.to_s == 'USD' %>
                   <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <%= render 'shared/layouts/pdf_templates/primary_bank_info', record.sales_order.currency.name.to_s %>
+                    <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.sales_order.currency.name.to_s %>
+                <% elsif record.sales_order.currency.name.to_s == 'GBP' %>
+                    <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.sales_order.currency.name.to_s %>
+                <% elsif record.sales_order.currency.name.to_s == 'EUR' %>
+                    <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.sales_order.currency.name.to_s %>
                   </div>
                   <br clear="all"/>
                 <% else %>
                   <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <%= render 'shared/layouts/pdf_templates/bank_info'%>
+                    <%= render 'shared/layouts/pdf_templates/bank_info' %>
                   </div>
                   <br clear="all"/>
                   <div id="pdf_btn_details">
