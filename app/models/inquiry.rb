@@ -155,7 +155,7 @@ class Inquiry < ApplicationRecord
   }
   scope :won, -> {where(:status => :'Order Won')}
 
-  attr_accessor :force_has_sales_orders
+  attr_accessor :force_has_sales_orders, :common_supplier, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
