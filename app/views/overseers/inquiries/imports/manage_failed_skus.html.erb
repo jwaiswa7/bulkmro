@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="col-6 col-md-2">
-                      <%= product.association :category, collection: selected_option_or_nil(product, :category), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(calling_category_id: inquiry_product.to_param)} %>
+                      <%= product.association :category, collection: selected_option_or_nil(product, :category), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service_categories => false)} %>
 
                     </div>
                     <div class="col-6 col-md-1">
