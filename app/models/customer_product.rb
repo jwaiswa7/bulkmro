@@ -13,6 +13,8 @@ class CustomerProduct < ApplicationRecord
   belongs_to :measurement_unit, required: false
   has_many :cart_items, dependent: :destroy
   has_many :customer_order_rows
+  has_many :customer_product_tags
+  has_many :tags, :through => :customer_product_tags
 
   has_many_attached :images
 
