@@ -37,6 +37,14 @@ class Services::Customers::Charts::DataGenerator < Services::Shared::BaseService
                         id: 'revenue',
                         type: 'linear',
                         position: 'left',
+                        ticks:{
+                           display:true,
+                           userCallback: ''
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Revenue'
+                        }
                     }]
         },
         # title: {
@@ -44,6 +52,7 @@ class Services::Customers::Charts::DataGenerator < Services::Shared::BaseService
         #     text: 'Order and Products Report'
         # },
     }
+
     months.each_with_index do |m, index|
       @data[:datasets][0][:data].push(products_count[index])
       @data[:datasets][1][:data].push(revenue_data[index])

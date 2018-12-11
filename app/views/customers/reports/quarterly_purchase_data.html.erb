@@ -1,10 +1,39 @@
 <div class="col-lg-12">
   <div class="page-header">
     <h2>Monthly Purchase Data</h2>
-
-    <%# @chart[0][:datasets][1][:data].each do |entry| %>
-      <%# @chart[0][:datasets][1][:data].push(number_to_currency(entry)) %>
-    <%# end %>
-      <%= bar_chart @chart[0], @chart[1] %>
+    <%= bar_chart @chart[0], @chart[1] %>
   </div>
 </div>
+
+
+<script>
+    $( document ).ready(function() {
+        var barChartOptions = {
+            scales: {
+                yAxes: [{
+                    id: 'products_count',
+                    type: 'linear',
+                    position: 'right',
+                }, {
+                    id: 'revenue',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                        display: true,
+                        userCallback: function(value) {
+                            value = value.toString();
+                            value = value.replace(/(\d)(?=(\d{2})+\d\.)/g, ',');
+                            return 'Rs. ' + value;
+                        }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Revenue'
+                    }
+                }]
+            }
+        };
+        window.chart.chart.options = barChartOptions;
+        window.chart.chart.update();
+    });
+</script>
