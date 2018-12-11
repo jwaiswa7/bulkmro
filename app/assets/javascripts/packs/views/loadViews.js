@@ -21,11 +21,7 @@ import salesQuotes from "./salesQuotes/init";
 
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
-<<<<<<< HEAD
-import shared from "./shared/init";
-=======
-import kits from "./kits/init"
->>>>>>> 187a1f18395335b3c0d3bf1fa799921c22065404
+import kits from "./kits/init";
 
 
 let loader = {
@@ -70,8 +66,6 @@ const loadViews = () => {
     let dataAttributes = $('body').data();
     let controller = camelize(dataAttributes.controller);
     let controllerAction = camelize(dataAttributes.controllerAction);
-
-    shared.chooseCompany();
 
     if (controller in loader && controllerAction in loader[controller]) {
         loader[controller][controllerAction]();
