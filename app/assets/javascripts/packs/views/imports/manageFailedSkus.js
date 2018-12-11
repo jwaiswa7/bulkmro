@@ -35,7 +35,7 @@ let onIsServiceChange = (element) => {
     var tax_code_id = $(element).attr('id').replace("is_service","tax_code_id");
     var category_id = $(element).attr('id').replace("is_service","category_id");
     $('#'+tax_code_id).val(null).trigger("change").attr('data-source', Routes.autocomplete_overseers_tax_codes_path({"is_service": $(element).val()})).select2('destroy');
-    $('#'+category_id).val(null).trigger("change").attr('data-source', Routes.autocomplete_closure_tree_overseers_categories_path({"is_service_categories": $(element).val()})).select2('destroy');
+    $('#'+category_id).val(null).trigger("change").attr('data-source', Routes.autocomplete_closure_tree_overseers_categories_path({"is_service": $(element).val()})).select2('destroy');
     select2s();
 };
 
