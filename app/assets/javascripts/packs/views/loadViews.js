@@ -21,7 +21,7 @@ import salesQuotes from "./salesQuotes/init";
 
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
-import kits from "./kits/init"
+import kits from "./kits/init";
 
 
 let loader = {
@@ -74,6 +74,7 @@ const loadViews = () => {
         loader[controller][controllerAction + 'Action']();
         console.log("loader[" + controller + "][" + controllerAction + "]")
     }
+
 };
 
 export default loadViews

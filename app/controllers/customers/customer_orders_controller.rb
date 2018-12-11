@@ -5,7 +5,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
     authorize :customer_order
 
     ActiveRecord::Base.transaction do
-      @customer_order = current_contact.customer_orders.create(:company => current_contact_companies.first)
+      @customer_order = current_contact.customer_orders.create(:company => current_company.first)
       @customer_order.assign_attributes(billing_address_id: current_cart.billing_address_id,
                                         shipping_address_id: current_cart.shipping_address_id,
                                         po_reference: current_cart.po_reference)

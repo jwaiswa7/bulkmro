@@ -13,7 +13,7 @@
       <div class="text-left">
         <div class="list-group list-group-flush">
             <% @most_ordered_products.each do |product, count| %>
-              <a class="list-group-item list-group-item-action p-1" href="<%= customers_product_path(CustomerProduct.joins(:company).where('companies.id IN (?)', current_contact_companies.map(&:id)).joins(:product).where('products.id = ?', product.id).first) %>" target="_blank">
+              <a class="list-group-item list-group-item-action p-1" href="<%= customers_product_path(CustomerProduct.joins(:company).where('companies.id IN (?)', [current_company.id]).joins(:product).where('products.id = ?', product.id).first) %>" target="_blank">
                 <span class="float-right"><%= count %></span>
                 <strong><%= product.name %></strong>
               </a>
