@@ -1,13 +1,11 @@
-class Services::Customers::Charts::DataGenerator < Services::Shared::Charts::ChartConfig
+class Services::Customers::Charts::MixedChart < Services::Shared::Charts::ChartConfig
   def initialize
     super
   end
 
-  def get_multi_axis_mixed_chart
-    super
+  def call
+    mixed_chart
 
-    start_at = Date.new(2018, 04, 01)
-    end_at = Time.now.end_of_month
     revenue_data = []
     months = []
     products_count = []

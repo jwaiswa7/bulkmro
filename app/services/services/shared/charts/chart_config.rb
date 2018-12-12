@@ -1,9 +1,10 @@
 class Services::Shared::Charts::ChartConfig < Services::Shared::BaseService
   def initialize
-    super
+    @start_at = Date.new(2018, 04, 01)
+    @end_at = Time.now.end_of_month
   end
 
-  def get_multi_axis_mixed_chart
+  def mixed_chart
     @chart = []
     @data = {
         labels: [],
@@ -49,4 +50,6 @@ class Services::Shared::Charts::ChartConfig < Services::Shared::BaseService
         }
     }
   end
+
+  attr_accessor :start_at, :end_at
 end
