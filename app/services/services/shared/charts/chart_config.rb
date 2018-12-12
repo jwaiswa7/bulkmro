@@ -1,9 +1,9 @@
 class Services::Shared::Charts::ChartConfig < Services::Shared::BaseService
-  def initialize()
+  def initialize
     super
   end
 
-  def get_multi_axis_mixed_chart()
+  def get_multi_axis_mixed_chart
     @chart = []
     @data = {
         labels: [],

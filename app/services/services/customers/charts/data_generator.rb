@@ -1,9 +1,9 @@
 class Services::Customers::Charts::DataGenerator < Services::Shared::Charts::ChartConfig
-  def initialize()
+  def initialize
     super
   end
 
-  def get_multi_axis_mixed_chart()
+  def get_multi_axis_mixed_chart
     super
 
     start_at = Date.new(2018, 04, 01)
