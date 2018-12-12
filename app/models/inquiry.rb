@@ -250,7 +250,6 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
-      self.shipping_company ||= self.company
       self.commercial_terms_and_conditions ||= [
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
@@ -263,13 +262,7 @@ class Inquiry < ApplicationRecord
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
 
-
-  end
-
-  after_initialize :set_global_defaults
-
-  def set_global_defaults
-    if self.company.present?
+    if self.company.present? && (self.billing_company.blank? || self.shipping_company.blank?)
       self.billing_company ||= self.company
       self.shipping_company ||= self.company
     end
