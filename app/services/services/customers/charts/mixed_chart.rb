@@ -6,28 +6,18 @@ class Services::Customers::Charts::MixedChart < Services::Shared::Charts::ChartC
   def call
     mixed_chart
 
-    revenue_data = []
-    months = []
-    products_count = []
-
     ActiveRecord::Base.default_timezone = :utc
 
     so = SalesOrder.remote_approved.joins(:rows).distinct.where(:created_at => start_at..end_at)
     so.group_by_month(&:created_at).map{|k,v| [k, v.map(&:calculated_total).sum] }.each do |month, revenue|
-      months.push(month)
-      revenue_data.push(revenue)
+      @data[:labels].push(month)
+      @data[:datasets][1][:data].push(revenue)
     end
-    so.group_by_month('sales_orders.created_at').count.each do |order, product_count|
-      products_count.push(product_count)
+    so.group_by_month('sales_orders.created_at').count.each do |order, products_count|
+      @data[:datasets][0][:data].push(products_count)
     end
     ActiveRecord::Base.default_timezone = :local
 
-
-    @data[:labels] = months
-    months.each_with_index do |m, index|
-      @data[:datasets][0][:data].push(products_count[index])
-      @data[:datasets][1][:data].push(revenue_data[index])
-    end
     @chart.push(@data, @options)
   end
 end
