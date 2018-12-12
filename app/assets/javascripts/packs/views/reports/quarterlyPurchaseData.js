@@ -1,5 +1,13 @@
 const quarterlyPurchaseData = () => {
     var barChartOptions = {
+        tooltips: {
+            mode: 'label',
+            callbacks: {
+                label: function(tooltipItem) {
+                    return tooltipItem.yLabel.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, ",");
+                },
+            }
+        },
         scales: {
             yAxes: [{
                 id: 'products_count',
