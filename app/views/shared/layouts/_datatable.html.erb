@@ -17,8 +17,8 @@
             </a>
           <% end %>
           <% if content_for?(:can_be_directly_exported) && policy(current_model.singularize.to_sym).export_all? %>
-            <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-              <i class="fal fa-download mr-1"></i>Export <%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
+            <a href="<%= [request.path, '/', 'export_all.csv'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" <% if Export.send(controller_path.split('/').last).last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).last.created_at), "ago"].join(' ') %><% end %>">
+              <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
             </a>
           <% end %>
 
@@ -33,7 +33,7 @@
 
     <% unless content_for?(:hide_table_desc) %>
       <p class="lead mt-1">
-        All <%= current_model.humanize.downcase %> filterable in any way that we want.
+        All <%= current_model.humanize.downcase %> searchable with relevant term/keywords.
       </p>
     <% end %>
   </section>
@@ -41,7 +41,7 @@
 <section class="pb-4 pb-lg-5">
   <table class="datatable table table-bordered dt-responsive
     <% if content_for?(:wrap_whitespace) %> wrap-whitespace
-    <% end %>" data-search="Filter by anything"
+    <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"
          <% end %>>
     <thead>

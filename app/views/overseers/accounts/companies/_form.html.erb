@@ -4,7 +4,7 @@
     <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
 
-    <p class="badge-danger">
+    <p class="alert alert-danger" data-dismiss="false">
       <% if @account.is_supplier? %>
         This company will be synced as a supplier because it's under a customer supplier.
       <% elsif @account.is_customer? %>
@@ -94,9 +94,9 @@
     </div>
 
     <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
     <% end %>
     <div class="form-row">
       <div class="col-12 col-md-6">

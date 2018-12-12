@@ -1,10 +1,16 @@
+<% provide :controller_is_aliased, true %>
+
+<% content_for :page_title do %>
+  Online Orders
+<% end %>
+
 <div class="col-12">
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <h1 class="display-5 mb-1">Order #<%= @customer_order.id %></h1>
     </div>
     <p class="lead mt-1">
-      There are total <strong><%= @customer_order.rows.count %></strong> products in this order.
+      There are a total of <strong><%= @customer_order.rows.count %></strong> product(s) in this order.
     </p>
   </section>
 
@@ -12,10 +18,15 @@
     <div class="card-body py-2">
       <div class="text-left">
         <% @customer_order.rows.each do |customer_order_row| %>
+          <!--          <a href="<%##= customers_product_path(customer_order_row.product) %>" target="_blank">-->
+          <img src="<%= url_for(customer_order_row.product.images.first) %>" width="60" alt="<%= customer_order_row.product.sku %>"/>
+          <!--          </a>-->
           <div class="ml-3 flex-grow-1">
-            <img class="" src="<%= url_for(customer_order_row.product.images.first) %>" width="60" />
-            <p class="text-black-50 m-0 p-0"><strong><%= Product.get_product_name(customer_order_row.product_id) %></strong></p>
+            <!--            <a href="<%##= customers_product_path(customer_order_row.product) %>" target="_blank">-->
+            <p class="text-black-50 m-0 p-0">
+              <strong><%= Product.get_product_name(customer_order_row.product_id) %></strong></p>
             <span class="text-black-50 d-block">x <%= customer_order_row.quantity %></span>
+            <!--            </a>-->
           </div>
           <br/><br/>
         <% end %>
@@ -24,12 +35,19 @@
 
     <div class="card-footer">
       <div class="form-row">
-        <div class="col-md-12">
-          <% if policy(:customer_order).approve_order? %>
-            <a class="btn btn-success mt-2" href="<%= approve_order_customers_customer_order_path(@customer_order) %>">Approve Order</a>
-          <% end %>
-          <a class="btn btn-dark mt-2" href="<%= customers_products_path %>"><i class="fal fa-arrow-circle-left mr-1"></i> Back to Products page </a>
-          <a class="btn btn-dark mt-2" href="<%= customers_customer_orders_path %>"><i class="fal fa-arrow-circle-left mr-1"></i> Back to Customer Orders </a>
+        <% if policy(:customer_order).approve_order? %>
+          <div class="col-md-6">
+            <a class="btn btn-success mt-2" href="<%= approve_order_customers_customer_order_path(@customer_order) %>">Approve
+              Order</a>
+          </div>
+        <% end %>
+        <div class="col-md-6">
+          <a class="btn btn-outline-dark btn-block" href="<%= customers_customer_orders_path %>"><i class="fal fa-arrow-circle-left mr-1"></i>Browse
+            Online Orders</a>
+        </div>
+        <div class="mt-1 mt-md-0 col-md-6">
+          <a class="btn btn-success btn-block" href="<%= customers_products_path %>">Browse
+            Products<i class="fal fa-arrow-circle-right ml-1"></i></a>
         </div>
       </div>
     </div>

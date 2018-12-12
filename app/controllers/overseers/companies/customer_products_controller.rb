@@ -24,13 +24,12 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     authorize @customer_product
   end
 
-  def edit
-    authorize @customer_product
-  end
-
   def create
-    @customer_product = @company.customer_products.where(:product_id => customer_product_params[:product_id]).first_or_initialize
+    @product = Product.find(customer_product_params[:product_id])
+    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
     @customer_product.assign_attributes(customer_product_params)
+    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
 
     authorize @customer_product
 
@@ -55,10 +54,17 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
-  def update
-    @customer_product = @company.customer_products.where(:product_id => customer_product_params[:product_id]).first_or_initialize
-    @customer_product.assign_attributes(customer_product_params)
 
+  def edit
+    authorize @customer_product
+  end
+
+  def update
+    @product = Product.find(customer_product_params[:product_id])
+    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product.assign_attributes(customer_product_params)
+    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
     authorize @customer_product
 
     if @customer_product.save

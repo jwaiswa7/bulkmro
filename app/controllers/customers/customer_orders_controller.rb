@@ -5,11 +5,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
     authorize :customer_order
 
     @customer_order = current_contact.customer_orders.build(
-        default_billing_address_id: current_cart.default_billing_address_id,
-        default_shipping_address_id: current_cart.default_shipping_address_id,
+        billing_address_id: current_cart.billing_address_id,
+        shipping_address_id: current_cart.shipping_address_id,
         po_reference: current_cart.po_reference
     )
-
 
     ActiveRecord::Base.transaction do
       @customer_order.save!
@@ -22,13 +21,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|
           row.customer_order_id = @customer_order.id
           row.quantity = cart_item.quantity
+          row.customer_product = cart_item.customer_product
         end
       end
-
       current_cart.destroy
-
-      redirect_to order_confirmed_customers_customer_order_path(@customer_order), notice: flash_message(@customer_order, action_name)
     end
+
+    redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
 
   def show
@@ -66,7 +65,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
     @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
     authorize @customer_orders
   end
-
 
   private
 
