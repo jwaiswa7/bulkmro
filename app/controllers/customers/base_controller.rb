@@ -53,7 +53,7 @@ class Customers::BaseController < ApplicationController
   end
 
   def current_cart
-    current_contact.current_cart
+    current_contact.current_cart(current_company)
   end
 
   def current_company

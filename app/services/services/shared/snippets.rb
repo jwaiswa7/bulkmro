@@ -19,6 +19,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Inquiry.delete_all
   end
 
+  def del_customer_orders
+    CustomerOrderApproval.all.destroy_all
+    CustomerOrder.all.destroy_all
+  end
+
   def update_amat_statuses
     invoices = Contact.find_by_email('bhupali_pawar@contractor.amat.com').account.invoices
 

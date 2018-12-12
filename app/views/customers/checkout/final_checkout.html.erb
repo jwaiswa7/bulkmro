@@ -86,17 +86,15 @@
             <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
               <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126' %>
               <p>Select a billing address from your address book.</p>
-              <% if current_company.billing_address.present? %>
+              <% current_company.addresses.each do |address| %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
-                      <%= f.radio_button :billing_address_id, current_company.billing_address.id %>
+                      <%= f.radio_button :billing_address_id, address.id %>
                     </span>
                   <span class="flex-grow-1 ml-2">
-                      <%= current_company.billing_address.try(:to_multiline_s) %><br/>
-                    <% if current_contact.telephone.present? %>
-                        T: <%= current_contact.telephone %><br/>
-                      <% end %>
-                    GST No: <%= current_company.billing_address.gst %>
+                    <%= address.to_multiline_s %><br/>
+                    <% if address.telephone.present? %>T: <%= address.telephone %><br/><% end %>
+                    GST No: <%= address.gst %>
                     </span>
                 </label>
               <% end %>
@@ -117,17 +115,15 @@
           <div class="card-body">
             <p>Select a shipping address from your address book.</p>
             <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
-              <% if current_company.shipping_address.present? %>
+              <% current_company.addresses.each do |address| %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
-                      <%= f.radio_button :shipping_address_id, current_company.shipping_address.id %>
+                      <%= f.radio_button :shipping_address_id, address.id %>
                     </span>
                   <span class="flex-grow-1 ml-2">
-                      <%= current_company.shipping_address.try(:to_multiline_s) %><br/>
-                    <% if current_contact.telephone.present? %>
-                        T: <%= current_contact.telephone %><br/>
-                      <% end %>
-                    GST No: <%= current_company.default_shipping_address.gst %>
+                    <%= address.to_multiline_s %><br/>
+                    <% if address.telephone.present? %>T: <%= address.telephone %><br/><% end %>
+                    GST No: <%= address.gst %>
                     </span>
                 </label>
               <% end %>
