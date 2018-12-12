@@ -14,6 +14,23 @@
   </section>
 
   <div class="card mb-2">
+    <div class="card-header">
+      <% if @customer_order.billing_address.present? %>
+        <% @customer_order.tax_line_items.each do |key, value| %>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(@customer_order.billing_address, @customer_order.default_warehouse_address, @customer_order.default_warehouse_address, key) %>
+                  :</em> <%= format_currency(value) %></span>
+        <% end %>
+        <strong class="float-left">Total Tax:</strong>
+        <strong><%= format_currency(@customer_order.calculated_total_tax) %></strong>
+        <hr class="my-1">
+        <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(@customer_order.grand_total) %>
+        </strong>
+      <% else %>
+        <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
+        <hr class="my-1">
+        <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(@customer_order.calculated_total) %></span>
+      <% end %>
+    </div>
     <div class="card-body pb-2">
       <% if @customer_order.po_reference.present? && @customer_order.po_reference != 0 %>
         <div>
