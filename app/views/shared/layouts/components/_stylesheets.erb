@@ -2,18 +2,18 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/b-html5-1.5.2/b-print-1.5.2/fh-3.1.4/r-2.2.2/rg-1.0.3/sc-1.5.0/datatables.min.css"/>
 <!-- /Move to node_modules imports -->
 
-<% if Rails.env.production? %>
+<% if production? %>
 <!-- FA 5 -->
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
 <!-- /FA 5 -->
 <% end %>
 
 <!-- Styles -->
-<% if !Rails.env.production? || !Rails.env.staging? %>
+<% if !production? || !staging? %>
   <%= stylesheet_link_tag 'overseers/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<% if Rails.env.staging? %>
+<% if staging? %>
   <!-- FA 5 -->
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
   <!-- /FA 5 -->
