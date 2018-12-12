@@ -34,4 +34,12 @@ class PaymentRequest < ApplicationRecord
       self.status = :'Created'
     end
   end
+
+  def completed?
+    self.status == "Completed"
+  end
+
+  def requested?
+    !self.completed?
+  end
 end

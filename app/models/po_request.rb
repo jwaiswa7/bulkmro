@@ -9,6 +9,7 @@ class PoRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
+  has_one :payment_request
   has_many_attached :attachments
 
   enum status: {
@@ -24,9 +25,5 @@ class PoRequest < ApplicationRecord
 
   def set_defaults
     self.status = :'Requested'
-  end
-
-  def has_purchase_order
-    self.purchase_order.present?
   end
 end

@@ -16,6 +16,15 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_payment?
-    record.has_purchase_order
+    has_purchase_order? && !has_payment_request?
   end
+
+  def has_purchase_order?
+    record.purchase_order.present?
+  end
+
+  def has_payment_request?
+    record.payment_request.present?
+  end
+
 end

@@ -23,7 +23,7 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :utr_number, label: "UTR Number", :input_html => {:maxlength => 8, :size => 8} %>
+        <%= f.input :utr_number, label: "UTR Number / Cheque Number" %>
       </div>
       <div class="col-6">
         <%= f.input :status, as: :select, disabled: true, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
