@@ -91,7 +91,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :sales_order_id,
         :purchase_order_number,
         :status,
-        :po_request_products_attributes => [:id, :product, :sales_order_row, :sales_quote_row, :quantity],
+        :po_request_rows_attributes => [:id, :product, :sales_order_row],
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )

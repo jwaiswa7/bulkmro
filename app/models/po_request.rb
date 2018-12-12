@@ -8,7 +8,7 @@ class PoRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
-  has_many :po_request_products
+  has_many :po_request_rows
   has_many_attached :attachments
 
   enum status: {
@@ -20,7 +20,7 @@ class PoRequest < ApplicationRecord
   scope :pending, -> { where(:status => :'Requested') }
   scope :handled, -> { where.not(:status => :'Requested') }
 
-  accepts_nested_attributes_for :po_request_products
+  accepts_nested_attributes_for :po_request_rows
 
   after_initialize :set_defaults, :if => :new_record?
 
