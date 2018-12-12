@@ -84,7 +84,7 @@
         <div id="checkout-billing" class="collapse <%= show_if(params[:next_step].blank?) %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
-              <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. 4591519126' %>
+              <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. ASDF19126' %>
               <p>Select a billing address from your address book.</p>
               <% if current_company.billing_address.present? %>
                 <label class="d-flex justify-content-center align-items-center flex-row">
@@ -167,7 +167,7 @@
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40"/>
                       <% end %>
                     </td>
-                    <td><%= cart_item.product.name.truncate(80) %></td>
+                    <td><%= cart_item.customer_product.name.truncate(80) %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
                     <td><%= cart_item.quantity %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
