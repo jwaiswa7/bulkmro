@@ -333,6 +333,13 @@ Rails.application.routes.draw do
 
     resources :warehouses
     resources :payment_options
+
+    resources :payment_requests do
+      collection do
+        get 'requests_created'
+        get 'completed'
+      end
+    end
   end
 
   namespace 'customers' do

@@ -6,6 +6,9 @@ json.data (@po_requests) do |po_request|
                       end,
                       if policy(po_request).edit?
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
+                      end,
+                      if policy(po_request).can_request_payment?
+                        row_action_button(new_overseers_payment_request_path(:po_request_id => po_request.to_param), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       end
                   ].join(' '),
                   po_request.id,

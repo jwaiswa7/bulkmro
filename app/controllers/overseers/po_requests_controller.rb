@@ -80,6 +80,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :inquiry_id,
         :sales_order_id,
         :purchase_order_number,
+        :purchase_order_id,
         :status,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []

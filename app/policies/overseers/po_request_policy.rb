@@ -14,4 +14,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def new?
     true
   end
+
+  def can_request_payment?
+    record.has_purchase_order
+  end
 end
