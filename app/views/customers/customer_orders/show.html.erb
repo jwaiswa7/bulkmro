@@ -14,7 +14,45 @@
   </section>
 
   <div class="card mb-2">
-    <div class="card-body py-2">
+    <div class="card-body pb-2">
+      <% if @customer_order.po_reference.present? && @customer_order.po_reference != 0 %>
+        <div>
+          <strong class="d-block">PO Reference</strong>
+          <%= @customer_order.po_reference %>
+        </div>
+      <% end %>
+      <div class="form-row">
+        <div class="col-md-6">
+          <% if @customer_order.billing_address.present? %>
+            <div>
+              <hr class="my-2">
+              <strong class="d-block">Billing Address</strong>
+              <em class="d-block mt-1"><%= @customer_order.contact.name %></em>
+              <%= @customer_order.billing_address.to_multiline_s %><br/>
+              <% if @customer_order.contact.telephone.present? %>
+                T: <%= @customer_order.contact.telephone %><br/>
+              <% end %>
+              GST No: <%= @customer_order.billing_address.gst %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <% if @customer_order.shipping_address.present? %>
+            <div>
+              <hr class="my-2">
+              <strong class="d-block">Shipping Address</strong>
+              <em class="d-block mt-1"><%= @customer_order.contact.name %></em>
+              <%= @customer_order.shipping_address.to_multiline_s %><br/>
+              <% if @customer_order.contact.telephone.present? %>
+                T: <%= @customer_order.contact.telephone %><br/>
+              <% end %>
+              GST No: <%= @customer_order.shipping_address.gst %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <hr class="mt-2 mb-0">
+
       <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
         <thead>
         <tr>
