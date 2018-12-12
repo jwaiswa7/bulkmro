@@ -8,7 +8,7 @@ const stepRoundUp = () => {
                 let rounded = Math.ceil(value/step)*step != 0 ? Math.ceil(value/step)*step : step;
                 $(this).val(rounded);
             }
-        }, 300);
+        }, 1500);
     });
 };
 

@@ -65,7 +65,7 @@
                     </td>
                     <td>
                       <a href="<%= customers_product_path(cart_item.object.customer_product) %>">
-                        <%= cart_item.object.customer_product.product.name.truncate(80) %>
+                        <%= cart_item.object.customer_product.name.truncate(80) %>
                       </a>
                     </td>
                     <td><%= format_currency(cart_item.object.customer_product.customer_price, precision: 2, symbol: '') %></td>
