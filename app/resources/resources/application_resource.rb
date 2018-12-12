@@ -69,7 +69,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
                          })
   end
 
-  if production?
+  if Rails.env.production?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
     DATABASE = 'BULKMRO_PRODUCTION'
     USERNAME = 'manager'
@@ -119,7 +119,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
   end
 
-  if staging?
+  if Rails.env.staging?
     ENDPOINT = URI.parse('https://35.200.144.191:50000/b1s/v1')
     DATABASE = 'BMRO_29NOV'
     USERNAME = 'manager'

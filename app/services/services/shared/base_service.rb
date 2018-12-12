@@ -10,7 +10,7 @@ class Services::Shared::BaseService
 	end
 
   def perform_later(*args)
-		if production? || staging?
+		if Rails.env.production? || Rails.env.staging?
 			ApplicationJob.perform_later(self.class.name, *args)
 		else
 			ApplicationJob.perform_now(self.class.name, *args)
@@ -18,7 +18,7 @@ class Services::Shared::BaseService
 	end
 
 	def perform_export_later(arg)
-		if production? || staging?
+		if Rails.env.production? || Rails.env.staging?
 			ApplicationExportJob.perform_later(arg)
 		else
 			ApplicationExportJob.perform_now(arg)
