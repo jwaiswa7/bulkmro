@@ -1,6 +1,6 @@
 class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    manager_or_cataloging? || admin?
   end
 
   def show?
