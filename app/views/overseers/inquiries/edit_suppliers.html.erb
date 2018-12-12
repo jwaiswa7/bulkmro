@@ -69,7 +69,7 @@
           <% end %>
         </div>
         <div class="card-footer">
-          <% if policy(@inquiry).not_logistics? %>
+          <% if policy(@inquiry).update_suppliers? %>
             <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
               <i class="fal fa-pen"></i> Update Suppliers
             <% end %>

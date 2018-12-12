@@ -27,6 +27,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     can_manage_inquiry? || cataloging? || logistics?
   end
 
+  def update?
+    not_logistics?
+  end
+
   def new_list_import?
     edit?
   end
@@ -64,7 +68,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def update_suppliers?
-    edit_suppliers?
+    edit_suppliers? && not_logistics?
   end
 
   def sales_quotes?
