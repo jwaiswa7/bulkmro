@@ -13,7 +13,14 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.inquiry.inquiry_number,
                   payment_request.po_request.purchase_order.id,
                   payment_request.inquiry.inside_sales_owner.to_s,
+                  format_date_time_meridiem(payment_request.due_date),
                   format_date_time_meridiem(payment_request.created_at),
+                  if payment_request.comments.present?
+                    format_date_time_meridiem(payment_request.comments.last.created_at)
+                  end,
+                  if payment_request.comments.present?
+                    format_comment(payment_request.comments.last)
+                  end
               ]
 end
 
