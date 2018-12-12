@@ -24,6 +24,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     CustomerOrder.all.destroy_all
   end
 
+  def check_company
+    company = Company.find_by_name('Flextronics Technologies India Pvt. Ltd.')
+
+    company.sales_quotes.first
+
+    SalesQuotesIndex::SalesQuote.import SalesQuote.all, update_fields: [:is_final]
+  end
+
   def update_amat_statuses
     invoices = Contact.find_by_email('bhupali_pawar@contractor.amat.com').account.invoices
 
