@@ -39,11 +39,8 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6 col-md-6">
+      <div class="col-12">
         <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
-      </div>
-      <div class="col-6 col-md-6">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
       </div>
       <div class="col-12 col-md-12 ">
         <div class="d-block d-md-flex align-items-end">

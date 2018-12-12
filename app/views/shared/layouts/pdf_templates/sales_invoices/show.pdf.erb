@@ -256,10 +256,10 @@
                   <b><span>Qty</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Unit Price<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Subtotal<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Tax<br>
                     Rate</span></b></th>
@@ -288,7 +288,7 @@
                 <% end %>
                 <th align="center" valign="center">
                   <b><span>Total<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
               </tr>
               </thead>
               <tbody>
@@ -300,7 +300,7 @@
                     <span><%= item.sku %></span></td>
 
                   <td align="center" valign="top">
-                    <span><%= record.sales_order.sales_order_rows[index].product.mpn %></span></td>
+                    <span><%= record.sales_order.sales_order_rows[index].try(:product).try(:mpn)%></span></td>
                   <td align="left" valign="top">
                     <span><%= item.name %></span></td>
                   <td align="center" valign="top">
@@ -314,7 +314,7 @@
                   <td align="right" valign="top">
                     <span><%= number_to_currency(item.metadata['price'], precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.metadata['row_total'], precision: 2, unit: '') %></span></td>
+                    <span><%= number_to_currency(item.metadata['base_row_total'], precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                   <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -322,22 +322,22 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
+                      <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
+                      <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %>
+                      <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>
                     </td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.metadata['row_total_incl_tax'], precision: 2, unit: '') %></span>
+                    <span><%= number_to_currency(item.metadata['base_row_total_incl_tax'], precision: 2, unit: '') %></span>
                   </td>
                 </tr>
               <% end if record.metadata['ItemLine'].present? %>
@@ -362,7 +362,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(record.metadata['subtotal'], precision: 2, unit: '') %></span></b>
+                  <b><span><%= number_to_currency(record.metadata['base_grand_total'].to_f - record.metadata['base_tax_amount'].to_f, precision: 2, unit: '') %></span></b>
                 </td>
                 <td align="center" valign="top">
                   <span></span></td>
@@ -371,22 +371,22 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(record.metadata['tax_amount'], precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency(record.metadata['base_tax_amount'], precision: 2, unit: '') %></span></b>
                   </td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency((record.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency((record.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
                   </td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency((record.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency((record.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
                   </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency((record.metadata['subtotal_incl_tax'].to_f), precision: 2, unit: '') %></span></b>
+                  <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f), precision: 2, unit: '') %></span></b>
                 </td>
               </tr>
 
