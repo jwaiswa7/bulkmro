@@ -19,11 +19,14 @@
           <div class="text-right">
             <% if @cart.billing_address.present? %>
               <% current_cart.tax_line_items.each do |key, value| %>
-                <span class="d-block"><em class="float-left"><%= TaxRateString.for(current_cart.billing_address, current_cart.default_warehouse_address, current_cart.default_warehouse_address, key) %>:</em> <%= format_currency(value) %></span>
+                <span class="d-block"><em class="float-left"><%= TaxRateString.for(current_cart.billing_address, current_cart.default_warehouse_address, current_cart.default_warehouse_address, key) %>
+                  :</em> <%= format_currency(value) %></span>
               <% end %>
-              <strong class="float-left">Total Tax:</strong> <strong><%= format_currency(current_cart.calculated_total_tax) %></strong>
+              <strong class="float-left">Total Tax:</strong>
+              <strong><%= format_currency(current_cart.calculated_total_tax) %></strong>
               <hr class="my-1">
-              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(current_cart.grand_total) %></strong>
+              <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(current_cart.grand_total) %>
+              </strong>
             <% else %>
               <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
               <hr class="my-1">
@@ -33,14 +36,16 @@
           <% if @cart.po_reference.present? && @cart.po_reference != 0 %>
             <div>
               <hr>
-              <strong class="d-block">PO Reference<a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
+              <strong class="d-block">PO
+                Reference<a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
               <%= @cart.po_reference %>
             </div>
           <% end %>
           <% if @cart.billing_address.present? %>
             <div>
               <hr>
-              <strong class="d-block">Billing Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
+              <strong class="d-block">Billing Address
+                <a data-toggle="collapse" data-parent="#checkout" href="#checkout-billing" class="float-right">Change</a></strong>
               <em class="d-block mt-1"><%= current_contact.name %></em>
               <%= current_cart.billing_address.to_multiline_s %><br/>
               <% if current_contact.telephone.present? %>
@@ -52,7 +57,8 @@
           <% if @cart.shipping_address.present? %>
             <div>
               <hr>
-              <strong class="d-block">Shipping Address <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a></strong>
+              <strong class="d-block">Shipping Address
+                <a data-toggle="collapse" data-parent="#checkout" href="#checkout-shipping" class="float-right">Change</a></strong>
               <em class="d-block mt-1"><%= current_contact.name %></em>
               <%= current_cart.shipping_address.to_multiline_s %><br/>
               <% if current_contact.telephone.present? %>
@@ -80,21 +86,19 @@
             <%= simple_form_for [:customers, @cart], :url => update_billing_address_customers_cart_path, :method => :patch do |f| %>
               <%= f.input :po_reference, label: 'PO Reference Number', placeholder: 'e.g. 4591519126' %>
               <p>Select a billing address from your address book.</p>
-              <% current_contact_companies.each do |company| %>
-                <% if company.billing_address.present? %>
-                  <label class="d-flex justify-content-center align-items-center flex-row">
+              <% if current_company.billing_address.present? %>
+                <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
-                      <%= f.radio_button :billing_address_id, company.billing_address.id %>
+                      <%= f.radio_button :billing_address_id, current_company.billing_address.id %>
                     </span>
-                    <span class="flex-grow-1 ml-2">
-                      <%= company.billing_address.try(:to_multiline_s) %><br/>
-                      <% if current_contact.telephone.present? %>
+                  <span class="flex-grow-1 ml-2">
+                      <%= current_company.billing_address.try(:to_multiline_s) %><br/>
+                    <% if current_contact.telephone.present? %>
                         T: <%= current_contact.telephone %><br/>
                       <% end %>
-                      GST No: <%= company.billing_address.gst %>
+                    GST No: <%= current_company.billing_address.gst %>
                     </span>
-                  </label>
-                <% end %>
+                </label>
               <% end %>
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
@@ -113,21 +117,19 @@
           <div class="card-body">
             <p>Select a shipping address from your address book.</p>
             <%= simple_form_for [:customers, @cart], :url => update_shipping_address_customers_cart_path, :method => :patch do |f| %>
-              <% current_contact_companies.each do |company| %>
-                <% if company.shipping_address.present? %>
-                  <label class="d-flex justify-content-center align-items-center flex-row">
+              <% if current_company.shipping_address.present? %>
+                <label class="d-flex justify-content-center align-items-center flex-row">
                     <span class="h-100">
-                      <%= f.radio_button :shipping_address_id, company.shipping_address.id %>
+                      <%= f.radio_button :shipping_address_id, current_company.shipping_address.id %>
                     </span>
-                    <span class="flex-grow-1 ml-2">
-                      <%= company.shipping_address.try(:to_multiline_s) %><br/>
-                      <% if current_contact.telephone.present? %>
+                  <span class="flex-grow-1 ml-2">
+                      <%= current_company.shipping_address.try(:to_multiline_s) %><br/>
+                    <% if current_contact.telephone.present? %>
                         T: <%= current_contact.telephone %><br/>
                       <% end %>
-                      GST No: <%= company.default_shipping_address.gst %>
+                    GST No: <%= current_company.default_shipping_address.gst %>
                     </span>
-                  </label>
-                <% end %>
+                </label>
               <% end %>
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
@@ -165,7 +167,7 @@
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40"/>
                       <% end %>
                     </td>
-                    <td><%= cart_item.product.name.truncate(80) %></td>
+                    <td><%= cart_item.customer_product.name.truncate(80) %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
                     <td><%= cart_item.quantity %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
