@@ -94,4 +94,14 @@ class SalesQuote < ApplicationRecord
   def to_s
     ['#', inquiry.inquiry_number].join
   end
+
+  def is_final?
+    if self.id.present? && self.inquiry.final_sales_quote == self
+      true
+    elsif self.sales_orders.size >= 1
+      true
+    else
+      false
+    end
+  end
 end
