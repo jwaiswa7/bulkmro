@@ -6,7 +6,7 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
 
   def all_records
     indexed_records = if current_contact.present?
-                        super.filter(filter_by_array("company_id", current_contact.companies.ids))
+                        super.filter(filter_by_value('company_id', current_company.id))
                       else
                         super
                       end
