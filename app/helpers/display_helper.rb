@@ -156,11 +156,17 @@ module DisplayHelper
     end
   end
 
-  def url_for_image(image,fallback_url: "")
-    if image.present? && ActiveStorage::Blob.service.exist?(image.key)
+  def url_for_image(image, fallback_url: "", check_remote: false)
+    if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
     else
       fallback_url
     end
+  end
+
+  def chewy_indices
+    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
+      path.gsub(".rb", "").gsub("app/chewy/", "") if !path.include? "base_index"
+    end.compact
   end
 end

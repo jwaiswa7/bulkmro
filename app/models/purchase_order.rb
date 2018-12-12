@@ -2,6 +2,8 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('purchase_orders#purchase_order') {self}
 
+  pg_search_scope :locate, :against => [:id, :po_number], :using => {:tsearch => {:prefix => true}}
+
   belongs_to :inquiry
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
@@ -52,7 +54,7 @@ class PurchaseOrder < ApplicationRecord
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
-      product_supplier = Company.find_by_remote_uid(self.metadata['PoSupNum'])
+      product_supplier = ( Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']) )
       return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
     end
 

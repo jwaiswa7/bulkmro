@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'reset_index'
       get 'serializer'
       get 'migrations'
       get 'console'
@@ -70,7 +71,10 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
-        get 'login_as_contact'
+      end
+
+      member do
+        get 'become'
       end
     end
 
@@ -148,6 +152,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :invoice_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+        get 'completed'
+      end
+    end
+
     resources :sales_orders do
       member do
         get 'new_purchase_order'
@@ -175,6 +187,10 @@ Rails.application.routes.draw do
     end
 
     resources :sales_invoices do
+      member do
+        get 'edit_pod'
+        patch 'update_pod'
+      end
       collection do
         get 'export_all'
         get 'export_rows'
@@ -188,6 +204,14 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :customer_orders do
+      scope module: 'customer_orders' do
+        resources :inquiries do
+
+        end
+      end
+    end
+
     resources :inquiries do
       member do
         get 'edit_suppliers'
@@ -198,6 +222,7 @@ Rails.application.routes.draw do
       end
 
       collection do
+        get 'new_from_customer_order'
         get 'autocomplete'
         get 'index_pg'
         get 'smart_queue'
@@ -261,7 +286,6 @@ Rails.application.routes.draw do
             post 'create_list_import'
           end
         end
-
       end
     end
 
@@ -272,6 +296,8 @@ Rails.application.routes.draw do
       end
 
       scope module: 'companies' do
+        resources :customer_orders
+
         resources :customer_products do
           collection do
             post 'generate_catalog'
@@ -292,6 +318,10 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+
+        resources :sales_quotes
+        resources :sales_orders
+        resources :sales_invoices
       end
     end
 
@@ -305,9 +335,16 @@ Rails.application.routes.draw do
     end
 
     resources :warehouses
+    resources :payment_options
   end
 
   namespace 'customers' do
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
+    end
+
     resources :reports do
       member do
       end
@@ -318,15 +355,17 @@ Rails.application.routes.draw do
     end
 
     resource :dashboard, :controller => :dashboard
-    resources :cart_items, only: %i[new create destroy]
+    resources :cart_items, only: %i[new create destroy update]
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
       end
     end
-    resources :customer_products, only: %i[index create show] do
+    resources :products, :controller => :customer_products, only: %i[index create show] do
       collection do
         get 'generate_all'
+        get 'most_ordered_products'
+        get 'autocomplete'
       end
     end
 
@@ -340,22 +379,42 @@ Rails.application.routes.draw do
     end
     resources :orders, :controller => :sales_orders, only: %i[index show]
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
-    resources :products, only: %i[index show] do
+    resource :checkout, :controller => :checkout do
       collection do
-        get 'most_ordered_products'
-        get 'autocomplete'
+        get 'final_checkout'
       end
     end
+    # resources :products, only: %i[index show] do
+    #   collection do
+    #     get 'most_ordered_products'
+    #     get 'autocomplete'
+    #   end
+    #
+    #   member do
+    #     get 'to_cart'
+    #   end
+    # end
 
-    resource :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, except: [:index] do
       collection do
         get 'checkout'
+        patch 'update_billing_address'
+        patch 'update_shipping_address'
+        patch 'add_po_number'
+        get 'empty_cart'
       end
     end
 
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments
+      end
+    end
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
       end
     end
 

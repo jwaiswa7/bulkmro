@@ -1,19 +1,34 @@
-<div class="dropdown-menu dropdown-menu-right cart-dropdown">
-  <h6 class="dropdown-header d-none">Cart</h6>
-  <div class="cart-items">
-    <% current_cart.items.each do |cart_item| %>
-      <div class="text-dark text-wrap" id="cart_item_<%= cart_item.id %>">
-        <%= link_to customers_cart_item_path(cart_item), method: :delete, remote: true do %>
-          <i class="fal fa-times ml-2 text-danger d-block float-right" id="delete_item"></i>
-        <% end %>
-        <span class="d-block text-small"><a href="<%= customers_product_path(Product.find(cart_item.product_id)) %>"><%= truncate(Product.find(cart_item.product_id).try(:name), :length => 30 ) %></a></span>
-        <span class="d-block text-black-50">x <%= cart_item.quantity %></span>
-        <div class="dropdown-divider" id="divider_<%= cart_item.id %>"></div>
-      </div>
-    <% end %>
-  </div>
-  <div class="cart-footer">
-    <%= link_to "Cart", customers_cart_path, :class => "btn btn-dark btn-sm w-50" %>
-    <%= link_to "Checkout", checkout_customers_cart_path, :class => "btn btn-success btn-sm w-50" %>
-  </div>
-</div>
+<%# if current_cart.items.present? %>
+<!--  <div class="dropdown-menu dropdown-menu-right cart-dropdown">-->
+    <%#= simple_form_for(current_cart, :url => customers_cart_path, :method => :patch) do |f| %>
+<!--      <h6 class="dropdown-header d-none">Cart</h6>-->
+<!--      <div class="cart-items">-->
+        <%#= f.simple_fields_for :items do |cart_item| %>
+<!--          <div class="text-dark text-wrap" id="cart_item_<%#= cart_item.object.id %>">-->
+<!--            <span class="d-block text-black-50 float-right"><%#= cart_item.object.customer_product.customer_price.to_f %></span>-->
+<!--            <span class="d-block text-small"><a href="<%#= customers_product_path(Product.find(cart_item.object.product_id)) %>"><%#= truncate(Product.find(cart_item.object.product_id).try(:name), :length => 30 ) %></a></span>-->
+            <%#= link_to customers_cart_item_path(cart_item.object), method: :delete, remote: true do %>
+<!--              <i class="fal fa-times ml-2 text-danger d-block float-right" id="delete_item"></i>-->
+            <%# end %>
+<!--            <span class="d-flex text-black-50" style="width: 100px">QTY <%#= cart_item.input_field :quantity, :class => 'form-control' %></span>-->
+<!--            <div class="dropdown-divider" id="divider_<%#= cart_item.object.id %>"></div>-->
+<!--          </div>-->
+        <%# end %>
+
+<!--      </div>-->
+
+<!--      <div class="cart-subtotal-container">-->
+<!--        <div>-->
+<!--          <strong>Subtotal: <%#= format_currency(current_cart.calculated_total(f.object.items)) %></strong>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="cart-footer">-->
+        <%#= f.submit "Checkout", class: "btn btn-success btn-sm w-50" %>
+        <%#= f.submit "Cart", name: 'show_cart', class: "btn btn-dark btn-sm w-50" %>
+<!--      </div>-->
+<!--      <div class="empty-cart">-->
+        <%#= link_to "EMPTY CART", empty_cart_customers_cart_path %>
+<!--      </div>-->
+    <%# end %>
+<!--  </div>-->
+<%# end %>

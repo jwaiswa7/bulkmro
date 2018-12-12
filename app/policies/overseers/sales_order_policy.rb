@@ -4,6 +4,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def company_converted_orders?
+    manager_or_sales? || logistics?
+  end
+
   def autocomplete?
     manager_or_sales? || logistics?
   end
@@ -80,12 +84,16 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     true #!record.has_purchase_order_request
   end
 
+  def can_request_invoice?
+    true #!record.has_purchase_order_request
+  end
+
   def approve?
     pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
   def approve_low_margin?
-    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com).include?(overseer.email)
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def reject?

@@ -4,14 +4,14 @@
 <% provide :container_fluid, true %>
 <% provide :heading_buttons do %>
   <% if policy(:sales_invoice).export_for_logistics? %>
-    <a href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Invoices (For Logistics)
+    <a href="<%= export_for_logistics_overseers_sales_invoices_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" <% if Export.sales_invoice_logistics.last.present? %>data-badge="<%= [time_ago_in_words(Export.sales_invoice_logistics.last.created_at), ' ago'].join(' ') %>"<% end %>>
+      <i class="fal fa-download mr-1"></i>Sales Invoices (Logistics)
     </a>
   <% end %>
 
   <% if policy(:sales_invoice).export_rows? %>
-    <a href="<%= export_rows_overseers_sales_invoices_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Invoice Rows
+    <a href="<%= export_rows_overseers_sales_invoices_path(format: :csv)  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" <% if Export.sales_invoice_rows.last.present? %>data-badge=" <%= [time_ago_in_words(Export.sales_invoice_rows.last.created_at), 'ago'].join(' ') %>"<% end %>>
+      <i class="fal fa-download mr-1"></i>Sales Invoice Rows
     </a>
   <% end %>
 <% end %>
@@ -26,6 +26,7 @@
     <th class="no-sort desktop">Status</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
+    <th class="no-sort desktop">Proof of Delivery</th>
     <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
     <th class="no-sort desktop">Created At</th>
   <% end %>
@@ -38,6 +39,7 @@
     <td data-filter="false"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
     <td data-filter="daterange"></td>
     <td data-filter="false"></td>
   <% end %>

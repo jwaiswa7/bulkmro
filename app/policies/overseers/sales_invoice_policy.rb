@@ -30,4 +30,12 @@ class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def export_for_logistics?
     allow_logistics_format_export?
   end
+
+  def edit_pod?
+    record.persisted? && record.not_legacy?
+  end
+
+  def update_pod?
+    edit_pod?
+  end
 end

@@ -14,6 +14,8 @@ module SalesOrderHelper
       "success"
     elsif status == "Order Deleted"
       "dark"
+    elsif status == "Closed"
+      "dark"
     elsif status == "Hold by Finance"
       "warning"
     else

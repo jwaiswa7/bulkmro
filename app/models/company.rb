@@ -14,35 +14,31 @@ class Company < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
-
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
-
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
-
   has_many :product_suppliers, foreign_key: :supplier_id
   has_many :products, :through => :product_suppliers
   accepts_nested_attributes_for :product_suppliers
-
   has_many :category_suppliers, foreign_key: :supplier_id
   has_many :categories, :through => :category_suppliers
   accepts_nested_attributes_for :category_suppliers
-
   has_many :brand_suppliers, foreign_key: :supplier_id
   has_many :brands, :through => :brand_suppliers
   has_many :brand_products, :through => :brands, :class_name => 'Product', :source => :products
   accepts_nested_attributes_for :brand_suppliers
-
   has_many :inquiries
   has_many :inquiry_product_suppliers, :through => :inquiries
   has_many :inquiry_products, :through => :inquiries
   has_many :products, :through => :inquiry_products
+  has_many :sales_quotes, :through => :inquiries, :source => :sales_quotes
   has_many :sales_orders, :through => :inquiries
   has_many :invoices, :through => :inquiries
   has_many :addresses, dependent: :destroy
   has_many :customer_products, dependent: :destroy
   has_many :company_products, :through => :customer_products
+  has_many :customer_orders
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -166,6 +162,9 @@ class Company < ApplicationRecord
     end
   end
 
+  def customer_product_for(product)
+    customer_products.joins(:product).where('products.id = ?', product.id).first
+  end
 
   def self.legacy
     self.find_by_name('Legacy Company')
