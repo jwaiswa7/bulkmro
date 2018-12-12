@@ -125,7 +125,7 @@
                       <div id="c-<%= row.object.inquiry_product_supplier_id %>" class="collapse <%= (f.object.persisted? && row.object.persisted?) || (rows.select {|r| r.new_record?}.size == rows.size && rows[0] == row.object) ? 'show' : '' %>" data-parent="#ac-<%= inquiry_product.id %>">
                         <div class="form-row mt-2">
                           <div class="col-md-1 col-4"><%= row.input :quantity, input_html: {"data-bind": ""} %></div>
-                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: {max: 99.99, "data-bind": ""} %></div>
+                          <div class="col-md-1 col-4"><%= row.input :margin_percentage, label: 'Margin', input_html: { "data-bind": ""} %></div>
                           <div class="col-md-2 col-4"><%= row.input :unit_selling_price, label: 'Unit Selling Price', input_html: {min: 0, "data-bind": ""} %></div>
                           <div class="col-md-3 col-12">
                             <div class="form-row">

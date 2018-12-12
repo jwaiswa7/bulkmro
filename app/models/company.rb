@@ -162,6 +162,9 @@ class Company < ApplicationRecord
     end
   end
 
+  def customer_product_for(product)
+    customer_products.joins(:product).where('products.id = ?', product.id).first
+  end
 
   def self.legacy
     self.find_by_name('Legacy Company')

@@ -2,13 +2,18 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
 
   def initialize
     super
-
-    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name' ,'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
     @model = Company
+    @export_name = 'companies'
+    @path = Rails.root.join('tmp', filename)
+    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name' ,'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
   end
 
   def call
-    model.includes( {addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.each do |record|
+    perform_export_later('CompaniesExporter')
+  end
+
+  def build_csv
+    model.includes( {addresses: :state }, :company_contacts, :inside_sales_owner, :outside_sales_owner, :industry, :account).all.order(created_at: :desc).each do |record|
       rows.push({
                   :name => record.name,
                   :comapny_alias => record.account.name,
@@ -34,7 +39,7 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
                   :created_at => record.created_at.to_date.to_s
                 })
     end
-
-    generate_csv
+    export = Export.create!(export_type: 10)
+    generate_csv(export)
   end
 end

@@ -11,23 +11,23 @@ class SalesInvoiceRow < ApplicationRecord
 
 
   def hsn
-    get_product.best_tax_code.chapter
+    get_product.try(:best_tax_code).try(:chapter)
   end
 
   def mpn
-    get_product.product.mpn
+    get_product.try(:product).mpn
   end
 
   def name
-    get_product.to_bp_catalog_s
+    get_product.try(:to_bp_catalog_s)
   end
 
   def uom
-    get_product.measurement_unit.try(:name) || get_product.product.measurement_unit.try(:name) || MeasurementUnit.default
+    get_product.try(:measurement_unit).try(:name) || get_product.try(:product).try(:measurement_unit).try(:name) || MeasurementUnit.default
   end
 
   def brand
-    get_product.product.brand.name if get_product.product.brand.present?
+    get_product.try(:product).brand.name if get_product.try(:product).try(:brand).present?
   end
 
   def tax_rate

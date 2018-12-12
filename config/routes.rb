@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'reset_index'
       get 'serializer'
       get 'migrations'
       get 'console'
@@ -70,7 +71,10 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
-        get 'login_as_contact'
+      end
+
+      member do
+        get 'become'
       end
     end
 
@@ -145,6 +149,14 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'pending'
+      end
+    end
+
+    resources :invoice_requests do
+      collection do
+        get 'autocomplete'
+        get 'pending'
+        get 'completed'
       end
     end
 
@@ -286,7 +298,7 @@ Rails.application.routes.draw do
       scope module: 'companies' do
         resources :customer_orders
 
-        resources :customer_products, except: [:index] do
+        resources :customer_products do
           collection do
             post 'generate_catalog'
             post 'destroy_all'
@@ -323,9 +335,16 @@ Rails.application.routes.draw do
     end
 
     resources :warehouses
+    resources :payment_options
   end
 
   namespace 'customers' do
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
+    end
+
     resources :reports do
       member do
       end
@@ -342,9 +361,11 @@ Rails.application.routes.draw do
         get 'order_confirmed'
       end
     end
-    resources :customer_products, only: %i[index create show] do
+    resources :products, :controller => :customer_products, only: %i[index create show] do
       collection do
         get 'generate_all'
+        get 'most_ordered_products'
+        get 'autocomplete'
       end
     end
 
@@ -363,25 +384,37 @@ Rails.application.routes.draw do
         get 'final_checkout'
       end
     end
-    resources :products, only: %i[index show] do
-      collection do
-        get 'most_ordered_products'
-        get 'autocomplete'
-      end
-    end
+    # resources :products, only: %i[index show] do
+    #   collection do
+    #     get 'most_ordered_products'
+    #     get 'autocomplete'
+    #   end
+    #
+    #   member do
+    #     get 'to_cart'
+    #   end
+    # end
 
-    resource :cart, :controller => :cart, only: [:show] do
+    resource :cart, :controller => :cart, except: [:index] do
       collection do
         get 'checkout'
         patch 'update_billing_address'
         patch 'update_shipping_address'
         patch 'add_po_number'
+        get 'empty_cart'
       end
     end
 
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments
+      end
+    end
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
       end
     end
 

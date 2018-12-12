@@ -12,8 +12,9 @@ class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::B
         outside_sales_owner: company.outside_sales_owner || overseer,
         sales_manager: company.sales_manager,
         potential_amount: 0.1,
-        billing_address: Address.find(customer_order.default_billing_address_id || company.default_billing_address_id || company.addresses.first),
-        shipping_address: Address.find(customer_order.default_shipping_address_id || company.default_shipping_address_id || company.addresses.first),
+        billing_address: Address.find(customer_order.billing_address_id || company.default_billing_address_id || company.addresses.first),
+        shipping_address: Address.find(customer_order.shipping_address_id || company.default_shipping_address_id || company.addresses.first),
+        payment_option: company.default_payment_option || PaymentOption.default,
         shipping_contact: customer_order.contact,
         customer_po_number: customer_order.po_reference,
         overseer: overseer
