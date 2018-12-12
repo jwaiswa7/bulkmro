@@ -129,13 +129,20 @@ class Overseers::InquiriesController < Overseers::BaseController
   def update_suppliers
     @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
-
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
-    else
-      render 'edit_suppliers'
+      if params.has_key?(:mass_suppliers)
+        redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
+      else
+        redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
     end
+    callback_method = %w(mass_suppliers).detect {|action| params[action]}
+    send(callback_method) if callback_method.present?
+  end
+
+  def mass_suppliers
+    Services::Overseers::Inquiries::MassSupplier.new(params).call
   end
 
   def stages
