@@ -35,7 +35,7 @@
                 <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_order_row.customer_product.sku %>" height="40"/>
               <% end %>
             </td>
-            <td><%= customer_order_row.product.name.truncate(80) %></td>
+            <td><%= customer_order_row.customer_product.name.truncate(80) %></td>
             <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f) %></td>
             <td><%= customer_order_row.quantity %></td>
             <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f * customer_order_row.quantity) %></td>

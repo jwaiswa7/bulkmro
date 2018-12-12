@@ -167,7 +167,7 @@
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.customer_product.sku %>" height="40"/>
                       <% end %>
                     </td>
-                    <td><%= cart_item.product.name.truncate(80) %></td>
+                    <td><%= cart_item.customer_product.name.truncate(80) %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f) %></td>
                     <td><%= cart_item.quantity %></td>
                     <td><%= format_currency(cart_item.customer_product.customer_price.to_f * cart_item.quantity) %></td>
