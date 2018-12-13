@@ -1838,5 +1838,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def update_inquiries_status
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Inquiries Status to be updated 12 Dec.csv', 'seed_files')
+    service.loop(nil) do |x|
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry.update_attribute(:status ,x.get_column('Before Change Status'))
+    end
+  end
 end
 
