@@ -18,7 +18,7 @@ json.data (@invoice_requests) do |invoice_request|
                     format_date_time_meridiem(invoice_request.comments.last.created_at)
                   end,
                   if invoice_request.comments.present?
-                    format_comment(invoice_request.comments.last)
+                    format_comment(invoice_request.comments.last, trimmed: true)
                   end
               ]
 end

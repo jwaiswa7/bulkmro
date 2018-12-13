@@ -14,16 +14,16 @@ json.data (@po_requests) do |po_request|
                       end
                   ].join(' '),
                   po_request.id,
+                  po_request_status_badge(po_request.status),
+                  po_request.inquiry.inquiry_number,
+                  po_request.sales_order.order_number,
+                  po_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
                     format_date_time_meridiem(po_request.last_comment.updated_at)
                   end,
-                  po_request.inquiry.inquiry_number,
-                  po_request.sales_order.order_number,
-                  po_request.inquiry.inside_sales_owner.to_s,
-                  po_request_status_badge(po_request.status),
                   if po_request.last_comment.present?
-                    format_comment(po_request.last_comment)
+                    format_comment(po_request.last_comment, trimmed: true)
                   end
               ]
 end

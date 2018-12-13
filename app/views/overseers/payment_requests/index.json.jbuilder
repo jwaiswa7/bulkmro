@@ -22,7 +22,7 @@ json.data (@payment_requests) do |payment_request|
                     format_date_time_meridiem(payment_request.comments.last.created_at)
                   end,
                   if payment_request.comments.present?
-                    format_comment(payment_request.comments.last)
+                    format_comment(payment_request.comments.last, trimmed: true)
                   end
               ]
 end

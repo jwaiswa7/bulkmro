@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        PO Request for Sales Order #<%= @po_request.sales_order.order_number %>
+        PO Request for Order #<%= @po_request.sales_order.order_number %>: <%= po_request_status_badge(@po_request.status) %>
       </h3>
       <% if policy(@po_request).edit? %>
         <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
