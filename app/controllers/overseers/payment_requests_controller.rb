@@ -33,7 +33,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   def new
     if params[:po_request_id].present?
       @po_request = PoRequest.find(params[:po_request_id])
-      @payment_request = PaymentRequest.new(:overseer => current_overseer, :po_request => @po_request, :inquiry => @po_request.inquiry)
+      @payment_request = PaymentRequest.new(:overseer => current_overseer, :po_request => @po_request, :inquiry => @po_request.inquiry, :purchase_order => @po_request.purchase_order)
       authorize @payment_request
     else
       redirect_to overseers_payment_requests_path

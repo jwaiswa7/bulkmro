@@ -21,7 +21,6 @@
       <div class="col-6">
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
-
       <div class="col-6">
         <%= f.input :utr_number, label: "UTR Number / Cheque Number" %>
       </div>
@@ -50,10 +49,10 @@
       </div>
 
       <div class="col-12">
-        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |invoice_request_comment| %>
-          <%= invoice_request_comment.hidden_field :created_by_id %>
-          <%= invoice_request_comment.hidden_field :updated_by_id %>
-          <%= invoice_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |payment_request_comment| %>
+          <%= payment_request_comment.hidden_field :created_by_id %>
+          <%= payment_request_comment.hidden_field :updated_by_id %>
+          <%= payment_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
         <% end %>
       </div>
 
