@@ -36,12 +36,12 @@ class Customers::BaseController < ApplicationController
 
   protected
 
-  def policy!(user, record)
-    CustomPolicyFinder.new(record, namespace).policy!.new(user, record)
+  def policy!(user, record, current_company)
+    CustomPolicyFinder.new(record, namespace).policy!.new(user, record, current_company)
   end
 
   def policy(record)
-    policies[record] ||= policy!(pundit_user, record)
+    policies[record] ||= policy!(pundit_user, record, current_company)
   end
 
   def pundit_policy_scope(scope)
