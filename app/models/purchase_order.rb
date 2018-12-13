@@ -5,6 +5,7 @@ class PurchaseOrder < ApplicationRecord
   pg_search_scope :locate, :against => [:id, :po_number], :using => {:tsearch => {:prefix => true}}
 
   belongs_to :inquiry
+  belongs_to :payment_option, required: false
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
