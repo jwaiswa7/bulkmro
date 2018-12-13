@@ -30,6 +30,12 @@
       <div class="col-6">
         <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
       </div>
+      <div class="col-6">
+        <% if f.object.purchase_order.present? && f.object.purchase_order.payment_option.present? %>
+          <%= f.object.purchase_order.payment_option.name%>
+        <% end %>
+      </div>
+
       <div class="col-12 col-md-12">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
