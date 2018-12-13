@@ -16,6 +16,14 @@ class Customers::CustomerOrdersController < Customers::BaseController
       if current_contact.account_manager?
         @customer_order.create_approval(contact: current_contact)
       end
+      @customer_order = current_contact.customer_orders.create(:company => current_company)
+      @customer_order.assign_attributes(
+          billing_address_id: current_cart.billing_address_id,
+          shipping_address_id: current_cart.shipping_address_id,
+          po_reference: current_cart.po_reference
+      )
+
+      @customer_order.save
 
       current_cart.items.each do |cart_item|
         @customer_order.rows.where(product_id: cart_item.product_id).first_or_create do |row|

@@ -57,8 +57,8 @@ class Contact < ApplicationRecord
     find_by_email('legacy@bulkmro.com')
   end
 
-  def current_cart
-    self.cart || self.create_cart
+  def current_cart(current_company=nil)
+    self.cart || self.create_cart(company: current_company)
   end
 
   def generate_products

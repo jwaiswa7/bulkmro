@@ -59,7 +59,7 @@ class Overseers::ContactsController < Overseers::BaseController
   def become
     authorize @contact
     sign_in(:contact, @contact)
-    redirect_to customers_dashboard_url
+    redirect_to customers_dashboard_url(became: true)
   end
 
   private

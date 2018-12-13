@@ -12,12 +12,19 @@
     <div class="card-body">
       <div class="text-left">
         <div class="list-group list-group-flush">
-            <% @most_ordered_products.each do |product, count| %>
-              <a class="list-group-item list-group-item-action p-1" href="<%= customers_product_path(CustomerProduct.joins(:company).where('companies.id IN (?)', [current_company.id]).joins(:product).where('products.id = ?', product.id).first) %>" target="_blank">
+          <% @most_ordered_products.each do |product, count| %>
+            <% if current_company.customer_product_for(product).present? %>
+              <a class="list-group-item list-group-item-action p-1" href="<%= customers_product_path(current_company.customer_product_for(product)) %>" target="_blank">
                 <span class="float-right"><%= count %></span>
                 <strong><%= product.name %></strong>
               </a>
+            <% else %>
+              <div class="list-group-item list-group-item-action p-1">
+                <span class="float-right"><%= count %></span>
+                <strong><%= product.name %></strong>
+              </div>
             <% end %>
+          <% end %>
         </div>
       </div>
     </div>
