@@ -60,4 +60,16 @@ class InvoiceRequest < ApplicationRecord
   def set_defaults
     self.status ||= :'Pending GRPO'
   end
+
+  def auto_update_status
+    if self.ar_invoice_number.present?
+      self.status = :'Completed AR Invoice Request'
+    elsif self.ap_invoice_number.present?
+      self.status = :'Pending AR Invoice'
+    elsif self.grpo_number.present?
+      self.status = :'Pending AP Invoice'
+    else
+      self.status = :'Pending GRPO'
+    end
+  end
 end

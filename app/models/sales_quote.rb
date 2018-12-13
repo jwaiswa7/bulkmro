@@ -87,7 +87,7 @@ class SalesQuote < ApplicationRecord
     elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
       'Purchase Order Revision Pending'
     elsif status == 'Regret' || status == 'Order Lost'
-      'Order Lost'
+      'Closed'
     end
   end
 
@@ -95,7 +95,7 @@ class SalesQuote < ApplicationRecord
     ['#', inquiry.inquiry_number].join
   end
 
-  def is_final
+  def is_final?
     if self.id.present? && self.inquiry.final_sales_quote == self
       true
     elsif self.sales_orders.size >= 1

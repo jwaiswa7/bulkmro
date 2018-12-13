@@ -11,7 +11,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:per] = 24
     end
 
-    service = Services::Customers::Finders::CustomerProducts.new(params, current_contact)
+    service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
 
     @indexed_customer_products = service.indexed_records
