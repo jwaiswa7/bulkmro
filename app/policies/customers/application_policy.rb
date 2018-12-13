@@ -1,10 +1,10 @@
 class Customers::ApplicationPolicy
-  attr_reader :contact, :record, :current_company
+  attr_reader :contact, :current_company, :record
 
-  def initialize(contact, record, current_company)
+  def initialize(contact, current_company, record)
     @contact = contact
-    @record = record
     @current_company = current_company
+    @record = record
   end
 
   def autocomplete?
