@@ -8,7 +8,9 @@ class PoRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
-  has_many :po_request_rows
+  has_many :rows, class_name: 'PoRequestRow'
+  accepts_nested_attributes_for :rows, allow_destroy: true
+
   has_many_attached :attachments
 
   enum status: {
@@ -17,14 +19,12 @@ class PoRequest < ApplicationRecord
       :'Cancelled' => 30
   }
 
-  scope :pending, -> { where(:status => :'Requested') }
-  scope :handled, -> { where.not(:status => :'Requested') }
-
-  accepts_nested_attributes_for :po_request_rows
+  scope :pending, -> {where(:status => :'Requested')}
+  scope :handled, -> {where.not(:status => :'Requested')}
 
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status = :'Requested'
+    self.status ||= :'Requested'
   end
 end

@@ -14,7 +14,9 @@ json.data (@po_requests) do |po_request|
                   po_request.sales_order.order_number,
                   po_request.inquiry.inside_sales_owner.to_s,
                   po_request.status,
-                  po_request.last_comment.message
+                  if po_request.last_comment.present?
+                    po_request.last_comment.message
+                  end
               ]
 end
 

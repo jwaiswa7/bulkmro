@@ -24,6 +24,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @po_request = PoRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      @sales_order.rows.each do |sales_order_row|
+        @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
+      end
       authorize @po_request
     else
       redirect_to overseers_po_requests_path
@@ -38,16 +41,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
       ActiveRecord::Base.transaction do
         @po_request.save!
         @po_request_comment = PoRequestComment.new(:message => "PO Request submitted.", :po_request => @po_request, :overseer => current_overseer)
-
-        @so_products = @po_request.sales_order.rows
-        @so_products .each do |so_product|
-          @po_request.po_request_products.where(:sales_order_row => so_product).first_or_create! do |row|
-            row.product = so_product.product
-            row.quantity = so_product.quantity
-            row.sales_quote_row = so_product.sales_quote_row
-          end
-        end
-        @po_request.save
         @po_request_comment.save!
       end
 
@@ -64,7 +57,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def update
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
-
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         if @po_request.status_changed?
@@ -91,7 +83,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :sales_order_id,
         :purchase_order_number,
         :status,
-        :po_request_rows_attributes => [:id, :product, :sales_order_row],
+        :rows_attributes => [:id, :sales_order_row_id, :_destroy],
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
