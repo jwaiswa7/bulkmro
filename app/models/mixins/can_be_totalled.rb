@@ -30,5 +30,9 @@ module Mixins::CanBeTotalled
     def grand_total
       calculated_total + calculated_total_tax
     end
+
+    def default_warehouse_address
+      Warehouse.default.address
+    end
   end
 end

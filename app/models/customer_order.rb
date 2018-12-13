@@ -18,4 +18,5 @@ class CustomerOrder < ApplicationRecord
   def total_quantities
     self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
+
 end
