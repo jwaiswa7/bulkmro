@@ -1,6 +1,8 @@
 class CustomerOrder < ApplicationRecord
   APPROVALS_CLASS = 'CustomerOrderApproval'
   include Mixins::CanBeApproved
+  include Mixins::CanBeRejected
+  include Mixins::HasComments
   include Mixins::CanBeTotalled
 
   pg_search_scope :locate, :against => [:id], :associated_against => {company: [:name] }, :using => {:tsearch => {:prefix => true}}

@@ -30,7 +30,16 @@
           </div>
         </li>
       <% end %>
-      <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
+      <%#= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Customer Orders
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
+          <%= nav_dropdown_item 'Pending Approval', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+        </div>
+      </li>
     </ul>
   </div>
   <!-- Navigation Bar -->
