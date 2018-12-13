@@ -56,6 +56,71 @@
 
     </div>
 
+    <div class="card mb-2">
+      <div class="card-body">
+        <div class="chats">
+          <div class="form-row d-none d-md-flex">
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Sr. No.</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-0">
+                <label>Product</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Quantity</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label></label>
+              </div>
+            </div>
+          </div>
+          <% sr_number = 0 %>
+          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+            <% sr_number = sr_number + 1 %>
+            <div class="form-row flex-row align-items-start">
+              <%= row.hidden_field :id %>
+              <%= row.hidden_field :sales_order_row_id %>
+
+              <div class="col-1 col-md-1">
+                <%= sr_number %>
+              </div>
+
+              <div class="col-6 col-md-6">
+                <%= row.object.product.to_s %>
+              </div>
+
+              <div class="col-1 col-md-1">
+                <div class="d-flex flex-row align-items-center">
+                  <div>
+                    <% if row.object.sales_order_row.present? %>
+                      <%= row.object.sales_order_row.quantity %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-1 col-md-1">
+                <div class="d-flex flex-row align-items-center">
+                  <%= row.remove_nested_fields_link do %>
+                    <div class="form-group align-self-center flex-grow-1 ml-2">
+                      <i class="far fa-times text-danger"></i>
+                    </div>
+                  <% end if policy(row.object).destroy? %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> Create PO Request

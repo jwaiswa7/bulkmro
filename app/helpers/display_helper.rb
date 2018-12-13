@@ -178,7 +178,7 @@ module DisplayHelper
      '</span></strong></span></span><span>',
      time_ago_in_words(comment.created_at),
      ' ago</span></div><div class="chat-item-body"><p>',
-     comment.message,
+     comment.message[0..48] + "..",
      '</p></div></div></div>'].join('').html_safe
   end
 end

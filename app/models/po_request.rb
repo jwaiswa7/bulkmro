@@ -8,6 +8,9 @@ class PoRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
+  has_many :rows, class_name: 'PoRequestRow'
+  accepts_nested_attributes_for :rows, allow_destroy: true
+
   belongs_to :purchase_order, required: false
   has_one :payment_request, required: false
   has_one :payment_option, :through => :purchase_order
@@ -19,12 +22,12 @@ class PoRequest < ApplicationRecord
       :'Cancelled' => 30
   }
 
-  scope :pending, -> { where(:status => :'Requested') }
-  scope :handled, -> { where.not(:status => :'Requested') }
+  scope :pending, -> {where(:status => :'Requested')}
+  scope :handled, -> {where.not(:status => :'Requested')}
 
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status = :'Requested'
+    self.status ||= :'Requested'
   end
 end
