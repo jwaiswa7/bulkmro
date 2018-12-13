@@ -3,6 +3,6 @@ class Customers::ReportsController < Customers::BaseController
     authorize :report, :show?
 
     service  = Services::Customers::Charts::MixedChart.new
-    @chart = service.call
+    @chart = service.customers_purchase_data(current_company)
   end
 end

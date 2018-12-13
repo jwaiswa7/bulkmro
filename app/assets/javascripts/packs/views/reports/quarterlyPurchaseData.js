@@ -4,7 +4,7 @@ const quarterlyPurchaseData = () => {
             mode: 'label',
             callbacks: {
                 label: function(tooltipItem) {
-                    return tooltipItem.yLabel.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, ",");
+                    return tooltipItem.yLabel.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                 },
             }
         },
