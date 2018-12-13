@@ -262,12 +262,8 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
-  end
 
-  after_initialize :set_global_defaults
-
-  def set_global_defaults
-    if self.company.present?
+    if self.company.present? && self.billing_company.blank? && self.shipping_company.blank?
       self.billing_company ||= self.company
       self.shipping_company ||= self.company
     end
