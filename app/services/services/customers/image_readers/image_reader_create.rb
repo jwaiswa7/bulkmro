@@ -1,5 +1,14 @@
-class Services::Customers::Playments::PlaymentCreate < Services::Shared::BaseService
+class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::BaseService
   def initialize
+
+    @images = []
+    @azure_storage_config = {
+        :name => 'imager',
+        :key => '',
+        :container => 'imager',
+        :base_url => 'http://imager.blob.cor.com'
+    }
+
   end
 
   def get_images
@@ -9,6 +18,29 @@ class Services::Customers::Playments::PlaymentCreate < Services::Shared::BaseSer
   end
 
   def call
+
+    #perform_later
+    call_later
+  end
+
+  def call_later
+    read_images
+
+    remove_old_files
+  end
+
+
+  def read_images
+
+
+
+
+
+  end
+
+
+
+  def send_and_register_request
     temp_array = get_images
 
     temp_array.each do |arr|
@@ -22,7 +54,7 @@ class Services::Customers::Playments::PlaymentCreate < Services::Shared::BaseSer
       if response[:status] == "success"
         begin
           ActiveRecord::Base.transaction do
-            Playment.where(image_name: image_name).first_or_create do |record|
+            ImageReader.where(image_name: image_name).first_or_create do |record|
               record.reference_id = response[:feed_line_unit][:reference_id]
               record.image_url = image_url
               record.status = response.status

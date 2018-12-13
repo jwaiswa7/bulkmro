@@ -1,2 +1,0 @@
-class Playment < ApplicationRecord
-end

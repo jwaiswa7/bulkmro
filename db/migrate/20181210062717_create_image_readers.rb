@@ -1,6 +1,6 @@
-class CreatePlayments < ActiveRecord::Migration[5.2]
+class CreateImageReaders < ActiveRecord::Migration[5.2]
   def change
-    create_table :playments do |t|
+    create_table :image_readers do |t|
       t.string :reference_id
       t.string :image_name
       t.string :image_url

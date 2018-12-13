@@ -1,14 +1,14 @@
-class Customers::PlaymentsController < Customers::BaseController
+class Customers::ImageReadersController < Customers::BaseController
   require 'httparty'
   protect_from_forgery with: :null_session
 
   def create
-    authorize :Playment
-    request = Services::Customers::Playments::PlaymentCreate.new.call
+    authorize :ImageReader
+    request = Services::Customers::ImageReaders::ImageReaderCreate.new.call
   end
 
   # def get_data
-  #   authorize :Playment
+  #   authorize :ImageReader
   #   debugger
   # end
 

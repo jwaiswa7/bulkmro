@@ -1,2 +1,2 @@
-class Customers::PlaymentPolicy < Customers::ApplicationPolicy
+class Customers::ImageReaderPolicy < Customers::ApplicationPolicy
 end
