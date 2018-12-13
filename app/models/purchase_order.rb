@@ -65,4 +65,8 @@ class PurchaseOrder < ApplicationRecord
   def metadata_status
     PurchaseOrder.statuses.key(self.metadata['PoStatus'].to_i).to_s if self.metadata.present?
   end
+
+  def to_s
+    ['#', po_number].join if po_number.present?
+  end
 end
