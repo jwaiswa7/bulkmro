@@ -8,7 +8,7 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_remote_uid?
-    admin?
+    developer?
   end
 
   def export_all?
