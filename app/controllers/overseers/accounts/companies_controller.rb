@@ -51,6 +51,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :account_id,
         :name,        
         :industry_id,
+        :remote_uid,
         :default_company_contact_id,
         :default_payment_option_id,
         :default_billing_address_id,
