@@ -18,12 +18,12 @@
     <%= f.hidden_field :account_id %>
 
     <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
-    <% if Rails.env.development? %>
+    <% if  policy(@company).edit_remote_uid? %>
       <div class="form-row">
-        <div class="col-12 col-md-6" >
-          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        <div class="col-12 col-md-8" >
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences'%>
         </div>
-        <div class="col-12 col-md-6" >
+        <div class="col-12 col-md-4" >
           <%= f.input :remote_uid, :label => 'Remote UID'%>
         </div>
       </div>
