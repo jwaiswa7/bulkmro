@@ -1,28 +1,16 @@
 class Overseers::PaymentRequestsController < Overseers::BaseController
   before_action :set_payment_request, only: [:show, :edit, :update]
 
-  def requests_created
-    @payment_requests = ApplyDatatableParams.to(PaymentRequest.all.created.order(id: :desc), params)
-    authorize @payment_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
-  def completed
-    @payment_requests = ApplyDatatableParams.to(PaymentRequest.all.completed.order(id: :desc), params)
-    authorize @payment_requests
-
-    respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
-    end
-  end
-
   def index
-    @payment_requests = ApplyDatatableParams.to(PaymentRequest.all.order(id: :desc), params)
+    payment_requests  =
+        if params[:status].present?
+          @title = params[:status]
+          PaymentRequest.where(:status => params[:status])
+        else
+          PaymentRequest.all
+        end.order(id: :desc)
+
+    @payment_requests = ApplyDatatableParams.to(payment_requests, params)
     authorize @payment_requests
   end
 

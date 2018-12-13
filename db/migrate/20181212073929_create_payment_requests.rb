@@ -7,8 +7,7 @@ class CreatePaymentRequests < ActiveRecord::Migration[5.2]
 
       t.integer :status
       t.integer :utr_number
-      t.datetime :due_date
-      t.text :payment_terms
+      t.date :due_date
 
       t.string :attachments
 

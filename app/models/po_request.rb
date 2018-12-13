@@ -9,7 +9,8 @@ class PoRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
-  has_one :payment_request
+  has_one :payment_request, required: false
+  has_one :payment_option, :through => :purchase_order
   has_many_attached :attachments
 
   enum status: {

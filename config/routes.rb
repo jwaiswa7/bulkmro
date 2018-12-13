@@ -339,7 +339,6 @@ Rails.application.routes.draw do
 
     resources :payment_requests do
       collection do
-        get 'requests_created'
         get 'completed'
       end
     end

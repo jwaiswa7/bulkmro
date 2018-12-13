@@ -1854,8 +1854,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def add_purchase_order_reference_to_po_request
-    po_requests = PoRequest.where({purchase_order_id: nil})
+  def purchase_order_to_po_request
+    po_requests = PoRequest.where.not({purchase_order_number:nil})
     po_requests.each do |po_request|
       if po_request.purchase_order_number.present?
         purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
@@ -1864,11 +1864,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def add_payment_option_to_purchase_order
+  def payment_option_to_purchase_order
     purchase_orders = PurchaseOrder.where({payment_option_id: nil})
     purchase_orders.each do |purchase_order|
-      if purchase_order.metadata.present?
-        payment_term_name = purchase_order.metadata['PoPaymentTerms']
+      if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
+        payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
         payment_option = PaymentOption.find_by_name(payment_term_name)
         purchase_order.update_attribute(:payment_option, payment_option)
       end
