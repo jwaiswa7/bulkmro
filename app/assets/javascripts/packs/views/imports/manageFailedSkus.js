@@ -41,14 +41,14 @@ let showPrevious = (row_object, page, index) => {
         data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
     })
-}
+};
 
 let showNext = (row_object, page, index) => {
     $.ajax({
         data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
     })
-}
+};
 
 let onRadioChange = (radio) => {
     let newProductForm = $(radio).closest('div.option-wrapper').find('div.nested');
