@@ -1,7 +1,7 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-
+<% provide :use_url_as_page_title, true %>
 <% content_for :heading do %>
   Orders
 <% end %>
@@ -12,7 +12,7 @@
   <th class="no-sort desktop" data-name="created_at">Order Date</th>
   <th class="no-sort desktop" data-name="">PO #</th>
   <th class="no-sort desktop" data-name="">PO Date</th>
-  <th class="no-sort all" data-name="order_number">Quote #</th>
+  <th class="no-sort all" data-name="order_number">Inquiry #</th>
   <th class="no-sort desktop" data-name="">Ship To</th>
   <th class="no-sort desktop" data-name="">Company</th>
   <th class="no-sort desktop" data-name="">Order Total</th>

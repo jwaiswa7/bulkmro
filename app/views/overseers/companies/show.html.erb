@@ -29,45 +29,51 @@
                 </div>
               <% end %>
 
-              <% if @company.default_company_contact %>
-                <div class="col-6 col-md-3 mb-2">
-                  <strong class="d-block">Mobile</strong>
-                  <%= @company.default_company_contact.contact.mobile %>
-                </div>
+              <% if @company.default_company_contact.present? %>
+                <% if @company.default_company_contact.contact.mobile %>
+                  <div class="col-6 col-md-3 mb-2">
+                    <strong class="d-block">Mobile</strong>
+                    <%= @company.default_company_contact.contact.mobile.present? %>
+                  </div>
+                <% end %>
 
-                <div class="col-6 col-md-3 mb-2">
-                  <strong class="d-block">Email address</strong>
-                  <%= @company.default_company_contact.contact.email %>
-                </div>
+                <% if @company.default_company_contact.contact.email.present? %>
+                  <div class="col-6 col-md-3 mb-2">
+                    <strong class="d-block">Email address</strong>
+                    <%= @company.default_company_contact.contact.email %>
+                  </div>
+                <% end %>
 
-                <div class="col-6 col-md-3 mb-2">
-                  <strong class="d-block">Telephone</strong>
-                  <%= @company.default_company_contact.contact.telephone %>
-                </div>
+                <% if @company.default_company_contact.contact.telephone.present? %>
+                  <div class="col-6 col-md-3 mb-2">
+                    <strong class="d-block">Telephone</strong>
+                    <%= @company.default_company_contact.contact.telephone %>
+                  </div>
+                <% end %>
               <% end %>
 
-              <% if @company.industry %>
+              <% if @company.industry.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Industry</strong>
                   <%= @company.industry %>
                 </div>
               <% end %>
 
-              <% if @company.company_type %>
+              <% if @company.company_type.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Type</strong>
                   <%= @company.company_type.titleize %>
                 </div>
               <% end %>
 
-              <% if @company.nature_of_business %>
+              <% if @company.nature_of_business.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Nature of business</strong>
                   <%= @company.nature_of_business %>
                 </div>
               <% end %>
 
-              <% if @company.priority %>
+              <% if @company.priority.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Priority</strong>
                   <%= @company.priority.titleize %>
@@ -75,7 +81,7 @@
               <% end %>
 
 
-              <% if @company.remote_uid %>
+              <% if @company.remote_uid.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">SAP Business Partner ID</strong>
                   <strong class="text-primary"> <%= @company.remote_uid %></strong>
@@ -83,14 +89,14 @@
               <% end %>
 
 
-              <% if @company.default_payment_option %>
+              <% if @company.default_payment_option.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Default payment option</strong>
                   <%= @company.default_payment_option %>
                 </div>
               <% end %>
 
-              <% if @company.credit_limit %>
+              <% if @company.credit_limit.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Credit limit</strong>
                   <%= @company.credit_limit %>
@@ -122,25 +128,25 @@
           </div>
         </div>
 
-        <% if @company.inside_sales_owner || @company.outside_sales_owner || @company.sales_manager %>
+        <% if @company.inside_sales_owner.present?  || @company.outside_sales_owner.present?  || @company.sales_manager.present?  %>
           <div class="mt-3">
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Default owners and managers</h6>
             <div class="form-row">
-              <% if @company.inside_sales_owner %>
+              <% if @company.inside_sales_owner.present?  %>
                 <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default inside sales</strong>
                   <%= @company.inside_sales_owner %>
                 </div>
               <% end %>
 
-              <% if @company.outside_sales_owner %>
+              <% if @company.outside_sales_owner.present?  %>
                 <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default outside sales</strong>
                   <%= @company.outside_sales_owner %>
                 </div>
               <% end %>
 
-              <% if @company.sales_manager %>
+              <% if @company.sales_manager.present?  %>
                 <div class="col-12 col-md-3 mb-2">
                   <strong class="d-block">Default manager</strong>
                   <%= @company.sales_manager %>
@@ -150,18 +156,18 @@
           </div>
         <% end %>
 
-        <% if @company.default_billing_address || @company.default_shipping_address %>
+        <% if @company.default_billing_address.present?  || @company.default_shipping_address.present?  %>
           <div class="mt-3">
             <h6 class="text-uppercase text-black-50 mb-1 d-block">Addresses</h6>
             <div class="form-row">
-              <% if @company.default_billing_address %>
+              <% if @company.default_billing_address.present?  %>
                 <div class="col-12 col-md-6 mb-2 mb-md-0">
                   <strong class="d-block">Default billing address</strong>
                   <%= @company.default_billing_address %>
                 </div>
               <% end %>
 
-              <% if @company.default_shipping_address %>
+              <% if @company.default_shipping_address.present?  %>
                 <div class="col-12 col-md-6">
                   <strong class="d-block">Default shipping address</strong>
                   <%= @company.default_shipping_address %>
@@ -192,7 +198,7 @@
               <% if @company.legacy_metadata["sup_tel"] != "NULL" || @company.legacy_metadata["sup_tel2"] != "NULL" %>
                 <div class="col-6 col-md-4">
                   <strong class="d-block">Telephone</strong>
-                  <%= (@company.legacy_metadata["sup_tel"] == "NULL" || @company.legacy_metadata["sup_tel"].nil?  ? '' : @company.legacy_metadata["sup_tel"]) + (@company.legacy_metadata["sup_tel2"] == "NULL" || @company.legacy_metadata["sup_tel"].nil? ? '' :  @company.legacy_metadata["sup_tel2"]) %>
+                  <%= (@company.legacy_metadata["sup_tel"] == "NULL" || @company.legacy_metadata["sup_tel"].nil? ? '' : @company.legacy_metadata["sup_tel"]) + (@company.legacy_metadata["sup_tel2"] == "NULL" || @company.legacy_metadata["sup_tel"].nil? ? '' : @company.legacy_metadata["sup_tel2"]) %>
                 </div>
               <% end %>
 
@@ -225,6 +231,18 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#orders" role="tab">Fulfilled Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#invoices" role="tab">Invoices</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -237,10 +255,10 @@
           <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All addresses filterable in any way that we want under <strong><%= @company.name %></strong>.
+          All addresses searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_addresses_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_addresses_path(company_id: @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -262,10 +280,10 @@
           <% end %>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All contacts filterable in any way that we want under <strong><%= @company.name %></strong>.
+          All contacts searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
@@ -286,24 +304,28 @@
       <div class="tab-pane fade" id="products" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Products</h3>
-          <% if policy(:customer_product).new? %>
-            <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Customer Product</a>
-          <% end %>
+          <div>
+            <% if policy(:customer_product).generate_catalog? %>
+              <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate
+                Catalog</a>
+            <% end %>
 
-          <% if policy(:customer_product).generate_catalog? %>
-            <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
-          <% end %>
+            <% if policy(:customer_product).destroy_all? %>
+              <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy
+                Catalog</a>
+            <% end %>
 
-          <% if policy(:customer_product).destroy_all? %>
-            <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-minus-circle mr-1"></i>Destroy All</a>
-          <% end %>
-
+            <% if policy(:customer_product).new? %>
+              <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+                Customer Product</a>
+            <% end %>
+          </div>
         </div>
         <p class="mt-md-1 d-none d-md-block">
-          All products filterable in any way that we want under <strong><%= @company.name %></strong>.
+          All products searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -324,14 +346,14 @@
         <div class="tab-pane fade" id="inquiries" role="tabpanel">
           <div class="d-md-flex justify-content-between">
             <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
-              <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-                Inquiry</a>
+            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Inquiry</a>
           </div>
           <p class="mt-md-1 d-none d-md-block">
-            All inquiries filterable in any way that we want under <strong><%= @company.name %></strong>.
+            All inquiries searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
           </p>
 
-          <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(company_id: @company.id) %>">
+          <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(company_id: @company.id) %>">
             <thead>
             <tr>
               <th class="no-sort"></th>
@@ -352,6 +374,99 @@
           </table>
         </div>
       <% end %>
+
+      <div class="tab-pane fade" id="online-orders" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Online Orders</h3>
+        </div>
+
+        <table class="datatable table table-bordered dt-responsive w-100" data-search="Filter by anything" data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort all" data-width="70px"></th>
+            <th class="no-sort all">Customer Name</th>
+            <th class="no-sort all">Line Items</th>
+            <th class="no-sort all">Inside Sales</th>
+            <th class="no-sort all">Outside Sales</th>
+            <th class="no-sort all">Manager</th>
+            <th class="no-sort desktop" data-name="created_at">Created</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="quotes" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Quotes</h3>
+        </div>
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_sales_quotes_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort all" data-width="70px"></th>
+            <th class="no-sort all">Doc ID</th>
+            <th class="no-sort all">Sent At</th>
+            <th class="no-sort all">Created By</th>
+            <th class="no-sort all">Line Items</th>
+            <th class="no-sort all">Total(Excl. Tax)</th>
+            <th class="no-sort all">Total(Incl. Tax)</th>
+            <th class="no-sort all">Created At</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="orders" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Fulfilled Orders</h3>
+        </div>
+
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_sales_orders_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort all"></th>
+            <th class="no-sort all">Order #</th>
+            <th class="no-sort desktop" data-name="status">Inquiry #</th>
+            <th class="no-sort desktop" data-name="status">Status</th>
+            <th class="no-sort desktop" data-name="remote_status">SAP Status</th>
+            <th class="no-sort desktop">Quote Total</th>
+            <th class="no-sort desktop">Order Total</th>
+            <th class="no-sort desktop" data-name="mis_date">Order Date</th>
+            <th class="no-sort desktop" data-name="created_at">Created At</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="invoices" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Invoices</h3>
+        </div>
+
+        <table class="datatable table table-bordered dt-responsive" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_sales_invoices_path(@company) %>">
+          <thead>
+          <tr>
+            <th class="no-sort all"></th>
+            <th class="no-sort all" data-name="invoice_number">Invoice #</th>
+            <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+            <th class="no-sort desktop" data-name="order_number">Order #</th>
+            <th class="no-sort desktop">Line Items</th>
+            <th class="no-sort desktop">Status</th>
+            <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
+            <th class="no-sort desktop">Created At</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 </div>

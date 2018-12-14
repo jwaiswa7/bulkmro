@@ -1,13 +1,15 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
-
+<% content_for :page_title do %>
+  Online Orders
+<% end %>
 <% content_for :heading do %>
-  Customer Orders
+  Online Orders
 <% end %>
 
 <% content_for :header_row do %>
-  <th class="no-sort all">Action</th>
+  <th class="no-sort all"></th>
   <th class="no-sort">Order #</th>
   <th class="no-sort">Placed On</th>
   <th class="no-sort">Created By</th>

@@ -1,4 +1,8 @@
 <% provide :container_fluid, true %>
+<% provide :controller_is_aliased, true %>
+<% content_for :page_title do %>
+  Quote <%= ['#', @sales_quote.id].join('') %>
+<% end %>
 
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
@@ -11,18 +15,14 @@
     <div class="card-header">
       <div class=form-row>
         <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Quotation Number</strong>
-          #<%= @sales_quote.id %>
+          <strong class="d-block">Inquiry Number</strong>
+          #<%= @sales_quote.inquiry.inquiry_number %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0">
           <strong class="d-block">Sales Person</strong>
           <%= @sales_quote.inquiry.inside_sales_owner.first_name %> <%= @sales_quote.inquiry.inside_sales_owner.last_name %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
-          <strong class="d-block">Contact Number</strong>
-          <a href="tel:+912249214921">+91 22 4921 4921</a>
-        </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0">
           <strong class="d-block">Currency</strong>
           <%= @sales_quote.currency %> (<%= @sales_quote.inquiry_currency.conversion_rate %>)
         </div>
@@ -38,11 +38,11 @@
           <strong class="d-block">Date of Inquiry</strong>
           <%= format_date(@sales_quote.inquiry.created_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0">
           <strong class="d-block">Date of Quotation</strong>
           <%= format_date(@sales_quote.inquiry.created_at) %>
         </div>
-        <div class="col-6 col-md-3 mb-2 mb-md-0">
+        <div class="col-6 col-md-3 mb-0">
           <strong class="d-block">Quotation Validity</strong>
           <%= format_date(@sales_quote.inquiry.valid_end_time) %>
         </div>
@@ -318,11 +318,9 @@
       <div class="form-row mt-3 mt-lg-4">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header">
-              <p class="text-uppercase text-black-50 "><strong>STANDARD TERMS AND CONDITIONS</strong></p>
-            </div>
             <div class="card-body">
-              <ol>
+              <p class="text-uppercase text-black-50 mb-1">Standard Terms &amp; Conditions</p>
+              <ol class="mb-0">
                 <li>All the prices are based on products and quantities quoted. Any changes to the products and/or
                   quantities may result in<br/>different pricing.
                 </li>
@@ -373,50 +371,39 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-12">
-      <div class="form-row mt-3 mt-lg-4">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="flex-fill">
-                <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-              </div>
 
-              <% if @sales_quote.comments.persisted.size > 0 %>
-                <div class="chats mb-3">
-                  <% @sales_quote.comments.each do |comment| %>
-                    <div class="media chat-item">
-                      <div class="media-body">
-                        <div class="chat-item-title">
+  <div class="card mt-4">
+    <div class="card-body">
+      <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+
+      <% if @sales_quote.comments.persisted.size > 0 %>
+        <div class="chats mb-3">
+          <% @sales_quote.comments.each do |comment| %>
+            <div class="media chat-item">
+              <div class="media-body">
+                <div class="chat-item-title">
                           <span class="chat-item-author">
                             <%= comment.author.full_name if comment.author.present? %>
                             <span class="mr-1"><strong>
                               <span class="badge badge-secondary"><%= comment.author_role %></span>
                             </strong></span>
                           </span>
-                          <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
-                        </div>
-                        <div class="chat-item-body">
-                          <p><%= comment.message %></p>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
+                  <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
                 </div>
-              <% end %>
-
-              <%= simple_form_for(@sales_quote.comments.build, url: customers_quote_comments_path(@sales_quote), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-                <%= render 'shared/snippets/form_errors', f: f %>
-                <div class="col-12">
-                  <%= f.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-                  <%= f.submit 'Comment', name: 'Comment', class: 'btn btn-danger' %>
+                <div class="chat-item-body">
+                  <p><%= comment.message %></p>
                 </div>
-              <% end %>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
-      </div>
+      <% end %>
+
+      <%= simple_form_for(@sales_quote.comments.build, url: customers_quote_comments_path(@sales_quote), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+        <%= render 'shared/snippets/form_errors', f: f %>
+        <%= f.input :message, :placeholder => 'Type message', required: true, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        <%= f.submit 'Comment', name: 'Comment', class: 'btn btn-danger' %>
+      <% end %>
     </div>
   </div>
 </div>

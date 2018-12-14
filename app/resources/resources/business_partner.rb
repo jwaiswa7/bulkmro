@@ -275,7 +275,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         PayTermsGrpCode: record.default_payment_option_id.present? ? record.default_payment_option.remote_uid : nil,
         CreditLimit: record.credit_limit,
         SalesPersonCode: record.inside_sales_owner_id.present? ? record.inside_sales_owner.salesperson_uid : nil,
-        Currency: nil,
+        Currency: "##",
         Cellular: record.mobile,
         County: nil,
         DefaultBranch: nil,
