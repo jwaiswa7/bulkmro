@@ -1,5 +1,28 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
 
+  def supplier_data_summary
+    Account.is_supplier.size
+    Company.acts_as_supplier.size
+    ids = PurchaseOrder.all.map{ |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids.size
+    nov_ids = Company.acts_as_supplier.where(:created_at =>  Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    (ids & nov_ids).size
+# # Accounts as suppliers
+#     7
+#
+# # Total suppliers
+#     6108
+#
+# # Total suppliers with purchase orders
+#     2053
+#
+# # Suppliers added in November
+#     214
+#
+# # Suppliers added in November with purchase orders
+#     105
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
