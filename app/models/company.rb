@@ -147,7 +147,7 @@ class Company < ApplicationRecord
     inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => self.id).map {|i| i.inquiry_products}.flatten
     inquiry_products.each do |inquiry_product|
       if inquiry_product.product.synced?
-        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id, :customer_price => inquiry_product.product.latest_unit_cost_price).first_or_create! do |customer_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id, :customer_price => ( inquiry_product.product.latest_unit_cost_price || 0 )).first_or_create! do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
           customer_product.name = (inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
@@ -162,6 +162,9 @@ class Company < ApplicationRecord
     end
   end
 
+  def customer_product_for(product)
+    customer_products.joins(:product).where('products.id = ?', product.id).first
+  end
 
   def self.legacy
     self.find_by_name('Legacy Company')

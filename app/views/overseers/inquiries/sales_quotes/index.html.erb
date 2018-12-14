@@ -26,7 +26,7 @@
         <% if !@inquiry.final_sales_quote.sales_quote_quantity_not_fulfilled? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Sales quote total quantity already fulfilled by non-rejected sales orders.</li><% end %>
         <% if @inquiry.customer_committed_date.blank? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer committed date has to be defined.</li><% end %>
         <% if !@inquiry.customer_po_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Customer PO sheet has to be uploaded.</li><% end %>
-        <% if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><% end %>
+<!--        <%# if !@inquiry.calculation_sheet.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Calculation sheet has to be uploaded.</li><%# end %>-->
         <% if !@inquiry.supplier_quotes.attached? %><li class="list-group-item"><i class="fal fa-check mr-2"></i>Supplier quote(s) have to be uploaded.</li><% end %>
       </ul>
     <% end %>
