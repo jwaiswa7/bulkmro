@@ -52,9 +52,9 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
   def update
     @payment_request.assign_attributes(payment_request_params.merge(overseer: current_overseer))
     authorize @payment_request
+    @payment_request.auto_update_status
 
     if @payment_request.valid?
-      @payment_request.auto_update_status
       ActiveRecord::Base.transaction do
         if @payment_request.status_changed?
           @payment_request_comment = PaymentRequestComment.new(:message => "Status Changed: #{@payment_request.status}", :payment_request => @payment_request, :overseer => current_overseer)
@@ -81,6 +81,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
         :po_request_id,
         :purchase_order_id,
         :due_date,
+        :payment_type,
         :status,
         :payment_terms,
         :comments_attributes => [:id, :message, :created_by_id],

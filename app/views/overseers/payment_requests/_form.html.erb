@@ -33,8 +33,13 @@
       <div class="col-6">
         <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
       </div>
+
       <div class="col-6">
         <%= f.input :payment_option, label: "Payment Terms", disabled: true %>
+      </div>
+
+      <div class="col-6">
+        <%= f.input :payment_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
       </div>
 
       <div class="col-6">

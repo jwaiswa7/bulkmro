@@ -2,10 +2,10 @@ json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
                       if policy(payment_request).show?
-                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Invoice Request', 'info')
+                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,
                       if policy(payment_request).edit?
-                        row_action_button(edit_overseers_payment_request_path(payment_request), 'pencil', 'Edit Invoice Request', 'warning')
+                        row_action_button(edit_overseers_payment_request_path(payment_request), 'pencil', 'Edit Payment Request', 'warning')
                       end
                   ].join(' '),
                   payment_request.id,

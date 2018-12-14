@@ -17,12 +17,21 @@ class PaymentRequest < ApplicationRecord
       :'Completed' => 20
   }
 
+  enum payment_type: {
+      :'Cheque' => 10,
+      :'NEFT/RTGS' => 20
+  }
+
   scope :Pending, -> {where(:status => :'Pending')}
   scope :completed, -> {where(:status => :'Completed')}
 
   validates_presence_of :inquiry
 
   after_initialize :set_defaults, :if => :new_record?
+
+  with_options if: :"Completed?" do |payment_request|
+    payment_request.validates_presence_of :payment_type
+  end
 
   def set_defaults
     self.status ||= :'Pending'

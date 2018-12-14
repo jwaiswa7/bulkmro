@@ -104,15 +104,22 @@
           <div class="form-row">
             <% if @payment_request.utr_number.present? %>
               <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">UTR # / Cheque #</strong>
+                <strong class="d-block">UTR/Cheque #</strong>
                 <%= @payment_request.utr_number %>
               </div>
             <% end %>
 
-            <% if @payment_request.purchase_order.present? && @payment_request.purchase_order.payment_option.present? %>
+            <% if @payment_request.payment_type.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Payment Type</strong>
+                <%= @payment_request.payment_type %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.payment_option.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Terms</strong>
-                <%= @payment_request.purchase_order.payment_option.name %>
+                <%= @payment_request.payment_option.name %>
               </div>
             <% end %>
 
