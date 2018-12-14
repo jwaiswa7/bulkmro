@@ -24,4 +24,4 @@
 //= require cocoon
 //= require js-routes
 
-//= require overseers/run
+//= require_tree .

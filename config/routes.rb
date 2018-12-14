@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   mount Maily::Engine, at: '/maily' if Rails.env.development?
+  mount ActionCable.server, at: '/cable'
 
   root :to => 'overseers/dashboard#show'
   get '/overseers', to: redirect('/overseers/dashboard'), as: 'overseer_root'
@@ -53,6 +54,12 @@ Rails.application.routes.draw do
     resources :callback_requests do
       member do
         get 'show'
+      end
+    end
+
+    resources :notifications do
+      collection do
+        post 'mark_as_read'
       end
     end
 

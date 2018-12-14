@@ -9,6 +9,7 @@ class Overseer < ApplicationRecord
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
+  has_many :notifications, foreign_key: :recipient_id
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
   has_closure_tree({name_column: :to_s})

@@ -150,6 +150,9 @@
       <a class="d-inline">
         <span class="headway mr-2" style="z-index: 1030;"></span>
       </a>
+      <%= link_to overseers_notifications_path, class: 'mr-2' do %>
+        <i class="fal fa-bell" id="notifications"><%= ActionCable.server.connections.length %></i>
+      <% end %>
       <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
         <i class="fal fa-user"></i>
       <% end %>
