@@ -1,6 +1,6 @@
 <div class="col-lg-12">
   <div class="page-header">
-    <h2><%= action_name.capitalize %> PO Request for Order #<%= po_request_status_badge(@po_request.sales_order.order_number) %>: <%= po_request_status_badge(@po_request.status) %></h2>
+    <h2><%= action_name.capitalize %> PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>:&nbsp;<%= po_request_status_badge(@po_request.status) %></h2>
     <p>This will <em>'<%= submit_text(@po_request).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
@@ -35,9 +35,9 @@
           </div>
           <div class="form-group">
             <% f.object.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => attachment.filename do %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
                 <% end if attachment.present? && policy(:attachment).destroy? %>
               <% end %>
@@ -81,15 +81,13 @@
               </div>
             </div>
           </div>
-          <% sr_number = 0 %>
-          <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-            <% sr_number = sr_number + 1 %>
+          <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
             <div class="form-row flex-row align-items-start">
               <%= row.hidden_field :id %>
               <%= row.hidden_field :sales_order_row_id %>
 
               <div class="col-1 col-md-1">
-                <%= sr_number %>
+                <%= (f.object.rows.index(row.object) || 0) + 1 %>
               </div>
 
               <div class="col-6 col-md-6">

@@ -1445,7 +1445,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def purchase_order_callback_data
-    tax_rates = { '14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5 }
+    tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
     errors = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
     i = 0
@@ -1789,14 +1789,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     puts product_name, customer_cost
     puts "<--------------->"
-    CustomerProduct.where(:company_id => company.id, :product_id => product.id , :customer_price => ( customer_cost || 0 ) ).first_or_create! do |customer_product|
-      customer_product.category_id = ( category.id if category.present? ) || product.category_id
-      customer_product.brand_id = ( brand.id if brand.present? ) || product.brand_id
+    CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (customer_cost || 0)).first_or_create! do |customer_product|
+      customer_product.category_id = (category.id if category.present?) || product.category_id
+      customer_product.brand_id = (brand.id if brand.present?) || product.brand_id
       customer_product.name = product_name
       customer_product.sku = product.sku
-      customer_product.measurement_unit_id = ( measurement_unit.id if measurement_unit.present? ) || product.measurement_unit_id
-      customer_product.tax_rate_id = ( tax_rate.id if tax_rate.present? ) || product.tax_rate_id
-      customer_product.tax_code_id = ( tax_code.id if tax_code.present? ) || product.tax_code_id
+      customer_product.measurement_unit_id = (measurement_unit.id if measurement_unit.present?) || product.measurement_unit_id
+      customer_product.tax_rate_id = (tax_rate.id if tax_rate.present?) || product.tax_rate_id
+      customer_product.tax_code_id = (tax_code.id if tax_code.present?) || product.tax_code_id
       customer_product.moq = 1
       customer_product.created_by = Overseer.default
     end
@@ -1850,9 +1850,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('Inquiries Status to be updated 12 Dec.csv', 'seed_files')
     service.loop(nil) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-      inquiry.update_attribute(:status ,x.get_column('Before Change Status'))
+      inquiry.update_attribute(:status, x.get_column('Before Change Status'))
     end
   end
+
 
   def update_sales_orders_mis_date
     no_inquiries = []
@@ -1875,6 +1876,27 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
     puts no_inquiries.uniq
     puts no_sales_orders.uniq
+  end
+
+  def purchase_order_to_po_request
+    po_requests = PoRequest.where.not({purchase_order_number: nil})
+    po_requests.each do |po_request|
+      if po_request.purchase_order_number.present?
+        purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
+        po_request.update_attribute(:purchase_order, purchase_order)
+      end
+    end
+  end
+
+  def payment_option_to_purchase_order
+    purchase_orders = PurchaseOrder.where({payment_option_id: nil})
+    purchase_orders.each do |purchase_order|
+      if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
+        payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
+        payment_option = PaymentOption.find_by_name(payment_term_name)
+        purchase_order.update_attribute(:payment_option, payment_option)
+      end
+    end
   end
 
   def purchase_order_to_po_request

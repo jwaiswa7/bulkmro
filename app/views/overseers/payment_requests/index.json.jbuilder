@@ -2,10 +2,10 @@ json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
                       if policy(payment_request).show?
-                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Invoice Request', 'info')
+                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,
                       if policy(payment_request).edit?
-                        row_action_button(edit_overseers_payment_request_path(payment_request), 'pencil', 'Edit Invoice Request', 'warning')
+                        row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'pencil', 'Edit Payment Request', 'warning')
                       end
                   ].join(' '),
                   payment_request.id,
@@ -18,11 +18,11 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(payment_request.due_date),
                   format_date_time_meridiem(payment_request.created_at),
-                  if payment_request.comments.present?
-                    format_date_time_meridiem(payment_request.comments.last.created_at)
+                  if payment_request.last_comment.present?
+                    format_date_time_meridiem(payment_request.last_comment.created_at)
                   end,
-                  if payment_request.comments.present?
-                    format_comment(payment_request.comments.last, trimmed: true)
+                  if payment_request.last_comment.present?
+                    format_comment(payment_request.last_comment, trimmed: true)
                   end
               ]
 end
