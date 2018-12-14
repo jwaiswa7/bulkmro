@@ -2,7 +2,8 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>:&nbsp;<%= po_request_status_badge(@po_request.status) %>
+        PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
+        :&nbsp;<%= po_request_status_badge(@po_request.status) %>
       </h3>
       <% if policy(@po_request).edit? %>
         <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
@@ -24,14 +25,22 @@
             <% if @po_request.sales_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Sales Order #</strong>
-                <%= @po_request.sales_order.order_number %>
+                <%= link_to overseers_inquiry_sales_order_path(@po_request.inquiry, @po_request.sales_order), target: '_blank' do %>
+                  <%= format_id(@po_request.sales_order.order_number) %>
+                <% end %>
               </div>
             <% end %>
 
             <% if @po_request.inquiry.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Inquiry #</strong>
-                <a href="<%= @po_request.inquiry.inquiry_number %>"><%= format_id(@po_request.inquiry.inquiry_number) %></a>
+                <% if policy(@po_request.inquiry).edit? %>
+                  <%= link_to overseers_inquiry_path(@po_request.inquiry), target: '_blank' do %>
+                    <%= format_id(@po_request.inquiry.inquiry_number) %>
+                  <% end %>
+                <% else %>
+                  <%= format_id(@po_request.sales_order.order_number) %>
+                <% end %>
               </div>
             <% end %>
 
