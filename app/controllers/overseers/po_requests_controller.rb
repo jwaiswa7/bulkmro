@@ -58,8 +58,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
-      ActiveRecord::Base.transaction do
-        if @po_request.status_changed?
+      ActiveRecord::Base.transaction do if @po_request.status_changed?
           @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
           @po_request.save!
           @po_request_comment.save!
@@ -67,10 +66,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
           @po_request.save!
         end
       end
-
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
-      redirect_to edit_overseers_po_request_path, notice: flash_message(@po_request, action_name)
+      render 'edit'
     end
   end
 
