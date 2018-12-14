@@ -48,8 +48,9 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
-              <% if customer_product.best_images.present? %>
-                <img src="<%= url_for_image(customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%= customer_product.sku %>"/>
+              <% if customer_product.best_images.present? && customer_product.best_images.attached? %>
+<!--                <img src="<%#= url_for_image(customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%#= customer_product.sku %>"/>-->
+                <%=image_tag customer_product.best_images.first.variant(resize: "400x400"), fallback_url: image_path('coming_soon.png'), check_remote: false %>
               <% else %>
                 <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" />
               <% end %>
