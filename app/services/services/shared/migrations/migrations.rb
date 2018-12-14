@@ -1854,6 +1854,29 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_sales_orders_mis_date
+    no_inquiries = []
+    no_sales_orders = []
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('MIS Dates - Sheet1.csv', 'seed_files')
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('SO No.'))
+      if sales_order.present?
+        sales_order.mis_date = x.get_column('MIS Date')
+        sales_order.save(validate: false)
+      else
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry No.'))
+        if inquiry.present?
+          no_sales_orders.push x.get_column('SO No.')
+        else
+          no_inquiries.push x.get_column(x.get_column('Inquiry No.'))
+        end
+      end
+    end
+    puts no_inquiries.uniq
+    puts no_sales_orders.uniq
+  end
+
   def purchase_order_to_po_request
     po_requests = PoRequest.where.not({purchase_order_number:nil})
     po_requests.each do |po_request|
