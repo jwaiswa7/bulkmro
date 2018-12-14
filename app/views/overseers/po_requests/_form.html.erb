@@ -1,6 +1,6 @@
 <div class="col-lg-12">
   <div class="page-header">
-    <h2><%= action_name.capitalize %> PO Request for Order #<%= po_request_status_badge(@po_request.sales_order.order_number) %>: <%= po_request_status_badge(@po_request.status) %></h2>
+    <h2><%= action_name.capitalize %> PO Request for Order #<%= @po_request.sales_order.order_number %>: <%= po_request_status_badge(@po_request.status) %></h2>
     <p>This will <em>'<%= submit_text(@po_request).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
