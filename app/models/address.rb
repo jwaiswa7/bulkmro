@@ -32,6 +32,7 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
+  validates_uniqueness_of :remote_uid, :on => :update
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
 
