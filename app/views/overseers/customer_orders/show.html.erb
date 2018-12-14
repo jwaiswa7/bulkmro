@@ -82,5 +82,38 @@
         </tbody>
       </table>
     </div>
+    <div class="col-lg-12">
+      <section class="pb-4 pb-lg-5">
+        <div id="accordion">
+          <div class="card mt-2">
+            <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#internal-comments">
+              Internal Comments</a>
+            <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
+              <div class="card-body">
+                <%= simple_form_for(@customer_order.comments.build, url: customers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <%= f.hidden_field :customer_order_id %>
+                  <%= render 'shared/snippets/form_errors', f: f %>
+                  <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.internal_comments, show_to_customer: false %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card mt-2">
+            <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#customer-comments">
+              Customer Comments
+            </a>
+            <div id="customer-comments" class="collapse <%= show_if(params[:show_to_customer].present? && params[:show_to_customer] == 'true') %>" data-parent="#accordion">
+              <div class="card-body">
+                <%= simple_form_for(@customer_order.comments.build, url: customers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <%= f.hidden_field :customer_order_id %>
+                  <%= render 'shared/snippets/form_errors', f: f %>
+                  <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </div>

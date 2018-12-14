@@ -365,6 +365,10 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
       end
+
+      scope module: 'customer_orders' do
+        resources :comments
+      end
     end
     resources :products, :controller => :customer_products, only: %i[index create show] do
       collection do

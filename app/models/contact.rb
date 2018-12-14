@@ -21,6 +21,7 @@ class Contact < ApplicationRecord
   has_one :cart
   has_many :customer_orders
   has_many :customer_products, :through => :companies
+  has_many :customer_order_comments
 
   enum role: {customer: 10, account_manager: 20}
   enum status: {active: 10, inactive: 20}

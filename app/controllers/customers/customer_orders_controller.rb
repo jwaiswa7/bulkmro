@@ -1,5 +1,5 @@
 class Customers::CustomerOrdersController < Customers::BaseController
-  before_action :set_customer_order, only: [:show, :order_confirmed, :approve_order]
+  before_action :set_customer_order, only: [:show, :order_confirmed]
 
   def create
     authorize :customer_order
@@ -43,13 +43,6 @@ class Customers::CustomerOrdersController < Customers::BaseController
     customer_orders = CustomerOrder.not_approved
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
-  end
-
-  def approve_order
-    authorize @customer_order
-    if @customer_order.create_approval(contact: current_contact)
-      redirect_to customers_customer_orders_path, notice: flash_message(@customer_order, action_name)
-    end
   end
 
   def order_confirmed

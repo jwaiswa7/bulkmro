@@ -1,5 +1,7 @@
 class CustomerOrder < ApplicationRecord
   APPROVALS_CLASS = 'CustomerOrderApproval'
+  REJECTIONS_CLASS = 'CustomerOrderRejection'
+  COMMENTS_CLASS = 'CustomerOrderComment'
   include Mixins::CanBeApproved
   include Mixins::CanBeRejected
   include Mixins::HasComments
@@ -12,6 +14,7 @@ class CustomerOrder < ApplicationRecord
   belongs_to :inquiry, required: false
   has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
   has_many :items, dependent: :destroy, class_name: 'CustomerOrderRow'
+  has_many :comments, dependent: :destroy, class_name: 'CustomerOrderComment'
   belongs_to :billing_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 

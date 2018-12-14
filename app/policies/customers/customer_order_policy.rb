@@ -10,4 +10,12 @@ class Customers::CustomerOrderPolicy < Customers::ApplicationPolicy
   def approve_order?
     manager?
   end
+
+  def approve?
+    record.not_approved? && !record.rejected?
+  end
+
+  def reject?
+    approve?
+  end
 end

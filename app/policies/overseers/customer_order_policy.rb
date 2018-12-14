@@ -18,4 +18,12 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def can_create_inquiry?
     !record.inquiry.present?
   end
+
+  def approve?
+    record.not_approved? && !record.rejected?
+  end
+
+  def reject?
+    approve?
+  end
 end
