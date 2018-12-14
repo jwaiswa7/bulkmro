@@ -14,11 +14,11 @@ json.data (@invoice_requests) do |invoice_request|
                   invoice_request.sales_order.order_number,
                   invoice_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(invoice_request.created_at),
-                  if invoice_request.comments.present?
-                    format_date_time_meridiem(invoice_request.comments.last.created_at)
+                  if invoice_request.last_comment.present?
+                    format_date_time_meridiem(invoice_request.last_comment.created_at)
                   end,
-                  if invoice_request.comments.present?
-                    format_comment(invoice_request.comments.last, trimmed: true)
+                  if invoice_request.last_comment.present?
+                    format_comment(invoice_request.last_comment, trimmed: true)
                   end
               ]
 end

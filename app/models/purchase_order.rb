@@ -69,6 +69,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def to_s
-    ['#', po_number].join if po_number.present?
+    supplier_name = self.get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
+    ['#' + po_number.to_s, supplier_name].join(' ') if po_number.present?
   end
 end

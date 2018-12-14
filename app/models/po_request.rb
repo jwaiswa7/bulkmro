@@ -25,6 +25,15 @@ class PoRequest < ApplicationRecord
   scope :pending, -> {where(:status => :'Requested')}
   scope :handled, -> {where.not(:status => :'Requested')}
 
+  validate :purchase_order_created?
+  validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
+
+  def purchase_order_created?
+    if self.status == "PO Created" && self.purchase_order.blank?
+      errors.add(:purchase_order, ' number is mandatory')
+    end
+  end
+
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
