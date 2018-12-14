@@ -87,7 +87,7 @@ gem 'phony_rails'
 
 # Use Microsoft Azure for file storage
 gem 'azure-storage', require: false
-
+gem 'azure-storage-blob'
 # Parse xls files
 gem 'spreadsheet', require: false
 

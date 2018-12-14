@@ -4,9 +4,9 @@ class CreateImageReaders < ActiveRecord::Migration[5.2]
       t.string :reference_id
       t.string :image_name
       t.string :image_url
-      t.string :status
-      t.string :request
-      t.string :response
+      t.integer :status
+      t.jsonb :request
+      t.jsonb :response
       t.string :meter_number
       t.string :meter_reading
       t.string :flu_id
