@@ -18,6 +18,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
         'Order Status',
         'Inside Sales',
         'Outside Sales',
+        'Sales Manager',
         'Quote Type',
         'Opportunity Type'
     ]
@@ -44,6 +45,7 @@ class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers:
                     :status => sales_order.remote_status,
                     :inside_sales => sales_order.inside_sales_owner.to_s,
                     :outside_sales => sales_order.outside_sales_owner.to_s,
+                    :sales_manager => inquiry.sales_manager.to_s,
                     :quote_type => inquiry.try(:quote_category) || "",
                     :opportunity_type => inquiry.try(:opportunity_type) || "",
                 }) if inquiry.present?
