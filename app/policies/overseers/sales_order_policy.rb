@@ -89,7 +89,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
+    manager? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
   def approve_low_margin?
