@@ -1,4 +1,5 @@
 class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::BaseService
+  URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
 
   def initialize
 
@@ -10,12 +11,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         :base_url => 'https://imager.blob.core.windows.net/images/'
     }
 
-  end
 
-  def get_images
-    [{blob: "blob1", image_url: "https://dummyimage.com/600x400/000/fff.jpg&text=Dummy+Image+1", image_name: "DummyImage1"},
-     {blob: "blob2", image_url: "https://dummyimage.com/600x400/000/fff.jpg&text=Dummy+Image+2", image_name: "DummyImage2"},
-     {blob: "blob3", image_url: "https://dummyimage.com/600x400/000/fff.jpg&text=Dummy+Image+3", image_name: "DummyImage3"}]
   end
 
   def call
@@ -25,7 +21,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   def call_later
     read_images
 
-    remove_old_files
+    #remove_old_files
   end
 
 
@@ -96,6 +92,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
   def remove_old_files
 
+
   end
 
   def send_and_register_request(images)
@@ -134,9 +131,13 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
               record.status = :pending
               record.request = request.merge({blob: blob})
             end
+            url = if Rails.env.production?
+                    URL
+                  else
+                    'http://localhost:3002/catch'
+                  end
 
-
-            response = HTTParty.post("http://localhost:3002/catch", body: request.to_json, headers: { :"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
+            response = HTTParty.post(url, body: request.to_json, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
 
             validated_response = get_validated_response (response)
 
