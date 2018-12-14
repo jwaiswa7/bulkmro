@@ -1,8 +1,7 @@
-
-class InvoiceRequestComment < ApplicationRecord
+class PaymentRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
 
-  belongs_to :invoice_request
+  belongs_to :payment_request
 
   def author
     self.created_by
