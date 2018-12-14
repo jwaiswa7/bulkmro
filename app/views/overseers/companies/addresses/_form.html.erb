@@ -10,12 +10,24 @@
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <div class="form-row">
-      <div class="col-3 col-md-1">
-        <%= f.input :legacy_id, disabled: true %>
-      </div>
-      <div class="col-9 col-md-11">
-        <%= f.input :name %>
-      </div>
+      <% if policy(@address).edit_remote_uid? %>
+        <div class="col-3 col-md-1">
+          <%= f.input :legacy_id, disabled: true %>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= f.input :name %>
+        </div>
+        <div class="col-12 col-md-5">
+          <%= f.input :remote_uid, :label => 'SAP Address ID' %>
+        </div>
+      <% else %>
+        <div class="col-3 col-md-1">
+          <%= f.input :legacy_id, disabled: true %>
+        </div>
+        <div class="col-9 col-md-11">
+          <%= f.input :name %>
+        </div>
+      <% end %>
     </div>
     <%= f.input :street1, label: 'Address Line 1' %>
     <%= f.input :street2, label: 'Address Line 2' %>
