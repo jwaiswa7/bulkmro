@@ -2,7 +2,8 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        PO Request for Order #<%= @po_request.sales_order.order_number %>: <%= po_request_status_badge(@po_request.status) %>
+        PO Request for Order #<%= @po_request.sales_order.order_number %>
+        : <%= po_request_status_badge(@po_request.status) %>
       </h3>
       <% if policy(@po_request).edit? %>
         <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
@@ -44,10 +45,10 @@
               </div>
             <% end %>
 
-            <% if @po_request.purchase_order_number.present? %>
+            <% if @po_request.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">PO #</strong>
-                <%= @po_request.purchase_order_number %>
+                <%= @po_request.purchase_order.po_number %>
               </div>
             <% end %>
           </div>
@@ -70,35 +71,36 @@
       </div>
     </div>
 
-    <div class="card mb-2">
-      <div class="card-body">
-        <div class="flex-fill">
-          <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
-        </div>
+    <% if @po_request.rows.present? %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+          </div>
 
-        <div class="mt-3">
-          <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
-            <thead>
+          <div class="mt-3">
+            <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+              <thead>
               <tr>
                 <th>Sr. No.</th>
                 <th>Product</th>
                 <th>Quantity</th>
               </tr>
-            </thead>
-            <tbody>
-            <% @po_request.rows.each_with_index do |row, sr_no| %>
-              <tr>
-                <td><%= sr_no + 1 %></td>
-                <td><%= row.product.to_s %></td>
-                <td><%= row.sales_order_row.quantity.to_i %></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              <% @po_request.rows.each_with_index do |row, sr_no| %>
+                <tr>
+                  <td><%= sr_no + 1 %></td>
+                  <td><%= row.product.to_s %></td>
+                  <td><%= row.sales_order_row.quantity.to_i %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-
+    <% end %>
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
