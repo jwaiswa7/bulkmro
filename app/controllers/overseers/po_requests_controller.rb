@@ -81,7 +81,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :id,
         :inquiry_id,
         :sales_order_id,
-        :purchase_order_number,
         :purchase_order_id,
         :status,
         :rows_attributes => [:id, :sales_order_row_id, :_destroy],
