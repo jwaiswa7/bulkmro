@@ -3,6 +3,9 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize :dashboard, :show?
+    if(current_overseer.role == "inside_sales_executive")
+      @dashboard = Overseers::Dashboard.new(current_overseer)
+    end
   end
 
   def serializer
@@ -44,4 +47,6 @@ class Overseers::DashboardController < Overseers::BaseController
     Services::Shared::Migrations::Migrations.new.call
     render json: {}, status: :ok
   end
+
+  attr_accessor :overseer
 end
