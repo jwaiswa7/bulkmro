@@ -14,3 +14,12 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(update_inquiries_status), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_inquiries), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_bible_sales_orders), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(bible_sales_orders_totals_mismatch), folder: 'seed_files')
+service.call

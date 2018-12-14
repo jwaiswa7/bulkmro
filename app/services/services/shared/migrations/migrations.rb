@@ -1876,5 +1876,49 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts no_inquiries.uniq
     puts no_sales_orders.uniq
   end
-end
 
+  def missing_inquiries
+    file = "#{Rails.root}/tmp/missing_increment_ids.csv"
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_inquiry_numbers.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ['missing_increment_ids']) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('increment_id'))
+        if inquiry.blank?
+          writer << [x.get_column('increment_id')]
+        end
+      end
+    end
+  end
+
+  def missing_bible_sales_orders
+    file = "#{Rails.root}/tmp/missing_orders.csv"
+    column_headers = ['inquiry_number', 'order_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
+        if sales_order.blank?
+          writer << [x.get_column('Inquiry Number'), x.get_column('SO #')]
+        end
+      end
+    end
+  end
+
+  def bible_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/bible_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f)||(sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
+          writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, x.get_column('SUM of Selling Price (as per SO / AR Invoice)'), x.get_column('SUM of Gross Total Selling')]
+        end
+      end
+    end
+  end
+
+end
