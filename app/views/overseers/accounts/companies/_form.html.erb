@@ -18,7 +18,7 @@
     <%= f.hidden_field :account_id %>
 
     <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
-    <% if  policy(@company).edit_remote_uid? %>
+    <% if  policy(@company).edit_remote_uid? && !@company.new_record? %>
       <div class="form-row">
         <div class="col-12 col-md-8" >
           <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences'%>
