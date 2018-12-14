@@ -1,5 +1,6 @@
 class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseController
   before_action :set_company, only: [:show, :edit, :update]
+
   def show
     redirect_to edit_overseers_account_company_path(@account, @company)
     authorize @account
@@ -16,7 +17,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def create
-    @company = @account.companies.build(company_params.merge(overseer: current_overseer))    
+    @company = @account.companies.build(company_params.merge(overseer: current_overseer))
     authorize @company
 
     if @company.save_and_sync
@@ -42,6 +43,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   private
+
   def set_company
     @company ||= Company.find(params[:id])
   end
@@ -49,7 +51,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   def company_params
     params.require(:company).permit(
         :account_id,
-        :name,        
+        :name,
         :industry_id,
         :remote_uid,
         :default_company_contact_id,
@@ -74,7 +76,6 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :contact_ids => [],
         :brand_ids => [],
         :product_ids => [],
-
     )
   end
 end

@@ -24,11 +24,15 @@
           <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
         </div>
         <div class="col-12 col-md-4">
-          <%= f.input :remote_uid, :label => 'Remote UID' %>
+          <%= f.input :remote_uid, :label => 'SAP Business Partner ID' %>
         </div>
       </div>
     <% else %>
-      <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+      <div class="form-row">
+        <div class="col-12 col-md-12">
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        </div>
+      </div>
     <% end %>
     <div class="form-row">
       <div class="col-6 col-md-3">
