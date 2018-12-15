@@ -31,6 +31,11 @@ Rails.application.routes.draw do
 
     resources :purchase_orders
     resources :products
+    resources :image_readers do
+      collection do
+        post 'update'
+      end
+    end
 
     get 'login' => '/callbacks/sessions#new'
   end
