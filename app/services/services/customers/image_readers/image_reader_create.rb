@@ -10,8 +10,6 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         :container => 'images',
         :base_url => 'https://imager.blob.core.windows.net/images/'
     }
-
-
   end
 
   def call
