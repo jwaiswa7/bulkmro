@@ -9,11 +9,10 @@ class Overseers::Dashboard
 
   def sales_quotes
     SalesQuote.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner' => overseer).where("sales_quotes.updated_at > ?",Date.new(2018, 04, 01)).latest
-    # .where.not(:sent_at => nil).order("inquiries.inquiry_number DESC").distinct(:inquiry_id).uniq {|p| p.inquiry_id}
   end
 
   def sales_orders
-    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner' => overseer).where("sales_orders.created_at > ?",Date.new(2018, 04, 01)).latest
+    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner' => overseer).where("sales_orders.updated_at > ?",Date.new(2018, 04, 01)).latest
   end
 
   def recent_inquiries

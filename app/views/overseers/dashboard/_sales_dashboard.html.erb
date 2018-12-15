@@ -1,3 +1,4 @@
+<% provide :container_fluid, true %>
 <div class="col-12">
   <% if dashboard.recent_inquiries.any? %>
     <div class="card mt-1">
@@ -16,7 +17,7 @@
           <tbody>
           <% dashboard.recent_inquiries.each do |inquiry| %>
             <tr>
-              <td><%#= row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info', :_blank) %></td>
+              <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'arrow-right', 'Go to Inquiry', 'dark',:_blank) %></td>
               <td><%= inquiry.inquiry_number %></td>
               <td><%= format_date(inquiry.created_at) %></td>
               <td><%= format_currency(inquiry.calculated_total) %></td>
@@ -25,9 +26,6 @@
           <% end %>
           </tbody>
         </table>
-      </div>
-      <div class="card-footer">
-
       </div>
     </div>
   <% end %>
@@ -49,7 +47,10 @@
         <tbody>
         <% dashboard.recent_sales_quotes.each do |sales_quote| %>
           <tr>
-            <td><%#= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank) %></td>
+            <td>
+              <%= row_action_button(overseers_inquiry_sales_quote_path(sales_quote.inquiry, sales_quote), 'eye', 'View Sales Quote', 'info') %>
+              <%= row_action_button(edit_overseers_inquiry_path(sales_quote.inquiry), 'arrow-right', 'Go to Inquiry', 'dark',:_blank) %>
+            </td>
             <td><%= sales_quote.inquiry.inquiry_number %></td>
             <td><%= format_date(sales_quote.inquiry.created_at) %></td>
             <td><%= sales_quote.rows.size %></td>
@@ -59,9 +60,6 @@
         <% end %>
         </tbody>
       </table>
-    </div>
-    <div class="card-footer">
-
     </div>
   </div>
 
@@ -83,7 +81,10 @@
           <tbody>
           <% dashboard.recent_sales_orders.each do |sales_order| %>
             <tr>
-              <td><%#= row_action_button(customers_order_path(sales_order), 'eye', 'View Order', 'info', :_blank) %></td>
+              <td>
+                <%= row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info', :_blank) %>
+                <%= row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark',:_blank) %>
+              </td>
               <td><%= sales_order.order_number %></td>
               <td><%= format_date(sales_order.inquiry.customer_order_date) %></td>
               <td><%= sales_order.inquiry.inquiry_number %></td>
@@ -93,9 +94,6 @@
           <% end %>
           </tbody>
         </table>
-      </div>
-      <div class="card-footer">
-
       </div>
     </div>
   <% end %>
