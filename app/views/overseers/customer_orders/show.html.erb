@@ -110,7 +110,7 @@
               <div class="card-body">
                 <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                   <%= render 'shared/snippets/form_errors', f: f %>
-                  <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.internal_comments, show_to_customer: false %>
+                  <%= render 'overseers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.internal_comments, show_to_customer: false %>
                 <% end %>
               </div>
             </div>
@@ -123,7 +123,7 @@
               <div class="card-body">
                 <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                   <%= render 'shared/snippets/form_errors', f: f %>
-                  <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
+                  <%= render 'overseers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
                 <% end %>
               </div>
             </div>
