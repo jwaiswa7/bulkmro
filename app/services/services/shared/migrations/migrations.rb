@@ -1876,5 +1876,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts no_inquiries.uniq
     puts no_sales_orders.uniq
   end
-end
 
+  def purchase_orders_total_mismatch
+    file = "#{Rails.root}/tmp/purchase_orders_total_mismatch.csv"
+    column_headers = ['PO_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_mismatch_purchase_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
+        if purchase_order.present? && ((purchase_order.calculated_total.to_f != x.get_column('Document Total').to_f)||(purchase_order.calculated_total_with_tax.to_f != ( x.get_column('Tax Amount (SC)').to_f + x.get_column('Document Total').to_f)))
+          writer << [purchase_order.po_number, purchase_order.calculated_total.to_f, purchase_order.calculated_total_with_tax.to_f, x.get_column('Document Total').to_f, ( x.get_column('Tax Amount (SC)').to_f + x.get_column('Document Total').to_f)]
+        end
+      end
+    end
+  end
+end
