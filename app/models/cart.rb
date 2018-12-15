@@ -16,9 +16,4 @@ class Cart < ApplicationRecord
       self.shipping_address ||= company.addresses.first
     end
   end
-
-
-  def default_warehouse_address
-    Warehouse.default.address
-  end
 end
