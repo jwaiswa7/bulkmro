@@ -90,8 +90,7 @@
               Internal Comments</a>
             <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
               <div class="card-body">
-                <%= simple_form_for(@customer_order.comments.build, url: customers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-                  <%= f.hidden_field :customer_order_id %>
+                <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                   <%= render 'shared/snippets/form_errors', f: f %>
                   <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.internal_comments, show_to_customer: false %>
                 <% end %>
@@ -104,8 +103,7 @@
             </a>
             <div id="customer-comments" class="collapse <%= show_if(params[:show_to_customer].present? && params[:show_to_customer] == 'true') %>" data-parent="#accordion">
               <div class="card-body">
-                <%= simple_form_for(@customer_order.comments.build, url: customers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-                  <%= f.hidden_field :customer_order_id %>
+                <%= simple_form_for([:overseers, @customer_order.comments.build], url: overseers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                   <%= render 'shared/snippets/form_errors', f: f %>
                   <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
                 <% end %>

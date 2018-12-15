@@ -5,7 +5,7 @@ class CreateCustomerOrderComments < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true
       t.text :message
 
-      t.userstamps(:contacts)
+      t.userstamps
       t.timestamps
     end
   end

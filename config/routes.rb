@@ -206,6 +206,7 @@ Rails.application.routes.draw do
 
     resources :customer_orders do
       scope module: 'customer_orders' do
+        resources :comments
         resources :inquiries do
 
         end

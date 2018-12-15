@@ -1,8 +1,8 @@
 class CustomerOrderComment < ApplicationRecord
-  include Mixins::Customers::CanBeStamped
+  include Mixins::CanBeStamped
 
   belongs_to :customer_order
-  belongs_to :contact
+  belongs_to :contact, required: false
 
   has_one :approval, class_name: 'CustomerOrderApproval', dependent: :destroy
   has_one :rejection, class_name: 'CustomerOrderRejection', dependent: :destroy
@@ -11,7 +11,7 @@ class CustomerOrderComment < ApplicationRecord
   scope :customer_comments, -> {where(:show_to_customer => true)}
 
   def author
-    self.created_by
+    self.contact || self.created_by
   end
 
   def author_role

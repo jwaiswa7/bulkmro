@@ -3,7 +3,7 @@ class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders:
   def create
     @comment = @customer_order.comments.build(comment_params.merge(:contact => current_contact))
     authorize @comment
-    debugger
+
     if @comment.save
       callback_method = %w(approve reject).detect {|action| params[action]}
       send(callback_method) if callback_method.present? && policy(@customer_order).send([callback_method, '?'].join)
