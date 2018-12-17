@@ -8,7 +8,7 @@
 
 <div class="form-row">
   <% if dashboard.recent_inquiries.any? %>
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-lg-6">
       <div class="card">
         <div class="card-body">
           <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Inquiries</h5>
@@ -29,7 +29,7 @@
                 <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %></td>
                 <td><%= inquiry.inquiry_number %></td>
                 <td><%= inquiry_status_badge(inquiry.status) %></td>
-                <td><%= inquiry.company.to_s %></td>
+                <td><%= inquiry.company.to_s.truncate(10) %></td>
                 <td><%= format_currency(inquiry.calculated_total) %></td>
                 <td><%= time_ago_in_words(inquiry.updated_at) %></td>
               </tr>
@@ -42,7 +42,7 @@
   <% end %>
 
   <% if dashboard.recent_sales_orders.any? %>
-    <div class="col-12 col-md-6 mt-3 mt-md-0">
+    <div class="col-12 col-lg-6 mt-3 mt-lg-0">
       <div class="card">
         <div class="card-body">
           <h5 class="text-uppercase text-black-50 mb-0">Recently Updated Orders</h5>
