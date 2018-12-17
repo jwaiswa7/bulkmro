@@ -50,7 +50,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
       loop do
         @images = []
-        blobs = blob_client.list_blobs(container_name, {marker: nextMarker, max_results: 50})
+        blobs = blob_client.list_blobs(container_name, {marker: nextMarker, max_results: 1000})
 
         blobs.each do |blob|
 
@@ -135,12 +135,12 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
                     'http://localhost:3002/catch'
                   end
 
-            response = HTTParty.post(url, body: request.to_json, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
+            response = HTTParty.post(url, body: request, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
 
             validated_response = get_validated_response (response)
 
             status = :failed
-            if validated_response[:error_message].blank?
+            if validated_response[:feed_line_unit].present?
               status = :successful
             end
 
@@ -158,7 +158,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
   def get_validated_response(raw_response)
     if raw_response['success'] == true
-      OpenStruct.new(raw_response.parsed_response)
+      OpenStruct.new(raw_response.parsed_response.deep_symbolize_keys)
     elsif raw_response['error']
       {raw_response: raw_response, error_message: raw_response['error']['message']}
     else
