@@ -1,5 +1,28 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
 
+  def supplier_data_summary
+    Account.is_supplier.size
+    Company.acts_as_supplier.size
+    ids = PurchaseOrder.all.map{ |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids.size
+    nov_ids = Company.acts_as_supplier.where(:created_at =>  Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    (ids & nov_ids).size
+# # Accounts as suppliers
+#     7
+#
+# # Total suppliers
+#     6108
+#
+# # Total suppliers with purchase orders
+#     2053
+#
+# # Suppliers added in November
+#     214
+#
+# # Suppliers added in November with purchase orders
+#     105
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
@@ -17,6 +40,19 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Activity.delete_all
     InquiryComment.delete_all
     Inquiry.delete_all
+  end
+
+  def del_customer_orders
+    CustomerOrderApproval.all.destroy_all
+    CustomerOrder.all.destroy_all
+  end
+
+  def check_company
+    company = Company.find_by_name('Flextronics Technologies India Pvt. Ltd.')
+
+    company.sales_quotes.first
+
+    SalesQuotesIndex::SalesQuote.import SalesQuote.all, update_fields: [:is_final]
   end
 
   def update_amat_statuses

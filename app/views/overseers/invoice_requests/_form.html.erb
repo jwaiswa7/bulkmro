@@ -29,18 +29,18 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :grpo_number, label: "GRPO Number", :input_html => {:maxlength => 8, :size => 8} %>
+        <%= f.input :grpo_number, as: :string, label: "GRPO Number", :input_html => {:maxlength => 8} %>
       </div>
 
       <div class="col-6">
-        <%= f.input :ap_invoice_number, label: "AP Invoice Number", :input_html => {:maxlength => 8, :size => 8} %>
+        <%= f.input :ap_invoice_number, as: :string, label: "SAP AP Invoice Document No.", :input_html => {:maxlength => 8} %>
       </div>
 
       <div class="col-6">
-        <%= f.input :ar_invoice_number, label: "AR Invoice Number", :input_html => {:maxlength => 8, :size => 8} %>
+        <%= f.input :ar_invoice_number, as: :string, label: "AR Invoice Number", :input_html => {:maxlength => 8} %>
       </div>
 
-      <div class="col-12 col-md-12">
+      <div class="col-6">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
             <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
@@ -93,7 +93,10 @@
                 <div class="media chat-item">
                   <div class="media-body">
                     <div class="chat-item-title">
-                      <span class="chat-item-author"><%= comment.created_by.full_name if comment.created_by.present? %></span>
+                      <span class="chat-item-author">
+                        <%= comment.created_by.full_name if comment.created_by.present? %>
+                        <span class="mr-1"><strong><span class="badge badge-secondary"><%= comment.author_role %></span></strong></span>
+                      </span>
                       <span><%= time_ago_in_words(comment.created_at) if comment.created_at.present? %> ago</span>
                     </div>
                     <div class="chat-item-body">

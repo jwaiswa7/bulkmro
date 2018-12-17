@@ -59,7 +59,7 @@ class Contact < ApplicationRecord
   end
 
   def current_cart
-    self.cart || self.create_cart
+    self.cart
   end
 
   def generate_products

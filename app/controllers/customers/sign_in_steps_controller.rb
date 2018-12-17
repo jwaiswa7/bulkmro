@@ -12,7 +12,7 @@ class Customers::SignInStepsController < Customers::BaseController
 
     if @contact.companies.size == 1
       session[:current_company_id] = @contact.companies.first.id
-      redirect_back fallback_location: customers_dashboard_path
+      redirect_to customers_dashboard_path
     end
   end
 

@@ -1778,27 +1778,34 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_customer_product(company, product, x)
     product_name = x.get_column('New Description')
     customer_cost = x.get_column('Cost').to_f
+    category_3 = Category.find_by_name(x.get_column('Category 3')) if x.get_column('Category 3').present?
+    category_2 = Category.find_by_name(x.get_column('Category 2')) if x.get_column('Category 2').present?
+    category_1 = Category.find_by_name(x.get_column('Category 1')) if x.get_column('Category 1').present?
+    category = category_3 || category_2 || category_1
+    brand = Brand.find_by_name(x.get_column('Brand'))
+    tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+    tax_rate = TaxRate.find_by_tax_percentage(x.get_column('GST').to_i)
+    measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
 
     puts product_name, customer_cost
     puts "<--------------->"
-    CustomerProduct.where(:company_id => company.id, :product_id => product.id).first_or_create! do |customer_product|
-      customer_product.category_id = product.category_id
-      customer_product.brand_id = product.brand_id
+    CustomerProduct.where(:company_id => company.id, :product_id => product.id , :customer_price => ( customer_cost || 0 ) ).first_or_create! do |customer_product|
+      customer_product.category_id = ( category.id if category.present? ) || product.category_id
+      customer_product.brand_id = ( brand.id if brand.present? ) || product.brand_id
       customer_product.name = product_name
       customer_product.sku = product.sku
-      customer_product.customer_price = customer_cost
-      customer_product.measurement_unit_id = product.measurement_unit_id
-      customer_product.tax_rate_id = product.tax_rate_id
-      customer_product.tax_code_id = product.tax_code_id
+      customer_product.measurement_unit_id = ( measurement_unit.id if measurement_unit.present? ) || product.measurement_unit_id
+      customer_product.tax_rate_id = ( tax_rate.id if tax_rate.present? ) || product.tax_rate_id
+      customer_product.tax_code_id = ( tax_code.id if tax_code.present? ) || product.tax_code_id
       customer_product.moq = 1
       customer_product.created_by = Overseer.default
     end
   end
 
   def add_products_and_customer_products_to_company
-    company = Company.find_by_name('Piramal Enterprises Ltd.')
+    company = Company.find_by_name('CHANDAN STEEL')
     products = []
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Piramal BulkMRO 121118 .csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Chandan Steel - Bulkmro.csv', 'seed_files')
     service.loop(nil) do |x|
       sku = x.get_column('SKU')
 
@@ -1825,7 +1832,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           product.category = category
           product.sku = product.generate_sku
           product.tax_code = tax_code || TaxCode.default
-          product.mpn = x.get_column('MFR')
+          product.mpn = x.get_column('MPN')
           product.description = x.get_column('New Description')
           product.name = name
           product.measurement_unit = measurement_unit
@@ -1837,6 +1844,37 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         create_customer_product(company, product, x)
       end
     end
+  end
+
+  def update_inquiries_status
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Inquiries Status to be updated 12 Dec.csv', 'seed_files')
+    service.loop(nil) do |x|
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry.update_attribute(:status ,x.get_column('Before Change Status'))
+    end
+  end
+
+  def update_sales_orders_mis_date
+    no_inquiries = []
+    no_sales_orders = []
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('MIS Dates - Sheet1.csv', 'seed_files')
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('SO No.'))
+      if sales_order.present?
+        sales_order.mis_date = x.get_column('MIS Date')
+        sales_order.save(validate: false)
+      else
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry No.'))
+        if inquiry.present?
+          no_sales_orders.push x.get_column('SO No.')
+        else
+          no_inquiries.push x.get_column(x.get_column('Inquiry No.'))
+        end
+      end
+    end
+    puts no_inquiries.uniq
+    puts no_sales_orders.uniq
   end
 end
 

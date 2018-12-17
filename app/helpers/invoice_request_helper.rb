@@ -1,11 +1,15 @@
 module InvoiceRequestHelper
   def invoice_request_status_color(status)
     case status
-    when 'Pending GRPO', 'Pending AP Invoice'
+    when 'Pending GRPO'
+      "primary"
+    when 'Pending AP Invoice'
       "warning"
-    when 'Pending AR Invoice', 'Completed AR Invoice Request'
+    when 'Pending AR Invoice'
+      "info"
+    when 'Completed AR Invoice Request'
       "success"
-    when 'AR Invoice Cancelled'
+    when 'Cancelled AR Invoice'
       "danger"
     end
   end

@@ -17,7 +17,7 @@ class Customers::BaseController < ApplicationController
     redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
                          edit_current_company_customers_sign_in_steps_path
                        elsif session[:current_company_id].present? && current_company.present?
-                         if current_contact.companies.exclude?(current_company)
+                         if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
                            session[:current_company_id] = nil
                            edit_current_company_customers_sign_in_steps_path
                          elsif controller_name == 'sign_in_steps'
@@ -53,7 +53,11 @@ class Customers::BaseController < ApplicationController
   end
 
   def current_cart
-    current_contact.current_cart
+    current_contact.cart || current_contact.create_cart(
+        company: current_company,
+        billing_address: current_company.default_billing_address || current_company.billing_addresses.first,
+        shipping_address: current_company.default_shipping_address || current_company.shipping_addresses.first,
+    )
   end
 
   def current_company
