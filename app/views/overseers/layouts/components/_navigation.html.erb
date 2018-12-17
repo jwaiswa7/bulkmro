@@ -49,24 +49,26 @@
       </li>
 
       <% if policy(:product).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Products
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'List', overseers_products_path, policy(:product).index? %>
-            <%= nav_dropdown_item 'Queue', pending_overseers_products_path, policy(:product).pending? %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Kits', overseers_kits_path, policy(:kit).index? %>
-            <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
-            <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
-            <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
-            <%= nav_dropdown_item 'Tax Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
-            <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
-            <%= nav_dropdown_item 'Payment Terms', overseers_payment_options_path, policy(:payment_option).index? %>
-          </div>
-        </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Catalog Manager
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Product List', overseers_products_path, policy(:product).index? %>
+          <%= nav_dropdown_item 'Product Approval Queue', pending_overseers_products_path, policy(:product).pending? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Kits', overseers_kits_path, policy(:kit).index? %>
+          <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
+          <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
+          <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
+          <%= nav_dropdown_item 'HSN / SAC Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
+          <%= nav_dropdown_item 'Payment Terms', overseers_payment_options_path, policy(:payment_option).index? %>
+        </div>
+      </li>
       <% end %>
+
       <% if policy(:inquiry).index? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
