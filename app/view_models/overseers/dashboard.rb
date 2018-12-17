@@ -8,7 +8,7 @@ class Overseers::Dashboard
   end
 
   def sales_orders
-    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner' => overseer).where("sales_orders.updated_at > ?", Date.new(2018, 04, 01)).latest
+    SalesOrder.with_includes.joins(:inquiry).where('inquiries.inside_sales_owner' => overseer).where('sales_orders.updated_at > ?', Date.new(2018, 04, 01)).latest
   end
 
   def recent_inquiries
