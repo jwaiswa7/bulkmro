@@ -1274,7 +1274,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     if file_url.present? && filename.present?
       url = URI.parse(file_url)
       req = Net::HTTP.new(url.host, url.port)
-      req.use_ssl = true
+      # req.use_ssl = true
       res = req.request_head(url.path)
       puts "---------------------------------"
       if res.code == '200'
