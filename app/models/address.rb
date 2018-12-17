@@ -30,6 +30,8 @@ class Address < ApplicationRecord
       un_agency_or_embassy: 60,
   }
 
+  scope :has_company_id, -> { where.not(:company_id => nil) }
+
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
