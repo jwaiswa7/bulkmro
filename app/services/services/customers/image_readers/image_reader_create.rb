@@ -19,7 +19,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         :name => 'imager',
         :key => 'wH/dYhTNW30yU8/3Bv+0cmZQz/y/8dMGMMLB/pL4/f5colupJTFicVcHd56JTa7f0ZJvrZDCYxU59WmdfvuOyg==',
         :container => CONTAINER,
-        :base_url => 'https://imager.blob.core.windows.net/images/'
+        :base_url => "https://imager.blob.core.windows.net/#{CONTAINER}/"
     }
   end
 
@@ -119,15 +119,16 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             image_reader.reference_id = reference_id
             request = {reference_id: reference_id, data: {image_url: image_url}, tag: "bulkmro"}
             image_reader.request = request.merge({blob: blob})
+
             image_reader.save
 
 
             response = HTTParty.post(URL, body: request, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
 
-            status = validated_response[:error_message].blank? ? :successful : :failed
+            status = validated_response[:feed_line_unit].present? ? :successful : :failed
 
-
+            debugger
             image_reader.status = status
             image_reader.response = validated_response
             image_reader.flu_id = status == :successful ? validated_response[:feed_line_unit][:flu_id] : nil
