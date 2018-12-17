@@ -1,12 +1,21 @@
 class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::BaseService
-  URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
+  if Rails.env.production?
+    URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
+    CONTAINER = 'images'
+  elsif Rails.env.staging?
+    URL = 'https://api.playment.in/v1/project/10574135-d26d-4352-96e9-adffd9a032d8/feedline'
+    CONTAINER = 'staging'
+  else
+    URL = 'http://localhost:3002/catch'
+    CONTAINER = 'staging'
+  end
 
   def initialize
     @images = []
     @azure_storage_config = {
         :name => 'imager',
         :key => 'wH/dYhTNW30yU8/3Bv+0cmZQz/y/8dMGMMLB/pL4/f5colupJTFicVcHd56JTa7f0ZJvrZDCYxU59WmdfvuOyg==',
-        :container => 'images',
+        :container => CONTAINER,
         :base_url => 'https://imager.blob.core.windows.net/images/'
     }
   end
