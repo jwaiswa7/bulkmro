@@ -9,7 +9,6 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
     response = {:success => false}
     begin
       ActiveRecord::Base.transaction do
-
         params["feed_line_units"].each do |image|
           flu_id = image[:flu_id]
           image_reader = ImageReader.find_by_flu_id(flu_id)
@@ -20,7 +19,7 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
               image_reader.meter_number = image[:result][:meter_number] if image[:result][:meter_number].present?
               image_reader.meter_reading = image[:result][:meter_reading] if image[:result][:meter_reading].present?
             end
-
+            image_reader.callback_request = params
             if image_reader.save
               response[:success] = true
             end
