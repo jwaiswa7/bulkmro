@@ -39,6 +39,7 @@
       <%= nav_item 'Dashboard', overseers_dashboard_path, policy(:dashboard).show? %>
       <%= nav_item 'Accounts', overseers_accounts_path, policy(:account).index? %>
       <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
+      <%= nav_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
       <%= nav_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
       <% if policy(:product).index? %>
         <li class="nav-item dropdown">

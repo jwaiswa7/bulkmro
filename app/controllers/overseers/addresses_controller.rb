@@ -1,7 +1,7 @@
 class Overseers::AddressesController < Overseers::BaseController
 
   def index
-    @addresses = ApplyDatatableParams.to(Address.all, params)
+    @addresses = ApplyDatatableParams.to(Address.where.not(:company_id => nil), params)
     authorize @addresses
   end
 
@@ -13,4 +13,5 @@ class Overseers::AddressesController < Overseers::BaseController
     @addresses = ApplyParams.to(addresses.includes(:state), params)
     authorize @addresses
   end
+
 end
