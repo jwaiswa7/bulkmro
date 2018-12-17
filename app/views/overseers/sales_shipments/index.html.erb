@@ -3,6 +3,10 @@
 <% provide :container_fluid, true %>
 
 <div class="col-lg-12">
+  <%=render partial: "shared/layouts/summary", locals: {klass: SalesShipment } %>
+</div>
+
+<div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort all" data-name="shipment_number">Shipment #</th>

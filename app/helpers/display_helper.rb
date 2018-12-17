@@ -191,4 +191,28 @@ module DisplayHelper
      '</p></div></div></div>'].join('').html_safe
   end
 
+  def format_status_color(klass,status)
+    case klass.name.to_sym
+    when :Inquiry
+      inquiry_status_color(status);
+    when :SalesOrder
+      sales_order_status_color(status);
+    else
+      ""
+    end
+
+  end
+
+  def format_status_count(klass,status)
+    case klass.name.to_sym
+    when :SalesOrder
+      if klass.statuses.keys.include?status
+        klass.where(status: status).or(klass.where(legacy_request_status: status)).count
+      else
+        klass.where(remote_status: status).count
+      end
+    else
+      klass.where(status: status).count;
+    end
+  end
 end

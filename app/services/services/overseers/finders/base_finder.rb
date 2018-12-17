@@ -2,6 +2,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
     @search_filters = []
     @range_filters = []
+    @status = params[:status]
 
     if params[:columns].present?
       params[:columns].each do |index, column|

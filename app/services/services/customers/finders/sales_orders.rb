@@ -13,6 +13,10 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
                         super
                       end
 
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    end
+
     indexed_records = indexed_records.query({
                                                 range: {
                                                     :"created_at" => {
@@ -45,6 +49,10 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
       indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
     else
       indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+    end
+
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
     end
 
     indexed_records = indexed_records.query({
