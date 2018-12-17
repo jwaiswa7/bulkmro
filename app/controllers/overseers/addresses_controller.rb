@@ -1,5 +1,5 @@
 class Overseers::AddressesController < Overseers::BaseController
-
+git pull orihg
   def index
     @addresses = ApplyDatatableParams.to(Address.all, params)
     authorize @addresses
