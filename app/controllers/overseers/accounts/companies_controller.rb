@@ -70,6 +70,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :pan,
         :pan_proof,
         :cen_proof,
+        :logo,
         :is_msme,
         :is_active,
         :is_unregistered_dealer,
