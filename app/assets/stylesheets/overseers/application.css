@@ -9839,6 +9839,23 @@ th {
 .dropdown-divider {
   margin: .5rem 0; }
 
+.dropdown-submenu {
+  position: relative; }
+
+.dropdown-submenu a::after {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em; }
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem; }
+
 .navbar.bg-white {
   border-bottom: 1px solid #E9EEF2; }
 
