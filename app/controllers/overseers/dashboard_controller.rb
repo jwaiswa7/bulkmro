@@ -3,8 +3,12 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize :dashboard, :show?
-    if(current_overseer.role == "inside_sales_executive")
+
+    if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
+      render 'sales_dashboard'
+    else
+      render 'default_dashboard'
     end
   end
 
@@ -47,6 +51,4 @@ class Overseers::DashboardController < Overseers::BaseController
     Services::Shared::Migrations::Migrations.new.call
     render json: {}, status: :ok
   end
-
-  attr_accessor :overseer
 end

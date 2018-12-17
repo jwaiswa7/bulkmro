@@ -1,7 +1,0 @@
-<div class="col-12">
-  <% if current_overseer.role == "inside_sales_executive" %>
-    <%= render 'overseers/dashboard/sales_dashboard', dashboard: @dashboard %>
-  <% else %>
-    <%= render 'overseers/dashboard/dashboard' %>
-  <% end %>
-</div>
