@@ -19,6 +19,7 @@
               <th class="no-sort">Inquiry</th>
               <th class="no-sort">Status</th>
               <th class="no-sort">Total</th>
+              <th class="no-sort">Updated</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,7 @@
                 <td><%= inquiry.inquiry_number %></td>
                 <td><%= inquiry_status_badge(inquiry.status) %></td>
                 <td><%= format_currency(inquiry.calculated_total) %></td>
+                <td><%= time_ago_in_words(inquiry.updated_at) %></td>
               </tr>
             <% end %>
             </tbody>
@@ -52,6 +54,7 @@
               <th class="no-sort">Status</th>
               <th class="no-sort">SAP Status</th>
               <th class="no-sort">Total</th>
+              <th class="no-sort">Updated</th>
             </tr>
             </thead>
             <tbody>
@@ -66,6 +69,7 @@
                 <td><%= sales_order_status_badge(sales_order.status) %></td>
                 <td><%= sales_order_status_badge(sales_order.remote_status) %></td>
                 <td><%= format_currency(sales_order.calculated_total) %></td>
+                <td><%= time_ago_in_words(sales_order.updated_at) %></td>
               </tr>
             <% end %>
             </tbody>
