@@ -23,6 +23,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 #     105
   end
 
+  def paper_trail_find
+    who = Product.find_by_sku('BM9R3F1').versions.last.whodunnit
+    GlobalID::Locator.locate(who)
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
