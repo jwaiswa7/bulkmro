@@ -72,6 +72,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     allow_logistics_format_export?
   end
 
+  def export_for_sap?
+    allow_export?
+  end
+
   def drafts_pending?
     admin?
   end
