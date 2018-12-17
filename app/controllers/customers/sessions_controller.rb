@@ -11,7 +11,7 @@ class Customers::SessionsController < Devise::SessionsController
 
   private
   def after_sign_in_path_for(resource_or_scope)
-    choose_company_customers_companies_path
+    customers_dashboard_path
   end
 
   def after_sign_out_path_for(resource_or_scope)
