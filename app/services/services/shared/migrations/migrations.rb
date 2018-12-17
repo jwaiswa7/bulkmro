@@ -1964,4 +1964,84 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def missing_sap_orders
+    file = "#{Rails.root}/tmp/sap_missing_orders.csv"
+    column_headers = ['inquiry_number', 'order_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
+        if sales_order.blank?
+          writer << [x.get_column('Project'), x.get_column('#')]
+        end
+      end
+    end
+  end
+
+  def sap_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
+        sap_total_without_tax = 0
+        sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
+
+        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax)||(sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
+          writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, sap_total_without_tax, x.get_column('Document Total')]
+        end
+      end
+    end
+  end
+
+  def missing_sap_invoices
+    file = "#{Rails.root}/tmp/sap_missing_invoices.csv"
+    column_headers = ['invoice_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
+        if sales_invoice.blank?
+          writer << [x.get_column('#')]
+        end
+      end
+    end
+  end
+
+  def sap_sales_invoices_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_invoices_totals_mismatch.csv"
+    column_headers = ['invoice_number', 'sprint_total', 'sprint_tax', 'sprint_total_with_tax', 'sap_total', 'sap_tax', 'sap_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
+        sap_total_without_tax = 0
+        total_without_tax = 0
+
+        if sales_invoice.present? && !sales_invoice.is_legacy?
+          total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
+          sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
+          if ((total_without_tax != sap_total_without_tax)||(sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
+
+            writer << [
+                sales_invoice.invoice_number,
+                total_without_tax,
+                sales_invoice.metadata['base_tax_amount'].to_f,
+                sales_invoice.metadata['base_grand_total'].to_f,
+                sap_total_without_tax,
+                x.get_column('Tax Amount (SC)').to_f,
+                x.get_column('Document Total')
+            ]
+          end
+        end
+      end
+    end
+  end
+
 end

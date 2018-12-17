@@ -23,3 +23,15 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(bible_sales_orders_totals_mismatch), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sap_orders), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(sap_sales_orders_totals_mismatch), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sap_invoices), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(sap_sales_invoices_totals_mismatch), folder: 'seed_files')
+service.call
