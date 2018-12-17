@@ -9,7 +9,8 @@ class ImageReader < ApplicationRecord
   enum status: {
       successful: 10,
       failed: 20,
-      pending: 30
+      pending: 30,
+      completed: 40
   }
 
 end

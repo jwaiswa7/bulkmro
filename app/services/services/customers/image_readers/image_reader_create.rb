@@ -39,7 +39,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
       loop do
         @images = []
 
-        blobs = blob_client.list_blobs(container_name, {marker: nextMarker, max_results: 50})
+        blobs = blob_client.list_blobs(container_name, {marker: nextMarker, max_results: 1000})
         blobs.each do |blob|
           puts "\tBlob name #{blob.name} #{blob.properties[:last_modified]}"
           puts "\tLink #{[azure_storage_config[:base_url], blob.name].join}"
@@ -107,10 +107,11 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             end
 
             url = Rails.env.production? ? URL : 'http://localhost:3002/catch'
-            response = HTTParty.post(url, body: request.to_json, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
+            response = HTTParty.post(url, body: request, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
             validated_response = get_validated_response(response)
 
             status = validated_response[:error_message].blank? ? :successful : :failed
+
 
             image_reader.status = status
             image_reader.response = validated_response
@@ -126,7 +127,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
   def get_validated_response(raw_response)
     if raw_response['success'] == true
-      OpenStruct.new(raw_response.parsed_response)
+      OpenStruct.new(raw_response.parsed_response.deep_symbolize_keys)
     elsif raw_response['error']
       {raw_response: raw_response, error_message: raw_response['error']['message']}
     else

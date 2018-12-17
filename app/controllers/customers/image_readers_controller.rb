@@ -7,6 +7,10 @@ class Customers::ImageReadersController < Customers::BaseController
     request = Services::Customers::ImageReaders::ImageReaderCreate.new.call
   end
 
+  def update
+    request = Services::Customers::ImageReaders::ImageReaderUpdate.new(params).call
+  end
+
   # def get_data
   #   authorize :ImageReader
   #   debugger

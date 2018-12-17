@@ -31,6 +31,11 @@ Rails.application.routes.draw do
 
     resources :purchase_orders
     resources :products
+    resources :image_readers do
+      collection do
+        post 'update'
+      end
+    end
 
     get 'login' => '/callbacks/sessions#new'
   end
@@ -146,10 +151,15 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      scope module: 'po_requests' do
+        resources :payment_requests
+      end
+
       collection do
         get 'autocomplete'
         get 'pending'
       end
+
     end
 
     resources :invoice_requests do
@@ -336,6 +346,12 @@ Rails.application.routes.draw do
 
     resources :warehouses
     resources :payment_options
+
+    resources :payment_requests do
+      collection do
+        get 'completed'
+      end
+    end
   end
 
   namespace 'customers' do

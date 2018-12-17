@@ -126,7 +126,7 @@
         <div class="col-6 mt-2">
           <strong class="d-block">Supplier Quotes Attachment</strong>
           <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-            <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
+            <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
               <span class="d-block"><%= attachment.filename %></span>
             <% end %>
           <% end if @inquiry.supplier_quotes.attached? %>
