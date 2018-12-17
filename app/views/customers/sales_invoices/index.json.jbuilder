@@ -1,6 +1,9 @@
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
-                  [   row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info'),
+                  [
+                      if policy(sales_invoice).index?
+                        row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info')
+                      end,
                       if policy(sales_invoice).show?
                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
