@@ -67,7 +67,7 @@
           <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
             <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
             <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
-            <div class="dropdown-divider"></div>
+            <% if policy(:customer_order).index? %><div class="dropdown-divider"></div><% end %>
             <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
           </div>
         </li>
@@ -120,7 +120,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           </div>
         </li>
