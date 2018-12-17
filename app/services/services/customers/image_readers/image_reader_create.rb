@@ -121,9 +121,8 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             image_reader.request = request.merge({blob: blob})
             image_reader.save
 
-            url = Rails.env.production? ? URL : 'http://localhost:3002/catch'
 
-            response = HTTParty.post(url, body: request, headers: {:"x-client-key" => KEY})
+            response = HTTParty.post(URL, body: request, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
 
             status = validated_response[:error_message].blank? ? :successful : :failed
