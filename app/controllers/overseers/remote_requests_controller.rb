@@ -13,8 +13,10 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
 
   def resend_failed_requests
     authorize :remote_request
-    service = Services::Shared::Snippets.new
-    service.resend_failed_remote_requests
+    service = Services::Overseers::RemoteRequests::ResyncFailedRequests.new
+    service.call
+
+    redirect_to overseers_remote_requests_path
   end
 
   private
