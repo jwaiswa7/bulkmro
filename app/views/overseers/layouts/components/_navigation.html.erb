@@ -69,28 +69,44 @@
       </li>
       <% end %>
 
-      <% if policy(:inquiry).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Inquiries
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
-            <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
-            <% if policy(:customer_order).index? %><div class="dropdown-divider"></div><% end %>
-            <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Sales
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
+          <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+              <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
+            </ul>
           </div>
-        </li>
-      <% end %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
+          <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+        </div>
+      </li>
+
       <% if policy(:sales_order).index? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
             Sales Orders
           </a>
           <div class="dropdown-menu">
-            <%= nav_dropdown_item 'List', overseers_sales_orders_path, policy(:sales_order).index? %>
-            <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
-            <%= nav_dropdown_item 'SAP Draft Pending', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
             <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
             <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
@@ -101,51 +117,7 @@
             <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
             <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
           </div>
-        </li>
-      <% end %>
-
-      <% if policy(:sales_order).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Invoice Requests
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-            Dropdown link
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li class="dropdown-submenu">
-              <a class="dropdown-item dropdown-toggle" href="#">Submenu</a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Submenu action</a></li>
-                <li><a class="dropdown-item" href="#">Another submenu action</a></li>
-                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Subsubmenu</a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
-                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
-                  </ul>
-                </li>
-                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Second subsubmenu</a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Subsubmenu action</a></li>
-                    <li><a class="dropdown-item" href="#">Another subsubmenu action</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
         </li>
       <% end %>
 
