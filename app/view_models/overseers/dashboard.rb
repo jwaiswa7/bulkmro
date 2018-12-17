@@ -16,15 +16,15 @@ class Overseers::Dashboard
   end
 
   def recent_inquiries
-    inquiries.first(5)
+    inquiries.first(10)
   end
 
   def recent_sales_quotes
-    sales_quotes.first(5)
+    sales_quotes.first(10)
   end
 
   def recent_sales_orders
-    sales_orders.first(5)
+    sales_orders.first(10)
   end
 
   attr_reader :overseer
