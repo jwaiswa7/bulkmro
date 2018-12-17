@@ -10,6 +10,12 @@ json.data (@addresses) do |address|
                       end,
                   ].join(' '),
                   address.to_s.truncate(50),
+                  address.state.name,
+                  address.city_name,
+                  address.gst,
+                  address.company.pan,
+                  format_boolean(address.gst.to_s.match(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)),
+                  format_boolean(address.company.pan.to_s.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/)),
                   format_boolean_label(address.synced?, 'synced'),
                   format_date(address.created_at)
               ]
