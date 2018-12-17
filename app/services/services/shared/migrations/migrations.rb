@@ -1899,23 +1899,28 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def purchase_order_to_po_request
-    po_requests = PoRequest.where.not({purchase_order_number:nil})
-    po_requests.each do |po_request|
-      if po_request.purchase_order_number.present?
-        purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
-        po_request.update_attribute(:purchase_order, purchase_order)
-      end
-    end
-  end
-
-  def payment_option_to_purchase_order
-    purchase_orders = PurchaseOrder.where({payment_option_id: nil})
-    purchase_orders.each do |purchase_order|
-      if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
-        payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
-        payment_option = PaymentOption.find_by_name(payment_term_name)
-        purchase_order.update_attribute(:payment_option, payment_option)
+  def update_images_for_reliance_products
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Customer Products  images - Reliance.csv', 'seed_files')
+    service.loop(nil) do |x|
+      puts x.get_column('Image Link')
+      if x.get_column('Image Link').present?
+        product = Product.find_by_sku(x.get_column('SKU'))
+        if product.present?
+          sheet_columns = [
+              ['Image Link', 'images']
+          ]
+          sheet_columns.each do |file|
+            file_url = x.get_column(file[0])
+            begin
+              puts "<-------------------------->"
+              attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+            rescue URI::InvalidURIError => e
+              puts "Help! #{e} did not migrate."
+            end
+          end
+        end
+      else
+        puts "false"
       end
     end
   end
