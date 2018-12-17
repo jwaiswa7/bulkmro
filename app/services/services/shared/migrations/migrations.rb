@@ -1274,7 +1274,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     if file_url.present? && filename.present?
       url = URI.parse(file_url)
       req = Net::HTTP.new(url.host, url.port)
-      # req.use_ssl = true
+      req.use_ssl = true
       res = req.request_head(url.path)
       puts "---------------------------------"
       if res.code == '200'
@@ -1904,18 +1904,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       puts x.get_column('Image Link')
       if x.get_column('Image Link').present?
-        product = Product.find_by_sku(x.get_column('SKU'))
-        if product.present?
-          sheet_columns = [
-              ['Image Link', 'images']
-          ]
-          sheet_columns.each do |file|
-            file_url = x.get_column(file[0])
-            begin
-              puts "<-------------------------->"
-              attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
-            rescue URI::InvalidURIError => e
-              puts "Help! #{e} did not migrate."
+        if x.get_column('Image Link').split(':').first != 'http'
+          product = Product.find_by_sku(x.get_column('SKU'))
+          if product.present?
+            sheet_columns = [
+                ['Image Link', 'images']
+            ]
+            sheet_columns.each do |file|
+              file_url = x.get_column(file[0])
+              begin
+                puts "<-------------------------->"
+                attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+              rescue URI::InvalidURIError => e
+                puts "Help! #{e} did not migrate."
+              end
             end
           end
         end
