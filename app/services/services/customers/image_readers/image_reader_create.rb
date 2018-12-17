@@ -2,12 +2,15 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   if Rails.env.production?
     URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
     CONTAINER = 'images'
+    KEY = "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"
   elsif Rails.env.staging?
     URL = 'https://api.playment.in/v1/project/10574135-d26d-4352-96e9-adffd9a032d8/feedline'
     CONTAINER = 'staging'
+    KEY = "qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o"
   else
     URL = 'http://localhost:3002/catch'
     CONTAINER = 'staging'
+    KEY = "qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o"
   end
 
   def initialize
@@ -21,7 +24,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   end
 
   def call
-    perform_later
+    call_later
   end
 
   def call_later
@@ -52,7 +55,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         blobs.each do |blob|
           puts "\tBlob name #{blob.name} #{blob.properties[:last_modified]}"
           puts "\tLink #{[azure_storage_config[:base_url], blob.name].join}"
-          images << { blob: blob.to_json, image_url: [azure_storage_config[:base_url], blob.name].join, image_name: blob.name, reference_id: Digest::MD5.hexdigest([blob.name, blob.properties[:last_modified]].join) }
+          images << {blob: blob.to_json, image_url: [azure_storage_config[:base_url], blob.name].join, image_name: blob.name}
         end
 
         # i += 1
@@ -63,7 +66,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         send_and_register_request(images)
         # puts images, images.size
 
-        break unless ( nextMarker && !nextMarker.empty? )
+        break unless (nextMarker && !nextMarker.empty?)
       end
 
 
@@ -100,23 +103,27 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
       begin
         ActiveRecord::Base.transaction do
 
-          reference_id = image[:reference_id]
+
           blob = image[:blob]
           image_name = image[:image_name]
           image_url = image[:image_url]
 
-          if (ImageReader.find_by_reference_id(reference_id).blank?)
+          if (ImageReader.find_by_image_url(image_url).blank?)
 
-            request = {reference_id: reference_id, data: {image_url: image_url}, tag: "bulkmro"}
-            image_reader = ImageReader.where(reference_id: reference_id).first_or_create do |record|
-              record.image_url = image_url
+
+            image_reader = ImageReader.where(image_url: image_url).first_or_create! do |record|
               record.image_name = image_name
               record.status = :pending
-              record.request = request.merge({blob: blob})
             end
+            reference_id = image_reader.to_sgid(expires_in: (24 * 7).hours, for: 'image_reader').to_s
+            image_reader.reference_id = reference_id
+            request = {reference_id: reference_id, data: {image_url: image_url}, tag: "bulkmro"}
+            image_reader.request = request.merge({blob: blob})
+            image_reader.save
 
             url = Rails.env.production? ? URL : 'http://localhost:3002/catch'
-            response = HTTParty.post(url, body: request, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
+
+            response = HTTParty.post(url, body: request, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
 
             status = validated_response[:error_message].blank? ? :successful : :failed

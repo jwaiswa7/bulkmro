@@ -10,10 +10,11 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
     begin
       ActiveRecord::Base.transaction do
         params["feed_line_units"].each do |image|
+          reference_id = image[:reference_id]
           flu_id = image[:flu_id]
-          image_reader = ImageReader.find_by_flu_id(flu_id)
+          image_reader = GlobalID::Locator.locate_signed(reference_id, for: 'image_reader')
 
-          if image_reader.present?
+          if image_reader.present? && image_reader.flu_id == flu_id
             image_reader.status = :completed
             if image[:result].present?
               image_reader.meter_number = image[:result][:meter_number] if image[:result][:meter_number].present?
@@ -25,7 +26,6 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
             end
           end
         end if params["feed_line_units"].present? && params["feed_line_units"].kind_of?(Array)
-
       end
 
     rescue ActiveRecord::RecordInvalid => exception
@@ -34,8 +34,6 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
 
     response
   end
-
-  # private
 
   attr_reader :params
 end
