@@ -2,7 +2,6 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
 
   def initialize
-
     @images = []
     @azure_storage_config = {
         :name => 'imager',
@@ -18,59 +17,44 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
   def call_later
     read_images
-
     #remove_old_files
   end
-
 
   def read_images
 
     begin
-
-
       # Create a BlobService object
-
       blob_client = Azure::Storage::Blob::BlobService.create(
-
           storage_account_name: azure_storage_config[:name],
-
           storage_access_key: azure_storage_config[:key]
-
       )
-
       container_name = azure_storage_config[:container]
 
       # List the blobs in the container
-
-      puts "\nList blobs in the container following continuation token"
+      # puts "\nList blobs in the container following continuation token"
 
       nextMarker = nil
-
-      i = 0
+      # i = 0
 
       loop do
         @images = []
+
         blobs = blob_client.list_blobs(container_name, {marker: nextMarker, max_results: 1000})
-
         blobs.each do |blob|
-
           puts "\tBlob name #{blob.name} #{blob.properties[:last_modified]}"
           puts "\tLink #{[azure_storage_config[:base_url], blob.name].join}"
-
-          images << image_hash(blob)
-
+          images << { blob: blob.to_json, image_url: [azure_storage_config[:base_url], blob.name].join, image_name: blob.name, reference_id: Digest::MD5.hexdigest([blob.name, blob.properties[:last_modified]].join) }
         end
 
-        i += 1
-
-        puts "\t Iteration #{i} #{blobs.continuation_token}"
+        # i += 1
+        # puts "\t Iteration #{i} #{blobs.continuation_token}"
 
         nextMarker = blobs.continuation_token
 
         send_and_register_request(images)
-        puts images, images.size
-        break unless nextMarker && !nextMarker.empty?
+        # puts images, images.size
 
+        break unless ( nextMarker && !nextMarker.empty? )
       end
 
 
@@ -83,12 +67,6 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
       # Clean up resources. This includes the container and the temp files
 
     end
-
-
-  end
-
-
-  def remove_old_files
 
 
   end
@@ -114,35 +92,26 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
         ActiveRecord::Base.transaction do
 
           reference_id = image[:reference_id]
+          blob = image[:blob]
+          image_name = image[:image_name]
+          image_url = image[:image_url]
 
           if (ImageReader.find_by_reference_id(reference_id).blank?)
 
-            blob = image[:blob]
-            image_name = image[:image_name]
-            image_url = image[:image_url]
-
             request = {reference_id: reference_id, data: {image_url: image_url}, tag: "bulkmro"}
             image_reader = ImageReader.where(reference_id: reference_id).first_or_create do |record|
-              record.reference_id = reference_id
               record.image_url = image_url
               record.image_name = image_name
               record.status = :pending
               record.request = request.merge({blob: blob})
             end
-            url = if Rails.env.production?
-                    URL
-                  else
-                    'http://localhost:3002/catch'
-                  end
 
+            url = Rails.env.production? ? URL : 'http://localhost:3002/catch'
             response = HTTParty.post(url, body: request, headers: {:"x-client-key" => "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"})
+            validated_response = get_validated_response(response)
 
-            validated_response = get_validated_response (response)
+            status = validated_response[:error_message].blank? ? :successful : :failed
 
-            status = :failed
-            if validated_response[:feed_line_unit].present?
-              status = :successful
-            end
 
             image_reader.status = status
             image_reader.response = validated_response
@@ -164,16 +133,6 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
     else
       {raw_response: raw_response, error_message: raw_response.to_s}
     end
-  end
-
-  def image_hash(blob)
-    reference_id = Digest::MD5.hexdigest([blob.name, blob.properties[:last_modified]].join)
-    {
-        blob: blob.to_json,
-        image_url: [azure_storage_config[:base_url], blob.name].join,
-        image_name: blob.name,
-        reference_id: reference_id
-    }
   end
 
   # private
