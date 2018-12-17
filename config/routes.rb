@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       member do
         get 'show'
       end
+      collection do
+        get 'resend_failed_requests'
+      end
     end
 
     resources :callback_requests do
