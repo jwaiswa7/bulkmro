@@ -120,7 +120,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           </div>
         </li>
