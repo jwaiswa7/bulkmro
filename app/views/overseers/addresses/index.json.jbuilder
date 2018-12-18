@@ -22,6 +22,20 @@ json.data (@addresses) do |address|
               ]
 end
 
-json.recordsTotal @addresses.model.all.count
-json.recordsFiltered @addresses.total_count
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [{:"label" => "True", :"value" => true},{:"label" => "False", :"value" => false}],
+                       [{:"label" => "True", :"value" => true},{:"label" => "False", :"value" => false}],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
+
+json.recordsTotal Address.count
+json.recordsFiltered @indexed_addresses.total_count
 json.draw params[:draw]

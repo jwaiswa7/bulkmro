@@ -31,6 +31,7 @@ class Address < ApplicationRecord
   }
 
   scope :has_company_id, -> { where.not(:company_id => nil) }
+  scope :with_includes, -> {includes(:state, :company)}
 
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?

@@ -44,7 +44,7 @@
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
-          <%= nav_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
+          <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
         </div>
       </li>
@@ -158,35 +158,37 @@
         </li>
       <% end %>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-          Admin
-        </a>
-        <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-          <% if (Rails.env.development?) || policy(:remote_request).index? %>
-            <div class="dropdown-submenu">
-              <a class="dropdown-item dropdown-toggle" href="#">Tools</a>
-              <div class="dropdown-menu">
-                <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
-                <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+      <% if policy(:remote_request).index? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+            Admin
+          </a>
+          <div class="dropdown-menu">
+            <%= nav_dropdown_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+            <% if (Rails.env.development?) || policy(:remote_request).index? %>
+              <div class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Tools</a>
+                <div class="dropdown-menu">
+                  <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+                  <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+                </div>
               </div>
-            </div>
-          <% end %>
-          <% if Rails.env.development? || policy(:dashboard).chewy? %>
-            <div class="dropdown-submenu">
-              <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
-              <div class="dropdown-menu">
-                <% chewy_indices.each do |chewy_index| %>
-                  <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
-                <% end %>
-                <div class="dropdown-divider"></div>
-                <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+            <% end %>
+            <% if Rails.env.development? || policy(:dashboard).chewy? %>
+              <div class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
+                <div class="dropdown-menu">
+                  <% chewy_indices.each do |chewy_index| %>
+                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <% end %>
+                  <div class="dropdown-divider"></div>
+                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+                </div>
               </div>
-            </div>
-          <% end %>
-        </div>
-      </li>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
     </ul>
   </div>
   <!-- Navigation Bar -->

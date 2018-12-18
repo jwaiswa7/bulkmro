@@ -1,14 +1,13 @@
 class Overseers::AddressesController < Overseers::BaseController
 
   def index
-    service = Services::Overseers::Finders::Addresses.new(params)
-    service.call
+     service = Services::Overseers::Finders::Addresses.new(params)
+     service.call
 
-    @indexed_addresses = service.indexed_records
-    @addresses = service.records
+     @indexed_addresses = service.indexed_records
+     @addresses = service.records
 
-    # @addresses = ApplyDatatableParams.to(Address.has_company_id, params)
-    authorize @addresses
+     authorize :address
   end
 
   def autocomplete
