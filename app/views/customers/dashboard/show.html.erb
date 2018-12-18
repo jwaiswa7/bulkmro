@@ -110,12 +110,12 @@
           <tbody>
           <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
             <tr>
-              <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
-                <td>
+              <td>
+                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
                   <%= row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info') %>
                   <%= row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-                </td>
-              <% end %>
+                <% end %>
+              </td>
               <td><%= sales_invoice.inquiry.customer_po_number %></td>
               <td><%= format_date(sales_invoice.inquiry.customer_order_date) %></td>
               <td><%= sales_invoice.invoice_number %></td>
