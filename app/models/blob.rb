@@ -13,9 +13,9 @@ class Blob
       style = style.to_sym
       size = IMAGE_SIZES[style] || IMAGE_SIZES[:small]
       if watermark
-        { resize: "#{size}X#{size}", gravity: 'Center', draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'" }
+        { resize: "#{size}X#{size}", extent: "#{size}X#{size}",gravity: 'Center', draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'" }
       else
-        { resize: "#{size}X#{size}" }
+        { resize: "#{size}X#{size}", extent: "#{size}X#{size}" }
       end
     end
   end
