@@ -67,7 +67,7 @@
           <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
             <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
             <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
-            <div class="dropdown-divider"></div>
+            <% if policy(:customer_order).index? %><div class="dropdown-divider"></div><% end %>
             <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
           </div>
         </li>
@@ -85,6 +85,10 @@
             <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
             <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
             <%= nav_dropdown_item 'Completed PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
+            <div class="dropdown-divider"></div>
+            <%= nav_dropdown_item 'Payment Requests', overseers_payment_requests_path, policy(:payment_request).index? %>
+            <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
+            <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
             <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
             <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
@@ -116,7 +120,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <div class="dropdown-divider"></div>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           </div>
         </li>
