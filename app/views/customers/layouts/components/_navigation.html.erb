@@ -31,7 +31,7 @@
         </li>
       <% end %>
       <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
-      <%= link_to 'Playment', customers_playments_path, method: :post %>
+      <%= nav_item 'Image Reader', customers_image_readers_path, true %>
     </ul>
   </div>
   <!-- Navigation Bar -->
