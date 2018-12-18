@@ -18,6 +18,10 @@ class Overseers::ApplicationPolicy
     admin_or_manager? || cataloging? || logistics?
   end
 
+  def not_logistics?
+    !logistics?
+  end
+
   def admin_or_cataloging?
     admin? || cataloging?
   end

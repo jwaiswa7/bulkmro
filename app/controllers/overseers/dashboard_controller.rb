@@ -3,6 +3,13 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def show
     authorize :dashboard, :show?
+
+    if current_overseer.inside_sales_executive?
+      @dashboard = Overseers::Dashboard.new(current_overseer)
+      render 'sales_dashboard'
+    else
+      render 'default_dashboard'
+    end
   end
 
   def serializer
