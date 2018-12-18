@@ -66,8 +66,12 @@ class CustomerProduct < ApplicationRecord
 
   def transform
     if self.has_images?
-      image_transform(self.images.last)
+      image_transform(self.best_images.first)
     end
+  end
+
+  def grid_image(size="small", watermark=true)
+    self.best_images.first.variant(Blob::variation(size,watermark))
   end
 
   def update_index
@@ -75,7 +79,7 @@ class CustomerProduct < ApplicationRecord
   end
 
   def has_images?
-    self.images.attached?
+    self.best_images.attached?
   end
 
   # def set_unit_selling_price

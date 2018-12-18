@@ -7,8 +7,7 @@
         <div class="row">
           <div class="col-md-3">
             <% if @customer_product.best_images.present? && @customer_product.best_images.attached? %>
-<!--              <img src="<%#= url_for_image(@customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%#= @customer_product.sku %>"/>-->
-            <%=image_tag @customer_product.best_images.first.variant(resize: "250x250"), fallback_url: image_path('coming_soon.png'), check_remote: false %>
+              <%= image_tag @customer_product.grid_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
             <% else %>
               <img src="<%= image_path('coming_soon.png') %>" alt="<%= @customer_product.sku %>"/>
             <% end %>
