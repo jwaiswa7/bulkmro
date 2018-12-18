@@ -1900,8 +1900,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_images_for_reliance_products
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Customer Products  images - Reliance.csv', 'seed_files')
-    service.loop(nil) do |x|
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-prodct-images.csv', 'seed_files')
+    service.loop(10) do |x|
       puts x.get_column('Image Link')
       if x.get_column('Image Link').present?
         if x.get_column('Image Link').split(':').first != 'http'
