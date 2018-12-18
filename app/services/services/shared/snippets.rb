@@ -28,6 +28,16 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     GlobalID::Locator.locate(who)
   end
 
+  def delete_products_without_images
+    Account.find('wBgfoW').companies.each do |c|
+      c.customer_products.each do |cp|
+        if cp.best_images.blank?
+          cp.destroy
+        end
+      end
+    end
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
