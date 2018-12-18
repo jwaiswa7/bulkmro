@@ -30,10 +30,10 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
                       }
     })
 
-    if search_filters.present?
-      indexed_records = filter_query(indexed_records)
-    end
-
-    indexed_records
+    # if search_filters.present?
+    #   indexed_records = filter_query(indexed_records)
+    # end
+    #
+    # indexed_records
   end
 end
