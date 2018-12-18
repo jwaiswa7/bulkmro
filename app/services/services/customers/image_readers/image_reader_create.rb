@@ -2,14 +2,17 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
   if Rails.env.production?
     URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
     CONTAINER = 'images'
+    TAG = 'bulkmro'
     KEY = "Uhs8H1Qrkf0VsQM0Owz7nX5jFUc28rhSTlYPRUSXo5o"
   elsif Rails.env.staging?
     URL = 'https://api.playment.in/v1/project/10574135-d26d-4352-96e9-adffd9a032d8/feedline'
     CONTAINER = 'staging'
+    TAG = 'bulkmro_testing'
     KEY = "qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o"
   else
     URL = 'http://localhost:3002/catch'
     CONTAINER = 'staging'
+    TAG = 'bulkmro_testing'
     KEY = "qJsaya4SP75m9Wtsz0hj+90PoROrTUlrOYmtmRAEZ0o"
   end
 
@@ -117,7 +120,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             end
             reference_id = image_reader.to_sgid(expires_in: (24 * 7).hours, for: 'image_reader').to_s
             image_reader.reference_id = reference_id
-            request = {reference_id: reference_id, data: {image_url: image_url}, tag: "bulkmro"}
+            request = {reference_id: reference_id, data: {image_url: image_url}, tag: TAG}
             image_reader.request = request.merge({blob: blob})
 
             image_reader.save
@@ -128,7 +131,6 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
 
             status = validated_response[:feed_line_unit].present? ? :successful : :failed
 
-            debugger
             image_reader.status = status
             image_reader.response = validated_response
             image_reader.flu_id = status == :successful ? validated_response[:feed_line_unit][:flu_id] : nil
