@@ -144,8 +144,15 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
             records = sales_invoices.
                 where('inquiries.inside_sales_owner_id = ?', overseer_id).
                 or(sales_invoices.where('inquiries.outside_sales_owner_id = ?', overseer_id)).
-                where('mis_date' => date_range).
-                map {|s| s.metadata['subtotal'].to_f}.compact
+                where('mis_date' => date_range).map do |sales_invoice|
+                  if sales_invoice.metadata.present?
+                    sales_invoice.metadata['subtotal'].to_f
+                  elsif sales_invoice.report_total.present?
+                    sales_invoice.report_total.to_f
+                  else
+                    nil
+                  end
+                end.compact
           end
 
           data.entries[overseer_hash_key][fields[target_type][0]] = target.target_value.to_f.round(2)
