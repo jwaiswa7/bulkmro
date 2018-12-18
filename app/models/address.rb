@@ -4,7 +4,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
-  pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
@@ -29,6 +29,8 @@ class Address < ApplicationRecord
       non_resident_taxable_person: 50,
       un_agency_or_embassy: 60,
   }
+
+  scope :has_company_id, -> { where.not(:company_id => nil) }
 
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
