@@ -32,5 +32,5 @@ json.data (@companies) do |company|
 end
 
 json.recordsTotal @companies.model.all.count
-json.recordsFiltered @companies.total_count
+json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
