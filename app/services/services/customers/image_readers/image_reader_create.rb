@@ -126,7 +126,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             image_reader.save
 
 
-            response = HTTParty.post(URL, body: request, headers: {:"x-client-key" => KEY})
+            response = HTTParty.post(URL, body: request.to_json, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
 
             status = validated_response[:feed_line_unit].present? ? :successful : :failed
