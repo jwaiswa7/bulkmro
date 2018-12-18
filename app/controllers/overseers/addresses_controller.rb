@@ -1,7 +1,13 @@
 class Overseers::AddressesController < Overseers::BaseController
 
   def index
-    @addresses = ApplyDatatableParams.to(Address.has_company_id, params)
+    service = Services::Overseers::Finders::Addresses.new(params)
+    service.call
+
+    @indexed_addresses = service.indexed_records
+    @addresses = service.records
+
+    # @addresses = ApplyDatatableParams.to(Address.has_company_id, params)
     authorize @addresses
   end
 
