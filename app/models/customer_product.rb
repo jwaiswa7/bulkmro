@@ -1,5 +1,6 @@
 class CustomerProduct < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::ActiveStorageVariants
 
   update_index('customer_products#customer_product') {self}
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
@@ -31,7 +32,7 @@ class CustomerProduct < ApplicationRecord
     self.moq ||= 1
   end
 
-  after_save :update_index
+  after_save :update_index, :transform
 
   def best_brand
     self.brand || self.product.brand
@@ -60,6 +61,12 @@ class CustomerProduct < ApplicationRecord
       self.product.images
     else
       nil
+    end
+  end
+
+  def transform
+    if self.has_images?
+      image_transform(self.images.last)
     end
   end
 
