@@ -131,8 +131,10 @@ module DisplayHelper
   end
 
   def format_badge(text, color)
-    content_tag :span, class: "badge text-uppercase badge-#{color}" do
-      content_tag :strong, text.to_s.capitalize
+    if text.to_s != ''
+      content_tag :span, class: "badge text-uppercase badge-#{color}" do
+        content_tag :strong, text.to_s.capitalize
+      end
     end
   end
 

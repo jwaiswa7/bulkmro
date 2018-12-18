@@ -4,20 +4,32 @@ class Customers::ImageReadersController < Customers::BaseController
 
   def create
     authorize :ImageReader
-    request = Services::Customers::ImageReaders::ImageReaderCreate.new.call
+    Services::Customers::ImageReaders::ImageReaderCreate.new.call
+
+    redirect_to customers_image_readers_path
   end
 
-  def update
-    request = Services::Customers::ImageReaders::ImageReaderUpdate.new(params).call
+  def index
+    authorize :ImageReader
+    @completed_records = ImageReader.where(status: "successful").group_by{ |reader| reader.created_at.to_date }.map{|date,values| { date: date, count: values.count }}
   end
 
-  # def get_data
-  #   authorize :ImageReader
-  #   debugger
-  # end
+  def export_all
+    authorize :ImageReader
 
-  # def index
-  #   response = HTTParty.get("https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline", body: {})
-  #   response.parsed_response
-  # end
+    service = Services::Overseers::Exporters::ImageReadersExporter.new
+    service.call
+
+    redirect_to url_for(Export.image_readers.last.report)
+  end
+
+  def export_by_date
+    authorize :ImageReader
+    service = Services::Overseers::Exporters::ImageReadersForDateExporter.new(date: params[:date])
+    service.call
+
+    redirect_to url_for(Export.image_readers_for_date.last.report)
+  end
+
+
 end

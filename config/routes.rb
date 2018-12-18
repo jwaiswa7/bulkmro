@@ -421,9 +421,11 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
-    resources :playments do
+
+    resources :image_readers do
       collection do
-        get 'get_data'
+        get 'export_all'
+        get 'export_by_date'
       end
     end
 
