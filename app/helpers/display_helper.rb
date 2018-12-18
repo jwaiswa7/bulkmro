@@ -191,7 +191,7 @@ module DisplayHelper
      '</p></div></div></div>'].join('').html_safe
   end
 
-  def format_status_color(klass,status)
+  def status_color(klass, status)
     case klass.name.to_sym
     when :Inquiry
       inquiry_status_color(status);
@@ -203,7 +203,7 @@ module DisplayHelper
 
   end
 
-  def format_status_count(klass,status)
+  def status_count(klass, status)
     case klass.name.to_sym
     when :SalesOrder
       if klass.statuses.keys.include?status
