@@ -157,6 +157,7 @@
         </li>
       <% end %>
 
+      <% if policy(:remote_request).index? %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
           Admin
@@ -186,6 +187,7 @@
           <% end %>
         </div>
       </li>
+      <% end %>
     </ul>
   </div>
   <!-- Navigation Bar -->
