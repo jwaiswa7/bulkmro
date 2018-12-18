@@ -5,12 +5,12 @@
     <h3 class="text-black-50 mb-0">
       <strong>Requests</strong>
       <div style="float: right">
-        <%= link_to customers_image_readers_path, :method => :post, :class => "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" do %>
+        <%= link_to customers_image_readers_path, method: :post, class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" do %>
           <i class="fal fa-paper-plane mr-1"></i>Create Request
         <% end %>
-        <a href="<%= export_all_customers_image_readers_path(format: :csv) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1">
+        <%= link_to export_all_customers_image_readers_path(format: :csv), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", target: "_blank" do %>
           <i class="fal fa-download mr-1"></i>Image Readers
-        </a>
+        <% end %>
       </div>
     </h3>
   </div>
@@ -26,11 +26,11 @@
           </tr>
         </thead>
         <tbody>
-          <% @completed_records.each do |date, count| %>
+          <% @completed_records.each do |record| %>
             <tr>
-<!--              <td><%#= link_to "Download Export", export_by_date_customers_image_readers_path(date: date) %></td>-->
-              <td><%= date %></td>
-              <td><%= count %></td>
+              <td><%= link_to "Download Export", export_by_date_customers_image_readers_path(date: record[:date], format: :csv), target: "_blank" %></td>
+              <td><%= record[:date] %></td>
+              <td><%= record[:count] %></td>
             </tr>
           <% end %>
         </tbody>

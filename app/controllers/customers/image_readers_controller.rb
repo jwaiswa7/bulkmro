@@ -11,9 +11,7 @@ class Customers::ImageReadersController < Customers::BaseController
 
   def index
     authorize :ImageReader
-    ActiveRecord::Base.default_timezone = :utc
-    @completed_records = ImageReader.where(status: "completed").group_by_day(:created_at).count.reject{ |date,count| count == 0 }
-    ActiveRecord::Base.default_timezone = :local
+    @completed_records = ImageReader.where(status: "successful").group_by{ |reader| reader.created_at.to_date }.map{|date,values| { date: date, count: values.count }}
   end
 
   def export_all
@@ -30,7 +28,7 @@ class Customers::ImageReadersController < Customers::BaseController
     service = Services::Overseers::Exporters::ImageReadersForDateExporter.new(date: params[:date])
     service.call
 
-    redirect_to url_for(Export.image_readers.last.report)
+    redirect_to url_for(Export.image_readers_for_date.last.report)
   end
 
 

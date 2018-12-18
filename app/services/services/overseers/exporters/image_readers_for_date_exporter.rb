@@ -14,7 +14,7 @@ class Services::Overseers::Exporters::ImageReadersForDateExporter < Services::Ov
   end
 
   def call
-    perform_export_later('ImageReadersForDateExporter')
+    build_csv
   end
 
   def build_csv
