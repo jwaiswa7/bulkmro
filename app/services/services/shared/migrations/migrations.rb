@@ -1270,21 +1270,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Done creating #{name.to_s.pluralize}"
   end
 
-  def attach_file(inquiry, filename:, field_name:, file_url:)
-    if file_url.present? && filename.present?
-      url = URI.parse(file_url)
-      req = Net::HTTP.new(url.host, url.port)
-      req.use_ssl = true
-      res = req.request_head(url.path)
-      puts "---------------------------------"
-      if res.code == '200'
-        file = open(file_url)
-        inquiry.send(field_name).attach(io: file, filename: filename)
-      else
-        puts res.code
-      end
-    end
-  end
+def attach_file(inquiry, filename:, field_name:, file_url:)
+if file_url.present? && filename.present?
+url = URI.parse(file_url)
+req = Net::HTTP.new(url.host, url.port)
+req.use_ssl = true
+res = req.request_head(url.path)
+puts "---------------------------------"
+if res.code == '200'
+file = open(file_url)
+inquiry.send(field_name).attach(io: file, filename: filename)
+else
+puts res.code
+end
+end
+end
 
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
@@ -1899,32 +1899,60 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def update_images_for_reliance_products
-    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-prodct-images.csv', 'seed_files')
-    service.loop(10) do |x|
-      puts x.get_column('Image Link')
-      if x.get_column('Image Link').present?
-        if x.get_column('Image Link').split(':').first != 'http'
-          product = Product.find_by_sku(x.get_column('SKU'))
-          if product.present?
-            sheet_columns = [
-                ['Image Link', 'images']
-            ]
-            sheet_columns.each do |file|
-              file_url = x.get_column(file[0])
-              begin
-                puts "<-------------------------->"
-                attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
-              rescue URI::InvalidURIError => e
-                puts "Help! #{e} did not migrate."
-              end
-            end
+
+  def create_reliance_products
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      company_1 = Company.find('ezBtA4')
+      company_2 = Company.find('Pn4t8O')
+      companies = [company_1, company_2]
+      if product.present? && product.has_images?
+        companies.each do |company|
+          CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (x.get_column('Last Buying Price').to_f || 0)).first_or_create! do |customer_product|
+            customer_product.category_id = product.try(:category_id)
+            customer_product.brand_id = product.try(:brand_id)
+            customer_product.name = product.try(:name)
+            customer_product.sku = x.get_column('SKU')
+            customer_product.measurement_unit_id = product.measurement_unit_id
+            customer_product.tax_rate_id = product.try(:tax_rate_id)
+            customer_product.tax_code_id = product.try(:tax_code_id)
+            customer_product.moq = 1
+            customer_product.created_by = Overseer.default
           end
         end
-      else
-        puts "false"
       end
     end
   end
-end
+
+  def update_images_for_reliance_products
+  service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+  service.loop(nil) do |x|
+  puts x.get_column('Image Link')
+  if x.get_column('Image Link').present?
+  if x.get_column('Image Link').split(':').first != 'http'
+  product = Product.find_by_sku(x.get_column('SKU'))
+  if product.present?
+  sheet_columns = [
+  ['Image Link', 'images']
+  ]
+  sheet_columns.each do |file|
+  file_url = x.get_column(file[0])
+  begin
+  puts "<-------------------------->"
+  if !product.has_images?
+    attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+  end
+  rescue URI::InvalidURIError => e
+  puts "Help! #{e} did not migrate."
+  end
+  end
+  end
+  end
+  else
+  puts "false"
+  end
+  end
+  end
+  end
 
