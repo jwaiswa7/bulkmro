@@ -28,7 +28,11 @@
         <tbody>
           <% @completed_records.each do |record| %>
             <tr>
-              <td><%= link_to "Download Export", export_by_date_customers_image_readers_path(date: record[:date], format: :csv), target: "_blank" %></td>
+              <td>
+                <%= link_to export_by_date_customers_image_readers_path(date: record[:date], format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
+                  <i class="fal fa-download mr-1"></i>Download Export
+                <% end %>
+              </td>
               <td><%= record[:date] %></td>
               <td><%= record[:count] %></td>
             </tr>
