@@ -70,7 +70,7 @@ class InvoiceRequest < ApplicationRecord
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
     else
-      self.status = :'Pending GRPO'
+      self.status
     end
   end
 end
