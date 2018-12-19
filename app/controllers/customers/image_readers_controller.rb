@@ -25,7 +25,7 @@ class Customers::ImageReadersController < Customers::BaseController
 
   def export_by_date
     authorize :ImageReader
-    service = Services::Overseers::Exporters::ImageReadersForDateExporter.new(date: params[:date])
+    service = Services::Overseers::Exporters::ImageReadersForDateExporter.new(params)
     service.call
 
     redirect_to url_for(Export.image_readers_for_date.last.report)

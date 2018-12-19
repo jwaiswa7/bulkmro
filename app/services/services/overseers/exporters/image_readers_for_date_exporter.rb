@@ -2,9 +2,10 @@ class Services::Overseers::Exporters::ImageReadersForDateExporter < Services::Ov
 
   attr_accessor :param, :rows, :date, :start_at, :end_at, :model, :export_name, :path, :columns
 
-  def initialize(param)
+  def initialize(params)
     @rows = []
-    @date = param[:date]
+    @date = params[:date]
+    @status = params[:status]
     @start_at = @date.to_date.beginning_of_day
     @end_at = @date.to_date.end_of_day
     @model = ImageReader
@@ -18,7 +19,7 @@ class Services::Overseers::Exporters::ImageReadersForDateExporter < Services::Ov
   end
 
   def build_csv
-    model.where(created_at: @start_at..@end_at).each do |record|
+    model.where("created_at IN (?) AND status = ?", @start_at..@end_at, @status).each do |record|
       rows.push({
                     :image_name => record.image_name,
                     :meter_number => record.meter_number,

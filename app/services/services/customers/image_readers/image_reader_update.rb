@@ -15,14 +15,18 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
           image_reader = GlobalID::Locator.locate_signed(reference_id, for: 'image_reader')
 
           if image_reader.present? && image_reader.flu_id == flu_id
-            image_reader.status = :completed
-            if image[:result].present?
-              image_reader.meter_number = image[:result][:meter_number] if image[:result][:meter_number].present?
-              image_reader.meter_reading = image[:result][:meter_reading] if image[:result][:meter_reading].present?
-            end
-            image_reader.callback_request = params
-            if image_reader.save
+            if image[:status] == "FAILED"
+              image_reader.status = :failed
+            else
+              if image[:result].present?
+                image_reader.status = :completed
+                image_reader.meter_number = image[:result][:meter_number] if image[:result][:meter_number].present?
+                image_reader.meter_reading = image[:result][:meter_reading] if image[:result][:meter_reading].present?
+              end
               response[:success] = true
+            end
+            if image_reader.save
+              image_reader.callback_request = params
             end
           end
         end if params["feed_line_units"].present? && params["feed_line_units"].kind_of?(Array)

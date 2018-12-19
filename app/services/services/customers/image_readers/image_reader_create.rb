@@ -85,12 +85,12 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             image_reader.save
 
 
-            request = if image_reader.id % 2 == 0 && !Rails.env.production?
-                        request
-                      else
-                        request.to_json
-                      end
-
+            # request = if image_reader.id % 2 == 0 && !Rails.env.production?
+            #             request
+            #           else
+            #             request.to_json
+            #           end
+            #
 
             response = HTTParty.post(URL, body: request, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
