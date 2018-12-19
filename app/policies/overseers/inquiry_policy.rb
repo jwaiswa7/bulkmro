@@ -7,7 +7,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     index?
   end
 
-  def change_billing_shipping_details?
+  def disable_billing_shipping_details?
     record.persisted? && record.quotation_uid.present?
   end
 
