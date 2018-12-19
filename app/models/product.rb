@@ -11,6 +11,7 @@ class Product < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeSynced
   include Mixins::CanHaveTaxes
+  include Mixins::CanBeActivated
 
   update_index('products#product') {self if self.approved?}
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
@@ -48,6 +49,7 @@ class Product < ApplicationRecord
 
   scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
+
 
   validates_presence_of :name
 
