@@ -191,4 +191,11 @@ module DisplayHelper
      '</p></div></div></div>'].join('').html_safe
   end
 
+  def validate_gst(gst)
+    format_boolean(gst.match(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/))
+  end
+
+  def validate_pan(pan)
+    format_boolean(pan.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/))
+  end
 end
