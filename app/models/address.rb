@@ -95,4 +95,12 @@ class Address < ApplicationRecord
         [city_name, pincode, state.to_s, country_name].reject(&:blank?).join(', ')
     ].reject(&:blank?).join("<br>").html_safe
   end
+
+  def validate_gst
+    self.gst.match(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+  end
+
+  def validate_pan
+    self.company.pan.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/) if self.company.present? && self.company.pan.present?
+  end
 end
