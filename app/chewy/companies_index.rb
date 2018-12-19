@@ -6,6 +6,8 @@ class CompaniesIndex < BaseIndex
     field :addresses, value: -> (record) { record.addresses.size }
     field :contacts, value: -> (record) { record.contacts.size }
     field :inquiries, value: -> (record) { record.inquiries.size }
+    field :pan, value: -> (record) { record.pan.to_s }, analyzer: 'substring'
+    field :is_pan_valid, value: -> (record) { record.validate_pan}
     field :is_supplier, value: -> (record) { record.is_supplier?}
     field :is_customer, value: -> (record) { record.is_customer? }
     field :sap_status, value: -> (record) { record.synced? }

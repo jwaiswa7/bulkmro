@@ -173,4 +173,8 @@ class Company < ApplicationRecord
   def self.legacy
     self.find_by_name('Legacy Company')
   end
+
+  def validate_pan
+    self.pan.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/) if self.pan.present?
+  end
 end
