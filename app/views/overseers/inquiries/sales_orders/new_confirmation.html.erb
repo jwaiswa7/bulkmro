@@ -43,13 +43,9 @@
             </div>
             <div class="col-6 col-md-3">
               <strong>Currency</strong>
-              <br> <%= f.object.currency %>
+              <br> <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
             </div>
-            <div class="col-6 col-md-2">
-              <strong>Conversion rate</strong>
-              <br> <%= f.object.conversion_rate %>
-            </div>
-            <div class="col-6 col-md-2">
+            <div class="col-6 col-md-4">
               <strong class="d-block">Payment Terms</strong>
               <%= @inquiry.payment_option %>
           </div>
