@@ -905,4 +905,26 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
   end
+
+  def destroy_customer_products_variant
+    customer_product_images = CustomerProduct.all.map(&:best_images).compact
+    cart_images = CartItem.all.map{|item| item.customer_product.best_images}.compact
+
+    customer_product_images.each do |best_images|
+      if !best_images.nil?
+        best_images.each do |image|
+          image.service.delete(image.variant(Blob::variation("small",true)).key)
+          image.service.delete(image.variant(Blob::variation("medium",true)).key)
+        end
+      end
+    end
+
+    cart_images.each do |best_images|
+      if !best_images.nil?
+        best_images.each do |image|
+          image.service.delete(image.variant(Blob::variation("tiny",true)).key)
+        end
+      end
+    end
+  end
 end
