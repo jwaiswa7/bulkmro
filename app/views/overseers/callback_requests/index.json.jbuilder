@@ -2,7 +2,7 @@ json.data (@callback_requests) do |callback_request|
   columns = [
                   [
                       if policy(callback_request).show?
-                        row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Remote Request', 'info')
+                        row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Remote Request', 'info', :_blank)
                       end,
                   ].join(' '),
                   remote_request_status_badge(callback_request.status),

@@ -1270,21 +1270,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Done creating #{name.to_s.pluralize}"
   end
 
-  def attach_file(inquiry, filename:, field_name:, file_url:)
-    if file_url.present? && filename.present?
-      url = URI.parse(file_url)
-      req = Net::HTTP.new(url.host, url.port)
-      req.use_ssl = true
-      res = req.request_head(url.path)
-      puts "---------------------------------"
-      if res.code == '200'
-        file = open(file_url)
-        inquiry.send(field_name).attach(io: file, filename: filename)
-      else
-        puts res.code
-      end
-    end
-  end
+def attach_file(inquiry, filename:, field_name:, file_url:)
+if file_url.present? && filename.present?
+url = URI.parse(file_url)
+req = Net::HTTP.new(url.host, url.port)
+req.use_ssl = true
+res = req.request_head(url.path)
+puts "---------------------------------"
+if res.code == '200'
+file = open(file_url)
+inquiry.send(field_name).attach(io: file, filename: filename)
+else
+puts res.code
+end
+end
+end
 
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
@@ -1445,7 +1445,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def purchase_order_callback_data
-    tax_rates = { '14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5 }
+    tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
     errors = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
     i = 0
@@ -1789,14 +1789,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     puts product_name, customer_cost
     puts "<--------------->"
-    CustomerProduct.where(:company_id => company.id, :product_id => product.id , :customer_price => ( customer_cost || 0 ) ).first_or_create! do |customer_product|
-      customer_product.category_id = ( category.id if category.present? ) || product.category_id
-      customer_product.brand_id = ( brand.id if brand.present? ) || product.brand_id
+    CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (customer_cost || 0)).first_or_create! do |customer_product|
+      customer_product.category_id = (category.id if category.present?) || product.category_id
+      customer_product.brand_id = (brand.id if brand.present?) || product.brand_id
       customer_product.name = product_name
       customer_product.sku = product.sku
-      customer_product.measurement_unit_id = ( measurement_unit.id if measurement_unit.present? ) || product.measurement_unit_id
-      customer_product.tax_rate_id = ( tax_rate.id if tax_rate.present? ) || product.tax_rate_id
-      customer_product.tax_code_id = ( tax_code.id if tax_code.present? ) || product.tax_code_id
+      customer_product.measurement_unit_id = (measurement_unit.id if measurement_unit.present?) || product.measurement_unit_id
+      customer_product.tax_rate_id = (tax_rate.id if tax_rate.present?) || product.tax_rate_id
+      customer_product.tax_code_id = (tax_code.id if tax_code.present?) || product.tax_code_id
       customer_product.moq = 1
       customer_product.created_by = Overseer.default
     end
@@ -1850,9 +1850,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('Inquiries Status to be updated 12 Dec.csv', 'seed_files')
     service.loop(nil) do |x|
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
-      inquiry.update_attribute(:status ,x.get_column('Before Change Status'))
+      inquiry.update_attribute(:status, x.get_column('Before Change Status'))
     end
   end
+
 
   def update_sales_orders_mis_date
     no_inquiries = []
@@ -1876,5 +1877,82 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts no_inquiries.uniq
     puts no_sales_orders.uniq
   end
-end
+
+  def purchase_order_to_po_request
+    po_requests = PoRequest.where.not({purchase_order_number: nil})
+    po_requests.each do |po_request|
+      if po_request.purchase_order_number.present?
+        purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
+        po_request.update_attribute(:purchase_order, purchase_order)
+      end
+    end
+  end
+
+  def payment_option_to_purchase_order
+    purchase_orders = PurchaseOrder.where({payment_option_id: nil})
+    purchase_orders.each do |purchase_order|
+      if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
+        payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
+        payment_option = PaymentOption.find_by_name(payment_term_name)
+        purchase_order.update_attribute(:payment_option, payment_option)
+      end
+    end
+  end
+
+
+  def create_reliance_products
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      company_1 = Company.find('ezBtA4')
+      company_2 = Company.find('Pn4t8O')
+      companies = [company_1, company_2]
+      if product.present? && product.has_images?
+        companies.each do |company|
+          CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (x.get_column('Last Buying Price').to_f || 0)).first_or_create! do |customer_product|
+            customer_product.category_id = product.try(:category_id)
+            customer_product.brand_id = product.try(:brand_id)
+            customer_product.name = product.try(:name)
+            customer_product.sku = x.get_column('SKU')
+            customer_product.measurement_unit_id = product.measurement_unit_id
+            customer_product.tax_rate_id = product.try(:tax_rate_id)
+            customer_product.tax_code_id = product.try(:tax_code_id)
+            customer_product.moq = 1
+            customer_product.created_by = Overseer.default
+          end
+        end
+      end
+    end
+  end
+
+  def update_images_for_reliance_products
+  service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+  service.loop(nil) do |x|
+  puts x.get_column('Image Link')
+  if x.get_column('Image Link').present?
+  if x.get_column('Image Link').split(':').first != 'http'
+  product = Product.find_by_sku(x.get_column('SKU'))
+  if product.present?
+  sheet_columns = [
+  ['Image Link', 'images']
+  ]
+  sheet_columns.each do |file|
+  file_url = x.get_column(file[0])
+  begin
+  puts "<-------------------------->"
+  if !product.has_images?
+    attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+  end
+  rescue URI::InvalidURIError => e
+  puts "Help! #{e} did not migrate."
+  end
+  end
+  end
+  end
+  else
+  puts "false"
+  end
+  end
+  end
+  end
 
