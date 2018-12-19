@@ -33,14 +33,25 @@
         </div>
         <div class="card-body">
           <div class="form-row">
-            <div class="col-6">
+            <div class="col-6 col-md-3">
+              <strong class="d-block">Customer PO No.</strong>
+              #<%= @inquiry.customer_po_number %>
+            </div>
+            <div class="col-6 col-md-2">
+              <strong class="d-block">Customer Order Date</strong>
+              <%= @inquiry.customer_order_date %>
+            </div>
+            <div class="col-6 col-md-3">
               <strong>Currency</strong>
               <br> <%= f.object.currency %>
             </div>
-            <div class="col-6">
+            <div class="col-6 col-md-2">
               <strong>Conversion rate</strong>
               <br> <%= f.object.conversion_rate %>
             </div>
+            <div class="col-6 col-md-2">
+              <strong class="d-block">Payment Terms</strong>
+              <%= @inquiry.payment_option %>
           </div>
           <div class="card-alternative mt-3">
             <div class="form-row">
