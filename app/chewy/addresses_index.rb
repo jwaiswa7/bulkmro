@@ -6,11 +6,6 @@ class AddressesIndex < BaseIndex
     field :city_name, value: -> (record) { record.city_name.to_s }, analyzer: 'substring'
     field :gst, value: -> (record) { record.gst.to_s }, analyzer: 'substring'
     field :is_gst_valid, value: -> (record) { record.validate_gst }
-    field :company_id, value: -> (record) { record.company_id }
-    field :pan, value: -> (record) { record.company.pan.to_s }, analyzer: 'substring'
-    field :is_pan_valid, value: -> (record) { record.validate_pan }
     field :created_at, type: 'date'
   end
-
-
 end

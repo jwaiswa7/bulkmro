@@ -25,7 +25,7 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
     multi_match: {
                           query: query,
                           operator: 'and',
-                          fields: %w[state^3 city_name^3 gst^3 pan^3 is_gst_valid is_pan_valid],
+                          fields: %w[state^3 city_name^3 gst^3 is_gst_valid],
                           minimum_should_match: '100%'
                       }
     })

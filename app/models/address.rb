@@ -97,10 +97,10 @@ class Address < ApplicationRecord
   end
 
   def validate_gst
-    self.gst.match(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
-  end
-
-  def validate_pan
-    self.company.pan.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/) if self.company.present? && self.company.pan.present?
+    if self.gst.present?
+      self.gst.match?(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+    else
+      false
+    end
   end
 end

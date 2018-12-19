@@ -14,9 +14,7 @@ json.data (@addresses) do |address|
                   address.state.name,
                   address.city_name,
                   format_boolean(address.validate_gst),
-                  format_boolean(address.validate_pan),
                   address.gst,
-                  address.company.pan,
                   format_boolean_label(address.synced?, 'synced'),
                   format_date(address.created_at)
               ]
@@ -28,9 +26,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{:"label" => "True", :"value" => true},{:"label" => "False", :"value" => false}],
-                       [{:"label" => "True", :"value" => true},{:"label" => "False", :"value" => false}],
-                       [],
+                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
                        [],
                        [],
                        []
