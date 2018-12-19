@@ -190,5 +190,4 @@ module DisplayHelper
      message,
      '</p></div></div></div>'].join('').html_safe
   end
-
 end
