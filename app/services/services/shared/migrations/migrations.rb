@@ -2,6 +2,7 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
+
   attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
   def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)
@@ -15,7 +16,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def generate_csv(array_of_ids, object_type)
     file = "#{Rails.root}/public/#{object_type}_data.csv"
     column_headers = ["ID"]
-    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+    calculated_total(file, 'w', write_headers: true, headers: column_headers) do |writer|
       array_of_ids.each do |i|
         writer << [i]
       end
@@ -1269,21 +1270,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Done creating #{name.to_s.pluralize}"
   end
 
-  def attach_file(inquiry, filename:, field_name:, file_url:)
-    if file_url.present? && filename.present?
-      url = URI.parse(file_url)
-      req = Net::HTTP.new(url.host, url.port)
-      req.use_ssl = true
-      res = req.request_head(url.path)
-      puts "---------------------------------"
-      if res.code == '200'
-        file = open(file_url)
-        inquiry.send(field_name).attach(io: file, filename: filename)
-      else
-        puts res.code
-      end
-    end
-  end
+def attach_file(inquiry, filename:, field_name:, file_url:)
+if file_url.present? && filename.present?
+url = URI.parse(file_url)
+req = Net::HTTP.new(url.host, url.port)
+req.use_ssl = true
+res = req.request_head(url.path)
+puts "---------------------------------"
+if res.code == '200'
+file = open(file_url)
+inquiry.send(field_name).attach(io: file, filename: filename)
+else
+puts res.code
+end
+end
+end
 
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
@@ -1443,6 +1444,54 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts errors
   end
 
+  def purchase_order_callback_data
+    tax_rates = {'14' => 0, '15' => 12, '16' => 18, '17' => 28, '18' => 5}
+    errors = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('purchase_order_callback.csv', 'seed_files')
+    i = 0
+    service.loop(nil) do |x|
+      i = i + 1
+      begin
+        puts "<----------------------- #{i}"
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
+        if purchase_order.present?
+          puts x.get_column('purchase_order_number')
+          meta_data = JSON.parse(x.get_column('meta_data'))
+
+          purchase_order.assign_attributes(:metadata => meta_data, :created_at => meta_data['PoDate'])
+
+          meta_data['ItemLine'].each do |remote_row|
+            purchase_order.rows.build do |row|
+              row.assign_attributes(
+                  metadata: remote_row
+              )
+              tax = nil
+              if remote_row['PopTaxRate'].to_i >= 14
+                supplier = purchase_order.get_supplier(remote_row['PopProductId'].to_i)
+                if supplier.present?
+                  bill_from = supplier.billing_address
+                  ship_from = supplier.shipping_address
+                  bill_to = purchase_order.inquiry.bill_from.address
+
+                  if bill_from.present? && ship_from.present? && bill_to.present?
+                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                  end
+                end
+              end
+              puts tax
+              puts "\n\n"
+            end
+          end
+          purchase_order.save!
+        end
+      rescue => e
+        errors.push("#{x.get_column('purchase_order_number')} - #{e}")
+      end
+    end
+    puts errors
+    puts errors.count
+  end
+
 
   def legacy_sales_order_reporting_data
     service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_sales_order.csv', 'seed_files')
@@ -1589,9 +1638,40 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[0])
         begin
+          puts "<-------------------------->"
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
+        end
+      end
+    end
+  end
+
+  def get_product_price(product_id, company)
+    company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
+    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    return sales_order_row_price.min if sales_order_row_price.present?
+    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
+    return sales_quote_row_price.min
+  end
+
+  def generate_customer_products_from_existing_products
+    overseer = Overseer.default
+    customers = Contact.all
+    customers.each do |customer|
+      customer_companies = customer.companies
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+      inquiry_products.each do |inquiry_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
+          customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
+          # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
+
+          customer_product.created_by = overseer
         end
       end
     end
@@ -1656,11 +1736,223 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice.each do |si|
           si.mis_date = x.get_column('mis_date')
           si.save(validate: false)
-          puts si.mis_date
         end
       end
 
     end
   end
 
-end
+  def sales_orders_reporting_data_update_mis_date
+    service = Services::Shared::Spreadsheets::CsvImporter.new('order_mis_date.csv', 'seed_files')
+    added = []
+    service.loop(2000) do |x|
+      sales_order = SalesOrder.where(order_number: x.get_column('order_number'))
+      if sales_order.present?
+        sales_order.each do |so|
+          so.mis_date = x.get_column('mis_date')
+          added << so.order_number
+          so.save(validate: false)
+        end
+      end
+    end
+    added.uniq
+  end
+
+  def update_products_description
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      is_duplicate = x.get_column('IS Duplicate')
+      if product.present?
+        if is_duplicate == 'TRUE'
+          product.is_active = false
+          product.save
+        else
+          product.name = x.get_column('New Discription')
+          product.save_and_sync
+        end
+      end
+    end
+  end
+
+  def create_customer_product(company, product, x)
+    product_name = x.get_column('New Description')
+    customer_cost = x.get_column('Cost').to_f
+    category_3 = Category.find_by_name(x.get_column('Category 3')) if x.get_column('Category 3').present?
+    category_2 = Category.find_by_name(x.get_column('Category 2')) if x.get_column('Category 2').present?
+    category_1 = Category.find_by_name(x.get_column('Category 1')) if x.get_column('Category 1').present?
+    category = category_3 || category_2 || category_1
+    brand = Brand.find_by_name(x.get_column('Brand'))
+    tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+    tax_rate = TaxRate.find_by_tax_percentage(x.get_column('GST').to_i)
+    measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
+
+    puts product_name, customer_cost
+    puts "<--------------->"
+    CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (customer_cost || 0)).first_or_create! do |customer_product|
+      customer_product.category_id = (category.id if category.present?) || product.category_id
+      customer_product.brand_id = (brand.id if brand.present?) || product.brand_id
+      customer_product.name = product_name
+      customer_product.sku = product.sku
+      customer_product.measurement_unit_id = (measurement_unit.id if measurement_unit.present?) || product.measurement_unit_id
+      customer_product.tax_rate_id = (tax_rate.id if tax_rate.present?) || product.tax_rate_id
+      customer_product.tax_code_id = (tax_code.id if tax_code.present?) || product.tax_code_id
+      customer_product.moq = 1
+      customer_product.created_by = Overseer.default
+    end
+  end
+
+  def add_products_and_customer_products_to_company
+    company = Company.find_by_name('CHANDAN STEEL')
+    products = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Chandan Steel - Bulkmro.csv', 'seed_files')
+    service.loop(nil) do |x|
+      sku = x.get_column('SKU')
+
+      if sku.present?
+        product = Product.find_by_sku(sku)
+        if product.present?
+          create_customer_product(company, product, x)
+        end
+      else
+        name = x.get_column('New Description')
+        product = Product.find_by_name(name)
+        if product.blank?
+          category_3 = Category.find_by_name(x.get_column('Category 3')) if x.get_column('Category 3').present?
+          category_2 = Category.find_by_name(x.get_column('Category 2')) if x.get_column('Category 2').present?
+          category_1 = Category.find_by_name(x.get_column('Category 1')) if x.get_column('Category 1').present?
+          brand = Brand.find_by_name(x.get_column('Brand'))
+
+          category = category_3 || category_2 || category_1
+          measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
+          tax_code = TaxCode.find_by_chapter(x.get_column('HSN'))
+
+          product = Product.new
+          product.brand = brand
+          product.category = category
+          product.sku = product.generate_sku
+          product.tax_code = tax_code || TaxCode.default
+          product.mpn = x.get_column('MPN')
+          product.description = x.get_column('New Description')
+          product.name = name
+          product.measurement_unit = measurement_unit
+          product.legacy_metadata = x.get_row
+          product.save!
+
+          product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+        end
+        create_customer_product(company, product, x)
+      end
+    end
+  end
+
+  def update_inquiries_status
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Inquiries Status to be updated 12 Dec.csv', 'seed_files')
+    service.loop(nil) do |x|
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
+      inquiry.update_attribute(:status, x.get_column('Before Change Status'))
+    end
+  end
+
+
+  def update_sales_orders_mis_date
+    no_inquiries = []
+    no_sales_orders = []
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('MIS Dates - Sheet1.csv', 'seed_files')
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('SO No.'))
+      if sales_order.present?
+        sales_order.mis_date = x.get_column('MIS Date')
+        sales_order.save(validate: false)
+      else
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('Inquiry No.'))
+        if inquiry.present?
+          no_sales_orders.push x.get_column('SO No.')
+        else
+          no_inquiries.push x.get_column(x.get_column('Inquiry No.'))
+        end
+      end
+    end
+    puts no_inquiries.uniq
+    puts no_sales_orders.uniq
+  end
+
+  def purchase_order_to_po_request
+    po_requests = PoRequest.where.not({purchase_order_number: nil})
+    po_requests.each do |po_request|
+      if po_request.purchase_order_number.present?
+        purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
+        po_request.update_attribute(:purchase_order, purchase_order)
+      end
+    end
+  end
+
+  def payment_option_to_purchase_order
+    purchase_orders = PurchaseOrder.where({payment_option_id: nil})
+    purchase_orders.each do |purchase_order|
+      if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
+        payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
+        payment_option = PaymentOption.find_by_name(payment_term_name)
+        purchase_order.update_attribute(:payment_option, payment_option)
+      end
+    end
+  end
+
+
+  def create_reliance_products
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      product = Product.find_by_sku(x.get_column('SKU'))
+      company_1 = Company.find('ezBtA4')
+      company_2 = Company.find('Pn4t8O')
+      companies = [company_1, company_2]
+      if product.present? && product.has_images?
+        companies.each do |company|
+          CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (x.get_column('Last Buying Price').to_f || 0)).first_or_create! do |customer_product|
+            customer_product.category_id = product.try(:category_id)
+            customer_product.brand_id = product.try(:brand_id)
+            customer_product.name = product.try(:name)
+            customer_product.sku = x.get_column('SKU')
+            customer_product.measurement_unit_id = product.measurement_unit_id
+            customer_product.tax_rate_id = product.try(:tax_rate_id)
+            customer_product.tax_code_id = product.try(:tax_code_id)
+            customer_product.moq = 1
+            customer_product.created_by = Overseer.default
+          end
+        end
+      end
+    end
+  end
+
+  def update_images_for_reliance_products
+  service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+  service.loop(nil) do |x|
+  puts x.get_column('Image Link')
+  if x.get_column('Image Link').present?
+  if x.get_column('Image Link').split(':').first != 'http'
+  product = Product.find_by_sku(x.get_column('SKU'))
+  if product.present?
+  sheet_columns = [
+  ['Image Link', 'images']
+  ]
+  sheet_columns.each do |file|
+  file_url = x.get_column(file[0])
+  begin
+  puts "<-------------------------->"
+  if !product.has_images?
+    attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+  end
+  rescue URI::InvalidURIError => e
+  puts "Help! #{e} did not migrate."
+  end
+  end
+  end
+  end
+  else
+  puts "false"
+  end
+  end
+  end
+  end
+

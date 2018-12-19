@@ -3,6 +3,7 @@ git_source(:github) {|repo| "https://github.com/#{repo}.git"}
 
 # ruby '2.5.3'
 
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
 
@@ -94,9 +95,9 @@ gem 'spreadsheet', require: false
 gem 'simple_xlsx_reader'
 
 # Render XLSX files
-gem 'axlsx', '2.0.0'
-gem 'axlsx_rails', '0.1.5'
-gem 'rubyzip', '0.9.9'
+gem 'axlsx', '3.0.0.pre'
+gem 'axlsx_rails', '0.5.2'
+gem 'rubyzip', '~> 1.2'
 
 # Validate file uploads
 gem 'file_validators'
@@ -178,9 +179,13 @@ gem 'memcachier'
 # Heroku platform API
 gem 'platform-api'
 
+gem 'pry'
 # Google Cloud API
 gem 'googleauth'
 gem 'google-api-client', '~> 0.11'
+
+gem 'parser'
+gem 'unparser'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -221,3 +226,4 @@ gem 'webpacker', '~> 3.5'
 
 # For Notification bot
 gem 'slack-ruby-bot'
+

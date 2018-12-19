@@ -18,6 +18,8 @@ class SalesOrder < ApplicationRecord
   has_one_attached :serialized_pdf
 
   belongs_to :sales_quote
+
+
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -31,6 +33,10 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
   has_one :po_request
+  has_many :invoice_requests
+  belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
+  belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
+
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
@@ -89,15 +95,14 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> {includes(:created_by, :updated_by, :inquiry)}
-
-  scope :remote_approved, -> {where('status = ? AND remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved'))}
+  scope :remote_approved, -> {where('sales_orders.status = ? AND sales_orders.remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved'))}
 
   def confirmed?
     self.confirmation.present?
   end
 
   def remote_approved?
-    self.status == :'Approved'
+    self.status == 'Approved' || self.legacy_request_status == 'Approved'
   end
 
   def legacy?
@@ -162,6 +167,8 @@ class SalesOrder < ApplicationRecord
       'Material Ready For Dispatch'
     when :'Order Deleted'
       'Cancelled'
+    when :'Order Lost'
+      'Closed'
     end
   end
 
@@ -177,7 +184,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def total_quantities
-    self.rows.pluck(:quantity).inject(0){|sum,x| sum + x }
+    self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
   def has_purchase_order_request

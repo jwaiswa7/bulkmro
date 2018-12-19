@@ -19,11 +19,9 @@ class Overseers::InquiriesController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::InquiriesExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_data service.call, filename: service.filename}
-    end
+    redirect_to url_for(Export.inquiries.last.report)
   end
 
   def index_pg
@@ -111,6 +109,8 @@ class Overseers::InquiriesController < Overseers::BaseController
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
       elsif @inquiry.status == 'Regret'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
+      else
+        Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
       end
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)

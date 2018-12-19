@@ -8,9 +8,13 @@ class Address < ApplicationRecord
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
   belongs_to :company, required: false
+  belongs_to :cart, required: false
+  belongs_to :customer_order, required: false
   has_one :warehouse
   has_one :as_default_billing_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_billing_address, foreign_key: :default_billing_address_id
   has_one :as_default_shipping_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_shipping_address, foreign_key: :default_shipping_address_id
+  has_one :sales_order, :as => :billing_address
+  has_one :sales_order, :as => :shipping_address
 
   has_one_attached :gst_proof
   has_one_attached :cst_proof
@@ -30,6 +34,7 @@ class Address < ApplicationRecord
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
+  validates_uniqueness_of :remote_uid, :on => :update, if: Proc.new { |address| address.company_id.present? }
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
 
@@ -54,7 +59,7 @@ class Address < ApplicationRecord
   end
 
   def remove_gst_whitespace
-    if self.gst != "No GST Number" || self.gst != nil
+    if self.gst != "No GST Number" && self.gst != nil
       self.gst = self.gst.delete(' ')
     end
   end

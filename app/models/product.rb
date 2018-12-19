@@ -28,6 +28,7 @@ class Product < ApplicationRecord
   has_many :inquiry_product_suppliers, :through => :inquiry_products
   has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
+  has_many :customer_products
   has_one :kit
   has_many_attached :images
   attr_accessor :applicable_tax_percentage
@@ -51,12 +52,29 @@ class Product < ApplicationRecord
 
 
   validates_presence_of :name
-  validates_uniqueness_of :name, :if => :not_rejected?
+
   validates_presence_of :sku, :if => :not_rejected?
   validates_uniqueness_of :sku, :if => :not_rejected?
   #validates_with MultipleImageFileValidator, attachments: :images
 
   after_initialize :set_defaults, :if => :new_record?
+  validate :unique_name?
+  def unique_name?
+    if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
+      errors.add(:name, " name must be unique")
+    end
+  end
+
+  def service_product
+    if self.is_service && !self.category.is_service
+      errors.add(:category, ' should be a service category')
+    end
+
+    if self.is_service && !self.tax_code.is_service
+      errors.add(:tax_code, 'Tax Code should be a service tax code')
+    end
+
+  end
 
   def set_defaults
     self.measurement_unit ||= MeasurementUnit.default
@@ -135,5 +153,17 @@ class Product < ApplicationRecord
 
   def self.get_product_name(product_id)
     self.find(product_id).try(:name)
+  end
+
+  def with_images_to_s
+    ["#{self.to_s}",has_images? ? " - Has #{self.images.count} Image(s)" : ""].join
+  end
+
+  def has_images?
+    self.images.attached?
+  end
+
+  def get_customer_company_product(company_id)
+    self.customer_products.where(company_id: company_id).first
   end
 end

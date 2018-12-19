@@ -7,7 +7,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Customers::Finders::SalesInvoices.new(params, current_contact)
+        service = Services::Customers::Finders::SalesInvoices.new(params, current_contact, current_company)
         service.call
 
         @indexed_sales_invoices = service.indexed_records

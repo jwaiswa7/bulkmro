@@ -5,14 +5,14 @@
 
 <% provide :heading_buttons do %>
   <% if policy(:sales_order).export_for_logistics? %>
-    <a href="<%= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Orders (For Logistics)
+    <a href="<%= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1"<% if Export.sales_order_logistics.last.present? %> data-badge="<%= ['', time_ago_in_words(Export.sales_order_logistics.last.created_at), 'ago'].join(' ') %>"<% end %>>
+      <i class="fal fa-download mr-1"></i>Sales Orders (Logistics)
     </a>
   <% end %>
 
   <% if policy(:sales_order).export_rows? %>
-    <a href="<%= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down">
-      <i class="fal fa-download mr-1"></i>Export Sales Order Rows
+    <a href="<%= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" <% if Export.sales_order_rows.last.present? %>data-badge="<%= ['', time_ago_in_words(Export.sales_order_rows.last.created_at),'ago'].join(' ') %>"<% end %>>
+      <i class="fal fa-download mr-1"></i>Sales Order Rows
     </a>
   <% end %>
 <% end %>
@@ -29,7 +29,8 @@
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
     <th class="no-sort desktop">Quote Total</th>
     <th class="no-sort desktop">Order Total</th>
-    <th class="no-sort desktop">Created At</th>
+    <th class="no-sort desktop" data-name="mis_date">Order Date</th>
+    <th class="no-sort desktop" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -42,7 +43,8 @@
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

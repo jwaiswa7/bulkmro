@@ -8,6 +8,8 @@ class SalesQuote < ApplicationRecord
 
   update_index('sales_quotes#sales_quote') {self}
   belongs_to :inquiry
+  has_many :comments, -> {where(:show_to_customer => true)}, :through => :inquiry
+  accepts_nested_attributes_for :comments
   has_one :inquiry_currency, :through => :inquiry
   accepts_nested_attributes_for :inquiry_currency
   has_one :currency, :through => :inquiry_currency
@@ -61,7 +63,7 @@ class SalesQuote < ApplicationRecord
   end
 
   def sales_quote_quantity_not_fulfilled?
-    self.calculated_total_quantity > self.sales_orders.persisted.map {|sales_order| sales_order.calculated_total_quantity if sales_order.order_status != 'Rejected' || sales_order.order_status != 'SAP Rejected'}.compact.sum
+    self.calculated_total_quantity > self.sales_orders.remote_approved.persisted.map {|sales_order| sales_order.calculated_total_quantity }.compact.sum
   end
 
   def filename(include_extension: false)
@@ -85,7 +87,21 @@ class SalesQuote < ApplicationRecord
     elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
       'Purchase Order Revision Pending'
     elsif status == 'Regret' || status == 'Order Lost'
-      'Order Lost'
+      'Closed'
+    end
+  end
+
+  def to_s
+    ['#', inquiry.inquiry_number].join
+  end
+
+  def is_final?
+    if self.id.present? && self.inquiry.final_sales_quote == self
+      true
+    elsif self.sales_orders.size >= 1
+      true
+    else
+      false
     end
   end
 end

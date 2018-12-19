@@ -2,13 +2,17 @@ class PurchaseOrder < ApplicationRecord
   include Mixins::HasConvertedCalculations
   update_index('purchase_orders#purchase_order') {self}
 
+  pg_search_scope :locate, :against => [:id, :po_number], :using => {:tsearch => {:prefix => true}}
+
   belongs_to :inquiry
+  belongs_to :payment_option, required: false
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
   has_many :rows, class_name: 'PurchaseOrderRow', inverse_of: :purchase_order
   has_one_attached :document
-
+  has_one :po_request
+  has_one :payment_request
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
 
   scope :with_includes, -> {includes(:inquiry)}
@@ -51,11 +55,21 @@ class PurchaseOrder < ApplicationRecord
   }
 
   def get_supplier(product_id)
+    if self.metadata['PoSupNum'].present?
+      product_supplier = ( Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']) )
+      return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
+    end
+
     product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
     product_supplier.supplier if product_supplier.present?
   end
 
   def metadata_status
     PurchaseOrder.statuses.key(self.metadata['PoStatus'].to_i).to_s if self.metadata.present?
+  end
+
+  def to_s
+    supplier_name = self.get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
+    ['#' + po_number.to_s, supplier_name].join(' ') if po_number.present?
   end
 end

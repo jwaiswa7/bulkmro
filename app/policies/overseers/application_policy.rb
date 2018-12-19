@@ -18,6 +18,10 @@ class Overseers::ApplicationPolicy
     admin_or_manager? || cataloging? || logistics?
   end
 
+  def not_logistics?
+    !logistics?
+  end
+
   def admin_or_cataloging?
     admin? || cataloging?
   end
@@ -28,6 +32,10 @@ class Overseers::ApplicationPolicy
 
   def manager_or_sales?
     admin_or_manager? || sales?
+  end
+
+  def developer?
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com','vishal.biradar@bulkmro.com' ,'lopesh.durugkar@bulkmro.com'].include? overseer.email
   end
 
   def admin?
@@ -99,11 +107,11 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    ['vijay.manjrekar@bulkmro.com','bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','nilesh.desai@bulkmro.com','shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com' ].include? overseer.email
+    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def allow_logistics_format_export?
-    ['bhargav.trivedi@bulkmro.com','saurabh.bhosale@bulkmro.com','ashwin.goyal@bulkmro.com','malav.desai@bulkmro.com','shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com' ].include? overseer.email
+    developer? || ['amit.rawool@bulkmro.com'].include?(overseer.email)
   end
 
   def export_rows?

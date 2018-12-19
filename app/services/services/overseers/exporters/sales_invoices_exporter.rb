@@ -2,7 +2,9 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
 
   def initialize
     super
-
+    @model = SalesInvoice
+    @export_name = 'sales_invoices'
+    @path = Rails.root.join('tmp', filename)
     @columns = [
         'Inquiry Number',
         'Invoice Number',
@@ -18,12 +20,14 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
         'Branch (Bill From)',
         'Invoice Status'
     ]
-
-    @model = SalesInvoice
   end
 
   def call
-    model.where(:created_at => start_at..end_at).where.not(sales_order_id: nil).order(invoice_number: :asc).each do |sales_invoice|
+    perform_export_later('SalesInvoicesExporter')
+  end
+
+  def build_csv
+    model.where(:created_at => start_at..end_at).where.not(sales_order_id: nil).where.not(metadata: nil).order(invoice_number: :asc).each do |sales_invoice|
       sales_order = sales_invoice.sales_order
       inquiry = sales_invoice.inquiry
       rows.push({
@@ -35,7 +39,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                     :customer_name => sales_invoice.inquiry.company.name.to_s,
                     :invoice_net_amount => (('%.2f' % (sales_order.calculated_total_cost.to_f - sales_invoice.metadata['shipping_amount'].to_f) ) || '%.2f' % sales_order.calculated_total_cost_without_freight),
                     :freight_and_packaging => (sales_invoice.metadata['shipping_amount'] || '%.2f' % sales_order.calculated_freight_cost_total),
-                    :total_with_freight => ('%.2f' % sales_invoice.metadata['subtotal']),
+                    :total_with_freight => ('%.2f' % sales_invoice.metadata['subtotal'] if sales_invoice.metadata['subtotal']),
                     :tax_amount => ('%.2f' % sales_invoice.metadata['tax_amount']),
                     :gross_amount => ('%.2f' % sales_invoice.metadata['grand_total']),
                     :bill_from_branch => (inquiry.bill_from.address.state.name if inquiry.bill_from.present?),
@@ -43,6 +47,7 @@ class Services::Overseers::Exporters::SalesInvoicesExporter < Services::Overseer
                 })
     end
 
-    generate_csv
+    export = Export.create!(export_type: 25)
+    generate_csv(export)
   end
 end

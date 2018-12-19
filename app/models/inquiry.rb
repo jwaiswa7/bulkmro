@@ -52,6 +52,7 @@ class Inquiry < ApplicationRecord
   has_many :inquiry_status_records
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
+  has_one :customer_order, dependent: :nullify
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -81,6 +82,10 @@ class Inquiry < ApplicationRecord
       :'Order Lost' => 9,
       :'Regret' => 10,
   }
+
+  def regrettable_statuses
+    Inquiry.statuses.keys.sort.reject {|status| ["Order Lost", "Regret", "Expected Order"].include?(status)}
+  end
 
   enum stage: {
       inquiry_number_assigned: 1,
@@ -154,7 +159,7 @@ class Inquiry < ApplicationRecord
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+    # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
@@ -198,6 +203,14 @@ class Inquiry < ApplicationRecord
 
   validate :every_product_is_only_added_once?
 
+  validate :company_is_active, :if => :new_record?
+
+  def company_is_active
+    if !self.company.is_active
+      errors.add(:company, 'must be active to make a inquiry')
+    end
+  end
+
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq {|ip| ip.product_id}.size != self.inquiry_products.size
       errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
@@ -237,7 +250,6 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
-      self.shipping_company ||= self.company
       self.commercial_terms_and_conditions ||= [
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
@@ -249,12 +261,8 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
-  end
 
-  after_initialize :set_global_defaults
-
-  def set_global_defaults
-    if self.company.present?
+    if self.company.present? && (self.billing_company.blank? || self.shipping_company.blank?)
       self.billing_company ||= self.company
       self.shipping_company ||= self.company
     end

@@ -16,7 +16,6 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records
-
     authorize @products
   end
 
@@ -79,7 +78,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @company = Company.find(params[:company_id])
     authorize @product
 
-    bp_catalog =  @product.bp_catalog_for_customer(@company)
+    bp_catalog = @product.bp_catalog_for_customer(@company)
 
     render json: bp_catalog ? {
         bp_catalog_name: bp_catalog[0],
@@ -102,11 +101,9 @@ class Overseers::ProductsController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::ProductsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_data service.call, filename: service.filename}
-    end
+    redirect_to url_for(Export.products.last.report)
   end
 
   private

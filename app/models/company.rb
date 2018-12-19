@@ -15,37 +15,36 @@ class Company < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
-
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
-
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
-
   has_many :product_suppliers, foreign_key: :supplier_id
   has_many :products, :through => :product_suppliers
   accepts_nested_attributes_for :product_suppliers
-
   has_many :category_suppliers, foreign_key: :supplier_id
   has_many :categories, :through => :category_suppliers
   accepts_nested_attributes_for :category_suppliers
-
   has_many :brand_suppliers, foreign_key: :supplier_id
   has_many :brands, :through => :brand_suppliers
   has_many :brand_products, :through => :brands, :class_name => 'Product', :source => :products
   accepts_nested_attributes_for :brand_suppliers
-
   has_many :inquiries
   has_many :inquiry_product_suppliers, :through => :inquiries
   has_many :inquiry_products, :through => :inquiries
   has_many :products, :through => :inquiry_products
+  has_many :sales_quotes, :through => :inquiries, :source => :sales_quotes
   has_many :sales_orders, :through => :inquiries
   has_many :invoices, :through => :inquiries
   has_many :addresses, dependent: :destroy
+  has_many :customer_products, dependent: :destroy
+  has_many :company_products, :through => :customer_products
+  has_many :customer_orders
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
+  has_one_attached :logo
 
   enum company_type: {
       :proprietorship => 10,
@@ -82,9 +81,11 @@ class Company < ApplicationRecord
   validates_presence_of :name
   validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
+  validates_uniqueness_of :remote_uid, :on => :update
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
+  validates_with ImageFileValidator, attachment: :logo
 
   validate :name_is_conditionally_unique?
 
@@ -122,6 +123,16 @@ class Company < ApplicationRecord
     self.addresses.first if !self.addresses.blank?
   end
 
+  def billing_address
+    self.update_attributes(:default_billing_address => self.set_default_company_billing_address) if self.default_billing_address.blank?
+    self.default_billing_address
+  end
+
+  def shipping_address
+    self.update_attributes(:default_shipping_address => self.set_default_company_shipping_address) if self.default_shipping_address.blank?
+    self.default_shipping_address
+  end
+
   def to_contextual_s(product)
     s = [self.to_s]
 
@@ -134,6 +145,29 @@ class Company < ApplicationRecord
     end
 
     s.join(' ')
+  end
+
+  def generate_catalog(overseer)
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => self.id).map {|i| i.inquiry_products}.flatten
+    inquiry_products.each do |inquiry_product|
+      if inquiry_product.product.synced?
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id, :customer_price => ( inquiry_product.product.latest_unit_cost_price || 0 )).first_or_create! do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = (inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
+          customer_product.sku = (inquiry_product.bp_catalog_sku == "" ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
+          customer_product.tax_code = inquiry_product.product.best_tax_code
+          customer_product.tax_rate = inquiry_product.best_tax_rate
+          customer_product.measurement_unit = inquiry_product.product.measurement_unit
+          customer_product.moq = 1
+          customer_product.created_by = overseer
+        end
+      end
+    end
+  end
+
+  def customer_product_for(product)
+    customer_products.joins(:product).where('products.id = ?', product.id).first
   end
 
   def self.legacy

@@ -9,7 +9,7 @@ module ShortcutsHelper
     end
   end
 
-  def breadcrumbs
+  def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
     elements = full_path.split('/').reject {|e| e.blank?}
@@ -31,8 +31,11 @@ module ShortcutsHelper
         # Default name is used
       end if index > 0
 
+      name = page_title if page_title.present? && name == controller_name.titleize
+
       if (index + 1) == elements.size
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
+          name = prev_element.singularize.titleize if controller_is_aliased == 'true'
           name
         end)
       else
@@ -54,7 +57,7 @@ module ShortcutsHelper
   def submit_text(obj, use_alias: nil, suffix: nil)
     class_name = use_alias ? use_alias.humanize : obj.class.name
     if obj.new_record?
-      "Create #{class_name}"
+      "Create #{class_name.split('_').join(' ')}"
     else
       if suffix.present?
         "Update #{class_name} #{suffix.humanize}"

@@ -25,10 +25,10 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     authorize @address
     @address.remove_gst_whitespace
 
-    if @address.save_and_sync
+    if @address.save
       @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
       @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
-
+      @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
       render 'new'
@@ -44,9 +44,10 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     authorize @address
     @address.remove_gst_whitespace
 
-    if @address.save_and_sync
+    if @address.save
       @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
       @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
+      @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
       render 'edit'
@@ -65,6 +66,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
         :country_code,
         :pincode,
         :city_name,
+        :remote_uid,
         :address_state_id,
         :state_name,
         :street1,

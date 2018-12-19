@@ -2,9 +2,22 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
 
   def autocomplete
-    # @tax_codes = ApplyParams.to(TaxCode.all.where(:is_service => params[:is_service] || false), params)
-    @tax_codes = ApplyParams.to(TaxCode.active, params).order(:code)
+    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",params[:is_service]), params)
     authorize :tax_code
+  end
+
+  def autocomplete_for_product
+    @product = Product.find(params[:product_id])
+    @is_service = @product.try(:is_service) || false
+    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",@is_service), params)
+    authorize @tax_codes
+    respond_to do |format|
+      format.html {}
+      format.json do
+        render 'autocomplete'
+      end
+    end
+
   end
 
   def index

@@ -1,12 +1,17 @@
 class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize
     super
-
-    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date)
     @model = PurchaseOrder
+    @export_name = 'purchase_orders'
+    @path = Rails.root.join('tmp', filename)
+    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date)
   end
 
   def call
+    perform_export_later('PurchaseOrdersExporter')
+  end
+
+  def build_csv
     model.where(:created_at => start_at..end_at).order(po_number: :asc).each do |purchase_order|
       inquiry = purchase_order.inquiry
 
@@ -28,7 +33,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       supplier = purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i)
 
-      sales_order = inquiry.sales_orders.each do |sales_order|
+       sales_order = inquiry.sales_orders.remote_approved.each do |sales_order|
         ids = []
 
         sales_order.rows.each do |r|
@@ -79,7 +84,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       rows.push(row)
     end
-
-    generate_csv
+    export = Export.create!(export_type: 15)
+    generate_csv(export)
   end
 end

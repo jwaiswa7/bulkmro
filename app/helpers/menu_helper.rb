@@ -4,6 +4,14 @@ module MenuHelper
     request.path == path ? 'active' : nil
   end
 
+  def show_if(bool)
+    if bool
+      'show'
+    else
+      nil
+    end
+  end
+
   def current_controller?(path)
     self.controller_path.include? recognize_path(path)[:controller]
   end

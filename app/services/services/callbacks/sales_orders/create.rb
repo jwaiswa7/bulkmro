@@ -36,7 +36,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
         when :'SAP Rejected'
           begin
             sales_order.update_attributes(:status => :'SAP Rejected')
-            comment = sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
+            comment = InquiryComment.where(message: comment_message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create! if sales_order.inquiry.present?
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :sap_rejected).call
             sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
             sales_order.approval.destroy! if sales_order.approval.present?
@@ -63,13 +63,3 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
     end
   end
 end
-
-# {
-#     "U_MgntDocID":"942",
-#     "Status":"1",
-#     "comment":"",
-#     "DocNum":"10300008",
-#     "DocEntry":"609",
-#     "UserEmail":"35",
-#     "SapReject":""
-# }
