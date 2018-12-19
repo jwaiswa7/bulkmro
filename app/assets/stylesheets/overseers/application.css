@@ -9839,6 +9839,23 @@ th {
 .dropdown-divider {
   margin: .5rem 0; }
 
+.dropdown-submenu {
+  position: relative; }
+  .dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: .1rem;
+    margin-right: .1rem; }
+  .dropdown-submenu .dropdown-item {
+    padding-right: 1.5em; }
+    .dropdown-submenu .dropdown-item::after {
+      -webkit-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+      position: absolute;
+      right: 6px;
+      top: .8em; }
+
 .navbar.bg-white {
   border-bottom: 1px solid #E9EEF2; }
 
@@ -10267,6 +10284,9 @@ button.bg-highlight-dark:focus {
 
 #HW_badge.HW_softHidden {
   background-color: #fd7e14 !important; }
+
+.badge.badge-wrap {
+  word-wrap: normal; }
 
 .badge-blue {
   color: #fff;
