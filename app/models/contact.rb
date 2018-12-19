@@ -3,6 +3,7 @@ class Contact < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
+  include Mixins::CanBeActivated
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {:account => [:name]}, :using => {:tsearch => {:prefix => true}}
 
