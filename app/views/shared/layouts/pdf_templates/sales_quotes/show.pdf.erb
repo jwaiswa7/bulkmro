@@ -398,11 +398,7 @@
                 </tbody>
               </table>
               <% if record.currency.name.present? %>
-                <% if record.currency.name.to_s == 'USD' %>
-                  <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.currency.name.to_s %>
-                <% elsif record.currency.name.to_s == 'GBP' %>
-                  <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.currency.name.to_s %>
-                <% elsif record.currency.name.to_s == 'EUR' %>
+                <% if record.currency.name.to_s == 'USD' || record.currency.name.to_s == 'EUR'|| record.currency.name.to_s == 'GBP' %>
                   <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.currency.name.to_s %>
                 <% else %>
                   <%= render 'shared/layouts/pdf_templates/bank_info'%>
