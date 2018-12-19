@@ -11,7 +11,7 @@
               <div class="card-body px-3 pt-3 pb-3">
                 <div class="text-center d-flex flex-column h-100">
                   <p class="mb-1 text-small"><strong><%= status == 'Order Lost' ? 'Order Lost / Regret' : status %></strong></p>
-                  <a href = "<%= [request.fullpath,"?status=",v].join %>"><h5 class="mb-0 mt-auto text-<%= status_color(klass, status) %>"><%= status_count(klass, status) %></h5></a>
+                  <a href = "<%= url_for(:only_path => false, :params => {status: v}) %>"><h5 class="mb-0 mt-auto text-<%= status_color(klass, status) %>"><%= status_count(klass, status) %></h5></a>
                 </div>
               </div>
             </div>
