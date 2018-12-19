@@ -5,9 +5,5 @@ module Mixins::CanBeActivated
 
     scope :active, -> { where(is_active:  true) }
 
-    def active
-      self.is_active?
-    end
-
   end
 end
