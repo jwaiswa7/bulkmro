@@ -15,6 +15,9 @@ import products from "./products/init";
 // Sales Orders
 import salesOrders from "./salesOrders/init";
 
+// Reports
+import reports from './reports/init';
+
 //
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
@@ -27,6 +30,8 @@ import freightRequests from "./freightRequests/init";
 
 let loader = {
     imports: imports,
+
+    reports: reports,
 
     inquiries: inquiries,
     products: products,

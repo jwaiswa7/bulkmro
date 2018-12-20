@@ -26,7 +26,7 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
-            <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true %>
+            <%= nav_dropdown_item 'Monthly Purchase Data', monthly_purchase_data_customers_reports_path, true %>
           </div>
         </li>
       <% end %>
