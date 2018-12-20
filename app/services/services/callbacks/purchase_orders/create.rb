@@ -2,12 +2,15 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
 
   def call
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
+    payment_option = PaymentOption.find_by_name(params['PoPaymentTerms'].to_s.strip)
     begin
       if inquiry.present?
         if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
             purchase_order.assign_attributes(:metadata => params)
-
+            if payment_option.present?
+              purchase_order.assign_attributes(:payment_option => payment_option)
+            end
             params['ItemLine'].each do |remote_row|
               purchase_order.rows.build do |row|
                 row.assign_attributes(

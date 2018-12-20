@@ -2,7 +2,9 @@
 
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
-    <h3 class="text-black-50 mb-0">Hello <%= current_contact.full_name %>!</h3>
+    <h3 class="text-black-50 mb-0">
+      Hello <strong><%= current_contact.first_name %></strong>, you are browsing <strong><%= current_company.name %></strong>
+    </h3>
   </div>
 
   <div class="card mt-1">
@@ -13,7 +15,6 @@
         <tr>
           <th class="no-sort"></th>
           <th class="no-sort">Inquiry #</th>
-          <th class="no-sort">Quote #</th>
           <th class="no-sort">Date</th>
           <th class="no-sort">Line Items</th>
           <th class="no-sort">Total</th>
@@ -27,13 +28,12 @@
           <tr>
             <td><%= row_action_button(customers_quote_path(sales_quote), 'eye', 'View Quote', 'info', :_blank) %></td>
             <td><%= sales_quote.inquiry.inquiry_number %></td>
-            <td><%= sales_quote.id %></td>
             <td><%= format_date(sales_quote.inquiry.created_at) %></td>
             <td><%= sales_quote.rows.size %></td>
             <td><%= format_currency(sales_quote.calculated_total) %></td>
             <td><%= sales_quote.inquiry.inside_sales_owner.to_s %></td>
             <td><%= format_date(sales_quote.inquiry.valid_end_time) %></td>
-            <td><%= inquiry_status_badge(sales_quote.changed_status(sales_quote.inquiry.status)) %></td>
+            <td><%= status_badge(sales_quote.changed_status(sales_quote.inquiry.status)) %></td>
           </tr>
         <% end %>
         </tbody>
@@ -75,7 +75,7 @@
               <td><%= sales_order.inquiry.shipping_contact.try(:name) || sales_order.inquiry.billing_contact.try(:name) %></td>
               <td><%= format_currency(sales_order.calculated_total) %></td>
               <td><%= format_date(sales_order.inquiry.customer_committed_date) %></td>
-              <td><%= sales_order_status_badge(sales_order.effective_customer_status) %></td>
+              <td><%= status_badge(sales_order.effective_customer_status) %></td>
             </tr>
           <% end %>
           </tbody>
@@ -99,7 +99,6 @@
             <th class="no-sort">Invoice #</th>
             <th class="no-sort">Inquiry #</th>
             <th class="no-sort">Order #</th>
-            <th class="no-sort">Quote #</th>
             <th class="no-sort">Line Items</th>
             <th class="no-sort">Inside Sales</th>
             <th class="no-sort">Outside Sales</th>
@@ -118,7 +117,6 @@
               <td><%= sales_invoice.invoice_number %></td>
               <td><%= sales_invoice.inquiry.inquiry_number %></td>
               <td><%= sales_invoice.sales_order.order_number %></td>
-              <td><%= sales_invoice.inquiry.inquiry_number %></td>
               <td><%= sales_invoice.rows.count %></td>
               <td><%= sales_invoice.inquiry.inside_sales_owner.to_s %></td>
               <td><%= sales_invoice.inquiry.outside_sales_owner.to_s %></td>

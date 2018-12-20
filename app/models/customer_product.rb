@@ -67,6 +67,10 @@ class CustomerProduct < ApplicationRecord
     CustomerProductsIndex::CustomerProduct.import([self.id])
   end
 
+  def has_images?
+    self.images.attached?
+  end
+
   # def set_unit_selling_price
   # self.unit_selling_price ||= price!
   # end

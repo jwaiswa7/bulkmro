@@ -1,0 +1,12 @@
+<div class="col-lg-6 col-md-7 my-md-5 my-2">
+  <p>You are assigned as a contact for <strong><%= @contact.companies.to_sentence %></strong>, please choose a company
+    below to browse.</p>
+  <%= simple_form_for(@contact, url: update_current_company_customers_sign_in_steps_path, method: :PATCH) do |f| %>
+    <%= f.input :company_id, as: :select, collection: @contact.companies, include_blank: false, label: 'Choose a Company', input_html: {class: "select2-single"} %>
+    <%= f.submit 'Choose Company', class: 'btn btn-rounded btn-success btn-block' %>
+    <span class="d-block text-center text-black-50 my-3">- OR -</span>
+    <%= link_to destroy_contact_session_path, method: :delete, :class => 'btn btn-outline-danger btn-block btn-sm' do %>
+      <i class="fal fa-power-off"></i>&nbsp;Sign Out
+    <% end %>
+  <% end %>
+</div>

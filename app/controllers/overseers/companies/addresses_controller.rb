@@ -66,6 +66,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
         :country_code,
         :pincode,
         :city_name,
+        :remote_uid,
         :address_state_id,
         :state_name,
         :street1,

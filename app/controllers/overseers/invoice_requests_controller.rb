@@ -2,10 +2,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   before_action :set_invoice_request, only: [:show, :edit, :update]
 
   def pending
-
     invoice_requests =
         if params[:status].present?
-          @title = params[:status]
+          @status = params[:status]
           InvoiceRequest.where(:status => params[:status])
         else
           InvoiceRequest.all
@@ -75,6 +74,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_request
 
     if @invoice_request.valid?
+      @invoice_request.update_status!
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(:message => "Status Changed: #{@invoice_request.status}", :invoice_request => @invoice_request, :overseer => current_overseer)
