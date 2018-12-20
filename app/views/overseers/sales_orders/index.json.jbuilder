@@ -22,7 +22,7 @@ json.data (@sales_orders) do |sales_order|
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,
-                  sales_order_status_badge(format_enum(sales_order.order_status, humanize_text: false)),
+                  status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   format_enum(sales_order.remote_status, humanize_text: false),
                   sales_order.inquiry.company.account.name,
                   sales_order.inside_sales_owner.to_s,
