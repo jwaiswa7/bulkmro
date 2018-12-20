@@ -361,7 +361,7 @@ Rails.application.routes.draw do
       end
 
       collection do
-        get 'quarterly_purchase_data'
+        get 'monthly_purchase_data'
       end
     end
 
