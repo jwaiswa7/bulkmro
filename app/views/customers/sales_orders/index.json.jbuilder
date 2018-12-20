@@ -18,7 +18,7 @@ json.data (@sales_orders) do |sales_order|
                   format_currency(sales_order.calculated_total),
                   format_date(sales_order.inquiry.customer_committed_date),
                   "-",
-                  sales_order_status_badge(sales_order.effective_customer_status)
+                  status_badge(sales_order.effective_customer_status)
               ]
 end
 

@@ -14,7 +14,7 @@ json.data (@po_requests) do |po_request|
                       end
                   ].join(' '),
                   po_request.id,
-                  po_request_status_badge(po_request.status),
+                  status_badge(po_request.status),
                   po_request.inquiry.inquiry_number,
                   po_request.sales_order.order_number,
                   if po_request.logistics_owner.present?
