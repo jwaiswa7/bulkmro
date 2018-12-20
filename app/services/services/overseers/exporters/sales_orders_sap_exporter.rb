@@ -2,6 +2,7 @@ class Services::Overseers::Exporters::SalesOrdersSapExporter < Services::Oversee
 
   def initialize
     super
+    @start_at = Time.now.beginning_of_month
     @model = SalesOrder
     @export_name = 'sales_order_sap'
     @path = Rails.root.join('tmp', filename)
