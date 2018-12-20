@@ -24,4 +24,3 @@
 //= require js-routes
 
 //= require overseers/run
-//= require Chart.bundle.min
