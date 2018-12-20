@@ -26,18 +26,18 @@
           </tr>
         </thead>
         <tbody>
-          <% @completed_records.each do |record| %>
+          <% @completed_records.each do |date, count| %>
             <tr>
               <td>
-                <%= link_to export_by_date_customers_image_readers_path(date: record[:date], status: "completed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
+                <%= link_to export_by_date_customers_image_readers_path(date: date, status: "completed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
                   <i class="fal fa-download mr-1"></i>Completed Records
                 <% end %>
-                <%= link_to export_by_date_customers_image_readers_path(date: record[:date], status: "failed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
+                <%= link_to export_by_date_customers_image_readers_path(date: date, status: "failed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
                   <i class="fal fa-download mr-1"></i>Failed Records
                 <% end %>
               </td>
-              <td><%= record[:date] %></td>
-              <td><%= record[:count] %></td>
+              <td><%= date %></td>
+              <td><%= count %></td>
             </tr>
           <% end %>
         </tbody>

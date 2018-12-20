@@ -11,7 +11,7 @@ class Customers::ImageReadersController < Customers::BaseController
 
   def index
     authorize :ImageReader
-    @completed_records = ImageReader.where(status: "completed").group_by{ |reader| reader.created_at.to_date }.map{|date,values| { date: date, count: values.count }}
+    @completed_records = ImageReader.where(status: "completed").group("DATE(created_at)").count
   end
 
   def export_all
