@@ -162,5 +162,4 @@ module DisplayHelper
   def format_times_ago(time)
     [time_ago_in_words(time),'ago'].join(' ').html_safe
   end
-
 end
