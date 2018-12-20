@@ -84,15 +84,7 @@ class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::B
             image_reader.request = request.merge({blob: blob})
             image_reader.save
 
-
-            # request = if image_reader.id % 2 == 0 && !Rails.env.production?
-            #             request
-            #           else
-            #             request.to_json
-            #           end
-            #
-
-            response = HTTParty.post(URL, body: request, headers: {:"x-client-key" => KEY})
+            response = HTTParty.post(URL, body: request.to_json, headers: {:"x-client-key" => KEY})
             validated_response = get_validated_response(response)
 
             status = validated_response[:feed_line_unit].present? ? :successful : :failed
