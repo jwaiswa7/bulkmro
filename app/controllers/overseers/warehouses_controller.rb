@@ -13,7 +13,7 @@ class Overseers::WarehousesController < Overseers::BaseController
 
   def autocomplete
     authorize :warehouse
-    @warehouse = ApplyParams.to(Warehouse.all.where(:is_active => true), params)
+    @warehouse = ApplyParams.to(Warehouse.all.active, params)
   end
 
   def create
