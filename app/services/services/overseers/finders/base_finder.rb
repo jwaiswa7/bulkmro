@@ -2,6 +2,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil)
     @search_filters = []
     @range_filters = []
+    @base_filter = []
     @status = params[:status]
 
     if params[:columns].present?
@@ -15,7 +16,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         end
       end
     end
-
+    if params[:base_filter_key].present? && params[:base_filter_value].present?
+      if params[:base_filter_value].kind_of?(Array)
+        #filter_By_array
+        @base_filter = filter_by_array(params[:base_filter_key], params[:base_filter_value])
+      else
+        #filter by value
+        @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
+      end
+    end
     @query_string = if params[:search].present? && params[:search][:value].present?
                       params[:search][:value]
                     elsif params[:q].present?
