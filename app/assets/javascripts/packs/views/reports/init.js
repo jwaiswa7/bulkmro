@@ -1,8 +1,8 @@
-import reportsQuarterlyPurchaseData from "./quarterlyPurchaseData";
+import reportsMonthlyPurchaseData from "./monthlyPurchaseData";
 
 
 let reports = {
-    quarterlyPurchaseData: reportsQuarterlyPurchaseData
+    monthlyPurchaseData: reportsMonthlyPurchaseData
 };
 
 export default reports
