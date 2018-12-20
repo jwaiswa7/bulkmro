@@ -156,22 +156,10 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-    if trimmed && comment.message.length > 48
-      message = comment.message[0..48] + ".."
-    else
-      message = comment.message
-    end
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
+  end
 
-    [
-        '<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
-        comment.created_by.full_name,
-        ' <span class="mr-1"><strong><span class="badge badge-secondary">',
-        comment.author_role,
-        '</span></strong></span></span><span>',
-        time_ago_in_words(comment.created_at),
-        ' ago</span></div><div class="chat-item-body"><p>',
-        message,
-        '</p></div></div></div>'
-    ].join('').html_safe
+  def format_times_ago(time)
+    [time_ago_in_words(time),'ago'].join(' ').html_safe
   end
 end

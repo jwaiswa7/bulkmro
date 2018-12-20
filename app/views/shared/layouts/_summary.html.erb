@@ -9,9 +9,9 @@
         <a id="status_<%= v %>" name="status" class="status_class card w-100 mb-2 rim rim-bottom border-<%= status_color(status) %>" href="#">
             <div class="card-body px-3 pt-3 pb-3">
               <div class="text-center d-flex flex-column h-100">
-                <p class="mb-1 text-small">
-                  <strong><%= format_enum(status) %></strong></p>
-
+                <p class="mb-1 text-small text-uppercase text-<%= status_color(status) %>">
+                  <strong><%= format_enum(status) %></strong>
+                </p>
                 <h5 class="mb-0 mt-auto text-<%= status_color(status) %>"><%= status_count(klass, status) %></h5>
               </div>
           </div>
