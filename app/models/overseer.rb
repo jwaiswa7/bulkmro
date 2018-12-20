@@ -8,7 +8,6 @@ class Overseer < ApplicationRecord
   include Mixins::HasRole
 
   has_many :activities, foreign_key: :created_by_id
-  has_many :po_requests, foreign_key: :logistics_owner_id
   has_one_attached :file
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
