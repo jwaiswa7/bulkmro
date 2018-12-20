@@ -30,7 +30,7 @@
 
       <div class="col-12 col-md-12">
         <div class="col-md-6">
-          <%= f.input :logistics_owner, as: :select, :include_blank => false %>
+          <%= f.association :logistics_owner, as: :select, :include_blank => false %>
         </div>
         <div class="d-block d-md-flex align-items-end col-md-6">
           <div class="flex-grow-1">
