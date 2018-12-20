@@ -7,6 +7,16 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
     Company
   end
 
+  def all_records
+    indexed_records = super
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
+
+    indexed_records
+  end
+
   def perform_query(query)
     query = query[0, 35]
 
@@ -14,10 +24,14 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
                                             multi_match: {
                                                 query: query,
                                                 operator: 'and',
-                                                fields: %w[name pan^3 is_pan_valid],
+                                                fields: %w[name^3 pan^3 is_pan_valid],
                                                 minimum_should_match: '100%'
                                             }
                                         })
+
+    if search_filters.present?
+      indexed_records = filter_query(indexed_records)
+    end
 
     indexed_records
   end

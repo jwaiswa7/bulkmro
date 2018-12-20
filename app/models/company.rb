@@ -175,6 +175,10 @@ class Company < ApplicationRecord
   end
 
   def validate_pan
-    self.pan.match(/^[A-Z]{5}\d{4}[A-Z]{1}$/) if self.pan.present?
+    if self.pan.present?
+      self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+    else
+      false
+    end
   end
 end
