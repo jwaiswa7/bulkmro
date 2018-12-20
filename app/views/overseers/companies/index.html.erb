@@ -8,10 +8,26 @@
   <th class="no-sort desktop">Addresses</th>
   <th class="no-sort desktop">Contacts</th>
   <th class="no-sort desktop">Inquiries</th>
+  <th class="no-sort desktop">PAN</th>
+  <th class="no-sort desktop" data-name="is_pan_valid">Valid PAN</th>
   <th class="no-sort desktop" data-name="is_supplier">Is Supplier</th>
   <th class="no-sort desktop" data-name="is_customer">Is Customer</th>
   <th class="no-sort desktop">SAP Status</th>
   <th class="desktop" data-name="created_at">Created</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
 <% end %>
 
 <div class="col-lg-12">
