@@ -33,7 +33,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? 
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
   end
 
   def update?
@@ -105,7 +105,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def resync?
-    record.sent? && record.approved? && record.not_synced?
+    record.sent? && record.approved? && record.not_synced? && not_logistics?
   end
 
   class Scope

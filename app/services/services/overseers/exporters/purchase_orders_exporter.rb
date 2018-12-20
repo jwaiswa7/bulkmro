@@ -4,7 +4,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
     @model = PurchaseOrder
     @export_name = 'purchase_orders'
     @path = Rails.root.join('tmp', filename)
-    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date)
+    @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date supplier_phone_no supplier_email route_through ship_from ship_to)
   end
 
   def call
@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           :po_number => purchase_order.po_number.to_s,
           :inquiry_number => inquiry.inquiry_number.to_s,
           :inquiry_date => inquiry.created_at.to_date.to_s,
-          :company_name => inquiry.company.name,
+          :company_name => inquiry.company.name.gsub(';', ''),
           :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.to_s : nil )
       }
 
@@ -81,6 +81,47 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
              {:committed_customer_date => ( inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil )}
       )
 
+      supplier_phone = if supplier.present?
+                         if supplier.phone.present? && supplier.mobile.present?
+                           supplier.phone + "/" + supplier.mobile
+                         elsif supplier.mobile.present?
+                           supplier.mobile
+                         else
+                           supplier.phone
+                         end
+                       else
+                         nil
+                       end
+
+      row.merge!(
+          if supplier.present?
+            {
+                :supplier_phone_no => supplier_phone,
+                :supplier_email => ( supplier.legacy_email || supplier.email )
+            }
+          else
+            {
+                :supplier_phone_no => nil,
+                :supplier_email => nil
+            }
+          end
+      )
+
+      row.merge!(
+          if inquiry.present?
+            {
+                :route_through => inquiry.try(:opportunity_type),
+                :ship_from => inquiry.ship_from.present? ? inquiry.ship_from.address.city_name : nil,
+                :ship_to => inquiry.shipping_address.present? ? inquiry.shipping_address.city_name : nil
+            }
+          else
+            {
+                :route_through => nil,
+                :ship_from => nil,
+                :ship_to => nil
+            }
+          end
+      )
 
       rows.push(row)
     end

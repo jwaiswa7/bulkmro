@@ -2,6 +2,7 @@ class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
+  include Mixins::CanBeActivated
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
@@ -43,6 +44,7 @@ class Company < ApplicationRecord
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
+  has_one_attached :logo
 
   enum company_type: {
       :proprietorship => 10,
@@ -83,6 +85,7 @@ class Company < ApplicationRecord
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
+  validates_with ImageFileValidator, attachment: :logo
 
   validate :name_is_conditionally_unique?
 

@@ -16,7 +16,8 @@ class InvoiceRequest < ApplicationRecord
       :'Pending AP Invoice' => 20,
       :'Pending AR Invoice' => 30,
       :'Completed AR Invoice Request' => 40,
-      :'Cancelled AR Invoice' => 50
+      :'Cancelled AR Invoice' => 50,
+      :'Cancelled' => 60
   }
 
   scope :grpo_pending, -> {where(:status => :'Pending GRPO')}
@@ -69,7 +70,7 @@ class InvoiceRequest < ApplicationRecord
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
     else
-      self.status = :'Pending GRPO'
+      self.status
     end
   end
 end
