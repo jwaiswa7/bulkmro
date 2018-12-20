@@ -174,6 +174,19 @@ module StatusesHelper
     end
   end
 
+  def status_count(klass, status)
+    case klass.name.to_sym
+    when :SalesOrder
+      if klass.statuses.keys.include?status
+        klass.where(status: status).or(klass.where(legacy_request_status: status)).count
+      else
+        klass.where(remote_status: status).count
+      end
+    else
+      klass.where(status: status).count;
+    end
+  end
+
   def status_badge(status)
     format_badge(status, status_color(status)) if status
   end
