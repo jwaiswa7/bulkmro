@@ -339,7 +339,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :warehouses
+
+    resources  :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+    end
     resources :payment_options
 
     resources :payment_requests do
