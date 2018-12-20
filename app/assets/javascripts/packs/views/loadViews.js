@@ -15,17 +15,22 @@ import products from "./products/init";
 // Sales Orders
 import salesOrders from "./salesOrders/init";
 
+// Reports
+import reports from './reports/init';
+
 //
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
 
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
-import kits from "./kits/init"
+import kits from "./kits/init";
 
 
 let loader = {
     imports: imports,
+
+    reports: reports,
 
     inquiries: inquiries,
     products: products,
@@ -74,6 +79,7 @@ const loadViews = () => {
         loader[controller][controllerAction + 'Action']();
         console.log("loader[" + controller + "][" + controllerAction + "]")
     }
+
 };
 
 export default loadViews
