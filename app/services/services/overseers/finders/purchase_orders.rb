@@ -10,11 +10,6 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
                         super
                       end
 
-    if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
-    end
-
-
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -33,10 +28,6 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
     end
-    if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
-    end
-
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
