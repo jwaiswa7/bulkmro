@@ -10408,6 +10408,14 @@ button.bg-highlight-dark:focus {
     text-decoration: none;
     background-color: #4080e5; }
 
+.badge-color-yellow {
+  color: #212529;
+  background-color: #ffe599; }
+  .badge-color-yellow[href]:hover, .badge-color-yellow[href]:focus {
+    color: #212529;
+    text-decoration: none;
+    background-color: #ffd866; }
+
 .badge-color-light-yellow {
   color: #212529;
   background-color: #fff2cc; }
@@ -10447,6 +10455,14 @@ button.bg-highlight-dark:focus {
     color: #fff;
     text-decoration: none;
     background-color: #54853f; }
+
+.badge-#f9cb9c {
+  color: #212529;
+  background-color: #f9cb9c; }
+  .badge-#f9cb9c[href]:hover, .badge-#f9cb9c[href]:focus {
+    color: #212529;
+    text-decoration: none;
+    background-color: #f6b26c; }
 
 .badge-color-grey {
   color: #212529;

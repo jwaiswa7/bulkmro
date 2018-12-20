@@ -33,7 +33,7 @@
             <td><%= format_currency(sales_quote.calculated_total) %></td>
             <td><%= sales_quote.inquiry.inside_sales_owner.to_s %></td>
             <td><%= format_date(sales_quote.inquiry.valid_end_time) %></td>
-            <td><%= inquiry_status_badge(sales_quote.changed_status(sales_quote.inquiry.status)) %></td>
+            <td><%= status_badge(sales_quote.changed_status(sales_quote.inquiry.status)) %></td>
           </tr>
         <% end %>
         </tbody>
@@ -75,7 +75,7 @@
               <td><%= sales_order.inquiry.shipping_contact.try(:name) || sales_order.inquiry.billing_contact.try(:name) %></td>
               <td><%= format_currency(sales_order.calculated_total) %></td>
               <td><%= format_date(sales_order.inquiry.customer_committed_date) %></td>
-              <td><%= sales_order_status_badge(sales_order.effective_customer_status) %></td>
+              <td><%= status_badge(sales_order.effective_customer_status) %></td>
             </tr>
           <% end %>
           </tbody>

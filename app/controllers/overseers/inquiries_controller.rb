@@ -129,20 +129,18 @@ class Overseers::InquiriesController < Overseers::BaseController
   def update_suppliers
     @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
     authorize @inquiry
+
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
 
-      if params.has_key?(:mass_suppliers)
+
+      if params.has_key?(:common_supplier_selected)
+        Services::Overseers::Inquiries::CommonSupplierSelected.new(@inquiry, params[:inquiry][:common_supplier_id], params[:inquiry_product_ids]).call
         redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
       else
         redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
       end
     end
-
-    callback_method = %w(select_common_supplier).detect {|action| params[action]}
-    Services::Overseers::Inquiries::SelectCommonSupplier.new(
-                                                            params[:common_supplier]
-    ).call  if callback_method.present?
   end
 
   def stages
@@ -151,7 +149,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
-
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
@@ -225,5 +222,4 @@ class Overseers::InquiriesController < Overseers::BaseController
       {}
     end
   end
-
 end

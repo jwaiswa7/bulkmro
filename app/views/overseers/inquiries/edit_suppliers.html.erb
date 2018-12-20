@@ -11,12 +11,12 @@
                 <label class="custom-control-label" for="select_all_suppliers">Select All</label>
               </div>
             </div>
-            <div class="col-md-4 offset-md-3">
-              <%= select_tag :common_supplier_id, '', class: 'form-control select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path %>
+            <div class="col-md-6">
+              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path}, include_blank: 'Select Common Supplier' %>
             </div>
-            <div class="col-md-3">
-              <%= button_tag(type: "submit", name: 'select_common_supplier', class: "btn btn-success btn-block") do %>
-                Add Common Supplier
+            <div class="col-md-4">
+              <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success btn-block") do %>
+                Add Common Supplier and Update
               <% end %>
             </div>
             <hr>
@@ -25,12 +25,13 @@
             <%= inquiry_product.hidden_field :id %>
             <h6 class="text-uppercase pl-3">
                 <span class="custom-control custom-checkbox d-inline pl-0">
-                  <%= check_box_tag 'inquiry_product_checkbox[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
+                  <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
                   <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
                 </span>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
               <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
-                <% if policy(inquiry_product.object.product).sku_purchase_history? %><a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
+                <% if policy(inquiry_product.object.product).sku_purchase_history? %>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
                 <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
