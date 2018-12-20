@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       member do
         get 'show'
       end
+      collection do
+        get 'resend_failed_requests'
+      end
     end
 
     resources :callback_requests do
@@ -339,12 +342,7 @@ Rails.application.routes.draw do
       end
     end
 
-
-    resources  :warehouses do
-      collection do
-        get 'autocomplete'
-      end
-    end
+    resources :warehouses
     resources :payment_options
 
     resources :payment_requests do
