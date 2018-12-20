@@ -47,7 +47,7 @@
                 <% if @company.default_company_contact.contact.mobile %>
                   <div class="col-6 col-md-3 mb-2">
                     <strong class="d-block">Mobile</strong>
-                    <%= @company.default_company_contact.contact.mobile.present? %>
+                    <%= @company.default_company_contact.contact.mobile %>
                   </div>
                 <% end %>
 
@@ -276,13 +276,13 @@
           <thead>
           <tr>
             <th class="no-sort"></th>
-            <th data-name="name">Address</th>
-            <th data-name="state">State</th>
-            <th data-name="city">City</th>
-            <th data-name="gst">GST</th>
-            <th data-name="valid_gst">Valid GST</th>
+            <th class="no-sort" data-name="name">Address</th>
+            <th class="no-sort" data-name="state">State</th>
+            <th class="no-sort" data-name="city">City</th>
+            <th class="no-sort" data-name="gst">GST</th>
+            <th class="no-sort" data-name="valid_gst">Valid GST</th>
             <th class="no-sort">SAP status</th>
-            <th class="desktop" data-name="created_at">Created</th>
+            <th class="no-sort desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody></tbody>
