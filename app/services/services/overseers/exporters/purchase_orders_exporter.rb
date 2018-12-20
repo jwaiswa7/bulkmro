@@ -97,7 +97,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           if supplier.present?
             {
                 :supplier_phone_no => supplier_phone,
-                :supplier_email => supplier.legacy_email
+                :supplier_email => ( supplier.legacy_email || supplier.email )
             }
           else
             {
@@ -110,15 +110,15 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
       row.merge!(
           if inquiry.present?
             {
-                :route_through => inquiry.opportunity_type == "route through" ? true : nil,
-                :ship_to => inquiry.ship_from.present? ? inquiry.ship_from.legacy_metadata["City"] : nil,
-                :ship_from => inquiry.shipping_address.present? ? inquiry.shipping_address.city_name : nil
+                :route_through => inquiry.try(:opportunity_type),
+                :ship_from => inquiry.ship_from.present? ? inquiry.ship_from.address.city_name : nil,
+                :ship_to => inquiry.shipping_address.present? ? inquiry.shipping_address.city_name : nil
             }
           else
             {
                 :route_through => nil,
-                :ship_to => nil,
-                :ship_from => nil
+                :ship_from => nil,
+                :ship_to => nil
             }
           end
       )
