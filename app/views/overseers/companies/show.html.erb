@@ -6,8 +6,7 @@
       </h3>
 
       <% if policy(@company).edit? %>
-        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
-          Company</a>
+        <a href="<%= edit_overseers_account_company_path(@company.account, @company) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit Company</a>
       <% end %>
     </div>
   </section>
@@ -18,7 +17,7 @@
         <% if @company.logo.attached? %>
           <div class="form-row mb-3">
             <div class="col-md-2 col-xs-12">
-              <img src="<%= url_for(@company.logo) %>" class="img-thumbnail img-fluid" alt="@company.name" >
+              <img src="<%= url_for(@company.logo) %>" alt="<%= @company.name %>" >
             </div>
           </div>
         <% end %>
@@ -29,6 +28,13 @@
           <div>
             <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
             <div class="form-row">
+              <% if @company.account %>
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Account</strong>
+                  <a href="<%= overseers_account_path(@company.account) %>" target="_blank"><%= @company.account %></a>
+                </div>
+              <% end %>
+
               <% if @company.site? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">Site</strong>
@@ -91,7 +97,7 @@
               <% if @company.remote_uid.present? %>
                 <div class="col-6 col-md-3 mb-2">
                   <strong class="d-block">SAP Business Partner ID</strong>
-                  <strong class="text-primary"> <%= @company.remote_uid %></strong>
+                  <strong class="text-info"><%= @company.remote_uid %></strong>
                 </div>
               <% end %>
 

@@ -24,7 +24,7 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
                                             multi_match: {
                                                 query: query,
                                                 operator: 'and',
-                                                fields: %w[name^3 pan^3 is_pan_valid],
+                                                fields: %w[name^4 pan^3 is_pan_valid],
                                                 minimum_should_match: '100%'
                                             }
                                         })

@@ -15,7 +15,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def mpn
-    get_product.try(:product).mpn
+    get_product.try(:product).try(:mpn)
   end
 
   def name
