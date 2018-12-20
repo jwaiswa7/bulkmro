@@ -14,7 +14,7 @@ json.data (@remote_requests) do |remote_request|
                   format_date(remote_request.created_at)
               ]
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
-  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + remote_request_status_color(remote_request.status)})
+  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(remote_request.status)})
 end
 
 json.recordsTotal @remote_requests.model.all.count

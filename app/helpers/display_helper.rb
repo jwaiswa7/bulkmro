@@ -1,15 +1,6 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  # def format_status(status)
-  #   case status.to_sym
-  #     when :active
-  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #     else
-  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #   end
-  # end
-
   def upcase(string)
     string.upcase
   end
@@ -128,14 +119,6 @@ module DisplayHelper
 
   def format_collection(kollection)
     kollection.map(&:to_s).to_sentence
-  end
-
-  def format_badge(text, color)
-    if text.to_s != ''
-      content_tag :span, class: "badge text-uppercase badge-#{color}" do
-        content_tag :strong, text.to_s.capitalize
-      end
-    end
   end
 
   def format_boolean(true_or_false)
