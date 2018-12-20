@@ -94,6 +94,16 @@
             </ul>
           </div>
           <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Requested'), policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Completed'), policy(:inquiry).index? %>
+            </ul>
+          </div>
+
+          <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
         </div>
@@ -131,6 +141,24 @@
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
             </ul>
           </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Requested'), policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Completed'), policy(:freight_request).index? %>
+            </ul>
+          </div>
+
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Quotes</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Quotes', overseers_freight_quotes_path, policy(:freight_quote).index? %>
+              <%= nav_dropdown_item 'Pending Quotes', overseers_freight_quotes_path(:status => 'Pending'), policy(:freight_quote).index? %>
+              <%= nav_dropdown_item 'Completed Quotes', overseers_freight_quotes_path(:status => 'Completed'), policy(:freight_quote).index? %>
+            </ul>
+          </div>
+
         </div>
       </li>
 

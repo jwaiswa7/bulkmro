@@ -4,15 +4,7 @@
 <% provide :wrap_whitespace, true %>
 
 <% content_for :heading do %>
-  Purchase Order Requests
-<% end %>
-
-<% content_for(:heading_buttons) do %>
-  <% if policy(:sales_order).index? %>
-    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
-      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
-    </a>
-  <% end %>
+  Freight Requests
 <% end %>
 
 <% content_for :hide_table_desc do %>

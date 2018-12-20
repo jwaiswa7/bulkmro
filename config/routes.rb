@@ -262,6 +262,10 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
           end
+
+          collection do
+            get 'autocomplete'
+          end
         end
 
         resources :sales_quotes do
@@ -347,6 +351,20 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
+    resources :freight_requests do
+
+      scope module: 'freight_requests' do
+        resources :freight_quotes
+      end
+
+      collection do
+        get 'completed'
+      end
+    end
+
+    resources :freight_quotes
+
   end
 
   namespace 'customers' do

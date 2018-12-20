@@ -22,6 +22,7 @@ import salesQuotes from "./salesQuotes/init";
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
+import freightRequests from "./freightRequests/init";
 
 
 let loader = {
@@ -34,7 +35,8 @@ let loader = {
     categories:categories,
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
-    kits: kits
+    kits: kits,
+    freightRequests:freightRequests
 };
 
 // Imports
