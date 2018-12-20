@@ -3,6 +3,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @search_filters = []
     @range_filters = []
     @status = params[:status]
+    @base_filter = []
 
     if params[:columns].present?
       params[:columns].each do |index, column|
@@ -15,6 +16,17 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         end
       end
     end
+
+    if params[:base_filter_key].present? && params[:base_filter_value].present?
+      if params[:base_filter_value].kind_of?(Array)
+        #filter_By_array
+        @base_filter = filter_by_array(params[:base_filter_key], params[:base_filter_value])
+      else
+        #filter by value
+        @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
+      end
+    end
+
 
     @query_string = if params[:search].present? && params[:search][:value].present?
                       params[:search][:value]
@@ -189,5 +201,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :base_filter
 end
