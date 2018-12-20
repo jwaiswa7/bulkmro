@@ -131,8 +131,10 @@ module DisplayHelper
   end
 
   def format_badge(text, color)
-    content_tag :span, class: "badge text-uppercase badge-#{color}" do
-      content_tag :strong, text.to_s.capitalize
+    if text.to_s != ''
+      content_tag :span, class: "badge text-uppercase badge-#{color}" do
+        content_tag :strong, text.to_s.capitalize
+      end
     end
   end
 
@@ -170,7 +172,14 @@ module DisplayHelper
     end.compact
   end
 
-  def format_comment(comment)
+  def format_comment(comment, trimmed = false)
+
+    if trimmed && comment.message.length > 48
+      message = comment.message[0..48] + ".."
+    else
+      message = comment.message
+    end
+
     ['<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
      comment.created_by.full_name,
      ' <span class="mr-1"><strong><span class="badge badge-secondary">',
@@ -178,7 +187,8 @@ module DisplayHelper
      '</span></strong></span></span><span>',
      time_ago_in_words(comment.created_at),
      ' ago</span></div><div class="chat-item-body"><p>',
-     comment.message,
+     message,
      '</p></div></div></div>'].join('').html_safe
   end
+
 end

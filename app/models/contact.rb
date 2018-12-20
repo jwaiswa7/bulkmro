@@ -3,6 +3,7 @@ class Contact < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
+  include Mixins::CanBeActivated
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {:account => [:name]}, :using => {:tsearch => {:prefix => true}}
 
@@ -58,8 +59,8 @@ class Contact < ApplicationRecord
     find_by_email('legacy@bulkmro.com')
   end
 
-  def current_cart(current_company=nil)
-    self.cart || self.create_cart(company: current_company)
+  def current_cart
+    self.cart
   end
 
   def generate_products

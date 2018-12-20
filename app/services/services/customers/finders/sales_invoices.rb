@@ -28,6 +28,7 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+    indexed_records = indexed_records.filter(filter_by_value("inquiry_present", true))
 
     indexed_records
   end
@@ -53,6 +54,8 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
                                                     }
                                                 }
                                             })
+    indexed_records = indexed_records.filter(filter_by_value("inquiry_present", true))
+
     indexed_records
   end
 

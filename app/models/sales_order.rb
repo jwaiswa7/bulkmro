@@ -103,7 +103,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def remote_approved?
-    self.status == :'Approved'
+    self.status == 'Approved' || self.legacy_request_status == 'Approved'
   end
 
   def legacy?

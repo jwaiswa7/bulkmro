@@ -17,7 +17,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -33,7 +33,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? 
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
   end
 
   def update?
@@ -89,7 +89,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve?
-    pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
+    manager? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
   def approve_low_margin?
@@ -101,7 +101,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def resync?
-    record.sent? && record.approved? && record.not_synced?
+    record.sent? && record.approved? && record.not_synced? && not_logistics?
   end
 
   class Scope
