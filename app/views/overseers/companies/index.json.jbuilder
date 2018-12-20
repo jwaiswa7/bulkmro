@@ -33,6 +33,19 @@ json.data (@companies) do |company|
               ]
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
 json.recordsTotal @companies.model.all.count
 json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
