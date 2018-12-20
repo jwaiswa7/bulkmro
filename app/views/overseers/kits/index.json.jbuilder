@@ -2,10 +2,10 @@ json.data (@kits) do |kit|
   json.array! [
                   [
                       if policy(kit).show?
-                        row_action_button(overseers_kit_path(kit), 'eye', 'View Kit', 'info')
+                        row_action_button(overseers_kit_path(kit), 'eye', 'View Kit', 'info', :_blank)
                       end,
                       if policy(kit).edit?
-                        row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning')
+                        row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning', :_blank)
                       end
                   ].join(' '),
                   kit.product.name,

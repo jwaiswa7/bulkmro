@@ -126,7 +126,7 @@ let setup = () => {
                     $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
-                    $('.filter-list-input').val("");
+                    $('.filter-list-input').val("").trigger('keyup');
                     e.preventDefault();
                 });
                 actionTd.append(clear);

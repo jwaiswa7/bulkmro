@@ -33,14 +33,21 @@
         </div>
         <div class="card-body">
           <div class="form-row">
-            <div class="col-6">
+            <div class="col-6 col-md-3">
+              <strong class="d-block">Customer PO No.</strong>
+              #<%= @inquiry.customer_po_number %>
+            </div>
+            <div class="col-6 col-md-2">
+              <strong class="d-block">Customer Order Date</strong>
+              <%= @inquiry.customer_order_date %>
+            </div>
+            <div class="col-6 col-md-3">
               <strong>Currency</strong>
-              <br> <%= f.object.currency %>
+              <br> <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
             </div>
-            <div class="col-6">
-              <strong>Conversion rate</strong>
-              <br> <%= f.object.conversion_rate %>
-            </div>
+            <div class="col-6 col-md-4">
+              <strong class="d-block">Payment Terms</strong>
+              <%= @inquiry.payment_option %>
           </div>
           <div class="card-alternative mt-3">
             <div class="form-row">
@@ -79,7 +86,7 @@
 
             <strong>Supplier Quotes attachment</strong>
             <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-              <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
+              <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
                 <br><%= attachment.filename %>
               <% end %>
             <% end if @inquiry.supplier_quotes.attached? %>

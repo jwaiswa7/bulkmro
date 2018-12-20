@@ -40,7 +40,7 @@
         <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
       </div>
       <div class="col-6 col-md-4">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
+        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service =>false)} %>
       </div>
     </div>
 
@@ -58,9 +58,9 @@
           </div>
           <div class="form-group">
             <% f.object.images.each do |image| %>
-              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => image.filename do %>
+              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => image.filename do %>
                 <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', image.filename, '?'].join('') do %>
+                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', image.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
                   <% end if image.present? && policy(:attachment).destroy? %>
               <% end %>

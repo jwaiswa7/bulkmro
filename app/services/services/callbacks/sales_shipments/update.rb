@@ -12,8 +12,8 @@ class Services::Callbacks::SalesShipments::Update < Services::Callbacks::Shared:
             :delivery_date => params['ship_delivery_date'],
             :followup_date => params['ship_follow_up_date'],
             :shipment_grn => params['shp_grn'],
-            :metadata => params,
-            :packing_remarks => params['pick_pack_remartk']
+            :metadata => ( shipment.metadata.present? ? shipment.metadata.merge!(params) : params ),
+            :packing_remarks => params['pick_pack_remark']
         )
 
         shipment.comments.create!({:message => message, :metadata => params})

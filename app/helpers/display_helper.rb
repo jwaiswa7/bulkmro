@@ -1,15 +1,6 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  # def format_status(status)
-  #   case status.to_sym
-  #     when :active
-  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #     else
-  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #   end
-  # end
-
   def upcase(string)
     string.upcase
   end
@@ -130,12 +121,6 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
-  def format_badge(text, color)
-    content_tag :span, class: "badge text-uppercase badge-#{color}" do
-      content_tag :strong, text.to_s.capitalize
-    end
-  end
-
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
@@ -156,11 +141,37 @@ module DisplayHelper
     end
   end
 
-  def url_for_image(image,fallback_url: "")
-    if image.present? && ActiveStorage::Blob.service.exist?(image.key)
+  def url_for_image(image, fallback_url: "", check_remote: false)
+    if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
     else
       fallback_url
     end
   end
+
+  def chewy_indices
+    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
+      path.gsub(".rb", "").gsub("app/chewy/", "") if !path.include? "base_index"
+    end.compact
+  end
+
+  def format_comment(comment, trimmed = false)
+
+    if trimmed && comment.message.length > 48
+      message = comment.message[0..48] + ".."
+    else
+      message = comment.message
+    end
+
+    ['<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
+     comment.created_by.full_name,
+     ' <span class="mr-1"><strong><span class="badge badge-secondary">',
+     comment.author_role,
+     '</span></strong></span></span><span>',
+     time_ago_in_words(comment.created_at),
+     ' ago</span></div><div class="chat-item-body"><p>',
+     message,
+     '</p></div></div></div>'].join('').html_safe
+  end
+
 end
