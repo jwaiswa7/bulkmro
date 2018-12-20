@@ -2,9 +2,9 @@
 
 const statusChange = function (classname, select) {
     $(classname).on('click', function (e) {
-        var id = $(this).attr('id').replace("status_", "");
-        var selectBox = $(select).find('select');
-        var sibling = selectBox.siblings();
+        let id = $(this).attr('id').replace("status_", "");
+        let selectBox = $(select).find('select');
+        let sibling = selectBox.siblings();
 
         selectBox.select2().val(id).trigger('change');
         sibling.removeClass('select2-container--default');
