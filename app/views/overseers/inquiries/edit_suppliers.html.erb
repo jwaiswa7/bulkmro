@@ -2,15 +2,37 @@
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <%= render 'shared/snippets/form_errors', f: f %>
-
       <div class="card">
         <div class="card-body">
+          <div class="form-row">
+            <div class="col-12 col-md-2">
+              <div class="custom-control custom-checkbox">
+                <%= check_box_tag "select_all_suppliers", true, false, class: 'custom-control-input' %>
+                <label class="custom-control-label" for="select_all_suppliers">Select All</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <%= f.input :common_supplier_id, label: false, :as => :select, input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path}, include_blank: 'Select Common Supplier' %>
+            </div>
+            <div class="col-md-4">
+              <%= button_tag(type: "submit", name: 'common_supplier_selected', class: "btn btn-success btn-block") do %>
+                Add Common Supplier and Update
+              <% end %>
+            </div>
+            <hr>
+          </div>
           <%= f.simple_fields_for :inquiry_products, f.object.inquiry_products.select {|ip| ip.approved?;} do |inquiry_product, i| %>
             <%= inquiry_product.hidden_field :id %>
-
-            <h6 class="text-uppercase">
+            <h6 class="text-uppercase pl-3">
+                <span class="custom-control custom-checkbox d-inline pl-0">
+                  <%= check_box_tag 'inquiry_product_ids[]', inquiry_product.object.id, false, id: "inquiry_product_id_#{inquiry_product.object.id}", class: 'custom-control-input' %>
+                  <label class="custom-control-label" for="<%= "inquiry_product_id_#{inquiry_product.object.id}" %>"></label>
+                </span>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= inquiry_product.object.sr_no %></span>
-              <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %> <% if policy(inquiry_product.object.product).sku_purchase_history? %><a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a><% end %></strong>
+              <strong><%= inquiry_product.object.product.sku %> - <%= inquiry_product.object.product.name %>
+                <% if policy(inquiry_product.object.product).sku_purchase_history? %>
+                  <a class="ml-2 text-small" href="<%= sku_purchase_history_overseers_product_path(inquiry_product.object.product) %>" target="_blank"><i class="fal fa-history mr-1 text-small"></i>History</a>
+                <% end %></strong>
             </h6>
             <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
               <%= inquiry_product.nested_fields_for :inquiry_product_suppliers do |inquiry_product_supplier| %>
@@ -39,7 +61,6 @@
                       <div class="mr-1">
                         <%= inquiry_product_supplier.input :unit_cost_price, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'Unit Price' : false, placeholder: placeholder_for(inquiry_product_supplier, :unit_cost_price) %>
                       </div>
-
                       <div class="mr-1">
                         <%= inquiry_product_supplier.input :latest_unit_cost_price, disabled: true, label: inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? "Latest" : false, wrapper: :input_group do %>
                           <div class="input-group-prepend">

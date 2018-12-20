@@ -1,14 +1,14 @@
 // to set the status filter upon selected status
 
-const statusChange = function (classname, selectbox) {
-    $(classname).click(function(){
-        var id= $(this).attr('id').replace("status_","");
-        var select_box =$(selectbox).find('select');
-        select_box.select2().val(id).trigger('change')
-        var sibling = select_box.siblings()
-        sibling.removeClass('select2-container--default')
-        sibling.addClass('select2-container--bootstrap')
+const statusChange = function (classname, select) {
+    $(classname).on('click', function (e) {
+        let id = $(this).attr('id').replace("status_", "");
+        let selectBox = $(select).find('select');
+        selectBox.val(id).trigger('change');
+
+        e.preventDefault();
+        return false;
     });
-}
+};
 
 export default statusChange

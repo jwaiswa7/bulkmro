@@ -1,15 +1,6 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  # def format_status(status)
-  #   case status.to_sym
-  #     when :active
-  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #     else
-  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #   end
-  # end
-
   def upcase(string)
     string.upcase
   end
@@ -130,14 +121,6 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
-  def format_badge(text, color)
-    if text.to_s != ''
-      content_tag :span, class: "badge text-uppercase badge-#{color}" do
-        content_tag :strong, text.to_s.capitalize
-      end
-    end
-  end
-
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
@@ -173,46 +156,22 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-
     if trimmed && comment.message.length > 48
       message = comment.message[0..48] + ".."
     else
       message = comment.message
     end
 
-    ['<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
-     comment.created_by.full_name,
-     ' <span class="mr-1"><strong><span class="badge badge-secondary">',
-     comment.author_role,
-     '</span></strong></span></span><span>',
-     time_ago_in_words(comment.created_at),
-     ' ago</span></div><div class="chat-item-body"><p>',
-     message,
-     '</p></div></div></div>'].join('').html_safe
-  end
-
-  def status_color(klass, status)
-    case klass.name.to_sym
-    when :Inquiry
-      inquiry_status_color(status);
-    when :SalesOrder
-      sales_order_status_color(status);
-    else
-      ""
-    end
-
-  end
-
-  def status_count(klass, status)
-    case klass.name.to_sym
-    when :SalesOrder
-      if klass.statuses.keys.include?status
-        klass.where(status: status).or(klass.where(legacy_request_status: status)).count
-      else
-        klass.where(remote_status: status).count
-      end
-    else
-      klass.where(status: status).count;
-    end
+    [
+        '<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
+        comment.created_by.full_name,
+        ' <span class="mr-1"><strong><span class="badge badge-secondary">',
+        comment.author_role,
+        '</span></strong></span></span><span>',
+        time_ago_in_words(comment.created_at),
+        ' ago</span></div><div class="chat-item-body"><p>',
+        message,
+        '</p></div></div></div>'
+    ].join('').html_safe
   end
 end
