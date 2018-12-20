@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::ImageReadersForDateExporter < Services::Ov
   end
 
   def build_csv
-    model.where("created_at IN (?) AND status = ?", @start_at..@end_at, @status).each do |record|
+    model.where("created_at >= :start_at AND created_at <= :end_at AND status = :status", {start_at: @start_at, end_at: @end_at, status: ImageReader.statuses[@status]}).each do |record|
       rows.push({
                     :image_name => record.image_name,
                     :meter_number => record.meter_number,
