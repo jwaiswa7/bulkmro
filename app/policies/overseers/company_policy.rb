@@ -3,6 +3,14 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     record.contacts.any? && record.addresses.any? && manager_or_sales? && record.is_active?
   end
 
+  def new_contact?
+    edit? && record.is_active?
+  end
+
+  def new_address?
+    edit? && record.is_active?
+  end
+
   def new?
     manager_or_cataloging? || logistics?
   end
