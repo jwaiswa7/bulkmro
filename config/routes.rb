@@ -330,6 +330,14 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
+        resources :purchase_orders do
+
+        end
+
+        resources :products do
+
+        end
       end
     end
 
@@ -342,7 +350,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :warehouses
+
+    resources  :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+    end
     resources :payment_options
 
     resources :payment_requests do

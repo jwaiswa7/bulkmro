@@ -20,19 +20,6 @@ json.data (@purchase_orders) do |purchase_order|
               ]
 end
 
-json.columnFilters [
-                       [],
-                       [],
-                       [],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       [],
-                       [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       []
-                   ]
-
 json.recordsTotal PurchaseOrder.all.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
