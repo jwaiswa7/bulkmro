@@ -73,7 +73,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_for_sap?
-    allow_export?
+    developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def drafts_pending?
