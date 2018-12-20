@@ -11,6 +11,10 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
   def all_records
     indexed_records = super
 
+    if @base_filter.present?
+      indexed_records=  indexed_records.filter(@base_filter)
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -32,6 +36,10 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
+    end
+
+    if @base_filter.present?
+      indexed_records=  indexed_records.filter(@base_filter)
     end
 
     indexed_records
