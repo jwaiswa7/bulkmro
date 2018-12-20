@@ -17,6 +17,7 @@ json.data (@po_requests) do |po_request|
                   po_request_status_badge(po_request.status),
                   po_request.inquiry.inquiry_number,
                   po_request.sales_order.order_number,
+                  po_request.logistics_owner_id.name,
                   po_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?

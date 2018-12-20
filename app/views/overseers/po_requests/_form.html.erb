@@ -32,11 +32,11 @@
         <div class="col-md-6">
           <%= f.association :logistics_owner, as: :select, :include_blank => false %>
         </div>
-        <div class="d-block d-md-flex align-items-end col-md-6">
-          <div class="flex-grow-1">
+        <div class="d-block d-md-flex align-items-end">
+          <div class="flex-grow-1 col-md-4">
             <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
           </div>
-          <div class="form-group">
+          <div class="form-group col-md-2">
             <% f.object.attachments.each do |attachment| %>
               <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
                 <i class="fal fa-download"></i>
