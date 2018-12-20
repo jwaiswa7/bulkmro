@@ -7,6 +7,7 @@ class PaymentOption < ApplicationRecord
 
   has_many :companies
   has_many :inquiries
+  has_many :purchase_orders
 
   def self.default
     first

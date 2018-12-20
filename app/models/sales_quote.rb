@@ -87,7 +87,7 @@ class SalesQuote < ApplicationRecord
     elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
       'Purchase Order Revision Pending'
     elsif status == 'Regret' || status == 'Order Lost'
-      'Order Lost'
+      'Closed'
     end
   end
 

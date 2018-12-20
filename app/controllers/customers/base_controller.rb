@@ -53,7 +53,11 @@ class Customers::BaseController < ApplicationController
   end
 
   def current_cart
-    current_contact.current_cart(current_company)
+    current_contact.cart || current_contact.create_cart(
+        company: current_company,
+        billing_address: current_company.default_billing_address || current_company.billing_address.first,
+        shipping_address: current_company.default_shipping_address || current_company.shipping_address.first,
+    )
   end
 
   def current_company

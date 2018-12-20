@@ -1,5 +1,43 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
 
+  def supplier_data_summary
+    Account.is_supplier.size
+    Company.acts_as_supplier.size
+    ids = PurchaseOrder.all.map{ |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids.size
+    nov_ids = Company.acts_as_supplier.where(:created_at =>  Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    (ids & nov_ids).size
+# # Accounts as suppliers
+#     7
+#
+# # Total suppliers
+#     6108
+#
+# # Total suppliers with purchase orders
+#     2053
+#
+# # Suppliers added in November
+#     214
+#
+# # Suppliers added in November with purchase orders
+#     105
+  end
+
+  def paper_trail_find
+    who = Product.find_by_sku('BM9R3F1').versions.last.whodunnit
+    GlobalID::Locator.locate(who)
+  end
+
+  def delete_products_without_images
+    Account.find('wBgfoW').companies.each do |c|
+      c.customer_products.each do |cp|
+        if cp.best_images.blank?
+          cp.destroy
+        end
+      end
+    end
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all

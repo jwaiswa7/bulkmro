@@ -146,10 +146,15 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      scope module: 'po_requests' do
+        resources :payment_requests
+      end
+
       collection do
         get 'autocomplete'
         get 'pending'
       end
+
     end
 
     resources :invoice_requests do
@@ -334,8 +339,19 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :warehouses
+
+    resources  :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+    end
     resources :payment_options
+
+    resources :payment_requests do
+      collection do
+        get 'completed'
+      end
+    end
   end
 
   namespace 'customers' do
@@ -350,7 +366,7 @@ Rails.application.routes.draw do
       end
 
       collection do
-        get 'quarterly_purchase_data'
+        get 'monthly_purchase_data'
       end
     end
 

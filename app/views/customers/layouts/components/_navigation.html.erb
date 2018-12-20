@@ -26,7 +26,7 @@
           </a>
           <div class="dropdown-menu">
             <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
-            <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true %>
+            <%= nav_dropdown_item 'Monthly Purchase Data', monthly_purchase_data_customers_reports_path, true %>
           </div>
         </li>
       <% end %>
@@ -37,6 +37,11 @@
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
+    <% if current_company.logo.attached? %>
+      <span class="d-none d-md-inline">
+        <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
+      </span>
+    <% end %>
     <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
     <% if policy(:cart).show? %>
       <div class="dropdown d-inline mr-2" id="cart">
