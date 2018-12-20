@@ -327,6 +327,14 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
+        resources :purchase_orders do
+
+        end
+
+        resources :products do
+
+        end
       end
     end
 
