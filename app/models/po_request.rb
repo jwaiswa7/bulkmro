@@ -8,6 +8,7 @@ class PoRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
+  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id'
   has_many :rows, class_name: 'PoRequestRow'
   accepts_nested_attributes_for :rows, allow_destroy: true
 
