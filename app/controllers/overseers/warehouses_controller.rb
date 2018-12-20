@@ -11,11 +11,6 @@ class Overseers::WarehousesController < Overseers::BaseController
     authorize @warehouse
   end
 
-  def autocomplete
-    authorize :warehouse
-    @warehouse = ApplyParams.to(Warehouse.all.active, params)
-  end
-
   def create
     @warehouse = Warehouse.new(warehouse_params)
     authorize @warehouse
@@ -49,8 +44,7 @@ class Overseers::WarehousesController < Overseers::BaseController
   def warehouse_params
     params.require(:warehouse).permit(
         :name,
-        :is_active,
-        :address_attributes => [:id,:street1,:street2,:country_code,:address_state_id,:city_name,:pincode],
+        :address_attributes => [:id,:street1,:street2,:country_code,:address_state_id,:city_name,:pincode]
     )
   end
 
