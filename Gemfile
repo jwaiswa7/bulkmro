@@ -227,3 +227,5 @@ gem 'webpacker', '~> 3.5'
 # For Notification bot
 gem 'slack-ruby-bot'
 
+# For charts
+gem 'chartjs-ror'
