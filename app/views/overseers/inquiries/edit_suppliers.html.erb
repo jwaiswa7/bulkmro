@@ -12,10 +12,10 @@
               </div>
             </div>
             <div class="col-md-4 offset-md-3">
-              <%= select_tag :common_supplier, '', class: 'form-control select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path %>
+              <%= select_tag :common_supplier_id, '', class: 'form-control select2-ajax', :'data-source' => autocomplete_overseers_suppliers_path %>
             </div>
             <div class="col-md-3">
-              <%= button_tag(type: "submit", name: 'mass_suppliers', class: "btn btn-success btn-block") do %>
+              <%= button_tag(type: "submit", name: 'select_common_supplier', class: "btn btn-success btn-block") do %>
                 Add Common Supplier
               <% end %>
             </div>

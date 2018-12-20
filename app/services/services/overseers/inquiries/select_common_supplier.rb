@@ -1,4 +1,4 @@
-class Services::Overseers::Inquiries::MassSupplier < Services::Shared::BaseService
+class Services::Overseers::Inquiries::SelectCommonSupplier < Services::Shared::BaseService
   def initialize(params)
           @params=params
   end
