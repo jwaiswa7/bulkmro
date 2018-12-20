@@ -81,13 +81,17 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
              {:committed_customer_date => ( inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil )}
       )
 
-      supplier_phone = if supplier.phone.present? && supplier.mobile.present?
-                supplier.phone + "/" + supplier.mobile
-              elsif supplier.mobile.present?
-                supplier.mobile
-              else
-                supplier.phone
-              end
+      supplier_phone = if supplier.present?
+                         if supplier.phone.present? && supplier.mobile.present?
+                           supplier.phone + "/" + supplier.mobile
+                         elsif supplier.mobile.present?
+                           supplier.mobile
+                         else
+                           supplier.phone
+                         end
+                       else
+                         nil
+                       end
 
       row.merge!(
           if supplier.present?
