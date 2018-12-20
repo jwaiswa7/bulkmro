@@ -5,7 +5,7 @@ json.data (@callback_requests) do |callback_request|
                         row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Remote Request', 'info', :_blank)
                       end,
                   ].join(' '),
-                  remote_request_status_badge(callback_request.status),
+                  status_badge(callback_request.status),
                   callback_request.hits.present? ? callback_request.hits.to_i : nil ,
                   format_enum(callback_request.method),
                   callback_request.resource,
