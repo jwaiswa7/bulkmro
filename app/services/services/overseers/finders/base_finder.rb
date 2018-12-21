@@ -1,7 +1,8 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_overseer = nil)
+  def initialize(params, current_overseer = nil, non_pagination: false)
     @search_filters = []
     @range_filters = []
+    @non_pagination = non_pagination
     @status = params[:status]
 
     if params[:columns].present?
@@ -40,6 +41,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                             end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
+    @indexed_records = non_paginated_records if non_pagination
     @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
   end
 
@@ -189,5 +191,5 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :non_pagination
 end
