@@ -23,6 +23,11 @@ every(20.minutes, 'refresh_smart_queue') do
   service.call
 end
 
+every(1.day, 'flush_unavailable_images', :at => '03:30') do
+  service = Services::Customers::CustomerProducts::FlushUnavailableImages.new
+  service.call
+end
+
 every(1.hour, 'generate_exports_hourly') do
   Services::Overseers::Exporters::GenerateExportsHourly.new
 end
