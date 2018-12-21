@@ -4,6 +4,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
+  update_index('addresses#address') {self}
   pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
@@ -97,8 +98,8 @@ class Address < ApplicationRecord
   end
 
   def validate_gst
-    if self.gst.present?
-      self.gst.match?(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+    if self.gst.present? && self.company.present?
+      self.gst.match?(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/) || self.international? || self.company.is_unregistered_dealer
     else
       false
     end

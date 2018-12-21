@@ -313,6 +313,10 @@ class Inquiry < ApplicationRecord
     ].join(' ')
   end
 
+  def po_subject
+    self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ') if self.customer_po_number.present?
+  end
+
   def billing_contact
     self.contact
   end
