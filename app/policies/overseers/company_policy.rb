@@ -14,4 +14,16 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def export_all?
     allow_export?
   end
+
+  def download_customer_product_template?
+    all_roles?
+  end
+
+  def new_excel_customer_product_import?
+    all_roles?
+  end
+
+  def create_customer_products?
+    all_roles?
+  end
 end
