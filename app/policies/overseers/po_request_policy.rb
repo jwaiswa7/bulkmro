@@ -14,4 +14,16 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def new?
     true
   end
+
+  def show_payment_request?
+    record.payment_request.present?
+  end
+
+  def new_payment_request?
+    record.purchase_order.present? && record.payment_request.blank? && (developer? || logistics?)
+  end
+
+  def edit_payment_request?
+    record.payment_request.present?
+  end
 end

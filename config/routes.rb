@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
+      get 'reset_index'
       get 'serializer'
       get 'migrations'
       get 'console'
@@ -47,6 +48,9 @@ Rails.application.routes.draw do
     resources :remote_requests do
       member do
         get 'show'
+      end
+      collection do
+        get 'resend_failed_requests'
       end
     end
 
@@ -70,7 +74,10 @@ Rails.application.routes.draw do
     resources :contacts do
       collection do
         get 'autocomplete'
-        get 'login_as_contact'
+      end
+
+      member do
+        get 'become'
       end
     end
 
@@ -142,10 +149,15 @@ Rails.application.routes.draw do
     end
 
     resources :po_requests do
+      scope module: 'po_requests' do
+        resources :payment_requests
+      end
+
       collection do
         get 'autocomplete'
         get 'pending'
       end
+
     end
 
     resources :invoice_requests do
@@ -167,6 +179,7 @@ Rails.application.routes.draw do
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'export_for_sap'
         get 'autocomplete'
       end
 
@@ -318,6 +331,14 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
+        resources :purchase_orders do
+
+        end
+
+        resources :products do
+
+        end
       end
     end
 
@@ -330,17 +351,34 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :warehouses
+
+    resources  :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+    end
     resources :payment_options
+
+    resources :payment_requests do
+      collection do
+        get 'completed'
+      end
+    end
   end
 
   namespace 'customers' do
+    resource 'sign_in_steps', controller: 'sign_in_steps' do
+      post 'reset_current_company'
+      get 'edit_current_company'
+      patch 'update_current_company'
+    end
+
     resources :reports do
       member do
       end
 
       collection do
-        get 'quarterly_purchase_data'
+        get 'monthly_purchase_data'
       end
     end
 
@@ -398,6 +436,13 @@ Rails.application.routes.draw do
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments
+      end
+    end
+
+    resources :companies do
+      collection do
+        get 'choose_company'
+        get 'contact_companies'
       end
     end
 

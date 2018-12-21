@@ -8,7 +8,7 @@ json.data (@activities) do |activity|
                   if activity.activity_company.present?; activity.activity_company.to_s end,
                   format_enum(activity.company_type),
                   if activity.inquiry.present?; link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry) end,
-                  if activity.inquiry.present?; inquiry_status_badge(activity.inquiry.commercial_status) end,
+                  if activity.inquiry.present?; status_badge(activity.inquiry.commercial_status) end,
                   if activity.contact.present?; activity.contact.to_s end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),

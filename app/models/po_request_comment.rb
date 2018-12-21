@@ -2,5 +2,11 @@ class PoRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :po_request
 
-  # validates_presence_of :message
+  def author
+    self.created_by
+  end
+
+  def author_role
+    author.role.titleize
+  end
 end

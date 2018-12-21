@@ -7,3 +7,5 @@ development:
   host: 'localhost:9200'
 production:
   host: <%= ENV["BONSAI_URL"] %>
+staging:
+  host: <%= ENV["BONSAI_URL"] %>
