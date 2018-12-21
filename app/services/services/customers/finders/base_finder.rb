@@ -2,6 +2,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_contact = nil, current_company = nil)
     @search_filters = []
     @range_filters = []
+    @custom_filters =  params[:custom_filters]
 
     if params[:columns].present?
       params[:columns].each do |index, column|

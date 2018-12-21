@@ -40,6 +40,7 @@ class Company < ApplicationRecord
   has_many :customer_products, dependent: :destroy
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
+  has_many :tags
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof

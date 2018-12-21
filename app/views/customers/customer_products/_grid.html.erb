@@ -1,5 +1,4 @@
 <% if content_for?(:heading) || (content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new?) || !content_for?(:hide_table_desc) %>
-
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
       <% if content_for?(:heading) %>
@@ -36,9 +35,41 @@
 
 <div class="input-group input-group-round">
   <div class="input-group-prepend">
-    <span class="input-group-text"><i class="material-icons">filter_list</i></span>
+    <span class="input-group-text"><i class="material-icons"></i></span>
   </div>
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
+</div>
+
+<div class="accordion mt-2" id="product-filters">
+  <div class="card">
+    <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
+      <strong>Filters</strong>
+    </a>
+    <div id="filters" class="collapse show" data-parent="#product-filters">
+      <%= simple_form_for :custom_filters, :method => 'get' do |f| %>
+        <div class='card-body'>
+          <p class="text-uppercase text-black-50 mb-2">Categories</p>
+          <div class="form-row">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <%= f.collection_check_boxes :tags, @tags,:first, :second, checked:  @checked_tags do |b|%>
+                    <%= b.label(class: "check_box") { b.check_box + b.text } %>
+                    <% end %>
+                </div>
+            </div>
+          </div>
+          <div class="form-row mt-2">
+            <div class="col-4 col-lg-2 col-md-3">
+              <button type="reset" href="#" class="btn btn-outline-danger btn-block">Clear</button>
+            </div>
+            <div class="col-8 col-lg-10 col-md-0">
+              <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <div class="form-row mt-2" id="product-grid">

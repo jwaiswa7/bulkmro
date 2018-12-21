@@ -6,10 +6,21 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
 
   def all_records
     indexed_records = if current_contact.present?
-                        super.filter(filter_by_value('company_id', current_company.id))
+                        super.filter(filter_by_array("company_id", current_contact.companies.ids))
                       else
                         super
                       end
+
+
+    if @custom_filters.present?
+      indexed_records = indexed_records.filter({
+                                                     terms: {
+                                                         :tags => @custom_filters["tags"]
+                                                     }
+                                                 })
+      indexed_records
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -36,6 +47,14 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
       indexed_records = indexed_records.filter(filter_by_array("company_id", current_contact.companies.ids))
     end
 
+    if @custom_filters.present?
+      indexed_records = indexed_records.filter({
+                                                   terms: {
+                                                       :tags => @custom_filters["tags"]
+                                                   }
+                                               })
+      indexed_records
+    end
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
