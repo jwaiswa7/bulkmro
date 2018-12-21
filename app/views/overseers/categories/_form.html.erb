@@ -11,7 +11,7 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path} %>
+        <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
       </div>
       <div class="col-6">
         <%= f.association :tax_rate, :wrapper => :custom_multi_select, include_blank: 'Select a Tax Rate' %>

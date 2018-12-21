@@ -9,7 +9,7 @@ module ShortcutsHelper
     end
   end
 
-  def breadcrumbs(page_title=nil, controller_is_aliased=false)
+  def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
     elements = full_path.split('/').reject {|e| e.blank?}

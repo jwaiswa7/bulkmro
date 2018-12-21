@@ -20,31 +20,33 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def export_all
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrdersExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_orders.last.report)
   end
 
   def export_rows
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_order_rows.last.report)
   end
 
   def export_for_logistics
     authorize :sales_order
     service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_order_logistics.last.report)
+  end
+
+  def export_for_sap
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_sap.last.report)
   end
 
   def index

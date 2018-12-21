@@ -3,6 +3,7 @@ class Contact < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
+  include Mixins::CanBeActivated
 
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {:account => [:name]}, :using => {:tsearch => {:prefix => true}}
 
@@ -59,7 +60,7 @@ class Contact < ApplicationRecord
   end
 
   def current_cart
-    self.cart || self.create_cart
+    self.cart
   end
 
   def generate_products

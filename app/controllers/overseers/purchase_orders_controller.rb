@@ -27,10 +27,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def export_all
     authorize :purchase_order
     service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.purchase_orders.last.report)
   end
 end

@@ -21,6 +21,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :outside_sales_owner, value: -> (record) { record.inquiry.outside_sales_owner.to_s }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
+    field :company_id, value: -> (record) { record.inquiry.company_id if record.inquiry.present? }
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
   end

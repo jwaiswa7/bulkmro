@@ -2,6 +2,7 @@ class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
+  include Mixins::CanBeActivated
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
@@ -43,6 +44,7 @@ class Company < ApplicationRecord
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
+  has_one_attached :logo
 
   enum company_type: {
       :proprietorship => 10,
@@ -73,15 +75,18 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
+  scope :with_includes, -> { includes(:addresses, :inquiries, :contacts) }
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
   validates_presence_of :name
   validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
+  validates_uniqueness_of :remote_uid, :on => :update
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
+  validates_with ImageFileValidator, attachment: :logo
 
   validate :name_is_conditionally_unique?
 
@@ -147,7 +152,7 @@ class Company < ApplicationRecord
     inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => self.id).map {|i| i.inquiry_products}.flatten
     inquiry_products.each do |inquiry_product|
       if inquiry_product.product.synced?
-        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id, :customer_price => inquiry_product.product.latest_unit_cost_price).first_or_create! do |customer_product|
+        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id, :customer_price => ( inquiry_product.product.latest_unit_cost_price || 0 )).first_or_create! do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
           customer_product.name = (inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
@@ -162,8 +167,19 @@ class Company < ApplicationRecord
     end
   end
 
+  def customer_product_for(product)
+    customer_products.joins(:product).where('products.id = ?', product.id).first
+  end
 
   def self.legacy
     self.find_by_name('Legacy Company')
+  end
+
+  def validate_pan
+    if self.pan.present?
+      self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+    else
+      false
+    end
   end
 end
