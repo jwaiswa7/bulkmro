@@ -54,7 +54,7 @@
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>
-          <td><%= sales_order_status_badge(sales_order.order_status) %></td>
+          <td><%= status_badge(sales_order.order_status) %></td>
           <% if @sales_orders.where(status: "Approved").count > 1 %>
             <td> <%=  sales_order.remote_status || "-" %></td>
           <% end %>
