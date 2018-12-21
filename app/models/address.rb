@@ -4,6 +4,7 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
+  update_index('addresses#address') {self}
   pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :state, class_name: 'AddressState', foreign_key: :address_state_id, required: false
