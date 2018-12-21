@@ -339,6 +339,8 @@ Rails.application.routes.draw do
             get 'download_customer_product_template'
             post 'customer_products', to: 'imports#create_customer_products'
           end
+        end
+
         resources :purchase_orders do
 
         end
