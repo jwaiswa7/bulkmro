@@ -19,17 +19,15 @@
       <%= nav_item 'Orders', customers_orders_path, true %>
       <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
       <%= nav_item 'Invoices', customers_invoices_path, true %>
-      <% if policy(:customer_product).most_ordered_products? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
-            Reports
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
-            <%= nav_dropdown_item 'Monthly Purchase Data', monthly_purchase_data_customers_reports_path, true %>
-          </div>
-        </li>
-      <% end %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
+          Reports
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
+          <%= nav_dropdown_item 'Monthly Purchase Data', monthly_purchase_data_customers_reports_path, true %>
+        </div>
+      </li>
       <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
     </ul>
   </div>
