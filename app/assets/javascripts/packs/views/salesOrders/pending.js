@@ -1,5 +1,4 @@
-import statusChange from './../../components/statusChange'
-
+import statusChange from '../shared/statusChange'
 const pending = () => {
     statusChange(".status_class",'#dropdown_status_column')
 };

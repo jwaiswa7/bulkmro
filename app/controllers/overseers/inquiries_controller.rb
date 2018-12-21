@@ -7,7 +7,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, non_pagination: true)
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
         service.call
 
         per = (params[:per] || params[:length] || 20).to_i
