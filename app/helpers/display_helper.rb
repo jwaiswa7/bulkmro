@@ -1,15 +1,6 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  # def format_status(status)
-  #   case status.to_sym
-  #     when :active
-  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #     else
-  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #   end
-  # end
-
   def upcase(string)
     string.upcase
   end
@@ -130,12 +121,6 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
-  def format_badge(text, color)
-    content_tag :span, class: "badge text-uppercase badge-#{color}" do
-      content_tag :strong, text.to_s.capitalize
-    end
-  end
-
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
@@ -170,15 +155,11 @@ module DisplayHelper
     end.compact
   end
 
-  def format_comment(comment)
-    ['<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
-     comment.created_by.full_name,
-     ' <span class="mr-1"><strong><span class="badge badge-secondary">',
-     comment.author_role,
-     '</span></strong></span></span><span>',
-     time_ago_in_words(comment.created_at),
-     ' ago</span></div><div class="chat-item-body"><p>',
-     comment.message,
-     '</p></div></div></div>'].join('').html_safe
+  def format_comment(comment, trimmed = false)
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
+  end
+
+  def format_times_ago(time)
+    [time_ago_in_words(time),'ago'].join(' ').html_safe
   end
 end

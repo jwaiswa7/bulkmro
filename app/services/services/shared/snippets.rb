@@ -1,5 +1,43 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
 
+  def supplier_data_summary
+    Account.is_supplier.size
+    Company.acts_as_supplier.size
+    ids = PurchaseOrder.all.map{ |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids.size
+    nov_ids = Company.acts_as_supplier.where(:created_at =>  Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    (ids & nov_ids).size
+# # Accounts as suppliers
+#     7
+#
+# # Total suppliers
+#     6108
+#
+# # Total suppliers with purchase orders
+#     2053
+#
+# # Suppliers added in November
+#     214
+#
+# # Suppliers added in November with purchase orders
+#     105
+  end
+
+  def paper_trail_find
+    who = Product.find_by_sku('BM9R3F1').versions.last.whodunnit
+    GlobalID::Locator.locate(who)
+  end
+
+  def delete_products_without_images
+    Account.find('wBgfoW').companies.each do |c|
+      c.customer_products.each do |cp|
+        if cp.best_images.blank?
+          cp.destroy
+        end
+      end
+    end
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
@@ -669,28 +707,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         end
       end
     end
-  end
-
-  def resend_failed_remote_requests(start_at: Date.today.beginning_of_day, end_at: Date.today.end_of_day)
-
-    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
-    requested = []
-    requests.each do |request|
-      new_request = [request.subject_type, request.subject_id].join('-')
-      if !requested.include? new_request
-        if request.subject_type.present? && request.subject_id.present?
-          begin
-            Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
-            requested << new_request
-          rescue
-            puts request
-          end
-        end
-      end
-
-    end
-    #Object.const_get(RemoteRequest.last.subject_type).find(RemoteRequest.last.subject_id)
-    [requested.sort, requested.size]
   end
 
   def update_warehouse_and_inquiry

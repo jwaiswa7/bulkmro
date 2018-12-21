@@ -15,6 +15,9 @@ import products from "./products/init";
 // Sales Orders
 import salesOrders from "./salesOrders/init";
 
+// Reports
+import reports from './reports/init';
+
 //
 // Sales Quotes
 import salesQuotes from "./salesQuotes/init";
@@ -23,9 +26,17 @@ import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
 
+// Sales Invoices
+import salesInvoices from "./salesInvoices/init";
+
+// Sales Shipments
+import salesShipments from "./salesShipments/init";
+
 
 let loader = {
     imports: imports,
+
+    reports: reports,
 
     inquiries: inquiries,
     products: products,
@@ -34,7 +45,9 @@ let loader = {
     categories:categories,
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
-    kits: kits
+    kits: kits,
+    salesInvoices: salesInvoices,
+    salesShipments: salesShipments
 };
 
 // Imports

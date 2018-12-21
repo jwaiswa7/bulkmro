@@ -7,6 +7,10 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     manager_or_cataloging? || logistics?
   end
 
+  def edit_remote_uid?
+    developer? && record.persisted?
+  end
+
   def export_all?
     allow_export?
   end
