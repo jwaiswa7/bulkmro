@@ -7,11 +7,21 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
         service.call
 
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records.try(:reverse)
+        per = (params[:per] || params[:length] || 20).to_i
+        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
+        @indexed_inquiries = service.indexed_records.per(per).page(page)
+        @inquiries = service.records.page(page).per(per).try(:reverse)
+
+        if (Inquiry.count != @indexed_inquiries.total_count)
+          status_records = service.records.try(:reverse)
+          @statuses = status_records.pluck(:status)
+        else
+          @statuses = Inquiry.all.pluck(:status)
+        end
       end
     end
   end
@@ -149,6 +159,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
+
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
