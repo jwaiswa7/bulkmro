@@ -75,6 +75,7 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
+  scope :with_includes, -> { includes(:addresses, :inquiries, :contacts) }
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
@@ -172,5 +173,13 @@ class Company < ApplicationRecord
 
   def self.legacy
     self.find_by_name('Legacy Company')
+  end
+
+  def validate_pan
+    if self.pan.present?
+      self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+    else
+      false
+    end
   end
 end

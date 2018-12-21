@@ -12,6 +12,7 @@ class Export < ApplicationRecord
       sales_invoice_logistics: 30,
       sales_order_rows: 35,
       sales_orders: 40,
-      sales_order_logistics: 45
+      sales_order_logistics: 45,
+      sales_order_sap: 50
   }
 end
