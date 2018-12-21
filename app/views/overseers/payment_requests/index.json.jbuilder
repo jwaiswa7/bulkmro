@@ -9,7 +9,7 @@ json.data (@payment_requests) do |payment_request|
                       end
                   ].join(' '),
                   payment_request.id,
-                  payment_request_status_badge(payment_request.status),
+                  status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,
                   payment_request.po_request.purchase_order.id,
                   if payment_request.payment_option.present?

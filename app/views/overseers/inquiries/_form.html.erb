@@ -103,6 +103,7 @@
 
       <div class="mt-3 card-alternative ">
         <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
+
         <% if policy(@inquiry).disable_billing_shipping_details? %>
           <div class="form-row">
             <div class="col-12 col-md-6">
@@ -115,10 +116,10 @@
         <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", disabled: policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", disabled: policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
             </div>
           </div>
         <% end %>
@@ -216,7 +217,7 @@
                 <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe) : false %>
               </div>
               <% if f.object.persisted? %>
-                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank">
+                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
                   <i class="fal fa-download"></i>
                 </a>
               <% end %>

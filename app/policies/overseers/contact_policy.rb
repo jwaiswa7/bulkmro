@@ -1,6 +1,6 @@
 class Overseers::ContactPolicy < Overseers::ApplicationPolicy
   def become?
-    true
+    cataloging? || admin? || manager?
   end
 
   def new?

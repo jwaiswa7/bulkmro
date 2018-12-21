@@ -11,6 +11,14 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
     render :show
   end
 
+  def resend_failed_requests
+    authorize :remote_request
+    service = Services::Overseers::RemoteRequests::ResyncFailedRequests.new
+    service.call
+
+    redirect_to overseers_remote_requests_path
+  end
+
   private
   def set_remote_request
     @remote_request = RemoteRequest.find(params[:id])
