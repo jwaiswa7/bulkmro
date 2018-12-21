@@ -16,7 +16,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :base_filter_key => "account_id",
         :base_filter_value => params[:account_id]
     }
-    authorize :address
+    authorize @account
     respond_to do |format|
       format.html {}
       format.json do
