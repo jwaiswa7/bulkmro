@@ -19,6 +19,8 @@ module StatusesHelper
       'color-yellow'
     when :'Invoiced'
       'color-yellow'
+    when :'In stock'
+      'color-yellow'
     when :'Delivered: GRN Pending'
       'color-red'
     when :'Delivered: GRN Received'

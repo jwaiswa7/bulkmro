@@ -15,6 +15,7 @@ class InvoiceRequest < ApplicationRecord
       :'Pending GRPO' => 10,
       :'Pending AP Invoice' => 20,
       :'Pending AR Invoice' => 30,
+      :'In stock' => 70,
       :'Completed AR Invoice Request' => 40,
       :'Cancelled AR Invoice' => 50,
       :'Cancelled' => 60
@@ -69,6 +70,8 @@ class InvoiceRequest < ApplicationRecord
       self.status = :'Pending AR Invoice'
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
+    elsif self.ap_invoice_number.blank? && self.grpo_number.blank?
+      self.status = :'In stock'
     else
       self.status
     end
