@@ -3,7 +3,8 @@
 <div class="col-12">
   <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <h3 class="text-black-50 mb-0">
-      Hello <strong><%= current_contact.first_name %></strong>, you are browsing <strong><%= current_company.name %></strong>
+      Hello <strong><%= current_contact.first_name %></strong>, you are browsing
+      <strong><%= current_company.name %></strong>
     </h3>
   </div>
 
@@ -40,7 +41,8 @@
       </table>
     </div>
     <div class="card-footer">
-      <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View More</a>
+      <a href="<%= customers_quotes_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View
+        More</a>
     </div>
   </div>
 
@@ -82,7 +84,8 @@
         </table>
       </div>
       <div class="card-footer">
-        <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View More</a>
+        <a href="<%= customers_orders_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View
+          More</a>
       </div>
     </div>
   <% end %>
@@ -109,12 +112,19 @@
           <tbody>
           <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
             <tr>
-              <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
-                <td><%= row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %></td>
-              <% end %>
+
               <td><%= sales_invoice.inquiry.customer_po_number %></td>
               <td><%= format_date(sales_invoice.inquiry.customer_order_date) %></td>
-              <td><%= sales_invoice.invoice_number %></td>
+              <td>
+                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
+                  <%= link_to overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), target: :_blank do %>
+                    <%= sales_invoice.invoice_number %>
+                  <% end %>
+                <% else %>
+                  <%= sales_invoice.invoice_number %>
+                <% end %>
+
+              </td>
               <td><%= sales_invoice.inquiry.inquiry_number %></td>
               <td><%= sales_invoice.sales_order.order_number %></td>
               <td><%= sales_invoice.rows.count %></td>
@@ -128,7 +138,8 @@
         </table>
       </div>
       <div class="card-footer">
-        <a href="<%= customers_invoices_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View More</a>
+        <a href="<%= customers_invoices_path %>" class="btn btn-lg btn-block btn-info"><i class="fal fa-eye mr-1"></i>View
+          More</a>
       </div>
     </div>
   <% end %>
