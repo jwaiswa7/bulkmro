@@ -15,7 +15,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def mpn
-    get_product.try(:product).mpn
+    get_product.try(:product).try(:mpn) || get_product.try(:mpn)
   end
 
   def name
@@ -37,7 +37,7 @@ class SalesInvoiceRow < ApplicationRecord
   private
 
   def get_product
-    sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: {sku: self.sku}).first
+    sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: {sku: self.sku}).first || Product.find_by_sku(self.sku)
   end
 
 end

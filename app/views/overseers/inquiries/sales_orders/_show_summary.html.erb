@@ -10,16 +10,6 @@
         <strong class="d-block">Status</strong>
         <%= f.object.status || f.object.legacy_request_status %>
       </div>
-      <% if f.object.remote_approved? %>
-        <div class="col-6 col-md-3 mt-2 mt-md-0">
-          <strong class="d-block">Doc Entry</strong>
-          <%= f.object.draft_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-        <div class="col-6 col-md-3 mt-2 mt-md-0">
-          <strong class="d-block">Draft Entry</strong>
-          <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-      <% end %>
       <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">SAP Status</strong>
         <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>

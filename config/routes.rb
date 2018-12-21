@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       member do
         get 'show'
       end
+      collection do
+        get 'resend_failed_requests'
+      end
     end
 
     resources :callback_requests do
@@ -176,6 +179,7 @@ Rails.application.routes.draw do
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
+        get 'export_for_sap'
         get 'autocomplete'
       end
 
@@ -328,16 +332,19 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
         resources :imports do
-          # member do
-          #   get 'manage_failed_skus'
-          #   patch 'create_failed_skus'
-          # end
           collection do
             get 'new_excel_customer_product_import'
             get 'download_customer_product_template'
             post 'customer_products', to: 'imports#create_customer_products'
           end
+        resources :purchase_orders do
+
+        end
+
+        resources :products do
+
         end
       end
     end
@@ -351,7 +358,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :warehouses
+
+    resources  :warehouses do
+      collection do
+        get 'autocomplete'
+      end
+    end
     resources :payment_options
 
     resources :payment_requests do
@@ -373,7 +385,7 @@ Rails.application.routes.draw do
       end
 
       collection do
-        get 'quarterly_purchase_data'
+        get 'monthly_purchase_data'
       end
     end
 

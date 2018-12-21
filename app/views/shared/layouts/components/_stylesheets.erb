@@ -9,8 +9,14 @@
 <% end %>
 
 <!-- Styles -->
-<% if !Rails.env.production? %>
+<% if !Rails.env.production? || !Rails.env.staging? %>
   <%= stylesheet_link_tag 'overseers/imports', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<% if Rails.env.staging? %>
+  <!-- FA 5 -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-TXfwrfuHVznxCssTxWoPZjhcss/hp38gEOH8UPZG/JcXonvBQ6SlsIF49wUzsGno" crossorigin="anonymous">
+  <!-- /FA 5 -->
 <% end %>
 
 <%= stylesheet_link_tag 'overseers/application', media: 'all', 'data-turbolinks-track': 'reload' %>
