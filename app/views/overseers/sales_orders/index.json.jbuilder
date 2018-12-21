@@ -24,7 +24,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inquiry.inquiry_number,
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
-                  sales_order.inquiry.company.account.name,
+                  link_to(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account),target: "_blank"),
                   sales_order.inside_sales_owner.to_s,
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),

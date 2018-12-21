@@ -9,7 +9,7 @@ json.data (@accounts) do |account|
                         row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success', :_blank)
                       end,
                   ].join(' '),
-                  account.to_s,
+                  link_to(account.to_s, overseers_account_path(account), target: "_blank"),
                   account.companies.size,
                   account.addresses.size,
                   account.contacts.size,
