@@ -36,4 +36,8 @@ class CustomerOrder < ApplicationRecord
     end
   end
 
+  def pending?
+    self.not_approved? && self.not_rejected?
+  end
+
 end

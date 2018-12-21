@@ -393,6 +393,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'approved'
       end
 
       scope module: 'customer_orders' do

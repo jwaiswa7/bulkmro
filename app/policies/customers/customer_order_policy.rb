@@ -7,6 +7,10 @@ class Customers::CustomerOrderPolicy < Customers::ApplicationPolicy
     manager?
   end
 
+  def approved?
+    true
+  end
+
   def approve_order?
     manager?
   end
