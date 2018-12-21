@@ -29,12 +29,18 @@ let updateChartOptions = function (chartObject) {
                     id: 'products_count',
                     type: 'linear',
                     position: 'right',
+                    ticks: {
+                        display: false
+                    }
                 }, {
                     id: 'revenue',
                     type: 'linear',
                     position: 'left',
                     ticks: {
                         display: true,
+                        label: {
+                            fontStyle: 500
+                        },
                         userCallback: function (value) {
                             value = value.toString();
                             return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
@@ -42,7 +48,7 @@ let updateChartOptions = function (chartObject) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Total Spends'
+                        labelString: 'INR Lakhs'
                     }
                 }]
             }
