@@ -47,7 +47,7 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Revenue'
+                          labelString: 'Total Spends'
                       }
                   }
               ]

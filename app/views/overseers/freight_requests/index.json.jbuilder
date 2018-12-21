@@ -9,7 +9,7 @@ json.data (@freight_requests) do |freight_request|
                       end
                   ].join(' '),
                   freight_request.id,
-                  freight_request_status_badge(freight_request.status),
+                  status_badge(freight_request.status),
                   freight_request.inquiry.inquiry_number,
                   freight_request.sales_order.order_number,
                   freight_request.inquiry.inside_sales_owner.to_s,

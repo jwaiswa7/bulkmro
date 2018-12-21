@@ -10,6 +10,10 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
                         super.filter(filter_by_value("inquiry_present", true))
                       end
 
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -28,6 +32,10 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value("inquiry_present", true)))
+    end
+
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
     end
 
     if search_filters.present?

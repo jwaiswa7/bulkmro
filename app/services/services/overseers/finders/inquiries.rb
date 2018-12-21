@@ -10,6 +10,10 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
                         super
                       end
 
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -31,6 +35,10 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    end
+
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status))
     end
 
     if search_filters.present?

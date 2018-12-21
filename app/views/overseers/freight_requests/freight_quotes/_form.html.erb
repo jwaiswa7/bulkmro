@@ -2,7 +2,7 @@
   <div class="page-header">
     <h2><%= action_name.capitalize %> Freight Quote for Inquiry
       <%= format_id(@freight_quote.inquiry.inquiry_number) %>
-      :&nbsp;<%= freight_request_status_badge(@freight_quote.status) %></h2>
+      :&nbsp;<%= status_badge(@freight_quote.status) %></h2>
     <p>This will <em>'<%= submit_text(@freight_quote).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
