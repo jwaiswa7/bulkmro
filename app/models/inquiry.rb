@@ -313,6 +313,10 @@ class Inquiry < ApplicationRecord
     ].join(' ')
   end
 
+  def po_subject
+    self.customer_po_number ? [self.customer_po_number, self.subject].join(' - ') : self.subject
+  end
+
   def billing_contact
     self.contact
   end
