@@ -42,7 +42,7 @@ let updateChartOptions = function (chartObject) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Revenue'
+                        labelString: 'Total Spends'
                     }
                 }]
             }

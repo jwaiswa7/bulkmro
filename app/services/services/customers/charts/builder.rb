@@ -54,10 +54,11 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
           }
       }
 
+
       sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
 
       sales_orders.group_by_month(&:created_at).map {|k, v| [k, v.map(&:calculated_total).sum]}.each do |month, revenue|
-        @data[:labels].push(month)
+        @data[:labels].push(month.strftime("%b-%y"))
         @data[:datasets][1][:data].push(revenue)
       end
 
