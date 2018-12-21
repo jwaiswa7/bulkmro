@@ -97,8 +97,8 @@ class Address < ApplicationRecord
   end
 
   def validate_gst
-    if self.gst.present?
-      self.gst.match?(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+    if self.gst.present? && self.company.present?
+      self.gst.match?(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/) || self.international? || self.company.is_unregistered_dealer
     else
       false
     end
