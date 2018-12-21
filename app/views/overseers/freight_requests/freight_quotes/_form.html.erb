@@ -43,7 +43,114 @@
             </div>
           </div>
         </div>
-
+        <div class="mt-3 card-alternative">
+          <h6 class="text-uppercase text-black-50 mb-1">Inquiry Details</h6>
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.input :country_of_origin, as: :country, :required => true, :wrapper => :custom_multi_select, priority_countries: ["IN", "US"] %>
+            </div>
+            <div class="col-6">
+              <%= f.input :port_of_loading, label: "Port of Loading", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :port_of_discharge, label: "Port of Discharge", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :iec_code, label: "IEC Code", readonly: true, :input_html => { :value => '316935051' } %>
+            </div>
+            <div class="col-6">
+              <%= f.input :inquiry, :value => f.object.inquiry.inquiry_number, label: "Inquiry #", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :purchase_order_number, collection: [f.object.inquiry.purchase_orders], label_method: :to_s, include_blank: "Select Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :required => true %>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 card-alternative">
+          <h6 class="text-uppercase text-black-50 mb-1">Custom Duty</h6>
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.input :invoice_value, label: "Invoice Value", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :freight_amount, label: "Freight", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :insurance, label: "Insurance", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :other_charges, label: "Other Charges", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :basic_custom_duty, label: "Basic Custom Duty", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :duty_on_freight, label: "Duty on Freight", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :social_welfare_cess, label: "Social Welfare Cess", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :custom_duty, label: "Total Duty", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :gst, label: "GST", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :grand_total, label: "Grand Total", :required => true %>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 card-alternative">
+          <h6 class="text-uppercase text-black-50 mb-1">Custom Duty</h6>
+          <div class="form-row">
+            <div class="col-6">
+              <%= f.input :currency, label: "Currency", :required => true, :input_html => { :value => 'USD' } %>
+            </div>
+            <div class="col-6">
+              <%= f.input :exchange_rate, label: "Exchange Rate", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :buying_price, label: "Buying Price", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :buying_price_inr, label: "Buying Price INR", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :freight_amount, label: "Freight", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :other_charges, label: "Other / Misc. Charges", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :custom_duty, label: "Net Custom Duty", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :gst_on_custom_duty, label: "GST on Custom Duty", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :bank_charges, label: "Bank Charges", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :clearance, label: "Clearance & DO", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :outward_freight, label: "Outward Freight", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :total_buying_price, label: "Net Total Buying Price", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :selling_price_inr, label: "Selling Price INR", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :margin, label: "Margin %", :required => true %>
+            </div>
+            <div class="col-6">
+              <%= f.input :margin_value, label: "Margin Value", :required => true %>
+            </div>
+          </div>
+        </div>
         <div class="mt-3 card-alternative">
           <div class="form-row">
             <div class="col-12">

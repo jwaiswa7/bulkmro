@@ -33,7 +33,7 @@ class CreateFreightRequests < ActiveRecord::Migration[5.2]
     add_foreign_key :freight_requests, :companies, column: :supplier_id
     add_foreign_key :freight_requests, :addresses, column: :pick_up_address_id
     add_foreign_key :freight_requests, :addresses, column: :delivery_address_id
-    add_foreign_key :freight_quotes, :overseers, column: :logistics_owner_id
+    add_foreign_key :freight_requests, :overseers, column: :logistics_owner_id
 
   end
 end

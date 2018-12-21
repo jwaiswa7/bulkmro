@@ -16,4 +16,8 @@ class FreightQuote < ApplicationRecord
       :'Completed' => 20
   }
 
+  def set_defaults
+    self.iec_code ||= :'316935051'
+  end
+
 end
