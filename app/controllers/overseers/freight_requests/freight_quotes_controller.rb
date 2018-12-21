@@ -2,13 +2,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   before_action :set_freight_quote, only: [:show, :edit, :update]
 
   def index
-    freight_quotes =
-        if params[:status].present?
-          @status = params[:status]
-          FreightQuote.where(:status => params[:status])
-        else
-          FreightQuote.all
-        end.order(id: :desc)
+    freight_quotes = FreightQuote.all.order(id: :desc)
 
     @freight_quotes = ApplyDatatableParams.to(freight_quotes, params)
     authorize @freight_quotes
@@ -29,6 +23,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
+        @freight_quote.freight_request.status = "Freight Request Completed"
         @freight_quote.save!
         @freight_quote_comment = FreightQuoteComment.new(:message => "Payment Request submitted.", :freight_quote => @freight_quote, :overseer => current_overseer)
         @freight_quote_comment.save!

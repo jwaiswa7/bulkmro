@@ -42,7 +42,7 @@ class FreightRequest < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'Requested'
+    self.status ||= :'Freight Quote Requested'
     self.hazardous ||= :'No'
     self.measurement ||= :'CM'
     self.request_type ||= :'Domestic'
