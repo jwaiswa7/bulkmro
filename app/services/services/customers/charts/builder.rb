@@ -18,35 +18,25 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
                   fill: false
               },
               {
-                  label: "INR Lakhs",
+                  label: "₹ Lacs",
                   type: "bar",
                   borderColor: "#fd7e14",
                   backgroundColor: '#fd7e14',
                   data: [],
                   yAxisID: 'revenue',
-                  fill: false,
+                  fill: false
               }
           ]
       }
 
       @options = {
           scales: {
-              xAxes: [
-                  {
-                      gridLines: {
-                          display: false
-                      }
-                  }
-              ],
               yAxes: [
                   {
                       id: 'products_count',
                       type: 'linear',
                       position: 'right',
                       ticks: {
-                          display: false
-                      },
-                      gridLines: {
                           display: false
                       }
                   },
@@ -60,13 +50,10 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'INR Lakhs'
+                          labelString: '₹ Lacs'
                       },
                       gridLines: {
-                          display: false
-                      },
-                      labels: {
-                          fontStyle: 500
+                          display: true
                       }
                   }
               ]

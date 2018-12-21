@@ -43,12 +43,16 @@ let updateChartOptions = function (chartObject) {
                         },
                         userCallback: function (value) {
                             value = value.toString();
-                            return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
+                            return '₹' + (value/100000) + ' Lacs';
+                            // return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                         }
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'INR Lakhs'
+                        labelString: '₹ Lacs'
+                    },
+                    gridLines: {
+                        display: true
                     }
                 }]
             }
