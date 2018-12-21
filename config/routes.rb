@@ -316,6 +316,7 @@ Rails.application.routes.draw do
           end
         end
 
+
         resources :addresses do
           collection do
             get 'autocomplete'
@@ -331,6 +332,14 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
+        resources :imports do
+          collection do
+            get 'new_excel_customer_product_import'
+            get 'download_customer_product_template'
+            post 'customer_products', to: 'imports#create_customer_products'
+          end
+        end
 
         resources :purchase_orders do
 
