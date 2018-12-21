@@ -1954,5 +1954,11 @@ end
   end
   end
   end
+
+  def update_online_order_numbers
+    CustomerOrder.all.each do |co|
+      co.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
+    end
+  end
   end
 

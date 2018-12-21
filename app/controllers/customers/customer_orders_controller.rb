@@ -18,6 +18,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
           po_reference: current_cart.po_reference
       )
       @customer_order.save
+      @customer_order.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
+
       if current_contact.account_manager?
         @customer_order.create_approval(contact: current_contact)
       end
@@ -56,10 +58,10 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
   def index
     @customer_orders = if current_contact.account_manager?
-                         CustomerOrder.where(contact_id: current_contact.account.contact_ids).approved
+                         CustomerOrder.where(contact_id: current_contact.account.contact_ids)
                        else
-                         current_contact.customer_orders.approved
-                       end
+                         current_contact.customer_orders
+                       end.order(id: :desc)
     @customer_orders = ApplyDatatableParams.to(@customer_orders, params)
     authorize @customer_orders
   end

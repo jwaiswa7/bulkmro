@@ -26,4 +26,14 @@ class CustomerOrder < ApplicationRecord
     self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
+  def status
+    if self.approved?
+      'Approved'
+    elsif self.rejected?
+      'Rejected'
+    else
+      'Requested'
+    end
+  end
+
 end
