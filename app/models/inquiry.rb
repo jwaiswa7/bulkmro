@@ -314,7 +314,7 @@ class Inquiry < ApplicationRecord
   end
 
   def po_subject
-    self.customer_po_number ? [self.customer_po_number, self.subject].join(' - ') : self.subject
+    self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
   end
 
   def billing_contact
