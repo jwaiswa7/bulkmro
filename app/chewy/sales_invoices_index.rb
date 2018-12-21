@@ -7,7 +7,6 @@ class SalesInvoicesIndex < BaseIndex
     field :sales_order_id, value: -> (record) {record.sales_order.id if record.sales_order.present?}
     field :sales_order_number, value: -> (record) {record.sales_order.order_number.to_i if record.sales_order.present?}, type: 'integer'
     field :invoice_number, value: -> (record) {record.invoice_number.to_i}, type: 'integer'
-    field :invoice_number_s, value: -> (record) {record.invoice_number.to_s}, analyzer: 'substring'
     field :inquiry_present, value: -> (record) { record.inquiry.present? }, type: 'boolean'
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i if record.inquiry.present?}, type: 'integer'
     field :sales_order_number_string, value: -> (record) {record.sales_order.order_number.to_s if record.sales_order.present?}, analyzer: 'substring'
