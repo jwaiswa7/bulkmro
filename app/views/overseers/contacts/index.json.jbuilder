@@ -18,6 +18,7 @@ json.data (@contacts) do |contact|
                   contact.name,
                   contact.email,
                   contact.account.name,
+                  contact.role.titleize,
                   contact.inquiries.size,
                   format_date(contact.created_at)
               ]
