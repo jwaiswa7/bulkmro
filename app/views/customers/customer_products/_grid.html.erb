@@ -60,7 +60,8 @@
           </div>
           <div class="form-row mt-2">
             <div class="col-4 col-lg-2 col-md-3">
-              <button type="reset" href="#" class="btn btn-outline-danger btn-block">Clear</button>
+              <%= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
+<!--              <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
             </div>
             <div class="col-8 col-lg-10 col-md-0">
               <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
