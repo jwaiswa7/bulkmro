@@ -20,7 +20,7 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   end
 
   def new_excel_customer_product_import?
-    all_roles?
+    cataloging? || developer?
   end
 
   def create_customer_products?

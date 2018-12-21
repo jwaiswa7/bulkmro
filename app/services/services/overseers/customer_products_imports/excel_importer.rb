@@ -37,46 +37,40 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
     end
   end
 
+  def attach_file(record, file_url, filename)
+    begin
+      if file_url.present? && filename.present?
+        url = URI(file_url)
+        res = Net::HTTP.get_response(url)
+        if res.code == '200'
+          file = open(file_url)
+          record.send('images').attach(io: file, filename: filename)
+        else
+          puts "Code = #{res.code}"
+        end
+      end
+    rescue URI::InvalidURIError => e
+      puts "Help! #{e} did not migrate."
+    end
+  end
+
   def set_rows
     excel_rows.each do |excel_row|
       row = excel_header_row.zip(excel_row).to_h
       if excel_row.compact.length > 1 && (row['sku'].present? && row['price'].present?)
         product = Product.find_by_sku(row['sku'])
         if product.present?
-          customer_product_object = CustomerProduct.new
-          customer_product_object.company_id = company.id
-          customer_product_object.product_id = product.id
-          customer_product_object.customer_price = row['price'].to_f
-          customer_product_object.name = (row['name'] if row['name'].present? ) || product.name
-          customer_product_object.sku = (row['material_code'] if row['material_code'].present?) || row['sku']
+          customer_product = CustomerProduct.where(company_id: company.id, product_id: product.id).first_or_create
+          customer_product.customer_price = row['price'].to_f
+          customer_product.name = (row['name'] if row['name'].present? ) || product.name
+          customer_product.sku =  row['sku'] || product.sku
           brand = ( Brand.find_by_name(row['brand']) if row['brand'].present? ) || product.brand
-          customer_product_object.brand_id = brand.id if brand.present?
-          file_url = row['url']
-          if file_url.present?
-            if file_url.split(':').first != 'http'
-              begin
-                filename = file_url.split('/').last
-                if file_url.present? && filename.present?
-                  url = URI.parse(file_url)
-                  req = Net::HTTP::Get.new(url)
-                  req["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
-                  res =  Net::HTTP.start(url.hostname, url.port) do |http|
-                    http.request(req)
-                  end
-                  if res.code == '200'
-                    file = open(file_url)
-                    customer_product_object.send('images').attach(io: file, filename: filename)
-                    puts "#{filename} code is #{res.code}"
-                  else
-                    puts "Code = #{res.code}"
-                  end
-                end
-              rescue URI::InvalidURIError => e
-                puts "Help! #{e} did not migrate."
-              end
-            end
+          customer_product.brand_id = brand.id if brand.present?
+          if row['url'].present?
+            filename = row['url'].split('/').last
+            attach_file(customer_product, row['url'], filename)
           end
-          customer_product_object.save
+          customer_product.save
         end
       else
         excel_rows.delete(excel_row)
