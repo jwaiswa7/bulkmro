@@ -14,6 +14,10 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
       indexed_records = filter_query(indexed_records)
     end
 
+    if @base_filter.present?
+      indexed_records =  indexed_records.filter(@base_filter)
+    end
+
     indexed_records
   end
 
@@ -28,6 +32,10 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
                                                 minimum_should_match: '100%'
                                             }
                                         })
+
+    if @base_filter.present?
+      indexed_records =  indexed_records.filter(@base_filter)
+    end
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
