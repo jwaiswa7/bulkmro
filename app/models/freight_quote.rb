@@ -11,11 +11,6 @@ class FreightQuote < ApplicationRecord
   has_one :sales_quote, :through => :freight_request
   has_many_attached :attachments
 
-  enum status: {
-      :'Pending' => 10,
-      :'Completed' => 20
-  }
-
   def set_defaults
     self.iec_code ||= :'316935051'
   end

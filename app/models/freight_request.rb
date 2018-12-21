@@ -32,9 +32,11 @@ class FreightRequest < ApplicationRecord
   }
 
   enum status: {
-      :'Requested' => 10,
-      :'Completed' => 20,
-      :'Cancelled' => 20,
+      :'Freight Quote Requested' => 10,
+      :'Pending Info: IS & P' => 20,
+      :'Awaiting Quote: 3PLs' => 30,
+      :'Freight Request Completed' => 40,
+      :'Cancelled' => 50
   }
 
   after_initialize :set_defaults, :if => :new_record?
