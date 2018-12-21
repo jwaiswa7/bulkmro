@@ -41,6 +41,14 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to url_for(Export.sales_order_logistics.last.report)
   end
 
+  def export_for_sap
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_sap.last.report)
+  end
+
   def index
     authorize :sales_order
 
