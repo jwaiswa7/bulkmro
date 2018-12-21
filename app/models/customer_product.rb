@@ -69,10 +69,9 @@ class CustomerProduct < ApplicationRecord
 
   def best_image
     if best_images.present?
-      if best_images.first.key.present? && ActiveStorage::Blob.service.exist?(best_images.first.key)
+      if best_images.first.present?
         best_images.first
       else
-        best_images.first.destroy
         nil
       end
     end

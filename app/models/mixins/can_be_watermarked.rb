@@ -27,8 +27,11 @@ module Mixins::CanBeWatermarked
               draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'"
           }
       )
-
-      ActiveStorage::Variant.new(image, variation).processed
+      begin
+        ActiveStorage::Variant.new(image, variation).processed
+      rescue Errno::ENOENT => e
+        nil
+      end
     end
 
     def tiny_best_image
