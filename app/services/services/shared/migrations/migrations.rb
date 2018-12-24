@@ -1955,8 +1955,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_is_international_field_in_company
-    Company.all.each do |company|
-      company.update_attribute(is_international: !company.addresses.map{ |address| address.country_code }.include?("IN"))
+    Company.all.includes(:addresses).each do |company|
+      company.update_attribute(:is_international, !company.addresses.map{ |address| address.country_code }.include?("IN"))
     end
   end
 end
