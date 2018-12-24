@@ -13,4 +13,11 @@ class Overseers::AddressesController < Overseers::BaseController
     @addresses = ApplyParams.to(addresses.includes(:state), params)
     authorize @addresses
   end
+
+  def warehouse_addresses
+    addresses = Address.joins(:warehouse)
+    @addresses = ApplyParams.to(addresses.includes(:state), params)
+    authorize @addresses
+    render 'autocomplete'
+  end
 end

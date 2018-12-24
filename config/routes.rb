@@ -106,6 +106,7 @@ Rails.application.routes.draw do
     resources :addresses do
       collection do
         get 'autocomplete'
+        get 'warehouse_addresses'
       end
     end
 
