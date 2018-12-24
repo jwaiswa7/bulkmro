@@ -1953,5 +1953,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
   end
   end
+
+  def update_is_international_field_in_company
+    Company.all.each do |company|
+      company.addresses.each do |company_address|
+        if company_address.country_code == "IN"
+          company.is_international = true
+        end
+      end
+    end
   end
+
+end
 
