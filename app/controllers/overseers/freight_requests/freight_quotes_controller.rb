@@ -24,6 +24,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
         @freight_quote.freight_request.status = "Freight Request Completed"
+        @freight_quote.freight_request.save!
         @freight_quote.save!
         @freight_quote_comment = FreightQuoteComment.new(:message => "Payment Request submitted.", :freight_quote => @freight_quote, :overseer => current_overseer)
         @freight_quote_comment.save!
@@ -63,14 +64,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   private
 
   def freight_quote_params
-    params.require(:freight_quote).permit(
-        :id,
-        :status,
-        :freight_request_id,
-        :invoice_value,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :attachments => []
-    )
+    params.require(:freight_quote).permit!
   end
 
   def set_freight_quote

@@ -9,7 +9,6 @@ json.data (@freight_quotes) do |freight_quote|
                       end
                   ].join(' '),
                   freight_quote.id,
-                  status_badge(freight_quote.status),
                   freight_quote.inquiry.inquiry_number,
                   freight_quote.freight_request.id,
                   format_date_time_meridiem(freight_quote.created_at),
