@@ -46,3 +46,4 @@ json.columnFilters [
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
+json.recordsSummary PaymentRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
