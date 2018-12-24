@@ -6,7 +6,7 @@ json.data (@inquiries) do |inquiry|
           end,
       ].join(' '),
       priority_helper_format_label(inquiry.priority),
-      inquiry.inquiry_number,
+      link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       status_badge(inquiry.status),
       link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: "_blank"),
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: "_blank"),

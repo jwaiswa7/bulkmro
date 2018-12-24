@@ -20,8 +20,8 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'Invoice Request', 'success', :_blank)
                       end
                   ].join(' '),
-                  sales_order.order_number,
-                  sales_order.inquiry.inquiry_number,
+                  link_to(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), target: "_blank"),
+                  link_to(sales_order.inquiry.inquiry_number,  ),
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
                   link_to(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account),target: "_blank"),
