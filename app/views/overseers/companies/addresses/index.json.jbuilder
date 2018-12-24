@@ -12,7 +12,7 @@ json.data (@addresses) do |address|
                   address.to_s.truncate(50),
                   address.try(:state).try(:name),
                   address.try(:city_name),
-                  format_boolean(address.validate_gst),
+                  address.readable_gst,
                   address.try(:gst),
                   address.try(:pincode),
                   format_boolean_label(address.synced?, 'synced'),

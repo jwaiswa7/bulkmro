@@ -291,7 +291,7 @@
           All addresses searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_addresses_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-fixed-header="false" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_addresses_path(company_id: @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
