@@ -32,6 +32,9 @@ import salesInvoices from "./salesInvoices/init";
 // Sales Shipments
 import salesShipments from "./salesShipments/init";
 
+// Purchase Orders
+import purchaseOrders from "./purchaseOrders/init";
+
 
 let loader = {
     imports: imports,
@@ -44,7 +47,8 @@ let loader = {
     customerProducts: customerProducts,
     kits: kits,
     salesInvoices: salesInvoices,
-    salesShipments: salesShipments
+    salesShipments: salesShipments,
+    purchaseOrders: purchaseOrders
 };
 
 // Imports
