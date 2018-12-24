@@ -22,8 +22,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           return_response("Purchase Order created successfully.")
         else
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
-          purchase_order.metadata['PoStatus']  = params['PoStatus']
-          purchase_order.save!
+          if purchase_order.present?
+            purchase_order.metadata['PoStatus'] = params['PoStatus']
+            purchase_order.save!
+          end
+
 
           return_response("Purchase Order updated successfully.")
         end
