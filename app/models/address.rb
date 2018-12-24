@@ -115,8 +115,7 @@ class Address < ApplicationRecord
     elsif self.company.is_unregistered_dealer
       'URD'
     else
-
-      format_boolean(validate_gst)
+      gst
     end
 
   end
