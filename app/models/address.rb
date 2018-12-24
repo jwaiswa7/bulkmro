@@ -4,6 +4,8 @@ class Address < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasMobileAndTelephone
 
+  include DisplayHelper
+
   update_index('addresses#address') {self}
   pg_search_scope :locate, :against => [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode, :gst], :associated_against => {:state => [:name]}, :using => {:tsearch => {:prefix => true}}
 
@@ -31,14 +33,14 @@ class Address < ApplicationRecord
       un_agency_or_embassy: 60,
   }
 
-  scope :has_company_id, -> { where.not(:company_id => nil) }
+  scope :has_company_id, -> {where.not(:company_id => nil)}
   scope :with_includes, -> {includes(:state, :company)}
 
   # validates_presence_of :name, :country_code, :city_name, :street1
   # validates_presence_of :pincode, :state, :if => :domestic?
   # validates_presence_of :state_name, :if => :international?
   validates_presence_of :state
-  validates_uniqueness_of :remote_uid, :on => :update, if: Proc.new { |address| address.company_id.present? }
+  validates_uniqueness_of :remote_uid, :on => :update, if: Proc.new {|address| address.company_id.present?}
   validates_length_of :gst, maximum: 15, minimum: 15, allow_nil: true, allow_blank: true, if: -> {self.gst != 'No GST Number'}
   # validates_presence_of :remote_uid
 
@@ -48,6 +50,7 @@ class Address < ApplicationRecord
   validates_with FileValidator, attachment: :excise_proof, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.is_sez ||= false
     self.country_code ||= 'IN'
@@ -58,6 +61,7 @@ class Address < ApplicationRecord
 
   after_create :set_remote_uid, :if => :persisted? # Do not remove IMP for SAP
   after_initialize :set_remote_uid, :if => :persisted?
+
   def set_remote_uid
     self.update_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(self)) if self.remote_uid.blank?
   end
@@ -69,7 +73,7 @@ class Address < ApplicationRecord
   end
 
   def syncable_identifiers
-    [:billing_address_uid,:shipping_address_uid]
+    [:billing_address_uid, :shipping_address_uid]
   end
 
   def self.legacy
@@ -104,4 +108,18 @@ class Address < ApplicationRecord
       false
     end
   end
+
+  def readable_gst
+    if self.international?
+      'International'
+    elsif self.company.is_unregistered_dealer
+      'URD'
+    else
+
+      format_boolean(validate_gst)
+    end
+
+  end
+
+
 end
