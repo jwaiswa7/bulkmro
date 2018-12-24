@@ -125,7 +125,7 @@
             <% if @freight_request.delivery_address.present? %>
               <div class="col-6">
                 <strong class="d-block">Delivery Address</strong>
-                <%= @freight_request.pick_up_address.to_s %>
+                <%= @freight_request.delivery_address.to_s %>
               </div>
             <% end %>
           </div>

@@ -39,6 +39,11 @@ class FreightRequest < ApplicationRecord
       :'Cancelled' => 50
   }
 
+  [:length, :breadth, :width, :volumetric_weight].each do | field|
+    validates_presence_of field
+    validates_numericality_of field, greater_than: 0.00, message: 'should be numeric and greater than zero.'
+  end
+
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
