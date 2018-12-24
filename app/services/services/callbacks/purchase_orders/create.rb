@@ -21,7 +21,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           end
           return_response("Purchase Order created successfully.")
         else
-          return_response("Purchase Order already created.")
+          purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
+          purchase_order.metadata['PoStatus']  = params['PoStatus']
+          purchase_order.save!
+
+          return_response("Purchase Order updated successfully.")
         end
       else
         return_response("Inquiry #{params['PoEnquiryId']} not found.", 0)
