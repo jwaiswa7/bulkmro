@@ -6,8 +6,8 @@ const updateSummaryBox = () => {
         let json = table.ajax.json();
         $.each(json.recordsSummary, function (index, summary) {
             let statusSize = summary["size"];
-            let statusId = "#status_" + summary["status_id"]
-            $(statusId).find('h5').text(statusSize);
+            let statusId = ".status-" + summary["status_id"]
+            $(statusId).find('.status-count-'+summary["status_id"]).text(statusSize);
         })
     });
 };
