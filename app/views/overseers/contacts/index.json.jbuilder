@@ -15,7 +15,7 @@ json.data (@contacts) do |contact|
                         row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
-                  contact.name,
+                  link_to(contact.name, overseers_contact_path(contact), target: "_blank"),
                   contact.email,
                   contact.account.name,
                   contact.inquiries.size,
