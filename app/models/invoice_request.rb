@@ -63,17 +63,15 @@ class InvoiceRequest < ApplicationRecord
     self.status ||= :'Pending GRPO'
   end
 
-  def update_status!
+  def update_status(status)
     if self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
     elsif self.ap_invoice_number.present?
       self.status = :'Pending AR Invoice'
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
-    elsif self.ap_invoice_number.blank? && self.grpo_number.blank?
-      self.status = :'In stock'
     else
-      self.status
+      self.status = status
     end
   end
 end
