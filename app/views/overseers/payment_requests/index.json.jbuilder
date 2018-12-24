@@ -27,18 +27,21 @@ json.data (@payment_requests) do |payment_request|
               ]
 end
 
-=begin
+
 json.columnFilters [
                        [],
                        [],
+                       PaymentRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
-                       # InvoiceRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
                        [],
                        [],
                        [],
                        []
                    ]
-=end
+
 
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
