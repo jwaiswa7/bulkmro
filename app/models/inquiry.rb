@@ -314,7 +314,15 @@ class Inquiry < ApplicationRecord
   end
 
   def po_subject
-    self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ') if self.customer_po_number.present?
+    if self.customer_po_number.present?
+      if self.customer_po_number != ''
+        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
+      else
+        self.subject
+      end
+    else
+      self.subject
+    end
   end
 
   def billing_contact
