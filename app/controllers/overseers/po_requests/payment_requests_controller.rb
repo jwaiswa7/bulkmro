@@ -66,6 +66,8 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :status,
         :payment_terms,
         :purpose_of_payment,
+        :description,
+        :supplier_bank_details,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
