@@ -42,14 +42,24 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def pending
-    customer_orders = CustomerOrder.not_approved.not_rejected.order(id: :desc)
+    customer_orders = if current_contact.account_manager?
+                        CustomerOrder.not_approved.not_rejected.where(contact_id: current_contact.account.contact_ids)
+                      else
+                        current_contact.customer_orders.not_approved.not_rejected
+                      end.order(id: :desc)
+
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
   end
 
   def approved
-    customer_orders = CustomerOrder.approved.order(id: :desc)
+    customer_orders = if current_contact.account_manager?
+                        CustomerOrder.approved.where(contact_id: current_contact.account.contact_ids)
+                      else
+                        current_contact.customer_orders.approved
+                      end.order(id: :desc)
+
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
