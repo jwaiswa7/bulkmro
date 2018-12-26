@@ -11,7 +11,7 @@ json.data (@customer_orders) do |customer_order|
                       end
                   ].join(' '),
                   conditional_link( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
-                  conditional_link(customer_order.company.present? ? customer_order.company.name : "-",overseers_company_path(customer_order.company), policy(customer_order.company).show?),
+                  customer_order.company.present? ? conditional_link(customer_order.company.name, overseers_company_path(customer_order.company), policy(customer_order.company).show?) : "-",
                   customer_order.contact.full_name,
                   customer_order.rows.count,
                   customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : "-",
