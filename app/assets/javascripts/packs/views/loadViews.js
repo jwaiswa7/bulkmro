@@ -35,14 +35,11 @@ import salesShipments from "./salesShipments/init";
 
 let loader = {
     imports: imports,
-
     reports: reports,
-
     inquiries: inquiries,
     products: products,
-
     salesOrders: salesOrders,
-    categories:categories,
+    categories: categories,
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
     kits: kits,

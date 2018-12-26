@@ -1270,21 +1270,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Done creating #{name.to_s.pluralize}"
   end
 
-def attach_file(inquiry, filename:, field_name:, file_url:)
-if file_url.present? && filename.present?
-url = URI.parse(file_url)
-req = Net::HTTP.new(url.host, url.port)
-req.use_ssl = true
-res = req.request_head(url.path)
-puts "---------------------------------"
-if res.code == '200'
-file = open(file_url)
-inquiry.send(field_name).attach(io: file, filename: filename)
-else
-puts res.code
-end
-end
-end
+  def attach_file(inquiry, filename:, field_name:, file_url:)
+    if file_url.present? && filename.present?
+      url = URI.parse(file_url)
+      req = Net::HTTP.new(url.host, url.port)
+      req.use_ssl = true
+      res = req.request_head(url.path)
+      puts "---------------------------------"
+      if res.code == '200'
+        file = open(file_url)
+        inquiry.send(field_name).attach(io: file, filename: filename)
+      else
+        puts res.code
+      end
+    end
+  end
 
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
@@ -1670,7 +1670,6 @@ end
           customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
           customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
           # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
-
           customer_product.created_by = overseer
         end
       end

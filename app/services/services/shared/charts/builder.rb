@@ -1,7 +1,7 @@
 class Services::Shared::Charts::Builder < Services::Shared::BaseService
   def initialize
-    @start_at = Time.new(2018, 04, 01).beginning_of_month
-    @end_at = Time.now.end_of_month
+    @start_at = Date.new(2018, 04, 01).beginning_of_month
+    @end_at = Date.today.end_of_month
     @data = {}
     @options = {}
     @chart = {:data => @data, :options => @options}

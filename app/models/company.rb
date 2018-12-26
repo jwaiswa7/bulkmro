@@ -6,6 +6,7 @@ class Company < ApplicationRecord
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
+  update_index('companies#company') {self}
   pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :account
@@ -40,6 +41,7 @@ class Company < ApplicationRecord
   has_many :customer_products, dependent: :destroy
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
+  has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
