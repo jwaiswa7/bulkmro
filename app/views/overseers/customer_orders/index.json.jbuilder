@@ -10,8 +10,8 @@ json.data (@customer_orders) do |customer_order|
                         row_action_button(edit_overseers_inquiry_path(customer_order.inquiry), 'pencil', 'View Inquiry', 'warning', :_blank)
                       end
                   ].join(' '),
-                  link_to( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), target: "_blank"),
-                  link_to(customer_order.company.present? ? customer_order.company.name : "-",overseers_company_path(customer_order.company), target: "_blank"),
+                  conditional_link( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
+                  conditional_link(customer_order.company.present? ? customer_order.company.name : "-",overseers_company_path(customer_order.company), policy(customer_order.company).show?),
                   customer_order.contact.full_name,
                   customer_order.rows.count,
                   customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : "-",

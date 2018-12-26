@@ -149,6 +149,14 @@ module DisplayHelper
     end
   end
 
+  def conditional_link(string,url,allowed)
+    if allowed
+      return link_to string, url, target: '_blank'
+    else
+      return string
+    end
+  end
+
   def url_for_image(image, fallback_url: "", check_remote: false)
     if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
