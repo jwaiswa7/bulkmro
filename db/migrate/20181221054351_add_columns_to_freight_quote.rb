@@ -17,7 +17,6 @@ class AddColumnsToFreightQuote < ActiveRecord::Migration[5.2]
     add_column :freight_quotes, :exchange_rate, :decimal
     add_column :freight_quotes, :buying_price, :decimal
     add_column :freight_quotes, :buying_price_inr, :decimal
-    add_column :freight_quotes, :gst_on_custom_duty, :decimal
     add_column :freight_quotes, :bank_charges, :decimal
     add_column :freight_quotes, :clearance, :decimal
     add_column :freight_quotes, :outward_freight, :decimal
