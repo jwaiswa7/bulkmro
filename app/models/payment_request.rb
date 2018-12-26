@@ -12,9 +12,16 @@ class PaymentRequest < ApplicationRecord
   has_many_attached :attachments
   has_one :payment_option, :through => :purchase_order
 
+  accepts_nested_attributes_for :inquiry
+
   enum status: {
-      :'Pending' => 10,
-      :'Completed' => 20
+      :'Partial: Payment Pending' => 10,
+      :'Complete: Payment Pending' => 20,
+      :'Rejected: Payment' => 30,
+      :'Payment on Hold' => 40,
+      :'Partial: Payment Made' => 50,
+      :'Complete: Payment Made' => 60,
+      :'Refund' => 70
   }
 
   enum payment_type: {
@@ -22,17 +29,23 @@ class PaymentRequest < ApplicationRecord
       :'NEFT/RTGS' => 20
   }
 
-  scope :Pending, -> {where(:status => :'Pending')}
-  scope :completed, -> {where(:status => :'Completed')}
+  enum purpose_of_payment: {
+      :'Advance' => 10,
+      :'Material Ready' => 20,
+      :'Payment Due' => 30
+  }
+
+  scope :Pending, -> {where(:status => :'Complete: Payment Pending')}
+  scope :completed, -> {where(:status => :'Complete: Payment Made')}
 
   validates_presence_of :inquiry
-  with_options if: :"Completed?" do |payment_request|
-    payment_request.validates_presence_of :payment_type
-  end
+  # with_options if: :"Completed?" do |payment_request|
+  #   payment_request.validates_presence_of :payment_type
+  # end
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
-    self.status ||= :'Pending'
+    self.status ||= :'Complete: Payment Pending'
   end
 
   def update_status!

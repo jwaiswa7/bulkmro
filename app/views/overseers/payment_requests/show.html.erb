@@ -129,6 +129,12 @@
               </div>
             <% end %>
 
+            <% if @payment_request.purpose_of_payment.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purpose of Payment</strong>
+                <%= @payment_request.purpose_of_payment %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
