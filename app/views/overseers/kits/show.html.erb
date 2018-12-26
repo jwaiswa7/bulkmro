@@ -56,13 +56,15 @@
         <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
           <thead>
           <tr>
-            <td> <strong class="col-6 col-md-3 mb-2">Product</strong></td>
-            <td><strong class="col-6 col-md-3 mb-2">Quantity</strong></td>
+            <td><strong class="d-block">Sr No</strong></td>
+            <td> <strong class="d-block">Product</strong></td>
+            <td><strong class="d-block">Quantity</strong></td>
           </tr>
           </thead>
           <tbody>
-          <% @kit.kit_product_rows.each do |kit_product| %>
+          <% @kit.kit_product_rows.each_with_index do |kit_product,index|  %>
             <tr>
+              <td><%= (index+1) %></td>
               <td><%= kit_product.product.name %></td>
               <td><%= kit_product.quantity %></td>
             </tr>
