@@ -64,14 +64,14 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if self.ar_invoice_number.present?
+    if status = 'In stock' || 'Pending GRPO'  || 'Cancelled AR Invoice'
+      self.status = status
+    elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
     elsif self.ap_invoice_number.present?
       self.status = :'Pending AR Invoice'
     elsif self.grpo_number.present?
       self.status = :'Pending AP Invoice'
-    else
-      self.status = status
     end
   end
 end
