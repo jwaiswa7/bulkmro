@@ -388,6 +388,10 @@ Rails.application.routes.draw do
 
       collection do
         get 'monthly_purchase_data'
+        get 'revenue_trend'
+        get 'orders_count'
+        get 'unique_skus'
+        get 'categorywise_revenue'
       end
     end
 
