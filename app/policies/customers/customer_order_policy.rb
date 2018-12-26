@@ -4,7 +4,7 @@ class Customers::CustomerOrderPolicy < Customers::ApplicationPolicy
   end
 
   def pending?
-    manager?
+    true
   end
 
   def approved?
