@@ -40,6 +40,11 @@ const newAction = () => {
         calculateInsurance();
         calculateGst();
     })
+
+    $('#freight_quote_currency').on('change', function () {
+        let _this = this;
+        $('#freight_quote_exchange_rate').val(_this.options[_this.selectedIndex].dataset.conversionRate);
+    })
 };
 
 let calculateFreight = () => {
