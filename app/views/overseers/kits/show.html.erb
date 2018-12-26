@@ -5,7 +5,7 @@
         <%= @kit.product.name %>
       </h3>
       <% if policy(@kit).edit? %>
-        <a href="<%= edit_overseers_product_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+        <a href="<%= edit_overseers_kit_path(@kit) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
           Product</a>
       <% end %>
     </div>
@@ -52,6 +52,24 @@
 
           </div>
         </div>
+
+        <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+          <thead>
+          <tr>
+            <td> <strong class="col-6 col-md-3 mb-2">Product</strong></td>
+            <td><strong class="col-6 col-md-3 mb-2">Quantity</strong></td>
+          </tr>
+          </thead>
+          <tbody>
+          <% @kit.kit_product_rows.each do |kit_product| %>
+            <tr>
+              <td><%= kit_product.product.name %></td>
+              <td><%= kit_product.quantity %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+
         <div class="mt-3">
           <h6 class="text-uppercase text-black-50 mb-1 d-block">Accounting and Logistics</h6>
           <div class="form-row">
