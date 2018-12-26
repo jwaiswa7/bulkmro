@@ -11,20 +11,20 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
               {
                   label: "Products",
                   type: "line",
-                  borderColor: "#ff0000",
-                  backgroundColor: "#ff0000",
+                  borderColor: "#007bff",
+                  backgroundColor: "#007bff",
                   data: [],
                   yAxisID: 'products_count',
                   fill: false
               },
               {
-                  label: "Orders",
+                  label: "₹ Lacs",
                   type: "bar",
-                  borderColor: "#8e5ea2",
-                  backgroundColor: '#50BB70',
+                  borderColor: "#fd7e14",
+                  backgroundColor: '#fd7e14',
                   data: [],
                   yAxisID: 'revenue',
-                  fill: false,
+                  fill: false
               }
           ]
       }
@@ -36,6 +36,9 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
                       id: 'products_count',
                       type: 'linear',
                       position: 'right',
+                      ticks: {
+                          display: false
+                      }
                   },
                   {
                       id: 'revenue',
@@ -47,11 +50,14 @@ class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Total Spends'
+                          labelString: '₹ Lacs'
+                      },
+                      gridLines: {
+                          display: true
                       }
                   }
               ]
-          }
+          },
       }
 
       sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})

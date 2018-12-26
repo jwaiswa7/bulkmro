@@ -10,7 +10,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
     field :po_status, value: -> (record) { record.metadata['PoStatus'].to_i }, type: 'integer'
-    field :po_status_string, value: -> (record) { status.key(record.metadata['PoStatus']).to_s  }, analyzer: 'substring'
+    field :po_status_string, value: -> (record) { record.status || record.metadata_status  }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:id) if record.rows.present? }
     field :supplier, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).to_s if record.rows.present? }, analyzer: 'substring'
     field :customer_id, value: -> (record) { record.inquiry.company.try(:id) if record.inquiry.company.present? }
