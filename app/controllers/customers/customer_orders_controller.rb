@@ -42,14 +42,14 @@ class Customers::CustomerOrdersController < Customers::BaseController
   end
 
   def pending
-    customer_orders = CustomerOrder.not_approved.not_rejected
+    customer_orders = CustomerOrder.not_approved.not_rejected.order(id: :desc)
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
   end
 
   def approved
-    customer_orders = CustomerOrder.approved
+    customer_orders = CustomerOrder.approved.order(id: :desc)
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
     render 'customers/customer_orders/index'
