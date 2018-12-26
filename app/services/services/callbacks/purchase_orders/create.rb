@@ -21,14 +21,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           end
           return_response("Purchase Order created successfully.")
         else
-          purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
-          if purchase_order.present?
-            purchase_order.metadata['PoStatus'] = params['PoStatus']
-            purchase_order.save!
-          end
-
-
-          return_response("Purchase Order updated successfully.")
+          return_response("Purchase Order already created.")
         end
       else
         return_response("Inquiry #{params['PoEnquiryId']} not found.", 0)
@@ -40,7 +33,6 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
 
   attr_accessor :params
 end
-
 
 # {
 #     "DocEntry": "500",
