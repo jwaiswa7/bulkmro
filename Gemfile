@@ -186,6 +186,7 @@ gem 'google-api-client', '~> 0.11'
 
 gem 'parser'
 gem 'unparser'
+gem 'mini_magick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -215,6 +216,10 @@ group :test do
 end
 
 group :production do
+  gem 'bonsai-elasticsearch-rails', '~> 7'
+end
+
+group :staging do
   gem 'bonsai-elasticsearch-rails', '~> 7'
 end
 

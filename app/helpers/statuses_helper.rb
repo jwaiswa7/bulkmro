@@ -19,6 +19,8 @@ module StatusesHelper
       'color-yellow'
     when :'Invoiced'
       'color-yellow'
+    when :'In stock'
+      'color-yellow'
     when :'Delivered: GRN Pending'
       'color-red'
     when :'Delivered: GRN Received'
@@ -168,7 +170,7 @@ module StatusesHelper
 
   def format_badge(text, color)
     if text.to_s != ''
-      content_tag :span, class: "badge text-uppercase badge-#{color}" do
+      content_tag :span, class: "badge badge-wrap text-uppercase badge-#{color}" do
         content_tag :strong, text.to_s.capitalize
       end
     end
