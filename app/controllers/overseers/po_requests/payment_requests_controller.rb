@@ -63,6 +63,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :purchase_order_id,
         :due_date,
         :payment_type,
+        :cheque_date,
         :status,
         :payment_terms,
         :purpose_of_payment,
@@ -74,6 +75,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
   end
 
   def set_payment_request
+    puts "set payment request-----------"
     @payment_request = PaymentRequest.find(params[:id])
   end
 end

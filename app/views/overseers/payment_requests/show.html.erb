@@ -122,6 +122,13 @@
               </div>
             <% end %>
 
+            <% if @payment_request.payment_type.present? && @payment_request.payment_type == "Cheque" %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Cheque Date</strong>
+                <%= @payment_request.cheque_date %>
+              </div>
+            <% end %>
+
             <% if @payment_request.payment_type.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Type</strong>
