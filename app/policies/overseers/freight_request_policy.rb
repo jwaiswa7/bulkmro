@@ -11,11 +11,15 @@ class Overseers::FreightRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def edit_request?
+    manager_or_sales? || admin?
+  end
+
   def new_freight_quote?
-    record.freight_quote.blank?
+    record.freight_quote.blank? && !manager_or_sales?
   end
 
   def edit_freight_quote?
-    record.freight_quote.present?
+    record.freight_quote.present? && !manager_or_sales?
   end
 end

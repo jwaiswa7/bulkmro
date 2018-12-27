@@ -155,8 +155,6 @@
             <a class="dropdown-item dropdown-toggle" href="#">Freight Quotes</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Quotes', overseers_freight_quotes_path, policy(:freight_quote).index? %>
-              <%= nav_dropdown_item 'Pending Quotes', overseers_freight_quotes_path(:status => 'Pending'), policy(:freight_quote).index? %>
-              <%= nav_dropdown_item 'Completed Quotes', overseers_freight_quotes_path(:status => 'Completed'), policy(:freight_quote).index? %>
             </ul>
           </div>
 

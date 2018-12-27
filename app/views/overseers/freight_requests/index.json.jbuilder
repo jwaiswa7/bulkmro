@@ -4,9 +4,9 @@ json.data (@freight_requests) do |freight_request|
                       if policy(freight_request).show?
                         row_action_button(overseers_freight_request_path(freight_request), 'eye', 'View Freight Request', 'info')
                       end,
-                      if policy(freight_request).edit?
-                        row_action_button(edit_overseers_freight_request_path(freight_request), 'pencil', 'Edit Freight Request', 'warning')
-                      end
+
+                      row_action_button(edit_overseers_freight_request_path(freight_request), 'pencil', 'Edit Freight Request', 'warning')
+
                   ].join(' '),
                   freight_request.id,
                   status_badge(freight_request.status),

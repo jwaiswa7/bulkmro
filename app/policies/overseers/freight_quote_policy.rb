@@ -1,6 +1,6 @@
 class Overseers::FreightQuotePolicy < Overseers::ApplicationPolicy
   def index?
-    logistics? || admin?
+    manager_or_sales? || logistics? || admin?
   end
 
   def new?
@@ -8,7 +8,7 @@ class Overseers::FreightQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    index?
+    logistics? || admin?
   end
 
   def show?
