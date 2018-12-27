@@ -13,7 +13,8 @@ class Export < ApplicationRecord
       sales_order_rows: 35,
       sales_orders: 40,
       sales_order_logistics: 45,
-      image_readers: 50,
-      image_readers_for_date: 55
+      sales_order_sap: 50,
+      image_readers: 55,
+      image_readers_for_date: 60
   }
 end

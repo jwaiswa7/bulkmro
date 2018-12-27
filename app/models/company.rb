@@ -2,9 +2,11 @@ class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
+  include Mixins::CanBeActivated
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
+  update_index('companies#company') {self}
   pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :account
@@ -39,6 +41,7 @@ class Company < ApplicationRecord
   has_many :customer_products, dependent: :destroy
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
+  has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
@@ -74,6 +77,7 @@ class Company < ApplicationRecord
   delegate :account_type, :is_customer?, :is_supplier?, to: :account
   alias_attribute :gst, :tax_identifier
 
+  scope :with_includes, -> { includes(:addresses, :inquiries, :contacts) }
   scope :acts_as_supplier, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier])}
   scope :acts_as_customer, -> {left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer])}
 
@@ -171,5 +175,13 @@ class Company < ApplicationRecord
 
   def self.legacy
     self.find_by_name('Legacy Company')
+  end
+
+  def validate_pan
+    if self.pan.present?
+      self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+    else
+      false
+    end
   end
 end

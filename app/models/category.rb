@@ -3,6 +3,7 @@ class Category < ApplicationRecord
   include Mixins::HasClosureTree
   include Mixins::CanBeSynced
   include Mixins::CanHaveTaxes
+  include Mixins::CanBeActivated
 
   pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true, :any_word => true}}
 

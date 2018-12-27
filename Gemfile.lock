@@ -101,6 +101,8 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
+    chartjs-ror (3.6.2)
+      rails (>= 3.1)
     chewy (5.0.0)
       activesupport (>= 4.0)
       elasticsearch (>= 2.0.0)
@@ -303,6 +305,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.2)
+    mini_magick (4.9.2)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -563,6 +566,7 @@ DEPENDENCIES
   bonsai-elasticsearch-rails (~> 7)
   bootsnap (>= 1.1.0)
   byebug
+  chartjs-ror
   chewy
   clockwork
   closure_tree
@@ -590,6 +594,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   maily
   memcachier
+  mini_magick
   money-open-exchange-rates
   msg91ruby
   nested_form_fields

@@ -34,7 +34,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     service = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
 
     import.rows.each do |row|
-      product = Product.where('lower(sku) = ?', row.sku.downcase).try(:first)
+      product = Product.active.where('lower(sku) = ? ', row.sku.downcase ).try(:first)
 
       if product.present?
         inquiry_product = inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|

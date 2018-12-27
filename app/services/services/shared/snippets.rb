@@ -3,9 +3,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def supplier_data_summary
     Account.is_supplier.size
     Company.acts_as_supplier.size
-    ids = PurchaseOrder.all.map{ |po| po.metadata['PoSupNum'] }.compact.uniq
+    ids = PurchaseOrder.all.map {|po| po.metadata['PoSupNum']}.compact.uniq
     ids.size
-    nov_ids = Company.acts_as_supplier.where(:created_at =>  Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    nov_ids = Company.acts_as_supplier.where(:created_at => Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
     (ids & nov_ids).size
 # # Accounts as suppliers
 #     7
@@ -709,28 +709,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
-  def resend_failed_remote_requests(start_at: Date.today.beginning_of_day, end_at: Date.today.end_of_day)
-
-    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
-    requested = []
-    requests.each do |request|
-      new_request = [request.subject_type, request.subject_id].join('-')
-      if !requested.include? new_request
-        if request.subject_type.present? && request.subject_id.present?
-          begin
-            Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
-            requested << new_request
-          rescue
-            puts request
-          end
-        end
-      end
-
-    end
-    #Object.const_get(RemoteRequest.last.subject_type).find(RemoteRequest.last.subject_id)
-    [requested.sort, requested.size]
-  end
-
   def update_warehouse_and_inquiry
     update_if_exists = true
 
@@ -882,7 +860,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def inquiry_status_update
 
-    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where( inquiry_status_records: {inquiry_id: nil} ).with_includes.each do |inquiry|
+    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where(inquiry_status_records: {inquiry_id: nil}).with_includes.each do |inquiry|
       if inquiry.inquiry_status_records.blank?
         subject = inquiry
         status = inquiry.status
@@ -900,8 +878,18 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           subject = inquiry.sales_orders.remote_approved.last
           status = 'Order Won'
         end
-        inquiry.update_attribute(:status ,status)
+        inquiry.update_attribute(:status, status)
         InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create if inquiry.inquiry_status_records.blank?
+      end
+    end
+  end
+
+  def destroy_customer_products_variant
+    CustomerProduct.with_attachments.each do |customer_product|
+      customer_product.best_images.each do |image|
+        image.service.delete(customer_product.watermarked_variation(image, 'tiny').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'small').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'medium').key)
       end
     end
   end
