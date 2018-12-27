@@ -44,6 +44,7 @@ const newAction = () => {
     $('#freight_quote_currency').on('change', function () {
         let _this = this;
         $('#freight_quote_exchange_rate').val(_this.options[_this.selectedIndex].dataset.conversionRate);
+        calculateBuyingPriceINR();
     })
 };
 
@@ -55,8 +56,10 @@ let calculateFreight = () => {
     calculateInsurance();
     calculateNetTotalBuyingPrice();
 
-    if((freight_amount != '' && parseFloat(freight_amount) > 0) && ( freight_percentage != '' && parseFloat(freight_percentage) > 0)){
+    if((freight_amount != '' && parseFloat(freight_amount) > 0) && ( freight_percentage != '' && parseFloat(freight_percentage) > 0)) {
         $('#freight_quote_duty_on_freight').val(((parseFloat(freight_amount) * parseFloat(freight_percentage)) / 100).toFixed(2));
+    }else{
+        $('#freight_quote_duty_on_freight').val(0);
     }
 };
 
@@ -88,10 +91,9 @@ let calculateBasicCustomDuty = () => {
     let other_charges = $('#freight_quote_other_charges').val();
     let duty_percentage = $('#freight_quote_basic_custom_duty_percentage').val();
 
-    if( (invoice_value != '' && parseFloat(invoice_value) > 0) && (other_charges != '' && parseFloat(other_charges) > 0) && (duty_percentage != '' && parseFloat(duty_percentage) > 0) ){
-        $('#freight_quote_basic_custom_duty').val((((parseFloat(invoice_value) + parseFloat(other_charges)) * parseFloat(duty_percentage)) / 100).toFixed(2));
-        calculateSocialWelfareCess();
-    }
+    $('#freight_quote_basic_custom_duty').val((((parseFloat(invoice_value) + parseFloat(other_charges)) * parseFloat(duty_percentage)) / 100).toFixed(2));
+    calculateSocialWelfareCess();
+
 };
 
 let calculateSocialWelfareCess = () => {
@@ -100,21 +102,23 @@ let calculateSocialWelfareCess = () => {
 
     if((basic_custom_duty != '' && parseFloat(basic_custom_duty) > 0) && (cess_percentage != '' && parseFloat(cess_percentage) > 0)){
         $('#freight_quote_social_welfare_cess').val(((parseFloat(basic_custom_duty) * parseFloat(cess_percentage)) / 100).toFixed(2));
-        calculateTotalDuty();
+    }else{
+        $('#freight_quote_social_welfare_cess').val(0);
     }
+    calculateTotalDuty();
 };
 
 let calculateTotalDuty = () => {
     let basic_custom_duty = $('#freight_quote_basic_custom_duty').val();
     let social_welfare_cess = $('#freight_quote_social_welfare_cess').val();
 
-    if((basic_custom_duty != '' && parseFloat(basic_custom_duty) > 0) && (social_welfare_cess != '' && parseFloat(social_welfare_cess) > 0)){
-        $('#freight_quote_custom_duty').val((parseFloat(basic_custom_duty) + parseFloat(social_welfare_cess)).toFixed(2));
-        $('#net_custom_duty').val($('#freight_quote_custom_duty').val());
-        calculateGst();
-        calculateGrandTotal();
-        calculateNetTotalBuyingPrice();
-    }
+    $('#freight_quote_custom_duty').val((parseFloat(basic_custom_duty) + parseFloat(social_welfare_cess)).toFixed(2));
+    $('#net_custom_duty').val($('#freight_quote_custom_duty').val());
+
+    calculateGst();
+    calculateGrandTotal();
+    calculateNetTotalBuyingPrice();
+
 };
 
 let calculateGst = () => {
@@ -122,20 +126,17 @@ let calculateGst = () => {
     let social_welfare_cess = $('#freight_quote_social_welfare_cess').val();
     let gst_percentage = $('#freight_quote_gst_percentage').val();
 
-    if((invoice_value != '' && parseFloat(invoice_value) > 0) && (social_welfare_cess != '' && parseFloat(social_welfare_cess) > 0) && (gst_percentage != '')){
-        $('#freight_quote_gst').val((((parseFloat(invoice_value) + parseFloat(social_welfare_cess)) * parseFloat(gst_percentage)) / 100).toFixed(2));
-        $('#gst_on_custom_duty').val($('#freight_quote_gst').val());
-        calculateGrandTotal();
-    }
+    $('#freight_quote_gst').val((((parseFloat(invoice_value) + parseFloat(social_welfare_cess)) * parseFloat(gst_percentage)) / 100).toFixed(2));
+    $('#gst_on_custom_duty').val($('#freight_quote_gst').val());
+
+    calculateGrandTotal();
 };
 
 let calculateGrandTotal = () => {
     let total_duty = $('#freight_quote_custom_duty').val();
     let gst = $('#freight_quote_gst').val();
 
-    if((gst != '' && parseFloat(gst) > 0) && (total_duty != '' && parseFloat(total_duty) > 0)){
-        $('#freight_quote_grand_total').val((parseFloat(gst) + parseFloat(total_duty)).toFixed(2));
-    }
+    $('#freight_quote_grand_total').val((parseFloat(gst) + parseFloat(total_duty)).toFixed(2));
 };
 
 let calculateNetTotalBuyingPrice = () => {
@@ -147,12 +148,9 @@ let calculateNetTotalBuyingPrice = () => {
     let clearance = $('#freight_quote_clearance').val();
     let outward_freight = $('#freight_quote_outward_freight').val();
 
-    if((buying_price != '' && parseFloat(buying_price) > 0) && (freight != '' && parseFloat(freight) > 0)  && (other_charges != '' && parseFloat(other_charges) > 0)  && (net_custom_duty != '' && parseFloat(net_custom_duty) > 0)
-        && (bank_charges != '' && parseFloat(bank_charges) > 0) && (clearance != '' && parseFloat(clearance) > 0) && (outward_freight != '' && parseFloat(outward_freight) > 0)){
-        $('#freight_quote_total_buying_price').val((parseFloat(buying_price) + parseFloat(freight) + parseFloat(other_charges) + parseFloat(net_custom_duty) + parseFloat(bank_charges) +
-            parseFloat(clearance) + parseFloat(outward_freight)).toFixed(2));
-        calculateMargin();
-    }
+    $('#freight_quote_total_buying_price').val((parseFloat(buying_price) + parseFloat(freight) + parseFloat(other_charges) + parseFloat(net_custom_duty) + parseFloat(bank_charges) +
+        parseFloat(clearance) + parseFloat(outward_freight)).toFixed(2));
+    calculateMargin();
 };
 
 let calculateMargin = () => {
