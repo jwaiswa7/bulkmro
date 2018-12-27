@@ -11,6 +11,8 @@ class FreightQuote < ApplicationRecord
   has_one :sales_quote, :through => :freight_request
   has_many_attached :attachments
 
+  after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.iec_code ||= '0316935051'
     self.exchange_rate ||= 1
