@@ -24,12 +24,18 @@ class Services::Customers::Charts::CategoryWiseRevenue < Services::Customers::Ch
 
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id}).joins(:products)
-      sales_orders.map{|so| so.products.map{ |pc| pc.category }}.flatten.uniq
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => @start_at..@end_at).joins(:company).where(companies: {id: 143}).joins(:products)
+      categorywise_revenue = {}
 
-      (start_at..end_at).map {|a| a.strftime("%b-%y") }.uniq.each do |month|
-        @data[:labels].push(month)
-        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month).map{|so| so.products}.flatten.uniq.count)
+      sales_orders.each do |so|
+        so.rows.each do |row|
+          categorywise_revenue[row.product.category.name] ||= 0
+          categorywise_revenue[row.product.category.name] = categorywise_revenue[row.product.category.name] + row.total_selling_price
+        end
+      end
+      categorywise_revenue.each do |category|
+        @data[:labels].push(category[0])
+        @data[:datasets][0][:data].push(category[1])
       end
     end
   end

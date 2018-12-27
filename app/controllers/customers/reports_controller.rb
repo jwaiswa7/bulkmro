@@ -2,7 +2,7 @@ class Customers::ReportsController < Customers::BaseController
 
   def index
     authorize :report, :show?
-    puts " HEY INDEX"
+    redirect_to monthly_purchase_data_customers_reports_path
   end
 
   def monthly_purchase_data
