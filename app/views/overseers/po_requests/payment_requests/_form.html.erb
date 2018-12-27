@@ -15,34 +15,58 @@
     <%= f.hidden_field :inquiry_id %>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.association :purchase_order, disabled: true, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
         <%= f.association :po_request, disabled: true, collection: [f.object.po_request], label_method: :to_s, include_blank: "PO Request Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_po_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "PO Request Number" %>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
-      <div class="col-6">
-        <%= f.input :status, as: :select, disabled: true, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
+
+      <%= f.simple_fields_for :inquiry do |inquiry| %>
+        <div class="col-4">
+          <%= inquiry.input :company, disabled: true , label: 'Customer Account' %>
+        </div>
+        <div class="col-4">
+          <%= inquiry.input :legacy_contact_name, disabled: true , label: 'Customer Name' %>
+        </div>
+        <div class="col-4">
+          <%= inquiry.input :created_by, disabled: true , label: 'Name of the Requestor / IS & P' %>
+        </div>
+    <% end %>
+
+      <div class="col-12">
+        <%= f.input :description %>
       </div>
 
       <div class="col-6">
-        <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+        <%#= f.input :status, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => grouped_statuses_overseer_payment_requests_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, :include_blank => false %>
+        <%= f.input :status, collection: PaymentRequest.new.grouped_status, as: :grouped_select, group_method: :last, include_blank: true%>
       </div>
-
       <div class="col-6">
         <%= f.input :payment_option, label: "Payment Terms", disabled: true %>
       </div>
+      <div class="col-3">
+        <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+      </div>
 
-      <div class="col-6">
+      <div class="col-3">
         <%= f.input :payment_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
       </div>
 
-      <div class="col-6">
+      <div class="col-3">
         <%= f.input :utr_number, label: "UTR / Cheque Number" %>
+      </div>
+
+      <div class="col-3">
+        <%= f.input :purpose_of_payment, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => false %>
+      </div>
+
+      <div class="col-12">
+        <%= f.input :supplier_bank_details, as: :text, label: "Supplier Bank Details" %>
       </div>
 
       <div class="col-12 col-md-12">
@@ -62,6 +86,30 @@
           </div>
         </div>
       </div>
+
+      <% if @payment_request.inquiry.attachments.present? %>
+        <div class="form-row col-12 col-md-12">
+          <div class="col-6">
+            <strong class="d-block">Customer Purchase Order</strong>
+            <%= link_to @payment_request.inquiry.customer_po_sheet, target: '_blank' do %>
+              <%= @payment_request.inquiry.customer_po_sheet.filename %>
+            <% end if @payment_request.inquiry.customer_po_sheet.attached? %>
+          </div>
+          <% if @payment_request.purchase_order.present? %>
+            <div class="col-6">
+              <strong class="d-block">Supplier Purchase Order</strong>
+              <%  if policy(@payment_request.purchase_order).show?%>
+                <%= link_to overseers_inquiry_purchase_order_path(@payment_request.inquiry, @payment_request.purchase_order, format: :pdf), target: '_blank' do %>
+                  <%= @payment_request.purchase_order.filename(include_extension: true) %>
+                <% end %>
+              <% else %>
+                <%= @payment_request.purchase_order.filename(include_extension: true) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
 
       <div class="col-12">
         <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |payment_request_comment| %>

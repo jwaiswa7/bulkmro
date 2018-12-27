@@ -76,6 +76,20 @@
               </div>
             <% end %>
 
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.company.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Account</strong>
+                <%= @payment_request.inquiry.company.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.legacy_contact_name.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Name</strong>
+                <%= @payment_request.inquiry.legacy_contact_name.to_s %>
+              </div>
+            <% end %>
+
           </div>
           <% if @payment_request.attachments.attached? %>
             <div class="form-row">
@@ -129,6 +143,19 @@
               </div>
             <% end %>
 
+            <% if @payment_request.purpose_of_payment.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purpose of Payment</strong>
+                <%= @payment_request.purpose_of_payment %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.supplier_bank_details.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Bank Details</strong>
+                <%= @payment_request.supplier_bank_details %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

@@ -119,6 +119,7 @@
               <%= nav_dropdown_item 'Payment Requests List', overseers_payment_requests_path, policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
               <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Rejected Payment Requests', overseers_payment_requests_path(:status => 'Rejected'), policy(:payment_request).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
