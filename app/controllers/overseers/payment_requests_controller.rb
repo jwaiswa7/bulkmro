@@ -5,7 +5,15 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     payment_requests =
         if params[:status].present?
           @status = params[:status]
-          PaymentRequest.where(:status => params[:status])
+          if @status == 'Pending'
+            PaymentRequest.Pending
+          elsif @status == 'Completed'
+            PaymentRequest.Completed
+          elsif @status == 'Rejected'
+            PaymentRequest.Rejected
+          else
+            PaymentRequest.where(:status => params[:status])
+          end
         else
           PaymentRequest.all
         end.order(id: :desc)

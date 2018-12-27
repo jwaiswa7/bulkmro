@@ -16,12 +16,21 @@ class PaymentRequest < ApplicationRecord
 
   enum status: {
       :'Partial: Payment Pending' => 10,
-      :'Complete: Payment Pending' => 20,
+      :'Complete: Payment Pending' => 11,
       :'Rejected: Payment' => 30,
+      :'Supplier Info: Bank Details Missing' => 31,
+      :'Supplier Info: Bank Details Incorrect' => 32,
+      :'Order Info: Material not Ready' => 33,
+      :'Supplier Info: PI mismatch' => 34,
       :'Payment on Hold' => 40,
+      :'Order Info: Low Margin' => 41,
+      :'Other Issues' => 42,
       :'Partial: Payment Made' => 50,
-      :'Complete: Payment Made' => 60,
-      :'Refund' => 70
+      :'Complete: Payment Made' => 51,
+      :'Refund' => 70,
+      :'Excess Payment Made' => 71,
+      :'Supplier cannot fulfill PO' => 72,
+      :'Material Rejected' => 73
   }
 
   enum payment_type: {
@@ -35,8 +44,9 @@ class PaymentRequest < ApplicationRecord
       :'Payment Due' => 30
   }
 
-  scope :Pending, -> {where(:status => :'Complete: Payment Pending')}
-  scope :completed, -> {where(:status => :'Complete: Payment Made')}
+  scope :Pending, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'])}
+  scope :Completed, -> {where(:status => :'Complete: Payment Made')}
+  scope :Rejected, -> {where(status: ['Rejected: Payment','Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Order Info: Material not Ready','Supplier Info: PI mismatch'])}
 
   validates_presence_of :inquiry
   # with_options if: :"Completed?" do |payment_request|
@@ -54,5 +64,14 @@ class PaymentRequest < ApplicationRecord
     else
       self.status = :'Pending'
     end
+  end
+
+  def grouped_status
+    grouped_status = {}
+    status_category = { 10 => 'Pending', 30 =>'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
+    status_category.each do |index, category|
+      grouped_status[category] = PaymentRequest.statuses.collect{|status,v|;if v.between?(index, index+9);status;end}.compact
+    end
+    grouped_status
   end
 end
