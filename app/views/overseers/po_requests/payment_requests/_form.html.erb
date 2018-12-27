@@ -74,11 +74,11 @@
       </div>
 
       <div class="col-3">
-        <%= f.input :payment_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
+        <%= f.input :payment_type, as: :select, disabled: true, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.payment_types, alphabetical: true, keep_raw: true), :include_blank => true %>
       </div>
 
       <div class="col-3">
-        <%= f.input :utr_number, label: "UTR / Cheque Number" %>
+        <%= f.input :utr_number, label: "UTR / Cheque Number", disabled: true %>
       </div>
 
       <div class="col-3">
