@@ -160,6 +160,9 @@ let calculateMargin = () => {
   if((total_buying_price != '' && parseFloat(total_buying_price) > 0) && (total_selling_price != '' && parseFloat(total_selling_price) > 0)){
     $('#freight_quote_margin').val(((100 * (parseFloat(total_selling_price) - parseFloat(total_buying_price))) / parseFloat(total_selling_price)).toFixed(2));
     $('#freight_quote_margin_value').val(((total_selling_price * $('#freight_quote_margin').val()) / 100).toFixed(2));
+  }else{
+      $('#freight_quote_margin').val(0);
+      $('#freight_quote_margin_value').val(0);
   }
 };
 

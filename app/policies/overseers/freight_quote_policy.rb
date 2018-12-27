@@ -10,8 +10,4 @@ class Overseers::FreightQuotePolicy < Overseers::ApplicationPolicy
   def edit?
     logistics? || admin?
   end
-
-  def show?
-    manager_or_sales?
-  end
 end
