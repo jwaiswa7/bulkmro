@@ -37,11 +37,11 @@ class PaymentRequest < ApplicationRecord
     self.status ||= :'Pending'
   end
 
-  def update_status!
-    if self.utr_number.present?
-      self.status = :'Completed'
-    else
-      self.status = :'Pending'
-    end
-  end
+  # def update_status!
+  #   if self.utr_number.present?
+  #     self.status = :'Completed'
+  #   else
+  #     self.status = :'Pending'
+  #   end
+  # end
 end
