@@ -16,6 +16,7 @@ import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
 import dropdowns from "./components/dropdownSubmenus";
+import chartjs from "./components/chartjs";
 
 // Namespacing all imports under app
 let app = {};
@@ -38,6 +39,7 @@ app.initializeComponents = () => {
     notify();
     stepRoundUp();
     dropdowns();
+    chartjs()
 };
 
 // Turbolinks load event

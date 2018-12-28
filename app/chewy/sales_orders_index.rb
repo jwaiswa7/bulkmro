@@ -13,6 +13,7 @@ class SalesOrdersIndex < BaseIndex
     field :status, value: -> (record) {statuses[record.status]}
     field :legacy_request_status, value: -> (record) {legacy_request_statuses[record.legacy_request_status]}
     field :approval_status, value: -> (record) {record.approved? ? 'approved' : 'pending'}
+    field :remote_approval_status, value: -> (record) {record.remote_approved? ? 'approved' : 'pending'}
     field :legacy_status, value: -> (record) {record.legacy? ? 'legacy' : 'not_legacy'}
     field :remote_status_string, value: -> (record) {record.remote_status.to_s}, analyzer: 'substring'
     field :remote_status, value: -> (record) {remote_statuses[record.remote_status]}

@@ -31,6 +31,6 @@ json.data (@po_requests) do |po_request|
               ]
 end
 
-json.recordsTotal @po_requests.model.all.count
-json.recordsFiltered @po_requests.count
+json.recordsTotal @po_requests.count
+json.recordsFiltered @po_requests.total_count
 json.draw params[:draw]
