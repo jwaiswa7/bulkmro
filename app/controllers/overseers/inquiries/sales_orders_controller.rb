@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :retrive_sap_so_data]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -135,6 +135,13 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     if @sales_order.save_and_sync
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     end
+  end
+
+  def retrive_sap_so_data
+    authorize @sales_order
+    sales_order = SalesOrder.find(params['id'])
+    Services::Overseers::SalesOrders::RetriveSapSoData.new(sales_order).call
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry)
   end
 
   private
