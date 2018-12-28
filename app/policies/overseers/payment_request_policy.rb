@@ -1,9 +1,13 @@
 class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   def index?
-    manager_or_sales? || logistics? || admin? || others?
+    true
   end
 
   def edit_payment_queue?
-    others?
+    accounts? || admin?
+  end
+
+  def edit_payment_logistics?
+    manager_or_sales? || logistics? || admin?
   end
 end

@@ -3,16 +3,12 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   def index
     payment_requests =
-        if params[:status].present?
-          @status = params[:status]
-          if @status == 'Pending'
-            PaymentRequest.Pending
-          elsif @status == 'Completed'
-            PaymentRequest.Completed
-          elsif @status == 'Rejected'
-            PaymentRequest.Rejected
+        if params[:status].present? || params[:owner].present?
+          @param = params[:status] || params[:owner]
+          if PaymentRequest.send(:valid_scope_name?, @param)
+            PaymentRequest.send(@param)
           else
-            PaymentRequest.where(:status => params[:status])
+            PaymentRequest.where(:status => @param)
           end
         else
           PaymentRequest.all

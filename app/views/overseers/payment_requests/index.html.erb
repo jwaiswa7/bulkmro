@@ -3,7 +3,7 @@
 <% provide :wrap_whitespace, true %>
 
 <% content_for :heading do %>
-  <% ['Payment Requests', @status].compact.join(': ') %>
+  <% ['Payment Requests', @param].compact.join(': ') %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>

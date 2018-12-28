@@ -90,6 +90,13 @@
               </div>
             <% end %>
 
+            <% if @payment_request.request_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Owner</strong>
+                <%= @payment_request.request_owner.to_s %>
+              </div>
+            <% end %>
+
           </div>
           <% if @payment_request.attachments.attached? %>
             <div class="form-row">

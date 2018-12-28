@@ -44,9 +44,16 @@ class PaymentRequest < ApplicationRecord
       :'Payment Due' => 30
   }
 
+  enum request_owner: {
+      :'Logistics' => 10,
+      :'Accounts' => 20
+  }
+
   scope :Pending, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'])}
   scope :Completed, -> {where(:status => :'Complete: Payment Made')}
   scope :Rejected, -> {where(status: ['Rejected: Payment','Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Order Info: Material not Ready','Supplier Info: PI mismatch'])}
+  scope :Logistics, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner:['Logistics','Accounts'])}
+  scope :Accounts, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
   # with_options if: :"Completed?" do |payment_request|
@@ -56,6 +63,7 @@ class PaymentRequest < ApplicationRecord
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     self.status ||= :'Complete: Payment Pending'
+    self.request_owner ||= :'Logistics'
   end
 
   def update_status!

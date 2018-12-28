@@ -41,6 +41,10 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
           @payment_request_comment = PaymentRequestComment.new(:message => "Status Changed: #{@payment_request.status}", :payment_request => @payment_request, :overseer => current_overseer)
           @payment_request.save!
           @payment_request_comment.save!
+        elsif @payment_request.request_owner_changed?
+          @payment_request_comment = PaymentRequestComment.new(:message => "Ownership transferred to: #{@payment_request.request_owner}", :payment_request => @payment_request, :overseer => current_overseer)
+          @payment_request.save!
+          @payment_request_comment.save!
         else
           @payment_request.save!
         end
@@ -64,6 +68,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :due_date,
         :payment_type,
         :cheque_date,
+        :request_owner,
         :status,
         :payment_terms,
         :purpose_of_payment,
@@ -75,7 +80,6 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
   end
 
   def set_payment_request
-    puts "set payment request-----------"
     @payment_request = PaymentRequest.find(params[:id])
   end
 end
