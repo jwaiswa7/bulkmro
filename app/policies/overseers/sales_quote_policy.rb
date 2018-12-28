@@ -28,6 +28,6 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def new_freight_request?
-    !record.freight_request.present? && record.is_final?
+    !record.freight_request.present? && record.is_final? && !logistics?
   end
 end

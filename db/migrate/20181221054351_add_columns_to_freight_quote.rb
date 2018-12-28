@@ -35,7 +35,6 @@ class AddColumnsToFreightQuote < ActiveRecord::Migration[5.2]
 
     add_column :freight_quotes, :iec_code, :integer
     add_column :freight_quotes, :supplier_id, :integer
-    add_column :freight_quotes, :purchase_order_number, :integer
 
     add_reference :freight_quotes, :inquiry, foreign_key: true
     add_reference :freight_quotes, :purchase_order, foreign_key: true

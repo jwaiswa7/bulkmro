@@ -51,10 +51,10 @@
               </div>
             <% end %>
 
-            <% if @freight_quote.purchase_order_number.present? %>
+            <% if @freight_quote.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Purchase Order Number</strong>
-                <%= @freight_quote.purchase_order_number %>
+                <%= @freight_quote.purchase_order.po_number %>
               </div>
             <% end %>
 
