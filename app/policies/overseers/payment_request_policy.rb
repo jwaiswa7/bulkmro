@@ -4,7 +4,7 @@ class Overseers::PaymentRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_payment_queue?
-    accounts? || admin?
+    accounts?
   end
 
   def edit_payment_logistics?
