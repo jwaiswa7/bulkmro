@@ -14,7 +14,9 @@ class PaymentRequest < ApplicationRecord
 
   enum status: {
       :'Pending' => 10,
-      :'Completed' => 20
+      :'Pending with Logistics' => 20,
+      :'Pending with Accounts' => 30,
+      :'Completed' => 40
   }
 
   enum payment_type: {
