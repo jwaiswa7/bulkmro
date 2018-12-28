@@ -108,6 +108,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && not_logistics?
   end
 
+  def new_purchase_orders_requests?
+    developer?
+  end
+
+  def create_purchase_orders_requests?
+    developer?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

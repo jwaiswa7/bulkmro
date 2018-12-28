@@ -4,7 +4,9 @@ class SalesOrderRow < ApplicationRecord
   belongs_to :sales_order
   has_one :sales_quote, :through => :sales_order
   belongs_to :sales_quote_row
+  has_one :supplier, :through => :sales_quote_row
   has_one :tax_code, :through => :sales_quote_row
+  has_one :inquiry_product_supplier, :through => :sales_quote_row
   has_one :inquiry_product, :through => :sales_quote_row
   has_one :product, :through => :inquiry_product
 

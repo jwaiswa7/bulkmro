@@ -71,6 +71,42 @@
                 <a href="<%= overseers_po_request_path(@po_request.payment_request) %>"><%= format_id(@po_request.id) %></a>
               </div>
             <% end %>
+
+            <% if @po_request.sales_order.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier PO Type</strong>
+                <%= @po_request.sales_order.opportunity_type %>
+              </div>
+            <% end %>
+
+            <% if @po_request.payment_option.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Payment Terms</strong>
+                <%= @po_request.payment_option %>
+              </div>
+            <% end %>
+
+            <% if @po_request.inquiry.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Committed Date</strong>
+                <%= @po_request.inquiry.customer_committed_date %>
+              </div>
+            <% end %>
+
+            <% if @po_request.supplier.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier</strong>
+                <%= @po_request.supplier.to_s %>
+              </div>
+            <% end %>
+
+            <% if @po_request.logistics_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Logistics Owner</strong>
+                <%= @po_request.logistics_owner.to_s %>
+              </div>
+            <% end %>
+
           </div>
 
           <% if @po_request.attachments.attached? %>
@@ -109,7 +145,13 @@
               <tr>
                 <th>Sr. No.</th>
                 <th>Product</th>
+                <th>Make</th>
+                <th>HSN</th>
+                <th>T. Rate</th>
                 <th>Quantity</th>
+                <th>MOU</th>
+                <th>UP</th>
+                <th>TP</th>
               </tr>
               </thead>
               <tbody>
@@ -117,7 +159,13 @@
                 <tr>
                   <td><%= sr_no + 1 %></td>
                   <td><%= row.product.to_s %></td>
+                  <td><%= row.product.try(:brand).to_s %></td>
+                  <td><%= row.sales_order_row.best_tax_code %></td>
+                  <td><%= row.sales_order_row.best_tax_rate %></td>
                   <td><%= row.sales_order_row.quantity.to_i %></td>
+                  <td><%= row.sales_order_row.measurement_unit %></td>
+                  <td><%= row.sales_order_row.converted_unit_selling_price %></td>
+                  <td><%= row.sales_order_row.converted_total_selling_price %></td>
                 </tr>
               <% end %>
               </tbody>

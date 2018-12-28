@@ -48,6 +48,7 @@
             <div class="col-6 col-md-4">
               <strong class="d-block">Payment Terms</strong>
               <%= @inquiry.payment_option %>
+            </div>
           </div>
           <div class="card-alternative mt-3">
             <div class="form-row">
@@ -98,7 +99,7 @@
           <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
             <%= row.hidden_field :sales_order_id %>
             <%= row.hidden_field :id %>
-           <div>
+            <div>
              <h6 class="text-uppercase mb-0 mt-3">
                <span class="lead text-black-50 text-small mr-1 mt-1">#<%= row.object.sr_no %></span>
                <strong><%= row.object.sales_quote_row %></strong>
@@ -171,7 +172,7 @@
                  </table>
                </div>
              </div>
-           </div>
+            </div>
             <hr class="my-2">
           <% end %>
 

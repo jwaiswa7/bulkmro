@@ -171,6 +171,8 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
       end
 
       collection do
@@ -185,6 +187,7 @@ Rails.application.routes.draw do
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
       end
     end
 

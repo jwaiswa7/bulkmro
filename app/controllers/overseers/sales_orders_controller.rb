@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync]
+  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests, :create_purchase_orders_requests]
   def pending
     authorize :sales_order
 
@@ -95,9 +95,50 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def new_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
+    service.call
+
+  end
+
+  def create_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    not_requested_po = service.call
+
+    if not_requested_po.size > 0
+      redirect_to new_purchase_orders_requests_overseers_sales_order_path(@sales_order.to_param)
+    else
+      redirect_to pending_overseers_po_requests_path
+    end
+  end
+
   private
 
   def set_sales_order
     @sales_order = SalesOrder.find(params[:id])
+  end
+
+  def new_purchase_orders_requests_params
+    if params.has_key?(:sales_order)
+      params.require(:sales_order).permit(
+          :id,
+          :po_requests_attributes => [
+              :id,
+              :logistics_owner_id,
+              :status,
+              :attachments => [],
+              :rows_attributes => [
+                  :id,
+                  :_destroy
+              ]
+          ]
+      )
+    else
+      {}
+    end
   end
 end
