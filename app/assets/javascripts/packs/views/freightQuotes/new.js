@@ -42,8 +42,7 @@ const newAction = () => {
     })
 
     $('#freight_quote_currency').on('change', function () {
-        let _this = this;
-        $('#freight_quote_exchange_rate').val(_this.options[_this.selectedIndex].dataset.conversionRate);
+        $('#freight_quote_exchange_rate').val(this.options[this.selectedIndex].dataset.conversionRate);
         calculateBuyingPriceINR();
     })
 };
