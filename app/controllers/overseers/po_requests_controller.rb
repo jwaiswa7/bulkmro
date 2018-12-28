@@ -66,6 +66,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
           @po_request.save!
         end
       end
+      create_payment_request = Services::Callbacks::PaymentRequests::Create.new({:po_request=> @po_request}, nil)
+      create_payment_request.call
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
       render 'edit'
