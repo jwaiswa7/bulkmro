@@ -12,8 +12,12 @@ json.data (@payment_requests) do |payment_request|
                   status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,
                   payment_request.po_request.purchase_order.id,
-                  if payment_request.payment_option.present?
-                    payment_request.payment_option.name
+                  payment_request.request_owner,
+                  if payment_request.payment_type.present?
+                    payment_request.payment_type
+                  end,
+                  if payment_request.utr_number.present?
+                    payment_request.utr_number
                   end,
                   payment_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(payment_request.due_date),
