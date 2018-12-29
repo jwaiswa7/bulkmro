@@ -95,6 +95,10 @@
             <h6 class="text-uppercase text-black-50 mb-1">Delivery Data</h6>
             <div class="form-row">
               <div class="col-3">
+                <%= f.input :weight, input_type: "number" %>
+              </div>
+
+              <div class="col-3">
                 <%= f.input :length, input_html: {class: 'calculate-metric'} %>
               </div>
 
@@ -106,7 +110,7 @@
                 <%= f.input :width, input_html: {class: 'calculate-metric'} %>
               </div>
 
-              <div class="col-3">
+              <div class="col-6">
                 <%= f.input :measurement, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.measurements, alphabetical: false), :include_blank => false %>
               </div>
 
@@ -114,7 +118,7 @@
                 <%= f.input :volumetric_weight, readonly: true, label: "Volumetric Weight in Kilograms" %>
               </div>
 
-              <div class="col-6">
+              <div class="col-3">
                 <%= f.input :hazardous, as: :select, :wrapper => :custom_multi_select, :include_blank => false, label: "Hazardous" %>
               </div>
             </div>

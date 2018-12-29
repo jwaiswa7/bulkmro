@@ -138,6 +138,13 @@
         <div class="mt-3 card-alternative">
           <h6 class="text-uppercase text-black-50 mb-1">Delivery Data</h6>
           <div class="form-row">
+            <% if @freight_request.weight.present? %>
+              <div class="col-3">
+                <strong class="d-block">Weight</strong>
+                <%= @freight_request.weight %>
+              </div>
+            <% end %>
+
             <% if @freight_request.length.present? %>
               <div class="col-3">
                 <strong class="d-block">Length</strong>
@@ -158,15 +165,15 @@
                 <%= @freight_request.width %>
               </div>
             <% end %>
-
+          </div>
+          <div class="form-row mt-1">
             <% if @freight_request.measurement.present? %>
               <div class="col-3">
                 <strong class="d-block">Measurement</strong>
                 <%= @freight_request.measurement %>
               </div>
             <% end %>
-          </div>
-          <div class="form-row mt-1">
+
             <% if @freight_request.volumetric_weight.present? %>
               <div class="col-3 ">
                 <strong class="d-block">Volumetric Weight in Kilograms</strong>

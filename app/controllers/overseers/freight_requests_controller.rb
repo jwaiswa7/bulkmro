@@ -97,6 +97,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
         :pick_up_address_id,
         :sales_quote_id,
         :status,
+        :weight,
         :length,
         :width,
         :breadth,
