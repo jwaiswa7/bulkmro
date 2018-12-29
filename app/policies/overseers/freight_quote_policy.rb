@@ -4,7 +4,7 @@ class Overseers::FreightQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def new?
-    index?
+    logistics? || admin?
   end
 
   def edit?

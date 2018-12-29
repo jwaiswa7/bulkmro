@@ -35,7 +35,7 @@ class FreightRequest < ApplicationRecord
       :'Freight Quote Requested' => 10,
       :'Pending Info: IS & P' => 20,
       :'Awaiting Quote: 3PLs' => 30,
-      :'Freight Request Completed' => 40,
+      :'Freight Quote Submitted' => 40,
       :'Cancelled' => 50
   }
 

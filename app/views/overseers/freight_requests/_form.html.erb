@@ -45,11 +45,11 @@
               </div>
 
               <div class="col-6">
-                <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.statuses, alphabetical: false), :include_blank => false %>
+                <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
               </div>
 
               <div class="col-6">
-                <%= f.association :supplier, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select Supplier Company" %>
+                <%= f.association :supplier, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select Supplier Company", required: true %>
               </div>
 
               <div class="col-6">
@@ -85,7 +85,7 @@
           <% else %>
             <div class="form-row">
               <div class="col-6">
-                <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.statuses, alphabetical: false), :include_blank => false %>
+                <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
               </div>
             </div>
           <% end %>

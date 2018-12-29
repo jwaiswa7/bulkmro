@@ -19,10 +19,6 @@ const newAction = () => {
         calculateBasicCustomDuty();
     });
 
-    $('#freight_quote_social_welfare_cess_percentage').on('keyup', function () {
-        calculateSocialWelfareCess();
-    });
-
     $('#freight_quote_gst_percentage').on('change', function () {
         calculateGst();
     });

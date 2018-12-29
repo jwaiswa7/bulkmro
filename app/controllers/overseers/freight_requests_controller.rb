@@ -19,15 +19,20 @@ class Overseers::FreightRequestsController < Overseers::BaseController
   end
 
   def new
-    if params[:sales_order_id].present? || params[:sales_quote_id].present?
+    if params[:sales_order_id].present? || params[:sales_quote_id].present? || params[:inquiry_id].present?
       if params[:sales_order_id].present?
         @sales_order = SalesOrder.find(params[:sales_order_id])
         @sales_quote = @sales_order.sales_quote
+        @inquiry = @sales_quote.inquiry
       elsif params[:sales_quote_id].present?
         @sales_quote = SalesQuote.find(params[:sales_quote_id])
+        @inquiry = @sales_quote.inquiry
+      elsif params[:inquiry_id].present?
+        @inquiry = Inquiry.find(params[:inquiry_id])
+        @sales_quote = @inquiry.final_sales_quote
       end
 
-      freight_params = {:overseer => current_overseer, :inquiry => @sales_quote.inquiry, :sales_quote => @sales_quote, :company => @sales_quote.inquiry.shipping_company}
+      freight_params = {:overseer => current_overseer, :inquiry => @inquiry, :sales_quote => @sales_quote, :company => @inquiry.shipping_company}
       freight_params[:sales_order] = @sales_order if @sales_order.present?
 
       @freight_request = FreightRequest.new(freight_params)
