@@ -1,11 +1,9 @@
 class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Charts::Builder
-  def initialize(report)
+  def initialize(daterange)
     super
   end
 
   def call(company)
-    # call_base
-    debugger
     build_chart do
       @data = {
           labels: [],
@@ -74,5 +72,5 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
     end
   end
 
-  attr_accessor :report, :start_at, :end_at
+  attr_accessor :start_at, :end_at
 end

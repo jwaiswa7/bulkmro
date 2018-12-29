@@ -1,17 +1,6 @@
-const monthlyPurchaseData = () => {
-
+const index = () => {
     Object.values(Chart.instances).forEach(updateChartOptions)
-
-    /*$('canvas.chart').each(function (index, object) {
-        console.log(object);
-        var myChart = new Chart(object, barChartOptions);
-        myChart.options = barChartOptions;
-        myChart.update();
-
-    });*/
-
 };
-
 
 let updateChartOptions = function (chartObject) {
     if (chartObject.canvas.id == 'monthly_purchase_data') {
@@ -44,7 +33,6 @@ let updateChartOptions = function (chartObject) {
                         userCallback: function (value) {
                             value = value.toString();
                             return '₹' + (value/100000) + ' Lacs';
-                            // return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                         }
                     },
                     scaleLabel: {
@@ -60,7 +48,47 @@ let updateChartOptions = function (chartObject) {
         chartObject.options = barChartOptions;
         chartObject.update();
     }
+    else if (chartObject.canvas.id == 'revenue_trend') {
+        var barChartOptions = {
+            tooltips: {
+                mode: 'label',
+                callbacks: {
+                    label: function (tooltipItem) {
+                        return Math.round(tooltipItem.yLabel).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                    },
+                }
+            },
+
+            scales: {
+                yAxes: [
+                    {
+                        id: 'revenue',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: {
+                            display: true,
+                            userCallback: function (value) {
+                                value = value.toString();
+                                return '₹' + (value / 100000) + ' Lacs';
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '₹ Lacs'
+                        },
+                        gridLines: {
+                            display: true
+                        }
+                    }
+                ]
+            }
+        };
+        chartObject.options = barChartOptions;
+        chartObject.update();
+    }
 };
 
+export default index
 
-export default monthlyPurchaseData
+// chartObject.destroy();
+// return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");

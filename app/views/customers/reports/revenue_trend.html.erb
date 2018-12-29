@@ -1,13 +1,11 @@
-<%= render layout: 'customers/reports/graph' do %>
-  <%= render layout: 'customers/reports/tabs_layout' do %>
-    <div class="page-header">
-      <h2>Revenue Trend</h2>
-    </div>
+<%= render layout: 'customers/reports/tabs_layout' do %>
+  <div class="page-header">
+    <h2>Revenue Trend</h2>
+  </div>
 
-    <div class="card">
-      <div class="card-body">
-        <%= bar_chart @chart[:data], @chart[:options].merge({:height => '180px', :id => 'revenue_trend'}) %>
-      </div>
+  <div class="card">
+    <div class="card-body">
+      <%= bar_chart @chart[:data], @chart[:options].merge({:height => '180px', :id => 'revenue_trend'}) %>
     </div>
-  <% end %>
+  </div>
 <% end %>

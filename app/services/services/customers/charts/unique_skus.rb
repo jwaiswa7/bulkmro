@@ -1,5 +1,5 @@
 class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Builder
-  def initialize
+  def initialize(daterange)
     super
   end
 

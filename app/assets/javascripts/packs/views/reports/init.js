@@ -1,10 +1,7 @@
-import reportsMonthlyPurchaseData from "./monthlyPurchaseData";
-import reportsrevenueTrend from "./revenueTrend";
-
+import reportsIndex from "./index";
 
 let reports = {
-    monthlyPurchaseData: reportsMonthlyPurchaseData,
-    revenueTrend: reportsrevenueTrend
+    index: reportsIndex,
 };
 
 export default reports

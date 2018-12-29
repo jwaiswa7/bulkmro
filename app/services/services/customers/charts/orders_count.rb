@@ -1,5 +1,5 @@
 class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Builder
-  def initialize(report)
+  def initialize(daterange)
     super
   end
 
@@ -52,5 +52,5 @@ class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Bu
     end
   end
 
-  attr_accessor :report, :start_at, :end_at
+  attr_accessor :start_at, :end_at
 end

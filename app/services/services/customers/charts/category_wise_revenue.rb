@@ -1,5 +1,5 @@
 class Services::Customers::Charts::CategoryWiseRevenue < Services::Customers::Charts::Builder
-  def initialize
+  def initialize(daterange)
     super
   end
 
@@ -22,7 +22,7 @@ class Services::Customers::Charts::CategoryWiseRevenue < Services::Customers::Ch
 
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => @start_at..@end_at).joins(:company).where(companies: {id: 143}).joins(:products)
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id}).joins(:products)
       categorywise_revenue = {}
 
       sales_orders.each do |so|
