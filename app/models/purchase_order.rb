@@ -60,8 +60,10 @@ class PurchaseOrder < ApplicationRecord
       return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
     end
 
-    product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
-    product_supplier.supplier if product_supplier.present?
+    if self.inquiry.final_sales_quote.present?
+      product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
+      return product_supplier.supplier if product_supplier.present?
+    end
   end
 
   def metadata_status
