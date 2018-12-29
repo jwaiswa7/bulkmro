@@ -56,6 +56,7 @@ class PaymentRequest < ApplicationRecord
   scope :Accounts, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
+  validates_presence_of :cheque_date, if: Proc.new { |payment_request| payment_request.payment_type == 'Cheque' }
   # with_options if: :"Completed?" do |payment_request|
   #   payment_request.validates_presence_of :payment_type
   # end

@@ -88,7 +88,7 @@
               </div>
 
               <div class="col-3">
-                <%= f.input :purpose_of_payment, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => false %>
+                <%= f.input :purpose_of_payment, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.purpose_of_payments, alphabetical: false, keep_raw: true), :include_blank => true %>
               </div>
 
               <div class="col-12">
