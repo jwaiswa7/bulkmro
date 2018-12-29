@@ -45,7 +45,7 @@ class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Bu
 
       sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
 
-      sales_orders.group_by_month('sales_orders.created_at', series:true).size.each do |month, order_count|
+      sales_orders.group_by_month('sales_orders.created_at', format: "%b-%y", series:true).size.each do |month, order_count|
         @data[:labels].push(month)
         @data[:datasets][0][:data].push(order_count)
       end
