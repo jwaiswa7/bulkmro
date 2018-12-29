@@ -1,15 +1,12 @@
-<% provide :container_fluid, true %>
-<% provide :wrap_whitespace, true %>
-<div class="col-lg-10 col-lg-offset-1">
+<%= render layout: 'customers/reports/graph' do %>
   <%= render layout: 'customers/reports/tabs_layout' do %>
     <div class="page-header">
       <h2>Monthly Purchase Data</h2>
     </div>
-
     <div class="card">
       <div class="card-body">
         <%= bar_chart @chart[:data], @chart[:options].merge({:height => '180px', :id => 'monthly_purchase_data'}) %>
       </div>
     </div>
   <% end %>
-</div>
+<% end %>

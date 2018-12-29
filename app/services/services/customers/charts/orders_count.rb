@@ -1,8 +1,6 @@
 class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Builder
-  def initialize
+  def initialize(report)
     super
-    # @start_at = start_at
-    # @end_at = end_at
   end
 
   def call(company)
@@ -54,5 +52,5 @@ class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Bu
     end
   end
 
-  attr_accessor :start_at, :end_at
+  attr_accessor :report, :start_at, :end_at
 end

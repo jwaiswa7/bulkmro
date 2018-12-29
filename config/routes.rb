@@ -392,6 +392,7 @@ Rails.application.routes.draw do
         get 'orders_count'
         get 'unique_skus'
         get 'categorywise_revenue'
+        get 'graph'
       end
     end
 

@@ -1,8 +1,6 @@
 class Services::Customers::Charts::CategoryWiseRevenue < Services::Customers::Charts::Builder
   def initialize
     super
-    # @start_at = start_at
-    # @end_at = end_at
   end
 
   def call(company)

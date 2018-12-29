@@ -1,6 +1,4 @@
-<% provide :container_fluid, true %>
-<% provide :wrap_whitespace, true %>
-<div class="col-lg-10 col-lg-offset-1">
+<%= render layout: 'customers/reports/graph' do %>
   <%= render layout: 'customers/reports/tabs_layout' do %>
     <div class="page-header">
       <h2>Revenue Trend</h2>
@@ -12,4 +10,4 @@
       </div>
     </div>
   <% end %>
-</div>
+<% end %>
