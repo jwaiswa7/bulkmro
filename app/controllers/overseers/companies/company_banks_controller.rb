@@ -1,4 +1,4 @@
-class CompanyBanksController < ApplicationController
+class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseController
   before_action :set_company_bank, only: [:show, :edit, :update, :destroy]
 
   # GET /company_banks
