@@ -23,6 +23,20 @@ json.data (@invoice_requests) do |invoice_request|
               ]
 end
 
-json.recordsTotal @invoice_requests.count
-json.recordsFiltered @invoice_requests.total_count
+=begin
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       # InvoiceRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
+=end
+
+json.recordsTotal @invoice_requests.model.all.count
+json.recordsFiltered @invoice_requests.count
 json.draw params[:draw]
+json.recordsSummary InvoiceRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
