@@ -139,8 +139,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def retrive_sap_so_data
     authorize @sales_order
-    sales_order = SalesOrder.find(params['id'])
-    Services::Overseers::SalesOrders::RetriveSapSoData.new(sales_order).call
+    Services::Overseers::SalesOrders::RetriveSapSoData.new(@sales_order).call
     redirect_to overseers_inquiry_sales_orders_path(@inquiry)
   end
 
