@@ -199,6 +199,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'material_readiness_queue'
         get 'material_pickup_queue'
+        get 'material_delivered_queue'
       end
     end
 

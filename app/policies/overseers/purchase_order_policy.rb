@@ -34,4 +34,8 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def material_pickup_queue?
     edit?
   end
+
+  def material_delivered_queue?
+    edit?
+  end
 end

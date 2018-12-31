@@ -38,6 +38,12 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'material_readiness_queue'
   end
 
+  def material_delivered_queue
+    authorize :purchase_order
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_delivered_queue, params)
+    render 'material_readiness_queue'
+  end
+
   def edit_internal_status
     authorize @purchase_order
   end
@@ -46,7 +52,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     authorize @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
-    if @purchase_order.save
+    if @purchase_order.valid?
+      ActiveRecord::Base.transaction do if @purchase_order.internal_status_changed?
+          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.internal_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
+          @purchase_order.save!
+          @po_comment.save!
+        else
+          @purchase_order.save!
+        end
+      end
       redirect_to edit_internal_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
       render 'edit_internal_status'
@@ -81,6 +95,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def purchase_order_params
     params.require(:purchase_order).permit(
         :internal_status,
+        :comments_attributes => [:id, :message, :created_by_id],
     )
   end
 end
