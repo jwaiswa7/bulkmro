@@ -19,6 +19,8 @@ module StatusesHelper
       'color-yellow'
     when :'Invoiced'
       'color-yellow'
+    when :'In stock'
+      'color-yellow'
     when :'Delivered: GRN Pending'
       'color-red'
     when :'Delivered: GRN Received'
@@ -182,6 +184,8 @@ module StatusesHelper
       else
         klass.where(remote_status: status).count
       end
+    when :PurchaseOrder
+      klass.all.map(&:metadata_status).count(status)
     else
       klass.where(status: status).count;
     end

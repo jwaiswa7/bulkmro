@@ -291,7 +291,7 @@
           All addresses searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_addresses_path(company_id: @company.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-fixed-header="false" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_addresses_path(company_id: @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -328,6 +328,7 @@
             <th class="all" data-name="name">Name</th>
             <th class="all" data-name="email">Email</th>
             <th class="all" data-name="account_id">Account</th>
+            <th class="all" data-name="account_id">Role</th>
             <th class="no-sort desktop">Inquiry</th>
             <!--<th class="no-sort desktop">SAP Status</th>-->
             <th class="desktop" data-name="created_at">Created</th>

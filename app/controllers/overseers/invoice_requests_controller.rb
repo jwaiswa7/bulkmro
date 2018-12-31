@@ -32,6 +32,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests
+    @statuses = @invoice_requests.pluck(:status)
   end
 
   def show
@@ -74,7 +75,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_request
 
     if @invoice_request.valid?
-      @invoice_request.update_status!
+      @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(:message => "Status Changed: #{@invoice_request.status}", :invoice_request => @invoice_request, :overseer => current_overseer)

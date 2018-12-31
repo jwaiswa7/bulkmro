@@ -1170,6 +1170,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def sales_invoices
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice.csv', folder)
     service.loop(limit) do |x|
+      next if x.get_column('order_number') != 2003414
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
         sales_invoice = SalesInvoice.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
@@ -1952,6 +1953,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   puts "false"
   end
   end
+  end
+
+  def update_online_order_numbers
+    CustomerOrder.all.each do |co|
+      co.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
+    end
   end
 
   def update_is_international_field_in_company
