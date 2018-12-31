@@ -20,7 +20,16 @@
       <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
       <%= nav_item 'Invoices', customers_invoices_path, true %>
       <%= nav_item 'Reports', customers_reports_path(:graph => 'monthly_purchase_data'), true %>
-      <%= nav_item 'Online Orders', customers_customer_orders_path, policy(:customer_product).online_orders? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Online Orders
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
+          <%= nav_dropdown_item 'Pending Approval', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+          <%= nav_dropdown_item 'Approved Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
+        </div>
+      </li>
     </ul>
   </div>
   <!-- Navigation Bar -->

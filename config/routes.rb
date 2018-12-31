@@ -215,6 +215,7 @@ Rails.application.routes.draw do
 
     resources :customer_orders do
       scope module: 'customer_orders' do
+        resources :comments
         resources :inquiries do
 
         end
@@ -395,6 +396,16 @@ Rails.application.routes.draw do
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
+        get 'approve_order'
+      end
+
+      collection do
+        get 'pending'
+        get 'approved'
+      end
+
+      scope module: 'customer_orders' do
+        resources :comments
       end
     end
     resources :products, :controller => :customer_products, only: %i[index create show] do

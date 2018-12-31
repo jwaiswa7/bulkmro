@@ -6,10 +6,21 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
+        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
         service.call
-        @indexed_purchase_orders = service.indexed_records
-        @purchase_orders = service.records.try(:reverse)
+
+        per = (params[:per] || params[:length] || 20).to_i
+        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
+        @indexed_purchase_orders = service.indexed_records.per(per).page(page)
+        @purchase_orders = service.records.page(page).per(per).try(:reverse)
+
+        if (PurchaseOrder.count != @indexed_purchase_orders.total_count)
+          status_records = service.records.try(:reverse)
+          @statuses = status_records.map(&:metadata_status)
+        else
+          @statuses = PurchaseOrder.all.map(&:metadata_status)
+        end
       end
     end
   end

@@ -40,7 +40,6 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
   attr_accessor :params
 end
 
-
 # {
 #     "DocEntry": "500",
 #     "PoNum": "40210162",
