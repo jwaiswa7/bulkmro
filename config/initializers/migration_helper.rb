@@ -6,12 +6,12 @@ module MigrationHelper
   end
 
   module InstanceMethods
-    def userstamps
+    def userstamps(table=:overseers)
       column(:created_by_id, :integer, index: true)
       column(:updated_by_id, :integer, index: true)
 
-      foreign_key(:overseers, column: 'created_by_id')
-      foreign_key(:overseers, column: 'updated_by_id')
+      foreign_key(table, column: 'created_by_id')
+      foreign_key(table, column: 'updated_by_id')
     end
   end
 end

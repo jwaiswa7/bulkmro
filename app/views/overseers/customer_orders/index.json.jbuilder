@@ -6,14 +6,18 @@ json.data (@customer_orders) do |customer_order|
                       end,
                       if policy(customer_order).can_create_inquiry?
                         row_action_button(new_overseers_customer_order_inquiry_path(customer_order), 'plus-circle', 'Create Inquiry', 'success', :_blank)
-                      elsif policy(customer_order.inquiry).edit?
+                      elsif customer_order.inquiry.present? && policy(customer_order.inquiry).edit?
                         row_action_button(edit_overseers_inquiry_path(customer_order.inquiry), 'pencil', 'View Inquiry', 'warning', :_blank)
                       end
                   ].join(' '),
-                  customer_order.contact.account.name,
-                  customer_order.company.present? ? customer_order.company.name : "-",
+                  customer_order.online_order_number,
+                  status_badge(customer_order.status),
+                  conditional_link( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
+                  customer_order.company.present? ? conditional_link(customer_order.company.name, overseers_company_path(customer_order.company), policy(customer_order.company).show?) : "-",
                   customer_order.contact.full_name,
                   customer_order.rows.count,
+                  format_currency(customer_order.calculated_total),
+                  format_currency(customer_order.grand_total),
                   customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : "-",
                   customer_order.company.present? && customer_order.company.outside_sales_owner.present? ? customer_order.company.outside_sales_owner.full_name : "-",
                   customer_order.company.present? && customer_order.company.sales_manager.present? ? customer_order.company.sales_manager.full_name : "-",
