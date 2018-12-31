@@ -32,6 +32,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests
+    @statuses = @invoice_requests.pluck(:status)
   end
 
   def show

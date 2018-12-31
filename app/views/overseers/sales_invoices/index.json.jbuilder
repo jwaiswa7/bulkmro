@@ -60,3 +60,4 @@ json.columnFilters [
 json.recordsTotal SalesInvoice.all.count
 json.recordsFiltered @indexed_sales_invoices.total_count
 json.draw params[:draw]
+json.recordsSummary SalesInvoice.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json

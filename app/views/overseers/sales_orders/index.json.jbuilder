@@ -52,3 +52,4 @@ json.columnFilters [
 json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]
+json.recordsSummary SalesOrder.remote_statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
