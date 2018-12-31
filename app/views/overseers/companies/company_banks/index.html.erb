@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Company Banks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @company_banks.each do |company_bank| %>
+      <tr>
+        <td><%= link_to 'Show', company_bank %></td>
+        <td><%= link_to 'Edit', edit_company_bank_path(company_bank) %></td>
+        <td><%= link_to 'Destroy', company_bank, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Company Bank', new_company_bank_path %>

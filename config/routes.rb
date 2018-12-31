@@ -357,6 +357,10 @@ Rails.application.routes.draw do
         resources :products do
 
         end
+
+        resources :company_banks do
+
+        end
       end
     end
 
