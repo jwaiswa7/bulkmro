@@ -66,7 +66,7 @@ class Services::Overseers::Finders::SmartQueues < Services::Overseers::Finders::
   end
 
   def sort_definition
-    [{:priority => :desc}, {:quotation_followup_date => :asc}, {:calculated_total_i => :desc}]
+    [{:priority => :desc}, {:quotation_followup_date => :asc}, {:calculated_total => :desc}]
   end
 
   def sq_filtered_statuses

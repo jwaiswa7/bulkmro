@@ -27,6 +27,23 @@ json.data (@payment_requests) do |payment_request|
               ]
 end
 
-json.recordsTotal @payment_requests.count
-json.recordsFiltered @payment_requests.total_count
+
+json.columnFilters [
+                       [],
+                       [],
+                       PaymentRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
+
+
+json.recordsTotal @payment_requests.model.all.count
+json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
+json.recordsSummary PaymentRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
