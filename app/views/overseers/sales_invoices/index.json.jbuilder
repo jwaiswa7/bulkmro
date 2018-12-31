@@ -2,11 +2,12 @@ json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [
                       if policy(sales_invoice).show? && sales_invoice.inquiry.present?
-                        [row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'file-pdf', 'Original with Signature', 'dark', :_blank),
-                         row_action_button(duplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'file-pdf', 'Duplicate with Signature', 'dark', :_blank),
-                         row_action_button(triplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'file-pdf', 'Triplicate with Signature', 'dark', :_blank),
-                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :zip), 'download', 'Zip with Signature', 'dark', :_blank),
-                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), 'download', 'Zip without Signature', 'dark', :_blank)
+
+                        [row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'none', 'O', 'Original with Signature', 'dark', :_blank),
+                         row_action_button(duplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'none', 'D', 'Duplicate with Signature', 'dark', :_blank),
+                         row_action_button(triplicate_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :pdf), 'none', 'T', 'Triplicate with Signature', 'dark', :_blank),
+                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, :stamp => 1, format: :zip), 'stamp','', 'Zip with Signature', 'dark', :_blank),
+                         row_action_button(make_zip_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :zip), 'file-archive','', 'Zip without Signature', 'dark', :_blank)
                         ]
                       end,
                       if policy(sales_invoice).show_original_invoice? && sales_invoice.inquiry.present?
@@ -16,7 +17,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
                       if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
-                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success')
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle','', 'Add Proof of Delivery', 'success')
                       end,
                       if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
                         [
