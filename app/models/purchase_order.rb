@@ -54,13 +54,22 @@ class PurchaseOrder < ApplicationRecord
       :'Closed' => 96
   }
 
+  enum internal_status: {
+      :'Material Readiness Follow-Up' => 10,
+      :'Material Pickup' => 20,
+      :'Material Delivered' => 30
+  }
+
+  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
+  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
+
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
-      product_supplier = ( Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']) )
-      return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
+      product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
+      return product_supplier if (self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?)
     end
 
-    product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
+    product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id}.first
     product_supplier.supplier if product_supplier.present?
   end
 

@@ -189,9 +189,16 @@ Rails.application.routes.draw do
     end
 
     resources :purchase_orders do
+      member do
+        get 'edit_internal_status'
+        patch 'update_internal_status'
+      end
+
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'material_readiness_queue'
+        get 'material_pickup_queue'
       end
     end
 
