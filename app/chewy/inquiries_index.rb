@@ -30,6 +30,6 @@ class InquiriesIndex < BaseIndex
   end
 
   def self.fields
-    [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact, :created_by_id, :calculated_total]
+    [:status, :status_string, :subject, :inquiry_number_string, :sales_orders_ids, :sales_invoices_ids, :inside_sales_owner, :outside_sales_owner, :inside_sales_executive, :outside_sales_executive, :company, :account, :contact, :created_by_id]
   end
 end
