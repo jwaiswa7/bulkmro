@@ -11,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
             row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
           end
       ].join(' '),
-      conditional_link(sales_order.order_number.present? ? sales_order.order_number : "", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?),
+      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : "",
       sales_order.id,
       conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
       status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
