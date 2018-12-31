@@ -1,5 +1,8 @@
 class PurchaseOrder < ApplicationRecord
+  COMMENTS_CLASS = 'PoComment'
+
   include Mixins::HasConvertedCalculations
+  include Mixins::HasComments
   update_index('purchase_orders#purchase_order') {self}
 
   pg_search_scope :locate, :against => [:id, :po_number], :using => {:tsearch => {:prefix => true}}
@@ -53,6 +56,16 @@ class PurchaseOrder < ApplicationRecord
       :'Cancelled' => 95,
       :'Closed' => 96
   }
+
+  enum internal_status: {
+      :'Material Readiness Follow-Up' => 10,
+      :'Material Pickup' => 20,
+      :'Material Delivered' => 30
+  }
+
+  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
+  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
+  scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
