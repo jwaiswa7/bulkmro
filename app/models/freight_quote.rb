@@ -7,7 +7,7 @@ class FreightQuote < ApplicationRecord
   belongs_to :freight_request
 
   belongs_to :inquiry
-  belongs_to :purchase_order
+  belongs_to :purchase_order, optional: true
   has_one :sales_order, :through => :freight_request
   has_one :sales_quote, :through => :freight_request
   has_many_attached :attachments

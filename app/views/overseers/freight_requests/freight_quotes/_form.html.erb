@@ -37,7 +37,7 @@
               <% if f.object.purchase_order_id.present? %>
                 <%= f.input :purchase_order, :input_html => { :value => f.object.purchase_order.po_number }, readonly: true %>
               <% else %>
-                <%= f.association :purchase_order, collection: [f.object.inquiry.purchase_orders], label_method: :to_s, include_blank: "Select PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
+                <%= f.association :purchase_order, collection: [f.object.inquiry.purchase_orders], label_method: :to_s, include_blank: "Select PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number)}, required: false %>
               <% end %>
             </div>
             <div class="col-6">
@@ -61,13 +61,13 @@
               <%= f.input :exchange_rate, label: "Exchange Rate" %>
             </div>
             <div class="col-6">
-              <%= f.input :buying_price, label: "Buying Price" %>
+              <%= f.input :buying_price, label: "Buying Price", :required => true %>
             </div>
             <div class="col-6">
               <%= f.input :buying_price_inr, label: "Buying Price INR", :required => true %>
             </div>
             <div class="col-6">
-              <%= f.input :invoice_value, label: "Invoice Value", :required => true, input_type: "number", readonly: true %>
+              <%= f.input :invoice_value, label: "Invoice Value", :required => true, readonly: true %>
             </div>
             <div class="col-6">
               <%= f.input :freight_amount, label: "Freight", :required => true, input_type: "number" %>

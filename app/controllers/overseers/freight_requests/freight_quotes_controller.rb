@@ -23,7 +23,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
-        @freight_quote.freight_request.status = "Freight Request Completed"
+        @freight_quote.freight_request.status = "Freight Quote Submitted"
         @freight_quote.freight_request.save!
         @freight_quote.save!
         @freight_quote_comment = FreightQuoteComment.new(:message => "Payment Request submitted.", :freight_quote => @freight_quote, :overseer => current_overseer)
@@ -41,7 +41,8 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
   end
 
   def update
-    @freight_quote.assign_attributes(freight_quote_params.merge(overseer: current_overseer))
+    filtered_params = freight_quote_params.except(:purchase_order)
+    @freight_quote.assign_attributes(filtered_params.merge(overseer: current_overseer))
     authorize @freight_request, :edit_freight_quote?
 
     if @freight_quote.valid?
