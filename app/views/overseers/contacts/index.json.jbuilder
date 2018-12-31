@@ -18,6 +18,7 @@ json.data (@contacts) do |contact|
                   conditional_link(contact.name, overseers_contact_path(contact), policy(contact).show?),
                   contact.email,
                   contact.account.name,
+                  contact.role.titleize,
                   contact.inquiries.size,
                   format_date(contact.created_at)
               ]
