@@ -27,7 +27,7 @@ Notifications = class Notifications {
             dataType: "JSON",
             method: "POST",
             success: function () {
-                return $("[data-behavior='unread-count']").text(0);
+                return $("[data-behavior='unread-count']").text(0).removeClass('badge-danger');
             }
         });
     }
@@ -43,7 +43,9 @@ Notifications = class Notifications {
                 return unread_count += 1;
             }
         });
-        $("[data-behavior='unread-count']").text(unread_count);
+        if (unread_count > 0) {
+            $("[data-behavior='unread-count']").text(unread_count).addClass('badge-danger');
+        }
         return $("[data-behavior='notification-items']").html(items);
     }
 
