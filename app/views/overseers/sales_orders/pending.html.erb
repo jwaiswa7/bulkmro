@@ -3,6 +3,10 @@
 <% provide :container_fluid, true %>
 
 <div class="col-lg-12">
+  <%=render partial: "shared/layouts/summary", locals: {klass: SalesOrder , statuses: SalesOrder.statuses.except("Approved")} %>
+</div>
+
+<div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort all">Order #</th>
@@ -23,7 +27,7 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="dropdown"></td>
+    <td class="status-filter" data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="dropdown"></td>

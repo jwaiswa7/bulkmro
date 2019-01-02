@@ -20,11 +20,11 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'Invoice Request', 'success', :_blank)
                       end
                   ].join(' '),
-                  sales_order.order_number,
-                  sales_order.inquiry.inquiry_number,
-                  sales_order_status_badge(format_enum(sales_order.order_status, humanize_text: false)),
-                  format_enum(sales_order.remote_status, humanize_text: false),
-                  sales_order.inquiry.company.account.name,
+                  conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show? ),
+                  conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
+                  status_badge(format_enum(sales_order.order_status, humanize_text: false)),
+                  status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
+                  conditional_link(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account), policy(sales_order.inquiry.company.account).show?),
                   sales_order.inside_sales_owner.to_s,
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
@@ -52,3 +52,4 @@ json.columnFilters [
 json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]
+json.recordsSummary SalesOrder.remote_statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json

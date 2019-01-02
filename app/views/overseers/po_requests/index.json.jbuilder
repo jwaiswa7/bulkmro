@@ -14,9 +14,12 @@ json.data (@po_requests) do |po_request|
                       end
                   ].join(' '),
                   po_request.id,
-                  po_request_status_badge(po_request.status),
-                  po_request.inquiry.inquiry_number,
-                  po_request.sales_order.order_number,
+                  status_badge(po_request.status),
+                  conditional_link(po_request.inquiry.inquiry_number,edit_overseers_inquiry_path(po_request.inquiry),policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.sales_order.order_number,overseers_inquiry_sales_order_path(po_request.inquiry,po_request.sales_order),policy(po_request.sales_order).show?),
+                  if po_request.logistics_owner.present?
+                    po_request.logistics_owner.to_s
+                  end,
                   po_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
@@ -28,6 +31,6 @@ json.data (@po_requests) do |po_request|
               ]
 end
 
-json.recordsTotal @po_requests.model.all.count
-json.recordsFiltered @po_requests.count
+json.recordsTotal @po_requests.count
+json.recordsFiltered @po_requests.total_count
 json.draw params[:draw]
