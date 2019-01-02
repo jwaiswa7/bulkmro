@@ -341,6 +341,7 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+        resources :company_banks
 
         resources :imports do
           collection do
@@ -355,10 +356,6 @@ Rails.application.routes.draw do
         end
 
         resources :products do
-
-        end
-
-        resources :company_banks do
 
         end
       end

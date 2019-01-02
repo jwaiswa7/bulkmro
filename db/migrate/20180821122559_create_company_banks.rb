@@ -2,7 +2,7 @@ class CreateCompanyBanks < ActiveRecord::Migration[5.2]
   def change
     create_table :company_banks do |t|
       t.references :company, foreign_key: true
-      t.string :country
+      t.string :country_code
       t.string :name
       t.string :code
       t.string :account_name
@@ -13,7 +13,7 @@ class CreateCompanyBanks < ActiveRecord::Migration[5.2]
       t.string :address_line_2
       t.string :beneficiary_email
       t.string :beneficiary_mobile
-      t.string :remote_uid
+      t.integer :remote_uid, index: { :unique => true }
 
       t.timestamps
     end
