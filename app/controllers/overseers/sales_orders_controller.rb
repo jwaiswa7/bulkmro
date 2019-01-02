@@ -150,6 +150,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
           :po_requests_attributes => [
               :id,
               :logistics_owner_id,
+              :address_id,
+              :contact_id,
               :status,
               :attachments => [],
               :rows_attributes => [
