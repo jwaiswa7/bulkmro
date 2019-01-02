@@ -38,6 +38,7 @@ app.initializeComponents = () => {
     daterangePicker();
     notify();
     stepRoundUp();
+    return new Notifications;
 };
 
 // Turbolinks load event

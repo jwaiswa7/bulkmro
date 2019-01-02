@@ -1,8 +1,8 @@
 json.data (@notifications) do |notification|
   json.array! [
-                  notification.id,
                   notification.message,
-                  format_date(notification.created_at)
+                  notification.overseer.name,
+                  time_ago_in_words(notification.created_at)+" ago"
               ]
 end
 
