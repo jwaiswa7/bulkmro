@@ -150,8 +150,8 @@
       <a class="d-inline">
         <span class="headway mr-2" style="z-index: 1030;"></span>
       </a>
-      <div class="btn-group" data-behavior="notifications">
-        <a href="#" role="button" data-toggle="dropdown" data-behavior="notifications-link">
+      <div class="btn-group mr-2" data-behavior="notifications">
+        <a class="align-self-center" href="#" role="button" data-toggle="dropdown" data-behavior="notifications-link">
           <i class="fal fa-bell"></i> <span data-behavior="unread-count"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -164,9 +164,11 @@
           <% end %>
         </div>
       </div>
-      <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
-        <i class="fal fa-user"></i>
-      <% end %>
+      <div class="btn-group">
+        <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
+          <i class="fal fa-user"></i>
+        <% end %>
+      </div>
       <div class="btn-group">
         <a href="#" role="button" data-toggle="dropdown">
           <i class="fal fa-cog"></i>
