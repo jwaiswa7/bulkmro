@@ -1962,11 +1962,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_is_international_field_in_company
-    Company.update_all("is_international=false")
-    international_companies = []
+    Company.update_all(is_international: false)
     Company.all.includes(:addresses).each do |company|
-      international_companies.push(company) if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+      if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+        company.update_attribute('is_international', true)
+      end
     end
-    international_companies.update_all("is_international=true")
   end
 end
