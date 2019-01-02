@@ -6,11 +6,22 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer,paginate: false)
         service.call
 
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        per = (params[:per] || params[:length] || 20).to_i
+        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
+        @indexed_sales_orders = service.indexed_records.per(per).page(page)
+        @sales_orders = service.records.page(page).per(per).try(:reverse)
+        puts "pending"
+
+        if (SalesOrder.count != @indexed_sales_orders.total_count)
+          status_records = service.records.try(:reverse)
+          @statuses = status_records.pluck(:status).concat(status_records.pluck(:legacy_request_status))
+        else
+          @statuses = SalesOrder.all.pluck(:status).concat(SalesOrder.all.pluck(:legacy_request_status))
+        end
 
         render 'pending'
       end
@@ -55,11 +66,21 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)
         service.call
 
-        @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        per = (params[:per] || params[:length] || 20).to_i
+        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
+        @indexed_sales_orders = service.indexed_records.per(per).page(page)
+        @sales_orders = service.records.page(page).per(per).try(:reverse)
+
+        if (SalesOrder.count != @indexed_sales_orders.total_count)
+          status_records = service.records.try(:reverse)
+          @statuses = status_records.pluck(:remote_status)
+        else
+          @statuses = SalesOrder.all.pluck(:remote_status)
+        end
       end
     end
   end

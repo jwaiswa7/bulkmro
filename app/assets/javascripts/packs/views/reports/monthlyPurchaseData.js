@@ -20,7 +20,7 @@ let updateChartOptions = function (chartObject) {
                 mode: 'label',
                 callbacks: {
                     label: function (tooltipItem) {
-                        return tooltipItem.yLabel.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                        return Math.round(tooltipItem.yLabel).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
                     },
                 }
             },

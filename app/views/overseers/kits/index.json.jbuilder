@@ -19,6 +19,6 @@ json.data (@kits) do |kit|
               ]
 end
 
-json.recordsTotal @kits.model.all.count
-json.recordsFiltered @kits.count
+json.recordsTotal @kits.count
+json.recordsFiltered @kits.total_count
 json.draw params[:draw]

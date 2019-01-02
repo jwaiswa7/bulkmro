@@ -35,8 +35,14 @@
           <%= po_request.hidden_field :id %>
           <h5 class="text-uppercase">
             <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@sales_order.po_requests.index(po_request.object) || 0) + 1 %></span>
-            <strong><%= po_request.object.supplier.to_s %></strong>
+            <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.legacy_email%></strong>
             <div class="form-row mt-2">
+              <div class="col-12 col-md-6">
+                <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses, :include_blank => false %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
+              </div>
               <div class="col-12 col-md-4">
                 <%= po_request.association :logistics_owner, as: :select, :include_blank => false %>
               </div>
@@ -92,9 +98,10 @@
               <div class="col-12 col-md-1">
                 <%= po_request_row.input :converted_total_selling_price, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
               </div>
-<!--              <div class="col-12 col-md-1">-->
-                <%#= po_request_row.input :lead_time_option, input_html: {value: po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s}, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
-<!--              </div>-->
+              <div class="col-12 col-md-1">
+                <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
+                <%= po_request_row.input :lead_time_option, input_html: {value: lead_time }, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
+              </div>
               <div class="col-12 col-md-1">
                 <%= po_request_row.remove_nested_fields_link do %>
                   <div class="form-group align-self-center flex-grow-1 ml-2">

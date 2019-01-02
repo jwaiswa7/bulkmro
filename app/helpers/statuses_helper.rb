@@ -184,6 +184,8 @@ module StatusesHelper
       else
         klass.where(remote_status: status).count
       end
+    when :PurchaseOrder
+      klass.all.map(&:metadata_status).count(status)
     else
       klass.where(status: status).count;
     end

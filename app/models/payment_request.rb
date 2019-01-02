@@ -14,7 +14,9 @@ class PaymentRequest < ApplicationRecord
 
   enum status: {
       :'Pending' => 10,
-      :'Completed' => 20
+      :'Pending with Logistics' => 20,
+      :'Pending with Accounts' => 30,
+      :'Completed' => 40
   }
 
   enum payment_type: {
@@ -35,11 +37,11 @@ class PaymentRequest < ApplicationRecord
     self.status ||= :'Pending'
   end
 
-  def update_status!
-    if self.utr_number.present?
-      self.status = :'Completed'
-    else
-      self.status = :'Pending'
-    end
-  end
+  # def update_status!
+  #   if self.utr_number.present?
+  #     self.status = :'Completed'
+  #   else
+  #     self.status = :'Pending'
+  #   end
+  # end
 end

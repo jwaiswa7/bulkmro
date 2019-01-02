@@ -12,6 +12,8 @@ class PoRequest < ApplicationRecord
   belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: false
   has_many :rows, class_name: 'PoRequestRow', :inverse_of => :po_request, dependent: :destroy
   accepts_nested_attributes_for :rows, allow_destroy: true
+  belongs_to :address, required: false
+  belongs_to :contact, required: false
 
   belongs_to :purchase_order, required: false
   has_one :payment_request, required: false
