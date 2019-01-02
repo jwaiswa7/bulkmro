@@ -87,4 +87,13 @@ class PurchaseOrder < ApplicationRecord
     supplier_name = self.get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
     ['#' + po_number.to_s, supplier_name].join(' ') if po_number.present?
   end
+
+  def valid_po_date?
+    begin
+      self.metadata['PoDate'].to_date
+      true
+    rescue ArgumentError
+      false
+    end
+  end
 end

@@ -19,6 +19,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
+                  (format_date(purchase_order.metadata['PoDate'].to_date) if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )),
                   format_date(purchase_order.created_at)
               ]
 end
@@ -33,6 +34,7 @@ json.columnFilters [
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
                        []
                    ]
 
