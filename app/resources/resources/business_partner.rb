@@ -44,6 +44,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.update_associated_records(response, force_find: false)
+
     response = find(response, quotes: true) if force_find
     return if response.blank?
 
@@ -60,6 +61,22 @@ class Resources::BusinessPartner < Resources::ApplicationResource
           address_to_update.billing_address_uid = address["RowNum"]
         end
         address_to_update.save
+      else
+        if !Address.find_by_legacy_id(address['AddressName']).present?
+          new_address = Address.new
+          new_address.legacy_id = address['AddressName'].present? ? address['AddressName'] : nil
+          new_address.remote_uid = address['AddressName'].present? ? address['AddressName'] : nil
+          new_address.street1 = address['Street'].present? ? address['Street'] : nil
+          new_address.city_name = address['City'].present? ? address['City'] : nil
+          new_address.street2 = address['AddressName2'].present? ? address['AddressName2'] : nil
+          new_address.country_code = address['Country'].present? ? address['Country'] : 'India'
+          new_address.state_name = address['State'].present? ? AddressState.where(:region_code => address['State']).first.name : nil
+          new_address.address_state_id = address['State'].present? ? AddressState.where(:region_code => address['State']).first.id : nil
+          new_address.company_id = company.id
+          new_address.pincode = address['ZipCode'].present? ? address['ZipCode'] : nil
+          new_address.gst = address['GSTIN'].present? ? address['GSTIN'] : nil
+          new_address.save
+         end
       end
     end if addresses.present?
 
