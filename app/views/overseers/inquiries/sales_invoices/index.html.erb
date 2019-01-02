@@ -31,7 +31,7 @@
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
             <% if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached? %>
-              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success') %>
+              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success') %>
             <% end %>
             <% if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached? %>
               <% if sales_invoice.pod_attachment.attached? %>
