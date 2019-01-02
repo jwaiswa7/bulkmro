@@ -1,5 +1,10 @@
 class Overseers::NotificationsController < Overseers::BaseController
   def index
+    @notifications = ApplyDatatableParams.to(Notification.where(recipient_id:  current_overseer).recent, params)
+    authorize @notifications
+  end
+
+  def queue
     @notifications = Notification.where(recipient_id:  current_overseer).recent
     authorize @notifications
   end

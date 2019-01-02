@@ -1,5 +1,11 @@
-json.array! @notifications do |notification|
-  json.id notification.id
-  json.unread !notification.read_at?
-  json.template render partial: "notifications/overseers/notifications", locals: {notification: notification}, formats: [:html]
+json.data (@notifications) do |notification|
+  json.array! [
+                  notification.id,
+                  notification.message,
+                  format_date(notification.created_at)
+              ]
 end
+
+json.recordsTotal @notifications.model.all.count
+json.recordsFiltered @notifications.total_count
+json.draw params[:draw]

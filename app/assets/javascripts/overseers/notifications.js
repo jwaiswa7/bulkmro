@@ -14,7 +14,7 @@ Notifications = class Notifications {
 
     getNewNotifications() {
         return $.ajax({
-            url: "notifications.json",
+            url: "/overseers/notifications/queue.json",
             dataType: "JSON",
             method: "GET",
             success: this.handleSuccess
@@ -23,7 +23,7 @@ Notifications = class Notifications {
 
     handleClick(e) {
         return $.ajax({
-            url: "notifications/mark_as_read",
+            url: "/overseers/notifications/mark_as_read",
             dataType: "JSON",
             method: "POST",
             success: function () {

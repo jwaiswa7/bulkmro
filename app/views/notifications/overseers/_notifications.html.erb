@@ -1,4 +1,4 @@
-<%= link_to "#", class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
+<%= link_to polymorphic_url(notification.notifiable_url.tableize, :id => notification.notifiable_id), class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
   <%= notification.id %>
   <%= notification.overseer.name %>
   <%= notification.message %>
