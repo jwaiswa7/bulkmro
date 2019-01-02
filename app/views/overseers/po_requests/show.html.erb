@@ -107,6 +107,20 @@
               </div>
             <% end %>
 
+            <% if @po_request.address.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Address</strong>
+                <%= @po_request.address.to_s %>
+              </div>
+            <% end %>
+
+            <% if @po_request.contact.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Contact</strong>
+                <%= @po_request.contact.to_s %>
+              </div>
+            <% end %>
+
           </div>
 
           <% if @po_request.attachments.attached? %>

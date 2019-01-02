@@ -38,7 +38,7 @@
             <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.legacy_email%></strong>
             <div class="form-row mt-2">
               <div class="col-12 col-md-6">
-                <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses, :include_blank => false %>
+                <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses.map(&:to_s), :include_blank => false %>
               </div>
               <div class="col-12 col-md-6">
                 <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>

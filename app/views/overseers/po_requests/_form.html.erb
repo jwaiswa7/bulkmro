@@ -75,6 +75,24 @@
           <h5 class="text-uppercase">
             <strong><%= f.object.supplier.to_s %></strong>
           </h5>
+          <div class="form-row">
+            <div class="col-6">
+              <% if f.object.address %>
+                <div class="form-group">
+                  <label class="form-control-label d-block">Address</label>
+                  <%= f.object.address %>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-6">
+              <% if f.object.contact %>
+                <div class="form-group">
+                  <label class="form-control-label d-block">Contact</label>
+                  <%= f.object.contact %>
+                </div>
+              <% end %>
+            </div>
+          </div>
           <div class="form-row d-none d-md-flex">
             <div class="col-1">
               <div class="form-group mb-0">
