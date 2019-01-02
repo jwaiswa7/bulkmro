@@ -149,13 +149,20 @@
     <div class="dropdown">
       <a class="d-inline">
         <span class="headway mr-2" style="z-index: 1030;"></span>
-    </a>
+      </a>
       <div class="btn-group" data-behavior="notifications">
         <a href="#" role="button" data-toggle="dropdown" data-behavior="notifications-link">
           <i class="fal fa-bell"></i> <span data-behavior="unread-count"></span>
         </a>
-          <ul class="dropdown-menu dropdown-menu-right" id="notifications" data-behavior="notification-items">
-          </ul>
+        <div class="dropdown-menu dropdown-menu-right">
+          <span class="dropdown-item text-center">Notifications</span>
+          <div class="dropdown-divider"></div>
+          <div id="notifications" data-behavior="notification-items"></div>
+          <div class="dropdown-divider"></div>
+          <%= link_to overseers_notifications_path, class: 'dropdown-item text-center' do %>
+            View More
+          <% end %>
+        </div>
       </div>
       <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
         <i class="fal fa-user"></i>
