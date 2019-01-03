@@ -56,10 +56,10 @@ class PaymentRequest < ApplicationRecord
   scope :Accounts, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
-  validates_presence_of :cheque_date, if: Proc.new { |payment_request| payment_request.payment_type == 'Cheque' }
-  # with_options if: :"Completed?" do |payment_request|
-  #   payment_request.validates_presence_of :payment_type
-  # end
+  validates_presence_of :cheque_date, if: :is_payment_type_cheque?
+  with_options if: :"Accounts?" do |payment_request|
+    payment_request.validates_presence_of :due_date, :purpose_of_payment, :supplier_bank_details
+  end
 
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
@@ -82,5 +82,9 @@ class PaymentRequest < ApplicationRecord
       grouped_status[category] = PaymentRequest.statuses.collect{|status,v|;if v.between?(index, index+9);status;end}.compact
     end
     grouped_status
+  end
+
+  def is_payment_type_cheque?
+    self.payment_type == 'Cheque'
   end
 end
