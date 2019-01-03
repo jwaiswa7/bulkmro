@@ -81,7 +81,12 @@ class Address < ApplicationRecord
   end
 
   def to_s
-    [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+    if self.warehouse.present?
+      [self.warehouse.to_s, street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+    else
+      [street1, street2, city_name, pincode, state.to_s, state_name, country_name].reject(&:blank?).join(', ')
+    end
+
   end
 
   def to_multiline_s

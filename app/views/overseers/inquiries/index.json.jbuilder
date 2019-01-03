@@ -4,6 +4,9 @@ json.data (@inquiries) do |inquiry|
           if policy(inquiry).edit?
             row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning', :_blank)
           end,
+          if policy(inquiry).new_freight_request?
+            row_action_button(new_overseers_freight_request_path(:inquiry_id => inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
+          end
       ].join(' '),
       link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
       inquiry.sales_orders.where.not(order_number: nil).map {|sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: "_blank")}.compact.join(' '),

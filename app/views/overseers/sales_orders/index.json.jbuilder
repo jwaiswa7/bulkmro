@@ -8,7 +8,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success', :_blank)
                       end,
                       if policy(sales_order).go_to_inquiry?
-                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark',:_blank)
+                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark', :_blank)
                       end,
                       if policy(sales_order).edit_mis_date?
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
@@ -18,6 +18,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'Invoice Request', 'success', :_blank)
+                      end,
+                      if policy(sales_order.sales_quote).new_freight_request?
+                        row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end
                   ].join(' '),
                   conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show? ),
@@ -38,7 +41,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.statuses.map {|k, v| {:"label" =>
+                                                            k, :"value" => v.to_s}}.as_json,
                        SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,

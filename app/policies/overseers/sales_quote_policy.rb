@@ -20,10 +20,14 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def reset_quote?
-    ['shravan.agarwal@bulkmro.com','prikesh.savla@bulkmro.com','pradeep.ketkale@bulkmro.com','lopesh.durugkar@bulkmro.com','vishal.biradar@bulkmro.com'].include? overseer.email
+    ['shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'pradeep.ketkale@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'vishal.biradar@bulkmro.com'].include? overseer.email
   end
 
   def preview?
     edit?
+  end
+
+  def new_freight_request?
+    !record.freight_request.present? && record.is_final? && !logistics?
   end
 end
