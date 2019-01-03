@@ -38,7 +38,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product = Product.new(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_product_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'new'
     end
@@ -52,7 +52,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product.assign_attributes(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_product_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'edit'
     end
