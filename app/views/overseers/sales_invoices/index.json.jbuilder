@@ -16,7 +16,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
                       if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
-                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success')
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
                       end,
                       if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
                         [
