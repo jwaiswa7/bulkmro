@@ -9,6 +9,7 @@ json.data (@kits) do |kit|
                       end
                   ].join(' '),
                   kit.product.name,
+                  kit.inquiry.inquiry_number,
                   kit.product.sku,
                   kit.product.brand.to_s,
                   kit.product.category.name,
