@@ -1,5 +1,4 @@
-<%= link_to polymorphic_url(notification.notifiable_url.tableize, :id => notification.notifiable_id), class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
-  <%= notification.message %><br>
-  <small>By <%= notification.overseer.name %></small>
-  <small> <%= time_ago_in_words(notification.created_at) %> ago</small>
-<% end %>
+<% @msg = notification.message+'<br><small>By '+notification.sender.name+'</small><small>'+ time_ago_in_words(notification.created_at)+' ago</small>' %>
+<div class="<%= "dropdown-item#{" unread" if !notification.read_at?}" %>" >
+<%= link_to_if notification.action_url.present?, @msg.html_safe, notification.action_url %>
+</div>
