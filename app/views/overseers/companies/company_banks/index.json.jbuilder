@@ -12,7 +12,7 @@ json.data (@company_banks) do |company_bank|
                         row_action_button(overseers_company_company_bank_path(company_bank.company, company_bank),'trash', 'Delete bank', 'danger', '' ,:delete)
                       end
                   ].join(' '),
-                  company_bank.name.truncate(50),
+                  company_bank.name,
                   company_bank.code,
                   company_bank.branch,
                   company_bank.account_name,
