@@ -4,8 +4,7 @@
 <!--    <p>This will <em>'<%#= submit_text(@company_bank).downcase %>'</em> and log it under-->
 <!--      <strong><%#= current_overseer.full_name %></strong>.</p>-->
   </div>
-
-  <%= simple_form_for(@company_bank, url: action_name == 'edit' ? overseers_company_company_banks_path(@company.to_param) : overseers_company_company_banks_path(:company_id => @company.to_param), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for([:overseers, @company, @company_bank], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= f.hidden_field :company_id %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
@@ -29,7 +28,7 @@
 
     <div class="form-row">
       <div class="col-4">
-        <%= f.input :code, required: true %>
+        <%= f.input :code, label: "Bank Code" %>
       </div>
 
       <div class="col-4">
@@ -69,18 +68,10 @@
       </div>
 
       <div class="col-6">
-        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number" %>
+        <%= f.input :beneficiary_mobile, required: true, label: "Beneficiary Mobile Number", input_type: "number", input_html: { placeholder: "+91" } %>
       </div>
     </div>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@company_bank) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@company_bank) %>
-      <% end %>
-    <% end %>
+    <%= action_button(action_name, @company_bank) %>
   <% end %>
 </div>

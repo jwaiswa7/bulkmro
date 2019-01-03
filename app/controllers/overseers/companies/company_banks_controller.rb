@@ -39,10 +39,10 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def update
     @company_bank.assign_attributes(company_bank_params)
-    authorize @contact
+    authorize @company_bank
 
-    if @contact.save
-      redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
+    if @company_bank.save
+      redirect_to overseers_company_company_bank_path(@company, @company_bank), notice: flash_message(@company_bank, action_name)
     else
       render 'edit'
     end
