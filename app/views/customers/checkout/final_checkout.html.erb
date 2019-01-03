@@ -143,7 +143,7 @@
         <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
-              <%= f.text_area :special_instructions %>
+              <%= f.text_area :special_instructions, class: 'col-12 form-group form-control'%>
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
           </div>
