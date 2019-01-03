@@ -10,8 +10,8 @@
 
   <%= form_tag customers_reports_path, method:'get' do %>
     <input type="hidden" id="graph" name="graph" value = <%= params['graph'] %>>
-    <input type="string" id="daterange" name="daterange" class="form-group form-control" data-toggle="daterangepicker">
-    <%= submit_tag "Select Date", class: "btn btn-dark" %>
+    <input type="string" id="daterange" name="daterange" class="form-group form-control" data-toggle="daterangepicker" placeholder="Select Date">
+    <%= submit_tag "Apply", class: "btn btn-dark" %>
   <% end %>
 
   <section class="pb-4 pb-lg-5">
