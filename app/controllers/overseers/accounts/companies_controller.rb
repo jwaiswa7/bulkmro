@@ -47,7 +47,9 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize @company
 
-    if @company.save_and_sync
+    options = @company.name_changed? ? {:name => @company.name_change[0]} : false
+
+    if @company.save_and_sync(options)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
       render 'edit'

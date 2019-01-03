@@ -10,8 +10,9 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           PaymentRequest.all
         end.order(id: :desc)
 
-    @payment_requests = ApplyDatatableParams.to(payment_requests, params)
+    @payment_requests = ApplyDatatableParams.to(payment_requests, params, paginate: false)
     authorize @payment_requests
+    @statuses = @payment_requests.pluck(:status)
   end
 
   def show
