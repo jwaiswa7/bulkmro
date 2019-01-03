@@ -4,11 +4,13 @@ class Services::Customers::Finders::SalesInvoices < Services::Customers::Finders
   end
 
   def all_records
-    indexed_records = if current_contact.account_manager?
-                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+    indexed_records = if current_company.present?
+                        super.filter(filter_by_value('company_id', current_company.id))
                         #super.filter(filter_by_value('account_id',current_contact.account.id))
+                      elsif current_contact.account_manager?
+                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
                       else
-                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+                        super
                       end
 
     indexed_records = indexed_records.query({
