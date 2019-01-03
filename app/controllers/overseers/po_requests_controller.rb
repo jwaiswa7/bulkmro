@@ -82,7 +82,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :purchase_order_id,
         :logistics_owner_id,
         :status,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy],
+        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )

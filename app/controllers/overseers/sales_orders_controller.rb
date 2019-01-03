@@ -156,7 +156,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :attachments => [],
               :rows_attributes => [
                   :id,
-                  :_destroy
+                  :_destroy,
+                  :status,
+                  :quantity
               ]
           ]
       )
