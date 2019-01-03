@@ -186,6 +186,7 @@ gem 'google-api-client', '~> 0.11'
 
 gem 'parser'
 gem 'unparser'
+gem 'mini_magick'
 
 gem 'redis'
 
@@ -220,6 +221,10 @@ group :production do
   gem 'bonsai-elasticsearch-rails', '~> 7'
 end
 
+group :staging do
+  gem 'bonsai-elasticsearch-rails', '~> 7'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -229,3 +234,5 @@ gem 'webpacker', '~> 3.5'
 # For Notification bot
 gem 'slack-ruby-bot'
 
+# For charts
+gem 'chartjs-ror'

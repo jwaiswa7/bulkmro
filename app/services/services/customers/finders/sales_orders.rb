@@ -21,7 +21,9 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
                                                     }
                                                 }
                                             }).order(sort_definition)
-    indexed_records = indexed_records.filter(filter_by_value("approval_status", "approved"))
+    indexed_records = indexed_records.filter(filter_by_value("remote_approval_status", "approved"))
+    indexed_records = indexed_records.filter(filter_must_exist("order_number"))
+    indexed_records = indexed_records.filter(filter_by_array("remote_status", SalesOrder.remote_statuses.except('Cancelled By SAP').values))
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

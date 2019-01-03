@@ -11,8 +11,7 @@
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
 //= require vue/dist/vue.min.js
-//= require chart.js/dist/Chart.min.js
-//= require chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js
+
 //= require stickybits/dist/jquery.stickybits.min.js
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js

@@ -2,16 +2,16 @@ json.data (@products) do |product|
   json.array! [
                   [
                       if policy(product).show?
-                        row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info')
+                        row_action_button(overseers_product_path(product), 'eye', 'View Product', 'info', :_blank)
                       end,
                       if policy(product).edit?
-                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning')
+                        row_action_button(edit_overseers_product_path(product), 'pencil', 'Edit Product', 'warning', :_blank)
                       end,
                       if policy(product).comments?
-                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark')
+                        row_action_button(overseers_product_comments_path(product), 'comment-lines', 'View Comments', 'dark', :_blank)
                       end,
                       if policy(product).sku_purchase_history?
-                        row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark')
+                        row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
                       end
                   ].join(' '),
                   product.name,

@@ -7,11 +7,21 @@ class Overseers::InquiriesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
+        service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
         service.call
 
-        @indexed_inquiries = service.indexed_records
-        @inquiries = service.records.try(:reverse)
+        per = (params[:per] || params[:length] || 20).to_i
+        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+
+        @indexed_inquiries = service.indexed_records.per(per).page(page)
+        @inquiries = service.records.page(page).per(per).try(:reverse)
+
+        if (Inquiry.count != @indexed_inquiries.total_count)
+          status_records = service.records.try(:reverse)
+          @statuses = status_records.pluck(:status)
+        else
+          @statuses = Inquiry.all.pluck(:status)
+        end
       end
     end
   end
@@ -132,14 +142,19 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
-      redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
-    else
-      render 'edit_suppliers'
+
+
+      if params.has_key?(:common_supplier_selected)
+        Services::Overseers::Inquiries::CommonSupplierSelected.new(@inquiry, params[:inquiry][:common_supplier_id], params[:inquiry_product_ids]).call
+        redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
+      else
+        redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
+      end
     end
   end
 
   def stages
-    @stages = @inquiry.inquiry_status_records.order("created_at ASC")
+    @stages = @inquiry.inquiry_status_records.order(created_at: :asc)
     authorize @inquiry
   end
 
@@ -218,5 +233,4 @@ class Overseers::InquiriesController < Overseers::BaseController
       {}
     end
   end
-
 end

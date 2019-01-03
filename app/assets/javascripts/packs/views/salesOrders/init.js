@@ -4,6 +4,8 @@ import salesOrdersNew from "./new";
 import salesOrdersNewRevision from "./newRevision";
 import salesOrdersUpdate from "./update";
 import salesOrdersUpdateOnSelect from "./updateOnSelect";
+import salesOrdersIndex from "./index";
+import salesOrdersPending from "./pending";
 
 let salesOrders = {
     create: salesOrdersCreate,
@@ -11,7 +13,9 @@ let salesOrders = {
     new: salesOrdersNew,
     newRevision: salesOrdersNewRevision,
     update: salesOrdersUpdate,
-    updateOnSelect: salesOrdersUpdateOnSelect
+    updateOnSelect: salesOrdersUpdateOnSelect,
+    index: salesOrdersIndex,
+    pending: salesOrdersPending
 }
 
 export default salesOrders

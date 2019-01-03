@@ -3,6 +3,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     record.persisted? && record.not_legacy? && !record.document.attached?
   end
 
+  def edit?
+    logistics? || admin?
+  end
+
   def autocomplete?
     manager_or_sales? || logistics?
   end
@@ -13,5 +17,25 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
 
   def show_document?
     record.document.attached?
+  end
+
+  def edit_internal_status?
+    edit?
+  end
+
+  def update_internal_status?
+    edit?
+  end
+
+  def material_readiness_queue?
+    edit?
+  end
+
+  def material_pickup_queue?
+    edit?
+  end
+
+  def material_delivered_queue?
+    edit?
   end
 end
