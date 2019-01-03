@@ -16,7 +16,7 @@ class Company < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
-  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
+  has_many :banks, class_name: 'CompanyBank', inverse_of: :company, dependent: :destroy
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
