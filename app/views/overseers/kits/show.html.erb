@@ -17,6 +17,13 @@
         <div>
           <h6 class="text-uppercase text-black-50 mb-1">Kit Details</h6>
           <div class="form-row">
+            <% if @kit.inquiry.inquiry_number? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Inquiry</strong>
+                <%= @kit.inquiry.inquiry_number%>
+              </div>
+            <% end %>
+
             <% if @kit.product.sku? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">BM Number</strong>
