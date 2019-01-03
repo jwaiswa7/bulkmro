@@ -34,6 +34,14 @@ import salesInvoices from "./salesInvoices/init";
 // Sales Shipments
 import salesShipments from "./salesShipments/init";
 
+// Purchase Orders
+import purchaseOrders from "./purchaseOrders/init";
+
+// Payment Requests
+import paymentRequests from "./paymentRequests/init";
+
+// Invoice Requests
+import invoiceRequests from "./paymentRequests/init";
 
 let loader = {
     imports: imports,
@@ -48,7 +56,10 @@ let loader = {
     freightRequests:freightRequests,
     freightQuotes:freightQuotes,
     salesInvoices: salesInvoices,
-    salesShipments: salesShipments
+    salesShipments: salesShipments,
+    purchaseOrders: purchaseOrders,
+    paymentRequests: paymentRequests,
+    invoiceRequests: invoiceRequests
 };
 
 // Imports
