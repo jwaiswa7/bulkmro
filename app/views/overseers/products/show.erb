@@ -50,6 +50,11 @@
               <%= format_boolean(@product.is_service) %>
             </div>
 
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">SAP</strong>
+              <%= format_boolean(@product.synced?) %>
+            </div>
+
           </div>
         </div>
         <div class="mt-3">

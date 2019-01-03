@@ -57,6 +57,17 @@
               <%= format_boolean(@kit.product.is_service) %>
             </div>
 
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Kit SAP Status</strong>
+              <%= format_boolean(@kit.synced?) %>
+            </div>
+
+
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Product SAP Status</strong>
+              <%= format_boolean(@kit.product.synced?) %>
+            </div>
+
           </div>
         </div>
 
