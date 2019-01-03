@@ -322,11 +322,11 @@
               <div class="col-3 col-md-1">
                 <div class="d-flex flex-row">
                   <div class="form-group align-self-center mr-1">
-                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
                       <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
-                    <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.rejected? %>
+                    <% elsif inquiry_product.object.persisted?  && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
                       <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
