@@ -52,6 +52,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def notification_message(type, *args)
+    case type.to_sym
+    when :send_inquiry_product
+      "#{args[0]} uploaded for approval in Inquiry ##{args[1]}"
+    when :approve_inquiry_product
+      if args[0].present?
+        "#{args[1]} has been #{args[0]}"
+      else
+        msg = "New reply for #{args[1]}"
+        msg = "#{msg.to_s}: #{args[2]}" if args[2].present?
+      end
+    when :destroy
+      "#{type} has been successfully destroyed."
+    else
+      "You have new notification"
+    end
+  end
+
   def set_raven_context
     if current_overseer.present?
       Raven.user_context(
