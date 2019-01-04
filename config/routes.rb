@@ -106,6 +106,7 @@ Rails.application.routes.draw do
     resources :addresses do
       collection do
         get 'autocomplete'
+        get 'warehouse_addresses'
       end
     end
 
@@ -189,9 +190,17 @@ Rails.application.routes.draw do
     end
 
     resources :purchase_orders do
+      member do
+        get 'edit_internal_status'
+        patch 'update_internal_status'
+      end
+
       collection do
         get 'export_all'
         get 'autocomplete'
+        get 'material_readiness_queue'
+        get 'material_pickup_queue'
+        get 'material_delivered_queue'
       end
     end
 
@@ -215,6 +224,7 @@ Rails.application.routes.draw do
 
     resources :customer_orders do
       scope module: 'customer_orders' do
+        resources :comments
         resources :inquiries do
 
         end
@@ -266,6 +276,10 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
           end
+
+          collection do
+            get 'autocomplete'
+          end
         end
 
         resources :sales_quotes do
@@ -316,6 +330,7 @@ Rails.application.routes.draw do
           end
         end
 
+
         resources :addresses do
           collection do
             get 'autocomplete'
@@ -331,6 +346,14 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+
+        resources :imports do
+          collection do
+            get 'new_excel_customer_product_import'
+            get 'download_customer_product_template'
+            post 'customer_products', to: 'imports#create_customer_products'
+          end
+        end
 
         resources :purchase_orders do
 
@@ -364,6 +387,20 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
+    resources :freight_requests do
+
+      scope module: 'freight_requests' do
+        resources :freight_quotes
+      end
+
+      collection do
+        get 'completed'
+      end
+    end
+
+    resources :freight_quotes
+
   end
 
   namespace 'customers' do
@@ -387,6 +424,16 @@ Rails.application.routes.draw do
     resources :customer_orders, only: %i[index create show] do
       member do
         get 'order_confirmed'
+        get 'approve_order'
+      end
+
+      collection do
+        get 'pending'
+        get 'approved'
+      end
+
+      scope module: 'customer_orders' do
+        resources :comments
       end
     end
     resources :products, :controller => :customer_products, only: %i[index create show] do

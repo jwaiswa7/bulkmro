@@ -11,4 +11,9 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
     super
     record.company.is_active if record.company.present?
   end
+
+  def warehouse_addresses?
+    true
+  end
+
 end

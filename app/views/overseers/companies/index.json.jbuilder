@@ -20,11 +20,11 @@ json.data (@companies) do |company|
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
-                  company.to_s,
+                  conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  company.pan,
+                  (company.addresses.present? && company.is_international) ? 'International' :company.pan,
                   format_boolean(company.validate_pan),
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),

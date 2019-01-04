@@ -53,6 +53,7 @@ class Inquiry < ApplicationRecord
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
+  has_one :freight_request
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -314,7 +315,15 @@ class Inquiry < ApplicationRecord
   end
 
   def po_subject
-    self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
+    if self.customer_po_number.present?
+      if self.customer_po_number != ''
+        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
+      else
+        self.subject
+      end
+    else
+      self.subject
+    end
   end
 
   def billing_contact

@@ -10,10 +10,11 @@ json.data (@addresses) do |address|
                       end,
                   ].join(' '),
                   address.to_s.truncate(50),
-                  address.state.name,
-                  address.city_name,
-                  format_boolean(address.validate_gst),
-                  address.gst,
+                  address.try(:state).try(:name),
+                  address.try(:city_name),
+                  address.readable_gst,
+                  address.try(:gst),
+                  address.try(:pincode),
                   format_boolean_label(address.synced?, 'synced'),
                   format_date(address.created_at)
               ]
