@@ -45,7 +45,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
     if @tax_code.save
       #below code is for testing purpose on stagging
       s = Overseer.find(168)
-      Notification.create(recipient: current_overseer, sender: s, namespace: self.class.parent, action: action_name.to_sym, notifiable: @tax_code, action_url:request.original_fullpath, message: flash_message(@tax_code, action_name))
+      Notification.create(recipient: current_overseer, sender: s, namespace: self.class.parent, action: action_name.to_sym, notifiable: @tax_code, action_url:request.referer, message: flash_message(@tax_code, action_name))
       #end
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
