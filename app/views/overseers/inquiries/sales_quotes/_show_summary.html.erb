@@ -102,7 +102,7 @@
                 - <%= @inquiry.contact.phone %></span>
           <% end %>
           <span class="d-block"><em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %></span>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.billing_address.present? ? @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst : "-" %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.billing_address.gst || (@inquiry.company.default_billing_address.gst if @inquiry.company.default_billing_address.present?) || '-' %></span>
         </div>
       </div>
     </div>
