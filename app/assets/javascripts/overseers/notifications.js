@@ -46,6 +46,9 @@ Notifications = class Notifications {
         if (unread_count > 0) {
             $("[data-behavior='unread-count']").text(unread_count).addClass('badge-danger');
         }
+        if (items == 0) {
+            items = '<div class="dropdown-item text-center text-secondary">No records found</div>'
+        }
         return $("[data-behavior='notification-items']").html(items);
     }
 
