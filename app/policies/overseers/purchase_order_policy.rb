@@ -20,7 +20,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_invoice?
-    true
+    !record.invoice_request.present?
   end
 
   def edit_internal_status?
