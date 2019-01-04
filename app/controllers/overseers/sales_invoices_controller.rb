@@ -7,21 +7,15 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
+        @indexed_sales_invoices = service.indexed_records
+        @sales_invoices = service.records.try(:reverse)
 
-        per = (params[:per] || params[:length] || 20).to_i
-        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
-
-        @indexed_sales_invoices = service.indexed_records.per(per).page(page)
-        @sales_invoices = service.records.page(page).per(per).try(:reverse)
-
-        if (SalesInvoice.count != @indexed_sales_invoices.total_count)
-          status_records = service.records.try(:reverse)
-          @statuses = status_records.pluck(:status)
-        else
-          @statuses = SalesInvoice.all.pluck(:status)
-        end
+        statuses = {}
+        indexed_buckets = service.indexed_records.aggs["statuses"]["buckets"]
+        indexed_buckets.map{|bucket| statuses[bucket["key"]] = bucket["doc_count"]}
+        @statuses = statuses
       end
     end
   end
