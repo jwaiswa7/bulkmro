@@ -6,7 +6,7 @@ class PoRequestRow < ApplicationRecord
   has_one :inquiry_product, :through => :inquiry_product_supplier
   has_one :product, :through => :inquiry_product
 
-  delegate :best_tax_code, :best_tax_rate, :measurement_unit, :converted_unit_selling_price, :converted_total_selling_price, to: :sales_order_row, allow_nil: true
+  delegate :best_tax_code, :best_tax_rate, :measurement_unit, :converted_unit_selling_price, to: :sales_order_row, allow_nil: true
 
   attr_accessor :sr, :product_name, :brand, :lead_time_option
 
@@ -15,4 +15,14 @@ class PoRequestRow < ApplicationRecord
       :'Po Requested' => 20
   }
 
+  def total_selling_price
+    if self.sales_quote_row.present?
+      unit_selling_price = self.sales_quote_row.unit_selling_price
+    end
+    unit_selling_price * self.quantity if unit_selling_price.present?
+  end
+
+  def converted_total_selling_price
+    self.sales_quote_row.present? ? (self.total_selling_price / self.sales_quote_row.conversion_rate) : 0.0
+  end
 end
