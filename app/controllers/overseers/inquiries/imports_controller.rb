@@ -82,6 +82,10 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
+      msg = @excel_import.rows.map(&:sku).join(', ') + " uploaded for approval in Inquiry #"+@inquiry.inquiry_number.to_s
+      Overseer.cataloging.each do | cataloger |
+        Notification.create(recipient: current_overseer, sender: cataloger, namespace: self.class.parent, action: action_name.to_sym, notifiable: @excel_import, action_url:edit_overseers_inquiry_path(@inquiry), message: msg)
+      end
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
