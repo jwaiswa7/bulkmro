@@ -34,4 +34,5 @@ json.columnFilters [
 json.recordsTotal SalesShipment.all.count
 json.recordsFiltered @indexed_sales_shipments.total_count
 json.draw params[:draw]
-json.recordsSummary SalesShipment.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.status @statuses
+json.recordsSummary SalesShipment.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
