@@ -22,7 +22,7 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
     indexed_records
   end
 
@@ -45,7 +45,7 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('po_status'))
     indexed_records
   end
 
