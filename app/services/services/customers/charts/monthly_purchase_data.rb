@@ -11,6 +11,7 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
               {
                   label: "Products",
                   type: "line",
+                  lineTension: 0,
                   borderColor: "#007bff",
                   backgroundColor: "#007bff",
                   data: [],
