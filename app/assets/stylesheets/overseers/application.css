@@ -10678,3 +10678,7 @@ a.text-color-orange:hover, a.text-color-orange:focus {
 
 a.text-color-grey:hover, a.text-color-grey:focus {
   color: #9e9e9e !important; }
+
+.unread-notification {
+    background: #fff6ef;
+}
