@@ -10,13 +10,13 @@ class SalesOrdersIndex < BaseIndex
     field :inquiry_number, value: -> (record) {record.inquiry.inquiry_number.to_i if record.inquiry.present?}, type: 'integer'
     field :inquiry_number_string, value: -> (record) {record.inquiry.inquiry_number.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :status_string, value: -> (record) {record.status.to_s}, analyzer: 'substring'
-    field :status, value: -> (record) {statuses[record.status]}
-    field :legacy_request_status, value: -> (record) {legacy_request_statuses[record.legacy_request_status]}
+    field :status, value: -> (record) {statuses[record.status]}, type: 'integer'
+    field :legacy_request_status, value: -> (record) {legacy_request_statuses[record.legacy_request_status]}, type: 'integer'
     field :approval_status, value: -> (record) {record.approved? ? 'approved' : 'pending'}
     field :remote_approval_status, value: -> (record) {record.remote_approved? ? 'approved' : 'pending'}
     field :legacy_status, value: -> (record) {record.legacy? ? 'legacy' : 'not_legacy'}
     field :remote_status_string, value: -> (record) {record.remote_status.to_s}, analyzer: 'substring'
-    field :remote_status, value: -> (record) {remote_statuses[record.remote_status]}
+    field :remote_status, value: -> (record) {remote_statuses[record.remote_status]}, type: 'integer'
     field :quote_total, value: -> (record) {record.sales_quote.calculated_total.to_i if record.sales_quote.present? && record.sales_quote.calculated_total.present?}
     field :order_total, value: -> (record) {record.calculated_total.to_i if record.rows.present? && record.calculated_total.present?}
     field :customer_po_number, value: -> (record) {record.inquiry.customer_po_number if record.inquiry.present?}

@@ -17,7 +17,7 @@ class Services::Overseers::Finders::PendingSalesOrders < Services::Overseers::Fi
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 
@@ -37,7 +37,7 @@ class Services::Overseers::Finders::PendingSalesOrders < Services::Overseers::Fi
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 
