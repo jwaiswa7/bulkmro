@@ -4,17 +4,19 @@
 <div class="col-lg-10 col-lg-offset-1">
   <div class="page-header">
     <h2>
-      <small class="text-black-50 mb-2 ml-2"><strong><%= current_company %></strong></small>
+      <small class="text-black-50 mb-2"><strong><%= current_company %></strong></small>
     </h2>
   </div>
 
-  <%= form_tag customers_reports_path, method:'get' do %>
+  <%= form_tag customers_reports_path, method:'get', class:'form-row' do %>
     <input type="hidden" id="graph" name="graph" value = <%= params['graph'] %>>
-    <input type="string" id="daterange" name="daterange" class="form-group form-control" data-toggle="daterangepicker" placeholder="Select Date">
-    <%= submit_tag "Apply", class: "btn btn-dark" %>
+    <input type="string" id="daterange" name="daterange" class="form-group form-control col-lg-9" data-toggle="daterangepicker" placeholder=" Select Date">
+    <div class="col-lg-3" style="text-align:center;">
+      <%= submit_tag "Apply", class: "btn form-group btn-dark", style:"width:80%;" %>
+    </div>
   <% end %>
 
-  <section class="pb-4 pb-lg-5">
+  <section class="pb-4 pb-lg-5 my-3">
     <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
       <%= nav_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
       <%= nav_item 'Monthly Purchase Data', customers_reports_path(:graph => 'monthly_purchase_data'), true %>

@@ -48,7 +48,7 @@ let updateChartOptions = function (chartObject) {
         chartObject.options = barChartOptions;
         chartObject.update();
     }
-    else if (chartObject.canvas.id == 'revenue_trend') {
+    if (chartObject.canvas.id == 'revenue_trend') {
         var barChartOptions = {
             tooltips: {
                 mode: 'label',
@@ -86,7 +86,7 @@ let updateChartOptions = function (chartObject) {
         chartObject.options = barChartOptions;
         chartObject.update();
     }
-    else if (chartObject.canvas.id == 'categorywise_revenue') {
+    if (chartObject.canvas.id == 'categorywise_revenue') {
         var doughnutChartOptions = {
             tooltips: {
                 callbacks: {
