@@ -61,7 +61,17 @@ Rails.application.routes.draw do
     end
 
     resources :reports
-    resources :activities, except: [:show]
+    resources :activities, except: [:show] do
+      collection do
+        get 'pending'
+        post 'approve_selected'
+        post 'rejected_selected'
+      end
+      member do
+        get 'approve'
+        get 'reject'
+      end
+    end
     resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers, except: [:show]
 
@@ -375,7 +385,7 @@ Rails.application.routes.draw do
     end
 
 
-    resources  :warehouses do
+    resources :warehouses do
       collection do
         get 'autocomplete'
       end
