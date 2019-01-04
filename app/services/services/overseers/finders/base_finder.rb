@@ -201,5 +201,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
+  def aggregate_by_status(key)
+    {
+          statuses: {
+              terms: {
+                  field: key
+              }
+          }
+    }
+  end
+
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter
 end
