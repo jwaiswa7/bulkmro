@@ -68,7 +68,7 @@
             <% if @po_request.payment_request.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Request</strong>
-                <a href="<%= overseers_po_request_path(@po_request.payment_request) %>"><%= format_id(@po_request.id) %></a>
+                <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>"><%= format_id(@po_request.id) %></a>
               </div>
             <% end %>
           </div>
