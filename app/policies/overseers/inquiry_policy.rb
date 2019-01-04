@@ -115,6 +115,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def resync_inquiry_products?
+    edit?
+  end
+
   def new_freight_request?
     !record.freight_request.present? && !logistics?
   end

@@ -235,6 +235,7 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
