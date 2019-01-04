@@ -8,8 +8,7 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    super
-    record.company.is_active if record.company.present?
+    super && record.company.is_active if record.company.present?
   end
 
   def warehouse_addresses?
