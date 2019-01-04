@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
     case type.to_sym
     when :send_inquiry_product
       "#{args[0]} uploaded for approval in Inquiry ##{args[1]}"
-    when :approve_inquiry_product
+    when :inquiry_comment_actions
       if args[0].present?
         "#{args[1]} has been #{args[0]}"
       else
