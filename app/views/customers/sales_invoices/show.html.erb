@@ -303,7 +303,7 @@
         <p class="mb-0">
           - Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= @sales_invoice.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>
           - Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
-          <% if record.sales_order.sales_quote.is_sez %>
+          <% if @sales_invoice.sales_order.sales_quote.is_sez %>
             - Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
           <% end %>
             </p>
