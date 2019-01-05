@@ -1,4 +1,6 @@
 class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseController
+  before_action :set_notification, only: [:create]
+
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
@@ -18,17 +20,12 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect {|action| params[action]}
       send(callback_method) if callback_method.present? && policy(@comment.sales_order).send([callback_method, '?'].join)
-
-      message_body = notification_message('inquiry_order_comment', callback_method, @inquiry.inquiry_number.to_s, @comment.message)
-      notification = Services::Overseers::Notifications::Notify.new
-      notification.send(
+      @notification.send_order_comment(
           @inquiry.inside_sales_owner,
-          current_overseer,
-          self.class.parent,
           action_name.to_sym,
           @comment.sales_order,
           overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, :show_to_customer => false),
-          message_body
+          callback_method, @inquiry.inquiry_number.to_s, @comment.message
       )
 
       redirect_to overseers_inquiry_comments_path(@inquiry, sales_order_id: @comment.sales_order.to_param, :show_to_customer => inquiry_comment_params[:show_to_customer]), notice: flash_message(@comment, action_name)

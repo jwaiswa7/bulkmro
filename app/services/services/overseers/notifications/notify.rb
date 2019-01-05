@@ -21,13 +21,25 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     else
       @message =  "New reply for Product #{msg[1]}"
     end
-    @message =  "#{message.to_s}: #{msg[2]}" if msg[2].present?
+    @message =  "#{@message.to_s}: #{msg[2]}" if msg[2].present?
     send
   end
 
   def send_order_confirmation(to, action, notifiable, url, *msg)
     @to = to; @action = action; @notifiable = notifiable; @url = url
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
+    send
+  end
+
+  def send_order_comment(to, action, notifiable, url, *msg)
+    @to = to; @action = action; @notifiable = notifiable; @url = url
+
+    if msg[0].present?
+      @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
+    else
+      @message =  "New reply for order of Inquiry ##{msg[1]}"
+    end
+    @message =  "#{@message.to_s}: #{msg[2]}" if msg[2].present?
     send
   end
 
