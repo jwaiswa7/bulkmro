@@ -17,7 +17,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'file-invoice', 'Request PO', 'success', :_blank)
                       end,
                       if policy(sales_order).can_request_invoice?
-                        row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'Invoice Request', 'success', :_blank)
+                        row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end,
                       if policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
