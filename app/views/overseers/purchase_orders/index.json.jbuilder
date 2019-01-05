@@ -11,7 +11,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(edit_internal_status_overseers_purchase_order_path(purchase_order), 'pencil', 'Edit Internal Status', 'success')
                       end,
                       if policy(purchase_order).can_request_invoice?
-                        row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'Invoice Request', 'success', :_blank)
+                        row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
