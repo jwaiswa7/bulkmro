@@ -11,10 +11,12 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
-        statuses = {}
-        indexed_buckets = service.indexed_records.aggs["statuses"]["buckets"]
-        indexed_buckets.map{|bucket| statuses[bucket["key"]] = bucket["doc_count"]}
-        @statuses = statuses
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
+
         render 'pending'
       end
     end
@@ -64,10 +66,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        statuses = {}
-        indexed_buckets = service.indexed_records.aggs["statuses"]["buckets"]
-        indexed_buckets.map{|bucket| statuses[bucket["key"]] = bucket["doc_count"]}
-        @statuses = statuses
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
       end
     end
   end

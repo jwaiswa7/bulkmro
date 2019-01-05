@@ -13,10 +13,10 @@ class Overseers::InquiriesController < Overseers::BaseController
         @indexed_inquiries = service.indexed_records
         @inquiries = service.records.try(:reverse)
 
-        statuses = {}
-        indexed_buckets = service.indexed_records.aggs["statuses"]["buckets"]
-        indexed_buckets.map{|bucket| statuses[bucket["key"]] = bucket["doc_count"]}
-        @statuses = statuses
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
       end
     end
   end
