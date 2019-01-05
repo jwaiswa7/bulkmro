@@ -44,10 +44,10 @@
             <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, include_blank: 'BULK MRO APPROVED', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
+            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service =>false)} %>
+            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
           </div>
         </div>
 
