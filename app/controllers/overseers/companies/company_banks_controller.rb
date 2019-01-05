@@ -2,7 +2,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
   before_action :set_company_bank, only: [:show, :edit, :update, :destroy]
 
   def index
-    @company_banks = ApplyDatatableParams.to(@company.banks, params)
+    @company_banks = ApplyDatatableParams.to(@company.company_banks, params)
     authorize @company_banks
   end
 
@@ -17,13 +17,13 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def new
     @company = Company.find(params[:company_id])
-    @company_bank = @company.banks.build
+    @company_bank = @company.company_banks.build
     authorize @company_bank
   end
 
   def create
     @company = Company.find(params[:company_id])
-    @company_bank = @company.banks.build(company_bank_params)
+    @company_bank = @company.company_banks.build(company_bank_params)
     authorize @company_bank
 
     if @company_bank.save
@@ -64,17 +64,15 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
   def company_bank_params
     params.require(:company_bank).permit(
         :company_id,
-        :country_code,
-        :name,
-        :code,
+        :bank_id,
         :branch,
-        :ifsc_code,
         :account_name,
         :account_number,
         :address_line_1,
         :address_line_2,
         :beneficiary_email,
-        :beneficiary_mobile
+        :beneficiary_mobile,
+        :mandate_id
     )
   end
 end

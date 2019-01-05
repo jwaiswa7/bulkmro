@@ -6,4 +6,5 @@ class CompanyBank < ApplicationRecord
   validates_presence_of :account_number
 
   validates_plausible_phone :beneficiary_mobile, allow_blank: true
+
 end
