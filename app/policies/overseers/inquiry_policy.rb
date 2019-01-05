@@ -116,7 +116,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-    edit?
+     developer?
   end
 
   def new_freight_request?
