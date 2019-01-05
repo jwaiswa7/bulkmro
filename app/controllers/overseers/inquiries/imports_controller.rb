@@ -82,8 +82,18 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
+      message_body = notification_message('send_inquiry_product', @excel_import.rows.map(&:sku).join(', '), @inquiry.inquiry_number.to_s)
+      notification = Services::Overseers::Notifications::Notify.new
       Overseer.cataloging.each do | cataloger |
-        Notification.create(recipient: current_overseer, sender: cataloger, namespace: self.class.parent, action: action_name.to_sym, notifiable: @excel_import, action_url:edit_overseers_inquiry_path(@inquiry), message: notification_message('send_inquiry_product', @excel_import.rows.map(&:sku).join(', '), @inquiry.inquiry_number.to_s))
+        notification.send(
+            cataloger,
+            current_overseer,
+            self.class.parent,
+            action_name.to_sym,
+            @excel_import,
+            edit_overseers_inquiry_path(@inquiry),
+            message_body
+        )
       end
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else

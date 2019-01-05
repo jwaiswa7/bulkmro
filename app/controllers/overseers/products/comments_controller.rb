@@ -13,8 +13,17 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
       callback_method = %w(approve reject merge).detect {|action| params[action]}
       send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
 
-      Notification.create(recipient: InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by, sender: current_overseer, namespace: self.class.parent, action: action_name.to_sym, notifiable: @product, action_url:overseers_product_comments_path(@product), message: notification_message('inquiry_comment_actions', callback_method, @product.to_s, @comment.message))
-
+      message_body = notification_message('inquiry_product_comment', callback_method, @product.to_s, @comment.message)
+      notification = Services::Overseers::Notifications::Notify.new
+      notification.send(
+          InquiryImport.find(@product.inquiry_import_row.inquiry_import_id).created_by,
+          current_overseer,
+          self.class.parent,
+          action_name.to_sym,
+          @product,
+          overseers_product_comments_path(@product),
+          message_body
+      )
       redirect_to overseers_product_comments_path(@product), notice: flash_message(@comment, action_name)
     else
       render 'new'
