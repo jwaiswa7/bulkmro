@@ -7,7 +7,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
     @customer_order = current_contact.customer_orders.build(
         billing_address_id: current_cart.billing_address_id,
         shipping_address_id: current_cart.shipping_address_id,
-        po_reference: current_cart.po_reference
+        po_reference: current_cart.po_reference,
+        special_instructions: current_cart.special_instructions
     )
 
     ActiveRecord::Base.transaction do
@@ -15,7 +16,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
       @customer_order.assign_attributes(
           billing_address_id: current_cart.billing_address_id,
           shipping_address_id: current_cart.shipping_address_id,
-          po_reference: current_cart.po_reference
+          po_reference: current_cart.po_reference,
+          special_instructions: current_cart.special_instructions
       )
       @customer_order.save
       @customer_order.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
