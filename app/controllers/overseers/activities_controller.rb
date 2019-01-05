@@ -53,22 +53,18 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_approval(:overseer => current_overseer)
-        completed.push(activity.to_param)
       end
     end
-
   end
 
   def reject_selected
 
     @activities = Activity.where(id: params[:activities])
 
-    completed = []
     authorize @activities
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_rejection(:overseer => current_overseer)
-        completed.push(activity.to_param)
       end
     end
 
