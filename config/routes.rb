@@ -66,6 +66,7 @@ Rails.application.routes.draw do
         get 'pending'
         post 'approve_selected'
         post 'reject_selected'
+        post 'add_to_inquiry'
       end
       member do
         get 'approve'

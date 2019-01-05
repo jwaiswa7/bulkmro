@@ -1,7 +1,6 @@
 const pending = () => {
     $('#approve_selected,#reject_selected').hide();
     toggleCheckboxes();
-
     $('#approve_selected').click((event) => {
         updateActivitiesApproval('approve');
     });
@@ -45,7 +44,6 @@ let updateActivitiesApproval = (action) => {
     let url = '';
     if (action == 'approve') {
         url = Routes.approve_selected_overseers_activities_path();
-
     } else {
         url = Routes.reject_selected_overseers_activities_path();
     }
@@ -58,17 +56,13 @@ let updateActivitiesApproval = (action) => {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-
-                var dataTable = $('.datatable').dataTable()
-                dataTable.fnDraw();
+                var dataTable = $('.datatable').dataTable();
+                dataTable.api().ajax.reload(null, false);
                 $('#all_activities').removeAttr('checked');
                 $('#all_activities').prop("checked", false);
-
             }
         });
     }
-
-
 };
 
 
@@ -81,13 +75,10 @@ let showOrHideActions = () => {
         }
     });
     if (hide) {
-
         $('#approve_selected,#reject_selected').hide();
     } else {
         $('#approve_selected,#reject_selected').show();
     }
-
-
 }
 
 export default pending

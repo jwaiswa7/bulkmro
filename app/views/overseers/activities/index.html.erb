@@ -5,13 +5,12 @@
 <% provide :heading_buttons do %>
 
   <% if policy(:activity).add_to_inquiry? %>
-    <span id="add_to_inquriy_wrapper">
-      <%= select_tag :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
-
-      <button type="button" id="reject_selected" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
-        <i class="fal fa-plus mr-1"></i>Add to Inquiry
-      </button>
-    </span>
+    <div class="mr-2 float-left">
+    <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity' %>
+</div>
+    <button type="button" id="add_to_inquiry" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-plus mr-1"></i>Add to Inquiry
+    </button>
   <% end %>
 <% end %>
 

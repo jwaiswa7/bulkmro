@@ -47,20 +47,14 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def approve_selected
-
     @activities = Activity.where(id: params[:activities])
 
-    completed = []
     authorize @activities
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
         activity.create_approval(:overseer => current_overseer)
         completed.push(activity.to_param)
       end
-    end
-
-    respond_to do |format|
-      format.json {render :json => {completed: completed.any?}} # don't do msg.to_json
     end
 
   end
@@ -78,10 +72,6 @@ class Overseers::ActivitiesController < Overseers::BaseController
       end
     end
 
-    respond_to do |format|
-      format.json {render :json => {completed: completed.any?}} # don't do msg.to_json
-    end
-
   end
 
   def reject
@@ -90,6 +80,16 @@ class Overseers::ActivitiesController < Overseers::BaseController
       @activity.create_rejection(:overseer => current_overseer)
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
+  end
+
+  def add_to_inquiry
+
+    @activities = Activity.where(id: params[:activities])
+    @inquiry = params[:inquiry]
+
+    authorize @activities
+    @activities.update_all(inquiry_id: @inquiry)
+
   end
 
 

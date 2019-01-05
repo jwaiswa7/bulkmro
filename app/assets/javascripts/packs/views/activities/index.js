@@ -1,9 +1,9 @@
 const index = () => {
-    $('#add_to_inquiry_wrapper').hide();
+    $('.add_to_inquiry_wrapper').hide();
     toggleCheckboxes();
 
     $('#add_to_inquiry').click((event) => {
-        addToInquriry('approve');
+        addToInquiry();
     });
 
 };
@@ -17,13 +17,13 @@ let toggleCheckboxes = () => {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
                 $(element).prop("checked", true);
-                $('#add_to_inquiry_wrapper').show();
+                $('.add_to_inquiry_wrapper').show();
             });
         } else {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).removeAttr('checked')
                 $(element).prop("checked", false);
-                $('#add_to_inquiry_wrapper').hide();
+                $('.add_to_inquiry_wrapper').hide();
             });
         }
     });
@@ -33,34 +33,27 @@ let toggleCheckboxes = () => {
     })
 }
 
-let addToInquriry = (action) => {
+let addToInquiry = () => {
     let activities = [];
     $('input[type=checkbox][name="activities[]"]:checked').each((index, element) => {
         activities.push($(element).val());
     });
 
-    let url = '';
-    if (action == 'approve') {
-        url = Routes.approve_selected_overseers_activities_path();
+    var inquiry = $('select[name*=inquiry]').val()
+    if (activities.length > 0 && inquiry != '') {
 
-    } else {
-        url = Routes.reject_selected_overseers_activities_path();
-    }
-    if (activities.length > 0 && url != '') {
-        var data = JSON.stringify({activities: activities});
+        var data = JSON.stringify({activities: activities, inquiry: inquiry});
         $.ajax({
-            url: url,
+            url: Routes.add_to_inquiry_overseers_activities_path(),
             type: "POST",
             data: data,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (response) {
-
-                var dataTable = $('.datatable').dataTable()
-                dataTable.fnDraw();
+            success: function () {
+                var dataTable = $('.datatable').dataTable();
+                dataTable.api().ajax.reload(null, false);
                 $('#all_activities').removeAttr('checked');
                 $('#all_activities').prop("checked", false);
-
             }
         });
     }
@@ -79,9 +72,9 @@ let showOrHideActions = () => {
     });
     if (hide) {
 
-        $('#add_to_inquiry_wrapper').hide();
+        $('.add_to_inquiry_wrapper').hide();
     } else {
-        $('#add_to_inquiry_wrapper').show();
+        $('.add_to_inquiry_wrapper').show();
     }
 
 
