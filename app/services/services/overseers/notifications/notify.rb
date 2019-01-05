@@ -12,6 +12,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       send
     end
   end
+
   def send_product_comment(to, action, notifiable, url, *msg)
     @to = to; @action = action; @notifiable = notifiable; @url = url
 
@@ -21,6 +22,12 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       @message =  "New reply for Product #{msg[1]}"
     end
     @message =  "#{message.to_s}: #{msg[2]}" if msg[2].present?
+    send
+  end
+
+  def send_order_confirmation(to, action, notifiable, url, *msg)
+    @to = to; @action = action; @notifiable = notifiable; @url = url
+    @message = "New Order for inquiry ##{msg[0]} awaiting approval"
     send
   end
 

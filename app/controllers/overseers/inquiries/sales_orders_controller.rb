@@ -1,5 +1,6 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
   before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date]
+  before_action :set_notification, only: [:create_confirmation]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -91,16 +92,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         @sales_order.update_attributes(:status => 'Requested')
         @sales_order.update_attributes(:sent_at => Time.now)
       end
-      message_body = notification_message('order_init', @sales_order.inquiry.inquiry_number.to_s)
-      notification = Services::Overseers::Notifications::Notify.new
-      notification.send(
-        @inquiry.sales_manager,
-        current_overseer,
-        self.class.parent,
-        action_name.to_sym,
-        @sales_order,
-        overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, :show_to_customer => false),
-        message_body
+      @notification.send_order_confirmation(
+          @inquiry.sales_manager,
+          action_name.to_sym,
+          @sales_order,
+          overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, :show_to_customer => false),
+          @sales_order.inquiry.inquiry_number.to_s
       )
     else
       @sales_order.update_attributes(:sent_at => Time.now) if @sales_order.sent_at.blank?
