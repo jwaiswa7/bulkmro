@@ -64,7 +64,7 @@ end if Rails.env.production?
 #   service.call
 # end if Rails.env.production?
 
-every(1.day, 'inquiry_product_inventory_update', :at => '22:00') do
+every(1.day, 'inquiry_product_inventory_update', :at => '02:00') do
   service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
   service.call
 end if Rails.env.production?
