@@ -1,7 +1,12 @@
 json.data (@activities) do |activity|
   json.array! [
                   [
-                      if policy(activity).edit?; row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning') end,
+                      if policy(:activity).perform_actions?;
+                        "<input type='checkbox' name='activities[]' value='#{activity.id}'>"
+                      end,
+                      if policy(activity).edit?;
+                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
+                      end,
                   ].join(' '),
                   activity.created_by.to_s,
                   if activity.activity_account.present?

@@ -10,6 +10,13 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
     admin?
   end
 
+  def add_to_inquiry?
+    admin?
+  end
+
+  def perform_actions?
+    admin?
+  end
 
   def approve_selected?
     admin?

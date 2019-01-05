@@ -48,8 +48,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def approve_selected
 
-    @activities = Activity.where(id: params[:activities].to_s.split(','))
-
+    @activities = Activity.where(id: params[:activities])
 
     completed = []
     authorize @activities
@@ -61,7 +60,26 @@ class Overseers::ActivitiesController < Overseers::BaseController
     end
 
     respond_to do |format|
-      format.json {render :json => {completed: completed}} # don't do msg.to_json
+      format.json {render :json => {completed: completed.any?}} # don't do msg.to_json
+    end
+
+  end
+
+  def reject_selected
+
+    @activities = Activity.where(id: params[:activities])
+
+    completed = []
+    authorize @activities
+    @activities.each do |activity|
+      ActiveRecord::Base.transaction do
+        activity.create_rejection(:overseer => current_overseer)
+        completed.push(activity.to_param)
+      end
+    end
+
+    respond_to do |format|
+      format.json {render :json => {completed: completed.any?}} # don't do msg.to_json
     end
 
   end

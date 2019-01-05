@@ -1,12 +1,9 @@
-const pending = () => {
-    $('#approve_selected,#reject_selected').hide();
+const index = () => {
+    $('#add_to_inquiry_wrapper').hide();
     toggleCheckboxes();
 
-    $('#approve_selected').click((event) => {
-        updateActivitiesApproval('approve');
-    });
-    $('#reject_selected').click((event) => {
-        updateActivitiesApproval('reject');
+    $('#add_to_inquiry').click((event) => {
+        addToInquriry('approve');
     });
 
 };
@@ -20,13 +17,13 @@ let toggleCheckboxes = () => {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
                 $(element).prop("checked", true);
-                $('#approve_selected,#reject_selected').show();
+                $('#add_to_inquiry_wrapper').show();
             });
         } else {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).removeAttr('checked')
                 $(element).prop("checked", false);
-                $('#approve_selected,#reject_selected').hide();
+                $('#add_to_inquiry_wrapper').hide();
             });
         }
     });
@@ -36,7 +33,7 @@ let toggleCheckboxes = () => {
     })
 }
 
-let updateActivitiesApproval = (action) => {
+let addToInquriry = (action) => {
     let activities = [];
     $('input[type=checkbox][name="activities[]"]:checked').each((index, element) => {
         activities.push($(element).val());
@@ -82,12 +79,12 @@ let showOrHideActions = () => {
     });
     if (hide) {
 
-        $('#approve_selected,#reject_selected').hide();
+        $('#add_to_inquiry_wrapper').hide();
     } else {
-        $('#approve_selected,#reject_selected').show();
+        $('#add_to_inquiry_wrapper').show();
     }
 
 
 }
 
-export default pending
+export default index

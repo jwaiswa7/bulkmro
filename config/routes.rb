@@ -65,7 +65,7 @@ Rails.application.routes.draw do
       collection do
         get 'pending'
         post 'approve_selected'
-        post 'rejected_selected'
+        post 'reject_selected'
       end
       member do
         get 'approve'
