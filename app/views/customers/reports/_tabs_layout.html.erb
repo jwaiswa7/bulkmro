@@ -12,7 +12,7 @@
     <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
       <%= nav_item 'Monthly Purchase Data', customers_reports_path(:graph => 'monthly_purchase_data'), true %>
       <%= nav_item 'Revenue Trend', customers_reports_path(:graph => 'revenue_trend'), true %>
-      <%= nav_item 'Orders Count', customers_reports_path(:graph => 'orders_count'), true %>
+      <%= nav_item 'Order Count', customers_reports_path(:graph => 'orders_count'), true %>
       <%= nav_item 'Unique SKUs', customers_reports_path(:graph => 'unique_skus'), true %>
       <%#= nav_item 'Categorywise Revenue', customers_reports_path(:graph => 'category_wise_revenue'), true %>
     </ul>
@@ -21,7 +21,7 @@
       <div class="col-md-10">
         <input type="hidden" id="graph" name="graph" value = <%= params['graph'] %>>
         <div class="form-group">
-          <input type="text" id="daterange" name="daterange" class="form-control" data-toggle="daterangepicker" placeholder="Pick a daterange">
+          <input type="text" id="daterange" name="daterange" class="form-control" data-toggle="daterangepicker" data-direction="right" placeholder="Pick a daterange">
         </div>
       </div>
       <div class="col-md-2">
