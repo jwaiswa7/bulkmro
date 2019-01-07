@@ -44,4 +44,4 @@ json.columnFilters [
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
 json.draw params[:draw]
-json.recordsSummary Inquiry.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary Inquiry.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
