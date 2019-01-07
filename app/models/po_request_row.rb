@@ -18,7 +18,13 @@ class PoRequestRow < ApplicationRecord
   def total_selling_price
     if self.sales_quote_row.present?
       unit_selling_price = self.sales_quote_row.unit_selling_price
-      unit_selling_price * self.quantity
+      if unit_selling_price.present?
+        if self.quantity.present?
+          unit_selling_price * self.quantity
+        else
+          unit_selling_price
+        end
+      end
     end
   end
 
