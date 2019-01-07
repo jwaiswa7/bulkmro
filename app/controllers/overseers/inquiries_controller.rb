@@ -133,7 +133,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
     @inquiry_products = @inquiry.products
     @inquiry_products.each do |product|
-       product.save_and_sync
+      if product.not_synced?
+        product.save_and_sync
+      end
     end
      redirect_to edit_overseers_inquiry_path(@inquiry) and return
   end
