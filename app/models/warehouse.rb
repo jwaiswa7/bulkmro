@@ -1,5 +1,6 @@
 class Warehouse < ApplicationRecord
   include Mixins::HasVisibility
+  include Mixins::CanBeActivated
 
   default_scope { order(:name => :asc) }
   pg_search_scope :locate, :against => [:name], :associated_against => { address: [:name, :country_code, :street1, :street2, :state_name, :city_name, :pincode] }, :using => { :tsearch => { :prefix => true } }

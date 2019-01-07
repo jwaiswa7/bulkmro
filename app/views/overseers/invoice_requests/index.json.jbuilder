@@ -9,7 +9,7 @@ json.data (@invoice_requests) do |invoice_request|
                       end
                   ].join(' '),
                   invoice_request.id,
-                  invoice_request_status_badge(invoice_request.status),
+                  status_badge(invoice_request.status),
                   invoice_request.inquiry.inquiry_number,
                   invoice_request.sales_order.order_number,
                   invoice_request.inquiry.inside_sales_owner.to_s,

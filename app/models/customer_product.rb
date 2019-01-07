@@ -1,6 +1,7 @@
 class CustomerProduct < ApplicationRecord
   include Mixins::CanBeStamped
-  include Mixins::ActiveStorageVariants
+  include Mixins::HasImages
+  include Mixins::CanBeWatermarked
 
   update_index('customer_products#customer_product') {self}
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
@@ -14,8 +15,6 @@ class CustomerProduct < ApplicationRecord
   belongs_to :measurement_unit, required: false
   has_many :cart_items, dependent: :destroy
   has_many :customer_order_rows
-
-  has_many_attached :images
 
   validates_presence_of :name
   validates_presence_of :sku
@@ -32,7 +31,11 @@ class CustomerProduct < ApplicationRecord
     self.moq ||= 1
   end
 
-  after_save :update_index, :transform
+  after_save :update_index
+
+  def update_index
+    CustomerProductsIndex::CustomerProduct.import([self.id])
+  end
 
   def best_brand
     self.brand || self.product.brand
@@ -64,18 +67,14 @@ class CustomerProduct < ApplicationRecord
     end
   end
 
-  def transform
-    if self.has_images?
-      image_transform(self.best_images.first)
+  def best_image
+    if best_images.present?
+      if best_images.first.present?
+        best_images.first
+      else
+        nil
+      end
     end
-  end
-
-  def grid_image(size="small", watermark=true)
-    self.best_images.first.variant(Blob::variation(size,watermark))
-  end
-
-  def update_index
-    CustomerProductsIndex::CustomerProduct.import([self.id])
   end
 
   def has_images?

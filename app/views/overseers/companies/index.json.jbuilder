@@ -24,6 +24,8 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
+                  company.pan,
+                  format_boolean(company.validate_pan),
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
@@ -31,6 +33,19 @@ json.data (@companies) do |company|
               ]
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [],
+                       [],
+                       [],
+                       []
+                   ]
 json.recordsTotal @companies.model.all.count
-json.recordsFiltered @companies.total_count
+json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
