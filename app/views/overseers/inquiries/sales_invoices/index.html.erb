@@ -17,21 +17,21 @@
         <tr>
           <td>
             <% if policy(sales_invoice).show_original_invoice? %>
-              <%= row_action_button(url_for(sales_invoice.original_invoice), 'file-pdf', sales_invoice.original_invoice.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'file-pdf', sales_invoice.duplicate_invoice.filename, 'dark', :_blank) %>
-              <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'file-pdf', sales_invoice.triplicate_invoice.filename, 'dark', :_blank) %>
+              <%= row_action_button(url_for(sales_invoice.original_invoice), 'none', sales_invoice.original_invoice.filename, 'success', :_blank, 'get', false, 'O') %>
+              <%= row_action_button(url_for(sales_invoice.duplicate_invoice), 'none', sales_invoice.duplicate_invoice.filename, 'success', :_blank, 'get', false, 'D') %>
+              <%= row_action_button(url_for(sales_invoice.triplicate_invoice), 'none', sales_invoice.triplicate_invoice.filename, 'success', :_blank, 'get', false, 'T') %>
             <% end %>
             <% if policy(sales_invoice).show? %>
-              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
-              <%= row_action_button(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :zip), 'download', 'Download zip', 'dark', :_blank) %>
+              <%= row_action_button(overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'O') %>
+              <%= row_action_button(duplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'D') %>
+              <%= row_action_button(triplicate_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :pdf), 'none', 'Download', 'success', :_blank, 'get', false, 'T') %>
+              <%= row_action_button(make_zip_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice, format: :zip), 'file-archive', 'Download zip', 'info', :_blank) %>
             <% end %>
             <% if policy(sales_invoice).edit_mis_date? %>
               <%= row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(@inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success') %>
             <% end %>
             <% if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached? %>
-              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success') %>
+              <%= row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success') %>
             <% end %>
             <% if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached? %>
               <% if sales_invoice.pod_attachment.attached? %>

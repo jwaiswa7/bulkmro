@@ -9,9 +9,13 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
-
         @indexed_sales_invoices = service.indexed_records
         @sales_invoices = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_invoices, SalesInvoice)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
       end
     end
   end
@@ -37,31 +41,25 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
   def export_all
     authorize :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoicesExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_invoices.last.report)
   end
 
   def export_rows
     authorize :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoiceRowsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_invoice_rows.last.report)
   end
 
   def export_for_logistics
     authorize :sales_invoice
     service = Services::Overseers::Exporters::SalesInvoicesLogisticsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv { send_data service.call, filename: service.filename }
-    end
+    redirect_to url_for(Export.sales_invoice_logistics.last.report)
   end
 
   private

@@ -212,7 +212,7 @@
 
                     <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
-                    <%= record.shipping_address.name %><br>
+                    <%= record.shipping_address.name if record.shipping_address.present? %><br>
                     <%= record.shipping_address.to_multiline_s if record.shipping_address.present? %>
                     <br>
 
@@ -222,7 +222,7 @@
                       Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.shipping_address.telephone %>
                     <% end %> <br>
 
-                    GST No.:<%= record.shipping_address.gst %><br>
+                    GST No.:<%= record.shipping_address.gst if record.shipping_address.present? %><br>
                   </div>
                 </td>
               </tr>
@@ -256,10 +256,10 @@
                   <b><span>Qty</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Unit Price<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Subtotal<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
                 <th align="center" valign="center">
                   <b><span>Tax<br>
                     Rate</span></b></th>
@@ -288,7 +288,7 @@
                 <% end %>
                 <th align="center" valign="center">
                   <b><span>Total<br>
-                    (INR)</span></b></th>
+                    (<%= record.inquiry.currency.name %>)</span></b></th>
               </tr>
               </thead>
               <tbody>
@@ -300,9 +300,9 @@
                     <span><%= item.sku %></span></td>
 
                   <td align="center" valign="top">
-                    <span><%= record.sales_order.sales_order_rows[index].product.mpn %></span></td>
+                    <span><%= item.mpn %></span></td>
                   <td align="left" valign="top">
-                    <span><%= item.name %></span></td>
+                    <span><%= item.name  %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.brand %></span></td>
                   <td align="center" valign="top">
@@ -314,7 +314,7 @@
                   <td align="right" valign="top">
                     <span><%= number_to_currency(item.metadata['price'], precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.metadata['row_total'], precision: 2, unit: '') %></span></td>
+                    <span><%= number_to_currency(item.metadata['base_row_total'], precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                   <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
@@ -322,22 +322,22 @@
                     <td align="center" valign="top">
                       <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency(item.metadata['tax_amount'], precision: 2, unit: '') %></span></td>
+                      <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
+                      <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
                       <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
-                      <span><%= number_to_currency((item.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %>
+                      <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>
                     </td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= number_to_currency(item.metadata['row_total_incl_tax'], precision: 2, unit: '') %></span>
+                    <span><%= number_to_currency(item.metadata['base_row_total_incl_tax'], precision: 2, unit: '') %></span>
                   </td>
                 </tr>
               <% end if record.metadata['ItemLine'].present? %>
@@ -362,7 +362,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency(record.metadata['subtotal'], precision: 2, unit: '') %></span></b>
+                  <b><span><%= number_to_currency(record.metadata['base_grand_total'].to_f - record.metadata['base_tax_amount'].to_f, precision: 2, unit: '') %></span></b>
                 </td>
                 <td align="center" valign="top">
                   <span></span></td>
@@ -371,22 +371,22 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(record.metadata['tax_amount'], precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency(record.metadata['base_tax_amount'], precision: 2, unit: '') %></span></b>
                   </td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency((record.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency((record.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
                   </td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency((record.metadata['tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency((record.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span></b>
                   </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= number_to_currency((record.metadata['subtotal_incl_tax'].to_f), precision: 2, unit: '') %></span></b>
+                  <b><span><%= number_to_currency((record.metadata['base_grand_total'].to_f), precision: 2, unit: '') %></span></b>
                 </td>
               </tr>
 
@@ -517,204 +517,29 @@
               </div>
               <br clear="all"/>
               <% if record.sales_order.currency.name.present? %>
-                <% if record.sales_order.currency.name.to_s == 'USD' %>
+                <% if record.sales_order.currency.name.to_s == 'USD' || record.sales_order.currency.name.to_s == 'EUR' || record.sales_order.currency.name.to_s == 'GBP' %>
                   <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <table style="width: 100%;" cellspacing="0" border="0">
-                      <tr style="background: #d3d3d3;">
-                        <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius: 4px; border-top-right-radius: 4px;" colspan="16" height="15" align="left" valign="top">
-                          <b><span>Payment By Wire Transfer To :</span></b></td>
-                      </tr>
-
-                      <tr>
-                        <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                          <b><span>Bank :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Kotak Mahindra Bank Limited </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Address :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span> Aum Saheel Tower, Mumbai 400080.</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Name :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Number :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>9412666668</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Swift Code :</span></b></td>
-                        <td style=" padding-left: 10px;" colspan="6">
-                          <span>KKBKINBB</span></td>
-
-                      </tr>
-                    </table>
-                  </div>
-                  <br clear="all"/>
-                <% elsif record.sales_order.currency.name.to_s == 'EUR' %>
-                  <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <table style="width: 100%;" cellspacing="0" border="0">
-                      <tr style="background: #d3d3d3;">
-                        <td class="invoiceheader1" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius: 4px; border-top-right-radius: 4px;" colspan="16" height="15" align="left" valign="top">
-                          <b><span>Payment By Wire Transfer To :</span></b></td>
-                      </tr>
-
-                      <tr>
-                        <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                          <b><span>Bank :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Kotak Mahindra Bank Ltd </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Address :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span> Aum Saheel Tower, Mumbai 400080.</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Name :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Number :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>9412666682</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Swift Code :</span></b></td>
-                        <td style=" padding-left: 10px;" colspan="6">
-                          <span>KKBKINBB</span></td>
-
-                      </tr>
-                    </table>
-                  </div>
-                  <br clear="all"/>
-                <% elsif record.sales_order.currency.name.to_s == 'GBP' %>
-                  <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <table style="width: 100%;" cellspacing="0" border="0">
-                      <tr style="background: #d3d3d3;">
-                        <td class="invoiceheader1" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top-left-radius: 4px; border-top-right-radius: 4px;" colspan="16" height="15" align="left" valign="top">
-                          <b><span>Payment By Wire Transfer To :</span></b></td>
-                      </tr>
-
-                      <tr>
-                        <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                          <b><span>Bank :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Kotak Mahindra Bank Ltd </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Address :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span> Aum Saheel Tower, Mumbai 400080.</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Name :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Number :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="12">
-                          <span>9412666675</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Swift Code :</span></b></td>
-                        <td style=" padding-left: 10px;" colspan="6">
-                          <span>KKBKINBB</span></td>
-
-                      </tr>
-                    </table>
+                    <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.sales_order.currency.name.to_s %>
                   </div>
                   <br clear="all"/>
                 <% else %>
                   <div id="OtherinfoInvoice" style="border:1px solid; border-radius: 5px;">
-                    <table style="width: 100%;" cellspacing="0" border="0">
-                      <tr style="background: #d3d3d3;">
-                        <td class="invoiceheader1" style="background: #d3d3d3; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom: 1px solid #3c3c3c;" colspan="16" height="15" align="left" valign="top">
-                          <b><span>Payment By Wire Transfer To :</span></b></td>
-                      </tr>
-
-                      <tr>
-                        <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                          <b><span>Bank :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                          <span>Kotak Mahindra Bank Ltd </span></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                          <span>State Bank of India </span></td>
-                      </tr>
-                      <tr>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Address :</span></b></td>
-                        <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                          <span> Aum Saheel Tower, Mumbai 400080.</span></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                          <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Name :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                          <span>Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                          <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>Account Number :</span></b></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                          <span>9412329433</span></td>
-                        <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                          <span>35924122136</span></td>
-                      </tr>
-                      <tr>
-                        <td style=" padding-left: 10px;border-right: 1px solid #3c3c3c;" colspan="4">
-                          <b><span>NEFT/RTGS Code :</span></b></td>
-                        <td style=" padding-left: 10px;border-right: 1px solid #3c3c3c;" colspan="6">
-                          <span>KKBK0001411</span></td>
-                        <td style=" padding-left: 10px" colspan="6">
-                          <span>SBIN0000510 </span></td>
-                      </tr>
-
-
-                    </table>
+                    <%= render 'shared/layouts/pdf_templates/bank_info' %>
                   </div>
                   <br clear="all"/>
-                  <div id="pdf_btn_details">
-                    <table border="0" cellspacing="0" style="width: 100%;">
-                      <tbody>
-                      <tr>
-                        <td align="center" colspan="22" style="position: relative;top:0px;">
-                          <span style="color:#000000">This is a Computer Generated Invoice.</span></td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 <% end %>
               <% end %>
             <% end %>
+            <div id="pdf_btn_details">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="center" colspan="22" style="position: relative;top:0px;">
+                    <span style="color:#000000">This is a Computer Generated Invoice.</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

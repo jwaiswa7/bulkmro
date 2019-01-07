@@ -57,15 +57,15 @@
                   <tr>
                     <td>
                       <%= cart_item.hidden_field :id %>
-                      <% if cart_item.object.customer_product.best_images.present? %>
-                        <img src="<%= url_for_image(cart_item.object.customer_product.best_images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
+                      <% if cart_item.object.customer_product.best_image.present? && cart_item.object.customer_product.tiny_best_image.present? %>
+                        <%= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
                       <% else %>
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
                       <% end %>
                     </td>
                     <td>
                       <a href="<%= customers_product_path(cart_item.object.customer_product) %>">
-                        <%= cart_item.object.customer_product.product.name.truncate(80) %>
+                        <%= cart_item.object.customer_product.name.truncate(80) %>
                       </a>
                     </td>
                     <td><%= format_currency(cart_item.object.customer_product.customer_price, precision: 2, symbol: '') %></td>

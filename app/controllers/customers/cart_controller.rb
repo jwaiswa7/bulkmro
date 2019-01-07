@@ -34,7 +34,7 @@ class Customers::CartController < Customers::BaseController
 
   def update_billing_address
     authorize @cart
-    @cart.update_attributes(billing_address_id: params[:cart][:billing_address_id].to_i, po_reference: params[:cart][:po_reference].to_i)
+    @cart.update_attributes(billing_address_id: params[:cart][:billing_address_id].to_i, po_reference: params[:cart][:po_reference])
 
     redirect_to final_checkout_customers_checkout_path(next_step: 'shipping')
   end
@@ -42,6 +42,13 @@ class Customers::CartController < Customers::BaseController
   def update_shipping_address
     authorize @cart
     @cart.update_attributes(shipping_address_id: params[:cart][:shipping_address_id].to_i)
+
+    redirect_to final_checkout_customers_checkout_path(next_step: 'special_instructions')
+  end
+
+  def update_special_instructions
+    authorize @cart
+    @cart.update_attributes(special_instructions: params[:cart][:special_instructions].to_s)
 
     redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
   end

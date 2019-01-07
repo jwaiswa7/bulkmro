@@ -1,9 +1,13 @@
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_overseer = nil)
+  def initialize(params, current_overseer = nil, paginate: true)
     @search_filters = []
     @range_filters = []
+    @paginate = paginate
+    @status = params[:status]
+    @base_filter = []
     @sort_by = "created_at"
     @sort_order = "desc"
+
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
@@ -17,6 +21,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
       if params[:order].values.first['column'].present?
         @sort_by = params[:columns][params[:order].values.first['column']][:name]
         @sort_order =params[:order].values.first['dir']
+      end
+    end
+    if params[:base_filter_key].present? && params[:base_filter_value].present?
+      if params[:base_filter_value].kind_of?(Array)
+        #filter_By_array
+        @base_filter = filter_by_array(params[:base_filter_key], params[:base_filter_value])
+      else
+        #filter by value
+        @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
       end
     end
 
@@ -44,7 +57,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                             end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
+    @indexed_records = non_paginated_records if !paginate
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes.order(sort_definition) if indexed_records.present?
   end
 
 
@@ -193,5 +207,15 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :sort_by, :sort_order
+  def aggregate_by_status(key)
+    {
+          statuses: {
+              terms: {
+                  field: key
+              }
+          }
+    }
+  end
+
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter, :sort_by, :sort_order
 end

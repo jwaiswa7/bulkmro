@@ -1,5 +1,5 @@
 class Overseers::ContactsController < Overseers::BaseController
-  before_action :set_contact, only: [:show, :edit, :update]
+  before_action :set_contact, only: [:show, :edit, :update, :become]
 
   def index
     # service = Services::Overseers::Finders::Contacts.new(params)
@@ -13,7 +13,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def autocomplete
-    @contacts = ApplyParams.to(Contact.all.where(:is_active => true), params)
+    @contacts = ApplyParams.to(Contact.active, params)
     authorize @contacts
   end
 
@@ -46,7 +46,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|k, v| (k == :password || k == :password_confirmation) && v.blank?})
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
     authorize @contact
 
     if @contact.save_and_sync
@@ -56,11 +56,10 @@ class Overseers::ContactsController < Overseers::BaseController
     end
   end
 
-  def login_as_contact
-    contact = Contact.find(params[:contact_id])
-    become(contact)
-    redirect_to customer_root_url
-    authorize contact
+  def become
+    authorize @contact
+    sign_in(:contact, @contact)
+    redirect_to customers_dashboard_url(became: true)
   end
 
   private
@@ -75,6 +74,7 @@ class Overseers::ContactsController < Overseers::BaseController
         :company_id,
         :first_name,
         :last_name,
+        :legacy_email,
         :password,
         :password_confirmation,
         :prefix,
@@ -89,9 +89,4 @@ class Overseers::ContactsController < Overseers::BaseController
         :company_ids => []
     )
   end
-
-  def become(contact)
-    sign_in(:contact, contact)
-  end
-
 end

@@ -4,11 +4,13 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
   end
 
   def all_records
-    indexed_records = if current_contact.account_manager?
-                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+    indexed_records = if current_company.present?
+                        super.filter(filter_by_value('company_id', current_company.id))
                         #super.filter(filter_by_value('account_id',current_contact.account.id))
+                      elsif current_contact.account_manager?
+                        super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
                       else
-                        super.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+                        super
                       end
 
     indexed_records = indexed_records.query({
@@ -19,7 +21,9 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
                                                     }
                                                 }
                                             }).order(sort_definition)
-    indexed_records = indexed_records.filter(filter_by_value("approval_status", "approved"))
+    indexed_records = indexed_records.filter(filter_by_value("remote_approval_status", "approved"))
+    indexed_records = indexed_records.filter(filter_must_exist("order_number"))
+    indexed_records = indexed_records.filter(filter_by_array("remote_status", SalesOrder.remote_statuses.except('Cancelled By SAP').values))
 
     if search_filters.present?
       indexed_records = filter_query(indexed_records)

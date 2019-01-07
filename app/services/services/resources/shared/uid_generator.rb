@@ -40,5 +40,9 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
     sku_characters.join
   end
 
+  def self.online_order_number(id)
+    (id + 100000)
+  end
+
   attr_accessor :sales_quote
 end

@@ -1,5 +1,10 @@
 class Overseers::ContactPolicy < Overseers::ApplicationPolicy
-  def login_as_contact?
-    true
+  def become?
+    cataloging? || admin? || manager?
   end
+
+  def new?
+    cataloging? || admin?
+  end
+
 end

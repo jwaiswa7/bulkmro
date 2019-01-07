@@ -38,7 +38,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product = Product.new(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'new'
     end
@@ -52,7 +52,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product.assign_attributes(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'edit'
     end
@@ -101,11 +101,9 @@ class Overseers::ProductsController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::ProductsExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_data service.call, filename: service.filename}
-    end
+    redirect_to url_for(Export.products.last.report)
   end
 
   private
