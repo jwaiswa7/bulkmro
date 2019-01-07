@@ -83,7 +83,7 @@
                   <%= @inquiry.copy_of_email.filename %>
                 <% end if @inquiry.copy_of_email.attached? %>
               </div>
-            <div class="col-3 col-md-6">
+            <div class="col-3">
               <strong>Supplier Quotes attachment</strong>
               <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
                 <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
