@@ -17,3 +17,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(update_images_for_reliance_products), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_image_readers), folder: 'seed_files')
+service.call
