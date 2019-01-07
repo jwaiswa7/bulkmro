@@ -7,7 +7,7 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   def send_product_import_confirmation(tos, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "#{msg[0]} uploaded for approval in Inquiry ##{msg[1]}"
-    tos.each do | to |
+    tos.uniq.each do | to |
       @to = to
       send
     end
@@ -49,14 +49,16 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
   end
 
-  def send_sap_order_confirmation(to, action, notifiable, url, msg)
+  def send_sap_order_confirmation(inq, action, notifiable, url, msg)
     @action = action; @notifiable = notifiable; @url = url; @message = msg
-    @to = to.sales_manager
-    send
-    @to = to.outside_sales_owner
-    send
-    @to = to.inside_sales_owner
-    send
+    tos= Array.new
+    tos << inq.sales_manager
+    tos << inq.outside_sales_owner
+    tos << inq.inside_sales_owner
+    tos.uniq.each do | to |
+      @to = to
+      send
+    end
   end
 
 end
