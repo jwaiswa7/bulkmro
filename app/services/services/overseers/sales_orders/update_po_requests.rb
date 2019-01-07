@@ -20,17 +20,17 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       po_request_hash[:rows_attributes].each do |index, row_hash|
         if row_hash[:_destroy].present?
           if new_po_request.save!
-            PoRequestRow.find(row_hash[:id]).update(status: :'Draft', po_request: new_po_request)
+            PoRequestRow.find(row_hash[:id]).update( po_request: new_po_request)
           end
         elsif row_hash[:quantity].present?
           quantity = PoRequestRow.find(row_hash[:id]).quantity
           if quantity == row_hash[:quantity].to_d
-            PoRequestRow.find(row_hash[:id]).update(status: :'Draft')
+            # PoRequestRow.find(row_hash[:id]).update(status: :'Draft')
           elsif quantity > row_hash[:quantity].to_d
             sales_order_row = PoRequestRow.find(row_hash[:id]).sales_order_row
-            PoRequestRow.create!(sales_order_row_id: sales_order_row.id, quantity: row_hash[:quantity], status: :'Draft', po_request: po_request)
+            PoRequestRow.create!(sales_order_row_id: sales_order_row.id, quantity: row_hash[:quantity],  po_request: po_request)
             if new_po_request.save!
-              PoRequestRow.find(row_hash[:id]).update(quantity: (quantity-row_hash[:quantity].to_d),status: :'Draft', po_request: new_po_request)
+              PoRequestRow.find(row_hash[:id]).update(quantity: (quantity-row_hash[:quantity].to_d), po_request: new_po_request)
             end
           end
         end
