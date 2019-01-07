@@ -49,4 +49,14 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     send
   end
 
+  def send_sap_order_confirmation(to, action, notifiable, url, msg)
+    @action = action; @notifiable = notifiable; @url = url; @message = msg
+    @to = to.sales_manager
+    send
+    @to = to.outside_sales_owner
+    send
+    @to = to.inside_sales_owner
+    send
+  end
+
 end

@@ -55,7 +55,7 @@ class Overseers::BaseController < ApplicationController
 	end
 
 	def set_notification
-		@notification = Services::Overseers::Notifications::Notify.new(current_overseer, self.class.parent)
+		@notification = Services::Overseers::Notifications::Notify.new(current_overseer, self.namespace)
 	end
 
 end
