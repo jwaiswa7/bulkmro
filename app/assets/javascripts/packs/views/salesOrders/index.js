@@ -1,7 +1,9 @@
-import statusChange from './../../components/statusChange'
+import bindSummaryBox from '../common/bindSummaryBox'
+import updateSummaryBox from "../common/updateSummaryBox";
 
 const index = () => {
-    statusChange(".status_class", '#dropdown_sapstatus_column')
+    bindSummaryBox(".summary_box", '.status-filter')
+    updateSummaryBox()
 };
 
 export default index

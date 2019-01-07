@@ -1170,6 +1170,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def sales_invoices
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_invoice.csv', folder)
     service.loop(limit) do |x|
+      next if x.get_column('order_number') != 2003414
       sales_order = SalesOrder.find_by_order_number(x.get_column('order_number'))
       if sales_order
         sales_invoice = SalesInvoice.where(legacy_id: x.get_column('legacy_id')).first_or_initialize
@@ -1270,21 +1271,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Done creating #{name.to_s.pluralize}"
   end
 
-def attach_file(inquiry, filename:, field_name:, file_url:)
-if file_url.present? && filename.present?
-url = URI.parse(file_url)
-req = Net::HTTP.new(url.host, url.port)
-req.use_ssl = true
-res = req.request_head(url.path)
-puts "---------------------------------"
-if res.code == '200'
-file = open(file_url)
-inquiry.send(field_name).attach(io: file, filename: filename)
-else
-puts res.code
-end
-end
-end
+  def attach_file(inquiry, filename:, field_name:, file_url:)
+    if file_url.present? && filename.present?
+      url = URI.parse(file_url)
+      req = Net::HTTP.new(url.host, url.port)
+      req.use_ssl = true
+      res = req.request_head(url.path)
+      puts "---------------------------------"
+      if res.code == '200'
+        file = open(file_url)
+        inquiry.send(field_name).attach(io: file, filename: filename)
+      else
+        puts res.code
+      end
+    end
+  end
 
   def update_addresses_remote_uid
     Addresses.update_all("remote_uid=legacy_uid")
@@ -1670,7 +1671,6 @@ end
           customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
           customer_product.sku = inquiry_product.bp_catalog_sku || inquiry_product.product.sku
           # customer_product.customer_price = get_product_price(inquiry_product.product_id, inquiry_product.inquiry.company)
-
           customer_product.created_by = overseer
         end
       end
@@ -1954,5 +1954,19 @@ end
   end
   end
   end
+
+  def update_online_order_numbers
+    CustomerOrder.all.each do |co|
+      co.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
+    end
   end
 
+  def update_is_international_field_in_company
+    Company.update_all(is_international: false)
+    Company.all.includes(:addresses).each do |company|
+      if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+        company.update_attribute('is_international', true)
+      end
+    end
+  end
+end

@@ -25,11 +25,11 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query({
-    multi_match: {
+    indexed_records = index_klass.query({
+        multi_match: {
                           query: query,
                           operator: 'and',
-                          fields: %w[state^3 city_name^3 gst^3 is_gst_valid],
+                          fields: %w[address^4 state^3 city_name^3 gst^3 is_gst_valid pincode company_id],
                           minimum_should_match: '100%'
                       }
     })

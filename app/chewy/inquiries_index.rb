@@ -1,15 +1,16 @@
-class InquiriesIndex < BaseIndex
+  class InquiriesIndex < BaseIndex
   statuses = Inquiry.statuses
   define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
+    field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :subject, analyzer: 'substring'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
     field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number:nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
     field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
-    field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
+    field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }, type: 'integer'
     field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
     field :outside_sales_owner_id, value: -> (record) { record.outside_sales_owner.id if record.outside_sales_owner.present? }
@@ -22,7 +23,6 @@ class InquiriesIndex < BaseIndex
     field :account, value: -> (record) { record.account.to_s }, analyzer: 'substring'
     field :contact, value: -> (record) { record.contact.to_s }, analyzer: 'substring'
     field :priority, type: 'integer'
-    field :calculated_total_i, type: 'integer', value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }
     field :quotation_followup_date, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'

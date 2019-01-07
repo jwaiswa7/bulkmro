@@ -19,7 +19,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def name
-    get_product.try(:to_bp_catalog_s)
+    get_product.try(:to_bp_catalog_s) || get_product.try(:name)
   end
 
   def uom
@@ -27,7 +27,7 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def brand
-    get_product.try(:product).brand.name if get_product.try(:product).try(:brand).present?
+    get_product.try(:product).try(:brand).try(:name) || get_product.try(:brand).try(:name)
   end
 
   def tax_rate

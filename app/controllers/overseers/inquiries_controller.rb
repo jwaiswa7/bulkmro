@@ -12,6 +12,11 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         @indexed_inquiries = service.indexed_records
         @inquiries = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
       end
     end
   end
@@ -149,6 +154,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   private
+
   def set_inquiry
     @inquiry ||= Inquiry.find(params[:id])
   end
