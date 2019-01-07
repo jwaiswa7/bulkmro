@@ -1935,6 +1935,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           image_reader.meter_reading = x.get_column('meter_reading')
           image_reader.image_url = x.get_column('image_url')
           image_reader.status = x.get_column('status')
+          image_reader.save!
         end
       rescue => e
         errors.push("#{e.inspect} - #{x.get_column('reference_id')}")
