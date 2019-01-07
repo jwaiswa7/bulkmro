@@ -1976,16 +1976,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       begin
         company = Company.find_by_remote_uid(x.get_column('bp_code'))
+        bank = Bank.find_by_code(x.get_column('bank_code'))
         if company
           company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
           if company_bank.new_record? || update_if_exists
             company_bank.company = company
-            company_bank.code = x.get_column('bank_code')
-            company_bank.country_code = x.get_column('country')
+            company_bank.bank = bank
             company_bank.account_name = x.get_column('account_name')
             company_bank.account_number = x.get_column('account_no')
             company_bank.branch = x.get_column('branch')
-            company_bank.ifsc_code = x.get_column('swift_code')
             company_bank.mandate_id = x.get_column('mandate_id')
             company_bank.metadata = x.get_row
             company_bank.save!
@@ -1993,6 +1992,24 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
       rescue => e
         errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
+      end
+    end
+    puts errors
+  end
+
+  def create_banks
+    service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        bank = Bank.where(code: x.get_column('bank_code')).first_or_initialize
+        if bank.new_record? || update_if_exists
+          bank.name = x.get_column('bank_name')
+          bank.country_code = x.get_column('country_code')
+          bank.swift_number = x.get_column('swift_number')
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('bank_code')}")
       end
     end
     puts errors
