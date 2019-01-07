@@ -415,7 +415,6 @@ Rails.application.routes.draw do
       end
 
       collection do
-        get 'monthly_purchase_data'
       end
     end
 
