@@ -91,6 +91,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     params.require(:purchase_order).permit(
         :internal_status,
         :comments_attributes => [:id, :message, :created_by_id],
+        :attachments => []
     )
   end
 end
