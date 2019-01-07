@@ -1,1 +1,1 @@
-ActiveStorage::Service.url_expires_in = 15.minute
+ActiveStorage::Service.url_expires_in = 15.minutes
