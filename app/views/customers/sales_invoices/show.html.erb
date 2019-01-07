@@ -316,15 +316,9 @@
         <div class="form-row">
           <% if @sales_invoice.sales_order.currency.name.present? %>
             <% if @sales_invoice.sales_order.currency.name.to_s == 'USD' || @sales_invoice.sales_order.currency.name.to_s == 'EUR' || @sales_invoice.sales_order.currency.name.to_s == 'GBP' %>
-              <div id="">
-                <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: @sales_invoice.sales_order.currency.name.to_s %>
-              </div>
-              <br clear="all"/>
+              <%= render 'shared/layouts/view_templates/primary_bank_info', currency: @sales_invoice.sales_order.currency.name.to_s %>
             <% else %>
-              <div id="">
-                <%= render 'shared/layouts/pdf_templates/bank_info' %>
-              </div>
-              <br clear="all"/>
+              <%= render 'shared/layouts/view_templates/bank_info' %>
             <% end %>
           <% end %>
         </div>
