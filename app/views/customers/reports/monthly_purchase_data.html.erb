@@ -1,7 +1,6 @@
 <%= render layout: 'customers/reports/tabs_layout' do %>
-  <div class="page-header">
-    <h2>Monthly Purchase Data</h2>
-  </div>
+  <h3 class="display-5 mt-3 mb-2 d-none d-md-block text-black-50">Monthly Purchase Data</h3>
+
   <div class="card">
     <div class="card-body">
       <%= bar_chart @chart[:data], @chart[:options].merge({:height => '180px', :id => 'monthly_purchase_data'}) %>

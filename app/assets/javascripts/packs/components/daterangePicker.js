@@ -9,8 +9,8 @@ const daterangePicker = () => {
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
                     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'Current Quarter': [moment().startOf('quarter'), moment().endOf('quarter')],
                     'Last Quarter': [moment().subtract(1, 'quarter').startOf('quarter'), moment().subtract(1, 'quarter').endOf('quarter')],
-                    'Current Quarter': [moment().startOf('quarter'), moment().endOf('quarter')]
                 },
                 autoApply: true,
                 opens: "left",

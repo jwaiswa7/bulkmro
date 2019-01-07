@@ -1,27 +1,31 @@
-<% provide :container_fluid, true %>
-<% provide :wrap_whitespace, true %>
-
-<div class="col-lg-10 col-lg-offset-1">
-  <div class="page-header">
-    <h2>
-      <small class="text-black-50 mb-2"><strong><%= current_company %></strong></small>
-    </h2>
-  </div>
+<div class="col-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Aggregate Reports</h1>
+    </div>
+    <p class="lead mt-1">
+      Reports generated using aggregated sales data and sales history.
+    </p>
+  </section>
 
   <section class="pb-4 pb-lg-5 my-1">
     <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
       <%= nav_item 'Monthly Purchase Data', customers_reports_path(:graph => 'monthly_purchase_data'), true %>
       <%= nav_item 'Revenue Trend', customers_reports_path(:graph => 'revenue_trend'), true %>
-      <%= nav_item 'Orders count', customers_reports_path(:graph => 'orders_count'), true %>
-      <%= nav_item 'Unique Skus', customers_reports_path(:graph => 'unique_skus'), true %>
+      <%= nav_item 'Orders Count', customers_reports_path(:graph => 'orders_count'), true %>
+      <%= nav_item 'Unique SKUs', customers_reports_path(:graph => 'unique_skus'), true %>
       <%#= nav_item 'Categorywise Revenue', customers_reports_path(:graph => 'category_wise_revenue'), true %>
     </ul>
 
-    <%= form_tag customers_reports_path, method:'get', class:'form-row my-4' do %>
-      <input type="hidden" id="graph" name="graph" value = <%= params['graph'] %>>
-      <input type="string" id="daterange" name="daterange" class="form-group form-control col-lg-9" data-toggle="daterangepicker" placeholder=" Select Date">
-      <div class="col-lg-3" style="text-align:center;">
-        <%= submit_tag "Apply", class: "btn form-group btn-dark", style:"width:80%;" %>
+    <%= form_tag customers_reports_path, method:'get', class:'my-2 form-row' do %>
+      <div class="col-md-10">
+        <input type="hidden" id="graph" name="graph" value = <%= params['graph'] %>>
+        <div class="form-group">
+          <input type="text" id="daterange" name="daterange" class="form-control" data-toggle="daterangepicker" placeholder="Pick a daterange">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <%= submit_tag "Apply", class: "btn btn-sm btn-block btn-success"%>
       </div>
     <% end %>
 
