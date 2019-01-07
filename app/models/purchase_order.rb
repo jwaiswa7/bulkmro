@@ -17,6 +17,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
+  has_many_attached :attachments
 
   scope :with_includes, -> {includes(:inquiry)}
 
