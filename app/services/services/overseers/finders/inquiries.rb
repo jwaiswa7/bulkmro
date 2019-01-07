@@ -21,6 +21,8 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if range_filters.present?
           indexed_records = range_query(indexed_records)
     end
+
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
@@ -48,6 +50,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
