@@ -1,0 +1,25 @@
+<% content_for :page_title do %>
+  <%= action_name.capitalize %> Product Category
+<% end %>
+
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> Product Category</h2>
+    <p>This will <em>'<%= submit_text(@tag).downcase %>'</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+  <%= simple_form_for([:overseers, @company, @tag], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <%= f.hidden_field :company_id %>
+    <div class="form-row">
+      <div class="col-12">
+        <%= f.input :company, as: :string, disabled: true %>
+      </div>
+      <div class="col-12">
+        <%= f.input :name, required: false, :placeholder => 'e.g. Construction Material' %>
+      </div>
+    </div>
+    <%= action_button(action_name, @tag) %>
+  <% end %>
+</div>
