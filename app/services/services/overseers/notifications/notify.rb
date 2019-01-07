@@ -26,8 +26,14 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
   end
 
   def send_order_confirmation(to, action, notifiable, url, *msg)
-    @to = to; @action = action; @notifiable = notifiable; @url = url
+    @action = action; @notifiable = notifiable; @url = url
     @message = "New Order for inquiry ##{msg[0]} awaiting approval"
+    @to = to.sales_manager
+    send
+    @message = "Order for inquiry ##{msg[0]} sent for approval"
+    @to = to.outside_sales_owner
+    send
+    @to = to.inside_sales_owner
     send
   end
 
