@@ -10,6 +10,8 @@ class Activity < ApplicationRecord
   belongs_to :company, required: false
   has_one :account, :through => :company
   belongs_to :contact, required: false
+  has_one :company_creation_request
+  accepts_nested_attributes_for :company_creation_request
 
   enum company_type: {
       is_supplier: 10,

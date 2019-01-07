@@ -8,6 +8,32 @@
     <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path }, include_blank: 'Leave blank if no inquiry connected' %>
     <%= f.association :company, collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
     <%= f.association :contact, collection: selected_option_or_nil(f, :contact),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
+    <button type="button" class="btn btn-info new-company" >
+      add new company
+    </button>
+    <div class="new-company-form" id="">
+      <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
+      <%= f.fields_for :company_creation_request do |company_creation_request_field|%>
+
+        <div class="form-row">
+          <div class="col-12 col-md-12">
+            <%= company_creation_request_field.input :name %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-md-4">
+            <%= company_creation_request_field.input :first_name %>
+           </div>
+          <div class="col-6 col-md-4">
+            <%= company_creation_request_field.input :last_name %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= company_creation_request_field.input :email %>
+          </div>
+        </div>
+        <%= company_creation_request_field.input :address %>
+      <% end %>
+    </div>
 
     <%= f.input :subject %>
 
@@ -32,7 +58,7 @@
     <%= f.input :points_discussed %>
     <%= f.input :actions_required %>
 
-    <% if action_name.capitalize == "New" %>
+    <% if action_name.capitalize == "New" %>`
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
       <% end %>
