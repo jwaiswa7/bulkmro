@@ -33,21 +33,10 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     @payment_request.assign_attributes(payment_request_params.merge(overseer: current_overseer))
     authorize @po_request, :edit_payment_request?
 
-    # @payment_request.update_status!
-
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
-        if @payment_request.status_changed?
-          @payment_request_comment = PaymentRequestComment.new(:message => "Status Changed: #{@payment_request.status}", :payment_request => @payment_request, :overseer => current_overseer)
-          @payment_request.save!
-          @payment_request_comment.save!
-        elsif @payment_request.request_owner_changed?
-          @payment_request_comment = PaymentRequestComment.new(:message => "Ownership transferred to: #{@payment_request.request_owner}", :payment_request => @payment_request, :overseer => current_overseer)
-          @payment_request.save!
-          @payment_request_comment.save!
-        else
-          @payment_request.save!
-        end
+        update_payment_request = Services::Overseers::PaymentRequests::Update.new(@payment_request)
+        update_payment_request.call
       end
 
       redirect_to overseers_payment_request_path(@payment_request), notice: flash_message(@payment_request, action_name)

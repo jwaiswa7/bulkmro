@@ -153,6 +153,7 @@
             <% if @payment_request.due_date.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Due Date</strong>
+                <%= format_due_distance(@payment_request.due_date) %>
                 <%= format_date(@payment_request.due_date) %>
               </div>
             <% end %>

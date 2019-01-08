@@ -12,7 +12,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           end
         else
           PaymentRequest.all
-        end.order(id: :desc)
+        end.order(due_date: :asc)
 
     @payment_requests = ApplyDatatableParams.to(payment_requests, params, paginate: false)
     authorize @payment_requests

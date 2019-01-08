@@ -62,6 +62,7 @@ class PaymentRequest < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.status ||= :'Complete: Payment Pending'
     self.request_owner ||= :'Logistics'
