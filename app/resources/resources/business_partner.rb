@@ -75,7 +75,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       account_number= bank["AccountNo"]
       company_bank = CompanyBank.find_by_account_number(account_number)
       company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
-    end if contacts.present?
+    end if banks.present?
   end
 
   def self.to_remote(record)
