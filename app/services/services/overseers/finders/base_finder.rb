@@ -18,9 +18,9 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           end
         end
       end
-      if params[:order].values.first['column'].present?
+      if params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
         @sort_by = params[:columns][params[:order].values.first['column']][:name]
-        @sort_order =params[:order].values.first['dir']
+        @sort_order = params[:order].values.first['dir']
       end
     end
     if params[:base_filter_key].present? && params[:base_filter_value].present?
@@ -209,11 +209,11 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def aggregate_by_status(key)
     {
-          statuses: {
-              terms: {
-                  field: key
-              }
-          }
+        statuses: {
+            terms: {
+                field: key
+            }
+        }
     }
   end
 
