@@ -35,7 +35,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
-        update_payment_request = Services::Overseers::PaymentRequests::Update.new(@payment_request)
+        update_payment_request = Services::Overseers::PaymentRequests::Update.new(@payment_request, current_overseer)
         update_payment_request.call
       end
 

@@ -1,7 +1,8 @@
 class Services::Overseers::PaymentRequests::Update < Services::Shared::BaseService
 
-  def initialize(payment_request)
+  def initialize(payment_request, current_overseer)
     @payment_request = payment_request
+    @current_overseer = current_overseer
   end
 
   def call
@@ -20,5 +21,5 @@ class Services::Overseers::PaymentRequests::Update < Services::Shared::BaseServi
 
   private
 
-  attr_accessor :payment_request
+  attr_accessor :payment_request, :current_overseer
 end
