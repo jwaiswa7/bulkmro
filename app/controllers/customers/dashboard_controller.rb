@@ -7,7 +7,7 @@ class Customers::DashboardController < Customers::BaseController
     @recent_sales_orders = indexed_sales_orders.call.records
     indexed_sales_invoices = Services::Customers::Finders::SalesInvoices.new(params.merge(page: 1).merge(per: 5), current_contact, current_company)
     @recent_sales_invoices = indexed_sales_invoices.call.records.try(:reverse)
-    @dashboard = Customers::Dashboard.new(current_contact)
+    @dashboard = Customers::Dashboard.new(current_contact, current_company, params)
     authorize :dashboard
   end
 
