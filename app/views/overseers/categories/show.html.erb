@@ -29,7 +29,7 @@
 
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Parent</strong>
-              <%= @category.parent.name %>
+              <%= @category.parent.name if @category.parent.present? %>
             </div>
           </div>
         </div>

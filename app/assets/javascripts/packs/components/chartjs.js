@@ -4,6 +4,8 @@ const globals = () => {
     Chart.defaults.global.hover.mode = 'nearest';
     Chart.defaults.global.defaultFontFamily = "'Muli', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
     Chart.defaults.global.defaultFontSize = 11;
+    Chart.defaults.global.defaultFontStyle = "bold";
+    Chart.defaults.scale.gridLines.display = false;
     Chart.helpers.merge(Chart.defaults.global, {
         aspectRatio: 4/3,
         layout: {
@@ -24,16 +26,16 @@ const globals = () => {
                 radius: 5
             }
         },
-
-        plugins: {
-            title: false
-        }
+        //
+        // plugins: {
+        //     title: false
+        // }
     });
 };
 
 const chartjs = () => {
     globals();
-    barcharts();
+    // barcharts();
 };
 
 const barcharts = () => {

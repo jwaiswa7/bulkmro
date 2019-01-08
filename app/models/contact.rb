@@ -5,6 +5,7 @@ class Contact < ApplicationRecord
   include Mixins::HasMobileAndTelephone
   include Mixins::CanBeActivated
 
+  update_index('contacts#contact') {self}
   pg_search_scope :locate, :against => [:first_name, :last_name, :email], :associated_against => {:account => [:name]}, :using => {:tsearch => {:prefix => true}}
 
   # Include default devise modules. Others available are:
@@ -22,6 +23,7 @@ class Contact < ApplicationRecord
   has_one :cart
   has_many :customer_orders
   has_many :customer_products, :through => :companies
+  has_many :customer_order_comments
 
   enum role: {customer: 10, account_manager: 20}
   enum status: {active: 10, inactive: 20}
@@ -53,7 +55,6 @@ class Contact < ApplicationRecord
       self.account ||= self.company.account
     end
   end
-
 
   def self.legacy
     find_by_email('legacy@bulkmro.com')

@@ -6,11 +6,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer,paginate: false)
         service.call
 
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
 
         render 'pending'
       end
@@ -41,6 +46,14 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     redirect_to url_for(Export.sales_order_logistics.last.report)
   end
 
+  def export_for_sap
+    authorize :sales_order
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
+    service.call
+
+    redirect_to url_for(Export.sales_order_sap.last.report)
+  end
+
   def index
     authorize :sales_order
 
@@ -52,6 +65,11 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
       end
     end
   end

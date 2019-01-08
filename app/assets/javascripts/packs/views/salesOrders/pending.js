@@ -1,7 +1,8 @@
-import statusChange from './../../components/statusChange'
-
+import bindSummaryBox from '../common/bindSummaryBox'
+import updateSummaryBox from "../common/updateSummaryBox";
 const pending = () => {
-    statusChange(".status_class",'#dropdown_status_column')
+    bindSummaryBox(".summary_box",'.status-filter')
+    updateSummaryBox()
 };
 
 export default pending

@@ -11,10 +11,11 @@ json.data (@addresses) do |address|
                   ].join(' '),
                   link_to(address.company.to_s.truncate(50), overseers_company_path(address.company), target: "_blank"),
                   address.to_s.truncate(50),
-                  address.state.name,
-                  address.city_name,
+                  address.try(:state).try(:name),
+                  address.try(:city_name),
                   format_boolean(address.validate_gst),
-                  address.gst,
+                  address.readable_gst,
+                  address.try(:pincode),
                   format_boolean_label(address.synced?, 'synced'),
                   format_date(address.created_at)
               ]
@@ -22,11 +23,12 @@ end
 
 json.columnFilters [
                        [],
-                       [],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
                        [],
                        [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [],
                        [],
                        [],
                        []
