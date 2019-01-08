@@ -50,6 +50,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     company = Company.find_by_remote_uid!(response['CardCode'])
     addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
+    banks  = response['BPBankAccounts']
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
@@ -68,12 +69,20 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
       company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
     end if contacts.present?
+
+    #TODO banks update remote uid
+    banks.each do |bank|
+      account_number= bank["AccountNo"]
+      company_bank = CompanyBank.find_by_account_number(account_number)
+      company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
+    end if contacts.present?
   end
 
   def self.to_remote(record)
     addresses = []
     contacts = []
     bp_tax_collection = []
+    banks = []
 
     if record.remote_uid.blank?
       record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid(record))
@@ -256,6 +265,19 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
+    #TODO
+    record.company_banks.each do |company_bank|
+
+      bank_row = OpenStruct.new
+      bank_row.CardCode = record.remote_uid
+
+      if company_bank.remote_uid.present?
+        contact_row.InternalCode = company_bank.remote_uid
+      end
+
+      banks.push(contact_row.marshal_dump)
+    end if record.remote_uid.present?
+
     params = {
         CardCode: record.remote_uid,
         CardName: record.name,
@@ -291,6 +313,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         U_URD: record.is_unregistered_dealer ? "Yes" : "No",
         BPAddresses: addresses,
         ContactEmployees: contacts,
+        BPBankAccounts: banks,
         BPFiscalTaxIDCollection: bp_tax_collection,
         UseBillToAddrToDetermineTax: "tYES"
     }
