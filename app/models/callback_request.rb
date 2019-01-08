@@ -7,4 +7,14 @@ class CallbackRequest < ApplicationRecord
   def set_defaults
     self.hits = 0
   end
+
+  scope :with_includes, -> {}
+  enum resources: {
+      :'SalesOrder' => 10,
+      :'SalesShipment' => 20,
+      :'SalesReceipt' => 30,
+      :'SalesInvoice' => 40,
+      :'PurchaseOrder' => 50,
+      :'Session' => 60
+  }
 end
