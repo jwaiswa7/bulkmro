@@ -265,7 +265,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
-    #TODO
+    #TODO add company bank fields
     record.company_banks.each do |company_bank|
 
       bank_row = OpenStruct.new
