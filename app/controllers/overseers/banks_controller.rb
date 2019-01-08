@@ -24,7 +24,7 @@ class Overseers::BanksController < Overseers::BaseController
     @bank = Bank.new(bank_params)
     authorize @bank
 
-    if @bank.save
+    if @bank.save_and_sync
       redirect_to overseers_banks_path, notice: flash_message(@bank, action_name)
     else
       render 'new'
@@ -39,7 +39,7 @@ class Overseers::BanksController < Overseers::BaseController
     @bank.assign_attributes(bank_params)
     authorize @bank
 
-    if @bank.save
+    if @bank.save_and_sync
       redirect_to overseers_bank_path(@bank), notice: flash_message(@bank, action_name)
     else
       render 'edit'

@@ -20,3 +20,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(create_company_banks), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_banks), folder: 'seed_files')
+service.call

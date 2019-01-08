@@ -2002,14 +2002,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     errors = []
     service.loop(nil) do |x|
       begin
-        bank = Bank.where(code: x.get_column('bank_code')).first_or_initialize
+        bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
         if bank.new_record? || update_if_exists
-          bank.name = x.get_column('bank_name')
-          bank.country_code = x.get_column('country_code')
-          bank.swift_number = x.get_column('swift_number')
+          bank.name = x.get_column('Bank Name')
+          bank.country_code = x.get_column('Country Code')
+          bank.remote_uid = x.get_column('Absolute entry')
+          bank.save!
         end
       rescue => e
-        errors.push("#{e.inspect} - #{x.get_column('bank_code')}")
+        errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
       end
     end
     puts errors
