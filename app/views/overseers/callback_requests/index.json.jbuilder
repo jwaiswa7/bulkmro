@@ -16,6 +16,16 @@ json.data (@callback_requests) do |callback_request|
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(callback_request.status)})
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       CallbackRequest.resources.map{|k, v| {:"label" => k.titlecase, :"value" => v.to_s}}.as_json,
+                       [],
+                       []
+                   ]
+
 json.recordsTotal @callback_requests.model.all.count
-json.recordsFiltered @callback_requests.total_count
+json.recordsFiltered @indexed_callback_request.total_count
 json.draw params[:draw]
