@@ -1,0 +1,15 @@
+<div class="col-md-12">
+  <p class="mb-0">
+    <strong class="d-block"><%= Settings.primary_bank.name %></strong>
+    Address: <%= Settings.primary_bank.address %><br>
+    Account Name: <%= Settings.primary_bank.account_name %><br>
+    Account Number:  <% if currency == 'USD' %>
+      <span style="color:#000000"><%= Settings.primary_bank.currency_usd.account_number %><br></span>
+    <% elsif currency == 'GBP' %>
+      <span style="color:#000000"><%= Settings.primary_bank.currency_gbp.account_number %><br></span>
+    <% elsif currency == 'EUR' %>
+      <span style="color:#000000"><%= Settings.primary_bank.currency_eur.account_number %><br></span>
+    <% end %>
+    Swift Code: <%= Settings.primary_bank.swift_code %>
+  </p>
+</div>
