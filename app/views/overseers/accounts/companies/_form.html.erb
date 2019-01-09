@@ -91,11 +91,14 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
       </div>
     </div>
 

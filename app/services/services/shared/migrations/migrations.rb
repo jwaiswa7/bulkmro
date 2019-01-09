@@ -1960,5 +1960,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       co.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
     end
   end
-  end
 
+  def update_is_international_field_in_company
+    Company.update_all(is_international: false)
+    Company.all.includes(:addresses).each do |company|
+      if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+        company.update_attribute('is_international', true)
+      end
+    end
+  end
+end

@@ -106,6 +106,7 @@ Rails.application.routes.draw do
     resources :addresses do
       collection do
         get 'autocomplete'
+        get 'warehouse_addresses'
       end
     end
 
@@ -275,6 +276,10 @@ Rails.application.routes.draw do
             post 'create_confirmation'
             post 'resync'
           end
+
+          collection do
+            get 'autocomplete'
+          end
         end
 
         resources :sales_quotes do
@@ -382,6 +387,20 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
+    resources :freight_requests do
+
+      scope module: 'freight_requests' do
+        resources :freight_quotes
+      end
+
+      collection do
+        get 'completed'
+      end
+    end
+
+    resources :freight_quotes
+
   end
 
   namespace 'customers' do
@@ -456,6 +475,7 @@ Rails.application.routes.draw do
         get 'checkout'
         patch 'update_billing_address'
         patch 'update_shipping_address'
+        patch 'update_special_instructions'
         patch 'add_po_number'
         get 'empty_cart'
       end

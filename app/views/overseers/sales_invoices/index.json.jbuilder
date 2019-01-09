@@ -16,7 +16,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         ]
                       end,
                       if policy(sales_invoice).edit_pod? && !sales_invoice.pod_attachment.attached?
-                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'plus-circle', 'Add Proof of Delivery', 'success')
+                        row_action_button(edit_pod_overseers_sales_invoice_path(sales_invoice), 'truck', 'Add Proof of Delivery', 'success')
                       end,
                       if policy(sales_invoice).edit_pod? && sales_invoice.pod_attachment.attached?
                         [
@@ -60,4 +60,4 @@ json.columnFilters [
 json.recordsTotal SalesInvoice.all.count
 json.recordsFiltered @indexed_sales_invoices.total_count
 json.draw params[:draw]
-json.recordsSummary SalesInvoice.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary SalesInvoice.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
