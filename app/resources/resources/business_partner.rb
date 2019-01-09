@@ -62,21 +62,29 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         end
         address_to_update.save
       else
-        if !Address.find_by_legacy_id(address['AddressName']).present?
-          new_address = Address.new
-          new_address.legacy_id = address['AddressName'].present? ? address['AddressName'] : nil
-          new_address.remote_uid = address['AddressName'].present? ? address['AddressName'] : nil
-          new_address.street1 = address['Street'].present? ? address['Street'] : nil
-          new_address.city_name = address['City'].present? ? address['City'] : nil
-          new_address.street2 = address['AddressName2'].present? ? address['AddressName2'] : nil
-          new_address.country_code = address['Country'].present? ? address['Country'] : 'India'
-          new_address.state_name = address['State'].present? ? AddressState.where(:region_code => address['State']).first.name : nil
-          new_address.address_state_id = address['State'].present? ? AddressState.where(:region_code => address['State']).first.id : nil
-          new_address.company_id = company.id
-          new_address.pincode = address['ZipCode'].present? ? address['ZipCode'] : nil
-          new_address.gst = address['GSTIN'].present? ? address['GSTIN'] : nil
-          new_address.save
-         end
+        new_address = company.addresses.where(name: address['AddressName']).first_or_create! do |address|
+          address.assign_attributes(
+              legacy_id: address['AddressName'],
+              remote_uid: address['AddressName'],
+              street1: address['Street'].present? ? address['Street'] : nil,
+              city_name: address['City'].present? ? address['City'] : nil,
+              street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
+              country_code: address['Country'].present? ? address['Country'] : 'IN',
+              state_name: address['State'].present? ? AddressState.where(:region_code => address['State']).first.name : nil,
+              address_state: address['State'].present? ? AddressState.where(:region_code => address['State']).first : nil,
+              pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
+              gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
+              vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
+              cst: address['U_CST'].present? ? address['U_CST'] : nil
+          )
+        end
+
+        if address['AddressType'] eql? "bo_BillTo"
+          new_address.update_attribute(:billing_address_uid, address['RowNum'])
+        elsif address['AddressType'] eql? "bo_ShipTo"
+          new_address.update_attribute(:shipping_address_uid, address['RowNum'])
+        end
+
       end
     end if addresses.present?
 
