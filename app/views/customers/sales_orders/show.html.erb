@@ -248,39 +248,59 @@
     </div>
   </div>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <p class="text-uppercase text-black-50 mb-1">Other Information</p>
-      <p class="mb-0">
-        - Please reference our Bulk MRO Industrial Supply Quote Number when remitting Wire Transfer payment.<br>
-        - Bulk MRO Industrial Supply is not responsible for any banking fees.
-      </p>
+  <% if @sales_order.inquiry.bill_from.present? && @sales_order.inquiry.bill_from.legacy_id == 12 %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Note</p>
+        <p class="mb-0">
+          1. Order once confirmed cannot be cancelled or returned.
+          2. Delayed payments will attract 2% interest per month.
+          3. If any modifications are required in the invoice ,please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.
+          4. Order once confirmed cannnot be cancelled.
+          5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.
+        </p>
+      </div>
     </div>
-  </div>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
-      <div class="form-row">
-        <div class="col-md-6">
-          <p class="mb-0">
-            <strong class="d-block">Kotak Mahindra Bank Ltd</strong>
-            Address: Aum Saheel Tower, Mumbai - 400 080<br>
-            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
-            Account Number: 9412329433<br>
-            NEFT / RTGS Code: KKBK0001411
-          </p>
-        </div>
-        <div class="col-md-6 mt-2 mt-md-0">
-          <p class="mb-0">
-            <strong class="d-block">State Bank Of India</strong>
-            Address: Kalpa Taru – 39, Pedder Road, Mumbai - 400 026<br>
-            Account Name: Bulk MRO Industrial Supply Pvt. Ltd.<br>
-            Account Number: 35924122136<br>
-            NEFT / RTGS Code: SBIN0000510
-          </p>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <div class="col-md-6">
+            <p class="mb-0">
+              <strong class="d-block">First Republic Bank</strong>
+              Address: 2274 EI Camino Real Palo Alto, CA 94306<br>
+              Account Name: Bulk MRO Industrial Supply , INC ABA : 32108166 <br>
+              Account Number: 80003839610<br>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% else %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+        <p class="mb-0">
+          1. Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Quote Number when remitting Wire Transfer payment.<br>
+          2. Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+        </p>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <% if @sales_order.currency.name.present? %>
+            <% if @sales_order.currency.name.to_s == 'USD' || @sales_order.currency.name.to_s == 'EUR' || @sales_order.currency.name.to_s == 'GBP' %>
+              <%= render 'shared/layouts/view_templates/primary_bank_info', currency: @sales_order.currency.name.to_s %>
+            <% else %>
+              <%= render 'shared/layouts/view_templates/bank_info' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
 </div>
