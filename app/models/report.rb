@@ -69,4 +69,6 @@ class Report < ApplicationRecord
   def to_param
     uid
   end
+
+  attr_accessor :daterange
 end
