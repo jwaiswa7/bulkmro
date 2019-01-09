@@ -1,9 +1,13 @@
 const newAction = () => {
     $('.new-company').unbind('click').bind('click', function (event) {
         event.stopPropagation();
-        $('.new-company-form').toggle(1500,"easeOutQuint")
+        $('.new-company-form, .existing-company-form,.existing-company ').removeClass('d-none'); 
+        $('.existing-company-form, .new-company').addClass('d-none'); 
     })
-
-    $('#select2-activity_company_id-results  li:eq(0)').before('<li><button type="button" class="btn btn-info new-company"> add new company </button></li>');
+    $('.existing-company').unbind('click').bind('click', function (event) {
+        event.stopPropagation();
+        $('.new-company-form, .existing-company-form,.new-company ').removeClass('d-none'); 
+        $('.new-company-form, .existing-company').addClass('d-none');  
+    })
 }
 export default newAction

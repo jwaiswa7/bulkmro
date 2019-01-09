@@ -10,6 +10,7 @@ class Account < ApplicationRecord
   # validates_length_of :alias, :maximum => 20
 
   has_many :companies
+  has_many :company_creation_request
   has_many :contacts
   has_many :inquiries, :through => :companies
   has_many :inquiry_products, :through => :inquiries

@@ -7,7 +7,7 @@ class CreateCompanyCreationRequests < ActiveRecord::Migration[5.2]
       t.string :email
       t.text :address
       t.references :activity, foreign_key: true
-
+      t.references :account, foreign_key: true
       t.timestamps
     end
   end

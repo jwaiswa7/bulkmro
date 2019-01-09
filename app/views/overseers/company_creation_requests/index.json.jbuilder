@@ -1,12 +1,14 @@
 json.data (@company_creation_requests) do |company|
   json.array! [
-
-                  company.name,
-                  company.first_name,
-                  company.last_name,
-                  company.email,
-                  company.address,
-                  format_date(company.created_at)
+  				  if policy(company.account).edit?;
+                    row_action_button(new_overseers_account_company_path(company.account), 'building', 'New Company', 'success', :_blank)
+                  end,
+	              company.name,
+	              company.first_name,
+	              company.last_name,
+	              company.email,
+	              company.address,
+	              format_date(company.created_at)
               ]
 end
 
