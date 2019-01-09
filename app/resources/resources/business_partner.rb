@@ -54,15 +54,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
-      if address_to_update.present?
-        if address["AddressType"].eql? "bo_ShipTo"
-          address_to_update.shipping_address_uid = address["RowNum"]
-        elsif address["AddressType"].eql? "bo_BillTo"
-          address_to_update.billing_address_uid = address["RowNum"]
-        end
-        address_to_update.save
-      else
-        new_address = company.addresses.where(name: address['AddressName']).first_or_create! do |address|
+      if address_to_update.blank?
+        address_to_update = company.addresses.where(name: address['AddressName']).first_or_create! do |address|
           address.assign_attributes(
               legacy_id: address['AddressName'],
               remote_uid: address['AddressName'],
@@ -78,14 +71,14 @@ class Resources::BusinessPartner < Resources::ApplicationResource
               cst: address['U_CST'].present? ? address['U_CST'] : nil
           )
         end
-
-        if address['AddressType'] eql? "bo_BillTo"
-          new_address.update_attribute(:billing_address_uid, address['RowNum'])
-        elsif address['AddressType'] eql? "bo_ShipTo"
-          new_address.update_attribute(:shipping_address_uid, address['RowNum'])
-        end
-
       end
+
+      if address['AddressType'].eql? "bo_BillTo"
+        address_to_update.update_attribute(:billing_address_uid, address['RowNum'])
+      elsif address['AddressType'].eql? "bo_ShipTo"
+        address_to_update.update_attribute(:shipping_address_uid, address['RowNum'])
+      end
+
     end if addresses.present?
 
     contacts.each do |contact|
