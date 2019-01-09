@@ -8,8 +8,15 @@ let updateChartOptions = function (chartObject) {
             tooltips: {
                 mode: 'label',
                 callbacks: {
-                    label: function (tooltipItem) {
-                        return '₹ Lacs' + '-' + (tooltipItem.yLabel/100000).toFixed(2);
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        if(dataset.label == 'Products'){
+                            var tooltip = dataset.label + ' - ' + dataset.data[tooltipItem.index];
+                        }
+                        else if(dataset.label == '₹ Lacs'){
+                            tooltip = dataset.label + ' - ' + (dataset.data[tooltipItem.index]/100000).toFixed(2);
+                        }
+                        return tooltip;
                     },
                 }
             },
@@ -27,9 +34,6 @@ let updateChartOptions = function (chartObject) {
                     position: 'left',
                     ticks: {
                         display: true,
-                        label: {
-                            fontStyle: 500
-                        },
                         userCallback: function (value) {
                             value = value.toString();
                             return '₹' + (value/100000) + ' Lacs';

@@ -9,7 +9,7 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           labels: [],
           datasets: [
               {
-                  label: "Order Counts",
+                  label: "Order Count",
                   type: "bar",
                   borderColor: "#fd7e14",
                   backgroundColor: '#fd7e14',
@@ -33,7 +33,7 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Order Counts'
+                          labelString: 'Order Count'
                       },
                       gridLines: {
                           display: true

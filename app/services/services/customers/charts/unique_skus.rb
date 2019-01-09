@@ -9,7 +9,7 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           labels: [],
           datasets: [
               {
-                  label: "Sku Counts",
+                  label: "Sku Count",
                   type: "bar",
                   borderColor: "#fd7e14",
                   backgroundColor: '#fd7e14',
@@ -33,7 +33,7 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Sku Counts'
+                          labelString: 'Sku Count'
                       },
                       gridLines: {
                           display: true
@@ -47,8 +47,8 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
       ordered_products = sales_orders.joins(:products)
 
       (start_at..end_at).map {|a| a.strftime("%b-%Y") }.uniq.each do |month|
-        @data[:labels].push(month.gsub(/-(\d{2})/, ''))
-        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month).map{|so| so.products}.flatten.uniq.count)
+        @data[:labels].push(month.gsub(/-(\d{2})/, '-'))
+        @data[:datasets][0][:data].push(ordered_products.where('sales_orders.created_at' => month.to_date.beginning_of_month..month.to_date.end_of_month.end_of_day).map{|so| so.products}.flatten.uniq.count)
       end
     end
   end

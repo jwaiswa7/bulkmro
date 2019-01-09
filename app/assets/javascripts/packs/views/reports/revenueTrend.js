@@ -9,7 +9,7 @@ let updateChartOptions = function (chartObject) {
                 mode: 'label',
                 callbacks: {
                     label: function (tooltipItem) {
-                        return '₹ Lacs' + '-' + (tooltipItem.yLabel/100000).toFixed(2);
+                        return '₹ Lacs' + ' - ' + (tooltipItem.yLabel/100000).toFixed(2);
                     },
                 }
             },
