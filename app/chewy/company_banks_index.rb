@@ -1,5 +1,5 @@
 class CompanyBanksIndex < BaseIndex
-  define_type CompanyBank.all do
+  define_type CompanyBank.all.with_includes do
     field :id, type: 'integer'
     field :company_id, value: -> (record) { record.company_id }
     field :bank_id, value: -> (record) { record.bank_id }

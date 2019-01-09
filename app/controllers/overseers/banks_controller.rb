@@ -2,7 +2,10 @@ class Overseers::BanksController < Overseers::BaseController
   before_action :set_bank, only: [:show, :edit, :update, :destroy]
 
   def index
-    @banks = ApplyDatatableParams.to(Bank.all, params)
+    service = Services::Overseers::Finders::Banks.new(params)
+    service.call
+    @indexed_banks = service.indexed_records
+    @banks = service.records
     authorize @banks
   end
 

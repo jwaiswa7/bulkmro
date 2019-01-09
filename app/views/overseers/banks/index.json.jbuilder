@@ -18,5 +18,5 @@ json.data (@banks) do |bank|
 end
 
 json.recordsTotal @banks.count
-json.recordsFiltered @banks.total_count
+json.recordsFiltered @indexed_banks.total_count
 json.draw params[:draw]
