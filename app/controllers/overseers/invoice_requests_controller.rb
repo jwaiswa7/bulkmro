@@ -1,5 +1,5 @@
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update]
+  before_action :set_invoice_request, :set_invoice_status_request,  only: [:show, :edit, :update]
 
   def pending
     invoice_requests =
@@ -40,10 +40,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   def new
+    authorize @invoice_request
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
-      authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path
     end
@@ -112,5 +112,16 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def set_invoice_request
     @invoice_request = InvoiceRequest.find(params[:id])
+  end
+
+  def set_invoice_status_request
+   @status = @invoice_request.status
+    if (@status.include? "Pending")
+      @changed_status = @status.remove("Pending")
+    elsif (@status.include? "Completed AR Invoice" ) || (@status.include? "Cancelled AR Invoice")
+      @changed_status = @status.gsub(@status, "AR Invoice")
+    else
+      @changed_status = "Invoice"
+    end
   end
 end
