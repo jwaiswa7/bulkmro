@@ -15,6 +15,7 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: "_blank"),
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: "_blank"),
       inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: "_blank") : inquiry.po_subject,
+      format_succinct_date(inquiry.quotation_followup_date),
       link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank"),
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,

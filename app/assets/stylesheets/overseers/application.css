@@ -10285,8 +10285,12 @@ button.bg-highlight-dark:focus {
 #HW_badge.HW_softHidden {
   background-color: #fd7e14 !important; }
 
-.badge.badge-wrap {
-  word-wrap: normal; }
+.badge {
+  vertical-align: middle; }
+  .badge.badge-wrap {
+    word-wrap: normal;
+    white-space: normal;
+    line-height: 1.25em; }
 
 .badge-blue {
   color: #fff;
