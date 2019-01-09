@@ -107,7 +107,7 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'lavanya.j@bulkmro.com'].include?(overseer.email)
   end
 
   def allow_logistics_format_export?
