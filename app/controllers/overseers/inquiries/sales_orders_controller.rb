@@ -10,6 +10,11 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def autocomplete
+    @sales_orders = @inquiry.sales_orders
+    authorize @sales_orders
+  end
+
   def show
     authorize @sales_order
 

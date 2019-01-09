@@ -32,7 +32,7 @@ class CustomerOrder < ApplicationRecord
     elsif self.rejected?
       'Rejected'
     else
-      'Requested'
+      'Pending Approval'
     end
   end
 

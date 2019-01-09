@@ -1,9 +1,10 @@
-class InquiriesIndex < BaseIndex
+  class InquiriesIndex < BaseIndex
   statuses = Inquiry.statuses
   define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
     field :status_string, value: -> (record) { record.status.to_s }, analyzer: 'substring'
     field :status, value: -> (record) { statuses[record.status] }
+    field :status_key, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :subject, analyzer: 'substring'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
