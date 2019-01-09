@@ -2,7 +2,7 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if policy(inquiry).edit?
-            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning', :_blank)
+            row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
           if policy(inquiry).new_freight_request?
             row_action_button(new_overseers_freight_request_path(:inquiry_id => inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
