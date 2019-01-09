@@ -1969,4 +1969,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def update_total_cost_in_sales_order
+    SalesOrder.all.each do |so|
+      so.order_total = so.rows.map {|row| row.total_selling_price}.sum.round(2)
+      so.invoice_total = so.invoices.map{|invo| invo.rows.map{|r| (r['metadata']['qty'].to_f * r['metadata']['price'].to_f)}}.flatten.sum
+      so.save
+    end
+  end
 end

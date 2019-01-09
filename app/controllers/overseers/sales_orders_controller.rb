@@ -56,9 +56,27 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def index
     authorize :sales_order
-
     respond_to do |format|
       format.html {}
+      format.json do
+        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @statuses = status_service.indexed_statuses
+      end
+    end
+  end
+
+  def not_invoiced
+    authorize :sales_order
+    respond_to do |format|
+      format.html {render 'not_invoiced' }
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
