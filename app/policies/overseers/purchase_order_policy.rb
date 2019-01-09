@@ -19,6 +19,10 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     record.document.attached?
   end
 
+  def can_request_invoice?
+    !record.invoice_request.present?
+  end
+
   def edit_internal_status?
     edit?
   end
