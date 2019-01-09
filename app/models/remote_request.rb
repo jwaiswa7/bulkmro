@@ -2,6 +2,8 @@ class RemoteRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::IsARequest
 
+  update_index('remote_requests#remote_request') {self}
+
   pg_search_scope :locate, :against => [:url], :associated_against => {}, :using => { :tsearch => { :prefix => true } }
 
   def manage_remote_request_data(remote_request)
