@@ -126,6 +126,7 @@ Rails.application.routes.draw do
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
         get 'resync'
+        get 'resync_inventory'
       end
 
       collection do

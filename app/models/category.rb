@@ -27,7 +27,7 @@ class Category < ApplicationRecord
   end
 
   def ancestors_to_s
-    self.ancestry_path - self.default_ancestors
+    self.ancestry_path - Category.default_ancestors
   end
 
   def autocomplete_to_s(level)

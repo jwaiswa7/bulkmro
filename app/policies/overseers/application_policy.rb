@@ -35,7 +35,7 @@ class Overseers::ApplicationPolicy
   end
 
   def developer?
-    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com','vishal.biradar@bulkmro.com' ,'lopesh.durugkar@bulkmro.com'].include? overseer.email
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com', 'vishal.biradar@bulkmro.com', 'lopesh.durugkar@bulkmro.com'].include? overseer.email
   end
 
   def admin?
@@ -107,15 +107,23 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'lavanya.j@bulkmro.com'].include?(overseer.email)
   end
 
   def allow_logistics_format_export?
     developer? || ['amit.rawool@bulkmro.com'].include?(overseer.email)
   end
 
+  def allow_customer_portal?
+    ['kartik.pai@bulkmro.com'].include?(overseer.email)
+  end
+
   def export_rows?
     false
+  end
+
+  def is_active?
+    record.is_active?
   end
 
   def export_for_logistics?

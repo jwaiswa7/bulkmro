@@ -10,10 +10,10 @@ json.data (@companies) do |company|
                       # if policy(company).edit?;
                       #   row_action_button(overseers_company_customer_products_path(company), 'list', 'Company Products', 'success', '_blank')
                       # end,
-                      if policy(company).edit?;
+                      if policy(company).new_contact?;
                         row_action_button(new_overseers_contact_path(company_id: company.to_param), 'user', 'New Contact', 'success', :_blank)
                       end,
-                      if policy(company).edit?;
+                      if policy(company).new_address?;
                         row_action_button(new_overseers_company_address_path(company), 'map-marker-alt', 'New Address', 'success', :_blank)
                       end,
                       if policy(company).new_inquiry?;
