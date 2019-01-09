@@ -76,4 +76,19 @@ class InvoiceRequest < ApplicationRecord
       self.status = status
     end
   end
+
+  def changed_status
+    status = self.status
+    if (status.include? "Pending")
+      status.remove("Pending")
+    elsif (status.include? "Completed AR Invoice" ) || (status.include? "Cancelled AR Invoice")
+      status.gsub(status, "AR Invoice")
+    else
+      "Invoice"
+    end
+  end
+
+  def to_s
+    [changed_status,"Request", "##{self.id}"].join(" ")
+  end
 end
