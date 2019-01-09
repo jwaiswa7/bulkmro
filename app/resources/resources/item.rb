@@ -8,6 +8,14 @@ class Resources::Item < Resources::ApplicationResource
     super(id, record, quotes: true)
   end
 
+  def self.find_inventory_info_for_item(id)
+    get("/#{collection_name}(#{["'", id, "'"].join})?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection")
+  end
+
+  def self.find_inventory_info_for_all_items(next_link_count: nil)
+    get("/#{collection_name}?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection" + ( next_link_count ? "&$skip=#{next_link_count}" : ""))
+  end
+
   def self.to_remote(record)
     params = {
         ItemCode: record.sku, #  BMRO Part#
