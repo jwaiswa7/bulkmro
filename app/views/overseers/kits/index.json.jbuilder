@@ -10,6 +10,8 @@ json.data (@kits) do |kit|
                   ].join(' '),
                   kit.product.name,
                   kit.product.sku,
+                  conditional_link(kit.inquiry.inquiry_number, edit_overseers_inquiry_path(kit.inquiry), policy(kit.inquiry).edit?),
+                  kit.inquiry.inside_sales_owner.full_name,
                   kit.product.brand.to_s,
                   kit.product.category.name,
                   format_boolean_label(kit.synced?, 'synced'),
