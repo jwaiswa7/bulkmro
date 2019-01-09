@@ -18,6 +18,7 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank"),
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
+      format_currency(inquiry.try(:potential_amount)),
       format_currency(inquiry.final_sales_quote.try(:calculated_total)),
       format_succinct_date(inquiry.created_at)
   ]
@@ -37,6 +38,7 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_contacts_path}],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
                        [],
                        []
                    ]
