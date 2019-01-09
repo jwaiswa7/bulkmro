@@ -12,11 +12,7 @@ json.data (@invoice_requests) do |invoice_request|
                   status_badge(invoice_request.status),
                   conditional_link(invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(invoice_request.inquiry), policy(invoice_request.inquiry).edit?),
                   conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), policy(invoice_request.sales_order).show?),
-                  if policy(invoice_request.purchase_order).show?
-                    conditional_link(invoice_request.purchase_order.po_number, overseers_inquiry_purchase_order_path(invoice_request.inquiry, invoice_request.purchase_order),policy(invoice_request.purchase_order).show?)
-                  elsif policy(invoice_request.purchase_order).show_document?
-                    conditional_link(invoice_request.purchase_order.document.filename, url_for(invoice_request.purchase_order.document),policy(invoice_request.purchase_order).show_document?)
-                  end,
+                  ( invoice_request.purchase_order.po_number if invoice_request.purchase_order.present? ),
                   invoice_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(invoice_request.created_at),
                   if invoice_request.last_comment.present?
