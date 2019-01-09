@@ -163,45 +163,92 @@
       </tr>
       </thead>
       <tbody>
-      <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-        <%= row.hidden_field :sales_order_id %>
-        <%= row.hidden_field :id %>
-        <tr>
-          <td>
-            <span>#<%= row.object.sr_no %></span>
-          </td>
-          <td>
-            <span><%= row.object.sales_quote_row %></span>
-          </td>
-          <td>
-            <span><%= row.object.quantity %></span>
-          </td>
-          <td>
-            <span><%= row.object.measurement_unit %></span>
-          </td>
-          <td>
-            <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
-          </td>
-          <td>
-            <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
-          </td>
-          <td>
-            <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
-          </td>
-          <td>
-            <span><%= format_currency(row.object.converted_total_selling_price) %></span>
-          </td>
-          <td>
-            <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
-          </td>
-          <td>
-            <span><%= row.object.best_tax_code %></span>
-          </td>
-          <td>
-            <span><%= row.object.best_tax_rate %></span>
-          </td>
-        </tr>
-      <% end %>
+        <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
+          <%= row.hidden_field :sales_order_id %>
+          <%= row.hidden_field :id %>
+          <tr>
+            <td>
+              <span>#<%= row.object.sr_no %></span>
+            </td>
+            <td>
+              <span><%= row.object.sales_quote_row %></span>
+            </td>
+            <td>
+              <span><%= row.object.quantity %></span>
+            </td>
+            <td>
+              <span><%= row.object.measurement_unit %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
+            </td>
+            <td>
+              <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.object.converted_total_selling_price) %></span>
+            </td>
+            <td>
+              <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
+            </td>
+            <td>
+              <span><%= row.object.best_tax_code %></span>
+            </td>
+            <td>
+              <span><%= row.object.best_tax_rate %></span>
+            </td>
+          </tr>
+          <% if row.object.product.present? && (row.object.product.kit.present? && row.object.product.kit.kit_product_rows.present?) %>
+            <tr>
+              <table class="w-100 table table-bordered dt-responsive datatable" data-fixed-header="false">
+                <thead>
+                <tr><strong class="d-block">Kit product details</strong></tr>
+                  <tr>
+                    <th class="no-sort">
+                      <span>Sr</span>
+                    </th>
+                    <th class="no-sort">
+                      <span>Product</span>
+                    </th>
+                    <th class="no-sort">
+                      <span>Quantity</span>
+                    </th>
+                    <th class="no-sort">
+                      <span>Tax Code</span>
+                    </th>
+                    <th class="no-sort">
+                      <span>Tax Rate</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% row.object.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
+                    <tr>
+                      <td class="col-1">
+                        <span><%= (index + 1) %></span>
+                      </td>
+                      <td class="col-6">
+                        <span><%= kit_product.product.name %></span>
+                      </td>
+                      <td class="col-2">
+                        <span><%= kit_product.quantity %></span>
+                      </td>
+                      <td class="col-2">
+                        <span><%= kit_product.tax_code.try(:code) %></span>
+                      </td>
+                      <td  class="col-2">
+                        <span><%= kit_product.tax_rate.to_s %></span>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </tr>
+          <% end %>
+        <% end %>
       </tbody>
     </table>
   </div>
