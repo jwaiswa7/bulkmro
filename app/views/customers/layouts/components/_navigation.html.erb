@@ -25,7 +25,7 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
-          <%= nav_dropdown_item 'Aggregate Reports', customers_reports_path(:graph => 'monthly_purchase_data'), true %>
+          <%= nav_dropdown_item 'Aggregate Reports', customers_reports_path(:graph => 'monthly_purchase_data'), policy(:report).show_aggregate_reports? %>
         </div>
       </li>
       <li class="nav-item dropdown">
