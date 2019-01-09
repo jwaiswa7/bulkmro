@@ -1,7 +1,11 @@
-import reportsIndex from "./index";
+import reportsmonthlyPurchaseData from "./monthlyPurchaseData";
+import reportsrevenueTrend from "./revenueTrend";
+import reportscategorywiseRevenue from "./categorywiseRevenue";
 
 let reports = {
-    index: reportsIndex,
+    monthlyPurchaseData: reportsmonthlyPurchaseData,
+    revenueTrend: reportsrevenueTrend,
+    categorywiseRevenue: reportscategorywiseRevenue,
 };
 
 export default reports

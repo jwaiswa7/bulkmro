@@ -410,11 +410,16 @@ Rails.application.routes.draw do
       patch 'update_current_company'
     end
 
-    resources :reports do
+    resources :reports, only: %i[index] do
       member do
       end
 
       collection do
+        get 'monthly_purchase_data'
+        get 'revenue_trend'
+        get 'unique_skus'
+        get 'order_count'
+        get 'categorywise_revenue'
       end
     end
 

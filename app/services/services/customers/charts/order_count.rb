@@ -1,4 +1,4 @@
-class Services::Customers::Charts::OrdersCount < Services::Customers::Charts::Builder
+class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Builder
   def initialize(daterange)
     super
   end
