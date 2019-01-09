@@ -11,9 +11,7 @@ class Services::Resources::CompanyBanks::SaveAndSync < Services::Shared::BaseSer
   end
 
   def call_later
-    company_bank.companies.each do |company|
-      company.save_and_sync
-    end
+    company_bank.company.save_and_sync
   end
 
   attr_accessor :company_bank

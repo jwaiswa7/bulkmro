@@ -26,7 +26,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     @company_bank = @company.company_banks.build(company_bank_params)
     authorize @company_bank
 
-    if @company_bank.save
+    if @company_bank.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
     else
       render 'new'
@@ -41,18 +41,11 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     @company_bank.assign_attributes(company_bank_params)
     authorize @company_bank
 
-    if @company_bank.save
+    if @company_bank.save_and_sync
       redirect_to overseers_company_company_bank_path(@company, @company_bank), notice: flash_message(@company_bank, action_name)
     else
       render 'edit'
     end
-  end
-
-  def destroy
-    authorize @company_bank
-    @company_bank.destroy!
-
-    redirect_to overseers_company_path(@company)
   end
 
   private

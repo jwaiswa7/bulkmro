@@ -70,9 +70,9 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
     end if contacts.present?
 
-    #TODO banks update remote uid
     banks.each do |bank|
       account_number= bank["AccountNo"]
+      remote_uid = bank["InternalKey"]
       company_bank = CompanyBank.find_by_account_number(account_number)
       company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
     end if banks.present?
@@ -265,17 +265,21 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
-    #TODO add company bank fields
     record.company_banks.each do |company_bank|
 
       bank_row = OpenStruct.new
-      bank_row.CardCode = record.remote_uid
+      bank_row.BPCode = record.remote_uid
+      bank_row.AccountNo = company_bank.account_number
+      bank_row.AccountName = company_bank.account_name
+      bank_row.Branch = company_bank.branch
+      bank_row.MandateID = company_bank.mandate_id
+      bank_row.BankCode = company_bank.bank.code
 
       if company_bank.remote_uid.present?
-        contact_row.InternalCode = company_bank.remote_uid
+        bank_row.InternalKey = company_bank.remote_uid
       end
 
-      banks.push(contact_row.marshal_dump)
+      banks.push(bank_row.marshal_dump)
     end if record.remote_uid.present?
 
     params = {

@@ -7,9 +7,6 @@ json.data (@company_banks) do |company_bank|
                       end,
                       if policy(company_bank).edit?
                         row_action_button(edit_overseers_company_company_bank_path(company_bank.company, company_bank), 'pencil', 'Edit bank', 'warning')
-                      end,
-                      if policy(company_bank).destroy?
-                        row_action_button(overseers_company_company_bank_path(company_bank.company, company_bank),'trash', 'Delete bank', 'danger', '' ,:delete)
                       end
                   ].join(' '),
                   company_bank.bank.name,
