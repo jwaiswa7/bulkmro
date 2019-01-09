@@ -1,5 +1,5 @@
 class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseController
-  before_action :set_company_bank, only: [:show, :edit, :update, :destroy]
+  before_action :set_company_bank, only: [:show, :edit, :update]
 
   def index
     base_filter = {

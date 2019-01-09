@@ -1,5 +1,5 @@
 class Overseers::BanksController < Overseers::BaseController
-  before_action :set_bank, only: [:show, :edit, :update, :destroy]
+  before_action :set_bank, only: [:show, :edit, :update]
 
   def index
     service = Services::Overseers::Finders::Banks.new(params)
@@ -47,13 +47,6 @@ class Overseers::BanksController < Overseers::BaseController
     else
       render 'edit'
     end
-  end
-
-  def destroy
-    authorize @bank
-    @bank.destroy!
-
-    redirect_to overseers_banks_path
   end
 
   private
