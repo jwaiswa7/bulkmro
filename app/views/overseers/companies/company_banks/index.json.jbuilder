@@ -18,6 +18,6 @@ json.data (@company_banks) do |company_bank|
               ]
 end
 
-json.recordsTotal @company.banks.count
-json.recordsFiltered @company_banks.total_count
+json.recordsTotal @company_banks.count
+json.recordsFiltered @indexed_company_banks.total_count
 json.draw params[:draw]

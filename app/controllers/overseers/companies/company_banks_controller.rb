@@ -2,8 +2,20 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
   before_action :set_company_bank, only: [:show, :edit, :update, :destroy]
 
   def index
-    @company_banks = ApplyDatatableParams.to(@company.company_banks, params)
-    authorize @company_banks
+    base_filter = {
+        :base_filter_key => "company_id",
+        :base_filter_value => params[:company_id]
+    }
+    authorize :company_bank
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::CompanyBanks.new(params.merge(base_filter))
+        service.call
+        @indexed_company_banks = service.indexed_records
+        @company_banks = service.records.try(:reverse)
+      end
+    end
   end
 
   def autocomplete
