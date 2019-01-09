@@ -27,7 +27,7 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query({
+    indexed_records = index_klass.query({
                           multi_match: {
                               query: query,
                               operator: 'and',
@@ -46,6 +46,6 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
   end
 
   def sort_definition
-    {:created_at => :asc}
+    {:created_at => :desc}
   end
 end

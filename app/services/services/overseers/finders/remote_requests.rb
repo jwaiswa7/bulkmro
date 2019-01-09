@@ -27,11 +27,11 @@ class Services::Overseers::Finders::RemoteRequests < Services::Overseers::Finder
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query({
+    indexed_records = index_klass.query({
                           multi_match: {
                               query: query,
                               operator: 'and',
-                              fields: %w[request resource],
+                              fields: %w[subject],
                               minimum_should_match: '100%'
                           }
                       }).order(sort_definition)
@@ -42,10 +42,11 @@ class Services::Overseers::Finders::RemoteRequests < Services::Overseers::Finder
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
     indexed_records
   end
 
   def sort_definition
-    {:created_at => :asc}
+    {:created_at => :desc}
   end
 end

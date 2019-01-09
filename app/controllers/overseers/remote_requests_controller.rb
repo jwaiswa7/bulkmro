@@ -2,7 +2,6 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
   before_action :set_remote_request, only: [:show]
 
   def index
-
     service = Services::Overseers::Finders::RemoteRequests.new(params)
     service.call
     @indexed_remote_requests = service.indexed_records
