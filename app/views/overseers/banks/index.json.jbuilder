@@ -13,6 +13,7 @@ json.data (@banks) do |bank|
                   bank.code,
                   bank.swift_number,
                   bank.iban,
+                  format_boolean_label(bank.synced?, 'synced'),
                   format_date(bank.created_at)
               ]
 end
