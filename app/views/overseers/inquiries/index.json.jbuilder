@@ -32,7 +32,6 @@ json.columnFilters [
                        [],
                        [],
                        [],
-
                        Inquiry.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [{"source": autocomplete_overseers_accounts_path}],
                        [{"source": autocomplete_overseers_companies_path}],

@@ -31,7 +31,6 @@ class InvoiceRequest < ApplicationRecord
   validates :ap_invoice_number, length: {is: 8}, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
 
-  validates_uniqueness_of :purchase_order, allow_blank: true
   validate :grpo_number_valid?
 
   def grpo_number_valid?
