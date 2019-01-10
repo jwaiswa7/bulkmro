@@ -8,7 +8,7 @@ json.data (@warehouses) do |warehouse|
                         row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning')
                       end,
                   ].join(' '),
-                  warehouse.name.to_s,
+                  conditional_link(warehouse.name.to_s,overseers_warehouse_path(warehouse),policy(warehouse).edit?),
                   warehouse.address.state.name.to_s,
                   if warehouse.address.gst.to_s.empty?
                       "N/A"

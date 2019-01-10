@@ -1,5 +1,5 @@
 class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
-  def initialize(params, current_contact = nil)
+  def initialize(params, current_contact = nil, current_company = nil)
     @search_filters = []
     @range_filters = []
 
@@ -27,7 +27,8 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
-    @current_contact  = current_contact
+    @current_contact = current_contact
+    @current_company = current_company
   end
 
   def call_base
@@ -105,6 +106,17 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
     }
   end
+  def filter_must_exist(key)
+    {
+        bool: {
+            should: [
+                {
+                    exists: {field: "#{key}"}
+                },
+            ],
+        },
+    }
+  end
 
   def filter_by_value(key, val)
     {
@@ -145,5 +157,5 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :search_filters, :range_filters
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_contact, :current_company, :search_filters, :range_filters
 end

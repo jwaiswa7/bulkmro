@@ -1,5 +1,5 @@
 class Customers::CustomerProductsController < Customers::BaseController
-  before_action :set_customer_product, only: [:show]
+  before_action :set_customer_product, only: [:show, :to_cart]
 
   def index
     authorize :customer_product
@@ -11,7 +11,7 @@ class Customers::CustomerProductsController < Customers::BaseController
       params[:per] = 24
     end
 
-    service = Services::Customers::Finders::CustomerProducts.new(params, current_contact)
+    service = Services::Customers::Finders::CustomerProducts.new(params, current_contact, current_company)
     service.call
 
     @indexed_customer_products = service.indexed_records
@@ -19,11 +19,29 @@ class Customers::CustomerProductsController < Customers::BaseController
     @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end
 
+  def autocomplete
+    service = Services::Overseers::Finders::CustomerProducts.new(params.merge(page: 1))
+    service.call
+
+    @indexed_customer_products = service.indexed_records
+    @customer_products = service.records
+    authorize @customer_products
+  end
+
   def show
     authorize @customer_product
   end
 
+  def most_ordered_products
+    authorize :customer_product
+
+    products = Inquiry.joins(:inquiry_products).where(:company => current_company).top(:product_id, 55) # nil top returns all
+    @total_products = products.size
+    @most_ordered_products = products.drop(5).map {|id, c| [Product.find(id), [c, 'times'].join(' ')]}
+  end
+
   private
+
   def set_customer_product
     @customer_product ||= CustomerProduct.find(params[:id])
   end

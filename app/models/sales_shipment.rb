@@ -15,10 +15,10 @@ class SalesShipment < ApplicationRecord
   scope :with_includes, -> {includes(:sales_order)}
   enum status: {
       default: 10,
-      cancelled: 20
+      cancelled: 3 # This is SAP status for shipment
   }, _prefix: true
 
-  validates_presence_of :status
+  # validates_presence_of :status
   validates_with FileValidator, attachment: :shipment_pdf, file_size_in_megabytes: 2
 
   after_initialize :set_defaults, :if => :new_record?

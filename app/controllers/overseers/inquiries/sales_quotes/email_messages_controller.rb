@@ -33,6 +33,11 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
       SalesQuoteMailer.send_acknowledgement(@email_message).deliver_now
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, :quotation_email_sent).call
 
+      #update ES is_final field
+      @inquiry.sales_quotes.each do |sq|
+        SalesQuotesIndex::SalesQuote.import sq, update_fields: [:is_final]
+      end
+
       @sales_quote.save_and_sync
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
     else

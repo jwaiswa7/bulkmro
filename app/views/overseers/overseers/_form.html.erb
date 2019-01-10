@@ -27,9 +27,6 @@
     <% else %>
       <%= f.association :parent, :wrapper => :custom_multi_select, :label_method => :to_s, include_blank: 'Select a parent' %>
     <% end %>
-
-    <%= f.input :email, :required => true %>
-
     <div class="form-row">
       <div class="col-12 col-md-4">
         <%= f.input :email, :required => true %>

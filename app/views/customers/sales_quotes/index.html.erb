@@ -1,6 +1,8 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
+<% provide :use_url_as_page_title, true %>
+
 <% content_for :heading do %>
   Quotes
 <% end %>
@@ -8,7 +10,7 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="no-sort all">Quote #</th>
+    <th class="no-sort all">Inquiry #</th>
     <th class="no-sort all" data-name="inquiry_created_at">Date</th>
     <th class="no-sort desktop">Line Items</th>
     <th class="no-sort desktop">Total</th>

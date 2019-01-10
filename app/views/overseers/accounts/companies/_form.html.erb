@@ -4,7 +4,7 @@
     <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
 
-    <p class="badge-danger">
+    <p class="alert alert-info" data-dismiss="false">
       <% if @account.is_supplier? %>
         This company will be synced as a supplier because it's under a customer supplier.
       <% elsif @account.is_customer? %>
@@ -18,7 +18,22 @@
     <%= f.hidden_field :account_id %>
 
     <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
-    <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+    <% if policy(@company).edit_remote_uid? %>
+      <div class="form-row">
+        <div class="col-12 col-md-8">
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        </div>
+        <div class="col-12 col-md-4">
+          <%= f.input :remote_uid, :label => 'SAP Business Partner ID' %>
+        </div>
+      </div>
+    <% else %>
+      <div class="form-row">
+        <div class="col-12 col-md-12">
+          <%= f.input :name, :placeholder => 'e.g. Reliance Life Sciences' %>
+        </div>
+      </div>
+    <% end %>
     <div class="form-row">
       <div class="col-6 col-md-3">
         <%= f.input :site %>
@@ -76,11 +91,14 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
       </div>
     </div>
 
@@ -92,11 +110,15 @@
         <%= f.input :pan_proof, wrapper: :custom_file, required: false, accept: 'image/png, application/pdf, image/jpeg', label: 'PAN Proof' %>
       </div>
     </div>
-
+    <div class="form-row">
+      <div class="col-12">
+        <%= f.input :logo, wrapper: :custom_file, required: false, accept: 'image/png, image/jpeg', label: 'Company Logo' %>
+      </div>
+    </div>
     <% if f.object.persisted? %>
-      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default' %>
-      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default' %>
+      <%= f.association :default_company_contact, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_billing_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
+      <%= f.association :default_shipping_address, label_method: :to_s, include_blank: 'Select a default', wrapper: :custom_multi_select %>
     <% end %>
     <div class="form-row">
       <div class="col-12 col-md-6">

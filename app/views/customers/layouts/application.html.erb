@@ -1,5 +1,11 @@
-<%= render layout: 'shared/layouts/application', locals: {
-    navigation: render(partial: 'customers/layouts/components/navigation')
-} do %>
-  <%= yield %>
+<% if current_company.present? %>
+  <%= render layout: 'shared/layouts/application', locals: {
+      navigation: render(partial: 'customers/layouts/components/navigation')
+  } do %>
+    <%= yield %>
+  <% end %>
+<% else %>
+  <%= render layout: 'shared/layouts/application' do %>
+    <%= yield %>
+  <% end %>
 <% end %>

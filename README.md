@@ -1,3 +1,34 @@
+# Installing required softwares like Ruby, Rails, PostgreSQL 
+
+Follow the below instructions and commands for basic setup to get the sprint running in development environment. Along with that sign up on bit Bucket and Heroku with official credentials.
+#### stable RVM 
+curl -sSL https://get.rvm.io | bash -s stable
+#### ruby (for version 2.5.3)
+rvm install 2.5.3
+
+rvm use 2.5.3
+#### ruby gem
+sudo gem update
+#### ruby bundler
+sudo gem install bundler
+#### rails (for version => 5)
+sudo gem install rails -v 5.2.1
+
+#### yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+sudo apt-get update && sudo apt-get install yarn
+
+yarn install
+#### postgres and pgadmin
+sudo apt install postgresql-10 pgadmin4
+
+Start the service with sudo service postgresql restart
+#### Heroku CLI 
+sudo snap install --classic heroku
+
 # Installing Elasticsearch on Ubuntu
 sudo apt install openjdk-11-jre-headless
 

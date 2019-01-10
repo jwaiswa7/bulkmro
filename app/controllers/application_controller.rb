@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_raven_context, :if => :production?
+  before_action :set_raven_context, :if => :staging?
 
   def render_pdf_for(record)
     render(
@@ -20,6 +21,10 @@ class ApplicationController < ActionController::Base
   private
   def production?
     Rails.env.production?
+  end
+
+  def staging?
+    Rails.env.staging?
   end
 
   def set_flash(object, action, sentiment: :info, now: false)

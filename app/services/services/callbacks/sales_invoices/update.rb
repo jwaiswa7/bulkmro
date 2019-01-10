@@ -13,8 +13,16 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
       if sales_invoice.present? && sales_invoice.sales_order.present?
         if params['state'].present?
           sales_invoice.update_attributes(:status => params['state'].to_i)
+
+          if params['state'].to_i == 3
+            invoice_request = InvoiceRequest.find_by_ar_invoice_number(params[:increment_id])
+            if invoice_request.present?
+              invoice_request.update_attributes!(:status => 'AR Invoice Cancelled')
+            end
+          end
         end
         sales_invoice.sales_order.inquiry.comments.create!(message: comment_message, overseer: Overseer.default_approver)
+
         return_response("Sales Invoice updated successfully.")
       else
         return_response("Sales Invoice or Sales Order for this invoice not found.", 0)

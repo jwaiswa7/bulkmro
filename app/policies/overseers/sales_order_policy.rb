@@ -4,6 +4,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales? || logistics?
   end
 
+  def company_converted_orders?
+    manager_or_sales? || logistics?
+  end
+
   def autocomplete?
     manager_or_sales? || logistics?
   end
@@ -13,7 +17,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -29,7 +33,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? 
+    record == record.sales_quote.sales_orders.latest_record && record.not_sent? && record.not_approved? && not_logistics?
   end
 
   def update?
@@ -68,6 +72,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     allow_logistics_format_export?
   end
 
+  def export_for_sap?
+    developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
+  end
+
   def drafts_pending?
     admin?
   end
@@ -80,12 +88,16 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     true #!record.has_purchase_order_request
   end
 
+  def can_request_invoice?
+    true #!record.has_purchase_order_request
+  end
+
   def approve?
-    pending? && record.sent? && record.not_approved? && !record.rejected? || admin?
+    manager? && record.sent? && record.not_approved? && !record.rejected? || admin?
   end
 
   def approve_low_margin?
-    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com).include?(overseer.email)
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def reject?
@@ -93,7 +105,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def resync?
-    record.sent? && record.approved? && record.not_synced?
+    record.sent? && record.approved? && record.not_synced? && not_logistics?
   end
 
   class Scope

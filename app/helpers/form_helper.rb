@@ -14,6 +14,10 @@ module FormHelper
 		end
   end
 
+  def show_if(condition)
+		condition ? 'show' : nil
+	end
+
 	def disabled_if(condition)
 		condition ? 'disabled' : nil
 	end

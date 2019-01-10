@@ -1,7 +1,6 @@
 import select2s from "../../components/select2s";
 
 const newAction = () => {
-
     $('form').on('change', 'select[name*=product_id]', function (e) {
         let reset = true;
         onProductChange($(this).val());

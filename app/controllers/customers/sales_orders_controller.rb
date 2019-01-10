@@ -7,7 +7,7 @@ class Customers::SalesOrdersController < Customers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Customers::Finders::SalesOrders.new(params, current_contact)
+        service = Services::Customers::Finders::SalesOrders.new(params, current_contact, current_company)
         service.call
 
         @indexed_sales_orders = service.indexed_records

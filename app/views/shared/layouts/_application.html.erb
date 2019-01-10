@@ -13,10 +13,10 @@
 </head>
 
 <body data-controller="<%= controller_name %>" data-controller-action="<%= action_name %>">
-  <%= navigation %>
+  <%= navigation if local_assigns[:navigation].present? %>
   <div class="layout layout-nav-top">
     <div class="main-container">
-      <%= render 'shared/layouts/components/breadcrumbs' %>
+      <%= render 'shared/layouts/components/breadcrumbs' if local_assigns[:navigation].present? %>
 
       <div class="container<% if content_for?(:container_fluid) %>-fluid<% end %>">
         <div class="row justify-content-center">

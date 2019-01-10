@@ -1,10 +1,10 @@
 class Overseers::KitPolicy < Overseers::ApplicationPolicy
   def index?
-    admin?
+    cataloging? || admin?
   end
 
   def new?
-    admin?
+    index?
   end
 
   def comments?

@@ -1,5 +1,7 @@
 class CustomerProduct < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::HasImages
+  include Mixins::CanBeWatermarked
 
   update_index('customer_products#customer_product') {self}
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
@@ -11,17 +13,29 @@ class CustomerProduct < ApplicationRecord
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
-  has_many :cart_items
-
-  has_many_attached :images
+  has_many :cart_items, dependent: :destroy
+  has_many :customer_order_rows
 
   validates_presence_of :name
   validates_presence_of :sku
   validates_presence_of :customer_price
   validates_uniqueness_of :sku, scope: :company_id
   validates_uniqueness_of :product_id, scope: :company_id
+  validates_presence_of :moq
 
   scope :with_includes, -> {includes(:brand, :category)}
+
+  after_initialize :set_defaults, :if => :new_record?
+
+  def set_defaults
+    self.moq ||= 1
+  end
+
+  after_save :update_index
+
+  def update_index
+    CustomerProductsIndex::CustomerProduct.import([self.id])
+  end
 
   def best_brand
     self.brand || self.product.brand
@@ -43,8 +57,32 @@ class CustomerProduct < ApplicationRecord
     self.category || self.product.category
   end
 
+  def best_images
+    if self.images.present?
+      self.images
+    elsif self.product.images.present?
+      self.product.images
+    else
+      nil
+    end
+  end
+
+  def best_image
+    if best_images.present?
+      if best_images.first.present?
+        best_images.first
+      else
+        nil
+      end
+    end
+  end
+
+  def has_images?
+    self.best_images.attached?
+  end
+
   # def set_unit_selling_price
-    # self.unit_selling_price ||= price!
+  # self.unit_selling_price ||= price!
   # end
 
   # def price

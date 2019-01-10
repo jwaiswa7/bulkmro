@@ -7,7 +7,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Customers::Finders::SalesInvoices.new(params, current_contact)
+        service = Services::Customers::Finders::SalesInvoices.new(params, current_contact, current_company)
         service.call
 
         @indexed_sales_invoices = service.indexed_records
@@ -22,7 +22,7 @@ class Customers::SalesInvoicesController < Customers::BaseController
     respond_to do |format|
       format.html {}
       format.pdf do
-        render_pdf_for @sales_invoice
+        render_pdf_for @sales_invoice, locals
       end
     end
   end
@@ -30,6 +30,12 @@ class Customers::SalesInvoicesController < Customers::BaseController
   private
   def set_sales_invoice
     @sales_invoice = current_contact.account.invoices.find(params[:id])
+    @locals = {stamp: false}
+    if params[:stamp].present?
+      @locals = {stamp: true}
+    end
   end
+
+  attr_accessor :locals
 end
 

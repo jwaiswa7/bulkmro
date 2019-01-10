@@ -101,7 +101,7 @@
                   <div style="" class="address-wrapper address-wrapper-left">
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.billing_address.to_multiline_s %>
+                      <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
                       GST No. : <%= @supplier.billing_address.try(:gst) %><br>
@@ -113,7 +113,7 @@
                   <div class="address-wrapper address-wrapper-right">
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.shipping_address.to_multiline_s %>
+                      <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present?%>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
                       GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
@@ -234,7 +234,6 @@
                     <span><%= index + 1 %></span></td>
                   <td align="center" valign="top">
                     <span><%= item.sku %></span></td>
-
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="left" valign="top">
@@ -246,30 +245,30 @@
                   <td align="center" valign="top">
                     <span><%= item.uom %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.quantity %></span></td>
+                    <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
-                    <span><%= item.unit_selling_price %></span></td>
+                    <span><%= number_to_currency(item.unit_selling_price, precision: 2, unit: '') %></span></td>
                   <td align="right" valign="top">
-                    <span><%= item.total_selling_price %></span></td>
+                    <span><%= number_to_currency(item.total_selling_price, precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.tax_rate %>%</span></td>
+                    <span><%= item.tax_rate.round(0) %>%</span></td>
                   <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate %>%</span></td>
+                      <span><%= item.tax_rate.round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= item.total_tax.to_f.round(2) %></span></td>
+                      <span><%= number_to_currency(item.total_tax, precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
                     <td align="right" valign="top">
-                      <span><%= (item.total_tax / 2).round(2) %></span></td>
+                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).round(2) %>%</span></td>
+                      <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
                     <td align="center" valign="top">
-                      <span><%= (item.total_tax / 2).round(2) %><br></span></td>
+                      <span><%= number_to_currency(item.total_tax / 2, precision: 2, unit: '') %><br></span></td>
                   <% end %>
                   <td align="right" valign="top">
-                    <span><%= item.total_selling_price_with_tax.to_f.round(2) %></span></td>
+                    <span><%= number_to_currency(item.total_selling_price_with_tax, precision: 2, unit: '') %></span></td>
                 </tr>
               <% end %>
 
@@ -293,24 +292,24 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" valign="top">
-                  <b><span><%= @purchase_order.calculated_total.to_f.round(2) %></span></b></td>
+                  <b><span><%= number_to_currency(@purchase_order.calculated_total, precision: 2, unit: '') %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
                   <td align="right" valign="top">
-                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) %></span></b></td>
+                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax, precision: 2, unit: '') %></span></b></td>
                 <% else %>
                   <td align="right" valign="top">
-                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) / 2 %></span></b></td>
+                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= @purchase_order.calculated_total_tax.to_f.round(2) / 2 %></span></b></td>
+                    <b><span><%= number_to_currency(@purchase_order.calculated_total_tax / 2, precision: 2, unit: '') %></span></b></td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= @purchase_order.calculated_total_with_tax.to_f.round(2) %></span></b></td>
+                  <b><span><%= number_to_currency(@purchase_order.calculated_total_with_tax, precision: 2, unit: '') %></span></b></td>
               </tr>
 
               </tbody>
@@ -319,8 +318,8 @@
           <br clear="all">
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
-              <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-                <%= wicked_pdf_image_tag 'signature.png', :width => "165", :height => "115" %>
+              <div id="inner-stamp" style="float: right; position: relative;">
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
               </div>
             </div>
 

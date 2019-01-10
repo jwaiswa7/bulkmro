@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   host: localhost
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  timeout: 50000
   username: rails
   password: 123456
 
@@ -13,6 +13,10 @@ development:
 test:
   <<: *default
   database: sprint_test
+
+staging:
+  <<: *default
+  database: sprint_staging
 
 production:
   <<: *default

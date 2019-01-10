@@ -3,10 +3,10 @@ json.data (@products) do |customer_product|
 
                   [
                       if policy(customer_product).show?
-                        row_action_button(overseers_company_customer_product_path(customer_product.company, customer_product), 'fal fa-eye', 'View product', 'dark')
+                        row_action_button(overseers_company_customer_product_path(customer_product.company, customer_product), 'fal fa-eye', 'View product', 'info', :_blank)
                       end,
                       if policy(customer_product).edit?
-                        row_action_button(edit_overseers_company_customer_product_path(customer_product.company, customer_product), 'pencil', 'Edit product', 'warning')
+                        row_action_button(edit_overseers_company_customer_product_path(customer_product.company, customer_product), 'pencil', 'Edit product', 'warning', :_blank)
                       end,
                       if policy(customer_product).destroy?
                         row_action_button(overseers_company_customer_product_path(customer_product.company, customer_product),'trash', 'Delete product', 'danger', '' ,:delete)
@@ -20,6 +20,6 @@ json.data (@products) do |customer_product|
               ]
 end
 
-json.recordsTotal @products.model.all.count
+json.recordsTotal @company.customer_products.count
 json.recordsFiltered @products.total_count
 json.draw params[:draw]

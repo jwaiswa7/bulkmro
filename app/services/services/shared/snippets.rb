@@ -1,5 +1,43 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
 
+  def supplier_data_summary
+    Account.is_supplier.size
+    Company.acts_as_supplier.size
+    ids = PurchaseOrder.all.map {|po| po.metadata['PoSupNum']}.compact.uniq
+    ids.size
+    nov_ids = Company.acts_as_supplier.where(:created_at => Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    (ids & nov_ids).size
+# # Accounts as suppliers
+#     7
+#
+# # Total suppliers
+#     6108
+#
+# # Total suppliers with purchase orders
+#     2053
+#
+# # Suppliers added in November
+#     214
+#
+# # Suppliers added in November with purchase orders
+#     105
+  end
+
+  def paper_trail_find
+    who = Product.find_by_sku('BM9R3F1').versions.last.whodunnit
+    GlobalID::Locator.locate(who)
+  end
+
+  def delete_products_without_images
+    Account.find('wBgfoW').companies.each do |c|
+      c.customer_products.each do |cp|
+        if cp.best_images.blank?
+          cp.destroy
+        end
+      end
+    end
+  end
+
   def delete_all_inquiries
     SalesOrderRow.delete_all
     SalesOrderApproval.all.delete_all
@@ -17,6 +55,19 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     Activity.delete_all
     InquiryComment.delete_all
     Inquiry.delete_all
+  end
+
+  def del_customer_orders
+    CustomerOrderApproval.all.destroy_all
+    CustomerOrder.all.destroy_all
+  end
+
+  def check_company
+    company = Company.find_by_name('Flextronics Technologies India Pvt. Ltd.')
+
+    company.sales_quotes.first
+
+    SalesQuotesIndex::SalesQuote.import SalesQuote.all, update_fields: [:is_final]
   end
 
   def update_amat_statuses
@@ -833,7 +884,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def inquiry_status_update
 
-    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where( inquiry_status_records: {inquiry_id: nil} ).with_includes.each do |inquiry|
+    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where(inquiry_status_records: {inquiry_id: nil}).with_includes.each do |inquiry|
       if inquiry.inquiry_status_records.blank?
         subject = inquiry
         status = inquiry.status
@@ -851,8 +902,18 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           subject = inquiry.sales_orders.remote_approved.last
           status = 'Order Won'
         end
-        inquiry.update_attribute(:status ,status)
+        inquiry.update_attribute(:status, status)
         InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create if inquiry.inquiry_status_records.blank?
+      end
+    end
+  end
+
+  def destroy_customer_products_variant
+    CustomerProduct.with_attachments.each do |customer_product|
+      customer_product.best_images.each do |image|
+        image.service.delete(customer_product.watermarked_variation(image, 'tiny').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'small').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'medium').key)
       end
     end
   end

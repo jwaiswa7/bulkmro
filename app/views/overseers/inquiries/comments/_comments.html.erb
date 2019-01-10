@@ -44,7 +44,7 @@
         <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success' %>
       <% else %>
         <span data-toggle='tooltip' title="Margin is below 10%; need Devang Shah's, Gaurang Shah's or Nilesh Desai's approval to move forward">
-          <%= f.submit 'Reply and Approve', name: 'approve', class: 'btn btn-success btn-disabled', disabled: true %>
+          <%= f.submit 'Reply and Approve', class: 'btn btn-success btn-disabled', disabled: true %>
         </span>
       <% end %>
     <% else %>

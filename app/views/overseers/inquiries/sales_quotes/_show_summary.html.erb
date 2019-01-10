@@ -31,13 +31,25 @@
   </div>
   <div class="card-body">
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-6 col-md-2">
         <strong class="d-block">SAP Quotation</strong>
         #<%= f.object.quotation_uid.blank? ? "SAP Request Pending" : f.object.quotation_uid %>
       </div>
-      <div class="col-6">
+      <div class="col-6 col-md-2">
+        <strong class="d-block">Customer PO No.</strong>
+        #<%= @inquiry.customer_po_number %>
+      </div>
+      <div class="col-6 col-md-2">
+        <strong class="d-block">Customer Order Date</strong>
+        <%= @inquiry.customer_order_date %>
+      </div>
+      <div class="col-6 col-md-2">
         <strong class="d-block">Currency</strong>
         <%= f.object.currency %> (<%= f.object.inquiry_currency.conversion_rate %>)
+      </div>
+      <div class="col-6 col-md-3">
+        <strong class="d-block">Payment Terms</strong>
+        <%= @inquiry.payment_option %>
       </div>
     </div>
 
@@ -74,7 +86,7 @@
                 - <%= @inquiry.contact.phone %></span>
           <% end %>
           <span class="d-block"><em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %></span>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || (@inquiry.company.default_shipping_address.gst if @inquiry.company.default_shipping_address.present?) %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>

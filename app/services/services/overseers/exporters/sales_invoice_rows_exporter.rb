@@ -2,7 +2,9 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
 
   def initialize
     super
-
+    @model = SalesInvoiceRow
+    @export_name = 'sales_invoice_rows'
+    @path = Rails.root.join('tmp', filename)
     @columns = [
         'Inquiry Number',
         'BM Number',
@@ -19,11 +21,13 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
         'Branch (Bill From)',
         'Invoice Status'
     ]
-
-    @model = SalesInvoiceRow
   end
 
   def call
+    perform_export_later('SalesInvoiceRowsExporter')
+  end
+
+  def build_csv
     model.where(:created_at => start_at..end_at).order(sales_invoice_id: :asc).where("sales_invoices.sales_order_id IS NOT NULL").joins(:sales_invoice).each do |row|
       sales_invoice = row.sales_invoice
       sales_order = sales_invoice.sales_order
@@ -45,7 +49,7 @@ class Services::Overseers::Exporters::SalesInvoiceRowsExporter < Services::Overs
                     :invoice_status => sales_invoice.sales_order.remote_status
                 })
     end
-
-    generate_csv
+    export = Export.create!(export_type: 20)
+    generate_csv(export)
   end
 end

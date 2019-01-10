@@ -1,0 +1,47 @@
+<table style="width: 100%;" cellspacing="0" border="0">
+  <tr style="background: #d3d3d3;">
+    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
+      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
+  </tr>
+
+  <tr>
+    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
+      <b><span style="color:#000000">Bank:</span></b></td>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.primary_bank.name %></span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.secondary_bank.name %></span></td>
+  </tr>
+  <tr>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Address:</span></b></td>
+    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"> <%= Settings.primary_bank.address %></span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.secondary_bank.address %></span></td>
+  </tr>
+  <tr>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Account Name:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.primary_bank.account_name %> </span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.secondary_bank.account_name %></span></td>
+  </tr>
+  <tr>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">Account Number:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.primary_bank.account_number %></span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.secondary_bank.account_number %></span></td>
+  </tr>
+  <tr>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
+      <b><span style="color:#000000">NEFT/RTGS Code:</span></b></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.primary_bank.neft_code %></span></td>
+    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
+      <span style="color:#000000"><%= Settings.secondary_bank.neft_code %></span></td>
+  </tr>
+</table>

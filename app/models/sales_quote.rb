@@ -11,6 +11,7 @@ class SalesQuote < ApplicationRecord
   has_many :comments, -> {where(:show_to_customer => true)}, :through => :inquiry
   accepts_nested_attributes_for :comments
   has_one :inquiry_currency, :through => :inquiry
+  has_one :freight_request
   accepts_nested_attributes_for :inquiry_currency
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
@@ -87,7 +88,21 @@ class SalesQuote < ApplicationRecord
     elsif status == 'SO Not Created-Pending Customer PO Revision' || status == 'SO Not Created-Customer PO Awaited'
       'Purchase Order Revision Pending'
     elsif status == 'Regret' || status == 'Order Lost'
-      'Order Lost'
+      'Closed'
+    end
+  end
+
+  def to_s
+    ['#', inquiry.inquiry_number].join
+  end
+
+  def is_final?
+    if self.id.present? && self.inquiry.final_sales_quote == self
+      true
+    elsif self.sales_orders.size >= 1
+      true
+    else
+      false
     end
   end
 end

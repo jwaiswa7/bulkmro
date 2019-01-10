@@ -28,7 +28,7 @@ class Services::Overseers::Inquiries::SmartQueueSummary < Services::Shared::Base
 
     Inquiry.statuses.each do |inquiry_status, v|
       @statuses.each do |title, status|
-        status[:value] += inquiry_statuses[inquiry_status] if status[:keys].include? inquiry_status
+        status[:value] += inquiry_statuses[inquiry_status] if status[:keys].include? inquiry_status && inquiry_status.present?
       end
     end
 

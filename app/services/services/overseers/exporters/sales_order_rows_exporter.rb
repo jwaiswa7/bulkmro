@@ -2,7 +2,9 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
 
   def initialize
     super
-
+    @model = SalesOrderRow
+    @export_name = 'sales_order_rows'
+    @path = Rails.root.join('tmp', filename)
     @columns = [
         'Inside Sales Person',
         'Inquiry Number',
@@ -85,17 +87,19 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         'Landed (Usd Million)',
         'Margin (Usd Million)'
     ]
-
-    @model = SalesOrderRow
   end
 
   def call
-    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).each do |row|
+    perform_export_later('SalesOrderRowsExporter')
+  end
+
+  def build_csv
+    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).order(created_at: :desc).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
 
       rows.push({
-                    :inside_sales => sales_order.inside_sales_owner.to_s,
+                    :inside_sales => sales_order.inside_sales_owner.try(:full_name),
                     :inquiry_number => inquiry.inquiry_number,
                     :bm_number => row.product.sku,
                     :description => row.product.description,
@@ -176,7 +180,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Margin_Usd_Million => ""
                 })
     end
-
-    generate_csv
+    export = Export.create!(export_type: 35)
+    generate_csv(export)
   end
 end

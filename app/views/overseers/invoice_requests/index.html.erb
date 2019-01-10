@@ -1,0 +1,50 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: InvoiceRequest, statuses: InvoiceRequest.statuses} %>
+</div>
+
+<% content_for :heading do %>
+  Invoice Requests
+  <% if @status .present? %>
+    <%= ": #{@status}" %>
+  <% end %>
+<% end %>
+
+<% content_for(:heading_buttons) do %>
+  <% if policy(:sales_order).index? %>
+    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+    <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+    </a>
+  <% end %>
+<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all" data-width="70px"></th>
+  <th class="no-sort desktop">Req. No.</th>
+  <th class="no-sort desktop" data-name="status">Status</th>
+  <th class="no-sort desktop">Inquiry #</th>
+  <th class="no-sort all">Order #</th>
+  <th class="no-sort all">PO Number #</th>
+  <th class="no-sort all">Inside Sales</th>
+  <th class="no-sort desktop">Requested At</th>
+  <th class="no-sort desktop">Updated At</th>
+  <th class="no-sort desktop">Latest Comment</th>
+<% end %>
+
+<%# content_for :filter_row do %>
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<!--  <td data-filter="false"></td>-->
+<%# end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

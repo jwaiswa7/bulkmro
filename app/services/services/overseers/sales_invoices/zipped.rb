@@ -1,13 +1,14 @@
 class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
-  def initialize(record)
+  def initialize(record,locals)
     @record = record
+    @locals = locals
   end
 
   def call
     files = [
-        {name: "original_#{record.filename}.pdf", path: RenderPdfToFile.for(record)},
-        {name: "duplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record, {duplicate: true})},
-        {name: "triplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record, {triplicate: true})}
+        {name: "original_#{record.filename}.pdf", path: RenderPdfToFile.for(record, locals)},
+        {name: "duplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record, locals.merge({duplicate: true}))},
+        {name: "triplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record, locals.merge({triplicate: true}))}
     ]
 
     invoice_zip = Rails.root.join('tmp', 'archive.zip')
@@ -27,5 +28,5 @@ class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
     File.read(invoice_zip)
   end
 
-  attr_accessor :record
+  attr_accessor :record, :locals
 end

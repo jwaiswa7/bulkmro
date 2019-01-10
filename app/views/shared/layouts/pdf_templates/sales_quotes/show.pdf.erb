@@ -94,15 +94,13 @@
           <div class="address-blocks">
 
 
-
-
-          <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
-            <b><span style="color:#000000">Supplier - Bill from:</span></b>
-          </div>
-          <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px;text-align: center;font-size:11px;">
-            <b><span style="color:#000000">Supplier - Ship from:</span></b>
-          </div>
-          <br clear="all">
+            <div style=" float:left; background: #d3d3d3;width: 49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px; text-align: center;font-size:11px;">
+              <b><span style="color:#000000">Supplier - Bill from:</span></b>
+            </div>
+            <div style="float:right;background: #d3d3d3;width:49%; border:1px solid; border-radius: 5px;padding-top: 2px;padding-bottom: 2px;text-align: center;font-size:11px;">
+              <b><span style="color:#000000">Supplier - Ship from:</span></b>
+            </div>
+            <br clear="all">
             <table border="0" cellspacing="0" style="width: 100%;">
               <tbody>
               <tr>
@@ -272,30 +270,34 @@
                     <span><%= item.try(:measurement_unit) || item.product.try(:measurement_unit) || MeasurementUnit.default %></span>
                   </td>
                   <td align="center">
-                    <span><%= item.quantity %></span></td>
+                    <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span></td>
                   <td align="right" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;text-align: right;">
-                    <span><%= item.converted_unit_selling_price %></span></td>
+                    <span><%= number_to_currency(item.converted_unit_selling_price, precision: 2, unit: '') %></span>
+                  </td>
                   <td align="right" style="text-align:right;">
-                    <span><%= item.converted_total_selling_price %></span></td>
+                    <span><%= number_to_currency(item.converted_total_selling_price, precision: 2, unit: '') %></span>
+                  </td>
                   <td align="center">
                     <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                   <% if record.tax_summary.strip == '0' || record.tax_summary.to_s.include?("IGST") %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= item.converted_total_tax %></span></td>
+                      <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2) %></span></td>
+                      <span><%= number_to_currency(item.converted_total_tax.to_f / 2, precision: 2, unit: '') %></span>
+                    </td>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= (item.converted_total_tax / 2) %></span></td>
+                      <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span></td>
                   <% end %>
                   <td align="right">
-                    <span><%= item.converted_total_selling_price_with_tax %></span></td>
+                    <span><%= number_to_currency(item.converted_total_selling_price_with_tax.to_f.round(2), precision: 2, unit: '') %></span>
+                  </td>
                 </tr>
               <% end %>
 
@@ -329,19 +331,23 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax %></span></b></td>
+                    <b><span><%= number_to_currency(record.converted_total_tax, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% else %>
                   <td align="center" style="font-size: 9px; border-right: 1px solid #3c3c3c;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax / 2 %></span></b></td>
+                    <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= record.converted_total_tax / 2 %></span></b></td>
+                    <b><span><%= number_to_currency(record.converted_total_tax / 2, precision: 2, unit: '') %></span></b>
+                  </td>
                 <% end %>
                 <td align="right" valign="top">
-                  <b><span><%= record.converted_total_with_tax %></span></b></td>
+                  <b><span><%= number_to_currency(record.converted_total_with_tax, precision: 2, unit: '') %></span></b>
+                </td>
               </tr>
 
               </tbody>
@@ -350,314 +356,150 @@
           <br clear="all">
           <div class="alwaysbreak"></div>
 
-          <div id="stamp" style="width:94%;position:absolute;top:600px; padding-top: 1px;padding-bottom: 1px;">
-            <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-              <%= wicked_pdf_image_tag 'signature.png', :width => "165", :height => "115" %></div>
-          </div>
-          <br clear="all">
 
-          <div id="commercial" style="border:1px solid; border-radius: 0;">
-            <table border="0" cellspacing="0" style="width: 100%;">
-              <tbody>
-              <tr>
-                <td align="left" colspan="2" height="20" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" valign="top">
-                  <b><span style="color:#000000">Commercial Terms and Conditions: </span></b></td>
-              </tr>
-              <tr>
-                <td align="left" height="" style="padding-left:10px;" valign="top">
-                  <%= simple_format record.inquiry.commercial_terms_and_conditions %>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
           <br clear="all">
-          <div id="Otherinfo" style="border:1px solid; border-radius: 0;">
-            <table border="0" cellspacing="0" style="width: 100%;">
-              <tbody>
-              <tr>
-                <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
-                  <b><span style="color:#000000">Other Information:</span></b></td>
-              </tr>
-              <tr>
-                <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">1. Please reference Bulk MRO Invoice Number when remitting payment.<br>
+          <div class="bottom-info" style="position:relative;">
+            <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
+              <div id="inner-stamp" style="float: right; position: relative;">
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
+              </div>
+            </div>
+            <div id="commercial" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="2" height="20" style="background: #d3d3d3; padding-left: 10px; border-bottom: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">Commercial Terms and Conditions: </span></b></td>
+                </tr>
+                <tr>
+                  <td align="left" height="" style="padding-left:10px;" valign="top">
+                    <%= simple_format record.inquiry.commercial_terms_and_conditions %>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <br clear="all">
+            <div id="Otherinfo" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">Other Information:</span></b></td>
+                </tr>
+                <tr>
+                  <td align="left" style=" padding-left: 10px;" valign="top"><span style="color:#000000">1. Please reference Bulk MRO Invoice Number when remitting payment.<br>
                     2. All Banking fees will be to Customer's account.<br>
                     3. Late payment will attract Interest at the rate of 2% per month.</span></td>
-              </tr>
-              <tr>
-                <td></td>
-              </tr>
-              </tbody>
-            </table>
-            <% if record.currency.name.present? %>
-              <% if record.currency.name.to_s == 'USD' %>
-                <table style="width: 100%;" cellspacing="0" border="0">
-                  <tr style="background: #d3d3d3;">
-                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
-                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span style="color:#000000">Bank:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Address:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Name:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Number:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">9412666668</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Swift Code:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">KKBKINBB</span></td>
-
-                  </tr>
-                </table>
-              <% elsif record.currency.name.to_s == 'GBP' %>
-                <table style="width: 100%;" cellspacing="0" border="0">
-                  <tr style="background: #d3d3d3;">
-                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
-                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span style="color:#000000">Bank:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Address:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Name:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Number:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">9412666675</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Swift Code:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">KKBKINBB</span></td>
-
-                  </tr>
-                </table>
-
-              <% elsif record.currency.name.to_s == 'EUR' %>
-                <table style="width: 100%;" cellspacing="0" border="0">
-                  <tr style="background: #d3d3d3;">
-                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
-                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span style="color:#000000">Bank:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Address:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Name:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Number:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="12">
-                      <span style="color:#000000">9412666682</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Swift Code:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">KKBKINBB</span></td>
-
-                  </tr>
-                </table>
-              <% else %>
-                <table style="width: 100%;" cellspacing="0" border="0">
-                  <tr style="background: #d3d3d3;">
-                    <td class="invoiceheader1" style="  padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" colspan="16" height="20" align="left" valign="top">
-                      <b><span style="color:#000000">Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span style="color:#000000">Bank:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">Kotak Mahindra Bank Ltd </span></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">State Bank of India </span></td>
-                  </tr>
-                  <tr>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Address:</span></b></td>
-                    <td style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000"> Aum Saheel Tower, Mumbai 400080.</span></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Name:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd. </span></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">Account Number:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">9412329433</span></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">35924122136</span></td>
-                  </tr>
-                  <tr>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="4">
-                      <b><span style="color:#000000">NEFT/RTGS Code:</span></b></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">KKBK0001411</span></td>
-                    <td style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;" colspan="6">
-                      <span style="color:#000000">SBIN0000510 </span></td>
-                  </tr>
-                </table>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                </tbody>
+              </table>
+              <% if record.currency.name.present? %>
+                <% if record.currency.name.to_s == 'USD' || record.currency.name.to_s == 'EUR'|| record.currency.name.to_s == 'GBP' %>
+                  <%= render 'shared/layouts/pdf_templates/primary_bank_info', currency: record.currency.name.to_s %>
+                <% else %>
+                  <%= render 'shared/layouts/pdf_templates/bank_info'%>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
-          <br clear="all">
-          <div id="standard-terms-cond" style="border:1px solid; border-radius: 0;">
-            <table border="0" cellspacing="0" style="width: 100%;">
-              <tbody>
-              <tr>
-                <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                  <b><span style="color:#000000">STANDARD TERMS AND CONDITIONS:</span></b></td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">1.</td>
+            </div>
+            <br clear="all">
+            <div id="standard-terms-cond" style="border:1px solid; border-radius: 0;">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td align="left" colspan="16" height="20" style="background: #d3d3d3; padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
+                    <b><span style="color:#000000">STANDARD TERMS AND CONDITIONS:</span></b></td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">1.</td>
 
-                <td align="left" valign="top">
-                  <span style="color:#000000">All the prices are based on products and quantities quoted. Any changes to the products and/or quantities may result in different pricing.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">2.</td>
-                <td align="left" valign="top">
-                  <span style="color:#000000">  All discrepancies must be reported within 7-days of receipt of goods. No goods may be returned without prior written authorization from Bulk MRO. Bulk MRO will not be responsible for non-authorized returns. This transaction is subject to Warranty, Sales Terms and Conditions.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">3.</td>
-                <td align="left" valign="top">
-                  <span style="color:#000000">Bulk MRO shall not entertain any claim for any loss arising from damage, shortage, and/or non-delivery of goods as per invoice unless written intimation of such loss is given to the Company within seven (7) days from the date of receipt of goods.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">4.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  <td align="left" valign="top">
+                    <span style="color:#000000">All the prices are based on products and quantities quoted. Any changes to the products and/or quantities may result in different pricing.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">2.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000">  All discrepancies must be reported within 7-days of receipt of goods. No goods may be returned without prior written authorization from Bulk MRO. Bulk MRO will not be responsible for non-authorized returns. This transaction is subject to Warranty, Sales Terms and Conditions.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">3.</td>
+                  <td align="left" valign="top">
+                    <span style="color:#000000">Bulk MRO shall not entertain any claim for any loss arising from damage, shortage, and/or non-delivery of goods as per invoice unless written intimation of such loss is given to the Company within seven (7) days from the date of receipt of goods.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">4.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">5.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">5.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     The goods quoted are subject to availability. Bulk MRO does not guarantee delivery of goods within any particular time frame. The customer acknowledges that Bulk MRO shall not be liable for any liquidated damages or un-liquidated damages or loss of business, penalty, etc, for any delay in delivery/supply of goods.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">6.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">6.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     The usage of the goods quoted and covered under the invoice is not meant for life saving and/or support equipment purpose, unless specifically provided for by the manufacturer.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">7.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">7.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     The terms as provided under Condition 5, 6, and 7 above, shall supersede any other terms and conditions inconsistent therewith.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">8.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">8.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     These terms and conditions inter-alia the pricing, terms of payment, etc of this transaction shall be kept confidential by the Customer and shall not be disclosed to any third party without prior written consent of Bulk MRO.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">9.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">9.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     All goods may be used by the Customer at its own risk and the Customer shall refer to the relevant technical advice, data, recommendations or services as specified by the manufacturer.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">10.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">10.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     The customer shall comply fully with all applicable anti-mafia, anti-bribery, anti-money laundering and anti-corruption statues, rules, or regulations of any national, federal, state, or local jurisdiction anywhere in the world, including the (Indian) Prevention of Corruption Act, 1988 and the (U.S.) Foreign Corrupt Practices Act of 1977.</span>
-                </td>
-              </tr>
-              <tr>
-                <td height="" style="padding-left:10px;" valign="top">11.</td>
-                <td align="left" valign="top"><span style="color:#000000">
+                  </td>
+                </tr>
+                <tr>
+                  <td height="" style="padding-left:10px;" valign="top">11.</td>
+                  <td align="left" valign="top"><span style="color:#000000">
                     The quotes given above are on the current foreign exchange rate. In event of significant Rupee depreciation on the date of PO or Order confirmation by customer, there could be upward revision of rates accordingly.</span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <br clear="all">
-          <div id="pdf_btn_details">
-            <table border="0" cellspacing="0" style="width: 100%;">
-              <tbody>
-              <tr>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-              </tr>
-              <tr>
-                <td align="center" colspan="22" style="position: relative;top:0px;">
-                  <span style="color:#000000">This is a Computer Generated Quotation.</span></td>
-              </tr>
-              </tbody>
-            </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <br clear="all">
+            <div id="pdf_btn_details">
+              <table border="0" cellspacing="0" style="width: 100%;">
+                <tbody>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td align="center" colspan="22" style="position: relative;top:0px;">
+                    <span style="color:#000000">This is a Computer Generated Quotation.</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

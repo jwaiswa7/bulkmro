@@ -2,12 +2,16 @@ class Overseers::CompaniesController < Overseers::BaseController
   before_action :set_company, only: [:show]
 
   def index
-    @companies = ApplyDatatableParams.to(Company.all.includes(:contacts, :account, :addresses, :inquiries), params)
+    service = Services::Overseers::Finders::Companies.new(params)
+    service.call
+
+    @indexed_companies = service.indexed_records
+    @companies = service.records
     authorize @companies
   end
 
   def autocomplete
-    @companies = ApplyParams.to(Company.all.where(:is_active => true), params)
+    @companies = ApplyParams.to(Company.active, params)
     authorize @companies
   end
 
@@ -18,11 +22,9 @@ class Overseers::CompaniesController < Overseers::BaseController
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::CompaniesExporter.new
+    service.call
 
-    respond_to do |format|
-      format.html
-      format.csv {send_data service.call, filename: service.filename}
-    end
+    redirect_to url_for(Export.companies.last.report)
   end
 
   private

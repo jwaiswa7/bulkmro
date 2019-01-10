@@ -40,7 +40,6 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
 
   def excel_template
     authorize @inquiry
-
     respond_to do |format|
       format.xlsx {
         response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", 'xlsx'].join('.') + '"'

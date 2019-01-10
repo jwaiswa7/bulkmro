@@ -266,30 +266,30 @@
                   <td align="center" valign="top">
                     <span><%= item.sales_quote_row.try(:measurement_unit) || item.sales_quote_row.product.try(:measurement_unit) || MeasurementUnit.default %></span>
                   <td align="center" valign="top">
-                    <span><%= item.quantity %></span></td>
+                    <span><%= format_currency(item.quantity, precision: 2, symbol: '') %></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <span><%= format_currency(item.converted_unit_selling_price, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_unit_selling_price, precision: 2, symbol: '') %></span></td>
                   <td align="right" style=" text-align:right;" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price, precision: 2, symbol: '') %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                    <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
                   <% if record.sales_quote.tax_summary.strip == '0' || record.sales_quote.tax_summary.to_s.include?("IGST") %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency(item.total_tax, symbol: '') %></span></td>
+                      <span><%= format_currency(item.total_tax, precision: 2, symbol: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                     <td align="center" valign="top">
-                      <span><%= item.sales_quote_row.applicable_tax_percentage * 100 / 2 %>%</span></td>
+                      <span><%= (item.sales_quote_row.applicable_tax_percentage * 100 / 2).to_f.round(0) %>%</span></td>
                     <td align="right" style=" text-align:right;" valign="top">
-                      <span><%= format_currency((item.converted_total_tax / 2), symbol: '') %></span></td>
+                      <span><%= format_currency((item.converted_total_tax / 2), precision: 2, symbol: '') %></span></td>
                   <% end %>
                   <td align="right" style="font-size: 9px;border-bottom: 1px solid #3c3c3c; text-align: right" valign="top">
-                    <span><%= format_currency(item.converted_total_selling_price_with_tax, symbol: '') %></span></td>
+                    <span><%= format_currency(item.converted_total_selling_price_with_tax, precision: 2, symbol: '') %></span></td>
                 </tr>
               <% end %>
 
@@ -313,7 +313,7 @@
                 <td align="center" valign="top">
                   <span></span></td>
                 <td align="right" style="text-align: right;" valign="top">
-                  <b><span><%= record.converted_total %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total, precision: 2, symbol: '') %></span></b></td>
                 <td align="center" valign="top">
                   <span></span></td>
                 <% if record.sales_quote.tax_summary.strip == '0' ||
@@ -321,19 +321,19 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency(record.converted_total_tax, symbol: '') %></span></b></td>
+                    <b><span><%= format_currency(record.converted_total_tax, precision: 2, symbol: '') %></span></b></td>
                 <% else %>
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b></td>
                   <td align="center" style="text-align: right;" valign="top">
                     <span></span></td>
                   <td align="right" style="text-align: right;" valign="top">
-                    <b><span><%= format_currency((record.converted_total_tax / 2), symbol: '') %></span></b></td>
+                    <b><span><%= format_currency((record.converted_total_tax / 2), precision: 2, symbol: '') %></span></b></td>
                 <% end %>
                 <td align="right" style="font-size: 9px;text-align: right;border-bottom-right-radius: 5px;" valign="top">
-                  <b><span><%= format_currency(record.converted_total_with_tax, symbol: '') %></span></b></td>
+                  <b><span><%= format_currency(record.converted_total_with_tax, precision: 2, symbol: '') %></span></b></td>
               </tr>
 
               </tbody>
@@ -343,8 +343,8 @@
           <br clear="all">
           <div class="bottom-info" style="position: relative">
             <div id="stamp" style="width:94%;position:absolute;top:0px; padding-top: 1px;padding-bottom: 1px;">
-              <div id="inner-stamp" style="float: right; position: relative; top: -8px;">
-                <%= wicked_pdf_image_tag 'signature.png', :width => "165", :height => "115" %>
+              <div id="inner-stamp" style="float: right; position: relative;">
+                <%= wicked_pdf_image_tag 'BulkMRO-stamp.png', :width => "95", :height => "95" %>
               </div>
             </div>
 
@@ -401,54 +401,7 @@
                   </tr>
                   </tbody>
                 </table>
-                <table border="0" cellspacing="0" style="width: 100%;">
-                  <tbody>
-                  <tr style="background: #d3d3d3;">
-                    <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                      <b><span>Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Bank:</span></b></td>
-                    <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Kotak Mahindra Bank Ltd</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>State Bank of India</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Address:</span></b></td>
-                    <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Aum Saheel Tower, Mumbai 400080.</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Account Name:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Account Number:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>9412329433</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>35924122136</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                      <b><span>NEFT/RTGS Code:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                      <span>KKBK0001411</span></td>
-                    <td colspan="6" style=" padding-left: 10px;">
-                      <span>SBIN0000510</span></td>
-                  </tr>
-                  </tbody>
-                </table>
+                <%= render 'shared/layouts/pdf_templates/bank_info' %>
               </div>
             <% end %>
             <br clear="all">

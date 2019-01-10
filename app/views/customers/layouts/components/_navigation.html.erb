@@ -17,40 +17,56 @@
       <%= nav_item 'Dashboard', customers_dashboard_path, true %>
       <%= nav_item 'Quotes', customers_quotes_path, true %>
       <%= nav_item 'Orders', customers_orders_path, true %>
-      <%#= nav_item 'Products', customers_products_path, true %>
+      <%= nav_item 'Products', customers_products_path, policy(:customer_product).index? %>
       <%= nav_item 'Invoices', customers_invoices_path, true %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
           Reports
         </a>
         <div class="dropdown-menu">
-          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, true%>
-          <%= nav_dropdown_item 'Monthly Purchase Data', quarterly_purchase_data_customers_reports_path, true%>
+          <%= nav_dropdown_item 'Most Ordered Products', most_ordered_products_customers_products_path, policy(:customer_product).most_ordered_products? %>
+          <%= nav_dropdown_item 'Aggregate Reports', monthly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports? %>
         </div>
       </li>
-      <%= nav_item 'Customer Orders', customers_customer_orders_path, true %>
-      <%= nav_item 'Customer Products', customers_customer_products_path, true %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Online Orders
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
+          <%= nav_dropdown_item 'Pending Approval', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+          <%= nav_dropdown_item 'Approved Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
+        </div>
+      </li>
     </ul>
   </div>
   <!-- Navigation Bar -->
 
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-block">
-    <div class="dropdown d-inline mr-2" id="cart">
-      <a href="#" role="button" data-toggle="dropdown" id="cart-count">
-        <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary"><%= current_cart.items.count %></span>
-      </a>
-      <% if current_cart.present? %>
-        <%= render(partial: 'customers/layouts/components/cart') %>
-      <% end %>
-    </div>
-
+    <% if current_company.logo.attached? %>
+      <span class="d-none d-md-inline">
+        <img src="<%= url_for(current_company.logo) %>" height="18" alt="<%= current_company.name %>">
+      </span>
+    <% end %>
+    <span class="d-none d-md-inline badge badge-light mr-1"><%= current_company.name %></span>
+    <% if policy(:cart).show? %>
+      <div class="dropdown d-inline mr-2" id="cart">
+        <a href="<%= customers_cart_path %>" role="button" id="cart-count">
+          <i class="fal fa-shopping-cart mr-1"></i><span class="text-primary cart-items-count"><%= current_cart.items.count %></span>
+        </a>
+      </div>
+    <% end %>
     <div class="dropdown d-inline">
       <a href="#" role="button" data-toggle="dropdown">
-        <%= current_contact.full_name %> <i class="fal fa-cog"></i>
+        <span class="d-none d-md-inline"><%= current_contact.first_name %></span>
+        <i class="fal fa-cog"></i>
       </a>
       <span class="dropdown-menu dropdown-menu-right">
-        <%= link_to destroy_contact_session_path, method: :delete, :class => 'ml-lg-2' do %>
+        <%= link_to reset_current_company_customers_sign_in_steps_path, method: :post, :class => 'dropdown-item' do %>
+          <i class="fal fa-building"></i>&nbsp;Choose Another Company
+        <% end if policy(current_contact).reset_current_company? %>
+        <%= link_to destroy_contact_session_path, method: :delete, :class => 'dropdown-item' do %>
           <i class="fal fa-power-off"></i>&nbsp;Sign Out
         <% end %>
       </span>

@@ -2,7 +2,6 @@ class Overseers::ReportsController < Overseers::BaseController
 
   def index
     Report.activity
-    Report.pipeline
     Report.target
     Report.monthly_sales
 

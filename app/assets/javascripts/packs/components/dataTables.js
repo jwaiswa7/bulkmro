@@ -121,12 +121,12 @@ let setup = () => {
 
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
-                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters">Clear</a>');
+                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
                 clear.on('click', function(e) {
                     $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');
                     $('[data-filter="daterange"] input').val("").trigger('change');
-                    $('.filter-list-input').val("");
+                    $('.filter-list-input').val("").trigger('keyup');
                     e.preventDefault();
                 });
                 actionTd.append(clear);

@@ -2,15 +2,19 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :heading do %>
+  Products
+<% end %>
+
 <% content_for :heading_buttons do %>
-  <a href="<%= customers_customer_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
-  <a href="<%= customers_customer_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
+  <a href="<%= customers_products_path(view: 'list_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="List View"><i class="fal fa-list-ul"></i></a>
+  <a href="<%= customers_products_path(view: 'grid_view') %>" class="btn btn-lg btn-light" data-toggle="tooltip" title="Grid View"><i class="fal fa-grip-horizontal"></i></a>
 <% end %>
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>
-  <th class="no-sort"><i class="fal fa-building"></i>Name</th>
-  <th class="no-sort"><i class="fal fa-building"></i>SKU</th>
+  <th class="no-sort">Name</th>
+  <th class="no-sort">SKU</th>
   <th class="no-sort desktop">Customer Price</th>
   <th class="no-sort desktop">SAP Status</th>
   <th class="desktop" data-name="created_at">Created</th>
@@ -23,3 +27,5 @@
     <%= render partial: 'grid' %>
   <% end %>
 </div>
+
+<div id="to_cart_modal_content"></div>

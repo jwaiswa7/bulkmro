@@ -2,13 +2,18 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
 
   def initialize
     super
-
-    @columns = ['order_number', 'order_date', 'quote_number', 'quote_type', 'opportunity_type', 'invoice_number', 'inside_sales', 'outside_sales', 'company_alias', 'company_name', 'bill_to_name', 'ship_to_name', 'customer_po_number', 'grand_total (Exc. Tax)', 'grand_total (Inc.Tax)', 'buying_cost (Exc. Tax)', 'margin (Exc. tax)', 'status', 'customer_committed_date']
     @model = SalesOrder
+    @export_name = 'sales_order_logistics'
+    @path = Rails.root.join('tmp', filename)
+    @columns = ['order_number', 'order_date', 'quote_number', 'quote_type', 'opportunity_type', 'invoice_number', 'inside_sales', 'outside_sales', 'company_alias', 'company_name', 'bill_to_name', 'ship_to_name', 'customer_po_number', 'grand_total (Exc. Tax)', 'grand_total (Inc.Tax)', 'buying_cost (Exc. Tax)', 'margin (Exc. tax)', 'status', 'customer_committed_date']
   end
 
   def call
-    model.status_Approved.where(:created_at => start_at..end_at).where.not(sales_quote_id: nil).each do |sales_order|
+    perform_export_later('SalesOrdersLogisticsExporter')
+  end
+
+  def build_csv
+    model.status_Approved.where(:created_at => start_at..end_at).where.not(sales_quote_id: nil).order(created_at: :desc).each do |sales_order|
       inquiry = sales_order.inquiry
 
       rows.push({
@@ -18,8 +23,8 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
                     :quote_type => inquiry.quote_category,
                     :opportunity_type => inquiry.opportunity_type,
                     :invoice_number => sales_order.invoices.pluck(:invoice_number).join(","),
-                    :inside_sales => sales_order.inside_sales_owner.to_s,
-                    :outside_sales => sales_order.outside_sales_owner.to_s,
+                    :inside_sales => sales_order.inside_sales_owner.try(:full_name),
+                    :outside_sales => sales_order.outside_sales_owner.try(:full_name),
                     :company_alias => inquiry.account.name,
                     :company_name => inquiry.company.name,
                     :bill_to_name => inquiry.contact.full_name,
@@ -33,7 +38,7 @@ class Services::Overseers::Exporters::SalesOrdersLogisticsExporter < Services::O
                     :customer_committed_date => ( inquiry.customer_committed_date.present? ? inquiry.customer_committed_date.to_date.to_s : nil ),
                 })
     end
-
-    generate_csv
+    export = Export.create!(export_type: 45)
+    generate_csv(export)
   end
 end

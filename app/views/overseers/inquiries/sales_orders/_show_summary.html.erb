@@ -10,16 +10,6 @@
         <strong class="d-block">Status</strong>
         <%= f.object.status || f.object.legacy_request_status %>
       </div>
-      <% if f.object.remote_approved? %>
-        <div class="col-6 col-md-3 mt-2 mt-md-0">
-          <strong class="d-block">Doc Entry</strong>
-          <%= f.object.draft_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-        <div class="col-6 col-md-3 mt-2 mt-md-0">
-          <strong class="d-block">Draft Entry</strong>
-          <%= f.object.remote_uid.blank? ? "SAP Request Pending" : f.object.remote_uid %>
-        </div>
-      <% end %>
       <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">SAP Status</strong>
         <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
@@ -46,11 +36,11 @@
         <strong class="d-block">Customer Order Date</strong>
         <%= @inquiry.customer_order_date %>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">Currency</strong>
         <%= f.object.currency %> (<%= f.object.conversion_rate %>)
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">Payment Terms</strong>
         <%= @inquiry.payment_option %>
       </div>
@@ -126,7 +116,7 @@
         <div class="col-6 mt-2">
           <strong class="d-block">Supplier Quotes Attachment</strong>
           <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
-            <%= link_to url_for(attachment), target: '_blank', :title => attachment.filename do %>
+            <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
               <span class="d-block"><%= attachment.filename %></span>
             <% end %>
           <% end if @inquiry.supplier_quotes.attached? %>
@@ -147,28 +137,28 @@
           <span data-toggle="tooltip" title="Quantity">Qty</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span><br>
+          <span data-toggle="tooltip" title="Unit of Measurement">UoM</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Unit Cost">UC</span><br>
+          <span data-toggle="tooltip" title="Unit Cost">UC</span>
         </th>
         <th class="no-sort">
           <span data-toggle="tooltip" title="Margin Percentage">%</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Unit Selling Price">USP</span><br>
+          <span data-toggle="tooltip" title="Unit Selling Price">USP</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Total Selling Price">TSP</span><br>
+          <span data-toggle="tooltip" title="Total Selling Price">TSP</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span><br>
+          <span data-toggle="tooltip" title="Total Selling Price with Tax">TSP w. Tax</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Tax Code">T. Code</span><br>
+          <span data-toggle="tooltip" title="Tax Code">T. Code</span>
         </th>
         <th class="no-sort">
-          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span><br>
+          <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
         </th>
       </tr>
       </thead>

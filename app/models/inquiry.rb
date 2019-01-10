@@ -52,6 +52,8 @@ class Inquiry < ApplicationRecord
   has_many :inquiry_status_records
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
+  has_one :customer_order, dependent: :nullify
+  has_one :freight_request
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -154,11 +156,11 @@ class Inquiry < ApplicationRecord
   }
   scope :won, -> {where(:status => :'Order Won')}
 
-  attr_accessor :force_has_sales_orders
+  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
-    inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
+    # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
     inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
@@ -249,7 +251,6 @@ class Inquiry < ApplicationRecord
       self.shipping_address ||= self.company.default_shipping_address
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
-      self.shipping_company ||= self.company
       self.commercial_terms_and_conditions ||= [
           '1. Cost does not include any additional certification if required as per Indian regulations.',
           '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
@@ -261,12 +262,8 @@ class Inquiry < ApplicationRecord
 
     self.is_sez ||= false
     self.inquiry_currency ||= self.build_inquiry_currency
-  end
 
-  after_initialize :set_global_defaults
-
-  def set_global_defaults
-    if self.company.present?
+    if self.company.present? && (self.billing_company.blank? || self.shipping_company.blank?)
       self.billing_company ||= self.company
       self.shipping_company ||= self.company
     end
@@ -315,6 +312,18 @@ class Inquiry < ApplicationRecord
         ['#', self.inquiry_number].join,
         self.company.name
     ].join(' ')
+  end
+
+  def po_subject
+    if self.customer_po_number.present?
+      if self.customer_po_number != ''
+        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
+      else
+        self.subject
+      end
+    else
+      self.subject
+    end
   end
 
   def billing_contact

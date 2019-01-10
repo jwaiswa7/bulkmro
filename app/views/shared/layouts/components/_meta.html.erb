@@ -1,5 +1,13 @@
 <meta charset="utf-8"/>
-<title><%= controller_name.titleize %> <%= action_name.humanize.titleize %> | Bulk MRO</title>
+<title><%=
+  if content_for(:page_title)
+    yield :page_title
+  elsif content_for?(:use_url_as_page_title)
+    request.path.split('/').last.titleize
+  else
+    [controller_name.titleize, action_name.humanize.titleize].join(' ')
+  end
+%> | Bulk MRO</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>

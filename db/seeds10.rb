@@ -11,3 +11,9 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(add_products_and_customer_products_to_company), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(update_inquiries_status), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(update_images_for_reliance_products), folder: 'seed_files')
+service.call

@@ -297,7 +297,7 @@ let initVueJS = () => {
                 let unit_selling_price = row.unit_selling_price;
                 let unit_cost_price_with_unit_freight_cost = row.unit_cost_price_with_unit_freight_cost;
 
-                if (trigger === 'margin_percentage' && margin_percentage < 100) {
+                if (trigger === 'margin_percentage' && ( margin_percentage < 100 || margin_percentage > 100 ) ) {
                     unit_selling_price = unit_cost_price_with_unit_freight_cost / (1 - (margin_percentage / 100));
                     row.unit_selling_price = toDecimal(unit_selling_price);
                 } else {

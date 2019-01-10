@@ -16,45 +16,42 @@
         <%= f.association :product, collection: [f.object.product], include_blank: "Type SKU number, name, or brand", label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
       </div>
       <div class="col-12">
-        <%= f.input :name %>
+        <%= f.input :name, required: false %>
       </div>
-      <div class="col-4">
-        <%= f.input :sku %>
+      <div class="col-6 col-md-4">
+        <%= f.input :sku, label: 'Material code', required: false %>
       </div>
-      <div class="col-4">
-        <%= f.input :customer_price %>
+      <div class="col-6 col-md-4">
+        <%= f.input :customer_price, label: 'Price' %>
       </div>
-      <div class="col-4">
-        <%= f.input :moq, label: "Minimum Ordered Quantity" %>
+      <div class="col-6 col-md-4">
+        <%= f.input :moq, label: 'MoQ' %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :tax_code, collection: selected_option_or_nil(f, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_for_product_overseers_tax_codes_path(product_id: ( f.object.product.present? ? f.object.product.id : nil))} %>
       </div>
-      <div class="col-4">
-        <%= f.association :tax_rate, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]}, input_html: {"data-bind": ""} %>
+      <div class="col-6 col-md-4">
+        <%= f.association :tax_rate, wrapper: :custom_multi_select, collection: TaxRate.all.map {|tax_rate| [tax_rate.to_s, tax_rate.id, {'data-tax_rate' => tax_rate.tax_percentage}]}, input_html: {"data-bind": ""} %>
       </div>
-      <div class="col-4">
+      <div class="col-6 col-md-4">
         <%= f.association :measurement_unit, wrapper: :custom_multi_select, required: false %>
       </div>
     </div>
 
     <div class="form-row">
-      <div class="col-6 col-md-6">
+      <div class="col-12">
         <%= f.association :brand, collection: selected_option_or_nil(f, :brand), include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
-      </div>
-      <div class="col-6 col-md-6">
-        <%= f.association :category, collection: selected_option_or_nil(f, :category), include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_categories_path} %>
       </div>
       <div class="col-12 col-md-12 ">
         <div class="d-block d-md-flex align-items-end">
           <div class="flex-grow-1">
-            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Customer Product Images' %>
+            <%= f.input :images, wrapper: :custom_file, input_html: {multiple: true}, label: 'Product images' %>
           </div>
           <div class="form-group">
             <% f.object.images.each do |image| %>
-              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :title => image.filename do %>
+              <%= link_to url_for(image), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => image.filename do %>
                 <i class="fal fa-download"></i>
-                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :title => ['Delete', ' ', image.filename, '?'].join('') do %>
+                <%= link_to overseers_attachment_path(image.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', image.filename, '?'].join('') do %>
                   <i class="fal fa-trash-alt"></i>
                 <% end if image.present? && policy(:attachment).destroy? %>
               <% end %>
