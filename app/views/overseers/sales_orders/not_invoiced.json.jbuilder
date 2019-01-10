@@ -32,6 +32,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
+                  format_currency(sales_order.invoice_total),
                   format_date(sales_order.mis_date),
                   format_date(sales_order.created_at)
               ]
