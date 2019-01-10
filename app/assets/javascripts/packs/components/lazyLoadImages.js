@@ -2,7 +2,7 @@ const lazyLoadImages = () => {
     $(".lazy-load").lazy({
         effect: "fadeIn",
         effectTime: 1000,
-        threshold: 0
+        threshold: 500
     });
 };
 
