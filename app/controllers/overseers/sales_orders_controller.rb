@@ -78,7 +78,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {render 'not_invoiced' }
       format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
+        service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
         service.call
 
         @indexed_sales_orders = service.indexed_records
