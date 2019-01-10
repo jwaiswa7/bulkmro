@@ -36,6 +36,8 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_accounts_path}],
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
+                       [],
+                       [],
                        [{"source": autocomplete_overseers_contacts_path}],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
