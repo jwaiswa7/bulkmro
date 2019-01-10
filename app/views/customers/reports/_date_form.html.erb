@@ -1,0 +1,10 @@
+<%= form_tag path, method:'get', class:'my-2 form-row' do %>
+  <div class="col-md-10">
+    <div class="form-group">
+      <input type="text" id="daterange" name="daterange" class="form-control" data-toggle="daterangepicker" data-direction="right" placeholder="Pick a daterange">
+    </div>
+  </div>
+  <div class="col-md-2">
+    <%= submit_tag "Apply", class: "btn btn-sm btn-block btn-success"%>
+  </div>
+<% end %>
