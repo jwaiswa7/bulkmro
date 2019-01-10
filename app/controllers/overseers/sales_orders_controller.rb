@@ -88,6 +88,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
+        buckets = status_service.all_indexed_records.aggregations["statuses"]["buckets"]
+        statuses = buckets.inject({}){|hash, bucket| hash[bucket["key"]] = bucket["doc_count"]; hash}
+        @total_order = statuses.values.sum
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end

@@ -18,7 +18,7 @@
 <% end %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses} %>
+  <%= render partial: "summary_with_extra_box", locals: {klass: SalesOrder, statuses: SalesOrder.remote_statuses} %>
 </div>
 
 <div class="col-lg-12">
