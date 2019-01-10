@@ -32,6 +32,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
+                  format_currency(sales_order.invoice_total),
                   format_date(sales_order.mis_date),
                   format_date(sales_order.created_at)
               ]
@@ -55,5 +56,6 @@ json.columnFilters [
 
 json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
+json.recordsTotalValue @total_values
 json.draw params[:draw]
 json.recordsSummary SalesOrder.remote_statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
