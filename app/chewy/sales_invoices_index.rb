@@ -30,6 +30,6 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_delivery_date_s, value: -> (record) { record.delivery_date.strftime("%d-%b-%Y").to_s if record.delivery_date.present? }, analyzer: 'substring'
     field :cp_po_number_s, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? && record.inquiry.customer_po_number.present? }, analyzer: 'substring'
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime("%d-%b-%Y").to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
-
+    field :potential_value, value: -> (record) {record.report_total}, type: 'double'
   end
 end

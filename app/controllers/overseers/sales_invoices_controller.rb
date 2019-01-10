@@ -14,7 +14,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_invoices, SalesInvoice)
         status_service.call
-
+        @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
     end
