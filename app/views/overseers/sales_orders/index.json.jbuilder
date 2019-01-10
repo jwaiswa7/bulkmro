@@ -2,7 +2,7 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if policy(sales_order).comments?
-                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success', :_blank)
+                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', sales_order.comments.last ? sales_order.comments.last.try(:message) : 'Comments and Approval', sales_order.comments.last ? 'success' : 'dark', :_blank)
                       end,
                       if policy(sales_order).edit_mis_date?
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
@@ -18,7 +18,11 @@ json.data (@sales_orders) do |sales_order|
                       end
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show? ),
+                  format_succinct_date(sales_order.created_at),
+                  format_succinct_date(sales_order.mis_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
+                  sales_order.inquiry.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(sales_order.inquiry), target: "_blank")}.compact.join(' '),
+                  sales_order.inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", sales_order.inquiry.po_subject].join('').html_safe, sales_order.inquiry.customer_po_sheet, target: "_blank") : sales_order.inquiry.po_subject,
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
                   conditional_link(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account), policy(sales_order.inquiry.company.account).show?),
@@ -26,12 +30,13 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
-                  format_date(sales_order.mis_date),
-                  format_date(sales_order.created_at)
               ]
 end
 
 json.columnFilters [
+                       [],
+                       [],
+                       [],
                        [],
                        [],
                        [],
@@ -42,8 +47,6 @@ json.columnFilters [
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        [],
-                       [],
-                       []
                    ]
 
 
