@@ -5,6 +5,8 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @paginate = paginate
     @status = params[:status]
     @base_filter = []
+    @sort_by = "created_at"
+    @sort_order = "desc"
 
     if params[:columns].present?
       params[:columns].each do |index, column|
@@ -15,6 +17,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
             search_filters << column
           end
         end
+      end
+      if params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+        @sort_by = params[:columns][params[:order].values.first['column']][:name]
+        @sort_order = params[:order].values.first['dir']
       end
     end
     if params[:base_filter_key].present? && params[:base_filter_value].present?
@@ -100,7 +106,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def sort_definition
-    {:created_at => :desc}
+    {"#{sort_by}" => "#{sort_order}"}
   end
 
   def index_klass
@@ -203,13 +209,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def aggregate_by_status(key)
     {
-          statuses: {
-              terms: {
-                  field: key
-              }
-          }
+        statuses: {
+            terms: {
+                field: key
+            }
+        }
     }
   end
 
-  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter
+  attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter, :sort_by, :sort_order
 end

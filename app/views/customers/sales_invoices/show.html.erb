@@ -1,0 +1,328 @@
+<% provide :container_fluid, true %>
+
+<div class="col-12">
+  <div class="page-header">
+    <div class="">
+      <h2>
+        Invoice <%= ['#', @sales_invoice.invoice_number].join if @sales_invoice.invoice_number.present? %>
+        <% if @sales_invoice.original_invoice.attached? %>
+          <a class="btn btn-dark" href="<%= url_for(@sales_invoice.original_invoice) %>"><i class="fal fa-file-pdf"></i>
+            Download PDF</a>
+        <% elsif policy(@sales_invoice).show? %>
+          <a class="btn btn-dark" href="<%= overseers_inquiry_sales_invoice_path(@sales_invoice.inquiry, @sales_invoice, format: :pdf) %>"><i class="fal fa-file-pdf"></i> Download PDF</a>
+        <% end %>
+      </h2>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class=form-row>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Order Number</strong>
+          #<%= @sales_invoice.sales_order.order_number %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">PO Number</strong>
+          #<%= @sales_invoice.inquiry.customer_po_number %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Payment Method</strong>
+          Bank Transfer
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Currency</strong>
+          <%= @sales_invoice.sales_order.currency %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-row mb-1">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">PO Date</strong>
+          <%= format_date(@sales_invoice.inquiry.customer_order_date) %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Date of Quotation</strong>
+          <%= format_date(@sales_invoice.sales_order.sales_quote.sent_at) %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Sales Order Date</strong>
+          <%= format_date(@sales_invoice.sales_order.approval.created_at) %>
+        </div>
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
+          <strong class="d-block">Payment Terms</strong>
+          <%= @sales_invoice.inquiry.payment_option.name %>
+        </div>
+      </div>
+      <div class="card-alternative mt-3 pb-3">
+        <div class="form-row">
+          <div class="col-12 col-md-6">
+            <strong class="d-block">Supplier - Billing Address</strong>
+            <%= @sales_invoice.inquiry.bill_from.address.name.to_s %><br>
+            <%= @sales_invoice.inquiry.bill_from.address.to_compact_multiline_s if @sales_invoice.inquiry.bill_from.present? %>
+            <% if @sales_invoice.inquiry.bill_from.address.phone.present? %>
+              <span class="d-block"><em>Contact</em>:  <%= @sales_invoice.inquiry.contact.full_name %></span>
+              - <%= @sales_invoice.inquiry.bill_from.address.phone %><br>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_invoice.inquiry.bill_from.address.gst %></span>
+          </div>
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <strong class="d-block">Supplier - Shipping Address</strong>
+            <%= @sales_invoice.inquiry.ship_from.address.name.to_s %><br>
+            <%= @sales_invoice.inquiry.ship_from.address.to_compact_multiline_s if @sales_invoice.inquiry.ship_from.present? %>
+            <% if @sales_invoice.inquiry.ship_from.address.mobile || @sales_invoice.inquiry.ship_from.address.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_invoice.inquiry.ship_from.address.mobile || @sales_invoice.inquiry.ship_from.address.telephone %></span>
+            <% end %>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_invoice.inquiry.ship_from.address.gst %></span>
+          </div>
+        </div>
+
+        <div class="form-row mt-2">
+          <div class="col-12 col-md-6">
+            <strong class="d-block">Customer - Billing Address</strong>
+            <%= @sales_invoice.inquiry.billing_contact.full_name %><br>
+            <%= @sales_invoice.inquiry.company.name %><br>
+            <%= @sales_invoice.inquiry.billing_address.to_compact_multiline_s %><br>
+            <% if @sales_invoice.inquiry.contact.phone.present? %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_invoice.inquiry.contact.full_name %>
+                - <%= @sales_invoice.inquiry.contact.phone %></span>
+            <% end %>
+            <span class="d-block"><em>Email</em>: <%= @sales_invoice.inquiry.contact.email if @sales_invoice.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_invoice.inquiry.billing_address.gst || @sales_invoice.inquiry.company.default_billing_address.gst %></span>
+          </div>
+
+          <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <strong class="d-block">Customer - Shipping Address</strong>
+            <%= @sales_invoice.inquiry.shipping_contact.try(:full_name) || (@sales_invoice.inquiry.billing_contact.full_name) %>
+            <br>
+            <%= @sales_invoice.inquiry.company.name %><br>
+            <%= @sales_invoice.inquiry.shipping_address.to_compact_multiline_s %><br>
+            <% if @sales_invoice.inquiry.contact.mobile || @sales_invoice.inquiry.contact.telephone %>
+              <span class="d-block"><em>Contact</em>: <%= @sales_invoice.inquiry.contact.full_name %>
+                - <%= @sales_invoice.inquiry.contact.phone %></span>
+            <% end %>
+            <span class="d-block"><em>Email</em>: <%= @sales_invoice.inquiry.contact.email if @sales_invoice.inquiry.contact.email.present? %></span>
+            <span class="d-block"><em>GST Number</em>: <%= @sales_invoice.inquiry.shipping_address.gst || @sales_invoice.inquiry.company.default_shipping_address.gst %></span>
+          </div>
+        </div>
+      </div>
+
+      <% if @sales_invoice.inquiry.attachments.present? %>
+        <div class="form-row mt-3">
+          <% if @sales_invoice.inquiry.customer_po_sheet.attached? %>
+            <div class="col-6">
+              <strong class="d-block">Purchase Order</strong>
+              <%= link_to @sales_invoice.inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @sales_invoice.inquiry.customer_po_sheet.filename %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div>
+        <div class="form-row my-2 text-small">
+          <div class="col-12">
+            <table class="datatable table table-bordered dt-responsive" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Product Number">SKU</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
+                </th>
+                <th class="no-sort">
+                  <span>Product</span>
+                </th>
+                <th class="no-sort">
+                  <span>Make</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Quantity">Qty</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Tax">Tax(%)</span>
+                </th>
+                <th class="no-sort">
+                  <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @sales_invoice.rows.each_with_index do |row, index| %>
+                <tr>
+                  <td>
+                      <span>
+                          <%= index+1 %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.sku %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                              <%= row.mpn || "" %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                        <%= row.name %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.brand %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.uom %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.quantity %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                        <%= number_to_currency(row.metadata['row_total'], precision: 2, unit: '') %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= row.tax_rate %>
+                      </span>
+                  </td>
+                  <td>
+                      <span>
+                          <%= number_to_currency((row.metadata['row_total_incl_tax'].to_f), precision: 2, unit: '') %>
+                      </span>
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class=form-row>
+        <div class="col-6 col-md-3">
+          Line Items
+          <strong class="d-block"><%= @sales_invoice.rows.size %></strong>
+        </div>
+        <div class="col-6 col-md-3">
+          Subtotal
+          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total) %></strong>
+        </div>
+        <div class="col-6 col-md-3 mt-2 mt-md-0">
+          Tax
+          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total_tax) %></strong>
+        </div>
+        <div class="col-6 col-md-3 mt-2 mt-md-0">
+          Grand Total
+          <strong class="d-block"><%= format_currency(@sales_invoice.sales_order.calculated_total_with_tax) %></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @sales_invoice.sales_order.inquiry.bill_from.present? && @sales_invoice.sales_order.inquiry.bill_from.legacy_id == 12 %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Note</p>
+        <p class="mb-0">
+          1. Order once confirmed cannot be cancelled or returned.<br>
+          2. Delayed payments will attract 2% interest per month.<br>
+          3. If any modifications are required in the invoice, please communicate the same in writing within 2 working days otherwise the invoice will be deemed accepted.<br>
+          4. Order once confirmed cannnot be cancelled.<br>
+          5. Invoice will be deemed accepted unless any discrepancy is raised within 7 days from the date of invoice.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+        <p class="mb-0">
+          - Please reference our Bulk MRO Industrial Supply  Pvt. Ltd. Invoice #<%= @sales_invoice.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>
+          - Bulk MRO Industrial Supply is not responsible for any banking fees.
+          <% if @sales_invoice.sales_order.sales_quote.is_sez %>
+            - Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <div class="col-md-6">
+            <p class="mb-0">
+              <strong class="d-block">First Republic Bank</strong>
+              Address: 2274 EI Camino Real Palo Alto, CA 94306<br>
+              Account Name: Bulk MRO Industrial Supply , INC ABA : 32108166 <br>
+              Account Number: 80003839610<br>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Note</p>
+        <p class="mb-0">
+          1. Order once confirmed can not be cancelled.<br>
+          2. Delayed payments will attract 2% interest per month.<br>
+          3. Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date of invoice.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Other Information</p>
+        <p class="mb-0">
+          - Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice #<%= @sales_invoice.metadata['increment_id'] %> when remitting Wire Transfer payment.<br>
+          - Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.
+          <% if @sales_invoice.sales_order.sales_quote.is_sez %>
+            - Supply Meant for SEZ/Export Under Letter of Undertaking without payment of IGST<br/>
+          <% end %>
+            </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <p class="text-uppercase text-black-50 mb-1">Wire Transfer Details</p>
+        <div class="form-row">
+          <% if @sales_invoice.sales_order.currency.name.present? %>
+            <% if @sales_invoice.sales_order.currency.name.to_s == 'USD' || @sales_invoice.sales_order.currency.name.to_s == 'EUR' || @sales_invoice.sales_order.currency.name.to_s == 'GBP' %>
+              <%= render 'shared/layouts/view_templates/primary_bank_info', currency: @sales_invoice.sales_order.currency.name.to_s %>
+            <% else %>
+              <%= render 'shared/layouts/view_templates/bank_info' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
