@@ -224,5 +224,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
+  def filter_by_script(condition)
+    {
+        script: {
+            script: condition
+        }
+    }
+  end
+
   attr_accessor :query_string, :page, :per, :records, :indexed_records, :current_overseer, :search_filters, :range_filters, :paginate, :base_filter, :sort_by, :sort_order
 end

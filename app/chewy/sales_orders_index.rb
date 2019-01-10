@@ -38,29 +38,28 @@ class SalesOrdersIndex < BaseIndex
     field :sent_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) {record.updated_by.to_s}, analyzer: 'substring'
-    field :cp_status_s, value: -> (record) { record.effective_customer_status.to_s }, analyzer: 'substring'
-    field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime("%d-%b-%Y").to_s if record.inquiry.customer_order_date.present? }, analyzer: 'substring'
-    field :cp_committed_date_s, value: -> (record) { record.inquiry.customer_committed_date.strftime("%d-%b-%Y").to_s if record.inquiry.customer_committed_date.present? }, analyzer: 'substring'
-    field :cp_created_at_s, value: -> (record) { record.created_at.strftime("%d-%b-%Y").to_s if record.created_at.present? }, analyzer: 'substring'
-    field :cp_calculated_total_s, value: -> (record) { record.calculated_total.to_s if record.calculated_total.present?}, analyzer: 'substring'
-    field :cp_quote_id_s, value: -> (record) { record.id.to_s if record.id.present?}, analyzer: 'substring'
-    field :cp_subject_s, value: -> (record) { record.inquiry.subject.to_s if record.inquiry.subject.present?}, analyzer: 'substring'
-    field :cp_ship_to_s, value: -> (record) { record.inquiry.shipping_contact.try(:name) || record.inquiry.billing_contact.try(:name)}, analyzer: 'substring'
-    field :cp_company_s, value: -> (record) { record.inquiry.company.name.to_s if record.inquiry.company.name.present?}, analyzer: 'substring'
-    field :cp_contact_email_s, value: -> (record) { record.inquiry.contact.email.to_s if record.inquiry.contact.email.present?}, analyzer: 'substring'
-    field :cp_billing_city_s, value: -> (record) { record.inquiry.billing_address.city_name.to_s if record.inquiry.billing_address.present?}, analyzer: 'substring'
-    field :cp_shipping_city_s, value: -> (record) { record.inquiry.shipping_address.city_name.to_s if record.inquiry.shipping_address.present?}, analyzer: 'substring'
-    field :cp_billing_gst_s, value: -> (record) { [record.inquiry.billing_address.try(:gst) || record.inquiry.company.default_billing_address.try(:gst)].join if record.inquiry.billing_address.try(:gst) || record.inquiry.company.default_billing_address.try(:gst)}, analyzer: 'substring'
-    field :cp_shipping_gst_s, value: -> (record) { [record.inquiry.shipping_address.try(:gst) || record.inquiry.company.default_shipping_address.try(:gst)].join if record.inquiry.shipping_address.try(:gst) || record.inquiry.company.default_shipping_address.try(:gst)}, analyzer: 'substring'
+    field :cp_status_s, value: -> (record) {record.effective_customer_status.to_s}, analyzer: 'substring'
+    field :cp_order_date_s, value: -> (record) {record.inquiry.customer_order_date.strftime("%d-%b-%Y").to_s if record.inquiry.customer_order_date.present?}, analyzer: 'substring'
+    field :cp_committed_date_s, value: -> (record) {record.inquiry.customer_committed_date.strftime("%d-%b-%Y").to_s if record.inquiry.customer_committed_date.present?}, analyzer: 'substring'
+    field :cp_created_at_s, value: -> (record) {record.created_at.strftime("%d-%b-%Y").to_s if record.created_at.present?}, analyzer: 'substring'
+    field :cp_calculated_total_s, value: -> (record) {record.calculated_total.to_s if record.calculated_total.present?}, analyzer: 'substring'
+    field :cp_quote_id_s, value: -> (record) {record.id.to_s if record.id.present?}, analyzer: 'substring'
+    field :cp_subject_s, value: -> (record) {record.inquiry.subject.to_s if record.inquiry.subject.present?}, analyzer: 'substring'
+    field :cp_ship_to_s, value: -> (record) {record.inquiry.shipping_contact.try(:name) || record.inquiry.billing_contact.try(:name)}, analyzer: 'substring'
+    field :cp_company_s, value: -> (record) {record.inquiry.company.name.to_s if record.inquiry.company.name.present?}, analyzer: 'substring'
+    field :cp_contact_email_s, value: -> (record) {record.inquiry.contact.email.to_s if record.inquiry.contact.email.present?}, analyzer: 'substring'
+    field :cp_billing_city_s, value: -> (record) {record.inquiry.billing_address.city_name.to_s if record.inquiry.billing_address.present?}, analyzer: 'substring'
+    field :cp_shipping_city_s, value: -> (record) {record.inquiry.shipping_address.city_name.to_s if record.inquiry.shipping_address.present?}, analyzer: 'substring'
+    field :cp_billing_gst_s, value: -> (record) {[record.inquiry.billing_address.try(:gst) || record.inquiry.company.default_billing_address.try(:gst)].join if record.inquiry.billing_address.try(:gst) || record.inquiry.company.default_billing_address.try(:gst)}, analyzer: 'substring'
+    field :cp_shipping_gst_s, value: -> (record) {[record.inquiry.shipping_address.try(:gst) || record.inquiry.company.default_shipping_address.try(:gst)].join if record.inquiry.shipping_address.try(:gst) || record.inquiry.company.default_shipping_address.try(:gst)}, analyzer: 'substring'
     field :sales_order_rows do
-      field :sku, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.remote_uid }, analyzer: 'substring'
-      field :brand, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.brand.name if sales_order_row.sales_quote_row.product.brand.present?}, analyzer: 'substring'
-      field :name, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.name if sales_order_row.sales_quote_row.product.name.present?}, analyzer: 'substring'
-      field :mpn, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.mpn if sales_order_row.sales_quote_row.product.mpn.present?}, analyzer: 'substring'
-      field :invoice_total, value: -> (record) {remote_statuses[record.invoice_total]}, type: 'integer'
-      field :potential_value, value: -> (record) {record.not_invoiced_value(record.status.to_s)}, type: 'double'
-
+      field :sku, value: -> (record, sales_order_row) {sales_order_row.sales_quote_row.product.remote_uid}, analyzer: 'substring'
+      field :brand, value: -> (record, sales_order_row) {sales_order_row.sales_quote_row.product.brand.name if sales_order_row.sales_quote_row.product.brand.present?}, analyzer: 'substring'
+      field :name, value: -> (record, sales_order_row) {sales_order_row.sales_quote_row.product.name if sales_order_row.sales_quote_row.product.name.present?}, analyzer: 'substring'
+      field :mpn, value: -> (record, sales_order_row) {sales_order_row.sales_quote_row.product.mpn if sales_order_row.sales_quote_row.product.mpn.present?}, analyzer: 'substring'
     end
+    field :invoice_total, type: 'integer', value: -> (record) {record.invoice_total}
+    field :order_total, type: 'integer', value: -> (record) {record.order_total}
   end
 
 end
