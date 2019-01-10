@@ -48,8 +48,8 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
-              <% if customer_product.best_image.present? && customer_product.medium_best_image.present? %>
-                <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500" fallback_url="<%= image_path('coming_soon.png') %>"/>
+              <% if customer_product.best_image.present? %>
+                <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500" />
               <% else %>
                 <img data-src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" width="500" class="lazy-load" src="<%= image_path('coming_soon.png') %>" />
               <% end %>
