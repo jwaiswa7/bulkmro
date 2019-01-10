@@ -28,7 +28,7 @@ module Mixins::CanBeWatermarked
           }
       )
       begin
-        ActiveStorage::Variant.new(image, variation).processed
+        ActiveStorage::Variant.new(image, variation).processed.service_url
       rescue Errno::ENOENT => e
         nil
       end
