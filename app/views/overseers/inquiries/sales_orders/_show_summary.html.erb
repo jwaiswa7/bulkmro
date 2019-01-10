@@ -204,10 +204,10 @@
       <% end %>
       </tbody>
     </table>
-    <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-      <%= row.hidden_field :sales_order_id %>
-      <%= row.hidden_field :id %>
-      <% if row.object.product.present? && (row.object.product.kit.present? && row.object.product.kit.kit_product_rows.present?) %>
+    <%= @sales_order.rows.each do |row| %>
+      <%= hidden_field_tag :sales_order_id, row.sales_order_id%>
+      <%= hidden_field_tag :id, row.id %>
+      <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
         <h4 class="mb-0 mt-3 text-uppercase text-small text-black-50">Kit product details</h4>
         <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
           <thead>
@@ -230,7 +230,7 @@
           </tr>
           </thead>
           <tbody>
-          <% row.object.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
+          <% row.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
             <tr>
               <td class="col-1">
                 <span>#<%= (index + 1) %></span>
