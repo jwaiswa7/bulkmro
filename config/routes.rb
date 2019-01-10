@@ -203,6 +203,10 @@ Rails.application.routes.draw do
         get 'material_pickup_queue'
         get 'material_delivered_queue'
       end
+
+      scope module: 'purchase_orders' do
+        resources :material_readiness_followup
+      end
     end
 
     resources :sales_invoices do
