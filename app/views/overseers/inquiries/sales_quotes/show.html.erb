@@ -1,15 +1,6 @@
 <% provide :heading, @sales_quote.to_s %>
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
-    <%= simple_form_for(@sales_quote, url: "", method: :post, :html => {:class => 'was-validated needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-
-
-      <% if f.object.errors.any? %>
-        <% f.object.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      <% end %>
-      <%= render 'overseers/inquiries/sales_quotes/show_summary', f: f %>
-    <% end %>
+      <%= render 'overseers/inquiries/sales_quotes/show_summary', sales_quote: @sales_quote %>
   <% end %>
 </div>
