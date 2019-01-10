@@ -212,6 +212,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         statuses: {
             terms: {
                 field: key
+            },
+            aggs: {
+                total_value: {
+                    sum: {
+                        field: "potential_value"
+                    }
+                }
             }
         }
     }

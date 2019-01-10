@@ -9,6 +9,10 @@ const updateSummaryBox = () => {
             let statusId = ".status-" + summary["status_id"]
             $(statusId).find('.status-count-'+summary["status_id"]).text(statusSize);
         })
+        $.each(json.recordTotalValue, function (index, total_value) {
+            let statusId = ".status-" + index
+            $(statusId).find('.status-value-'+index).text("INR "+total_value);
+        })
     });
 };
 
