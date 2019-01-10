@@ -1972,7 +1972,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def update_total_cost_in_sales_order
     SalesOrder.all.each do |so|
-      so.order_total = calculated_total
+      so.order_total = so.calculated_total
       so.invoice_total = so.invoices.map{|i| i.metadata.present? ? ( i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f ) : 0.0 }.inject(0){|sum,x| sum + x }
       so.save
     end

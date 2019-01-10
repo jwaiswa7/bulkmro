@@ -21,32 +21,32 @@
       </div>
     <% end %>
     <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-      <a data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " href="#">
+      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " >
         <div class="card-body px-3 pt-3 pb-3">
           <div class="text-center d-flex flex-column h-100">
             <p class="mb-1 text-small text-uppercase text-red">
               <strong>Not Invoiced</strong>
             </p>
-            <h5 class="mb-0 mt-auto text-red status-count"></h5>
+            <h5 class="mb-0 mt-auto text-red not-invoiced-status"></h5>
             <hr class="my-2">
-            <h5 class="my-0 text-small text-red status-value">&#8377;0</h5>
+            <h5 class="my-0 text-small text-red not-invoiced-value">&#8377;0</h5>
           </div>
         </div>
-      </a>
+      </div>
     </div>
     <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-      <a data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-blue " href="#">
+      <div data-value="" name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-blue " >
         <div class="card-body px-3 pt-3 pb-3">
           <div class="text-center d-flex flex-column h-100">
             <p class="mb-1 text-small text-uppercase text-blue">
               <strong>Total Order</strong>
             </p>
-            <h5 class="mb-0 mt-auto text-blue status-count"></h5>
+            <h5 class="mb-0 mt-auto text-blue"><%= SalesOrder.count %></h5>
             <hr class="my-2">
-            <h5 class="my-0 text-small text-blue status-value">&#8377;0</h5>
+            <h5 class="my-0 text-small text-blue status-value"><%= format_currency(SalesOrder.pluck(:order_total).compact.sum) %></h5>
           </div>
         </div>
-      </a>
+      </div>
     </div>
 
   </div>

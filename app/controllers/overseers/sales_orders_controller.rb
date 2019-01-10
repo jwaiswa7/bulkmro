@@ -66,7 +66,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -86,13 +86,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
         status_service.call
-        buckets = status_service.all_indexed_records.aggregations["statuses"]["buckets"]
-        statuses = buckets.inject({}){|hash, bucket| hash[bucket["key"]] = bucket["doc_count"]; hash}
-        @total_order = statuses.values.sum
+
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @statuses_count = @statuses.values.sum
+        @not_invoiced_values = @total_values.values.sum
       end
     end
   end
