@@ -79,7 +79,7 @@
             <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, policy(:sales_order).index? %>
-              <%= nav_dropdown_item 'Uninvoiced Sales Orders', overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'Uninvoiced Sales Orders', not_invoiced_overseers_sales_orders_path, policy(:sales_order).index? %>
               <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
               <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
             </ul>
