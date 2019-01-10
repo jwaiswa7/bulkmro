@@ -21,6 +21,7 @@ json.data (@sales_orders) do |sales_order|
                   format_succinct_date(sales_order.created_at),
                   format_succinct_date(sales_order.mis_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
+                  sales_order.inquiry.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(sales_order.inquiry), target: "_blank")}.compact.join(' '),
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
                   conditional_link(sales_order.inquiry.company.account.name, overseers_account_path(sales_order.inquiry.company.account), policy(sales_order.inquiry.company.account).show?),
@@ -32,6 +33,7 @@ json.data (@sales_orders) do |sales_order|
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],
