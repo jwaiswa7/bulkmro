@@ -99,7 +99,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
       inquiry = sales_order.inquiry
 
       rows.push({
-                    :inside_sales => sales_order.inside_sales_owner.full_name,
+                    :inside_sales => sales_order.inside_sales_owner.try(:full_name),
                     :inquiry_number => inquiry.inquiry_number,
                     :bm_number => row.product.sku,
                     :description => row.product.description,
