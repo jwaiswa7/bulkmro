@@ -18,6 +18,7 @@ json.data (@sales_orders) do |sales_order|
                       end
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show? ),
+                  format_succinct_date(sales_order.created_at),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
@@ -26,12 +27,12 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
-                  format_date(sales_order.mis_date),
-                  format_date(sales_order.created_at)
+                  format_succinct_date(sales_order.mis_date),
               ]
 end
 
 json.columnFilters [
+                       [],
                        [],
                        [],
                        [],
@@ -43,7 +44,6 @@ json.columnFilters [
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        [],
                        [],
-                       []
                    ]
 
 
