@@ -54,3 +54,4 @@ json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]
 json.recordsSummary SalesOrder.remote_statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values

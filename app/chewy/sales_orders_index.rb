@@ -60,6 +60,7 @@ class SalesOrdersIndex < BaseIndex
     end
     field :invoice_total, type: 'integer', value: -> (record) {record.invoice_total}
     field :order_total, type: 'integer', value: -> (record) {record.order_total}
+    field :potential_value, value: -> (record) {record.try(:calculated_total)}, type: 'double'
   end
 
 end
