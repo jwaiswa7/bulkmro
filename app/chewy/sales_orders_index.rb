@@ -58,6 +58,7 @@ class SalesOrdersIndex < BaseIndex
       field :name, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.name if sales_order_row.sales_quote_row.product.name.present?}, analyzer: 'substring'
       field :mpn, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.mpn if sales_order_row.sales_quote_row.product.mpn.present?}, analyzer: 'substring'
     end
+    field :potential_value, value: -> (record) {record.try(:calculated_total)}, type: 'double'
   end
 
 end
