@@ -57,7 +57,10 @@ class SalesOrdersIndex < BaseIndex
       field :brand, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.brand.name if sales_order_row.sales_quote_row.product.brand.present?}, analyzer: 'substring'
       field :name, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.name if sales_order_row.sales_quote_row.product.name.present?}, analyzer: 'substring'
       field :mpn, value: -> (record, sales_order_row) { sales_order_row.sales_quote_row.product.mpn if sales_order_row.sales_quote_row.product.mpn.present?}, analyzer: 'substring'
+      field :invoice_total, value: -> (record) {remote_statuses[record.invoice_total]}, type: 'integer'
     end
   end
 
 end
+
+
