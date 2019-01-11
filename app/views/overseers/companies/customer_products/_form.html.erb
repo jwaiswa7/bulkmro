@@ -46,7 +46,7 @@
         <div class="form-group">
           <%= f.label :tag_ids, 'Categories' %>
           <div class="select2-wrapper">
-            <%= f.select :tag_ids, @company.tags.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple select2-tags', :"data-placeholder" => 'Select / Add Categories' %>
+            <%= f.select :tag_ids, @company.tags.collect {|x| [x.to_s, x.id]}, {}, :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select / Add Categories' %>
           </div>
         </div>
       </div>
