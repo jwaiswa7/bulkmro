@@ -204,11 +204,11 @@
       <% end %>
       </tbody>
     </table>
-    <%= @sales_order.rows.each do |row| %>
+    <% @sales_order.rows.each do |row| %>
       <%= hidden_field_tag :sales_order_id, row.sales_order_id%>
       <%= hidden_field_tag :id, row.id %>
       <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
-        <h4 class="mb-0 mt-3 text-uppercase text-small text-black-50">Kit product details</h4>
+        <h4 class="mb-0 mt-3 text-small "> <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong></h4>
         <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
           <thead>
           <tr>
