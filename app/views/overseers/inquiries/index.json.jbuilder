@@ -19,7 +19,7 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank"),
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
-      inquiry.is_final_quote_present_for_margin_percentage,
+      inquiry.margin_percentage,
       format_currency(inquiry.try(:potential_amount)),
       format_currency(inquiry.final_sales_quote.try(:calculated_total)),
       format_succinct_date(inquiry.created_at)

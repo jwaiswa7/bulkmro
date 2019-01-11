@@ -370,12 +370,8 @@ class Inquiry < ApplicationRecord
     end
   end
 
-  def is_final_quote_present_for_margin_percentage
-    if self.final_sales_quote.present?
-      self.final_sales_quote.calculated_total_margin_percentage.to_f
-    else
-      0
-    end
+  def margin_percentage
+    self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
   end
 
 end
