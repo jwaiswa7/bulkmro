@@ -183,6 +183,7 @@ Rails.application.routes.draw do
         get 'export_for_logistics'
         get 'export_for_sap'
         get 'autocomplete'
+        get 'not_invoiced'
       end
 
       scope module: 'sales_orders' do

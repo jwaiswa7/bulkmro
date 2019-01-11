@@ -28,6 +28,7 @@
     field :updated_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
+    field :potential_value, value: -> (record) {record.potential_value(record.status.to_s)}, type: 'double'
   end
 
   def self.fields

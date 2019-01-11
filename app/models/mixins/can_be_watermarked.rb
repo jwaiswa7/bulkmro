@@ -28,7 +28,11 @@ module Mixins::CanBeWatermarked
           }
       )
       begin
-        ActiveStorage::Variant.new(image, variation).processed.service_url
+        if image.present?
+          ActiveStorage::Variant.new(image, variation).processed
+        else
+          '/assets/coming_soon.png'
+        end
       rescue Errno::ENOENT => e
         nil
       end

@@ -190,4 +190,8 @@ class SalesOrder < ApplicationRecord
   def has_purchase_order_request
     self.po_request.present?
   end
+
+  def not_invoiced_value(status)
+    self.order_total
+  end
 end
