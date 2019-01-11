@@ -204,6 +204,55 @@
       <% end %>
       </tbody>
     </table>
+    <% @sales_order.rows.each do |row| %>
+      <%= hidden_field_tag :sales_order_id, row.sales_order_id%>
+      <%= hidden_field_tag :id, row.id %>
+      <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
+        <h4 class="mb-0 mt-3 text-small "> <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong></h4>
+        <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort">
+              <span>Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Quantity">Qty</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% row.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
+            <tr>
+              <td class="col-1">
+                <span>#<%= (index + 1) %></span>
+              </td>
+              <td class="col-6">
+                <span><%= kit_product.product.name %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.quantity %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_code.try(:code) %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_rate.to_s %></span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    <% end %>
   </div>
   <div class="card-footer">
     <div class=form-row>
