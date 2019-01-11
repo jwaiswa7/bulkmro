@@ -118,14 +118,4 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @invoice_request = InvoiceRequest.find(params[:id])
   end
 
-  def set_invoice_status_request
-   @status = @invoice_request.status
-    if (@status.include? "Pending")
-      @changed_status = @status.remove("Pending")
-    elsif (@status.include? "Completed AR Invoice" ) || (@status.include? "Cancelled AR Invoice")
-      @changed_status = @status.gsub(@status, "AR Invoice")
-    else
-      @changed_status = "Invoice"
-    end
-  end
 end
