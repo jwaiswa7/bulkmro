@@ -18,7 +18,7 @@
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
-    field :margin_percentage, value: -> (record) { record.is_final_quote_present_for_margin_percentage }, type: 'float'
+    field :margin_percentage, value: -> (record) { record.margin_percentage }, type: 'float'
     field :company_id, value: -> (record) { record.company_id }
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.account_id }
