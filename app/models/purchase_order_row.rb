@@ -45,7 +45,6 @@ class PurchaseOrderRow < ApplicationRecord
     self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
-  private
   def get_product
     Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
   end
