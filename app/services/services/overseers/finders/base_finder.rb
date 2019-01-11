@@ -207,12 +207,27 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key)
+  def aggregate_by_status(key= "statuses",  aggregation_field= "potential_value", status_field)
     {
-        statuses: {
+        "#{key}": {
             terms: {
-                field: key
+                field: status_field
+            },
+            aggs: {
+                total_value: {
+                    sum: {
+                        field: aggregation_field
+                    }
+                }
             }
+        }
+    }
+  end
+
+  def filter_by_script(condition)
+    {
+        script: {
+            script: condition
         }
     }
   end
