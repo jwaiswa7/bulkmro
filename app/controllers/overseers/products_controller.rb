@@ -102,7 +102,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
-    redirect_to overseers_product_path(@product)+"#inventory", notice: flash_message(@product, action_name)
+    redirect_to overseers_product_path(@product, :anchor => "inventory"), notice: flash_message(@product, action_name)
   end
 
   def export_all
