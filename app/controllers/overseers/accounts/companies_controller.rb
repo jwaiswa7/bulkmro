@@ -7,7 +7,15 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def new
-    @company = @account.companies.build(overseer: current_overseer)
+
+    if params[:ccr_id].present?
+      requested_comp = CompanyCreationRequest.where(:id => params[:ccr_id]).last
+      if !requested_comp.nil?
+        @company = @account.companies.build({'name': requested_comp.name, 'company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
+      end
+    else
+      @company = @account.companies.build(overseer: current_overseer)
+    end
     authorize @company
   end
 
@@ -78,6 +86,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :company_type,
         :priority,
         :site,
+        :company_creation_request_id,
         :nature_of_business,
         :creadit_limit,
         :tan_proof,

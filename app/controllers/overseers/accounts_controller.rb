@@ -21,7 +21,14 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def new
-    @account = Account.new(overseer: current_overseer)
+    if params[:acr_id].present?
+      requested_account = AccountCreationRequest.where(:id => params[:acr_id]).last
+      if !requested_account.nil?
+        @account = Account.new({overseer: current_overseer,name: requested_account.name})
+      else
+        @account = Account.new(overseer: current_overseer)
+      end
+    end
     authorize @account
   end
 
