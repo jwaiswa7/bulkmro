@@ -206,7 +206,7 @@ Rails.application.routes.draw do
       end
 
       scope module: 'purchase_orders' do
-        resources :material_readiness_followup
+        resources :material_readiness_followups
       end
     end
 
