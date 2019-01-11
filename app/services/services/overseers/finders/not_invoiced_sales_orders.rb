@@ -1,4 +1,4 @@
-class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::BaseFinder
+class Services::Overseers::Finders::NotInvoicedSalesOrders < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -22,6 +22,7 @@ class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::
       indexed_records = range_query(indexed_records)
     end
 
+    indexed_records = indexed_records.filter(filter_by_script("doc['order_total'].value >  doc['invoice_total'].value"))
 
     indexed_records = indexed_records.aggregations(aggregate_by_status('remote_status'))
     indexed_records

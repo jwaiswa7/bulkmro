@@ -15,6 +15,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
 
+        @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
 
         render 'pending'
@@ -56,7 +57,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def index
     authorize :sales_order
-
     respond_to do |format|
       format.html {}
       format.json do
@@ -66,10 +66,33 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
         status_service.call
 
+        @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+      end
+    end
+  end
+
+  def not_invoiced
+    authorize :sales_order
+    respond_to do |format|
+      format.html {render 'not_invoiced' }
+      format.json do
+        service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+        @statuses_count = @statuses.values.sum
+        @not_invoiced_values = @total_values.values.sum
       end
     end
   end

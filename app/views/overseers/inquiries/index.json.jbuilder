@@ -37,7 +37,6 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
-                       [],
                        [{"source": autocomplete_overseers_contacts_path}],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
@@ -48,5 +47,6 @@ json.columnFilters [
 
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
+json.recordsTotalValue @total_values
 json.draw params[:draw]
 json.recordsSummary Inquiry.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
