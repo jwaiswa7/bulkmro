@@ -10,6 +10,7 @@
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
     field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number:nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
     field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
+    field :potential_amount, value: -> (record) { record.potential_amount.to_f if record.potential_amount.present? }, type: 'integer'
     field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }, type: 'integer'
     field :inside_sales_owner_id, value: -> (record) { record.inside_sales_owner.id if record.inside_sales_owner.present? }
     field :inside_sales_owner, value: -> (record) { record.inside_sales_owner.to_s }, analyzer: 'substring'
@@ -17,6 +18,7 @@
     field :outside_sales_owner, value: -> (record) { record.outside_sales_owner.to_s }, analyzer: 'substring'
     field :inside_sales_executive, value: -> (record) { record.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.outside_sales_owner_id }
+    field :margin_percentage, value: -> (record) { record.is_final_quote_present_for_margin_percentage }, type: 'float'
     field :company_id, value: -> (record) { record.company_id }
     field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :account_id, value: -> (record) { record.account_id }
