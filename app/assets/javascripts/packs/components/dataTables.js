@@ -80,6 +80,9 @@ let setup = () => {
             }, {
                 "targets": 'numeric',
                 "render": $.fn.dataTable.render.number(',', '.', 0)
+            }, {
+                "targets": 'text-right',
+                "class": 'text-right'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
