@@ -8,7 +8,7 @@ json.data (@payment_options) do |payment_option|
                         row_action_button(edit_overseers_payment_option_path(payment_option), 'pencil', 'Edit Payment Term', 'warning')
                       end,
                   ].join(' '),
-                  payment_option.name.to_s,
+                  conditional_link(payment_option.name.to_s, overseers_payment_option_path(payment_option), policy(payment_option).edit?),
                   payment_option.credit_limit,
                   payment_option.general_discount,
                   payment_option.load_limit,
