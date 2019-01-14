@@ -56,8 +56,9 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :last_name,
             :address,
             :account_id,
-            :account_name,
-            :account_type
+            :account_type,
+            :account_name
+
 
           ]
     )

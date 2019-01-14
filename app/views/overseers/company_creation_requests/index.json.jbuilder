@@ -4,7 +4,7 @@ json.data (@company_creation_requests) do |company|
                 if company.account.present? && policy(:company).new?;
                     row_action_button(new_overseers_account_company_path(company.account,:ccr_id => company.id), 'building', 'New Company', 'success', :_blank)
                 else
-                  link_to '#', :disabled => true, :'data-toggle' => 'tooltip', :title => "First create new account",:class => 'btn btn-sm btn-warninggit 'do
+                  link_to '#', :disabled => true, :'data-toggle' => 'tooltip', :title => "First create new account",:class => 'btn btn-sm btn-warning 'do
                     concat content_tag(:span, '')
                     concat content_tag :i, nil, class: 'fal fa-building'
                   end
@@ -21,6 +21,8 @@ json.data (@company_creation_requests) do |company|
 	              company.last_name,
 	              company.email,
 	              company.address,
+                company.account.present? ? company.account.name : company.account_name,
+                company.account.present? ? company.account.account_type : company.account_type,
 	              format_date(company.created_at)
               ]
 end

@@ -6,7 +6,7 @@ class CreateCompanyCreationRequests < ActiveRecord::Migration[5.2]
       t.string :last_name
       t.string :email
       t.string :account_name
-      t.string :account_type
+      t.integer :account_type
       t.text :address
       t.references :activity, foreign_key: true
       t.references :account, foreign_key: true
