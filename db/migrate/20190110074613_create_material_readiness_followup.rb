@@ -11,6 +11,7 @@ class CreateMaterialReadinessFollowup < ActiveRecord::Migration[5.2]
       t.integer :type_of_doc
       t.integer :logistics_owner_id
 
+      t.userstamps
       t.timestamps
     end
   end

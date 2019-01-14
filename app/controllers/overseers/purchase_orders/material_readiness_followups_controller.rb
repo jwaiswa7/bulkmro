@@ -49,15 +49,6 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     end
   end
 
-  def pickup_queue
-    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 20).order("created_at DESC"), params)
-    authorize @material_readiness_followups
-  end
-
-  def delivered_queue
-    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 30).order("created_at DESC"), params)
-    authorize @material_readiness_followups
-  end
 
   private
 
