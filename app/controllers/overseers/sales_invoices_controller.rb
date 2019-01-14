@@ -9,9 +9,13 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
-
         @indexed_sales_invoices = service.indexed_records
         @sales_invoices = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_invoices, SalesInvoice)
+        status_service.call
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
       end
     end
   end

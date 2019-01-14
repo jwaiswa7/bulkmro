@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        Payment Request for PO <%= format_id(@payment_request.po_request.purchase_order.po_number) %>:&nbsp;<%= payment_request_status_badge(@payment_request.status) %>
+        Payment Request for PO <%= format_id(@payment_request.po_request.purchase_order.po_number) %>:&nbsp;<%= status_badge(@payment_request.status) %>
       </h3>
       <% if policy(@payment_request).edit? %>
         <a href="<%= edit_overseers_po_request_payment_request_path(@payment_request.po_request, @payment_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
@@ -58,7 +58,7 @@
             <% if @payment_request.status.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Status</strong>
-                <%= payment_request_status_badge(@payment_request.status) %>
+                <%= status_badge(@payment_request.status) %>
               </div>
             <% end %>
 

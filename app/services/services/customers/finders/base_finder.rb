@@ -106,6 +106,17 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
     }
   end
+  def filter_must_exist(key)
+    {
+        bool: {
+            should: [
+                {
+                    exists: {field: "#{key}"}
+                },
+            ],
+        },
+    }
+  end
 
   def filter_by_value(key, val)
     {

@@ -28,7 +28,7 @@
                 <tr>
                   <td><%= row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Go to Inquiry', 'warning', :_blank) %></td>
                   <td><%= inquiry.inquiry_number %></td>
-                  <td><%= inquiry_status_badge(inquiry.status) %></td>
+                  <td><%= status_badge(inquiry.status) %></td>
                   <td><%= inquiry.company.to_s.truncate(10) %></td>
                   <td><%= format_currency(inquiry.calculated_total) %></td>
                   <td><%= time_ago_in_words(inquiry.updated_at) %></td>
@@ -68,8 +68,8 @@
                   <td><%= sales_order.inquiry.inquiry_number %></td>
                   <td><%= sales_order.id %></td>
                   <td><%= sales_order.order_number %></td>
-                  <td><%= sales_order_status_badge(sales_order.status) %></td>
-                  <td><%= sales_order_status_badge(sales_order.remote_status) %></td>
+                  <td><%= status_badge(sales_order.status) %></td>
+                  <td><%= status_badge(sales_order.remote_status) %></td>
                   <td><%= format_currency(sales_order.calculated_total) %></td>
                   <td><%= time_ago_in_words(sales_order.updated_at) %></td>
                 </tr>

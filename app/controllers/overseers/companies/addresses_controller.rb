@@ -1,6 +1,23 @@
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
   before_action :set_address, only: [:show, :edit, :update]
 
+  def index
+    base_filter = {
+        :base_filter_key => "company_id",
+        :base_filter_value => params[:company_id]
+    }
+    authorize :address
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Addresses.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_addresses = service.indexed_records
+        @addresses = service.records.try(:reverse)
+      end
+    end
+  end
+
   def autocomplete
     @addresses = ApplyParams.to(@company.addresses, params)
     authorize @addresses
@@ -15,10 +32,6 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     authorize @address
   end
 
-  def index
-    redirect_to overseers_company_path(@company)
-    authorize @company
-  end
 
   def create
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))

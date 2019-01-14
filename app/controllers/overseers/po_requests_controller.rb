@@ -80,6 +80,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :inquiry_id,
         :sales_order_id,
         :purchase_order_id,
+        :logistics_owner_id,
         :status,
         :rows_attributes => [:id, :sales_order_row_id, :_destroy],
         :comments_attributes => [:id, :message, :created_by_id],

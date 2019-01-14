@@ -39,6 +39,7 @@ class Inquiry < ApplicationRecord
   has_many :po_requests
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
+  has_many :draft_sales_quotes, -> {where(:sent_at => nil)}, class_name: 'SalesQuote'
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
   has_one :approved_final_sales_order, -> {approved}, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
@@ -53,6 +54,7 @@ class Inquiry < ApplicationRecord
   belongs_to :legacy_shipping_company, -> (record) {where(company_id: record.company.id)}, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
   belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
+  has_one :freight_request
 
   has_one_attached :customer_po_sheet
   has_one_attached :copy_of_email
@@ -155,7 +157,7 @@ class Inquiry < ApplicationRecord
   }
   scope :won, -> {where(:status => :'Order Won')}
 
-  attr_accessor :force_has_sales_orders
+  attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
     inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
@@ -313,6 +315,18 @@ class Inquiry < ApplicationRecord
     ].join(' ')
   end
 
+  def po_subject
+    if self.customer_po_number.present?
+      if self.customer_po_number != ''
+        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
+      else
+        self.subject
+      end
+    else
+      self.subject
+    end
+  end
+
   def billing_contact
     self.contact
   end
@@ -332,4 +346,32 @@ class Inquiry < ApplicationRecord
       self.billing_company.remote_uid
     end
   end
+
+  def potential_value(status)
+    case status
+      when 'Lead by O/S','New Inquiry','Acknowledgement Mail'
+        self.potential_amount || 0.0
+      when 'Cross Reference'
+        self.products.map(&:latest_unit_cost_price).compact.sum || 0.0
+      when 'Preparing Quotation'
+        self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
+      when 'Quotation Sent','Follow-Up on Quotation','Expected Order','SO Not Created-Customer PO Awaited','SO Not Created-Pending Customer PO Revision'
+        self.final_sales_quote.try(:calculated_total) || 0.0
+      when 'Order Won'
+        self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
+      when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval','SO Rejected by Sales Manager','Rejected by Accounts'
+        self.sales_orders.map(&:calculated_total).compact.sum || 0.0
+      when 'Order Lost'
+        (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0 ) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
+      when 'Regret'
+        self.final_sales_quote.try(:calculated_total) || 0.0
+      else
+        0
+    end
+  end
+
+  def margin_percentage
+    self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
+  end
+
 end

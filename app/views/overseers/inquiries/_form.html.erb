@@ -41,7 +41,9 @@
           </div>
           <% if policy(@inquiry).update? %>
             <div class="col-3">
-              <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update Status</button>
+              <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update
+                Status
+              </button>
               <div class="modal fade" id="statusModal" role="dialog">
                 <div class="modal-dialog">
                   <!-- Modal content-->
@@ -101,14 +103,26 @@
 
       <div class="mt-3 card-alternative ">
         <h6 class="text-uppercase text-black-50 mb-1">Billing / Shipping Details</h6>
-        <div class="form-row">
-          <div class="col-12 col-md-6">
-            <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from" %>
+
+        <% if policy(@inquiry).disable_billing_shipping_details? %>
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <%= f.input :bill_from, as: :string, disabled: true %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :ship_from, as: :string, disabled: true %>
+            </div>
           </div>
-          <div class="col-12 col-md-6">
-            <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from" %>
+        <% else %>
+          <div class="form-row">
+            <div class="col-12 col-md-6">
+              <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
+            </div>
           </div>
-        </div>
+        <% end %>
         <div class="form-row">
           <div class="col-12 col-md-6">
             <%= f.association :billing_company, :wrapper => :custom_multi_select, label_method: :to_s, disabled: true %>
@@ -203,7 +217,7 @@
                 <%= f.input :calculation_sheet, wrapper: :custom_file, label: 'Calculation sheet', hint: f.object.calculation_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.calculation_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.calculation_sheet.filename}".html_safe) : false %>
               </div>
               <% if f.object.persisted? %>
-                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path %>" target="_blank" class="text-small mt-0">
+                <a class="btn btn-sm text-success ml-1 mt-2 align-self-center text-small mt-0" data-toggle="tooltip" title="Download calculation sheet" href="<%= calculation_sheet_overseers_inquiry_path(id: f.object.to_param) %>" target="_blank">
                   <i class="fal fa-download"></i>
                 </a>
               <% end %>
@@ -308,11 +322,11 @@
               <div class="col-3 col-md-1">
                 <div class="d-flex flex-row">
                   <div class="form-group align-self-center mr-1">
-                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.approved? %>
+                    <% if inquiry_product.object.persisted? && inquiry_product.object.product.present? && inquiry_product.object.product.approved? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-success" data-toggle="tooltip" title="Approved product
                       <% if inquiry_product.object.product.last_comment %>;  <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
-                    <% elsif inquiry_product.object.persisted? && inquiry_product.object.product.rejected? %>
+                    <% elsif inquiry_product.object.persisted?  && inquiry_product.object.product.present? && inquiry_product.object.product.rejected? %>
                       <a href="<%= overseers_product_comments_path(inquiry_product.object.product) %>" target="_blank" class="text-danger" data-toggle="tooltip" title="Rejected product
                       <% if inquiry_product.object.product.last_comment %>; <%= inquiry_product.object.product.last_comment.message %>
                       <% end %>"><i class="far fa-comment-lines"></i></a>
@@ -404,7 +418,8 @@
       <div class="form-row">
         <% if policy(@inquiry).new_email_message? && policy(@inquiry).update? %>
           <div class="col-md-6">
-            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send Acknowledgement</a>
+            <a href="<%= new_overseers_inquiry_email_message_path(@inquiry) %>" class="btn-block btn btn-dark"><i class="fal fa-envelope mr-1"></i>Send
+              Acknowledgement</a>
           </div>
         <% end %>
 

@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> Payment Request for PO
-      <%= format_id(@payment_request.po_request.purchase_order.po_number) %>:&nbsp;<%= payment_request_status_badge(@payment_request.status) %></h2>
+      <%= format_id(@payment_request.po_request.purchase_order.po_number) %>:&nbsp;<%= status_badge(@payment_request.status) %></h2>
     <p>This will <em>'<%= submit_text(@payment_request).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
@@ -26,7 +26,7 @@
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
       <div class="col-6">
-        <%= f.input :status, as: :select, disabled: true, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PaymentRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
 
       <div class="col-6">

@@ -42,7 +42,12 @@ class Overseers::DashboardController < Overseers::BaseController
   def console
     authorize :dashboard
 
-    Services::Overseers::Inquiries::RefreshCalculatedTotals.new.call
+    CustomerProduct.with_attachments.each do |customer_product|
+      customer_product.best_images.each do |image|
+        image.service.delete(customer_product.watermarked_variation(image, 'tiny').key)
+        image.service.delete(customer_product.watermarked_variation(image, 'medium').key)
+      end
+    end
     # render json: Resources::BusinessPartner.find('3095267094', quotes: true)
   end
 

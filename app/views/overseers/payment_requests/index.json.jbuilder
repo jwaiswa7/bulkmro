@@ -9,7 +9,7 @@ json.data (@payment_requests) do |payment_request|
                       end
                   ].join(' '),
                   payment_request.id,
-                  payment_request_status_badge(payment_request.status),
+                  status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,
                   payment_request.po_request.purchase_order.id,
                   if payment_request.payment_option.present?
@@ -27,19 +27,23 @@ json.data (@payment_requests) do |payment_request|
               ]
 end
 
-=begin
+
 json.columnFilters [
                        [],
                        [],
+                       PaymentRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
-                       # InvoiceRequest.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
                        [],
                        [],
                        [],
                        []
                    ]
-=end
+
 
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
+json.recordsSummary PaymentRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json

@@ -401,54 +401,7 @@
                   </tr>
                   </tbody>
                 </table>
-                <table border="0" cellspacing="0" style="width: 100%;">
-                  <tbody>
-                  <tr style="background: #d3d3d3;">
-                    <td align="left" class="invoiceheader1" colspan="16" height="20" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-top: 1px solid #3c3c3c;" valign="top">
-                      <b><span>Payment By Wire Transfer To:</span></b></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Bank:</span></b></td>
-                    <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Kotak Mahindra Bank Ltd</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>State Bank of India</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Address:</span></b></td>
-                    <td colspan="6" style="padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Aum Saheel Tower, Mumbai 400080.</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Kalpa Taru - 39, Pedder Road, Mumbai 400026.</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Account Name:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>Bulk MRO Industrial Supply Pvt. Ltd.</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <b><span>Account Number:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;border-right: 1px solid #3c3c3c;">
-                      <span>9412329433</span></td>
-                    <td colspan="6" style=" padding-left: 10px;border-bottom: 1px solid #3c3c3c;">
-                      <span>35924122136</span></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                      <b><span>NEFT/RTGS Code:</span></b></td>
-                    <td colspan="6" style=" padding-left: 10px;border-right: 1px solid #3c3c3c;">
-                      <span>KKBK0001411</span></td>
-                    <td colspan="6" style=" padding-left: 10px;">
-                      <span>SBIN0000510</span></td>
-                  </tr>
-                  </tbody>
-                </table>
+                <%= render 'shared/layouts/pdf_templates/bank_info' %>
               </div>
             <% end %>
             <br clear="all">

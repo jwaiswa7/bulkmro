@@ -14,7 +14,7 @@
         <%= f.input :email, :class => 'form-control', :required => true, :placeholder => "name@company.com", autofocus: true, autocomplete: "email", value: 'ashwin.goyal@bulkmro.com' %>
       </div>
       <div class="form-group">
-        <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: Rails.env.production? ? '' : 'abc123' %>
+        <%= f.input :password, :class => 'form-control', :required => true, :placeholder => "••••••••", autocomplete: "off", value: ( Rails.env.production? || Rails.env.staging? ) ? '' : 'abc123' %>
       </div>
 
       <% if devise_mapping.rememberable? -%>

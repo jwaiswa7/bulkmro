@@ -6,8 +6,8 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-3">
-            <% if @customer_product.best_images.present? %>
-              <img src="<%= url_for_image(@customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%= @customer_product.sku %>"/>
+            <% if @customer_product.best_image.present?%>
+              <%= image_tag @customer_product.medium_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
             <% else %>
               <img src="<%= image_path('coming_soon.png') %>" alt="<%= @customer_product.sku %>"/>
             <% end %>

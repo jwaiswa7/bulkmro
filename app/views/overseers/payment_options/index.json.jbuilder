@@ -13,10 +13,9 @@ json.data (@payment_options) do |payment_option|
                   payment_option.general_discount,
                   payment_option.load_limit,
                   payment_option.remote_uid.to_s,
-                  payment_option.created_by.present? ? payment_option.created_by.full_name : "-",
-                  payment_option.updated_by.present? ? payment_option.updated_by.full_name : "-",
-                  format_date_time_meridiem(payment_option.created_at),
-                  format_date_time_meridiem(payment_option.updated_at)
+                  format_boolean_label(payment_option.synced?, 'synced'),
+                  format_date(payment_option.created_at)
+
   ]
 end
 

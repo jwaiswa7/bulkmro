@@ -56,6 +56,14 @@
                 <% @warehouse.address.gst %>
               <% end %>
             </div>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Is Active</strong>
+              <% if @warehouse.is_active %>
+                <i class="far fa-check text-success"></i>
+              <% else %>
+                <i class="far fa-times text-danger"></i>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def convert?
-    admin?
+    admin? && record.approved?
   end
 
   def company_customer_orders?
@@ -16,6 +16,14 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_create_inquiry?
-    !record.inquiry.present?
+    !record.inquiry.present? && record.approved?
+  end
+
+  def approve?
+    record.not_approved? && !record.rejected?
+  end
+
+  def reject?
+    approve?
   end
 end

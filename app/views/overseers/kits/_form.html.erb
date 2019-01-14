@@ -23,7 +23,7 @@
             <%= product.input :name %>
           </div>
           <div class="col-6">
-            <%= product.input :sku %>
+            <%= product.input :sku, :readonly => true %>
           </div>
           <div class="col-6">
             <%= product.input :mpn, label: "Manufacturer Part Number" %>
@@ -32,7 +32,7 @@
 
         <div class="form-row">
           <div class="col-6">
-            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
+            <%= product.association :tax_code, collection: selected_option_or_nil(product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label: "Tax code (Please Confirm With Inside Sales Owner)" %>
           </div>
           <div class="col-6">
             <%= product.input :best_tax_code, disabled: true %>
@@ -44,10 +44,10 @@
             <%= product.association :measurement_unit, include_blank: false, input_html: {class: 'select2-single'} %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, include_blank: 'Select a brand', input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path} %>
+            <%= product.association :brand, collection: selected_option_or_nil(product, :brand), :wrapper => :custom_multi_select, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, :required => true %>
           </div>
           <div class="col-6 col-md-4">
-            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service =>false)} %>
+            <%= product.association :category, collection: selected_option_or_nil(product, :category), :wrapper => :custom_multi_select, include_blank: 'Select a category', label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_closure_tree_overseers_categories_path(:is_service => false)} %>
           </div>
         </div>
 
@@ -68,7 +68,7 @@
               </div>
             </div>
 
-            <div class="col-2">
+            <div class="col-1">
               <div class="form-group mb-0">
                 <label>SAP Status</label>
               </div>
@@ -79,12 +79,22 @@
                 <label>Quantity</label>
               </div>
             </div>
+            <div class="col-2">
+              <div class="form-group mb-0">
+                <label>Tax Code</label>
+              </div>
+            </div>
 
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Tax Rate</label>
+              </div>
+            </div>
           </div>
           <%= f.nested_fields_for :kit_product_rows, wrapper_tag: :div do |kit_product| %>
             <div class="form-row flex-row align-items-start">
               <%= kit_product.hidden_field :id %>
-              <div class="col-5">
+              <div class="col-6">
                 <div class="select2-wrap">
                   <%= kit_product.association :product, collection: [kit_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
@@ -106,14 +116,14 @@
 
               <div class="col-5">
                 <div class="d-flex flex-row align-items-center">
-                  <div class="col-2 ">
+                  <div class="col-2">
                     <%= kit_product.input :quantity, :label => false, placeholder: placeholder_for(kit_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
                   <div class="col-5 ">
-                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
+                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label: false %>
                   </div>
-                  <div class="col-4 ">
-                    <%= kit_product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false %>
+                  <div class="col-4">
+                    <%= kit_product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
                   </div>
                   <div class="col-1 ">
                     <%= kit_product.remove_nested_fields_link do %>

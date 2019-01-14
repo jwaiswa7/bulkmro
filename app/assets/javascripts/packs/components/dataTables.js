@@ -67,10 +67,10 @@ let setup = () => {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
                 }
             },
-            info: false,
+            info: true,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
+                "<'row'<'col-12 align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
             "pageLength": 20,
             pagingType: 'full_numbers',
             order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
@@ -80,6 +80,9 @@ let setup = () => {
             }, {
                 "targets": 'numeric',
                 "render": $.fn.dataTable.render.number(',', '.', 0)
+            }, {
+                "targets": 'text-right',
+                "class": 'text-right'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {
@@ -121,7 +124,7 @@ let setup = () => {
 
                 // Init filters
                 let actionTd = $(table).find('thead tr:eq(1) td:eq(0)');
-                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters">Clear</a>');
+                let clear = $('<a href="#" class="btn btn-sm px-2 btn-danger" data-toggle="tooltip" title="Clear search and all enabled filters"><i class="fal fa-times"></i></a>');
                 clear.on('click', function(e) {
                     $('[data-filter="ajax"] select').val("").trigger('change');
                     $('[data-filter="dropdown"] select').val("").trigger('change');

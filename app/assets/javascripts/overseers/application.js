@@ -11,8 +11,7 @@
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
 //= require vue/dist/vue.min.js
-//= require chart.js/dist/Chart.min.js
-//= require chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js
+
 //= require stickybits/dist/jquery.stickybits.min.js
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js
@@ -20,6 +19,7 @@
 // https://github.com/twbs/bootstrap/issues/23381#issuecomment-322358996 to fix popper not found issue
 
 //= require select2/dist/js/select2.full.min.js
+//= require jquery-lazy/jquery.lazy.min.js
 //= require nested_form_fields
 //= require cocoon
 //= require js-routes

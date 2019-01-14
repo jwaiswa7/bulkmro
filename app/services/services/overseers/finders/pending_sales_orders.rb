@@ -10,10 +10,14 @@ class Services::Overseers::Finders::PendingSalesOrders < Services::Overseers::Fi
                         super.filter(filter_by_status)
                       end
 
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status.to_i))
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 
@@ -26,10 +30,14 @@ class Services::Overseers::Finders::PendingSalesOrders < Services::Overseers::Fi
       indexed_records = indexed_records.filter(filter_by_status)
     end
 
+    if @status.present?
+      indexed_records = indexed_records.filter(filter_by_value(:status, @status.to_i))
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 

@@ -48,11 +48,11 @@
         <div class="card mb-2">
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
-              <% if customer_product.best_images.present? %>
-                <img src="<%= url_for_image(customer_product.best_images.first, fallback_url: image_path('coming_soon.png'), check_remote: false) %>" alt="<%= customer_product.sku %>"/>
-              <% else %>
-                <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_product.sku %>" />
-              <% end %>
+              <%# if customer_product.best_image.present? %>
+                <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500" />
+              <%# else %>
+<!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
+              <%# end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
               <h5 class="mb-0 mt-1 text-small text-black-50">
@@ -99,4 +99,3 @@
     <%= paginate @customer_products_paginate, remote: false, :params => {:view => "grid_view", :q => params[:q]} %>
   </div>
 </div>
-

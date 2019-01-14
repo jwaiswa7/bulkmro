@@ -8,13 +8,13 @@ json.data (@remote_requests) do |remote_request|
                   if remote_request.subject.present? && policy(remote_request.subject).show?
                     [remote_request.subject.class.name, remote_request.subject.to_s].join(' > ')
                   end,
-                  remote_request_status_badge(remote_request.status),
+                  status_badge(remote_request.status),
                   format_enum(remote_request.method),
                   remote_request.resource,
                   format_date(remote_request.created_at)
               ]
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
-  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + remote_request_status_color(remote_request.status)})
+  json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(remote_request.status)})
 end
 
 json.recordsTotal @remote_requests.model.all.count

@@ -17,7 +17,7 @@
   <div class="d-flex align-items-center">
     <div class="d-block d-lg-none ml-2">
       <div class="dropdown">
-        <a href="#" role="button" data-toggle="dropdown">
+        <a href="#" data-toggle="dropdown">
           <i class="fal fa-cog"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
@@ -37,83 +37,146 @@
   <div class="collapse navbar-collapse justify-content-between" id="navbar-collapse">
     <ul class="navbar-nav">
       <%= nav_item 'Dashboard', overseers_dashboard_path, policy(:dashboard).show? %>
-      <%= nav_item 'Accounts', overseers_accounts_path, policy(:account).index? %>
-      <%= nav_item 'Companies', overseers_companies_path, policy(:company).index? %>
-      <%= nav_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
-      <% if policy(:product).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-            Products
-          </a>
-          <div class="dropdown-menu" aria-labelledby="productsDropdown">
-            <%= nav_dropdown_item 'List', overseers_products_path, policy(:product).index? %>
-            <%= nav_dropdown_item 'Queue', pending_overseers_products_path, policy(:product).pending? %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Kits', overseers_kits_path, policy(:kit).index? %>
-            <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
-            <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
-            <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
-            <%= nav_dropdown_item 'Tax Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
-            <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
-            <%= nav_dropdown_item 'Payment Terms', overseers_payment_options_path, policy(:payment_option).index? %>
-          </div>
-        </li>
-      <% end %>
-      <% if policy(:inquiry).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="inquiriesDropdown" role="button" data-toggle="dropdown">
-            Inquiries
-          </a>
-          <div class="dropdown-menu" aria-labelledby="inquiriesDropdown">
-            <%= nav_dropdown_item 'List', overseers_inquiries_path, policy(:inquiry).index? %>
-            <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
-            <% if policy(:customer_order).index? %><div class="dropdown-divider"></div><% end %>
-            <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
-          </div>
-        </li>
-      <% end %>
-      <% if policy(:sales_order).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-            Sales Orders
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'List', overseers_sales_orders_path, policy(:sales_order).index? %>
-            <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
-            <%= nav_dropdown_item 'SAP Draft Pending', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Purchase Orders', overseers_purchase_orders_path, policy(:purchase_order).index? %>
-            <%= nav_dropdown_item 'Pending PO Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
-            <%= nav_dropdown_item 'Completed PO Requests', overseers_po_requests_path, policy(:po_request).index? %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Payment Requests', overseers_payment_requests_path, policy(:payment_request).index? %>
-            <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
-            <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Sales Invoices', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
-          </div>
-        </li>
-      <% end %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          B. Partners
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Accounts / Aliases', overseers_accounts_path, policy(:account).index? %>
+          <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
+          <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
+          <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
+        </div>
+      </li>
 
-      <% if policy(:sales_order).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-            Invoice Requests
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'All', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
-            <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Catalog
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Product List', overseers_products_path, policy(:product).index? %>
+          <%= nav_dropdown_item 'Product Approval Queue', pending_overseers_products_path, policy(:product).pending? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Kits', overseers_kits_path, policy(:kit).index? %>
+          <%= nav_dropdown_item 'Categories', overseers_categories_path, policy(:category).index? %>
+          <%= nav_dropdown_item 'Brands', overseers_brands_path, policy(:brand).index? %>
+          <%= nav_dropdown_item 'Measurement Units', overseers_measurement_units_path, policy(:measurement_unit).index? %>
+          <%= nav_dropdown_item 'HSN / SAC Codes', overseers_tax_codes_path, policy(:tax_code).index? %>
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Payment Terms', overseers_payment_options_path, policy(:payment_option).index? %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Sales
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
+          <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
+              <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
+            </ul>
           </div>
-        </li>
-      <% end %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:inquiry).index? %>
+            </ul>
+          </div>
+
+          <div class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
+          <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Logistics
+        </a>
+        <div class="dropdown-menu">
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Purchase Orders</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Material Readiness Followup Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Material Pickup Queue', material_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Material Delivered Queue', material_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
+              <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Payment Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Payment Requests List', overseers_payment_requests_path, policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Pending Payment Requests', overseers_payment_requests_path(:status => 'Pending'), policy(:payment_request).index? %>
+              <%= nav_dropdown_item 'Completed Payment Requests', overseers_payment_requests_path(:status => 'Completed'), policy(:payment_request).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">AR Invoices</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'Sales Invoices List', overseers_sales_invoices_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'All Requests', overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending GRPO', pending_overseers_invoice_requests_path(:status => 'Pending GRPO'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AP Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AP Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Pending AR Invoice', pending_overseers_invoice_requests_path(:status => 'Pending AR Invoice'), policy(:sales_invoice).index? %>
+              <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
+            </ul>
+          </div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:freight_request).index? %>
+            </ul>
+          </div>
+
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Freight Quotes</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Quotes', overseers_freight_quotes_path, policy(:freight_quote).index? %>
+            </ul>
+          </div>
+
+        </div>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+          Inventory
+        </a>
+        <div class="dropdown-menu">
+          <%= nav_dropdown_item 'Warehouses', overseers_warehouses_path, policy(:warehouse).index? %>
+        </div>
+      </li>
 
       <% if policy(:report).index? %>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
             Reports
           </a>
           <div class="dropdown-menu">
@@ -124,30 +187,35 @@
           </div>
         </li>
       <% end %>
-      <%= nav_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
-      <% if (Rails.env.development?) || policy(:remote_request).index? %>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-            Tools
-          </a>
-          <div class="dropdown-menu">
-            <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
-            <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
-          </div>
-        </li>
-      <% end %>
 
-      <% if Rails.env.development? || policy(:dashboard).chewy? %>
+      <% if policy(:remote_request).index? %>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-toggle="dropdown">
-            Chewy
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+            Admin
           </a>
           <div class="dropdown-menu">
-            <% chewy_indices.each do |chewy_index| %>
-              <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+            <%= nav_dropdown_item 'Overseers', overseers_overseers_path, policy(:overseer).index? %>
+            <% if (Rails.env.development?) || policy(:remote_request).index? %>
+              <div class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Tools</a>
+                <div class="dropdown-menu">
+                  <%= nav_dropdown_item 'Remote Requests', overseers_remote_requests_path, policy(:remote_request).index? %>
+                  <%= nav_dropdown_item 'Callback Requests', overseers_callback_requests_path, policy(:callback_request).index? %>
+                </div>
+              </div>
             <% end %>
-            <div class="dropdown-divider"></div>
-            <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+            <% if Rails.env.development? || policy(:dashboard).chewy? %>
+              <div class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
+                <div class="dropdown-menu">
+                  <% chewy_indices.each do |chewy_index| %>
+                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <% end %>
+                  <div class="dropdown-divider"></div>
+                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </li>
       <% end %>
@@ -168,7 +236,7 @@
       <%= link_to edit_overseers_profile_path, class: 'mr-2' do %>
         <i class="fal fa-user"></i>
       <% end %>
-      <a href="#" role="button" data-toggle="dropdown">
+      <a href="#" data-toggle="dropdown">
         <i class="fal fa-cog"></i>
       </a>
       <div class="dropdown-menu dropdown-menu-right">

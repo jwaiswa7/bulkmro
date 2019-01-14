@@ -4,7 +4,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
     payment_option = PaymentOption.find_by_name(params['PoPaymentTerms'].to_s.strip)
     begin
-      if inquiry.present?
+      if inquiry.present? && inquiry.final_sales_quote.present?
         if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
             purchase_order.assign_attributes(:metadata => params)
@@ -21,10 +21,16 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           end
           return_response("Purchase Order created successfully.")
         else
-          return_response("Purchase Order already created.")
+          purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
+          if purchase_order.present?
+            purchase_order.metadata['PoStatus'] = params['PoStatus']
+            purchase_order.save!
+          end
+
+          return_response("Purchase Order updated successfully.")
         end
       else
-        return_response("Inquiry #{params['PoEnquiryId']} not found.", 0)
+        return_response("Inquiry #{params['PoEnquiryId']} or Quotation not found.", 0)
       end
     rescue => e
       return_response(e.message, 0)
@@ -33,7 +39,6 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
 
   attr_accessor :params
 end
-
 
 # {
 #     "DocEntry": "500",

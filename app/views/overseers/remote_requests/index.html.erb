@@ -2,6 +2,14 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% provide :heading_buttons do %>
+  <% if policy(:remote_request).resend_failed_requests? %>
+    <a href="<%= resend_failed_requests_overseers_remote_requests_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-redo mr-1"></i>Resync failed requests
+    </a>
+  <% end %>
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort"></th>
   <th data-name="subject_id">Subject</th>

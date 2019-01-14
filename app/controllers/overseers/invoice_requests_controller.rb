@@ -32,6 +32,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def index
     @invoice_requests = ApplyDatatableParams.to(InvoiceRequest.all.order(id: :desc), params)
     authorize @invoice_requests
+    @statuses = @invoice_requests.pluck(:status)
   end
 
   def show
@@ -42,6 +43,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      authorize @invoice_request
+    elsif  params[:purchase_order_id].present?
+      @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+      @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
       authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path
@@ -74,7 +79,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_request
 
     if @invoice_request.valid?
-      @invoice_request.update_status!
+      @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
           @invoice_request_comment = InvoiceRequestComment.new(:message => "Status Changed: #{@invoice_request.status}", :invoice_request => @invoice_request, :overseer => current_overseer)

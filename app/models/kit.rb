@@ -2,6 +2,10 @@ class Kit < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
 
+  default_scope {order(created_at: :desc)}
+
+  pg_search_scope :locate, :against => [:remote_uid], :associated_against => {product: [:sku, :name]}, :using => {:tsearch => {:prefix => true}}
+
   has_many :kit_product_rows
   belongs_to :product
   belongs_to :inquiry

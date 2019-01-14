@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -38,7 +38,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product = Product.new(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'new'
     end
@@ -52,7 +52,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product.assign_attributes(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'edit'
     end
@@ -96,6 +96,13 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.save_and_sync
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     end
+  end
+
+  def resync_inventory
+    authorize @product
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
   end
 
   def export_all

@@ -2,10 +2,10 @@ json.data (@categories) do |category|
   json.array! [
                   [
                       if policy(category).show?
-                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'dark')
+                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'dark', :_blank)
                       end,
                       if policy(category).edit?
-                        row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning')
+                        row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning', :_blank)
                       end
                   ].join(' '),
                   category.to_s,

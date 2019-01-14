@@ -11,6 +11,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def disable_billing_shipping_details?
+    record.persisted? && record.quotation_uid.present?
+  end
+
   def smart_queue?
     manager_or_sales?
   end
@@ -109,6 +113,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def stages?
     edit?
+  end
+
+  def new_freight_request?
+    !record.freight_request.present? && !logistics?
   end
 
   class Scope

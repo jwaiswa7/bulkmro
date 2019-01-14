@@ -7,6 +7,14 @@
   Purchase Order Requests
 <% end %>
 
+<% content_for(:heading_buttons) do %>
+  <% if policy(:sales_order).index? %>
+    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+      <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
+    </a>
+  <% end %>
+<% end %>
+
 <% content_for :hide_table_desc do %>
 <!--  To Do Filters-->
 <% end %>
@@ -17,6 +25,7 @@
   <th class="no-sort desktop">Status</th>
   <th class="no-sort desktop" data-name="name">Inquiry #</th>
   <th class="no-sort all" data-name="sku">Order #</th>
+  <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
   <th class="no-sort all" data-name="sku">Inside Sales</th>
   <th class="no-sort desktop" data-name="name">Requested At</th>
   <th class="no-sort desktop" data-name="name">Updated At</th>

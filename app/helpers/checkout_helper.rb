@@ -1,4 +1,0 @@
-module CheckoutHelper
-
-
-end
