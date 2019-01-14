@@ -29,15 +29,17 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def material_pickup_queue
-    authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_pickup_queue, params)
-    render 'material_readiness_queue'
+    @status = 'Material Pickup Queue'
+    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 20).order("created_at DESC"), params)
+    authorize @material_readiness_followups
+    render 'material_pickup_queue'
   end
 
   def material_delivered_queue
-    authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_delivered_queue, params)
-    render 'material_readiness_queue'
+    @status = 'Material Delivered Queue'
+    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 30).order("created_at DESC"), params)
+    authorize @material_readiness_followups
+    render 'material_pickup_queue'
   end
 
   def edit_internal_status
@@ -49,7 +51,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
-      ActiveRecord::Base.transaction do if @purchase_order.internal_status_changed?
+      ActiveRecord::Base.transaction do
+        if @purchase_order.internal_status_changed?
           @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.internal_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
           @purchase_order.save!
           @po_comment.save!
