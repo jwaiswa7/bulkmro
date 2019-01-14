@@ -236,6 +236,7 @@ Rails.application.routes.draw do
         get 'edit_suppliers'
         post 'update_suppliers'
         get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
