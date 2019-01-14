@@ -14,7 +14,7 @@ json.data (@payment_options) do |payment_option|
                   payment_option.load_limit,
                   payment_option.remote_uid.to_s,
                   format_boolean_label(payment_option.synced?, 'synced'),
-                  format_date(payment_option.created_at)
+                  format_succinct_date(payment_option.created_at)
 
   ]
 end

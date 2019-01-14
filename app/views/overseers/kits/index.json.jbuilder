@@ -16,8 +16,8 @@ json.data (@kits) do |kit|
                   kit.product.category.name,
                   format_boolean_label(kit.synced?, 'synced'),
                   format_boolean_label(kit.product.synced?, 'synced'),
-                  format_date(kit.created_at),
-                  format_date(kit.product.approval.try(:created_at))
+                  format_succinct_date(kit.created_at),
+                  format_succinct_date(kit.product.approval.try(:created_at))
               ]
 end
 

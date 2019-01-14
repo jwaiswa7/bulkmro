@@ -6,7 +6,7 @@ json.data (@measurement_units) do |measurement_unit|
                       end,
                   ].join(' '),
                   measurement_unit.to_s,
-                  format_date(measurement_unit.created_at)
+                  format_succinct_date(measurement_unit.created_at)
               ]
 end
 

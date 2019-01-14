@@ -21,7 +21,7 @@ json.data (@customer_orders) do |customer_order|
                   customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : "-",
                   customer_order.company.present? && customer_order.company.outside_sales_owner.present? ? customer_order.company.outside_sales_owner.full_name : "-",
                   customer_order.company.present? && customer_order.company.sales_manager.present? ? customer_order.company.sales_manager.full_name : "-",
-                  format_date(customer_order.created_at)
+                  format_succinct_date(customer_order.created_at)
               ]
 end
 
