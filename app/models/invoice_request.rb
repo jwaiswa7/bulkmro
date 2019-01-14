@@ -78,7 +78,7 @@ class InvoiceRequest < ApplicationRecord
     end
   end
 
-  def changed_status
+  def readable_status
     status = self.status
     if (status.include? "Pending")
       status.remove("Pending")
@@ -90,6 +90,6 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def to_s
-    [changed_status,"Request", "##{self.id}"].join(" ")
+    [readable_status,"Request", "##{self.id}"].join(" ")
   end
 end

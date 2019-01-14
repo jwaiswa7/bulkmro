@@ -2,12 +2,12 @@
   <div class="page-header">
     <h2>
       <% if @invoice_request.sales_order.present? %>
-        <%= action_name.capitalize %> <%= @invoice_request.changed_status %> Request for Order #<%= @invoice_request.sales_order.order_number %>
+        <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number %>
       <% else %>
         <%= action_name.capitalize %> Invoice Request for Purchase Order #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.changed_status).downcase %>'</em> and log it under
+    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -79,7 +79,7 @@
       <% end %>
     <% elsif @invoice_request.status %>
       <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
-        <i class="fal fa-pen"></i> Update <%= @invoice_request.changed_status %> Request
+        <i class="fal fa-pen"></i> Update <%= @invoice_request.readable_status %>
       <% end %>
     <% else %>
       <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
