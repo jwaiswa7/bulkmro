@@ -81,12 +81,14 @@ class InvoiceRequest < ApplicationRecord
   def readable_status
     status = self.status
     if (status.include? "Pending")
-      status.remove("Pending")
+      title_without_pending = status.remove("Pending")
+      title = status.include?("GRPO") ? "Invoice GRPO" : "#{title_without_pending}"
     elsif (status.include? "Completed AR Invoice" ) || (status.include? "Cancelled AR Invoice")
-      status.gsub(status, "AR Invoice")
+      title = status.gsub(status, "AR Invoice")
     else
-      "Invoice"
+      title = "Invoice"
     end
+      "#{title} Request"
   end
 
   def to_s
