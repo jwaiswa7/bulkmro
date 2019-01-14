@@ -12,8 +12,8 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def new
     @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
-    @purchase_order.material_status = 10
-    @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create
+    @purchase_order.update_attributes(material_status: :'Material Readiness Follow-Up')
+    @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create!
 
     authorize @mrf
 

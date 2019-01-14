@@ -4,7 +4,7 @@ class MaterialReadinessFollowup < ApplicationRecord
   include Mixins::HasComments
 
   belongs_to :purchase_order
-  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id'
+  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_many :mrf_rows
   has_many_attached :attachments
 
