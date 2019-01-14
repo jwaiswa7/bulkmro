@@ -49,9 +49,6 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
     indexed_records
   end
 
-  def sort_definition
-    {:created_at => :desc}
-  end
 
   def model_klass
     SalesInvoice
