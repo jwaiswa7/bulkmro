@@ -13,6 +13,7 @@
     <div class="form-group">
       <%= f.input :account_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(Account.account_types) %>
     </div>
+    <%= f.hidden_field :reference_company_creation_request_id %>
 
     <%= action_button(action_name, @account) %>
   <% end %>

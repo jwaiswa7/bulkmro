@@ -47,6 +47,8 @@ class Company < ApplicationRecord
   has_one_attached :pan_proof
   has_one_attached :cen_proof
   has_one_attached :logo
+  belongs_to :company_creation_request, optional: true
+
 
   enum company_type: {
       :proprietorship => 10,

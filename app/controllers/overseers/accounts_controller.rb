@@ -21,12 +21,11 @@ class Overseers::AccountsController < Overseers::BaseController
   end
 
   def new
-    if params[:acr_id].present?
-      requested_account = AccountCreationRequest.where(:id => params[:acr_id]).last
+    @account = Account.new(overseer: current_overseer)
+    if params[:ccr_id].present?
+      requested_account = CompanyCreationRequest.where(:id => params[:ccr_id]).last
       if !requested_account.nil?
-        @account = Account.new({overseer: current_overseer,name: requested_account.name})
-      else
-        @account = Account.new(overseer: current_overseer)
+        @account = Account.new({'name': requested_account.name, 'reference_company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
       end
     end
     authorize @account
@@ -41,6 +40,13 @@ class Overseers::AccountsController < Overseers::BaseController
     end
 
     if @account.save_and_sync
+      if @account.reference_company_creation_request_id.present?
+        company_creation_request = CompanyCreationRequest.where(:id => @account.reference_company_creation_request_id).last
+        if !company_creation_request.nil?
+          company_creation_request.account_id = @account.id
+          company_creation_request.save
+        end
+      end
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
       render 'new'
@@ -73,6 +79,7 @@ class Overseers::AccountsController < Overseers::BaseController
         :name,
         :alias,
         :account_type,
+        :reference_company_creation_request_id
     )
   end
 

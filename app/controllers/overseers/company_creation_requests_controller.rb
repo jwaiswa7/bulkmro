@@ -2,7 +2,7 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
   before_action :set_company_creation_request, only: [:show]
 
   def index
-    company_que = CompanyCreationRequest.where.not(:id => Company.pluck(:company_creation_request_id))
+    company_que = CompanyCreationRequest.includes(:company).where(companies:  { id: nil })
     @company_creation_requests =   ApplyDatatableParams.to(company_que, params)
     authorize @company_creation_requests
 

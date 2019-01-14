@@ -21,18 +21,31 @@
     <h6 class="mt-2 text-center">
       OR
     </h6>
-    <div class="existing-company-form mt-3" >
-      <%= f.association :company, collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
-    </div>
-    
     <div class="new-company-form d-none mt-3" >
-      <h6 class="text-uppercase text-black-50 mb-1">Company Details</h6>
+      <h6 class="text-uppercase text-black-50 mb-1">Add new company details</h6>
       <%= f.fields_for :company_creation_request do |company_creation_request_field|%>
-         <%= company_creation_request_field.association :account, collection: selected_option_or_nil(company_creation_request_field, :account),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_accounts_path, include_blank: 'Create new account if no company connected to existing account'  }%>
-        <%= company_creation_request_field.fields_for :account_creation_request do |account_creation_request_field|%>
-            <%= account_creation_request_field.input :name, label: 'account name' %>
-            <%= account_creation_request_field.input :account_type, label: 'account type' %>
-        <%end %>
+        <div class="row" >
+          <div class="col-12 col-md-12 ">
+            <button type="button" class="btn btn-info btn-block existing-account d-none" >
+              add existing account
+            </button>
+          </div>
+          <div class="col-12 col-md-12" >
+            <button type="button" class="btn btn-info btn-block new-account" >
+              add new account
+            </button>
+          </div>
+        </div>
+        <h6 class="mt-2 text-center">
+          OR
+        </h6>
+        <div class="existing-account-form">
+          <%= company_creation_request_field.association :account,label: 'Existing account', collection: selected_option_or_nil(company_creation_request_field, :account),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_accounts_path, include_blank: 'Create new account if no company connected to existing account'  }%>
+        </div>
+        <div class="new-account-form d-none">
+            <%= company_creation_request_field.input :account_name, label: 'account name' %>
+            <%= company_creation_request_field.input :account_type, as: :select, include_blank: false, label: 'account type', collection: enum_to_collection(CompanyCreationRequest.account_types) %>
+        </div>
         <div class="form-row">
           <div class="col-12 col-md-12">
             <%= company_creation_request_field.input :name %>
@@ -42,7 +55,7 @@
         <div class="form-row">
           <div class="col-6 col-md-4">
             <%= company_creation_request_field.input :first_name %>
-           </div>
+          </div>
           <div class="col-6 col-md-4">
             <%= company_creation_request_field.input :last_name %>
           </div>
@@ -51,8 +64,11 @@
           </div>
         </div>
         <%= company_creation_request_field.input :address %>
-
       <% end %>
+    </div>
+
+    <div class="existing-company-form mt-3" >
+      <%= f.association :company, label: "Existing company", collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
     </div>
 
     

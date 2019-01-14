@@ -62,7 +62,6 @@ Rails.application.routes.draw do
 
     resources :reports
     resources :company_creation_requests
-    resources :account_creation_requests
     resources :activities, except: [:show]
     resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers, except: [:show]
