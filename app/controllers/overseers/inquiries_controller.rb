@@ -146,7 +146,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       product.save_and_sync
       end
     end
-    redirect_to edit_overseers_inquiry_path(@inquiry)
+    redirect_to edit_overseers_inquiry_path(@inquiry) and return
   end
 
   def edit_suppliers
