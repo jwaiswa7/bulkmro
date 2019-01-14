@@ -4,6 +4,8 @@ class CreateMaterialReadinessFollowup < ActiveRecord::Migration[5.2]
       t.references :purchase_order, foreign_key: true
       t.references :overseer, foreign_key: true
       t.string :document_type
+
+      t.timestamps
     end
   end
 end

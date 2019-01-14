@@ -61,10 +61,13 @@ class PurchaseOrder < ApplicationRecord
       :'Closed' => 96
   }
 
-  enum internal_status: {
+  enum material_status: {
       :'Material Readiness Follow-Up' => 10,
       :'Material Pickup' => 20,
-      :'Material Delivered' => 30
+      :'Material Partial Pickup' => 25,
+      :'Material Delivered' => 30,
+      :'Material Partial Delivered' => 35,
+
   }
 
   scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}

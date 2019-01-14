@@ -12,6 +12,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def new
     @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+    @purchase_order.material_status = 10
     @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create
 
     authorize @mrf
@@ -27,14 +28,22 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def edit
     authorize @mrf
+    @purchase_order = @mrf.purchase_order
   end
 
   def update
     @mrf.assign_attributes(mrf_params)
     @mrf.status = 20
     authorize @mrf
+
+    if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:pickup_quantity).to_i
+      @mrf.purchase_order.update_attributes(material_status: :'Material Pickup')
+    else
+      @mrf.purchase_order.update_attributes(material_status: :'Material Partial Pickup')
+    end
+
     if @mrf.save
-      redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
+      redirect_to overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
     else
       render 'edit'
     end

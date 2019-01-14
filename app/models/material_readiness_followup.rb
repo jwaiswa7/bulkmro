@@ -4,7 +4,7 @@ class MaterialReadinessFollowup < ApplicationRecord
   include Mixins::HasComments
 
   belongs_to :purchase_order
-  has_one :overseer, foreign_key: 'logistics_owner_id'
+  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id'
   has_many :mrf_rows
   has_many_attached :attachments
 
@@ -16,8 +16,7 @@ class MaterialReadinessFollowup < ApplicationRecord
   }
 
   enum status: {
-      :'Material Readiness Follow-Up' => 10,
-      :'Material Pickup' => 20,
-      :'Material Delivered' => 30
+      :'Material Pickup' => 10,
+      :'Material Delivered' => 20
   }, _prefix: true
 end

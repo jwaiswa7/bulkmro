@@ -5,6 +5,8 @@ class CreateMrfRow < ActiveRecord::Migration[5.2]
       t.references :purchase_order_row, foreign_key: true
       t.decimal :quantity
       t.string :status
+
+      t.timestamps
     end
   end
 end
