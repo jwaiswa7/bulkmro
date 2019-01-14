@@ -14,4 +14,10 @@ class MaterialReadinessFollowup < ApplicationRecord
       tax_invoice: 10,
       proforma_invoice: 20
   }
+
+  enum status: {
+      :'Material Readiness Follow-Up' => 10,
+      :'Material Pickup' => 20,
+      :'Material Delivered' => 30
+  }, _prefix: true
 end

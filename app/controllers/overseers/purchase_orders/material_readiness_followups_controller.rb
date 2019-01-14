@@ -12,9 +12,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def new
     @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
-    @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create! do
-      @mrf.status = 20
-    end
+    @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create
 
     authorize @mrf
 
@@ -33,12 +31,23 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def update
     @mrf.assign_attributes(mrf_params)
+    @mrf.status = 20
     authorize @mrf
     if @mrf.save
       redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else
       render 'edit'
     end
+  end
+
+  def pickup_queue
+    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 20).order("created_at DESC"), params)
+    authorize @material_readiness_followups
+  end
+
+  def delivered_queue
+    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: 30).order("created_at DESC"), params)
+    authorize @material_readiness_followups
   end
 
   private

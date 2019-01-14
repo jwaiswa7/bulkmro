@@ -37,8 +37,12 @@
             </div>
           </div>
 
-          <div class="col-3">
+          <div class="col-6">
             <%= f.input :type_of_doc, collection: enum_to_collection(MaterialReadinessFollowup.type_of_docs), required: true, label: "Type of Document", input_html: {class: "select2-single"} %>
+          </div>
+
+          <div class="col-6">
+            <%= f.input :status, as: :select, collection: enum_to_collection(MaterialReadinessFollowup.statuses), disabled: true %>
           </div>
 
           <div class="col-12">
@@ -66,16 +70,21 @@
       </div>
 
       <div class="card-body">
-        <%= f.nested_fields_for :mrf_rows do |m| %>
+        <%= f.simple_fields_for :mrf_rows do |m| %>
           <div class="form-row flex-row">
             <div class="col-4">
+              <%= m.label :name %><br/>
+              <%= m.label :name,"#{m.object.purchase_order_row.get_product.name.truncate(50)}" %>
+            </div>
+            <div class="col-2">
+              <%= m.label :sku %><br/>
+              <%= m.label :sku,"#{m.object.purchase_order_row.get_product.sku}" %>
+            </div>
+            <div class="col-3">
               <%= m.input :quantity, input_html: { value: m.object.quantity }, readonly: true %>
             </div>
-            <div class="col-4">
-              <%= m.input :pickup_quantity, input_html: { value: m.object.pickup_quantity }, max: m.object.pickup_quantity %>
-            </div>
-            <div class="col-4">
-              <%= m.input :delivered_quantity, input_html: { value: m.object.delivered_quantity } %>
+            <div class="col-3">
+              <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i }, min: 0, max: m.object.pickup_quantity.to_i %>
             </div>
             <hr/>
           </div>
