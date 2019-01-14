@@ -23,7 +23,6 @@ class PoRequest < ApplicationRecord
   attr_accessor :opportunity_type, :customer_committed_date
 
   enum status: {
-      :'Draft' => 5,
       :'Requested' => 10,
       :'PO Created' => 20,
       :'Cancelled' => 30
@@ -41,9 +40,9 @@ class PoRequest < ApplicationRecord
   #     :tender => 80
   # }
 
-  scope :drafts, -> {where(:status => :'Draft')}
   scope :pending, -> {where(:status => :'Requested')}
-  scope :handled, -> {where.not(:status => [:'Requested',:'Draft'])}
+  scope :handled, -> {where.not(:status => [:'Requested'])}
+  scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }

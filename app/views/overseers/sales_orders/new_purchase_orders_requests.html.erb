@@ -28,89 +28,100 @@
         <%= f.input :customer_committed_date, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
       </div>
     </div>
-    <% if @sales_order.po_requests.drafts.present? %>
+    <% if @po_requests.present? %>
       <div class="card">
       <div class="card-body">
-        <%= f.simple_fields_for :po_requests, f.object.po_requests.select {|po| po.Draft?;}, wrapper_tag: :div do |po_request| %>
-          <%= po_request.hidden_field :id %>
-          <h5 class="text-uppercase">
-            <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@sales_order.po_requests.index(po_request.object) || 0) + 1 %></span>
-            <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.legacy_email%></strong>
-            <div class="form-row mt-2">
-              <div class="col-12 col-md-6">
-                <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses, :include_blank => false %>
-              </div>
-              <div class="col-12 col-md-6">
-                <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
-              </div>
-              <div class="col-12 col-md-4">
-                <%= po_request.association :logistics_owner, as: :select, :include_blank => false %>
-              </div>
-              <div class="col-12 col-md-2">
-                <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false), :include_blank => false %>
-              </div>
-              <div class="col-12 col-md-6">
-                <div class="d-flex flex-row align-items-end">
-                  <div class="flex-grow-1">
-                    <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
-                  </div>
-                  <div class="form-group">
-                    <% po_request.object.attachments.each do |attachment| %>
-                      <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                        <i class="fal fa-download"></i>
-                        <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                          <i class="fal fa-trash-alt"></i>
-                        <% end if attachment.present? && policy(:attachment).destroy? %>
-                      <% end %>
-                    <% end if po_request.object.attachments.attached? %>
+        <%= f.simple_fields_for :po_requests, @po_requests.values, wrapper_tag: :div do |po_request| %>
+          <div class="simple-row">
+            <%= po_request.hidden_field :id %>
+            <%= po_request.hidden_field :supplier_id %>
+            <%= po_request.hidden_field :inquiry_id %>
+            <h5 class="text-uppercase">
+              <%# raise %>
+              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
+              <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.try(:legacy_email)%></strong>
+
+              <div class="form-row mt-2">
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses, :include_blank => false %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
+                </div>
+                <div class="col-12 col-md-4">
+                  <%= po_request.association :logistics_owner, as: :select, :include_blank => false %>
+                </div>
+                <div class="col-12 col-md-2">
+                  <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false), :include_blank => false %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="d-flex flex-row align-items-end">
+                    <div class="flex-grow-1">
+                      <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                    </div>
+                    <div class="form-group">
+                      <% po_request.object.attachments.each do |attachment| %>
+                        <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                          <i class="fal fa-download"></i>
+                          <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                            <i class="fal fa-trash-alt"></i>
+                          <% end if attachment.present? && policy(:attachment).destroy? %>
+                        <% end %>
+                      <% end if po_request.object.attachments.attached? %>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </h5>
-          <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
-            <%= po_request_row.hidden_field :id %>
-            <div class="form-row">
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: po_request.object.rows.first == po_request_row.object ? "Sr." : false, disabled: true %>
+            </h5>
+
+            <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+              Hide
+            <% end %>
+            <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
+              <%= po_request_row.hidden_field :id %>
+              <div class="form-row">
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: po_request.object.rows.first == po_request_row.object ? "Sr." : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-2">
+                  <%= po_request_row.input :product_name, input_html: {value: po_request_row.object.product.to_s}, label: po_request.object.rows.first == po_request_row.object ? "Product" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :best_tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :best_tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :converted_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price }, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
+                  <%= po_request_row.input :lead_time_option, input_html: {value: lead_time }, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
+                </div>
+                <div class="col-12 col-md-1">
+                  <%= po_request_row.remove_nested_fields_link do %>
+                    <div class="form-group align-self-center flex-grow-1 ml-2">
+                      <i class="far fa-times text-danger"></i>
+                    </div>
+                  <% end if policy(po_request_row.object).destroy? %>
+                </div>
               </div>
-              <div class="col-12 col-md-2">
-                <%= po_request_row.input :product_name, input_html: {value: po_request_row.object.product.to_s}, label: po_request.object.rows.first == po_request_row.object ? "Product" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :best_tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :best_tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :converted_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price }, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
-                <%= po_request_row.input :lead_time_option, input_html: {value: lead_time }, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= po_request_row.remove_nested_fields_link do %>
-                  <div class="form-group align-self-center flex-grow-1 ml-2">
-                    <i class="far fa-times text-danger"></i>
-                  </div>
-                <% end if policy(po_request_row.object).destroy? %>
-              </div>
-            </div>
-          <% end %>
+            <% end %>
+
+          </div>
           <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
         <% end %>
       </div>

@@ -1972,20 +1972,24 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def create_po_request_for_purchase_orders
       SalesOrder.remote_approved.each do |sales_order|
-        rows = sales_order.rows.inject({}){|hash, row|; hash[row.sales_quote_row.product.legacy_id] = row.id;hash}
+        rows = sales_order.rows.inject({}){|hash, row|; hash[row.sales_quote_row.product.sku] = row.id;hash}
         sales_order.inquiry.purchase_orders.each do |purchase_order|
-            purchase_order.metadata["ItemLine"].each do |line_item|
-              legacy_id = line_item["PopProductId"].to_i
-              row = sales_order.rows.find(rows[legacy_id])
-              quantity = line_item["PopQty"].present? ? line_item["PopQty"].to_i : row.quantity
-              if !purchase_order.po_request.present?
-                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created',purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number).first_or_create!
-              else
-                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, status: 'PO Created',purchase_order_number: purchase_order.po_number)
-                po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created',purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number})
+          if purchase_order.rows.present?
+            purchase_order.rows.each do |line_item|
+              product_sku = line_item.sku
+              if rows[product_sku] != nil
+                row = sales_order.rows.find(rows[product_sku])
+                quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
+                if !purchase_order.po_request.present?
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created',purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number).first_or_create!
+                else
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, status: 'PO Created',purchase_order_number: purchase_order.po_number).first
+                  po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id:sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created',purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number})
+                end
+                po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity)
               end
-              po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity)
             end
+          end
         end
     end
   end
@@ -1993,16 +1997,33 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_existing_po_requests_with_purchase_order
     PoRequest.where.not(purchase_order_number: nil).each do |po_request|
       if po_request.status != "Cancelled"
-        rows = po_request.sales_order.rows.inject({}){|hash, row|; hash[row.sales_quote_row.product.legacy_id] = row.id;hash}
-        purchase_order = po_request.purchase_order
-        purchase_order.metadata["ItemLine"].each do |line_item|
-          legacy_id = line_item["PopProductId"].to_i
-          row = sales_order.rows.find(rows[legacy_id])
-          quantity = line_item["PopQty"].present? ? line_item["PopQty"].to_i : row.quantity
-          po_request.update(supplier_id: row.supplier.id)
-          po_request.rows.where(sales_order_row_id: row.id, quantity: quantity).first_or_create!
+        rows = po_request.sales_order.rows.inject({}){|hash, row|; hash[row.sales_quote_row.product.sku] = row.id;hash}
+        if po_request.status != 'Requested'
+          purchase_order = po_request.purchase_order
+          purchase_order.rows.each do |line_item|
+            product_sku = line_item.sku
+            if rows[product_sku] != nil
+              row = po_request.sales_order.rows.find(rows[product_sku])
+              quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
+              po_request.update!(supplier_id: row.supplier.id)
+              po_request.rows.where(sales_order_row_id: row.id, quantity: quantity).first_or_create!
+            end
+          end
+        else
+          po_request.sales_order.rows.each do |row|
+            po_request.update!(supplier_id: row.supplier.id)
+            po_request.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
+          end
         end
       end
+    end
+  end
+
+  def udapte_created_po_requests_with_no_po_order
+    po_requests = PoRequest.where(status: 'PO Created', purchase_order_id: nil)
+    po_requests.each do |po_request|
+      po_request.status = 'Cancelled'
+      po_request.comments.create(message: "Migration Cancelled: Status was PO created but PO number not assigned to PO requests", overseer: Overseer.default)
     end
   end
 end
