@@ -7,7 +7,7 @@
       </h3>
 
       <% if policy(@company_creation_request.account).edit? %>
-        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Create
+        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
           Company</a>
       <% end %>
 
@@ -35,6 +35,20 @@
               last Name
             </strong>
             <%= @company_creation_request.email %>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-6 col-md-4 mb-2">
+            <strong class="d-block">
+              Account Name
+            </strong>
+            <%= @company_creation_request.account.present? ? @company_creation_request.account.name : @company_creation_request.account_name %>
+          </div>
+          <div class="col-6 col-md-4 mb-2">
+            <strong class="d-block">
+              Account Type
+            </strong>
+            <%= @company_creation_request.account.present? ? @company_creation_request.account.account_type : @company_creation_request.account_type %>
           </div>
         </div>
         <div class="form-row">
