@@ -2102,60 +2102,109 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def update_row(row, x)
-    row.product.sku == x.get_column('product sku')
-    row.quantity = x.get_column('quantity').to_i
-    row.margin_percentage = x.get_column('margin percentage')
-    row.unit_selling_price = x.get_column('unit selling price').to_f
-    row.converted_unit_selling_price = x.get_column('unit selling price').to_f
-    row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
-    row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit'))
-    row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) || nil
-    row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
-    # row.calculateD_total =
-    row.save!
-    puts "**************** QUOTE ROW SAVED ********************"
+  def update_row(product_sku, row, x)
+    if product_sku.include? row.product.sku
+      row.quantity = x.get_column('quantity').to_i
+      row.margin_percentage = x.get_column('margin percentage')
+      row.unit_selling_price = x.get_column('unit selling price').to_f
+      row.converted_unit_selling_price = x.get_column('unit selling price').to_f
+      row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+      row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+      row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+      row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+      # row.tax_percentage
+      row.save!
+      puts "**************** QUOTE ROW SAVED ********************"
+    end
   end
 
   def create_missing_orders
-    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_records.csv', 'seed_files')
-    service.loop(16) do |x|
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
+    totals = {}
+    inquiry_not_found = []
+    sales_order_exists = []
+    service.loop(nil) do |x|
+      # next if x.get_column('inquiry number').in? %w(8625 9071 9146 9226)
+      puts "*********************** INQUIRY ", x.get_column('inquiry number')
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
-
       if inquiry.present? && !inquiry.sales_orders.include?(x.get_column('order number'))
+        if !inquiry.shipping_contact.present?
+          inquiry.update(shipping_contact: inquiry.billing_contact)
+        end
         sales_quote = inquiry.sales_quotes.last
         if sales_quote.blank?
-          sales_quote = inquiry.sales_quote.create!({overseer: inquiry.inside_sales_owner})
-        end
-        row = sales_quote.rows.where(inquiry_product_supplier: x.get_column('supplier')).first_or_initialize
-        if row.new_record?
-          update_row(row, x)
-        else
-          update_row(row, x)
+          sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
         end
 
-        sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_initialize
+        product_sku = x.get_column('product sku')
+        puts "SKU", product_sku
+        product = Product.find_by_sku(product_sku)
+
+        inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
+        if inquiry_products.blank?
+          sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
+          inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
+        else
+          inquiry_product = inquiry_products.first
+          inquiry_product.update_attribute('quantity', inquiry_product.quantity + x.get_column('quantity').to_f)
+        end
+
+        supplier = Company.acts_as_supplier.find_by_name(x.get_column('supplier')) || Company.acts_as_supplier.find_by_name('Local')
+
+        inquiry_product_supplier = InquiryProductSupplier.where(:supplier_id => supplier.id, :inquiry_product => inquiry_product).first_or_create!
+        inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
+        row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+
+          if product_sku == row.product.sku
+            row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
+            row.quantity = x.get_column('quantity')
+            row.margin_percentage = x.get_column('margin percentage')
+            row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
+            row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+            row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+            row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+            row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+            row.created_at = x.get_column('created at',to_datetime: true)
+
+            if row.unit_selling_price.round != row.calculated_unit_selling_price.round
+              row.margin_percentage = (1 - (row.unit_cost_price / row.unit_selling_price)) * 100
+            end
+            row.save!
+
+            puts "**************** QUOTE ROW SAVED ********************"
+          end
+
+        sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
         sales_order.overseer = inquiry.inside_sales_owner
-        sales_order.order_number = x.get_column('order_number')
-        sales_order.created_at = x.get_column('created at').to_datetime
-        sales_order.mis_date = x.get_column('created at').to_datetime
+        sales_order.order_number = x.get_column('order number')
+        sales_order.created_at = x.get_column('created at',to_datetime: true)
+        sales_order.mis_date = x.get_column('created at',to_datetime: true)
 
         sales_order.status = x.get_column('status') || "Approved"
         sales_order.remote_status = x.get_column('SAP status') || "Processing"
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
-
+        row_object = { :sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f }
+        totals[sales_order.order_number] ||= []
+        totals[sales_order.order_number].push(row_object)
         puts "************************** ORDER SAVED *******************************"
+        so_row = sales_order.rows.where(:sales_quote_row => row).first_or_create!
 
-        product_skus = x.get_column('product sku')
 
-        sales_quote.rows.each do |row|
-          if product_skus.include? row.product.sku
-            sales_order.rows.where(:sales_quote_row => row).first_or_create!
-          end
-          puts "***************************** ORDER ROW SAVED ******************************"
+        puts "****************** ORDER TOTAL ****************************", sales_order.order_number, sales_order.calculated_total_with_tax
+      else
+        if !inquiry.present?
+          inquiry_not_found.push(x.get_column('inquiry number'))
+        end
+        if inquiry.present? && inquiry.sales_orders.include?(x.get_column('order number'))
+          sales_order_exists.push(x.get_column('order_number'))
         end
       end
     end
+    puts totals
+    puts "<------------------------------------------------------------------------------------------->"
+    puts inquiry_not_found
+    puts "<-------------------------------------------------------------------------------------------->"
+    puts sales_order_exists
   end
 end
