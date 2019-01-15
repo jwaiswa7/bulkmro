@@ -24,8 +24,8 @@ json.data (@products) do |product|
                   product.mpn,
                   format_boolean(product.is_active?),
                   format_boolean_label(product.synced?, 'synced'),
-                  format_date(product.created_at),
-                  format_date(product.approval.try(:created_at))
+                  format_succinct_date(product.created_at),
+                  format_succinct_date(product.approval.try(:created_at))
               ]
 end
 json.columnFilters [

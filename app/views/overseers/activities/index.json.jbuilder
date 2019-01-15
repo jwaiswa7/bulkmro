@@ -24,7 +24,7 @@ json.data (@activities) do |activity|
                   format_enum(activity.activity_type),
                   activity.points_discussed,
                   activity.actions_required,
-                  format_date(activity.created_at)
+                  format_succinct_date(activity.created_at)
               ]
 end
 
