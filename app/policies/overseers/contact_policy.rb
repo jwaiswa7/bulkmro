@@ -7,4 +7,8 @@ class Overseers::ContactPolicy < Overseers::ApplicationPolicy
     cataloging? || admin?
   end
 
+  def edit?
+    record.company.is_active if record.company.present?
+  end
+
 end

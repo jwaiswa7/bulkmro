@@ -1,21 +1,6 @@
 <% provide :can_be_ajaxed, true %>
-<%# provide :can_be_directly_exported, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
-
-<%# provide :heading_buttons do %>
-<%# if policy(:sales_order).export_for_logistics? %>
-<!--    <a href="<%#= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1"<%# if Export.sales_order_logistics.last.present? %> data-badge="<%#= ['', time_ago_in_words(Export.sales_order_logistics.last.created_at), 'ago'].join(' ') %>"<%# end %>>-->
-<!--      <i class="fal fa-download mr-1"></i>Sales Orders (Logistics)-->
-<!--    </a>-->
-<%# end %>
-
-<%# if policy(:sales_order).export_rows? %>
-<!--    <a href="<%#= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" <%# if Export.sales_order_rows.last.present? %>data-badge="<%#= ['', time_ago_in_words(Export.sales_order_rows.last.created_at),'ago'].join(' ') %>"<%# end %>>-->
-<!--      <i class="fal fa-download mr-1"></i>Sales Order Rows-->
-<!--    </a>-->
-<%# end %>
-<%# end %>
 
 <% provide :heading_buttons do %>
   <div class="btn-group">

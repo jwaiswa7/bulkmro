@@ -27,6 +27,7 @@ class SalesOrder < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
   has_many :products, :through => :rows
+  has_many :categories, :through => :products
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order

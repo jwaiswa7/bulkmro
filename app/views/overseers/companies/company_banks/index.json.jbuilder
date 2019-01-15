@@ -7,20 +7,18 @@ json.data (@company_banks) do |company_bank|
                       end,
                       if policy(company_bank).edit?
                         row_action_button(edit_overseers_company_company_bank_path(company_bank.company, company_bank), 'pencil', 'Edit bank', 'warning')
-                      end,
-                      if policy(company_bank).destroy?
-                        row_action_button(overseers_company_company_bank_path(company_bank.company, company_bank),'trash', 'Delete bank', 'danger', '' ,:delete)
                       end
                   ].join(' '),
-                  company_bank.name.truncate(50),
-                  company_bank.code,
+                  company_bank.bank.name,
+                  company_bank.bank.code,
                   company_bank.branch,
                   company_bank.account_name,
                   company_bank.account_number ,
+                  format_boolean_label(company_bank.synced?, 'synced'),
                   format_date(company_bank.created_at)
               ]
 end
 
-json.recordsTotal @company.banks.count
-json.recordsFiltered @company_banks.total_count
+json.recordsTotal @company_banks.count
+json.recordsFiltered @indexed_company_banks.total_count
 json.draw params[:draw]
