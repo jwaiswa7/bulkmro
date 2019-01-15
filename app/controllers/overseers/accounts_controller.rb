@@ -40,12 +40,13 @@ class Overseers::AccountsController < Overseers::BaseController
     end
 
     if @account.save_and_sync
-      if @account.reference_company_creation_request_id.present?
-        company_creation_request = CompanyCreationRequest.where(:id => @account.reference_company_creation_request_id).last
-        if !company_creation_request.nil?
-          company_creation_request.account_id = @account.id
-          company_creation_request.save
-        end
+      company_creation_request = CompanyCreationRequest.where(:id => @account.reference_company_creation_request_id).last
+      if !company_creation_request.nil?
+        company_creation_request.account_id = @account.id
+        company_creation_request.save
+        activity = company_creation_request.activity
+        activity.account = @account
+        activity.save
       end
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else

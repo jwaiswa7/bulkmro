@@ -41,6 +41,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     authorize @company
 
     if @company.save_and_sync
+      company_creation_request = @company.company_creation_request
+      company_creation_request.company_id = @company.id
+      company_creation_request.save
+      activity = company_creation_request.activity
+      activity.company = @company
+      activity.save
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
       render 'new'

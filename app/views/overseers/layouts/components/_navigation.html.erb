@@ -46,6 +46,14 @@
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Creation Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_company_creation_requests_path, policy(:company_creation_request).index? %>
+              <%= nav_dropdown_item 'Requested', requested_overseers_company_creation_requests_path, policy(:company_creation_request).requested? %>
+              <%= nav_dropdown_item 'Created/Completed', created_overseers_company_creation_requests_path, policy(:company_creation_request).created? %>
+            </ul>
+          </div>
         </div>
       </li>
 
@@ -184,7 +192,6 @@
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
-            <%= nav_dropdown_item 'Company Creation Requests', overseers_company_creation_requests_path, policy(:company_creation_request).index? %>
           </div>
         </li>
       <% end %>

@@ -1,9 +1,26 @@
 class Overseers::CompanyCreationRequestsController < Overseers::BaseController
   before_action :set_company_creation_request, only: [:show]
 
+  def requested
+    @company_creation_requests =   ApplyDatatableParams.to( CompanyCreationRequest.all.requested.order(id: :desc), params)
+    authorize @company_creation_requests
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def created
+    @company_creation_requests =   ApplyDatatableParams.to( CompanyCreationRequest.all.created.order(id: :desc), params)
+    authorize @company_creation_requests
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
   def index
-    company_que = CompanyCreationRequest.includes(:company).where(companies:  { id: nil })
-    @company_creation_requests =   ApplyDatatableParams.to(company_que, params)
+    @company_creation_requests =   ApplyDatatableParams.to( CompanyCreationRequest.all.order(id: :desc), params)
     authorize @company_creation_requests
   end
 

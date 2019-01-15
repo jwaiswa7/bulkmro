@@ -7,7 +7,7 @@
       </h3>
 
       <% if @company_creation_request.account.present? && policy(:company).new? %>
-        <a href="<%= new_overseers_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
           Company</a>
       <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
         <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create

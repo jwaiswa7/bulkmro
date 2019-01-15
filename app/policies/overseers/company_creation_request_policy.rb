@@ -3,4 +3,12 @@ class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
     admin? || cataloging?
   end
 
+  def requested?
+    index?
+  end
+
+  def created?
+    index?
+  end
+
 end
