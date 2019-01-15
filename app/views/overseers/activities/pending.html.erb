@@ -21,9 +21,10 @@
 <% content_for :header_row do %>
   <th class="no-sort">
     <% if policy(:activity).perform_actions? %>
-      <label for="all_activities" class="mb-0 ml-3"><input type="checkbox" name="all_activities" id="all_activities">
-        Select All
-      </label>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
+        <label class="custom-control-label" for="all_activities">Select All</label>
+      </div>
     <% end %>
   </th>
   <th class="no-sort">Created By</th>
