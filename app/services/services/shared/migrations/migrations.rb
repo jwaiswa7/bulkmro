@@ -1759,8 +1759,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_products_description
-    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO DATA_15000 Ready to Upload.csv', 'seed_files')
     service.loop(nil) do |x|
+      puts "-----------------#{x.get_column('SKU')}"
       product = Product.find_by_sku(x.get_column('SKU'))
       is_duplicate = x.get_column('IS Duplicate')
       if product.present?
@@ -1769,7 +1770,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           product.save
         else
           product.name = x.get_column('New Discription')
-          product.save_and_sync
+          product.save
         end
       end
     end
