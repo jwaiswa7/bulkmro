@@ -153,6 +153,7 @@ Rails.application.routes.draw do
     resources :po_requests do
       scope module: 'po_requests' do
         resources :payment_requests
+        resources :email_messages
       end
 
       collection do

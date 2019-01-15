@@ -34,6 +34,7 @@ class SalesOrder < ApplicationRecord
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
   has_one :po_request
   has_many :invoice_requests
+  has_many :email_messages
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
 
