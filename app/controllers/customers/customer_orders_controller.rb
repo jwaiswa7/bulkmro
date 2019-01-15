@@ -39,6 +39,32 @@ class Customers::CustomerOrdersController < Customers::BaseController
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end
 
+  def process_razorpayment(online_order_number, amount)
+    payment = Payment.new(:contact => current_contact)
+    razorpay_pmnt_obj = fetch_payment(online_order_number)
+    status = razorpay_pmnt_obj.status
+    if status == "authorized"
+      razorpay_pmnt_obj.capture({amount: amount})
+      razorpay_pmnt_obj = fetch_payment(online_order_number)
+      params.merge!({status: razorpay_pmnt_obj.status, price: product.price})
+      Order.create(params)
+    else
+      raise StandardError, "Unable to capture payment"
+    end
+  end
+
+  def process_refund(payment_id)
+    fetch_payment(payment_id).refund
+    record = Order.find_by_payment_id(payment_id)
+    record.update_attributes(status: fetch_payment(payment_id).status)
+    return record
+  end
+
+  def filter(params)
+    scope = params[:status] ? Order.send(params[:status]) : Order.authorized
+    return scope
+  end
+
   def show
     authorize @customer_order
   end
