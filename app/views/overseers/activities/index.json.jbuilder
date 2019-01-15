@@ -2,7 +2,7 @@ json.data (@activities) do |activity|
   json.array! [
                   [
                       if policy(:activity).perform_actions?;
-                        "<input type='checkbox' name='activities[]' value='#{activity.id}'>"
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
                       end,
                       if policy(activity).edit?;
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
