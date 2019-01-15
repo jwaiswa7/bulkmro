@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseers::BaseController
-  before_action :set_material_readiness_followup, only: [:show, :edit, :update]
+  before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery]
 
   def index
     @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.all, params)
@@ -49,6 +49,16 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     end
   end
 
+  def confirm_delivery
+    authorize @mrf
+    @purchase_order = @mrf.purchase_order
+
+    @mrf.mrf_rows.each do |row|
+      row.update_attributes(delivered_quantity: row.pickup_quantity)
+    end
+
+    render 'edit'
+  end
 
   private
 

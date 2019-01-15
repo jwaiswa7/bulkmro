@@ -1,11 +1,14 @@
 <div class="col-lg-12 ">
   <div class="page-header">
-    <h2><%= action_name.capitalize %> Material Readiness Followup</h2>
+    <h2><%= action_name.capitalize.gsub('_', ' ') %> Material Readiness Followup</h2>
   </div>
 
   <%= simple_form_for([:overseers, @purchase_order, @mrf], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <div class="card">
       <%= render 'shared/snippets/form_errors', f: f %>
+      <% if action_name == "confirm_delivery" %>
+        <%= f.hidden_field 'action_name', value: action_name %>
+      <% end %>
       <div class="card-body">
         <div class="form-row">
           <div class="col-6">
@@ -56,13 +59,13 @@
       <div class="card-body">
         <div class="form-row flex-row align-items-center">
           <div class="col-4">
-            <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker' }, required: true %>
+            <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_dispatch_date.try(:strftime,"%d-%b-%Y") }, required: true %>
           </div>
           <div class="col-4">
-            <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker' }, required: true %>
+            <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime,"%d-%b-%Y") }, required: true %>
           </div>
           <div class="col-4">
-            <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker' }, required: true %>
+            <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime,"%d-%b-%Y") }, required: true %>
           </div>
         </div>
       </div>
@@ -78,12 +81,21 @@
               <%= m.label :sku %><br/>
               <%= m.label :sku,"#{m.object.purchase_order_row.get_product.sku}" %>
             </div>
-            <div class="col-3">
-              <%= m.input :quantity, input_html: { value: m.object.quantity }, readonly: true %>
-            </div>
-            <div class="col-3">
-              <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i }, min: 0, max: m.object.pickup_quantity.to_i %>
-            </div>
+            <% if action_name == "confirm_delivery" %>
+              <div class="col-3">
+                <%= m.input :pickup_quantity, input_html: { value: m.object.pickup_quantity }, readonly: true %>
+              </div>
+              <div class="col-3">
+                <%= m.input :delivered_quantity, type: "number", input_html: { value: m.object.delivered_quantity.to_i, min: 0, max: m.object.pickup_quantity.to_i } %>
+              </div>
+            <% else %>
+              <div class="col-3">
+                <%= m.input :quantity, input_html: { value: m.object.quantity }, readonly: true %>
+              </div>
+              <div class="col-3">
+                <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i, min: 0, max: m.object.quantity.to_i } %>
+              </div>
+            <% end %>
             <hr/>
           </div>
         <% end %>

@@ -207,9 +207,8 @@ Rails.application.routes.draw do
 
       scope module: 'purchase_orders' do
         resources :material_readiness_followups do
-          collection do
-            :pickup_queue
-            :delivered_queue
+          member do
+            get 'confirm_delivery'
           end
         end
       end
