@@ -137,6 +137,7 @@ Rails.application.routes.draw do
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
         get 'resync'
+        get 'resync_inventory'
       end
 
       collection do
@@ -193,6 +194,7 @@ Rails.application.routes.draw do
         get 'export_for_logistics'
         get 'export_for_sap'
         get 'autocomplete'
+        get 'not_invoiced'
       end
 
       scope module: 'sales_orders' do
@@ -421,12 +423,16 @@ Rails.application.routes.draw do
       patch 'update_current_company'
     end
 
-    resources :reports do
+    resources :reports, only: %i[index] do
       member do
       end
 
       collection do
         get 'monthly_purchase_data'
+        get 'revenue_trend'
+        get 'unique_skus'
+        get 'order_count'
+        get 'categorywise_revenue'
       end
     end
 

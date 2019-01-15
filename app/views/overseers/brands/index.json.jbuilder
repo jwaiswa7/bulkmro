@@ -10,7 +10,7 @@ json.data (@brands) do |brand|
                   ].join(' '),
                   brand.to_s,
                   format_boolean_label(brand.synced?, 'synced'),
-                  format_date(brand.created_at)
+                  format_succinct_date(brand.created_at)
               ]
 end
 

@@ -7,21 +7,17 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html {}
       format.json do
-        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
 
-        per = (params[:per] || params[:length] || 20).to_i
-        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
 
-        @indexed_purchase_orders = service.indexed_records.per(per).page(page)
-        @purchase_orders = service.records.page(page).per(per).try(:reverse)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
+        status_service.call
 
-        if (PurchaseOrder.count != @indexed_purchase_orders.total_count)
-          status_records = service.records.try(:reverse)
-          @statuses = status_records.map(&:metadata_status)
-        else
-          @statuses = PurchaseOrder.all.map(&:metadata_status)
-        end
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
       end
     end
   end
@@ -96,6 +92,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     params.require(:purchase_order).permit(
         :internal_status,
         :comments_attributes => [:id, :message, :created_by_id],
+        :attachments => []
     )
   end
 end

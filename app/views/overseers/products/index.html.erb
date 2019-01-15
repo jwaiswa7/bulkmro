@@ -7,14 +7,15 @@
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
   <th class="no-sort desktop" data-name="product_id">Name</th>
-  <th class="no-sort all" data-name="sku">SKU</th>
+  <th class="no-sort all text-right" data-name="sku">SKU</th>
   <th class="no-sort desktop" data-name="brand_id">Brand</th>
   <th class="no-sort desktop">Category</th>
   <th class="no-sort desktop">MPN</th>
-  <th class="no-sort desktop" data-name="is_active"> Active</th>
+  <th class="no-sort desktop text-right" data-name="is_active"> Active</th>
   <th class="no-sort desktop">SAP</th>
-  <th class="no-sort desktop" data-name="created_at">Created</th>
-  <th class="no-sort desktop">Approved</th>
+  <th class="no-sort desktop text-right" >Approved</th>
+  <th class="no-sort desktop text-right" data-name="created_at">Created</th>
+
 <% end %>
 
 <% content_for :filter_row do %>

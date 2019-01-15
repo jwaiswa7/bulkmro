@@ -1,13 +1,28 @@
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
-        <%= @product.name %>
-      </h3>
-      <% if policy(@product).edit? %>
-        <a href="<%= edit_overseers_product_path(@product) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
-          Product</a>
-      <% end %>
+      <div class="col-6">
+        <h3 class="display-5 d-flex align-items-center">
+          <%= @product.name %>
+        </h3>
+      </div>
+      <div class="col-2">
+        <% if @product.is_kit %>
+          <a href="<%= overseers_kit_path(@product.kit) %>" class="btn btn-info btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-eye mr-1"></i>View
+            Kit</a>
+        <% end %>
+      </div>
+      <div class="col-2">
+        <% if policy(@product).edit? %>
+          <a href="<%= edit_overseers_product_path(@product) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit
+            Product</a>
+        <% end %>
+      </div>
+      <div class="col-2">
+        <% if policy(@product).resync_inventory? %>
+          <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Resync Inventory</a>
+        <% end %>
+      </div>
     </div>
   </section>
 
@@ -15,6 +30,13 @@
     <div class="card">
       <div class="card-body">
         <div>
+          <% if @product.is_kit %>
+            <ul class="list-group text-info mb-3">
+              <li class="list-group-item">
+                <h5 class="text-info mb-0">This is a kit product.</h5>
+              </li>
+            </ul>
+          <% end %>
           <h6 class="text-uppercase text-black-50 mb-1">Product Details</h6>
           <div class="form-row">
             <% if @product.sku? %>
@@ -50,6 +72,11 @@
               <%= format_boolean(@product.is_service) %>
             </div>
 
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">SAP</strong>
+              <%= format_boolean(@product.synced?) %>
+            </div>
+
           </div>
         </div>
         <div class="mt-3">
@@ -62,12 +89,12 @@
               </div>
             <% end %>
 
-              <% if @product.tax_rate.present? %>
+            <% if @product.tax_rate.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Tax Rate</strong>
-                  <%= @product.tax_rate %>
+                <%= @product.tax_rate %>
               </div>
-              <% end %>
+            <% end %>
 
             <% if @product.measurement_unit %>
               <div class="col-6 col-md-3 mb-2">
@@ -75,6 +102,45 @@
                 <%= @product.measurement_unit %>
               </div>
             <% end %>
+          </div>
+        </div>
+        <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#inventoryModal" style="margin-top: 25px;">View Inventory
+        </button>
+        <div class="modal fade" id="inventoryModal" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Product Inventory</h4>
+              </div>
+              <div class="modal-body">
+                <table class="table table-bordered dt-responsive" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="no-sort">Warehouse</th>
+                      <th class="no-sort">In Stock</th>
+                      <th class="no-sort">Committed</th>
+                      <th class="no-sort">Ordered</th>
+                      <th class="no-sort">Available</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @product.stocks.order(instock: :desc).each do |stock| %>
+                      <tr>
+                        <td><%= stock.warehouse.name %></td>
+                        <td><%= stock.instock %></td>
+                        <td><%= stock.committed %></td>
+                        <td><%= stock.ordered %></td>
+                        <td><%= ( stock.instock - stock.committed ) %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -112,8 +178,10 @@
               <% end %>
             </td>
             <td><%= inquiry_product.inquiry.inquiry_number %></td>
-            <td data-toggle="tooltip" title="(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %>">(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name.truncate(25) %></td>
-            <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
+            <td data-toggle="tooltip" title="(<%= inquiry_product.inquiry.company.account.alias %>) <%= inquiry_product.inquiry.company.account.name %>">(<%= inquiry_product.inquiry.company.account.alias %>
+              ) <%= inquiry_product.inquiry.company.account.name.truncate(25) %></td>
+            <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>
+              ) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
             <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
             <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
             <td><%= format_date(inquiry_product.inquiry.quotation_date) %></td>
