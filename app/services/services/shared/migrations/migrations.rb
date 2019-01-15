@@ -2102,6 +2102,60 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_row(row, x)
+    row.product.sku == x.get_column('product sku')
+    row.quantity = x.get_column('quantity').to_i
+    row.margin_percentage = x.get_column('margin percentage')
+    row.unit_selling_price = x.get_column('unit selling price').to_f
+    row.converted_unit_selling_price = x.get_column('unit selling price').to_f
+    row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+    row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit'))
+    row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) || nil
+    row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+    # row.calculateD_total =
+    row.save!
+    puts "**************** QUOTE ROW SAVED ********************"
+  end
 
+  def create_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_records.csv', 'seed_files')
+    service.loop(16) do |x|
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
 
+      if inquiry.present? && !inquiry.sales_orders.include?(x.get_column('order number'))
+        sales_quote = inquiry.sales_quotes.last
+        if sales_quote.blank?
+          sales_quote = inquiry.sales_quote.create!({overseer: inquiry.inside_sales_owner})
+        end
+        row = sales_quote.rows.where(inquiry_product_supplier: x.get_column('supplier')).first_or_initialize
+        if row.new_record?
+          update_row(row, x)
+        else
+          update_row(row, x)
+        end
+
+        sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_initialize
+        sales_order.overseer = inquiry.inside_sales_owner
+        sales_order.order_number = x.get_column('order_number')
+        sales_order.created_at = x.get_column('created at').to_datetime
+        sales_order.mis_date = x.get_column('created at').to_datetime
+
+        sales_order.status = x.get_column('status') || "Approved"
+        sales_order.remote_status = x.get_column('SAP status') || "Processing"
+        sales_order.sent_at = sales_quote.created_at
+        sales_order.save!
+
+        puts "************************** ORDER SAVED *******************************"
+
+        product_skus = x.get_column('product sku')
+
+        sales_quote.rows.each do |row|
+          if product_skus.include? row.product.sku
+            sales_order.rows.where(:sales_quote_row => row).first_or_create!
+          end
+          puts "***************************** ORDER ROW SAVED ******************************"
+        end
+      end
+    end
+  end
 end
