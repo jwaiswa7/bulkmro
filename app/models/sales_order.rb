@@ -171,6 +171,15 @@ class SalesOrder < ApplicationRecord
     end
   end
 
+
+  def serailized_billing_address
+    self.billing_address || self.inquiry.billing_address
+  end
+
+  def serailized_shipping_address
+    self.shipping_address || self.inquiry.shipping_address
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
@@ -188,5 +197,9 @@ class SalesOrder < ApplicationRecord
 
   def has_purchase_order_request
     self.po_request.present?
+  end
+
+  def not_invoiced_value(status)
+    self.order_total
   end
 end

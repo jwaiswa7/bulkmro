@@ -2,13 +2,13 @@ json.data (@categories) do |category|
   json.array! [
                   [
                       if policy(category).show?
-                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'dark', :_blank)
+                        row_action_button(overseers_category_path(category), 'fal fa-eye', 'View Category', 'info', :_blank)
                       end,
                       if policy(category).edit?
                         row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning', :_blank)
                       end
                   ].join(' '),
-                  category.to_s,
+                  conditional_link(category.to_s, overseers_category_path(category), policy(category).show? ),
                   format_boolean_label(category.synced?, 'synced'),
                   format_succinct_date(category.created_at)
               ]
