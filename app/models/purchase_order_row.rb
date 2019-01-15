@@ -1,6 +1,6 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
-
+  has_many :mrf_rows
   def sku
     get_product.sku if get_product.present?
   end

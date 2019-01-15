@@ -13,16 +13,32 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   def new
     @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
     @purchase_order.update_attributes(material_status: :'Material Readiness Follow-Up')
-    @mrf = MaterialReadinessFollowup.where(purchase_order_id: @purchase_order.id).first_or_create!
+
+    @mrf = MaterialReadinessFollowup.new(purchase_order: @purchase_order)
+    authorize @mrf
+  end
+
+  def create
+    @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+    @mrf = @purchase_order.material_readiness_followups.new(mrf_params)
 
     authorize @mrf
-
-    @po_rows = @purchase_order.rows
-    @po_rows.each do |row|
-      @mrf.mrf_rows.where(purchase_order_row_id: row.id).first_or_create! do |mrf_row|
-        mrf_row.quantity = row.quantity
-        mrf_row.pickup_quantity = row.quantity
+    if @mrf.save
+      if @mrf.purchase_order.present?
+        @po_rows = @purchase_order.rows
+        @po_rows.each do |row|
+          @mrf_row = @mrf.mrf_rows.build
+          @mrf_row.purchase_order_row_id = row.id
+          @mrf_row.quantity = row.quantity
+          @mrf_row.pickup_quantity = row.quantity
+          @mrf_row.save
+        end
+        @mrf.save
       end
+
+      redirect_to edit_overseers_purchase_order_material_readiness_followup_path(@purchase_order, @mrf), notice: flash_message(@mrf, action_name)
+    else
+      'new'
     end
   end
 
@@ -32,20 +48,28 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   end
 
   def update
-    @mrf.assign_attributes(mrf_params)
-    @mrf.status = 20
     authorize @mrf
 
-    if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:pickup_quantity).to_i
-      @mrf.purchase_order.update_attributes(material_status: :'Material Pickup')
+    if params[:action_name] == "confirm_delivery"
+      if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:delivered_quantity).to_i
+        @mrf.purchase_order.update_attributes(material_status: :'Material Delivered')
+        @mrf.update_attributes(status: :"Material Delivered")
+      else
+        @mrf.purchase_order.update_attributes(material_status: :'Material Partial Delivered')
+      end
     else
-      @mrf.purchase_order.update_attributes(material_status: :'Material Partial Pickup')
-    end
+      if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:pickup_quantity).to_i
+        @mrf.purchase_order.update_attributes(material_status: :'Material Pickup')
+      else
+        @mrf.purchase_order.update_attributes(material_status: :'Material Partial Pickup')
+      end
+      @mrf.assign_attributes(mrf_params)
 
-    if @mrf.save
-      redirect_to overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
-    else
-      render 'edit'
+      if @mrf.save
+        redirect_to overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
+      else
+        render 'edit'
+      end
     end
   end
 
@@ -68,13 +92,14 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
 
   def mrf_params
     params.require(:material_readiness_followup).permit(
+        :action_name,
         :status,
         :expected_dispatch_date,
         :expected_delivery_date,
         :actual_delivery_date,
         :type_of_doc,
         :logistics_owner_id,
-        :purchase_order,
+        :purchase_order_id,
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :mrf_rows_attributes => [:id, :quantity, :pickup_quantity, :delivered_quantity],
         :attachments => []
