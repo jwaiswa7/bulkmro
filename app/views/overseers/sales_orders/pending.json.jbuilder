@@ -51,4 +51,6 @@ json.recordsFiltered @indexed_sales_orders.total_count
 # json.recordsTotal @inquiries.model.all.count
 # json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
-json.recordsSummary SalesOrder.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.status @indexed_sales_orders
+json.recordsSummary SalesOrder.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values

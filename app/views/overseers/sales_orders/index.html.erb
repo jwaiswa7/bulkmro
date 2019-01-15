@@ -1,21 +1,6 @@
 <% provide :can_be_ajaxed, true %>
-<%# provide :can_be_directly_exported, true %>
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
-
-<%# provide :heading_buttons do %>
-<%# if policy(:sales_order).export_for_logistics? %>
-<!--    <a href="<%#= export_for_logistics_overseers_sales_orders_path(format: :csv)  %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1"<%# if Export.sales_order_logistics.last.present? %> data-badge="<%#= ['', time_ago_in_words(Export.sales_order_logistics.last.created_at), 'ago'].join(' ') %>"<%# end %>>-->
-<!--      <i class="fal fa-download mr-1"></i>Sales Orders (Logistics)-->
-<!--    </a>-->
-<%# end %>
-
-<%# if policy(:sales_order).export_rows? %>
-<!--    <a href="<%#= export_rows_overseers_sales_orders_path(format: :csv)  %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" <%# if Export.sales_order_rows.last.present? %>data-badge="<%#= ['', time_ago_in_words(Export.sales_order_rows.last.created_at),'ago'].join(' ') %>"<%# end %>>-->
-<!--      <i class="fal fa-download mr-1"></i>Sales Order Rows-->
-<!--    </a>-->
-<%# end %>
-<%# end %>
 
 <% provide :heading_buttons do %>
   <div class="btn-group">
@@ -39,19 +24,25 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="no-sort all">Order #</th>
-    <th class="no-sort desktop" data-name="status">Inquiry #</th>
+    <th class="no-sort all text-right">Order</th>
+    <th class="no-sort desktop text-right" data-name="created_at">Created Date</th>
+    <th class="no-sort desktop text-right" data-name="mis_date">Order Date</th>
+    <th class="no-sort desktop text-right" data-name="status">Inquiry</th>
+    <th class="no-sort desktop">Sales Invoices</th>
+    <th class="no-sort desktop text-right">PO # - Subject</th>
     <th class="no-sort desktop" data-name="status">Status</th>
     <th class="no-sort desktop" data-name="remote_status">SAP Status</th>
-    <th class="no-sort desktop" data-name="account_name">Customer Account Name</th>
+    <th class="no-sort desktop" data-name="account_name">Account</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-    <th class="no-sort desktop">Quote Total</th>
-    <th class="no-sort desktop">Order Total</th>
-    <th class="no-sort desktop" data-name="mis_date">Order Date</th>
-    <th class="no-sort desktop" data-name="created_at">Created At</th>
+    <th class="no-sort desktop text-right">Quote Total</th>
+    <th class="no-sort desktop text-right">Order Total</th>
   <% end %>
   <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="daterange"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
@@ -62,8 +53,6 @@
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="daterange"></td>
-    <td data-filter="daterange"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

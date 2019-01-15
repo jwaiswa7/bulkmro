@@ -10,6 +10,9 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).edit_internal_status?
                         row_action_button(edit_internal_status_overseers_purchase_order_path(purchase_order), 'pencil', 'Edit Internal Status', 'success')
                       end,
+                      if policy(purchase_order).can_request_invoice?
+                        row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
+                      end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
@@ -41,4 +44,5 @@ json.columnFilters [
 json.recordsTotal PurchaseOrder.all.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
-json.recordsSummary PurchaseOrder.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary PurchaseOrder.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values

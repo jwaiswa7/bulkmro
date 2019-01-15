@@ -4,7 +4,7 @@ const datePicker = () => {
             $(this).daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
-                opens: "left",
+                opens: $(this).data('direction') ? $(this).data('direction') : "left",
                 locale: {
                     format: 'DD-MMM-YYYY'
                 }

@@ -44,6 +44,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.update_associated_records(response, force_find: false)
+
     response = find(response, quotes: true) if force_find
     return if response.blank?
 
@@ -53,14 +54,34 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
-      if address_to_update.present?
-        if address["AddressType"].eql? "bo_ShipTo"
-          address_to_update.shipping_address_uid = address["RowNum"]
-        elsif address["AddressType"].eql? "bo_BillTo"
-          address_to_update.billing_address_uid = address["RowNum"]
+      if address_to_update.blank?
+
+        address_to_update = company.addresses.where(remote_uid: address['AddressName']).first_or_initialize do |new_address|
+          new_address.assign_attributes(
+              legacy_id: address['AddressName'],
+              name: company.name,
+              street1: address['Street'].present? ? address['Street'] : nil,
+              city_name: address['City'].present? ? address['City'] : nil,
+              street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
+              country_code: address['Country'].present? ? address['Country'] : 'IN',
+              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.name : nil,
+              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.id : nil,
+              pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
+              gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
+              vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
+              cst: address['U_CST'].present? ? address['U_CST'] : nil
+          )
         end
         address_to_update.save
+
       end
+
+      if address['AddressType'].eql? "bo_BillTo"
+        address_to_update.update_attribute(:billing_address_uid, address['RowNum'])
+      elsif address['AddressType'].eql? "bo_ShipTo"
+        address_to_update.update_attribute(:shipping_address_uid, address['RowNum'])
+      end
+
     end if addresses.present?
 
     contacts.each do |contact|

@@ -23,7 +23,7 @@ primary_bank:
   currency_eur:
     account_number: 9412666682
 
-secondry_bank:
+secondary_bank:
   name: State Bank of India
   address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.
   account_name: Bulk MRO Industrial Supply Pvt. Ltd.
