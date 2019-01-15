@@ -1,0 +1,23 @@
+  <div class="row" >
+    <div class="col-12 col-md-12 ">
+      <button type="button" class="btn btn-info btn-block existing-account <%= ( @activity.company_creation_request.account_name.present?) ? '' : 'd-none' %>" >
+        add existing account
+      </button>
+    </div>
+    <div class="col-12 col-md-12 " >
+      <button type="button" class="btn btn-info btn-block new-account <%= ( @activity.company_creation_request.account_name.present?) ? 'd-none' : '' %>" >
+        add new account
+      </button>
+    </div>
+  </div>
+  <h6 class="mt-2 text-center">
+    OR
+  </h6>
+<div class="existing-account-form <%= ( @activity.company_creation_request.account_name.present?) ? 'd-none' : '' %>">
+  <%= company_creation_request_field.association :account,label: 'Existing account', collection: selected_option_or_nil(company_creation_request_field, :account),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_accounts_path, include_blank: 'Create new account if no company connected to existing account'  }%>
+</div>
+<div class="new-account-form <%= ( @activity.company_creation_request.account_name.present?) ? '' : 'd-none' %>">
+  <%= company_creation_request_field.input :account_name, label: 'account name' %>
+  <%= company_creation_request_field.input :account_type, as: :select, include_blank: false, label: 'account type', collection: enum_to_collection(CompanyCreationRequest.account_types) %>
+
+</div>

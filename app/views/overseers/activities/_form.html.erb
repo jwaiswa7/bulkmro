@@ -12,7 +12,7 @@
         <%= f.association :company, label: "Existing company", collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
       </div>
      <%else %>
-        <%= render partial: 'company_creation_request',locals: {f: f} %>
+        <%= render partial: 'overseers/activities/company_creation_partials/company_creation_request',locals: {f: f} %>
       <%end %>
 
     
