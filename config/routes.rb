@@ -193,8 +193,8 @@ Rails.application.routes.draw do
 
     resources :purchase_orders do
       member do
-        get 'edit_internal_status'
-        patch 'update_internal_status'
+        get 'edit_material_status'
+        patch 'update_material_status'
       end
 
       collection do

@@ -7,8 +7,8 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
-                      if policy(purchase_order).edit_internal_status?
-                        row_action_button(new_overseers_purchase_order_material_readiness_followup_path(purchase_order), 'pencil', 'Edit Internal Status', 'success')
+                      if policy(purchase_order).edit_material_status?
+                        row_action_button(new_overseers_purchase_order_material_readiness_followup_path(purchase_order), 'pencil', 'Create Pickup Request', 'success')
                       end,
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)

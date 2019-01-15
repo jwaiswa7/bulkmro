@@ -5,14 +5,14 @@
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
-  <%= simple_form_for(@purchase_order, url: update_internal_status_overseers_purchase_order_path(@purchase_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+  <%= simple_form_for(@purchase_order, url: update_material_status_overseers_purchase_order_path(@purchase_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
 
     <div class="card">
       <div class="card-header">
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :internal_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.internal_statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
+            <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
           </div>
 
           <div class="col-12">

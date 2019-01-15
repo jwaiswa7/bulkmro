@@ -23,11 +23,11 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     !record.invoice_request.present?
   end
 
-  def edit_internal_status?
+  def edit_material_status?
     edit?
   end
 
-  def update_internal_status?
+  def update_material_status?
     edit?
   end
 

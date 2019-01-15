@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:edit_internal_status, :update_internal_status]
+  before_action :set_purchase_order, only: [:edit_material_status, :update_material_status]
 
   def index
     authorize :purchase_order
@@ -42,27 +42,27 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'material_pickup_queue'
   end
 
-  def edit_internal_status
+  def edit_material_status
     authorize @purchase_order
   end
 
-  def update_internal_status
+  def update_material_status
     authorize @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
       ActiveRecord::Base.transaction do
-        if @purchase_order.internal_status_changed?
-          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.internal_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
+        if @purchase_order.material_status_changed?
+          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.material_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
           @purchase_order.save!
           @po_comment.save!
         else
           @purchase_order.save!
         end
       end
-      redirect_to edit_internal_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
+      redirect_to edit_material_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
-      render 'edit_internal_status'
+      render 'edit_material_status'
     end
 
   end
@@ -93,7 +93,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def purchase_order_params
     params.require(:purchase_order).permit(
-        :internal_status,
+        :material_status,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
