@@ -24,9 +24,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
         quantity = row.quantity
         if row.po_request_rows.present?
           row.po_request_rows.each do |po_request_row|
-            if (po_request_row.po_request.status == 'Cancelled')
-              quantity += (po_request_row.quantity || 0)
-            else
+            if (po_request_row.po_request.status != 'Cancelled')
               quantity -= (po_request_row.quantity || 0)
             end
           end
