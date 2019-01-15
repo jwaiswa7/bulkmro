@@ -15,6 +15,14 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
+    company_creation_request = @activity.company_creation_request
+    if @activity.company_id.present?
+      company_creation_request.destroy!
+    end
+    if company_creation_request.account_id.present?
+      company_creation_request.account_name = nil
+      company_creation_request.account_type =nil
+    end
     authorize @activity
     if @activity.save
       redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
@@ -30,6 +38,13 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def update
     @activity.assign_attributes(activity_params.merge(overseer: current_overseer))
+    if @activity.company_id.present?
+      company_creation_request.destroy!
+    end
+    if company_creation_request.account_id.present?
+      company_creation_request.account_name = nil
+      company_creation_request.account_type =nil
+    end
     authorize @activity
     if @activity.save
       redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)

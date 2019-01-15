@@ -13,7 +13,6 @@ const newAction = () => {
         $('.new-company-form, .existing-company-form,.new-company ').removeClass('d-none');
         $('.new-company-form, .existing-company').addClass('d-none');
         $('.new-company-form').find('select, input').attr('required', false)
-        $('.new-company-form').find("input[type=text], textarea").val("")
     })
     $('.new-account').unbind('click').bind('click', function (event) {
         event.stopPropagation();
