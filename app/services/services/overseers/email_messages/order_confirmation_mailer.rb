@@ -9,7 +9,7 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
     if Rails.env.production?
       order_contact = Overseer.find_by_email(customer_order.contact.email)
     else
-      order_contact = current_overseer
+      order_contact = current_overseer || Overseer.find_by_email('bhargav.trivedi@bulkmro.com')
     end
     template_id = "d-90ffe3b972c14d29ae6992a095638b80"
 
@@ -17,8 +17,8 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
     template_data["name"] = customer_order.contact.to_s
     template_data["order_number"] = customer_order.online_order_number
     template_data["order_date"] = customer_order.created_at
-    template_data["shipping_address"] = customer_order.shipping_address.to_multiline_s.remove("<br>")
-    template_data["billing_address"] = customer_order.billing_address.to_multiline_s.remove("<br>")
+    template_data["shipping_address"] = customer_order.shipping_address.to_multiline_s.gsub('<br>',' ')
+    template_data["billing_address"] = customer_order.billing_address.to_multiline_s.gsub('<br>',' ')
     template_data["items"] = []
     customer_order.items.each_with_index do |item,index|
       hash = {}
