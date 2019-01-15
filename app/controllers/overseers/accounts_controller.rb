@@ -25,7 +25,7 @@ class Overseers::AccountsController < Overseers::BaseController
     if params[:ccr_id].present?
       requested_account = CompanyCreationRequest.where(:id => params[:ccr_id]).last
       if !requested_account.nil?
-        @account = Account.new({'name': requested_account.name, 'reference_company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
+        @account = Account.new({'name': requested_account.account_name,'account_type': requested_account.account_type, 'reference_company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
       end
     end
     authorize @account
