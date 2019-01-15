@@ -7,8 +7,8 @@ json.data (@material_readiness_followups) do |material_readiness_followup|
                       if policy(material_readiness_followup.purchase_order).show_document?
                         row_action_button(url_for(material_readiness_followup.purchase_order.document), 'file-pdf', material_readiness_followup.purchase_order.document.filename, 'dark', :_blank)
                       end,
-                      if policy(material_readiness_followup.purchase_order).edit_internal_status?
-                        row_action_button(edit_internal_status_overseers_material_readiness_followup.purchase_order_path(material_readiness_followup.purchase_order), 'pencil', 'Edit Internal Status', 'success')
+                      if policy(material_readiness_followup.purchase_order).edit_material_status?
+                        row_action_button(edit_material_status_overseers_material_readiness_followup.purchase_order_path(material_readiness_followup.purchase_order), 'pencil', 'Edit Internal Status', 'success')
                       end
                   ].join(' '),
                   link_to(material_readiness_followup.purchase_order.po_number, overseers_inquiry_material_readiness_followup.purchase_orders_path(material_readiness_followup.purchase_order.inquiry), target: "_blank"),
