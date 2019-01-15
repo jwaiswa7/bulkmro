@@ -109,21 +109,16 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize :sales_order
 
     service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
-    service.call
+    @po_requests = service.call
 
   end
 
   def create_purchase_orders_requests
     authorize :sales_order
-
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
-    not_requested_po = service.call
+    service.call
 
-    if not_requested_po.size > 0
-      redirect_to new_purchase_orders_requests_overseers_sales_order_path(@sales_order.to_param)
-    else
-      redirect_to pending_overseers_po_requests_path
-    end
+    redirect_to new_purchase_orders_requests_overseers_sales_order_path(@sales_order.to_param)
   end
 
   private
@@ -138,6 +133,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
           :id,
           :po_requests_attributes => [
               :id,
+              :supplier_id,
+              :inquiry_id,
+              :_destroy,
               :logistics_owner_id,
               :address_id,
               :contact_id,
@@ -147,7 +145,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :id,
                   :_destroy,
                   :status,
-                  :quantity
+                  :quantity,
+                  :sales_order_row_id
               ]
           ]
       )

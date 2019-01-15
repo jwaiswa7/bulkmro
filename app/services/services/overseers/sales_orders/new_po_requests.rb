@@ -2,21 +2,46 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
   def initialize(sales_order, overseer)
     @sales_order = sales_order
     @overseer = overseer
+    @po_requests = {}
   end
 
   def call
-    if !@sales_order.po_requests.drafts.present?
+    if !@sales_order.po_requests.present?
+      po_requests = {}
       @sales_order.rows.each do |row|
-        po_requests = @sales_order.po_requests.where(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id)
-        if !po_requests.present?
-          po_request = @sales_order.po_requests.create!(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Draft')
-          po_request.rows.first_or_create!(sales_order_row_id: row.id, quantity: row.quantity)
-        elsif po_requests.first.Draft?
-          if !po_requests.first.rows.where(status: nil).empty?
-            po_requests.first.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
+        if po_requests[row.supplier.id] == nil
+          po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
+        end
+        po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: row.quantity)
+      end
+    else
+      # TODO Look for po_requests where status is created or requested
+      # create po_request for remaining product or remainning quantities
+      # If po_request Cancelled then find po_requests with same supplier and add product quantities to existing
+
+      po_requests = {}
+      @sales_order.rows.each do |row|
+        quantity = row.quantity
+        if row.po_request_rows.present?
+          row.po_request_rows.each do |po_request_row|
+            if (po_request_row.po_request.status == 'Cancelled')
+              quantity += (po_request_row.quantity || 0)
+            else
+              quantity -= (po_request_row.quantity || 0)
+            end
           end
+        end
+
+        if quantity > 0
+          if !po_requests[row.supplier.id].present?
+            po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
+          end
+          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity)
         end
       end
     end
+    po_requests
   end
+
+  attr_accessor :po_requests
 end
