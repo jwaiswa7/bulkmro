@@ -6,7 +6,7 @@ json.data (@tax_codes) do |tax_code|
                       end,
                   ].join(' '),
                   tax_code.to_s,
-                  format_date(tax_code.created_at)
+                  format_succinct_date(tax_code.created_at)
               ]
 end
 
