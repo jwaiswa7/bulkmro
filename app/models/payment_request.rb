@@ -39,9 +39,9 @@ class PaymentRequest < ApplicationRecord
   }
 
   enum purpose_of_payment: {
-      :'Advance' => 10,
-      :'Material Ready' => 20,
-      :'Payment Due' => 30
+      :'Advance - On issue of PO' => 10,
+      :'Advance - Material Ready for dispatch' => 20,
+      :'Credit' => 30
   }
 
   enum request_owner: {
