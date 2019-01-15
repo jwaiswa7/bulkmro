@@ -76,17 +76,17 @@
               </div>
             <% end %>
 
-            <% if @payment_request.inquiry.present? && @payment_request.inquiry.company.present? %>
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.account.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Customer Account</strong>
-                <%= @payment_request.inquiry.company.to_s %>
+                <%= @payment_request.inquiry.account.to_s %>
               </div>
             <% end %>
 
-            <% if @payment_request.inquiry.present? && @payment_request.inquiry.legacy_contact_name.present? %>
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.company.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Customer Name</strong>
-                <%= @payment_request.inquiry.legacy_contact_name.to_s %>
+                <%= @payment_request.inquiry.company.to_s %>
               </div>
             <% end %>
 
@@ -168,7 +168,7 @@
             <% if @payment_request.supplier_bank_details.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Supplier Bank Details</strong>
-                <%= @payment_request.supplier_bank_details %>
+                <%= @payment_request.company_bank.to_s %>
               </div>
             <% end %>
           </div>

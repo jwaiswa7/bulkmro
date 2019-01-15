@@ -11,7 +11,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     @payment_request = PaymentRequest.new(payment_request_params.merge(overseer: current_overseer))
 
     # @payment_request.update_status!
-
+raise
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
         @payment_request.save!
@@ -63,6 +63,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :purpose_of_payment,
         :description,
         :supplier_bank_details,
+        :company_bank_id,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
