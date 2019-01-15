@@ -889,7 +889,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
 
       next if inquiry.updated_at > inquiry_updated_date
-      debugger
 
       if inquiry.new_record? || update_if_exists
         inquiry.company = company
@@ -2125,7 +2124,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     totals = {}
     inquiry_not_found = []
     sales_order_exists = []
-    service.loop(nil) do |x|
+    service.loop(15300) do |x|
       # i = i + 1
       # next if i < 15358
       next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7'])
@@ -2159,7 +2158,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry_product_supplier = InquiryProductSupplier.where(:supplier_id => supplier.id, :inquiry_product => inquiry_product).first_or_create!
         inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
         row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
-
           if product_sku == row.product.sku
             row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
             row.quantity = x.get_column('quantity')
@@ -2168,12 +2166,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
             row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
             row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-            row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+            row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
             row.created_at = x.get_column('created at',to_datetime: true)
 
-            if row.unit_selling_price.round != row.calculated_unit_selling_price.round
-              row.margin_percentage = (1 - (row.unit_cost_price / row.unit_selling_price)) * 100
-            end
+            # if row.unit_selling_price.round != row.calculated_unit_selling_price.round
+            #   row.margin_percentage = (1 - (row.unit_cost_price / row.unit_selling_price)) * 100
+            # end
             row.save!
 
             puts "**************** QUOTE ROW SAVED ********************"
