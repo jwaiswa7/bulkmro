@@ -50,11 +50,11 @@ class PaymentRequest < ApplicationRecord
       :'Accounts' => 20
   }
 
-  scope :Pending, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'])}
-  scope :Completed, -> {where(:status => :'Complete: Payment Made')}
-  scope :Rejected, -> {where(status: ['Rejected: Payment','Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Order Info: Material not Ready','Supplier Info: PI mismatch'])}
-  scope :Logistics, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner:['Logistics','Accounts'])}
-  scope :Accounts, -> {where(status:['Partial: Payment Pending','Complete: Payment Pending'], request_owner: 'Accounts')}
+  scope :Pending, -> {where(status:[10,11])}
+  scope :Completed, -> {where(:status => 50)}
+  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Supplier Info: PI mismatch'])}
+  scope :Logistics, -> {where(status:[10,11], request_owner:['Logistics','Accounts'])}
+  scope :Accounts, -> {where(status:[10,11], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
   validates_presence_of :cheque_date, if: :is_payment_type_cheque?
