@@ -2121,13 +2121,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
     i = 0
-    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771,19173]
+    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771,19173, 28301, 28352, 28232, 27688, 28369, 28288, 28631, 28702, 28017, 28722, 28532, 28746, 28747,28717,28788,28795,28803,28871]
     totals = {}
     inquiry_not_found = []
     sales_order_exists = []
     service.loop(nil) do |x|
       # i = i + 1
-      # next if i < 10951
+      # next if i < 15358
+      next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
       puts "*********************** INQUIRY ", x.get_column('inquiry number')
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
