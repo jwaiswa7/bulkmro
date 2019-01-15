@@ -1,11 +1,16 @@
 class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Shared::BaseService
 
-  def initialize(customer_order)
+  def initialize(customer_order,current_overseer = nil)
     @customer_order = customer_order
+    @current_overseer = current_overseer
   end
 
   def call
-    order_contact = Overseer.find_by_email(customer_order.contact.email)
+    if Rails.env.production?
+      order_contact = Overseer.find_by_email(customer_order.contact.email)
+    else
+      order_contact = current_overseer
+    end
     template_id = "d-90ffe3b972c14d29ae6992a095638b80"
 
     template_data = {}
@@ -42,5 +47,5 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
     service.send_email_message(order_contact, template_id, template_data)
   end
 
-  attr_accessor :customer_order
+  attr_accessor :customer_order, :current_overseer
 end

@@ -36,7 +36,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order)
+    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
     email_service.call
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
