@@ -24,9 +24,9 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
       hash = {}
       hash["sr_no"]=index+1
       hash["product"]=item.customer_product.to_s
-      hash["price"]=item.customer_product.customer_price.to_f
+      hash["price"]=format_currency(item.customer_product.customer_price.to_f)
       hash["quantity"]=item.quantity
-      hash["subtotal"]= (item.customer_product.customer_price.to_f * item.quantity).round(2)
+      hash["subtotal"]= format_currency(item.customer_product.customer_price.to_f * item.quantity)
       template_data["items"] << hash
     end
 
@@ -35,13 +35,13 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
       customer_order.tax_line_items.each do |key, value|
         hash = {}
         hash["tax_rate"] = TaxRateString.for(customer_order.billing_address, customer_order.default_warehouse_address, customer_order.default_warehouse_address, key)
-        hash["tax_value"] = value
+        hash["tax_value"] = format_currency(value)
         template_data["tax_rates"] << hash
       end
     end
 
-    template_data["total_calculated_tax"] = customer_order.calculated_total_tax.round(2)
-    template_data["grand_total"] = customer_order.grand_total.round(2)
+    template_data["total_calculated_tax"] = format_currency(customer_order.calculated_total_tax)
+    template_data["grand_total"] = format_currency(customer_order.grand_total)
 
     service =  Services::Overseers::EmailMessages::SendEmail.new
     service.send_email_message(order_contact, template_id, template_data)
