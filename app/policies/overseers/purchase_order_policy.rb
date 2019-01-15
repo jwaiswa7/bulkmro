@@ -42,4 +42,12 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   def material_delivered_queue?
     edit?
   end
+
+  def new_email_message?
+    (manager_or_sales? || logistics?) && record.po_request.present? && record.has_supplier? && record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).company_contacts.present?
+  end
+
+  def create_email_message?
+    new_email_message?
+  end
 end
