@@ -88,7 +88,7 @@
                   <%= m.input :pickup_quantity, input_html: { value: m.object.pickup_quantity }, readonly: true %>
                 </div>
                 <div class="col-3">
-                  <%= m.input :delivered_quantity, type: "number", input_html: { value: m.object.delivered_quantity.to_i, min: 0, max: m.object.pickup_quantity.to_i } %>
+                  <%= m.input :delivered_quantity, type: "number", input_html: { value: m.object.delivered_quantity.to_i, min: 1, max: m.object.pickup_quantity.to_i } %>
                 </div>
               <% else %>
                 <div class="col-3">

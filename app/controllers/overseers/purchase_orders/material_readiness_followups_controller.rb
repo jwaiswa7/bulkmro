@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseers::BaseController
-  before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery]
+  before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
 
   def index
     authorize :material_readiness_followup
@@ -50,20 +50,27 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   def update
     authorize @mrf
 
-    if params[:action_name] == "confirm_delivery"
+    if mrf_params[:action_name] == "confirm_delivery"
       if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:delivered_quantity).to_i
         @mrf.purchase_order.update_attributes(material_status: :'Material Delivered')
         @mrf.update_attributes(status: :"Material Delivered")
+      end
+      @mrf.assign_attributes(mrf_params.except(:action_name))
+      @mrf.mrf_rows.each do |row|
+        row.pickup_quantity = row.quantity - row.delivered_quantity
+        row.save
+      end
+      authorize @mrf
+      if @mrf.save
+        redirect_to delivered_material_overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
       else
-        @mrf.purchase_order.update_attributes(material_status: :'Material Partial Delivered')
+        render 'confirm_delivery'
       end
     else
       if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:pickup_quantity).to_i
         @mrf.purchase_order.update_attributes(material_status: :'Material Pickup')
-      else
-        @mrf.purchase_order.update_attributes(material_status: :'Material Partial Pickup')
+        @mrf.assign_attributes(mrf_params.except(:action_name))
       end
-      @mrf.assign_attributes(mrf_params)
 
       if @mrf.save
         redirect_to overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
@@ -71,6 +78,10 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
         render 'edit'
       end
     end
+  end
+
+  def delivered_material
+    authorize @mrf
   end
 
   def confirm_delivery

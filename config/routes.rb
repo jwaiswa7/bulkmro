@@ -209,6 +209,7 @@ Rails.application.routes.draw do
         resources :material_readiness_followups do
           member do
             get 'confirm_delivery'
+            get 'delivered_material'
           end
         end
       end

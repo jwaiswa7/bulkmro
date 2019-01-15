@@ -64,10 +64,7 @@ class PurchaseOrder < ApplicationRecord
   enum material_status: {
       :'Material Readiness Follow-Up' => 10,
       :'Material Pickup' => 20,
-      :'Material Partial Pickup' => 25,
-      :'Material Delivered' => 30,
-      :'Material Partial Delivered' => 35,
-
+      :'Material Delivered' => 30
   }
 
   scope :material_readiness_queue, -> {where(:material_status => :'Material Readiness Follow-Up')}
