@@ -7175,8 +7175,8 @@ LookUp,inquiry number,quote number,order number,product sku,supplier,quantity,cr
 ,17119,,2003667,BM0K8Y0,Shah Dharamchand Chhaganlal,100,09-Feb-2018,-0.33,-33.16,34.2,44,,,,0.05,5,171,3591
 ,17125,,2003668,BM0K8Y0,Shah Dharamchand Chhaganlal,100,09-Feb-2018,0.08,7.78,34.2,30,,,,0.05,5,171,3591
 ,17433,,2003565,BM9A8C3,ATR Chemicals And Lubricants,25,09-Feb-2018,0.16,15.5,437.5,350,,,,0.18,18,1968.75,12906.25
-,17646,,10200181,Bm00038,Unitron Instrumentation Technology Pvt. Ltd.,1,09-Feb-2018,-0.02,-2.15,78203,79885,,,,0.18,18,14076.54,92279.54
-,17646,,10200181,Bm00039,Unitron Instrumentation Technology Pvt. Ltd.,1,09-Feb-2018,-0.02,-2.14,4619,4718,,,,0.18,18,831.42,5450.42
+,17646,,10200181,BM00038,Unitron Instrumentation Technology Pvt. Ltd.,1,09-Feb-2018,-0.02,-2.15,78203,79885,,,,0.18,18,14076.54,92279.54
+,17646,,10200181,BM00039,Unitron Instrumentation Technology Pvt. Ltd.,1,09-Feb-2018,-0.02,-2.14,4619,4718,,,,0.18,18,831.42,5450.42
 ,17816,,10200004,BM0A4I8,Samju Sales Corporation,5,09-Feb-2018,0.09,9.1,145,125.2,,,,0.18,18,130.5,855.5
 ,17816,,10200004,BM0A4K1,Samju Sales Corporation,5,09-Feb-2018,0.07,6.51,209,186,,,,0.18,18,188.1,1233.1
 ,17816,,10200004,BM0A4L2,Samju Sales Corporation,5,09-Feb-2018,0.05,5.02,287,259.8,,,,0.18,18,258.3,1693.3
@@ -7265,10 +7265,10 @@ LookUp,inquiry number,quote number,order number,product sku,supplier,quantity,cr
 ,18965,,210200275,BM99999,Stanley Black and Decker India Pvt. Ltd.,1,15-Feb-2018,0,-0.21,106.78,107,,,,0.18,18,19.2204,126.0004
 ,17489,,10300013,BM9M7U8,Yash Filters,10,16-Feb-2018,0.16,15.59,438,350,,,,0.12,12,525.6,4905.6
 ,17570,,10200084,BM9M7C9,Jaine Agencies and Travels,1,16-Feb-2018,0.08,8.48,16891,14700,,,,0.18,18,3040.38,19931.38
-,17608,,10200183,Bm00034,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,126316,120000,,,,0.18,18,22736.88,149052.88
-,17608,,10200183,Bm00035,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,4737,4500,,,,0.18,18,852.66,5589.66
-,17608,,10200183,Bm00036,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,33684,32000,,,,0.18,18,6063.12,39747.12
-,17608,,10200183,Bm00037,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,4737,4500,,,,0.18,18,852.66,5589.66
+,17608,,10200183,BM00034,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,126316,120000,,,,0.18,18,22736.88,149052.88
+,17608,,10200183,BM00035,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,4737,4500,,,,0.18,18,852.66,5589.66
+,17608,,10200183,BM00036,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,33684,32000,,,,0.18,18,6063.12,39747.12
+,17608,,10200183,BM00037,IDIADA Automotive Technology India Pvt. Ltd.,1,16-Feb-2018,0.05,5,4737,4500,,,,0.18,18,852.66,5589.66
 ,18039,,10300007,BM9E9F8,No Supplier Details,10,16-Feb-2018,0.07,6.57,213,193,,,,0.18,18,383.4,2513.4
 ,18039,,10300007,BM9E9F8,No Supplier Details,50,16-Feb-2018,0.09,8.83,213,193,,,,0.18,18,1917,12567
 ,18966,,210200276,BM0C7Q5,Stanley Black and Decker India Pvt. Ltd.,1,16-Feb-2018,-0.12,-12.41,143.22,161,,,,0.18,18,25.7796,168.9996
@@ -15911,7 +15911,7 @@ LookUp,inquiry number,quote number,order number,product sku,supplier,quantity,cr
 ,28283,,11410052,BM9Q0S5,Yeo Business Solutions Pvt. Ltd.,10,22-Nov-2018,0.11,10.74,13.5,12.05,,,,0.18,18,24.3,159.3
 ,28283,,11410052,BM9Z3Z2,Yeo Business Solutions Pvt. Ltd.,1,22-Nov-2018,0.15,15.2,93.75,79.5,,,,0.12,12,11.25,105
 ,28283,,11410052,BM0O4H5,Yeo Business Solutions Pvt. Ltd.,4,22-Nov-2018,0.33,33.33,102,68,,,,0.18,18,73.44,481.44
-,28380,,10211335,Freight,No Supplier Details,1,22-Nov-2018,0,0,2000,2000,,,,0.18,18,360,2360
+,28380,,10211335,FREIGHT,No Supplier Details,1,22-Nov-2018,0,0,2000,2000,,,,0.18,18,360,2360
 ,28380,,10211335,BM9V0Q2,Sapphire Technologies,1,22-Nov-2018,-0.02,-1.86,86250,87850,,,,0.18,18,15525,101775
 ,28380,,10211335,BM9N1U2,Sapphire Technologies,1,22-Nov-2018,0.07,6.67,351000,327605,,,,0.18,18,63180,414180
 ,28611,,10211334,BM9J0W8,Mahendra Thermo Electricals,6,22-Nov-2018,0.05,5,1563.16,1485,,,,0.18,18,1688.2128,11067.1728
