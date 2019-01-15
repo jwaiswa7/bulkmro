@@ -7,7 +7,11 @@ class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
     admin? || logistics? || sales?
   end
 
+  def edit?
+    admin? || logistics? || sales? &&   record.status != 'Material Delivered'
+  end
+
   def confirm_delivery?
-    admin? || logistics? || sales?
+    record.status == 'Material Pickup'
   end
 end

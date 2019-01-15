@@ -2,8 +2,8 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery]
 
   def index
-    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.all, params)
-    authorize @material_readiness_followups
+    authorize :material_readiness_followup
+    redirect_to material_readiness_queue_overseers_purchase_orders_path()
   end
 
   def show
