@@ -17,13 +17,13 @@ let toggleCheckboxes = () => {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
                 $(element).prop("checked", true);
-                $('.add_to_inquiry_wrapper').show();
+                showOrHideActions();
             });
         } else {
             $('input[type=checkbox][name="activities[]"]').each((index, element) => {
                 //$(element).removeAttr('checked')
                 $(element).prop("checked", false);
-                $('.add_to_inquiry_wrapper').hide();
+                showOrHideActions();
             });
         }
     });
@@ -39,7 +39,12 @@ let addToInquiry = () => {
         activities.push($(element).val());
     });
 
-    var inquiry = $('select[name*=inquiry]').val()
+    var inquiry = $('select[name*=inquiry]').val();
+    if (inquiry == '') {
+        alert("Please Choose an Inquiry to Assign");
+        $('#inquiry_select').select2('open');
+    }
+
     if (activities.length > 0 && inquiry != '') {
 
         var data = JSON.stringify({activities: activities, inquiry: inquiry});
@@ -65,18 +70,11 @@ let addToInquiry = () => {
 let showOrHideActions = () => {
     var hide = true;
 
-    $('input[type=checkbox][name="activities[]"]').each((index, element) => {
-        if ($(element).is(':checked')) {
-            hide = false;
-        }
-    });
-    if (hide) {
-
-        $('.add_to_inquiry_wrapper').hide();
-    } else {
+    if ($('input[type=checkbox][name="activities[]"]:checked').length > 0) {
         $('.add_to_inquiry_wrapper').show();
+    } else {
+        $('.add_to_inquiry_wrapper').hide();
     }
-
 
 }
 
