@@ -50,10 +50,10 @@
 
           <%= f.simple_fields_for :inquiry do |inquiry| %>
             <div class="col-4">
-              <%= inquiry.input :company, disabled: true , label: 'Customer Account' %>
+              <%= inquiry.input :account, disabled: true , label: 'Customer Account' %>
             </div>
             <div class="col-4">
-              <%= inquiry.input :legacy_contact_name, disabled: true , label: 'Customer Name' %>
+              <%= inquiry.input :company, disabled: true , label: 'Customer Name' %>
             </div>
             <div class="col-4">
               <%= inquiry.input :created_by, disabled: true , label: 'Name of the Requestor / IS & P' %>
@@ -71,7 +71,7 @@
                 <%= f.input :status, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true%>
               </div>
               <div class="col-4">
-                <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+                <%= f.input :due_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, label: "Payment Due Date"%>
               </div>
 
               <div class="col-4">
