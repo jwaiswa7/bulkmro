@@ -5,7 +5,15 @@ const pending = () => {
         updateActivitiesApproval('approve');
     });
     $('#reject_selected').click((event) => {
-        updateActivitiesApproval('reject');
+
+        let message = 'Activity';
+        if ($('input[type=checkbox][name="activities[]"]:checked').length > 1) {
+            message = 'Activities';
+        }
+        if (confirm("Do you want to Reject " + $('input[type=checkbox][name="activities[]"]:checked').length + " " + message)) {
+            updateActivitiesApproval('reject');
+        }
+
     });
 
 };
