@@ -15,7 +15,7 @@ json.data (@products) do |product|
       product.sku,
       product.brand.to_s,
       product.category.name,
-      format_date(product.created_at)
+      format_succinct_date(product.created_at)
   ]
 end
 

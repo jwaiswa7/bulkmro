@@ -38,9 +38,9 @@ json.data (@sales_invoices) do |sales_invoice|
                   status_badge(sales_invoice.status),
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : "",
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : "",
-                  format_date(sales_invoice.delivery_date),
-                  format_date(sales_invoice.mis_date),
-                  format_date(sales_invoice.created_at)
+                  format_succinct_date(sales_invoice.delivery_date),
+                  format_succinct_date(sales_invoice.mis_date),
+                  format_succinct_date(sales_invoice.created_at)
               ]
 end
 
@@ -63,3 +63,4 @@ json.recordsTotal SalesInvoice.all.count
 json.recordsFiltered @indexed_sales_invoices.total_count
 json.draw params[:draw]
 json.recordsSummary SalesInvoice.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values
