@@ -76,23 +76,23 @@
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>
           <%= (@inquiry.company.name) %><br>
-          <%= @inquiry.billing_address.to_compact_multiline_s %><br>
+          <%= @sales_order.serailized_billing_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.phone.present? %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Shipping Address</strong>
           <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
-          <span class="d-block"><%= @inquiry.shipping_address.to_compact_multiline_s %></span>
+          <span class="d-block"><%= @sales_order.serailized_shipping_address.to_compact_multiline_s %></span>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
     </div>
@@ -205,10 +205,12 @@
       </tbody>
     </table>
     <% @sales_order.rows.each do |row| %>
-      <%= hidden_field_tag :sales_order_id, row.sales_order_id%>
+      <%= hidden_field_tag :sales_order_id, row.sales_order_id %>
       <%= hidden_field_tag :id, row.id %>
       <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
-        <h4 class="mb-0 mt-3 text-small "> <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong></h4>
+        <h4 class="mb-0 mt-3 text-small ">
+          <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong>
+        </h4>
         <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
           <thead>
           <tr>

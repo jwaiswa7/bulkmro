@@ -23,7 +23,8 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
         else
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
-            purchase_order.metadata['PoStatus'] = params['PoStatus']
+            purchase_order.assign_attributes(:metadata => params)
+            #purchase_order.metadata['PoStatus'] = params['PoStatus']
             purchase_order.save!
           end
 

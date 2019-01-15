@@ -188,7 +188,7 @@ class Company < ApplicationRecord
   end
 
   def validate_pan?
-    if self.pan.length != 10
+    if self.pan.blank? || self.pan.length != 10
       errors.add(:company, 'PAN is not valid')
     end
   end
