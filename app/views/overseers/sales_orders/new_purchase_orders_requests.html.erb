@@ -79,6 +79,7 @@
             <% end %>
             <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
               <%= po_request_row.hidden_field :id %>
+              <%= po_request_row.hidden_field :sales_order_row_id %>
               <div class="form-row">
                 <div class="col-12 col-md-1">
                   <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: po_request.object.rows.first == po_request_row.object ? "Sr." : false, disabled: true %>

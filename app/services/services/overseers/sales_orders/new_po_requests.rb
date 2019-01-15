@@ -20,15 +20,23 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
       # If po_request Cancelled then find po_requests with same supplier and add product quantities to existing
 
       po_requests = {}
-      @sales_order.po_requests.not_cancelled.each do |po_request|
-        po_request.rows.each do |row|
-          debugger
-          if row.quantity != row.sales_order_row.quantity
-            if po_requests[row.sales_order_row.supplier.id] == nil
-              po_requests[row.sales_order_row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.sales_order_row.supplier.id, status: :'Requested')
+      @sales_order.rows.each do |row|
+        quantity = row.quantity
+        if row.po_request_rows.present?
+          row.po_request_rows.each do |po_request_row|
+            if (po_request_row.po_request.status == 'Cancelled')
+              quantity += (po_request_row.quantity || 0)
+            else
+              quantity -= (po_request_row.quantity || 0)
             end
-            po_requests[row.sales_order_row.supplier.id].rows.build(sales_order_row_id: row.sales_order_row.id, quantity: (row.sales_order_row.quantity - row.quantity.to_f))
           end
+        end
+
+        if quantity > 0
+          if !po_requests[row.supplier.id].present?
+            po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
+          end
+          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity)
         end
       end
     end
