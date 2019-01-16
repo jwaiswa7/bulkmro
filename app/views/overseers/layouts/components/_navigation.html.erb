@@ -79,6 +79,7 @@
             <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, policy(:sales_order).index? %>
               <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
               <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
             </ul>
@@ -183,6 +184,7 @@
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+            <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
           </div>
         </li>
       <% end %>

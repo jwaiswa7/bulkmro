@@ -10,7 +10,7 @@ json.data (@callback_requests) do |callback_request|
                   format_enum(callback_request.method),
                   callback_request.resource,
                   callback_request.response.to_s[0..120],
-                  format_date(callback_request.created_at)
+                  format_succinct_date(callback_request.created_at)
               ]
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(callback_request.status)})

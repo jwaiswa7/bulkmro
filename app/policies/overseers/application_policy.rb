@@ -122,6 +122,10 @@ class Overseers::ApplicationPolicy
     false
   end
 
+  def is_active?
+    record.is_active?
+  end
+
   def export_for_logistics?
     false
   end

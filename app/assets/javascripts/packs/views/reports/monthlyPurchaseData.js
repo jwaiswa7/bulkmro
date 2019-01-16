@@ -1,17 +1,6 @@
 const monthlyPurchaseData = () => {
-
     Object.values(Chart.instances).forEach(updateChartOptions)
-
-    /*$('canvas.chart').each(function (index, object) {
-        console.log(object);
-        var myChart = new Chart(object, barChartOptions);
-        myChart.options = barChartOptions;
-        myChart.update();
-
-    });*/
-
 };
-
 
 let updateChartOptions = function (chartObject) {
     if (chartObject.canvas.id == 'monthly_purchase_data') {
@@ -19,8 +8,15 @@ let updateChartOptions = function (chartObject) {
             tooltips: {
                 mode: 'label',
                 callbacks: {
-                    label: function (tooltipItem) {
-                        return Math.round(tooltipItem.yLabel).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        if(dataset.label == 'Products'){
+                            var tooltip = dataset.label + ' - ' + dataset.data[tooltipItem.index];
+                        }
+                        else if(dataset.label == '₹ Lacs'){
+                            tooltip = dataset.label + ' - ' + (dataset.data[tooltipItem.index]/100000).toFixed(2);
+                        }
+                        return tooltip;
                     },
                 }
             },
@@ -38,13 +34,9 @@ let updateChartOptions = function (chartObject) {
                     position: 'left',
                     ticks: {
                         display: true,
-                        label: {
-                            fontStyle: 500
-                        },
                         userCallback: function (value) {
                             value = value.toString();
                             return '₹' + (value/100000) + ' Lacs';
-                            // return '₹' + value.toString().replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
                         }
                     },
                     scaleLabel: {
@@ -61,6 +53,5 @@ let updateChartOptions = function (chartObject) {
         chartObject.update();
     }
 };
-
 
 export default monthlyPurchaseData

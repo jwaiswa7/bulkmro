@@ -15,14 +15,14 @@ json.data (@sales_orders) do |sales_order|
       sales_order.id,
       conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
       status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
-      format_date(sales_order.sent_at),
+      format_succinct_date(sales_order.sent_at),
       sales_order.created_by.to_s,
       sales_order.inside_sales_owner.to_s,
       sales_order.outside_sales_owner.to_s,
       [sales_order.calculated_total_margin_percentage, '%'].join(''),
       format_currency(sales_order.sales_quote.calculated_total),
       format_currency(sales_order.calculated_total),
-      format_date(sales_order.created_at)
+      format_succinct_date(sales_order.created_at)
   ]
 
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
@@ -53,3 +53,4 @@ json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]
 json.status @indexed_sales_orders
 json.recordsSummary SalesOrder.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values

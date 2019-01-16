@@ -58,7 +58,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes.order(sort_definition) if indexed_records.present?
+    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
   end
 
 
@@ -207,12 +207,27 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key)
+  def aggregate_by_status(key= "statuses",  aggregation_field= "potential_value", status_field)
     {
-        statuses: {
+        "#{key}": {
             terms: {
-                field: key
+                field: status_field
+            },
+            aggs: {
+                total_value: {
+                    sum: {
+                        field: aggregation_field
+                    }
+                }
             }
+        }
+    }
+  end
+
+  def filter_by_script(condition)
+    {
+        script: {
+            script: condition
         }
     }
   end
