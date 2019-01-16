@@ -2,13 +2,15 @@ class ReviewQuestion < ApplicationRecord
   include Mixins::CanBeStamped
 
   enum :question_type => {
-      :is_sale => 10,
-      :is_logistic => 20,
+      :'Logistics' => 10,
+      :'Sales' => 20,
   }
   validates_presence_of :question_type
 
-  after_initialize :set_defaults, :if => :new_record?
-  def set_defaults
-    self.question_type ||= :is_sale
+  scope :sales, ->{ where(question_type: :'Sales')}
+  scope :logistics, ->{ where(question_type: :'Logistics')}
+
+  def to_s
+    self.question
   end
 end

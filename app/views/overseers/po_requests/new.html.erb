@@ -1,1 +1,5 @@
 <%= render 'overseers/po_requests/form' %>
+
+<% if @can_review %>
+  <%= render partial: 'shared/layouts/rating_modal' %>
+<% end %>

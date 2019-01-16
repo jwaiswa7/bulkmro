@@ -414,7 +414,11 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      member do
+        put 'update_rating'
+      end
+    end
   end
 
   namespace 'customers' do
