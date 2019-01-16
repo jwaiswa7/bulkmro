@@ -1,5 +1,4 @@
 class Overseers::AddressesController < Overseers::BaseController
-git pull orihg
   def index
      service = Services::Overseers::Finders::Addresses.new(params)
      service.call

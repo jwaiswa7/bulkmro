@@ -34,14 +34,14 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
-  validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
+  # validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
 
-  validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, :if => :not_legacy?
+  # validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, :if => :not_legacy?
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
