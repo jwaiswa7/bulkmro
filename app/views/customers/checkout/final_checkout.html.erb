@@ -237,7 +237,7 @@
                           src="https://checkout.razorpay.com/v1/checkout.js"
                           data-key="<%= Settings.razorpay.MERCHANT_KEY_ID %>"
                           data-amount="<%= (@cart.grand_total * 100).ceil %>"
-                          data-buttontext="Pay and Place Order"
+                          data-buttontext="Place Order"
                           data-name="Bulk MRO"
                           data-description="Online Order Payment"
                           data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"
@@ -265,3 +265,31 @@
     </div>
   </div>
 </div>
+
+<style>
+  .razorpay-payment-button{
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); display: block;
+    width: 100%;height: 32px;}
+  .razorpay-payment-button:hover {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34; cursor: pointer}
+  .razorpay-payment-button:focus, .razorpay-payment-button.focus {
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+  .razorpay-payment-button.disabled, .razorpay-payment-button:disabled {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745; }
+  .razorpay-payment-button:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled).active, .show > .razorpay-payment-button.dropdown-toggle {
+    color: #fff;
+    background-color: #1e7e34;
+    border-color: #1c7430; }
+  .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus, .show > .razorpay-payment-button.dropdown-toggle:focus {
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+</style>
