@@ -26,4 +26,12 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def reject?
     approve?
   end
+
+  def payments?
+    index?
+  end
+
+  def refresh_payment?
+    index?
+  end
 end
