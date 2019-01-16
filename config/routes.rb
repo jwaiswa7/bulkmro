@@ -288,6 +288,7 @@ Rails.application.routes.draw do
             get 'proforma'
             post 'create_confirmation'
             post 'resync'
+            get 'fetch_order_data'
           end
 
           collection do
