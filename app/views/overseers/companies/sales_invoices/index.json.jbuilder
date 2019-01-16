@@ -22,8 +22,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ? sales_invoice.sales_order.order_number : "",
                   sales_invoice.inquiry.present? ? sales_invoice.rows.count : "",
                   sales_invoice.status,
-                  format_date(sales_invoice.mis_date),
-                  format_date(sales_invoice.created_at)
+                  format_succinct_date(sales_invoice.mis_date),
+                  format_succinct_date(sales_invoice.created_at)
               ]
 end
 
