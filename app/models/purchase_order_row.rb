@@ -49,4 +49,8 @@ class PurchaseOrderRow < ApplicationRecord
     Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
   end
 
+  def get_pickup_quantity
+    self.quantity - self.mrf_rows.sum(&:reserved_quantity)
+  end
+
 end

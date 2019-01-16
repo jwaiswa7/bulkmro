@@ -29,8 +29,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
         @po_rows.each do |row|
           @mrf_row = @mrf.mrf_rows.build
           @mrf_row.purchase_order_row_id = row.id
-          @mrf_row.quantity = row.quantity
-          @mrf_row.pickup_quantity = row.quantity
+          @mrf_row.pickup_quantity = row.get_pickup_quantity
           @mrf_row.save
         end
         @mrf.save
@@ -56,10 +55,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
         @mrf.update_attributes(status: :"Material Delivered")
       end
       @mrf.assign_attributes(mrf_params.except(:action_name))
-      @mrf.mrf_rows.each do |row|
-        row.pickup_quantity = row.quantity - row.delivered_quantity
-        row.save
-      end
+
       authorize @mrf
       if @mrf.save
         redirect_to delivered_material_overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
@@ -112,7 +108,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
         :logistics_owner_id,
         :purchase_order_id,
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
-        :mrf_rows_attributes => [:id, :quantity, :pickup_quantity, :delivered_quantity],
+        :mrf_rows_attributes => [:id, :pickup_quantity, :delivered_quantity],
         :attachments => []
     )
   end

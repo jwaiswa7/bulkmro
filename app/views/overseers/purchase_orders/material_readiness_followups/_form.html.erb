@@ -92,7 +92,7 @@
                 </div>
               <% else %>
                 <div class="col-3">
-                  <%= m.input :quantity, input_html: { value: m.object.quantity }, readonly: true %>
+                  <%= m.input :quantity, input_html: { value: m.object.purchase_order_row.quantity }, readonly: true %>
                 </div>
                 <div class="col-3">
                   <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i, min: 0, max: m.object.quantity.to_i } %>
