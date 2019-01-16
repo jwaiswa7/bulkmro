@@ -185,6 +185,7 @@
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
             <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+            <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
           </div>
         </li>
       <% end %>
