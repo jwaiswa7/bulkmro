@@ -75,4 +75,4 @@ end if Rails.env.production?
 every(1.day, 'remote_unwanted_requests', :at => '22:00') do
   service = Services::Overseers::RequestCronJobs::RemoveRequestCronJob.new
   service.call
-end if Rails.env.development?
+end if Rails.env.production?
