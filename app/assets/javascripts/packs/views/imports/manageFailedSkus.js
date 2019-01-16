@@ -21,32 +21,31 @@ const manageFailedSkus = () => {
     $('body').on('click', 'button[name*=load-previous-approved-alternatives]:button', function (e) {
         var page = $(this).parent().attr('data-page');
         if(page > 1){
-            showPrevious($(this).data("row-object"), --page, $(this).parent().data("index"));
+            showPaginationButton($(this).data("row-object"), page, $(this).parent().data("index"), "previous");
         }
-        if(page < 2){
+        if(--page < 2){
             $(this).addClass('disabled');
         }
     });
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
         var page = $(this).parent().attr('data-page');
-        showNext($(this).data("row-object"), ++page, $(this).parent().data("index"));
+        showPaginationButton($(this).data("row-object"), page, $(this).parent().data("index"), "next");
         if(page > 1){
             $(this).siblings().removeClass('disabled');
         }
     });
 };
 
-let showPrevious = (row_object, page, index) => {
+let showPaginationButton = (row_object, page, index, action) => {
+    page = action == "previous" ? --page : ++page;
     $.ajax({
         data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
-    })
-};
-
-let showNext = (row_object, page, index) => {
-    $.ajax({
-        data: {row_object : row_object, page: page, index:index},
-        url: "load_alternatives",
+        success: function (data) {
+            $('.' + row_object + '.card-footer').attr('data-page', page);
+            $('.' + row_object + '.approved-alternatives').empty();
+            $('.' + row_object + '.approved-alternatives').append(data);
+        }
     })
 };
 
