@@ -235,9 +235,9 @@
                         <!-- Note that the amount is in paise = 50 INR -->
                         <script
                           src="https://checkout.razorpay.com/v1/checkout.js"
-                          data-key="rzp_test_YorJsu5KKxrZxc"
+                          data-key="<%= Settings.razorpay.MERCHANT_KEY_ID %>"
                           data-amount="<%= (@cart.grand_total * 100).ceil %>"
-                          data-buttontext="Pay with Razorpay"
+                          data-buttontext="Pay Online"
                           data-name="Bulk MRO"
                           data-description="Online Order Payment"
                           data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"

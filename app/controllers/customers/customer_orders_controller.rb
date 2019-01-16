@@ -43,8 +43,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
       end
 
       if payment.present?
-        razorpay_pmnt_obj = payment.fetch_payment
-        payment.update_attributes!(:customer_order => @customer_order, :status => razorpay_pmnt_obj.status, :amount => razorpay_pmnt_obj.amount, :metadata => razorpay_pmnt_obj.to_json)
+        payment.capture
+        payment.update_attributes!(:customer_order => @customer_order)
       end
 
       current_cart.destroy
