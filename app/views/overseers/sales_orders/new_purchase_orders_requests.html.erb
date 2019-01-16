@@ -97,7 +97,7 @@
                   <%= po_request_row.input :best_tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: true %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
+                  <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0 }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
@@ -134,6 +134,12 @@
         <% end %>
       </div>
     </div>
+    <% else %>
+      <div class="card text-lg-center">
+        <div class="card-body">
+          All quantities satisfied
+        </div>
+      </div>
     <% end %>
   <% end %>
 </div>

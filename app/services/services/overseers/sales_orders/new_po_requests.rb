@@ -21,14 +21,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
 
       po_requests = {}
       @sales_order.rows.each do |row|
-        quantity = row.quantity
-        if row.po_request_rows.present?
-          row.po_request_rows.each do |po_request_row|
-            if (po_request_row.po_request.status != 'Cancelled')
-              quantity -= (po_request_row.quantity || 0)
-            end
-          end
-        end
+        quantity = row.max_po_request_qty
 
         if quantity > 0
           if !po_requests[row.supplier.id].present?

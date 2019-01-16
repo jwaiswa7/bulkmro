@@ -87,6 +87,18 @@ class SalesOrderRow < ApplicationRecord
     self.sales_quote_row.unit_cost_price_with_unit_freight_cost * self.quantity if self.sales_quote_row.present?
   end
 
+  def max_po_request_qty
+    quantity = self.quantity
+    if self.po_request_rows.present?
+      self.po_request_rows.each do |po_request_row|
+        if (po_request_row.po_request.status != 'Cancelled')
+          quantity -= (po_request_row.quantity || 0)
+        end
+      end
+    end
+    quantity
+  end
+
   def hsn_or_sac
     if is_service
       :sac
