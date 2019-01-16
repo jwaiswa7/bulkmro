@@ -10,6 +10,11 @@ class Cart < ApplicationRecord
 
   after_initialize :set_global_defaults
 
+  enum payment_method: {
+      :'Bank Transfer' => 10,
+      :'Razor Pay' => 20
+  }
+
   def set_global_defaults
     if self.company.present?
       self.billing_address ||= company.addresses.first

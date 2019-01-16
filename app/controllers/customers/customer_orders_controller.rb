@@ -4,6 +4,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
   def create
     authorize :customer_order
 
+    if params[:cart].present? && current_cart.id == params[:cart][:id].to_i
+      payment = OnlinePayment.where(:payment_id => params[:razorpay_payment_id]).first_or_create! do |online_payment|
+        online_payment.assign_attributes(:contact => current_contact, :payment_id => params[:razorpay_payment_id], :auth_token => params[:authenticity_token], amount: params[:cart][:grand_total], :metadata => params.to_json, :status => :'created')
+      end
+      payment.save!
+    end
+
     @customer_order = current_contact.customer_orders.build(
         billing_address_id: current_cart.billing_address_id,
         shipping_address_id: current_cart.shipping_address_id,
@@ -17,7 +24,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
           billing_address_id: current_cart.billing_address_id,
           shipping_address_id: current_cart.shipping_address_id,
           po_reference: current_cart.po_reference,
-          special_instructions: current_cart.special_instructions
+          special_instructions: current_cart.special_instructions,
+          payment_method: current_cart.payment_method
       )
       @customer_order.save
       @customer_order.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
@@ -33,36 +41,16 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.customer_product = cart_item.customer_product
         end
       end
+
+      if payment.present?
+        razorpay_pmnt_obj = payment.fetch_payment
+        payment.update_attributes!(:customer_order => @customer_order, :status => razorpay_pmnt_obj.status, :amount => razorpay_pmnt_obj.amount, :metadata => razorpay_pmnt_obj.to_json)
+      end
+
       current_cart.destroy
     end
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
-  end
-
-  def process_razorpayment(online_order_number, amount)
-    payment = Payment.new(:contact => current_contact)
-    razorpay_pmnt_obj = fetch_payment(online_order_number)
-    status = razorpay_pmnt_obj.status
-    if status == "authorized"
-      razorpay_pmnt_obj.capture({amount: amount})
-      razorpay_pmnt_obj = fetch_payment(online_order_number)
-      params.merge!({status: razorpay_pmnt_obj.status, price: product.price})
-      Order.create(params)
-    else
-      raise StandardError, "Unable to capture payment"
-    end
-  end
-
-  def process_refund(payment_id)
-    fetch_payment(payment_id).refund
-    record = Order.find_by_payment_id(payment_id)
-    record.update_attributes(status: fetch_payment(payment_id).status)
-    return record
-  end
-
-  def filter(params)
-    scope = params[:status] ? Order.send(params[:status]) : Order.authorized
-    return scope
   end
 
   def show

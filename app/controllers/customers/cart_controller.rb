@@ -50,7 +50,43 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
     @cart.update_attributes(special_instructions: params[:cart][:special_instructions].to_s)
 
+    redirect_to final_checkout_customers_checkout_path(next_step: 'payment_method')
+  end
+
+  def update_payment_method
+    authorize @cart
+    @cart.update_attributes(payment_method: params[:cart][:payment_method].to_s)
+
     redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
+  end
+
+  def update_payment_data
+    authorize @cart
+
+    if @cart.id == params[:cart][:id].to_i
+      payment = OnlinePayment.where(:payment_id => params[:razorpay_payment_id]).first_or_create! do |online_payment|
+        online_payment.assign_attributes(:contact => current_contact, :payment_id => params[:razorpay_payment_id], :auth_token => params[:authenticity_token], amount: params[:cart][:grand_total], :metadata => params.to_json, :status => :'created')
+      end
+      payment.save!
+      if self.process_razorpayment(payment)
+        redirect_to customers_customer_orders_path(contact_id: current_contact.id, payment_id: payment.id)
+      else
+        redirect_to customers_customer_orders_path(contact_id: current_contact.id)
+      end
+    else
+      redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
+    end
+  end
+
+  def process_razorpayment(payment)
+    razorpay_pmnt_obj = payment.fetch_payment
+    payment.update_attributes(:status => razorpay_pmnt_obj.status, :amount => razorpay_pmnt_obj.amount, :metadata => razorpay_pmnt_obj.to_json)
+
+    if razorpay_pmnt_obj.status != 'authorized' || razorpay_pmnt_obj.status != 'captured'
+      true
+    else
+      false
+    end
   end
 
   private

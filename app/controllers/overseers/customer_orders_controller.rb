@@ -6,6 +6,11 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
     authorize @customer_orders
   end
 
+  def payments
+    @payments = OnlinePayment.all
+    authorize :customer_order
+  end
+
   def show
     authorize @customer_order
   end
