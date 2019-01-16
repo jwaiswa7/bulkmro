@@ -1,6 +1,6 @@
 class OnlinePayment < ApplicationRecord
   include Mixins::CanBeStamped
-  include Mixins::HasPayments
+  include Mixins::HasOnlinePayments
 
   belongs_to :customer_order, required:false
   belongs_to :contact, required:false

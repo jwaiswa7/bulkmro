@@ -1,4 +1,4 @@
-module Mixins::HasPayments
+module Mixins::HasOnlinePayments
   extend ActiveSupport::Concern
 
   included do
