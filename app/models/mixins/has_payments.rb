@@ -4,7 +4,7 @@ module Mixins::HasPayments
   included do
     def fetch_payment
       razorpay_obj = Razorpay::Payment.fetch(self.payment_id)
-      self.update_attributes(:metadata => razorpay_obj.to_json, :status => razorpay_obj.status, :amount => razorpay_pmnt_obj.amount) if razorpay_obj.present?
+      self.update_attributes(:metadata => razorpay_obj.to_json, :status => razorpay_obj.status, :amount => razorpay_obj.amount) if razorpay_obj.present?
       razorpay_obj
     end
 

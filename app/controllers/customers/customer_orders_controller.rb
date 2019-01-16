@@ -43,8 +43,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
       end
 
       if payment.present?
-        payment.capture
         payment.update_attributes!(:customer_order => @customer_order)
+        payment.capture
       end
 
       current_cart.destroy
