@@ -37,6 +37,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
+    resources :review_questions
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
