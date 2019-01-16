@@ -245,6 +245,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'payments'
+        get 'refresh_payment'
       end
     end
 

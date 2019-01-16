@@ -73,8 +73,13 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
-          <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
-          <%= nav_dropdown_item 'Online Orders Payments', payments_overseers_customer_orders_path, policy(:customer_order).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Online Orders</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'List', overseers_customer_orders_path, policy(:customer_order).index? %>
+              <%= nav_dropdown_item 'Online Payments List', payments_overseers_customer_orders_path, policy(:customer_order).index? %>
+            </ul>
+          </div>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>

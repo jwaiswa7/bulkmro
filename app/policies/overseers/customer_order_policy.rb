@@ -30,4 +30,8 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def payments?
     index?
   end
+
+  def refresh_payment?
+    index?
+  end
 end

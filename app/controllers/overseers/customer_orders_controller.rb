@@ -7,8 +7,25 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
   end
 
   def payments
-    @payments = OnlinePayment.all
+    payments = if params[:company_id].present?
+       OnlinePayment.joins(:customer_order).where("customer_orders.company_id = ?", params[:company_id])
+    else
+      OnlinePayment.all
+    end.order(id: :desc)
+
+    @payments = ApplyDatatableParams.to(payments, params)
     authorize :customer_order
+  end
+
+  def refresh_payment
+    authorize :customer_order
+    if params[:payment_id].present?
+      payment = OnlinePayment.where(:payment_id => params[:payment_id])
+      if payment.present?
+        payment.fetch_payment
+      end
+    end
+    redirect_to payments_overseers_customer_orders_path
   end
 
   def show

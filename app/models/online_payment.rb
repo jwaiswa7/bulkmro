@@ -2,6 +2,8 @@ class OnlinePayment < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasPayments
 
+  pg_search_scope :locate, :against => [:payment_id], :associated_against => {customer_order: [:online_order_number]}, :using => {:tsearch => {:prefix => true}}
+
   belongs_to :customer_order, required:false
   belongs_to :contact, required:false
 
