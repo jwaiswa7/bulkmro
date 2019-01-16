@@ -12,7 +12,7 @@ class Cart < ApplicationRecord
 
   enum payment_method: {
       :'Bank Transfer' => 10,
-      :'Razor Pay' => 20
+      :'Online Payment' => 20
   }
 
   def set_global_defaults
