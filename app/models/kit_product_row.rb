@@ -9,6 +9,8 @@ class KitProductRow < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
 
+  validates_numericality_of :quantity, greater_than: 0
+
   def set_defaults
     if product.present?
       tax_code ||= product.tax_code

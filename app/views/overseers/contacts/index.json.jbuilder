@@ -15,11 +15,12 @@ json.data (@contacts) do |contact|
                         row_action_button(new_overseers_inquiry_path(company_id: contact.company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
-                  contact.name,
+                  conditional_link(contact.name, overseers_contact_path(contact), policy(contact).show?),
                   contact.email,
                   contact.account.name,
+                  contact.role.titleize,
                   contact.inquiries.size,
-                  format_date(contact.created_at)
+                  format_succinct_date(contact.created_at)
               ]
 end
 

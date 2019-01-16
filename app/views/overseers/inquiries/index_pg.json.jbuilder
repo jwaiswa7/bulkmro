@@ -6,14 +6,14 @@ json.data (@inquiries) do |inquiry|
                       end,
                   ].join(' '),
                   inquiry.inquiry_number,
-                  inquiry_status_badge(inquiry.status),
+                  status_badge(inquiry.status),
                   inquiry.account.to_s,
                   inquiry.company.to_s.truncate(15),
                   inquiry.contact.to_s.truncate(10),
                   inquiry.inside_sales_owner.to_s,
                   inquiry.outside_sales_owner.to_s,
                   format_currency(inquiry.final_sales_quote.try(:calculated_total)),
-                  format_date(inquiry.created_at)
+                  format_succinct_date(inquiry.created_at)
               ]
 end
 

@@ -1,0 +1,41 @@
+<% if comments.persisted.size > 0 %>
+  <div class="chats mb-3">
+    <% comments.persisted.each do |comment| %>
+      <div class="media chat-item">
+        <div class="media-body">
+          <div class="chat-item-title">
+            <span class="chat-item-author">
+              <%= comment.author.full_name %>
+              <span class="mr-1"><strong>
+                <span class="badge badge-secondary"><%= comment.author_role %></span>
+              </strong></span>
+            </span>
+            <span>
+              <span class="mr-1"><strong>
+                <% if comment.approval.present? %><span class="badge badge-success">Approved </span><% end %>
+                <% if comment.rejection.present? %><span class="badge badge-danger">Rejected </span><% end %>
+              </strong>
+            </span>
+              <% if comment.show_to_customer? %>
+              <span class="mr-1">
+                <strong>
+                  <span class="badge badge-info">Visible To Customer</span>
+                </strong>
+              </span>
+            <% end %>
+              <%= time_ago_in_words(comment.created_at) %> ago</span>
+          </div>
+          <div class="chat-item-body">
+            <p><%= comment.message %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+<%= f.hidden_field :show_to_customer, value: show_to_customer %>
+<div class="flex-fill">
+  <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
+</div>

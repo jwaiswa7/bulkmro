@@ -2,7 +2,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
   before_action :set_customer_order, only: [:show]
 
   def index
-    @customer_orders = ApplyDatatableParams.to(CustomerOrder.all, params)
+    @customer_orders = ApplyDatatableParams.to(CustomerOrder.all.order(id: :desc), params)
     authorize @customer_orders
   end
 

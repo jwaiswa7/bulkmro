@@ -47,7 +47,7 @@
           All companies searchable with relevant term/keywords under <strong><%= @account.name %></strong>.
         </p>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_companies_path(account_id: @account.id) %>">
+        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_account_companies_path(account_id: @account.id) %>">
           <thead>
           <tr>
             <th class="no-sort"></th>
@@ -55,6 +55,8 @@
             <th class="no-sort">Addresses</th>
             <th class="no-sort">Contacts</th>
             <th class="no-sort">Inquiries</th>
+            <th class="no-sort">PAN</th>
+            <th class="no-sort">Valid PAN? </th>
             <th data-name="is_supplier">Is Supplier</th>
             <th data-name="is_customer">Is Customer</th>
             <th data-name="sap_status">SAP Status</th>

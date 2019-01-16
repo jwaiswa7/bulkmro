@@ -2,7 +2,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        Invoice Request for Order #<%= @invoice_request.sales_order.order_number %>:&nbsp;<%= invoice_request_status_badge(@invoice_request.status) %>
+        Invoice Request for Order #<%= @invoice_request.sales_order.order_number %>:&nbsp;<%= status_badge(@invoice_request.status) %>
       </h3>
       <% if policy(@invoice_request).edit? %>
         <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
@@ -41,7 +41,7 @@
             <% if @invoice_request.status.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Status</strong>
-                <%= @invoice_request.status %>
+                <%= status_badge(@invoice_request.status) %>
               </div>
             <% end %>
 

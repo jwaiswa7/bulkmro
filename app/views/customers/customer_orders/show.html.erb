@@ -6,7 +6,7 @@
 <div class="col-12">
   <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
     <div class="d-md-flex justify-content-between">
-      <h1 class="display-5 mb-1">Order #<%= @customer_order.id %></h1>
+      <h1 class="display-5 mb-1">Order <%= format_id(@customer_order.online_order_number) %></h1>
     </div>
     <p class="lead mt-1">
       There are a total of <strong><%= @customer_order.rows.count %></strong> product(s) in this order.
@@ -14,91 +14,24 @@
   </section>
 
   <div class="card mb-2">
-    <div class="card-header">
-      <div class="text-right">
-        <% if @customer_order.billing_address.present? %>
-          <% @customer_order.tax_line_items.each do |key, value| %>
-                <span class="d-block"><em class="float-left"><%= TaxRateString.for(@customer_order.billing_address, @customer_order.default_warehouse_address, @customer_order.default_warehouse_address, key) %>
-                  :</em> <%= format_currency(value) %></span>
-          <% end %>
-          <strong class="float-left">Total Tax:</strong>
-          <strong><%= format_currency(@customer_order.calculated_total_tax) %></strong>
-          <hr class="my-1">
-          <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(@customer_order.grand_total) %>
-          </strong>
-        <% else %>
-          <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>
-          <hr class="my-1">
-          <span class="d-block"><strong class="float-left">Grand Total:</strong> <%= format_currency(@customer_order.calculated_total) %></span>
-        <% end %>
-      </div>
-    </div>
-    <div class="card-body pb-2">
-      <div class="form-row">
-        <div class="col-md-6">
-          <% if @customer_order.billing_address.present? %>
-            <div>
-              <strong class="d-block">Billing Address</strong>
-              <em class="d-block"><%= @customer_order.contact.name %></em>
-              <%= @customer_order.billing_address.to_multiline_s %><br/>
-              <% if @customer_order.contact.telephone.present? %>
-                T: <%= @customer_order.contact.telephone %><br/>
-              <% end %>
-              GST No: <%= @customer_order.billing_address.gst %>
+    <%= render partial: 'shared/layouts/customer_order_templates/show', locals: {customer_order: @customer_order} %>
+    <div class="col-lg-12">
+      <section class="pb-4 pb-lg-5">
+        <div id="accordion">
+          <div class="card mt-2">
+            <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#customer-comments">Comments</a>
+            <div id="customer-comments" class="collapse show" data-parent="#accordion">
+              <div class="card-body">
+                <%= simple_form_for(@customer_order.comments.build, url: customers_customer_order_comments_path(@customer_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <%= f.hidden_field :customer_order_id %>
+                  <%= render 'shared/snippets/form_errors', f: f %>
+                  <%= render 'customers/customer_orders/comments/comments', f: f, customer_order: @customer_order, comments: @customer_order.comments.customer_comments, show_to_customer: true %>
+                <% end %>
+              </div>
             </div>
-          <% end %>
+          </div>
         </div>
-        <div class="col-md-6 mt-2 mt-md-0">
-          <% if @customer_order.shipping_address.present? %>
-            <div>
-              <strong class="d-block">Shipping Address</strong>
-              <em class="d-block"><%= @customer_order.contact.name %></em>
-              <%= @customer_order.shipping_address.to_multiline_s %><br/>
-              <% if @customer_order.contact.telephone.present? %>
-                T: <%= @customer_order.contact.telephone %><br/>
-              <% end %>
-              GST No: <%= @customer_order.shipping_address.gst %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      <hr class="my-2">
-      <% if @customer_order.po_reference.present? && @customer_order.po_reference != 0 %>
-        <div>
-          <strong class="d-block">PO Reference</strong>
-          <%= @customer_order.po_reference %>
-        </div>
-        <hr class="my-2">
-      <% end %>
-
-      <table class="datatable table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
-        <thead>
-        <tr>
-          <th class="no-sort desktop">Image</th>
-          <th class="no-sort all">Product</th>
-          <th class="no-sort">Price</th>
-          <th class="all">Quantity</th>
-          <th class="no-sort all">Subtotal</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @customer_order.rows.each do |customer_order_row| %>
-          <tr>
-            <td>
-              <% if customer_order_row.customer_product.best_images.present? %>
-                <img src="<%= url_for_image(customer_order_row.customer_product.best_images.first, fallback_url: image_path('coming_soon.png')) %>" alt="<%= customer_order_row.customer_product.sku %>" height="40"/>
-              <% else %>
-                <img src="<%= image_path('coming_soon.png') %>" alt="<%= customer_order_row.customer_product.sku %>" height="40"/>
-              <% end %>
-            </td>
-            <td><%= customer_order_row.customer_product.name.truncate(80) %></td>
-            <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f) %></td>
-            <td><%= customer_order_row.quantity %></td>
-            <td><%= format_currency(customer_order_row.customer_product.customer_price.to_f * customer_order_row.quantity) %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
+      </section>
     </div>
 
     <div class="card-footer">

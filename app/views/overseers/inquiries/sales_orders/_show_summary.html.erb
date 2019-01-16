@@ -4,17 +4,17 @@
 
       <div class="col-6 col-md-3">
         <strong class="d-block">Order Number</strong>
-        #<%= f.object.try(:order_number).blank? ? "SAP Request Pending" : f.object.order_number %>
+        #<%= sales_order.try(:order_number).blank? ? "SAP Request Pending" : sales_order.order_number %>
       </div>
       <div class="col-6 col-md-3">
         <strong class="d-block">Status</strong>
-        <%= f.object.status || f.object.legacy_request_status %>
+        <%= sales_order.status || sales_order.legacy_request_status %>
       </div>
       <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">SAP Status</strong>
-        <%= f.object.remote_status.blank? ? "SAP Request Pending" : f.object.remote_status %>
+        <%= sales_order.remote_status.blank? ? "SAP Request Pending" : sales_order.remote_status %>
       </div>
-      <% if f.object.status || f.object.legacy_request_status == "Approved" %>
+      <% if sales_order.status || sales_order.legacy_request_status == "Approved" %>
         <div class="col-6 col-md-3 mt-2 mt-md-0 text-right">
           <% if policy(@sales_order).show_pdf? %>
             <%= link_to proforma_overseers_inquiry_sales_order_path(@inquiry, @sales_order, format: :pdf), class: "btn btn-info btn-sm", target: "_blank" do %>
@@ -38,7 +38,7 @@
       </div>
       <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">Currency</strong>
-        <%= f.object.currency %> (<%= f.object.conversion_rate %>)
+        <%= sales_order.currency %> (<%= sales_order.conversion_rate %>)
       </div>
       <div class="col-6 col-md-3 mt-2 mt-md-0">
         <strong class="d-block">Payment Terms</strong>
@@ -76,23 +76,23 @@
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Billing Address</strong>
           <%= (@inquiry.company.name) %><br>
-          <%= @inquiry.billing_address.to_compact_multiline_s %><br>
+          <%= @sales_order.serailized_billing_address.to_compact_multiline_s %><br>
           <% if @inquiry.contact.phone.present? %>
             Contact: <%= @inquiry.contact.full_name %> - <%= @inquiry.contact.phone %><br>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_billing_address.gst || @inquiry.company.default_billing_address.gst %></span>
         </div>
         <div class="col-md-6 mt-2 mt-md-0">
           <strong class="d-block">Customer - Shipping Address</strong>
           <span class="d-block"><%= (@inquiry.shipping_company.name) %></span>
-          <span class="d-block"><%= @inquiry.shipping_address.to_compact_multiline_s %></span>
+          <span class="d-block"><%= @sales_order.serailized_shipping_address.to_compact_multiline_s %></span>
           <% if @inquiry.contact.mobile || @inquiry.contact.telephone %>
             <span class="d-block"><em>Contact</em>: <%= @inquiry.contact.full_name %>
               - <%= @inquiry.contact.phone %></span>
           <% end %>
           <em>Email</em>: <%= @inquiry.contact.email if @inquiry.contact.email.present? %>
-          <span class="d-block"><em>GST Number</em>: <%= @inquiry.shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
+          <span class="d-block"><em>GST Number</em>: <%= @sales_order.serailized_shipping_address.gst || @inquiry.company.default_shipping_address.gst %></span>
         </div>
       </div>
     </div>
@@ -163,74 +163,124 @@
       </tr>
       </thead>
       <tbody>
-      <%= f.nested_fields_for :rows, wrapper_tag: :div do |row| %>
-        <%= row.hidden_field :sales_order_id %>
-        <%= row.hidden_field :id %>
+      <% sales_order.rows.each do |row| %>
         <tr>
           <td>
-            <span>#<%= row.object.sr_no %></span>
+            <span>#<%= row.sr_no %></span>
           </td>
           <td>
-            <span><%= row.object.sales_quote_row %></span>
+            <span><%= row.sales_quote_row %></span>
           </td>
           <td>
-            <span><%= row.object.quantity %></span>
+            <span><%= row.quantity %></span>
           </td>
           <td>
-            <span><%= row.object.measurement_unit %></span>
+            <span><%= row.measurement_unit %></span>
           </td>
           <td>
-            <span><%= format_currency(row.object.converted_unit_cost_price_with_unit_freight_cost) %></span>
+            <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost) %></span>
           </td>
           <td>
-            <span><%= number_with_precision(row.object.margin_percentage, precision: 2) %></span>
+            <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.object.converted_unit_selling_price) %></span>
+            <span><%= format_currency(row.converted_unit_selling_price) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.object.converted_total_selling_price) %></span>
+            <span><%= format_currency(row.converted_total_selling_price) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.object.converted_total_selling_price_with_tax) %></span>
+            <span><%= format_currency(row.converted_total_selling_price_with_tax) %></span>
           </td>
           <td>
-            <span><%= row.object.best_tax_code %></span>
+            <span><%= row.best_tax_code %></span>
           </td>
           <td>
-            <span><%= row.object.best_tax_rate %></span>
+            <span><%= row.best_tax_rate %></span>
           </td>
         </tr>
       <% end %>
       </tbody>
     </table>
+    <% @sales_order.rows.each do |row| %>
+      <%= hidden_field_tag :sales_order_id, row.sales_order_id %>
+      <%= hidden_field_tag :id, row.id %>
+      <% if row.product.present? && (row.product.kit.present? && row.product.kit.kit_product_rows.present?) %>
+        <h4 class="mb-0 mt-3 text-small ">
+          <span class="text-black-50 text-uppercase ">Kit product details - </span><strong class="text-black"><%= row.sales_quote_row.to_s %></strong>
+        </h4>
+        <table class="w-100 table table-bordered dt-responsive datatable mt-0" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.</span>
+            </th>
+            <th class="no-sort">
+              <span>Product</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Quantity">Qty</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Code">T. Code</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">T. Rate</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% row.product.kit.kit_product_rows.each_with_index do |kit_product, index| %>
+            <tr>
+              <td class="col-1">
+                <span>#<%= (index + 1) %></span>
+              </td>
+              <td class="col-6">
+                <span><%= kit_product.product.name %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.quantity %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_code.try(:code) %></span>
+              </td>
+              <td class="col-2">
+                <span><%= kit_product.tax_rate.to_s %></span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    <% end %>
+
   </div>
   <div class="card-footer">
     <div class=form-row>
       <div class="col-6 col-md-2">
         Products
-        <strong class="d-block"><%= f.object.rows.size %></strong>
+        <strong class="d-block"><%= sales_order.rows.size %></strong>
       </div>
       <div class="col-6 col-md-2">
         Cost
-        <strong class="d-block"><%= format_currency(f.object.converted_total_cost) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_cost) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
-        <strong class="d-block"><%= format_currency(f.object.converted_total_margin) %>
-          (<%= f.object.calculated_total_margin_percentage %>%)</strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_margin) %>
+          (<%= sales_order.calculated_total_margin_percentage %>%)</strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (E. tax)
-        <strong class="d-block"><%= format_currency(f.object.converted_total) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Tax
-        <strong class="d-block"><%= format_currency(f.object.converted_total_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_tax) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (I. tax)
-        <strong class="d-block"><%= format_currency(f.object.converted_total_with_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_with_tax) %></strong>
       </div>
     </div>
   </div>

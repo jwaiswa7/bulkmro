@@ -4,7 +4,7 @@
     <p>This will <em>'<%= submit_text(@account).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
 
-    <p class="alert alert-danger" data-dismiss="false">
+    <p class="alert alert-info" data-dismiss="false">
       <% if @account.is_supplier? %>
         This company will be synced as a supplier because it's under a customer supplier.
       <% elsif @account.is_customer? %>
@@ -91,11 +91,14 @@
     </div>
 
     <div class="form-row">
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_msme, as: :radio_buttons, :wrapper => :vertical_collection_inline, label: 'Is MSME?' %>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <%= f.input :is_unregistered_dealer, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is unregistered dealer?' %>
+      </div>
+      <div class="col-4">
+        <%= f.input :is_international, :wrapper => :vertical_collection_inline, as: :radio_buttons, label: 'Is international?' %>
       </div>
     </div>
 

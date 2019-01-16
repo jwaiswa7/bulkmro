@@ -3,16 +3,20 @@
 <% provide :container_fluid, true %>
 
 <div class="col-lg-12">
+  <%= render partial: "shared/layouts/summary", locals: {klass: SalesShipment, statuses: SalesShipment.statuses} %>
+</div>
+
+<div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="no-sort all" data-name="shipment_number">Shipment #</th>
+    <th class="sort all" data-name="shipment_number">Shipment #</th>
     <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="order_number">Order #</th>
     <th class="no-sort desktop">Line Items</th>
-    <th class="no-sort desktop">Status</th>
+    <th class="no-sort desktop" data-name="status">Status</th>
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-    <th class="no-sort desktop">Created At</th>
+    <th class="sort desktop" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -20,7 +24,7 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td class="status-filter" data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>

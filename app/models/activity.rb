@@ -1,11 +1,17 @@
 class Activity < ApplicationRecord
-  include Mixins::CanBeStamped
+  REJECTIONS_CLASS = 'ActivityRejection'
+  APPROVALS_CLASS = 'ActivityApproval'
 
-  pg_search_scope :locate, :against => [:purpose, :company_type, :activity_type], :associated_against => { created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number] }, :using => { :tsearch => {:prefix => true} }
+  include Mixins::CanBeStamped
+  include Mixins::CanBeApproved
+  include Mixins::CanBeRejected
+  include Mixins::HasApproveableStatus
+
+  pg_search_scope :locate, :against => [:purpose, :company_type, :activity_type], :associated_against => {created_by: [:first_name, :last_name], account: [:name], company: [:name], contact: [:first_name, :last_name], inquiry: [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
 
   has_many :activity_overseers
   has_many :overseers, :through => :activity_overseers
-  accepts_nested_attributes_for :activity_overseers, reject_if: lambda { |attributes| attributes['overseer_id'].blank? && attributes['id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :activity_overseers, reject_if: lambda {|attributes| attributes['overseer_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   belongs_to :inquiry, required: false
   belongs_to :company, required: false
   has_one :account, :through => :company
@@ -38,8 +44,8 @@ class Activity < ApplicationRecord
       :'Rejected' => 30
   }
 
-  scope :not_meeting, -> { where.not(activity_type: activity_types[:'Meeting']) }
-  scope :meeting, -> { where(activity_type: activity_types[:'Meeting']) }
+  scope :not_meeting, -> {where.not(activity_type: activity_types[:'Meeting'])}
+  scope :meeting, -> {where(activity_type: activity_types[:'Meeting'])}
 
 
   validates_presence_of :company_type
@@ -47,6 +53,7 @@ class Activity < ApplicationRecord
   validates_presence_of :activity_type
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.company_type ||= :is_customer
     self.purpose ||= :'First Meeting/Intro Meeting'

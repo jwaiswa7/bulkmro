@@ -101,7 +101,7 @@
                   <div style="" class="address-wrapper address-wrapper-left">
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.billing_address.to_multiline_s %>
+                      <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
                       GST No. : <%= @supplier.billing_address.try(:gst) %><br>
@@ -113,7 +113,7 @@
                   <div class="address-wrapper address-wrapper-right">
                     <% if @supplier.present? %>
                       <%= @supplier.name if @supplier.name.present? %><br>
-                      <%= @supplier.shipping_address.to_multiline_s %>
+                      <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present?%>
                       <br>
                       Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
                       GST No. : <%= @supplier.shipping_address.try(:gst) %><br>

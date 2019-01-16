@@ -2,15 +2,16 @@ module Mixins::CanBeSynced
   extend ActiveSupport::Concern
 
   included do
-    def save_and_sync
-      if Rails.env.development?
+    def save_and_sync(options = false)
+
+      if options
+        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self, options)
+      else
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-        service.call
-        self.save
-      elsif Rails.env.production?
-        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
-        service.call
       end
+
+      service.call
+      self.save if Rails.env.development?
     end
 
     def syncable_identifiers

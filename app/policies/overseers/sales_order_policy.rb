@@ -60,6 +60,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def not_invoiced?
+    # have to confirm
+    manager_or_sales?
+  end
+
   def export_all?
     allow_export?
   end
@@ -70,6 +75,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def export_for_logistics?
     allow_logistics_format_export?
+  end
+
+  def export_for_sap?
+    developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def drafts_pending?

@@ -3,7 +3,7 @@
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
         PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
-        :&nbsp;<%= po_request_status_badge(@po_request.status) %>
+        :&nbsp;<%= status_badge(@po_request.status) %>
       </h3>
       <% if policy(@po_request).edit? %>
         <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
@@ -47,7 +47,7 @@
             <% if @po_request.status.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Status</strong>
-                <%= po_request_status_badge(@po_request.status) %>
+                <%= status_badge(@po_request.status) %>
               </div>
             <% end %>
 
@@ -75,7 +75,11 @@
 
           <% if @po_request.attachments.attached? %>
             <div class="form-row">
-              <div class="col-12 col-md-3 mb-2">
+              <div class="col-2 col-md-3 mb-2">
+                <strong class="d-block">Logistics Owner</strong>
+                <%= @po_request.logistics_owner.to_s %>
+              </div>
+              <div class="col-10 col-md-3 mb-2">
                 <strong class="d-block">Attachments </strong>
                 <% @po_request.attachments.each do |attachment| %>
                   <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>

@@ -12,6 +12,12 @@ const editSuppliers = () => {
         .each(function (e) {
             onSupplierChange(this);
         });
+
+    $('#select_all_suppliers').change(function () {
+        $('input[name="inquiry_product_ids[]"]').each(function () {
+            $(this).prop('checked', $('#select_all_suppliers').prop("checked")).trigger('change');
+        });
+    });
 };
 
 let onSupplierChange = (container) => {

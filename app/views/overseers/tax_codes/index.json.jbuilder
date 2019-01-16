@@ -5,8 +5,8 @@ json.data (@tax_codes) do |tax_code|
                         row_action_button(edit_overseers_tax_code_path(tax_code), 'pencil', 'Edit Tax Code', 'warning')
                       end,
                   ].join(' '),
-                  tax_code.to_s,
-                  format_date(tax_code.created_at)
+                  conditional_link(tax_code.to_s,edit_overseers_tax_code_path(tax_code),policy(tax_code).new?),
+                  format_succinct_date(tax_code.created_at)
               ]
 end
 

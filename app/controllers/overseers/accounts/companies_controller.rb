@@ -12,8 +12,20 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def index
-    redirect_to overseers_account_path(@account)
+    base_filter = {
+        :base_filter_key => "account_id",
+        :base_filter_value => params[:account_id]
+    }
     authorize @account
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_companies = service.indexed_records
+        @companies = service.records.try(:reverse)
+      end
+    end
   end
 
   def create
@@ -35,7 +47,9 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize @company
 
-    if @company.save_and_sync
+    options = @company.name_changed? ? {:name => @company.name_change[0]} : false
+
+    if @company.save_and_sync(options)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
       render 'edit'

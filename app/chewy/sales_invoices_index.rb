@@ -14,6 +14,7 @@ class SalesInvoicesIndex < BaseIndex
     field :inquiry_number_string, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present?}, analyzer: 'substring'
     field :status_string, value: -> (record) {record.status.to_s}, analyzer: 'substring'
     field :status, value: -> (record) {statuses[record.status]}
+    field :status_key, value: -> (record) {statuses[record.status]}, type: 'integer'
     field :company_id, value: -> (record) { record.inquiry.company.id if record.inquiry.present?}, type: 'integer'
     field :legacy, value: -> (record) {record.is_legacy}
     field :inside_sales_owner_id, value: -> (record) {record.inquiry.inside_sales_owner.id if record.inquiry.present? && record.inquiry.inside_sales_owner.present?}
@@ -29,10 +30,6 @@ class SalesInvoicesIndex < BaseIndex
     field :cp_delivery_date_s, value: -> (record) { record.delivery_date.strftime("%d-%b-%Y").to_s if record.delivery_date.present? }, analyzer: 'substring'
     field :cp_po_number_s, value: -> (record) { record.inquiry.customer_po_number.to_s if record.inquiry.present? && record.inquiry.customer_po_number.present? }, analyzer: 'substring'
     field :cp_order_date_s, value: -> (record) { record.inquiry.customer_order_date.strftime("%d-%b-%Y").to_s if record.inquiry.present? && record.inquiry.customer_order_date.present? }, analyzer: 'substring'
-    field :invoice_number_s, value: -> (record) { record.invoice_number.to_s if record.invoice_number.present? }, analyzer: 'substring'
-    field :inquiry_number_s, value: -> (record) { record.inquiry.inquiry_number.to_s if record.inquiry.present? }, analyzer: 'substring'
-    field :order_number_s, value: -> (record) { record.sales_order.order_number.to_s if record.sales_order.present? }, analyzer: 'substring'
-    field :status_s, value: -> (record) {record.status}, analyzer: 'substring'
-
+    field :potential_value, value: -> (record) {record.report_total}, type: 'double'
   end
 end

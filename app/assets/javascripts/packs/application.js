@@ -10,14 +10,14 @@ import dataTables from "./components/dataTables";
 import loadViews from "./views/loadViews";
 import alertsAutohide from "./components/alertsAutohide";
 import tinyHtmlEditor from "./components/tinyHtmlEditor";
-import chartjs from "./components/chartjs";
 import datePicker from "./components/datePicker";
 import stickyBits from "./components/stickyBits";
 import daterangePicker from "./components/daterangePicker";
 import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
 import dropdowns from "./components/dropdownSubmenus";
-
+import chartjs from "./components/chartjs";
+import lazyLoadImages from "./components/lazyLoadImages"
 // Namespacing all imports under app
 let app = {};
 
@@ -33,13 +33,14 @@ app.initializeComponents = () => {
     parselyValidations();
     dataTables();
     tinyHtmlEditor();
-    chartjs();
     datePicker();
     stickyBits();
     daterangePicker();
     notify();
     stepRoundUp();
     dropdowns();
+    chartjs();
+    lazyLoadImages();
 };
 
 // Turbolinks load event

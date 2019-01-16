@@ -7,6 +7,10 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
   def all_records
     indexed_records = super
 
+    if @base_filter.present?
+      indexed_records=  indexed_records.filter(@base_filter)
+    end
+
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -24,7 +28,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                                             multi_match: {
                                                 query: query,
                                                 operator: 'and',
-                                                fields: %w[sku^3 sku_edge name brand category],
+                                                fields: %w[sku^3 sku_edge name brand category mpn],
                                                 minimum_should_match: '100%'
                                             }
                                         })

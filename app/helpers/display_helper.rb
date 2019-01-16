@@ -1,15 +1,6 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  # def format_status(status)
-  #   case status.to_sym
-  #     when :active
-  #       content_tag(:div, class: 'status-pill green', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #     else
-  #       content_tag(:div, class: 'status-pill red', :'data-title' => status.humanize, :'data-toggle' => 'tooltip') do; end
-  #   end
-  # end
-
   def upcase(string)
     string.upcase
   end
@@ -53,6 +44,14 @@ module DisplayHelper
     end
   end
 
+  def conditional_link(string,url,allowed)
+    if allowed
+      return link_to string, url, target: '_blank'
+    else
+      return string
+    end
+  end
+
   def format_size(kollection)
     [kollection.size, kollection.class.to_s.split('::').first.downcase.pluralize].join(' ')
   end
@@ -65,6 +64,15 @@ module DisplayHelper
 
   def format_id(id, prefix: nil)
     ['#', id].join if id.present?
+  end
+
+  def format_succinct_date(date)
+    if date.present?
+      #date.strftime("%e %b, %Y %H:%M")
+      date.strftime("%d-%b-%y")
+    else
+      "-"
+    end
   end
 
   def format_date(date)
@@ -130,14 +138,6 @@ module DisplayHelper
     kollection.map(&:to_s).to_sentence
   end
 
-  def format_badge(text, color)
-    if text.to_s != ''
-      content_tag :span, class: "badge text-uppercase badge-#{color}" do
-        content_tag :strong, text.to_s.capitalize
-      end
-    end
-  end
-
   def format_boolean(true_or_false)
     (true_or_false ? '<i class="far fa-check text-success"></i>' : '<i class="far fa-times text-danger"></i>').html_safe
   end
@@ -158,6 +158,14 @@ module DisplayHelper
     end
   end
 
+  def conditional_link(string,url,allowed)
+    if allowed
+      return link_to string, url, target: '_blank'
+    else
+      return string
+    end
+  end
+
   def url_for_image(image, fallback_url: "", check_remote: false)
     if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
@@ -173,22 +181,10 @@ module DisplayHelper
   end
 
   def format_comment(comment, trimmed = false)
-
-    if trimmed && comment.message.length > 48
-      message = comment.message[0..48] + ".."
-    else
-      message = comment.message
-    end
-
-    ['<div class="media chat-item"><div class="media-body"><div class="chat-item-title"><span class="chat-item-author">',
-     comment.created_by.full_name,
-     ' <span class="mr-1"><strong><span class="badge badge-secondary">',
-     comment.author_role,
-     '</span></strong></span></span><span>',
-     time_ago_in_words(comment.created_at),
-     ' ago</span></div><div class="chat-item-body"><p>',
-     message,
-     '</p></div></div></div>'].join('').html_safe
+    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
   end
 
+  def format_times_ago(time)
+    [time_ago_in_words(time),'ago'].join(' ').html_safe
+  end
 end

@@ -12,6 +12,7 @@ class Product < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanHaveTaxes
   include Mixins::CanBeActivated
+  include Mixins::HasImages
 
   update_index('products#product') {self if self.approved?}
   pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
@@ -22,7 +23,6 @@ class Product < ApplicationRecord
   belongs_to :measurement_unit, required: false
   has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, :through => :import
-
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, :dependent => :destroy
   has_many :inquiry_product_suppliers, :through => :inquiry_products
@@ -30,26 +30,15 @@ class Product < ApplicationRecord
   has_many :customer_order_rows
   has_many :customer_products
   has_one :kit
-  has_many_attached :images
-  attr_accessor :applicable_tax_percentage
-
   has_many :cart_items
-  # Start ignore
-  # has_many :p_suppliers, :through => :product_suppliers, class_name: 'Company', source: :supplier
-  # has_many :b_suppliers, :through => :brand, class_name: 'Company', source: :suppliers
-  # def c_suppliers
-  #   Company.joins(:category_suppliers).where('category_id IN (?)', self.category.self_and_descendants.map(&:id))
-  # end
-  # def all_suppliers
-  #   Company.where('id in (?)', p_suppliers.pluck(:id) + c_suppliers.pluck(:id) + b_suppliers.pluck(:id)).uniq
-  # end
-  # End ignore
+  has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
+
+  attr_accessor :applicable_tax_percentage
 
   enum product_type: {item: 10, service: 20}
 
   scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
-
 
   validates_presence_of :name
 
@@ -59,6 +48,7 @@ class Product < ApplicationRecord
 
   after_initialize :set_defaults, :if => :new_record?
   validate :unique_name?
+
   def unique_name?
     if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
       errors.add(:name, " name must be unique")
@@ -156,7 +146,7 @@ class Product < ApplicationRecord
   end
 
   def with_images_to_s
-    ["#{self.to_s}",has_images? ? " - Has #{self.images.count} Image(s)" : ""].join
+    ["#{self.to_s}", has_images? ? " - Has #{self.images.count} Image(s)" : ""].join
   end
 
   def has_images?
