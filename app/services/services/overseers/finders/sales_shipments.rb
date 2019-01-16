@@ -31,10 +31,6 @@ class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finder
     indexed_records
   end
 
-  def sort_definition
-    {:shipment_number => :desc}
-  end
-
   def model_klass
     SalesShipment
   end
