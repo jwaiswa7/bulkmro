@@ -113,7 +113,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && not_logistics?
   end
 
-  def retrive_sap_so_data?
+  def fetch_order_data?
     developer?
   end
 

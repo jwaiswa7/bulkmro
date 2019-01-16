@@ -288,7 +288,7 @@ Rails.application.routes.draw do
             get 'proforma'
             post 'create_confirmation'
             post 'resync'
-            get 'retrive_sap_so_data'
+            get 'fetch_order_data'
           end
 
           collection do

@@ -51,8 +51,8 @@
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
             <% end %>
-            <% if policy(sales_order).retrive_sap_so_data? %>
-              <%= row_action_button(retrive_sap_so_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
+            <% if policy(sales_order).fetch_order_data? %>
+              <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
             <% end %>
 
             <% if policy(sales_order.sales_quote).new_freight_request? %>

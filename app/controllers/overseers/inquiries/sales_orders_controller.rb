@@ -1,5 +1,5 @@
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :retrive_sap_so_data]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -142,9 +142,9 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
-  def retrive_sap_so_data
+  def fetch_order_data
     authorize @sales_order
-    Services::Overseers::SalesOrders::RetriveSapSoData.new(@sales_order).call
+    Services::Overseers::SalesOrders::FetchOrderData.new(@sales_order).call
     redirect_to overseers_inquiry_sales_orders_path(@inquiry)
   end
 
