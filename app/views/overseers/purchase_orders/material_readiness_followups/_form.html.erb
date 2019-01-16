@@ -74,7 +74,8 @@
         <div class="card-body">
           <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
           <%= f.simple_fields_for :mrf_rows do |m| %>
-            <div class="form-row flex-row">
+            <%= m.hidden_field :id %>
+            <div class="form-row flex-row simple-row">
               <div class="col-4">
                 <%= m.label :name %><br/>
                 <%= m.label :name,"#{m.object.purchase_order_row.get_product.name.truncate(50)}" %>
@@ -83,21 +84,24 @@
                 <%= m.label :sku %><br/>
                 <%= m.label :sku,"#{m.object.purchase_order_row.get_product.sku}" %>
               </div>
-              <% if action_name == "confirm_delivery" %>
-                <div class="col-3">
+              <% if f.object.status == "Material Delivered" %>
+                <div class="col-2">
                   <%= m.input :pickup_quantity, input_html: { value: m.object.pickup_quantity }, readonly: true %>
                 </div>
-                <div class="col-3">
-                  <%= m.input :delivered_quantity, type: "number", input_html: { value: m.object.delivered_quantity.to_i, min: 1, max: m.object.pickup_quantity.to_i } %>
+                <div class="col-2">
+                  <%= m.input :delivered_quantity, type: "number", input_html: { value: m.object.delivered_quantity.to_i, min: 0, max: m.object.pickup_quantity.to_i } %>
                 </div>
               <% else %>
-                <div class="col-3">
+                <div class="col-2">
                   <%= m.input :quantity, input_html: { value: m.object.purchase_order_row.quantity }, readonly: true %>
                 </div>
-                <div class="col-3">
-                  <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i, min: 0, max: m.object.quantity.to_i } %>
+                <div class="col-2">
+                  <%= m.input :pickup_quantity, type: "number", input_html: { value: m.object.pickup_quantity.to_i, min: 0, max: m.object.pickup_quantity.to_i } %>
                 </div>
               <% end %>
+              <div class="col-2">
+                <%= link_to_remove_association 'Remove Product',m, class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' %>
+              </div>
               <hr/>
             </div>
           <% end %>

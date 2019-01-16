@@ -2,7 +2,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
 
   def index
-    authorize :material_readiness_followup
+    authorize :material_readiness_followups
     redirect_to material_readiness_queue_overseers_purchase_orders_path()
   end
 
@@ -13,8 +13,12 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   def new
     @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
     @purchase_order.update_attributes(material_status: :'Material Readiness Follow-Up')
-
-    @mrf = MaterialReadinessFollowup.new(purchase_order: @purchase_order)
+    @logistics_owner = Services::Overseers::MaterialReadinessFollowups::SelectLogisticsOwner.new(@purchase_order).call
+    @mrf = MaterialReadinessFollowup.new(purchase_order: @purchase_order,
+                                         expected_dispatch_date: DateTime.now,
+                                         expected_delivery_date: DateTime.now,
+                                         actual_delivery_date: DateTime.now,
+                                         logistics_owner: @logistics_owner)
     authorize @mrf
   end
 
@@ -52,7 +56,6 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     if mrf_params[:action_name] == "confirm_delivery"
       if @mrf.purchase_order.rows.sum(&:quantity).to_i == @mrf.mrf_rows.sum(&:delivered_quantity).to_i
         @mrf.purchase_order.update_attributes(material_status: :'Material Delivered')
-        @mrf.update_attributes(status: :"Material Delivered")
       end
       @mrf.assign_attributes(mrf_params.except(:action_name))
 
@@ -83,7 +86,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   def confirm_delivery
     authorize @mrf
     @purchase_order = @mrf.purchase_order
-
+    @mrf.status = 'Material Delivered'
     @mrf.mrf_rows.each do |row|
       row.update_attributes(delivered_quantity: row.pickup_quantity)
     end
@@ -108,7 +111,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
         :logistics_owner_id,
         :purchase_order_id,
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
-        :mrf_rows_attributes => [:id, :pickup_quantity, :delivered_quantity],
+        :mrf_rows_attributes => [:id, :pickup_quantity, :delivered_quantity, :_destroy],
         :attachments => []
     )
   end
