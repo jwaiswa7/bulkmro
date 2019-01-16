@@ -1,6 +1,6 @@
-class CreateSurveyQuestions < ActiveRecord::Migration[5.2]
+class CreateReviewQuestions < ActiveRecord::Migration[5.2]
   def change
-    create_table :survey_questions do |t|
+    create_table :review_questions do |t|
       t.string :question
       t.decimal :weightage
       t.integer :rating, default: 5

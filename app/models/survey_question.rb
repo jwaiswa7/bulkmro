@@ -1,2 +1,0 @@
-class SurveyQuestion < ApplicationRecord
-end
