@@ -1,4 +1,4 @@
-class CompanySurvey < ApplicationRecord
+class CompanyReview < ApplicationRecord
   belongs_to :company
   belongs_to :invoice_request
   belongs_to :overseer
