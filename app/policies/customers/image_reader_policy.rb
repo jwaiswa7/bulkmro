@@ -3,6 +3,10 @@ class Customers::ImageReaderPolicy < Customers::ApplicationPolicy
     true
   end
 
+  def index?
+    contact.account_id == 2089
+  end
+
   def export_by_date?
     true
   end

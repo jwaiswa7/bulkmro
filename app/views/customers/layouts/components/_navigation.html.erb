@@ -38,7 +38,7 @@
           <%= nav_dropdown_item 'Approved Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
         </div>
       </li>
-      <%= nav_item 'Image Reader', customers_image_readers_path, true %>
+      <%= nav_item 'Image Reader', customers_image_readers_path, policy(:image_reader).index? %>
     </ul>
   </div>
   <!-- Navigation Bar -->
