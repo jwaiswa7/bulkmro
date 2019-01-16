@@ -11,6 +11,7 @@ class SalesQuote < ApplicationRecord
   has_many :comments, -> {where(:show_to_customer => true)}, :through => :inquiry
   accepts_nested_attributes_for :comments
   has_one :inquiry_currency, :through => :inquiry
+  has_one :freight_request
   accepts_nested_attributes_for :inquiry_currency
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency

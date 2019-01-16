@@ -25,6 +25,8 @@ import salesQuotes from "./salesQuotes/init";
 import categories from "./categories/init";
 import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
+import freightRequests from "./freightRequests/init";
+import freightQuotes from "./freightQuotes/init";
 
 // Sales Invoices
 import salesInvoices from "./salesInvoices/init";
@@ -32,6 +34,17 @@ import salesInvoices from "./salesInvoices/init";
 // Sales Shipments
 import salesShipments from "./salesShipments/init";
 
+// Purchase Orders
+import purchaseOrders from "./purchaseOrders/init";
+
+// Payment Requests
+import paymentRequests from "./paymentRequests/init";
+
+// Invoice Requests
+import invoiceRequests from "./paymentRequests/init";
+
+// Activities
+import activities from './activities/init'
 
 let loader = {
     imports: imports,
@@ -43,8 +56,14 @@ let loader = {
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
     kits: kits,
+    freightRequests: freightRequests,
+    freightQuotes: freightQuotes,
     salesInvoices: salesInvoices,
-    salesShipments: salesShipments
+    salesShipments: salesShipments,
+    purchaseOrders: purchaseOrders,
+    paymentRequests: paymentRequests,
+    invoiceRequests: invoiceRequests,
+    activities: activities
 };
 
 // Imports

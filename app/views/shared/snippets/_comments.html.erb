@@ -1,10 +1,25 @@
 <div class="media chat-item">
   <div class="media-body">
     <div class="chat-item-title">
-      <span class="chat-item-author"><%= comment.created_by.full_name %>
+      <span class="chat-item-author"><%= comment.author.full_name %>
         <span class="mr-1"><strong><span class="badge badge-secondary"><%= comment.author_role %></span></strong></span>
       </span>
-      <span><%= format_times_ago(comment.created_at) %></span>
+      <span>
+      <span class="mr-1">
+        <strong>
+          <% if comment.respond_to?('approval') && comment.approval.present? %><span class="badge badge-success">Approved </span><% end %>
+          <% if comment.respond_to?('rejection') && comment.rejection.present? %><span class="badge badge-danger">Rejected </span><% end %>
+        </strong>
+
+        <% if comment.respond_to?('show_to_customer?') && comment.show_to_customer? && current_overseer %>
+          <span class="mr-1">
+            <strong>
+              <span class="badge badge-info">Visible To Customer</span>
+            </strong>
+          </span>
+        <% end %>
+      </span>
+      <%= format_times_ago(comment.created_at) %></span>
     </div>
     <div class="chat-item-body">
       <p>

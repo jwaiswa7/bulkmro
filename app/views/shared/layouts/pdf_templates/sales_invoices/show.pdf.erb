@@ -212,7 +212,7 @@
 
                     <%= record.sales_order.inquiry.shipping_contact.present? ? record.sales_order.inquiry.shipping_contact.full_name : record.sales_order.inquiry.contact.full_name %>
                     <br>
-                    <%= record.shipping_address.name %><br>
+                    <%= record.shipping_address.name if record.shipping_address.present? %><br>
                     <%= record.shipping_address.to_multiline_s if record.shipping_address.present? %>
                     <br>
 
@@ -222,7 +222,7 @@
                       Tel: <%= record.sales_order.inquiry.contact.phone || record.sales_order.inquiry.contact.mobile || record.shipping_address.telephone %>
                     <% end %> <br>
 
-                    GST No.:<%= record.shipping_address.gst %><br>
+                    GST No.:<%= record.shipping_address.gst if record.shipping_address.present? %><br>
                   </div>
                 </td>
               </tr>

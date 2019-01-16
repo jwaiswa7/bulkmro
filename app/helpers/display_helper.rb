@@ -44,6 +44,14 @@ module DisplayHelper
     end
   end
 
+  def conditional_link(string,url,allowed)
+    if allowed
+      return link_to string, url, target: '_blank'
+    else
+      return string
+    end
+  end
+
   def format_size(kollection)
     [kollection.size, kollection.class.to_s.split('::').first.downcase.pluralize].join(' ')
   end
@@ -56,6 +64,15 @@ module DisplayHelper
 
   def format_id(id, prefix: nil)
     ['#', id].join if id.present?
+  end
+
+  def format_succinct_date(date)
+    if date.present?
+      #date.strftime("%e %b, %Y %H:%M")
+      date.strftime("%d-%b-%y")
+    else
+      "-"
+    end
   end
 
   def format_date(date)
@@ -138,6 +155,14 @@ module DisplayHelper
       0
     else
       nil
+    end
+  end
+
+  def conditional_link(string,url,allowed)
+    if allowed
+      return link_to string, url, target: '_blank'
+    else
+      return string
     end
   end
 

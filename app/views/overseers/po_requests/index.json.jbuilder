@@ -15,8 +15,8 @@ json.data (@po_requests) do |po_request|
                   ].join(' '),
                   po_request.id,
                   status_badge(po_request.status),
-                  po_request.inquiry.inquiry_number,
-                  po_request.sales_order.order_number,
+                  conditional_link(po_request.inquiry.inquiry_number,edit_overseers_inquiry_path(po_request.inquiry),policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.sales_order.order_number,overseers_inquiry_sales_order_path(po_request.inquiry,po_request.sales_order),policy(po_request.sales_order).show?),
                   if po_request.logistics_owner.present?
                     po_request.logistics_owner.to_s
                   end,

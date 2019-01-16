@@ -115,6 +115,10 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def new_freight_request?
+    !record.freight_request.present? && !logistics?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

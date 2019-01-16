@@ -85,6 +85,8 @@ class Company < ApplicationRecord
   validates :credit_limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates_presence_of :pan
   validates_uniqueness_of :remote_uid, :on => :update
+  validate :validate_pan?
+
   validates_with FileValidator, attachment: :tan_proof
   validates_with FileValidator, attachment: :pan_proof
   validates_with FileValidator, attachment: :cen_proof
@@ -182,6 +184,12 @@ class Company < ApplicationRecord
       self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
     else
       false
+    end
+  end
+
+  def validate_pan?
+    if self.pan.blank? || self.pan.length != 10
+      errors.add(:company, 'PAN is not valid')
     end
   end
 end

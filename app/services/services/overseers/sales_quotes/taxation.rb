@@ -15,7 +15,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     @is_sez = sales_quote.is_sez || sales_quote.billing_address.is_sez
     @is_service = sales_quote_row.try(:product).try(:is_service) # || tax_code.is_service
 
-    @is_cgst_sgst = if bill_to.country_code == 'IN' && bill_from.present? && bill_from.present?
+    @is_cgst_sgst = if bill_to.country_code == 'IN' && bill_from.present? && bill_from.present? && ship_from.present?
                       if is_service
                         ship_from.address.state == bill_to.state
                       else

@@ -28,9 +28,10 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
       product_supplier = ( Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']) )
       return product_supplier if ( purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy? )
     end
-
-    product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
-    product_supplier.supplier if product_supplier.present?
+    if purchase_order.inquiry.final_sales_quote.present?
+      product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
+      product_supplier.supplier if product_supplier.present?
+    end
   end
 
   def get_packing(metadata)

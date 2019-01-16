@@ -9,13 +9,13 @@ json.data (@accounts) do |account|
                         row_action_button(new_overseers_account_company_path(account), 'building', 'New Company', 'success', :_blank)
                       end,
                   ].join(' '),
-                  account.to_s,
+                  conditional_link(account.to_s, overseers_account_path(account), policy(account).show?),
                   account.companies.size,
                   account.addresses.size,
                   account.contacts.size,
                   account.inquiries.size,
                   format_boolean_label(account.synced?, 'synced'),
-                  format_date(account.created_at)
+                  format_succinct_date(account.created_at)
               ]
 end
 

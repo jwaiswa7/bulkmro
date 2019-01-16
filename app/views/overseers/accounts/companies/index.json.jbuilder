@@ -24,12 +24,12 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  company.pan,
+                  (company.addresses.present? && company.is_international) ? 'International' :company.pan,
                   format_boolean(company.validate_pan),
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
-                  format_date(company.created_at)
+                  format_succinct_date(company.created_at)
               ]
 end
 

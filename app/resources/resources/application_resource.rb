@@ -206,7 +206,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
   def self.find(id, quotes: false)
     response = get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})")
-    OpenStruct.new(response.parsed_response) if response.present? && response.parsed_response.present?
+    OpenStruct.new(response.parsed_response) if response.present? && response.parsed_response.present? && (response.parsed_response.is_a? Hash)
   end
 
   def self.custom_find(id, by = nil)

@@ -1,0 +1,29 @@
+<%= provide :container_fluid, true %>
+<%# provide :can_be_directly_created, true %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :heading do %>
+  Freight Requests
+<% end %>
+
+<% content_for :hide_table_desc do %>
+<!--  To Do Filters-->
+<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all" data-width="70px"></th>
+  <th class="no-sort desktop" data-name="name">Req. No.</th>
+  <th class="no-sort desktop">Status</th>
+  <th class="no-sort desktop text-right" data-name="name">Inquiry #</th>
+  <th class="no-sort all text-right" data-name="sku">Order #</th>
+  <th class="no-sort all" data-name="sku">Inside Sales</th>
+  <th class="sort desktop" data-name="created_at">Requested At</th>
+  <th class="no-sort desktop" data-name="name">Updated At</th>
+  <th class="no-sort desktop">Latest Comment</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

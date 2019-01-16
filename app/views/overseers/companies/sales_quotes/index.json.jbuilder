@@ -6,12 +6,12 @@ json.data (@sales_quotes) do |sales_quote|
                       end,
                   ].join(' '),
                   sales_quote.id,
-                  format_date(sales_quote.sent_at),
+                  format_succinct_date(sales_quote.sent_at),
                   sales_quote.created_by.to_s,
                   sales_quote.rows.size,
                   format_currency(sales_quote.calculated_total),
                   format_currency(sales_quote.calculated_total_with_tax),
-                  format_date(sales_quote.created_at)
+                  format_succinct_date(sales_quote.created_at)
               ]
 end
 

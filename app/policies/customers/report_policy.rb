@@ -3,7 +3,7 @@ class Customers::ReportPolicy < Customers::ApplicationPolicy
     true
   end
 
-  def monthly_purchase_data?
+  def show_aggregate_reports?
     true
   end
 end

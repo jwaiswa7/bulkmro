@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           :inquiry_number => inquiry.inquiry_number.to_s,
           :inquiry_date => inquiry.created_at.to_date.to_s,
           :company_name => inquiry.company.name.gsub(';', ''),
-          :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.to_s : nil )
+          :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.try(:full_name) : nil )
       }
 
       row.merge!(
@@ -53,7 +53,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
                 :order_number => sales_order.order_number.to_s,
                 :order_date => sales_order.created_at.to_date.to_s,
                 :order_status => sales_order.remote_status,
-                :po_date => purchase_order.created_at.to_date.to_s,
+                :po_date => ( purchase_order.metadata['PoDate'].to_date.strftime("%d-%b-%Y").to_s if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )) || nil,
                 :po_status => nil,
                 :supplier_name => supplier.name
             }
@@ -62,7 +62,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
                 :order_number => nil,
                 :order_date => nil,
                 :order_status => nil,
-                :po_date => purchase_order.created_at.to_date.to_s,
+                :po_date => ( purchase_order.metadata['PoDate'].to_date.strftime("%d-%b-%Y").to_s if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )) || nil,
                 :po_status => nil,
                 :supplier_name => nil
             }

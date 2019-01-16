@@ -18,8 +18,6 @@ class SalesOrder < ApplicationRecord
   has_one_attached :serialized_pdf
 
   belongs_to :sales_quote
-
-
   has_one :inquiry, :through => :sales_quote
   has_one :company, :through => :inquiry
   has_one :inquiry_currency, :through => :inquiry
@@ -29,6 +27,7 @@ class SalesOrder < ApplicationRecord
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank?}, allow_destroy: true
   has_many :sales_quote_rows, :through => :sales_quote
   has_many :products, :through => :rows
+  has_many :categories, :through => :products
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
@@ -37,7 +36,6 @@ class SalesOrder < ApplicationRecord
   has_many :invoice_requests
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
-
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
@@ -173,6 +171,15 @@ class SalesOrder < ApplicationRecord
     end
   end
 
+
+  def serailized_billing_address
+    self.billing_address || self.inquiry.billing_address
+  end
+
+  def serailized_shipping_address
+    self.shipping_address || self.inquiry.shipping_address
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
@@ -190,5 +197,9 @@ class SalesOrder < ApplicationRecord
 
   def has_purchase_order_request
     self.po_request.present?
+  end
+
+  def not_invoiced_value(status)
+    self.order_total
   end
 end
