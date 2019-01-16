@@ -25,3 +25,9 @@
 //= require js-routes
 
 //= require overseers/run
+//= require overseers/run
+//= require overseers/run
+
+
+//= require jquery.raty
+//= require ratyrate

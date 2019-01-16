@@ -4,6 +4,7 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
+  <th class="no-sort all">Rating</th>
   <th class="no-sort all" data-name="name">Name</th>
   <th class="no-sort desktop text-right">Addresses</th>
   <th class="no-sort desktop text-right">Contacts</th>
@@ -17,6 +18,7 @@
 <% end %>
 
 <% content_for :filter_row do %>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="false"></td>

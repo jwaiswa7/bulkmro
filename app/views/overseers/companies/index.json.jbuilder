@@ -20,6 +20,9 @@ json.data (@companies) do |company|
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                   ].join(' '),
+                  if company.is_supplier?
+                    rating_for(company,'supplier_responsiveness')
+                  end,
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   company.addresses.size,
                   company.contacts.size,
@@ -46,6 +49,8 @@ json.columnFilters [
                        [],
                        []
                    ]
+
 json.recordsTotal @companies.model.all.count
 json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
+json.rating {}

@@ -43,7 +43,7 @@ class Company < ApplicationRecord
   has_many :customer_orders
   has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
   has_many :company_reviews
-
+  ratyrate_rateable "supplier_responsiveness"
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
@@ -192,5 +192,9 @@ class Company < ApplicationRecord
     if self.pan.blank? || self.pan.length != 10
       errors.add(:company, 'PAN is not valid')
     end
+  end
+
+  def company_rating
+    rating_for self,'supplier_responsiveness',star: Random.rand(1..5)
   end
 end

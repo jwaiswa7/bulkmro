@@ -46,6 +46,8 @@ import invoiceRequests from "./paymentRequests/init";
 // Activities
 import activities from './activities/init'
 
+import companies from './companies/init'
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -63,7 +65,8 @@ let loader = {
     purchaseOrders: purchaseOrders,
     paymentRequests: paymentRequests,
     invoiceRequests: invoiceRequests,
-    activities: activities
+    activities: activities,
+    companies: companies
 };
 
 // Imports
