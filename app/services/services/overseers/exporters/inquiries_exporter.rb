@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                     :order_number => record.sales_orders.pluck(:order_number).compact.join(','),
                     :created_at => record.created_at.to_date.to_s,
                     :committed_customer_date => ( record.customer_committed_date.present? ? record.customer_committed_date.to_date.to_s : nil ),
-                    :updated_at => (record.last_comment.present? && record.last_comment.updated_at.to_date > record.updated_at.to_date) ? record.last_comment.updated_at.to_date.to_s : record.updated_at.to_date.to_s,
+                    :updated_at => record.updated_at.to_date.to_s,
                     :quote_type => record.quote_category,
                     :status => record.status,
                     :opportunity_type => record.opportunity_type,
