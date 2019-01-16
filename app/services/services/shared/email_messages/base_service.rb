@@ -23,7 +23,9 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
         template_id: template_id
     }.as_json)
 
-    recipient.email_messages.create!(:to => recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
+    if Rails.env.production?
+      recipient.email_messages.create!(:to => recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
+    end
   end
 
   def send_email_messages(recipients, template_id, template_data)
