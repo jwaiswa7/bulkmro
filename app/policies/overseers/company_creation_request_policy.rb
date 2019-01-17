@@ -11,4 +11,8 @@ class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def exchange_with_existing_company?
+    index?
+  end
+
 end

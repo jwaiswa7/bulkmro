@@ -1,3 +1,4 @@
+<%= @company_creation_request.id %>
 <%= provide :container_fluid, true %>
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
@@ -65,4 +66,22 @@
       </div>
     </div>
   </section>
+  <% if !@company_creation_request.company.present? %>
+    <section class="mb-3">
+      <div class="card">
+        <div class="card-body">
+          <%= form_tag exchange_with_existing_company_overseers_company_creation_request_path(@company_creation_request), method:'post', class:'my-2 form-row' do %>
+            <div class="col-md-10">
+              <div class="form-group">
+                <%=select_tag "company_id", options_for_select(["Search for company"], ""), class: 'select2-ajax form-control', :'data-source' => autocomplete_overseers_companies_path  %>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <%= submit_tag "Apply", class: "btn btn-sm btn-block btn-success"%>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+    <%end %>
 </div>

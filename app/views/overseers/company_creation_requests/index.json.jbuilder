@@ -20,7 +20,8 @@ json.data (@company_creation_requests) do |company|
 	              company.email,
 	              company.address,
                 company.account.present? ? company.account.name : company.account_name,
-                company.account.present? ? company.account.account_type : company.account_type,
+                company.account.present? ? format_boolean(company.account.is_supplier?) : format_boolean(company.is_supplier?),
+                company.account.present? ? format_boolean(company.account.is_customer?) : format_boolean(company.is_customer?),
 	              format_date(company.created_at)
               ]
 end
