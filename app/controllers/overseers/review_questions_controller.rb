@@ -31,7 +31,6 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   def create
     @review_question = ReviewQuestion.new(review_question_params)
     authorize @review_question
-
     if @review_question.save
       redirect_to overseers_review_questions_path, notice: flash_message(@review_question, action_name)
     else
@@ -43,7 +42,7 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   # PATCH/PUT /review_questions/1.json
   def update
     authorize @review_question
-    if @review_question.save_and_sync
+    if @review_question.save
       redirect_to overseers_review_questions_path(@review_question), notice: flash_message(@review_question, action_name)
     else
       render 'edit'
