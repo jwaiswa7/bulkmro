@@ -135,12 +135,12 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-comments">
             <h5 class="mb-0"><strong>Special Instructions</strong></h5>
           </a>
         </div>
 
-        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
+        <div id="checkout-comments" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
               <%= f.input :special_instructions, label: false, placeholder: 'Special Instructions / Comments' %>
@@ -152,16 +152,32 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
             <h5 class="mb-0"><strong>Payment Method</strong></h5>
           </a>
         </div>
 
-        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'payment_method') %>" data-parent="#checkout">
+        <div id="checkout-payment-method" class="collapse <%= show_if(params[:next_step] == 'payment_method') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_payment_method_customers_cart_path, :method => :patch do |f| %>
-              <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %> Bank Transfer
-              <%= f.radio_button :payment_method, 'Online Payment' %> Online Payment
+              <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
+                    </span>
+                    <span class="flex-grow-1 ml-2">
+                      <strong class="d-block">Bank Transfer</strong>
+                    </span>
+              </label>
+
+              <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :payment_method, 'Online Payment' %>
+                    </span>
+                    <span class="flex-grow-1 ml-2">
+                      <strong class="d-block">Online Payment</strong>
+                      Check out with your credit card / debit card / net banking via Razorpay.
+                    </span>
+              </label>
 
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
@@ -262,29 +278,43 @@
 </div>
 
 <style>
-  .razorpay-payment-button{
+  .razorpay-payment-button {
     color: #fff;
     background-color: #28a745;
     border-color: #28a745;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); display: block;
-    width: 100%;height: 32px;}
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: block;
+    width: 100%;
+    height: 32px;
+  }
+
   .razorpay-payment-button:hover {
     color: #fff;
     background-color: #218838;
-    border-color: #1e7e34; cursor: pointer}
+    border-color: #1e7e34;
+    cursor: pointer
+  }
+
   .razorpay-payment-button:focus, .razorpay-payment-button.focus {
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+  }
+
   .razorpay-payment-button.disabled, .razorpay-payment-button:disabled {
     color: #fff;
     background-color: #28a745;
-    border-color: #28a745; }
+    border-color: #28a745;
+  }
+
   .razorpay-payment-button:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled).active, .show > .razorpay-payment-button.dropdown-toggle {
     color: #fff;
     background-color: #1e7e34;
-    border-color: #1c7430; }
+    border-color: #1c7430;
+  }
+
   .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus, .show > .razorpay-payment-button.dropdown-toggle:focus {
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+  }
 </style>
