@@ -84,6 +84,13 @@ GEM
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
       nokogiri (~> 1.6, >= 1.6.8)
+    azure-storage-blob (1.1.0)
+      azure-core (~> 0.1.13)
+      azure-storage-common (~> 1.0)
+      nokogiri (~> 1.6, >= 1.6.8)
+    azure-storage-common (1.1.0)
+      azure-core (~> 0.1.13)
+      nokogiri (~> 1.6, >= 1.6.8)
     bcrypt (3.1.12)
     bcrypt (3.1.12-x64-mingw32)
     bindex (0.5.0)
@@ -403,7 +410,8 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rake (12.3.2)
     randexp (0.1.7)
-    ratyrate (1.2.2.alpha)
+    razorpay (2.3.0)
+      httparty (~> 0.14)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
@@ -529,6 +537,7 @@ GEM
       timeliness (~> 0.3.8)
     warden (1.2.8)
       rack (>= 2.0.6)
+    wdm (0.1.1)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -556,6 +565,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   axlsx_rails (= 0.5.2)
   azure-storage
+  azure-storage-blob
   bonsai-elasticsearch-rails (~> 7)
   bootsnap (>= 1.1.0)
   byebug
@@ -604,7 +614,7 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)
-  ratyrate
+  razorpay
   rotp
   rubyzip (~> 1.2)
   sass-rails (~> 5.0)
@@ -626,6 +636,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unparser
   validates_timeliness (~> 5.0.0.alpha3)
+  wdm (>= 0.1.0)
   web-console (>= 3.3.0)
   webpacker (~> 3.5)
   wicked_pdf

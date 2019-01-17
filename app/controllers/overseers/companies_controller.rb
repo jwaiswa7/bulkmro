@@ -10,6 +10,15 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @companies
   end
 
+  def company_rating
+    service = Services::Overseers::Finders::Companies.new(params)
+    service.call
+
+    @indexed_companies = service.indexed_records
+    @companies = service.records
+    authorize @companies
+  end
+
   def autocomplete
     @companies = ApplyParams.to(Company.active, params)
     authorize @companies
