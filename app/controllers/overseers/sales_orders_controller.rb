@@ -169,7 +169,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :_destroy,
                   :status,
                   :quantity,
-                  :sales_order_row_id
+                  :sales_order_row_id,
               ]
           ]
       )

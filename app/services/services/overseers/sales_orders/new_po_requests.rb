@@ -12,7 +12,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
         if po_requests[row.supplier.id] == nil
           po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
         end
-        po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: row.quantity)
+        po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: row.quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit)
       end
     else
       # TODO Look for po_requests where status is created or requested
@@ -27,7 +27,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
           if !po_requests[row.supplier.id].present?
             po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
           end
-          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity, product: row.product, tax_code: row.product.tax_code, tax_rate: row.product.tax_rate)
+          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity, product: row.product, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit)
         end
       end
     end
