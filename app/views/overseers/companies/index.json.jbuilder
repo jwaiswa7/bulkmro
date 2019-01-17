@@ -21,7 +21,7 @@ json.data (@companies) do |company|
                       end,
                   ].join(' '),
                   if company.is_supplier?
-                    rating_for(company,'supplier_responsiveness')
+                    rating_for(company)
                   end,
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   company.addresses.size,

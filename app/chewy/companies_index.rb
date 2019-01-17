@@ -10,6 +10,7 @@ class CompaniesIndex < BaseIndex
     field :is_pan_valid, value: -> (record) { record.validate_pan}
     field :is_supplier, value: -> (record) { record.is_supplier?}
     field :is_customer, value: -> (record) { record.is_customer? }
+    field :rating, value: -> (record) { record.rating }, type: 'float'
     field :sap_status, value: -> (record) { record.synced? }
     field :created_at, value: -> (record) { record.created_at },type: 'date'
     field :updated_at, value: -> (record) { record.updated_at },type: 'date'
