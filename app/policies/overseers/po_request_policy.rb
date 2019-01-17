@@ -3,6 +3,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     true
   end
 
+  def edit
+    developer? || logistics? || manager_or_sales?
+  end
+
   def pending_and_rejected?
     index?
   end
@@ -17,6 +21,14 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
 
   def new?
     true
+  end
+
+  def can_cancel?
+    manager_or_sales?
+  end
+
+  def can_reject?
+    logistics?
   end
 
   def show_payment_request?

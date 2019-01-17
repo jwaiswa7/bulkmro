@@ -68,6 +68,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
+      @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
       ActiveRecord::Base.transaction do if @po_request.status_changed?
           @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
           @po_request.save!
