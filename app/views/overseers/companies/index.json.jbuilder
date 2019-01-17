@@ -21,15 +21,16 @@ json.data (@companies) do |company|
                       end,
                   ].join(' '),
 
-                   if company.is_supplier?
-                     rating_for(company)
-                   end,
+
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
                   (company.addresses.present? && company.is_international) ? 'International' :company.pan,
                   format_boolean(company.validate_pan),
+                  if company.is_supplier?
+                    rating_for(company)
+                  end,
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
@@ -43,8 +44,9 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
                        [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [],
+                       [],
                        [],
                        [],
                        [],
