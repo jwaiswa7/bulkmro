@@ -7,7 +7,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
       @company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).update({rating: company_rating_attribute['rating'].to_i})
     end
 
-    average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum / @company_review.company_ratings.count
+    average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
     @company_review.update!(rating: average_company_rating)
 
     authorize @company_review
