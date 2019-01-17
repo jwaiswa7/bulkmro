@@ -11,11 +11,11 @@ class Overseers::InquiriesController < Overseers::BaseController
         service.call
 
         @indexed_inquiries = service.indexed_records
-        @inquiries = service.records.try(:reverse)
+        @inquiries = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
         status_service.call
-
+        @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
     end
@@ -54,6 +54,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def autocomplete
+
     service = Services::Overseers::Finders::Inquiries.new(params.merge(page: 1))
     service.call
 

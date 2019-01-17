@@ -12,11 +12,22 @@
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>
-  <th data-name="subject_id">Subject</th>
+  <th data-name="subject">Subject</th>
   <th data-name="status">Status</th>
   <th data-name="method">Method</th>
-  <th data-name="resource">Resource</th>
+  <th data-name="inquiry">Inquiry</th>
+  <th data-name="resource_id">Resource</th>
   <th data-name="created_at">Created</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="daterange"></td>
 <% end %>
 
 <div class="col-lg-12">

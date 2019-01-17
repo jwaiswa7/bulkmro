@@ -33,13 +33,14 @@ json.data (@sales_invoices) do |sales_invoice|
                   conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoices_path(sales_invoice.inquiry),policy(sales_invoice).show?),
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), policy(sales_invoice.inquiry).edit?) : "-",
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.sales_order.order_number, overseers_inquiry_sales_order_path(sales_invoice.inquiry, sales_invoice.sales_order), policy(sales_invoice.sales_order).show?) : "-",
+                  sales_invoice.inquiry.company.name,
                   sales_invoice.inquiry.present? ? sales_invoice.rows.count : "",
                   status_badge(sales_invoice.status),
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.inside_sales_owner.to_s : "",
                   sales_invoice.inquiry.present? ? sales_invoice.inquiry.outside_sales_owner.to_s : "",
-                  format_date(sales_invoice.delivery_date),
-                  format_date(sales_invoice.mis_date),
-                  format_date(sales_invoice.created_at)
+                  format_succinct_date(sales_invoice.delivery_date),
+                  format_succinct_date(sales_invoice.mis_date),
+                  format_succinct_date(sales_invoice.created_at)
               ]
 end
 
@@ -50,6 +51,7 @@ json.columnFilters [
                        [],
                        [],
                        SalesInvoice.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        [],
@@ -61,3 +63,4 @@ json.recordsTotal SalesInvoice.all.count
 json.recordsFiltered @indexed_sales_invoices.total_count
 json.draw params[:draw]
 json.recordsSummary SalesInvoice.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsTotalValue @total_values

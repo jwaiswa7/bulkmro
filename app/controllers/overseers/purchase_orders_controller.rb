@@ -16,6 +16,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
         status_service.call
 
+        @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
       end
     end
