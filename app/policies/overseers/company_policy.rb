@@ -34,4 +34,8 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def create_customer_products?
     all_roles? && is_active?
   end
+
+  def company_rating?
+    index?
+  end
 end
