@@ -15,11 +15,12 @@
             <%= f.simple_fields_for :company_ratings, @company_review.company_ratings , wrapper_tag: :div do |company_rating| %>
               <div class="simple-row">
                 <div class="form-row mt-2">
-                  <div class="col-12 col-md-8">
+                  <div class="col-12 col-md-7">
                     <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false %>
                   </div>
-                  <div class="col-12 col-md-2">
-                    <%= company_rating.input :rating, :include_blank => false %>
+                  <div class="col-12 col-md-5 mt-3">
+                    <div class="star"></div>
+                    <%= company_rating.hidden_field :rating, :include_blank => false %>
                   </div>
                 </div>
               </div>
