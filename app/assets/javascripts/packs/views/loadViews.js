@@ -41,10 +41,15 @@ import purchaseOrders from "./purchaseOrders/init";
 import paymentRequests from "./paymentRequests/init";
 
 // Invoice Requests
-import invoiceRequests from "./paymentRequests/init";
+import invoiceRequests from "./invoiceRequests/init";
+
+// Po Requests
+import poRequests from "./poRequests/init";
 
 // Activities
 import activities from './activities/init'
+
+import companies from './companies/init'
 
 let loader = {
     imports: imports,
@@ -63,7 +68,9 @@ let loader = {
     purchaseOrders: purchaseOrders,
     paymentRequests: paymentRequests,
     invoiceRequests: invoiceRequests,
-    activities: activities
+    poRequests: poRequests,
+    activities: activities,
+    companies: companies
 };
 
 // Imports

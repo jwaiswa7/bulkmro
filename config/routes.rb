@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
+    resources :review_questions
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -333,6 +335,7 @@ Rails.application.routes.draw do
 
     resources :companies do
       collection do
+        get 'company_rating'
         get 'autocomplete'
         get 'export_all'
       end
@@ -419,7 +422,11 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      member do
+        put 'update_rating'
+      end
+    end
   end
 
   namespace 'customers' do

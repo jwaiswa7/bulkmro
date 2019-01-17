@@ -27,6 +27,20 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
+
+      @can_review = !@sales_order.inquiry.suppliers.first.company_reviews.present? || !@sales_order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Sales').present?
+
+      if @can_review
+        @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Sales', company: @sales_order.inquiry.suppliers.first).first_or_create!
+
+        ReviewQuestion.sales.each do |question|
+          CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
+        end
+        # @questions = @company_review.company_ratings.map(&:review_question).pluck(:question)
+      else
+        @company_review = CompanyReview.new
+      end
+
       authorize @po_request
     else
       redirect_to overseers_po_requests_path
