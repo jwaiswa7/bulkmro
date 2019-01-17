@@ -1,4 +1,12 @@
-<div class="col-md-12 mt-2">
+<div class="col-md-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        Remote Request <%= @remote_request.id %>
+      </h3>
+    </div>
+  </section>
+
   <div class="row bg-white">
     <% if @remote_request.response['error_message'] %>
       <div class="col-lg-12">
