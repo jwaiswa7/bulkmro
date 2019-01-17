@@ -120,7 +120,7 @@
                     <%= kit_product.input :quantity, :label => false, placeholder: placeholder_for(kit_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
                   <div class="col-5 ">
-                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, label: false %>
+                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: kit_product.object.product.is_service)}, label: false if kit_product.object.product.present? %>
                   </div>
                   <div class="col-4">
                     <%= kit_product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>

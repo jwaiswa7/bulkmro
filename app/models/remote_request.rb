@@ -35,7 +35,6 @@ class RemoteRequest < ApplicationRecord
     :'Invoices' => 130,
     :'Attachments2' => 140,
     :'Items' => 150
-
   }
 
   scope :with_includes, -> {}
