@@ -6,15 +6,6 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @company_creation_request.name %>:&nbsp;<%= status_badge(@company_creation_request.status) %>
       </h3>
-
-      <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
-        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create New
-          Company</a>
-      <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
-        <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create New
-          Account</a>
-      <% end %>
-
     </div>
   </section>
   <section class="mb-3">
@@ -30,13 +21,13 @@
           </div>
           <div class="col-6 col-md-4 mb-2">
             <strong class="d-block">
-              last Name
+              Last Name
             </strong>
             <%= @company_creation_request.last_name %>
           </div>
           <div class="col-6 col-md-4 mb-2">
             <strong class="d-block">
-              last Name
+              Email
             </strong>
             <%= @company_creation_request.email %>
           </div>
@@ -66,23 +57,40 @@
       </div>
     </div>
   </section>
-  <% if !@company_creation_request.company.present? %>
+
     <section class="mb-3">
       <div class="card">
-        <div class="card-header">Add existing company</div>
         <div class="card-body">
-          <%= form_tag exchange_with_existing_company_overseers_company_creation_request_path(@company_creation_request), method:'post', class:'my-2 form-row' do %>
-            <div class="col-md-10">
-              <div class="form-group">
-                <%=select_tag "company_id", options_for_select(["Search for company"], ""), class: 'select2-ajax form-control', :'data-source' => autocomplete_overseers_companies_path  %>
+          <div>
+            <h6 class="text-uppercase text-black-50 mb-1">Create OR Link Company</h6>
+            <div class="form-row">
+              <div class="col-4">
+                <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
+                  <a href="<%= new_overseers_account_company_path(@company_creation_request.account, :ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+                    New
+                    Company</a>
+                <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
+                  <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+                    New
+                    Account</a>
+                <% end %>
+              </div>
+              <div class="col-2"> OR </div>
+              <div class="col-6">
+                  <%= simple_form_for([:overseers, @company_creation_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                  <div class="col-3">
+                    <div class="form-group">
+                      <%= f.association :company, as: :select, :include_blank => true, input_html:{class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path}%>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <%= submit_tag "Link", class: "btn btn-sm btn-block btn-success" %>
+                  </div>
+                <% end %>
               </div>
             </div>
-            <div class="col-md-2">
-              <%= submit_tag "Apply", class: "btn btn-sm btn-block btn-success"%>
-            </div>
-          <% end %>
+          </div>
         </div>
       </div>
     </section>
-    <%end %>
 </div>

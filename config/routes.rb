@@ -62,9 +62,9 @@ Rails.application.routes.draw do
 
     resources :reports
     resources :company_creation_requests do
-      member do
-        post 'exchange_with_existing_company'
-      end
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
       collection do
         get 'requested'
         get 'created'

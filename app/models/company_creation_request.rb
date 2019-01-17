@@ -2,16 +2,15 @@ class CompanyCreationRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasApproveableStatus
 
+  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :activity
   belongs_to :account
-  has_one :company
+  belongs_to :company
   validates_presence_of :name
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   scope :requested, -> {where(:company_id => nil)}
   scope :created, -> {where.not(:company_id => nil)}
-
 
   enum :account_type => {
       :is_supplier => 10,
@@ -19,7 +18,7 @@ class CompanyCreationRequest < ApplicationRecord
   }
 
   def status
-    (self.account_id.present? && self.company_id.present?) ? 'created' : 'Requested'
+    (self.account_id.present? && self.company_id.present?) ? 'Created' : 'Requested'
   end
 
 end
