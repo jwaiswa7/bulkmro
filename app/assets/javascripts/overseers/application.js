@@ -28,6 +28,5 @@
 //= require overseers/run
 //= require overseers/run
 
-
-//= require jquery.raty
-//= require ratyrate
+//= require packs/plugins/raty/jquery.raty.js
+//= require packs/plugins/raty/ratyrate.js.erb
