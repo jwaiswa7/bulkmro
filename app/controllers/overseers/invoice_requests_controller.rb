@@ -101,6 +101,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   private
 
   def create_company_review(order)
+    @supplier = order.inquiry.suppliers.first
     @can_review = !order.inquiry.suppliers.first.company_reviews.present? || !order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Logistics').present?
 
     if @can_review
