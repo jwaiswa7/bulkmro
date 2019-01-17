@@ -19,6 +19,19 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def service_autocomplete
+    base_filter = {
+        :base_filter_key => "is_service",
+        :base_filter_value => true
+    }
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
+    authorize @products
+  end
+
   def pending
     @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)), params)
     authorize @products

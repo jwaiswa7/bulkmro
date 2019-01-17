@@ -27,7 +27,7 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
           if !po_requests[row.supplier.id].present?
             po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
           end
-          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity)
+          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity, product: row.product, tax_code: row.product.tax_code, tax_rate: row.product.tax_rate)
         end
       end
     end

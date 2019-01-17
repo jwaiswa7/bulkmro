@@ -120,6 +120,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
