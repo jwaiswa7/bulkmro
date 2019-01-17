@@ -12,8 +12,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
     else
       OnlinePayment.all
                end.order(id: :desc)
-    binding.pry
-    @payments = ApplyDatatableParams.to( OnlinePayment.all.order(id: :desc), params.reject! { |k, v| k == 'company_id'})
+    @payments = ApplyDatatableParams.to( payments, params.reject! { |k, v| k == 'company_id'})
     authorize :customer_order
   end
 
