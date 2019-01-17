@@ -8,7 +8,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
           FreightRequest.where(:status => params[:status])
         else
           FreightRequest.all
-        end.order(id: :desc)
+        end
 
     @freight_requests = ApplyDatatableParams.to(freight_requests, params)
     authorize @freight_requests
