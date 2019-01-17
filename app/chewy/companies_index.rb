@@ -1,5 +1,5 @@
 class CompaniesIndex < BaseIndex
-  define_type Company.all.with_includes do
+  define_type Company.where("id < 100").with_includes do
     field :id, type: 'integer'
     field :account_id, value: -> (record) { record.account_id }
     field :name, value: -> (record) { record.name }, analyzer: 'substring'
