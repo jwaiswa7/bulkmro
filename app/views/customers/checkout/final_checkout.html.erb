@@ -7,11 +7,6 @@
       You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth
       <strong><%= format_currency(current_cart.grand_total) %></strong>.
     </p>
-
-    <p class="lead mt-1">
-      <strong><%= params[:payment_message] if params[:payment_message].present? %></strong>.
-    </p>
-
   </section>
 
   <div class="row flex-lg-row-reverse">
@@ -148,8 +143,8 @@
         <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
-              <%= f.text_area :special_instructions, class: 'col-12 form-group form-control' %>
-              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
+              <%= f.input :special_instructions, label: false, placeholder: 'Special Instructions / Comments' %>
+              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block' %>
             <% end %>
           </div>
         </div>
