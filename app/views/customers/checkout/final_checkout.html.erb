@@ -7,6 +7,11 @@
       You have <strong><%= @cart.items.size %></strong> product(s) in your cart worth
       <strong><%= format_currency(current_cart.grand_total) %></strong>.
     </p>
+
+    <p class="lead mt-1">
+      <strong><%= params[:payment_message] if params[:payment_message].present? %></strong>.
+    </p>
+
   </section>
 
   <div class="row flex-lg-row-reverse">
@@ -143,7 +148,26 @@
         <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
-              <%= f.text_area :special_instructions, class: 'col-12 form-group form-control'%>
+              <%= f.text_area :special_instructions, class: 'col-12 form-group form-control' %>
+              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout">
+            <h5 class="mb-0"><strong>Payment Method</strong></h5>
+          </a>
+        </div>
+
+        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'payment_method') %>" data-parent="#checkout">
+          <div class="card-body">
+            <%= simple_form_for [:customers, @cart], :url => update_payment_method_customers_cart_path, :method => :patch do |f| %>
+              <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %> Bank Transfer
+              <%= f.radio_button :payment_method, 'Online Payment' %> Online Payment
+
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
           </div>
@@ -200,8 +224,30 @@
                 </div>
                 <% if @cart.billing_address.present? && @cart.shipping_address.present? %>
                   <div class="col-12 col-md-6 mt-2 mt-md-0">
-                    <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-                      Place Order
+
+                    <% if @cart.payment_method.present? && @cart.payment_method == 'Bank Transfer' %>
+                      <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+                        Place Order
+                      <% end %>
+                    <% else %>
+                      <%# raise %>
+                      <%= simple_form_for [:customers, @cart], :url => customers_customer_orders_path, :method => :post do |f| %>
+                        <!-- Note that the amount is in paise = 50 INR -->
+                        <script
+                          src="https://checkout.razorpay.com/v1/checkout.js"
+                          data-key="<%= Settings.razorpay.MERCHANT_KEY_ID %>"
+                          data-amount="<%= (@cart.grand_total * 100).ceil %>"
+                          data-buttontext="Place Order"
+                          data-name="Bulk MRO"
+                          data-description="Online Order Payment"
+                          data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"
+                          data-prefill.name="<%= current_contact.full_name %>"
+                          data-prefill.email="<%= current_contact.email %>"
+                          data-theme.color="#F37254"
+                        ></script>
+                        <%= f.hidden_field :id %>
+                        <%= f.hidden_field :grand_total %>
+                      <% end %>
                     <% end %>
                   </div>
                 <% end %>
@@ -219,3 +265,31 @@
     </div>
   </div>
 </div>
+
+<style>
+  .razorpay-payment-button{
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); display: block;
+    width: 100%;height: 32px;}
+  .razorpay-payment-button:hover {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34; cursor: pointer}
+  .razorpay-payment-button:focus, .razorpay-payment-button.focus {
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+  .razorpay-payment-button.disabled, .razorpay-payment-button:disabled {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745; }
+  .razorpay-payment-button:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled).active, .show > .razorpay-payment-button.dropdown-toggle {
+    color: #fff;
+    background-color: #1e7e34;
+    border-color: #1c7430; }
+  .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus, .show > .razorpay-payment-button.dropdown-toggle:focus {
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+</style>
