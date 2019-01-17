@@ -1,8 +1,18 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update]
 
-  def pending
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending.order(id: :desc), params)
+  def pending_and_rejected
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_and_rejected.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def cancelled
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.cancelled.order(id: :desc), params)
     authorize @po_requests
 
     respond_to do |format|

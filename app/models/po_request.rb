@@ -25,7 +25,8 @@ class PoRequest < ApplicationRecord
   enum status: {
       :'Requested' => 10,
       :'PO Created' => 20,
-      :'Cancelled' => 30
+      :'Cancelled' => 30,
+      :'Rejected' => 40
   }
 
   # enum supplier_po_type: {
@@ -40,9 +41,10 @@ class PoRequest < ApplicationRecord
   #     :tender => 80
   # }
 
-  scope :pending, -> {where(:status => :'Requested')}
+  scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
   scope :handled, -> {where.not(:status => [:'Requested'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
+  scope :cancelled, -> {where(:status => [:'Cancelled'])}
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
@@ -57,5 +59,21 @@ class PoRequest < ApplicationRecord
 
   def set_defaults
     self.status ||= :'Requested'
+  end
+
+  def selling_price
+    10
+  end
+
+  def buying_price
+    10
+  end
+
+  def po_margin_percentage
+    10
+  end
+
+  def overall_margin_percentage
+    10
   end
 end

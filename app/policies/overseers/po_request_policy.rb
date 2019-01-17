@@ -3,7 +3,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     true
   end
 
-  def pending?
+  def pending_and_rejected?
+    index?
+  end
+
+  def cancelled?
     index?
   end
 
