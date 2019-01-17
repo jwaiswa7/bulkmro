@@ -108,7 +108,7 @@
                   <td><%= (index + 1) %></td>
                   <td><%= kit_product.product.name %></td>
                   <td><%= kit_product.quantity %></td>
-                  <td><%= kit_product.tax_code.code %></td>
+                  <td><%= kit_product.tax_code.code if kit_product.tax_code.present?%></td>
                   <td><%= kit_product.tax_rate.to_s %></td>
                 </tr>
               <% end %>
