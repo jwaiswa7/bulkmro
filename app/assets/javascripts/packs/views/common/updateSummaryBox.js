@@ -4,6 +4,7 @@ const updateSummaryBox = () => {
     let table = $('.datatable').DataTable();
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
+
         $.each(json.recordsSummary, function (index, summary) {
             let statusSize = summary["size"];
             let statusId = ".status-" + summary["status_id"];
