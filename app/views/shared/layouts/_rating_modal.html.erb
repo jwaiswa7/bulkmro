@@ -11,20 +11,20 @@
       <div class="modal-body mx-3">
           <%= simple_form_for([:overseers, @company_review], :url => url, :method => 'PUT') do |f| %>
             <%= f.hidden_field :id %>
-
             <%= f.simple_fields_for :company_ratings, @company_review.company_ratings , wrapper_tag: :div do |company_rating| %>
               <div class="simple-row">
                 <div class="form-row mt-2">
-                  <div class="col-12 col-md-8">
+                  <div class="col-12 col-md-7">
                     <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false %>
                   </div>
-                  <div class="col-12 col-md-2">
-                    <%= company_rating.input :rating, :include_blank => false %>
+                  <div class="col-12 col-md-5 mt-3 star">
+                    <div class=<%='star-'+company_rating.index.to_s %>></div>
+                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s %>
                   </div>
                 </div>
               </div>
-            <% end %>
-            <div class="card-footer">
+          <% end %>
+          <div class="card-footer">
               <%= button_tag(type: "submit", class: "btn btn-warning btn-block disabled") do %>
                 <i class="fal fa-pen"></i> Submit Review
               <% end %>

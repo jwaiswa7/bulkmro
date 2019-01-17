@@ -62,3 +62,7 @@ wit:
 
 heroku:
   dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3
+
+razorpay:
+  MERCHANT_KEY_ID:  'rzp_test_YorJsu5KKxrZxc'
+  MERCHANT_KEY_SECRET:  'F1KKKL5ntCXObq4EZ6huRj32'

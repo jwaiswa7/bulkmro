@@ -135,15 +135,50 @@
 
       <div class="card">
         <div class="card-header">
-          <a class="collapsed" data-toggle="collapse" data-parent="#checkout">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-comments">
             <h5 class="mb-0"><strong>Special Instructions</strong></h5>
           </a>
         </div>
 
-        <div id="checkout-shipping" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
+        <div id="checkout-comments" class="collapse <%= show_if(params[:next_step] == 'special_instructions') %>" data-parent="#checkout">
           <div class="card-body">
             <%= simple_form_for [:customers, @cart], :url => update_special_instructions_customers_cart_path, :method => :patch do |f| %>
-              <%= f.text_area :special_instructions, class: 'col-12 form-group form-control'%>
+              <%= f.input :special_instructions, label: false, placeholder: 'Special Instructions / Comments' %>
+              <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="collapsed" data-toggle="collapse" data-parent="#checkout" href="#checkout-payment-method">
+            <h5 class="mb-0"><strong>Payment Method</strong></h5>
+          </a>
+        </div>
+
+        <div id="checkout-payment-method" class="collapse <%= show_if(params[:next_step] == 'payment_method') %>" data-parent="#checkout">
+          <div class="card-body">
+            <%= simple_form_for [:customers, @cart], :url => update_payment_method_customers_cart_path, :method => :patch do |f| %>
+              <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :payment_method, 'Bank Transfer', :checked => true %>
+                    </span>
+                    <span class="flex-grow-1 ml-2">
+                      <strong class="d-block">Bank Transfer</strong>
+                    </span>
+              </label>
+
+              <label class="d-flex justify-content-center align-items-center flex-row">
+                    <span class="h-100">
+                      <%= f.radio_button :payment_method, 'Online Payment' %>
+                    </span>
+                    <span class="flex-grow-1 ml-2">
+                      <strong class="d-block">Online Payment</strong>
+                      Checkout using credit card / debit card / net banking.
+                    </span>
+              </label>
+
               <%= f.button :submit, 'Continue', class: 'btn btn-success btn-block mt-4' %>
             <% end %>
           </div>
@@ -200,8 +235,29 @@
                 </div>
                 <% if @cart.billing_address.present? && @cart.shipping_address.present? %>
                   <div class="col-12 col-md-6 mt-2 mt-md-0">
-                    <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
-                      Place Order
+                    <% if @cart.payment_method.present? && @cart.payment_method == 'Bank Transfer' %>
+                      <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
+                        Place Order
+                      <% end %>
+                    <% else %>
+                      <%# raise %>
+                      <%= simple_form_for [:customers, @cart], :url => customers_customer_orders_path, :method => :post do |f| %>
+                        <!-- Note that the amount is in paise = 50 INR -->
+                        <script
+                          src="https://checkout.razorpay.com/v1/checkout.js"
+                          data-key="<%= Settings.razorpay.MERCHANT_KEY_ID %>"
+                          data-amount="<%= (@cart.grand_total * 100).ceil %>"
+                          data-buttontext="Place Order"
+                          data-name="Bulk MRO"
+                          data-description="Online Order Payment"
+                          data-image="https://sprint.bulkmro.com/assets/BMIS_Logo_PNG-53d0c1344909fef521a2a08848e952268ba7b61c133103f49c7100f2735b8d59.png"
+                          data-prefill.name="<%= current_contact.full_name %>"
+                          data-prefill.email="<%= current_contact.email %>"
+                          data-theme.color="#F37254"
+                        ></script>
+                        <%= f.hidden_field :id %>
+                        <%= f.hidden_field :grand_total %>
+                      <% end %>
                     <% end %>
                   </div>
                 <% end %>
