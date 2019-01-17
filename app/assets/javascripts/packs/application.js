@@ -43,11 +43,7 @@ app.initializeComponents = () => {
     dropdowns();
     chartjs();
     lazyLoadImages();
-<<<<<<< HEAD
     highlightjs();
-=======
-
->>>>>>> 76ab5d20aa5b6cc6c540074bd55a0c9af6dabaad
 };
 
 // Turbolinks load event
