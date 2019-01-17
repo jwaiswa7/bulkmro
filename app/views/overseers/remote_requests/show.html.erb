@@ -18,36 +18,19 @@
     <div class="card mb-2">
       <div class="card-body">
         <% if @remote_request.response['error_message'] %>
-
-            <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bg-highlight-<%= status_color(@remote_request.status) %>" type="button" data-toggle="collapse" data-target="#error_summary">
-              Error
-            </a>
-
-            <div id="error_summary" class="collapse show">
-              <div class="mt-2 p-2 d-flex flex-row align-content-stretch">
-                <%= ap(@remote_request.response['error_message'], plain: true).html_safe %>
-              </div>
-            </div>
+          <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1">Error Message</h6>
+          <p><%= @remote_request.response['error_message'] %>.</p>
         <% end %>
 
-          <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bg-highlight-<%= status_color(@remote_request.status) %>" type="button" data-toggle="collapse" data-target="#request_summary">
-            Request
-          </a>
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#request-summary">Request</h6>
+        <div class="collapse show" id="request-summary">
+          <%= ap(@remote_request.request, plain: true, indent: -1).html_safe %>
+        </div>
 
-          <div id="request_summary" class="collapse show">
-            <div class="mt-2 p-2 flex-row align-content-stretch">
-              <%= ap(@remote_request.request, plain: true, indent: -1).html_safe %>
-            </div>
-          </div>
-
-          <a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4 bg-highlight-<%= status_color(@remote_request.status) %>" type="button" data-toggle="collapse" data-target="#response_summary">
-            Response
-          </a>
-          <div id="response_summary" class="collapse show">
-            <div class="mt-2 p-2 flex-row align-content-stretch">
-              <%= ap(@remote_request.response['raw_response'], plain: true, indent: -1).html_safe %>
-            </div>
-          </div>
+        <h6 class="text-uppercase text-<%= status_color(@remote_request.status) %> mb-1 mt-4" data-toggle="collapse" data-target="#response-summary">Response</h6>
+        <div id="response-summary" class="collapse show">
+          <%= ap(@remote_request.response['raw_response'], plain: true, indent: -1).html_safe %>
+        </div>
       </div>
     </div>
   </section>
