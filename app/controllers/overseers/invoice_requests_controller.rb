@@ -43,10 +43,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      create_company_review(@sales_order)
       authorize @invoice_request
     elsif  params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+      create_company_review(@purchase_order)
       authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path
@@ -97,6 +99,20 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   end
 
   private
+
+  def create_company_review(order)
+    @can_review = !order.inquiry.suppliers.first.company_reviews.present? || !order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Logistics').present?
+
+    if @can_review
+      @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Logistics', company: order.inquiry.suppliers.first).first_or_create!
+
+      ReviewQuestion.logistics.each do |question|
+        CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
+      end
+    else
+      @company_review = CompanyReview.new
+    end
+  end
 
   def invoice_request_params
     params.require(:invoice_request).permit(
