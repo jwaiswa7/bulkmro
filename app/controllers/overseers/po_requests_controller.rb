@@ -28,7 +28,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
 
-      @can_review = @sales_order.inquiry.suppliers.first.company_reviews.present? && !@sales_order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Sales').present?
+      @can_review = !@sales_order.inquiry.suppliers.first.company_reviews.present? || !@sales_order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Sales').present?
 
       if @can_review
         @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Sales', company: @sales_order.inquiry.suppliers.first).first_or_create!
