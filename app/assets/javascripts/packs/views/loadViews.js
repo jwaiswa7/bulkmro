@@ -44,6 +44,9 @@ import paymentRequests from "./paymentRequests/init";
 // Invoice Requests
 import invoiceRequests from "./paymentRequests/init";
 
+// Activities
+import activities from './activities/init'
+
 let loader = {
     imports: imports,
     reports: reports,
@@ -54,14 +57,15 @@ let loader = {
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
     kits: kits,
-    freightRequests:freightRequests,
-    freightQuotes:freightQuotes,
+    freightRequests: freightRequests,
+    freightQuotes: freightQuotes,
     materialReadinessFollowups:materialReadinessFollowups,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
     paymentRequests: paymentRequests,
-    invoiceRequests: invoiceRequests
+    invoiceRequests: invoiceRequests,
+    activities: activities
 };
 
 // Imports

@@ -23,7 +23,27 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
         else
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
-            purchase_order.metadata['PoStatus'] = params['PoStatus']
+            purchase_order.assign_attributes(:metadata => params)
+            if payment_option.present?
+              purchase_order.assign_attributes(:payment_option => payment_option)
+            end
+            params['ItemLine'].each do |remote_row|
+              product = Product.find_by_legacy_id(remote_row['PopProductId'].to_i) || Product.find(remote_row['PopProductId'])
+              row = purchase_order.rows.select {|por| por.sku == product.sku}.first
+
+              if row.present?
+                row.assign_attributes(
+                    metadata: remote_row
+                )
+              else
+                new_row = purchase_order.rows.build do |row|
+                  row.assign_attributes(
+                      metadata: remote_row
+                  )
+                end
+                new_row.save
+              end
+            end
             purchase_order.save!
           end
 

@@ -9,10 +9,10 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
           labels: [],
           datasets: [
               {
-                  label: "Sku Count",
+                  label: "SKU Count",
                   type: "bar",
-                  borderColor: "#fd7e14",
-                  backgroundColor: '#fd7e14',
+                  borderColor: "#007bff",
+                  backgroundColor: '#007bff',
                   data: [],
                   yAxisID: 'sku_count',
                   fill: false
@@ -33,7 +33,7 @@ class Services::Customers::Charts::UniqueSkus < Services::Customers::Charts::Bui
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Sku Count'
+                          labelString: 'SKU Count'
                       },
                       gridLines: {
                           display: true
