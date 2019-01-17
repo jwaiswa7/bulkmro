@@ -1,5 +1,5 @@
 class Overseers::ReviewQuestionsController < Overseers::BaseController
-  before_action :set_review_question, only: [:show, :edit, :update]
+  before_action :set_review_question, only: [:show, :edit, :update, :destroy]
 
   # GET /review_questions
   # GET /review_questions.json
@@ -53,10 +53,12 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   # DELETE /review_questions/1.json
   def destroy
     authorize @review_question
-    @review_question.destroy
-    respond_to do |format|
-      format.html { redirect_to overseers_review_questions_url, notice: flash_message(@review_question, action_name) }
-      format.json { head :no_content }
+    company_rating = CompanyRating.where(:review_question_id => @review_question.id )
+    if !company_rating.present?
+      @review_question.destroy!
+      redirect_to overseers_review_questions_url, notice: flash_message(@review_question, action_name)
+    else
+      redirect_to overseers_review_questions_url, notice: "Cannot delete this review question already in used."
     end
   end
 
