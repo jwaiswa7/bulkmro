@@ -1,5 +1,7 @@
 class CompanyCreationRequest < ApplicationRecord
   include Mixins::CanBeStamped
+  include Mixins::HasApproveableStatus
+
 
   belongs_to :activity
   belongs_to :account
@@ -15,5 +17,9 @@ class CompanyCreationRequest < ApplicationRecord
       :is_supplier => 10,
       :is_customer => 20,
   }
+
+  def status
+    (self.account_id.present? && self.company_id.present?) ? 'created' : 'Requested'
+  end
 
 end
