@@ -34,7 +34,8 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     authorize @mrf
     if @mrf.purchase_order.present? && @mrf.rows.blank?
       @mrf.purchase_order.rows.each do |row|
-        @mrf.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
+        row = @mrf.rows.build(purchase_order_row: row, pickup_quantity: row.get_pickup_quantity)
+        row.save
       end
     end
   end

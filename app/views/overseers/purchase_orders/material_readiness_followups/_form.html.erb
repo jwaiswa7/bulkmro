@@ -94,7 +94,7 @@
                   </div>
                 <% else %>
                   <div class="col-2">
-                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f} %>
+                    <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0} %>
                   </div>
                 <% end %>
                 <div class="col-2  mt-3 ">
