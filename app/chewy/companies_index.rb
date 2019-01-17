@@ -3,9 +3,9 @@ class CompaniesIndex < BaseIndex
     field :id, type: 'integer'
     field :account_id, value: -> (record) { record.account_id }
     field :name, value: -> (record) { record.name }, analyzer: 'substring'
-    field :addresses, value: -> (record) { record.addresses.size }
-    field :contacts, value: -> (record) { record.contacts.size }
-    field :inquiries, value: -> (record) { record.inquiries.size }
+    field :addresses, value: -> (record) { record.addresses.size }, type: 'integer'
+    field :contacts, value: -> (record) { record.contacts.size }, type: 'integer'
+    field :inquiries, value: -> (record) { record.inquiries.size }, type: 'integer'
     field :pan, value: -> (record) { record.pan.to_s }, analyzer: 'substring'
     field :is_pan_valid, value: -> (record) { record.validate_pan}
     field :is_supplier, value: -> (record) { record.is_supplier?}

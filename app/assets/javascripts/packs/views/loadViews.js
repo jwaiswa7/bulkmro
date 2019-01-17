@@ -43,8 +43,8 @@ import paymentRequests from "./paymentRequests/init";
 // Invoice Requests
 import invoiceRequests from "./paymentRequests/init";
 
-// Activity
-import activities from "./activities/init";
+// Activities
+import activities from './activities/init'
 
 let loader = {
     imports: imports,
@@ -56,8 +56,8 @@ let loader = {
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
     kits: kits,
-    freightRequests:freightRequests,
-    freightQuotes:freightQuotes,
+    freightRequests: freightRequests,
+    freightQuotes: freightQuotes,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,

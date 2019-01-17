@@ -6,7 +6,7 @@ json.data (@measurement_units) do |measurement_unit|
                       end,
                   ].join(' '),
                   conditional_link(measurement_unit.to_s, edit_overseers_measurement_unit_path(measurement_unit),  policy(measurement_unit).edit?),
-                  format_date(measurement_unit.created_at)
+                  format_succinct_date(measurement_unit.created_at)
               ]
 end
 
