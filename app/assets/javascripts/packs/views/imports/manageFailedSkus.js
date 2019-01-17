@@ -30,7 +30,7 @@ const manageFailedSkus = () => {
     $('body').on('click', 'button[name*=load-next-approved-alternatives]:button', function (e) {
         var page = $(this).parent().attr('data-page');
         showPaginationButton($(this).data("row-object"), page, $(this).parent().data("index"), "next");
-        if(page > 1){
+        if(++page > 1){
             $(this).siblings().removeClass('disabled');
         }
     });
@@ -42,9 +42,13 @@ let showPaginationButton = (row_object, page, index, action) => {
         data: {row_object : row_object, page: page, index:index},
         url: "load_alternatives",
         success: function (data) {
+            console.log(data);
             $('.' + row_object + '.card-footer').attr('data-page', page);
             $('.' + row_object + '.approved-alternatives').empty();
             $('.' + row_object + '.approved-alternatives').append(data);
+        },
+        complete: function complete() {
+            $('#load-approved-alternatives').unwrap();
         }
     })
 };
