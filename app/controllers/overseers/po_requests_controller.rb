@@ -1,8 +1,18 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update]
 
-  def pending
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending.order(id: :desc), params)
+  def pending_and_rejected
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_and_rejected.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def cancelled
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.cancelled.order(id: :desc), params)
     authorize @po_requests
 
     respond_to do |format|
@@ -58,6 +68,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
+      @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
       ActiveRecord::Base.transaction do if @po_request.status_changed?
           @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
           @po_request.save!

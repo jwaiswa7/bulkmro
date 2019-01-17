@@ -168,7 +168,8 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
-        get 'pending'
+        get 'pending_and_rejected'
+        get 'cancelled'
       end
 
     end
