@@ -8,10 +8,10 @@
       </h3>
 
       <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
-        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+        <a href="<%= new_overseers_account_company_path(@company_creation_request.account,:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create New
           Company</a>
       <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
-        <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+        <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create New
           Account</a>
       <% end %>
 
@@ -69,6 +69,7 @@
   <% if !@company_creation_request.company.present? %>
     <section class="mb-3">
       <div class="card">
+        <div class="card-header">Add existing company</div>
         <div class="card-body">
           <%= form_tag exchange_with_existing_company_overseers_company_creation_request_path(@company_creation_request), method:'post', class:'my-2 form-row' do %>
             <div class="col-md-10">
