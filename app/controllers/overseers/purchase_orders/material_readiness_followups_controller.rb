@@ -42,8 +42,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   def update
     authorize @mrf
     @mrf.assign_attributes(mrf_params.merge(:overseer => current_overseer))
-    if @mrf.valid?
-      @mrf.save
+    if @mrf.save
       redirect_to overseers_purchase_order_material_readiness_followup_path(@mrf.purchase_order, @mrf), notice: flash_message(@mrf, action_name)
     else
       render 'edit'

@@ -18,9 +18,8 @@ class MrfRow < ApplicationRecord
   end
 
   def check_pickup_quantity?
-    raise
     if self.pickup_quantity > self.purchase_order_row.quantity
-      errors.add(:pickup_quantity, " need to be less than or equal to #{purchase_order_row.get_pickup_quantity}")
+      errors.add(:pickup_quantity, " need to be less than or equal to #{purchase_order_row.quantity}")
     end
   end
 
