@@ -4,7 +4,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        <%= @company_creation_request.name %>
+        <%= @company_creation_request.name %>:&nbsp;<%= status_badge(@company_creation_request.status) %>
       </h3>
 
       <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
