@@ -46,6 +46,14 @@
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Reviews</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'List', company_rating_overseers_companies_path, policy(:company).index? %>
+              <%= nav_dropdown_item 'Review Questions', overseers_review_questions_path, policy(:company).index? %>
+            </ul>
+          </div>
         </div>
       </li>
 
