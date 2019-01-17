@@ -234,3 +234,6 @@ gem 'slack-ruby-bot'
 
 # For charts
 gem 'chartjs-ror'
+
+#For online payments with Razorpay
+gem 'razorpay'
