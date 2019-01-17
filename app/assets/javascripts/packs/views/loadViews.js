@@ -41,7 +41,7 @@ import purchaseOrders from "./purchaseOrders/init";
 import paymentRequests from "./paymentRequests/init";
 
 // Invoice Requests
-import invoiceRequests from "./paymentRequests/init";
+import invoiceRequests from "./invoiceRequests/init";
 
 // Po Requests
 import poRequests from "./poRequests/init";

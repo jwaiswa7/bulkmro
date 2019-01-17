@@ -14,7 +14,15 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     Company.find(@company_review.company_id).update!({rating: overall_rating})
 
     authorize @company_review
-    redirect_to new_overseers_po_request_path(:sales_order_id=>params[:sales_order_id])
+    if params[:sales_order_id].present?
+      if @company_review.Sales?
+        redirect_to new_overseers_po_request_path(:sales_order_id=>params[:sales_order_id])
+      else
+        redirect_to new_overseers_invoice_request_path(:sales_order_id=>params[:sales_order_id])
+      end
+    else
+      redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id])
+    end
   end
 
   private
