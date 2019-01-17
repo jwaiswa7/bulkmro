@@ -28,6 +28,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
 
+      @supplier = @sales_order.inquiry.suppliers.first
       @can_review = !@sales_order.inquiry.suppliers.first.company_reviews.present? || !@sales_order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Sales').present?
 
       if @can_review
