@@ -175,7 +175,7 @@
                     </span>
                     <span class="flex-grow-1 ml-2">
                       <strong class="d-block">Online Payment</strong>
-                      Check out with your credit card / debit card / net banking via Razorpay.
+                      Checkout using credit card / debit card / net banking.
                     </span>
               </label>
 
@@ -235,7 +235,6 @@
                 </div>
                 <% if @cart.billing_address.present? && @cart.shipping_address.present? %>
                   <div class="col-12 col-md-6 mt-2 mt-md-0">
-
                     <% if @cart.payment_method.present? && @cart.payment_method == 'Bank Transfer' %>
                       <%= link_to customers_customer_orders_path(contact_id: current_contact.id), method: :post, :class => "btn btn-success btn-block" do %>
                         Place Order
@@ -276,45 +275,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .razorpay-payment-button {
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-    display: block;
-    width: 100%;
-    height: 32px;
-  }
-
-  .razorpay-payment-button:hover {
-    color: #fff;
-    background-color: #218838;
-    border-color: #1e7e34;
-    cursor: pointer
-  }
-
-  .razorpay-payment-button:focus, .razorpay-payment-button.focus {
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-  }
-
-  .razorpay-payment-button.disabled, .razorpay-payment-button:disabled {
-    color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
-  }
-
-  .razorpay-payment-button:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled).active, .show > .razorpay-payment-button.dropdown-toggle {
-    color: #fff;
-    background-color: #1e7e34;
-    border-color: #1c7430;
-  }
-
-  .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus, .show > .razorpay-payment-button.dropdown-toggle:focus {
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-  }
-</style>
