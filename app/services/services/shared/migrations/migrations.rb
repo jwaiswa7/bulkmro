@@ -1925,6 +1925,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def create_image_readers
+    service = Services::Shared::Spreadsheets::CsvImporter.new('image_readers.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        image_reader = ImageReader.where(reference_id: x.get_column('reference_id')).first_or_initialize
+        if image_reader.new_record? || update_if_exists
+          image_reader.meter_number = x.get_column('meter_number')
+          image_reader.meter_reading = x.get_column('meter_reading')
+          image_reader.image_url = x.get_column('image_url')
+          image_reader.status = x.get_column('status')
+          image_reader.save!
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('reference_id')}")
+      end
+    end
+    puts errors
+  end
+
   def update_images_for_reliance_products
   service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
   service.loop(nil) do |x|
