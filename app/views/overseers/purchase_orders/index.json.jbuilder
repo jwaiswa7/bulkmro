@@ -17,6 +17,9 @@ json.data (@purchase_orders) do |purchase_order|
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
                   (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? ),
+                  if purchase_order.inquiry.company.is_supplier?
+                    rating_for(purchase_order.inquiry.company)
+                  end,
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : "-",
                   purchase_order.status || purchase_order.metadata_status,
                   purchase_order.rows.count,
@@ -32,6 +35,7 @@ json.columnFilters [
                        [],
                        [],
                        [{"source": autocomplete_overseers_companies_path}],
+                       [],
                        [{"source": autocomplete_overseers_companies_path}],
                        PurchaseOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
