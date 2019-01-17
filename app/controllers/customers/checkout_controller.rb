@@ -5,5 +5,8 @@ class Customers::CheckoutController < Customers::BaseController
     @cart = current_cart
   end
 
-  private
+  def show
+    authorize :checkout
+    redirect_to customers_cart_path
+  end
 end

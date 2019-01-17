@@ -60,6 +60,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def not_invoiced?
+    # have to confirm
+    manager_or_sales?
+  end
+
   def export_all?
     allow_export?
   end
@@ -113,6 +118,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def create_purchase_orders_requests?
+    developer?
+  end
+
+  def fetch_order_data?
     developer?
   end
 

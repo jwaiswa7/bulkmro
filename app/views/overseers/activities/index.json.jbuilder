@@ -1,7 +1,12 @@
 json.data (@activities) do |activity|
   json.array! [
                   [
-                      if policy(activity).edit?; row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning') end,
+                      if policy(:activity).perform_actions?;
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='activities[]' class='custom-control-input' value='#{activity.id}' id='c-#{activity.id}'><label class='custom-control-label' for='c-#{activity.id}'></label></div>"
+                      end,
+                      if policy(activity).edit?;
+                        row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
+                      end,
                   ].join(' '),
                   activity.created_by.to_s,
                   if activity.activity_account.present?
@@ -24,7 +29,7 @@ json.data (@activities) do |activity|
                   format_enum(activity.activity_type),
                   activity.points_discussed,
                   activity.actions_required,
-                  format_date(activity.created_at)
+                  format_succinct_date(activity.created_at)
               ]
 end
 

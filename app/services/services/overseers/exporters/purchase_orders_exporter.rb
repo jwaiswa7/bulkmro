@@ -20,7 +20,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           :inquiry_number => inquiry.inquiry_number.to_s,
           :inquiry_date => inquiry.created_at.to_date.to_s,
           :company_name => inquiry.company.name.gsub(';', ''),
-          :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.to_s : nil )
+          :inside_sales => ( inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.try(:full_name) : nil )
       }
 
       row.merge!(

@@ -67,10 +67,10 @@ let setup = () => {
                     $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
                 }
             },
-            info: false,
+            info: true,
             dom: "" + //<'row'<'col-12'<'input-group'f>>> <'col-sm-12 col-md-6'l>
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-12  align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
+                "<'row'<'col-12 align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
             "pageLength": 20,
             pagingType: 'full_numbers',
             order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
@@ -80,6 +80,9 @@ let setup = () => {
             }, {
                 "targets": 'numeric',
                 "render": $.fn.dataTable.render.number(',', '.', 0)
+            }, {
+                "targets": 'text-right',
+                "class": 'text-right'
             }],
             fnServerParams: function (data) {
                 data['columns'].forEach(function (items, index) {

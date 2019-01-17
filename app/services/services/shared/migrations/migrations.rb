@@ -889,7 +889,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
 
       next if inquiry.updated_at > inquiry_updated_date
-      debugger
 
       if inquiry.new_record? || update_if_exists
         inquiry.company = company
@@ -1832,8 +1831,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_products_description
-    service = Services::Shared::Spreadsheets::CsvImporter.new('SO_data_10000-28th Nov.csv', 'seed_files')
+    service = Services::Shared::Spreadsheets::CsvImporter.new('SO DATA_15000 Ready to Upload.csv', 'seed_files')
     service.loop(nil) do |x|
+      puts "-----------------#{x.get_column('SKU')}"
       product = Product.find_by_sku(x.get_column('SKU'))
       is_duplicate = x.get_column('IS Duplicate')
       if product.present?
@@ -1842,7 +1842,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           product.save
         else
           product.name = x.get_column('New Discription')
-          product.save_and_sync
+          product.save
         end
       end
     end
@@ -1998,6 +1998,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def create_image_readers
+    service = Services::Shared::Spreadsheets::CsvImporter.new('image_readers.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        image_reader = ImageReader.where(reference_id: x.get_column('reference_id')).first_or_initialize
+        if image_reader.new_record? || update_if_exists
+          image_reader.meter_number = x.get_column('meter_number')
+          image_reader.meter_reading = x.get_column('meter_reading')
+          image_reader.image_url = x.get_column('image_url')
+          image_reader.status = x.get_column('status')
+          image_reader.save!
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('reference_id')}")
+      end
+    end
+    puts errors
+  end
+
   def update_images_for_reliance_products
   service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
   service.loop(nil) do |x|
@@ -2043,4 +2063,245 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def missing_inquiries
+    file = "#{Rails.root}/tmp/missing_increment_ids.csv"
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('legacy_inquiry_numbers.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: ['missing_increment_ids']) do |writer|
+      service.loop(nil) do |x|
+        inquiry = Inquiry.find_by_inquiry_number(x.get_column('increment_id'))
+        if inquiry.blank?
+          writer << [x.get_column('increment_id')]
+        end
+      end
+    end
+  end
+
+  def missing_bible_sales_orders
+    file = "#{Rails.root}/tmp/missing_orders.csv"
+    column_headers = ['inquiry_number', 'order_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
+        if sales_order.blank?
+          writer << [x.get_column('Inquiry Number'), x.get_column('SO #')]
+        end
+      end
+    end
+  end
+
+  def bible_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/bible_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f)||(sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
+          writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, x.get_column('SUM of Selling Price (as per SO / AR Invoice)'), x.get_column('SUM of Gross Total Selling')]
+        end
+      end
+    end
+  end
+
+  def missing_sap_orders
+    file = "#{Rails.root}/tmp/sap_missing_orders.csv"
+    column_headers = ['inquiry_number', 'order_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
+        if sales_order.blank?
+          writer << [x.get_column('Project'), x.get_column('#')]
+        end
+      end
+    end
+  end
+
+  def sap_sales_orders_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
+    column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
+        sap_total_without_tax = 0
+        sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
+
+        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax)||(sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
+          writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, sap_total_without_tax, x.get_column('Document Total')]
+        end
+      end
+    end
+  end
+
+  def missing_sap_invoices
+    file = "#{Rails.root}/tmp/sap_missing_invoices.csv"
+    column_headers = ['invoice_number']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
+        if sales_invoice.blank?
+          writer << [x.get_column('#')]
+        end
+      end
+    end
+  end
+
+  def sap_sales_invoices_totals_mismatch
+    file = "#{Rails.root}/tmp/sap_invoices_totals_mismatch.csv"
+    column_headers = ['invoice_number', 'sprint_total', 'sprint_tax', 'sprint_total_with_tax', 'sap_total', 'sap_tax', 'sap_total_with_tax']
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+
+        sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
+        sap_total_without_tax = 0
+        total_without_tax = 0
+
+        if sales_invoice.present? && !sales_invoice.is_legacy?
+          total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
+          sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
+          if ((total_without_tax != sap_total_without_tax)||(sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
+
+            writer << [
+                sales_invoice.invoice_number,
+                total_without_tax,
+                sales_invoice.metadata['base_tax_amount'].to_f,
+                sales_invoice.metadata['base_grand_total'].to_f,
+                sap_total_without_tax,
+                x.get_column('Tax Amount (SC)').to_f,
+                x.get_column('Document Total')
+            ]
+          end
+        end
+      end
+    end
+  end
+
+  def update_total_cost_in_sales_order
+    SalesOrder.all.each do |so|
+      so.order_total = so.calculated_total
+      so.invoice_total = so.invoices.map{|i| i.metadata.present? ? ( i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f ) : 0.0 }.inject(0){|sum,x| sum + x }
+      so.save
+    end
+  end
+
+  def update_row(product_sku, row, x)
+    if product_sku.include? row.product.sku
+      row.quantity = x.get_column('quantity').to_i
+      row.margin_percentage = x.get_column('margin percentage')
+      row.unit_selling_price = x.get_column('unit selling price').to_f
+      row.converted_unit_selling_price = x.get_column('unit selling price').to_f
+      row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+      row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+      row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+      row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+      # row.tax_percentage
+      row.save!
+      puts "**************** QUOTE ROW SAVED ********************"
+    end
+  end
+
+  def create_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
+    i = 0
+    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771,19173, 28301, 28352, 28232, 27688, 28369, 28288, 28631, 28702, 28017, 28722, 28532, 28746, 28747,28717,28788,28795,28803,28871]
+    totals = {}
+    inquiry_not_found = []
+    sales_order_exists = []
+    service.loop(15300) do |x|
+      # i = i + 1
+      # next if i < 15358
+      next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7'])
+      next if skips.include?(x.get_column('inquiry number').to_i)
+      puts "*********************** INQUIRY ", x.get_column('inquiry number')
+      inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
+      if inquiry.present? && !inquiry.sales_orders.include?(x.get_column('order number'))
+        if !inquiry.shipping_contact.present?
+          inquiry.update(shipping_contact: inquiry.billing_contact)
+        end
+        sales_quote = inquiry.sales_quotes.last
+        if sales_quote.blank?
+          sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
+        end
+
+        product_sku = x.get_column('product sku')
+        puts "SKU", product_sku
+        product = Product.find_by_sku(product_sku)
+
+        inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
+        if inquiry_products.blank?
+          sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
+          inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
+        else
+          inquiry_product = inquiry_products.first
+          inquiry_product.update_attribute('quantity', inquiry_product.quantity + x.get_column('quantity').to_f)
+        end
+
+        supplier = Company.acts_as_supplier.find_by_name(x.get_column('supplier')) || Company.acts_as_supplier.find_by_name('Local')
+
+        inquiry_product_supplier = InquiryProductSupplier.where(:supplier_id => supplier.id, :inquiry_product => inquiry_product).first_or_create!
+        inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
+        row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+          if product_sku == row.product.sku
+            row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
+            row.quantity = x.get_column('quantity')
+            row.margin_percentage = x.get_column('margin percentage')
+            row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
+            row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+            row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+            row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+            row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+            row.created_at = x.get_column('created at',to_datetime: true)
+
+            # if row.unit_selling_price.round != row.calculated_unit_selling_price.round
+            #   row.margin_percentage = (1 - (row.unit_cost_price / row.unit_selling_price)) * 100
+            # end
+            row.save!
+
+            puts "**************** QUOTE ROW SAVED ********************"
+          end
+
+        sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
+        sales_order.overseer = inquiry.inside_sales_owner
+        sales_order.order_number = x.get_column('order number')
+        sales_order.created_at = x.get_column('created at',to_datetime: true)
+        sales_order.mis_date = x.get_column('created at',to_datetime: true)
+
+        sales_order.status = x.get_column('status') || "Approved"
+        sales_order.remote_status = x.get_column('SAP status') || "Processing"
+        sales_order.sent_at = sales_quote.created_at
+        sales_order.save!
+        row_object = { :sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f }
+        totals[sales_order.order_number] ||= []
+        totals[sales_order.order_number].push(row_object)
+        puts "************************** ORDER SAVED *******************************"
+        so_row = sales_order.rows.where(:sales_quote_row => row).first_or_create!
+
+
+        puts "****************** ORDER TOTAL ****************************", sales_order.order_number, sales_order.calculated_total_with_tax
+      else
+        if !inquiry.present?
+          inquiry_not_found.push(x.get_column('inquiry number'))
+        end
+        if inquiry.present? && inquiry.sales_orders.include?(x.get_column('order number'))
+          sales_order_exists.push(x.get_column('order_number'))
+        end
+      end
+    end
+    puts totals
+    puts "<------------------------------------------------------------------------------------------->"
+    puts inquiry_not_found
+    puts "<-------------------------------------------------------------------------------------------->"
+    puts sales_order_exists
+  end
 end

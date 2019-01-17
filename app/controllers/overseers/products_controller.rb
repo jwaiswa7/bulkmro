@@ -1,5 +1,5 @@
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -15,7 +15,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
 
     @indexed_products = service.indexed_records
-    @products = service.records
+    @products = service.records.active
     authorize @products
   end
 
@@ -109,6 +109,13 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.save_and_sync
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     end
+  end
+
+  def resync_inventory
+    authorize @product
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
   end
 
   def export_all

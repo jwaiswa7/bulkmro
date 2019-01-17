@@ -49,9 +49,6 @@ class Services::Overseers::Finders::PurchaseOrders < Services::Overseers::Finder
     indexed_records
   end
 
-  def sort_definition
-    {:po_number => :desc}
-  end
 
   def model_klass
     PurchaseOrder

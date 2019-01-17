@@ -12,6 +12,9 @@ json.data (@products) do |product|
                       end,
                       if policy(product).sku_purchase_history?
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
+                      end,
+                      if policy(product).resync_inventory?
+                          row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
                   product.name,
@@ -21,8 +24,8 @@ json.data (@products) do |product|
                   product.mpn,
                   format_boolean(product.is_active?),
                   format_boolean_label(product.synced?, 'synced'),
-                  format_date(product.created_at),
-                  format_date(product.approval.try(:created_at))
+                  format_succinct_date(product.created_at),
+                  format_succinct_date(product.approval.try(:created_at))
               ]
 end
 json.columnFilters [

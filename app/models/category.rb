@@ -18,7 +18,7 @@ class Category < ApplicationRecord
     self.is_service ||= false
   end
 
-  def default_ancestors
+  def self.default_ancestors
     ["Root Catalog", "Default Category"]
   end
 
@@ -27,7 +27,7 @@ class Category < ApplicationRecord
   end
 
   def ancestors_to_s
-    self.ancestry_path - default_ancestors
+    self.ancestry_path - Category.default_ancestors
   end
 
   def autocomplete_to_s(level)

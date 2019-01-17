@@ -1,0 +1,26 @@
+<div class="col-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Aggregate Reports</h1>
+    </div>
+    <p class="lead mt-1">
+      Reports generated using aggregated sales data and sales history.
+    </p>
+  </section>
+
+  <section class="pb-4 pb-lg-5 my-1">
+    <ul class="nav nav-tabs nav-fill" data-toggle="sticky">
+      <%= nav_item('Monthly Purchase Data', monthly_purchase_data_customers_reports_path, policy(:report).show_aggregate_reports?) %>
+      <%= nav_item('Revenue Trend', revenue_trend_customers_reports_path, policy(:report).show_aggregate_reports?) %>
+      <%= nav_item('Order Count', order_count_customers_reports_path, policy(:report).show_aggregate_reports?) %>
+      <%= nav_item('Unique SKUs', unique_skus_customers_reports_path, policy(:report).show_aggregate_reports?) %>
+      <%#= nav_item('Categorywise Revenue', categorywise_revenue_customers_reports_path, policy(:report).show_aggregate_reports?) %>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade active show" role="tabpanel">
+        <%= yield %>
+      </div>
+    </div>
+  </section>
+</div>
