@@ -51,6 +51,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     else
       redirect_to overseers_invoice_requests_path
     end
+    if params[:mrf_id]
+      @invoice_request.material_readiness_followup = MaterialReadinessFollowup.find(params[:mrf_id])
+    end
   end
 
   def create
@@ -108,6 +111,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :shipment_number,
         :ar_invoice_number,
         :purchase_order_id,
+        :material_readiness_followup_id,
         :status,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
