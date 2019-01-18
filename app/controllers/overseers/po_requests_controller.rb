@@ -68,6 +68,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
+      # todo allow only in case of zero form errors
       @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
       ActiveRecord::Base.transaction do if @po_request.status_changed?
           @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
@@ -93,6 +94,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :purchase_order_id,
         :logistics_owner_id,
         :status,
+        :cancellation_reason,
+        :rejection_reason,
         :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []

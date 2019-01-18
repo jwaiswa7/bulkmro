@@ -19,7 +19,6 @@ class PoRequest < ApplicationRecord
   has_one :payment_request, required: false
   has_one :payment_option, :through => :purchase_order
   has_many_attached :attachments
-  has_many :po_request_comment
 
   attr_accessor :opportunity_type, :customer_committed_date
 
@@ -60,7 +59,9 @@ class PoRequest < ApplicationRecord
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
-  validates_presence_of :po_request_comment, if: -> { self.status.in? ['Cancelled', 'Rejected'] || self.rejection_reason == 'Others'}
+  validate :update_reason_for_status_change?
+
+  after_initialize :set_defaults, :if => :new_record?
 
   def purchase_order_created?
     if self.status == "PO Created" && self.purchase_order.blank?
@@ -68,12 +69,9 @@ class PoRequest < ApplicationRecord
     end
   end
 
-  after_initialize :set_defaults, :if => :new_record?
-  before_create :update_cancellation_reason
-
-  def update_cancellation_reason
-    if self.status == "Cancelled"
-      self.assign_attributes(cancellation_reason: self.po_request_comment.last_comment.message)
+  def update_reason_for_status_change?
+    if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
+      errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
     end
   end
 
