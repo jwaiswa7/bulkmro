@@ -57,14 +57,9 @@ let loader = {
     salesQuotes: salesQuotes,
     customerProducts: customerProducts,
     kits: kits,
-<<<<<<< HEAD
     freightRequests: freightRequests,
     freightQuotes: freightQuotes,
-=======
-    freightRequests:freightRequests,
-    freightQuotes:freightQuotes,
->>>>>>> 008e0cf2eae03005355e31cb95a4fe35ade071b2
-    materialReadinessFollowups:materialReadinessFollowups,
+    materialReadinessFollowups: materialReadinessFollowups,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
