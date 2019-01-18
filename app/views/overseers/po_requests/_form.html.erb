@@ -152,6 +152,16 @@
                 <label>TP</label>
               </div>
             </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TT</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TP with tax</label>
+              </div>
+            </div>
           </div>
           <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
             <div class="form-row flex-row align-items-start">
@@ -182,10 +192,16 @@
                 <%= row.object.sales_order_row.measurement_unit %>
               </div>
               <div class="col-12 col-md-1">
-                <%= row.object.sales_order_row.converted_unit_selling_price %>
+                <%= row.object.converted_unit_selling_price %>
               </div>
               <div class="col-12 col-md-1">
                 <%= row.object.converted_total_selling_price %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_total_tax %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_total_selling_price_with_tax %>
               </div>
             </div>
           <% end %>

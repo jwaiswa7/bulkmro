@@ -3,6 +3,7 @@ class PoRequest < ApplicationRecord
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
+  include Mixins::HasConvertedCalculations
 
   pg_search_scope :locate, :against => [:id], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
 
@@ -80,18 +81,15 @@ class PoRequest < ApplicationRecord
   end
 
   def selling_price
-    10
+   rows.sum(&:converted_total_selling_price).compact.round(2)
   end
 
   def buying_price
-    10
+    rows.sum(&:converted_total_buying_price).compact.round(2)
   end
 
   def po_margin_percentage
-    10
+    (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
 
-  def overall_margin_percentage
-    10
-  end
 end
