@@ -21,10 +21,10 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::CompaniesExporter.new
-    service.call
-
-    redirect_to url_for(Export.companies.last.report)
+    service = Services::Overseers::Exporters::CompaniesExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   private
