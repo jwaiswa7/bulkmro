@@ -107,9 +107,9 @@
 
             <% end %>
 
-
-            <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
-
+            <% if policy(f.object).add_products? %>
+              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
+            <% end %>
           </div>
         <% end %>
 
