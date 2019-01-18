@@ -23,7 +23,7 @@ class MaterialReadinessFollowup < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
-  validates_length_of :rows, minimum: 1, maximum: :po_row_size, message: "must have at least one product", :on => :update
+  validates_length_of :rows, minimum: 1, message: "must have at least one product", :on => :update
   validates :attachments, presence: true, if: :material_delivered?
   validates :document_type, presence: true, if: :attachments?
   validate :date_validation

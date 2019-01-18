@@ -25,7 +25,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     @mrf = @purchase_order.material_readiness_followups.new(mrf_params.merge(overseer: current_overseer))
 
     authorize @mrf
-    if @mrf.save!
+    if @mrf.save
       redirect_to edit_overseers_purchase_order_material_readiness_followup_path(@purchase_order, @mrf), notice: flash_message(@mrf, action_name)
     else
       'new'
