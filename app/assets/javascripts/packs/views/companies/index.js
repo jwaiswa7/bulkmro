@@ -3,7 +3,7 @@ const index = () => {
     onLoadPage();
 
     $('.datatable').on('click','.rating',function () {
-        var id = $(this).data('id')
+        var id = $(this).data('company-id')
         $.ajax({
             data: {},
             url: "/overseers/companies/"+id+"/render_rating_form",
@@ -17,7 +17,6 @@ const index = () => {
                 for (let i = 0; i < reviewQuestionsLength; i++) {
                     let starRating = ".star-"+i
                     $(starRating).raty({scoreName: "review-score-"+i ,score: function () {
-                            console.log($(this))
                             return $(this).data('rating');
                         },
                         click:function (score) {

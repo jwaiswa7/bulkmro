@@ -12,12 +12,12 @@ class Overseers::CompaniesController < Overseers::BaseController
   def render_rating_form
     authorize @company
     type = ""
-    review_questions = ReviewQuestion.sales
+    review_questions = ReviewQuestion.logistics
 
-    if ["inside_sales_executive", "outside_sales_manager", "outside_sales_executive"].include?(current_overseer.role)
+    if current_overseer.inside? || current_overseer.outside? || current_overseer.manager?
       type = "Sales"
       review_questions =ReviewQuestion.sales
-    elsif current_overseer.role == "logistics"
+    elsif current_overseer.logistics?
       type = "Logistics"
       review_questions = ReviewQuestion.logistics
     end
