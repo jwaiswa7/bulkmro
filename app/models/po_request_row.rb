@@ -1,14 +1,16 @@
 class PoRequestRow < ApplicationRecord
   belongs_to :po_request
-  belongs_to :sales_order_row
+  belongs_to :sales_order_row, required: false
   has_one :sales_quote_row, :through => :sales_order_row
   has_one :inquiry_product_supplier, :through => :sales_quote_row
   has_one :inquiry_product, :through => :inquiry_product_supplier
   # has_one :product, :through => :inquiry_product
 
-  belongs_to :product
-  belongs_to :tax_code
-  belongs_to :tax_rate
+  # has_one :product, :through => :sales_order_row
+
+  belongs_to :product, required: false
+  belongs_to :tax_code, required: false
+  belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
 
   accepts_nested_attributes_for :product
