@@ -1,6 +1,7 @@
 class CompanyReview < ApplicationRecord
+  include Mixins::CanBeStamped
+
   belongs_to :company
-  belongs_to :overseer
   has_many :company_ratings, dependent: :destroy
   accepts_nested_attributes_for :company_ratings, allow_destroy: true
 
@@ -11,5 +12,5 @@ class CompanyReview < ApplicationRecord
 
   scope :sales, ->{ where(survey_type: :'Sales')}
   scope :logistics, ->{ where(survey_type: :'Logistics')}
-  scope :reviewed, ->(overseer, type){where(survey_type: type, overseer: overseer).where.not(rating: nil)}
+  scope :reviewed, ->(overseer, type){where(survey_type: type, created_by: overseer).where.not(rating: nil)}
 end

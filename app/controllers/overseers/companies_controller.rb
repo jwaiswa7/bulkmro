@@ -21,10 +21,10 @@ class Overseers::CompaniesController < Overseers::BaseController
       type = "Logistics"
       review_questions = ReviewQuestion.logistics
     end
-    company_review = CompanyReview.where(overseer: current_overseer, survey_type: type, company: @company).first_or_create!
+    company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
 
     review_questions.each do |question|
-      CompanyRating.where({company_review_id: company_review.id, review_question_id: question.id}).first_or_create!
+      CompanyRating.where({company_review_id: company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
     end
     respond_to do |format|
       format.html {render :partial => "rating_modal",  locals: {company_review: company_review,:supplier => @company}}
@@ -46,16 +46,6 @@ class Overseers::CompaniesController < Overseers::BaseController
       @company.update!({rating: overall_rating})
     end
     redirect_to overseers_companies_path
-  end
-
-
-  def company_rating
-    service = Services::Overseers::Finders::Companies.new(params)
-    service.call
-
-    @indexed_companies = service.indexed_records
-    @companies = service.records
-    authorize @companies
   end
 
   def autocomplete

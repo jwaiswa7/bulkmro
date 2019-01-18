@@ -12,7 +12,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     end
 
     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
-    @company_review.update!(rating: average_company_rating)
+    @company_review.update_attributes!(rating: average_company_rating, overseer: current_overseer)
 
     overall_rating = CompanyReview.where(company_id: @company_review.company_id).average(:rating)
     company = Company.find(@company_review.company_id)

@@ -1,4 +1,6 @@
 class CompanyRating < ApplicationRecord
+  include Mixins::CanBeStamped
+
   belongs_to :company_review
   belongs_to :review_question
 

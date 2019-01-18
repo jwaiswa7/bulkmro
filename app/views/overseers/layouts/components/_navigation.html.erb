@@ -50,8 +50,7 @@
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Company Reviews</a>
             <ul class="dropdown-menu">
-              <%= nav_dropdown_item 'List', company_rating_overseers_companies_path, policy(:company).index? %>
-              <%= nav_dropdown_item 'Review Questions', overseers_review_questions_path, policy(:company).index? %>
+              <%= nav_dropdown_item 'Review Questions', overseers_review_questions_path, policy(:review_question).index? %>
             </ul>
           </div>
         </div>
