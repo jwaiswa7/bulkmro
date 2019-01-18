@@ -9,13 +9,14 @@ class PoRequestRow < ApplicationRecord
   # has_one :product, :through => :sales_order_row
 
   belongs_to :product, required: false
+  belongs_to :brand, required: false
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
 
   accepts_nested_attributes_for :product
 
-  delegate :measurement_unit, :converted_unit_selling_price, to: :sales_order_row, allow_nil: true
+  delegate :measurement_unit, to: :sales_order_row, allow_nil: true
 
   attr_accessor :sr, :product_name, :brand, :lead_time_option
 
@@ -26,7 +27,7 @@ class PoRequestRow < ApplicationRecord
 
   def total_selling_price
     if self.sales_quote_row.present?
-      unit_selling_price = self.sales_quote_row.unit_selling_price
+      unit_selling_price = self.unit_selling_price
       if unit_selling_price.present?
         if self.quantity.present?
           unit_selling_price * self.quantity
@@ -37,12 +38,40 @@ class PoRequestRow < ApplicationRecord
     end
   end
 
-  def total_selling_price_with_tax
-    self.sales_quote_row.unit_selling_price_with_tax * self.quantity if self.sales_quote_row.present? && self.sales_quote_row.unit_selling_price.present?
+  def unit_selling_price
+    self.sales_quote_row.unit_cost_price if self.sales_quote_row.present?
+  end
+
+  def converted_unit_selling_price
+    self.sales_quote_row.present? ? (self.unit_selling_price / self.sales_quote_row.conversion_rate) : 0.0
+  end
+
+  def unit_selling_price_with_tax
+    self.unit_selling_price + (self.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage || 0))
   end
 
   def converted_total_selling_price
     self.sales_quote_row.present? ? (self.total_selling_price / self.sales_quote_row.conversion_rate) : 0.0
+  end
+
+  def total_selling_price_with_tax
+    self.unit_selling_price_with_tax * self.quantity
+  end
+
+  def converted_total_selling_price_with_tax
+    sales_quote_row.present? ? (self.total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
+  end
+
+  def total_tax
+    total_selling_price_with_tax - total_selling_price
+  end
+
+  def converted_total_tax
+    converted_total_selling_price_with_tax - converted_total_selling_price
+  end
+
+  def total_buying_price
+    self.sales_order_row.unit_selling_price * self.quantity if self.sales_order_row.present?
   end
 
   def field_disabled?
