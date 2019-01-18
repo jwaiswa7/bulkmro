@@ -9855,8 +9855,6 @@ th {
     background-color: #fff; }
   .table.wrap-whitespace td, .table.wrap-whitespace th {
     white-space: normal; }
-    .table.wrap-whitespace td:first-child, .table.wrap-whitespace th:first-child {
-      white-space: nowrap; }
 
 .table.align-items-center td {
   vertical-align: middle;
@@ -10725,3 +10723,10 @@ a.text-color-orange:hover, a.text-color-orange:focus {
 
 a.text-color-grey:hover, a.text-color-grey:focus {
   color: #9e9e9e !important; }
+
+.notifications {
+  min-width: 22.5rem;
+  max-width: 22.5rem; }
+  .notifications .dropdown-item {
+    word-wrap: normal;
+    white-space: normal; }
