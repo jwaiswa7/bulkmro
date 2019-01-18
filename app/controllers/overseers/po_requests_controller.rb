@@ -28,18 +28,26 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
 
-      @supplier = @sales_order.inquiry.suppliers.first
-      @can_review = !@sales_order.inquiry.suppliers.first.company_reviews.present? || !@sales_order.inquiry.suppliers.first.company_reviews.reviewed(current_overseer,:'Sales').present?
-
-      if @can_review
-        @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Sales', company: @sales_order.inquiry.suppliers.first).first_or_create!
-
-        ReviewQuestion.sales.each do |question|
-          CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
+      suppliers_not_reviewed = {}
+      @sales_order.inquiry.suppliers.uniq.each do |supplier|
+        if !supplier.company_reviews.reviewed(current_overseer,:'Sales').present?
+          suppliers_not_reviewed[supplier.id] = false
         end
-        # @questions = @company_review.company_ratings.map(&:review_question).pluck(:question)
-      else
-        @company_review = CompanyReview.new
+      end
+
+      if !suppliers_not_reviewed.empty?
+        @supplier = Company.where(id: suppliers_not_reviewed.keys.first).first
+        @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,:'Sales').present?
+
+        if @can_review
+          @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Sales', company: @supplier).first_or_create!
+
+          ReviewQuestion.sales.each do |question|
+            CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
+          end
+        else
+          @company_review = CompanyReview.new
+        end
       end
 
       authorize @po_request
