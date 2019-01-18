@@ -11,7 +11,7 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   end
 
   def new
-    @review_question = ReviewQuestion.new
+    @review_question = ReviewQuestion.new(overseer: current_overseer)
     authorize @review_question
 
   end

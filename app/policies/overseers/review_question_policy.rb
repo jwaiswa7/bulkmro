@@ -3,7 +3,7 @@ class Overseers::ReviewQuestionPolicy < Overseers::ApplicationPolicy
     admin? || developer?
   end
 
-  def delete?
+  def update?
     index?
   end
 
