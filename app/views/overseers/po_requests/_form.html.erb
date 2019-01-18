@@ -44,6 +44,10 @@
         <% end %>
       </div>
 
+      <div class="col-6">
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: f.object.purchase_order.blank? && policy(@po_request).can_reject?, :include_blank => true %>
+      </div>
+
       <div class="col-md-6">
         <%= f.association :logistics_owner, as: :select, :include_blank => false %>
       </div>
@@ -66,10 +70,10 @@
       </div>
 
       <div class="col-12">
-        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
-          <%= purchase_order_comment.hidden_field :created_by_id %>
-          <%= purchase_order_comment.hidden_field :updated_by_id %>
-          <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
+          <%= po_request_comment.hidden_field :created_by_id %>
+          <%= po_request_comment.hidden_field :updated_by_id %>
+          <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
         <% end %>
       </div>
 

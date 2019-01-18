@@ -19,6 +19,7 @@ class PoRequest < ApplicationRecord
   has_one :payment_request, required: false
   has_one :payment_option, :through => :purchase_order
   has_many_attached :attachments
+  has_many :po_request_comment
 
   attr_accessor :opportunity_type, :customer_committed_date
 
@@ -41,6 +42,17 @@ class PoRequest < ApplicationRecord
   #     :tender => 80
   # }
 
+  enum rejection_reason: {
+    :'Not Found: Supplier in SAP' => 10,
+    :'Not Found: Supplier GST Number' => 20,
+    :'Not Found: Supplier Address' => 30,
+    :'Mismatch: HSN / SAC Code' => 40,
+    :'Mismatch: Tax Rates' => 50,
+    :'Mismatch: Supplier Billing or Shipping Address' => 60,
+    :'Mismatch: Supplier GST Number' => 70,
+    :'Others' => 80
+  }
+
   scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
   scope :handled, -> {where.not(:status => [:'Requested'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
@@ -48,6 +60,7 @@ class PoRequest < ApplicationRecord
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
+  validates_presence_of :po_request_comment, if: -> { self.status.in? ['Cancelled', 'Rejected'] || self.rejection_reason == 'Others'}
 
   def purchase_order_created?
     if self.status == "PO Created" && self.purchase_order.blank?
@@ -56,6 +69,13 @@ class PoRequest < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+  before_create :update_cancellation_reason
+
+  def update_cancellation_reason
+    if self.status == "Cancelled"
+      self.assign_attributes(cancellation_reason: self.po_request_comment.last_comment.message)
+    end
+  end
 
   def set_defaults
     self.status ||= :'Requested'
