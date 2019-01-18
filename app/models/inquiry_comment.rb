@@ -10,6 +10,12 @@ class InquiryComment < ApplicationRecord
   scope :internal_comments, -> {where(:show_to_customer => [false, nil])}
   scope :customer_comments, -> {where(:show_to_customer => true)}
 
+  after_create :update_inquiry, :if => :persisted?
+
+  def update_inquiry
+    self.inquiry.touch(:updated_at)
+  end
+
   def author
     self.contact || self.created_by
   end
