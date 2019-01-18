@@ -8,7 +8,7 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
 
   def show
     authorize @sales_shipment
-    @metadata = @sales_shipment.metadata.deep_symbolize_keys
+    @metadata = @sales_shipment.metadata.deep_symbolize_keys if @sales_shipment.metadata.present?
 
     respond_to do |format|
       format.html {}
