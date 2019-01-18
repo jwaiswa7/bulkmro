@@ -9,7 +9,6 @@ class PoRequestRow < ApplicationRecord
   # has_one :product, :through => :sales_order_row
 
   belongs_to :product, required: false
-  belongs_to :brand, required: false
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
@@ -71,7 +70,11 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_buying_price
-    self.sales_order_row.unit_selling_price * self.quantity if self.sales_order_row.present?
+    self.sales_order_row.present? && self.sales_order_row.unit_selling_price.present? ? self.sales_order_row.unit_selling_price * self.quantity : 0.0
+  end
+
+  def converted_total_buying_price
+    sales_quote_row.present? ? (self.total_buying_price / sales_quote_row.conversion_rate) : 0.0
   end
 
   def field_disabled?

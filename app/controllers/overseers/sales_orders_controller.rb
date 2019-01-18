@@ -170,6 +170,11 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :status,
                   :quantity,
                   :sales_order_row_id,
+                  :product_id,
+                  :brand_id,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id
               ]
           ]
       )
