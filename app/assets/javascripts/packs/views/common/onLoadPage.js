@@ -8,9 +8,9 @@ const onLoadPage = () => {
 
         // $("div.star").raty({'readOnly': true , 'score': 4 , 'precision': true, 'hints': ['bad','poor','average','good','best']})
 
-        $.each(json.companyRating, function (index, company) {
-            console.log(company)
-            $("div.star").raty({'readOnly': true , 'score': company , 'precision': true, 'hints': ['bad','poor','average','good','best']})
+        $.each(json.companyRating, function (index, ratings) {
+            let star_id = "[data-id="+ ratings['id'] + "]";
+            $(star_id).raty({'readOnly': true , 'score': ratings['rating'] , 'precision': true, 'hints': ['bad','poor','average','good','best']})
         });
     } );
 }
