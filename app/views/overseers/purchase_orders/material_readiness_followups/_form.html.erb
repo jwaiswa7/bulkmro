@@ -43,7 +43,7 @@
             </div>
 
             <div class="col-6">
-              <%= f.input :type_of_doc, collection: enum_to_collection(MaterialReadinessFollowup.type_of_docs), required: true, label: "Type of Document", input_html: {class: "select2-single"} %>
+              <%= f.input :document_type, collection: enum_to_collection(MaterialReadinessFollowup.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"}, include_blank: 'Choose a type of Document' %>
             </div>
 
             <div class="col-6">
@@ -106,11 +106,10 @@
 
 
             <% end %>
-            <% if f.object.status != 'Material Delivered' && f.object.rows.size < f.object.purchase_order.rows.size %>
 
 
-              <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
-            <% end %>
+            <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
+
           </div>
         <% end %>
 

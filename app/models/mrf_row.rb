@@ -1,6 +1,6 @@
 class MrfRow < ApplicationRecord
   belongs_to :material_readiness_followup
-  belongs_to :purchase_order_row #, ->(record){where(purchase_order_id: record.material_readiness_followup.purchase_order.id)}
+  belongs_to :purchase_order_row
 
   validates_uniqueness_of :purchase_order_row, scope: :material_readiness_followup
 
@@ -18,9 +18,11 @@ class MrfRow < ApplicationRecord
   end
 
   def check_pickup_quantity?
-    if self.pickup_quantity > self.purchase_order_row.quantity
-      errors.add(:pickup_quantity, " need to be less than or equal to #{purchase_order_row.quantity}")
-    end
+
+    previous_pickup_quantity = pickup_quantity_was || 0
+    max_quantity = purchase_order_row.get_pickup_quantity + previous_pickup_quantity
+
+    errors.add(:pickup_quantity, " need to be less than or equal to #{max_quantity}") if pickup_quantity > max_quantity
   end
 
   attr_accessor :quantity

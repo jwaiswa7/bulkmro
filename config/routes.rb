@@ -218,7 +218,11 @@ Rails.application.routes.draw do
 
       scope module: 'purchase_orders' do
         resources :material_readiness_followups do
+          collection do
+            get 'index'
+          end
           member do
+            get 'index'
             get 'confirm_delivery'
             get 'delivered_material'
           end

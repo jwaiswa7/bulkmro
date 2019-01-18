@@ -2,8 +2,9 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
   before_action :set_material_readiness_followup, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
 
   def index
-    authorize :material_readiness_followups
+
     redirect_to material_readiness_queue_overseers_purchase_orders_path()
+    authorize :material_readiness_followup
   end
 
   def show
@@ -15,6 +16,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     @logistics_owner = Services::Overseers::MaterialReadinessFollowups::SelectLogisticsOwner.new(@purchase_order).call
     @mrf = MaterialReadinessFollowup.new(purchase_order: @purchase_order,
                                          logistics_owner: @logistics_owner)
+
     authorize @mrf
   end
 
@@ -23,7 +25,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     @mrf = @purchase_order.material_readiness_followups.new(mrf_params.merge(overseer: current_overseer))
 
     authorize @mrf
-    if @mrf.save
+    if @mrf.save!
       redirect_to edit_overseers_purchase_order_material_readiness_followup_path(@purchase_order, @mrf), notice: flash_message(@mrf, action_name)
     else
       'new'
@@ -60,7 +62,6 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
     @mrf.rows.each do |row|
       row.delivered_quantity = row.pickup_quantity
     end
-
     render 'edit'
   end
 
@@ -77,7 +78,7 @@ class Overseers::PurchaseOrders::MaterialReadinessFollowupsController < Overseer
             :expected_dispatch_date,
             :expected_delivery_date,
             :actual_delivery_date,
-            :type_of_doc,
+            :document_type,
             :logistics_owner_id,
             :purchase_order_id,
             :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],

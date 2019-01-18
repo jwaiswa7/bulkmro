@@ -8,8 +8,7 @@ class CreateMrfRow < ActiveRecord::Migration[5.2]
       t.decimal :delivered_quantity
 
       t.timestamps
-
-      add_index :mrf_rows, [:material_readiness_followup_id, :purchase_order_row_id], unique: true, name: 'index_mrfr_on_mrf_and_por'
     end
+    add_index :mrf_rows, [:material_readiness_followup_id, :purchase_order_row_id], unique: true, name: 'index_mrfr_on_mrf_and_por'
   end
 end

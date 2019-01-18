@@ -3,6 +3,10 @@ class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
     admin? || logistics? || sales?
   end
 
+  def index
+
+  end
+
   def material_delivered_queue?
     admin? || logistics? || sales?
   end
@@ -12,10 +16,14 @@ class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
   end
 
   def edit?
-    admin? || logistics? || sales? &&   record.status != 'Material Delivered'
+    admin? || logistics? || sales? && record.status != 'Material Delivered'
   end
 
   def confirm_delivery?
+    record.status == 'Material Pickup'
+  end
+
+  def add_products?
     record.status == 'Material Pickup'
   end
 end
