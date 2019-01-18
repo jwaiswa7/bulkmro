@@ -12,7 +12,7 @@ json.data (@remote_requests) do |remote_request|
                   format_enum(remote_request.method),
                   remote_request.manage_remote_request_data(remote_request),
                   remote_request.resource,
-                  format_succinct_date(remote_request.created_at)
+                  format_date_with_time(remote_request.created_at)
               ]
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(remote_request.status)})
