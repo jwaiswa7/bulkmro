@@ -70,7 +70,11 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_buying_price
-    self.sales_order_row.present? && self.sales_order_row.unit_selling_price.present? ? self.sales_order_row.unit_selling_price * self.quantity : 0.0
+    if self.quantity
+      self.sales_order_row.present? && self.sales_order_row.unit_selling_price.present? ? self.sales_order_row.unit_selling_price * self.quantity : 0.0
+    else
+      0.0
+    end
   end
 
   def converted_total_buying_price

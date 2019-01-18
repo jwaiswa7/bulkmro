@@ -81,11 +81,11 @@ class PoRequest < ApplicationRecord
   end
 
   def selling_price
-   rows.sum(&:converted_total_selling_price).compact.round(2)
+   rows.sum(&:converted_total_selling_price).round(2)
   end
 
   def buying_price
-    rows.sum(&:converted_total_buying_price).compact.round(2)
+    rows.sum(&:converted_total_buying_price).round(2)
   end
 
   def po_margin_percentage
