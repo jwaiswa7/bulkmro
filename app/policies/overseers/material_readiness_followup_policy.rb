@@ -3,9 +3,6 @@ class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
     admin? || logistics? || sales?
   end
 
-  def index
-
-  end
 
   def material_delivered_queue?
     admin? || logistics? || sales?
@@ -26,4 +23,9 @@ class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
   def add_products?
     record.status == 'Material Pickup'
   end
+
+  def delivered?
+    record.status == 'Material Delivered'
+  end
+
 end

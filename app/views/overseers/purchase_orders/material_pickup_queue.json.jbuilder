@@ -11,6 +11,9 @@ json.data (@material_readiness_followups) do |material_readiness_followup|
                       if policy(material_readiness_followup).confirm_delivery?
                         row_action_button(confirm_delivery_overseers_purchase_order_material_readiness_followup_path(material_readiness_followup.purchase_order, material_readiness_followup), 'check', 'Confirm Delivery', 'success')
                       end,
+                      if policy(material_readiness_followup).delivered? && policy(material_readiness_followup.purchase_order).can_request_invoice?
+                        row_action_button(new_overseers_invoice_request_path(purchase_order_id: material_readiness_followup.purchase_order, mrf_id: material_readiness_followup), 'plus', 'Create Invoice Request', 'success', target: :_blank)
+                      end,
                   ].join(' '),
 
                   link_to(material_readiness_followup.purchase_order.po_number, overseers_inquiry_purchase_orders_path(material_readiness_followup.purchase_order.inquiry), target: "_blank"),
@@ -37,9 +40,9 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_companies_path}],
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
-                       [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
                        []
                    ]
 

@@ -22,8 +22,7 @@
     <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
     <th class="no-sort desktop" data-name="created_at">Created</th>
-    <th class="no-sort desktop" data-name="name">Updated At</th>
-    <th class="no-sort desktop">Latest Comment</th>
+
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -35,8 +34,7 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="daterange"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
+
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>
