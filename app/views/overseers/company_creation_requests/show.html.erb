@@ -6,6 +6,17 @@
       <h3 class="display-5 d-flex align-items-center">
         <%= @company_creation_request.name %>:&nbsp;<%= status_badge(@company_creation_request.status) %>
       </h3>
+
+      <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
+        <a href="<%= new_overseers_account_company_path(@company_creation_request.account, :ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+          New
+          Company</a>
+      <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
+        <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+          New
+          Account</a>
+      <% end %>
+
     </div>
   </section>
   <section class="mb-3">
@@ -58,6 +69,8 @@
     </div>
   </section>
 
+
+  <% if 0 > 0 %>
     <section class="mb-3">
       <div class="card">
         <div class="card-body">
@@ -75,12 +88,12 @@
                     Account</a>
                 <% end %>
               </div>
-              <div class="col-2"> OR </div>
+              <div class="col-2"> OR</div>
               <div class="col-6">
-                  <%= simple_form_for([:overseers, @company_creation_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+                <%= simple_form_for([:overseers, @company_creation_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                   <div class="col-3">
                     <div class="form-group">
-                      <%= f.association :company, as: :select, :include_blank => true, input_html:{class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path}%>
+                      <%= f.association :company, as: :select, :include_blank => true, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path} %>
                     </div>
                   </div>
                   <div class="col-3">
@@ -93,4 +106,5 @@
         </div>
       </div>
     </section>
+  <% end %>
 </div>
