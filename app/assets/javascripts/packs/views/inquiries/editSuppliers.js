@@ -1,3 +1,4 @@
+import productsSupplierRating from "../products/productSupplierRating"
 const editSuppliers = () => {
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {

@@ -26,6 +26,9 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
     redirect_to_path_genaration("Feedback captured successfully.")
   end
+  def show
+    authorize @company_review
+  end
 
   private
 
@@ -41,11 +44,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     end
   end
 
-  def show
-    authorize @company_review
-  end
 
-  private
   def set_company_review
     @company_review ||= CompanyReview.find(params[:id])
   end
