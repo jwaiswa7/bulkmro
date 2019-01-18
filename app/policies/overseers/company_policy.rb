@@ -35,7 +35,15 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     all_roles? && is_active?
   end
 
-  def company_rating?
+  def render_rating_form?
     index?
+  end
+
+  def update_rating?
+    index?
+  end
+
+  def new_rating?
+    record.is_supplier? && (manager? || sales? || logistics?)
   end
 end
