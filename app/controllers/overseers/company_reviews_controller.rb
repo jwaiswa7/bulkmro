@@ -1,5 +1,10 @@
 class Overseers::CompanyReviewsController < Overseers::BaseController
-  before_action :set_company_review, only: [:update_rating]
+  before_action :set_company_review, only: [:update_rating,:show]
+
+  def index
+    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(:rating => nil), params)
+    authorize @company_reviews
+  end
 
   def update_rating
     company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
@@ -23,6 +28,10 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     else
       redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id])
     end
+  end
+
+  def show
+    authorize @company_review
   end
 
   private
