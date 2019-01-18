@@ -335,7 +335,6 @@ Rails.application.routes.draw do
 
     resources :companies do
       collection do
-        get 'company_rating'
         get 'autocomplete'
         get 'export_all'
       end

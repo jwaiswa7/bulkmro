@@ -1,5 +1,10 @@
 class Overseers::CompanyReviewsController < Overseers::BaseController
-  before_action :set_company_review, only: [:update_rating]
+  before_action :set_company_review, only: [:update_rating,:show]
+
+  def index
+    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(:rating => nil), params)
+    authorize @company_reviews
+  end
 
   def update_rating
     authorize @company_review
@@ -12,12 +17,15 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     end
 
     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
-    @company_review.update!(rating: average_company_rating)
+    @company_review.update_attributes!(rating: average_company_rating, overseer: current_overseer)
 
     overall_rating = CompanyReview.where(rateable_id: @company_review.rateable_id).average(:rating)
     @company_review.rateable.update({rating: overall_rating})
 
     redirect_to_path_generation("Feedback captured successfully.")
+  end
+  def show
+    authorize @company_review
   end
 
   private
@@ -33,6 +41,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
       redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id]), :flash => { :error => message }
     end
   end
+
 
   def set_company_review
     @company_review ||= CompanyReview.find(params[:id])

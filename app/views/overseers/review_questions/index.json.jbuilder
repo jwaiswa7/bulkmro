@@ -1,14 +1,14 @@
 json.data (@review_questions) do |review_question|
   json.array! [
                   [
-                      if policy(review_question).show?;
+                      if policy(review_question).show?
                         row_action_button(overseers_review_question_path(review_question), 'eye', 'Edit Review Question', 'info')
 
                       end,
-                      if policy(review_question).edit?;
+                      if policy(review_question).edit?
                         row_action_button(edit_overseers_review_question_path(review_question), 'pencil', 'Edit Review Question', 'warning')
                       end,
-                      if policy(review_question).destroy?;
+                      if policy(review_question).destroy?
                         row_action_button(overseers_review_question_path(review_question), 'trash', 'Delete Review Question', 'danger', '', method = :delete)
                       end
                   ].join(' '),

@@ -20,9 +20,9 @@ json.data (@companies) do |company|
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
                       end,
                       if policy(company).new_rating?
-                        link_to('', class: ['btn btn-sm btn-success rating '], :'data-company-id' => company.id, :remote => true) do
+                        link_to('', class: ['btn btn-sm btn-warning rating '], :'data-company-id' => company.id, :remote => true) do
                           concat content_tag(:span, '')
-                          concat content_tag :i, nil, class: ['fal fa-pencil'].join
+                          concat content_tag :i, nil, class: ['fal fa-star'].join
                         end
                       end
                   ].join(' '),

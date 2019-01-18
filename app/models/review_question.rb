@@ -15,12 +15,14 @@ class ReviewQuestion < ApplicationRecord
     self.question
   end
 
+  def max_weightage
+    (100 - ReviewQuestion.where(:question_type => self.question_type).pluck(:weightage).sum).to_i
+  end
+
   private
   def weightage_requirement
-    same_type_question = ReviewQuestion.where(:question_type => self.question_type)
-    weightage_sum = same_type_question.pluck(:weightage).sum
-    if (weightage_sum + self.weightage) > 100
-      errors.add(:weightage, "of all #{self.question_type} review question must be less than 100")
+    if self.weightage > self.max_weightage
+      errors.add(:weightage, "of all #{self.question_type} review question must be less than 100, for current question it should be max #{self.max_weightage}")
     end
   end
 end

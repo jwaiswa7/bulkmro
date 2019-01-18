@@ -5,6 +5,7 @@ class CreateReviewQuestions < ActiveRecord::Migration[5.2]
       t.decimal :weightage
       t.integer :rating, default: 5
       t.integer :type
+
       t.timestamps
     end
   end
