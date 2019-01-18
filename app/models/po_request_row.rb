@@ -6,9 +6,9 @@ class PoRequestRow < ApplicationRecord
   has_one :inquiry_product, :through => :inquiry_product_supplier
   # has_one :product, :through => :inquiry_product
 
-  has_one :product, :through => :sales_order_row
+  # has_one :product, :through => :sales_order_row
 
-  # belongs_to :product, required: false
+  belongs_to :product, required: false
   belongs_to :tax_code, required: false
   belongs_to :tax_rate, required: false
   belongs_to :measurement_unit, required: false
