@@ -1,5 +1,10 @@
 class Overseers::CompanyReviewsController < Overseers::BaseController
-  before_action :set_company_review, only: [:update_rating]
+  before_action :set_company_review, only: [:update_rating,:show]
+
+  def index
+    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(:rating => nil), params)
+    authorize @company_reviews
+  end
 
   def update_rating
     authorize @company_review
@@ -21,6 +26,9 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
     redirect_to_path_genaration("Feedback captured successfully.")
   end
+  def show
+    authorize @company_review
+  end
 
   private
 
@@ -35,6 +43,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
       redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id]), :flash => { :error => message }
     end
   end
+
 
   def set_company_review
     @company_review ||= CompanyReview.find(params[:id])
