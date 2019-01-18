@@ -6,7 +6,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
     company_ratings_attributes.each do |index,company_rating_attribute|
       if !@company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).first.update({rating: company_rating_attribute['rating'].to_f})
-        redirect_to_path_genaration("Please enter Feedback to proceed.")
+        redirect_to_path_generation("Please enter Feedback to proceed.")
         return
       end
     end
@@ -14,17 +14,15 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
     @company_review.update!(rating: average_company_rating)
 
-    overall_rating = CompanyReview.where(company_id: @company_review.company_id).average(:rating)
-    company = Company.find(@company_review.company_id)
-    company.assign_attributes({rating: overall_rating})
-    company.save(validate: false)
+    overall_rating = CompanyReview.where(rateable_id: @company_review.rateable_id).average(:rating)
+    @company_review.rateable.update({rating: overall_rating})
 
-    redirect_to_path_genaration("Feedback captured successfully.")
+    redirect_to_path_generation("Feedback captured successfully.")
   end
 
   private
 
-  def redirect_to_path_genaration(message)
+  def redirect_to_path_generation(message)
     if params[:sales_order_id].present?
       if @company_review.Sales?
         redirect_to new_overseers_po_request_path(:sales_order_id=>params[:sales_order_id]), :flash => { :error => message }

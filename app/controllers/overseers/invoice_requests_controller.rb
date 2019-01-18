@@ -113,7 +113,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,:'Logistics').present?
 
       if @can_review
-        @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Logistics', company: @supplier).first_or_create!
+        @company_review = CompanyReview.where(overseer: current_overseer, survey_type: :'Logistics', rateable: @supplier).first_or_create!
 
         ReviewQuestion.logistics.each do |question|
           CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
