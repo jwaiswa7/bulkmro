@@ -56,4 +56,4 @@ json.columnFilters [
 json.recordsTotal @companies.model.all.count
 json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
-json.companyRating @indexed_companies.map(&:rating)
+json.companyRating @indexed_companies.map {|cmp| {:id => cmp.id ,:"rating" => cmp.rating}}.as_json

@@ -1,6 +1,5 @@
-import onLoadPage from '../common/onLoadPage'
+import productsSupplierRating from "./productSupplierRating"
 const show = () => {
-    onLoadPage()
-    console.log('Loepsh')
+    productsSupplierRating()
 }
 export default show

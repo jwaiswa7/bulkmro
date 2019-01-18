@@ -48,4 +48,4 @@ json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
 json.recordsSummary PurchaseOrder.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
 json.recordsTotalValue @total_values
-json.companyRating @indexed_purchase_orders.map(&:company_rating)
+json.companyRating @indexed_purchase_orders.map{|cmp| {:id => cmp.supplier_id ,:"rating" => cmp.company_rating}}.as_json

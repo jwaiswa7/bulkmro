@@ -3,9 +3,9 @@ const onLoadPage = () => {
     table.on( 'draw.dt', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
 
-        $.each(json.companyRating, function (index, company) {
-
-            $("div.star").raty({'readOnly': true , 'score': company , 'precision': true})
+        $.each(json.companyRating, function (index, ratings) {
+            let star_id = "[data-id="+ ratings['id'] + "]";
+            $(star_id).raty({'readOnly': true , 'score': ratings['rating'] , 'precision': true, 'hints': ['bad','poor','average','good','best']})
         });
     } );
 }
