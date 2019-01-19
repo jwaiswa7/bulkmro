@@ -45,7 +45,8 @@
               <h5 class="text-uppercase">
                 <%# raise %>
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
-                <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.try(:legacy_email)%></strong>
+                <strong><%= po_request.object.supplier.to_s %>
+                  : <%= po_request.object.supplier.try(:legacy_email) %></strong>
 
                 <div class="form-row mt-2">
                   <div class="col-12 col-md-6">
@@ -55,24 +56,20 @@
                     <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-4">
-                    <%= po_request.association :logistics_owner, as: :select, :include_blank => false, disabled: true%>
+                    <%= po_request.association :logistics_owner, as: :select, :include_blank => false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-2">
                     <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false), :include_blank => false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'} , disabled: true%>
+                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: true %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <div class="d-flex flex-row align-items-end">
-                      <div class="flex-grow-1">
-                        <%#= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
-                      </div>
-                      <div class="form-group">
-                        <% po_request.object.attachments.each do |attachment| %>
-                          <%=attachment.filename if attachment.blob_id.present?%>
-                        <% end if po_request.object.attachments.attached? %>
-                      </div>
+                    <div class="form-group select optional disabled sales_order_po_requests_logistics_owner form-group-valid">
+                      <label class="">Attachments</label>
+                      <% po_request.object.attachments.each do |attachment| %>
+                        <%= attachment.filename if attachment.blob_id.present? %>
+                      <% end if po_request.object.attachments.attached? %>
                     </div>
                   </div>
                 </div>
@@ -105,7 +102,7 @@
                     <%= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0 }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: po_request_row.object.field_disabled? %>
+                    <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: po_request_row.object.field_disabled? %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
@@ -114,17 +111,17 @@
                     <%= po_request_row.input :converted_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: po_request_row.object.field_disabled? %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price }, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
+                    <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax }, label: po_request.object.rows.first == po_request_row.object ? "TT" : false, disabled: true %>
+                    <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, label: po_request.object.rows.first == po_request_row.object ? "TT" : false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax }, label: po_request.object.rows.first == po_request_row.object ? "TP with tax" : false, disabled: true %>
+                    <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, label: po_request.object.rows.first == po_request_row.object ? "TP with tax" : false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-1">
                     <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
-                    <%= po_request_row.input :lead_time_option, input_html: {value: lead_time }, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
+                    <%= po_request_row.input :lead_time_option, input_html: {value: lead_time}, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%= po_request_row.remove_nested_fields_link do %>
