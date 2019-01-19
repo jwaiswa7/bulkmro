@@ -19,14 +19,14 @@ json.data (@purchase_orders) do |purchase_order|
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
-                  ( purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? ),
+                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? ),
                   purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : "-",
                   purchase_order.status || purchase_order.metadata_status,
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
-                  (format_date(purchase_order.metadata['PoDate'].to_date) if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )),
-                  format_date(purchase_order.created_at)
+                  (format_succinct_date(purchase_order.metadata['PoDate'].to_date) if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )),
+                  format_succinct_date(purchase_order.created_at)
               ]
 end
 

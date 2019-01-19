@@ -1,0 +1,1 @@
+Razorpay.setup(Settings.razorpay.MERCHANT_KEY_ID, Settings.razorpay.MERCHANT_KEY_SECRET)
