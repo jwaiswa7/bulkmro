@@ -39,8 +39,10 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
       else
         redirect_to new_overseers_invoice_request_path(:sales_order_id=>params[:sales_order_id]), :flash => { :error => message }
       end
-    else
+    elsif params[:purchase_order_id].present?
       redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id]), :flash => { :error => message }
+    else
+      redirect_to overseers_company_review_path(@company_review), :flash => { :error => message }
     end
   end
 
