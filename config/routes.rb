@@ -353,7 +353,11 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
-
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -386,6 +390,7 @@ Rails.application.routes.draw do
         resources :products do
 
         end
+
       end
     end
 
