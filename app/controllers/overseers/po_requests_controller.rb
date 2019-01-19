@@ -28,27 +28,11 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
 
-      suppliers_not_reviewed = {}
-      @sales_order.inquiry.suppliers.uniq.each do |supplier|
-        if !supplier.company_reviews.reviewed(current_overseer,:'Sales').present?
-          suppliers_not_reviewed[supplier.id] = false
-        end
-      end
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer,'Sales')
+      service.call
 
-      if !suppliers_not_reviewed.empty?
-        @supplier = Company.where(id: suppliers_not_reviewed.keys.first).first
-        @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,:'Sales').present?
-
-        if @can_review
-          @company_review = CompanyReview.where(created_by: current_overseer, survey_type: :'Sales', rateable: @supplier).first_or_create!
-
-          ReviewQuestion.sales.each do |question|
-            CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
-          end
-        else
-          @company_review = CompanyReview.new
-        end
-      end
+      @can_review = service.can_review
+      @company_review = service.company_review
 
       authorize @po_request
     else

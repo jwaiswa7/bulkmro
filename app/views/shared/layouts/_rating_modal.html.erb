@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body mx-3">
         <h6 class="text">
-          Kindly share your feedback for `<%= @supplier %>`
+          Kindly share your feedback for `<%= @company_review.company %>`
         </h6>
 
         <%= simple_form_for([:overseers, @company_review], :url => url, :method => 'PUT') do |f| %>
