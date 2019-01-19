@@ -2,12 +2,12 @@
   <div class="page-header">
     <h2>
       <% if @invoice_request.sales_order.present? %>
-        <%= action_name.capitalize %> Invoice Request for Order #<%= @invoice_request.sales_order.order_number %>
+        <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number %>
       <% else %>
         <%= action_name.capitalize %> Invoice Request for Purchase Order #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@invoice_request).downcase %>'</em> and log it under
+    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -21,7 +21,7 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.remote_approved, label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number" %>
+        <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number" %>
       </div>
       <div class="col-6">
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
@@ -76,6 +76,10 @@
     <% if action_name.capitalize == "New" %>
       <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
         <i class="fal fa-plus-circle"></i> Create Invoice Request
+      <% end %>
+    <% elsif @invoice_request.status %>
+      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+        <i class="fal fa-pen"></i> Update <%= @invoice_request.readable_status %>
       <% end %>
     <% else %>
       <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>

@@ -74,12 +74,22 @@
               </div>
             </div>
 
-            <div class="col-2">
+            <div class="col-1">
               <div class="form-group mb-0">
                 <label>Quantity</label>
               </div>
             </div>
+            <div class="col-2">
+              <div class="form-group mb-0">
+                <label>Tax Code</label>
+              </div>
+            </div>
 
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Tax Rate</label>
+              </div>
+            </div>
           </div>
           <%= f.nested_fields_for :kit_product_rows, wrapper_tag: :div do |kit_product| %>
             <div class="form-row flex-row align-items-start">
@@ -106,14 +116,14 @@
 
               <div class="col-5">
                 <div class="d-flex flex-row align-items-center">
-                  <div class="col-2 ">
+                  <div class="col-2">
                     <%= kit_product.input :quantity, :label => false, placeholder: placeholder_for(kit_product, :quantity), input_html: {:'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''} %>
                   </div>
                   <div class="col-5 ">
-                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)} %>
+                    <%= kit_product.association :tax_code, collection: selected_option_or_nil(kit_product, :tax_code), label_method: :to_s, include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: kit_product.object.product.is_service)}, label: false if kit_product.object.product.present? %>
                   </div>
                   <div class="col-4">
-                    <%= kit_product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false %>
+                    <%= kit_product.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
                   </div>
                   <div class="col-1 ">
                     <%= kit_product.remove_nested_fields_link do %>

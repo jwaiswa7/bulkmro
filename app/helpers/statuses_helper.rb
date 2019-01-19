@@ -93,6 +93,8 @@ module StatusesHelper
       'success'
     when 'Delivered'
       'success'
+    when 'created'
+      'success'
     when :'Approved'
       'success'
     when :'SO Rejected by Sales Manager'
@@ -133,6 +135,8 @@ module StatusesHelper
       'warning'
     when :'Hold by Finance'
       'warning'
+    when :'refunded'
+      'color-yellow'
     when :'Order Lost'
       'danger'
     when :'Regret'
@@ -163,6 +167,10 @@ module StatusesHelper
       'primary'
     when :'Pending AR Invoice'
       'info'
+    when :'authorized'
+      'info'
+    when :'captured'
+      'success'
     else
       'danger'
     end

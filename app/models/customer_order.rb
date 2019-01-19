@@ -18,6 +18,22 @@ class CustomerOrder < ApplicationRecord
   belongs_to :billing_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :billing_address_id, required: false
   belongs_to :shipping_address, -> (record) {where(company_id: record.company_id)}, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 
+  enum payment_method: {
+      :'Bank Transfer' => 10,
+      :'Online Payment' => 20
+  }
+
+  def paid_online?
+    self.online_payment.present?
+  end
+
+  def get_payment_method
+    if self.payment_method.nil?
+      self.update_attributes!(:payment_method => 'Bank Transfer')
+    end
+    self.payment_method
+  end
+
   def to_s
     super.gsub!('CustomerOrder', 'Order')
   end

@@ -60,6 +60,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def not_invoiced?
+    # have to confirm
+    manager_or_sales?
+  end
+
   def export_all?
     allow_export?
   end
@@ -106,6 +111,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def resync?
     record.sent? && record.approved? && record.not_synced? && not_logistics?
+  end
+
+  def fetch_order_data?
+    developer?
   end
 
   class Scope

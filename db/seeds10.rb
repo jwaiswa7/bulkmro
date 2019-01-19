@@ -15,6 +15,27 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(update_inquiries_status), folder: 'seed_files')
 service.call
 
+service = Services::Shared::Migrations::Migrations.new(%w(missing_inquiries), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_bible_sales_orders), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(bible_sales_orders_totals_mismatch), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sap_orders), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(sap_sales_orders_totals_mismatch), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(missing_sap_invoices), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(sap_sales_invoices_totals_mismatch), folder: 'seed_files')
+service.call
+
 service = Services::Shared::Migrations::Migrations.new(%w(update_images_for_reliance_products), folder: 'seed_files')
 service.call
 
@@ -22,4 +43,10 @@ service = Services::Shared::Migrations::Migrations.new(%w(create_company_banks),
 service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(create_banks), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_missing_orders), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(create_image_readers), folder: 'seed_files')
 service.call
