@@ -7,6 +7,10 @@ class CompanyRating < ApplicationRecord
   validates_numericality_of :rating, :greater_than => 0.0, on: :update
 
   def calculate_rating
-    self.rating * self.review_question.weightage / 100
+    if self.rating.present?
+      self.rating * self.review_question.weightage / 100
+    else
+      0.0
+    end
   end
 end
