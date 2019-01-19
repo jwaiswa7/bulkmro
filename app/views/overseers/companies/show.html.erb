@@ -470,7 +470,7 @@
           <!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
           <!--          </p>-->
 
-          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%# <%= overseers_company_products_path(company_id: @company.id) %>">
+          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_products_path(company_id: @company.id) %>">
             <thead>
             <tr>
               <th class="no-sort all" data-width="70px"></th>
@@ -520,7 +520,7 @@
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Online Payments</h3>
         </div>
-        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%# <%=  payments_overseers_customer_orders_path(:company_id =>@company.id)%>">
+        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%=  payments_overseers_customer_orders_path(:company_id =>@company.id)%>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
