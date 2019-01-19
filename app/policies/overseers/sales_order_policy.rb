@@ -117,6 +117,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer?
   end
 
+  def preview_purchase_orders_requests?
+    developer?
+  end
+
   def create_purchase_orders_requests?
     developer?
   end

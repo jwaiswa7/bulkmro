@@ -187,6 +187,7 @@ Rails.application.routes.draw do
       member do
         get 'new_purchase_order'
         get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
       end
 
