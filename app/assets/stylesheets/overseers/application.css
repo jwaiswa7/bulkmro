@@ -9855,6 +9855,8 @@ th {
     background-color: #fff; }
   .table.wrap-whitespace td, .table.wrap-whitespace th {
     white-space: normal; }
+    .table.wrap-whitespace td:first-child, .table.wrap-whitespace th:first-child {
+      white-space: nowrap; }
 
 .table.align-items-center td {
   vertical-align: middle;
