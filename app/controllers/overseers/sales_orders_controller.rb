@@ -141,7 +141,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     service.call
 
-    redirect_to new_purchase_orders_requests_overseers_sales_order_path(@sales_order.to_param)
+    redirect_to pending_and_rejected_overseers_po_requests_path
   end
 
   private

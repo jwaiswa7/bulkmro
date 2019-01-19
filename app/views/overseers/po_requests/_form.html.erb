@@ -93,7 +93,8 @@
               <% if f.object.address %>
                 <div class="form-group">
                   <label class="form-control-label d-block">Address</label>
-                  <%= f.object.address %>
+                  <%= f.object.address %><br>
+                  <strong>Email: </strong><%= f.object.contact.email %>
                 </div>
               <% end %>
             </div>
@@ -101,7 +102,7 @@
               <% if f.object.contact %>
                 <div class="form-group">
                   <label class="form-control-label d-block">Contact</label>
-                  <%= f.object.contact %>
+                  <strong><%= f.object.contact %>:</strong> <%= f.object.contact.telephone || f.object.contact.mobile %>
                 </div>
               <% end %>
             </div>
@@ -112,7 +113,7 @@
                 <label>Sr. No.</label>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-2">
               <div class="form-group mb-0">
                 <label>Product</label>
               </div>
@@ -139,7 +140,7 @@
             </div>
             <div class="col-1">
               <div class="form-group mb-0">
-                <label>MOU</label>
+                <label>UOM</label>
               </div>
             </div>
             <div class="col-1">
@@ -172,7 +173,7 @@
                 <%= (f.object.rows.index(row.object) || 0) + 1 %>
               </div>
 
-              <div class="col-6 col-md-4">
+              <div class="col-6 col-md-2">
                 <%= row.object.product.to_s %>
               </div>
 
