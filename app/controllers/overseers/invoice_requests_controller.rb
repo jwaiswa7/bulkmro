@@ -43,10 +43,21 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer,'Logistics')
+      service.call
+
+      @can_review = service.can_review
+      @company_review = service.company_review
       authorize @invoice_request
     elsif  params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order, current_overseer,'Logistics')
+      service.call
+
+      @supplier = service.supplier
+      @can_review = service.can_review
+      @company_review = service.company_review
       authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path

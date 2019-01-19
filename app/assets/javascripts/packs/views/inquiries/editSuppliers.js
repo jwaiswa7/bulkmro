@@ -1,3 +1,4 @@
+import productsSupplierRating from "../products/productSupplierRating"
 const editSuppliers = () => {
     $('form[action$=update_suppliers]')
         .on('change', 'select[name*=supplier_id]', function (e) {
@@ -37,6 +38,7 @@ let onSupplierChange = (container) => {
                 select.closest('div.form-row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
                 select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
                 select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
+                select.closest('div.form-row').find("[data-name=starred]").raty({'readOnly': true , 'score': response.rating , 'precision': true, 'hints': ['bad','poor','average','good','best']})
             }
         });
     }

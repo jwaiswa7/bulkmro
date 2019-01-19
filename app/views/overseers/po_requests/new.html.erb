@@ -1,1 +1,5 @@
 <%= render 'overseers/po_requests/form' %>
+
+<% if @can_review %>
+  <%= render partial: 'shared/layouts/rating_modal', locals: {url: update_rating_overseers_company_review_path(@company_review,:sales_order_id => @sales_order.hashid)} %>
+<% end %>

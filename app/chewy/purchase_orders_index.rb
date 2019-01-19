@@ -22,6 +22,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
     field :company_id, value: -> (record) { record.inquiry.company_id if record.inquiry.present? }
+    field :company_rating, value: ->(record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.rows.present? }
     field :po_date, value: -> (record) { record.metadata['PoDate'].to_date if ( record.metadata['PoDate'].present? && record.valid_po_date? ) }, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'

@@ -66,8 +66,10 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_supplier(@supplier)
 
     render json: {
+        supplier_id: @supplier.id,
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
         latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+        rating: @supplier.rating
     }.merge!(bp_catalog ? {
         bp_catalog_name: bp_catalog[0],
         bp_catalog_sku: bp_catalog[1]

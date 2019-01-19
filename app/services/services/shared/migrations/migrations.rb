@@ -2231,4 +2231,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "<-------------------------------------------------------------------------------------------->"
     puts sales_order_exists
   end
+
+  def generate_review_questions
+    service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
+
+      service.loop() do |x|
+        question = x.get_column('Question')
+        type = x.get_column('Type')
+        weightage = x.get_column('Weightage')
+        ReviewQuestion.where(question: question, question_type: type, weightage:weightage).first_or_create!
+
+      end
+
+  end
 end
