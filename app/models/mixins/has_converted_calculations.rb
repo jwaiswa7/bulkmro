@@ -19,7 +19,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def calculated_total_margin_percentage
-      (((calculated_total - calculated_total_cost) / calculated_total) * 100).round(2) if calculated_total > 0
+      ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
     end
 
     def calculated_total_cost
