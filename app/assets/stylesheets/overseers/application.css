@@ -10725,3 +10725,10 @@ a.text-color-orange:hover, a.text-color-orange:focus {
 
 a.text-color-grey:hover, a.text-color-grey:focus {
   color: #9e9e9e !important; }
+
+.notifications {
+  min-width: 22.5rem;
+  max-width: 22.5rem; }
+  .notifications .dropdown-item {
+    word-wrap: normal;
+    white-space: normal; }

@@ -128,4 +128,5 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def set_invoice_request
     @invoice_request = InvoiceRequest.find(params[:id])
   end
+
 end
