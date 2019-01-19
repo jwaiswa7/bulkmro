@@ -204,8 +204,8 @@ Rails.application.routes.draw do
 
     resources :purchase_orders do
       member do
-        get 'edit_material_status'
-        patch 'update_material_status'
+        get 'edit_material_followup'
+        patch 'update_material_followup'
       end
 
       collection do
