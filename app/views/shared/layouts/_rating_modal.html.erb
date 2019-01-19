@@ -19,11 +19,11 @@
               <div class="simple-row">
                 <div class="form-row mt-2">
                   <div class="col-12 col-md-7">
-                    <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false %>
+                    <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false, required: true%>
                   </div>
                   <div class="col-12 col-md-5 mt-3 star">
-                    <div class=<%='star-'+company_rating.index.to_s %>></div>
-                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s %>
+                    <div class=<%='star-'+company_rating.index.to_s %> ></div>
+                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s, required: true, "data-rating": company_rating.object.rating %>
                   </div>
                 </div>
               </div>
