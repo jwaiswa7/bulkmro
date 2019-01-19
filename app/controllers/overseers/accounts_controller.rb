@@ -39,7 +39,7 @@ class Overseers::AccountsController < Overseers::BaseController
       @account.alias = @account.name
     end
 
-    if @account.save_and_sync
+    if @account.save
       company_creation_request = CompanyCreationRequest.where(:id => @account.reference_company_creation_request_id).last
       if !company_creation_request.nil?
         company_creation_request.account_id = @account.id
@@ -48,7 +48,9 @@ class Overseers::AccountsController < Overseers::BaseController
         activity.account = @account
         activity.save
       end
-      redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
+      if @account.save_and_sync
+        redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
+      end
     else
       render 'new'
     end
