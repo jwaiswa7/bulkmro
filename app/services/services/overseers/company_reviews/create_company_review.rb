@@ -27,7 +27,7 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
         end
 
         review_questions.each do |question|
-          CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
+          CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
         end
       else
         @company_review = CompanyReview.new

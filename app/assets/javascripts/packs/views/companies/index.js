@@ -4,6 +4,8 @@ const index = () => {
 
     $('.datatable').on('click','.rating',function () {
         var id = $(this).data('company-id')
+        var $this = $(this)
+        $(this).addClass('disabled')
         $.ajax({
             data: {},
             url: "/overseers/companies/"+id+"/render_rating_form",
@@ -23,6 +25,9 @@ const index = () => {
                             $(".rating-"+i).val(score)
                         }});
                 }
+                $('#modalRatingForm').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
             },
             complete: function complete() {
             }

@@ -13,7 +13,6 @@ class Overseers::CompaniesController < Overseers::BaseController
     authorize @company
     type = ""
     review_questions = ReviewQuestion.logistics
-
     if current_overseer.inside? || current_overseer.outside? || current_overseer.manager?
       type = "Sales"
       review_questions =ReviewQuestion.sales
@@ -21,8 +20,12 @@ class Overseers::CompaniesController < Overseers::BaseController
       type = "Logistics"
       review_questions = ReviewQuestion.logistics
     end
-    company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
+    p '**********************************************************'
+    p type
+    p review_questions
 
+    company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
+    p company_review
     review_questions.each do |question|
       CompanyRating.where({company_review_id: company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
     end
