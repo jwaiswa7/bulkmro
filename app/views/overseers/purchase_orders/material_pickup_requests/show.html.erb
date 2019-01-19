@@ -9,7 +9,7 @@
       <span>
         <% if policy(@mpr).edit? %>
         <a href="<%= edit_overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>
-          Edit Material Readiness Followup</a>
+          Edit Material Pickup Request</a>
       <% end %>
         <% if policy(@mpr).confirm_delivery? %>
         <a href="<%= confirm_delivery_overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-check mr-1"></i>
@@ -37,7 +37,7 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Material Readiness Followup Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1">Material Pickup Request Details</h6>
           <div class="form-row">
             <% if @mpr.purchase_order.present? %>
               <div class="col-6 col-md-3 mb-2">

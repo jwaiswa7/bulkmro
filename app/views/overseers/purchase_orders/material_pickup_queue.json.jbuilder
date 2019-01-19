@@ -3,7 +3,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                   [
 
                       if policy(material_pickup_request).show?
-                        row_action_button(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'eye', 'View Material Readiness Followup', 'info', target: :_blank)
+                        row_action_button(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'eye', 'View Material Pickup Request', 'info', target: :_blank)
                       end,
                       if policy(material_pickup_request).edit?
                         row_action_button(edit_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'pencil', 'Edit Pickup Request', 'warning')
