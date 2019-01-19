@@ -52,4 +52,7 @@ class MaterialReadinessFollowup < ApplicationRecord
     self.actual_delivery_date = DateTime.now
   end
 
+  def to_s
+    [status,"Request", "##{self.id}"].join(" ")
+  end
 end
