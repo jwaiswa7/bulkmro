@@ -52,7 +52,11 @@ class MaterialPickupRequest < ApplicationRecord
     self.actual_delivery_date = DateTime.now
   end
 
+  def readable_status
+    [status, "Request"].join(" ")
+  end
+
   def to_s
-    [status,"Request", "##{self.id}"].join(" ")
+    [readable_status, "##{self.id}"].join(" ")
   end
 end

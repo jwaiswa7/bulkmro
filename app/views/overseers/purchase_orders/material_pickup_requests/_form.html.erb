@@ -3,11 +3,16 @@
     <h2>
 
       <% if @mpr.purchase_order.present? %>
-        <%= action_name.capitalize %>  <%= @mpr.status %> Request for Purchase Order
-        #<%= @mpr.purchase_order.po_number %>
+        <% if action_name == 'confirm_delivery' %>
+          <%= action_name.capitalize.titleize %>
+        <% else %>
+          <%= action_name.capitalize.titleize %>  <%= @mpr.readable_status %>
+        <% end %>
+
+        for Purchase Order #<%= @mpr.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@mpr, use_alias: @mpr.status).downcase %>'</em>
+    <p>This will <em>'<%= submit_text(@mpr).downcase %>'</em>
       and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
@@ -136,7 +141,7 @@
 
     <% end %>
     <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-      <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.status, suffix: 'Request') %>
+      <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.readable_status) %>
     <% end %>
     </div>
   <% end %>
