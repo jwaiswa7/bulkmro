@@ -173,6 +173,8 @@ module StatusesHelper
       'info'
     when :'captured'
       'success'
+    when :'Replaced'
+      'warning'
     else
       'danger'
     end
