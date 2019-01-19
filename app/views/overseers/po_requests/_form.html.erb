@@ -180,10 +180,12 @@
                 <%= row.object.product.try(:brand).to_s %>
               </div>
               <div class="col-12 col-md-1">
-                <%= row.object.sales_order_row.best_tax_code %>
+                <%#= row.object.tax_code %>
+                <%= row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, disabled: false, label:  false  %>
               </div>
               <div class="col-12 col-md-1">
-                <%= row.object.sales_order_row.best_tax_rate %>
+                <%#= row.object.sales_order_row.best_tax_rate %>
+                <%= row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
               </div>
               <div class="col-12 col-md-1">
                 <%= row.object.quantity %>

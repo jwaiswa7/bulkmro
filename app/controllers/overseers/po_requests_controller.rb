@@ -96,7 +96,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :status,
         :cancellation_reason,
         :rejection_reason,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity],
+        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )

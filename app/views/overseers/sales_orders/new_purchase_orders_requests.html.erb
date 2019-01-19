@@ -101,13 +101,13 @@
                   <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
+                  <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
 
-                  <%#= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false  %>
+                  <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false  %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
-                  <%#= po_request_row.association :tax_rate, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_rate), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_tax_rate_path(is_service: !po_request_row.object.field_disabled?)}, disabled: po_request_row.object.field_disabled?  %>
+                  <%#= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
+                  <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0 }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
