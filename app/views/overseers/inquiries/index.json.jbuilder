@@ -18,7 +18,7 @@ json.data (@inquiries) do |inquiry|
       format_succinct_date(inquiry.quotation_followup_date),
       if inquiry.contact.present?
         link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank")
-      end
+      end,
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
       inquiry.margin_percentage,

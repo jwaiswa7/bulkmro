@@ -87,11 +87,11 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:TrackLine].first[:invoice_number] %></span></td>
+                  <span style="color:#000000"><%= @metadata[:TrackLine].first[:invoice_number] if @metadata[:TrackLine].present? %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Invoice Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= Date.parse(@metadata[:TrackLine].first[:order_created_at]).strftime("%d-%b-%Y") if @metadata[:TrackLine].first[:order_created_at].present? %></span>
+                  <span style="color:#000000"><%= Date.parse(@metadata[:TrackLine].first[:order_created_at]).strftime("%d-%b-%Y") if @metadata[:TrackLine].present? && @metadata[:TrackLine].first[:order_created_at].present? %></span>
                 </td>
               </tr>
               <tr>
@@ -123,7 +123,7 @@
                   <b><span style="color:#000000">GRN #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @metadata[:TrackLine].map {|g| g[:grn]}.join(",") %>
+                      <%= @metadata[:TrackLine].map {|g| g[:grn]}.join(",") if @metadata[:TrackLine].present? %>
                     </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer ID</span></b> <span style="float:right">:</span></td>
@@ -134,12 +134,12 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Carrier </span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") %></span>
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") if @metadata[:TrackLine].present? %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Tracking Number</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:track_number]}.join(",") %></span>
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:track_number]}.join(",") if @metadata[:TrackLine].present? %></span>
                 </td>
               </tr>
               </tbody>
