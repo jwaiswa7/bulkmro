@@ -15,7 +15,7 @@ json.data (@sales_shipments) do |sales_shipment|
                   sales_shipment.status,
                   sales_shipment.inquiry.inside_sales_owner.to_s,
                   sales_shipment.inquiry.outside_sales_owner.to_s,
-                  format_date(sales_shipment.created_at)
+                  format_succinct_date(sales_shipment.created_at)
               ]
 end
 

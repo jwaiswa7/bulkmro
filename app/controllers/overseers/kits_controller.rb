@@ -65,7 +65,7 @@ class Overseers::KitsController < Overseers::BaseController
     params.require(:kit).permit(
         :inquiry_id,
         :product_attributes => [:id, :name, :sku, :mpn, :is_service, :brand_id, :category_id, :tax_code_id, :measurement_unit_id, :overseer],
-        :kit_product_rows_attributes => [:id, :product_id, :quantity, :tax_code_id, :tax_rate_id]
+        :kit_product_rows_attributes => [:id, :product_id, :quantity, :tax_code_id, :tax_rate_id, :_destroy]
     )
   end
 

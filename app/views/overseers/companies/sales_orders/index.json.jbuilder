@@ -23,8 +23,8 @@ json.data (@sales_orders) do |sales_order|
                   format_enum(sales_order.remote_status, humanize_text: false),
                   format_currency(sales_order.sales_quote.calculated_total),
                   format_currency(sales_order.calculated_total),
-                  format_date(sales_order.mis_date),
-                  format_date(sales_order.created_at)
+                  format_succinct_date(sales_order.mis_date),
+                  format_succinct_date(sales_order.created_at)
               ]
 end
 

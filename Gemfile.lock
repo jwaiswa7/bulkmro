@@ -84,7 +84,15 @@ GEM
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
       nokogiri (~> 1.6, >= 1.6.8)
+    azure-storage-blob (1.1.0)
+      azure-core (~> 0.1.13)
+      azure-storage-common (~> 1.0)
+      nokogiri (~> 1.6, >= 1.6.8)
+    azure-storage-common (1.1.0)
+      azure-core (~> 0.1.13)
+      nokogiri (~> 1.6, >= 1.6.8)
     bcrypt (3.1.12)
+    bcrypt (3.1.12-x64-mingw32)
     bindex (0.5.0)
     bonsai-elasticsearch-rails (7.0.1)
       elasticsearch-model (< 8)
@@ -199,6 +207,7 @@ GEM
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     ffi (1.10.0)
+    ffi (1.10.0-x64-mingw32)
     file_validators (2.3.0)
       activemodel (>= 3.2)
       mime-types (>= 1.0)
@@ -306,6 +315,7 @@ GEM
       money (~> 6.6)
     msg91ruby (1.0.2)
     msgpack (1.2.6)
+    msgpack (1.2.6-x64-mingw32)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -319,6 +329,8 @@ GEM
     net-ssh (5.1.0)
     nio4r (2.3.1)
     nokogiri (1.10.0)
+      mini_portile2 (~> 2.4.0)
+    nokogiri (1.10.0-x64-mingw32)
       mini_portile2 (~> 2.4.0)
     oauth2 (1.4.1)
       faraday (>= 0.8, < 0.16.0)
@@ -345,6 +357,7 @@ GEM
     parser (2.5.3.0)
       ast (~> 2.4.0)
     pg (1.1.4)
+    pg (1.1.4-x64-mingw32)
     pg_search (2.1.3)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
@@ -397,6 +410,8 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rake (12.3.2)
     randexp (0.1.7)
+    razorpay (2.3.0)
+      httparty (~> 0.14)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
@@ -504,6 +519,8 @@ GEM
       rotp (>= 3.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2018.9)
+      tzinfo (>= 1.0.0)
     uber (0.1.0)
     uglifier (4.1.20)
       execjs (>= 0.3.0, < 3)
@@ -520,6 +537,7 @@ GEM
       timeliness (~> 0.3.8)
     warden (1.2.8)
       rack (>= 2.0.6)
+    wdm (0.1.1)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -538,6 +556,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   activeresource
@@ -546,6 +565,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   axlsx_rails (= 0.5.2)
   azure-storage
+  azure-storage-blob
   bonsai-elasticsearch-rails (~> 7)
   bootsnap (>= 1.1.0)
   byebug
@@ -594,6 +614,7 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)
+  razorpay
   rotp
   rubyzip (~> 1.2)
   sass-rails (~> 5.0)
@@ -615,6 +636,7 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unparser
   validates_timeliness (~> 5.0.0.alpha3)
+  wdm (>= 0.1.0)
   web-console (>= 3.3.0)
   webpacker (~> 3.5)
   wicked_pdf
