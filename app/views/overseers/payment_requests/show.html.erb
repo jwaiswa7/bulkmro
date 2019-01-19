@@ -76,6 +76,27 @@
               </div>
             <% end %>
 
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.account.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Account</strong>
+                <%= @payment_request.inquiry.account.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.inquiry.present? && @payment_request.inquiry.company.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Customer Name</strong>
+                <%= @payment_request.inquiry.company.to_s %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.request_owner.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Owner</strong>
+                <%= @payment_request.request_owner.to_s %>
+              </div>
+            <% end %>
+
           </div>
           <% if @payment_request.attachments.attached? %>
             <div class="form-row">
@@ -108,6 +129,13 @@
               </div>
             <% end %>
 
+            <% if @payment_request.payment_type.present? && @payment_request.payment_type == "Cheque" %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Cheque Date</strong>
+                <%= @payment_request.cheque_date %>
+              </div>
+            <% end %>
+
             <% if @payment_request.payment_type.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Type</strong>
@@ -125,10 +153,24 @@
             <% if @payment_request.due_date.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Due Date</strong>
+                <%= format_due_distance(@payment_request.due_date) %>
                 <%= format_date(@payment_request.due_date) %>
               </div>
             <% end %>
 
+            <% if @payment_request.purpose_of_payment.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Purpose of Payment</strong>
+                <%= @payment_request.purpose_of_payment %>
+              </div>
+            <% end %>
+
+            <% if @payment_request.supplier_bank_details.present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier Bank Details</strong>
+                <%= @payment_request.company_bank.to_s %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

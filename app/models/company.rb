@@ -42,6 +42,9 @@ class Company < ApplicationRecord
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
   has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
+  has_many :company_banks
+  has_many :banks, through: :company_banks
+
   has_many :company_reviews
   ratyrate_rateable "supplier_responsiveness"
   has_one_attached :tan_proof

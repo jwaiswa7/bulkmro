@@ -18,6 +18,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
                 )
               end
             end
+
+            if purchase_order.po_request.present?
+              create_payment_request = Services::Overseers::PaymentRequests::Create.new(purchase_order.po_request)
+              create_payment_request.call
+            end
           end
           return_response("Purchase Order created successfully.")
         else
