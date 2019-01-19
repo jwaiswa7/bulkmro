@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:edit_material_status, :update_material_status]
+  before_action :set_purchase_order, only: [:edit_material_followup, :update_material_followup]
 
   def index
     authorize :purchase_order
@@ -42,29 +42,32 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     render 'material_pickup_queue'
   end
 
-  def edit_material_status
+  def edit_material_followup
     authorize @purchase_order
+    @po_request = @purchase_order.po_request
   end
 
-  def update_material_status
+  def update_material_followup
     authorize @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
       ActiveRecord::Base.transaction do
-        if @purchase_order.material_status_changed?
-          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.material_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
-          @purchase_order.save!
+        if @purchase_order.supplier_dispatch_date_changed?
+          @po_comment = PoComment.new(:message => "Supplier Dispatch Date Changed: #{@purchase_order.supplier_dispatch_date.try(:strftime, "%d-%b-%Y")}", :purchase_order => @purchase_order, :overseer => current_overseer)
           @po_comment.save!
-        else
-          @purchase_order.save!
         end
-      end
-      redirect_to edit_material_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
-    else
-      render 'edit_material_status'
-    end
 
+        if @purchase_order.revised_supplier_delivery_date_changed?
+          @po_comment = PoComment.new(:message => "Revised Supplier Delivery Date To: #{@purchase_order.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y")}", :purchase_order => @purchase_order, :overseer => current_overseer)
+          @po_comment.save!
+        end
+        @purchase_order.save!
+      end
+      redirect_to edit_material_followup_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
+    else
+      render 'edit_material_followup'
+    end
   end
 
   def autocomplete
@@ -94,6 +97,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def purchase_order_params
     params.require(:purchase_order).permit(
         :material_status,
+        :supplier_dispatch_date,
+        :revised_supplier_delivery_date,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
