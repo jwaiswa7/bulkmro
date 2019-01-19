@@ -20,7 +20,13 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
       if @can_review
         @company_review = CompanyReview.where(created_by: current_overseer, survey_type: @review_type, company: @supplier).first_or_create!
 
-        ReviewQuestion.logistics.each do |question|
+        if @review_type == 'Sales'
+          review_questions = ReviewQuestion.sales
+        elsif @review_type == 'Logistics'
+          review_questions = ReviewQuestion.logistics
+        end
+
+        review_questions.each do |question|
           CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
         end
       else
