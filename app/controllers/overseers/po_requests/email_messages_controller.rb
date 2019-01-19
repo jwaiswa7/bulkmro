@@ -34,7 +34,9 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     end
 
     if @email_message.save
-      PoRequestMailer.send_supplier_notification(@email_message).deliver_now
+      if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
+        @po_request.update_attributes(:sent_at => Time.now)
+      end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else
       render 'new'
