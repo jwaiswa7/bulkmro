@@ -2,7 +2,7 @@ import bindAndUpdateStarRating from "../common/bindAndUpdateStarRating"
 
 const  showAction = () => {
     $(document).ready(function () {
-        $('.star').each(function () {
+        $('.show-star').each(function () {
             $(this).raty({'readOnly': false, 'score': $(this).data('rating'), 'precision': true})
         })
 
