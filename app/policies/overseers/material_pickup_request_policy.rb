@@ -1,4 +1,4 @@
-class Overseers::MaterialReadinessFollowupPolicy < Overseers::ApplicationPolicy
+class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
   def material_pickup_queue?
     admin? || logistics? || sales?
   end

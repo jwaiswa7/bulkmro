@@ -1,12 +1,12 @@
-class MaterialReadinessFollowup < ApplicationRecord
-  COMMENTS_CLASS = 'MrfComment'
+class MaterialPickupRequest < ApplicationRecord
+  COMMENTS_CLASS = 'MprComment'
 
   include Mixins::HasComments
   include Mixins::CanBeStamped
 
   belongs_to :purchase_order
   belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
-  has_many :rows, -> {joins(:purchase_order_row)}, class_name: 'MrfRow', inverse_of: :material_readiness_followup, dependent: :destroy
+  has_many :rows, -> {joins(:purchase_order_row)}, class_name: 'MprRow', inverse_of: :material_pickup_request, dependent: :destroy
   has_many_attached :attachments
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   validates_associated :rows

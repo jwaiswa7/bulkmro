@@ -30,15 +30,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_pickup_queue
     @status = 'Material Pickup Queue'
-    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: :'Material Pickup').order("created_at DESC"), params)
-    authorize @material_readiness_followups
+    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Pickup').order("created_at DESC"), params)
+    authorize @material_pickup_requests
     render 'material_pickup_queue'
   end
 
   def material_delivered_queue
     @status = 'Material Delivered Queue'
-    @material_readiness_followups = ApplyDatatableParams.to(MaterialReadinessFollowup.where(status: :'Material Delivered').order("created_at DESC"), params)
-    authorize @material_readiness_followups
+    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Delivered').order("created_at DESC"), params)
+    authorize @material_pickup_requests
     render 'material_pickup_queue'
   end
 

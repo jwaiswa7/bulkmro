@@ -1,9 +1,9 @@
 import newAction from "./new";
 import edit from "./edit";
 
-let mrfs = {
+let mprs = {
     new: newAction,
     edit: edit
 }
 
-export default mrfs
+export default mprs

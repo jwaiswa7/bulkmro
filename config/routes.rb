@@ -217,7 +217,7 @@ Rails.application.routes.draw do
       end
 
       scope module: 'purchase_orders' do
-        resources :material_readiness_followups do
+        resources :material_pickup_requests do
           member do
             get 'confirm_delivery'
             get 'delivered_material'

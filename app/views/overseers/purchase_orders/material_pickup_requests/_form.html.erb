@@ -2,20 +2,20 @@
   <div class="page-header">
     <h2>
 
-      <% if @mrf.purchase_order.present? %>
-        <%= action_name.capitalize %>  <%= @mrf.status %> Request for Purchase Order
-        #<%= @mrf.purchase_order.po_number %>
+      <% if @mpr.purchase_order.present? %>
+        <%= action_name.capitalize %>  <%= @mpr.status %> Request for Purchase Order
+        #<%= @mpr.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@mrf, use_alias: @mrf.status).downcase %>'</em>
+    <p>This will <em>'<%= submit_text(@mpr, use_alias: @mpr.status).downcase %>'</em>
       and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
 
-  <%= simple_form_for([:overseers, @mrf.purchase_order, @mrf], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |mrf_object| %>
-    <%= render 'shared/snippets/form_errors', f: mrf_object %>
-    <%= mrf_object.simple_fields_for :material_readiness_followup, mrf_object.object do |f| %>
+  <%= simple_form_for([:overseers, @mpr.purchase_order, @mpr], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |mpr_object| %>
+    <%= render 'shared/snippets/form_errors', f: mpr_object %>
+    <%= mpr_object.simple_fields_for :material_pickup_request, mpr_object.object do |f| %>
 
 
       <div class="card">
@@ -53,20 +53,20 @@
             </div>
 
             <div class="col-6">
-              <%= f.input :document_type, collection: enum_to_collection(MaterialReadinessFollowup.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"}, include_blank: 'Choose a type of Document' %>
+              <%= f.input :document_type, collection: enum_to_collection(MaterialPickupRequest.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"}, include_blank: 'Choose a type of Document' %>
             </div>
 
             <div class="col-6">
 
-              <%= f.input :status, as: :select, collection: enum_to_collection(MaterialReadinessFollowup.statuses, keep_raw: true), disabled: true, readonly: true %>
+              <%= f.input :status, as: :select, collection: enum_to_collection(MaterialPickupRequest.statuses, keep_raw: true), disabled: true, readonly: true %>
               <%= f.hidden_field :status %>
             </div>
 
             <div class="col-12">
-              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |mrf_comment| %>
-                <%= mrf_comment.hidden_field :created_by_id %>
-                <%= mrf_comment.hidden_field :updated_by_id %>
-                <%= mrf_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+              <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |mpr_comment| %>
+                <%= mpr_comment.hidden_field :created_by_id %>
+                <%= mpr_comment.hidden_field :updated_by_id %>
+                <%= mpr_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
               <% end %>
             </div>
           </div>
@@ -86,14 +86,14 @@
           </div>
         </div>
 
-        <% if @mrf.rows.present? %>
+        <% if @mpr.rows.present? %>
           <div class="card-body">
             <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
             <%= f.nested_fields_for :rows, f.object.rows, wrapper_tag: :div do |row| %>
               <%= row.hidden_field :id %>
               <div class="form-row flex-row simple-row">
                 <div class="col-6">
-                  <%= row.association :purchase_order_row, collection: @mrf.purchase_order.rows, include_blank: 'Choose Product', disabled: row.object.purchase_order_row.present? && row.object.errors.blank? %>
+                  <%= row.association :purchase_order_row, collection: @mpr.purchase_order.rows, include_blank: 'Choose Product', disabled: row.object.purchase_order_row.present? && row.object.errors.blank? %>
                 </div>
                 <% if f.object.status == "Material Delivered" %>
                   <div class="col-2">
@@ -136,7 +136,7 @@
 
     <% end %>
     <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-      <i class="fal fa-pen"></i> <%= submit_text(@mrf, use_alias: @mrf.status, suffix: 'Request') %>
+      <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.status, suffix: 'Request') %>
     <% end %>
     </div>
   <% end %>

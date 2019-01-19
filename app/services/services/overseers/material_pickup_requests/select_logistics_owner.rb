@@ -1,4 +1,4 @@
-class Services::Overseers::MaterialReadinessFollowups::SelectLogisticsOwner < Services::Shared::BaseService
+class Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner < Services::Shared::BaseService
   def initialize(purchase_order)
     @purchase_order = purchase_order
     @company_name = purchase_order.inquiry.company.name

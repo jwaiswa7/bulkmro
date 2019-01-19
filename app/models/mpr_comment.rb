@@ -1,6 +1,6 @@
-class MrfComment < ApplicationRecord
+class MprComment < ApplicationRecord
   include Mixins::CanBeStamped
-  belongs_to :material_readiness_followup
+  belongs_to :material_pickup_request
 
   def author
     self.created_by

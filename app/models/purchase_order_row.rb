@@ -1,6 +1,6 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
-  has_many :mrf_rows
+  has_many :mpr_rows
 
   def sku
     get_product.sku if get_product.present?
@@ -51,7 +51,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_pickup_quantity
-    self.quantity - self.mrf_rows.sum(&:reserved_quantity)
+    self.quantity - self.mpr_rows.sum(&:reserved_quantity)
   end
 
   def to_s

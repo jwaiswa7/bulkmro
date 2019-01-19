@@ -1,5 +1,5 @@
-class Overseers::MrfRowPolicy < Overseers::ApplicationPolicy
+class Overseers::MprRowPolicy < Overseers::ApplicationPolicy
   def destroy?
-    record.material_readiness_followup.present? && record.material_readiness_followup.status != 'Material Delivered'
+    record.material_pickup_request.present? && record.material_pickup_request.status != 'Material Delivered'
   end
 end

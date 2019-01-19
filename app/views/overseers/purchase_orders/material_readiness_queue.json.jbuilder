@@ -8,7 +8,7 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
                       if policy(purchase_order).new_pickup_request?
-                        row_action_button(new_overseers_purchase_order_material_readiness_followup_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
+                        row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
                       end
                   ].join(' '),
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: "_blank"),

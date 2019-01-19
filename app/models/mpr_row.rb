@@ -1,8 +1,8 @@
-class MrfRow < ApplicationRecord
-  belongs_to :material_readiness_followup
+class MprRow < ApplicationRecord
+  belongs_to :material_pickup_request
   belongs_to :purchase_order_row
 
-  validates_uniqueness_of :purchase_order_row, scope: :material_readiness_followup
+  validates_uniqueness_of :purchase_order_row, scope: :material_pickup_request
 
   def reserved_quantity
     self.delivered_quantity.present? ? self.delivered_quantity : self.pickup_quantity
