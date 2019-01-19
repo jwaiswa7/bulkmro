@@ -1,15 +1,20 @@
-<div class="col-lg-12">
-  <div class="page-header">
-    <h2>Edit Material Followup: <%= format_id(@purchase_order.po_number) %></h2>
-    <p>This will <em>update internal status</em> and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
+<% provide :container_fluid, true %>
 
-    <% if policy(@purchase_order).new_pickup_request? %>
-      <a href="<%= new_overseers_purchase_order_material_readiness_followup_path(@purchase_order) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" style="position: absolute; right: 20px; top: 75px;" >
-        <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
-      </a>
-    <% end %>
-  </div>
+<div class="col-lg-12">
+  <section class="pt-3 pt-lg-4 pb-2">
+    <div class="d-md-flex justify-content-between">
+      <h3 class="display-5 d-flex align-items-center">
+        Edit Material Followup: <%= format_id(@purchase_order.po_number) %>
+      </h3>
+      <span>
+        <% if policy(@purchase_order).new_pickup_request? %>
+          <a href="<%= new_overseers_purchase_order_material_readiness_followup_path(@purchase_order) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down " >
+            <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
+          </a>
+        <% end %>
+      </span>
+    </div>
+  </section>
 
   <%= simple_form_for(@purchase_order, url: update_material_followup_overseers_purchase_order_path(@purchase_order), :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
