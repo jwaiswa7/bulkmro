@@ -73,14 +73,19 @@ class PurchaseOrder < ApplicationRecord
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
-      product_supplier = ( Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']) )
-      return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
+      product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
+      return product_supplier if (self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?)
     end
 
     if self.inquiry.final_sales_quote.present?
-      product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
+      product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id}.first
       return product_supplier.supplier if product_supplier.present?
     end
+  end
+
+  def supplier
+    return po_request.supplier if po_request.present?
+    return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
   end
 
   def metadata_status
