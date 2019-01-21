@@ -1,18 +1,32 @@
 <div class="col-lg-12">
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
-      <h3 class="display-5 d-flex align-items-center">
-        PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
-        :&nbsp;<%= status_badge(@po_request.status) %>
-      </h3>
+
+      <div class="col-8">
+        <h3 class="display-5 d-flex align-items-center">
+          PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
+          :&nbsp;<%= status_badge(@po_request.status) %>
+        </h3>
+      </div>
+
       <% if policy(@po_request).edit? %>
-        <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        <div class="col-2">
+          <a href="<%= edit_overseers_po_request_path(@po_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
+        </div>
       <% end %>
 
       <% if policy(@po_request).new_payment_request? %>
-        <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment
-          Request</a>
+        <div class="col-2">
+          <a href="<%= new_overseers_po_request_payment_request_path(@po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment Request</a>
+        </div>
       <% end %>
+
+      <% if @po_request.payment_request.present? && policy(@po_request.payment_request).show? %>
+        <div class="col-2">
+          <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>Payment Request</a>
+        </div>
+      <% end %>
+
     </div>
   </section>
 
@@ -68,7 +82,7 @@
             <% if @po_request.payment_request.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Request</strong>
-                <a href="<%= overseers_po_request_path(@po_request.payment_request) %>"><%= format_id(@po_request.id) %></a>
+                <a href="<%= overseers_payment_request_path(@po_request.payment_request) %>"><%= format_id(@po_request.id) %></a>
               </div>
             <% end %>
           </div>

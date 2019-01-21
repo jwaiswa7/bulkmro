@@ -202,4 +202,18 @@ module StatusesHelper
   def status_badge(status)
     format_badge(status, status_color(status)) if status
   end
+
+  def due_badge(due_in_days, text)
+    if due_in_days == 0
+      format_badge(text, 'color-red')
+    elsif due_in_days < 0
+      format_badge(text, 'danger')
+    elsif due_in_days <= 2
+      format_badge(text, 'color-yellow')
+    elsif due_in_days <= 5
+      format_badge(text, 'color-dark-blue')
+    else
+      format_badge(text, 'color-dark-green')
+    end
+  end
 end
