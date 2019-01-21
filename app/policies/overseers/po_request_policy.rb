@@ -7,6 +7,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     developer? || logistics? || manager_or_sales?
   end
 
+
   def pending_and_rejected?
     index?
   end
