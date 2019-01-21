@@ -1,4 +1,5 @@
 <div class="col-lg-12">
+
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
@@ -8,6 +9,20 @@
         <a href="<%= edit_overseers_review_question_path(@review_question) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
     </div>
+
+    <ul class="list-group text-primary mb-3">
+      <% if ReviewQuestion.overall_weightage('Sales').to_i != 100 %>
+        <li class="list-group-item">
+          <i class="fal fa-exclamation-triangle mr-2"></i>Overall weightage of Sales Type Questions is not 100. Please adjust weightage.
+        </li>
+      <% end %>
+      <% if ReviewQuestion.overall_weightage('Logistics').to_i != 100 %>
+        <li class="list-group-item">
+          <i class="fal fa-exclamation-triangle mr-2"></i>Overall weightage of Logistics Type Questions is not 100. Please adjust weightage.
+        </li>
+      <% end %>
+    </ul>
+
   </section>
 
   <section class="mb-3">
