@@ -78,7 +78,7 @@
             </h5>
 
             <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-              Hide
+              Remove Supplier
             <% end %>
             <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
               <%= po_request_row.hidden_field :id %>

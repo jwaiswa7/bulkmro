@@ -163,9 +163,11 @@
                 <th>HSN</th>
                 <th>T. Rate</th>
                 <th>Quantity</th>
-                <th>MOU</th>
+                <th>UOM</th>
                 <th>UP</th>
                 <th>TP</th>
+                <th>TT</th>
+                <th>TP with Tax</th>
               </tr>
               </thead>
               <tbody>
@@ -180,6 +182,8 @@
                   <td><%= row.sales_order_row.measurement_unit %></td>
                   <td><%= row.sales_order_row.converted_unit_selling_price %></td>
                   <td><%= row.converted_total_selling_price %></td>
+                  <td><%= row.converted_total_tax %></td>
+                  <td><%= row.converted_total_selling_price_with_tax %></td>
                 </tr>
               <% end %>
               </tbody>
