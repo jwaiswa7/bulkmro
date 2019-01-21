@@ -6,7 +6,6 @@ class CreateCompanyReviews < ActiveRecord::Migration[5.2]
       # t.references :overseer, foreign_key: true
       t.references :company, foreign_key: true
 
-      t.userstamps
       t.timestamps
     end
   end
