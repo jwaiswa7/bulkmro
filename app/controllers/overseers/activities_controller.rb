@@ -13,14 +13,13 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def new
     @activity = current_overseer.activities.build(:overseer => current_overseer)
-    @activity.build_company_creation_request
+    @activity.build_company_creation_request(:overseer => current_overseer)
     @accounts = Account.all
     authorize @activity
   end
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
-    company_creation_request = @activity.company_creation_request
 
     authorize @activity
     if @activity.save

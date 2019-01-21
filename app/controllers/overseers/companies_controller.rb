@@ -26,12 +26,10 @@ class Overseers::CompaniesController < Overseers::BaseController
     @company = Company.new(company_params.merge(overseer: current_overseer))
     authorize @company
     if @company.save
-      company_creation_request = @company.company_creation_request
-      company_creation_request.company_id = @company.id
-      company_creation_request.save
-      activity = company_creation_request.activity
-      activity.company = @company
-      activity.save
+      if @company.company_creation_request.present?
+        @company.company_creation_request.update_attributes(:company_id => @company.id)
+        @company.company_creation_request.activity.update_attributes(:company => @company)
+      end
       if @company.save_and_sync
         redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
       end
