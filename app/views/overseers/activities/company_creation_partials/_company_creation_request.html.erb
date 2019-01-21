@@ -34,7 +34,7 @@
           <%= company_creation_request_field.input :email %>
         </div>
         <div class="col-12 col-md-6">
-          <%= company_creation_request_field.input :account_type, :wrapper => :custom_multi_select, as: :select, collection: enum_to_collection(CompanyCreationRequest.account_types) %>
+          <%= company_creation_request_field.input :account_type, as: :select, include_blank: false, collection: enum_to_collection(CompanyCreationRequest.account_types) %>
         </div>
       </div>
       <%= company_creation_request_field.input :address %>

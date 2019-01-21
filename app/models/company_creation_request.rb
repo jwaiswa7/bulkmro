@@ -10,10 +10,10 @@ class CompanyCreationRequest < ApplicationRecord
   scope :requested, -> {where(:company_id => nil)}
   scope :created, -> {where.not(:company_id => nil)}
 
-  enum :account_types => {
+  enum :account_type => {
       :is_supplier => 10,
       :is_customer => 20,
-  }
+  }, _prefix: true
 
   def status
     (self.company_id.present?) ? 'created' : 'Requested'

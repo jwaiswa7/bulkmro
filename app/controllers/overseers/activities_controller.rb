@@ -116,9 +116,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :first_name,
             :last_name,
             :address,
-            :account_id,
             :account_type,
-            :account_name
           ]
     )
   end
