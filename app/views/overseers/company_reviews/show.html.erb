@@ -3,7 +3,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        Rating of <%= @company_review.company.name %> given by <%= @company_review.created_by.name %>
+        Rating of <%= @company_review.company.name %> given by <%= @company_review.created_by.name %> with average rating &nbsp; <div class="show-star" data-rating="<%= @company_review.rating %>"></div>
       </h3>
       <% if @company_review.created_by == current_overseer %>
         <button type="button" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down change-company-review" data-toggle="modal" data-target="#modalRatingForm">Change Rating</button>
