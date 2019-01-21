@@ -38,9 +38,6 @@ import salesShipments from "./salesShipments/init";
 // Purchase Orders
 import purchaseOrders from "./purchaseOrders/init";
 
-// PO Requests
-import poRequests from "./poRequests/init";
-
 // Payment Requests
 import paymentRequests from "./paymentRequests/init";
 
