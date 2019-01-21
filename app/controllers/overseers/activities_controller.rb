@@ -24,7 +24,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     authorize @activity
     if @activity.save
-      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
+      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
     else
       render 'new'
     end
@@ -41,7 +41,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
     authorize @activity
     if @activity.save
-      redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
+      redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
     end
   end
 
