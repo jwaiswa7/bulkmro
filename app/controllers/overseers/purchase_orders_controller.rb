@@ -24,20 +24,20 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params)
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     render 'material_readiness_queue'
   end
 
   def material_pickup_queue
     @status = 'Material Pickup Queue'
-    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Pickup').order("created_at DESC"), params)
+    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Pickup').order("created_at DESC"), params).order(:expected_delivery_date)
     authorize @material_pickup_requests
     render 'material_pickup_queue'
   end
 
   def material_delivered_queue
     @status = 'Material Delivered Queue'
-    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Delivered').order("created_at DESC"), params)
+    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Delivered').order("created_at DESC"), params).order(:actual_delivery_date)
     authorize @material_pickup_requests
     render 'material_pickup_queue'
   end
@@ -53,7 +53,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
     if @purchase_order.valid?
 
-      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date'])
+      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
       if messages.present?
         @purchase_order.comments.create(:message => messages, :overseer => current_overseer)
       end
@@ -93,6 +93,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     params.require(:purchase_order).permit(
         :material_status,
         :supplier_dispatch_date,
+        :followup_date,
         :revised_supplier_delivery_date,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
