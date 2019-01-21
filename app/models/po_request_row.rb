@@ -46,7 +46,7 @@ class PoRequestRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * (self.sales_quote_row.applicable_tax_percentage || 0))
+    self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage/100) || 0))
   end
 
   def converted_total_selling_price

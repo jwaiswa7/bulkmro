@@ -8,7 +8,6 @@ class Services::Overseers::SalesOrders::PreviewPoRequests < Services::Shared::Ba
 
   def call
       po_requests = {}
-
       @params.each do |index, po_request_hash|
         attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
         po_requests[po_request_hash[:supplier_id]] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], status: po_request_hash[:status], address_id: po_request_hash[:address_id], contact_id: po_request_hash[:contact_id], supplier_committed_date: po_request_hash[:supplier_committed_date], attachments: attachments)

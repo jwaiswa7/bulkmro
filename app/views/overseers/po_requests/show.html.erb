@@ -178,7 +178,7 @@
                   <td><%= row.product.try(:brand).to_s %></td>
                   <td><%= row.tax_code %></td>
                   <td><%= row.tax_rate %></td>
-                  <td><%= row.quantity.to_i %></td>
+                  <td><%= row.quantity.to_f %></td>
                   <td><%= row.sales_order_row.measurement_unit %></td>
                   <td><%= row.sales_order_row.converted_unit_selling_price %></td>
                   <td><%= row.converted_total_selling_price %></td>
