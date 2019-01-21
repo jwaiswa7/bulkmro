@@ -1,5 +1,6 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
+  has_many :mpr_rows
 
   after_create :increase_product_count
   before_destroy :decrease_product_count
@@ -64,4 +65,11 @@ class PurchaseOrderRow < ApplicationRecord
     product.first if product.present?
   end
 
+  def get_pickup_quantity
+    self.quantity - self.mpr_rows.sum(&:reserved_quantity)
+  end
+
+  def to_s
+    get_product.to_s
+  end
 end

@@ -61,6 +61,7 @@ class SalesOrder < ApplicationRecord
       :'Hold by Finance' => 80
   }, _prefix: true
 
+
   enum status: {
       :'Requested' => 10,
       :'SAP Approval Pending' => 20,

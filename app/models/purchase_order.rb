@@ -17,6 +17,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
+  has_many :material_pickup_requests
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
@@ -60,15 +61,15 @@ class PurchaseOrder < ApplicationRecord
       :'Closed' => 96
   }
 
-  enum internal_status: {
+  enum material_status: {
       :'Material Readiness Follow-Up' => 10,
       :'Material Pickup' => 20,
       :'Material Delivered' => 30
   }
 
-  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
-  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
-  scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  scope :material_readiness_queue, -> {where(:material_status => :'Material Readiness Follow-Up')}
+  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickup')}
+  scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
