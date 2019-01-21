@@ -174,8 +174,8 @@
                   <td><%= sr_no + 1 %></td>
                   <td><%= row.product.to_s %></td>
                   <td><%= row.product.try(:brand).to_s %></td>
-                  <td><%= row.sales_order_row.best_tax_code %></td>
-                  <td><%= row.sales_order_row.best_tax_rate %></td>
+                  <td><%= row.tax_code %></td>
+                  <td><%= row.tax_rate %></td>
                   <td><%= row.quantity.to_i %></td>
                   <td><%= row.sales_order_row.measurement_unit %></td>
                   <td><%= row.sales_order_row.converted_unit_selling_price %></td>
