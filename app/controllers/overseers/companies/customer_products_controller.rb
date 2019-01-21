@@ -26,9 +26,20 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def create
+    custom_params = customer_product_params
     @product = Product.find(customer_product_params[:product_id])
     @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
-    @customer_product.assign_attributes(customer_product_params)
+
+    custom_params[:tag_ids].reject!(&:empty?)
+    custom_params[:tag_ids].each_with_index do |tag_id, index|
+      @tag = @company.tags.where(id: tag_id)
+      if @tag.blank?
+        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        custom_params[:tag_ids][index] = @new_tag.id.to_s
+      end
+    end
+
+    @customer_product.assign_attributes(custom_params)
     @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
     @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
 
@@ -62,9 +73,20 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def update
+    custom_params = customer_product_params
     @product = Product.find(customer_product_params[:product_id])
     @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
-    @customer_product.assign_attributes(customer_product_params)
+
+    custom_params[:tag_ids].reject!(&:empty?)
+    custom_params[:tag_ids].each_with_index do |tag_id, index|
+      @tag = @company.tags.where(id: tag_id)
+      if @tag.blank?
+        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        custom_params[:tag_ids][index] = @new_tag.id.to_s
+      end
+    end
+
+    @customer_product.assign_attributes(custom_params)
     @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
     @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
     authorize @customer_product
@@ -92,6 +114,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   def customer_product_params
     params.require(:customer_product).permit(
         :name,
+        :company_id,
         :product_id,
         :tax_code_id,
         :tax_rate_id,
