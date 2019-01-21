@@ -16,7 +16,11 @@ class ReviewQuestion < ApplicationRecord
   end
 
   def max_weightage
-    (100 - ReviewQuestion.where(:question_type => self.question_type).pluck(:weightage).sum).to_i
+    (100 - (ReviewQuestion.where(:question_type => self.question_type).pluck(:weightage).sum  - self.weightage)).to_i
+  end
+
+  def self.overall_weightage(type = 'Logistics')
+    ReviewQuestion.where(:question_type => type).pluck(:weightage).sum
   end
 
   private
