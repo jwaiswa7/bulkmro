@@ -1,5 +1,6 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
+  has_many :mpr_rows
 
   def sku
     get_product.sku if get_product.present?
@@ -45,9 +46,15 @@ class PurchaseOrderRow < ApplicationRecord
     self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
-  private
   def get_product
     Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
   end
 
+  def get_pickup_quantity
+    self.quantity - self.mpr_rows.sum(&:reserved_quantity)
+  end
+
+  def to_s
+    get_product.to_s
+  end
 end

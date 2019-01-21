@@ -23,16 +23,20 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     !record.invoice_request.present?
   end
 
-  def edit_internal_status?
+  def edit_material_followup?
     edit?
   end
 
-  def update_internal_status?
+  def update_material_followup?
     edit?
   end
 
   def material_readiness_queue?
     edit?
+  end
+
+  def new_pickup_request?
+    record.rows.sum(&:get_pickup_quantity) > 0
   end
 
   def material_pickup_queue?

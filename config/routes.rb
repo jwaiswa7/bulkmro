@@ -29,7 +29,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -217,8 +217,8 @@ Rails.application.routes.draw do
 
     resources :purchase_orders do
       member do
-        get 'edit_internal_status'
-        patch 'update_internal_status'
+        get 'edit_material_followup'
+        patch 'update_material_followup'
       end
 
       collection do
@@ -227,6 +227,15 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+      end
+
+      scope module: 'purchase_orders' do
+        resources :material_pickup_requests do
+          member do
+            get 'confirm_delivery'
+            get 'delivered_material'
+          end
+        end
       end
     end
 
