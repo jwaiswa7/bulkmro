@@ -59,7 +59,7 @@ class PaymentRequest < ApplicationRecord
   validates_presence_of :inquiry
   validates_presence_of :cheque_date, if: :is_payment_type_cheque?
   with_options if: :"Accounts?" do |payment_request|
-    payment_request.validates_presence_of :due_date, :purpose_of_payment, :supplier_bank_details
+    payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
 
   after_initialize :set_defaults, :if => :new_record?
