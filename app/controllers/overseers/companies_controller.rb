@@ -23,8 +23,9 @@ class Overseers::CompaniesController < Overseers::BaseController
 
     company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
     review_questions.each do |question|
-      CompanyRating.where({company_review_id: company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
+      company_review.company_ratings.where({review_question_id: question.id, created_by: current_overseer}).first_or_create!
     end
+
     respond_to do |format|
       format.html {render :partial => "rating_modal",  locals: {company_review: company_review,:supplier => @company}}
     end
