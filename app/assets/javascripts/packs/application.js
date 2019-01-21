@@ -17,7 +17,8 @@ import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
 import dropdowns from "./components/dropdownSubmenus";
 import chartjs from "./components/chartjs";
-
+import lazyLoadImages from "./components/lazyLoadImages"
+import highlightjs from "./components/highlightjs";
 // Namespacing all imports under app
 let app = {};
 
@@ -39,7 +40,9 @@ app.initializeComponents = () => {
     notify();
     stepRoundUp();
     dropdowns();
-    chartjs()
+    chartjs();
+    lazyLoadImages();
+    highlightjs();
 };
 
 // Turbolinks load event

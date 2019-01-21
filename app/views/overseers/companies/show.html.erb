@@ -3,7 +3,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        <img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/><%= @company.name %>
+        <a href="<%= overseers_account_path(@company.account) %>"><img src="https://ui-avatars.com/api/?size=128&name=<%= @company.account.name %>&rounded=true&font-size=0.5&background=0D8ABC&color=fff" height="35" class="pr-2"/></a><%= @company.name %>
       </h3>
 
       <% if policy(@company).edit? %>
@@ -102,6 +102,11 @@
                   <strong class="text-info"><%= @company.remote_uid %></strong>
                 </div>
               <% end %>
+
+                <div class="col-6 col-md-3 mb-2">
+                  <strong class="d-block">Active</strong>
+                  <strong class="text-info"><%= format_boolean(@company.is_active) %></strong>
+                </div>
 
 
               <% if @company.default_payment_option.present? %>
@@ -271,6 +276,9 @@
         <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
       </li>
       <li class="nav-item">
@@ -284,7 +292,7 @@
     <div class="tab-content">
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
         <div class="d-md-flex justify-content-between">
-          <% if policy(:address).new? %>
+          <% if policy(:address).new? && policy(@company).new_address? %>
             <h3 class="display-5 mb-1 d-none d-md-block">Addresses</h3>
             <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Address</a>
@@ -315,7 +323,7 @@
       <div class="tab-pane fade" id="contacts" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
-          <% if policy(:contact).new? %>
+          <% if policy(:contact).new? && policy(@company).new_contact? %>
             <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
               Contact</a>
           <% end %>
@@ -513,22 +521,46 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Online Orders</h3>
         </div>
 
-        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive w-100 table-responsive" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort all" data-width="70px"></th>
+            <th class="no-sort desktop text-right">Online Order #</th>
+            <th class="no-sort desktop">Status</th>
+            <th class="no-sort desktop">Payment Method</th>
+            <th class="no-sort desktop">Account</th>
+            <th class="no-sort all">Company</th>
             <th class="no-sort all">Customer Name</th>
             <th class="no-sort all">Line Items</th>
+            <th class="sort all">Total (Excl. Tax)</th>
+            <th class="sort all" data-name="grand_total">Total (Incl. Tax)</th>
             <th class="no-sort all">Inside Sales</th>
             <th class="no-sort all">Outside Sales</th>
             <th class="no-sort all">Manager</th>
-            <th class="no-sort desktop" data-name="created_at">Created</th>
+            <th class="sort desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-
+      <div class="tab-pane fade" id="payments" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Online Payments</h3>
+        </div>
+        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%=  payments_overseers_customer_orders_path(:company_id =>@company.id)%>">
+          <thead>
+          <tr>
+            <th class="no-sort all"></th>
+            <th class="no-sort desktop">Status</th>
+            <th class="no-sort all">Online Order</th>
+            <th class="no-sort desktop ">Payment #</th>
+            <th class="no-sort desktop">Amount</th>
+            <th class="sort desktop" data-name="created_at">Created</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
       <div class="tab-pane fade" id="quotes" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Quotes</h3>

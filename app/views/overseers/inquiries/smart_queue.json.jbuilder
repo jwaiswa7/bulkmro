@@ -14,7 +14,7 @@ json.data (@inquiries) do |inquiry|
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
       format_currency(inquiry.calculated_total),
-      format_date(inquiry.created_at)
+      format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] } ]
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + smart_queue_priority_color(inquiry.priority)})
