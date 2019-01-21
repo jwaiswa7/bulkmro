@@ -9,6 +9,8 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).can_request_po?
                         row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'file-invoice', 'Request PO', 'success', :_blank)
+                      end,
+                      if policy(sales_order).can_request_po?
                         row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'dark', :_blank)
                       end,
                       if policy(sales_order).can_request_invoice?
