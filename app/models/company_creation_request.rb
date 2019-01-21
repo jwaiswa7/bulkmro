@@ -16,7 +16,7 @@ class CompanyCreationRequest < ApplicationRecord
   }
 
   def status
-    (self.company_id.present?) ? 'created' : (self.activity.company.present? ? 'Replaced' : 'Requested')
+    (self.company_id.present?) ? 'created' : 'Requested'
   end
 
 end
