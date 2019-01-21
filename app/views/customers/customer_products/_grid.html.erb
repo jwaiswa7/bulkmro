@@ -40,38 +40,32 @@
   <input type="search" name="q" class="form-control filter-list-input" placeholder="Enter search term/keywords" value="<%= params[:q] %>">
 </div>
 
-<div class="accordion mt-2" id="product-filters">
-  <div class="card">
-    <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
-      <strong>Filters</strong>
-    </a>
-    <div id="filters" class="collapse show" data-parent="#product-filters">
-      <%= simple_form_for :custom_filters, :method => 'get' do |f| %>
-        <div class='card-body'>
-          <p class="text-uppercase text-black-50 mb-2">Categories</p>
-          <div class="form-row">
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                  <%= f.collection_check_boxes :tags, @tags,:first, :second, checked:  @checked_tags do |b|%>
-                    <%= b.label(class: "check_box") { b.check_box + b.text } %>
-                    <% end %>
-                </div>
+<% if @tags.count > 0 %>
+  <div class="accordion mt-2" id="product-filters">
+    <div class="card">
+      <a class="card-header py-2 text-black-50 text-uppercase" href="#" data-toggle="collapse" data-target="#filters">
+        <strong>Filters</strong>
+      </a>
+      <div id="filters" class="collapse show" data-parent="#product-filters">
+        <%= simple_form_for :custom_filters, :method => 'get' do |f| %>
+          <div class='card-body'>
+            <p class="text-uppercase text-black-50 mb-2">Categories</p>
+            <%= f.input :tags, :collection => @tags, :value_method => :first, :label_method => :second, checked: @checked_tags, :as => :check_boxes %>
+            <div class="form-row mt-2">
+              <div class="col-4 col-lg-2 col-md-3">
+                <%= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
+                <!--              <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
+              </div>
+              <div class="col-8 col-lg-10 col-md-0">
+                <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
+              </div>
             </div>
           </div>
-          <div class="form-row mt-2">
-            <div class="col-4 col-lg-2 col-md-3">
-              <%= link_to "Clear", customers_products_path, class: "btn btn-outline-danger btn-block" %>
-<!--              <button type="reset" href="customers_products_path" class="btn btn-outline-danger btn-block">Clear</button>-->
-            </div>
-            <div class="col-8 col-lg-10 col-md-0">
-              <button type="submit" href="#" class="btn btn-success btn-block">Filter products</button>
-            </div>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <div class="form-row mt-2" id="product-grid">
   <% if @customer_products.count > 0 %>
@@ -81,9 +75,9 @@
           <div class="card-body">
             <a href="<%= customers_product_path(customer_product) %>">
               <%# if customer_product.best_image.present? %>
-                <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500" />
+              <img data-src="<%= url_for(customer_product.medium_best_image) %>" src="<%= image_path('coming_soon.png') %>" class="lazy-load" alt="<%= customer_product.sku %>" width="500"/>
               <%# else %>
-<!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
+              <!--                <img data-src="<%#= image_path('coming_soon.png') %>" alt="<%#= customer_product.sku %>" width="500" class="lazy-load" src="<%#= image_path('coming_soon.png') %>" />-->
               <%# end %>
               <h5 class="mb-0 text-small mt-2"><strong><%= truncate(customer_product.name, :length => 100) %></strong></h5>
               <h5 class="mb-0 text-small"><strong>(#<%= customer_product.sku %>)</strong></h5>
