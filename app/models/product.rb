@@ -39,6 +39,7 @@ class Product < ApplicationRecord
 
   scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
+  scope :is_service, ->{ where(is_service: true)}
 
   validates_presence_of :name
 

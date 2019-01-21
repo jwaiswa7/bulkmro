@@ -7,9 +7,12 @@ class ProductsIndex < BaseIndex
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
     field :approved, value: -> (record) { record.approval.try(:created_at) }
     field :has_images, value: -> (record) { record.images.attached? }
+    field :is_service
     field :sku, analyzer: 'sku_substring'
     field :name, analyzer: 'substring'
     field :mpn, value: -> (record) { record.mpn.to_s },analyzer: 'substring'
+    field :total_pos, value: -> (record) {record.total_pos}, type: 'integer'
+    field :total_quotes, value: -> (record) {record.total_quotes}, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
     field :created_by, value: -> (record) { record.created_by.to_s }

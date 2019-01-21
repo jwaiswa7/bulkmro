@@ -2,6 +2,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   has_paper_trail
+  include Extensions::ActiveRecord::FindByOrderedIds
   include PgSearch
   include Hashid::Rails
 

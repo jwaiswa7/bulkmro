@@ -29,7 +29,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
@@ -181,7 +182,8 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
-        get 'pending'
+        get 'pending_and_rejected'
+        get 'cancelled'
       end
 
     end
@@ -197,6 +199,9 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
       end
 
       collection do
@@ -212,13 +217,14 @@ Rails.application.routes.draw do
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
       end
     end
 
     resources :purchase_orders do
       member do
-        get 'edit_internal_status'
-        patch 'update_internal_status'
+        get 'edit_material_followup'
+        patch 'update_material_followup'
       end
 
       collection do
@@ -227,6 +233,15 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+      end
+
+      scope module: 'purchase_orders' do
+        resources :material_pickup_requests do
+          member do
+            get 'confirm_delivery'
+            get 'delivered_material'
+          end
+        end
       end
     end
 

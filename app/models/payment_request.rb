@@ -11,7 +11,7 @@ class PaymentRequest < ApplicationRecord
   belongs_to :po_request
   has_many_attached :attachments
   has_one :payment_option, :through => :purchase_order
-  belongs_to :company_bank
+  belongs_to :company_bank, required: false
   accepts_nested_attributes_for :inquiry
 
   enum status: {
@@ -50,16 +50,16 @@ class PaymentRequest < ApplicationRecord
       :'Accounts' => 20
   }
 
-  scope :Pending, -> {where(status:[10,11])}
+  scope :Pending, -> {where(status: [10, 11])}
   scope :Completed, -> {where(:status => 50)}
-  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Supplier Info: PI mismatch'])}
-  scope :Logistics, -> {where(status:[10,11], request_owner:['Logistics','Accounts'])}
-  scope :Accounts, -> {where(status:[10,11], request_owner: 'Accounts')}
+  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch'])}
+  scope :Logistics, -> {where(status: [10, 11], request_owner: ['Logistics', 'Accounts'])}
+  scope :Accounts, -> {where(status: [10, 11], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
   validates_presence_of :cheque_date, if: :is_payment_type_cheque?
   with_options if: :"Accounts?" do |payment_request|
-    payment_request.validates_presence_of :due_date, :purpose_of_payment, :supplier_bank_details
+    payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
 
   after_initialize :set_defaults, :if => :new_record?
@@ -79,9 +79,12 @@ class PaymentRequest < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = { 10 => 'Pending', 30 =>'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
+    status_category = {10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
     status_category.each do |index, category|
-      grouped_status[category] = PaymentRequest.statuses.collect{|status,v|;if v.between?(index, index+9);status;end}.compact
+      grouped_status[category] = PaymentRequest.statuses.collect {|status, v| ;
+      if v.between?(index, index + 9);
+        status;
+      end}.compact
     end
     grouped_status
   end

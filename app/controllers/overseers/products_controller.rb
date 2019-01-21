@@ -4,7 +4,6 @@ class Overseers::ProductsController < Overseers::BaseController
   def index
     service = Services::Overseers::Finders::Products.new(params)
     service.call
-
     @indexed_products = service.indexed_records
     @products = service.records
     authorize @products
@@ -16,6 +15,19 @@ class Overseers::ProductsController < Overseers::BaseController
 
     @indexed_products = service.indexed_records
     @products = service.records.active
+    authorize @products
+  end
+
+  def service_autocomplete
+    base_filter = {
+        :base_filter_key => "is_service",
+        :base_filter_value => true
+    }
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
     authorize @products
   end
 
