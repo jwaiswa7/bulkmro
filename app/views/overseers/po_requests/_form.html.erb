@@ -95,7 +95,7 @@
                   <label class="form-control-label d-block">Address</label>
                   <%= f.object.address.to_compact_multiline_s %><br>
                   <% if f.object.contact.present? %>
-                    <strong>Email: </strong><%= f.object.contact.try(email) || '-' %>
+                    <strong>Email: </strong><%= f.object.contact.email || '-' %>
                   <% end %>
                 </div>
               <% end %>
