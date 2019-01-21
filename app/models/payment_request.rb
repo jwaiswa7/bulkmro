@@ -11,7 +11,7 @@ class PaymentRequest < ApplicationRecord
   belongs_to :po_request
   has_many_attached :attachments
   has_one :payment_option, :through => :purchase_order
-  belongs_to :company_bank
+  belongs_to :company_bank, required:false
   accepts_nested_attributes_for :inquiry
 
   enum status: {

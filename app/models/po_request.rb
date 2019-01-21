@@ -54,7 +54,7 @@ class PoRequest < ApplicationRecord
   }
 
   scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
-  scope :handled, -> {where.not(:status => [:'Requested'])}
+  scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
 
