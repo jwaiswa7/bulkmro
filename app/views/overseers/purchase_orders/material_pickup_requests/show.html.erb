@@ -88,6 +88,7 @@
           <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
             <thead>
             <tr>
+              <td></td>
               <td><strong class="d-block">Name</strong></td>
               <td><strong class="d-block">Sku</strong></td>
               <td><strong class="d-block">PO Total Quantity</strong></td>
@@ -96,8 +97,9 @@
             </tr>
             </thead>
             <tbody>
-            <% @mpr.rows.each do |row| %>
+            <% @mpr.rows.each_with_index do |row,index| %>
               <tr>
+                <td><%= index + 1 %></td>
                 <td><%= row.purchase_order_row.get_product.name %></td>
                 <td><%= row.purchase_order_row.get_product.sku %></td>
                 <td><%= row.purchase_order_row.quantity %></td>
@@ -109,6 +111,19 @@
           </table>
         </div>
       </div>
+      <% if @mpr.comments.persisted.size > 0 %>
+
+        <div class="card-body">
+          <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+          <div class="chats mb-3">
+            <% @mpr.comments.persisted.each do |comment| %>
+              <%= format_comment(comment) %>
+            <% end %>
+          </div>
+        </div>
+
+      <% end %>
     </div>
+
   </section>
 </div>

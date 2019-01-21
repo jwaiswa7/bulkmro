@@ -2,7 +2,8 @@ class MprRow < ApplicationRecord
   belongs_to :material_pickup_request
   belongs_to :purchase_order_row
 
-  validates_uniqueness_of :purchase_order_row, scope: :material_pickup_request
+  validates_uniqueness_of :purchase_order_row_id, scope: :material_pickup_request
+  validates_numericality_of :pickup_quantity, greater_than: 0
 
   def reserved_quantity
     self.delivered_quantity.present? ? self.delivered_quantity : self.pickup_quantity
