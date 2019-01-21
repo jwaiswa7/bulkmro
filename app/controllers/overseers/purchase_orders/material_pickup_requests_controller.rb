@@ -1,5 +1,6 @@
 class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::BaseController
   before_action :set_material_pickup_request, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
+  before_action :set_purchase_order, only: [:new, :create]
 
   def index
 
@@ -12,7 +13,6 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   end
 
   def new
-    @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
     @logistics_owner = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(@purchase_order).call
     @mpr = MaterialPickupRequest.new(purchase_order: @purchase_order, logistics_owner: @logistics_owner)
 
@@ -23,7 +23,6 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   end
 
   def create
-    @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
     @mpr = @purchase_order.material_pickup_requests.new()
     @mpr.assign_attributes(mpr_params.merge(:overseer => current_overseer))
     authorize @mpr
@@ -41,40 +40,18 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   def update
     authorize @mpr
 
-
     @mpr.assign_attributes(mpr_params.merge(:overseer => current_overseer))
 
-    messages = []
-
-    if @mpr.expected_dispatch_date_changed?
-      messages.push("Expected Dispatch Date Changed from #{@mpr.expected_dispatch_date_was.try(:strftime, "%d-%b-%Y")} to  #{@mpr.expected_dispatch_date.try(:strftime, "%d-%b-%Y")}")
-
-    end
-
-    if @mpr.expected_delivery_date_changed?
-      messages.push("Expected Delivery Date Changed from #{@mpr.expected_delivery_date_was.try(:strftime, "%d-%b-%Y")} to  #{@mpr.expected_delivery_date.try(:strftime, "%d-%b-%Y")}")
-
-    end
-
-    if @mpr.actual_delivery_date_changed?
-      messages.push("Actual Delivery Date Changed from #{@mpr.actual_delivery_date_was.try(:strftime, "%d-%b-%Y")} to  #{@mpr.actual_delivery_date.try(:strftime, "%d-%b-%Y")}",)
-
-    end
-
-    if messages.any?
-      @mpr_comment = @mpr.comments.new(:message => messages.join(", \r\n"), :overseer => current_overseer)
-      @mpr_comment.save!
-    end
-    if @mpr.save
-
+    if @mpr.valid?
+      messages = DateModifiedMessage.for(@mpr, ['expected_dispatch_date', 'expected_delivery_date', 'actual_delivery_date'])
+      if messages.present?
+        @mpr.comments.create(:message => messages, :overseer => current_overseer)
+      end
+      @mpr.save
       redirect_to overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr), notice: flash_message(@mpr, action_name)
     else
       render 'edit'
     end
-  end
-
-  def delivered_material
-    authorize @mpr
   end
 
   def confirm_delivery
@@ -87,6 +64,10 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   end
 
   private
+
+  def set_purchase_order
+    @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+  end
 
   def set_material_pickup_request
     @mpr = MaterialPickupRequest.find(params[:id])

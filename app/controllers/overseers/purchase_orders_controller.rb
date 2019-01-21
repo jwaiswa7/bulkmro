@@ -52,18 +52,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
-      ActiveRecord::Base.transaction do
-        if @purchase_order.supplier_dispatch_date_changed?
-          @po_comment = PoComment.new(:message => "Supplier Dispatch Date Changed: #{@purchase_order.supplier_dispatch_date.try(:strftime, "%d-%b-%Y")}", :purchase_order => @purchase_order, :overseer => current_overseer)
-          @po_comment.save!
-        end
 
-        if @purchase_order.revised_supplier_delivery_date_changed?
-          @po_comment = PoComment.new(:message => "Revised Supplier Delivery Date To: #{@purchase_order.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y")}", :purchase_order => @purchase_order, :overseer => current_overseer)
-          @po_comment.save!
-        end
-        @purchase_order.save!
+      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date'])
+      if messages.present?
+        @purchase_order.comments.create(:message => messages, :overseer => current_overseer)
       end
+
+      @purchase_order.save
       redirect_to edit_material_followup_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
       render 'edit_material_followup'
