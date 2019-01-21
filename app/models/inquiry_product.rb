@@ -29,12 +29,10 @@ class InquiryProduct < ApplicationRecord
   before_destroy :decrease_product_count
 
   def increase_product_count
-    debugger
     self.product.update_attribute('total_quotes', self.product.total_quotes + 1) if self.product.present?
   end
 
   def decrease_product_count
-    debugger
     self.product.update_attribute('total_quotes', (self.product.total_quotes == 0 ? 0 : ( self.product.total_quotes - 1 ))) if self.product.present?
   end
 
