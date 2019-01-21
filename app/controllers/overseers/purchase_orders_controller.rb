@@ -24,7 +24,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params)
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
     render 'material_readiness_queue'
   end
 

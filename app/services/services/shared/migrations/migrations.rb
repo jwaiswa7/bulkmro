@@ -2350,10 +2350,15 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
     puts errors
   end
-  
+
   def update_purchase_order_fields
     PurchaseOrder.all.each do |po|
-      po.followup_date = po.metadata['PoDate'].to_date if po.metadata.present? && po.metadata['PoDate']
+      if po.metadata.present? && po.metadata['PoDate']
+        po.followup_date = po.metadata['PoDate'].to_date
+      else
+        po.followup_date = po.created_at
+      end
+
       po.save
     end
   end

@@ -64,7 +64,9 @@ class PurchaseOrder < ApplicationRecord
   enum material_status: {
       :'Material Readiness Follow-Up' => 10,
       :'Material Pickup' => 20,
-      :'Material Delivered' => 30
+      :'Material Partial Pickup' => 25,
+      :'Material Delivered' => 30,
+      :'Material Partial Delivered' => 35
   }
 
   scope :material_readiness_queue, -> {where(:material_status => :'Material Readiness Follow-Up')}
@@ -103,6 +105,23 @@ class PurchaseOrder < ApplicationRecord
       true
     rescue ArgumentError
       false
+    end
+  end
+
+
+  def update_material_status
+
+    if (@purchase_order.material_pickup_requests.any?)
+      partial = true
+      if po.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
+      end
+      if "Material Pickup".in? po.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Pickup" : "Material Pickup"
+      elsif "Material Delivered".in? po.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Delivered" : "Material Delivered"
+      end
+      @purchase_order.material_status = status
     end
   end
 end
