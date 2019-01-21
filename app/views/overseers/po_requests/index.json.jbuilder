@@ -1,7 +1,7 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if policy(po_request).edit?
+                      if ( policy(po_request).edit? && po_request.status != 'Cancelled' )
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if policy(po_request).new_payment_request?
