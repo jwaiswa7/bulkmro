@@ -58,7 +58,14 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
+
+#    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
+#    @records = order_by_ids(@indexed_records) if indexed_records.present?
+    @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
+  end
+
+  def order_by_ids(indexed_records)
+
   end
 
 

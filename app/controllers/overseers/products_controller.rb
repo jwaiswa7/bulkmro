@@ -4,7 +4,6 @@ class Overseers::ProductsController < Overseers::BaseController
   def index
     service = Services::Overseers::Finders::Products.new(params)
     service.call
-
     @indexed_products = service.indexed_records
     @products = service.records
     authorize @products
