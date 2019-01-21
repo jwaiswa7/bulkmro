@@ -4,7 +4,7 @@
 <% provide :wrap_whitespace, true %>
 
 <% content_for :heading do %>
-  Purchase Order Requests
+  <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected')? 'Pending' : action_name.capitalize %> Purchase Order Requests
 <% end %>
 
 <% content_for(:heading_buttons) do %>
@@ -21,12 +21,20 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all" data-width="70px"></th>
-  <th class="no-sort desktop" data-name="name">Req. No.</th>
-  <th class="no-sort desktop">Status</th>
-  <th class="no-sort desktop text-right" data-name="name">Inquiry #</th>
-  <th class="no-sort all text-right" data-name="sku">Order #</th>
-  <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
+  <th class="no-sort desktop" data-name="name">PO Request No.</th>
+  <th class="no-sort desktop text-right" data-name="name">Inquiry</th>
+  <th class="no-sort all text-right" data-name="sku">Order</th>
   <th class="no-sort all" data-name="sku">Inside Sales</th>
+  <th class="no-sort all" data-name="supplier">Supplier</th>
+  <th class="no-sort all" data-name="bp">Selling Price</th>
+  <th class="no-sort all" data-name="sp">Cost Price</th>
+  <th class="no-sort all" data-name="po_margin">PO Margin %</th>
+  <th class="no-sort all" data-name="overall_margin">Overall Margin %</th>
+  <th class="no-sort all">Committed Delivery Date</th>
+  <th class="no-sort all">Committed Supplier Dispatch Date</th>
+  <th class="no-sort all">Committed Supplier Delivery Date</th>
+  <th class="no-sort desktop">Status</th>
+  <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
   <th class="sort desktop" data-name="created_at">Requested At</th>
   <th class="no-sort desktop" data-name="name">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>

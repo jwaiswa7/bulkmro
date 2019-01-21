@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
@@ -169,7 +170,8 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
-        get 'pending'
+        get 'pending_and_rejected'
+        get 'cancelled'
       end
 
     end
@@ -185,6 +187,9 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
       end
 
       collection do
@@ -200,6 +205,7 @@ Rails.application.routes.draw do
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
       end
     end
 
