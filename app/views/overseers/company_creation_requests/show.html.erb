@@ -6,14 +6,10 @@
         <%= @company_creation_request.name %>:&nbsp;<%= status_badge(@company_creation_request.status) %>
       </h3>
 
-      <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
-        <a href="<%= new_overseers_account_company_path(@company_creation_request.account, :ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+      <% if !@company_creation_request.company.present? && policy(:company).new? %>
+        <a href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
           New
           Company</a>
-      <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
-        <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
-          New
-          Account</a>
       <% end %>
 
     </div>
@@ -43,20 +39,6 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
-              Account Name
-            </strong>
-            <%= @company_creation_request.account.present? ? @company_creation_request.account.name : @company_creation_request.account_name %>
-          </div>
-          <div class="col-6 col-md-4 mb-2">
-            <strong class="d-block">
-              Account Type
-            </strong>
-            <%= @company_creation_request.account.present? ? @company_creation_request.account.account_type : @company_creation_request.account_type %>
-          </div>
-        </div>
-        <div class="form-row">
           <div class="col-12">
             <strong class="d-block">
               Address
@@ -77,14 +59,10 @@
             <h6 class="text-uppercase text-black-50 mb-1">Create OR Link Company</h6>
             <div class="form-row">
               <div class="col-4">
-                <% if @company_creation_request.account.present? && !@company_creation_request.company.present? && policy(:company).new? %>
-                  <a href="<%= new_overseers_account_company_path(@company_creation_request.account, :ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
+                <% if  !@company_creation_request.company.present? && policy(:company).new? %>
+                  <a href="<%= new_overseers_company_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
                     New
                     Company</a>
-                <% elsif !@company_creation_request.account.present? && policy(:account).new? %>
-                  <a href="<%= new_overseers_account_path(:ccr_id => @company_creation_request.id) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>Create
-                    New
-                    Account</a>
                 <% end %>
               </div>
               <div class="col-2"> OR</div>

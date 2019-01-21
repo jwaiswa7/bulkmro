@@ -13,13 +13,7 @@ json.data (@activities) do |activity|
                       end,
                   ].join(' '),
                   activity.created_by.to_s,
-                  if activity.activity_account.present?
-                    conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
-                  elsif activity.company_creation_request.present?
-                    activity.company_creation_request.account_name
-                  else
-                    '--'
-                  end,
+                  activity.account.present? ? activity.account.name : '',
                   if activity.activity_company.present?
                     conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), policy(activity.activity_company))
                   elsif activity.company_creation_request.present?
