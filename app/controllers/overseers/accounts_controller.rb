@@ -65,8 +65,7 @@ class Overseers::AccountsController < Overseers::BaseController
     params.require(:account).permit(
         :name,
         :alias,
-        :account_type,
-        :reference_company_creation_request_id
+        :account_type
     )
   end
 
