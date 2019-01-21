@@ -1842,7 +1842,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           product.save
         else
           product.name = x.get_column('New Discription')
-          product.save
+          product.save_and_sync
         end
       end
     end

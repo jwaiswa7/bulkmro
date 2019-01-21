@@ -163,9 +163,11 @@
                 <th>HSN</th>
                 <th>T. Rate</th>
                 <th>Quantity</th>
-                <th>MOU</th>
+                <th>UOM</th>
                 <th>UP</th>
                 <th>TP</th>
+                <th>TT</th>
+                <th>TP with Tax</th>
               </tr>
               </thead>
               <tbody>
@@ -174,12 +176,14 @@
                   <td><%= sr_no + 1 %></td>
                   <td><%= row.product.to_s %></td>
                   <td><%= row.product.try(:brand).to_s %></td>
-                  <td><%= row.sales_order_row.best_tax_code %></td>
-                  <td><%= row.sales_order_row.best_tax_rate %></td>
-                  <td><%= row.quantity.to_i %></td>
+                  <td><%= row.tax_code %></td>
+                  <td><%= row.tax_rate %></td>
+                  <td><%= row.quantity.to_f %></td>
                   <td><%= row.sales_order_row.measurement_unit %></td>
                   <td><%= row.sales_order_row.converted_unit_selling_price %></td>
                   <td><%= row.converted_total_selling_price %></td>
+                  <td><%= row.converted_total_tax %></td>
+                  <td><%= row.converted_total_selling_price_with_tax %></td>
                 </tr>
               <% end %>
               </tbody>

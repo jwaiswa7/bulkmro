@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests, :create_purchase_orders_requests]
+  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests,:create_purchase_orders_requests]
   def pending
     authorize :sales_order
 
@@ -133,8 +133,15 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
     @po_requests = service.call
-
   end
+
+  def preview_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+  end
+
 
   def create_purchase_orders_requests
     authorize :sales_order
@@ -163,6 +170,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :address_id,
               :contact_id,
               :status,
+              :supplier_committed_date,
               :attachments => [],
               :rows_attributes => [
                   :id,
