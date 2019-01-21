@@ -28,7 +28,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
                                             multi_match: {
                                                 query: query,
                                                 operator: 'and',
-                                                fields: %w[sku^3 sku_edge name brand category mpn],
+                                                fields: %w[sku^3 sku_edge name brand category mpn total_pos total_quotes],
                                                 minimum_should_match: '100%'
                                             }
                                         })
