@@ -21,7 +21,7 @@ class Overseers::CompaniesController < Overseers::BaseController
       type = "Logistics"
       review_questions = ReviewQuestion.logistics
     end
-    company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, company: @company).first_or_create!
+    company_review = CompanyReview.where(created_by: current_overseer, survey_type: type, rateable: @company).first_or_create!
 
     review_questions.each do |question|
       CompanyRating.where({company_review_id: company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
@@ -34,17 +34,16 @@ class Overseers::CompaniesController < Overseers::BaseController
 
   def update_rating
     authorize @company
-    company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
+
     @company_review = CompanyReview.find(params[:company_review][:id])
-    if @company_review.present?
-      company_ratings_attributes.each do |index,company_rating_attribute|
-        @company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).update({rating: company_rating_attribute['rating'].to_i})
-      end
-      average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
-      @company_review.update!(rating: average_company_rating)
-      overall_rating = CompanyReview.where(company_id: @company_review.company_id).average(:rating)
-      @company.update!({rating: overall_rating})
-    end
+    average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
+    @company_review.update_attributes!(rating: average_company_rating, overseer: current_overseer)
+    Rate.create({rater: current_overseer, rateable_type: "CompanyReview", rateable_id: @company_review.id, stars: @company_review.company_ratings.map(&:calculate_rating).sum})
+    # average_company_rating = @company_review.rating_for(@company_review,'CompanyRating')
+    overall_rating = CompanyReview.where(rateable_id: @company_review.rateable_id).average(:rating)
+    Rate.create({rater: current_overseer, rateable_type: @company_review.rateable_type, rateable_id: @company_review.rateable_id, stars: overall_rating})
+    @company_review.rateable.update({rating: overall_rating})
+
     redirect_to overseers_companies_path
   end
 

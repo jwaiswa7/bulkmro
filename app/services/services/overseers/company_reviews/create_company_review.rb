@@ -18,7 +18,7 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
       @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,@review_type).present?
 
       if @can_review
-        @company_review = CompanyReview.where(created_by: current_overseer, survey_type: @review_type, company: @supplier).first_or_create!
+        @company_review = CompanyReview.where(created_by: current_overseer, survey_type: @review_type, rateable: @supplier).first_or_create!
 
         if @review_type == 'Sales'
           review_questions = ReviewQuestion.sales

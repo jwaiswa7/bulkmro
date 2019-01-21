@@ -43,7 +43,7 @@ class Company < ApplicationRecord
   has_many :customer_orders
   has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
   has_many :company_reviews, as: :rateable
-  ratyrate_rateable "supplier_responsiveness"
+  ratyrate_rateable "CompanyReview"
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof

@@ -4,6 +4,7 @@ class CompanyReview < ApplicationRecord
   has_many :company_ratings, dependent: :destroy
   accepts_nested_attributes_for :company_ratings, allow_destroy: true
   belongs_to :rateable, polymorphic: true
+  ratyrate_rateable"CompanyRating"
 
   enum survey_type:{
     :'Logistics' => 10,

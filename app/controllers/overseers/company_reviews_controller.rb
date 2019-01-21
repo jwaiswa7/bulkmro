@@ -8,18 +8,14 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
   def update_rating
     authorize @company_review
-    company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
-    company_ratings_attributes.each do |index,company_rating_attribute|
-      if !@company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).first.update({rating: company_rating_attribute['rating'].to_f})
-        redirect_to_path_generation("Please enter Feedback to proceed.")
-        return
-      end
-    end
 
     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
     @company_review.update_attributes!(rating: average_company_rating, overseer: current_overseer)
-
+    @company_review.rate(average_company_rating, current_overseer, "CompanyRating")
+    # Rate.create({rater: current_overseer, rateable_type: "CompanyReview", rateable_id: @company_review.id, stars: @company_review.company_ratings.map(&:calculate_rating).sum})
+    # average_company_rating = @company_review.rating_for(@company_review,'CompanyRating')
     overall_rating = CompanyReview.where(rateable_id: @company_review.rateable_id).average(:rating)
+    @company_review.rateable.rate(overall_rating, current_overseer, "CompanyReview")
     @company_review.rateable.update({rating: overall_rating})
 
     redirect_to_path_generation("Feedback captured successfully.")

@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body mx-3">
         <h6 class="text">
-          Kindly share your feedback for `<%= @company_review.company %>`
+          Kindly share your feedback for `<%= @company_review.rateable %>`
         </h6>
 
         <%= simple_form_for([:overseers, @company_review], :url => url, :method => 'PUT') do |f| %>
@@ -22,8 +22,9 @@
                     <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false, required: true%>
                   </div>
                   <div class="col-12 col-md-5 mt-3 star">
-                    <div class=<%='star-'+company_rating.index.to_s %> ></div>
-                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s, required: true, "data-rating": company_rating.object.rating %>
+                    <%= rating_for company_rating.object ,nil, disable_after_rate:false%>
+<!--                    <div class=<%#='star-'+company_rating.index.to_s %> ></div>-->
+                    <%#= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s, required: true, "data-rating": company_rating.object.rating %>
                   </div>
                 </div>
               </div>
