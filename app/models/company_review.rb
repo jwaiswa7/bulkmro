@@ -5,6 +5,7 @@ class CompanyReview < ApplicationRecord
   belongs_to :company
   has_many :company_ratings, dependent: :destroy
   accepts_nested_attributes_for :company_ratings, allow_destroy: true
+  validates_associated :company_ratings
 
   enum survey_type:{
     :'Logistics' => 10,
