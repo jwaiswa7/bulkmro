@@ -2359,8 +2359,26 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       else
         po.followup_date = po.created_at
       end
-      po.update_material_status
+      update_material_status(po)
       po.save
+    end
+  end
+
+  def update_material_status(po)
+
+    if (po.material_pickup_requests.any?)
+      partial = true
+      if po.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
+      end
+      if "Material Pickup".in? po.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Pickup" : "Material Pickup"
+      elsif "Material Delivered".in? po.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Delivered" : "Material Delivered"
+      end
+      po.update_attribute(:material_status, status)
+    else
+      po.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
 end
