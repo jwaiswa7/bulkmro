@@ -1,6 +1,20 @@
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
 
+  after_create :increase_product_count
+  before_destroy :decrease_product_count
+
+
+  def increase_product_count
+    product = self.get_product
+    product.update_attribute('total_pos', product.total_pos + 1) if product.present?
+  end
+
+  def decrease_product_count
+    product = self.get_product
+    product.update_attribute('total_pos', ( product.total_pos == 0 ? 0 : ( product.total_pos - 1 ))) if product.present?
+  end
+
   def sku
     get_product.sku if get_product.present?
   end
@@ -45,9 +59,9 @@ class PurchaseOrderRow < ApplicationRecord
     self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
-  private
   def get_product
-    Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
+    product = Product.where(legacy_id: self.metadata['PopProductId'].to_i) || Product.where(id: self.metadata['PopProductId'])
+    product.first if product.present?
   end
 
 end

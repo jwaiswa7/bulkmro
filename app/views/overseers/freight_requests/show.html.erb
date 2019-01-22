@@ -139,28 +139,28 @@
           <h6 class="text-uppercase text-black-50 mb-1">Delivery Data</h6>
           <div class="form-row">
             <% if @freight_request.weight.present? %>
-              <div class="col-3">
+              <div class="col-4">
                 <strong class="d-block">Weight</strong>
                 <%= @freight_request.weight %>
               </div>
             <% end %>
 
             <% if @freight_request.length.present? %>
-              <div class="col-3">
+              <div class="col-4">
                 <strong class="d-block">Length</strong>
                 <%= @freight_request.length %>
               </div>
             <% end %>
 
             <% if @freight_request.breadth.present? %>
-              <div class="col-3">
+              <div class="col-4">
                 <strong class="d-block">Breadth</strong>
                 <%= @freight_request.breadth %>
               </div>
             <% end %>
 
             <% if @freight_request.width.present? %>
-              <div class="col-3">
+              <div class="col-4">
                 <strong class="d-block">Width</strong>
                 <%= @freight_request.width %>
               </div>
@@ -168,22 +168,36 @@
           </div>
           <div class="form-row mt-1">
             <% if @freight_request.measurement.present? %>
-              <div class="col-3">
+              <div class="col-4">
                 <strong class="d-block">Measurement</strong>
                 <%= @freight_request.measurement %>
               </div>
             <% end %>
 
             <% if @freight_request.volumetric_weight.present? %>
-              <div class="col-3 ">
+              <div class="col-4 ">
                 <strong class="d-block">Volumetric Weight in Kilograms</strong>
                 <%= @freight_request.volumetric_weight %>
               </div>
             <% end %>
 
-            <div class="col-3">
+            <div class="col-4">
               <strong class="d-block">Is Hazardous</strong>
               <%= format_boolean(@freight_request.hazardous) %>
+            </div>
+          </div>
+          <div class="form-row mt-1">
+            <div class="col-4">
+              <strong class="d-block">Loading</strong>
+              <%= @freight_request.loading %>
+            </div>
+            <div class="col-4">
+              <strong class="d-block">Unloading</strong>
+              <%= @freight_request.unloading %>
+            </div>
+            <div class="col-4">
+              <strong class="d-block">Pickup Date</strong>
+              <%= @freight_request.pickup_date %>
             </div>
           </div>
         </div>
