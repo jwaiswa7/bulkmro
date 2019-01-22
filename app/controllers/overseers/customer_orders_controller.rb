@@ -13,7 +13,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
       OnlinePayment.all
     end.order(id: :desc)
 
-    @payments = ApplyDatatableParams.to(payments, params)
+    @payments = ApplyDatatableParams.to(payments, params.except(:company_id))
     authorize :customer_order
   end
 
