@@ -1,6 +1,6 @@
 import onLoadPage from '../common/onLoadPage'
 const index = () => {
-    onLoadPage();
+    // onLoadPage();
 
     $('.datatable').on('click','.rating',function () {
         var id = $(this).data('company-id')

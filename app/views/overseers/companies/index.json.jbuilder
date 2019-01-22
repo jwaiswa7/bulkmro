@@ -35,7 +35,7 @@ json.data (@companies) do |company|
                   (company.addresses.present? && company.is_international) ? 'International' :company.pan,
                   format_boolean(company.validate_pan),
                   if company.is_supplier?
-                    rating_for(company)
+                    format_star(company.rating)
                   end,
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
@@ -62,4 +62,3 @@ json.columnFilters [
 json.recordsTotal @companies.model.all.count
 json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]
-json.companyRating @indexed_companies.map {|cmp| {:id => cmp.id ,:"rating" => cmp.rating}}.as_json

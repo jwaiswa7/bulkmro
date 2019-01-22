@@ -185,7 +185,7 @@
             <td data-toggle="tooltip" title="(<%= inquiry_product_supplier.supplier.account.alias %>) <%= inquiry_product_supplier.supplier.name %>">(<%= inquiry_product_supplier.supplier.account.alias %>
               ) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
             <td>
-              <div class="product_supplier_ratings" data-ratings="<%= inquiry_product_supplier.supplier.rating %>"></div>
+              <%= format_star(inquiry_product_supplier.supplier.rating) %>
             </td>
             <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
             <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>

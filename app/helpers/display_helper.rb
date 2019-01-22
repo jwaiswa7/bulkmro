@@ -148,6 +148,11 @@ module DisplayHelper
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
 
+  def format_star(rating)
+    star_given = rating.nil? ? 0 : rating
+    (['<i class="fas fa-star text-warning "></i>', '<span class="render-star">',star_given,'<span/>'].join(' ')).html_safe
+  end
+
   def format_count(count, zero_if_nil: true)
     if count.present?
       count
