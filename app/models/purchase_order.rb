@@ -69,7 +69,7 @@ class PurchaseOrder < ApplicationRecord
       :'Material Partial Delivered' => 35
   }
 
-  scope :material_readiness_queue, -> {where(:material_status => :'Material Readiness Follow-Up')}
+  scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(:material_status => :'Material Pickup')}
   scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
 

@@ -1,6 +1,6 @@
 class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::BaseController
   before_action :set_material_pickup_request, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
-  before_action :set_purchase_order, only: [:new, :create]
+  before_action :set_purchase_order, only: [:new, :create, :update]
 
   def index
 
@@ -27,7 +27,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
     @mpr.assign_attributes(mpr_params.merge(:overseer => current_overseer))
     authorize @mpr
     if @mpr.save
-      @purchase_order.update_status
+      @purchase_order.update_material_status
 
       redirect_to edit_overseers_purchase_order_material_pickup_request_path(@purchase_order, @mpr), notice: flash_message(@mpr, action_name)
     else
@@ -50,7 +50,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
         @mpr.comments.create(:message => messages, :overseer => current_overseer)
       end
       @mpr.save
-      @purchase_order.update_status
+      @purchase_order.update_material_status
       redirect_to overseers_purchase_order_material_pickup_request_path(@mpr.purchase_order, @mpr), notice: flash_message(@mpr, action_name)
     else
       render 'edit'
