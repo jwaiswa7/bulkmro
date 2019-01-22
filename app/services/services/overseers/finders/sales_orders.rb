@@ -10,7 +10,6 @@ class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::
                         super.filter(filter_by_status(only_remote_approved: true))
                       end
 
-
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:remote_status, @status.to_i))
     end
@@ -22,6 +21,8 @@ class Services::Overseers::Finders::SalesOrders < Services::Overseers::Finders::
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
+
+
     indexed_records = indexed_records.aggregations(aggregate_by_status('remote_status'))
     indexed_records
   end

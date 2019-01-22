@@ -66,6 +66,15 @@ module DisplayHelper
     ['#', id].join if id.present?
   end
 
+  def format_succinct_date(date)
+    if date.present?
+      #date.strftime("%e %b, %Y %H:%M")
+      date.strftime("%d-%b-%y")
+    else
+      "-"
+    end
+  end
+
   def format_date(date)
     if date.present?
       #date.strftime("%e %b, %Y %H:%M")

@@ -52,11 +52,11 @@ class PaymentRequest < ApplicationRecord
       :'Accounts' => 20
   }
 
-  scope :Pending, -> {where(status:[10,11])}
+  scope :Pending, -> {where(status: [10, 11])}
   scope :Completed, -> {where(:status => 50)}
-  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing','Supplier Info: Bank Details Incorrect','Supplier Info: PI mismatch'])}
-  scope :Logistics, -> {where(status:[10,11], request_owner:['Logistics','Accounts'])}
-  scope :Accounts, -> {where(status:[10,11], request_owner: 'Accounts')}
+  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch'])}
+  scope :Logistics, -> {where(status: [10, 11], request_owner: ['Logistics', 'Accounts'])}
+  scope :Accounts, -> {where(status: [10, 11], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
 
@@ -81,9 +81,12 @@ class PaymentRequest < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = { 10 => 'Pending', 30 =>'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
+    status_category = {10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
     status_category.each do |index, category|
-      grouped_status[category] = PaymentRequest.statuses.collect{|status,v|;if v.between?(index, index+9);status;end}.compact
+      grouped_status[category] = PaymentRequest.statuses.collect {|status, v| ;
+      if v.between?(index, index + 9);
+        status;
+      end}.compact
     end
     grouped_status
   end

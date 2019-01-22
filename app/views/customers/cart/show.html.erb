@@ -57,8 +57,8 @@
                   <tr>
                     <td>
                       <%= cart_item.hidden_field :id %>
-                      <% if cart_item.object.customer_product.best_image.present? && cart_item.object.customer_product.tiny_best_image.present? %>
-                        <%= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
+                      <% if cart_item.object.customer_product.best_image.present? %>
+                        <%#= image_tag cart_item.object.customer_product.tiny_best_image, fallback_url: image_path('coming_soon.png'), check_remote: false %>
                       <% else %>
                         <img src="<%= image_path('coming_soon.png') %>" alt="<%= cart_item.object.customer_product.sku %>" height="40" />
                       <% end %>
