@@ -178,19 +178,19 @@
             <span><%= row.measurement_unit %></span>
           </td>
           <td>
-            <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost,symbol:sales_order.inquiry_currency.sign) %></span>
+            <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost,symbol:sales_order.is_inquiry_currency_present) %></span>
           </td>
           <td>
             <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.converted_unit_selling_price,symbol:sales_order.inquiry_currency.sign) %></span>
+            <span><%= format_currency(row.converted_unit_selling_price,symbol:sales_order.is_inquiry_currency_present) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.converted_total_selling_price,symbol:sales_order.inquiry_currency.sign) %></span>
+            <span><%= format_currency(row.converted_total_selling_price,symbol:sales_order.is_inquiry_currency_present) %></span>
           </td>
           <td>
-            <span><%= format_currency(row.converted_total_selling_price_with_tax,symbol:sales_order.inquiry_currency.sign) %></span>
+            <span><%= format_currency(row.converted_total_selling_price_with_tax,symbol:sales_order.is_inquiry_currency_present) %></span>
           </td>
           <td>
             <span><%= row.best_tax_code %></span>
@@ -263,7 +263,7 @@
       </div>
       <div class="col-6 col-md-2">
         Cost
-        <strong class="d-block"><%= format_currency(sales_order.converted_total_cost,symbol:sales_order.inquiry_currency.sign) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_cost,symbol:sales_order.is_inquiry_currency_present) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
@@ -272,15 +272,15 @@
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (E. tax)
-        <strong class="d-block"><%= format_currency(sales_order.converted_total,symbol:sales_order.inquiry_currency.sign) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total,symbol:sales_order.is_inquiry_currency_present) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Tax
-        <strong class="d-block"><%= format_currency(sales_order.converted_total_tax,symbol:sales_order.inquiry_currency.sign) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_tax,symbol:sales_order.is_inquiry_currency_present) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (I. tax)
-        <strong class="d-block"><%= format_currency(sales_order.converted_total_with_tax,symbol:sales_order.inquiry_currency.sign) %></strong>
+        <strong class="d-block"><%= format_currency(sales_order.converted_total_with_tax,symbol:sales_order.is_inquiry_currency_present) %></strong>
       </div>
     </div>
   </div>
