@@ -61,7 +61,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
 #    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
 #    @records = order_by_ids(@indexed_records) if indexed_records.present?
-    @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
+    ids = indexed_records.pluck(:id)
+    @records = model_klass.where(:id => ids).with_includes.sort_by {|object| ids.index(object.id)} if indexed_records.present?
+
+
   end
 
   def order_by_ids(indexed_records)
@@ -214,7 +217,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key= "statuses",  aggregation_field= "potential_value", status_field)
+  def aggregate_by_status(key = "statuses", aggregation_field = "potential_value", status_field)
     {
         "#{key}": {
             terms: {

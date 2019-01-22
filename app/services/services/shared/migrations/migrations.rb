@@ -2352,13 +2352,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_purchase_order_fields
+
     PurchaseOrder.all.each do |po|
       if po.metadata.present? && po.metadata['PoDate']
         po.followup_date = po.metadata['PoDate'].to_date
       else
         po.followup_date = po.created_at
       end
-
+      po.update_material_status
       po.save
     end
   end
