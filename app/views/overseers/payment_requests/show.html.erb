@@ -14,7 +14,7 @@
     <div class="card mb-2">
       <div class="card-body">
         <div>
-          <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
+          <h6 class="text-uppercase text-black-50 mb-1">Payment Request Details</h6>
           <div class="form-row">
             <% if @payment_request.po_request.present? %>
               <div class="col-6 col-md-3 mb-2">
@@ -97,6 +97,13 @@
               </div>
             <% end %>
 
+            <% if @payment_request.po_date.present? || @payment_request.purchase_order.metadata["PoDate"].present? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Supplier PO date</strong>
+                <%= @payment_request.po_date || @payment_request.purchase_order.metadata["PoDate"] %>
+              </div>
+            <% end %>
+
           </div>
           <% if @payment_request.attachments.attached? %>
             <div class="form-row">
@@ -119,29 +126,10 @@
 
 
     <div class="card mb-2">
+      <% if @payment_request.payment_option.present? || @payment_request.due_date.present? || @payment_request.purpose_of_payment.present? || @payment_request.company_bank.present? %>
       <div class="card-body">
         <div>
           <div class="form-row">
-            <% if @payment_request.utr_number.present? %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">UTR/Cheque #</strong>
-                <%= @payment_request.utr_number %>
-              </div>
-            <% end %>
-
-            <% if @payment_request.payment_type.present? && @payment_request.payment_type == "Cheque" %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Cheque Date</strong>
-                <%= @payment_request.cheque_date %>
-              </div>
-            <% end %>
-
-            <% if @payment_request.payment_type.present? %>
-              <div class="col-6 col-md-3 mb-2">
-                <strong class="d-block">Payment Type</strong>
-                <%= @payment_request.payment_type %>
-              </div>
-            <% end %>
 
             <% if @payment_request.payment_option.present? %>
               <div class="col-6 col-md-3 mb-2">
@@ -153,7 +141,9 @@
             <% if @payment_request.due_date.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Due Date</strong>
-                <%= format_due_distance(@payment_request.due_date) %>
+                <% if @payment_request.status ==  "Partial Payment Pending" || @payment_request.status == "Payment Pending" %>
+                  <%=  format_due_distance(@payment_request.due_date) %>
+                <% end %>
                 <%= format_date(@payment_request.due_date) %>
               </div>
             <% end %>
@@ -165,7 +155,7 @@
               </div>
             <% end %>
 
-            <% if @payment_request.supplier_bank_details.present? %>
+            <% if @payment_request.company_bank.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Supplier Bank Details</strong>
                 <%= @payment_request.company_bank.to_s %>
@@ -174,6 +164,37 @@
           </div>
         </div>
       </div>
+    <%end %>
+    </div>
+
+    <div class="card mb-2">
+      <% if  @payment_request.transactions.present? %>
+      <div class="card-body">
+      <h6 class="text-uppercase text-black-50 mb-1">Payment Transactions</h6>
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+            <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Payment Type</th>
+              <th>UTR / Cheque Number</th>
+              <th>Cheque Date</th>
+              <th>Amount Paid</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%  @payment_request.transactions.each_with_index do |row, sr_no| %>
+              <tr>
+                <td><%= sr_no + 1 %></td>
+                <td><%= row.payment_type %></td>
+                <td><%= row.utr_or_cheque_no %></td>
+                <td><%= row.cheque_date %></td>
+                <td><%= format_currency(row.amount_paid) %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+      </div>
+    <% end %>
     </div>
 
     <div class="card">

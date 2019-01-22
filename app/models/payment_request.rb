@@ -11,8 +11,10 @@ class PaymentRequest < ApplicationRecord
   belongs_to :po_request
   has_many_attached :attachments
   has_one :payment_option, :through => :purchase_order
-  belongs_to :company_bank
+  belongs_to :company_bank, required: false
   accepts_nested_attributes_for :inquiry
+  has_many :transactions, :class_name => "PaymentRequestTransaction", dependent: :destroy
+  accepts_nested_attributes_for :transactions,allow_destroy: true
 
   enum status: {
       :'Payment Pending' => 10,
@@ -22,10 +24,10 @@ class PaymentRequest < ApplicationRecord
       :'Supplier Info: Bank Details Incorrect' => 32,
       # :'Order Info: Material not Ready' => 33,
       :'Supplier Info: PI mismatch' => 34,
-      :'Others' => 35,
+      :'Rejected: Others' => 35,
       # :'Payment on Hold' => 40,
       :'Order Info: Low Margin' => 41,
-      :'Others' => 42,
+      :'Payment on Hold: Others' => 42,
       :'Payment Made' => 50,
       :'Partial Payment Made' => 51,
       # :'Refund' => 70,
@@ -57,15 +59,15 @@ class PaymentRequest < ApplicationRecord
   scope :Accounts, -> {where(status:[10,11], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
-  validates_presence_of :cheque_date, if: :is_payment_type_cheque?
+
   with_options if: :"Accounts?" do |payment_request|
-    payment_request.validates_presence_of :due_date, :purpose_of_payment, :supplier_bank_details
+    payment_request.validates_presence_of :due_date, :purpose_of_payment
   end
 
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
-    self.status ||= :'Complete: Payment Pending'
+    self.status ||= :'Payment Pending'
     self.request_owner ||= :'Logistics'
   end
 
@@ -86,7 +88,18 @@ class PaymentRequest < ApplicationRecord
     grouped_status
   end
 
-  def is_payment_type_cheque?
-    self.payment_type == 'Cheque'
+
+  def total_amount_paid
+    self.transactions.persisted.map(&:amount_paid).compact.sum
+  end
+
+  def remaining_amount
+    if self.po_request.sales_order.try(:calculated_total_with_tax) >= self.total_amount_paid
+      self.po_request.sales_order.try(:calculated_total_with_tax) - self.total_amount_paid
+    end
+  end
+
+  def percent_amount_paid
+    self.total_amount_paid * 100 / self.po_request.sales_order.try(:calculated_total_with_tax)
   end
 end
