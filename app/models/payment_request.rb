@@ -33,7 +33,8 @@ class PaymentRequest < ApplicationRecord
       # :'Refund' => 70,
       :'Excess Payment Made' => 71,
       :'Supplier cannot fulfill PO' => 72,
-      :'Material Rejected' => 73
+      :'Material Rejected' => 73,
+      :'Cancelled' => 80
   }
 
   enum payment_type: {
@@ -80,7 +81,7 @@ class PaymentRequest < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = {10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund'}
+    status_category = {10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund', 80 => 'Cancelled'}
     status_category.each do |index, category|
       grouped_status[category] = PaymentRequest.statuses.collect {|status, v| ;
       if v.between?(index, index + 9);
