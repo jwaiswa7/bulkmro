@@ -18,7 +18,7 @@ class PoRequest < ApplicationRecord
 
   belongs_to :purchase_order, required: false
   has_one :payment_request, required: false
-  has_one :payment_option, :through => :purchase_order
+  belongs_to :payment_option
   has_many_attached :attachments
 
   attr_accessor :opportunity_type, :customer_committed_date

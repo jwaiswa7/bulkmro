@@ -40,13 +40,6 @@
             </div>
           <% end %>
 
-          <% if @sales_order.payment_option.present? %>
-            <div class="col-5 col-md-2 mb-2">
-              <strong class="d-block">Payment Terms</strong>
-              <%= @sales_order.payment_option %>
-            </div>
-          <% end %>
-
           <% if @sales_order.inquiry.present? %>
             <div class="col-5 col-md-3 mb-2">
               <strong class="d-block">Customer Committed Date</strong>
@@ -70,6 +63,7 @@
               <%= po_request.hidden_field :address_id %>
               <%= po_request.hidden_field :contact_id %>
               <%= po_request.hidden_field :logistics_owner_id %>
+              <%= po_request.hidden_field :payment_option_id %>
 
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
               <strong><span style="font-size: 24px"><%= po_request.object.supplier.to_s %>
@@ -77,7 +71,7 @@
 
               <div class="form-row mt-2">
                 <% if po_request.object.address.present? %>
-                  <div class="col-6 col-md-3 mb-2">
+                  <div class="col-5 col-md-2 mb-2">
                     <strong class="d-block">ADDRESS</strong>
                     <%= po_request.object.address.to_s %>
                   </div>
@@ -98,15 +92,17 @@
                   <strong class="d-block">STATUS</strong>
                   <%= po_request.object.status %>
                 </div>
+                <div class="col-2 col-md-1 mb-2">
+                  <strong class="d-block">P. Terms</strong>
+                  <%= po_request.object.payment_option %>
+                </div>
                 <% if po_request.object.supplier_committed_date.present? %>
                   <div class="col-2 col-md-3 mb-2">
                     <strong class="d-block">SUPPLIER COMMITTED DATE</strong>
                     <%= po_request.object.supplier_committed_date %>
-
                   </div>
                 <% end %>
                 <div class="col-2 col-md-2 mb-2">
-
                   <strong class="d-block">Attachments</strong>
                   <% po_request.object.attachments.each do |attachment| %>
                     <%= attachment.filename if attachment.blob_id.present? %>
