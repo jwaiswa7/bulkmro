@@ -31,7 +31,13 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def tax_rate
-    ((self.metadata['tax_amount'].to_f / self.metadata['row_total'].to_f) * 100).round(2)
+    tax_amount = self.metadata['tax_amount']
+    row_total = self.metadata['row_total']
+    if(tax_amount.nil? || tax_amount.zero?) || (row_total.nil? || row_total.zero?)
+      0
+    else
+      ((tax_amount.to_f / row_total.to_f) * 100).round(2)
+    end
   end
 
   private
