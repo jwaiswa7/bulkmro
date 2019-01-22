@@ -59,7 +59,6 @@ class PaymentRequest < ApplicationRecord
   scope :Accounts, -> {where(status: [10, 11], request_owner: 'Accounts')}
 
   validates_presence_of :inquiry
-  validates_presence_of :cheque_date, if: :is_payment_type_cheque?
   with_options if: :"Accounts?" do |payment_request|
     payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
