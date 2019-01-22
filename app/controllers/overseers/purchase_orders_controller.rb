@@ -23,21 +23,74 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
+        service.call
+
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
+      end
+    end
+=begin
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
+=end
     render 'material_readiness_queue'
   end
 
   def material_pickup_queue
     @status = 'Material Pickup Queue'
-    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Pickup').order("created_at DESC"), params).order(:expected_delivery_date)
-    authorize @material_pickup_requests
+
+
+    base_filter = {
+        :base_filter_key => "status",
+
+        :base_filter_value => MaterialPickupRequest.statuses['Material Pickup']
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+
+        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+
+        service.call
+
+        @indexed_material_pickup_requests = service.indexed_records
+        @material_pickup_requests = service.records.try(:reverse)
+      end
+    end
+
+    authorize :material_pickup_request
     render 'material_pickup_queue'
   end
 
   def material_delivered_queue
     @status = 'Material Delivered Queue'
-    @material_pickup_requests = ApplyDatatableParams.to(MaterialPickupRequest.where(status: :'Material Delivered').order("created_at DESC"), params).order(:actual_delivery_date)
-    authorize @material_pickup_requests
+
+    base_filter = {
+        :base_filter_key => "status",
+
+        :base_filter_value => MaterialPickupRequest.statuses['Material Delivered']
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+
+        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+
+        service.call
+
+        @indexed_material_pickup_requests = service.indexed_records
+        @material_pickup_requests = service.records.try(:reverse)
+      end
+    end
+
+    authorize :material_pickup_request
     render 'material_pickup_queue'
   end
 
