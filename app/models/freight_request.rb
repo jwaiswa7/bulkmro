@@ -39,6 +39,18 @@ class FreightRequest < ApplicationRecord
       :'Cancelled' => 50
   }
 
+  enum loading: {
+      :'BM Scope' => 10,
+      :'Supplier Scope' => 20,
+      :'Customer Scope' => 30
+  },_prefix:'loading'
+
+  enum unloading: {
+      :'BM Scope' => 10,
+      :'Supplier Scope' => 20,
+      :'Customer Scope' => 30
+  },_prefix:'unloading'
+
   [:length, :breadth, :width, :volumetric_weight].each do | field|
     validates_presence_of field
     validates_numericality_of field, greater_than: 0.00, message: 'should be numeric and greater than zero.'
@@ -53,5 +65,4 @@ class FreightRequest < ApplicationRecord
     self.request_type ||= :'Domestic'
     self.delivery_type ||= :'Regular'
   end
-
 end
