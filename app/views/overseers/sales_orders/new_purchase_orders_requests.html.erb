@@ -8,7 +8,6 @@
 
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
     <%= render 'shared/snippets/form_errors', f: f %>
-    <%= f.object.class %>
     <%= f.hidden_field :id %>
 
     <div class="form-row">
@@ -40,22 +39,24 @@
               <%# raise %>
               <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
               <strong><%= po_request.object.supplier.to_s %> : <%= po_request.object.supplier.try(:legacy_email)%></strong>
-
+              <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                Remove Supplier
+              <% end %>
               <div class="form-row mt-2">
                 <div class="col-12 col-md-6">
-                  <%= po_request.association :address, as: :select, collection: po_request.object.supplier.addresses, :include_blank => false %>
+                  <%= po_request.association :address, collection: selected_option_or_nil(po_request, :address), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required:true %>
                 </div>
                 <div class="col-12 col-md-6">
                   <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
                 </div>
                 <div class="col-12 col-md-4">
-                  <%= po_request.association :logistics_owner, as: :select, :include_blank => false %>
+                  <%= po_request.association :logistics_owner, as: :select, required:true %>
                 </div>
                 <div class="col-12 col-md-2">
                   <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false), :include_blank => false %>
                 </div>
                 <div class="col-12 col-md-6">
-                  <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'} %>
+                  <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, required:true %>
                 </div>
                 <div class="col-12 col-md-6">
                   <div class="d-flex flex-row align-items-end">
@@ -76,10 +77,6 @@
                 </div>
               </div>
             </h5>
-
-            <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-              Remove Supplier
-            <% end %>
             <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
               <%= po_request_row.hidden_field :id %>
               <%= po_request_row.hidden_field :sales_order_row_id %>
@@ -136,7 +133,7 @@
                   <%= po_request_row.remove_nested_fields_link do %>
                     <div class="form-group align-self-center flex-grow-1 ml-2">
                       <i class="far fa-times text-danger"></i>
-                    </div>
+                   </div>
                   <% end if policy(po_request_row.object).destroy? %>
                 </div>
               </div>

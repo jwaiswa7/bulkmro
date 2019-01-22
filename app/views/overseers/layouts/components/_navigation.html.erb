@@ -144,6 +144,7 @@
             <a class="dropdown-item dropdown-toggle" href="#">Purchase Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_and_rejected_overseers_po_requests_path, policy(:po_request).pending_and_rejected? %>
               <%= nav_dropdown_item 'Cancelled Purchase Order Requests', cancelled_overseers_po_requests_path, policy(:po_request).cancelled? %>
               <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>

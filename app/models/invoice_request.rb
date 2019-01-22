@@ -9,6 +9,7 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
+  has_one :material_readiness_followup
   has_many_attached :attachments
 
   enum status: {

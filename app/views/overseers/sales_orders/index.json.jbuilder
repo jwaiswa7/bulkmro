@@ -11,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'file-invoice', 'Request PO', 'success', :_blank)
                       end,
                       if policy(sales_order).can_request_po?
-                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'dark', :_blank)
+                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
                       end,
                       if policy(sales_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
@@ -32,7 +32,9 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inside_sales_owner.to_s,
                   sales_order.outside_sales_owner.to_s,
                   format_currency(sales_order.sales_quote.calculated_total),
-                  format_currency(sales_order.calculated_total)
+                  format_currency(sales_order.calculated_total),
+                  format_succinct_date(sales_order.mis_date),
+                  format_succinct_date(sales_order.created_at)
               ]
 end
 
@@ -43,13 +45,12 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
-                       SalesOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.statuses.map {|k, v| {:"label" =>
+                                                            k, :"value" => v.to_s}}.as_json,
                        SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       [],
                        [],
                    ]
 
