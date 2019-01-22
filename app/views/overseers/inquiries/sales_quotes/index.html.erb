@@ -74,8 +74,8 @@
           <td><%= format_date(sales_quote.sent_at) %></td>
           <td><%= sales_quote.created_by.to_s %></td>
           <td><%= sales_quote.rows.size %></td>
-          <td><%= format_currency(sales_quote.calculated_total) %></td>
-          <td><%= format_currency(sales_quote.calculated_total_with_tax) %></td>
+          <td><%= format_currency(sales_quote.calculated_total,symbol:sales_quote.inquiry_currency.sign) %></td>
+          <td><%= format_currency(sales_quote.calculated_total_with_tax,symbol:sales_quote.inquiry_currency.sign) %></td>
           <td><%= format_date(sales_quote.created_at) %></td>
         </tr>
       <% end %>

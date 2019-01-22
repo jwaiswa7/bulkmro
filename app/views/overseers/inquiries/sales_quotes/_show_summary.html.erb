@@ -7,25 +7,25 @@
       </div>
       <div class="col-6 col-md-2">
         Cost
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin) %>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin,symbol:sales_quote.inquiry_currency.sign) %>
           (<%= sales_quote.calculated_total_margin_percentage %>%)</strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (E. tax)
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (I. tax)
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
 
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Tax
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
     </div>
   </div>
@@ -178,19 +178,19 @@
               <span><%= row.measurement_unit %></span>
             </td>
             <td>
-              <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost) %></span>
+              <span><%= format_currency(row.converted_unit_cost_price_with_unit_freight_cost,symbol:sales_quote.inquiry_currency.sign) %></span>
             </td>
             <td>
-              <span><%= number_with_precision(row.margin_percentage, precision: 2) %></span>
+              <span><%= number_with_precision(row.margin_percentage, precision: 2,symbol:sales_quote.inquiry_currency.sign) %></span>
             </td>
             <td>
-              <span><%= format_currency(row.converted_unit_selling_price) %></span>
+              <span><%= format_currency(row.converted_unit_selling_price,symbol:sales_quote.inquiry_currency.sign) %></span>
             </td>
             <td>
-              <span><%= format_currency(row.converted_total_selling_price) %></span>
+              <span><%= format_currency(row.converted_total_selling_price,symbol:sales_quote.inquiry_currency.sign) %></span>
             </td>
             <td>
-              <span><%= format_currency(row.converted_total_selling_price_with_tax) %></span>
+              <span><%= format_currency(row.converted_total_selling_price_with_tax,symbol:sales_quote.inquiry_currency.sign) %></span>
             </td>
             <td>
               <span><%= row.best_tax_code.chapter %></span>
@@ -212,25 +212,25 @@
       </div>
       <div class="col-6 col-md-2">
         Cost
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_cost,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Margin
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin) %>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_margin,symbol:sales_quote.inquiry_currency.sign) %>
           (<%= sales_quote.calculated_total_margin_percentage %>%)</strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (E. tax)
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Selling Price (I. tax)
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_with_tax,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
 
       <div class="col-6 col-md-2 mt-2 mt-md-0">
         Tax
-        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax) %></strong>
+        <strong class="d-block"><%= format_currency(sales_quote.converted_total_tax,symbol:sales_quote.inquiry_currency.sign) %></strong>
       </div>
     </div>
   </div>

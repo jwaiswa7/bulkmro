@@ -67,8 +67,8 @@
           <% end %>
           <td><%= format_date(sales_order.sent_at) %></td>
           <td><%= sales_order.rows.size %></td>
-          <td><%= format_currency(sales_order.sales_quote.calculated_total) %></td>
-          <td><%= format_currency(sales_order.calculated_total) %></td>
+          <td><%= format_currency(sales_order.sales_quote.calculated_total,symbol:sales_order.inquiry_currency.sign) %></td>
+          <td><%= format_currency(sales_order.calculated_total,symbol:sales_order.inquiry_currency.sign) %></td>
           <td><%= format_date(sales_order.mis_date) %></td>
           <td><%= format_date(sales_order.created_at) %></td>
           <td><%= sales_order.created_by.to_s %></td>
