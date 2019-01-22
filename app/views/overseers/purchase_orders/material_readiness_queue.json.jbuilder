@@ -37,14 +37,14 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_companies_path}],
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
-                       [],
-                       [],
-                       [],
+                       PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
                        []
                    ]
 
-json.recordsTotal @purchase_orders.all.count
-json.recordsFiltered @purchase_orders.total_count
+json.recordsTotal PurchaseOrder.all.count
+json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
