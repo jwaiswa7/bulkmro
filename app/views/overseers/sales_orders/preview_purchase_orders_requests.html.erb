@@ -58,7 +58,7 @@
               <%= po_request.hidden_field :supplier_id %>
               <%= po_request.hidden_field :inquiry_id %>
               <%= po_request.hidden_field :supplier_committed_date %>
-              <%= po_request.hidden_field :attachments %>
+              <%= po_request.hidden_field :blobs %>
               <%= po_request.hidden_field :status %>
               <%= po_request.hidden_field :address_id %>
               <%= po_request.hidden_field :contact_id %>
@@ -106,8 +106,8 @@
                 <% end %>
                 <div class="col-2 col-md-2 mb-2">
                   <strong class="d-block">Attachments</strong>
-                  <% po_request.object.attachments.each do |attachment| %>
-                    <%= attachment.filename if attachment.blob_id.present? %>
+                  <% po_request.object.attachments.each_with_index do |attachment, index| %>
+                    <%= index + 1 %>. <%= attachment.filename if attachment.blob_id.present? %> <br>
                   <% end if po_request.object.attachments.attached? %>
                 </div>
               </div>

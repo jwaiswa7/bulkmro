@@ -21,7 +21,7 @@ class PoRequest < ApplicationRecord
   belongs_to :payment_option
   has_many_attached :attachments
 
-  attr_accessor :opportunity_type, :customer_committed_date
+  attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
   enum status: {
       :'Requested' => 10,
