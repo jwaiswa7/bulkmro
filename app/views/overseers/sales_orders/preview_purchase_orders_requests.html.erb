@@ -29,7 +29,7 @@
           <% if @sales_order.inquiry.present? %>
             <div class="col-6 col-md-3 mb-2">
               <strong class="d-block">Inquiry #</strong>
-              <%= format_id(@sales_order.inquiry.to_s) %>
+              <%= @sales_order.inquiry.to_s %>
             </div>
           <% end %>
 
@@ -65,10 +65,12 @@
               <%= po_request.hidden_field :logistics_owner_id %>
               <%= po_request.hidden_field :payment_option_id %>
 
-              <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
-              <strong><span style="font-size: 24px"><%= po_request.object.supplier.to_s %>
-                : <%= po_request.object.supplier.try(:legacy_email) %></strong>
 
+              <strong class="d-block text-uppercase">
+                <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (po_request.index + 1) || 0 %></span>
+                <%= po_request.object.supplier.to_s %>
+                : <%= po_request.object.supplier.try(:legacy_email) %>
+              </strong>
               <div class="form-row mt-2">
                 <% if po_request.object.address.present? %>
                   <div class="col-5 col-md-2 mb-2">
@@ -109,68 +111,54 @@
                   <% end if po_request.object.attachments.attached? %>
                 </div>
               </div>
+              <table class="w-100 table table-bordered dt-responsive wrap-whitespace" data-fixed-header="false">
+                <thead>
+                <tr>
+                  <th class="no-sort">Sr. No.</th>
+                  <th class="no-sort">Product</th>
+                  <th class="no-sort">Make</th>
+                  <th class="no-sort">HSN</th>
+                  <th class="no-sort">T. Rate</th>
+                  <th class="no-sort">Quantity</th>
+                  <th class="no-sort">UOM</th>
+                  <th class="no-sort">UP</th>
+                  <th class="no-sort">TP</th>
+                  <th class="no-sort">TT</th>
+                  <th class="no-sort">TP with Tax</th>
+                  <th class="no-sort">Lead time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
+                  <%= po_request_row.hidden_field :id %>
+                  <%= po_request_row.hidden_field :sales_order_row_id %>
+                  <%= po_request_row.hidden_field :product_id %>
+                  <%= po_request_row.hidden_field :tax_code_id %>
+                  <%= po_request_row.hidden_field :tax_rate_id %>
+                  <%= po_request_row.hidden_field :measurement_unit_id %>
+                  <%= po_request_row.hidden_field :quantity %>
 
-              <%= po_request.nested_fields_for :rows, po_request.object.rows do |po_request_row| %>
-                <%= po_request_row.hidden_field :id %>
-                <%= po_request_row.hidden_field :sales_order_row_id %>
-                <%= po_request_row.hidden_field :product_id %>
-                <%= po_request_row.hidden_field :tax_code_id %>
-                <%= po_request_row.hidden_field :tax_rate_id %>
-                <%= po_request_row.hidden_field :measurement_unit_id %>
-                <%= po_request_row.hidden_field :quantity %>
-                <div class="form-row">
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "Sr." : '' %></strong>
-                    <%= ((po_request.object.rows.index(po_request_row.object) || 0) + 1) %>
+                  <% if po_request_row.present? %>
 
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "Product" : '' %></strong>
-                    <%= po_request_row.object.product.to_s %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "Make" : '' %></strong>
-                    <%= po_request_row.object.product.try(:brand).to_s %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "HSN" : '' %></strong>
-                    <%= po_request_row.object.tax_code %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "T. rate" : '' %></strong>
-                    <%= po_request_row.object.tax_rate.to_s %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "Qty" : '' %></strong>
-                    <%= po_request_row.object.quantity.to_f %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "UOM" : '' %></strong>
-                    <%= po_request_row.object.measurement_unit %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "UP" : '' %></strong>
-                    <%= po_request_row.object.converted_unit_selling_price %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "TP" : '' %></strong>
-                    <%= po_request_row.object.converted_total_selling_price %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "TT" : '' %></strong>
-                    <%= po_request_row.object.converted_total_tax %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "TP with tax" : '' %></strong>
-                    <%= po_request_row.object.converted_total_selling_price_with_tax %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <strong class="d-block"><%= po_request.object.rows.first == po_request_row.object ? "Lead Time" : '' %></strong>
-                    <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
-                    <%= lead_time %>
-                  </div>
-                </div>
-              <% end %>
+                    <tr>
+                      <td><%= ((po_request.object.rows.index(po_request_row.object) || 0) + 1) %></td>
+                      <td><%= po_request_row.object.product.to_s %></td>
+                      <td><%= po_request_row.object.product.try(:brand).to_s %></td>
+                      <td><%= po_request_row.object.tax_code %></td>
+                      <td><%= po_request_row.object.tax_rate.to_s %></td>
+                      <td><%= number_with_precision(po_request_row.object.quantity.to_f, precision: 2) %></td>
+                      <td><%= po_request_row.object.measurement_unit %></td>
+                      <td><%= format_currency(po_request_row.object.converted_unit_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td>
+                        <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %><%= lead_time %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+                </tbody>
+              </table>
               <div class="col-md-3 d-none">
                 <%= po_request.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
                   <i class="fal fa-plus-circle mr-1"></i>Add a Service product
@@ -182,9 +170,18 @@
         </div>
         <div class="card-footer">
           <% if policy(@sales_order).create_purchase_orders_requests? %>
-            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-              <i class="fal fa-pen"></i> Create PO requests
-            <% end %>
+            <div class="form-row">
+              <div class="col-md-6">
+                <%= link_to :back, :class => "btn btn-warning btn-block" do %>
+                  <i class="fal fa-angle-double-left"></i> Back
+                <% end %>
+              </div>
+              <div class="col-md-6">
+                <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                  <i class="fal fa-pen"></i> Create PO requests
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>
