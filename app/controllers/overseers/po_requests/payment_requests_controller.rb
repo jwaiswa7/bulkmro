@@ -54,6 +54,7 @@ raise
         :utr_number,
         :po_request_id,
         :purchase_order_id,
+        :po_date,
         :due_date,
         :payment_type,
         :cheque_date,
@@ -65,6 +66,7 @@ raise
         :supplier_bank_details,
         :company_bank_id,
         :comments_attributes => [:id, :message, :created_by_id],
+        :transactions_attributes => [:id, :payment_type, :utr_or_cheque_no, :cheque_date, :amount_paid, :_destroy],
         :attachments => []
     )
   end
