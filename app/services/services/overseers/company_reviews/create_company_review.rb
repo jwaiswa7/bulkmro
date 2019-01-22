@@ -15,17 +15,17 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
 
     if !suppliers_not_reviewed.empty?
       @supplier = Company.where(id: suppliers_not_reviewed.keys.first).first
+      @review_type = ''
+      if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
+        @review_type = "Sales"
+        review_questions =ReviewQuestion.sales
+      elsif @current_overseer.logistics?
+        @review_type = "Logistics"
+        review_questions = ReviewQuestion.logistics
+      end
       @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,@review_type).present?
-
       if @can_review
         @company_review = CompanyReview.where(created_by: current_overseer, survey_type: @review_type, company: @supplier).first_or_create!
-
-        if @review_type == 'Sales'
-          review_questions = ReviewQuestion.sales
-        elsif @review_type == 'Logistics'
-          review_questions = ReviewQuestion.logistics
-        end
-
         review_questions.each do |question|
           @company_review.company_ratings.where({company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
         end
