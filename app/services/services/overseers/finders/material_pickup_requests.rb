@@ -14,10 +14,6 @@ class Services::Overseers::Finders::MaterialPickupRequests < Services::Overseers
       indexed_records = indexed_records.filter(@base_filter)
     end
 
-
-
-
-
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
