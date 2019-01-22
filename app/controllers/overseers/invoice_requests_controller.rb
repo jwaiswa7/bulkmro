@@ -49,7 +49,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @can_review = service.can_review
       @company_review = service.company_review
       authorize @invoice_request
-    elsif  params[:purchase_order_id].present?
+    elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
       service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order, current_overseer,'Logistics')
@@ -59,12 +59,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @can_review = service.can_review
       @company_review = service.company_review
       authorize @invoice_request
+      if params[:mpr_id]
+        @invoice_request.material_pickup_request = MaterialPickupRequest.find(params[:mpr_id])
+      end
     else
       redirect_to overseers_invoice_requests_path
     end
-    if params[:mrf_id]
-      @invoice_request.material_readiness_followup = MaterialReadinessFollowup.find(params[:mrf_id])
-    end
+
   end
 
   def create
@@ -122,7 +123,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :shipment_number,
         :ar_invoice_number,
         :purchase_order_id,
-        :material_readiness_followup_id,
+        :material_pickup_request_id,
         :status,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
