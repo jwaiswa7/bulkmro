@@ -69,4 +69,38 @@
       </div>
     </div>
   </section>
+
+  <% if @warehouse.product_stocks.any? && policy(@warehouse).show_product_stocks? %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1">Product Stock</h3>
+    </div>
+
+    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords">
+      <thead>
+      <tr>
+        <th class="no-sort">Product</th>
+        <th class="no-sort">In stock</th>
+        <th class="no-sort">Committed</th>
+        <th class="no-sort">Ordered</th>
+        <th class="no-sort">Available</th>
+      </tr>
+      </thead>
+      <% @warehouse.product_stocks.order(instock: :desc).each do |warehouse_product| %>
+        <tbody>
+          <tr>
+            <td>
+              <% if policy(warehouse_product.product).show? %>
+                <a href="<%= overseers_product_path(warehouse_product.product) %>" target="blank"><%= warehouse_product.product.name.truncate(50, separator: ' ') %></a></td>
+              <% else %>
+                <td><%= warehouse_product.product.name.truncate(50, separator: ' ') %></td>
+              <% end %>
+            <td><%= warehouse_product.instock %></td>
+            <td><%= warehouse_product.committed %></td>
+            <td><%= warehouse_product.ordered %></td>
+            <td><%= (warehouse_product.instock - warehouse_product.committed) %></td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table>
+  <% end %>
 </div>
