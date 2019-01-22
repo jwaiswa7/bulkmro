@@ -169,6 +169,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :logistics_owner_id,
               :address_id,
               :contact_id,
+              :payment_option_id,
               :status,
               :supplier_committed_date,
               :attachments => [],
