@@ -1,5 +1,5 @@
 class Overseers::CompanyReviewsController < Overseers::BaseController
-  before_action :set_company_review, only: [:update_rating,:show]
+  before_action :set_company_review, only: [:update_rating,:show,:render_form]
 
   def index
     @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(:rating => nil), params)
@@ -28,6 +28,23 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
   def show
     authorize @company_review
+  end
+
+  def render_form
+    authorize @company_review
+    if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
+      @review_type = "Sales"
+      review_questions =ReviewQuestion.sales
+    elsif @current_overseer.logistics?
+      @review_type = "Logistics"
+      review_questions = ReviewQuestion.logistics
+    end
+    review_questions.each do |question|
+      @company_review.company_ratings.where({company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
+    end
+    respond_to do |format|
+      format.html {render :partial => "form",  locals: {company_review: @company_review,:refernce_type => params[:refrence_type], :refrence_object_id => params[:refrence_object_id]}}
+    end
   end
 
   private

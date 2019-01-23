@@ -1,0 +1,33 @@
+<div class="modal fade" id="multipleRatingForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" data-type="<%= refernce_type %>" data-id = <%= refrence_object_id %>>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Company Review Form</h4>
+      </div>
+      <div class="modal-body mx-3">
+        <ul class="nav nav-tabs nav-fill">
+          <% @company_reviews.each_with_index do |company_review, index| %>
+            <li class="nav-item">
+              <a class="nav-link custom-tab <%= index== 0 ? 'active' : '' %>" data-toggle="tab" href="<%='#company-'+ index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.company.name %></a>
+            </li>
+          <% end %>
+        </ul>
+        <div class="tab-content">
+          <% @company_reviews.each_with_index do |company_review, index| %>
+            <div class="tab-pane fade  <%= index== 0 ? 'active show' : '' %>" id="<%= 'company-'+index.to_s %>" role="tabpanel">
+              <h6 class="text">
+                Kindly share your feedback for `<%= company_review.company %>`
+              </h6>
+              <div id=<%= "form-render-div-#{company_review.id}"%>></div>
+            </div>
+          <% end %>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rating-modal">
+  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false"></a>
+</div>

@@ -432,6 +432,7 @@ Rails.application.routes.draw do
     resources :company_reviews do
       member do
         put 'update_rating'
+        get 'render_form'
       end
     end
   end

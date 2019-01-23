@@ -27,13 +27,19 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
+      # move to another place
+      @suppliers = @sales_order.inquiry.suppliers.uniq
 
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer,'Sales')
-      service.call
-
-      @can_review = service.can_review
-      @company_review = service.company_review
-
+      if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
+        @review_type = "Sales"
+      elsif @current_overseer.logistics?
+        @review_type = "Logistics"
+      end
+      @company_reviews = []
+      @suppliers.each do |supplier|
+        company_review = supplier.company_reviews.where(created_by: current_overseer, survey_type: @review_type).first_or_create!
+        @company_reviews << company_review
+      end
       authorize @po_request
     else
       redirect_to overseers_po_requests_path
