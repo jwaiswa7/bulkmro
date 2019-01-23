@@ -543,6 +543,7 @@ Rails.application.routes.draw do
         patch 'update_billing_address'
         patch 'update_shipping_address'
         patch 'update_special_instructions'
+        patch 'update_payment_method'
         patch 'add_po_number'
         get 'empty_cart'
       end
