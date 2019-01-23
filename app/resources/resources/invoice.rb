@@ -41,7 +41,7 @@ class Resources::Invoice < Resources::ApplicationResource
                   :base_cost => nil,
                   :row_total => unit_price * quantity,
                   :base_price => unit_price,
-                  :product_id => product.id.to_param,
+                  :product_id => (product.present? ? product.id.to_param: ''),
                   :tax_amount => tax_amount,
                   :description => remote_row['ItemDescription'],
                   :order_item_id => nil,
