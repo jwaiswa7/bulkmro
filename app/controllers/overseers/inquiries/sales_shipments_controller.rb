@@ -8,7 +8,12 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
 
   def show
     authorize @sales_shipment
-    @metadata = @sales_shipment.metadata.deep_symbolize_keys if @sales_shipment.metadata.present?
+    @metadata = @sales_shipment.metadata.present? ? @sales_shipment.metadata.deep_symbolize_keys : nil
+    if @metadata.nil?
+      set_flash_message("There is no information to show for this Sales Shipment", :warning, now: false)
+      redirect_to(request.referrer || root_path)
+    end
+
 
     respond_to do |format|
       format.html {}
