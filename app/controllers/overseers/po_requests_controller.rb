@@ -74,6 +74,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
           if @po_request.status == "Cancelled"
             @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" , :po_request => @po_request, :overseer => current_overseer)
             @po_request.purchase_order = nil
+            @po_request.payment_request.update!(status: :'Cancelled')
+            @po_request.payment_request.comments.create!(:message => "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", :payment_request => @po_request.payment_request, :overseer => current_overseer)
           else
             @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
           end

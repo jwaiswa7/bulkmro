@@ -11,7 +11,7 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.id,
                   status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,
-                  payment_request.po_request.purchase_order.po_number,
+                  payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.po_number : "-",
                   payment_request.request_owner,
                   # if payment_request.payment_type.present?
                   #   payment_request.payment_type
