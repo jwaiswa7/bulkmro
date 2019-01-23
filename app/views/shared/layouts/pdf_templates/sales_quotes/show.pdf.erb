@@ -152,14 +152,15 @@
               <tr>
                 <td class="address-section-holder">
                   <div class="address-wrapper address-wrapper-left">
-
                     <%= record.inquiry.contact.full_name %><br>
-                    <%= record.inquiry.billing_address.name %><br>
-                    <%= record.inquiry.billing_address.to_multiline_s if record.inquiry.billing_address.present? %>
-                    <br>
-                    Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
-                    <br>
-                    GST No.:<%= record.inquiry.billing_address.gst %><br>
+                    <% if record.inquiry.billing_address.present?  %>
+                      <%= record.inquiry.billing_address.name %><br>
+                      <%= record.inquiry.billing_address.to_multiline_s %>
+                      <br>
+                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.billing_address.telephone %>
+                      <br>
+                      GST No.:<%= record.inquiry.billing_address.gst %><br>
+                    <% end %>
                   </div>
                 </td>
                 <td class="address-section-gap"></td>
@@ -168,17 +169,18 @@
 
                     <%= record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.full_name : record.inquiry.contact.full_name %>
                     <br>
-                    <%= record.inquiry.shipping_address.name %><br>
-                    <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
-                    <br>
-                    <% if record.inquiry.shipping_contact.present? %>
-                      Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_contact.mobile || record.inquiry.shipping_address.telephone %>
-                    <% else %>
-                      Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                    <% if record.inquiry.shipping_address.present?  %>
+                      <%= record.inquiry.shipping_address.name %><br>
+                      <%= record.inquiry.shipping_address.to_multiline_s if record.inquiry.shipping_address.present? %>
+                      <br>
+                      <% if record.inquiry.shipping_contact.present? %>
+                        Tel: <%= record.inquiry.shipping_contact.phone || record.inquiry.shipping_contact.mobile || record.inquiry.shipping_address.telephone %>
+                      <% else %>
+                        Tel: <%= record.inquiry.contact.phone || record.inquiry.contact.mobile || record.inquiry.shipping_address.telephone %>
+                      <% end %>
+                      <br>
+                      GST No.:<%= record.inquiry.shipping_address.gst %><br>
                     <% end %>
-
-                    <br>
-                    GST No.:<%= record.inquiry.shipping_address.gst %><br>
                   </div>
                 </td>
               </tr>
