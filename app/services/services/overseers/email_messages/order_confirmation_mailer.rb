@@ -9,7 +9,7 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
     if Rails.env.production?
       order_contact = Contact.find_by_email(customer_order.contact.email)
     else
-      order_contact = Contact.find_by_email(customer_order.contact.email)
+      order_contact = current_overseer || Overseer.find_by_email('bhargav.trivedi@bulkmro.com')
     end
     template_id = "d-90ffe3b972c14d29ae6992a095638b80"
 
