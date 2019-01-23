@@ -1,0 +1,32 @@
+<div class="modal fade" id="multipleRatingForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Company Review Form</h4>
+      </div>
+      <div class="modal-body mx-3">
+        <ul class="nav nav-tabs nav-fill">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#addresses" role="tab">Addresses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#contacts" role="tab">Contacts</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade active show" id="addresses" role="tabpanel">
+            <%= @sup %>
+          </div>
+          <div class="tab-pane fade active show" id="contacts" role="tabpanel">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="rating-modal">
+  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false"></a>
+</div>
