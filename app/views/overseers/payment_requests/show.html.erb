@@ -161,6 +161,19 @@
                 <%= @payment_request.company_bank.to_s %>
               </div>
             <% end %>
+
+            <div class="col-6 col-md-3 mb-2">
+              <div class="form-group mb-0">
+                <strong class="d-block">Remaining amount to be Paid</strong>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= format_currency(@payment_request.remaining_amount) %></h6>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <div class="form-group mb-0">
+                <strong class="d-block">Total amount paid in Percentage</strong>
+              </div>
+              <h6 class="form-group text-uppercase text-black-50 form-text mb-1"><%= percentage(@payment_request.percent_amount_paid,precision:2) %></h6>
+            </div>
           </div>
         </div>
       </div>
