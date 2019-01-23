@@ -54,7 +54,7 @@ json.columnFilters [
                    ]
 
 
-json.recordsTotal SalesOrder.all.count
+json.recordsTotal SalesOrder.remote_approved.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.recordsTotalValue @total_values
 json.draw params[:draw]
