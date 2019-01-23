@@ -29,7 +29,11 @@ module Mixins::CanBeWatermarked
       )
       begin
         if image.present?
-          ActiveStorage::Variant.new(image, variation).processed
+          if Rails.env == 'production'
+            ActiveStorage::Variant.new(image, variation).processed
+          else
+            ActiveStorage::Variant.new(image, variation)
+          end
         else
           '/assets/coming_soon.png'
         end
