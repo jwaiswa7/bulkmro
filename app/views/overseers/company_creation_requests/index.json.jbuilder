@@ -15,7 +15,6 @@ json.data (@company_creation_requests) do |company|
 	              company.first_name,
 	              company.last_name,
 	              company.email,
-	              company.address,
                 format_boolean(company.is_supplier?),
                 format_boolean(company.is_customer?),
 	              format_date(company.created_at)

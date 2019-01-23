@@ -21,7 +21,8 @@ json.data (@activities) do |activity|
                   else
                     '--'
                   end,
-                  format_enum(activity.company_type),
+                  activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_supplier?) : format_boolean(activity.is_supplier?),
+                  activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_customer?) : format_boolean(activity.is_customer?),
                   if activity.company_creation_request.present?
                     status_badge(activity.company_creation_request.status)
                   else
