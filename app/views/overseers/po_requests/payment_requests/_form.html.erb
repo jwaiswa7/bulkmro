@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> Payment Request for PO
-      <%= format_id(@payment_request.po_request.purchase_order.po_number) %>:&nbsp;<%= status_badge(@payment_request.status) %></h2>
+      <%= format_id(@payment_request.po_request.purchase_order.present? ? @payment_request.po_request.purchase_order.po_number : nil) %>:&nbsp;<%= status_badge(@payment_request.status) %></h2>
     <p>This will <em>'<%= submit_text(@payment_request).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
