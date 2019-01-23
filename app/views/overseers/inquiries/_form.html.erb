@@ -133,10 +133,10 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} if f.object.billing_company.present? %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)}  if f.object.shipping_company.present? %>
+            <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
           </div>
         </div>
         <div class="form-row">
