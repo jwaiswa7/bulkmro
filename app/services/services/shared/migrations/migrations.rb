@@ -2214,14 +2214,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
     i = 0
-    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771]
+    skips = [10709, 17619, 10541, 19229, 20001, 20037, 19232, 20029, 21413, 19412, 25097, 25239, 30037, 30040, 30041, 30042, 30034, 30035, 30045, 30083, 30098, 25003, 25361, 19523, 19636, 19717, 20004, 20583, 20612, 20916, 20973, 20975, 21455, 21473, 25329, 25373, 26285, 20627, 25698, 26430, 26901, 10491, 21447, 27044, 27013, 25042, 26062, 19875, 18840, 20132, 28767, 27782, 21030, 26771]
     totals = {}
     inquiry_not_found = []
     sales_order_exists = []
     service.loop(nil) do |x|
       i = i + 1
       # next if i < 17732
-      next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7','BM9R0R1', 'BM9H7O3', 'BM9P0T9','BM9J7D7'])
+      next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
       next if (Product.where(sku: x.get_column('product sku')).present? == false)
       puts "*********************** INQUIRY ", x.get_column('inquiry number')
@@ -2268,7 +2268,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row = nil
         if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
           so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
-          if so.rows.map{|r| r.product.sku}.include?(x.get_column('product sku'))
+          if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
             row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
           end
         end
@@ -2284,7 +2284,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
         row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
         row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
-        row.created_at = x.get_column('created at',to_datetime: true)
+        row.created_at = x.get_column('created at', to_datetime: true)
 
         row.save!
 
@@ -2322,13 +2322,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def generate_review_questions
     service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
-      service.loop() do |x|
-        question = x.get_column('Question')
-        type = x.get_column('Type')
-        weightage = x.get_column('Weightage')
-        ReviewQuestion.where(question: question, question_type: type, weightage:weightage).first_or_create!
+    service.loop() do |x|
+      question = x.get_column('Question')
+      type = x.get_column('Type')
+      weightage = x.get_column('Weightage')
+      ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
 
-      end
+    end
 
   end
 
@@ -2388,12 +2388,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                          end
       update_material_status(po)
       po.save
+    end
   end
 
   def update_total_cost_in_sales_order
     SalesOrder.all.each do |so|
       so.order_total = so.calculated_total
-      so.invoice_total = so.invoices.map{|i| i.metadata.present? ? ( i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f ) : 0.0 }.inject(0){|sum,x| sum + x }
+      so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
       so.save
     end
   end
