@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/:page" => "docs#index"
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'

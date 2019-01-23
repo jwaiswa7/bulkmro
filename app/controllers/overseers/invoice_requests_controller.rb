@@ -109,7 +109,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ar_invoice_number,
         :purchase_order_id,
         :status,
-        :comments_attributes => [:id, :message, :created_by_id],
+        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
   end
