@@ -25,7 +25,7 @@
                 </td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
                   <span style="color:#000000">
-                    <%= record.inquiry.inside_sales_owner.full_name %>
+                    <%= record.inquiry.inside_sales_owner.full_name if record.inquiry.inside_sales_owner.present? %>
                   </span></td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
                   <b><span style="color:#000000">Bulk MRO Contact #</span></b> <span style="float:right">:</span></td>
