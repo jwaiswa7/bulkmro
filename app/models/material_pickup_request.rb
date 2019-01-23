@@ -5,9 +5,12 @@ class MaterialPickupRequest < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :purchase_order
+  has_one :inquiry, :through => :purchase_order
+
   belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_many :rows, -> {joins(:purchase_order_row)}, class_name: 'MprRow', inverse_of: :material_pickup_request, dependent: :destroy
   has_many_attached :attachments
+  has_one :invoice_request
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   validates_associated :rows
   enum document_types: {
@@ -18,9 +21,9 @@ class MaterialPickupRequest < ApplicationRecord
   enum status: {
       'Material Pickup': 10,
       'Material Delivered': 20
-  }, _prefix: true
+  }
 
-
+  scope :with_includes, -> {includes(:inquiry).includes(:purchase_order)}
   after_initialize :set_defaults, if: :new_record?
 
   validates_length_of :rows, minimum: 1, message: "must have at least one product", :on => :update

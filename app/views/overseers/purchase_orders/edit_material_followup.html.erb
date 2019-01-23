@@ -22,10 +22,9 @@
     <div class="card">
       <div class="card-header">
         <div class="form-row">
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-12">
             <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true %>
           </div>
-
 
           <div class="col-4">
             <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y")}, required: true %>
@@ -33,6 +32,10 @@
 
           <div class="col-4">
             <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y")}, required: true %>
+          </div>
+
+          <div class="col-4">
+            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y")}, required: true %>
           </div>
 
 
@@ -44,23 +47,6 @@
             <% end %>
           </div>
 
-          <div class="col-12 col-md-12">
-            <div class="d-block d-md-flex align-items-end">
-              <div class="flex-grow-1">
-                <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
-              </div>
-              <div class="form-group">
-                <% f.object.attachments.each do |attachment| %>
-                  <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                    <i class="fal fa-download"></i>
-                    <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                      <i class="fal fa-trash-alt"></i>
-                    <% end if attachment.present? && policy(:attachment).destroy? %>
-                  <% end %>
-                <% end if f.object.attachments.attached? %>
-              </div>
-            </div>
-          </div>
 
           <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
             <i class="fal fa-plus-circle"></i> Update Status
@@ -84,20 +70,23 @@
                   <td><strong class="d-block">Name</strong></td>
                   <td><strong class="d-block">Sku</strong></td>
                   <td><strong class="d-block">PO Total Quantity</strong></td>
-                  <td><strong class="d-block">Pickup Quantity</strong></td>
-                  <td><strong class="d-block">Quantity Delivered / Intransit</strong></td>
+                  <td><strong class="d-block">Available Pickup Quantity</strong></td>
+                  <td><strong class="d-block">Quantity Pickup / Delivered </strong></td>
                 </tr>
                 </thead>
                 <tbody>
                 <% @purchase_order.rows.each_with_index do |row, index| %>
-                  <tr>
-                    <td><%= index + 1 %></td>
-                    <td><%= row.get_product.name %></td>
-                    <td><%= row.get_product.sku %></td>
-                    <td><%= row.quantity %></td>
-                    <td><%= row.get_pickup_quantity %></td>
-                    <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
-                  </tr>
+                  <% if row.get_product %>
+
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= row.get_product.name %></td>
+                      <td><%= row.get_product.sku %></td>
+                      <td><%= row.quantity %></td>
+                      <td><%= row.get_pickup_quantity %></td>
+                      <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                    </tr>
+                  <% end %>
                 <% end %>
                 </tbody>
               </table>
@@ -108,12 +97,13 @@
 
     </div>
   </div>
-  <div class="card mt-2">
-    <div class="card-body">
-      <div>
-        <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-        <div class="form-row">
-          <% if @purchase_order.comments.persisted.size > 0 %>
+  <% if @purchase_order.comments.persisted.size > 0 %>
+    <div class="card mt-2">
+      <div class="card-body">
+        <div>
+          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          <div class="form-row">
+
             <div class="col-12">
               <div class="chats mb-3">
                 <% @purchase_order.comments.each do |comment| %>
@@ -123,9 +113,10 @@
                 <% end %>
               </div>
             </div>
-          <% end %>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

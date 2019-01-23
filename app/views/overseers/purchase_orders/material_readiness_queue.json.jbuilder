@@ -19,12 +19,11 @@ json.data (@purchase_orders) do |purchase_order|
                   (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
                   (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
                   purchase_order.status || purchase_order.metadata_status,
+                  purchase_order.material_status,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   format_succinct_date(purchase_order.created_at),
-                  if purchase_order.last_comment.present?
-                    format_date_time_meridiem(purchase_order.last_comment.updated_at)
-                  end,
+                  format_succinct_date(purchase_order.followup_date),
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end
@@ -38,12 +37,14 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_companies_path}],
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
-                       [],
+                       PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
                        []
                    ]
 
-json.recordsTotal @purchase_orders.all.count
-json.recordsFiltered @purchase_orders.total_count
+json.recordsTotal PurchaseOrder.all.count
+json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]

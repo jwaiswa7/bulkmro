@@ -13,7 +13,7 @@ class PurchaseOrderRow < ApplicationRecord
 
   def decrease_product_count
     product = self.get_product
-    product.update_attribute('total_pos', ( product.total_pos == 0 ? 0 : ( product.total_pos - 1 ))) if product.present?
+    product.update_attribute('total_pos', (product.total_pos == 0 ? 0 : (product.total_pos - 1))) if product.present?
   end
 
   def sku
@@ -70,6 +70,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def to_s
-    get_product.to_s
+    "#{sku ? "#{sku} -" : ''} #{metadata['PopProductName']}"
+
   end
 end

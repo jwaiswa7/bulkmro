@@ -46,7 +46,8 @@ class PoRequestRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage/100) || 0))
+    return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage/100) || 0)) if self.tax_rate.present?
+    return 0
   end
 
   def converted_total_selling_price
@@ -54,7 +55,7 @@ class PoRequestRow < ApplicationRecord
   end
 
   def total_selling_price_with_tax
-    self.unit_selling_price_with_tax * self.quantity
+    self.quantity ? self.unit_selling_price_with_tax * self.quantity : 0
   end
 
   def converted_total_selling_price_with_tax

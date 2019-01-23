@@ -23,9 +23,7 @@
       <div class="col-6">
         <%= f.input :opportunity_type, input_html: {value: f.object.sales_order.opportunity_type}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), :include_blank => false, disabled: true, label: 'Supplier PO Type' %>
       </div>
-      <div class="col-6">
-        <%= f.input :payment_option, label: 'Payment terms', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
-      </div>
+
       <div class="col-6">
         <%= f.input :customer_committed_date, input_html: {value: f.object.sales_order.customer_committed_date}, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
       </div>
@@ -107,6 +105,12 @@
                   <strong><%= f.object.contact %>:</strong> <%= f.object.contact.telephone || f.object.contact.mobile %>
                 </div>
               <% end %>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="form-control-label d-block">Payment Terms: </label><%= f.object.payment_option %>
+                <%#= f.association :payment_option, label: 'Payment terms', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+              </div>
             </div>
           </div>
           <div class="form-row d-none d-md-flex">
@@ -233,23 +237,19 @@
     <% end %>
   <% end %>
 
-  <% if action_name.capitalize != "New" %>
+  <% if @po_request.comments.persisted.size > 0 %>
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
           <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
         </div>
-
-        <% if @po_request.comments.persisted.size > 0 %>
-          <div class="chats mb-3">
-            <% @po_request.comments.each do |comment| %>
-              <% if comment.persisted? %>
-                <%= format_comment(comment) %>
-              <% end %>
-
+        <div class="chats mb-3">
+          <% @po_request.comments.each do |comment| %>
+            <% if comment.persisted? %>
+              <%= format_comment(comment) %>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>

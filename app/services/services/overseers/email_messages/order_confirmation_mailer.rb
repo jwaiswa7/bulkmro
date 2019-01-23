@@ -7,7 +7,7 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
 
   def call
     if Rails.env.production?
-      order_contact = Overseer.find_by_email(customer_order.contact.email)
+      order_contact = Contact.find_by_email(customer_order.contact.email)
     else
       order_contact = current_overseer || Overseer.find_by_email('bhargav.trivedi@bulkmro.com')
     end
