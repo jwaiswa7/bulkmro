@@ -9,7 +9,7 @@
             <%= wicked_pdf_image_tag 'BMIS_Logo_PNG.png', :width => "50%" %>
           </div>
           <div style="float:right;width:49%; padding-top: 1px;padding-bottom: 10px;text-align: right; vertical-align:center">
-            <b><span style="color:#000; font-size: 30px">Shipment #<%= @metadata[:increment_id] %></span></b>
+            <b><span style="color:#000; font-size: 30px">Shipment #<%= @metadata[:increment_id] if @metadata.present? %></span></b>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;padding: 2px">
@@ -38,7 +38,7 @@
           </div>
           <br clear="all">
           <div style=" border:1px solid; border-radius: 5px;padding-top: 1px;padding-bottom: 1px; text-align: center;">
-            <span style="color:#000000"><b>Shipment #<%= @metadata[:increment_id] %></b></span>
+            <span style="color:#000000"><b>Shipment #<%= @metadata[:increment_id] if @metadata.present? %></b></span>
           </div>
           <br clear="all">
           <div style="border:1px solid; border-radius: 5px;">
@@ -110,12 +110,12 @@
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Shipment #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:increment_id] %></span></td>
+                  <span style="color:#000000"><%= @metadata[:increment_id] if @metadata.present? %></span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Shipment Date</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= Date.parse(@metadata[:created_at]).strftime("%d-%b-%Y") if @metadata[:created_at].present? %>
+                      <%= Date.parse(@metadata[:created_at]).strftime("%d-%b-%Y") if @metadata.present? && @metadata[:created_at].present? %>
                     </span></td>
               </tr>
               <tr>
@@ -123,23 +123,23 @@
                   <b><span style="color:#000000">GRN #</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                     <span style="color:#000000">
-                      <%= @metadata[:TrackLine].map {|g| g[:grn]}.join(",") if @metadata[:TrackLine].present? %>
+                      <%= @metadata[:TrackLine].map {|g| g[:grn]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %>
                     </span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Customer ID</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:customer_id] %></span></td>
+                  <span style="color:#000000"><%= @metadata[:customer_id] if @metadata.present? %></span></td>
               </tr>
               <tr>
                 <td align="left" colspan="5" height="20" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Carrier </span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") if @metadata[:TrackLine].present? %></span>
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:carrier_code]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %></span>
                 </td>
                 <td align="left" colspan="5" style="border-top: 1px solid #3c3c3c; padding-left: 10px;" valign="top">
                   <b><span style="color:#000000">Tracking Number</span></b> <span style="float:right">:</span></td>
                 <td align="left" colspan="6" style="border-top: 1px solid #3c3c3c;padding-left: 10px;" valign="top">
-                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:track_number]}.join(",") if @metadata[:TrackLine].present? %></span>
+                  <span style="color:#000000"><%= @metadata[:TrackLine].map {|g| g[:track_number]}.join(",") if @metadata.present? && @metadata[:TrackLine].present? %></span>
                 </td>
               </tr>
               </tbody>
