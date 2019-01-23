@@ -11,7 +11,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
     company_ratings_attributes.each do |index,company_rating_attribute|
       if !@company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).first.update({rating: company_rating_attribute['rating'].to_f})
-        redirect_to_path_genaration("Please give star ratings for all the Questions.")
+        redirect_to_path_genaration("Please give star ratings for all the Questions.",500)
         return
       end
     end
@@ -24,7 +24,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     company.assign_attributes({rating: overall_rating})
     company.save(validate: false)
 
-    redirect_to_path_genaration("Feedback captured successfully.")
+    redirect_to_path_genaration("Feedback captured successfully.", 200)
   end
   def show
     authorize @company_review
@@ -49,18 +49,13 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
   private
 
-  def redirect_to_path_genaration(message)
-    if params[:sales_order_id].present?
-      if @company_review.Sales?
-        redirect_to new_overseers_po_request_path(:sales_order_id=>params[:sales_order_id]), :flash => { :error => message }
-      else
-        redirect_to new_overseers_invoice_request_path(:sales_order_id=>params[:sales_order_id]), :flash => { :error => message }
-      end
-    elsif params[:purchase_order_id].present?
-      redirect_to new_overseers_invoice_request_path(:purchase_order_id=>params[:purchase_order_id]), :flash => { :error => message }
-    else
+  def redirect_to_path_genaration(message,status)
+    if params[:company_review_redirect]
       redirect_to overseers_company_review_path(@company_review), :flash => { :error => message }
+    else
+      render :json => {:error => message}, :status => status
     end
+
   end
 
 

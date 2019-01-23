@@ -1,6 +1,6 @@
 <div class="modal fade" id="multipleRatingForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true" data-type="<%= refernce_type %>" data-id = <%= refrence_object_id %>>
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h4 class="modal-title w-100 font-weight-bold">Company Review Form</h4>
@@ -9,7 +9,7 @@
         <ul class="nav nav-tabs nav-fill">
           <% @company_reviews.each_with_index do |company_review, index| %>
             <li class="nav-item">
-              <a class="nav-link custom-tab <%= index== 0 ? 'active' : '' %>" data-toggle="tab" href="<%='#company-'+ index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.company.name %></a>
+              <a class="nav-link custom-tab disabled <%= index== 0 ? 'active' : '' %>" data-index = '<%= index %>'data-toggle="tab" href="<%='#company-'+ index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.company.name %></a>
             </li>
           <% end %>
         </ul>
