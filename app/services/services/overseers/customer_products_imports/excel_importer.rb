@@ -42,7 +42,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
       if file_url.present? && filename.present?
         url = URI(file_url)
         res = Net::HTTP.get_response(url)
-        if res.code == '200'
+        if res.code == '200' || res.code =='301' || res.code =='302'
           file = open(file_url)
           record.send('images').attach(io: file, filename: filename)
         else
