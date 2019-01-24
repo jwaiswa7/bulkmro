@@ -27,7 +27,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
-      # move to another place
+
       @suppliers = @sales_order.inquiry.suppliers.uniq
 
       if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
