@@ -5,9 +5,7 @@ class CompanyCreationRequest < ApplicationRecord
   pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :activity
-  belongs_to :account
   belongs_to :company
-  validates_presence_of :name
 
   scope :requested, -> {where(:company_id => nil)}
   scope :created, -> {where.not(:company_id => nil)}
@@ -15,10 +13,17 @@ class CompanyCreationRequest < ApplicationRecord
   enum :account_type => {
       :is_supplier => 10,
       :is_customer => 20,
-  }
+  }, _prefix: true
+
 
   def status
-    (self.account_id.present? && self.company_id.present?) ? 'Created' : 'Requested'
+    (self.company_id.present?) ? 'created' : 'Requested'
   end
 
+  def is_customer?
+    self.account_type == 'is_customer'
+  end
+  def is_supplier?
+    self.account_type == 'is_supplier'
+  end
 end

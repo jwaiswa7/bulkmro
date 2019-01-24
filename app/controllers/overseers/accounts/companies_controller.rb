@@ -7,15 +7,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def new
-
-    if params[:ccr_id].present?
-      requested_comp = CompanyCreationRequest.where(:id => params[:ccr_id]).last
-      if !requested_comp.nil?
-        @company = @account.companies.build({'name': requested_comp.name, 'company_creation_request_id': params[:ccr_id]}.merge(overseer: current_overseer))
-      end
-    else
-      @company = @account.companies.build(overseer: current_overseer)
-    end
+    @company = @account.companies.build(overseer: current_overseer)
     authorize @company
   end
 
@@ -40,16 +32,8 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))
     authorize @company
 
-    if @company.save
-      company_creation_request = @company.company_creation_request
-      company_creation_request.company_id = @company.id
-      company_creation_request.save
-      activity = company_creation_request.activity
-      activity.company = @company
-      activity.save
-      if @company.save_and_sync
-        redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
-      end
+    if @company.save_and_sync
+      redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
       render 'new'
     end

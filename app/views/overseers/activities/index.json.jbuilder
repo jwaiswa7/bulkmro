@@ -7,18 +7,12 @@ json.data (@activities) do |activity|
                       if policy(activity).edit?;
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
                       end,
-                      if (activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?);
+                      if (!activity.company.present? && activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?);
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info  ')
                       end,
                   ].join(' '),
                   activity.created_by.to_s,
-                  if activity.activity_account.present?
-                    conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
-                  elsif activity.company_creation_request.present?
-                    activity.company_creation_request.account_name
-                  else
-                    '--'
-                  end,
+                  activity.account.present? ? activity.account.name : '',
                   if activity.activity_company.present?
                     conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), policy(activity.activity_company))
                   elsif activity.company_creation_request.present?
@@ -26,7 +20,8 @@ json.data (@activities) do |activity|
                   else
                     '--'
                   end,
-                  activity.company_type,
+                  activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_supplier?) : format_boolean(activity.is_supplier?),
+                  activity.company_creation_request.present? ? format_boolean(activity.company_creation_request.is_customer?) : format_boolean(activity.is_customer?),
                   if activity.company_creation_request.present?
                     status_badge(activity.company_creation_request.status)
                   else
