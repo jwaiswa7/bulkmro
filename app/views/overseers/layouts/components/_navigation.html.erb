@@ -193,7 +193,7 @@
       </li>
 
       <% if policy(:report).index? %>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown d-none">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
             Reports
           </a>
@@ -223,18 +223,18 @@
                 </div>
               </div>
             <% end %>
-            <% if Rails.env.development? || policy(:dashboard).chewy? %>
-              <div class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
-                <div class="dropdown-menu">
-                  <% chewy_indices.each do |chewy_index| %>
-                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
-                  <% end %>
-                  <div class="dropdown-divider"></div>
-                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
-                </div>
-              </div>
-            <% end %>
+            <%# if Rails.env.development? || policy(:dashboard).chewy? %>
+<!--              <div class="dropdown-submenu">-->
+<!--                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>-->
+<!--                <div class="dropdown-menu">-->
+                  <%# chewy_indices.each do |chewy_index| %>
+                    <%#= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <%# end %>
+<!--                  <div class="dropdown-divider"></div>-->
+                  <%#= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+<!--                </div>-->
+<!--              </div>-->
+            <%# end %>
           </div>
         </li>
       <% end %>
