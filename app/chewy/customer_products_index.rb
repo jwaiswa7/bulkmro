@@ -9,6 +9,7 @@ class CustomerProductsIndex < BaseIndex
     field :brand, value: -> (record) { record.brand.to_s }, analyzer: 'substring'
     field :category, value: -> (record) { record.category.to_s }, analyzer: 'substring'
     field :mpn, value: -> (record) { record.product.try(:mpn).to_s }, analyzer: 'substring'
+    field :tags, value: -> (record) { record.tags.ids.map(&:to_s) }, analyzer: 'substring'
     field :customer_price, type: 'integer'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'

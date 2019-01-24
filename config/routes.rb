@@ -385,6 +385,13 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :tags do
+          collection do
+            get 'autocomplete'
+            get 'autocomplete_closure_tree'
+          end
+        end
+
         resources :addresses do
           collection do
             get 'autocomplete'
