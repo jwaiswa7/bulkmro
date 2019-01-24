@@ -11,9 +11,8 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
        OnlinePayment.joins(:customer_order).where("customer_orders.company_id = ?", params[:company_id])
     else
       OnlinePayment.all
-    end.order(id: :desc)
-
-    @payments = ApplyDatatableParams.to(payments, params)
+               end.order(id: :desc)
+    @payments = ApplyDatatableParams.to(payments, params.except(:company_id))
     authorize :customer_order
   end
 
