@@ -1,6 +1,6 @@
 
 class Overseers::CompanyReviewPolicy < Overseers::ApplicationPolicy
-  def update_rating?
+  def update?
     true
   end
   def render_form?
