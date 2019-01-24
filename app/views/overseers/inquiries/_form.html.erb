@@ -284,7 +284,7 @@
                 <label>#</label>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
               <div class="form-group mb-0">
                 <label>Product</label>
               </div>
@@ -313,6 +313,12 @@
             <div class="col-1">
               <div class="form-group mb-0">
                 <label>Quantity</label>
+              </div>
+            </div>
+
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Inventory</label>
               </div>
             </div>
           </div>
@@ -347,7 +353,7 @@
 
                 </div>
               </div>
-              <div class="col-9 col-md-5">
+              <div class="col-9 col-md-4">
                 <div class="select2-wrap">
                   <%= inquiry_product.association :product, collection: [inquiry_product.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false %>
                 </div>
@@ -384,6 +390,11 @@
                     </div>
                   <% end if policy(inquiry_product.object).destroy? %>
                 </div>
+              </div>
+              <div class="col-2 col-md-1 text-center">
+                <% if inquiry_product.object.persisted? && inquiry_product.object.product.present?  %>
+                    <a href="<%= resync_inventory_overseers_product_path(inquiry_product.object.product) %>" target="_blank" <% if inquiry_product.object.product.stocks.total_qty > 0 %> class="text-success" <% else %>  class="text-warning" <% end %>title="Resync Inventory"><%= inquiry_product.object.product.stocks.total_qty %></a>
+                <% end %>
               </div>
 
             </div>

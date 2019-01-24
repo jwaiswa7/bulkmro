@@ -45,10 +45,19 @@ import poRequests from "./poRequests/init";
 import paymentRequests from "./paymentRequests/init";
 
 // Invoice Requests
-import invoiceRequests from "./paymentRequests/init";
+import invoiceRequests from "./invoiceRequests/init";
+
+// Po Requests
+import poRequests from "./poRequests/init";
 
 // Activities
 import activities from './activities/init'
+
+import companies from './companies/init'
+
+// Company Reviews
+
+import companyReviews from './companyReviews/init'
 
 let loader = {
     imports: imports,
@@ -69,7 +78,10 @@ let loader = {
     poRequests: poRequests,
     paymentRequests: paymentRequests,
     invoiceRequests: invoiceRequests,
-    activities: activities
+    poRequests: poRequests,
+    activities: activities,
+    companies: companies,
+    companyReviews: companyReviews
 };
 
 // Imports

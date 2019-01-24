@@ -188,6 +188,9 @@ gem 'parser'
 gem 'unparser'
 gem 'mini_magick'
 
+# Star Rating
+gem 'ratyrate'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -237,3 +240,6 @@ gem 'chartjs-ror'
 
 #For online payments with Razorpay
 gem 'razorpay'
+
+# Wit.ai
+gem 'wit'

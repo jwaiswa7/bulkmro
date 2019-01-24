@@ -43,10 +43,29 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+
+      @suppliers = @sales_order.inquiry.suppliers.uniq
+
+      if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
+        @review_type = "Sales"
+      elsif @current_overseer.logistics?
+        @review_type = "Logistics"
+      end
+      @company_reviews = []
+      @suppliers.each do |supplier|
+        company_review = supplier.company_reviews.where(created_by: current_overseer, survey_type: @review_type).first_or_create!
+        @company_reviews << company_review
+      end
       authorize @invoice_request
     elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order, current_overseer,'Logistics')
+      service.call
+
+      @supplier = service.supplier
+      @can_review = service.can_review
+      @company_review = service.company_review
       authorize @invoice_request
       if params[:mpr_id]
         @invoice_request.material_pickup_request = MaterialPickupRequest.find(params[:mpr_id])

@@ -2388,4 +2388,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       po.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
+
+  def generate_review_questions
+    service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
+
+      service.loop() do |x|
+        question = x.get_column('Question')
+        type = x.get_column('Type')
+        weightage = x.get_column('Weightage')
+        ReviewQuestion.where(question: question, question_type: type, weightage:weightage).first_or_create!
+
+      end
+
+  end
 end

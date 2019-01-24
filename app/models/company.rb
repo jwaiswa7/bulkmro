@@ -16,6 +16,7 @@ class Company < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
+  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
@@ -44,6 +45,8 @@ class Company < ApplicationRecord
   has_many :company_banks
   has_many :banks, through: :company_banks
 
+  has_many :company_reviews
+  ratyrate_rateable "supplier_responsiveness"
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
@@ -192,5 +195,9 @@ class Company < ApplicationRecord
     if self.pan.blank? || self.pan.length != 10
       errors.add(:company, 'PAN is not valid')
     end
+  end
+
+  def company_rating
+    rating_for self,'supplier_responsiveness',star: Random.rand(1..5)
   end
 end

@@ -12,7 +12,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
-
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
         status_service.call
 

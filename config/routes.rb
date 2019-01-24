@@ -28,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -37,7 +37,6 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
-    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -132,7 +131,6 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
-        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
@@ -352,7 +350,10 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
       end
-
+      member do
+        get 'render_rating_form'
+        put 'update_rating'
+      end
       scope module: 'companies' do
         resources :customer_orders
 
@@ -364,7 +365,11 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
-
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -415,6 +420,9 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
+      end
     end
     resources :payment_options
 
@@ -436,7 +444,12 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      member do
+        put 'update_rating'
+        get 'render_form'
+      end
+    end
   end
 
   namespace 'customers' do

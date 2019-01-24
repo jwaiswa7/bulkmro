@@ -148,6 +148,11 @@ module DisplayHelper
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
 
+  def format_star(rating)
+    star_given = rating.nil? ? 0 : rating
+    (['<i class="fas fa-star text-warning "></i>', '<span class="render-star">',star_given,'<span/>'].join(' ')).html_safe
+  end
+
   def format_count(count, zero_if_nil: true)
     if count.present?
       count
@@ -202,5 +207,9 @@ module DisplayHelper
     end
 
     due_badge(due_in_days, [due_string, distance_of_time_in_words(current_date, due_date)].join(' '))
+  end
+
+  def current_user
+    current_overseer
   end
 end
