@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
+    resources :review_questions
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -131,6 +133,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
