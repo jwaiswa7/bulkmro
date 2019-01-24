@@ -20,7 +20,7 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
               end
             end
 
-            if purchase_order.po_request.present?
+            if purchase_order.po_request.present? && purchase_order.po_request.payment_request.blank?
               create_payment_request = Services::Overseers::PaymentRequests::Create.new(purchase_order.po_request)
               create_payment_request.call
             end

@@ -1335,6 +1335,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_payment_requests_statuses
+    PaymentRequest.where(status: 10).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 20).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 30).update_all(request_owner: 'Accounts', status: :'Payment Pending')
+    PaymentRequest.where(status: 40).update_all(request_owner: 'Accounts', status: :'Payment Made')
+  end
+
   private
 
   def perform_migration(name)

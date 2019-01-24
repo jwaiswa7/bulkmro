@@ -18,10 +18,10 @@ class PoRequest < ApplicationRecord
 
   belongs_to :purchase_order, required: false
   has_one :payment_request, required: false
-  belongs_to :payment_option
+  belongs_to :payment_option, required: false
   has_many_attached :attachments
 
-  attr_accessor :opportunity_type, :customer_committed_date
+  attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
   enum status: {
       :'Requested' => 10,

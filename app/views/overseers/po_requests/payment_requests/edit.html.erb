@@ -1,5 +1,1 @@
-<% if policy(@payment_request).edit_payment_logistics? %>
-  <%= render 'overseers/po_requests/payment_requests/form' %>
-<% else %>
-  <%= render 'overseers/po_requests/payment_requests/form_queue' %>
-<% end %>
+<%= render 'overseers/po_requests/payment_requests/form' %>

@@ -145,6 +145,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def create_purchase_orders_requests
     authorize :sales_order
+
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     service.call
 
@@ -172,6 +173,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :payment_option_id,
               :status,
               :supplier_committed_date,
+              :blobs,
               :attachments => [],
               :rows_attributes => [
                   :id,
