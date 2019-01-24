@@ -63,7 +63,7 @@ class PoRequest < ApplicationRecord
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, :if => :new_record?
-  after_save :update_index, :if => self.purchase_order.present?
+  after_save :update_index, if: -> { purchase_order.present? }
 
   def purchase_order_created?
     if self.status == "PO Created" && self.purchase_order.blank?
