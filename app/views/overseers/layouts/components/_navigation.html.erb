@@ -132,6 +132,9 @@
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+          <div  class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+          <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
         </div>
       </li>
 
@@ -214,8 +217,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
-            <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
           </div>
         </li>
       <% end %>
@@ -236,18 +237,18 @@
                 </div>
               </div>
             <% end %>
-            <% if Rails.env.development? || policy(:dashboard).chewy? %>
-              <div class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
-                <div class="dropdown-menu">
-                  <% chewy_indices.each do |chewy_index| %>
-                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
-                  <% end %>
-                  <div class="dropdown-divider"></div>
-                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
-                </div>
-              </div>
-            <% end %>
+            <%# if Rails.env.development? || policy(:dashboard).chewy? %>
+<!--              <div class="dropdown-submenu">-->
+<!--                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>-->
+<!--                <div class="dropdown-menu">-->
+                  <%# chewy_indices.each do |chewy_index| %>
+                    <%#= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <%# end %>
+<!--                  <div class="dropdown-divider"></div>-->
+                  <%#= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+<!--                </div>-->
+<!--              </div>-->
+            <%# end %>
           </div>
         </li>
       <% end %>
