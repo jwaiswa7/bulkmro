@@ -7,7 +7,7 @@ json.data (@payments) do |payment|
                   status_badge(payment.status),
                   payment.customer_order.online_order_number,
                   payment.payment_id,
-                  format_currency(payment.amount),
+                  format_currency((payment.amount/100)),
                   format_succinct_date(payment.created_at)
               ]
 end

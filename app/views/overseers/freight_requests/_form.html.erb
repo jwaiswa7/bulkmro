@@ -118,8 +118,21 @@
                 <%= f.input :volumetric_weight, readonly: true, label: "Volumetric Weight in Kilograms" %>
               </div>
 
+              <div class="col-6">
+                <%= f.input :material_type, label: "Material Type" %>
+              </div>
+
               <div class="col-3">
                 <%= f.input :hazardous, as: :select, :wrapper => :custom_multi_select, :include_blank => false, label: "Hazardous" %>
+              </div>
+              <div class="col-3">
+                <%= f.input :pickup_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true %>
+              </div>
+              <div class="col-6">
+                <%= f.input :loading, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.loadings, alphabetical: false, keep_raw: true), :include_blank => false, label: "Loading Type" %>
+              </div>
+              <div class="col-6">
+                <%= f.input :unloading, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(FreightRequest.unloadings, alphabetical: false, keep_raw: true), :include_blank => false, label: "Unloading Type" %>
               </div>
             </div>
           </div>
