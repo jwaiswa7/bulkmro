@@ -130,6 +130,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def new_purchase_orders_requests
     authorize :sales_order
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
+    @company_reviews = service.call
 
     service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
     @po_requests = service.call

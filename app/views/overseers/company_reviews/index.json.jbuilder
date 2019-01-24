@@ -7,11 +7,10 @@ json.data (@company_reviews) do |company_review|
                   ],
                   company_review.created_by.name,
                   company_review.company.name,
-                  rating_for(company_review.company)
+                  format_star(company_review.rating)
               ]
 end
 
 json.recordsTotal @company_reviews.model.all.count
 json.recordsFiltered @company_reviews.total_count
 json.draw params[:draw]
-json.companyRating @company_reviews.map {|cmp| {:id=> cmp.company.id, :"rating"=> cmp.rating}}.as_json

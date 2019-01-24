@@ -37,12 +37,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
-
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer,'Sales')
-      service.call
-
-      @can_review = service.can_review
-      @company_review = service.company_review
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
+      @company_reviews = service.call
 
       authorize @po_request
     else

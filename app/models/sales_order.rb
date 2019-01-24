@@ -40,7 +40,6 @@ class SalesOrder < ApplicationRecord
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
 
-
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
@@ -64,7 +63,6 @@ class SalesOrder < ApplicationRecord
       :'Order Deleted' => 70,
       :'Hold by Finance' => 80
   }, _prefix: true
-
 
   enum status: {
       :'Requested' => 10,

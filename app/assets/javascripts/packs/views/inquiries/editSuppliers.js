@@ -34,11 +34,12 @@ let onSupplierChange = (container) => {
             },
 
             success: function (response) {
+                var rating = (response.rating === null) ? 0 : response.rating
                 select.closest('div.form-row').find('[name*=lowest_unit_cost_price]').val(response.lowest_unit_cost_price);
                 select.closest('div.form-row').find('[name*=latest_unit_cost_price]').val(response.latest_unit_cost_price);
                 select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
                 select.closest('div.form-row').find('[name*=bp_catalog_sku]').val(response.bp_catalog_sku);
-                select.closest('div.form-row').find("[data-name=starred]").raty({'readOnly': true , 'score': response.rating , 'precision': true, 'hints': ['bad','poor','average','good','best']})
+                select.closest('div.form-row').find(".render-star").text(rating)
             }
         });
     }

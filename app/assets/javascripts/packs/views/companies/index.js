@@ -1,6 +1,6 @@
 import onLoadPage from '../common/onLoadPage'
 const index = () => {
-    onLoadPage();
+    // onLoadPage();
 
     $('.datatable').on('click','.rating',function () {
         var id = $(this).data('company-id')
@@ -14,7 +14,6 @@ const index = () => {
                 $('.modal-render').append(data)
                 $('#modalRatingForm').modal('show')
                 let reviewQuestionsLength = $(".rating-form .star").length
-                console.log(reviewQuestionsLength)
 
                 for (let i = 0; i < reviewQuestionsLength; i++) {
                     let starRating = ".star-"+i

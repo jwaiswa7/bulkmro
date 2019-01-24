@@ -44,9 +44,6 @@ import paymentRequests from "./paymentRequests/init";
 // Invoice Requests
 import invoiceRequests from "./invoiceRequests/init";
 
-// Po Requests
-import poRequests from "./poRequests/init";
-
 // Activities
 import activities from './activities/init'
 
@@ -72,7 +69,6 @@ let loader = {
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
-    poRequests: poRequests,
     paymentRequests: paymentRequests,
     invoiceRequests: invoiceRequests,
     poRequests: poRequests,

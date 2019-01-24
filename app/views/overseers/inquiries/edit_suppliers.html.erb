@@ -46,7 +46,7 @@
                   </div>
                   <% if inquiry_product.object.inquiry_product_suppliers.present? %>
                     <div class="col-12 col-md-1">
-                      <div class="product_supplier_ratings" data-name="starred" data-ratings="<%= inquiry_product.object.inquiry_product_suppliers.first.supplier.rating %>"></div>
+                      <%= format_star(inquiry_product.object.inquiry_product_suppliers.first.supplier.rating) %>
                     </div>
                   <% end %>
                   <div class="col-6 col-md-2">

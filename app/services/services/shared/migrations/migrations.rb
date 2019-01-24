@@ -2334,9 +2334,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       type = x.get_column('Type')
       weightage = x.get_column('Weightage')
       ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
-
     end
-
   end
 
   def create_company_banks

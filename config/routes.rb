@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -29,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -424,7 +423,6 @@ Rails.application.routes.draw do
         resources :products do
 
         end
-
       end
     end
 
@@ -468,7 +466,7 @@ Rails.application.routes.draw do
     resources :freight_quotes
     resources :company_reviews do
       member do
-        put 'update_rating'
+        get 'render_form'
       end
     end
   end

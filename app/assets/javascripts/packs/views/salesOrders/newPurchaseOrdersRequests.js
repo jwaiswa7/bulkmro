@@ -1,6 +1,7 @@
-import updateRatingForm from "../common/updateRatingForm";
-import bindRatingModalTabClick from "../common/bindRatingModalTabClick";
-const newAction = () => {
+import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
+import updateRatingForm from "../common/updateRatingForm"
+const newPurchaseOrdersRequests = () => {
+
     bindRatingModalTabClick();
     $('.rating-modal a').click();
 
@@ -8,6 +9,7 @@ const newAction = () => {
     customTabSelector.eq(0).removeClass('disabled')
     customTabSelector[0].click();
     updateRatingForm();
+
 };
 
-export default newAction
+export default newPurchaseOrdersRequests
