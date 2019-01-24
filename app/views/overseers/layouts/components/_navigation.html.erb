@@ -114,6 +114,9 @@
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+          <div  class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+          <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
         </div>
       </li>
 
@@ -183,7 +186,7 @@
       </li>
 
       <% if policy(:report).index? %>
-        <li class="nav-item dropdown d-none">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
             Reports
           </a>
@@ -191,8 +194,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
-            <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
           </div>
         </li>
       <% end %>
