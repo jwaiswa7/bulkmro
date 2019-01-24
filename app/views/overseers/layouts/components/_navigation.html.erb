@@ -107,7 +107,7 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:inquiry).index? %>
               <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:inquiry).index? %>
-              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), policy(:inquiry).index? %>
             </ul>
           </div>
 
@@ -157,7 +157,7 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>
               <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:freight_request).index? %>
-              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), policy(:freight_request).index? %>
             </ul>
           </div>
 
