@@ -52,6 +52,7 @@ import companies from './companies/init'
 // Company Reviews
 
 import companyReviews from './companyReviews/init'
+import poRequests from './poRequests/init'
 
 let loader = {
     imports: imports,
