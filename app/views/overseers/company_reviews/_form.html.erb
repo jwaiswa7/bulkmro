@@ -1,4 +1,4 @@
-<%= simple_form_for([:overseers, company_review],:url => update_rating_overseers_company_review_path(company_review,refernce_type => refrence_object_id), :method => 'PUT', :remote => true) do |f| %>
+<%= simple_form_for([:overseers, company_review],:url => overseers_company_review_path(company_review,refernce_type => refrence_object_id), :method => 'PATCH', :remote => true) do |f| %>
   <%= f.hidden_field :id %>
   <div class="error bg-danger text-white"></div>
   <%= f.simple_fields_for :company_ratings, company_review.company_ratings , wrapper_tag: :div do |company_rating| %>
