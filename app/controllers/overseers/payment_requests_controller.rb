@@ -12,11 +12,11 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           end
         else
           PaymentRequest.all
-        end.order(due_date: :asc)
+        end
 
-    @payment_requests = ApplyDatatableParams.to(payment_requests, params, paginate: false)
+    @payment_requests = ApplyDatatableParams.to(payment_requests.order(due_date: :asc), params)
     authorize @payment_requests
-    @statuses = @payment_requests.pluck(:status)
+    @statuses = payment_requests.group(:status).count
   end
 
   def show

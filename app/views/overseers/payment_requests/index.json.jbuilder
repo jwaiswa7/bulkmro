@@ -30,6 +30,7 @@ json.data (@payment_requests) do |payment_request|
                     "-"
                   end,
                   format_currency(payment_request.po_request.sales_order.try(:calculated_total_with_tax)),
+                  format_currency(payment_request.remaining_amount),
                   percentage(payment_request.percent_amount_paid,precision: 2),
                   format_date_time_meridiem(payment_request.created_at),
                   if payment_request.last_comment.present?
@@ -60,4 +61,4 @@ json.columnFilters [
 json.recordsTotal @payment_requests.model.all.count
 json.recordsFiltered @payment_requests.count
 json.draw params[:draw]
-json.recordsSummary PaymentRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary PaymentRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses[k]}}.as_json
