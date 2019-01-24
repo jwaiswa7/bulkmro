@@ -15,6 +15,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         set_and_validate_excel_header_row
         set_rows
       end
+      import
     end
   end
 
@@ -32,7 +33,6 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         column.downcase!
       else
         import.errors.add(:base, ['Invalid excel upload; the columns should be', CustomerProductImport::HEADERS.to_sentence + '.'].join(' '))
-        raise ExcelInvalidHeader
       end
     end
   end
