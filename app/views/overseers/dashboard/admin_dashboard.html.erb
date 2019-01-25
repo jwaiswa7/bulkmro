@@ -1,0 +1,105 @@
+<%= render layout: 'overseers/dashboard/show' do %>
+
+  <div class="form-row mt-3 mt-lg-4">
+        <% if policy(:product).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Products</strong></p>
+              <h3 class="mb-0"><%= Product.all.size %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_products_path %>" class="btn btn-lg btn-block btn-success">See Products</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:company).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase text-black-50 mb-1"><strong>Companies</strong>
+              </p>
+              <h3 class="mb-0"><%= Company.all.size %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_companies_path %>" class="btn btn-lg btn-block btn-success">See Companies</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:contact).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
+              <h3 class="mb-0"><%= Contact.all.size %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_contacts_path %>" class="btn btn-lg btn-block btn-success">See Contacts</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:account).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
+              <h3 class="mb-0"><%= Account.all.size %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_accounts_path %>" class="btn btn-lg btn-block btn-success">See Accounts</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-row">
+    <% if @dashboard.entries.any? %>
+      <div class="col-12 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+<!--            <h4 class="text-uppercase text-black-50 mb-0">Sales report</h4>-->
+
+            <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort"></th>
+                <th class="no-sort">Inquiry</th>
+                <th class="no-sort">Quotes</th>
+                <th class="no-sort">Orders</th>
+                <th class="no-sort">Purchase Orders</th>
+                <th class="no-sort">Invoices</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @dashboard.entries.each do |month, values| %>
+                <tr>
+                  <th><%= format_month_without_date(month) %></th>
+                  <% values.each do |column, value| %>
+                    <td class="text-uppercase text-center text-black-50">
+                      <%= value[:count] %> <%= ['(',format_percent_of(value[:count], values[:inquiry][:count]),')'].join if column != 'inquiry'.to_sym %>
+                    <hr class="my-1">
+                      <%= format_currency(value[:total], precision: 0, show_symbol: true)  %>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
