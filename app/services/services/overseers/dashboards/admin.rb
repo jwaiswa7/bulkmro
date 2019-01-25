@@ -10,7 +10,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
         }
     )
 
-    start_at = Date.new(2018, 10, 01)
+    start_at = Date.new(2018, 10, 01).beginning_of_day
     end_at = Date.today.end_of_day
 
     ActiveRecord::Base.default_timezone = :utc
@@ -31,7 +31,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
     months = inquiry_groups.keys
 
-    months.each do |month|
+    months.reverse.each do |month|
       @data.entries[month.to_s] = {:inquiry => 0, :sales_quotes => 0, :sales_order => 0, :purchase_order => 0, :sales_invoice => 0}
 
       # INQUIRIES
@@ -92,7 +92,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
 
       # SALES ORDERS
-      so = sales_orders.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
+      so = sales_orders.where(:mis_date => month.to_date.beginning_of_month..month.to_date.end_of_month)
       max_order_updated_at = so.order(:updated_at).last
       cached_order_updated_at = Rails.cache.read("#{month.to_s}-orders-updated_at")
       if cached_order_updated_at == nil
