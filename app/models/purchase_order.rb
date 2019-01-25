@@ -73,6 +73,12 @@ class PurchaseOrder < ApplicationRecord
   scope :material_pickup_queue, -> {where(:material_status => :'Material Pickup')}
   scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
 
+  after_initialize :set_defaults, :if => :new_record?
+
+  def set_defaults
+    self.material_status = 'Material Readiness Follow-Up'
+  end
+
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
       product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
