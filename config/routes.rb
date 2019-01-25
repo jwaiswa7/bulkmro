@@ -62,7 +62,12 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :reports
+    resources :reports do
+      collection do
+        get 'bi_report'
+      end
+    end
+
     resources :company_creation_requests do
       # member do
       #   post 'exchange_with_existing_company'

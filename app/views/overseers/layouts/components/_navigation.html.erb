@@ -217,6 +217,7 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
+            <%= nav_dropdown_item "BI Sample", bi_report_overseers_reports_path, policy(:report).bi_report? %>
           </div>
         </li>
       <% end %>
