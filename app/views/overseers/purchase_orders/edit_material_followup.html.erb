@@ -67,8 +67,7 @@
                 <thead>
                 <tr>
                   <td></td>
-                  <td><strong class="d-block">Name</strong></td>
-                  <td><strong class="d-block">Sku</strong></td>
+                  <td><strong class="d-block">Product</strong></td>
                   <td><strong class="d-block">PO Total Quantity</strong></td>
                   <td><strong class="d-block">Available Pickup Quantity</strong></td>
                   <td><strong class="d-block">Quantity Pickup / Delivered </strong></td>
@@ -76,17 +75,15 @@
                 </thead>
                 <tbody>
                 <% @purchase_order.rows.each_with_index do |row, index| %>
-                  <% if row.get_product %>
 
-                    <tr>
-                      <td><%= index + 1 %></td>
-                      <td><%= row.get_product.name %></td>
-                      <td><%= row.get_product.sku %></td>
-                      <td><%= row.quantity %></td>
-                      <td><%= row.get_pickup_quantity %></td>
-                      <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= row.to_s %></td>
+                    <td><%= row.quantity %></td>
+                    <td><%= row.get_pickup_quantity %></td>
+                    <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                  </tr>
+
                 <% end %>
                 </tbody>
               </table>
