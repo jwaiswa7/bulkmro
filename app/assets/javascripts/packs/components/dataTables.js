@@ -46,6 +46,7 @@ let setup = () => {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
         let isAjax = !!$(this).data('ajax');
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
+        let allowSort = $(this).data(sort) ? $(this).data(sort) : true;
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
@@ -73,7 +74,7 @@ let setup = () => {
                 "<'row'<'col-12 align-items-center text-center'i><'col-12 align-items-center text-center'p>>",
             "pageLength": 20,
             pagingType: 'full_numbers',
-            order: [[$(that).find('th').length - 1, 'desc']], // Sort on the last column
+            order: allowSort ? [[$(that).find('th').length - 1, 'desc']] : false, // Sort on the last column
             columnDefs: [{
                 "targets": 'no-sort',
                 "orderable": false
