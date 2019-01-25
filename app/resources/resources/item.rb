@@ -25,7 +25,7 @@ class Resources::Item < Resources::ApplicationResource
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
         Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : -1, # Product Manufacturer
-        Valid: "tYES", # Status
+        Valid: record.is_active ? "tYES" : "tNO", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
         PurchaseUnit: nil, # TO BE CREATED IN MAGENTO
@@ -57,7 +57,8 @@ class Resources::Item < Resources::ApplicationResource
         GSTTaxCategory: "gtc_Regular",
         U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class,
         MaterialType: "mt_FinishedGoods",
-        Excisable: "tNO"
+        Excisable: "tNO",
+        Frozen: record.is_active ? "tNO" : "tYES"
     }
 
     if record.is_service
