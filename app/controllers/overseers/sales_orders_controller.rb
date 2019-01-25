@@ -185,7 +185,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :brand_id,
                   :tax_code_id,
                   :tax_rate_id,
-                  :measurement_unit_id
+                  :measurement_unit_id,
+                  :unit_price
               ]
           ]
       )

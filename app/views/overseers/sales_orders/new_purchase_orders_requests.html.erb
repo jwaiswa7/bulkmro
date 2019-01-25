@@ -90,31 +90,31 @@
                 </div>
                 <div class="col-12 col-md-2">
                   <div class="select2-wrap">
-                    <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
+                    <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled?, required: true %>
                   </div>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: po_request_row.object.field_disabled? %>
+                  <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
                   <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
 
-                  <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false  %>
+                  <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, required: true  %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%#= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
                   <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0 }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
+                  <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0 }, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false, required: true %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
                   <%#= po_request_row.association :measurement_unit, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :measurement_unit), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_measurement_units_path(is_service: !po_request_row.object.field_disabled?)}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false  %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= po_request_row.input :converted_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: po_request_row.object.field_disabled? %>
+                  <%= po_request_row.input :unit_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, readonly: po_request_row.object.field_disabled?, required: true %>
                 </div>
                 <div class="col-12 col-md-1">
                   <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price }, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
@@ -138,7 +138,7 @@
                 </div>
               </div>
             <% end %>
-            <div class="col-md-3 d-none">
+            <div class="col-md-3">
               <%= po_request.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
                 <i class="fal fa-plus-circle mr-1"></i>Add a Service product
               <% end %>
