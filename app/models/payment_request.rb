@@ -105,4 +105,5 @@ class PaymentRequest < ApplicationRecord
   def percent_amount_paid
     self.total_amount_paid * 100 / self.po_request.sales_order.try(:calculated_total_with_tax)
   end
+
 end

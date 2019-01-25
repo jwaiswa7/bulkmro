@@ -23,6 +23,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
+
     respond_to do |format|
       format.html {}
       format.json do
@@ -33,6 +34,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @purchase_orders = service.records.try(:reverse)
       end
     end
+
 =begin
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
 =end
