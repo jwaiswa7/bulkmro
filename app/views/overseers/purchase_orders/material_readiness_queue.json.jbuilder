@@ -22,13 +22,14 @@ json.data (@purchase_orders) do |purchase_order|
                   link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: "_blank"),
                   link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: "_blank"),
                   (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
+                  format_succinct_date(purchase_order.followup_date),
                   (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
                   purchase_order.status || purchase_order.metadata_status,
                   purchase_order.material_status,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   format_succinct_date(purchase_order.created_at),
-                  format_succinct_date(purchase_order.followup_date),
+
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end
