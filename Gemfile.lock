@@ -537,7 +537,6 @@ GEM
       timeliness (~> 0.3.8)
     warden (1.2.8)
       rack (>= 2.0.6)
-    wdm (0.1.1)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -551,6 +550,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
     wicked_pdf (1.1.0)
+    wit (6.0.0)
     with_advisory_lock (4.0.0)
       activerecord (>= 4.2)
 
@@ -636,10 +636,10 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unparser
   validates_timeliness (~> 5.0.0.alpha3)
-  wdm (>= 0.1.0)
   web-console (>= 3.3.0)
   webpacker (~> 3.5)
   wicked_pdf
+  wit
 
 BUNDLED WITH
    1.17.1
