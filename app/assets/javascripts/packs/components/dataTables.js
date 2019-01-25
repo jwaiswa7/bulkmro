@@ -46,7 +46,7 @@ let setup = () => {
         if ($.fn.dataTable.isDataTable('#' + $(this).attr('id'))) return false;
         let isAjax = !!$(this).data('ajax');
         let isFixedHeader = $(this).data('fixed-header') == "false" ? false : true;
-        let allowSort = $(this).data(sort) ? $(this).data(sort) : true;
+        let allowSort = $(this).data('sort') ? $(this).data(sort) : true;
         let that = this;
 
         $.fn.dataTable.ext.errMode = 'throw';
