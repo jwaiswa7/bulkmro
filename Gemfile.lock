@@ -404,6 +404,7 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rake (12.3.2)
     randexp (0.1.7)
+    ratyrate (1.2.2.alpha)
     razorpay (2.3.0)
       httparty (~> 0.14)
     rb-fsevent (0.10.3)
@@ -605,6 +606,7 @@ DEPENDENCIES
   puma (~> 3.11)
   pundit
   rails (~> 5.2.0)
+  ratyrate
   razorpay
   rotp
   rubyzip (~> 1.2)

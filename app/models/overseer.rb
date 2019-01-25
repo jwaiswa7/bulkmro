@@ -18,7 +18,7 @@ class Overseer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
 
-
+  ratyrate_rater
   enum status: {active: 10, inactive: 20}
 
   scope :can_send_email, -> {where.not(:smtp_password => nil)}

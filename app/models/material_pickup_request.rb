@@ -4,6 +4,7 @@ class MaterialPickupRequest < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeStamped
 
+  update_index('material_pickup_requests#material_pickup_request') {self}
   belongs_to :purchase_order
   has_one :inquiry, :through => :purchase_order
 

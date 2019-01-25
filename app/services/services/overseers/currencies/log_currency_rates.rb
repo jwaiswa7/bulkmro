@@ -12,7 +12,7 @@ class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::Base
 
       Money.default_bank = oxr
       conversion_rate = Money.default_bank.get_rate(currency.name, Currency.inr.name)
-      currency_rate = currency.current_rate || currency.rates.build
+      currency_rate = currency.current_rate || currency.figures.build
       currency_rate.assign_attributes(:conversion_rate => conversion_rate)
       currency_rate.save!
     end

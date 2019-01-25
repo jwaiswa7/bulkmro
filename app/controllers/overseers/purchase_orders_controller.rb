@@ -12,7 +12,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
-
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
         status_service.call
 
@@ -132,10 +131,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
-    service.call
-
-    redirect_to url_for(Export.purchase_orders.last.report)
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   private

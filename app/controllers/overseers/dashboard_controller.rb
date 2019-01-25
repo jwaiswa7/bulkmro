@@ -7,6 +7,10 @@ class Overseers::DashboardController < Overseers::BaseController
     if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'sales_dashboard'
+    elsif current_overseer.admin?
+        service = Services::Overseers::Dashboards::Admin.new
+        @dashboard = service.call
+        render 'admin_dashboard'
     else
       render 'default_dashboard'
     end

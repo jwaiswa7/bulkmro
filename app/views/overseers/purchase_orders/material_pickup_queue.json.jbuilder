@@ -21,6 +21,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                   link_to(material_pickup_request.purchase_order.po_number, overseers_inquiry_purchase_orders_path(material_pickup_request.purchase_order.inquiry), target: "_blank"),
                   link_to(material_pickup_request.purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(material_pickup_request.purchase_order.inquiry), target: "_blank"),
                   (material_pickup_request.purchase_order.get_supplier(material_pickup_request.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if material_pickup_request.purchase_order.rows.present?),
+                  (format_star(material_pickup_request.purchase_order.get_supplier(material_pickup_request.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:rating)) if material_pickup_request.purchase_order.rows.present?),
                   (material_pickup_request.purchase_order.inquiry.company.try(:name) if material_pickup_request.purchase_order.inquiry.company.present?),
                   material_pickup_request.logistics_owner.to_s,
                   format_date(material_pickup_request.expected_dispatch_date),
