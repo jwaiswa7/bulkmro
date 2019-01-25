@@ -1,6 +1,7 @@
 <div class="col-lg-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
     <%= simple_form_for(@inquiry, url: update_suppliers_overseers_inquiry_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <%= f.object.class %>
       <%= render 'shared/snippets/form_errors', f: f %>
       <div class="card">
         <div class="card-body">
@@ -72,7 +73,6 @@
                           <%= inquiry_product_supplier.input_field :latest_unit_cost_price, class: "form-control", disabled: true, placeholder: placeholder_for(inquiry_product_supplier, :latest_unit_cost_price) %>
                         <% end %>
                       </div>
-
                       <div class="ml-1 <%= inquiry_product.object.inquiry_product_suppliers.first == inquiry_product_supplier.object ? 'align-self-center' : '' %>">
                         <%= inquiry_product_supplier.remove_nested_fields_link do %>
                           <i class="far fa-times text-danger"></i>

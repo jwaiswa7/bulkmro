@@ -7,7 +7,7 @@
 </div>
 
 <% content_for :heading do %>
-  <% ['Payment Requests', @status].compact.join(': ') %>
+  <% ['Payment Requests', @param].compact.join(': ') %>
 <% end %>
 
 <% content_for(:heading_buttons) do %>
@@ -22,13 +22,16 @@
   <th class="no-sort all" data-width="70px"></th>
   <th class="no-sort desktop">Req. No.</th>
   <th class="no-sort desktop" data-name="status">Status</th>
-  <th class="no-sort desktop text-right">Inquiry #</th>
-  <th class="no-sort all text-right">PO Request #</th>
-  <th class="no-sort all">Payment Terms</th>
+  <th class="no-sort desktop">Inquiry #</th>
+  <th class="no-sort all">PO #</th>
+  <th class="no-sort all">Owner</th>
   <th class="no-sort all">Inside Sales</th>
-  <th class="no-sort desktop text-right">Due Date</th>
-  <th class="no-sort desktop text-right">Requested At</th>
-  <th class="no-sort desktop text-right">Updated At</th>
+  <th class="no-sort desktop">Due Date</th>
+  <th class="no-sort desktop">Total Amount</th>
+  <th class="no-sort desktop">Remaining Amount</th>
+  <th class="no-sort desktop">Percentage Paid</th>
+  <th class="no-sort desktop">Requested At</th>
+  <th class="no-sort desktop">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>
 

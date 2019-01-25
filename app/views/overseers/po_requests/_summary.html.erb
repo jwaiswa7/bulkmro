@@ -1,0 +1,179 @@
+<div class="card mb-2">
+  <div class="card-body">
+    <div>
+      <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
+      <div class="form-row">
+        <% if po_request.sales_order.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Sales Order #</strong>
+            <%= link_to overseers_inquiry_sales_order_path(po_request.inquiry, po_request.sales_order), target: '_blank' do %>
+              <%= format_id(po_request.sales_order.order_number) %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if po_request.inquiry.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Inquiry #</strong>
+            <% if policy(po_request.inquiry).edit? %>
+              <%= link_to overseers_inquiry_path(po_request.inquiry), target: '_blank' do %>
+                <%= format_id(po_request.inquiry.inquiry_number) %>
+              <% end %>
+            <% else %>
+              <%= format_id(po_request.sales_order.order_number) %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if po_request.status.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Status</strong>
+            <%= status_badge(po_request.status) %>
+          </div>
+        <% end %>
+
+        <% if po_request.inquiry.present? && po_request.inquiry.inside_sales_owner.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Inside Sales</strong>
+            <%= po_request.inquiry.inside_sales_owner.to_s %>
+          </div>
+        <% end %>
+
+        <% if po_request.purchase_order.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">PO #</strong>
+            <%= po_request.purchase_order.po_number %>
+          </div>
+        <% end %>
+
+        <% if po_request.payment_request.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Payment Request</strong>
+            <a href="<%= overseers_payment_request_path(po_request.payment_request) %>"><%= format_id(po_request.id) %></a>
+          </div>
+        <% end %>
+
+        <% if po_request.sales_order.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Supplier PO Type</strong>
+            <%= po_request.sales_order.opportunity_type %>
+          </div>
+        <% end %>
+
+        <% if po_request.payment_option.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Payment Terms</strong>
+            <%= po_request.payment_option %>
+          </div>
+        <% end %>
+
+        <% if po_request.inquiry.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Customer Committed Date</strong>
+            <%= po_request.inquiry.customer_committed_date %>
+          </div>
+        <% end %>
+
+        <% if po_request.supplier.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Supplier</strong>
+            <%= po_request.supplier.to_s %>
+          </div>
+        <% end %>
+
+        <% if po_request.logistics_owner.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Logistics Owner</strong>
+            <%= po_request.logistics_owner.to_s %>
+          </div>
+        <% end %>
+
+        <% if po_request.address.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Supplier Address</strong>
+            <%= po_request.address.to_s %>
+          </div>
+        <% end %>
+
+        <% if po_request.contact.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Supplier Contact</strong>
+            <%= po_request.contact.to_s %>
+          </div>
+        <% end %>
+
+      </div>
+
+      <% if po_request.attachments.attached? %>
+        <div class="form-row">
+          <div class="col-2 col-md-3 mb-2">
+            <strong class="d-block">Logistics Owner</strong>
+            <%= po_request.logistics_owner.to_s %>
+          </div>
+          <div class="col-10 col-md-3 mb-2">
+            <strong class="d-block">Attachments </strong>
+            <% po_request.attachments.each do |attachment| %>
+              <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                <i class="fal fa-download"></i>
+                <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                  <i class="fal fa-trash-alt"></i>
+                <% end if attachment.present? && policy(:attachment).destroy? %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% if po_request.rows.present? %>
+  <div class="card mb-2">
+    <div class="card-body">
+      <div class="flex-fill">
+        <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
+      </div>
+
+      <div class="mt-3">
+        <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th>Sr. No.</th>
+            <th>Product</th>
+            <th>Make</th>
+            <th>HSN</th>
+            <th>T. Rate</th>
+            <th>Quantity</th>
+            <th>UOM</th>
+            <th>UP</th>
+            <th>TP</th>
+            <th>TT</th>
+            <th>TP with Tax</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% po_request.rows.each_with_index do |row, sr_no| %>
+          <% if row.product.present? %>
+
+            <tr>
+              <td><%= sr_no + 1 %></td>
+              <td><%= row.product.to_s %></td>
+              <td><%= row.product.try(:brand).to_s %></td>
+              <td><%= row.tax_code %></td>
+              <td><%= row.tax_rate %></td>
+              <td><%= row.quantity.to_f %></td>
+              <td><%= row.sales_order_row.measurement_unit %></td>
+              <td><%= row.sales_order_row.converted_unit_selling_price %></td>
+              <td><%= row.converted_total_selling_price %></td>
+              <td><%= row.converted_total_tax %></td>
+              <td><%= row.converted_total_selling_price_with_tax %></td>
+            </tr>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
+

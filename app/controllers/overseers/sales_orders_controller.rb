@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync]
+  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests,:create_purchase_orders_requests]
   def pending
     authorize :sales_order
 
@@ -128,9 +128,69 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def new_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
+    @po_requests = service.call
+  end
+
+  def preview_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+  end
+
+
+  def create_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    service.call
+
+    redirect_to pending_and_rejected_overseers_po_requests_path
+  end
+
   private
 
   def set_sales_order
     @sales_order = SalesOrder.find(params[:id])
+  end
+
+  def new_purchase_orders_requests_params
+    if params.has_key?(:sales_order)
+      params.require(:sales_order).permit(
+          :id,
+          :po_requests_attributes => [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :status,
+              :supplier_committed_date,
+              :blobs,
+              :attachments => [],
+              :rows_attributes => [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand_id,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id
+              ]
+          ]
+      )
+    else
+      {}
+    end
   end
 end
