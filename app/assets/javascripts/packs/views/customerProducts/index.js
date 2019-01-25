@@ -1,3 +1,5 @@
+import lazyLoadImages from "../../components/lazyLoadImages";
+
 const index = () => {
     $('.filter-list-input').bindWithDelay('keyup', (e) => {
         searchSubmit(e.target.value)
@@ -16,6 +18,7 @@ const searchSubmit = (val) => {
         success: function (data) {
             let grid = $("#product-grid", data).html();
             $("#product-grid").html(grid);
+            lazyLoadImages();
         },
 
         complete: function () {
