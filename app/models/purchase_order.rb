@@ -63,14 +63,14 @@ class PurchaseOrder < ApplicationRecord
 
   enum material_status: {
       :'Material Readiness Follow-Up' => 10,
-      :'Material Pickup' => 20,
-      :'Material Partial Pickup' => 25,
+      :'Material Pickedup' => 20,
+      :'Material Partially Pickedup' => 25,
       :'Material Delivered' => 30,
-      :'Material Partial Delivered' => 35
+      :'Material Partially Delivered' => 35
   }
 
   scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
-  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickup')}
+  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickedup')}
   scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
 
   after_initialize :set_defaults, :if => :new_record?
@@ -123,9 +123,9 @@ class PurchaseOrder < ApplicationRecord
         partial = false
       end
       if "Material Pickup".in? self.material_pickup_requests.map(&:status)
-        status = partial ? "Material Partial Pickup" : "Material Pickup"
+        status = partial ? "Material Partially Pickedup" : "Material Pickedup"
       elsif "Material Delivered".in? self.material_pickup_requests.map(&:status)
-        status = partial ? "Material Partial Delivered" : "Material Delivered"
+        status = partial ? "Material Partially Delivered" : "Material Delivered"
       end
       self.update_attribute(:material_status, status)
     else
