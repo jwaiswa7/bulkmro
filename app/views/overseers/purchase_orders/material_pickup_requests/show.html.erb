@@ -89,8 +89,7 @@
             <thead>
             <tr>
               <td></td>
-              <td><strong class="d-block">Name</strong></td>
-              <td><strong class="d-block">Sku</strong></td>
+              <td><strong class="d-block">Product</strong></td>
               <td><strong class="d-block">PO Total Quantity</strong></td>
               <td><strong class="d-block">Pickup Quantity</strong></td>
               <td><strong class="d-block">Delivered Quantity</strong></td>
@@ -100,8 +99,7 @@
             <% @mpr.rows.each_with_index do |row,index| %>
               <tr>
                 <td><%= index + 1 %></td>
-                <td><%= row.purchase_order_row.get_product.name %></td>
-                <td><%= row.purchase_order_row.get_product.sku %></td>
+                <td><%= row.purchase_order_row.to_s %></td>
                 <td><%= row.purchase_order_row.quantity %></td>
                 <td><%= row.pickup_quantity %></td>
                 <td><%= row.delivered_quantity || 'N/A' %></td>
