@@ -102,7 +102,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :activity_type,
         :points_discussed,
         :actions_required,
-        :overseer_ids => []
+        :daily_allowance,
+        :overseer_ids => [],
     )
   end
 
