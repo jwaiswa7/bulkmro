@@ -4,7 +4,7 @@ class PaymentRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id, :utr_number], :associated_against => {:po_request => [:id, :purchase_order_id], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:id], :associated_against => {:po_request => [:id, :purchase_order_id], :inquiry => [:inquiry_number], :purchase_order => [:po_number]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :inquiry
   belongs_to :purchase_order
