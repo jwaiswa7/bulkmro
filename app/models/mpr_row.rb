@@ -4,6 +4,7 @@ class MprRow < ApplicationRecord
 
   validates_uniqueness_of :purchase_order_row_id, scope: :material_pickup_request
   validates_numericality_of :pickup_quantity, greater_than: 0
+  validates_numericality_of :delivered_quantity, greater_than: 0, :allow_nil => true
 
   def reserved_quantity
     self.delivered_quantity.present? ? self.delivered_quantity : self.pickup_quantity
