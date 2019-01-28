@@ -1,6 +1,2 @@
 <%= render 'overseers/invoice_requests/form' %>
-<% if @sales_order.present? %>
-  <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab', locals: {refernce_type: 'sales_order_id',refrence_object_id:  @sales_order.hashid} %>
-<% else %>
-  <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab', locals: {refernce_type: 'purchase_order_id',refrence_object_id:  @purchase_order.hashid} %>
-<% end %>
+<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>
