@@ -13,6 +13,13 @@
           <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
         </div>
         <%= render partial: 'overseers/activities/company_creation_partials/company_creation_request', locals: {f: f} %>
+        <%= f.input :subject %>
+        <div class="form-row">
+          <div class="col-12 col-md-12">
+            <%= f.input :daily_allowance %>
+          </div>
+        </div>
+
 
         <div class="mt-3">
           <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected' %>
@@ -86,5 +93,5 @@
       </div>
     </div>
   <% end %>
-  </div>
+</div>
 </div>

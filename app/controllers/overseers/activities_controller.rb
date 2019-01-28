@@ -105,6 +105,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :company_type,
         :subject,
         :purpose,
+        :daily_allowance,
         :activity_date,
         :activity_type,
         :points_discussed,
@@ -117,7 +118,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :last_name,
             :address,
             :account_type,
-          ]
+        ]
     )
   end
 
