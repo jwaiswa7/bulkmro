@@ -79,10 +79,16 @@ class PaymentRequest < ApplicationRecord
   end
 
   def update_status!
-    if self.utr_number.present?
-      self.status = :'Completed'
-    else
-      self.status = :'Pending'
+    if self.status == :'Payment Pending' || self.status == :'Partial Payment Made' || self.status == :'Payment Made'
+      if self.transactions.present?
+        if self.percent_amount_paid == 100.0
+          self.status = :'Payment Made'
+        else
+          self.status = :'Partial Payment Made'
+        end
+      else
+        self.status = :'Payment Pending'
+      end
     end
   end
 
