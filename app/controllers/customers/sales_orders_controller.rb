@@ -29,6 +29,6 @@ class Customers::SalesOrdersController < Customers::BaseController
 
   private
   def set_sales_order
-    @sales_order = current_contact.account.sales_orders.find(params[:id])
+    @sales_order = current_company.sales_orders.find(params[:id])
   end
 end
