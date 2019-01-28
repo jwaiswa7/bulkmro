@@ -33,10 +33,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def new
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
-      @po_request = PoRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      @po_request = PoRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry, :po_request_type => :'Regular')
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
+      authorize @po_request
+    elsif params[:stock_inquiry_id].present?
+      @inquiry = Inquiry.find(params[:stock_inquiry_id])
+      @po_request = PoRequest.new(:overseer => current_overseer, :inquiry => @inquiry, :po_request_type => :'Stock')
+
       authorize @po_request
     else
       redirect_to overseers_po_requests_path
@@ -46,7 +51,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def create
     @po_request = PoRequest.new(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
-
+raise
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         @po_request.save!
@@ -108,6 +113,9 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :status,
         :cancellation_reason,
         :rejection_reason,
+        :stock_status,
+        :requested_by_id,
+        :approved_by_id,
         :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []

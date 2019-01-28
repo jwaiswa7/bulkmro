@@ -7,7 +7,7 @@ class PoRequest < ApplicationRecord
 
   pg_search_scope :locate, :against => [:id], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
 
-  belongs_to :sales_order
+  belongs_to :sales_order, required: false
   belongs_to :inquiry
   belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
   belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: false
@@ -22,6 +22,10 @@ class PoRequest < ApplicationRecord
   has_many_attached :attachments
 
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
+
+  belongs_to :requested_by, :class_name => 'Overseer', foreign_key: 'requested_by_id', required: false
+  belongs_to :approved_by, :class_name => 'Overseer', foreign_key: 'approved_by_id', required: false
+  belongs_to :company, required: false
 
   enum status: {
       :'Requested' => 10,
@@ -53,6 +57,17 @@ class PoRequest < ApplicationRecord
     :'Others' => 80
   }
 
+  enum po_request_type: {
+    :'Regular' => 10,
+    :'Stock' => 20
+  }
+
+  enum stock_status: {
+    :'Stock Requested' => 10,
+    :'Stock Rejected' => 20,
+    :'Stock Supplier PO Created' => 30
+  }
+
   scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
   scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
@@ -77,7 +92,8 @@ class PoRequest < ApplicationRecord
   end
 
   def set_defaults
-    self.status ||= :'Requested'
+    self.status ||= :'Requested' if self.po_request_type == 'Regular'
+    self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
   end
 
   def selling_price
