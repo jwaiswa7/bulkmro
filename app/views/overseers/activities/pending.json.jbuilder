@@ -28,6 +28,7 @@ json.data (@activities) do |activity|
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
+                  activity.daily_allowance,
                   activity.points_discussed,
                   activity.actions_required,
                   format_date(activity.created_at)
