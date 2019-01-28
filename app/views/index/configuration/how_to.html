@@ -1,0 +1,28 @@
+# Steps to add custom documentation
+
+# Step 1
+
+  - Create a `html` file inside `[views/index/topics/]` (Name the file with the name of the topic on which you are creating a documentation)
+
+# Step 2
+
+  - For creating a beautiful markdown styled document you can refer [Dillinger](https://dillinger.io/)
+
+# Step 3
+
+  - Copy/Paste the markdown styled document code in your `topic_name.html` file
+
+# Step 4
+
+  - Add the path of your newly created `html` file to `[views/index/_navbar.html.erb]` file.
+    Call your `html` file with the extension `.md` as below.
+
+    ```sh
+    * Docs
+        * [Rails](topics/rails.md)
+        * [Ruby](topics/ruby.md)
+        * [Javascript](topics/javascript.md)
+        * [Topic Name](topics/topic_name.md)
+    ```
+
+**That's it. You are done.**
