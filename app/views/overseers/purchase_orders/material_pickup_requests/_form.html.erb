@@ -107,7 +107,7 @@
                     <%= row.input :pickup_quantity, input_html: {value: row.object.pickup_quantity}, readonly: true %>
                   </div>
                   <div class="col-2">
-                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 0, max: row.object.pickup_quantity.to_i}, readonly: f.object.invoice_request.present? %>
+                    <%= row.input :delivered_quantity, type: "number", input_html: {value: row.object.delivered_quantity.to_i, min: 1, max: (row.object.pickup_quantity.to_i if row.object.pickup_quantity.to_i > 1)}, readonly: f.object.invoice_request.present? %>
                   </div>
                 <% else %>
                   <div class="col-2">
