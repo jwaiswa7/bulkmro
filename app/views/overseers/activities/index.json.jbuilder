@@ -12,7 +12,10 @@ json.data (@activities) do |activity|
                       end,
                   ].join(' '),
                   activity.created_by.to_s,
-                  activity.account.present? ? activity.account.name : '',
+                  format_date(activity.activity_date),
+                  if activity.activity_account.present?
+                    conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
+                  end,
                   if activity.activity_company.present?
                     conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), policy(activity.activity_company))
                   elsif activity.company_creation_request.present?
@@ -38,6 +41,7 @@ json.data (@activities) do |activity|
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
+                  activity.daily_allowance,
                   activity.points_discussed,
                   activity.actions_required,
                   format_date(activity.activity_date),
