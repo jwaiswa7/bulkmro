@@ -45,6 +45,10 @@
         <% end %>
       </div>
 
+      <div class="col-6">
+        <%= f.input :supplier_committed_date, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_committed_date.to_s}, as: :string, label: 'Supplier Committed Date', disabled: true %>
+      </div>
+
       <div class="col-6 d-none status-rejected">
         <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(@po_request).can_reject? , :include_blank => true %>
       </div>
