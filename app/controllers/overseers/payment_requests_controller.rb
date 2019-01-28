@@ -14,7 +14,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           PaymentRequest.all
         end
 
-    @payment_requests = ApplyDatatableParams.to(payment_requests.order(due_date: :asc), params)
+    @payment_requests = ApplyDatatableParams.to(payment_requests.order(due_date: :desc), params)
     authorize @payment_requests
     @statuses = payment_requests.group(:status).count
   end

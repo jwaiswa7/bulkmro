@@ -22,10 +22,10 @@
 
         <% if @mpr.purchase_order.po_request.present? && policy(@mpr).delivered? && policy(@mpr.purchase_order.po_request).new_payment_request? %>
 
-            <a href="<%= new_overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i> Create Payment Request
+            <a href="<%= new_overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i> Create Payment Request
             </a>
               <% elsif @mpr.purchase_order.po_request.present? && policy(@mpr).delivered? && policy(@mpr.purchase_order.po_request).show_payment_request? %>
-              <a href="<%= overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
+              <a href="<%= overseers_po_request_payment_request_path(@mpr.purchase_order.po_request) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-dollar-sign mr-1"></i>
                 View Payment Request</a>
 
         <% end %>
@@ -89,8 +89,7 @@
             <thead>
             <tr>
               <td></td>
-              <td><strong class="d-block">Name</strong></td>
-              <td><strong class="d-block">Sku</strong></td>
+              <td><strong class="d-block">Product</strong></td>
               <td><strong class="d-block">PO Total Quantity</strong></td>
               <td><strong class="d-block">Pickup Quantity</strong></td>
               <td><strong class="d-block">Delivered Quantity</strong></td>
@@ -100,8 +99,7 @@
             <% @mpr.rows.each_with_index do |row,index| %>
               <tr>
                 <td><%= index + 1 %></td>
-                <td><%= row.purchase_order_row.get_product.name %></td>
-                <td><%= row.purchase_order_row.get_product.sku %></td>
+                <td><%= row.purchase_order_row.to_s %></td>
                 <td><%= row.purchase_order_row.quantity %></td>
                 <td><%= row.pickup_quantity %></td>
                 <td><%= row.delivered_quantity || 'N/A' %></td>

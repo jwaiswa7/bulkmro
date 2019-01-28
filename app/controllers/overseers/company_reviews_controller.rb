@@ -44,7 +44,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
       @company_review.company_ratings.where({company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
     end
     respond_to do |format|
-      format.html {render :partial => "form", locals: {company_review: @company_review, :refernce_type => params[:refrence_type], :refrence_object_id => params[:refrence_object_id]}}
+      format.html {render :partial => "form", locals: {company_review: @company_review}}
     end
   end
 
