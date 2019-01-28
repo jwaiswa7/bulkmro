@@ -133,8 +133,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
     @company_reviews = service.call
 
-    service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
-    @po_requests = service.call
+    if Rails.cache.exist?('po_requests')
+      @po_requests =  Rails.cache.read('po_requests')
+      Rails.cache.delete(:po_requests)
+    else
+      service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
+      @po_requests = service.call
+    end
   end
 
   def preview_purchase_orders_requests
@@ -142,6 +147,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     @po_requests = service.call
+
+    Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
   end
 
 
@@ -150,7 +157,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     service.call
-
+    Rails.cache.delete(:po_requests)
     redirect_to pending_and_rejected_overseers_po_requests_path
   end
 
