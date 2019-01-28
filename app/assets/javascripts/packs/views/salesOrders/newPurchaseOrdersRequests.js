@@ -10,7 +10,7 @@ const newPurchaseOrdersRequests = () => {
     customTabSelector[0].click();
     updateRatingForm();
 
-    $('#daterange').daterangepicker({
+    $('.supplier-committed-date').daterangepicker({
         singleDatePicker: true,
         minDate: moment(),
         locale: {
