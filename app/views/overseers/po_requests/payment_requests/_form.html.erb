@@ -83,7 +83,7 @@
           </div>
 
           <div class="col-4">
-            <%= f.input :payment_option, label: "Payment Terms", disabled: true %>
+            <%= f.input :payment_option, label: "Payment Terms",input_html: {:'value' => f.object.po_request.payment_option}, disabled: true %>
           </div>
           <div class="col-4 mt-1">
             <div class="form-group mb-0">

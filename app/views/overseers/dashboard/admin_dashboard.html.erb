@@ -88,7 +88,7 @@
                   <th><%= format_month_without_date(month) %></th>
                   <% values.each do |column, value| %>
                     <td class="text-uppercase text-center text-black-50">
-                      <%= value[:count] %> <%= ['(',format_percent_of(value[:count], values[:inquiry][:count]),')'].join if column != 'inquiry'.to_sym %>
+                      <%= value[:count] %> <%#= ['(',format_percent_of(value[:count], values[:inquiry][:count]),')'].join if column != 'inquiry'.to_sym %>
                     <hr class="my-1">
                       <%= format_currency(value[:total], precision: 0, show_symbol: true)  %>
                     </td>
