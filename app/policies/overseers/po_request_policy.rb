@@ -43,4 +43,8 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def edit_payment_request?
     record.payment_request.present?
   end
+
+  def preview_stock_po_request?
+    true
+  end
 end

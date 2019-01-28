@@ -48,10 +48,34 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def preview_stock_po_request
+    # po_requests = {}
+    # po_request_params[:po_requests_attributes].to_h.each do |index, po_request_hash|
+    #   @inquiry = Inquiry.find(po_request_hash[:inquiry_id])
+    #   attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
+    #   po_requests[po_request_hash[:supplier_id]] = @inquiry.po_requests.build(inquiry_id: @inquiry, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], status: po_request_hash[:stock_status], attachments: attachments)
+    #   blobs = Array.new
+    #   if po_requests[po_request_hash[:supplier_id]].attachments.present?
+    #     po_requests[po_request_hash[:supplier_id]].attachments.each do |attachment|
+    #       blobs << attachment.blob_id
+    #     end
+    #   end
+    #   po_requests[po_request_hash[:supplier_id]].blobs = blobs
+    #   if po_request_hash[:rows_attributes].present?
+    #     po_request_hash[:rows_attributes].each do |index, row_hash|
+    #       if !row_hash[:_destroy].present? && row_hash[:quantity].present?
+    #         po_requests[po_request_hash[:supplier_id]].rows.build( quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id])
+    #       end
+    #     end
+    #   end
+    # end
+    # authorize @inquiry.po_requests
+  end
+
   def create
     @po_request = PoRequest.new(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
-raise
+
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         @po_request.save!
@@ -116,7 +140,8 @@ raise
         :stock_status,
         :requested_by_id,
         :approved_by_id,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id],
+        :supplier_id,
+        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :converted_unit_selling_price],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
