@@ -63,6 +63,13 @@ class PaymentRequest < ApplicationRecord
   with_options if: :"Accounts?" do |payment_request|
     payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
+  validate :due_date_cannot_be_in_the_past
+
+  def due_date_cannot_be_in_the_past
+    if self.due_date.present? && self.due_date < Date.today
+      errors.add(:due_date, 'cannot be less than Today')
+    end
+  end
 
   after_initialize :set_defaults, :if => :new_record?
 
@@ -72,10 +79,16 @@ class PaymentRequest < ApplicationRecord
   end
 
   def update_status!
-    if self.utr_number.present?
-      self.status = :'Completed'
-    else
-      self.status = :'Pending'
+    if self.status == :'Payment Pending' || self.status == :'Partial Payment Made' || self.status == :'Payment Made'
+      if self.transactions.present?
+        if self.percent_amount_paid == 100.0
+          self.status = :'Payment Made'
+        else
+          self.status = :'Partial Payment Made'
+        end
+      else
+        self.status = :'Payment Pending'
+      end
     end
   end
 

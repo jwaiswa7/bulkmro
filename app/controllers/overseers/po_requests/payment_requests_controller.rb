@@ -10,7 +10,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     authorize @po_request, :new_payment_request?
     @payment_request = PaymentRequest.new(payment_request_params.merge(overseer: current_overseer))
 
-    # @payment_request.update_status!
+    @payment_request.update_status!
 
     if @payment_request.valid?
       ActiveRecord::Base.transaction do

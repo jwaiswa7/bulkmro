@@ -2413,9 +2413,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         partial = false
       end
       status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
-                 partial ? 'Material Partial Pickup' : 'Material Pickup'
+                 partial ? 'Material Partially Pickup' : 'Material Pickedup'
                elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
-                 partial ? 'Material Partial Delivered' : 'Material Delivered'
+                 partial ? 'Material Partially Delivered' : 'Material Delivered'
                end
       po.update_attribute(:material_status, status)
     else

@@ -131,10 +131,10 @@
         <div>
           <div class="form-row">
 
-            <% if @payment_request.payment_option.present? %>
+            <% if @payment_request.po_request.payment_option.present? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Payment Terms</strong>
-                <%= @payment_request.payment_option.name %>
+                <%= @payment_request.po_request.payment_option.name %>
               </div>
             <% end %>
 

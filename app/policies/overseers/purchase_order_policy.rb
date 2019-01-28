@@ -36,7 +36,7 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def new_pickup_request?
-    record.rows.sum(&:get_pickup_quantity) > 0
+    (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
   end
 
   def material_pickup_queue?
