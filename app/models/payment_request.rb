@@ -63,6 +63,13 @@ class PaymentRequest < ApplicationRecord
   with_options if: :"Accounts?" do |payment_request|
     payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
+  validate :due_date_cannot_be_in_the_past
+
+  def due_date_cannot_be_in_the_past
+    if self.due_date.present? && self.due_date < Date.today
+      errors.add(:due_date, 'cannot be less than Today')
+    end
+  end
 
   after_initialize :set_defaults, :if => :new_record?
 
