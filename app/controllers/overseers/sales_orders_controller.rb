@@ -71,6 +71,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
+        @statuses_count = @statuses.values.sum
+        @sales_order_total = @total_values.values.sum
       end
     end
   end
@@ -92,7 +94,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
         @statuses_count = @statuses.values.sum
-        @not_invoiced_values = @total_values.values.sum
+        @not_invoiced_total = @total_values.values.sum
       end
     end
   end
