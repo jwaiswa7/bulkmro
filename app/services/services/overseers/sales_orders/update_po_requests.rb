@@ -22,7 +22,7 @@ class Services::Overseers::SalesOrders:: UpdatePoRequests < Services::Shared::Ba
           po_request.attachments.attach(ActiveStorage::Blob.find(blob))
         end
       end
-      if(po_request.save)
+      if(po_request.save!)
         if po_request_hash[:rows_attributes].present?
           po_request_hash[:rows_attributes].each do |index, row_hash|
             if !row_hash[:_destroy].present? && row_hash[:quantity].present?
