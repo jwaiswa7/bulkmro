@@ -1,7 +1,7 @@
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
-      :&nbsp;<%= status_badge(@po_request.status) %></h2>
+      &nbsp;<%#= status_badge(@po_request.status) %></h2>
     <p>This will <em>'<%= submit_text(@po_request).downcase %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
@@ -20,13 +20,36 @@
       <div class="col-6">
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
+      <div class="col-6">
+        <%= f.input :opportunity_type, input_html: {value: f.object.sales_order.opportunity_type}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), :include_blank => false, disabled: true, label: 'Supplier PO Type' %>
+      </div>
+
+      <div class="col-6">
+        <%= f.input :customer_committed_date, input_html: {value: f.object.sales_order.customer_committed_date}, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
+      </div>
 
       <div class="col-6">
         <%#= f.input :purchase_order_number %>
-        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
       </div>
+
       <div class="col-6">
-        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), :include_blank => false %>
+        <% if policy(@po_request).can_cancel? %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
+        <% elsif policy(@po_request).can_reject?  %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false), :include_blank => false %>
+        <% elsif policy(@po_request).can_update_rejected_po_requests? %>
+            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false), :include_blank => false, :disabled => ['Rejected'] %>
+        <% else %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled:true, :include_blank => false %>
+        <% end %>
+      </div>
+
+      <div class="col-6 d-none status-rejected">
+        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(@po_request).can_reject? , :include_blank => true %>
+      </div>
+      <div class="col-6 d-none status-cancelled">
+        <%= f.input :cancellation_reason, disabled: !(policy(@po_request).can_cancel?), :include_blank => true %>
       </div>
 
       <div class="col-md-6">
@@ -51,10 +74,10 @@
       </div>
 
       <div class="col-12">
-        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |purchase_order_comment| %>
-          <%= purchase_order_comment.hidden_field :created_by_id %>
-          <%= purchase_order_comment.hidden_field :updated_by_id %>
-          <%= purchase_order_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
+          <%= po_request_comment.hidden_field :created_by_id %>
+          <%= po_request_comment.hidden_field :updated_by_id %>
+          <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
         <% end %>
       </div>
 
@@ -63,15 +86,60 @@
     <div class="card mb-2">
       <div class="card-body">
         <div class="chats">
+          <h5 class="text-uppercase">
+            <strong><%= f.object.supplier.to_s %></strong>
+          </h5>
+          <div class="form-row">
+            <div class="col-6">
+              <% if f.object.address %>
+                <div class="form-group">
+                  <label class="form-control-label d-block">Address</label>
+                  <%= f.object.address.to_compact_multiline_s %><br>
+                  <% if f.object.contact.present? %>
+                    <strong>Email: </strong><%= f.object.contact.email || '-' %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-6">
+              <% if f.object.contact %>
+                <div class="form-group">
+                  <label class="form-control-label d-block">Contact</label>
+                  <strong><%= f.object.contact %>:</strong> <%= f.object.contact.telephone || f.object.contact.mobile %>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label class="form-control-label d-block">Payment Terms: </label><%= f.object.payment_option %>
+                <%#= f.association :payment_option, label: 'Payment terms', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+              </div>
+            </div>
+          </div>
           <div class="form-row d-none d-md-flex">
             <div class="col-1">
               <div class="form-group mb-0">
                 <label>Sr. No.</label>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-2">
               <div class="form-group mb-0">
                 <label>Product</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Make</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>HSN</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>T. Rate</label>
               </div>
             </div>
             <div class="col-1">
@@ -81,7 +149,27 @@
             </div>
             <div class="col-1">
               <div class="form-group mb-0">
-                <label></label>
+                <label>UOM</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>UP</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TP</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TT</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TP with tax</label>
               </div>
             </div>
           </div>
@@ -94,28 +182,46 @@
                 <%= (f.object.rows.index(row.object) || 0) + 1 %>
               </div>
 
-              <div class="col-6 col-md-6">
+              <div class="col-6 col-md-2">
                 <%= row.object.product.to_s %>
               </div>
 
-              <div class="col-1 col-md-1">
-                <div class="d-flex flex-row align-items-center">
-                  <div>
-                    <% if row.object.sales_order_row.present? %>
-                      <%= row.object.sales_order_row.quantity %>
-                    <% end %>
-                  </div>
-                </div>
+              <div class="col-6 col-md-1">
+                <%= row.object.product.try(:brand).to_s %>
               </div>
-
-              <div class="col-1 col-md-1">
-                <div class="d-flex flex-row align-items-center">
-                  <%= row.remove_nested_fields_link do %>
-                    <div class="form-group align-self-center flex-grow-1 ml-2">
-                      <i class="far fa-times text-danger"></i>
-                    </div>
-                  <% end if policy(row.object).destroy? %>
-                </div>
+              <div class="col-12 col-md-1">
+                <%#= row.object.tax_code %>
+                <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
+                  <%= row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, disabled: false, label:  false  %>
+                <% else %>
+                  <%= row.object.tax_code %>
+                <% end %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%#= row.object.sales_order_row.best_tax_rate %>
+                <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
+                  <%= row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
+                <% else %>
+                  <%= row.object.tax_rate %>
+                <% end %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.quantity %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.sales_order_row.measurement_unit %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_unit_selling_price %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_total_selling_price %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_total_tax %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.object.converted_total_selling_price_with_tax %>
               </div>
             </div>
           <% end %>
@@ -134,23 +240,19 @@
     <% end %>
   <% end %>
 
-  <% if action_name.capitalize != "New" %>
+  <% if @po_request.comments.persisted.size > 0 %>
     <div class="card">
       <div class="card-body">
         <div class="flex-fill">
           <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
         </div>
-
-        <% if @po_request.comments.persisted.size > 0 %>
-          <div class="chats mb-3">
-            <% @po_request.comments.each do |comment| %>
-              <% if comment.persisted? %>
-                <%= format_comment(comment) %>
-              <% end %>
-
+        <div class="chats mb-3">
+          <% @po_request.comments.each do |comment| %>
+            <% if comment.persisted? %>
+              <%= format_comment(comment) %>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>

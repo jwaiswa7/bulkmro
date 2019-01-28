@@ -58,6 +58,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     }.as_json)
 
     recipients.each do |recipient|
+
       if Rails.env.production?
         recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient) if response.present? && response.headers.present?
       else

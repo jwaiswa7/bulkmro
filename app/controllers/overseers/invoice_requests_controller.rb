@@ -43,14 +43,26 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
+      @company_reviews = service.call
+
       authorize @invoice_request
-    elsif  params[:purchase_order_id].present?
+    elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order,current_overseer)
+      @company_reviews = service.call
+
       authorize @invoice_request
+      if params[:mpr_id]
+        @invoice_request.material_pickup_request = MaterialPickupRequest.find(params[:mpr_id])
+      end
     else
       redirect_to overseers_invoice_requests_path
     end
+
   end
 
   def create
@@ -108,6 +120,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :shipment_number,
         :ar_invoice_number,
         :purchase_order_id,
+        :material_pickup_request_id,
         :status,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []

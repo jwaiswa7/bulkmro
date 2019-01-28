@@ -90,7 +90,6 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
         puts "<----------------Updated Cached------------------->"
       end
 
-
       # SALES ORDERS
       so = sales_orders.where(:mis_date => month.to_date.beginning_of_month..month.to_date.end_of_month)
       max_order_updated_at = so.order(:updated_at).last

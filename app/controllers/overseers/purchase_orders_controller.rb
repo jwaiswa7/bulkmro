@@ -1,5 +1,5 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:edit_internal_status, :update_internal_status]
+  before_action :set_purchase_order, only: [:edit_material_followup, :update_material_followup]
 
   def index
     authorize :purchase_order
@@ -12,7 +12,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
-
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
         status_service.call
 
@@ -24,62 +23,120 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params)
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
+        service.call
+
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
+      end
+    end
+
+=begin
+    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
+=end
     render 'material_readiness_queue'
   end
 
   def material_pickup_queue
-    authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_pickup_queue, params)
-    render 'material_readiness_queue'
+    @status = 'Material Pickup Queue'
+
+
+    base_filter = {
+        :base_filter_key => "status",
+
+        :base_filter_value => MaterialPickupRequest.statuses['Material Pickup']
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+
+        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+
+        service.call
+
+        @indexed_material_pickup_requests = service.indexed_records
+        @material_pickup_requests = service.records.try(:reverse)
+      end
+    end
+
+    authorize :material_pickup_request
+    render 'material_pickup_queue'
   end
 
   def material_delivered_queue
-    authorize :purchase_order
-    @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_delivered_queue, params)
-    render 'material_readiness_queue'
+    @status = 'Material Delivered Queue'
+
+    base_filter = {
+        :base_filter_key => "status",
+
+        :base_filter_value => MaterialPickupRequest.statuses['Material Delivered']
+    }
+
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+
+        service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
+
+        service.call
+
+        @indexed_material_pickup_requests = service.indexed_records
+        @material_pickup_requests = service.records.try(:reverse)
+      end
+    end
+
+    authorize :material_pickup_request
+    render 'material_pickup_queue'
   end
 
-  def edit_internal_status
+  def edit_material_followup
     authorize @purchase_order
+    @po_request = @purchase_order.po_request
   end
 
-  def update_internal_status
+  def update_material_followup
     authorize @purchase_order
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
-      ActiveRecord::Base.transaction do if @purchase_order.internal_status_changed?
-          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.internal_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
-          @purchase_order.save!
-          @po_comment.save!
-        else
-          @purchase_order.save!
-        end
-      end
-      redirect_to edit_internal_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
-    else
-      render 'edit_internal_status'
-    end
 
+      messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
+      if messages.present?
+        @purchase_order.comments.create(:message => messages, :overseer => current_overseer)
+      end
+
+      @purchase_order.save
+      redirect_to edit_material_followup_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
+    else
+      render 'edit_material_followup'
+    end
   end
 
   def autocomplete
     if params[:inquiry_number].present?
-      @purchase_orders = ApplyParams.to(PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]}), params)
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
+      purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
     else
-      @purchase_orders = ApplyParams.to(PurchaseOrder.all, params)
+      purchase_orders = PurchaseOrder.all
     end
+    @purchase_orders = ApplyParams.to(purchase_orders, params)
 
     authorize :purchase_order
   end
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
-    service.call
-
-    redirect_to url_for(Export.purchase_orders.last.report)
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   private
@@ -90,7 +147,10 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def purchase_order_params
     params.require(:purchase_order).permit(
-        :internal_status,
+        :material_status,
+        :supplier_dispatch_date,
+        :followup_date,
+        :revised_supplier_delivery_date,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )

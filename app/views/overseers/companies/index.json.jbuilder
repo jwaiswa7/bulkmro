@@ -18,14 +18,25 @@ json.data (@companies) do |company|
                       end,
                       if policy(company).new_inquiry?;
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
-                      end,
+                      end#,
+                      # if policy(company).new_rating?
+                      #   link_to('', class: ['btn btn-sm btn-warning rating '], :'data-company-id' => company.id, :remote => true) do
+                      #     concat content_tag(:span, '')
+                      #     concat content_tag :i, nil, class: ['fal fa-star'].join
+                      #   end
+                      # end
                   ].join(' '),
+
+
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
                   (company.addresses.present? && company.is_international) ? 'International' :company.pan,
                   format_boolean(company.validate_pan),
+                  if company.is_supplier?
+                    format_star(company.rating)
+                  end,
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
                   format_boolean_label(company.synced?, 'synced'),
@@ -39,13 +50,15 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [],
                        [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [],
+                       [],
                        [],
                        [],
                        [],
                        []
                    ]
+
 json.recordsTotal @companies.model.all.count
 json.recordsFiltered @indexed_companies.total_count
 json.draw params[:draw]

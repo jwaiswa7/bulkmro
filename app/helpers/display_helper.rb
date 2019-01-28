@@ -44,7 +44,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -148,6 +148,11 @@ module DisplayHelper
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
 
+  def format_star(rating)
+    star_given = rating.nil? ? 0 : rating
+    (['<i class="fas fa-star text-warning "></i>', '<span class="render-star">',star_given,'<span/>'].join(' ')).html_safe
+  end
+
   def format_count(count, zero_if_nil: true)
     if count.present?
       count
@@ -158,7 +163,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -185,7 +190,27 @@ module DisplayHelper
   end
 
   def format_times_ago(time)
-    [time_ago_in_words(time),'ago'].join(' ').html_safe
+    [time_ago_in_words(time), 'ago'].join(' ').html_safe
+  end
+
+  def format_due_distance(due_date)
+    current_date = Date.today
+    due_in_days = (due_date - current_date).to_i
+
+    if due_in_days < 0
+      due_string  = 'Overdue'
+    elsif due_in_days == 0
+      due_string  = 'Due Today'
+      return due_badge(due_in_days, due_string)
+    else
+      due_string  = 'Due In'
+    end
+
+    due_badge(due_in_days, [due_string, distance_of_time_in_words(current_date, due_date)].join(' '))
+  end
+
+  def current_user
+    current_overseer
   end
 
   def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)

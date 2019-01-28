@@ -1,0 +1,47 @@
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+<% provide :container_fluid, true %>
+
+
+<% content_for :heading do %>
+  <% if @status.present? %>
+    <%= @status %>
+  <% end %>
+<% end %>
+
+
+<div class="col-lg-12">
+  <% content_for :header_row do %>
+    <th class="no-sort all"></th>
+    <th class="no-sort desktop" data-name="po_number">Doc ID</th>
+    <th class="no-sort desktop" data-name="po_number">Purchase #</th>
+    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
+    <th class="no-sort desktop" data-name="rating">Rating</th>
+    <th class="no-sort desktop" data-name="customer_id">Customer</th>
+    <th class="no-sort desktop" data-name="logistics_owner_id">Logistics</th>
+    <th class="sort desktop" data-name="expected_dispatch_date">Expected Dispatch Date</th>
+    <th class="sort desktop" data-name="expected_delivery_date">Expected Delivery Date</th>
+    <th class="sort desktop" data-name="actual_delivery_date">Actual Delivery Date</th>
+    <th class="sort desktop" data-name="created_at">Created</th>
+
+  <% end %>
+  <% content_for :filter_row do %>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
+    <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+
+  <% end %>
+
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

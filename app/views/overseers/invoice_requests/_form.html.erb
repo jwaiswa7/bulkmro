@@ -2,12 +2,15 @@
   <div class="page-header">
     <h2>
       <% if @invoice_request.sales_order.present? %>
-        <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Order #<%= @invoice_request.sales_order.order_number %>
+        <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Order
+        #<%= @invoice_request.sales_order.order_number %>
       <% else %>
-        <%= action_name.capitalize %> Invoice Request for Purchase Order #<%= @invoice_request.purchase_order.po_number %>
+        <%= action_name.capitalize %> Invoice Request for Purchase Order
+        #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status).downcase %>'</em> and log it under
+    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status).downcase %>'</em>
+      and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -18,6 +21,7 @@
     <%= f.hidden_field :sales_order_id %>
     <%= f.hidden_field :inquiry_id %>
     <%= f.hidden_field :purchase_order_id %>
+    <%= f.hidden_field :material_pickup_request_id %>
 
     <div class="form-row">
       <div class="col-6">
@@ -30,7 +34,7 @@
         <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(InvoiceRequest.statuses, alphabetical: false, keep_raw: true), :include_blank => false %>
       </div>
       <div class="col-6">
-        <%= f.association :purchase_order, disabled: f.object.purchase_order.present?  && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+        <%= f.association :purchase_order, disabled: f.object.purchase_order.present? && f.object.errors.blank?, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
       </div>
 
       <div class="col-6">
@@ -71,6 +75,118 @@
         <% end %>
       </div>
 
+    </div>
+
+    <div class="card mb-2">
+      <div class="card-body">
+        <div class="chats">
+          <% if f.object.purchase_order.present? %>
+            <h5 class="text-uppercase">
+              <strong><%= f.object.purchase_order.supplier.to_s %></strong>
+            </h5>
+            <div class="form-row">
+              <div class="col-6">
+                <% if f.object.purchase_order.try(:supplier).try(:address) %>
+                  <div class="form-group">
+                    <label class="form-control-label d-block">Address</label>
+                    <%= f.object.purchase_order.supplier.address %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="col-6">
+                <% if f.object.purchase_order.try(:supplier).try(:default_contact) %>
+                  <div class="form-group">
+                    <label class="form-control-label d-block">Contact</label>
+                    <%= f.object.purchase_order.supplier.default_contact if f.object.purchase_order.supplier.default_contact.present? %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-row d-none d-md-flex">
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Sr. No.</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group mb-0">
+                <label>Product</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Make</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>HSN</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>T. Rate</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Quantity</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>MOU</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>UP</label>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>TP</label>
+              </div>
+            </div>
+          </div>
+          <% if !f.object.material_pickup_request.nil? %>
+            <% f.object.material_pickup_request.rows.each do |row| %>
+            <div class="form-row flex-row align-items-start">
+              <div class="col-1 col-md-1">
+                <%= (f.object.material_pickup_request.rows.index(row) || 0) + 1 %>
+              </div>
+
+              <div class="col-6 col-md-4">
+                <%= row.purchase_order_row.get_product.name.to_s %>
+              </div>
+
+              <div class="col-6 col-md-1">
+                <%= row.purchase_order_row.get_product.try(:brand).to_s %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.purchase_order_row.metadata['PopHsn'] %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.purchase_order_row.tax_rate %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.purchase_order_row.quantity %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= row.purchase_order_row.uom %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= number_to_currency(row.purchase_order_row.unit_selling_price, precision: 0, unit: '') %>
+              </div>
+              <div class="col-12 col-md-1">
+                <%= number_to_currency(row.purchase_order_row.total_selling_price, precision: 0, unit: '') %>
+              </div>
+            </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
     </div>
 
     <% if action_name.capitalize == "New" %>

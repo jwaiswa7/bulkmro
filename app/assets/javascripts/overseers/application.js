@@ -3,7 +3,7 @@
 //= require turbolinks
 // https://github.com/heroku/heroku-buildpack-ruby/issues/591 to fix yarn issues
 
-// Component Imports
+// Components
 //= require jquery/dist/jquery.min.js
 //= require popper.js/dist/umd/popper.min.js
 //= require jquery-ujs/src/rails.js
@@ -11,7 +11,6 @@
 //= require bootstrap/dist/js/bootstrap.js
 //= require autosize/dist/autosize.min.js
 //= require vue/dist/vue.min.js
-
 //= require stickybits/dist/jquery.stickybits.min.js
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js
@@ -25,4 +24,9 @@
 //= require cocoon
 //= require js-routes
 
+// Plugins
+//= require packs/plugins/raty/jquery.raty.js
+//= require packs/plugins/raty/ratyrate.js.erb
+
+// Global
 //= require overseers/run

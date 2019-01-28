@@ -17,9 +17,10 @@ import notify from "./components/notify";
 import stepRoundUp from "./components/stepRoundUp";
 import dropdowns from "./components/dropdownSubmenus";
 import chartjs from "./components/chartjs";
-import lazyLoadImages from "./components/lazyLoadImages"
 import highlightjs from "./components/highlightjs";
 import tableHighlightWholly from "./components/tableHighlightWholly";
+import lazyLoadImages from "./components/lazyLoadImages";
+
 // Namespacing all imports under app
 let app = {};
 

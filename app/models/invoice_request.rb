@@ -9,6 +9,7 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
+  belongs_to :material_pickup_request
   has_many_attached :attachments
 
   enum status: {
@@ -82,15 +83,15 @@ class InvoiceRequest < ApplicationRecord
     if (status.include? "Pending")
       title_without_pending = status.remove("Pending")
       title = status.include?("GRPO") ? "Invoice GRPO" : "#{title_without_pending}"
-    elsif (status.include? "Completed AR Invoice" ) || (status.include? "Cancelled AR Invoice")
+    elsif (status.include? "Completed AR Invoice") || (status.include? "Cancelled AR Invoice")
       title = status.gsub(status, "AR Invoice")
     else
       title = "Invoice"
     end
-      "#{title} Request"
+    "#{title} Request"
   end
 
   def to_s
-    [readable_status,"Request", "##{self.id}"].join(" ")
+    [readable_status, "##{self.id}"].join(" ")
   end
 end

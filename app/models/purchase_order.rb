@@ -17,6 +17,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :po_request
   has_one :payment_request
   has_one :invoice_request
+  has_many :material_pickup_requests
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
@@ -60,26 +61,39 @@ class PurchaseOrder < ApplicationRecord
       :'Closed' => 96
   }
 
-  enum internal_status: {
+  enum material_status: {
       :'Material Readiness Follow-Up' => 10,
       :'Material Pickup' => 20,
-      :'Material Delivered' => 30
+      :'Material Partial Pickup' => 25,
+      :'Material Delivered' => 30,
+      :'Material Partial Delivered' => 35
   }
 
-  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
-  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
-  scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
+  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickup')}
+  scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
+
+  after_initialize :set_defaults, :if => :new_record?
+
+  def set_defaults
+    self.material_status = 'Material Readiness Follow-Up'
+  end
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
-      product_supplier = ( Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']) )
-      return product_supplier if ( self.inquiry.suppliers.include?(product_supplier) || self.is_legacy? )
+      product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
+      return product_supplier if (self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?)
     end
 
     if self.inquiry.final_sales_quote.present?
-      product_supplier = self.inquiry.final_sales_quote.rows.select { | supplier_row |  supplier_row.product.id == product_id || supplier_row.product.legacy_id  == product_id}.first
+      product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id}.first
       return product_supplier.supplier if product_supplier.present?
     end
+  end
+
+  def supplier
+    return po_request.supplier if po_request.present?
+    return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
   end
 
   def metadata_status
@@ -97,6 +111,25 @@ class PurchaseOrder < ApplicationRecord
       true
     rescue ArgumentError
       false
+    end
+  end
+
+
+  def update_material_status
+
+    if (self.material_pickup_requests.any?)
+      partial = true
+      if self.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
+      end
+      if "Material Pickup".in? self.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Pickup" : "Material Pickup"
+      elsif "Material Delivered".in? self.material_pickup_requests.map(&:status)
+        status = partial ? "Material Partial Delivered" : "Material Delivered"
+      end
+      self.update_attribute(:material_status, status)
+    else
+      self.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
 end

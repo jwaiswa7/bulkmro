@@ -16,6 +16,9 @@ class Activity < ApplicationRecord
   belongs_to :company, required: false
   has_one :account, :through => :company
   belongs_to :contact, required: false
+  has_one :company_creation_request, :dependent => :destroy,:validate => false
+  accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
+
 
   enum company_type: {
       is_supplier: 10,

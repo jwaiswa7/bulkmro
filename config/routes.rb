@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
+    resources :review_questions
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -61,6 +63,16 @@ Rails.application.routes.draw do
     end
 
     resources :reports
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -131,6 +143,7 @@ Rails.application.routes.draw do
     resources :products do
       collection do
         get 'autocomplete'
+        get 'service_autocomplete'
       end
       member do
         get 'customer_bp_catalog'
@@ -168,7 +181,8 @@ Rails.application.routes.draw do
 
       collection do
         get 'autocomplete'
-        get 'pending'
+        get 'pending_and_rejected'
+        get 'cancelled'
       end
 
     end
@@ -184,6 +198,9 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'new_purchase_orders_requests'
+        post 'preview_purchase_orders_requests'
+        post 'create_purchase_orders_requests'
       end
 
       collection do
@@ -199,13 +216,14 @@ Rails.application.routes.draw do
 
       scope module: 'sales_orders' do
         resources :comments
+        resources :purchase_orders_requests
       end
     end
 
     resources :purchase_orders do
       member do
-        get 'edit_internal_status'
-        patch 'update_internal_status'
+        get 'edit_material_followup'
+        patch 'update_material_followup'
       end
 
       collection do
@@ -214,6 +232,15 @@ Rails.application.routes.draw do
         get 'material_readiness_queue'
         get 'material_pickup_queue'
         get 'material_delivered_queue'
+      end
+
+      scope module: 'purchase_orders' do
+        resources :material_pickup_requests do
+          member do
+            get 'confirm_delivery'
+            get 'delivered_material'
+          end
+        end
       end
     end
 
@@ -336,7 +363,10 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
       end
-
+      member do
+        get 'render_rating_form'
+        put 'update_rating'
+      end
       scope module: 'companies' do
         resources :customer_orders
 
@@ -348,7 +378,18 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
+        resources :tags do
+          collection do
+            get 'autocomplete'
+            get 'autocomplete_closure_tree'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -365,6 +406,7 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+        resources :company_banks
 
         resources :imports do
           collection do
@@ -422,7 +464,11 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      member do
+        get 'render_form'
+      end
+    end
   end
 
   namespace 'customers' do
@@ -503,7 +549,6 @@ Rails.application.routes.draw do
         patch 'update_shipping_address'
         patch 'update_special_instructions'
         patch 'update_payment_method'
-        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end
