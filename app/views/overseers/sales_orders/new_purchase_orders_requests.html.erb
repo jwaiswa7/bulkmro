@@ -54,7 +54,7 @@
                     <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true %>
+                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :id => 'daterange' }, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', required: true %>

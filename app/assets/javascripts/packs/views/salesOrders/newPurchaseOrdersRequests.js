@@ -10,6 +10,13 @@ const newPurchaseOrdersRequests = () => {
     customTabSelector[0].click();
     updateRatingForm();
 
+    $('#daterange').daterangepicker({
+        singleDatePicker: true,
+        minDate: moment(),
+        locale: {
+            format: 'DD-MMM-YYYY'
+        }
+    });
 };
 
 export default newPurchaseOrdersRequests
