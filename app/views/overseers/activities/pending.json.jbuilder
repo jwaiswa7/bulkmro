@@ -10,18 +10,15 @@ json.data (@activities) do |activity|
                       end
                   ].join(' '),
                   activity.created_by.to_s,
+                  format_date(activity.activity_date),
                   if activity.activity_account.present?
                     conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
                   end,
                   if activity.activity_company.present?
                     conditional_link(activity.activity_company.to_s, overseers_company_path(activity.activity_company), policy(activity.activity_company))
                   end,
-                  format_enum(activity.company_type),
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
-                  end,
-                  if activity.inquiry.present?
-                    status_badge(activity.inquiry.commercial_status)
                   end,
                   if activity.contact.present?
                     activity.contact.to_s
@@ -31,7 +28,6 @@ json.data (@activities) do |activity|
                   activity.daily_allowance,
                   activity.points_discussed,
                   activity.actions_required,
-                  format_date(activity.activity_date),
                   format_date(activity.created_at)
               ]
 end
