@@ -115,22 +115,19 @@
                   </div>
                 <% end %>
                 <div class="col-2  mt-3 ">
-
                   <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
                 </div>
                 <hr/>
               </div>
-
-
             <% end %>
-
             <% if policy(f.object).add_products? %>
               <%= f.add_nested_fields_link :rows, 'Add Product', class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' %>
             <% end %>
           </div>
-
         <% end %>
-
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.readable_status) %>
+        <% end %>
         <% if f.object.comments.persisted.size > 0 %>
           <div class="card-body">
             <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
@@ -141,10 +138,6 @@
             </div>
           </div>
         <% end %>
-
-    <% end %>
-    <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-      <i class="fal fa-pen"></i> <%= submit_text(@mpr, use_alias: @mpr.readable_status) %>
     <% end %>
     </div>
   <% end %>
