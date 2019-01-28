@@ -7,7 +7,7 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
 
   def call
     if Rails.env.production?
-      order_contact = Overseer.find_by_email(customer_order.contact.email)
+      order_contact = Contact.find_by_email(customer_order.contact.email)
     else
       order_contact = current_overseer || Overseer.find_by_email('bhargav.trivedi@bulkmro.com')
     end
@@ -42,9 +42,10 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
 
     template_data["total_calculated_tax"] = format_currency(customer_order.calculated_total_tax)
     template_data["grand_total"] = format_currency(customer_order.grand_total)
+    subject = "Your Bulk MRO Order Number #{customer_order.online_order_number} has been confirmed"
 
     service =  Services::Overseers::EmailMessages::SendEmail.new
-    service.send_email_message(order_contact, template_id, template_data)
+    service.send_email_message(order_contact, template_id, template_data, subject)
   end
 
   attr_accessor :customer_order, :current_overseer

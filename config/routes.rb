@@ -399,6 +399,9 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
+      end
     end
     resources :payment_options
 
