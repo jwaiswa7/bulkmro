@@ -133,8 +133,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
     @company_reviews = service.call
 
-    if Rails.cache.exist?('po_requests')
-      @po_requests =  Rails.cache.read('po_requests')
+    if Rails.cache.exist?(:po_requests)
+      @po_requests =  Rails.cache.read(:po_requests)
       Rails.cache.delete(:po_requests)
     else
       service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
