@@ -57,7 +57,7 @@
                     <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option' %>
+                    <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <div class="d-flex flex-row align-items-end">

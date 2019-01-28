@@ -1,7 +1,7 @@
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if ( policy(po_request).edit? && po_request.status != 'Cancelled' )
+                      if (policy(po_request).edit? && po_request.status != 'Cancelled')
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if policy(po_request).new_payment_request?
@@ -10,9 +10,10 @@ json.data (@po_requests) do |po_request|
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
                       end
                   ].join(' '),
-                  conditional_link(po_request.id,overseers_po_request_path(po_request),policy(po_request).show?),
-                  conditional_link(po_request.inquiry.inquiry_number,edit_overseers_inquiry_path(po_request.inquiry),policy(po_request.inquiry).edit?),
-                  conditional_link(po_request.sales_order.order_number,overseers_inquiry_sales_order_path(po_request.inquiry,po_request.sales_order),policy(po_request.sales_order).show?),
+                  conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
+                  conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry, po_request.sales_order), policy(po_request.sales_order).show?),
+                  (po_request.purchase_order.po_number if po_request.purchase_order.present?),
                   po_request.inquiry.inside_sales_owner.to_s,
                   po_request.supplier.to_s,
                   po_request.buying_price,
@@ -24,7 +25,7 @@ json.data (@po_requests) do |po_request|
                   po_request.supplier_committed_date,
                   status_badge(po_request.status),
                   if po_request.logistics_owner.present?
-                        po_request.logistics_owner.to_s
+                    po_request.logistics_owner.to_s
                   end,
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
