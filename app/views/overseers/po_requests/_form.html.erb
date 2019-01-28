@@ -30,8 +30,9 @@
 
       <div class="col-6">
         <%#= f.input :purchase_order_number %>
-        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
       </div>
+
       <div class="col-6">
         <% if f.object.purchase_order.present? && policy(@po_request).can_cancel? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
@@ -43,7 +44,7 @@
       </div>
 
       <div class="col-6 d-none status-rejected">
-        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !f.object.purchase_order.blank? && policy(@po_request).can_reject?, :include_blank => true %>
+        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !f.object.purchase_order.blank? && policy(@po_request).can_reject? , :include_blank => true %>
       </div>
       <div class="col-6 d-none status-cancelled">
         <%= f.input :cancellation_reason, disabled: !(f.object.purchase_order.present? && policy(@po_request).can_cancel?), :include_blank => true %>

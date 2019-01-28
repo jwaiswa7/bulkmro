@@ -56,7 +56,7 @@
         <% if po_request.sales_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier PO Type</strong>
-            <%= po_request.sales_order.opportunity_type %>
+            <%= po_request.sales_order.opportunity_type.humanize %>
           </div>
         <% end %>
 
