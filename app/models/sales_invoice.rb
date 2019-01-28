@@ -60,4 +60,17 @@ class SalesInvoice < ApplicationRecord
   def self.syncable_identifiers
     [:invoice_number]
   end
+
+  def calculated_total
+    rows.map { |row| row.metadata['base_row_total'].to_f }.sum.round(2)
+  end
+
+  def calculated_total_tax
+    rows.map { |row| row.metadata['base_tax_amount'].to_f }.sum.round(2)
+  end
+
+  def calculated_total_with_tax
+    (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
 end
