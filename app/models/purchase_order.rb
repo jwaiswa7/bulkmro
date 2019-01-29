@@ -69,6 +69,7 @@ class PurchaseOrder < ApplicationRecord
   scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
   scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
   scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  # scope :not_cancelled, -> {where.not(:status => :'Cancelled')}
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?
