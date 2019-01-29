@@ -60,4 +60,8 @@ class SalesInvoice < ApplicationRecord
   def self.syncable_identifiers
     [:invoice_number]
   end
+
+  def calculated_total
+    self.metadata.present? && self.metadata['base_grand_total'] && self.metadata['base_tax_amount'] ? self.metadata['base_grand_total'].to_f - self.metadata['base_tax_amount'].to_f : 0
+  end
 end
