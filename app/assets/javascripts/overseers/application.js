@@ -16,6 +16,7 @@
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js
 //= require bootstrap4-notify/bootstrap-notify.min.js
+//= require wholly/dist/wholly.min.js
 // https://github.com/twbs/bootstrap/issues/23381#issuecomment-322358996 to fix popper not found issue
 
 //= require select2/dist/js/select2.full.min.js
