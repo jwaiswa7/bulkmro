@@ -14,4 +14,4 @@ end
 json.recordsTotal @company_reviews.model.all.count
 json.recordsFiltered @company_reviews.total_count
 json.draw params[:draw]
-json.companyRating @company_reviews.map {|cmp| {:id=> cmp.rateable.id, :"rating"=> cmp.rating}}.as_json
+json.companyRating @company_reviews.map {|cmp| {:id=> cmp.id, :"rating"=> cmp.rating}}.as_json
