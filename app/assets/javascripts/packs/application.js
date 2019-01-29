@@ -19,7 +19,6 @@ import dropdowns from "./components/dropdownSubmenus";
 import chartjs from "./components/chartjs";
 import highlightjs from "./components/highlightjs";
 import lazyLoadImages from "./components/lazyLoadImages";
-
 import tableHighlightWholly from "./components/tableHighlightWholly";
 // Namespacing all imports under app
 let app = {};
