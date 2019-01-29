@@ -43,14 +43,14 @@ class PoRequest < ApplicationRecord
   # }
 
   enum rejection_reason: {
-    :'Not Found: Supplier in SAP' => 10,
-    :'Not Found: Supplier GST Number' => 20,
-    :'Not Found: Supplier Address' => 30,
-    :'Mismatch: HSN / SAC Code' => 40,
-    :'Mismatch: Tax Rates' => 50,
-    :'Mismatch: Supplier Billing or Shipping Address' => 60,
-    :'Mismatch: Supplier GST Number' => 70,
-    :'Others' => 80
+      :'Not Found: Supplier in SAP' => 10,
+      :'Not Found: Supplier GST Number' => 20,
+      :'Not Found: Supplier Address' => 30,
+      :'Mismatch: HSN / SAC Code' => 40,
+      :'Mismatch: Tax Rates' => 50,
+      :'Mismatch: Supplier Billing or Shipping Address' => 60,
+      :'Mismatch: Supplier GST Number' => 70,
+      :'Others' => 80
   }
 
   scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
@@ -59,15 +59,20 @@ class PoRequest < ApplicationRecord
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
 
   validate :purchase_order_created?
-  validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
+  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, :if => :new_record?
+  after_save :update_po_index, if: -> {purchase_order.present?}
 
   def purchase_order_created?
     if self.status == "PO Created" && self.purchase_order.blank?
       errors.add(:purchase_order, ' number is mandatory')
     end
+  end
+
+  def update_po_index
+    PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end
 
   def update_reason_for_status_change?
@@ -81,7 +86,7 @@ class PoRequest < ApplicationRecord
   end
 
   def selling_price
-   rows.sum(&:converted_total_selling_price).round(2)
+    rows.sum(&:converted_total_selling_price).round(2)
   end
 
   def buying_price
@@ -91,5 +96,4 @@ class PoRequest < ApplicationRecord
   def po_margin_percentage
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
-
 end

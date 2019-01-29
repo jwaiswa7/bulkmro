@@ -21,7 +21,7 @@
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
       <div class="col-6">
-        <%= f.input :opportunity_type, input_html: {value: f.object.sales_order.opportunity_type}, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), :include_blank => false, disabled: true, label: 'Supplier PO Type' %>
+        <%= f.input :opportunity_type, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), as: :select, :wrapper => :custom_multi_select, :include_blank => false, disabled: true, label: 'Supplier PO Type', :selected => f.object.sales_order.opportunity_type %>
       </div>
 
       <div class="col-6">
@@ -30,23 +30,30 @@
 
       <div class="col-6">
         <%#= f.input :purchase_order_number %>
-        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
       </div>
+
       <div class="col-6">
-        <% if f.object.purchase_order.present? && policy(@po_request).can_cancel? %>
+        <% if policy(@po_request).can_cancel? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
-        <% elsif f.object.purchase_order.blank? && policy(@po_request).can_reject?  %>
+        <% elsif policy(@po_request).can_reject?  %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false), :include_blank => false %>
+        <% elsif policy(@po_request).can_update_rejected_po_requests? %>
+            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false), :include_blank => false, :disabled => ['Rejected'] %>
         <% else %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled:true, :include_blank => false %>
         <% end %>
       </div>
 
+      <div class="col-6">
+        <%= f.input :supplier_committed_date, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_committed_date.to_s}, as: :string, label: 'Supplier Committed Date', disabled: true %>
+      </div>
+
       <div class="col-6 d-none status-rejected">
-        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !f.object.purchase_order.blank? && policy(@po_request).can_reject?, :include_blank => true %>
+        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(@po_request).can_reject? , :include_blank => true %>
       </div>
       <div class="col-6 d-none status-cancelled">
-        <%= f.input :cancellation_reason, disabled: !(f.object.purchase_order.present? && policy(@po_request).can_cancel?), :include_blank => true %>
+        <%= f.input :cancellation_reason, disabled: !(policy(@po_request).can_cancel?), :include_blank => true %>
       </div>
 
       <div class="col-md-6">

@@ -105,4 +105,8 @@ class SalesQuote < ApplicationRecord
       false
     end
   end
+
+  def currency_sign
+    self.inquiry_currency.present? ? self.inquiry_currency.sign : nil
+  end
 end

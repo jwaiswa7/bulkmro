@@ -15,6 +15,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         set_and_validate_excel_header_row
         set_rows
       end
+      import
     end
   end
 
@@ -32,7 +33,6 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         column.downcase!
       else
         import.errors.add(:base, ['Invalid excel upload; the columns should be', CustomerProductImport::HEADERS.to_sentence + '.'].join(' '))
-        raise ExcelInvalidHeader
       end
     end
   end
@@ -42,7 +42,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
       if file_url.present? && filename.present?
         url = URI(file_url)
         res = Net::HTTP.get_response(url)
-        if res.code == '200'
+        if res.code == '200' || res.code =='301' || res.code =='302'
           file = open(file_url)
           record.send('images').attach(io: file, filename: filename)
         else
@@ -70,6 +70,8 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
             filename = row['url'].split('/').last
             attach_file(customer_product, row['url'], filename)
           end
+          customer_product.tax_code = (TaxCode.where("code LIKE '%?%'",row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
+          customer_product.tax_rate = (TaxRate.where(:tax_percentage => row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
           customer_product.save
         end
       else

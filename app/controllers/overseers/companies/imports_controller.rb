@@ -16,9 +16,13 @@ class Overseers::Companies::ImportsController < Overseers::Companies::BaseContro
   def create_customer_products
     @product_excel_import = @company.product_imports.build(create_excel_import_params.merge(import_type: :list,overseer: current_overseer))
     service = Services::Overseers::CustomerProductsImports::ExcelImporter.new(@company, @product_excel_import)
-    service.call
+    import = service.call
+    if import.errors.messages.present?
+      redirect_to new_excel_customer_product_import_overseers_company_imports_path(@company), notice: import.errors.full_messages.first
+    else
+      redirect_to overseers_company_path(@company)
+    end
     authorize @company
-    redirect_to overseers_company_path(@company)
   end
 
   def create_excel_import_params

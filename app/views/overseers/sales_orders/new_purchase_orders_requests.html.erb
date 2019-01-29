@@ -67,9 +67,9 @@
                       <div class="form-group">
                         <%# po_request.object.attachments.each do |attachment| %>
                         <%#= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                        <!--                          <i class="fal fa-download"></i>-->
+                        <!--                            <i class="fal fa-download"></i>-->
                         <%#= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                        <!--                            <i class="fal fa-trash-alt"></i>-->
+                        <!--                              <i class="fal fa-trash-alt"></i>-->
                         <%# end if attachment.present? && policy(:attachment).destroy? %>
                         <%# end %>
                         <%# end if po_request.object.attachments.attached? %>
@@ -100,7 +100,6 @@
                   </div>
                   <div class="col-12 col-md-1">
                     <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
-
                     <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, required: true %>
                   </div>
                   <div class="col-12 col-md-1">

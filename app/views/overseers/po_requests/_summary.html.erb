@@ -56,7 +56,7 @@
         <% if po_request.sales_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier PO Type</strong>
-            <%= po_request.sales_order.opportunity_type %>
+            <%= po_request.sales_order.opportunity_type.humanize %>
           </div>
         <% end %>
 
@@ -73,7 +73,10 @@
             <%= po_request.inquiry.customer_committed_date %>
           </div>
         <% end %>
-
+        <div class="col-6 col-md-3 mb-2">
+          <strong class="d-block">Supplier Committed Date</strong>
+          <%= po_request.supplier_committed_date %>
+        </div>
         <% if po_request.supplier.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier</strong>

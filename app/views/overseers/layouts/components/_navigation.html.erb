@@ -47,6 +47,23 @@
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
           <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Creation Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_company_creation_requests_path, policy(:company_creation_request).index? %>
+              <%= nav_dropdown_item 'Requested', requested_overseers_company_creation_requests_path, policy(:company_creation_request).requested? %>
+              <%= nav_dropdown_item 'Created/Completed', created_overseers_company_creation_requests_path, policy(:company_creation_request).created? %>
+            </ul>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Reviews</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'List', overseers_company_reviews_path, policy(:company).index? %>
+              <%= nav_dropdown_item 'Review Questions', overseers_review_questions_path, policy(:company).index? %>
+            </ul>
+          </div>
         </div>
       </li>
 
@@ -115,6 +132,9 @@
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+          <div  class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+          <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
         </div>
       </li>
 
@@ -197,8 +217,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
-            <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
           </div>
         </li>
       <% end %>
