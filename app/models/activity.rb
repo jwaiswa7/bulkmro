@@ -19,6 +19,7 @@ class Activity < ApplicationRecord
   has_one :company_creation_request, :dependent => :destroy,:validate => false
   accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
 
+  has_many_attached :attachments
 
   enum company_type: {
       is_supplier: 10,
@@ -61,6 +62,7 @@ class Activity < ApplicationRecord
     self.company_type ||= :is_customer
     self.purpose ||= :'First Meeting/Intro Meeting'
     self.activity_type ||= :'Meeting'
+    self.activity_date = Date.today
   end
 
   def activity_company
