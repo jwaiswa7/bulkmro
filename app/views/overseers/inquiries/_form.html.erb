@@ -91,7 +91,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount, required: true %>
+                <%= f.input :potential_amount, required: true, input_html: {min: 0.01} %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
