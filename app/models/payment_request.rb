@@ -79,7 +79,7 @@ class PaymentRequest < ApplicationRecord
   end
 
   def update_status!
-    if self.status == :'Payment Pending' || self.status == :'Partial Payment Made' || self.status == :'Payment Made'
+    if self.status == 'Payment Pending' || self.status == 'Partial Payment Made' || self.status == 'Payment Made' || self.status == 'Partial Payment Pending'
       if self.transactions.present?
         if self.percent_amount_paid == 100.0
           self.status = :'Payment Made'
