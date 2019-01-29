@@ -187,4 +187,13 @@ module DisplayHelper
   def format_times_ago(time)
     [time_ago_in_words(time),'ago'].join(' ').html_safe
   end
+
+  def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+    precentage = (d.to_f / n.to_f * 100.0)
+    if d.present? && n.present?
+      [precentage > 0 && plus_if_positive ? '+' : nil, precentage < 0 ? '-' : nil, number_with_precision(floor ? precentage.abs.floor : precentage.abs, :precision => precision), show_symbol ? ('%') : nil].join
+    else
+      0
+    end
+  end
 end
