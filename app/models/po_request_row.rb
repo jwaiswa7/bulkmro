@@ -25,13 +25,13 @@ class PoRequestRow < ApplicationRecord
   }
 
   def total_selling_price
-      if unit_selling_price.present?
-        if self.quantity.present?
-          unit_selling_price * self.quantity
-        else
-          unit_selling_price
-        end
+    if unit_selling_price.present?
+      if self.quantity.present?
+        unit_selling_price * self.quantity
+      else
+        unit_selling_price
       end
+    end
   end
 
   def unit_selling_price
@@ -47,7 +47,7 @@ class PoRequestRow < ApplicationRecord
   end
 
   def unit_selling_price_with_tax
-    return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage/100) || 0)) if self.tax_rate.present?
+    return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage / 100) || 0)) if self.tax_rate.present?
     return 0
   end
 
