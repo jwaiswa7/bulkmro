@@ -40,7 +40,7 @@
             <!-- TODO commercial_status need to be added -->
           </div>
           <% if policy(@inquiry).update? %>
-            <div class="col-3">
+            <div class="col-6 col-md-3">
               <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#statusModal" style="margin-top: 25px;">Update
                 Status
               </button>
@@ -91,7 +91,7 @@
           <div class="col-md-4">
             <div class="form-row">
               <div class="col-6 col-md-8">
-                <%= f.input :potential_amount %>
+                <%= f.input :potential_amount, required: true %>
               </div>
               <div class="col-6 col-md-4">
                 <%= f.input :gross_profit_percentage, label: 'Gross profit %' %>
@@ -116,10 +116,10 @@
         <% else %>
           <div class="form-row">
             <div class="col-12 col-md-6">
-              <%= f.association :bill_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :bill_from, label_method: :to_s, include_blank: "Select a bill from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
             </div>
             <div class="col-12 col-md-6">
-              <%= f.association :ship_from, :wrapper => :custom_multi_select, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
+              <%= f.association :ship_from, label_method: :to_s, include_blank: "Select a ship from", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_warehouses_path}, disabled: policy(@inquiry).disable_billing_shipping_details? %>
             </div>
           </div>
         <% end %>
@@ -133,7 +133,7 @@
         </div>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} %>
+            <%= f.association :contact, collection: selected_option_or_nil(f, :contact), label: "Billing contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.billing_company)} %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.association :shipping_contact, collection: selected_option_or_nil(f, :shipping_contact), label_method: :to_s, include_blank: "Select a shipping Contact", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_contacts_path(f.object.shipping_company)} %>
@@ -152,10 +152,10 @@
       <div class="mt-3">
         <h6 class="text-uppercase text-black-50 mb-1">Owner Details</h6>
         <div class="form-row">
-          <div class="col-6 col-md-3">
+          <div class="col-12 col-md-3">
             <%= f.association :inside_sales_owner, required: true, collection: Overseer.inside_and_obj(f.object.inside_sales_owner).alphabetical, include_blank: 'Select an Inside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-12 col-md-3">
             <%= f.association :outside_sales_owner, required: true, collection: Overseer.outside_and_obj(f.object.outside_sales_owner).alphabetical, include_blank: 'Select an Outside Sales Owner', input_html: {class: "select2-single"} %>
           </div>
           <div class="col-12 col-md-3">
@@ -202,10 +202,10 @@
         <h6 class="text-uppercase text-black-50 mb-1">Order Details</h6>
         <div class="form-row">
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_number, label: 'Customer Purchase Order No.' %>
+            <%= f.input :customer_po_number, label: 'Customer purchase order number' %>
           </div>
           <div class="col-12 col-md-6">
-            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer Purchase Order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
+            <%= f.input :customer_po_sheet, wrapper: :custom_file, label: 'Customer purchase order', hint: f.object.customer_po_sheet.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.customer_po_sheet), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.customer_po_sheet.filename}".html_safe) : false %>
           </div>
           <div class="col-12 col-md-6">
             <%= f.input :copy_of_email, as: :file, wrapper: :custom_file, required: false, label: 'Email attachment', hint: f.object.copy_of_email.attached? ? ("#{link_to '<i class="fal fa-download"></i>'.html_safe, url_for(f.object.copy_of_email), class: 'ml-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => f.object.copy_of_email.filename}".html_safe) : false %>
@@ -250,8 +250,7 @@
             <%= f.input :procurement_date, as: :string, input_html: {:'data-toggle' => 'datepicker'}, disabled: f.object.sales_quotes.blank? %>
           </div>
           <div class="col-12 col-md-3">
-            <%= f.label :valid_end_time, "Quotation Validity Date" %>
-            <%= f.input :valid_end_time, as: :string, label: false, required: true, input_html: {:'data-toggle' => 'datepicker'} %>
+            <%= f.input :valid_end_time, as: :string, label: "Quotation validity date", required: true, input_html: {:'data-toggle' => 'datepicker'} %>
           </div>
         </div>
       </div>
