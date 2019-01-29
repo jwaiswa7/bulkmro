@@ -14,6 +14,7 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
     geographies.each do |geography_name, geography_count|
 
       geo_activities = activities.where('overseers.geography = ?', geography_name)
+
       overseers = []
       if !geo_activities.present?
         ga = activities.where('overseers.geography = ?', geography_name)
