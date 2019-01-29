@@ -62,6 +62,16 @@ Rails.application.routes.draw do
     end
 
     resources :reports
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -503,8 +513,6 @@ Rails.application.routes.draw do
         patch 'update_billing_address'
         patch 'update_shipping_address'
         patch 'update_special_instructions'
-        patch 'update_payment_method'
-        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end
