@@ -32,7 +32,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
     months = inquiry_groups.keys
 
     months.reverse.each do |month|
-      @data.entries[month.to_s] = {:inquiry => 0, :sales_quotes => 0, :sales_order => 0, :purchase_order => 0, :sales_invoice => 0}
+      @data.entries[month.to_s] = {:inquiry => 0, :sales_quotes => 0, :sales_order => 0, :sales_invoice => 0, :purchase_order => 0}
 
       # INQUIRIES
       i = inquiries.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
