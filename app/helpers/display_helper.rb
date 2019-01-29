@@ -44,7 +44,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -150,7 +150,14 @@ module DisplayHelper
 
   def format_star(rating)
     star_given = rating.nil? ? 0 : rating
-    (['<i class="fas fa-star text-warning "></i>', '<span class="render-star">',star_given,'<span/>'].join(' ')).html_safe
+    color = 'text-success'
+    if star_given < 3
+      color = 'text-danger'
+    elsif star_given > 3 && star_given <= 4
+      color = 'text-warning'
+    end
+
+    (["<i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/>'].join(' ')).html_safe
   end
 
   def format_count(count, zero_if_nil: true)
@@ -163,7 +170,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -190,7 +197,7 @@ module DisplayHelper
   end
 
   def format_times_ago(time)
-    [time_ago_in_words(time),'ago'].join(' ').html_safe
+    [time_ago_in_words(time), 'ago'].join(' ').html_safe
   end
 
   def current_user
