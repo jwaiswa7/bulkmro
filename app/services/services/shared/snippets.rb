@@ -900,7 +900,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
 
     Activity.not_approved.each do |activity|
-      activity.create_approval(:overseer => current_overseer)
+      activity.create_approval(:overseer => Overseer.default_approver)
     end
   end
 end
