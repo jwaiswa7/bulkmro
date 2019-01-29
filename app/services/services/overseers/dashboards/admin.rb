@@ -119,35 +119,6 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
         puts "<----------------Updated Cached------------------->"
       end
 
-
-      # PURCHASE ORDERS
-      po = purchase_orders.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_purchase_order_updated_at = po.order(:updated_at).last
-      cached_purchase_order_updated_at = Rails.cache.read("#{month.to_s}-purchase-orders-updated_at")
-      if cached_purchase_order_updated_at == nil
-        @data.entries[month.to_s][:purchase_order] = {
-            :count => purchase_orders_groups[month].present? ? purchase_orders_groups[month] : 0,
-            :total => po.sum(&:calculated_total)
-        }
-        # Create cache
-        create_purchase_order_cache(month.to_s, @data.entries[month.to_s][:purchase_order], max_purchase_order_updated_at)
-        puts "<----------------NIL------------------->"
-      elsif cached_purchase_order_updated_at == max_purchase_order_updated_at
-        @data.entries[month.to_s][:purchase_order] = {
-            :count => Rails.cache.read("#{month.to_s}-purchase-order-count"),
-            :total => Rails.cache.read("#{month.to_s}-purchase-order-total")
-        }
-        puts "<----------------Cached------------------->"
-      else
-        @data.entries[month.to_s][:purchase_order] = {
-            :count => purchase_orders_groups[month].present? ? purchase_orders_groups[month] : 0,
-            :total => po.sum(&:calculated_total)
-        }
-        # Create cache
-        create_purchase_order_cache(month.to_s, @data.entries[month.to_s][:purchase_order], max_purchase_order_updated_at)
-        puts "<----------------Updated Cached------------------->"
-      end
-
       # INVOICES
       si = sales_invoices.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
       max_invoice_updated_at = si.order(:updated_at).last
@@ -176,6 +147,33 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
         puts "<----------------Updated Cached------------------->"
       end
 
+      # PURCHASE ORDERS
+      po = purchase_orders.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
+      max_purchase_order_updated_at = po.order(:updated_at).last
+      cached_purchase_order_updated_at = Rails.cache.read("#{month.to_s}-purchase-orders-updated_at")
+      if cached_purchase_order_updated_at == nil
+        @data.entries[month.to_s][:purchase_order] = {
+            :count => purchase_orders_groups[month].present? ? purchase_orders_groups[month] : 0,
+            :total => po.sum(&:calculated_total)
+        }
+        # Create cache
+        create_purchase_order_cache(month.to_s, @data.entries[month.to_s][:purchase_order], max_purchase_order_updated_at)
+        puts "<----------------NIL------------------->"
+      elsif cached_purchase_order_updated_at == max_purchase_order_updated_at
+        @data.entries[month.to_s][:purchase_order] = {
+            :count => Rails.cache.read("#{month.to_s}-purchase-order-count"),
+            :total => Rails.cache.read("#{month.to_s}-purchase-order-total")
+        }
+        puts "<----------------Cached------------------->"
+      else
+        @data.entries[month.to_s][:purchase_order] = {
+            :count => purchase_orders_groups[month].present? ? purchase_orders_groups[month] : 0,
+            :total => po.sum(&:calculated_total)
+        }
+        # Create cache
+        create_purchase_order_cache(month.to_s, @data.entries[month.to_s][:purchase_order], max_purchase_order_updated_at)
+        puts "<----------------Updated Cached------------------->"
+      end
     end
 
     ActiveRecord::Base.default_timezone = :local
