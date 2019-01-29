@@ -11,7 +11,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     company_ratings_attributes = params['company_review']['company_ratings_attributes'] if params['company_review'].present? && params['company_review']['company_ratings_attributes'].present?
     company_ratings_attributes.each do |index, company_rating_attribute|
       if !@company_review.company_ratings.where(id: company_rating_attribute['id'].to_i).first.update({rating: company_rating_attribute['rating'].to_f})
-        redirect_to_path_genaration("Please give star ratings for all the Questions.", 500)
+        redirect_to_path_genaration("Please rate all questions before submitting.", 500)
         return
       end
     end
