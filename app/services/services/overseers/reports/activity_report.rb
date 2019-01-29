@@ -16,7 +16,7 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
       geo_activities = activities.where('overseers.geography = ?', geography_name)
       overseers = []
       if !geo_activities.present?
-        ga = all_activities.where('overseers.geography = ?', geography_name)
+        ga = activities.where('overseers.geography = ?', geography_name)
         ga.top('activities.created_by_id').each do |overseer_id, overseer_count|
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: 0}))
         end
