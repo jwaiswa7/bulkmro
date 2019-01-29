@@ -10,7 +10,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service.call
 
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
