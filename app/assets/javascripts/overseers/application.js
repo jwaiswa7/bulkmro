@@ -15,6 +15,7 @@
 //= require daterangepicker/moment.min.js
 //= require daterangepicker/daterangepicker.js
 //= require bootstrap4-notify/bootstrap-notify.min.js
+//= require wholly/dist/wholly.min.js
 //= require select2/dist/js/select2.full.min.js
 //= require jquery-lazy/jquery.lazy.min.js
 //= require nested_form_fields

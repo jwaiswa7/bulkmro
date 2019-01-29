@@ -99,10 +99,12 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :company_type,
         :subject,
         :purpose,
+        :activity_date,
         :activity_type,
         :points_discussed,
         :actions_required,
-        :overseer_ids => []
+        :daily_allowance,
+        :overseer_ids => [],
     )
   end
 
