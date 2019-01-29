@@ -294,6 +294,8 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
+        post 'create_stock_po_request'
+        post 'preview_stock_po_request'
       end
 
       scope module: 'inquiries' do
@@ -301,6 +303,12 @@ Rails.application.routes.draw do
         resources :email_messages
         resources :sales_shipments
         resources :purchase_orders
+
+        resources :po_requests do
+          collection do
+            post 'preview_stock'
+          end
+        end
 
         resources :sales_invoices do
           member do

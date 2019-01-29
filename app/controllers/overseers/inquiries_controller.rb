@@ -154,6 +154,34 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
+  def create_stock_po_request
+    authorize @inquiry
+  end
+
+  def preview_stock_po_request
+    po_requests = {}
+    @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
+    po_request_hash = new_purchase_orders_requests_params["po_requests"].to_h
+      attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
+      po_requests[po_request_hash[:supplier_id]] = @inquiry.po_requests.build(inquiry_id: @inquiry, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], stock_status: po_request_hash[:stock_status], attachments: attachments)
+      blobs = Array.new
+      if po_requests[po_request_hash[:supplier_id]].attachments.present?
+        po_requests[po_request_hash[:supplier_id]].attachments.each do |attachment|
+          blobs << attachment.blob_id
+        end
+      end
+      po_requests[po_request_hash[:supplier_id]].blobs = blobs
+      if po_request_hash[:rows_attributes].present?
+        po_request_hash[:rows_attributes].each do |index, row_hash|
+          if !row_hash[:_destroy].present? && row_hash[:quantity].present?
+            po_requests[po_request_hash[:supplier_id]].rows.build( quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id])
+          end
+        end
+        end
+    @po_requests = po_requests
+    authorize @inquiry
+  end
+
   private
 
   def set_inquiry
@@ -222,6 +250,50 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :bp_catalog_sku,
                   :unit_cost_price,
                   :_destroy
+              ]
+          ]
+      )
+    else
+      {}
+    end
+  end
+
+  def new_purchase_orders_requests_params
+    if params.has_key?(:inquiry)
+      params.require(:inquiry).permit(
+          :id,
+          :po_requests => [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :requested_by_id,
+              :approved_by_id,
+              :_destroy,
+              :logistics_owner_id,
+              :address_id,
+              :contact_id,
+              :payment_option_id,
+              :stock_status,
+              :supplier_committed_date,
+              :blobs,
+              :attachments => [],
+              :rows_attributes => [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand_id,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :measurement_unit_id,
+                  :converted_unit_selling_price
+              ],
+              :comments_attributes => [
+                  :created_by_id,
+                  :updated_by_id,
+                  :message
               ]
           ]
       )

@@ -37,7 +37,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order,current_overseer)
       @company_reviews = service.call
 
       authorize @po_request
@@ -49,30 +49,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
     else
       redirect_to overseers_po_requests_path
     end
-  end
-
-  def preview_stock_po_request
-    po_requests = {}
-    po_request_params[:po_requests_attributes].to_h.each do |index, po_request_hash|
-      @inquiry = Inquiry.find(po_request_hash[:inquiry_id])
-      attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
-      po_requests[po_request_hash[:supplier_id]] = @inquiry.po_requests.build(inquiry_id: @inquiry, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], status: po_request_hash[:stock_status], attachments: attachments)
-      blobs = Array.new
-      if po_requests[po_request_hash[:supplier_id]].attachments.present?
-        po_requests[po_request_hash[:supplier_id]].attachments.each do |attachment|
-          blobs << attachment.blob_id
-        end
-      end
-      po_requests[po_request_hash[:supplier_id]].blobs = blobs
-      if po_request_hash[:rows_attributes].present?
-        po_request_hash[:rows_attributes].each do |index, row_hash|
-          if !row_hash[:_destroy].present? && row_hash[:quantity].present?
-            po_requests[po_request_hash[:supplier_id]].rows.build( quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id])
-          end
-        end
-      end
-    end
-    authorize(:po_request)
   end
 
   def create

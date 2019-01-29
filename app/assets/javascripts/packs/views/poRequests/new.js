@@ -5,10 +5,12 @@ const newAction = () => {
     bindRatingModalTabClick();
     // $('.rating-modal a').click();
 
-    var customTabSelector =  $('#multipleRatingForm .custom-tab')
-    customTabSelector.eq(0).removeClass('disabled')
-    customTabSelector[0].click();
-    updateRatingForm();
+    // Need to uncomment it add a condition for update rating not present
+
+    // var customTabSelector =  $('#multipleRatingForm .custom-tab')
+    // customTabSelector.eq(0).removeClass('disabled')
+    // customTabSelector[0].click();
+    // updateRatingForm();
 
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);
