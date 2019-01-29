@@ -8,9 +8,9 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'sales_dashboard'
     elsif current_overseer.admin?
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-        render 'admin_dashboard'
+      service = Services::Overseers::Dashboards::Admin.new
+      @dashboard = service.call
+      render 'admin_dashboard'
     else
       render 'default_dashboard'
     end
