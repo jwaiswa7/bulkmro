@@ -25,7 +25,7 @@
 
     <div class="form-row">
       <div class="col-6">
-        <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number" %>
+        <%= f.association :sales_order, disabled: f.object.sales_order.present?, collection: f.object.inquiry.sales_orders.where.not(:order_number => nil), label_method: :to_s, include_blank: "Type Order Number", input_html: {class: 'select2-single select2-wrap-text', :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Order Number", :selected => [(@sales_order.present? ? @sales_order.id : f.object.sales_order.id)] %>
       </div>
       <div class="col-6">
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>

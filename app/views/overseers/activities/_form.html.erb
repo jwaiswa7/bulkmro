@@ -19,6 +19,12 @@
           <%= f.input :subject %>
 
           <div class="form-row">
+            <div class="col-12 col-md-12">
+              <%= f.input :daily_allowance %>
+            </div>
+          </div>
+
+          <div class="form-row">
             <div class="col-6 col-md-6">
               <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
             </div>

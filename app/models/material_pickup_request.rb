@@ -51,9 +51,7 @@ class MaterialPickupRequest < ApplicationRecord
   end
 
   def set_defaults
-    self.expected_dispatch_date = DateTime.now
-    self.expected_delivery_date = DateTime.now
-    self.actual_delivery_date = DateTime.now
+    self.expected_delivery_date = purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?
   end
 
   def readable_status

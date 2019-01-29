@@ -54,7 +54,7 @@
                     <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker'}, required: true %>
+                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date' }, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', required: true %>
@@ -65,14 +65,14 @@
                         <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
                       </div>
                       <div class="form-group">
-                        <% po_request.object.attachments.each do |attachment| %>
-                          <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                            <i class="fal fa-download"></i>
-                            <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                              <i class="fal fa-trash-alt"></i>
-                            <% end if attachment.present? && policy(:attachment).destroy? %>
-                          <% end %>
-                        <% end if po_request.object.attachments.attached? %>
+                        <%# po_request.object.attachments.each do |attachment| %>
+                          <%#= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+<!--                            <i class="fal fa-download"></i>-->
+                            <%#= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+<!--                              <i class="fal fa-trash-alt"></i>-->
+                            <%# end if attachment.present? && policy(:attachment).destroy? %>
+                          <%# end %>
+                        <%# end if po_request.object.attachments.attached? %>
                       </div>
                     </div>
                   </div>

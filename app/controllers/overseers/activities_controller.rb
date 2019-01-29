@@ -109,6 +109,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :activity_type,
         :points_discussed,
         :actions_required,
+        :daily_allowance,
         :overseer_ids => [],
         :company_creation_request_attributes => [
             :name,
