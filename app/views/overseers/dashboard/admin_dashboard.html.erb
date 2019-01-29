@@ -76,8 +76,8 @@
                 <th class="no-sort text-right">Inquiry</th>
                 <th class="no-sort text-right">Quotes</th>
                 <th class="no-sort text-right">Orders</th>
-                <th class="no-sort text-right">Purchase Orders</th>
                 <th class="no-sort text-right">Invoices</th>
+                <th class="no-sort text-right">Purchase Orders</th>
               </tr>
               </thead>
               <tbody>
@@ -86,7 +86,7 @@
                   <td><strong><%= format_month_without_date(month) %></strong></td>
                   <% values.each do |column, value| %>
                     <td class="text-uppercase text-right text-black-50">
-                      <%= number_with_delimiter(value[:count], delimiter: ',') %> <%= ['(', format_percent_of(value[:count], values[:inquiry][:count]), ')'].join if column != 'inquiry'.to_sym %>
+                      <%= number_with_delimiter(value[:count], delimiter: ',') %>
                       <hr class="my-1">
                       <strong><%= format_currency(value[:total], precision: 0, show_symbol: true) %></strong>
                     </td>
