@@ -150,7 +150,14 @@ module DisplayHelper
 
   def format_star(rating)
     star_given = rating.nil? ? 0 : rating
-    (['<i class="fas fa-star text-warning "></i>', '<span class="render-star">',star_given,'<span/>'].join(' ')).html_safe
+    color = 'text-success'
+    if star_given < 3
+      color = 'text-danger'
+    elsif star_given > 3 && star_given <= 4
+      color = 'text-warning'
+    end
+
+    (["<i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/>'].join(' ')).html_safe
   end
 
   def format_count(count, zero_if_nil: true)
@@ -160,14 +167,6 @@ module DisplayHelper
       0
     else
       nil
-    end
-  end
-
-  def conditional_link(string, url, allowed)
-    if allowed
-      return link_to string, url, target: '_blank'
-    else
-      return string
     end
   end
 
@@ -211,15 +210,6 @@ module DisplayHelper
 
   def current_user
     current_overseer
-  end
-
-  def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
-    precentage = (d.to_f / n.to_f * 100.0)
-    if d.present? && n.present?
-      [precentage > 0 && plus_if_positive ? '+' : nil, precentage < 0 ? '-' : nil, number_with_precision(floor ? precentage.abs.floor : precentage.abs, :precision => precision), show_symbol ? ('%') : nil].join
-    else
-      0
-    end
   end
 
   def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
