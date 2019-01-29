@@ -1,0 +1,22 @@
+<%= simple_form_for([:overseers, company_review],:url => overseers_company_review_path(company_review), :method => 'PATCH', :remote => true) do |f| %>
+  <%= f.hidden_field :id %>
+  <div class="error bg-danger text-white"></div>
+  <%= f.simple_fields_for :company_ratings, company_review.company_ratings , wrapper_tag: :div do |company_rating| %>
+    <div class="simple-row">
+      <div class="form-row mt-2">
+        <div class="col-12 col-md-7">
+          <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false%>
+        </div>
+        <div class="col-12 col-md-5 mt-3 star">
+          <div class=<%='star-'+company_rating.index.to_s %> ></div>
+          <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s,  "data-rating": company_rating.object.rating %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="card-footer">
+    <%= button_tag(type: "submit", class: "btn btn-warning btn-block submit-rating") do %>
+      <i class="fal fa-pen"></i> Submit Review
+    <% end %>
+  </div>
+<% end %>

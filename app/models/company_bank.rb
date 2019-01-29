@@ -10,7 +10,6 @@ class CompanyBank < ApplicationRecord
   scope :with_includes, -> { includes(:bank, :company) }
 
   validates_presence_of :account_number
-  validates :account_number, uniqueness: true
 
   validates_plausible_phone :beneficiary_mobile, allow_blank: true
 

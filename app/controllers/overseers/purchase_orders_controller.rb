@@ -12,7 +12,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
         @indexed_purchase_orders = service.indexed_records
         @purchase_orders = service.records.try(:reverse)
-
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
         status_service.call
 
@@ -24,6 +23,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def material_readiness_queue
     authorize :purchase_order
+
     respond_to do |format|
       format.html {}
       format.json do
@@ -34,6 +34,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @purchase_orders = service.records.try(:reverse)
       end
     end
+
 =begin
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params).joins(:po_request).where("po_requests.status = ?", 20).order("purchase_orders.created_at DESC")
 =end
@@ -120,20 +121,22 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   def autocomplete
     if params[:inquiry_number].present?
-      @purchase_orders = ApplyParams.to(PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]}), params)
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
+      purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
     else
-      @purchase_orders = ApplyParams.to(PurchaseOrder.all, params)
+      purchase_orders = PurchaseOrder.all
     end
+    @purchase_orders = ApplyParams.to(purchase_orders, params)
 
     authorize :purchase_order
   end
 
   def export_all
     authorize :purchase_order
-    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new
-    service.call
-
-    redirect_to url_for(Export.purchase_orders.last.report)
+    service = Services::Overseers::Exporters::PurchaseOrdersExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   private

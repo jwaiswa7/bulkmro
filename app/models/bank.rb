@@ -11,5 +11,5 @@ class Bank < ApplicationRecord
   scope :with_includes, -> { includes(:company_banks, :companies) }
 
   validates_presence_of :name, :code
-  validates_uniqueness_of :name, :code, :swift_number
+  validates_uniqueness_of :name, :code, :swift_number, allow_blank: true
 end

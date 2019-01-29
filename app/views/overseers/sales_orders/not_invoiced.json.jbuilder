@@ -14,7 +14,7 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success', :_blank)
                       end,
                       if policy(sales_order).can_request_po?
-                        row_action_button(new_overseers_po_request_path(:sales_order_id => sales_order.to_param), 'file-invoice', 'Request PO', 'success', :_blank)
+                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
                       end,
                       if policy(sales_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:sales_order_id => sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
@@ -54,10 +54,10 @@ json.columnFilters [
                    ]
 
 
-json.recordsTotal SalesOrder.all.count
+json.recordsTotal SalesOrder.remote_approved.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.recordsTotalValue @total_values
 json.draw params[:draw]
 json.recordsSummary SalesOrder.remote_statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
-json.recordsStatusesCount @statuses_count
-json.recordsValue @not_invoiced_values
+json.recordsOverallStatusCount @statuses_count
+json.recordsOverallStatusValue @not_invoiced_total

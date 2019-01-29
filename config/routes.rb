@@ -28,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -37,6 +37,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     resources :attachments
+    resources :review_questions
     resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
@@ -62,6 +63,16 @@ Rails.application.routes.draw do
     end
 
     resources :reports
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -355,7 +366,10 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'export_all'
       end
-
+      member do
+        get 'render_rating_form'
+        put 'update_rating'
+      end
       scope module: 'companies' do
         resources :customer_orders
 
@@ -367,7 +381,18 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
+        resources :tags do
+          collection do
+            get 'autocomplete'
+            get 'autocomplete_closure_tree'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -418,6 +443,9 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
       end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
+      end
     end
     resources :payment_options
 
@@ -439,7 +467,11 @@ Rails.application.routes.draw do
     end
 
     resources :freight_quotes
-
+    resources :company_reviews do
+      member do
+        get 'render_form'
+      end
+    end
   end
 
   namespace 'customers' do
@@ -520,7 +552,6 @@ Rails.application.routes.draw do
         patch 'update_shipping_address'
         patch 'update_special_instructions'
         patch 'update_payment_method'
-        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end

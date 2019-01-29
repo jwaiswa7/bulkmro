@@ -107,7 +107,7 @@
                 <div class="col-2 col-md-2 mb-2">
                   <strong class="d-block">Attachments</strong>
                   <% po_request.object.attachments.each_with_index do |attachment, index| %>
-                    <%= index + 1 %>. <%= attachment.filename if attachment.blob_id.present? %> <br>
+                    <%= "#{(index + 1)} ." if attachment.blob_id.present? %> <%= attachment.filename if attachment.blob_id.present? %> <br>
                   <% end if po_request.object.attachments.attached? %>
                 </div>
               </div>
@@ -178,7 +178,7 @@
               </div>
               <div class="col-md-6">
                 <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-                  <i class="fal fa-pen"></i> Create PO requests
+                  <i class="fal fa-pen"></i> Create PO request
                 <% end %>
               </div>
             </div>

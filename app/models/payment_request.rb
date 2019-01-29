@@ -4,7 +4,7 @@ class PaymentRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id, :utr_number], :associated_against => {:po_request => [:id, :purchase_order_id], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, :against => [:id], :associated_against => {:po_request => [:id, :purchase_order_id], :inquiry => [:inquiry_number], :purchase_order => [:po_number]}, :using => {:tsearch => {:prefix => true}}
 
   belongs_to :inquiry
   belongs_to :purchase_order
@@ -63,6 +63,13 @@ class PaymentRequest < ApplicationRecord
   with_options if: :"Accounts?" do |payment_request|
     payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
   end
+  validate :due_date_cannot_be_in_the_past
+
+  def due_date_cannot_be_in_the_past
+    if self.due_date.present? && self.due_date < Date.today
+      errors.add(:due_date, 'cannot be less than Today')
+    end
+  end
 
   after_initialize :set_defaults, :if => :new_record?
 
@@ -72,10 +79,16 @@ class PaymentRequest < ApplicationRecord
   end
 
   def update_status!
-    if self.utr_number.present?
-      self.status = :'Completed'
-    else
-      self.status = :'Pending'
+    if self.status == :'Payment Pending' || self.status == :'Partial Payment Made' || self.status == :'Payment Made' || self.status == :'Partial Payment Pending'
+      if self.transactions.present?
+        if self.percent_amount_paid == 100.0
+          self.status = :'Payment Made'
+        else
+          self.status = :'Partial Payment Made'
+        end
+      else
+        self.status = :'Payment Pending'
+      end
     end
   end
 
@@ -105,4 +118,5 @@ class PaymentRequest < ApplicationRecord
   def percent_amount_paid
     self.total_amount_paid * 100 / self.po_request.sales_order.try(:calculated_total_with_tax)
   end
+
 end

@@ -4,6 +4,7 @@ class MaterialPickupRequest < ApplicationRecord
   include Mixins::HasComments
   include Mixins::CanBeStamped
 
+  update_index('material_pickup_requests#material_pickup_request') {self}
   belongs_to :purchase_order
   has_one :inquiry, :through => :purchase_order
 
@@ -50,9 +51,7 @@ class MaterialPickupRequest < ApplicationRecord
   end
 
   def set_defaults
-    self.expected_dispatch_date = DateTime.now
-    self.expected_delivery_date = DateTime.now
-    self.actual_delivery_date = DateTime.now
+    self.expected_delivery_date = purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?
   end
 
   def readable_status

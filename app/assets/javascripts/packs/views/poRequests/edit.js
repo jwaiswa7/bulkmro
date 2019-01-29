@@ -8,13 +8,16 @@ const edit = () => {
             $('.status-rejected').removeClass('d-none');
             $('.status-rejected').find('select').attr("required",true);
         }
-        else{
+        if($(e.target).val() != "Cancelled"){
             $('.status-cancelled').addClass('d-none');
-            $('.status-rejected').addClass('d-none');
             $('.status-cancelled').find('textarea').val('');
+        }
+        if($(e.target).val() != "Rejected"){
+            $('.status-rejected').addClass('d-none');
             $('.status-rejected').find('select').val('');
         }
     });
+    $('select[name*=status]').trigger('change');
 };
 
 export default edit
