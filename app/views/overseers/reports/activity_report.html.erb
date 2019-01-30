@@ -46,7 +46,8 @@
       <tr>
         <th class="border-right"></th>
         <% @data.geographies.each.with_index do |geography, index| %>
-          <th class="text-uppercase text-black-50 border-right <% if index.odd? %>bg-highlight-secondary<% end %>" colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
+          <th class="text-uppercase text-black-50 border-right <% if index.odd? %>bg-highlight-secondary<% end %>" colspan="<%= geography.overseers.size %>">
+            <%= !(geography.name == "") ? geography.name : "-" %></th>
         <% end %>
       </tr>
       <tr>

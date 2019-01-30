@@ -893,4 +893,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
   end
+
+  def set_activity_date_and_create_approval
+    Activity.where(activity_date: nil).each do |activity|
+      activity.update_attribute('activity_date', activity.created_at)
+    end
+
+    Activity.not_approved.each do |activity|
+      activity.create_approval(:overseer => Overseer.default_approver)
+    end
+  end
 end

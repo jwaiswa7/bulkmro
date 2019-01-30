@@ -108,7 +108,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :activity_type,
         :points_discussed,
         :actions_required,
-        :daily_allowance,
+        :expenses,
         :overseer_ids => [],
         :company_creation_request_attributes => [
             :name,
@@ -117,7 +117,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :last_name,
             :address,
             :account_type,
-          ]
+          ],
+        :attachments => []
     )
   end
 
