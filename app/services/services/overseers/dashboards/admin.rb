@@ -18,14 +18,15 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
     inquiries = Inquiry.includes(:products).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
     max_updated_at_for_inquiries = inquiries.order(:updated_at).last.updated_at
 
-    sales_quotes = SalesQuote.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month).find_by_sql ["(select *From  sales_quotes sq where sq.created_at = (select max(sales_quotes.created_at) from sales_quotes where sq.inquiry_id = sales_quotes.inquiry_id and sales_quotes.sent_at is not null ) and sq.created_at between ? and ? order by sq.created_at desc) union( select sq.* from sales_quotes as sq left join sales_orders as so on sq.id = so.sales_quote_id where ( so.status = ? or so.legacy_request_status = ? ) and sq.created_at between ? and ?)", start_at.beginning_of_month, end_at.end_of_month, SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'], start_at.beginning_of_month, end_at.end_of_month]
+    sales_quotes_array = SalesQuote.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month).find_by_sql ["(select *From  sales_quotes sq where sq.created_at = (select max(sales_quotes.created_at) from sales_quotes where sq.inquiry_id = sales_quotes.inquiry_id and sales_quotes.sent_at is not null ) and sq.created_at between ? and ? order by sq.created_at desc) union( select sq.* from sales_quotes as sq left join sales_orders as so on sq.id = so.sales_quote_id where ( so.status = ? or so.legacy_request_status = ? ) and sq.created_at between ? and ?)", start_at.beginning_of_month, end_at.end_of_month, SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'], start_at.beginning_of_month, end_at.end_of_month]
+    sales_quotes = SalesQuote.where(id: sales_quotes_array.map(&:id))
 
     sales_orders = SalesOrder.includes(:rows).where(:mis_date => start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
     purchase_orders = PurchaseOrder.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
     sales_invoices = SalesInvoice.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
-    sales_quotes_groups = Hash[ sales_quotes.group_by_month { |u| u.created_at }.map { |k, v| [k, v.size] } ]
+    sales_quotes_groups = sales_quotes.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:mis_date, default_value: nil).count
     purchase_orders_groups = purchase_orders.group_by_month(:created_at, default_value: nil).count
     sales_invoices_groups = sales_invoices.group_by_month(:created_at, default_value: nil).count
@@ -56,8 +57,8 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
       end
 
       # SALES QUOTES
-      sq = sales_quotes.map{ |q| q if q.created_at >= month.to_date.beginning_of_month && q.created_at <= month.to_date.end_of_month}.compact
-      max_quote_updated_at = sq.map{ |q| q.updated_at}.max
+      sq = sales_quotes.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
+      max_quote_updated_at = sq.order(:updated_at).last
       cached_quote_updated_at = Rails.cache.read("#{month.to_s}-quotes-updated_at")
       if cached_quote_updated_at == max_quote_updated_at
         @data.entries[month.to_s][:sales_quotes] = {
@@ -68,7 +69,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
       else
         @data.entries[month.to_s][:sales_quotes] = {
             :count => sales_quotes_groups[month].present? ? sales_quotes_groups[month] : 0,
-            :total => sq.map { |q| q.calculated_total}.sum
+            :total => sq.sum(&:calculated_total)
         }
         # Create cache
         create_quote_cache(month.to_s, @data.entries[month.to_s][:sales_quotes], max_quote_updated_at)
