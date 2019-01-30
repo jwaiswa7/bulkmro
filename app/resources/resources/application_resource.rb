@@ -15,8 +15,8 @@ class Resources::ApplicationResource
   end
 
   def self.get_sap_cookie
-    Rails.cache.fetch('sap_cookie', expires_in: 25.minutes) do
-      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=Tue, 19 Jan 2018 03:20:07 GMT"
+    Rails.cache.fetch('sap_cookie', expires_in: 1.day) do
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{1.day}"
     end
   end
 
@@ -205,12 +205,14 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.find(id, quotes: false)
-    response = get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})")
+    url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
+    response = perform_sap_sync_action('get',url,'')
     OpenStruct.new(response.parsed_response) if response.present? && response.parsed_response.present? && (response.parsed_response.is_a? Hash)
   end
 
   def self.custom_find(id, by = nil)
-    response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
+    url = "/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1"
+    response = perform_sap_sync_action('get',url,'')
 
     log_request(:get, id, is_find: true)
     validated_response = get_validated_response(response)
@@ -224,8 +226,9 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.create(record)
-    response = post("/#{collection_name}", body: to_remote(record).to_json)
-
+    url = "/#{collection_name}"
+    body = to_remote(record).to_json
+    response = perform_sap_sync_action('post',url,body)
     log_request(:post, record)
     validated_response = get_validated_response(response)
     log_response(validated_response)
@@ -235,8 +238,9 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.update(id, record, quotes: false)
-    response = patch("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
-
+    url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
+    body = to_remote(record).to_json
+    response = perform_sap_sync_action('patch',url,body)
     log_request(:patch, record)
     validated_response = get_validated_response(response)
     log_response(validated_response)
@@ -280,5 +284,18 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
 
     @remote_request.update_attributes(:response => response, status: status)
     @remote_request
+  end
+
+  def self.perform_sap_sync_action(action, url, body)
+    begin
+      if body.present?
+        send(action, url, body:body)
+      else
+        send(action, url)
+      end
+    rescue Exception => e
+      Rails.cache.delete('sap_cookie')
+      send(action, url,body:body)
+    end
   end
 end
