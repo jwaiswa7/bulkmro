@@ -51,9 +51,6 @@ import activities from './activities/init'
 
 import companies from './companies/init'
 
-// Company Reviews
-
-import companyReviews from './companyReviews/init'
 
 let loader = {
     imports: imports,
@@ -74,8 +71,7 @@ let loader = {
     invoiceRequests: invoiceRequests,
     poRequests: poRequests,
     activities: activities,
-    companies: companies,
-    companyReviews: companyReviews
+    companies: companies
 };
 
 // Imports
