@@ -22,7 +22,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
     sales_orders = SalesOrder.includes(:rows).where(:mis_date => start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
     purchase_orders = PurchaseOrder.not_cancelled.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
-    sales_invoices = SalesInvoice.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
+    sales_invoices = SalesInvoice.includes(:rows).where(:created_at => start_at.beginning_of_month..end_at.end_of_month).where.not(sales_order_id: nil).where.not(metadata: nil)
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_quotes_groups = sales_quotes.group_by_month(:created_at, default_value: nil).count
