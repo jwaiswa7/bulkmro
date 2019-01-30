@@ -52,7 +52,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    (self.unit_selling_price * self.quantity).round(2) if self.metadata['PopPriceHt'].present?
+    (self.unit_selling_price.to_f * self.quantity.to_f).round(2) if self.metadata['PopPriceHt'].present?
   end
 
   def total_selling_price_with_tax
