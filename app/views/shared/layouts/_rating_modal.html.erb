@@ -7,7 +7,7 @@
       <%= simple_form_for([:overseers, @company_review], :url => url, :method => 'PUT') do |f| %>
         <div class="modal-body mx-3">
           <h6 class="text pb-2">
-            Kindly share your feedback for <strong><%= @company_review.rateable %></strong>.
+            Kindly share your feedback for <strong><%= @company_review.company %></strong>.
           </h6>
           <%= f.hidden_field :id %>
           <%= f.simple_fields_for :company_ratings, @company_review.company_ratings, wrapper_tag: :div do |company_rating| %>

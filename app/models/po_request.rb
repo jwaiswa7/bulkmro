@@ -16,6 +16,8 @@ class PoRequest < ApplicationRecord
   has_one :payment_request, required: false
   has_one :payment_option, :through => :purchase_order
   has_many_attached :attachments
+  has_many :company_reviews, as: :rateable
+  ratyrate_rateable "CompanyReview"
 
   enum status: {
       :'Requested' => 10,

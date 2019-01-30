@@ -10,6 +10,8 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
   has_many_attached :attachments
+  has_many :company_reviews, as: :rateable
+  ratyrate_rateable "CompanyReview"
 
   enum status: {
       :'Pending GRPO' => 10,

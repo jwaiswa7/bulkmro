@@ -9,21 +9,28 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   def update
     authorize @company_review
 
-    if @company_review.company_ratings.map(&:rating).include?nil
+    if @company_review.company_ratings.map(&:rating).include? nil
       redirect_to_path_generation("Please rate all questions before submitting.", 500)
       return
     end
 
+    # Average of all company ratings updated in respective company review
     average_company_rating = @company_review.company_ratings.map(&:calculate_rating).sum
-    puts average_company_rating
     @company_review.update_attributes!(rating: average_company_rating, overseer: current_overseer)
+
+    # Rate is model provided by raty_rate gem
+    # Rates for company review and its associated rateable document are created explicitly
+    # as ratyrate gem does not provide multilevel average calculations
     @company_review.rate(average_company_rating, current_overseer, "CompanyRating")
-    Rate.create({rater: current_overseer, rateable_type: "CompanyReview", rateable_id: @company_review.id, stars: @company_review.company_ratings.map(&:calculate_rating).sum})
-    # average_company_rating = @company_review.rating_for(@company_review,'CompanyRating')
-    overall_rating = CompanyReview.where(rateable_id: @company_review.rateable_id).average(:rating)
-    @company_review.rateable.rate(overall_rating, current_overseer, "CompanyReview")
-    Rate.create({rater: current_overseer, rateable_type: "Company", rateable_id: @company_review.rateable.id, stars: overall_rating})
-    @company_review.rateable.update({rating: overall_rating})
+    create_rates("CompanyReview", @company_review.id, average_company_rating)
+    @company_review.rateable.rate(average_company_rating, current_overseer, "CompanyReview")
+    create_rates(@company_review.rateable_type, @company_review.rateable.id, average_company_rating)
+
+    # Overall rating is always calculated against a Company(is_supplier)
+    # updated in respective company and ratyrate gem's rates model explicitly
+    overall_rating = CompanyReview.where(company_id: @company_review.company_id).average(:rating)
+    create_rates("Company", @company_review.company.id, overall_rating)
+    @company_review.company.update({rating: overall_rating})
 
     redirect_to_path_generation("Feedback captured successfully.", 200)
   end
@@ -34,11 +41,11 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
   def render_form
     authorize @company_review
-    if @current_overseer.inside? || @current_overseer.outside? || @current_overseer.manager?
+    if @company_review.survey_type == 'Sales'
       @review_type = "Sales"
       review_questions = ReviewQuestion.sales
-    elsif @current_overseer.logistics?
-      @review_type = "Logistics"
+    elsif @company_review.survey_type == 'Logistics'
+        @review_type = "Logistics"
       review_questions = ReviewQuestion.logistics
     end
     review_questions.each do |question|
@@ -50,6 +57,15 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
 
   private
+
+  def create_rates(rateable_type, rateable_id, score)
+    rate = Rate.where({rater: current_overseer, rateable_type: rateable_type, rateable_id: rateable_id})
+    if rate.present?
+      Rate.create({rater: current_overseer, rateable_type: rateable_type, rateable_id: rateable_id, stars: score})
+    else
+      rate.update({stars: score})
+    end
+  end
 
   def redirect_to_path_generation(message, status)
     if params[:company_review_redirect]

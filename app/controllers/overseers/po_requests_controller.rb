@@ -18,6 +18,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def show
     authorize @po_request
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    @company_reviews = service.call
   end
 
   def new
@@ -27,8 +29,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order,current_overseer)
-      @company_reviews = service.call
 
       authorize @po_request
     else
@@ -47,7 +47,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         @po_request_comment.save!
       end
 
-      redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
+      redirect_to edit_overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
       render 'new'
     end
@@ -55,6 +55,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def edit
     authorize @po_request
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@po_request.sales_order, current_overseer, @po_request, 'Sales')
+    @company_reviews = service.call
   end
 
   def update

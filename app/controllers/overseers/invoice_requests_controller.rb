@@ -37,6 +37,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def show
     authorize @invoice_request
+    @order = @invoice_request.sales_order || @invoice_request.purchase_order
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
+    @company_reviews = service.call
   end
 
   def new
@@ -44,16 +47,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
 
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
-      @company_reviews = service.call
-
       authorize @invoice_request
     elsif  params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
-
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order,current_overseer)
-      @company_reviews = service.call
 
       authorize @invoice_request
     else
@@ -72,7 +69,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         @invoice_request_comment.save!
       end
 
-      redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
+      redirect_to edit_overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
       render 'new'
     end
@@ -80,6 +77,9 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   def edit
     authorize @invoice_request
+    @order = @invoice_request.sales_order || @invoice_request.purchase_order
+    service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
+    @company_reviews = service.call
   end
 
   def update
