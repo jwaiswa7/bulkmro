@@ -56,7 +56,8 @@ class PurchaseOrder < ApplicationRecord
       :'Supplier PI Pending Finance Approval' => 64,
       :'Supplier PI delayed' => 67,
       :'Payment to Supplier Delayed' => 68,
-      :'Cancelled' => 95,
+      :'payment_done_out_from_bm_warehouse' => 69,
+      :'cancelled' => 95,
       :'Closed' => 96
   }
 
