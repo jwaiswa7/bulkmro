@@ -17,7 +17,7 @@ class SalesInvoice < ApplicationRecord
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
-      :'Unpaid' => 3,
+      :'Cancelled' => 3,
       :'Partial: Shipped' => 201,
       :'Shipped' => 202,
       :'Material Delivery Delayed' => 203,

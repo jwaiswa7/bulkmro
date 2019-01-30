@@ -2231,4 +2231,35 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "<-------------------------------------------------------------------------------------------->"
     puts sales_order_exists
   end
+
+  def update_invoice_statuses
+    missing_invoices = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_sales_invoices.csv', folder)
+    service.loop(limit) do |x|
+      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('Invoice Number'))
+      if sales_invoice.present? && sales_invoice.sales_order.present?
+        sales_invoice.status = 3
+        sales_invoice.metadata['state'] = 3 if sales_invoice.metadata.present?
+        sales_invoice.save!
+      else
+        missing_invoices << x.get_column('Invoice Number')
+      end
+    end
+    puts "Missing Invoices", missing_invoices
+  end
+
+  def update_po_statuses
+    missing_po = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_purchase_orders.csv', folder)
+    service.loop(limit) do |x|
+      po = PurchaseOrder.find_by_po_number(x.get_column('Purchase Order Number'))
+      if po.present?
+        po.metadata['PoStatus'] = 95
+        po.save!
+      else
+        missing_po << x.get_column('Purchase Order Number')
+      end
+    end
+    puts "Missing PO", missing_po
+  end
 end
