@@ -240,3 +240,6 @@ gem 'chartjs-ror'
 
 #For online payments with Razorpay
 gem 'razorpay'
+
+# Wit.ai
+gem 'wit'

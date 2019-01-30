@@ -5,7 +5,6 @@ import onLoadPage from "../common/onLoadPage";
 const index = () => {
     bindSummaryBox(".summary_box", '.status-filter')
     updateSummaryBox()
-    onLoadPage();
 };
 
 export default index

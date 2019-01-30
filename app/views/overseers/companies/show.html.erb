@@ -480,6 +480,7 @@
               <th class="no-sort desktop">Category</th>
               <th class="no-sort desktop">MPN</th>
               <th class="no-sort desktop" data-name="is_active"> Active</th>
+              <th class="no-sort desktop" data-name="created_at"> Created At</th>
             </tr>
             </thead>
             <tbody>
@@ -607,20 +608,16 @@
       </div>
       <div class="tab-pane fade" id="rating" role="tabpanel">
         <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Invoices</h3>
+          <h3 class="display-5 mb-1 d-none d-md-block">Rating</h3>
         </div>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_sales_invoices_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive review-table" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_company_reviews_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
-            <th class="no-sort all" data-name="invoice_number">Invoice #</th>
-            <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
-            <th class="no-sort desktop" data-name="order_number">Order #</th>
-            <th class="no-sort desktop">Line Items</th>
-            <th class="no-sort desktop">Status</th>
-            <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
-            <th class="no-sort desktop">Created At</th>
+            <th class="no-sort all">Overseer Name</th>
+            <th>Company name</th>
+            <th class="no-sort desktop">Rating</th>
           </tr>
           </thead>
           <tbody>

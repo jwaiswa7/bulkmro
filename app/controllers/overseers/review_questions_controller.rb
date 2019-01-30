@@ -2,7 +2,7 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   before_action :set_review_question, only: [:show, :edit, :update, :destroy]
 
   def index
-    @review_questions = ApplyDatatableParams.to(ReviewQuestion.all.includes(:created_by), params)
+    @review_questions = ApplyDatatableParams.to(ReviewQuestion.all.includes(:created_by).order(:question_type), params)
     authorize @review_questions
   end
 
@@ -13,7 +13,6 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
   def new
     @review_question = ReviewQuestion.new(overseer: current_overseer)
     authorize @review_question
-
   end
 
   def edit
@@ -42,12 +41,12 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
 
   def destroy
     authorize @review_question
-    company_rating = CompanyRating.where(:review_question_id => @review_question.id )
+    company_rating = CompanyRating.where(:review_question_id => @review_question.id)
     if !company_rating.present?
       @review_question.destroy!
       redirect_to overseers_review_questions_url, notice: flash_message(@review_question, action_name)
     else
-      redirect_to overseers_review_questions_url, notice: "Cannot delete this review question already in used."
+      redirect_to overseers_review_questions_url, notice: "Cannot delete question used in reviews."
     end
   end
 

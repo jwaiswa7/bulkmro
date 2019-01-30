@@ -1,9 +1,7 @@
-import showAction from './show'
-import companyReviewsIndex from "./index"
-
-let companyReviews = {
-    index: companyReviewsIndex,
-    show: showAction
-}
-
-export default companyReviews
+// import showAction from './show'
+//
+// let companyReviews = {
+//     show: showAction
+// }
+//
+// export default companyReviews

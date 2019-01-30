@@ -3,7 +3,7 @@
   <section class="pt-3 pt-lg-4 pb-2">
     <div class="d-md-flex justify-content-between">
       <h3 class="display-5 d-flex align-items-center">
-        Rating of <%= @company_review.rateable.name %> given by <%= @company_review.created_by.name %>
+        <%= @company_review.rateable.name %>: <%= @company_review.created_by.name %>&nbsp;&nbsp;<%= format_star(@company_review.rating)%>
       </h3>
       <% if @company_review.created_by == current_overseer %>
         <button type="button" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down change-company-review" data-toggle="modal" data-target="#modalRatingForm">Change Rating</button>
@@ -18,6 +18,8 @@
             <div class="col-md-2 col-xs-12">
               <strong class="d-block"><%= company_rating.review_question.question %></strong>
               <%= rating_for company_rating %>
+<!--              <div class="show-star" data-rating="<%#= company_rating.rating %>">-->
+<!--              </div>-->
             </div>
           </div>
         <% end %>
@@ -26,4 +28,4 @@
   </section>
 </div>
 
-<%= render partial: 'shared/layouts/rating_modal', locals: {url: update_rating_overseers_company_review_path(@company_review)} %>
+<%= render partial: 'shared/layouts/rating_modal', locals: {url: overseers_company_review_path(@company_review,:company_review_redirect => true)} %>

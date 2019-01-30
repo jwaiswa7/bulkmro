@@ -1,8 +1,2 @@
 <%= render 'overseers/invoice_requests/form' %>
-<% if @can_review %>
-  <% if @sales_order.present? %>
-    <%= render partial: 'shared/layouts/rating_modal', locals: {url: update_rating_overseers_company_review_path(@company_review,:sales_order_id => @sales_order.hashid)} %>
-  <% else %>
-    <%= render partial: 'shared/layouts/rating_modal', locals: {url: update_rating_overseers_company_review_path(@company_review,:purchase_order_id => @purchase_order.hashid)} %>
-  <% end %>
-<% end %>
+<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>

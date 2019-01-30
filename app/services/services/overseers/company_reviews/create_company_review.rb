@@ -1,39 +1,24 @@
 class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Shared::BaseService
-  def initialize(order,current_overseer,review_type)
+  def initialize(order,current_overseer)
     @order = order
     @current_overseer = current_overseer
-    @review_type = review_type
   end
 
   def call
-    suppliers_not_reviewed = {}
-    order.inquiry.suppliers.uniq.each do |supplier|
-      if !supplier.company_reviews.reviewed(current_overseer,@review_type).present?
-        suppliers_not_reviewed[supplier.id] = false
-      end
+    suppliers = order.inquiry.suppliers.uniq
+    review_type = "Logistics"
+    if current_overseer.inside? || current_overseer.outside? || current_overseer.manager?
+      review_type = "Sales"
+    elsif current_overseer.logistics?
+      review_type = "Logistics"
     end
-
-    if !suppliers_not_reviewed.empty?
-      @supplier = Company.where(id: suppliers_not_reviewed.keys.first).first
-      @can_review = !@supplier.company_reviews.present? || !@supplier.company_reviews.reviewed(current_overseer,@review_type).present?
-
-      if @can_review
-        @company_review = CompanyReview.where(created_by: current_overseer, survey_type: @review_type, rateable: @supplier).first_or_create!
-
-        if @review_type == 'Sales'
-          review_questions = ReviewQuestion.sales
-        elsif @review_type == 'Logistics'
-          review_questions = ReviewQuestion.logistics
-        end
-
-        review_questions.each do |question|
-          CompanyRating.where({company_review_id: @company_review.id, review_question_id: question.id}).first_or_create!
-        end
-      else
-        @company_review = CompanyReview.new
-      end
+    company_reviews = []
+    suppliers.each do |supplier|
+      company_review = supplier.company_reviews.where(created_by: current_overseer, survey_type: review_type).first_or_create!
+      company_reviews << company_review
     end
+    return company_reviews
   end
 
-  attr_accessor :order, :current_overseer, :review_type, :company_review, :can_review
+  attr_accessor :order, :current_overseer
 end

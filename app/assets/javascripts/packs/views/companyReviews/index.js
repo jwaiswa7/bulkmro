@@ -1,7 +1,6 @@
-import onLoadPage from "../common/onLoadPage";
-const index = () => {
-    onLoadPage();
-
-}
-
-export default index
+// import onLoadPage from "../common/onLoadPage";
+// const index = () => {
+//
+// }
+//
+// export default index

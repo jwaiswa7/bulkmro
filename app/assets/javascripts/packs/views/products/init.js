@@ -4,9 +4,9 @@ import productsShow from "./show"
 
 
 let products = {
+    show: productsShow,
     edit: productsEdit,
-    new: productsNew,
-    show: productsShow
+    new: productsNew
 }
 
 export default products

@@ -44,7 +44,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -148,6 +148,18 @@ module DisplayHelper
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
 
+  def format_star(rating)
+    star_given = rating.nil? ? 0 : rating
+    color = 'text-success'
+    if star_given < 3
+      color = 'text-danger'
+    elsif star_given > 3 && star_given <= 4
+      color = 'text-warning'
+    end
+
+    (["<i class='fas fa-star #{color}'></i>", "<span class='render-star #{color}'>", star_given, '<span/>'].join(' ')).html_safe
+  end
+
   def format_count(count, zero_if_nil: true)
     if count.present?
       count
@@ -158,7 +170,7 @@ module DisplayHelper
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
       return link_to string, url, target: '_blank'
     else
@@ -185,10 +197,19 @@ module DisplayHelper
   end
 
   def format_times_ago(time)
-    [time_ago_in_words(time),'ago'].join(' ').html_safe
+    [time_ago_in_words(time), 'ago'].join(' ').html_safe
   end
 
   def current_user
     current_overseer
+  end
+
+  def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+    precentage = (d.to_f / n.to_f * 100.0)
+    if d.present? && n.present?
+      [precentage > 0 && plus_if_positive ? '+' : nil, precentage < 0 ? '-' : nil, number_with_precision(floor ? precentage.abs.floor : precentage.abs, :precision => precision), show_symbol ? ('%') : nil].join
+    else
+      0
+    end
   end
 end

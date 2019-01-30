@@ -69,4 +69,24 @@
       </div>
     </div>
   </section>
+
+  <% if @warehouse.product_stocks.any? && policy(@warehouse).show_product_stocks? %>
+    <div class="d-md-flex justify-content-between mt-5">
+      <h3 class="display-5 mb-1">Product Stock</h3>
+    </div>
+
+    <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" data-ajax="<%= overseers_warehouse_product_stocks_path(warehouse_id: @warehouse.id) %>">
+      <thead>
+      <tr>
+        <th class="no-sort">Product Name</th>
+        <th class="no-sort">SKU</th>
+        <th class="no-sort">In stock</th>
+        <th class="no-sort">Committed</th>
+        <th class="no-sort">Ordered</th>
+        <th class="no-sort">Available</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  <% end %>
 </div>

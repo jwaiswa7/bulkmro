@@ -1,0 +1,32 @@
+<div class="modal fade" id="multipleRatingForm">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center pb-0">
+        <h4 class="modal-title w-100 text-uppercase text-black-50 text-small pt-2">Company Review</h4>
+      </div>
+      <div class="modal-body mx-0 px-0 pb-0">
+        <ul class="nav nav-tabs nav-fill mx-3">
+          <% @company_reviews.each_with_index do |company_review, index| %>
+            <li class="nav-item">
+              <a class="nav-link custom-tab disabled <%= index == 0 ? 'active' : '' %>" data-index='<%= index %>' data-toggle="tab" href="<%= '#company-' + index.to_s %>" role="tab" data-id='<%= company_review.id %>'><%= company_review.rateable.name %></a>
+            </li>
+          <% end %>
+        </ul>
+        <div class="tab-content mt-0">
+          <% @company_reviews.each_with_index do |company_review, index| %>
+            <div class="tab-pane fade <%= index == 0 ? 'active show' : '' %>" id="<%= 'company-' + index.to_s %>" role="tabpanel">
+              <h6 class="text pt-3 pb-2 px-3">
+                Kindly share your feedback for <strong><%= company_review.rateable %></strong>.
+              </h6>
+              <div id=<%= "form-render-div-#{company_review.id}" %>></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rating-modal">
+  <a href="#" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false"></a>
+</div>

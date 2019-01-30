@@ -353,7 +353,11 @@ Rails.application.routes.draw do
             get 'autocomplete'
           end
         end
-
+        resources :company_reviews do
+          collection do
+            get 'index'
+          end
+        end
 
         resources :addresses do
           collection do
@@ -386,6 +390,7 @@ Rails.application.routes.draw do
         resources :products do
 
         end
+
       end
     end
 
@@ -402,6 +407,9 @@ Rails.application.routes.draw do
     resources :warehouses do
       collection do
         get 'autocomplete'
+      end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
       end
     end
     resources :payment_options
@@ -426,7 +434,7 @@ Rails.application.routes.draw do
     resources :freight_quotes
     resources :company_reviews do
       member do
-        put 'update_rating'
+        get 'render_form'
       end
     end
   end

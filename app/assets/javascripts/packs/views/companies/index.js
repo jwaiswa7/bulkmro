@@ -1,9 +1,11 @@
 import onLoadPage from '../common/onLoadPage'
 const index = () => {
-    onLoadPage();
+    // onLoadPage();
 
     $('.datatable').on('click','.rating',function () {
         var id = $(this).data('company-id')
+        var $this = $(this)
+        $(this).addClass('disabled')
         $.ajax({
             data: {},
             url: "/overseers/companies/"+id+"/render_rating_form",
@@ -12,7 +14,6 @@ const index = () => {
                 $('.modal-render').append(data)
                 $('#modalRatingForm').modal('show')
                 let reviewQuestionsLength = $(".rating-form .star").length
-                console.log(reviewQuestionsLength)
 
                 for (let i = 0; i < reviewQuestionsLength; i++) {
                     let starRating = ".star-"+i
@@ -23,6 +24,9 @@ const index = () => {
                             $(".rating-"+i).val(score)
                         }});
                 }
+                $('#modalRatingForm').on('hidden.bs.modal', function () {
+                    $this.removeClass('disabled')
+                })
             },
             complete: function complete() {
             }
