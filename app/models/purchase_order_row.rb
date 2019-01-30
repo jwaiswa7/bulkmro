@@ -60,8 +60,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-    product = Product.where(legacy_id: self.metadata['PopProductId'].to_i) || Product.where(id: self.metadata['PopProductId'])
-    product.first if product.present?
+    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 
 end
