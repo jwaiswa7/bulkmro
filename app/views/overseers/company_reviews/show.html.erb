@@ -6,7 +6,7 @@
         <%= @company_review.company.name %>: <%= @company_review.created_by.name %>&nbsp;&nbsp;<%= format_star(@company_review.rating)%>
       </h3>
       <% if @company_review.created_by == current_overseer %>
-        <button type="button" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down change-company-review" data-toggle="modal" data-target="#modalRatingForm">Change Rating</button>
+        <button type="button" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down change-company-review" data-toggle="modal" data-target="#modalRatingForm" data-backdrop="static" data-keyboard="false">Change Rating</button>
         <% end %>
     </div>
   </section>
