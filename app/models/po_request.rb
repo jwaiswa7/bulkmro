@@ -40,4 +40,16 @@ class PoRequest < ApplicationRecord
   def set_defaults
     self.status ||= :'Requested'
   end
+
+  def sending_purchase_order(email_message, po_request, inquiry)
+    subject = "Internal Ref Inq # #{inquiry.id} Purchase Order # #{po_request.purchase_order.po_number}"
+    body = PoRequestMailer.purchase_order_details(email_message)
+    return { subject: subject, body: body, auto_attach: true}
+  end
+
+  def dispatch_from_supplier_delayed(email_message, inquiry)
+    subject = "Ref # #{inquiry.id} Delay in Material Delivery"
+    body = PoRequestMailer.dispatch_supplier_delayed(email_message)
+    return { subject: subject, body: body, auto_attach: false}
+  end
 end

@@ -4,13 +4,19 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   def new
     if @po_request.purchase_order.present?
       @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @supplier.company_contacts.first.contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order)
+      if params[:type] == "sending_purchase_order"
+        email_content = @po_request.sending_purchase_order(@email_message, @po_request, @inquiry)
+        authorize @po_request, :new_email_message?
+      elsif params[:type] == "dispatch_from_supplier_delayed"
+        email_content = @po_request.dispatch_from_supplier_delayed(@email_message, @inquiry)
+        authorize @po_request, :dispatch_supplier_delayed_new_email_message?
+      end
       @email_message.assign_attributes(
-          :subject => "Internal Ref Inq # #{@inquiry.id} Purchase Order # #{@po_request.purchase_order.po_number}" ,
-          :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
-          :auto_attach => true,
-          )
+          :subject => email_content[:subject],
+          :body => email_content[:body].body.raw_source,
+          :auto_attach => email_content[:auto_attach]
+      )
     end
-    authorize @po_request, :new_email_message?
   end
 
   def create
@@ -29,13 +35,16 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     authorize @po_request, :create_email_message?
 
     if @email_message.auto_attach?
-
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@po_request.purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})), filename: @po_request.purchase_order.filename(include_extension: true))
+      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@po_request.purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})), filename: @po_request.purchase_order.filename(include_extension: true))
     end
 
     if @email_message.save
-      if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
-        @po_request.update_attributes(:sent_at => Time.now)
+      if params[:type] == "sending_purchase_order"
+        if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
+          @po_request.update_attributes(:sent_at => Time.now)
+        end
+      elsif params[:type] == "dispatch_from_supplier_delayed"
+        PoRequestMailer.send_dispatch_from_supplier_delayed_notification(@email_message).deliver_now
       end
       redirect_to overseers_po_requests_path, notice: flash_message(@po_request, action_name)
     else

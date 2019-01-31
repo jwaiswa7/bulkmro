@@ -13,13 +13,16 @@ json.data (@po_requests) do |po_request|
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
                       end,
                       if policy(po_request).new_email_message?
-                        row_action_button(new_overseers_po_request_email_message_path(po_request), 'envelope', 'Send Notification', 'dark', :_blank)
+                        row_action_button(new_overseers_po_request_email_message_path(po_request, type: "sending_purchase_order"), 'envelope', 'Send Purchase order to supplier', 'dark', :_blank)
+                      end,
+                      if policy(po_request).dispatch_supplier_delayed_new_email_message?
+                        row_action_button(new_overseers_po_request_email_message_path(po_request, type: "dispatch_from_supplier_delayed"), 'envelope', 'Dispatch from supplier delayed', 'dark', :_blank)
                       end
                   ].join(' '),
                   po_request.id,
                   status_badge(po_request.status),
-                  conditional_link(po_request.inquiry.inquiry_number,edit_overseers_inquiry_path(po_request.inquiry),policy(po_request.inquiry).edit?),
-                  conditional_link(po_request.sales_order.order_number,overseers_inquiry_sales_order_path(po_request.inquiry,po_request.sales_order),policy(po_request.sales_order).show?),
+                  conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
+                  conditional_link(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry, po_request.sales_order), policy(po_request.sales_order).show?),
                   if po_request.logistics_owner.present?
                     po_request.logistics_owner.to_s
                   end,
