@@ -7,6 +7,19 @@ def generate_csv(objects,columns,name= "po_export_")
   end
 end
 
+def update_po_status
+  PurchaseOrder.all.each do |po|
+    if po.metadata['PoStatus'].present?
+      if po.metadata['PoStatus'].to_i > 0
+        po.status = po.metadata['PoStatus'].to_i
+      else
+        po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+      end
+      po.save
+    end
+  end
+end
+
 
 def get_purchase_order
   start_at = Date.new(2018, 10, 19)
