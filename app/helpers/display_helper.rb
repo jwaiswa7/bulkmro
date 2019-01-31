@@ -149,7 +149,7 @@ module DisplayHelper
   end
 
   def format_star(rating)
-    star_given = rating.nil? ? 0 : rating
+    star_given = rating.nil? ? 0 : number_with_precision(rating, :precision => 1).to_f
     color = 'text-success'
     if star_given < 3
       color = 'text-danger'
