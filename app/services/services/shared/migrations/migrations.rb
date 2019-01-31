@@ -2248,7 +2248,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts "Missing Invoices", missing_invoices
   end
 
-  def update_po_statuses
+  def update_cancelled_po_statuses
     missing_po = []
     service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_purchase_orders.csv', folder)
     service.loop(limit) do |x|
@@ -2261,5 +2261,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
     puts "Missing PO", missing_po
+  end
+
+  def update_po_status
+    PurchaseOrder.all.each do |po|
+      if po.metadata['PoStatus'].present?
+        if po.metadata['PoStatus'].to_i > 0
+          po.status = po.metadata['PoStatus'].to_i
+        else
+          po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+        end
+        po.save
+      end
+    end
   end
 end
