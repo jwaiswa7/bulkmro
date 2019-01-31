@@ -38,12 +38,10 @@ $(function () {
             targetScoret: $(this).attr('data-target-score'),
             readOnly: $readonly,
             click: function (score, evt) {
-                console.log("here")
                 var _this = this;
                 if (score == null) {
                     score = 0;
                 }
-                console.log('<%= Rails.application.class.routes.url_helpers.rate_path %>')
                 $.post('<%= Rails.application.class.routes.url_helpers.rate_path %>',
                     {
                         score: score,
