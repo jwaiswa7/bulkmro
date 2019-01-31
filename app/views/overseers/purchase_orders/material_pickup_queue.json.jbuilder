@@ -1,7 +1,9 @@
 json.data (@material_pickup_requests) do |material_pickup_request|
   json.array! [
                   [
-
+                      if policy(material_pickup_request).delivered? && policy(material_pickup_request.purchase_order).can_request_invoice?
+                        "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='pickup_requests[]' class='custom-control-input' value='#{material_pickup_request.id}' id='c-#{material_pickup_request.id}' data-po-number='#{material_pickup_request.purchase_order.po_number}'><label class='custom-control-label' for='c-#{material_pickup_request.id}'></label></div>"
+                      end,
                       if policy(material_pickup_request).show?
                         row_action_button(overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'eye', 'View Material Pickup Request', 'info', target: :_blank)
                       end,

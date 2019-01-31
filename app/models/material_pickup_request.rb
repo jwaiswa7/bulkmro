@@ -11,7 +11,7 @@ class MaterialPickupRequest < ApplicationRecord
   belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_many :rows, -> {joins(:purchase_order_row)}, class_name: 'MprRow', inverse_of: :material_pickup_request, dependent: :destroy
   has_many_attached :attachments
-  has_one :invoice_request
+  belongs_to :invoice_request
   accepts_nested_attributes_for :rows, reject_if: lambda {|attributes| attributes['purchase_order_row_id'].blank? && attributes['id'].blank?}, allow_destroy: true
   validates_associated :rows
   enum document_types: {
