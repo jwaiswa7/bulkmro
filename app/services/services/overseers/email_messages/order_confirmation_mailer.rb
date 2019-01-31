@@ -43,9 +43,10 @@ class Services::Overseers::EmailMessages::OrderConfirmationMailer < Services::Sh
     template_data["total_calculated_tax"] = format_currency(customer_order.calculated_total_tax)
     template_data["grand_total"] = format_currency(customer_order.grand_total)
     subject = "Your Bulk MRO Order Number #{customer_order.online_order_number} has been confirmed"
+    contact = customer_order.contact
 
     service =  Services::Overseers::EmailMessages::SendEmail.new
-    service.send_email_message(order_contact, template_id, template_data, subject)
+    service.send_email_message(order_contact, template_id, template_data, subject,contact)
   end
 
   attr_accessor :customer_order, :current_overseer
