@@ -90,11 +90,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_po?
-    true #!record.has_purchase_order_request
+    admin? || sales? || manager_or_sales? #!record.has_purchase_order_request
   end
 
   def can_request_invoice?
-    true #!record.has_purchase_order_request
+    admin? || logistics?
   end
 
   def approve?

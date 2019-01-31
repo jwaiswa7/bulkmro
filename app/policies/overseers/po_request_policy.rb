@@ -12,7 +12,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new?
-    true
+    admin? || sales? || manager_or_sales?
   end
 
   def show_payment_request?
