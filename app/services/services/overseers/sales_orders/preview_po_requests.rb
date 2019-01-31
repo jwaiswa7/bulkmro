@@ -21,7 +21,7 @@ class Services::Overseers::SalesOrders::PreviewPoRequests < Services::Shared::Ba
           if po_request_hash[:rows_attributes].present?
             po_request_hash[:rows_attributes].each do |index, row_hash|
                 if !row_hash[:_destroy].present? && row_hash[:quantity].present?
-                po_requests[po_request_hash[:supplier_id]].rows.build(sales_order_row_id: row_hash[:sales_order_row_id], quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id])
+                po_requests[po_request_hash[:supplier_id]].rows.build(sales_order_row_id: row_hash[:sales_order_row_id], quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id], discount_percentage: row_hash[:discount_percentage])
               end
             end
           end

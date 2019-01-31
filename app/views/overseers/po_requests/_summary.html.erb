@@ -152,6 +152,7 @@
             <th>TP</th>
             <th>TT</th>
             <th>TP with Tax</th>
+            <th>Discount %</th>
           </tr>
           </thead>
           <tbody>
@@ -170,6 +171,7 @@
               <td><%= row.converted_total_selling_price %></td>
               <td><%= row.converted_total_tax %></td>
               <td><%= row.converted_total_selling_price_with_tax %></td>
+              <td><%= percentage(row.discount_percentage, precision: 2) %></td>
             </tr>
             <% end %>
           <% end %>

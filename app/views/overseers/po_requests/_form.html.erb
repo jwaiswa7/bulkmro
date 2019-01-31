@@ -176,6 +176,11 @@
                 <label>TP with tax</label>
               </div>
             </div>
+            <div class="col-1">
+              <div class="form-group mb-0">
+                <label>Discount %</label>
+              </div>
+            </div>
           </div>
           <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
             <div class="form-row flex-row align-items-start">
@@ -226,6 +231,13 @@
               </div>
               <div class="col-12 col-md-1">
                 <%= row.object.converted_total_selling_price_with_tax %>
+              </div>
+              <div class="col-12 col-md-1">
+                <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
+                  <%= row.input :discount_percentage, input_html: {value: row.object.discount_percentage, max: 100, min: 0}, label: false %>
+                <% else %>
+                  <%= row.object.discount_percentage %>
+                <% end %>
               </div>
             </div>
           <% end %>

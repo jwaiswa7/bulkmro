@@ -125,6 +125,7 @@
                   <th class="no-sort">TP</th>
                   <th class="no-sort">TT</th>
                   <th class="no-sort">TP with Tax</th>
+                  <th class="no-sort">Discount %</th>
                   <th class="no-sort">Lead time</th>
                 </tr>
                 </thead>
@@ -137,6 +138,7 @@
                   <%= po_request_row.hidden_field :tax_rate_id %>
                   <%= po_request_row.hidden_field :measurement_unit_id %>
                   <%= po_request_row.hidden_field :quantity %>
+                  <%= po_request_row.hidden_field :discount_percentage %>
 
                   <% if po_request_row.present? %>
 
@@ -152,6 +154,7 @@
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= percentage(po_request_row.object.discount_percentage, precision: 2) %></td>
                       <td>
                         <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %><%= lead_time %></td>
                     </tr>
