@@ -15,8 +15,8 @@ class Resources::ApplicationResource
   end
 
   def self.get_sap_cookie
-    Rails.cache.fetch('sap_cookie', expires_in: 1.day) do
-      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{1.day}"
+    Rails.cache.fetch('sap_cookie', expires_in: 25.minutes) do
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{25.minutes}"
     end
   end
 
@@ -168,17 +168,19 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
                          })
   end
 
+  def self.set_headers
+    base_uri ENDPOINT.to_s
+    debug_output($stdout)
+    default_options.merge!(verify: false, timeout: 30)
+    headers({
+                :'Content-Type' => 'application/json',
+                :'Access-Control-Allow-Origin' => '*',
+                :'Cookie' => get_sap_cookie,
+                :'B1S-ReplaceCollectionsOnPatch' => 'true'
+            })
+  end
 
-  base_uri ENDPOINT.to_s
-  debug_output($stdout)
-  default_options.merge!(verify: false, timeout: 30)
-  headers({
-              :'Content-Type' => 'application/json',
-              :'Access-Control-Allow-Origin' => '*',
-              :'Cookie' => get_sap_cookie,
-              :'B1S-ReplaceCollectionsOnPatch' => 'true'
-          })
-
+  set_headers
 
   def self.model_name
     self.name.split('::').last.to_s
@@ -205,14 +207,13 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.find(id, quotes: false)
-    url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
-    response = perform_sap_sync_action('get', url, '')
+    response = perform_remote_sync_action('get', "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})", '')
     OpenStruct.new(response.parsed_response) if response.present? && response.parsed_response.present? && (response.parsed_response.is_a? Hash)
   end
 
   def self.custom_find(id, by = nil)
     url = "/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1"
-    response = perform_sap_sync_action('get', url, '')
+    response = perform_remote_sync_action('get', url)
 
     log_request(:get, id, is_find: true)
     validated_response = get_validated_response(response)
@@ -228,7 +229,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   def self.create(record)
     url = "/#{collection_name}"
     body = to_remote(record).to_json
-    response = perform_sap_sync_action('post', url, body)
+    response = perform_remote_sync_action('post', url, body)
     log_request(:post, record)
     validated_response = get_validated_response(response)
     log_response(validated_response, 'post', url, body)
@@ -240,10 +241,11 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   def self.update(id, record, quotes: false)
     url = "/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})"
     body = to_remote(record).to_json
-    response = perform_sap_sync_action('patch', url, body)
+    response = perform_remote_sync_action('patch', url, body)
     log_request(:patch, record)
     validated_response = get_validated_response(response)
-    log_response(validated_response,)
+
+    log_response(validated_response, 'patch', url, body)
 
     yield validated_response if block_given?
     id
@@ -278,9 +280,19 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   def self.log_response(response, method = 'get', url = '', body = '')
 
     status = :success
-    if response[:error_message].present? && response[:error_message] == "Invalid session"
-      Rails.cache.fetch('sap_cookie').delete
-      perform_sap_sync_action(method, url, body)
+    if response[:error_message].present?
+      response[:error_message] = "Invalid session.."
+    end
+    if response[:error_message].present? && response[:error_message] == "Invalid session.."
+
+      Rails.cache.delete('sap_cookie')
+      set_headers
+      response_back = perform_remote_sync_action(method, url, body)
+      validated_response = get_validated_response(response_back)
+      if validated_response[:error_message].present?
+        status = :failed
+        response[:error_message] = validated_response[:error_message]
+      end
     elsif response[:error_message].present?
       status = :failed
     end
@@ -289,7 +301,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     @remote_request
   end
 
-  def self.perform_sap_sync_action(action, url, body)
+  def self.perform_remote_sync_action(action, url, body='')
     begin
       if body.present?
         send(action, url, body: body)
@@ -301,4 +313,5 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
       send(action, url, body: body)
     end
   end
+
 end
