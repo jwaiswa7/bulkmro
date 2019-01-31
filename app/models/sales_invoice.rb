@@ -28,6 +28,7 @@ class SalesInvoice < ApplicationRecord
   }
 
   scope :with_includes, -> {includes(:sales_order)}
+  scope :not_cancelled, -> {where.not(:status => 'Cancelled')}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
