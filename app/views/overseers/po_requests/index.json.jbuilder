@@ -11,6 +11,9 @@ json.data (@po_requests) do |po_request|
                         row_action_button(new_overseers_po_request_payment_request_path(po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
+                      end,
+                      if policy(po_request).new_email_message?
+                        row_action_button(new_overseers_po_request_email_message_path(po_request), 'envelope', 'Send Notification', 'dark', :_blank)
                       end
                   ].join(' '),
                   po_request.id,

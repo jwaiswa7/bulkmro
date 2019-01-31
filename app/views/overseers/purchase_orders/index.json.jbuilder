@@ -12,6 +12,9 @@ json.data (@purchase_orders) do |purchase_order|
                       end,
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
+                      end,
+                      if policy(purchase_order).new_email_message?
+                        row_action_button(new_overseers_po_request_email_message_path(purchase_order.po_request), 'envelope', 'Send Notification', 'dark', :_blank)
                       end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),

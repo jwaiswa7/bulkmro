@@ -6,6 +6,9 @@ class EmailMessage < ApplicationRecord
 
   belongs_to :inquiry, required: false
   belongs_to :sales_quote, required: false
+  belongs_to :purchase_order, required: false
+  belongs_to :sales_order, required: false
+  belongs_to :sales_invoice, required: false
 
   validates_presence_of :from, :to, :subject
 

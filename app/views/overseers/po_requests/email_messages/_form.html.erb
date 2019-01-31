@@ -1,0 +1,33 @@
+<div class="col-lg-12">
+  <% content_for :heading_byline do %>
+    This will <em>send an notification to supplier</em> and log it under
+    <strong><%= current_overseer.full_name %></strong>.
+  <% end %>
+  <%= render layout: 'shared/layouts/form' do %>
+
+    <%= simple_form_for([:overseers, @po_request, @email_message], :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <div class="card-body">
+        <%= f.input :from, disabled: true %>
+        <%= f.input :to %>
+        <%= f.input :cc %>
+        <%= f.input :bcc %>
+        <%= f.input :subject %>
+        <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
+        <div class="d-flex flex-row align-items-center">
+          <div class="form-group mr-2">
+            <%= link_to overseers_purchase_order_path(@po_request.purchase_order, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
+              <i class="fal fa-file-pdf mr-2"></i>Purchase Order
+            <% end %>
+          </div>
+          <%= f.input :auto_attach, wrapper: :custom_boolean, input_html: {:'data-parsely-no-valid-feedback' => ''} %>
+        </div>
+        <%= f.input :body, input_html: {rows: 10, class: 'html-editor'} %>
+      </div>
+      <div class="card-footer">
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <i class="fal fa-paper-plane"></i> Send Email
+        <% end %>
+      </div>`
+    <% end %>
+  <% end %>
+</div>`
