@@ -7,6 +7,7 @@ json.data (@company_reviews) do |company_review|
                   ],
                   company_review.created_by.name,
                   company_review.company.name,
+                  company_review.survey_type,
                   format_star(company_review.rating)
               ]
 end
