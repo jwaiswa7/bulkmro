@@ -3,7 +3,7 @@ class InquiryProduct < ApplicationRecord
 
   belongs_to :inquiry
   has_one :company, :through => :inquiry
-  belongs_to :product
+  belongs_to :product, validate: false
   accepts_nested_attributes_for :product
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
   has_many :inquiry_product_suppliers, :inverse_of => :inquiry_product, dependent: :destroy
