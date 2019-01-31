@@ -199,6 +199,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
