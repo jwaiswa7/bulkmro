@@ -62,6 +62,15 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    self.metadata.present? && self.metadata['base_grand_total'] && self.metadata['base_tax_amount'] ? self.metadata['base_grand_total'].to_f - self.metadata['base_tax_amount'].to_f : 0
+    rows.map { |row| row.metadata['base_row_total'].to_f }.sum.round(2)
   end
+
+  def calculated_total_tax
+    rows.map { |row| row.metadata['base_tax_amount'].to_f }.sum.round(2)
+  end
+
+  def calculated_total_with_tax
+    (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
 end
