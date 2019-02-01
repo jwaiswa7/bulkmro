@@ -1,3 +1,4 @@
+<%= provide :container_fluid, true %>
 <div class="col-lg-12">
 
   <div class="page-header">
@@ -7,21 +8,25 @@
   </div>
 
   <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= render 'shared/snippets/form_errors', f: f %>
-    <%= f.hidden_field :id %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <%= render 'shared/snippets/form_errors', f: f %>
+        <%= f.hidden_field :id %>
 
-    <div class="form-row">
-      <div class="col-6">
-        <%= f.input :order_number, as: :string, disabled: true %>
-      </div>
-      <div class="col-6">
-        <%= f.input :inquiry, as: :string, disabled: true %>
-      </div>
-      <div class="col-6">
-        <%= f.input :opportunity_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), :include_blank => false, disabled: true, label: 'Supplier PO Type' %>
-      </div>
-      <div class="col-6">
-        <%= f.input :customer_committed_date, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
+        <div class="form-row">
+          <div class="col-6">
+            <%= f.input :order_number, as: :string, disabled: true %>
+          </div>
+          <div class="col-6">
+            <%= f.input :inquiry, as: :string, disabled: true %>
+          </div>
+          <div class="col-6">
+            <%= f.input :opportunity_type, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), :include_blank => false, disabled: true, label: 'Supplier PO Type' %>
+          </div>
+          <div class="col-6">
+            <%= f.input :customer_committed_date, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
+          </div>
+        </div>
       </div>
     </div>
     <% if @po_requests.present? %>
@@ -64,16 +69,6 @@
                       <div class="flex-grow-1">
                         <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
                       </div>
-                      <div class="form-group">
-                        <%# po_request.object.attachments.each do |attachment| %>
-                        <%#= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-                        <!--                            <i class="fal fa-download"></i>-->
-                        <%#= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-                        <!--                              <i class="fal fa-trash-alt"></i>-->
-                        <%# end if attachment.present? && policy(:attachment).destroy? %>
-                        <%# end %>
-                        <%# end if po_request.object.attachments.attached? %>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -86,59 +81,71 @@
                 <%= po_request_row.hidden_field :tax_rate_id %>
                 <%= po_request_row.hidden_field :measurement_unit_id %>
                 <div class="form-row">
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: po_request.object.rows.first == po_request_row.object ? "Sr." : false, disabled: true %>
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <div class="select2-wrap">
-                      <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
+                  <div class="col-12 col-md-6">
+                    <div class="form-row">
+                      <div class="col-12 col-md-1">
+                        <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: po_request.object.rows.first == po_request_row.object ? "Sr." : false, disabled: true %>
+                      </div>
+                      <div class="col-12 col-md-3">
+                        <div class="select2-wrap">
+                          <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
+                        </div>
+                      </div>
+
+
+                      <div class="col-12 col-md-2">
+                        <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
+                        <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
+                      </div>
+                      <div class="col-12 col-md-2">
+                        <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
+                        <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, required: true %>
+                      </div>
+                      <div class="col-12 col-md-2">
+                        <%#= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
+                        <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false, required: true %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage}, label: po_request.object.rows.first == po_request_row.object ? "Discount %" : false, disabled: false %>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
-                    <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
-                    <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, required: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%#= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
-                    <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false, required: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
-                    <%#= po_request_row.association :measurement_unit, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :measurement_unit), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_measurement_units_path(is_service: !po_request_row.object.field_disabled?)}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false  %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :unit_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, readonly: po_request_row.object.field_disabled?, required: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, label: po_request.object.rows.first == po_request_row.object ? "TT" : false, disabled: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, label: po_request.object.rows.first == po_request_row.object ? "TP with tax" : false, disabled: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage, max: 100, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Discount %" : false, disabled: false %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
-                    <%= po_request_row.input :lead_time_option, input_html: {value: lead_time}, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false, disabled: true %>
-                  </div>
-                  <div class="col-12 col-md-1">
-                    <%= po_request_row.remove_nested_fields_link do %>
-                      <div class="form-group align-self-center flex-grow-1 ml-2">
-                        <i class="far fa-times text-danger"></i>
+                  <div class="col-12 col-md-6">
+                    <div class="form-row">
+
+                      <div class="col-12 col-md-1">
+                        <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
                       </div>
-                    <% end if policy(po_request_row.object).destroy? %>
+                      <div class="col-12 col-md-2">
+                        <%= po_request_row.input :unit_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, readonly: po_request_row.object.field_disabled?, required: true %>
+                      </div>
+                      <div class="col-12 col-md-2">
+                        <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
+                      </div>
+                      <div class="col-12 col-md-2">
+                        <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, label: po_request.object.rows.first == po_request_row.object ? "TT" : false, disabled: true %>
+                      </div>
+                      <div class="col-12 col-md-2">
+                        <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, label: po_request.object.rows.first == po_request_row.object ? "TP with tax" : false, disabled: true %>
+                      </div>
+
+                      <div class="col-12 col-md-2">
+                        <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
+                        <%= po_request_row.input :lead_time_option, input_html: {value: lead_time}, label: po_request.object.rows.first == po_request_row.object ? "Lead Time" : false %>
+                      </div>
+                      <div class="col-12 col-md-1">
+                        <%= po_request_row.remove_nested_fields_link do %>
+                          <div class="form-group align-self-center flex-grow-1 ml-2">
+                            <i class="far fa-times text-danger"></i>
+                          </div>
+                        <% end if policy(po_request_row.object).destroy? %>
+                      </div>
+                    </div>
                   </div>
+
                 </div>
               <% end %>
               <div class="col-md-3">
@@ -193,6 +200,7 @@
         </div>
       </div>
     <% end %>
+
   <% end %>
 </div>
 <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>
