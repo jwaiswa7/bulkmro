@@ -54,7 +54,7 @@
                     <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date' }, required: true %>
+                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', required: true %>
@@ -66,12 +66,12 @@
                       </div>
                       <div class="form-group">
                         <%# po_request.object.attachments.each do |attachment| %>
-                          <%#= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
-<!--                            <i class="fal fa-download"></i>-->
-                            <%#= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
-<!--                              <i class="fal fa-trash-alt"></i>-->
-                            <%# end if attachment.present? && policy(:attachment).destroy? %>
-                          <%# end %>
+                        <%#= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                        <!--                            <i class="fal fa-download"></i>-->
+                        <%#= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                        <!--                              <i class="fal fa-trash-alt"></i>-->
+                        <%# end if attachment.present? && policy(:attachment).destroy? %>
+                        <%# end %>
                         <%# end if po_request.object.attachments.attached? %>
                       </div>
                     </div>
@@ -95,27 +95,26 @@
                     </div>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: po_request_row.object.field_disabled? %>
+                    <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: po_request.object.rows.first == po_request_row.object ? "Make" : false, disabled: true %>
                     <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%#= po_request_row.input :tax_code, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
-
-                    <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false %>
+                    <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: po_request.object.rows.first == po_request_row.object ? "HSN" : false, required: true %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%#= po_request_row.input :tax_rate, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
                     <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: po_request.object.rows.first == po_request_row.object ? "T. rate" : false %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false %>
+                    <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: po_request.object.rows.first == po_request_row.object ? "Qty" : false, disabled: false, required: true %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%= po_request_row.input :measurement_unit, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false, disabled: true %>
                     <%#= po_request_row.association :measurement_unit, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :measurement_unit), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_measurement_units_path(is_service: !po_request_row.object.field_disabled?)}, disabled: po_request_row.object.field_disabled?, label: po_request.object.rows.first == po_request_row.object ? "UOM" : false  %>
                   </div>
                   <div class="col-12 col-md-1">
-                    <%= po_request_row.input :converted_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: po_request_row.object.field_disabled? %>
+                    <%= po_request_row.input :unit_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, readonly: po_request_row.object.field_disabled?, required: true %>
                   </div>
                   <div class="col-12 col-md-1">
                     <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
@@ -142,7 +141,7 @@
                   </div>
                 </div>
               <% end %>
-              <div class="col-md-3 d-none">
+              <div class="col-md-3">
                 <%= po_request.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
                   <i class="fal fa-plus-circle mr-1"></i>Add a Service product
                 <% end %>
@@ -162,9 +161,9 @@
     <% else %>
       <div class="card text-lg-center">
         <div class="card-body">
-<p>
-  All PO Requests have already been created
-</p>
+          <p>
+            All PO Requests have already been created
+          </p>
           <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0" data-fixed-header="false">
             <tr>
               <th class="no-sort desktop" data-name="name">PO Request No.</th>
@@ -188,15 +187,12 @@
                 <td><%= po_request.supplier.try(:name) || '-' %></td>
                 <td><%= po_request.status || '-' %></td>
                 <td><%= po_request.logistics_owner || '-' %></td>
-
               </tr>
             <% end %>
           </table>
-
-
         </div>
       </div>
     <% end %>
   <% end %>
 </div>
-<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>
+<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>

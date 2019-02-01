@@ -139,6 +139,7 @@
                   <%= po_request_row.hidden_field :measurement_unit_id %>
                   <%= po_request_row.hidden_field :quantity %>
                   <%= po_request_row.hidden_field :discount_percentage %>
+                  <%= po_request_row.hidden_field :unit_price %>
 
                   <% if po_request_row.present? %>
 
@@ -149,8 +150,8 @@
                       <td><%= po_request_row.object.tax_code %></td>
                       <td><%= po_request_row.object.tax_rate.to_s %></td>
                       <td><%= number_with_precision(po_request_row.object.quantity.to_f, precision: 2) %></td>
-                      <td><%= po_request_row.object.measurement_unit %></td>
-                      <td><%= format_currency(po_request_row.object.converted_unit_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= po_request_row.object.product.try(:measurement_unit).to_s %></td>
+                      <td><%= format_currency(po_request_row.object.unit_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>

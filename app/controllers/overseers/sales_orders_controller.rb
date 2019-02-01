@@ -198,6 +198,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :tax_rate_id,
                   :measurement_unit_id,
                   :discount_percentage
+                  :unit_price
               ]
           ]
       )
