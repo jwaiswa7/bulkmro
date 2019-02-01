@@ -44,3 +44,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(create_image_readers), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(update_invoice_statuses update_cancelled_po_statuses update_po_status), folder: 'seed_files')
+service.call
