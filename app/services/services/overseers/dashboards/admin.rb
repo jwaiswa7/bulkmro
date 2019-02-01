@@ -12,7 +12,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
     start_at = Date.new(2018, 10, 01).beginning_of_day
     end_at = Date.today.end_of_day
 
-    @data = Rails.cache.fetch('admin_dashboard_data', expires_in: 20.minutes) do
+    @data = Rails.cache.fetch('admin_dashboard_data', expires_in: 10.minutes) do
       ActiveRecord::Base.default_timezone = :utc
       inquiries = Inquiry.includes(:products).where(:created_at => start_at.beginning_of_month..end_at.end_of_month)
 
