@@ -1,4 +1,5 @@
 json.data (@po_requests) do |po_request|
+  if po_request.sales_order.present?
   json.array! [
                   [
                       if (policy(po_request).edit? && po_request.status != 'Cancelled')
@@ -12,7 +13,6 @@ json.data (@po_requests) do |po_request|
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  conditional_link(po_request.sales_order.order_number, overseers_inquiry_sales_order_path(po_request.inquiry, po_request.sales_order), policy(po_request.sales_order).show?),
                   (po_request.purchase_order.po_number if po_request.purchase_order.present?),
                   po_request.inquiry.inside_sales_owner.to_s,
                   po_request.supplier.to_s,
@@ -35,7 +35,8 @@ json.data (@po_requests) do |po_request|
                     format_comment(po_request.last_comment, trimmed: true)
                   end
               ]
-end
+  end
+  end
 
 json.recordsTotal @po_requests.count
 json.recordsFiltered @po_requests.total_count
