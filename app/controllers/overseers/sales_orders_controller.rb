@@ -26,7 +26,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def cancelled
     authorize :sales_order
     respond_to do |format|
-      format.html { render 'cancelled' }
+      format.html { render 'pending' }
       format.json do
         service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -39,7 +39,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
-        render 'cancelled'
+        render 'pending'
       end
     end
   end
