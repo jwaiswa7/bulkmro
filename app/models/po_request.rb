@@ -30,17 +30,11 @@ class PoRequest < ApplicationRecord
       :'Rejected' => 40
   }
 
-  # enum supplier_po_type: {
-  #     :amazon => 10,
-  #     :rate_contract => 20,
-  #     :financing => 30,
-  #     :regular => 40,
-  #     :service => 50,
-  #     :repeat => 60,
-  #     :list => 65,
-  #     :route_through => 70,
-  #     :tender => 80
-  # }
+  enum supplier_po_type: {
+      :regular => 10,
+      :route_through => 20,
+      :drop_ship => 30
+  }
 
   enum rejection_reason: {
       :'Not Found: Supplier in SAP' => 10,
