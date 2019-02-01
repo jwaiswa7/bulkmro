@@ -503,8 +503,6 @@ let assignDataEventsAsEvents = (el, currentRowIndex = '') => {
     }
 };
 
-let toDecimal = (value, precision = 2) => {
-    return parseFloat(value).toFixed(precision);
-};
+
 
 export default newAction
