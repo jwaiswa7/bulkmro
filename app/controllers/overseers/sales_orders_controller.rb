@@ -184,6 +184,8 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :payment_option_id,
               :status,
               :supplier_committed_date,
+              :contact_email,
+              :contact_phone,
               :blobs,
               :attachments => [],
               :rows_attributes => [

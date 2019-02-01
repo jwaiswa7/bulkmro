@@ -47,6 +47,12 @@
                   <div class="col-12 col-md-6">
                     <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
                   </div>
+                  <div class="col-12 col-md-6">
+                    <%= po_request.input :contact_email, label: 'Contact Email', required: false, placeholder: 'If left blank, above selected contact\'s email will be applied'   %>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <%= po_request.input :contact_phone, label: 'Contact Phone', required: false, placeholder: 'If left blank, above selected contact\'s number will be applied'  %>
+                  </div>
                   <div class="col-12 col-md-4">
                     <%= po_request.association :logistics_owner, as: :select, required: true %>
                   </div>
