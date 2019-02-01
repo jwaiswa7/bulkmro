@@ -173,6 +173,10 @@ module StatusesHelper
       'info'
     when :'captured'
       'success'
+    when :'Supplier PO Sent'
+      'success'
+    when :'Supplier PO: Not Sent to Supplier'
+      'danger'
     else
       'danger'
     end

@@ -177,8 +177,8 @@ Rails.application.routes.draw do
         resources :payment_requests
         resources :email_messages do
           collection do
-            get 'sending_purchase_order'
-            post 'sending_po_notification'
+            get 'sending_po_to_supplier'
+            post 'sending_po_to_supplier_notification'
             get 'dispatch_from_supplier_delayed'
             post 'dispatch_from_supplier_delayed_notification'
           end

@@ -12,6 +12,11 @@ class EmailMessage < ApplicationRecord
 
   validates_presence_of :from, :to, :subject
 
+  enum email_type: {
+      :'Sending PO to Supplier' => 10,
+      :'Dispatch from Supplier Delayed' => 20,
+  }
+
   after_initialize :set_defaults, :if => :new_record?
   def set_defaults
     if inquiry.present?
