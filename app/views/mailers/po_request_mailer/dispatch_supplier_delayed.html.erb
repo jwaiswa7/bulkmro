@@ -1,47 +1,47 @@
 <div class="font-family: Arial; font-size: 14.5px;">
-  <p style="color: #555;">Dear <%= @to.to_s %>,</p>
+  <p style="color: #555;">Dear <%= @to.first_name %>,</p>
 
   <p style="color: #555;">There is a potential delay in the delivery of the following material.
   </p>
   <p style="color: #555;">
   <div>
-    <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%">
+    <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%" style="color: #333;">
       <tbody>
       <tr>
-        <td width="50%">Inquiry_number</td>
-        <td width="50%"><%= @inquiry.id %></td>
+        <td style="padding: 5px" width="50%">Inquiry_number</td>
+        <td style="padding: 5px" width="50%"><%= @inquiry.id %></td>
       </tr>
       <tr>
-        <td width="50%">Supplier PO Number</td>
-        <td width="50%">#<%= @inquiry.customer_po_number %></td>
+        <td style="padding: 5px" width="">Supplier PO Number</td>
+        <td style="padding: 5px" width="">#<%= @inquiry.customer_po_number %></td>
       </tr>
       <tr>
-        <td width="50%">Supplier Name</td>
-        <td width="50%"><%= @inquiry.contact.full_name %></td>
+        <td style="padding: 5px" width="">Supplier Name</td>
+        <td style="padding: 5px" width=""><%= @inquiry.contact.full_name %></td>
       </tr>
       <tr>
-        <td width="50%">Pick-up location</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">Pick-up location</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       <tr>
-        <td width="50%">Delivery location</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">Delivery location</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       <tr>
-        <td width="50%">Expected date of delivery</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">Expected date of delivery</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       <tr>
-        <td width="50%">New expected date of delivery</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">New expected date of delivery</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       <tr>
-        <td width="50%">Reason for delay</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">Reason for delay</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       <tr>
-        <td width="50%">Remarks</td>
-        <td width="50%"></td>
+        <td style="padding: 5px" width="">Remarks</td>
+        <td style="padding: 5px" width=""></td>
       </tr>
       </tbody>
     </table>

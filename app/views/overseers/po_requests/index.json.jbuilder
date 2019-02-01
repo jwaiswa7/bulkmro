@@ -12,11 +12,11 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
                       end,
-                      if policy(po_request).sending_po_to_supplier_new_email_message?
-                        row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase order to supplier', 'dark', :_blank)
-                      end,
                       if policy(po_request).dispatch_supplier_delayed_new_email_message?
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from supplier delayed', 'dark', :_blank)
+                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'clock', 'Dispatch from Supplier Delayed', 'warning', :_blank)
+                      end,
+                      if policy(po_request).sending_po_to_supplier_new_email_message?
+                        row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
                       end
                   ].join(' '),
                   po_request.id,
@@ -31,7 +31,7 @@ json.data (@po_requests) do |po_request|
                   if po_request.last_comment.present?
                     format_date_time_meridiem(po_request.last_comment.updated_at)
                   end,
-                  status_badge(po_request.purchase_order.has_sending_po_to_supplier_email_messages? ? "Supplier PO Sent" : "Supplier PO: Not Sent to Supplier"),
+                  status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? "Supplier PO Sent" : "Supplier PO: Not Sent to Supplier"),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
                   end

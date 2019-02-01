@@ -1,13 +1,21 @@
 <div class="font-family: Arial; font-size: 14.5px;">
   <p style="color: #555;">Dear <%= @contact.first_name %>,</p>
   <p style="color: #555;">Greetings from Bulk MRO!<br/></p>
-  <p style="color: #555;">Please find attached our Purchase Order No. : <%= format_id(@inquiry.inquiry_number) %></p>
-  <p style="color: #555;">We look forward to receiving your confirmation of the same along with your PI and delivery date of the material.</p>
+  <p style="color: #555;">Please find attached our Purchase Order No. : <%= format_id(@purchase_order.po_number) %></p>
+  <p style="color: #555;">We look forward to receiving your confirmation of the same along with your PI and delivery
+    date of the material.</p>
   <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>
 
   <p style="color: #555;">Thanking you</p>
+  <p style="color: #555;">Inq
+    <%= format_id(@inquiry.inquiry_number) %>
+  </p>
   <br/>
-  <p style="color: #555;">Regards,<br><%= @overseer.full_name %></p>
+  <p style="color: #555;">Regards,<br><%= @overseer.full_name %>
+    <br>
+    <small>Inside Sales & Procurement Executive.</small>
+  </p>
+
 </div>
 
 <% if @overseer.designation.present? %><p style="margin:0 0 0;">

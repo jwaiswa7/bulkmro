@@ -6,7 +6,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @supplier.company_contacts.first.contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order)
       @action = "sending_po_to_supplier_notification"
       @email_message.assign_attributes(
-          :subject => "Internal Ref Inq # #{@inquiry.id} Purchase Order # #{@po_request.purchase_order.po_number}",
+          :subject => "Internal Ref Inq ##{@inquiry.id} Purchase Order ##{@po_request.purchase_order.po_number}",
           :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
           :auto_attach => true
       )
