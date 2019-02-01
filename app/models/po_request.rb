@@ -13,7 +13,11 @@ class PoRequest < ApplicationRecord
   belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: false
   has_many :rows, class_name: 'PoRequestRow', :inverse_of => :po_request, dependent: :destroy
   accepts_nested_attributes_for :rows, allow_destroy: true
-  belongs_to :address, required: false
+  belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id
+  belongs_to :ship_to, class_name: 'Warehouse', foreign_key: :ship_to_id
+
+  belongs_to :bill_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :bill_from_id
+  belongs_to :ship_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :ship_from_id
   belongs_to :contact, required: false
 
   belongs_to :purchase_order, required: false
@@ -31,9 +35,9 @@ class PoRequest < ApplicationRecord
   }
 
   enum supplier_po_type: {
-      :regular => 10,
-      :route_through => 20,
-      :drop_ship => 30
+      :'regular' => 10,
+      :'route_through' => 20,
+      :'drop_ship' => 30
   }
 
   enum rejection_reason: {
@@ -55,6 +59,7 @@ class PoRequest < ApplicationRecord
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
   validate :update_reason_for_status_change?
+  # validate :addresses_based_on_po_types
 
   after_initialize :set_defaults, :if => :new_record?
   after_save :update_po_index, if: -> {purchase_order.present?}
@@ -74,6 +79,18 @@ class PoRequest < ApplicationRecord
       errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
     end
   end
+
+  # def addresses_based_on_po_types
+  #   if self.supplier_po_type == "Drop Ship" || self.supplier_po_type == "Route Through"
+  #     if not self.sales_order.inquiry.bill_from.address.city_name == self.bill_to.city_name
+  #       errors.add(:billing_address, "cannot be of city other than orders bill from")
+  #     end
+  #   elsif self.supplier_po_type == "Regular"
+  #     if self.sales_order.inquiry.shipping_address.address.city_name == self.bill_to.city_name
+  #       errors.add(:billing_address, "cannot be of city other than orders bill from")
+  #     end
+  #   end
+  # end
 
   def set_defaults
     self.status ||= :'Requested'

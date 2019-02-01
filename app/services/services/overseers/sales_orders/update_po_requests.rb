@@ -13,9 +13,13 @@ class Services::Overseers::SalesOrders:: UpdatePoRequests < Services::Shared::Ba
       po_request.logistics_owner_id = po_request_hash[:logistics_owner_id]
       po_request.supplier_id = po_request_hash[:supplier_id]
       po_request.inquiry_id = po_request_hash[:inquiry_id]
-      po_request.address_id = po_request_hash[:address_id]
+      po_request.bill_from_id = po_request_hash[:bill_from_id]
+      po_request.ship_from_id = po_request_hash[:ship_from_id]
+      po_request.bill_to_id = po_request_hash[:bill_to_id]
+      po_request.ship_to_id = po_request_hash[:ship_to_id]
       po_request.contact_id = po_request_hash[:contact_id]
       po_request.payment_option_id = po_request_hash[:payment_option_id]
+      po_request.supplier_po_type = po_request_hash[:supplier_po_type]
       po_request.supplier_committed_date = po_request_hash[:supplier_committed_date]
       if po_request_hash[:blobs].present?
         po_request_hash[:blobs].split(" ").each do | blob |

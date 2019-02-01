@@ -10,7 +10,7 @@ class Services::Overseers::SalesOrders::PreviewPoRequests < Services::Shared::Ba
       po_requests = {}
       @params.each do |index, po_request_hash|
         attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
-        po_requests[po_request_hash[:supplier_id]] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], status: po_request_hash[:status], address_id: po_request_hash[:address_id], contact_id: po_request_hash[:contact_id], supplier_committed_date: po_request_hash[:supplier_committed_date], payment_option_id: po_request_hash[:payment_option_id], attachments: attachments)
+        po_requests[po_request_hash[:supplier_id]] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], status: po_request_hash[:status], supplier_po_type: po_request_hash[:supplier_po_type], bill_from_id: po_request_hash[:bill_from_id], ship_from_id: po_request_hash[:ship_from_id], bill_to_id: po_request_hash[:bill_to_id], ship_to_id: po_request_hash[:ship_to_id], contact_id: po_request_hash[:contact_id], supplier_committed_date: po_request_hash[:supplier_committed_date], payment_option_id: po_request_hash[:payment_option_id], attachments: attachments)
         blobs = Array.new
         if po_requests[po_request_hash[:supplier_id]].attachments.present?
           po_requests[po_request_hash[:supplier_id]].attachments.each do |attachment|
