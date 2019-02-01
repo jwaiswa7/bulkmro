@@ -1,3 +1,4 @@
+# NOT IS USE
 json.data (@sales_orders) do |sales_order|
   columns = [
       [
@@ -31,8 +32,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.except("Approved","Cancelled").map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
-                       SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [],
+                       [],
                        [],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
@@ -49,5 +50,4 @@ json.recordsFiltered @indexed_sales_orders.total_count
 # json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
 json.status @indexed_sales_orders
-json.recordsSummary SalesOrder.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
 json.recordsTotalValue @total_values
