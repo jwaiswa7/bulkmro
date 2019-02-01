@@ -32,7 +32,7 @@ class Resources::Item < Resources::ApplicationResource
         PurchaseItemsPerUnit: 1, # TO BE CREATED IN MAGENTO
         PurchaseUnitWeight: 0, # TO BE CREATED IN MAGENTO
         SalesUnitWeight1: 0, # weight
-        SWW: record.try(:mpn).present? ? record.try(:mpn).truncate(15,:omission => "") : "", # MPN
+        SWW: record.mpn.present? ? record.mpn[0..15] : "", # MPN
         U_MPN: record.try(:mpn),
         LeadTime: nil, # Delivery Period
         MinOrderQuantity: 0, # Minimum Order Qty
