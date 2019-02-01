@@ -37,7 +37,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
       # INQUIRIES
       i = inquiries.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_inquiry_updated_at = i.order(:updated_at).last
+      max_inquiry_updated_at = i.order(:updated_at).max
       cached_inquiry_updated_at = Rails.cache.read("#{month.to_s}-inquiries-updated_at")
       if cached_inquiry_updated_at == max_inquiry_updated_at
         @data.entries[month.to_s][:inquiry] = {
@@ -57,7 +57,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
       # SALES QUOTES
       sq = sales_quotes.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_quote_updated_at = sq.order(:updated_at).last
+      max_quote_updated_at = sq.order(:updated_at).max
       cached_quote_updated_at = Rails.cache.read("#{month.to_s}-quotes-updated_at")
       if cached_quote_updated_at == max_quote_updated_at
         @data.entries[month.to_s][:sales_quotes] = {
@@ -77,7 +77,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
       # SALES ORDERS
       so = sales_orders.where(:mis_date => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_order_updated_at = so.order(:updated_at).last
+      max_order_updated_at = so.order(:updated_at).max
       cached_order_updated_at = Rails.cache.read("#{month.to_s}-orders-updated_at")
       if cached_order_updated_at == max_order_updated_at
         @data.entries[month.to_s][:sales_order] = {
@@ -97,9 +97,10 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
       # INVOICES
       si = sales_invoices.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_invoice_updated_at = si.order(:updated_at).last
+      max_invoice_updated_at = si.order(:updated_at).max
       cached_invoice_updated_at = Rails.cache.read("#{month.to_s}-invoices-updated_at")
       if cached_invoice_updated_at == max_invoice_updated_at
+        debugger
         @data.entries[month.to_s][:sales_invoice] = {
             :count => Rails.cache.read("#{month.to_s}-invoices-count"),
             :total => Rails.cache.read("#{month.to_s}-invoices-total")
@@ -117,7 +118,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
 
       # PURCHASE ORDERS
       po = purchase_orders.where(:created_at => month.to_date.beginning_of_month..month.to_date.end_of_month)
-      max_purchase_order_updated_at = po.order(:updated_at).last
+      max_purchase_order_updated_at = po.order(:updated_at).max
       cached_purchase_order_updated_at = Rails.cache.read("#{month.to_s}-purchase-orders-updated_at")
       if cached_purchase_order_updated_at == max_purchase_order_updated_at
         @data.entries[month.to_s][:purchase_order] = {
@@ -142,33 +143,33 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
   end
 
   def create_inquiry_cache(month, data, max_updated_at)
-    Rails.cache.write("#{month}-inquiries-updated_at", max_updated_at)
-    Rails.cache.write("#{month}-inquiries-count", data[:count])
-    Rails.cache.write("#{month}-inquiries-total", data[:total])
+    Rails.cache.write("#{month}-inquiries-updated_at", max_updated_at, expires_in: 30.minutes)
+    Rails.cache.write("#{month}-inquiries-count", data[:count], expires_in: 30.minutes)
+    Rails.cache.write("#{month}-inquiries-total", data[:total], expires_in: 30.minutes)
   end
 
   def create_quote_cache(month, data, max_updated_at)
-    Rails.cache.write("#{month}-quotes-updated_at", max_updated_at)
-    Rails.cache.write("#{month}-quotes-count", data[:count])
-    Rails.cache.write("#{month}-quotes-total", data[:total])
+    Rails.cache.write("#{month}-quotes-updated_at", max_updated_at, expires_in: 30.minutes)
+    Rails.cache.write("#{month}-quotes-count", data[:count], expires_in: 30.minutes)
+    Rails.cache.write("#{month}-quotes-total", data[:total], expires_in: 30.minutes)
   end
 
   def create_order_cache(month, data, max_updated_at)
-    Rails.cache.write("#{month}-orders-updated_at", max_updated_at)
-    Rails.cache.write("#{month}-order-count", data[:count])
-    Rails.cache.write("#{month}-order-total", data[:total])
+    Rails.cache.write("#{month}-orders-updated_at", max_updated_at, expires_in: 30.minutes)
+    Rails.cache.write("#{month}-order-count", data[:count], expires_in: 30.minutes)
+    Rails.cache.write("#{month}-order-total", data[:total], expires_in: 30.minutes)
   end
 
   def create_invoice_cache(month, data, max_updated_at)
-    Rails.cache.write("#{month}-invoices-updated_at", max_updated_at)
-    Rails.cache.write("#{month}-invoices-count", data[:count])
-    Rails.cache.write("#{month}-invoices-total", data[:total])
+    Rails.cache.write("#{month}-invoices-updated_at", max_updated_at, expires_in: 30.minutes)
+    Rails.cache.write("#{month}-invoices-count", data[:count], expires_in: 30.minutes)
+    Rails.cache.write("#{month}-invoices-total", data[:total], expires_in: 30.minutes)
   end
 
   def create_purchase_order_cache(month, data, max_updated_at)
-    Rails.cache.write("#{month}-purchase-order-updated_at", max_updated_at)
-    Rails.cache.write("#{month}-purchase-order-count", data[:count])
-    Rails.cache.write("#{month}-purchase-order-total", data[:total])
+    Rails.cache.write("#{month}-purchase-order-updated_at", max_updated_at, expires_in: 30.minutes)
+    Rails.cache.write("#{month}-purchase-order-count", data[:count], expires_in: 30.minutes)
+    Rails.cache.write("#{month}-purchase-order-total", data[:total], expires_in: 30.minutes)
   end
 
 end
