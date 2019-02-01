@@ -26,6 +26,7 @@ class PoRequestMailer < ApplicationMailer
   def dispatch_supplier_delayed(email_message)
     @overseer = email_message.overseer
     @inquiry = email_message.inquiry
+    @to = @inquiry.inside_sales_owner
 
     standard_email(email_message)
   end
@@ -33,8 +34,8 @@ class PoRequestMailer < ApplicationMailer
 
   def send_dispatch_from_supplier_delayed_notification(email_message)
     @overseer = email_message.overseer
-    @contact = email_message.contact
     @inquiry = email_message.inquiry
+    @to = @inquiry.inside_sales_owner
 
     email = htmlized_email(email_message)
     email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})

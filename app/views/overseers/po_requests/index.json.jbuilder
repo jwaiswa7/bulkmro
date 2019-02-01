@@ -12,11 +12,11 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
                       end,
-                      if policy(po_request).new_email_message?
-                        row_action_button(new_overseers_po_request_email_message_path(po_request, type: "sending_purchase_order"), 'envelope', 'Send Purchase order to supplier', 'dark', :_blank)
+                      if policy(po_request).sending_po_to_supplier_new_email_message?
+                        row_action_button(sending_purchase_order_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase order to supplier', 'dark', :_blank)
                       end,
                       if policy(po_request).dispatch_supplier_delayed_new_email_message?
-                        row_action_button(new_overseers_po_request_email_message_path(po_request, type: "dispatch_from_supplier_delayed"), 'envelope', 'Dispatch from supplier delayed', 'dark', :_blank)
+                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from supplier delayed', 'dark', :_blank)
                       end
                   ].join(' '),
                   po_request.id,

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -175,7 +175,14 @@ Rails.application.routes.draw do
     resources :po_requests do
       scope module: 'po_requests' do
         resources :payment_requests
-        resources :email_messages
+        resources :email_messages do
+          collection do
+            get 'sending_purchase_order'
+            post 'sending_po_notification'
+            get 'dispatch_from_supplier_delayed'
+            post 'dispatch_from_supplier_delayed_notification'
+          end
+        end
       end
 
       collection do
