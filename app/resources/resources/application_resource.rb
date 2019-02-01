@@ -16,14 +16,17 @@ class Resources::ApplicationResource
 
   def self.get_sap_cookie
     Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
-      "B1SESSION=#{new_session_id}; path=#{Settings.sap.ENDPOINT.path}; domain=#{[Settings.sap.ENDPOINT.scheme, '://', Settings.sap.ENDPOINT.host].join}; HttpOnly; Expires=#{20.minutes}" #TODO Expires should be in date format
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{20.minutes}" #TODO Expires should be in date format
     end
   end
 
+  ENDPOINT = URI.parse(Settings.sap.ENDPOINT)
+  ATTACHMENT_ENDPOINT = URI.parse(Settings.sap.ATTACHMENT_ENDPOINT)
+  
   SAP = OpenStruct.new({
                              attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
                              attachment_api: Settings.sap.ATTACHMENT_API,
-                             server: {host: Settings.sap.ATTACHMENT_ENDPOINT.host, port: Settings.sap.ATTACHMENT_ENDPOINT.port},
+                             server: {host: ATTACHMENT_ENDPOINT.host, port: ATTACHMENT_ENDPOINT.port},
                              login: {user: Settings.sap.ATTACHMENT_USERNAME, password: Settings.sap.ATTACHMENT_PASSWORD},
                              draft_doc_object_code: 17,
                              draft_base_type: 23,
@@ -32,7 +35,7 @@ class Resources::ApplicationResource
                          })
 
   def self.set_headers
-    base_uri Settings.sap.ENDPOINT.to_s
+    base_uri ENDPOINT.to_s
     debug_output($stdout)
     default_options.merge!(verify: false, timeout: 30)
     headers({

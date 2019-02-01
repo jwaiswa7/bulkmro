@@ -68,14 +68,13 @@ razorpay:
   MERCHANT_KEY_SECRET:  'F1KKKL5ntCXObq4EZ6huRj32'
 
 sap:
-  ENDPOINT: URI.parse('https://35.200.144.191:50000/b1s/v1')
+  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
   DATABASE: 'BMRO_15NOV'
   USERNAME: 'manager'
   PASSWORD: 'vm1234'
-
-  ATTACHMENT_ENDPOINT: URI.parse('https://35.200.144.191:22')
-  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments',
-  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments',
+  ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
+  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
   ATTACHMENT_USERNAME: 'pradeep'
   ATTACHMENT_PASSWORD: ''
   ATTACHMENT_SSH: '-----BEGIN RSA PRIVATE KEY-----
