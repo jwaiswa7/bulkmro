@@ -9,7 +9,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :material_status, value: -> (record) {material_statuses[record.material_status]}
     field :po_number, value: -> (record) {record.po_number.to_i}, type: 'integer'
     field :po_number_string, value: -> (record) {record.po_number.to_s}, analyzer: 'substring'
-    field :po_status, value: -> (record) {record.metadata['PoStatus'].to_i}, type: 'integer'
+    field :po_status, value: -> (record) {statuses[record.status]}, type: 'integer'
     field :po_status_string, value: -> (record) {record.status || record.metadata_status}, analyzer: 'substring'
     field :po_request_status, value: -> (record) {po_statuses[record.po_request ? record.po_request.status : 'PO Created']}
     field :po_request_status_string, value: -> (record) {record.po_request ? record.po_request.status : 'PO Created'}, analyzer: 'substring'

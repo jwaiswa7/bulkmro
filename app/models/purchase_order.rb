@@ -18,6 +18,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :payment_request
   has_one :invoice_request
   has_many :material_pickup_requests
+  has_many :email_messages
 
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
@@ -57,7 +58,8 @@ class PurchaseOrder < ApplicationRecord
       :'Supplier PI Pending Finance Approval' => 64,
       :'Supplier PI delayed' => 67,
       :'Payment to Supplier Delayed' => 68,
-      :'Cancelled' => 95,
+      :'payment_done_out_from_bm_warehouse' => 69,
+      :'cancelled' => 95,
       :'Closed' => 96
   }
 
@@ -69,10 +71,10 @@ class PurchaseOrder < ApplicationRecord
       :'Material Partially Delivered' => 35
   }
 
-  scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
-  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickedup')}
-  scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
-
+  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
+  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
+  scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
@@ -91,6 +93,14 @@ class PurchaseOrder < ApplicationRecord
     end
   end
 
+  def has_supplier?
+    self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
+  end
+
+  def has_sent_email_to_supplier?
+    self.email_messages.where(email_type: "Sending PO to Supplier").present?
+  end
+
   def supplier
     return po_request.supplier if po_request.present?
     return get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
@@ -103,6 +113,14 @@ class PurchaseOrder < ApplicationRecord
   def to_s
     supplier_name = self.get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
     ['#' + po_number.to_s, supplier_name].join(' ') if po_number.present?
+  end
+
+  def get_packing(metadata)
+    if metadata['PoShippingCost'].present?
+      metadata['PoShippingCost'].to_f > 0 ? (metadata['PoShippingCost'].to_f + ' Amount Extra') : 'Included'
+    else
+      'Included'
+    end
   end
 
   def valid_po_date?

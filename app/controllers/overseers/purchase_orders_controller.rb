@@ -1,9 +1,9 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:edit_material_followup, :update_material_followup]
+  before_action :set_purchase_order, only: [:show,:edit_material_followup, :update_material_followup]
+
 
   def index
     authorize :purchase_order
-
     respond_to do |format|
       format.html {}
       format.json do
@@ -139,7 +139,33 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     response.status = 200
   end
 
+  def show
+    authorize @purchase_order
+    @inquiry = @purchase_order.inquiry
+    @metadata = @purchase_order.metadata.deep_symbolize_keys
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
+    @metadata[:packing] = @purchase_order.get_packing(@metadata)
+
+    respond_to do |format|
+      format.html {}
+      format.pdf do
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
+      end
+    end
+  end
+
   private
+
+  def get_supplier(purchase_order, product_id)
+    if purchase_order.metadata['PoSupNum'].present?
+      product_supplier = ( Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']) )
+      return product_supplier if ( purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy? )
+    end
+    if purchase_order.inquiry.final_sales_quote.present?
+      product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
+      product_supplier.supplier if product_supplier.present?
+    end
+  end
 
   def set_purchase_order
     @purchase_order = PurchaseOrder.find(params[:id])

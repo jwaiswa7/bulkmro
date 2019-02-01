@@ -8,15 +8,16 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
             entries: {}
         }
     )
-    all_activities = Activity.all.joins(:created_by)
-    activities = all_activities.where(:created_at => report.start_at..report.end_at).joins(:created_by)
-    geographies = Overseer.joins(:activities).top(:geography)
+    all_activities = Activity.approved
+    activities = all_activities.where(:activity_date => report.start_at..report.end_at).joins(:created_by)
+    geographies = Overseer.outside.top(:geography)
     geographies.each do |geography_name, geography_count|
 
       geo_activities = activities.where('overseers.geography = ?', geography_name)
+
       overseers = []
       if !geo_activities.present?
-        ga = all_activities.where('overseers.geography = ?', geography_name)
+        ga = activities.where('overseers.geography = ?', geography_name)
         ga.top('activities.created_by_id').each do |overseer_id, overseer_count|
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: 0}))
         end
@@ -25,6 +26,13 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: overseer_count}))
         end
       end
+      geo_overseers = Overseer.where(:geography => geography_name).outside_sales_executive
+      if overseers.size < geo_overseers.size
+        geo_overseers.where.not(id: overseers.collect {|o| o.id }).each do |geo_overseer|
+          overseers.push(OpenStruct.new({id: geo_overseer.id, name: geo_overseer.full_name, count: 0}))
+        end
+      end
+
 
       geography = OpenStruct.new({
                                      name: geography_name,

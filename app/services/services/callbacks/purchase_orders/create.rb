@@ -8,7 +8,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
         if params['PoNum'].present? && !PurchaseOrder.find_by_po_number(params['PoNum']).present?
           inquiry.purchase_orders.where(po_number: params['PoNum']).first_or_create! do |purchase_order|
             purchase_order.assign_attributes(:metadata => params)
-            purchase_order.assign_attributes(:material_status => "Material Readiness Follow-Up")
+            if params['PoStatus'].to_i > 0
+              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+            else
+              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+            end
             if payment_option.present?
               purchase_order.assign_attributes(:payment_option => payment_option)
             end
@@ -30,6 +34,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
             purchase_order.assign_attributes(:metadata => params)
+            if params['PoStatus'].to_i > 0
+              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+            else
+              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+            end
             if payment_option.present?
               purchase_order.assign_attributes(:payment_option => payment_option)
             end

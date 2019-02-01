@@ -8,6 +8,7 @@ class SalesInvoice < ApplicationRecord
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
+  has_many :email_messages
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
@@ -17,7 +18,7 @@ class SalesInvoice < ApplicationRecord
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
-      :'Unpaid' => 3,
+      :'Cancelled' => 3,
       :'Partial: Shipped' => 201,
       :'Shipped' => 202,
       :'Material Delivery Delayed' => 203,
@@ -28,6 +29,7 @@ class SalesInvoice < ApplicationRecord
   }
 
   scope :with_includes, -> {includes(:sales_order)}
+  scope :not_cancelled, -> {where.not(:status => 'Cancelled')}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2

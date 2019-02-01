@@ -123,7 +123,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :purchase_order_id,
         :material_pickup_request_id,
         :status,
-        :comments_attributes => [:id, :message, :created_by_id],
+        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
   end
