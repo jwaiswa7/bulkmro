@@ -29,8 +29,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.custom_find(company_name, company_type)
-
-    response = get("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    encoded_url = URI.encode("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    response = get(encoded_url)
 
     log_request(:get, company_name, is_find: true)
     validated_response = get_validated_response(response)
