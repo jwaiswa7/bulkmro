@@ -56,6 +56,13 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     end
   end
 
+  def export_all
+    authorize :company_review
+    service = Services::Overseers::Exporters::CompanyReviewExporter.new
+    service.call
+    redirect_to url_for(Export.company_reviews.last.report)
+  end
+
   private
 
   def create_rates(rateable_type, rateable_id, score)
@@ -76,6 +83,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
 
 
+
   def set_company_review
     @company_review ||= CompanyReview.find(params[:id])
   end
@@ -87,5 +95,6 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
         :company_ratings_attributes => [:rating, :id]
     )
   end
+
 
 end

@@ -433,6 +433,9 @@ Rails.application.routes.draw do
 
     resources :freight_quotes
     resources :company_reviews do
+      collection do
+        get 'export_all'
+      end
       member do
         get 'render_form'
       end
