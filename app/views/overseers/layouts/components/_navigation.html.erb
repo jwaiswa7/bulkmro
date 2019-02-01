@@ -96,6 +96,7 @@
               <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, policy(:sales_order).index? %>
               <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
               <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
+              <%= nav_dropdown_item 'Cancelled SO', cancelled_overseers_sales_orders_path, policy(:sales_order).cancelled? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
