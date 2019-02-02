@@ -52,6 +52,9 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
     email_service.call
+    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
+    email_service.call
+
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end

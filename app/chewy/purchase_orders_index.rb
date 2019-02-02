@@ -1,5 +1,6 @@
 class PurchaseOrdersIndex < BaseIndex
   internal_statuses =  PurchaseOrder.internal_statuses
+  statuses = PurchaseOrder.statuses
 
   define_type PurchaseOrder.all.with_includes do
     field :id
@@ -9,7 +10,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :internal_status, value: -> (record) { internal_statuses[record.internal_status] }
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
-    field :po_status, value: -> (record) { record.metadata['PoStatus'].to_i }, type: 'integer'
+    field :po_status, value: -> (record) { statuses[record.status]}, type: 'integer'
     field :po_status_string, value: -> (record) { record.status || record.metadata_status  }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:id) if record.rows.present? }
     field :supplier, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).to_s if record.rows.present? }, analyzer: 'substring'

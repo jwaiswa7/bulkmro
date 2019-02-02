@@ -17,7 +17,7 @@ class SalesInvoice < ApplicationRecord
   enum status: {
       :'Open' => 1,
       :'Paid' => 2,
-      :'Unpaid' => 3,
+      :'Cancelled' => 3,
       :'Partial: Shipped' => 201,
       :'Shipped' => 202,
       :'Material Delivery Delayed' => 203,
@@ -28,6 +28,7 @@ class SalesInvoice < ApplicationRecord
   }
 
   scope :with_includes, -> {includes(:sales_order)}
+  scope :not_cancelled, -> {where.not(:status => 'Cancelled')}
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -60,4 +61,17 @@ class SalesInvoice < ApplicationRecord
   def self.syncable_identifiers
     [:invoice_number]
   end
+
+  def calculated_total
+    rows.map { |row| row.metadata['base_row_total'].to_f }.sum.round(2)
+  end
+
+  def calculated_total_tax
+    rows.map { |row| row.metadata['base_tax_amount'].to_f }.sum.round(2)
+  end
+
+  def calculated_total_with_tax
+    (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
 end

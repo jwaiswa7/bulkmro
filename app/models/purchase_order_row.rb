@@ -52,7 +52,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    (self.unit_selling_price * self.quantity).round(2) if self.metadata['PopPriceHt'].present?
+    (self.unit_selling_price.to_f * self.quantity.to_f).round(2) if self.metadata['PopPriceHt'].present?
   end
 
   def total_selling_price_with_tax
@@ -60,8 +60,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-    product = Product.where(legacy_id: self.metadata['PopProductId'].to_i) || Product.where(id: self.metadata['PopProductId'])
-    product.first if product.present?
+    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 
 end

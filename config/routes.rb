@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/*page" => "docs#index"
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
@@ -61,6 +62,16 @@ Rails.application.routes.draw do
     end
 
     resources :reports
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
     resources :activities, except: [:show] do
       collection do
         get 'pending'
@@ -188,6 +199,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'

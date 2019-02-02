@@ -10,6 +10,7 @@ class Account < ApplicationRecord
   # validates_length_of :alias, :maximum => 20
 
   has_many :companies
+  has_many :company_creation_request
   has_many :contacts
   has_many :inquiries, :through => :companies
   has_many :inquiry_products, :through => :inquiries
@@ -18,7 +19,6 @@ class Account < ApplicationRecord
   has_many :invoices, :through => :inquiries
   has_many :sales_quotes, :through => :inquiries, :source => "final_sales_quote"
   has_many :addresses, :through => :companies
-
   enum :account_type => {
       :is_supplier => 10,
       :is_customer => 20,
@@ -46,4 +46,6 @@ class Account < ApplicationRecord
   def self.non_trade
     find_by_name('Non-Trade')
   end
+
+
 end

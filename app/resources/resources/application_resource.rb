@@ -201,16 +201,16 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.all
-    get("/#{collection_name}").parsed_response['value'].map {|pr| OpenStruct.new(pr)}
+    get("/#{collection_name}".encode('utf-8')).parsed_response['value'].map {|pr| OpenStruct.new(pr)}
   end
 
   def self.find(id, quotes: false)
-    response = get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})")
+    response = get("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})".encode('utf-8'))
     OpenStruct.new(response.parsed_response) if response.present? && response.parsed_response.present? && (response.parsed_response.is_a? Hash)
   end
 
   def self.custom_find(id, by = nil)
-    response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1")
+    response = get("/#{collection_name}?$filter=#{by ? by : identifier} eq '#{id}'&$top=1".encode('utf-8'))
 
     log_request(:get, id, is_find: true)
     validated_response = get_validated_response(response)
@@ -224,7 +224,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.create(record)
-    response = post("/#{collection_name}", body: to_remote(record).to_json)
+    response = post("/#{collection_name}".encode('utf-8'), body: to_remote(record).to_json)
 
     log_request(:post, record)
     validated_response = get_validated_response(response)
@@ -235,7 +235,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
   end
 
   def self.update(id, record, quotes: false)
-    response = patch("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})", body: to_remote(record).to_json)
+    response = patch("/#{collection_name}(#{quotes ? ["'", id, "'"].join : id})".encode('utf-8'), body: to_remote(record).to_json)
 
     log_request(:patch, record)
     validated_response = get_validated_response(response)

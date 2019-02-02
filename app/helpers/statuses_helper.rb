@@ -165,6 +165,8 @@ module StatusesHelper
       'primary'
     when :'Requested'
       'primary'
+    when :'created'
+      'success'
     when :'Pending AR Invoice'
       'info'
     when :'authorized'

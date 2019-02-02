@@ -51,7 +51,7 @@ class Product < ApplicationRecord
 
   def unique_name?
     if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
-      errors.add(:name, " name must be unique")
+      errors.add(:name, " must be unique")
     end
   end
 

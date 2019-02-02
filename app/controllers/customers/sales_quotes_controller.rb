@@ -18,6 +18,7 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   def show
     authorize @sales_quote
+    @sales_quote_rows = @sales_quote.sales_quote_rows
     respond_to do |format|
       format.html {}
       format.pdf do

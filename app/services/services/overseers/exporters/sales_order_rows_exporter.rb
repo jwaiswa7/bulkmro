@@ -53,6 +53,8 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
         'Customer Industry',
         'Customer - Domestic / Exports',
         'Product Category',
+        'Product Sub Category 1',
+        'Product Sub Category 2',
         'Brand',
         'Type Of Supplier (Dvs)',
         'Supplier - Domestic / Imports',
@@ -144,11 +146,22 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :Domestic_Outward_Logistics => "",
                     :Type_Of_Customer => inquiry.company.company_type,
                     :Customer_Industry => inquiry.company.industry.try(:name),
-                    :Customer => ((if inquiry.company.default_billing_address.country_code == "IN" then "Domestic" else "Exports" end) if inquiry.company.default_billing_address.present?),
-                    :product_category => ( row.product.category.name if row.product.category.present? ),
+                    :Customer => ((
+                    if inquiry.company.default_billing_address.country_code == "IN" then
+                      "Domestic"
+                    else
+                      "Exports"
+                    end) if inquiry.company.default_billing_address.present?),
+                    :Product_Category => (row.product.category.ancestors_to_s.first if row.product.category.present? && row.product.category.ancestors_to_s.first.present?),
+                    :Product_Sub_Category_1 => (row.product.category.ancestors_to_s.second if row.product.category.present? && row.product.category.ancestors_to_s.second.present?),
+                    :Product_Sub_Category_2 => (row.product.category.ancestors_to_s.third if row.product.category.present? && row.product.category.ancestors_to_s.third.present?),
                     :brand => (row.product.brand.name if row.product.brand.present?),
                     :Type_Of_Supplier => row.sales_quote_row.supplier.company_type,
-                    :Supplier_Domestic_Imports => if (row.sales_quote_row.supplier.default_shipping_address.try(:country_code) == "IN" || row.sales_quote_row.supplier.addresses.first.try(:country_code) == "IN") then "Domestic" else "Imports" end,
+                    :Supplier_Domestic_Imports => if (row.sales_quote_row.supplier.default_shipping_address.try(:country_code) == "IN" || row.sales_quote_row.supplier.addresses.first.try(:country_code) == "IN") then
+                                                    "Domestic"
+                                                  else
+                                                    "Imports"
+                                                  end,
                     :Oem_Non_Oem => "",
                     :Revenue_Stream => "",
                     :Business_Vertical => "",

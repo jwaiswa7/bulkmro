@@ -25,7 +25,7 @@
                 </td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
                   <span style="color:#000000">
-                    <%= record.inquiry.inside_sales_owner.full_name %>
+                    <%= record.inquiry.inside_sales_owner.full_name if record.inquiry.inside_sales_owner.present? %>
                   </span></td>
                 <td align="left" colspan="5" style="width:25%; padding-left: 10px;font-size:11px;" valign="top">
                   <b><span style="color:#000000">Bulk MRO Contact #</span></b> <span style="float:right">:</span></td>
@@ -285,7 +285,7 @@
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.applicable_tax_percentage * 100 %>%</span></td>
                     <td align="right" style="text-align:right;">
-                      <span><%= number_to_currency(item.converted_total_tax / 2, precision: 2, unit: '') %></span></td>
+                      <span><%= number_to_currency(item.converted_total_tax , precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" style="font-size: 9px;border-right: 1px solid #3c3c3c;border-bottom: 1px solid #3c3c3c;">
                       <span><%= item.best_tax_rate.tax_percentage / 2 if item.best_tax_rate.present? %>%</span></td>

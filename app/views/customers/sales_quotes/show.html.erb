@@ -130,65 +130,66 @@
       <div>
         <div class="form-row my-2 text-small">
           <div class="col-12">
-            <table class="datatable table table-bordered dt-responsive" data-fixed-header="false">
-              <thead>
-              <tr>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Product Number">Product</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
-                </th>
-                <th class="no-sort">
-                  <span>Description</span>
-                </th>
-                <th class="no-sort">
-                  <span>Make</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Quantity">Qty</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Tax">Tax</span>
-                </th>
-                <th class="no-sort">
-                  <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <% @sales_quote.sales_quote_rows.each do |row| %>
+            <div class="table-responsive">
+              <table class="table table-bordered dt-responsive" data-fixed-header="false">
+                <thead>
                 <tr>
-                  <td>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Serial Number">Sr. No.</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Product Number">Product</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Manufacturer Code">Mfr. Model</span>
+                  </th>
+                  <th class="no-sort">
+                    <span>Description</span>
+                  </th>
+                  <th class="no-sort">
+                    <span>Make</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Unit Of Measurement">UoM</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Quantity">Qty</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Tax">Tax</span>
+                  </th>
+                  <th class="no-sort">
+                    <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @sales_quote_rows.each do |row| %>
+                  <tr>
+                    <td>
                       <span>
                           #<%= row.sr_no %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                           <%= row.product.sku %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                            <%= row.product.mpn %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                         <%= row.product.name || "-" %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                       <% if row.product.brand %>
                         <%= row.product.brand %>
@@ -196,8 +197,8 @@
                         -
                       <% end %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                       <% if row.product.measurement_unit %>
                         <%= row.product.measurement_unit %>
@@ -205,8 +206,8 @@
                         -
                       <% end %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                          <% if row.quantity %>
                             <%= row.quantity %>
@@ -214,8 +215,8 @@
                             -
                           <% end %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
 
                   <% if row.unit_selling_price %>
@@ -224,21 +225,22 @@
                     -
                   <% end %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                           <%= [row.best_tax_code.tax_percentage, '%'].join('') %>
                       </span>
-                  </td>
-                  <td>
+                    </td>
+                    <td>
                       <span>
                         <%= format_currency(row.total_selling_price) %>
                       </span>
-                  </td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

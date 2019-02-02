@@ -26,7 +26,8 @@ class Resources::Invoice < Resources::ApplicationResource
           unit_price = remote_row['Price'].to_f
           sku = remote_row['ItemCode']
           product = Product.find_by_sku(sku)
-          is_kit = product.is_kit
+          is_kit = product.present? ? product.is_kit : false
+
           # sales_order_row = sales_order.rows.joins(:product).where('products.sku = ?', sku).first
           quantity = remote_row['Quantity'].to_f
           tax_amount = remote_row['NetTaxAmountFC'].to_f != 0 ? remote_row['NetTaxAmountFC'].to_f : remote_row['NetTaxAmount'].to_f

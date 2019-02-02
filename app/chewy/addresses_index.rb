@@ -9,7 +9,7 @@ class AddressesIndex < BaseIndex
     field :is_gst_valid, value: -> (record) { record.validate_gst }
     field :pincode, value: -> (record) { record.try(:pincode) }
     field :company_id, value: -> (record) { record.company_id }
-    field :company, value: -> (record) { record.company.to_s }
+    field :company, value: -> (record) { record.company.to_s }, analyzer: 'substring'
     field :created_at, type: 'date'
   end
 end
