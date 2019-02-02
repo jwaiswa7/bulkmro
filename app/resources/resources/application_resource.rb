@@ -49,6 +49,7 @@ class Resources::ApplicationResource
                     tq7iFj/oZ0WuMVBpik7S47FVc9SeuWTUcbRwC87lF5aobMyUNIaxc06+4zR9Hl5X
                     ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
                     -----END RSA PRIVATE KEY-----'
+
   SAP = OpenStruct.new({
                            attachment_directory: Settings.sap.ATTACHMENT_DIRECTORY,
                            attachment_api: Settings.sap.ATTACHMENT_API,
