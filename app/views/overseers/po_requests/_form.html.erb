@@ -1,8 +1,11 @@
+<% content_for :page_title do %>
+  <%= @po_request.readable_status %>
+<% end %>
 <div class="col-lg-12">
   <div class="page-header">
-    <h2><%= action_name.capitalize %> PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
-      &nbsp;<%#= status_badge(@po_request.status) %></h2>
-    <p>This will <em>'<%= submit_text(@po_request) %>'</em> and log it under
+    <h2><%= action_name.capitalize %> <%= @po_request.readable_status %> for Order <%= format_id(@po_request.sales_order.order_number) %></h2>
+    <p>This will <em>'<%= submit_text(@po_request, use_alias: @po_request.readable_status) %>'</em> and log it
+      under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -36,12 +39,12 @@
       <div class="col-6">
         <% if policy(@po_request).can_cancel? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
-        <% elsif policy(@po_request).can_reject?  %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
+        <% elsif policy(@po_request).can_reject? %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-            <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created","Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
         <% else %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled:true, :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
       </div>
 
@@ -50,7 +53,7 @@
       </div>
 
       <div class="col-6 d-none status-rejected">
-        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(@po_request).can_reject? , :include_blank => true %>
+        <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(@po_request).can_reject?, :include_blank => true %>
       </div>
       <div class="col-6 d-none status-cancelled">
         <%= f.input :cancellation_reason, disabled: !(policy(@po_request).can_cancel?), :include_blank => true %>
@@ -192,7 +195,7 @@
               <div class="col-12 col-md-1">
                 <%#= row.object.tax_code %>
                 <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
-                  <%= row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, disabled: false, label:  false  %>
+                  <%= row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, disabled: false, label: false %>
                 <% else %>
                   <%= row.object.tax_code %>
                 <% end %>
