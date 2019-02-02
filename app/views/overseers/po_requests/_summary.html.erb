@@ -168,10 +168,10 @@
               <td><%= row.tax_rate %></td>
               <td><%= row.quantity.to_f %></td>
               <td><%= row.measurement_unit %></td>
-              <td><%= row.unit_price %></td>
-              <td><%= row.converted_total_selling_price %></td>
-              <td><%= row.converted_total_tax %></td>
-              <td><%= row.converted_total_selling_price_with_tax %></td>
+              <td><%= format_currency(row.unit_price )%></td>
+              <td><%= format_currency(row.converted_total_selling_price) %></td>
+              <td><%= format_currency(row.converted_total_tax) %></td>
+              <td><%= format_currency(row.converted_total_selling_price_with_tax) %></td>
               <td><%= percentage(row.discount_percentage, precision: 2) %></td>
               <td><%= format_succinct_date(row.lead_time) %></td>
             </tr>
