@@ -42,7 +42,7 @@
                 <% end %>
                 <div class="form-row mt-2">
                   <div class="col-12 col-md-6">
-                    <%= po_request.association :address, collection: selected_option_or_nil(po_request, :address), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
+                    <%= po_request.association :address, collection: selected_option_or_nil(po_request, :address), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
