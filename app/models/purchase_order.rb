@@ -9,6 +9,7 @@ class PurchaseOrder < ApplicationRecord
 
   belongs_to :inquiry
   belongs_to :payment_option, required: false
+  belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
