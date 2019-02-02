@@ -52,8 +52,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
     email_service.call
-    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
-    email_service.call
+
+    company = @customer_order.company
+    account_managers = company.contacts.where(:role => 'account_manager')
+    if account_managers.present?
+      email_service = Services::Overseers::EmailMessages::OrderConfirmationToAccountManagerMailer.new(@customer_order,account_managers, current_overseer)
+      email_service.call
+    end
 
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
