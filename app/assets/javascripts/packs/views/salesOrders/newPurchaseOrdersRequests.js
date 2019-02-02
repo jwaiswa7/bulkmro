@@ -32,31 +32,26 @@ const newPurchaseOrdersRequests = () => {
         updateTotal(element);
     });
 
-
-
 };
 
 
 let updateTotal = (element) => {
 
     let container = $(element).closest('.po-request-row');
+    let totalPriceElement = $(container).find('input[name$="converted_total_selling_price]"]');
+    let taxPercentageOption = $('option:selected', $(container).find('select[name*=tax_rate_id]'));
+    let totalTaxElement = $(container).find('input[name*=converted_total_tax]');
+
     let quantity = toDecimal(container.find('input[name*=quantity]').val());
     let unitPrice = toDecimal($(container).find('input[name*=unit_price]').val());
-    let totalPriceElement = $(container).find('input[name$="converted_total_selling_price]"]');
-    let taxPercentageOption =  $('option:selected',$(container).find('select[name*=tax_rate_id]'));
-    let totalTaxElement =  $(container).find('input[name*=converted_total_tax]');
-
     let taxPercentage = 0;
-    if (taxPercentageOption != null){
+    if (taxPercentageOption != null) {
         taxPercentage = toDecimal(taxPercentageOption [0].text.match(/\w[\d]\.[\d]*/gm)[0])
     }
-
     let totalPriceWithTaxElement = $(container).find('input[name*=converted_total_selling_price_with_tax]');
     let total_price = quantity * unitPrice;
-    let total_tax = (total_price * (taxPercentage/100));
-    console.log(container);
-    console.log(quantity, unitPrice);
-    console.log("Total = ", total_price);
+    let total_tax = ((total_price * taxPercentage) / 100 );
+
     $(totalPriceElement).val(total_price);
     $(totalTaxElement).val(total_tax);
     $(totalPriceWithTaxElement).val(total_price + total_tax);
