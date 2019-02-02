@@ -147,8 +147,7 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %>
-          <%= po_request_row.input :lead_time_option, input_html: {value: lead_time}, label: false %>
+          <%= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: true %>
         </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.remove_nested_fields_link do %>

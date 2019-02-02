@@ -196,6 +196,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :brand_id,
                   :tax_code_id,
                   :tax_rate_id,
+                  :lead_time,
                   :measurement_unit_id,
                   :discount_percentage,
                   :unit_price
