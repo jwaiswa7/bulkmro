@@ -185,7 +185,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending_and_rejected'
         get 'cancelled'
-        post 'preview_stock_po_request'
+        get 'pending_stock'
       end
 
     end

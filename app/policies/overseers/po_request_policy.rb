@@ -4,7 +4,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def edit
-    developer? || logistics? || manager_or_sales?
+    developer? || logistics? || manager_or_sales? || admin?
   end
 
   def pending_and_rejected?
@@ -47,7 +47,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.payment_request.present?
   end
 
-  def preview_stock_po_request?
-    true
+  def pending_stock?
+    index?
   end
 end

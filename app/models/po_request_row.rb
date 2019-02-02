@@ -33,6 +33,12 @@ class PoRequestRow < ApplicationRecord
           unit_selling_price
         end
       end
+    else
+      if self.quantity.present?
+        self.product_unit_selling_price * self.quantity
+      else
+        self.product_unit_selling_price
+      end
     end
   end
 
@@ -41,16 +47,28 @@ class PoRequestRow < ApplicationRecord
   end
 
   def converted_unit_selling_price
-    self.sales_quote_row.present? ? (self.unit_selling_price / self.sales_quote_row.conversion_rate) : 0.0
+    self.sales_quote_row.present? ? (self.unit_selling_price / self.sales_quote_row.conversion_rate) : ((self.product_unit_selling_price / self.conversion) if !self.conversion.nil?)
   end
 
   def unit_selling_price_with_tax
-    return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage/100) || 0)) if self.tax_rate.present?
+    if self.unit_selling_price.present?
+      return self.unit_selling_price + (self.unit_selling_price * ((self.tax_rate.tax_percentage / 100) || 0)) if self.tax_rate.present?
+    elsif self.product_unit_selling_price.present?
+      return self.product_unit_selling_price + (self.product_unit_selling_price * ((self.tax_rate.tax_percentage / 100) || 0)) if self.tax_rate.present?
+    end
     return 0
   end
 
   def converted_total_selling_price
-    self.sales_quote_row.present? ? (self.total_selling_price / self.sales_quote_row.conversion_rate) : 0.0
+    if self.sales_quote_row.present?
+      (self.total_selling_price / self.sales_quote_row.conversion_rate)
+    else
+       if self.conversion.nil?
+         0.0
+         else
+         (self.total_selling_price / self.conversion)
+       end
+    end
   end
 
   def total_selling_price_with_tax
@@ -58,15 +76,23 @@ class PoRequestRow < ApplicationRecord
   end
 
   def converted_total_selling_price_with_tax
-    sales_quote_row.present? ? (self.total_selling_price_with_tax / sales_quote_row.conversion_rate) : 0.0
+    if self.sales_quote_row.present?
+      (self.total_selling_price_with_tax / sales_quote_row.conversion_rate)
+    else
+      if self.conversion.nil?
+        0.0
+      else
+        (self.total_selling_price_with_tax / self.conversion)
+      end
+    end
   end
 
   def total_tax
-    total_selling_price_with_tax - total_selling_price
+    total_selling_price.present? ? (total_selling_price_with_tax - total_selling_price) : 0.0
   end
 
   def converted_total_tax
-    converted_total_selling_price_with_tax - converted_total_selling_price
+    converted_total_selling_price.present? ? converted_total_selling_price_with_tax - converted_total_selling_price : 0.0
   end
 
   def total_buying_price

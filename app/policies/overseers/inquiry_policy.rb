@@ -120,7 +120,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def preview_stock_po_request?
-    true
+    developer? || logistics? || manager_or_sales? || admin?
+  end
+
+  def create_stock_po_request?
+    developer? || logistics? || manager_or_sales? || admin?
   end
 
   class Scope

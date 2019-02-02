@@ -72,6 +72,7 @@ class PoRequest < ApplicationRecord
   scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
+  scope :pending_stock_po, -> {where(:stock_status => [:'Stock Requested'])}
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}

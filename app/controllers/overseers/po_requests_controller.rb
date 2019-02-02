@@ -108,6 +108,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def pending_stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
   private
 
   def po_request_params
@@ -125,7 +135,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :requested_by_id,
         :approved_by_id,
         :supplier_id,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :converted_unit_selling_price],
+        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :brand, :product_id, :converted_unit_selling_price, :product_unit_selling_price,:conversion],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )

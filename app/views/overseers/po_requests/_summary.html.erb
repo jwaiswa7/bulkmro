@@ -3,14 +3,6 @@
     <div>
       <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
       <div class="form-row">
-        <% if po_request.sales_order.present? %>
-          <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Sales Order #</strong>
-            <%= link_to overseers_inquiry_sales_order_path(po_request.inquiry, po_request.sales_order), target: '_blank' do %>
-              <%= format_id(po_request.sales_order.order_number) %>
-            <% end %>
-          </div>
-        <% end %>
 
         <% if po_request.inquiry.present? %>
           <div class="col-6 col-md-3 mb-2">
@@ -165,8 +157,8 @@
               <td><%= row.tax_code %></td>
               <td><%= row.tax_rate %></td>
               <td><%= row.quantity.to_f %></td>
-              <td><%= row.sales_order_row.measurement_unit %></td>
-              <td><%= row.sales_order_row.converted_unit_selling_price %></td>
+              <td><%= row.sales_order_row.present? ? row.sales_order_row.measurement_unit : row.product.measurement_unit %></td>
+              <td><%= row.sales_order_row.present? ? row.sales_order_row.converted_unit_selling_price : row.converted_unit_selling_price %></td>
               <td><%= row.converted_total_selling_price %></td>
               <td><%= row.converted_total_tax %></td>
               <td><%= row.converted_total_selling_price_with_tax %></td>

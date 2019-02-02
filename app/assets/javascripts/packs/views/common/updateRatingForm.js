@@ -1,5 +1,9 @@
 const updateRatingForm = () => {
     var customTabSelector =  $('#multipleRatingForm .custom-tab')
+    if (customTabSelector.length > 0) {
+        customTabSelector.eq(0).removeClass('disabled')
+        customTabSelector[0].click();
+    }
     var tabsLength =customTabSelector.length
     $("#multipleRatingForm").on('click','.submit-rating',function(event){
         var formSelector = "#"+$(this).closest('form').attr('id')

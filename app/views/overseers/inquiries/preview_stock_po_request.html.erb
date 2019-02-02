@@ -14,51 +14,34 @@
         <!--        <div>-->
         <h6 class="text-uppercase text-black-50 mb-1">Details</h6>
         <div class="form-row">
-          <%# if @sales_order.present? %>
-<!--            <div class="col-4 col-md-2 mb-2">-->
-<!--              <strong class="d-block">Sales Order #</strong>-->
-              <%#= format_id(@sales_order.order_number) %>
-<!--            </div>-->
-          <%# end %>
 
-          <%# if @sales_order.inquiry.present? %>
-<!--            <div class="col-6 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Inquiry #</strong>-->
-              <%#= @sales_order.inquiry.to_s %>
-<!--            </div>-->
-          <%# end %>
+          <% if @inquiry.present? %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Inquiry #</strong>
+              <%= @inquiry.to_s %>
+            </div>
+          <% end %>
 
-          <%# if @sales_order.present? %>
-<!--            <div class="col-4 col-md-2 mb-2">-->
-<!--              <strong class="d-block">Supplier PO Type</strong>-->
-              <%#= @sales_order.opportunity_type %>
-<!--            </div>-->
-          <%# end %>
-
-          <%# if @sales_order.inquiry.present? %>
-<!--            <div class="col-5 col-md-3 mb-2">-->
-<!--              <strong class="d-block">Customer Committed Date</strong>-->
-              <%#= @sales_order.inquiry.customer_committed_date %>
-<!--            </div>-->
-          <%# end %>
         </div>
       </div>
     </div>
     <% if @po_requests.present? %>
       <div class="card">
         <div class="card-body">
-          <%= f.simple_fields_for :po_requests, @po_requests.values, wrapper_tag: :div do |po_request| %>
+          <%= f.simple_fields_for :po_requests, @po_requests.values, wrapper_tag: :div do |po_request|  %>
             <div>
-              <%#= po_request.hidden_field :id %>
+              <%= po_request.hidden_field :id %>
               <%= po_request.hidden_field :supplier_id %>
               <%= po_request.hidden_field :inquiry_id %>
               <%= po_request.hidden_field :supplier_committed_date %>
-              <%= po_request.hidden_field :blobs %>
-              <%= po_request.hidden_field :status %>
-              <%= po_request.hidden_field :address_id %>
-              <%= po_request.hidden_field :contact_id %>
+              <%#= po_request.hidden_field :blobs %>
+              <%= po_request.hidden_field :stock_status %>
+              <%#= po_request.hidden_field :address_id %>
+              <%#= po_request.hidden_field :contact_id %>
               <%= po_request.hidden_field :logistics_owner_id %>
               <%= po_request.hidden_field :payment_option_id %>
+              <%= po_request.hidden_field :requested_by_id %>
+              <%= po_request.hidden_field :approved_by_id %>
 
 
               <strong class="d-block text-uppercase">
@@ -67,27 +50,39 @@
                 : <%= po_request.object.supplier.try(:legacy_email) %>
               </strong>
               <div class="form-row mt-2">
-                <% if po_request.object.address.present? %>
-                  <div class="col-5 col-md-2 mb-2">
-                    <strong class="d-block">ADDRESS</strong>
-                    <%= po_request.object.address.to_s %>
-                  </div>
-                <% end %>
-                <% if po_request.object.contact.present? %>
-                  <div class="col-2 col-md-1 mb-2">
-                    <strong class="d-block">CONTACT</strong>
-                    <%= po_request.object.contact.to_s %>
-                  </div>
-                <% end %>
+                <%# if po_request.object.address.present? %>
+<!--                  <div class="col-5 col-md-2 mb-2">-->
+<!--                    <strong class="d-block">ADDRESS</strong>-->
+                    <%#= po_request.object.address.to_s %>
+<!--                  </div>-->
+                <%# end %>
+                <%# if po_request.object.contact.present? %>
+<!--                  <div class="col-2 col-md-1 mb-2">-->
+<!--                    <strong class="d-block">CONTACT</strong>-->
+                    <%#= po_request.object.contact.to_s %>
+<!--                  </div>-->
+                <%# end %>
                 <% if po_request.object.logistics_owner.present? %>
                   <div class="col-2 col-md-2 mb-2">
                     <strong class="d-block">LOGISTICS OWNER</strong>
                     <%= po_request.object.logistics_owner.to_s %>
                   </div>
                 <% end %>
+                <% if po_request.object.requested_by.present? %>
+                  <div class="col-2 col-md-2 mb-2">
+                    <strong class="d-block">Requested By</strong>
+                    <%= po_request.object.requested_by.to_s %>
+                  </div>
+                <% end %>
+                <% if po_request.object.approved_by.present? %>
+                  <div class="col-2 col-md-2 mb-2">
+                    <strong class="d-block">Approved By</strong>
+                    <%= po_request.object.approved by.to_s %>
+                  </div>
+                <% end %>
                 <div class="col-2 col-md-1 mb-2">
-                  <strong class="d-block">STATUS</strong>
-                  <%= po_request.object.status %>
+                  <strong class="d-block">STOCK STATUS</strong>
+                  <%= po_request.object.stock_status %>
                 </div>
                 <div class="col-2 col-md-1 mb-2">
                   <strong class="d-block">P. Terms</strong>
@@ -131,6 +126,8 @@
                   <%= po_request_row.hidden_field :tax_rate_id %>
                   <%= po_request_row.hidden_field :measurement_unit_id %>
                   <%= po_request_row.hidden_field :quantity %>
+                  <%= po_request_row.hidden_field :product_unit_selling_price %>
+                  <%= po_request_row.hidden_field :conversion %>
 
                   <% if po_request_row.present? %>
 
@@ -142,10 +139,11 @@
                       <td><%= po_request_row.object.tax_rate.to_s %></td>
                       <td><%= number_with_precision(po_request_row.object.quantity.to_f, precision: 2) %></td>
                       <td><%= po_request_row.object.measurement_unit %></td>
-                      <td><%#= format_currency(po_request_row.object.converted_unit_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
-                      <td><%#= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
-                      <td><%#= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
-                      <td><%#= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+<!--                      <td><%#= po_request_row.object.conversion %></td>-->
+                      <td><%= format_currency(po_request_row.object.converted_unit_selling_price, symbol: @inquiry.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @inquiry.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @inquiry.inquiry_currency.currency.sign) %></td>
+                      <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @inquiry.inquiry_currency.currency.sign) %></td>
 
                     </tr>
                   <% end %>
