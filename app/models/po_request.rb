@@ -113,4 +113,14 @@ class PoRequest < ApplicationRecord
   def po_margin_percentage
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
+
+  def readable_status
+    status = self.status
+    if self.status == "Requested"
+      title = "Pending"
+    elsif self.status == "PO Created"
+      title = "Completed"
+    end
+    "#{title} PO Request"
+  end
 end

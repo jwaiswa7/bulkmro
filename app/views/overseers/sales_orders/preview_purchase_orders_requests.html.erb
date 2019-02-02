@@ -74,24 +74,24 @@
               <div class="form-row mt-2">
                 <% if po_request.object.address.present? %>
                   <div class="col-5 col-md-2 mb-2">
-                    <strong class="d-block">ADDRESS</strong>
+                    <strong class="d-block">Address</strong>
                     <%= po_request.object.address.to_s %>
                   </div>
                 <% end %>
                 <% if po_request.object.contact.present? %>
                   <div class="col-2 col-md-1 mb-2">
-                    <strong class="d-block">CONTACT</strong>
+                    <strong class="d-block">Contact</strong>
                     <%= po_request.object.contact.to_s %>
                   </div>
                 <% end %>
                 <% if po_request.object.logistics_owner.present? %>
                   <div class="col-2 col-md-2 mb-2">
-                    <strong class="d-block">LOGISTICS OWNER</strong>
+                    <strong class="d-block">Logistics Owner</strong>
                     <%= po_request.object.logistics_owner.to_s %>
                   </div>
                 <% end %>
                 <div class="col-2 col-md-1 mb-2">
-                  <strong class="d-block">STATUS</strong>
+                  <strong class="d-block">Status</strong>
                   <%= po_request.object.status %>
                 </div>
                 <div class="col-2 col-md-1 mb-2">
@@ -100,7 +100,7 @@
                 </div>
                 <% if po_request.object.supplier_committed_date.present? %>
                   <div class="col-2 col-md-3 mb-2">
-                    <strong class="d-block">SUPPLIER COMMITTED DATE</strong>
+                    <strong class="d-block">Supplier Committed Date</strong>
                     <%= po_request.object.supplier_committed_date %>
                   </div>
                 <% end %>
@@ -137,6 +137,7 @@
                   <%= po_request_row.hidden_field :tax_rate_id %>
                   <%= po_request_row.hidden_field :measurement_unit_id %>
                   <%= po_request_row.hidden_field :quantity %>
+                  <%= po_request_row.hidden_field :unit_price %>
 
                   <% if po_request_row.present? %>
 
@@ -147,8 +148,8 @@
                       <td><%= po_request_row.object.tax_code %></td>
                       <td><%= po_request_row.object.tax_rate.to_s %></td>
                       <td><%= number_with_precision(po_request_row.object.quantity.to_f, precision: 2) %></td>
-                      <td><%= po_request_row.object.measurement_unit %></td>
-                      <td><%= format_currency(po_request_row.object.converted_unit_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= po_request_row.object.product.try(:measurement_unit).to_s %></td>
+                      <td><%= format_currency(po_request_row.object.unit_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>

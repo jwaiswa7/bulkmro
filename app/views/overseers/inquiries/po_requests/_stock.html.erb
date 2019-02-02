@@ -114,9 +114,9 @@
                     <div class="col-12 col-md-1">
                       <%= po_request_row.input :product_unit_selling_price, label: po_request.object.rows.first == po_request_row.object ? "UP" : false, disabled: po_request_row.object.field_disabled? %>
                     </div>
-                    <div class="col-12 col-md-1">
-                      <%= po_request_row.input :conversion, input_html: {value: @inquiry.inquiry_currency.conversion_rate }, label: po_request.object.rows.first == po_request_row.object ? "Conversion" : false, disabled: po_request_row.object.field_disabled? %>
-                    </div>
+<!--                    <div class="col-12 col-md-1">-->
+                      <%#= po_request_row.input :conversion, input_html: {value: @inquiry.inquiry_currency.conversion_rate }, label: po_request.object.rows.first == po_request_row.object ? "Conversion" : false, disabled: po_request_row.object.field_disabled? %>
+<!--                    </div>-->
 <!--                    <div class="col-12 col-md-1">-->
                       <%#= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price }, label: po_request.object.rows.first == po_request_row.object ? "TP" : false, disabled: true %>
 <!--                    </div>-->
