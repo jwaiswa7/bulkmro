@@ -1,5 +1,4 @@
 json.data (@po_requests) do |po_request|
-  if po_request.sales_order.present?
   json.array! [
                   [
                       if (policy(po_request).edit? && po_request.status != 'Cancelled')
@@ -13,7 +12,11 @@ json.data (@po_requests) do |po_request|
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),
                   conditional_link(po_request.inquiry.inquiry_number, edit_overseers_inquiry_path(po_request.inquiry), policy(po_request.inquiry).edit?),
-                  (po_request.purchase_order.po_number if po_request.purchase_order.present?),
+                  if po_request.purchase_order.present? && (po_request.status == 'PO Created')
+                    po_request.purchase_order.po_number
+                  else
+                    po_request.sales_order.order_number if po_request.sales_order.present?
+                  end,
                   po_request.inquiry.inside_sales_owner.to_s,
                   po_request.supplier.to_s,
                   po_request.buying_price,
@@ -21,12 +24,8 @@ json.data (@po_requests) do |po_request|
                   po_request.po_margin_percentage,
                   po_request.sales_order.calculated_total_margin_percentage,
                   po_request.inquiry.customer_committed_date,
-                  '',
                   po_request.supplier_committed_date,
                   status_badge(po_request.status),
-                  if po_request.logistics_owner.present?
-                    po_request.logistics_owner.to_s
-                  end,
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
                     format_date_time_meridiem(po_request.last_comment.updated_at)
@@ -35,8 +34,7 @@ json.data (@po_requests) do |po_request|
                     format_comment(po_request.last_comment, trimmed: true)
                   end
               ]
-  end
-  end
+end
 
 json.recordsTotal @po_requests.count
 json.recordsFiltered @po_requests.total_count

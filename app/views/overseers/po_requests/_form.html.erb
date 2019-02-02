@@ -2,7 +2,7 @@
   <div class="page-header">
     <h2><%= action_name.capitalize %> PO Request for Order <%= format_id(@po_request.sales_order.order_number) %>
       &nbsp;<%#= status_badge(@po_request.status) %></h2>
-    <p>This will <em>'<%= submit_text(@po_request).downcase %>'</em> and log it under
+    <p>This will <em>'<%= submit_text(@po_request) %>'</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -54,10 +54,6 @@
       </div>
       <div class="col-6 d-none status-cancelled">
         <%= f.input :cancellation_reason, disabled: !(policy(@po_request).can_cancel?), :include_blank => true %>
-      </div>
-
-      <div class="col-md-6">
-        <%= f.association :logistics_owner, as: :select, :include_blank => false %>
       </div>
       <div class="col-md-6">
         <div class="d-flex flex-row align-items-end">
