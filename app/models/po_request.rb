@@ -59,7 +59,6 @@ class PoRequest < ApplicationRecord
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
   validate :update_reason_for_status_change?
-  # validate :addresses_based_on_po_types
 
   after_initialize :set_defaults, :if => :new_record?
   after_save :update_po_index, if: -> {purchase_order.present?}
@@ -79,18 +78,6 @@ class PoRequest < ApplicationRecord
       errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
     end
   end
-
-  # def addresses_based_on_po_types
-  #   if self.supplier_po_type == "Drop Ship" || self.supplier_po_type == "Route Through"
-  #     if not self.sales_order.inquiry.bill_from.address.city_name == self.bill_to.city_name
-  #       errors.add(:billing_address, "cannot be of city other than orders bill from")
-  #     end
-  #   elsif self.supplier_po_type == "Regular"
-  #     if self.sales_order.inquiry.shipping_address.address.city_name == self.bill_to.city_name
-  #       errors.add(:billing_address, "cannot be of city other than orders bill from")
-  #     end
-  #   end
-  # end
 
   def set_defaults
     self.status ||= :'Requested'
