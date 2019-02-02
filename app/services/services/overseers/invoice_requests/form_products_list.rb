@@ -1,14 +1,19 @@
 class Services::Overseers::InvoiceRequests::FormProductsList < Services::Shared::BaseService
-  def initialize(mpr_ids)
-    @mpr_ids = mpr_ids
+  def initialize(object, sort_by_po)
+    @object = object
+    @sort_by_po = sort_by_po
   end
 
   def call
-    MprRow.where(material_pickup_request_id: mpr_ids)
-          .group_by(&:purchase_order_row_id)
-          .map{|por_id, mpr_rows| {purchase_order_row: PurchaseOrderRow.find(por_id), total_quantity: mpr_rows.sum(&:delivered_quantity).to_s}}
+    if(sort_by_po == true)
+      object.rows.map{|row| {purchase_order_row: row, total_quantity: row.metadata["PopQty"]}}
+    else
+      MprRow.where(material_pickup_request_id: object)
+            .group_by(&:purchase_order_row_id)
+            .map{|por_id, mpr_rows| {purchase_order_row: PurchaseOrderRow.find(por_id), total_quantity: mpr_rows.sum(&:delivered_quantity).to_s}}
+    end
   end
 
   private
-  attr_accessor :mpr_ids
+  attr_accessor :object, :sort_by_po
 end

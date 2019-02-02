@@ -65,7 +65,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
           @invoice_request.material_pickup_requests << mpr
         end
       end
-      service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids)
+
+      if(params[:mpr_id] || params[:ids])
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
+      else
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, true)
+      end
       @products_list = service.call
     else
       redirect_to overseers_invoice_requests_path
@@ -76,7 +81,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def create
     @invoice_request = InvoiceRequest.new(invoice_request_params.merge(overseer: current_overseer))
     authorize @invoice_request
-    debugger
+
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         @invoice_request.save!
