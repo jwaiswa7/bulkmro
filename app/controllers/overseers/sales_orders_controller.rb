@@ -153,7 +153,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
   end
 
-
   def create_purchase_orders_requests
     authorize :sales_order
 

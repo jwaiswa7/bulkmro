@@ -29,7 +29,7 @@
               <%= po_request.hidden_field :id %>
               <%= po_request.hidden_field :supplier_id %>
               <%= po_request.hidden_field :inquiry_id %>
-              <%= po_request.hidden_field :city_name, :value => f.object.inquiry.bill_from.address.city_name, :id => "city" %>
+              <%#= po_request.hidden_field :city_name, :value => f.object.inquiry.shipping_address.city_name, :id => "shipping_city" %>
               <h5 class="text-uppercase">
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
                 <strong><%= po_request.object.supplier.to_s %>
@@ -57,10 +57,11 @@
                     <%= po_request.association :ship_from, collection: selected_option_or_nil(po_request, :ship_from), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
-                    <%= po_request.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A'}]}, input_html: {class: 'select2-single'}, required: true %>
+                    <%= po_request.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-parsley-warehousecity': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
                   </div>
+
                   <div class="col-12 col-md-6">
-                    <%= po_request.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A'}]}, input_html: {class: 'select2-single'}, required: true %>
+                    <%= po_request.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single',  'data-parsley-warehousecity': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
                   </div>
                   <div class="col-12 col-md-6">
                     <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
