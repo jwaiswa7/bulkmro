@@ -5,7 +5,7 @@ const updateSummaryBox = () => {
     table.on('xhr', function () {
         let json = table.ajax.json() ? table.ajax.json() : {};
         $.each(json.recordsSummary, function (index, summary) {
-            let statusSize = summary["size"];
+            let statusSize = summary["size"].toLocaleString(undefined, { minimumFractionDigits: 0 });
             let statusId = ".status-" + summary["status_id"];
             $(statusId).find('.status-count-' + summary["status_id"]).text(statusSize);
         });
