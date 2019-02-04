@@ -25,7 +25,7 @@
         <%= f.association :inquiry, disabled: true, collection: [f.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
       </div>
       <div class="col-6">
-        <%= f.input :opportunity_type, collection: enum_to_collection(Inquiry.opportunity_types, alphabetical: false), as: :select, :wrapper => :custom_multi_select, :include_blank => false, disabled: true, label: 'Supplier PO Type', :selected => f.object.sales_order.opportunity_type %>
+        <%= f.input :supplier_po_type, collection: enum_to_collection(PoRequest.supplier_po_types, alphabetical: false), as: :select, :wrapper => :custom_multi_select, :include_blank => false, label: 'Supplier PO Type' %>
       </div>
 
       <div class="col-6">
