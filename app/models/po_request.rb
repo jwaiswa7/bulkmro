@@ -92,7 +92,7 @@ class PoRequest < ApplicationRecord
   end
 
   def po_margin_percentage
-    (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if se lf.buying_price > 0
+    (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
 
   def readable_status
