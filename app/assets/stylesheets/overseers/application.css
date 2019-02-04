@@ -10033,7 +10033,7 @@ th {
   max-width: 250px; }
   @media (max-width: 991.98px) {
     .alert {
-      width: 100%;
+      width: 100% !important;
       max-width: 100%;
       top: auto;
       right: auto;
