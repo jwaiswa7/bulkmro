@@ -10,6 +10,11 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
             purchase_order.assign_attributes(:metadata => params)
             purchase_order.assign_attributes(:material_status => "Material Readiness Follow-Up")
             purchase_order.assign_attributes(:logistics_owner => Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(purchase_order).call)
+            if params['PoStatus'].to_i > 0
+              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+            else
+              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+            end
             if payment_option.present?
               purchase_order.assign_attributes(:payment_option => payment_option)
             end
@@ -31,24 +36,28 @@ class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared:
           purchase_order = PurchaseOrder.find_by_po_number(params['PoNum'])
           if purchase_order.present?
             purchase_order.assign_attributes(:metadata => params)
+            if params['PoStatus'].to_i > 0
+              purchase_order.assign_attributes(:status => params['PoStatus'].to_i)
+            else
+              purchase_order.assign_attributes(:status => PurchaseOrder.statuses[params['PoStatus']])
+            end
             if payment_option.present?
               purchase_order.assign_attributes(:payment_option => payment_option)
             end
             params['ItemLine'].each do |remote_row|
-              product = Product.find_by_legacy_id(remote_row['PopProductId'].to_i) || Product.find(remote_row['PopProductId'])
-              row = purchase_order.rows.select {|por| por.sku == product.sku}.first
+
+              row = purchase_order.rows.select {|por| por.metadata['Linenum'] == remote_row['Linenum']}.first
 
               if row.present?
-                row.assign_attributes(
-                    metadata: remote_row
-                )
+                row.assign_attributes(metadata: remote_row)
+                row.save!
               else
                 new_row = purchase_order.rows.build do |row|
                   row.assign_attributes(
                       metadata: remote_row
                   )
                 end
-                new_row.save
+                new_row.save!
               end
             end
             purchase_order.save!

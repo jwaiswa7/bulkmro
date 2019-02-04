@@ -2248,7 +2248,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     sales_order_exists = []
     service.loop(nil) do |x|
       i = i + 1
-      # next if i < 17732
+      next if i < 11729
       next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
       next if (Product.where(sku: x.get_column('product sku')).present? == false)
@@ -2345,6 +2345,65 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts totals
     puts "<----------------------------------------INQUIRIES--------------------------------------------------->"
     puts inquiry_not_found.inspect
+  end
+
+  def update_invoice_statuses
+    missing_invoices = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_sales_invoices.csv', folder)
+    service.loop(limit) do |x|
+      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('Invoice Number'))
+      if sales_invoice.present? && sales_invoice.sales_order.present?
+        sales_invoice.status = 3
+        sales_invoice.metadata['state'] = 3 if sales_invoice.metadata.present?
+        sales_invoice.save!
+      else
+        missing_invoices << x.get_column('Invoice Number')
+      end
+    end
+    puts "Missing Invoices", missing_invoices
+  end
+
+  def update_cancelled_po_statuses
+    missing_po = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_purchase_orders.csv', folder)
+    service.loop(limit) do |x|
+      po = PurchaseOrder.find_by_po_number(x.get_column('Purchase Order Number'))
+      if po.present?
+        po.metadata['PoStatus'] = 95
+        po.save!
+      else
+        missing_po << x.get_column('Purchase Order Number')
+      end
+    end
+    puts "Missing PO", missing_po
+  end
+
+  def update_po_status
+    PurchaseOrder.all.each do |po|
+      if po.metadata['PoStatus'].present?
+        if po.metadata['PoStatus'].to_i > 0
+          po.status = po.metadata['PoStatus'].to_i
+        else
+          po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+        end
+        po.save
+      end
+    end
+  end
+
+  def update_mis_date_of_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+    missing_so = []
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+      if sales_order.present?
+        sales_order.update_attribute('mis_date', x.get_column('mis date',to_datetime: true))
+      else
+        missing_so.push(x.get_column('order number'))
+      end
+    end
+    puts "<--------------------------------------------------------------------------------------------->"
+    puts missing_so
   end
 
   def generate_review_questions

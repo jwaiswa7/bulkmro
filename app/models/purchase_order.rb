@@ -58,7 +58,8 @@ class PurchaseOrder < ApplicationRecord
       :'Supplier PI Pending Finance Approval' => 64,
       :'Supplier PI delayed' => 67,
       :'Payment to Supplier Delayed' => 68,
-      :'Cancelled' => 95,
+      :'payment_done_out_from_bm_warehouse' => 69,
+      :'cancelled' => 95,
       :'Closed' => 96
   }
 
@@ -73,12 +74,15 @@ class PurchaseOrder < ApplicationRecord
   scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
   scope :material_pickup_queue, -> {where(:material_status => :'Material Pickedup')}
   scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
+  scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
 
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
+
+
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?

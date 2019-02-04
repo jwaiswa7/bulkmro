@@ -894,6 +894,16 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def set_activity_date_and_create_approval
+    Activity.where(activity_date: nil).each do |activity|
+      activity.update_attribute('activity_date', activity.created_at)
+    end
+
+    Activity.not_approved.each do |activity|
+      activity.create_approval(:overseer => Overseer.default_approver)
+    end
+  end
+
   def add_logistics_owner_to_all_po
     PurchaseOrder.all.each do |po|
       po.update_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(po).call)
