@@ -32,7 +32,7 @@ class SalesOrder < ApplicationRecord
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
-  has_one :po_request
+  has_many :po_requests
   has_many :invoice_requests
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
@@ -196,7 +196,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def has_purchase_order_request
-    self.po_request.present?
+    self.po_requests.present?
   end
 
   def not_invoiced_value(status)

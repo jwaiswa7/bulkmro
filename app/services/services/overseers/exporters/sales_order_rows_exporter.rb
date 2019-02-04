@@ -96,7 +96,7 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
   end
 
   def build_csv
-    model.joins(:sales_order).where.not(:'sales_orders.sales_quote_id' => nil).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where(:created_at => start_at..end_at).order(created_at: :desc).each do |row|
+    model.joins(:sales_order).where('sales_orders.status = ?', SalesOrder.statuses['Approved']).where.not(:'sales_orders.order_number' => nil).where.not(:'sales_orders.sales_quote_id' => nil).where(:created_at => start_at..end_at).order(created_at: :desc).each do |row|
       sales_order = row.sales_order
       inquiry = sales_order.inquiry
 
@@ -104,18 +104,18 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :inside_sales => sales_order.inside_sales_owner.try(:full_name),
                     :inquiry_number => inquiry.inquiry_number,
                     :bm_number => row.product.sku,
-                    :description => row.product.description,
+                    :description => row.product.name,
                     :company_alias => inquiry.account.name,
                     :order_date => sales_order.created_at.to_date.to_s,
                     :order_number => sales_order.order_number,
                     :qty => row.quantity,
-                    :selling_price => "",
+                    :selling_price => row.converted_total_selling_price,
                     :supplier_name => row.sales_quote_row.supplier.name,
                     :total_landed_cost => "",
-                    :margin => "",
-                    :margin_percentage => "",
-                    :client_order => "",
-                    :client_order_date => "",
+                    :margin => row.total_margin,
+                    :margin_percentage => row.margin_percentage,
+                    :client_order => inquiry.customer_po_number,
+                    :client_order_date => ( inquiry.customer_order_date.to_date.to_s if inquiry.customer_order_date.present?),
                     :unit_price => row.unit_selling_price,
                     :freight => row.freight_cost_subtotal,
                     :tax_type => "", #remaining
@@ -131,10 +131,10 @@ class Services::Overseers::Exporters::SalesOrderRowsExporter < Services::Oversee
                     :currency => inquiry.currency.name,
                     :conversion_rate => inquiry.inquiry_currency.conversion_rate,
                     :company_name => inquiry.company.name,
-                    :AR_Invoice => "",
-                    :AR_Invoice_Date => "",
+                    :AR_Invoice => sales_order.invoices.pluck(:invoice_number).join(';'),
+                    :AR_Invoice_Date => sales_order.invoices.map{|i| i.created_at.to_date.to_s}.join(';'),
                     :AR_Month_Code => "",
-                    :Supplier_PO => "", #po?
+                    :Supplier_PO => sales_order.po_requests.pluck(:purchase_order_number).compact.join(';'),
                     :AP_Invoice => "",
                     :Qty => "",
                     :AP_Invoice_not_for_margin_calculation => "",
