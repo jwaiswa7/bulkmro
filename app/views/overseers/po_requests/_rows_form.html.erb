@@ -58,8 +58,7 @@
     <%= f.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
   </div>
   <div class="col-12 col-md-4">
-    <strong class="form-control-label" for="payment_option">Payment Terms:</strong>
-    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: false %>
+    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: 'Payment Terms:' %>
   </div>
 
   <div class="col-12 ">
@@ -85,9 +84,32 @@
       <div class="flex-grow-1">
         <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
       </div>
+
+      <% if f.object.persisted? %>
+        <div class="form-group">
+          <% f.object.attachments.each do |attachment| %>
+            <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+              <i class="fal fa-download"></i>
+              <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join('') do %>
+                <i class="fal fa-trash-alt"></i>
+              <% end if attachment.present? && policy(:attachment).destroy? %>
+            <% end %>
+          <% end if f.object.attachments.attached? %>
+        </div>
+      <% end %>
     </div>
   </div>
+  <% if f.object.persisted? %>
+    <div class="col-12  col-md-6">
+      <%= f.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
+        <%= po_request_comment.hidden_field :created_by_id %>
+        <%= po_request_comment.hidden_field :updated_by_id %>
+        <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''}, label: 'Comment Message' %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
+<hr>
 <div class="form-row d-none d-md-flex">
   <div class="col-12 col-md-6">
     <div class="form-row">

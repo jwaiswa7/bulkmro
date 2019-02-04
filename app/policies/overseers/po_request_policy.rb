@@ -24,7 +24,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_cancel?
-    record.purchase_order.present? && (manager_or_sales? || admin? ) && record.status != "Amend"
+    record.purchase_order.present? && (manager_or_sales? || admin?) && record.status != "Amend"
   end
 
   def can_reject?
@@ -32,19 +32,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && manager_or_sales? && record.status == "Rejected"
+    record.purchase_order.present? && (manager_or_sales? || admin? ) && record.status == "Rejected"
   end
 
   def can_process_amended_po_requests?
-    record.purchase_order.present? && logistics? && record.status == "Amend"
-  end
-
-  def is_logistics?
-    logistics? || admin?
-  end
-
-  def is_manager_or_sales?
-    manager_or_sales?
+    record.purchase_order.present? && (logistics? || admin?) && record.status == "Amend"
   end
 
   def show_payment_request?
