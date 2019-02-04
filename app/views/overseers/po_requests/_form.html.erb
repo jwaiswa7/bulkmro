@@ -34,16 +34,18 @@
 
       <div class="col-6">
         <%#= f.input :purchase_order_number %>
-        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+        <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number", disabled: !policy(@po_request).is_logistics? %>
       </div>
 
       <div class="col-6">
         <% if policy(@po_request).can_cancel? %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_reject? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Amend"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
         <% elsif policy(@po_request).can_update_rejected_po_requests? %>
-          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Amend"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+        <% elsif policy(@po_request).can_process_amended_po_requests? %>
+          <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
         <% else %>
           <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
         <% end %>
@@ -158,17 +160,19 @@
   <% end %>
 
   <% if @po_request.comments.persisted.size > 0 %>
-    <div class="card">
-      <div class="card-body">
-        <div class="flex-fill">
-          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-        </div>
-        <div class="chats mb-3">
-          <% @po_request.comments.each do |comment| %>
-            <% if comment.persisted? %>
-              <%= format_comment(comment) %>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          </div>
+          <div class="chats mb-3">
+            <% @po_request.comments.each do |comment| %>
+              <% if comment.persisted? %>
+                <%= format_comment(comment) %>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
