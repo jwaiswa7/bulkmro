@@ -4,6 +4,7 @@ class SalesReceipt < ApplicationRecord
   belongs_to :sales_invoice, required: false
   belongs_to :company, required: false
   belongs_to :sales_order, required: false
+  belongs_to :currency, required: false
 
   enum payment_method: {
       :'banktransfer' => 10,
