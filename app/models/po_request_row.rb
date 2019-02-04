@@ -18,6 +18,12 @@ class PoRequestRow < ApplicationRecord
   # delegate :measurement_unit, to: :sales_order_row, allow_nil: true
   attr_accessor :sr, :product_name, :brand, :lead_time_option
 
+  after_initialize :set_defaults
+
+  def set_defaults
+    measurement_unit ||= MeasurementUnit.default
+  end
+
   enum status: {
       :'Draft' => 10,
       :'Po Requested' => 20

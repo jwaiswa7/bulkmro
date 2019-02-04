@@ -14,6 +14,7 @@
     <%= f.hidden_field :opportunity_type %>
     <%= f.hidden_field :payment_option %>
     <%= f.hidden_field :customer_committed_date %>
+
     <div class="card mb-2">
       <div class="card-body">
         <!--        <div>-->
@@ -60,10 +61,16 @@
               <%= po_request.hidden_field :supplier_committed_date %>
               <%= po_request.hidden_field :blobs %>
               <%= po_request.hidden_field :status %>
-              <%= po_request.hidden_field :address_id %>
+              <%= po_request.hidden_field :bill_from_id %>
+              <%= po_request.hidden_field :ship_from_id %>
+              <%= po_request.hidden_field :bill_to_id %>
+              <%= po_request.hidden_field :ship_to_id %>
               <%= po_request.hidden_field :contact_id %>
+              <%= po_request.hidden_field :contact_email %>
+              <%= po_request.hidden_field :contact_phone %>
               <%= po_request.hidden_field :logistics_owner_id %>
               <%= po_request.hidden_field :payment_option_id %>
+              <%= po_request.hidden_field :supplier_po_type %>
 
 
               <strong class="d-block text-uppercase">
@@ -72,16 +79,28 @@
                 : <%= po_request.object.supplier.try(:legacy_email) %>
               </strong>
               <div class="form-row mt-2">
-                <% if po_request.object.address.present? %>
+                <% if po_request.object.bill_from.present? %>
                   <div class="col-5 col-md-2 mb-2">
                     <strong class="d-block">Address</strong>
-                    <%= po_request.object.address.to_s %>
+                    <%= po_request.object.bill_from.address.to_s %>
                   </div>
                 <% end %>
                 <% if po_request.object.contact.present? %>
                   <div class="col-2 col-md-1 mb-2">
                     <strong class="d-block">Contact</strong>
                     <%= po_request.object.contact.to_s %>
+                  </div>
+                <% end %>
+                <% if po_request.object.contact_email.present? %>
+                  <div class="col-2 col-md-1 mb-2">
+                    <strong class="d-block">CONTACT EMAIL</strong>
+                    <%= po_request.object.contact_email.to_s %>
+                  </div>
+                <% end %>
+                <% if po_request.object.contact_phone.present? %>
+                  <div class="col-2 col-md-1 mb-2">
+                    <strong class="d-block">CONTACT NUMBER</strong>
+                    <%= po_request.object.contact_phone.to_s %>
                   </div>
                 <% end %>
                 <% if po_request.object.logistics_owner.present? %>
@@ -125,6 +144,7 @@
                   <th class="no-sort">TP</th>
                   <th class="no-sort">TT</th>
                   <th class="no-sort">TP with Tax</th>
+                  <th class="no-sort">Discount %</th>
                   <th class="no-sort">Lead time</th>
                 </tr>
                 </thead>
@@ -137,7 +157,9 @@
                   <%= po_request_row.hidden_field :tax_rate_id %>
                   <%= po_request_row.hidden_field :measurement_unit_id %>
                   <%= po_request_row.hidden_field :quantity %>
+                  <%= po_request_row.hidden_field :discount_percentage %>
                   <%= po_request_row.hidden_field :unit_price %>
+                  <%= po_request_row.hidden_field :lead_time %>
 
                   <% if po_request_row.present? %>
 
@@ -153,8 +175,9 @@
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
                       <td><%= format_currency(po_request_row.object.converted_total_selling_price_with_tax, symbol: @sales_order.inquiry_currency.currency.sign) %></td>
+                      <td><%= percentage(po_request_row.object.discount_percentage, precision: 2) %></td>
                       <td>
-                        <% lead_time = (po_request_row.object.sales_order_row.nil?) ? "NA" : po_request_row.object.sales_order_row.sales_quote_row.lead_time_option.to_s %><%= lead_time %></td>
+                        <%= format_succinct_date(po_request_row.object.lead_time) %></td>
                     </tr>
                   <% end %>
                 <% end %>

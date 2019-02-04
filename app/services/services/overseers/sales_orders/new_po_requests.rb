@@ -12,7 +12,8 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
         if po_requests[row.supplier.id] == nil
           po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
         end
-        po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: row.quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit, unit_price: row.sales_quote_row.unit_cost_price)
+
+        po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: row.quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit, unit_price: row.sales_quote_row.unit_cost_price, lead_time: Date.today)
       end
     else
       # TODO Look for po_requests where status is created or requested
@@ -25,9 +26,9 @@ class Services::Overseers::SalesOrders::NewPoRequests < Services::Shared::BaseSe
 
         if quantity > 0
           if !po_requests[row.supplier.id].present?
-            po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested')
+            po_requests[row.supplier.id] = @sales_order.po_requests.build(inquiry_id: @sales_order.inquiry.id, supplier_id: row.supplier.id, status: :'Requested', address_id: row.supplier.addresses.first.id)
           end
-          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity, product: row.product, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit, unit_price: row.sales_quote_row.unit_cost_price)
+          po_requests[row.supplier.id].rows.build(sales_order_row_id: row.id, quantity: quantity, product: row.product, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit, unit_price: row.sales_quote_row.unit_cost_price, lead_time: Date.today)
         end
       end
     end

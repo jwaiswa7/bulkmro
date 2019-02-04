@@ -1,5 +1,8 @@
 import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
 import updateRatingForm from "../common/updateRatingForm"
+import updateRowTotal from "../salesOrders/updateRowTotal"
+
+
 const newAction = () => {
 
     bindRatingModalTabClick();
@@ -13,29 +16,23 @@ const newAction = () => {
     }).find('select[name*=product_id]').each(function (e) {
         onProductChange(this);
     });
+    updateRowTotal();
+
 }
 
 let onProductChange = (container) => {
     let optionSelected = $("option:selected", container);
-    let select = $(container).closest('select');
+    let row = $(container).closest('.po-request-row');
     if (optionSelected.exists() && optionSelected.val() !== '') {
-        // $.getJSON({
-        //     url: Routes.autocomplete_suppliers_overseers_product_path(optionSelected.val()),
-        //
-        //     success: function (response) {
-        //         select.closest('div.form-row').find('[name*=bp_catalog_name]').val(response.bp_catalog_name);
-        //     }
-        // });
         $.getJSON({
             url: Routes.get_product_details_overseers_product_path(optionSelected.val()),
 
             success: function (response) {
                 console.log(response)
-                select.closest('div.form-row').find('[name*=brand]').val(response.brand);
-                // select.closest('div.form-row').find('[name*=tax_code_id]').val(response.tax_code_id).trigger("change");
-                select.closest('div.form-row').find('[name*=tax_rate_id]').val(response.tax_rate_id).trigger("change");
-                select.closest('div.form-row').find('[name*=measurement_unit]').val(response.measurement_unit);
-                select.closest('div.form-row').find('[name*=product_unit_selling_price]').val(response.converted_unit_selling_price);
+                row.find('[name*=brand]').val(response.brand);
+                row.find('[name*=tax_rate_id]').val(response.tax_rate_id).trigger("change");
+                row.find('[name*=measurement_unit]').val(response.measurement_unit);
+                row.find('[name*=unit_price]').val(response.converted_unit_selling_price);
             }
         });
     }
