@@ -2289,4 +2289,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def update_mis_date_of_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+    missing_so = []
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+      if sales_order.present?
+        sales_order.update_attribute('mis_date', x.get_column('mis date',to_datetime: true))
+      else
+        missing_so.push(x.get_column('order number'))
+      end
+    end
+    puts "<--------------------------------------------------------------------------------------------->"
+    puts missing_so
+  end
 end
