@@ -1265,6 +1265,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_po_request_for_purchase_orders
     SalesOrder.remote_approved.each do |sales_order|
       rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name:sales_order.inquiry.company.name)
       sales_order.inquiry.purchase_orders.each do |purchase_order|
         if purchase_order.rows.present?
           purchase_order.rows.each do |line_item|
@@ -1273,10 +1274,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               row = sales_order.rows.find(rows[product_sku])
               quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
               if !purchase_order.po_request.present?
-                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number).first_or_create!
+                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, logistics_owner: service.call).first_or_create!
               else
                 po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created', purchase_order_number: purchase_order.po_number).first
-                po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number})
+                # confirm
+                po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, logistics_owner: service.call})
               end
               po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit)
             end
@@ -1295,6 +1297,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           if !po_request.status != 'PO Created'
             purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
             if purchase_order.present?
+              service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name:purchase_order.inquiry.company.name)
               purchase_order.rows.each do |line_item|
                 product_sku = line_item.sku
                 if rows[product_sku] != nil
@@ -1304,20 +1307,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                     if purchase_order.po_request.present?
                       po_request.update!(status: 'Cancelled')
                     else
-                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order)
+                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, logistics_owner: service.call)
                     end
                   else
-                    po_request.update!(supplier_id: row.supplier.id)
+                    po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id)
                     po_request.rows.where(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit).first_or_create!
                   end
                 end
               end
             end
-
           end
         else
+          service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name:po_request.sales_order.inquiry.company.name)
           po_request.sales_order.rows.each do |row|
-            po_request.update!(supplier_id: row.supplier.id)
+            po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: po_request.sales_order.inquiry.bill_from_id, ship_to_id: po_request.sales_order.inquiry.ship_from_id, logistics_owner: service.call)
             po_request.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
           end
         end
@@ -2405,7 +2408,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_material_status(po)
-
     if po.material_pickup_requests.any?
       partial = true
       if po.rows.sum(&:get_pickup_quantity) <= 0
@@ -2419,6 +2421,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       po.update_attribute(:material_status, status)
     else
       po.update_attribute(:material_status, 'Material Readiness Follow-Up')
+    end
+  end
+
+  def update_addresses_in_existing_po_requests
+    PoRequest.all.each do |po_request|
+
     end
   end
 end
