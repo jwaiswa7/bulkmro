@@ -106,14 +106,19 @@
             <strong><%= f.object.supplier.to_s %></strong>
           </h5>
           <div class="form-row">
-            <div class="col-6">
-              <% if f.object.address %>
-                <div class="form-group">
-                  <label class="form-control-label d-block">Address</label>
-                  <%= f.object.address.to_compact_multiline_s %>
-                </div>
-              <% end %>
+            <div class="col-12 col-md-6">
+              <%= f.association :bill_from, collection: Address.where(:company_id => f.object.supplier_id).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id}]}, input_html: {class: 'select2-single'}, required: true %>
             </div>
+            <div class="col-12 col-md-6">
+              <%= f.association :ship_from, collection: selected_option_or_nil(f, :ship_from), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier)}, required: true %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
+            </div>
+          </div>
             <div class="col-6">
               <% if f.object.contact %>
                 <div class="form-group">

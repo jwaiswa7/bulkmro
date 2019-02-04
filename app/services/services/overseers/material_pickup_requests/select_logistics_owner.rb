@@ -1,7 +1,7 @@
 class Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner < Services::Shared::BaseService
-  def initialize(purchase_order)
+  def initialize(purchase_order, company_name: nil )
     @purchase_order = purchase_order
-    @company_name = purchase_order.inquiry.company.name
+    @company_name = company_name || purchase_order.inquiry.company.name
     @companies_group_1 = ["Cummins Technologies India Pvt. Ltd.", "Cummins India Ltd.", "Cummins Generator Technologies India Pvt. Ltd.",
                           "Beckman Coulter India Pvt. Ltd.", "Huntsman International India Pvt Ltd", "Godrej and Boyce Manufacturing Co. Ltd.",
                           "DHL Supply Chain India Pvt. Ltd."]
