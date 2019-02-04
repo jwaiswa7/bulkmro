@@ -15,6 +15,8 @@ class Services::Overseers::SalesOrders:: UpdatePoRequests < Services::Shared::Ba
       po_request.inquiry_id = po_request_hash[:inquiry_id]
       po_request.address_id = po_request_hash[:address_id]
       po_request.contact_id = po_request_hash[:contact_id]
+      po_request.contact_email = po_request_hash[:contact_email]
+      po_request.contact_phone = po_request_hash[:contact_phone]
       po_request.payment_option_id = po_request_hash[:payment_option_id]
       po_request.supplier_committed_date = po_request_hash[:supplier_committed_date]
       if po_request_hash[:blobs].present?

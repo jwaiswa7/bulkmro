@@ -58,6 +58,18 @@
       <div class="col-6 d-none status-cancelled">
         <%= f.input :cancellation_reason, disabled: !(policy(@po_request).can_cancel?), :include_blank => true %>
       </div>
+      <div class="col-12 col-md-6">
+        <%= f.association :contact, as: :select, collection: f.object.supplier.contacts, :include_blank => false %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :contact_email, label: 'Contact Email', required: false, placeholder: 'If left blank, above selected contact\'s email will be applied'   %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.input :contact_phone, label: 'Contact Phone', required: false, placeholder: 'If left blank, above selected contact\'s number will be applied'  %>
+      </div>
+      <div class="col-md-6">
+        <%= f.association :logistics_owner, as: :select, :include_blank => false %>
+      </div>
       <div class="col-md-6">
         <div class="d-flex flex-row align-items-end">
           <div class="flex-grow-1">
@@ -97,10 +109,7 @@
               <% if f.object.address %>
                 <div class="form-group">
                   <label class="form-control-label d-block">Address</label>
-                  <%= f.object.address.to_compact_multiline_s %><br>
-                  <% if f.object.contact.present? %>
-                    <strong>Email: </strong><%= f.object.contact.email || '-' %>
-                  <% end %>
+                  <%= f.object.address.to_compact_multiline_s %>
                 </div>
               <% end %>
             </div>
@@ -108,7 +117,13 @@
               <% if f.object.contact %>
                 <div class="form-group">
                   <label class="form-control-label d-block">Contact</label>
-                  <strong><%= f.object.contact %>:</strong> <%= f.object.contact.telephone || f.object.contact.mobile %>
+                  <strong><%= f.object.contact %></strong><br>
+                  <% if f.object.contact_email.present? %>
+                    <strong>Email: </strong><%= f.object.contact_email %><br>
+                  <% end %>
+                  <% if f.object.contact_phone.present? %>
+                    <strong>Phone: </strong><%= f.object.contact_phone %>
+                  <% end %>
                 </div>
               <% end %>
             </div>
