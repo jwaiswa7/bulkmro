@@ -1,6 +1,7 @@
 <% content_for :page_title do %>
   <%= @po_request.readable_status %>
 <% end %>
+<%= provide :container_fluid, true %>
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> <%= @po_request.readable_status %> for Order <%= format_id(@po_request.sales_order.order_number) %></h2>
@@ -134,115 +135,8 @@
               </div>
             </div>
           </div>
-          <div class="form-row d-none d-md-flex">
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Sr. No.</label>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="form-group mb-0">
-                <label>Product</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Make</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>HSN</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>T. Rate</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>Quantity</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>UOM</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>UP</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>TP</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>TT</label>
-              </div>
-            </div>
-            <div class="col-1">
-              <div class="form-group mb-0">
-                <label>TP with tax</label>
-              </div>
-            </div>
-          </div>
-          <%= f.simple_fields_for :rows, wrapper_tag: :div do |row| %>
-            <div class="form-row flex-row align-items-start">
-              <%= row.hidden_field :id %>
-              <%= row.hidden_field :sales_order_row_id %>
 
-              <div class="col-1 col-md-1">
-                <%= (f.object.rows.index(row.object) || 0) + 1 %>
-              </div>
-
-              <div class="col-6 col-md-2">
-                <%= row.object.product.to_s %>
-              </div>
-
-              <div class="col-6 col-md-1">
-                <%= row.object.product.try(:brand).to_s %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%#= row.object.tax_code %>
-                <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
-                  <%= row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: false)}, disabled: false, label: false %>
-                <% else %>
-                  <%= row.object.tax_code %>
-                <% end %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%#= row.object.sales_order_row.best_tax_rate %>
-                <% if f.object.status == "Requested" || f.object.status == "Rejected" || f.object.purchase_order.blank? %>
-                  <%= row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
-                <% else %>
-                  <%= row.object.tax_rate %>
-                <% end %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.quantity %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.measurement_unit %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.converted_unit_selling_price %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.converted_total_selling_price %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.converted_total_tax %>
-              </div>
-              <div class="col-12 col-md-1">
-                <%= row.object.converted_total_selling_price_with_tax %>
-              </div>
-            </div>
-          <% end %>
+            <%= render 'overseers/po_requests/rows_form', po_request: f %>
         </div>
       </div>
     </div>

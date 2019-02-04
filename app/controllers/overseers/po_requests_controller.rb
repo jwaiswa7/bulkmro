@@ -68,6 +68,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def update
+
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
@@ -116,7 +117,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :status,
         :cancellation_reason,
         :rejection_reason,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id],
+        :rows_attributes => [:id, :sales_order_row_id,:product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
