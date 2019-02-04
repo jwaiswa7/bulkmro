@@ -10,13 +10,12 @@
 <% end %>
 
 <% provide :heading_buttons do %>
-  <% if policy(:material_pickup_request).material_delivered_queue? %>
+  <% if action_name == 'material_delivered_queue' %>
     <button type="button" id="create_invoice" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
       <i class="fal fa-check mr-1"></i>Create Invoice Request
     </button>
   <% end %>
 <% end %>
-
 
 <div class="col-lg-12">
   <% content_for :header_row do %>

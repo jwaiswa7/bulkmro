@@ -1,7 +1,7 @@
 json.data (@material_pickup_requests) do |material_pickup_request|
   json.array! [
                   [
-                      if policy(material_pickup_request).delivered? && policy(material_pickup_request.purchase_order).can_request_invoice?
+                      if policy(material_pickup_request).delivered? && policy(material_pickup_request).can_request_invoice?
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='pickup_requests[]' class='custom-control-input' value='#{material_pickup_request.id}' id='c-#{material_pickup_request.id}' data-po-id='#{material_pickup_request.purchase_order.id}'><label class='custom-control-label' for='c-#{material_pickup_request.id}'></label></div>"
                       end,
                       if policy(material_pickup_request).show?
@@ -13,7 +13,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                       if policy(material_pickup_request).confirm_delivery?
                         row_action_button(confirm_delivery_overseers_purchase_order_material_pickup_request_path(material_pickup_request.purchase_order, material_pickup_request), 'check', 'Confirm Delivery', 'success')
                       end,
-                      if policy(material_pickup_request).delivered? && policy(material_pickup_request.purchase_order).can_request_invoice?
+                      if policy(material_pickup_request).delivered? && policy(material_pickup_request).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(purchase_order_id: material_pickup_request.purchase_order, mpr_id: material_pickup_request), 'plus', 'Create Invoice Request', 'success', target: :_blank)
                       elsif material_pickup_request.invoice_request.present? && policy(material_pickup_request.invoice_request).show?
                         row_action_button(overseers_invoice_request_path(material_pickup_request.invoice_request), 'eye', "View #{material_pickup_request.invoice_request.readable_status}", 'success', target: :_blank)

@@ -50,7 +50,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       authorize @invoice_request
     elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
-      @sales_order = @purchase_order.po_request.sales_order
+      @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
       @mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
 
