@@ -435,6 +435,8 @@ Rails.application.routes.draw do
 
     resources :freight_quotes
 
+    resources :sales_receipts
+
   end
 
   namespace 'customers' do

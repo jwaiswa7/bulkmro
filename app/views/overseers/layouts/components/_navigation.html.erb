@@ -110,6 +110,7 @@
               <%= nav_dropdown_item 'Completed', completed_overseers_invoice_requests_path, policy(:sales_invoice).index? %>
             </ul>
           </div>
+          <%= nav_dropdown_item 'Sales Receipt', overseers_sales_receipts_path, policy(:sales_receipt).index? %>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Freight Requests</a>
