@@ -54,17 +54,35 @@
                   Remove Supplier
                 <% end %>
               <div class="form-row mt-2">
-                <div class="col-12 col-md-6">
-                  <%= po_request.association :address, collection: selected_option_or_nil(po_request, :address), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
+                <div class="col-12 col-md-3">
+                  <%= po_request.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, alphabetical: false), :include_blank => false, label: 'Supplier PO Type' %>
+                </div>
+                <div class="col-12 col-md-3">
+                  <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
                 </div>
                 <div class="col-12 col-md-6">
                   <%= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
+                </div>
+                <div class="col-12 col-md-4">
+                  <%= po_request.association :logistics_owner, as: :select, required: true %>
                 </div>
                 <div class="col-12 col-md-6">
                   <%= po_request.input :contact_email, label: 'Contact Email', required: false, placeholder: 'If left blank, above selected contact\'s email will be applied' %>
                 </div>
                 <div class="col-12 col-md-6">
                   <%= po_request.input :contact_phone, label: 'Contact Phone', required: false, placeholder: 'If left blank, above selected contact\'s number will be applied' %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :bill_from, collection: Address.where(:company => po_request.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id}]}, input_html: {class: 'select2-single'}, required: true %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :ship_from, collection: selected_option_or_nil(po_request, :ship_from), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <%= po_request.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true %>
                 </div>
                 <div class="col-12 col-md-2">
                   <%= po_request.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
@@ -79,12 +97,11 @@
                 <div class="col-12 col-md-6">
                   <div class="d-flex flex-row align-items-end">
                     <div class="flex-grow-1">
-                      <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments', :placeholder => "test" %>
+                      <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
                     </div>
                   </div>
                 </div>
               </div>
-              </p>
 
               <%= render 'overseers/po_requests/rows_form', po_request: po_request %>
             </div>

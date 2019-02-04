@@ -14,6 +14,7 @@
     <%= f.hidden_field :opportunity_type %>
     <%= f.hidden_field :payment_option %>
     <%= f.hidden_field :customer_committed_date %>
+
     <div class="card mb-2">
       <div class="card-body">
         <!--        <div>-->
@@ -60,12 +61,16 @@
               <%= po_request.hidden_field :supplier_committed_date %>
               <%= po_request.hidden_field :blobs %>
               <%= po_request.hidden_field :status %>
-              <%= po_request.hidden_field :address_id %>
+              <%= po_request.hidden_field :bill_from_id %>
+              <%= po_request.hidden_field :ship_from_id %>
+              <%= po_request.hidden_field :bill_to_id %>
+              <%= po_request.hidden_field :ship_to_id %>
               <%= po_request.hidden_field :contact_id %>
               <%= po_request.hidden_field :contact_email %>
               <%= po_request.hidden_field :contact_phone %>
               <%= po_request.hidden_field :logistics_owner_id %>
               <%= po_request.hidden_field :payment_option_id %>
+              <%= po_request.hidden_field :supplier_po_type %>
 
 
               <strong class="d-block text-uppercase">
@@ -74,10 +79,10 @@
                 : <%= po_request.object.supplier.try(:legacy_email) %>
               </strong>
               <div class="form-row mt-2">
-                <% if po_request.object.address.present? %>
+                <% if po_request.object.bill_from.present? %>
                   <div class="col-5 col-md-2 mb-2">
                     <strong class="d-block">Address</strong>
-                    <%= po_request.object.address.to_s %>
+                    <%= po_request.object.bill_from.address.to_s %>
                   </div>
                 <% end %>
                 <% if po_request.object.contact.present? %>
