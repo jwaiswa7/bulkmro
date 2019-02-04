@@ -16,17 +16,17 @@ class Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner < Servic
   def call
     case
     when companies_group_1.include?(company_name) then
-      Overseer.logistics.where(first_name: "Farhan").first
+      Overseer.logistics.where(email: "farhan.ansari@bulkmro.com").first
     when companies_group_2.include?(company_name) then
-      Overseer.logistics.where(first_name: "Mahendra").first
+      Overseer.logistics.where(email: "mahendra.kolekar@bulkmro.com").first
     when companies_group_3.include?(company_name) then
-      Overseer.logistics.where(first_name: "Sumit").first
+      Overseer.logistics.where(email: "sumit.sharma@bulkmro.com").first
     when companies_group_4.include?(company_name) then
-      Overseer.logistics.where(first_name: "Tushar").first
+      Overseer.logistics.where(email: "tushar.jadhav@bulkmro.com").first
     when companies_group_5.include?(company_name) then
-      Overseer.logistics.where(first_name: "Vignesh").first
+      Overseer.logistics.where(email: "vignesh.gounder@bulkmro.com").first
     else
-      Overseer.logistics.where(first_name: "Amit").first
+      Overseer.logistics.where(email: "amit.rawool@bulkmro.com").first
     end
   end
 

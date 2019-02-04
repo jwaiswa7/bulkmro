@@ -52,24 +52,21 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.po_request.sales_order
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
-      mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
+      @mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
 
       service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order,current_overseer)
       @company_reviews = service.call
 
       authorize @invoice_request
-      if params[:mpr_id]
-        @invoice_request.material_pickup_requests << MaterialPickupRequest.find(mpr_ids)
-      else
-        MaterialPickupRequest.where(id: mpr_ids).each do |mpr|
-          @invoice_request.material_pickup_requests << mpr
-        end
-      end
-
       if(params[:mpr_id] || params[:ids])
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, false)
+        if params[:mpr_id]
+          @invoice_request.material_pickup_requests << MaterialPickupRequest.find(@mpr_ids)
+        else
+          @invoice_request.material_pickup_requests << MaterialPickupRequest.where(id: @mpr_ids)
+        end
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@mpr_ids, by_po = false)
       else
-        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, true)
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, by_po = true)
       end
       @products_list = service.call
     else

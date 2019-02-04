@@ -1,11 +1,11 @@
 class Services::Overseers::InvoiceRequests::FormProductsList < Services::Shared::BaseService
-  def initialize(object, sort_by_po)
+  def initialize(object, by_po)
     @object = object
-    @sort_by_po = sort_by_po
+    @by_po = by_po
   end
 
   def call
-    if(sort_by_po == true)
+    if(by_po == true)
       object.rows.map{|row| {purchase_order_row: row, total_quantity: row.metadata["PopQty"]}}
     else
       MprRow.where(material_pickup_request_id: object)
@@ -15,5 +15,5 @@ class Services::Overseers::InvoiceRequests::FormProductsList < Services::Shared:
   end
 
   private
-  attr_accessor :object, :sort_by_po
+  attr_accessor :object, :by_po
 end

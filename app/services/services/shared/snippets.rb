@@ -893,4 +893,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
   end
+
+  def add_logistics_owner_to_all_po
+    PurchaseOrder.all.each do |po|
+      po.update_attributes(logistics_owner: Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(po).call)
+    end
+  end
 end
