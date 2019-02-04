@@ -153,7 +153,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
   end
 
-
   def create_purchase_orders_requests
     authorize :sales_order
 
@@ -179,11 +178,17 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :inquiry_id,
               :_destroy,
               :logistics_owner_id,
-              :address_id,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
               :contact_id,
               :payment_option_id,
+              :supplier_po_type,
               :status,
               :supplier_committed_date,
+              :contact_email,
+              :contact_phone,
               :blobs,
               :attachments => [],
               :rows_attributes => [
@@ -196,7 +201,10 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :brand_id,
                   :tax_code_id,
                   :tax_rate_id,
-                  :measurement_unit_id
+                  :lead_time,
+                  :measurement_unit_id,
+                  :discount_percentage,
+                  :unit_price
               ]
           ]
       )

@@ -1,3 +1,5 @@
+import updateRowTotal from "../salesOrders/updateRowTotal"
+
 const edit = () => {
     $('form').on('change','select[name*=status]',function(e){
         if($(e.target).val() == "Cancelled"){
@@ -18,6 +20,8 @@ const edit = () => {
         }
     });
     $('select[name*=status]').trigger('change');
+
+    updateRowTotal();
 };
 
 export default edit
