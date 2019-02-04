@@ -60,6 +60,34 @@
               </div>
             <% end %>
 
+            <% if @mpr.dispatched_by? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Material Dispatched By</strong>
+                <%= @mpr.dispatched_by %>
+              </div>
+            <% end %>
+
+            <% if @mpr.shipped_to? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Material Shipped To</strong>
+                <%= @mpr.shipped_to %>
+              </div>
+            <% end %>
+
+            <% if @mpr.logistics_partner? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Logistics Partner</strong>
+                <%= @mpr.logistics_partner %>
+              </div>
+            <% end %>
+
+            <% if @mpr.tracking_number? %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Tracking Number</strong>
+                <%= @mpr.tracking_number %>
+              </div>
+            <% end %>
+
             <% if @mpr.expected_dispatch_date? %>
               <div class="col-6 col-md-3 mb-2">
                 <strong class="d-block">Expected Dispatch Date</strong>

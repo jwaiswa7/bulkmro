@@ -29,6 +29,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
 
   def can_reject?
     record.purchase_order.blank? && logistics?
+    # || admin?
   end
 
   def can_update_rejected_po_requests?

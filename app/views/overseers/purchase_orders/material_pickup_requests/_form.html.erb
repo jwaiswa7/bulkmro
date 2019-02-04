@@ -58,13 +58,29 @@
             </div>
 
             <div class="col-6">
-              <%= f.input :document_type, collection: enum_to_collection(MaterialPickupRequest.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"}, include_blank: 'Choose a type of Document' %>
+              <%= f.input :document_type, collection: enum_to_collection(MaterialPickupRequest.document_types, keep_raw: true), label: "Type of Document", input_html: {class: "select2-single"} %>
             </div>
 
             <div class="col-6">
 
               <%= f.input :status, as: :select, collection: enum_to_collection(MaterialPickupRequest.statuses, keep_raw: true), disabled: true, readonly: true %>
               <%= f.hidden_field :status %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :dispatched_by, collection: enum_to_collection(MaterialPickupRequest.dispatched_bies, keep_raw: true), label: "Material Dispatched By", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :shipped_to, collection: enum_to_collection(MaterialPickupRequest.shipped_tos, keep_raw: true), label: "Material Shipped To", input_html: {class: "select2-single"}, required: true %>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
+            </div>
+
+            <div class="col-6">
+              <%= f.input :tracking_number, label: 'Tracking Number' %>
             </div>
 
             <div class="col-12">
