@@ -9,21 +9,38 @@
   <% end %>
 <% end %>
 
+<% provide :heading_buttons do %>
+  <% if policy(:material_pickup_request).material_delivered_queue? %>
+    <button type="button" id="create_invoice" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-check mr-1"></i>Create Invoice Request
+    </button>
+  <% end %>
+<% end %>
+
 
 <div class="col-lg-12">
   <% content_for :header_row do %>
-    <th class="no-sort all"></th>
-    <th class="no-sort desktop" data-name="po_number">Doc ID</th>
-    <th class="no-sort desktop" data-name="po_number">Purchase #</th>
-    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
-    <th class="no-sort desktop" data-name="rating">Rating</th>
-    <th class="no-sort desktop" data-name="customer_id">Customer</th>
-    <th class="no-sort desktop" data-name="logistics_owner_id">Logistics</th>
+    <th class="sort all"></th>
+    <th class="sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="sort desktop" data-name="company_name">Customer Company Name</th>
+    <th class="sort desktop" data-name="so_number">Sales Order #</th>
+    <th class="sort desktop" data-name="so_date">Sales Order Date</th>
+    <th class="sort desktop" data-name="committed_date">Committed Date to Customer</th>
+    <th class="sort desktop" data-name="supplier_po_number">Supplier PO #</th>
+    <th class="sort desktop" data-name="supplier_po_date">Supplier PO Date</th>
+    <th class="sort desktop" data-name="supplier_id">Supplier Name</th>
+    <th class="sort desktop" data-name="sales_owner">IS & P Owner</th>
+    <th class="sort desktop" data-name="logistics_owner_id">Logistics Owner</th>
+    <th class="sort desktop" data-name="po_status">Status</th>
+    <th class="sort desktop" data-name="po_request_status">PO Request Status</th>
+    <th class="sort desktop" data-name="pr_status">Payment Request Status</th>
+    <th class="sort all" data-name="material_status">Material Status</th>
+    <th class="sort desktop">Latest Comment</th>
     <th class="sort desktop" data-name="expected_dispatch_date">Expected Dispatch Date</th>
+    <th class="sort desktop" data-name="logistics_partner">Logistics Partner</th>
+    <th class="sort desktop" data-name="tracking_number">Tracking Details</th>
     <th class="sort desktop" data-name="expected_delivery_date">Expected Delivery Date</th>
     <th class="sort desktop" data-name="actual_delivery_date">Actual Delivery Date</th>
-    <th class="sort desktop" data-name="created_at">Created</th>
 
   <% end %>
   <% content_for :filter_row do %>
@@ -31,14 +48,23 @@
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
+    <td data-filter="false"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
     <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
+    <td data-filter="false"></td>
+    <td data-filter="daterange"></td>
+    <td data-filter="daterande"></td>
 
   <% end %>
 
