@@ -77,21 +77,21 @@
   <% end %>
 
   <% if @po_request.comments.persisted.size > 0 %>
-    <div class="card">
-      <div class="card-body">
-        <div class="flex-fill">
-          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-        </div>
-        <div class="chats mb-3">
-          <% @po_request.comments.each do |comment| %>
-            <% if comment.persisted? %>
-              <%= format_comment(comment) %>
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-fill">
+            <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+          </div>
+          <div class="chats mb-3">
+            <% @po_request.comments.each do |comment| %>
+              <% if comment.persisted? %>
+                <%= format_comment(comment) %>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
     </div>
   <% end %>
-
-
-  </div>
+</div>
