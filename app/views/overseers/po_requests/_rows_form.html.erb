@@ -1,4 +1,92 @@
+<div class="form-row mt-2 po-request-form">
 
+  <%= f.hidden_field :id %>
+  <%= f.hidden_field :sales_order_id %>
+  <%= f.hidden_field :inquiry_id %>
+  <%= f.hidden_field :supplier_id %>
+  <%= f.hidden_field :logistics_owner_id %>
+  <div class="col-12 col-md-4">
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, alphabetical: false), :include_blank => false, label: 'Supplier PO Type', input_html: {'data-ship-from-state': f.object.sales_order.inquiry.ship_from.address.state.id} %>
+  </div>
+
+  <% if f.object.persisted? %>
+    <div class="col-12 col-md-4">
+      <% if policy(f.object).can_cancel? %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["Requested", "Rejected"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
+      <% elsif policy(f.object).can_reject? %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false %>
+      <% elsif policy(f.object).can_update_rejected_po_requests? %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled"].include?(status)}, alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Rejected'] %>
+      <% else %>
+        <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
+      <% end %>
+
+    </div>
+
+
+    <div class="col-4 d-none status-rejected">
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(f.object).can_reject?, :include_blank => true %>
+    </div>
+    <div class="col-4 d-none status-cancelled">
+      <%= f.input :cancellation_reason, disabled: !(policy(f.object).can_cancel?), :include_blank => true %>
+    </div>
+  <% else %>
+    <div class="col-12 col-md-4">
+      <%= f.input :status, as: :select, collection: enum_to_collection(PoRequest.statuses.reject {|status| ["PO Created", "Cancelled", "Rejected"].include?(status)}, alphabetical: false), :include_blank => false %>
+    </div>
+  <% end %>
+  <% if f.object.persisted? %>
+
+    <div class="col-4">
+      <%= f.association :purchase_order, collection: [f.object.purchase_order], label_method: :to_s, include_blank: "Type Supplier PO Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_purchase_orders_path(:inquiry_number => f.object.inquiry.inquiry_number, :has_po_request => true), :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier PO Number" %>
+    </div>
+  <% end %>
+  <div class="col-12 col-md-4">
+    <%= f.association :contact, as: :select, collection: f.object.supplier.contacts, :include_blank => false %>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <%= f.input :contact_email, label: 'Contact Email', required: false, placeholder: 'If left blank, above selected contact\'s email will be applied' %>
+  </div>
+  <div class="col-12 col-md-4">
+    <%= f.input :contact_phone, label: 'Contact Phone', required: false, placeholder: 'If left blank, above selected contact\'s number will be applied' %>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <%= f.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, required: true %>
+  </div>
+  <div class="col-12 col-md-4">
+    <strong class="form-control-label" for="payment_option">Payment Terms:</strong>
+    <%= f.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select Payment Terms', required: true, label: false %>
+  </div>
+
+  <div class="col-12 ">
+    <div class="form-row">
+      <div class="col-12 col-md-6">
+        <%= f.association :bill_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id}]}, input_html: {class: 'select2-single'}, required: true %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.association :ship_from, collection: selected_option_or_nil(f, :ship_from), label_method: :to_s, input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(f.object.supplier)}, required: true %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= f.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Shipped TO where the Sales Order is being Shipped From (Inquiry Ship From)' %>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="col-12 col-md-6">
+    <div class="d-flex flex-row align-items-end">
+      <div class="flex-grow-1">
+        <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="form-row d-none d-md-flex">
   <div class="col-12 col-md-6">
     <div class="form-row">
@@ -86,7 +174,7 @@
   </div>
 </div>
 
-<%= po_request.nested_fields_for :rows do |po_request_row| %>
+<%= f.nested_fields_for :rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
   <%= po_request_row.hidden_field :sales_order_row_id %>
   <%= po_request_row.hidden_field :product_id %>
@@ -97,7 +185,7 @@
     <div class="col-12 col-md-6">
       <div class="form-row">
         <div class="col-12 col-md-1">
-          <%= po_request_row.input :sr, input_html: {value: ((po_request.object.rows.index(po_request_row.object) || 0) + 1)}, label: false, disabled: true %>
+          <%= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, label: false, disabled: true %>
         </div>
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
@@ -109,18 +197,18 @@
         <div class="col-12 col-md-1">
 
           <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: false, disabled: true %>
-          <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: false, po_request.object.rows.first == po_request_row.object ? "Make" : false  %>
+          <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, label: false, f.object.rows.first == po_request_row.object ? "Make" : false  %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_code, label: false, po_request.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
+          <%#= po_request_row.input :tax_code, label: false, f.object.rows.first == po_request_row.object ? "HSN" : false, disabled: po_request_row.object.field_disabled? %>
           <%= po_request_row.association :tax_code, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :tax_code), include_blank: "Type to search", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_tax_codes_path(is_service: !po_request_row.object.field_disabled?)}, label: false, required: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%#= po_request_row.input :tax_rate, label: false, po_request.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
+          <%#= po_request_row.input :tax_rate, label: false, f.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: false %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.quantity, min: 0}, label: false, disabled: false, required: true %>
+          <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, label: false, disabled: false, required: true %>
         </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage}, label: false, disabled: false %>
@@ -161,7 +249,7 @@
   </div>
 <% end %>
 <div class="col-md-3">
-  <%= po_request.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
+  <%= f.add_nested_fields_link :rows, class: 'btn btn-outline-success btn-block mb-2 mb-md-0' do %>
     <i class="fal fa-plus-circle mr-1"></i>Add a Service product
   <% end %>
 </div>
