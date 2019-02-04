@@ -86,6 +86,14 @@ class PoRequest < ApplicationRecord
     self.status ||= :'Requested'
   end
 
+  def amending?
+    status == 'Amend'
+  end
+
+  def not_amending?
+    status != 'Amend'
+  end
+
   def selling_price
     rows.sum(&:converted_total_selling_price).round(2)
   end
