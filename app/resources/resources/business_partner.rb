@@ -86,8 +86,26 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
-      company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
+        if remote_uid.present? && Contact.where(:email => contact["E_Mail"].to_s.strip.downcase).first.present?
+          company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
+          company_contact.update_attributes(:remote_uid => remote_uid) if CompanyContact.find_by_remote_uid(remote_uid).nil?
+        elsif remote_uid.present? && Contact.find_by_email(contact["E_Mail"].to_s.strip.downcase).nil?
+           new_contact = Contact.new
+           new_contact.account_id = contact['CardCode'].present? ? Company.where(:remote_uid => contact['CardCode']).first.account : '',
+           new_contact.first_name = contact['FirstName'].present? ? contact['FirstName'] : '',
+           new_contact.last_name =  contact['LastName'].present? ? contact['LastName'] : '',
+           new_contact.telephone = contact['Phone1'].present? ? contact['Phone1'] : '',
+           new_contact.mobile = contact['MobilePhone'].present? ? contact['MobilePhone'] : '',
+           new_contact.email =  contact['E_Mail'] if contact['E_Mail'].present?
+           new_contact.save!
+           if new_contact.save!
+              com_con = CompanyContact.new
+              com_con.contact_id = new_contact.id,
+              com_con.company_id = company.id
+              com_con.remote_uid = contact["InternalCode"]
+              com_con.save!
+           end
+        end
     end if contacts.present?
   end
 
