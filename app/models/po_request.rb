@@ -57,7 +57,7 @@ class PoRequest < ApplicationRecord
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
 
   validate :purchase_order_created?
-  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
+  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present? && !is_legacy}
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, :if => :new_record?
