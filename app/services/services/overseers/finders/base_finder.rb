@@ -61,7 +61,6 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
 #    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
 #    @records = order_by_ids(@indexed_records) if indexed_records.present?
-
     if @indexed_records.size > 0
       @records = model_klass.find_ordered(indexed_records.pluck(:id)).with_includes if @indexed_records.present?
     else
@@ -176,7 +175,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def filter_by_status(only_remote_approved: false)
+  def filter_by_status(only_remote_approved = false, key = nil )
     if only_remote_approved
       {
           bool: {
@@ -195,6 +194,23 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           },
 
       }
+    elsif key.present?
+      {
+          bool: {
+              should: [
+                  {
+                      term: {status: SalesOrder.statuses[key]},
+                  },
+                  {
+                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[key]},
+                  },
+                  {
+                      term: {approval_status: key},
+                  },
+              ],
+              minimum_should_match: 2,
+          },
+      }
     else
       {
           bool: {
@@ -206,7 +222,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       exists: {field: 'sent_at'}
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected').values},
+                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected',:'Canceled').values},
                   },
               ],
               minimum_should_match: 3,

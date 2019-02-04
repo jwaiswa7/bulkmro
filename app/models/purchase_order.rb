@@ -9,6 +9,7 @@ class PurchaseOrder < ApplicationRecord
 
   belongs_to :inquiry
   belongs_to :payment_option, required: false
+  belongs_to :logistics_owner, -> (record) {where(role: 'logistics')}, class_name: 'Overseer', foreign_key: 'logistics_owner_id', optional: true
   has_one :inquiry_currency, :through => :inquiry
   has_one :currency, :through => :inquiry_currency
   has_one :conversion_rate, :through => :inquiry_currency
@@ -71,15 +72,18 @@ class PurchaseOrder < ApplicationRecord
       :'Material Partially Delivered' => 35
   }
 
-  scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
-  scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
-  scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  scope :material_readiness_queue, -> {where.not(:material_status => [:'Material Delivered'])}
+  scope :material_pickup_queue, -> {where(:material_status => :'Material Pickedup')}
+  scope :material_delivered_queue, -> {where(:material_status => :'Material Delivered')}
   scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
+
   after_initialize :set_defaults, :if => :new_record?
 
   def set_defaults
     self.material_status = 'Material Readiness Follow-Up'
   end
+
+
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?

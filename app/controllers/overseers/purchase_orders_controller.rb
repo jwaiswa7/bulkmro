@@ -120,11 +120,11 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   end
 
   def autocomplete
+    purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
       purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
-      purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
-    else
-      purchase_orders = PurchaseOrder.all
+      #purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
+
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 

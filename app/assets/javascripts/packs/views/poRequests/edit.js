@@ -1,3 +1,6 @@
+import updateRowTotal from "./updateRowTotal"
+import validatePoRequestAddresses from "./validatePoRequestAddresses"
+
 const edit = () => {
     $('form').on('change','select[name*=status]',function(e){
         if($(e.target).val() == "Cancelled"){
@@ -10,14 +13,22 @@ const edit = () => {
         }
         if($(e.target).val() != "Cancelled"){
             $('.status-cancelled').addClass('d-none');
-            $('.status-cancelled').find('textarea').val('');
+            $('.status-cancelled').find('textarea').val('').attr("required",false);
         }
         if($(e.target).val() != "Rejected"){
             $('.status-rejected').addClass('d-none');
-            $('.status-rejected').find('select').val('');
+            $('.status-rejected').find('select').val('').attr("required",false);
         }
     });
+    window.Parsley.on('field:error', function () {
+        // This global callback will be called for any field
+        //  that fails validation.
+        console.log('Validation failed for: ',
+            this.$element.attr('name'));
+    });
     $('select[name*=status]').trigger('change');
+    validatePoRequestAddresses();
+    updateRowTotal();
 };
 
 export default edit

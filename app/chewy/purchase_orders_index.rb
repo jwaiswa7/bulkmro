@@ -1,6 +1,7 @@
 class PurchaseOrdersIndex < BaseIndex
   material_statuses = PurchaseOrder.material_statuses
   po_statuses = PoRequest.statuses
+  statuses = PurchaseOrder.statuses
 
   define_type PurchaseOrder.all.with_includes do
     field :id

@@ -90,18 +90,41 @@
             <%= po_request.logistics_owner.to_s %>
           </div>
         <% end %>
-
-        <% if po_request.address.present? %>
-          <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Supplier Address</strong>
-            <%= po_request.address.to_s %>
+        <% if po_request.contact.present? %>
+          <div class="col-6 col-md-6 mb-2">
+            <strong class="d-block">Supplier Contact</strong>
+            <%= po_request.contact.to_s %><br>
+            <% if po_request.contact_email.present? %>
+              <strong>Email: </strong><%= po_request.contact_email %><br>
+            <% end %>
+            <% if po_request.contact_phone.present? %>
+              <strong>Phone: </strong><%= po_request.contact_phone %>
+            <% end %>
           </div>
         <% end %>
 
-        <% if po_request.contact.present? %>
+        <% if po_request.bill_from.present? %>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Supplier Contact</strong>
-            <%= po_request.contact.to_s %>
+            <strong class="d-block">Bill From</strong>
+            <%= po_request.bill_from.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.ship_from.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Ship From</strong>
+            <%= po_request.ship_from.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.bill_to.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Bill To</strong>
+            <%= po_request.bill_to.to_s %>
+          </div>
+        <% end %>
+        <% if po_request.ship_to.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Ship To</strong>
+            <%= po_request.ship_to.to_s %>
           </div>
         <% end %>
 
@@ -152,6 +175,8 @@
             <th>TP</th>
             <th>TT</th>
             <th>TP with Tax</th>
+            <th>Discount %</th>
+            <th>Lead Time</th>
           </tr>
           </thead>
           <tbody>
@@ -166,10 +191,12 @@
               <td><%= row.tax_rate %></td>
               <td><%= row.quantity.to_f %></td>
               <td><%= row.measurement_unit %></td>
-              <td><%= row.unit_price %></td>
-              <td><%= row.converted_total_selling_price %></td>
-              <td><%= row.converted_total_tax %></td>
-              <td><%= row.converted_total_selling_price_with_tax %></td>
+              <td><%= format_currency(row.unit_price )%></td>
+              <td><%= format_currency(row.converted_total_selling_price) %></td>
+              <td><%= format_currency(row.converted_total_tax) %></td>
+              <td><%= format_currency(row.converted_total_selling_price_with_tax) %></td>
+              <td><%= percentage(row.discount_percentage, precision: 2) %></td>
+              <td><%= format_succinct_date(row.lead_time) %></td>
             </tr>
             <% end %>
           <% end %>

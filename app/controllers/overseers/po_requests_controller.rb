@@ -68,11 +68,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def update
+
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
       @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
+      @po_request.status = "Requested" if @po_request.status == "Rejected" && policy(@po_request).is_manager_or_sales?
       ActiveRecord::Base.transaction do if @po_request.status_changed?
           if @po_request.status == "Cancelled"
             @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" , :po_request => @po_request, :overseer => current_overseer)
@@ -113,10 +115,15 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :purchase_order_id,
         :logistics_owner_id,
         :payment_option_id,
+        :bill_from_id,
+        :ship_from_id,
+        :bill_to_id,
+        :ship_to_id,
         :status,
+        :supplier_po_type,
         :cancellation_reason,
         :rejection_reason,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id],
+        :rows_attributes => [:id, :sales_order_row_id,:product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
         :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )

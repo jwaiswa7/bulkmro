@@ -15,6 +15,9 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
   def edit?
     admin? || logistics? || sales? && record.status != 'Material Delivered'
   end
+  def can_request_invoice?
+    !record.invoice_request.present?
+  end
 
   def confirm_delivery?
     record.status == 'Material Pickup'

@@ -10,7 +10,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service.call
 
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
@@ -18,6 +18,27 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
 
+        render 'pending'
+      end
+    end
+  end
+
+  def cancelled
+    authorize :sales_order
+    respond_to do |format|
+      format.html { render 'pending' }
+      format.json do
+        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
         render 'pending'
       end
     end
@@ -153,7 +174,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
   end
 
-
   def create_purchase_orders_requests
     authorize :sales_order
 
@@ -179,11 +199,17 @@ class Overseers::SalesOrdersController < Overseers::BaseController
               :inquiry_id,
               :_destroy,
               :logistics_owner_id,
-              :address_id,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
               :contact_id,
               :payment_option_id,
+              :supplier_po_type,
               :status,
               :supplier_committed_date,
+              :contact_email,
+              :contact_phone,
               :blobs,
               :attachments => [],
               :rows_attributes => [
@@ -196,7 +222,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
                   :brand_id,
                   :tax_code_id,
                   :tax_rate_id,
+                  :lead_time,
                   :measurement_unit_id,
+                  :discount_percentage,
                   :unit_price
               ]
           ]
