@@ -2476,11 +2476,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_purchase_order_fields
     PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
     PurchaseOrder.all.each do |po|
-      po.followup_date = if po.metadata.present? && po.metadata['PoDate'].present?
-                           po.metadata['PoDate'].to_date
-                         else
-                           po.created_at
-                         end
       update_material_status(po)
       po.save
     end
