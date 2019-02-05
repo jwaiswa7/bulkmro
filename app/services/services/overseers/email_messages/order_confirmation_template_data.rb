@@ -10,7 +10,6 @@ class Services::Overseers::EmailMessages::OrderConfirmationTemplateData < Servic
     template_data["order_date"] = customer_order.created_at
     template_data["shipping_address"] = customer_order.shipping_address.to_multiline_s.gsub('<br>',' ')
     template_data["billing_address"] = customer_order.billing_address.to_multiline_s.gsub('<br>',' ')
-    template_data["billing_address"] = customer_order.billing_address.to_multiline_s.gsub('<br>',' ')
     template_data["items"] = []
     customer_order.items.each_with_index do |item,index|
       hash = {}
