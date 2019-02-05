@@ -95,7 +95,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def edit
     authorize @invoice_request
     mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(", ")
-    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids)
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, by_po = false)
     @products_list = service.call
   end
 
