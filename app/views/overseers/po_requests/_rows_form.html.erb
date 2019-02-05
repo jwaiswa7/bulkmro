@@ -27,7 +27,7 @@
 
 
     <div class="col-4 d-none status-rejected">
-      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(f.object).can_reject?, :include_blank => true %>
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), disabled: !policy(f.object).can_reject?, :include_blank => true %>
     </div>
     <div class="col-4 d-none status-cancelled">
       <%= f.input :cancellation_reason, disabled: !(policy(f.object).can_cancel?), :include_blank => true %>
@@ -146,18 +146,16 @@
 <div class="form-row d-none d-md-flex">
   <div class="col-12 col-md-6">
     <div class="form-row">
-      <div class="col-12 col-md-1">
-        <div class="form-group mb-0">
-          <label>Sr. No.</label>
-        </div>
-      </div>
+      <!--      <div class="col-12 col-md-1">-->
+      <!--        <div class="form-group mb-0">-->
+      <!--          <label>Sr. No.</label>-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="col-12 col-md-3">
         <div class="form-group mb-0">
           <label>Product</label>
         </div>
       </div>
-
-
       <div class="col-12 col-md-1">
         <div class="form-group mb-0">
           <label>Make</label>
@@ -170,7 +168,7 @@
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>T. Rate</label>
+          <label data-toggle="tooltip" title="Tax Rate">T. Rate</label>
         </div>
       </div>
       <div class="col-12 col-md-2">
@@ -178,53 +176,49 @@
           <label>Quantity</label>
         </div>
       </div>
-      <div class="col-12 col-md-1">
+      <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>Discount %</label>
+          <label data-toggle="tooltip" title="Discount percentage">Disc. %</label>
         </div>
       </div>
     </div>
   </div>
   <div class="col-12 col-md-6">
     <div class="form-row">
-
       <div class="col-12 col-md-1">
         <div class="form-group mb-0">
-          <label>UOM</label>
+          <label data-toggle="tooltip" title="Unit of Measurement">UOM</label>
         </div>
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>UP</label>
+          <label data-toggle="tooltip" title="Unit Price">UP</label>
         </div>
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>TP</label>
+          <label data-toggle="tooltip" title="Total Price">TP</label>
         </div>
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>TT</label>
+          <label data-toggle="tooltip" title="Total Tax">TT</label>
         </div>
       </div>
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
-          <label>TP with tax</label>
+          <label data-toggle="tooltip" title="Total Price with tax">TP with tax</label>
         </div>
       </div>
-
       <div class="col-12 col-md-2">
         <div class="form-group mb-0">
           <label>Lead Time</label>
         </div>
-
       </div>
       <div class="col-12 col-md-1">
         <div class="form-group mb-0">
           <label>Remove</label>
         </div>
-
       </div>
     </div>
   </div>
@@ -240,9 +234,9 @@
   <div class="form-row po-request-row">
     <div class="col-12 col-md-6">
       <div class="form-row">
-        <div class="col-12 col-md-1">
-          <%= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, label: false, disabled: true %>
-        </div>
+        <!--        <div class="col-12 col-md-1">-->
+        <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, label: false, disabled: true %>
+        <!--        </div>-->
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
             <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
@@ -266,7 +260,7 @@
         <div class="col-12 col-md-2">
           <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, label: false, disabled: false, required: true %>
         </div>
-        <div class="col-12 col-md-1">
+        <div class="col-12 col-md-2">
           <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage}, label: false, disabled: false %>
         </div>
       </div>
@@ -275,7 +269,7 @@
       <div class="form-row">
 
         <div class="col-12 col-md-1">
-          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default, label: false, disabled: true %>
+          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, label: false, disabled: true %>
         </div>
         <div class="col-12 col-md-2">
           <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, label: false, readonly: po_request_row.object.field_disabled?, required: true %>

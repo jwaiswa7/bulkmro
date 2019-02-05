@@ -1330,7 +1330,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def create_po_request_for_purchase_orders
-    skips = [421, 185, 200, 1046, 1047, 1048, 1049, 1050, 1051, 1071, 1045]
     SalesOrder.remote_approved.each do |sales_order|
       rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
       service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
@@ -1340,24 +1339,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             product_sku = line_item.sku
             if rows[product_sku] != nil
               row = sales_order.rows.find(rows[product_sku])
-              if not row.supplier.blank? || row.supplier.addresses.blank?
+              if row.supplier.present? && row.supplier.addresses.present?
                 quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
                 if purchase_order.po_request.blank?
                   po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true).first_or_create!
                 else
                   po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
-                  next if skips.include?(po_request.id)
-                  po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true}) if po_request
+                  if po_request
+                    po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true})
+                  end
                 end
                 po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit) if po_request
               else
                 po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
-                if skips.include?(po_request.id)
-                  next
-                else
-                  po_request.update_attributes({purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true}) if po_request
+                if po_request.present?
+                  po_request.is_legacy = true
+                  po_request.save(:validate => false)
                 end
-
               end
             end
           end
