@@ -245,7 +245,7 @@
           <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default, label: false, disabled: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price_per_quantity}, label: false, readonly: po_request_row.object.field_disabled?, required: true %>
+          <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity}, label: false, readonly: po_request_row.object.field_disabled?, required: true %>
         </div>
         <div class="col-12 col-md-2">
           <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, label: false, disabled: true %>
