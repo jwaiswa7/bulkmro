@@ -21,4 +21,8 @@
       </div>
     <% end %>
   </div>
+
+  <% if aggregation.present? %>
+    <%= render partial: 'shared/layouts/summary_aggregation', locals: {statuses: aggregation[:statuses], label: aggregation[:label] } %>
+  <% end %>
 </div>
