@@ -2311,7 +2311,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def sales_invoice_totals
     SalesInvoice.all.each do | sales_invoice |
-      sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total)
+      ales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total) if sales_invoice.sales_order.present?
     end
   end
 end
