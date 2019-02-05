@@ -7,7 +7,7 @@ module Mixins::CanBeTotalled
     end
 
     def tax_line_items(for_show_page=false)
-      grouped_items = (for_show_page == true) ? items.group_by(&:best_tax_rate) : items.joins(:customer_product).group_by(&:best_tax_rate)
+      grouped_items = (for_show_page == true) ? items.group_by(&:tax_rate) : items.joins(:customer_product).group_by(&:best_tax_rate)
       tax_items = {}
 
       grouped_items.each do |tax_rate, items|
@@ -23,7 +23,7 @@ module Mixins::CanBeTotalled
 
     def calculated_total_tax(for_show_page=false)
       items.map do |item|
-        tax_percentage = (for_show_page == true) ? item.best_tax_rate.tax_percentage : item.customer_product.best_tax_rate.tax_percentage
+        tax_percentage = (for_show_page == true) ? item.tax_rate.tax_percentage : item.customer_product.best_tax_rate.tax_percentage
         item.customer_product.customer_price * item.quantity * tax_percentage / 100
       end.sum
     end
