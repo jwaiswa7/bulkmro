@@ -39,6 +39,10 @@ class PoRequestRow < ApplicationRecord
     end
   end
 
+  def unit_price_per_quantity
+    self.quantity.present? ? ((self.converted_total_selling_price || 0) / self.quantity) : 0
+  end
+
   def unit_selling_price
     if self.unit_price.present?
       self.unit_price
