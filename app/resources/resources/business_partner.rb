@@ -107,7 +107,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
             :email => assigned_email
         )
       end
-      company.company_contacts.where(:remote_uid => remote_uid, :company => company, :contact => assigned_contact).first_or_create!
+      company.company_contacts.where(:remote_uid => remote_uid, :contact => assigned_contact).first_or_create!
     end
   end
 
