@@ -11,6 +11,21 @@ class Overseers::BaseController < ApplicationController
 
 	private
 
+	def render_pdf_for(record, locals={})
+		render(
+				pdf: record.filename,
+				template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+				layout: 'shared/layouts/pdf_templates/show',
+				page_size: 'A4',
+				footer: {
+						center: '[page] of [topage]'
+				},
+				locals: {
+						record: record
+				}.merge(locals)
+		)
+	end
+
 	def user_not_authorized
 		message = "You are not authorized to perform this action."
 		set_flash_message(message, :warning, now: false)
