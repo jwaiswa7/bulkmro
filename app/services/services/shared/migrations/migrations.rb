@@ -2289,4 +2289,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+
+  def update_sales_receipt
+    SalesReceipt.all.each do |sr|
+      if sr.metadata.class == String
+        sr.metadata = JSON.parse(sr.metadata)
+        sr.save
+      end
+      metadata_obj = sr.metadata
+      currency = Currency.where(:name => metadata_obj['p_amount_currency']).last
+      if currency.present?
+        sr.currency = currency
+      end
+      sr.payment_type = (metadata_obj['on_account'] == "1" ? 10 : (metadata_obj['on_account'] == "0" ? 20 : nil) )
+      sr.payment_amount_received = metadata_obj['p_amount_received']
+      sr.payment_received_date = metadata_obj['p_received_date']
+      sr.save!
+    end
+  end
 end
