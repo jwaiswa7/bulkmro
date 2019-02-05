@@ -83,6 +83,13 @@ class PurchaseOrder < ApplicationRecord
     self.material_status = 'Material Readiness Follow-Up'
   end
 
+  def has_supplier?
+    self.get_supplier(self.rows.first.metadata['PopProductId'].to_i).present?
+  end
+
+  def has_sent_email_to_supplier?
+    self.email_messages.where(email_type: "Sending PO to Supplier").present?
+  end
 
 
   def get_supplier(product_id)

@@ -1,6 +1,6 @@
 class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::BaseController
   before_action :set_material_pickup_request, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
-  before_action :set_purchase_order, only: [:new, :create, :update]
+  before_action :set_purchase_order, only: [:new, :create, :update, :show]
 
   def index
 
@@ -10,6 +10,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
 
   def show
     authorize @mpr
+    @po_request = @purchase_order.po_request
   end
 
   def new

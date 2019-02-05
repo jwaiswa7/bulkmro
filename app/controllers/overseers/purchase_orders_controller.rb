@@ -1,7 +1,6 @@
 class Overseers::PurchaseOrdersController < Overseers::BaseController
   before_action :set_purchase_order, only: [:show,:edit_material_followup, :update_material_followup]
 
-
   def index
     authorize :purchase_order
     respond_to do |format|

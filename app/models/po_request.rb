@@ -57,7 +57,7 @@ class PoRequest < ApplicationRecord
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
   scope :can_amend, -> {where(:status => [:'PO Created'])}
-  scope :amended_po, -> {where(:status => [:'Amend'])}
+  scope :amended, -> {where(:status => [:'Amend'])}
 
   validate :purchase_order_created?
   validates_uniqueness_of :purchase_order, if: -> {purchase_order.present? && !is_legacy}

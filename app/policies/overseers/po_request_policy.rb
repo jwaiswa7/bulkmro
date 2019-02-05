@@ -15,6 +15,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def amended?
+    index?
+  end
+
   def new_purchase_order?
     true
   end
@@ -60,7 +64,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-    admin? || logistics?
+     record.status == 'PO Created' && (admin? || logistics?)
   end
 
   def dispatch_supplier_delayed_create_email_message?
