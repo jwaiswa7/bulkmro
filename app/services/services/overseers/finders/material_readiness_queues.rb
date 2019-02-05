@@ -14,6 +14,8 @@ class Services::Overseers::Finders::MaterialReadinessQueues < Services::Overseer
 
     indexed_records = indexed_records.filter(filter_by_array('material_status', PurchaseOrder.material_statuses.except(:'Material Delivered').values))
     indexed_records = indexed_records.filter(filter_by_value('po_request_status', PoRequest.statuses['PO Created']))
+    indexed_records = indexed_records.filter(filter_by_value('po_email_sent',true))
+
 
     if @base_filter.present?
       indexed_records = indexed_records.filter(@base_filter)
