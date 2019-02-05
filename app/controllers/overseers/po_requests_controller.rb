@@ -21,6 +21,16 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def amended
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.amended.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
   def index
     @po_requests = ApplyDatatableParams.to(PoRequest.all.handled.order(id: :desc), params)
     authorize @po_requests

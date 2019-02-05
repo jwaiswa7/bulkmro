@@ -184,6 +184,7 @@ Rails.application.routes.draw do
         get 'autocomplete'
         get 'pending_and_rejected'
         get 'cancelled'
+        get 'amended'
       end
 
     end

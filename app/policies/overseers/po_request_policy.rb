@@ -15,6 +15,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def amended?
+    index?
+  end
+
   def new_purchase_order?
     true
   end
