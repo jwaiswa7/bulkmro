@@ -22,7 +22,7 @@
           <div class="card-body">
             <div class="text-center">
               <p class="text-uppercase text-black-50 mb-1"><strong><%= format_enum(activity_type) %></strong></p>
-              <h3 class="mb-0"><%= Activity.send(activity_type).size %></h3>
+              <h3 class="mb-0"><%= number_with_delimiter(Activity.send(activity_type).size, options = {}) %></h3>
             </div>
           </div>
         </div>
