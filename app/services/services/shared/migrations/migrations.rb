@@ -2308,4 +2308,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sr.save!
     end
   end
+
+  def sales_invoice_totals
+    SalesInvoice.all.each do | sales_invoice |
+      sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total)
+    end
+  end
 end
