@@ -64,8 +64,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
               city_name: address['City'].present? ? address['City'] : nil,
               street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
               country_code: address['Country'].present? ? address['Country'] : 'IN',
-              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.name : nil,
-              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.id : nil,
+              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'], :country_code => address['Country']).first.name : nil,
+              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'], :country_code => address['Country']).first.id : nil,
               pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
               gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
               vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
@@ -86,27 +86,29 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-        if remote_uid.present? && Contact.where(:email => contact["E_Mail"].to_s.strip.downcase).first.present?
-          company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
-          company_contact.update_attributes(:remote_uid => remote_uid) if CompanyContact.find_by_remote_uid(remote_uid).nil?
-        elsif remote_uid.present? && Contact.find_by_email(contact["E_Mail"].to_s.strip.downcase).nil?
-           new_contact = Contact.new
-           new_contact.account_id = contact['CardCode'].present? ? Company.where(:remote_uid => contact['CardCode']).first.account : '',
-           new_contact.first_name = contact['FirstName'].present? ? contact['FirstName'] : '',
-           new_contact.last_name =  contact['LastName'].present? ? contact['LastName'] : '',
-           new_contact.telephone = contact['Phone1'].present? ? contact['Phone1'] : '',
-           new_contact.mobile = contact['MobilePhone'].present? ? contact['MobilePhone'] : '',
-           new_contact.email =  contact['E_Mail'] if contact['E_Mail'].present?
-           new_contact.save!
-           if new_contact.save!
-              com_con = CompanyContact.new
-              com_con.contact_id = new_contact.id,
-              com_con.company_id = company.id
-              com_con.remote_uid = contact["InternalCode"]
-              com_con.save!
-           end
-        end
-    end if contacts.present?
+      contact_email = contact["E_Mail"].to_s.strip.downcase
+      existing_contact = Contact.find_by_email(contact_email)
+
+      if existing_contact.blank?
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account == existing_contact.account
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account != existing_contact.account
+        assigned_email = [contact_email.split('@', 2)[0], '_duplicate', '@', contact_email.split('@', 2)[1]].join('')
+      end
+
+      assigned_contact = Contact.where(:email => assigned_email).first_or_create! do |new_contact|
+        new_contact.update_attributes(
+            :account => company.account,
+            :first_name => contact['FirstName'],
+            :last_name => contact['LastName'],
+            :telephone => contact['Phone1'],
+            :mobile => contact['MobilePhone'],
+            :email => assigned_email
+        )
+      end
+      company.company_contacts.where(:remote_uid => remote_uid, :company => company, :contact => assigned_contact).first_or_create!
+    end
   end
 
   def self.to_remote(record)
