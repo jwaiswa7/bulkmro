@@ -5,7 +5,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     freight_requests =
         if params[:status].present?
           @status = params[:status]
-          FreightRequest.where(:status => params[:status])
+          FreightRequest.where(:status => FreightRequest.statuses[params[:status]])
         else
           FreightRequest.all
         end

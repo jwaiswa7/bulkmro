@@ -79,12 +79,23 @@
                 : <%= po_request.object.supplier.try(:legacy_email) %>
               </strong>
               <div class="form-row mt-2">
-                <% if po_request.object.bill_from.present? %>
-                  <div class="col-5 col-md-2 mb-2">
-                    <strong class="d-block">Address</strong>
-                    <%= po_request.object.bill_from.address.to_s %>
+                  <div class="col-5 col-md-3 mb-2">
+                    <strong class="d-block">Bill From</strong>
+                    <%= po_request.object.bill_from.to_s %>
                   </div>
-                <% end %>
+                  <div class="col-5 col-md-3 mb-2">
+                    <strong class="d-block">Ship From</strong>
+                    <%= po_request.object.ship_from.to_s %>
+                  </div>
+                  <div class="col-5 col-md-3 mb-2">
+                    <strong class="d-block">Bill To</strong>
+                    <%= po_request.object.bill_to.to_s %>
+                  </div>
+                  <div class="col-5 col-md-3 mb-2">
+                    <strong class="d-block">Ship To</strong>
+                    <%= po_request.object.ship_to.to_s %>
+                  </div>
+
                 <% if po_request.object.contact.present? %>
                   <div class="col-2 col-md-1 mb-2">
                     <strong class="d-block">Contact</strong>

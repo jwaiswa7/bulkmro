@@ -10,7 +10,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service.call
 
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
@@ -18,6 +18,27 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
 
+        render 'pending'
+      end
+    end
+  end
+
+  def cancelled
+    authorize :sales_order
+    respond_to do |format|
+      format.html { render 'pending' }
+      format.json do
+        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
         render 'pending'
       end
     end

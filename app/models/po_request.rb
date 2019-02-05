@@ -35,7 +35,8 @@ class PoRequest < ApplicationRecord
       :'Requested' => 10,
       :'PO Created' => 20,
       :'Cancelled' => 30,
-      :'Rejected' => 40
+      :'Rejected' => 40,
+      :'Amend' => 50
   }
 
   enum supplier_po_type: {
@@ -66,14 +67,16 @@ class PoRequest < ApplicationRecord
     :'Stock Supplier PO Created' => 30
   }
 
-  scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
-  scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled'])}
+  scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected', :'Amend'])}
+  scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled', :'Amend'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
+  scope :can_amend, -> {where(:status => [:'PO Created'])}
+  scope :amended_po, -> {where(:status => [:'Amend'])}
   scope :pending_stock_po, -> {where(:stock_status => [:'Stock Requested'])}
 
   validate :purchase_order_created?
-  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
+  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present? && !is_legacy}
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, :if => :new_record?
@@ -98,6 +101,14 @@ class PoRequest < ApplicationRecord
   def set_defaults
     self.status ||= :'Requested' if self.po_request_type == 'Regular'
     self.stock_status ||= :'Stock Requested' if self.po_request_type == 'Stock'
+  end
+
+  def amending?
+    status == 'Amend'
+  end
+
+  def not_amending?
+    status != 'Amend'
   end
 
   def selling_price

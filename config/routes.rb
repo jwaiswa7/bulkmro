@@ -28,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/*page" => "docs#index"
     resources :attachments
     resources :review_questions
     resources :banks
@@ -179,6 +180,14 @@ Rails.application.routes.draw do
     resources :po_requests do
       scope module: 'po_requests' do
         resources :payment_requests
+        resources :email_messages do
+          collection do
+            get 'sending_po_to_supplier'
+            post 'sending_po_to_supplier_notification'
+            get 'dispatch_from_supplier_delayed'
+            post 'dispatch_from_supplier_delayed_notification'
+          end
+        end
       end
 
       collection do
@@ -208,6 +217,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
@@ -560,6 +570,7 @@ Rails.application.routes.draw do
         patch 'update_shipping_address'
         patch 'update_special_instructions'
         patch 'update_payment_method'
+        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end

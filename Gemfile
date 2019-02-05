@@ -188,6 +188,9 @@ gem 'parser'
 gem 'unparser'
 gem 'mini_magick'
 
+#This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
+gem 'markdown-rails'
+
 # Star Rating
 gem 'ratyrate'
 

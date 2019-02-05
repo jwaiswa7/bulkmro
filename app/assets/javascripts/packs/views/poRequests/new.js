@@ -1,6 +1,6 @@
 import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
 import updateRatingForm from "../common/updateRatingForm"
-import updateRowTotal from "../salesOrders/updateRowTotal"
+import updateRowTotal from "./updateRowTotal"
 
 
 const newAction = () => {
