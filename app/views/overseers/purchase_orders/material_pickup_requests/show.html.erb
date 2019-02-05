@@ -111,18 +111,6 @@
           </div>
         </div>
       </div>
-      <% if @mpr.comments.persisted.size > 0 %>
-
-        <div class="card-body">
-          <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
-          <div class="chats mb-3">
-            <% @mpr.comments.persisted.each do |comment| %>
-              <%= format_comment(comment) %>
-            <% end %>
-          </div>
-        </div>
-
-      <% end %>
     </div>
 
   </section>
@@ -135,6 +123,9 @@
       <% end %>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#products" role="tab">Products</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#comments" role="tab">Comments</a>
       </li>
     </ul>
 
@@ -347,6 +338,20 @@
             </div>
           </div>
         <% end %>
+      </div>
+      <div class="tab-pane fade " id="comments" role="tabpanel">
+        <div class="card">
+          <% if @mpr.comments.persisted.size > 0 %>
+            <div class="card-body">
+              <h6 class="text-uppercase text-black-50 mb-1">Comments</h6>
+              <div class="chats mb-3">
+                <% @mpr.comments.persisted.each do |comment| %>
+                  <%= format_comment(comment) %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </section>
