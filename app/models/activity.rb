@@ -20,7 +20,7 @@ class Activity < ApplicationRecord
   accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
 
   has_many_attached :attachments
-
+  scope :with_includes, -> {includes(:company,:contact,:inquiry)}
   enum company_type: {
       is_supplier: 10,
       is_customer: 20

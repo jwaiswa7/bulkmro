@@ -1,13 +1,13 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
 <% provide :can_be_directly_created, true %>
-
+<% provide :wrap_whitespace, true %>
 <% provide :heading_buttons do %>
 
   <% if policy(:activity).add_to_inquiry? %>
     <div class="mr-2 float-left add_to_inquiry_wrapper">
-    <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
-</div>
+      <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
+    </div>
     <button type="button" id="add_to_inquiry" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 add_to_inquiry_wrapper">
       <i class="fal fa-plus mr-1"></i>Add to Inquiry
     </button>
@@ -33,7 +33,7 @@
 
 
 <% content_for :header_row do %>
-  <th class="no-sort">
+  <th class="desktop no-sort">
     <% if policy(:activity).perform_actions? %>
       <div class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
@@ -41,23 +41,40 @@
       </div>
     <% end %>
   </th>
-  <th class="no-sort">Created By</th>
-  <th data-name="activity_date">Activity Date</th>
-  <th class="no-sort">Account</th>
-  <th class="no-sort">Company</th>
-  <th data-name="activity_type">Is Supplier</th>
-  <th data-name="activity_type">Is Customer</th>
-  <th class="no-sort">Company Creation Request Status</th>
-  <th class="no-sort text-right">Inquiry</th>
-  <th class="no-sort">Commercial Status</th>
-  <th class="no-sort">Contact Name</th>
-  <th data-name="purpose">Purpose</th>
-  <th data-name="activity_type">Type</th>
-  <th class="no-sort">Misc Expenses</th>
-  <th class="no-sort">Points Discussed</th>
-  <th class="no-sort">Actions Required</th>
-  <th data-name="activity_date">Date</th>
-  <th class = "desktop text-right" data-name="created_at">Created</th>
+  <th class="desktop no-sort" data-name="created_by_id">Created By</th>
+  <th class="desktop no-sort" data-name="account_id">Account</th>
+  <th class="desktop no-sort" data-name="company_id">Company</th>
+  <th class="desktop no-sort">Is Supplier</th>
+  <th class="desktop no-sort">Is Customer</th>
+  <th class="desktop no-sort">Company Creation Request Status</th>
+  <th class="desktop no-sort text-right">Inquiry</th>
+  <th class="desktop no-sort" data-name="contact_id">Contact Name</th>
+  <th class="desktop no-sort" data-name="purpose">Purpose</th>
+  <th class="desktop no-sort">Type</th>
+  <th class="desktop no-sort">Misc Expenses</th>
+  <th class="desktop no-sort" data-name="activity_date">Activity Date</th>
+  <th class="desktop no-sort">Points Discussed</th>
+  <th class="desktop no-sort">Actions Required</th>
+  <th class="desktop text-right" data-name="created_at">Created</th>
+<% end %>
+
+<% content_for :filter_row do %>
+  <td data-filter="false"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="ajax"></td>
+  <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="daterange"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
 <% end %>
 
 <div class="col-lg-12">
