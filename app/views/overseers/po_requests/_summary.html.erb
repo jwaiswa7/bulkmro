@@ -164,18 +164,18 @@
         <table class="table table-bordered dt-responsive wrap-whitespace w-100" data-fixed-header="false">
           <thead>
           <tr>
-            <th>Sr. No.</th>
+<!--            <th>Sr. No.</th>-->
             <th>Product</th>
             <th>Make</th>
             <th>HSN</th>
-            <th>T. Rate</th>
+            <th data-toggle="tooltip" title="Tax Rate">T. Rate</th>
             <th>Quantity</th>
-            <th>UOM</th>
-            <th>UP</th>
-            <th>TP</th>
-            <th>TT</th>
-            <th>TP with Tax</th>
-            <th>Discount %</th>
+            <th data-toggle="tooltip" title="Unit of Measurement">UOM</th>
+            <th data-toggle="tooltip" title="Unit Price">UP</th>
+            <th data-toggle="tooltip" title="Total Price">TP</th>
+            <th data-toggle="tooltip" title="Total Tax">TT</th>
+            <th data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
+            <th data-toggle="tooltip" title="Discount percentage">Disc. %</th>
             <th>Lead Time</th>
           </tr>
           </thead>
@@ -184,7 +184,7 @@
           <% if row.product.present? %>
 
             <tr>
-              <td><%= sr_no + 1 %></td>
+<!--              <td><%#= sr_no + 1 %></td>-->
               <td><%= row.product.to_s %></td>
               <td><%= row.product.try(:brand).to_s %></td>
               <td><%= row.tax_code %></td>
