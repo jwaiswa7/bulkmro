@@ -5,7 +5,7 @@ class SalesInvoice < ApplicationRecord
   belongs_to :sales_order
   has_one :inquiry, :through => :sales_order
 
-  has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
+  has_many :receipts,dependent: :destroy, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
 

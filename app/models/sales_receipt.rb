@@ -5,7 +5,7 @@ class SalesReceipt < ApplicationRecord
   belongs_to :company, required: false
   belongs_to :sales_order, required: false
   belongs_to :currency, required: false
-
+  scope :with_includes, -> {includes(:company, :sales_order,:sales_invoice,:currency)}
   enum payment_method: {
       :'banktransfer' => 10,
       :'Cheque' => 20,
