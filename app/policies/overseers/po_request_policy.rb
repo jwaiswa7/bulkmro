@@ -35,6 +35,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     record.purchase_order.blank? && (logistics? || admin?)
   end
 
+  def can_reject_stock_po?
+    record.purchase_order.blank? && (manager? || admin?)
+  end
+
   def can_update_rejected_po_requests?
     record.purchase_order.present? && (manager_or_sales? || admin? ) && record.status == "Rejected"
   end
@@ -71,7 +75,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     dispatch_supplier_delayed_new_email_message?
   end
 
-  def pending_stock?
-    index?
+  def pending_stock_approval?
+    index? && (manager? || admin?)
   end
 end

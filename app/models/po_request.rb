@@ -93,9 +93,16 @@ class PoRequest < ApplicationRecord
   end
 
   def update_reason_for_status_change?
-    if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
-      errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+    if self.po_request_type == 'Regular'
+      if (self.status == 'Cancelled' && self.cancellation_reason.blank?) || (self.status == 'Rejected' && self.rejection_reason.blank?)
+        errors.add(:base, "Provide a reason to change the status to #{self.status} in message section")
+      end
+    elsif self.po_request_type == 'Stock'
+      if (self.stock_status == 'Stock Rejected' && self.rejection_reason.blank?)
+        errors.add(:base, "Provide a reason to change the stock_status to #{self.stock_status} in message section")
+      end
     end
+
   end
 
   def set_defaults

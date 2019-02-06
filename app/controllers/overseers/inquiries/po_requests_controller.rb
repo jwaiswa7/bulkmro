@@ -27,25 +27,19 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
     if @po_request.valid?
       # todo allow only in case of zero form errors
       @po_request.stock_status = "Stock Supplier PO Created" if @po_request.purchase_order.present? && @po_request.stock_status == "Stock Requested"
-      ActiveRecord::Base.transaction do if @po_request.stock_status_changed?
-                                          if @po_request.stock_status == "Stock Cancelled"
-                                            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.stock_status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" , :po_request => @po_request, :overseer => current_overseer)
-                                            @po_request.purchase_order = nil
+      ActiveRecord::Base.transaction do
+        if @po_request.stock_status_changed?
+          if @po_request.stock_status == "Stock Rejected"
+            @po_request_comment = PoRequestComment.new(:message => "Stock Status Changed: #{@po_request.stock_status} \r\n Rejection Reason: #{@po_request.rejection_reason}" , :po_request => @po_request, :overseer => current_overseer)
 
-                                            @po_request.payment_request.update!(stock_status: :'Stock Cancelled')
-                                            @po_request.payment_request.comments.create!(:message => "Status Changed: #{@po_request.payment_request.stock_status}; Stock Po Request #{@po_request.id}: Cancelled", :payment_request => @po_request.payment_request, :overseer => current_overseer)
-
-                                          elsif @po_request.stock_status == "Stock Rejected"
-                                            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.stock_status} \r\n Rejection Reason: #{@po_request.rejection_reason}" , :po_request => @po_request, :overseer => current_overseer)
-
-                                          else
-                                            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.stock_status}", :po_request => @po_request, :overseer => current_overseer)
-                                          end
-                                          @po_request.save!
-                                          @po_request_comment.save!
-                                        else
-                                          @po_request.save!
-                                        end
+          else
+            @po_request_comment = PoRequestComment.new(:message => "Stock Status Changed: #{@po_request.stock_status}", :po_request => @po_request, :overseer => current_overseer)
+          end
+          @po_request.save!
+          @po_request_comment.save!
+        else
+          @po_request.save!
+        end
       end
 
       create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)

@@ -160,7 +160,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
     service.call
     Rails.cache.delete(:po_requests)
-    redirect_to pending_stock_overseers_po_requests_path
+    redirect_to pending_stock_approval_overseer_po_requests_path
   end
 
   def preview_stock_po_request

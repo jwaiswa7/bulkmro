@@ -120,7 +120,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def pending_stock
+  def pending_stock_approval
     @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
     authorize @po_requests
 

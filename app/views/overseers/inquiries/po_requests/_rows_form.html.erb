@@ -16,7 +16,7 @@
     <div class="col-12 col-md-4">
       <% if policy(@po_request).can_cancel? %>
         <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Requested", "Stock Rejected"), alphabetical: false, keep_raw: true), :include_blank => false %>
-      <% elsif policy(@po_request).can_reject? %>
+      <% elsif policy(@po_request).can_reject_stock_po? %>
         <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false %>
       <% elsif policy(@po_request).can_update_rejected_po_requests? %>
         <%= f.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.except("Stock Supplier PO Created"), alphabetical: false, keep_raw: true), :include_blank => false, :disabled => ['Stock Rejected'] %>
@@ -28,7 +28,7 @@
 
 
     <div class="col-4 d-none status-rejected">
-      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(f.object).can_reject?, :include_blank => true %>
+      <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, alphabetical: false), disabled: !policy(f.object).can_reject_stock_po?, :include_blank => true %>
     </div>
     <div class="col-4 d-none status-cancelled">
       <%= f.input :cancellation_reason, disabled: !(policy(f.object).can_cancel?), :include_blank => true %>

@@ -195,7 +195,7 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
-        get 'pending_stock'
+        get 'pending_stock_approval'
       end
 
     end
