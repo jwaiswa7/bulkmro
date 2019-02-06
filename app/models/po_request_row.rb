@@ -42,8 +42,6 @@ class PoRequestRow < ApplicationRecord
   def unit_selling_price
     if self.unit_price.present?
       self.unit_price
-    elsif self.product_unit_selling_price.present?
-      self.product_unit_selling_price
     else
       self.sales_quote_row.present? ? sales_quote_row.unit_cost_price : 0.0
     end

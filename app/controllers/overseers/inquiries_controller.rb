@@ -154,61 +154,20 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
   end
 
-  def create_stock_po_request
+  def create_purchase_orders_requests
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
     authorize @inquiry
-    new_purchase_orders_requests_params["po_requests_attributes"].to_h.each do |index, po_request_hash|
-      po_request = PoRequest.new
-      po_request.inquiry = @inquiry
-      po_request.stock_status = po_request_hash[:stock_status]
-      po_request.logistics_owner_id = po_request_hash[:logistics_owner_id]
-      po_request.supplier_id = po_request_hash[:supplier_id]
-      po_request.inquiry_id = po_request_hash[:inquiry_id]
-      po_request.address_id = po_request_hash[:address_id]
-      po_request.contact_id = po_request_hash[:contact_id]
-      po_request.payment_option_id = po_request_hash[:payment_option_id]
-      po_request.supplier_committed_date = po_request_hash[:supplier_committed_date]
-      po_request.requested_by_id = po_request_hash[:requested_by_id]
-      if po_request_hash[:blobs].present?
-        po_request_hash[:blobs].split(" ").each do | blob |
-          po_request.attachments.attach(ActiveStorage::Blob.find(blob))
-        end
-      end
-      if(po_request.save!)
-        if po_request_hash[:rows_attributes].present?
-          po_request_hash[:rows_attributes].each do |index, row_hash|
-            if !row_hash[:_destroy].present? && row_hash[:quantity].present?
-              PoRequestRow.create!(po_request: po_request,quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id],product_unit_selling_price: row_hash[:product_unit_selling_price], conversion: row_hash[:conversion])
-            end
-          end
-        end
-      end
-    end
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    service.call
     Rails.cache.delete(:po_requests)
     redirect_to pending_stock_overseers_po_requests_path
   end
 
   def preview_stock_po_request
-    @po_requests = {}
     @inquiry = Inquiry.find(new_purchase_orders_requests_params[:id])
-    new_purchase_orders_requests_params["po_requests_attributes"].to_h.each do |index, po_request_hash|
-      attachments = po_request_hash[:attachments] if po_request_hash[:attachments].present?
-      @po_requests[po_request_hash[:supplier_id]] = @inquiry.po_requests.build(inquiry_id: @inquiry, logistics_owner_id: po_request_hash[:logistics_owner_id], supplier_id: po_request_hash[:supplier_id], stock_status: po_request_hash[:stock_status], attachments: attachments, requested_by_id: po_request_hash[:requested_by_id], payment_option_id: po_request_hash[:payment_option_id])
-      blobs = Array.new
-      if @po_requests[po_request_hash[:supplier_id]].attachments.present?
-        @po_requests[po_request_hash[:supplier_id]].attachments.each do |attachment|
-          blobs << attachment.blob_id
-        end
-      end
-      @po_requests[po_request_hash[:supplier_id]].blobs = blobs
-      if po_request_hash[:rows_attributes].present?
-        po_request_hash[:rows_attributes].each do |index, row_hash|
-          if !row_hash[:_destroy].present? && row_hash[:quantity].present?
-            @po_requests[po_request_hash[:supplier_id]].rows.build( quantity: row_hash[:quantity], product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id],product_unit_selling_price: row_hash[:product_unit_selling_price], conversion: row_hash[:conversion])
-          end
-        end
-      end
-    end
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@inquiry, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+
     Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
     authorize @inquiry
   end
@@ -297,6 +256,9 @@ class Overseers::InquiriesController < Overseers::BaseController
               :id,
               :supplier_id,
               :inquiry_id,
+              :company_id,
+              :reason_to_stock,
+              :estimated_date_to_unstock,
               :requested_by_id,
               :approved_by_id,
               :_destroy,
@@ -307,6 +269,12 @@ class Overseers::InquiriesController < Overseers::BaseController
               :stock_status,
               :supplier_committed_date,
               :blobs,
+              :supplier_po_type,
+              :contact_email,
+              :contact_phone,
+              :bill_from_id,
+              :bill_to_id,
+              :ship_to_id,
               :attachments => [],
               :rows_attributes => [
                   :id,
@@ -319,8 +287,9 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :tax_code_id,
                   :tax_rate_id,
                   :measurement_unit_id,
-                  :product_unit_selling_price,
-                  :conversion
+                  :unit_price,
+                  :conversion,
+                  :lead_time
               ],
               :comments_attributes => [
                   :created_by_id,

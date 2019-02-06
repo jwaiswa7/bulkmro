@@ -304,7 +304,7 @@ Rails.application.routes.draw do
         get 'index_pg'
         get 'smart_queue'
         get 'export_all'
-        post 'create_stock_po_request'
+        post 'create_purchase_orders_requests'
         post 'preview_stock_po_request'
       end
 

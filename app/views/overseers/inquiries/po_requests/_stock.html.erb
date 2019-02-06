@@ -1,7 +1,8 @@
+<%= provide :container_fluid, true %>
 <div class="col-lg-12">
   <div class="page-header">
     <h2><%= action_name.capitalize %> PO Request for Stock &nbsp;</h2>
-<!--    <p>This will <em>'<%#= submit_text(@po_request).downcase %>'</em> and log it under-->
+    <p>This will <em>Create purchase order requests for stock</em> and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
 
@@ -11,113 +12,94 @@
     <%= f.hidden_field :id %>
 
     <%= f.simple_fields_for :po_requests, @po_requests, wrapper_tag: :div do |po_request| %>
-      <div class="form-row">
-        <div class="col-12">
-          <%= po_request.association :inquiry, disabled: true, collection: [po_request.object.inquiry], label_method: :to_s, include_blank: "Type Inquiry Number", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_inquiries_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Inquiry Number" %>
-        </div>
-        <div class="col-md-6">
-          <%= po_request.association :requested_by, as: :select, :include_blank => true %>
-        </div>
-        <div class="col-md-6">
-          <%= po_request.association :approved_by, as: :select, :include_blank => true %>
-        </div>
+      <div class="card mb-2">
+        <div class="card-body">
+          <%= render 'shared/snippets/form_errors', f: po_request %>
+          <%= po_request.hidden_field :id %>
+          <%= po_request.hidden_field :inquiry, as: :string %>
 
-
-      <div class="col-12">
-        <%= po_request.nested_fields_for :comments, f.object.comments.build(:overseer => current_overseer) do |po_request_comment| %>
-        <%= po_request_comment.hidden_field :created_by_id %>
-        <%= po_request_comment.hidden_field :updated_by_id %>
-        <%= po_request_comment.input :message, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
-        <% end %>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <strong class="d-block">Inquiry</strong>
+              <%= link_to overseers_inquiry_path(po_request.object.inquiry) do %>
+                <%= po_request.object.inquiry %>
+              <% end %>
+            </div>
+            <br>
+            <div class="form-group col-6">
+              <strong class="d-block">Company Name</strong>
+              <%= link_to overseers_company_path(po_request.object.inquiry.company) do %>
+                <%= po_request.object.inquiry.company %>
+              <% end %>
+            </div>
+            <br>
+            <div class="col-md-6">
+              <%= po_request.association :requested_by, as: :select, :include_blank => true %>
+            </div>
+            <div class="col-md-6">
+              <%= po_request.association :approved_by, as: :select, :include_blank => true, label: "Request Approved By" %>
+            </div>
+            <div class="col-md-9">
+              <%= po_request.input :reason_to_stock, :include_blank => true, label: "Reason to stock", required: true %>
+            </div>
+            <div class="col-md-3">
+              <%= po_request.input :estimated_date_to_unstock, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date'}, label: "Estimated date to Unstock", required: true%>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card col-12">
         <div class="card-body">
-            <div class="simple-row">
-              <%= po_request.hidden_field :id %>
-              <h5 class="text-uppercase">
-                <%# raise %>
-                    <div class="col-12 col-md-5">
-                      <div class="select2-wrap">
-                        <%= po_request.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
-                      </div>
-                    </div>
-                <%#= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-    <!--                  Remove Supplier-->
-                <%# end %>
-                <div class="form-row mt-2">
-<!--                  <div class="col-12 col-md-6">-->
-                    <%#= po_request.association :address, collection: selected_option_or_nil(po_request, :address), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_company_addresses_path(po_request.object.supplier)}, required: true %>
-<!--                  </div>-->
-<!--                  <div class="col-12 col-md-6">-->
-                    <%#= po_request.association :contact, as: :select, collection: po_request.object.supplier.contacts, :include_blank => false %>
-<!--                  </div>-->
-                  <div class="col-12 col-md-4">
-                    <%= po_request.association :logistics_owner, as: :select, required: true %>
-                  </div>
-                  <div class="col-12 col-md-2">
-                    <%= po_request.input :stock_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.stock_statuses.reject {|status| ["Stock Rejected","Stock Supplier PO Created"].include?(status)}, alphabetical: false), :include_blank => false %>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <%= po_request.input :supplier_committed_date, label: 'Supplier Committed Date', as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'supplier-committed-date' }, required: true %>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <%= po_request.association :payment_option, :wrapper => :custom_multi_select, include_blank: 'Select a Payment Option', required: true %>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <div class="d-flex flex-row align-items-end">
-                      <div class="flex-grow-1">
-                        <%= po_request.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
-                      </div>
-                      <div class="form-group">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </h5>
-
-              <h6 class="text-uppercase text-black-50 mb-1">Products</h6>
-              <%= render 'overseers/po_requests/rows_form', po_request: po_request, product_path: autocomplete_overseers_products_path%>
-
-              <%# if policy(f.object).add_products? %>
-              <%= po_request.add_nested_fields_link :rows, class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' do%>
-                <i class="fal fa-plus-circle mr-1"></i>Add a product
-              <% end %>
+          <div class="simple-row">
+          <%= po_request.hidden_field :id %>
+            <div class="col-12 col-md-4">
+                <%= po_request.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
             </div>
-
-        </div>
-      </div>
-    <% end %>
-
+            <%#= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+            <!--                  Remove Supplier-->
+            <%# end %>
 
 
-    </div>
+            <%= render 'overseers/inquiries/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path%>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> Preview PO Request
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
-        <i class="fal fa-pen"></i> Update PO Request
-      <% end %>
-    <% end %>
-  <% end %>
-
-  <% if @po_requests.comments.persisted.size > 0 %>
-    <div class="card">
-      <div class="card-body">
-        <div class="flex-fill">
-          <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
-        </div>
-        <div class="chats mb-3">
-          <% @po_requests.comments.each do |comment| %>
-            <% if comment.persisted? %>
-              <%= format_comment(comment) %>
+            <%= po_request.add_nested_fields_link :rows, class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' do %>
+              <i class="fal fa-plus-circle mr-1"></i>Add a product
             <% end %>
-          <% end %>
+          </div>
+
         </div>
       </div>
-    </div>
+    <% end %>
+
+    <div class="card-footer">
+      <% if action_name.capitalize == "New" %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+          <i class="fal fa-pen"></i> Preview PO request
+        <% end %>
+      <% else %>
+        <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+          <i class="fal fa-pen"></i> Update PO Request
+        <% end %>
+      <% end %>
   <% end %>
+  </div>
+
+</div>
+<% if @po_requests.comments.persisted.size > 0 %>
+  <div class="card">
+    <div class="card-body">
+      <div class="flex-fill">
+        <h6 class="text-uppercase text-black-50 mb-1">Comments History</h6>
+      </div>
+      <div class="chats mb-3">
+        <% @po_requests.comments.each do |comment| %>
+          <% if comment.persisted? %>
+            <%= format_comment(comment) %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
 </div>

@@ -123,7 +123,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     developer? || logistics? || manager_or_sales? || admin?
   end
 
-  def create_stock_po_request?
+  def create_purchase_orders_requests?
     developer? || logistics? || manager_or_sales? || admin?
   end
 
