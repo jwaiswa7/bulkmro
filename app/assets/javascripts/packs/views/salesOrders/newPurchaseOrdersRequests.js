@@ -7,12 +7,12 @@ import select2s from "../../components/select2s";
 
 const newPurchaseOrdersRequests = () => {
 
-    bindRatingModalTabClick();
+/*    bindRatingModalTabClick();
     $('.rating-modal a').click();
     var customTabSelector = $('#multipleRatingForm .custom-tab')
     customTabSelector.eq(0).removeClass('disabled')
     customTabSelector[0].click();
-    updateRatingForm();
+    updateRatingForm();*/
 
 
     validatePoRequestAddresses();
