@@ -24,7 +24,11 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def add_products?
-    record.status == 'Material Pickup'
+    record.status == 'Material Pickup' && !(record.purchase_order.rows.count == 1)
+  end
+
+  def remove_products?
+    add_products?
   end
 
   def delivered?

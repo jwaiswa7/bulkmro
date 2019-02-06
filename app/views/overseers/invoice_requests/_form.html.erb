@@ -179,7 +179,7 @@
                   <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= number_to_currency(k[:purchase_order_row].total_selling_price, precision: 0, unit: '') %>
+                  <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f , precision: 0, unit: '') %>
                 </div>
               </div>
             <% end %>
