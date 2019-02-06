@@ -1775,6 +1775,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_products_tax_rate_hsn
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Piramal Stationary.csv', 'seed_files')
+    service.loop(nil) do |x|
+      puts "-----------------#{x.get_column('SKU')}"
+      product = Product.find_by_sku(x.get_column('SKU'))
+      if product.present?
+        tax_rate = TaxRate.find_by_tax_percentage(x.get_column('Tax Rate').split('%').first.to_i)
+        tax_code = TaxCode.where(chapter: x.get_column('HSN').to_i, is_service: product.is_service).first
+        product.tax_rate = tax_rate || nil
+        product.tax_code = tax_code || nil
+        product.save
+      end
+    end
+  end
+
   def create_customer_product(company, product, x)
     product_name = x.get_column('New Description')
     customer_cost = x.get_column('Cost').to_f
