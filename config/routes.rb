@@ -401,7 +401,11 @@ Rails.application.routes.draw do
         get 'autocomplete'
       end
       scope module: 'accounts' do
-        resources :companies
+        resources :companies do
+          collection do
+            get 'payment_collection'
+          end
+        end
       end
     end
 

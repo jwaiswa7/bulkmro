@@ -41,6 +41,7 @@ class Company < ApplicationRecord
   has_many :customer_products, dependent: :destroy
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
+  has_many :sales_receipts
   has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
 
   has_one_attached :tan_proof
@@ -118,6 +119,10 @@ class Company < ApplicationRecord
     [:remote_uid]
   end
 
+  def total_invoice_amount
+
+  end
+
   def set_default_company_contact
     self.company_contacts.first
   end
@@ -138,6 +143,22 @@ class Company < ApplicationRecord
   def shipping_address
     self.update_attributes(:default_shipping_address => self.set_default_company_shipping_address) if self.default_shipping_address.blank?
     self.default_shipping_address
+  end
+
+  def amount_received
+    SalesReceipt.where(:company_id => self.id).pluck(:payment_amount_received).compact.sum
+  end
+
+  def amount_received_against_invoice
+    SalesReceipt.where(:company_id => self.id,:payment_type => 'against invoice').pluck(:payment_amount_received).compact.sum
+  end
+
+  def amount_received_on_account
+    SalesReceipt.where(:company_id => self.id,:payment_type => 'on account').pluck(:payment_amount_received).compact.sum
+  end
+
+  def amount_receivable
+    self.invoices.map{|invoice| invoice.calculated_total}.compact.sum
   end
 
   def to_contextual_s(product)

@@ -1,0 +1,19 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort all"></th>
+  <th class="no-sort all" data-name="name">Name</th>
+  <th class="sort desktop" >Total of Invoice Amount</th>
+  <th class="sort desktop" >Total Amount received against Invoice</th>
+  <th class="sort desktop" >Total Amount received On Account of Account</th>
+  <th class="sort desktop" >Total Ammount Received </th>
+  <th class="sort desktop" >Overdue Outstanding </th>
+  <th class="sort desktop" >Total Outstanding</th>
+<% end %>
+
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>
