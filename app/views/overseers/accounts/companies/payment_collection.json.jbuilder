@@ -6,8 +6,7 @@ json.data (@companies) do |company|
                       end
                   ].join(' '),
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
-                  # format_currency(company.invoices.sum(:calculated_total)),
-                  format_currency(company.amount_receivable),
+                  format_currency(company.invoices.sum(&:calculated_total)),
                   format_currency(company.amount_received_against_invoice),
                   format_currency(company.amount_received_on_account),
                   format_currency(company.amount_received),

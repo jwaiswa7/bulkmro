@@ -376,7 +376,11 @@ Rails.application.routes.draw do
 
         resources :sales_quotes
         resources :sales_orders
-        resources :sales_invoices
+        resources :sales_invoices do
+          collection do
+            get 'payment_collection'
+          end
+        end
 
         resources :imports do
           collection do

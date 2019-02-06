@@ -2317,7 +2317,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if currency.present?
         sr.currency = currency
       end
-      sr.payment_type = (metadata_obj['on_account'] == "1" ? 10 : (metadata_obj['on_account'] == "0" ? 20 : nil) )
+      if sr.sales_invoice.present?
+        sr.payment_type = 20
+      elsif sr.company.present?
+        sr.payment_type = 10
+      end
       sr.payment_amount_received = metadata_obj['p_amount_received']
       sr.payment_received_date = metadata_obj['p_received_date']
       sr.save!
@@ -2326,7 +2330,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def sales_invoice_totals
     SalesInvoice.all.each do | sales_invoice |
-      sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total) if sales_invoice.sales_order.present?
+      sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total_with_tax) if sales_invoice.sales_order.present?
     end
   end
 end
