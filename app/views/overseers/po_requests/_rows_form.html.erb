@@ -42,14 +42,15 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.association :contact, collection: f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]}, input_html: {class: 'select2-single'}, required: true %>
+    <%= f.association :contact, collection: f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]}, input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+
   </div>
 
   <div class="col-12 col-md-4">
-    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', hint: 'Note: If left blank, above selected contact\'s email will be applied', input_html: {'data-parsley-contact-email': ''} %>
+    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: true %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', hint: 'Note: If left blank, above selected contact\'s number will be applied', input_html: {'data-parsley-contact-phone': ''} %>
+    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: true %>
   </div>
 
   <div class="col-12 col-md-4">
