@@ -246,3 +246,6 @@ gem 'razorpay'
 
 # Wit.ai
 gem 'wit'
+
+#new relic - Performance Analytics
+gem 'newrelic_rpm'
