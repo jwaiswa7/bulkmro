@@ -1,6 +1,7 @@
 import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
 import updateRatingForm from "../common/updateRatingForm"
 import updateRowTotal from "./updateRowTotal"
+import select2s from "../../components/select2s";
 
 
 const newAction = () => {
@@ -17,6 +18,13 @@ const newAction = () => {
         onProductChange(this);
     }).find('select[name*=product_id]').each(function (e) {
         onProductChange(this);
+    });
+    $('form').on('change', 'select[name*=supplier_id]', function (e) {
+        let reset = true;
+        onSupplierChange(this, reset);
+    }).find('select[name*=supplier_id]').each(function (e) {
+        let reset = false;
+        onSupplierChange(this, reset);
     });
     updateRowTotal();
 
@@ -37,6 +45,22 @@ let onProductChange = (container) => {
                 row.find('[name*=unit_price]').val(response.converted_unit_selling_price);
             }
         });
+    }
+};
+
+let onSupplierChange = (container, reset) => {
+    let optionSelected = $("option:selected", container);
+    if (optionSelected.exists() && optionSelected.val() !== '') {
+        if (reset) {
+            $('form').find('select[name*=bill_from_id]').val(null).trigger("change");
+            $('form').find('select[name*=ship_from_id]').val(null).trigger("change");
+            $('form').find('select[name*=contact_id]').val(null).trigger("change");
+        }
+        $('form').find('select[name*=bill_from_id]').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $('form').find('select[name*=ship_from_id]').attr('data-source', Routes.autocomplete_overseers_company_addresses_path(optionSelected.val())).select2('destroy');
+        $('form').find('select[name*=contact_id]').attr('data-source', Routes.autocomplete_overseers_company_contacts_path(optionSelected.val())).select2('destroy');
+
+        select2s();
     }
 };
 

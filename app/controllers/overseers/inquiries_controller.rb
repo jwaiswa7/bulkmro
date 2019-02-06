@@ -273,6 +273,7 @@ class Overseers::InquiriesController < Overseers::BaseController
               :contact_email,
               :contact_phone,
               :bill_from_id,
+              :ship_from_id,
               :bill_to_id,
               :ship_to_id,
               :attachments => [],
@@ -289,7 +290,8 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :measurement_unit_id,
                   :unit_price,
                   :conversion,
-                  :lead_time
+                  :lead_time,
+                  :discount_percentage
               ],
               :comments_attributes => [
                   :created_by_id,

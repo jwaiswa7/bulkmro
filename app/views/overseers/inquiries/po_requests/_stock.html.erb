@@ -52,14 +52,6 @@
       <div class="card col-12">
         <div class="card-body">
           <div class="simple-row">
-          <%= po_request.hidden_field :id %>
-            <div class="col-12 col-md-4">
-                <%= po_request.association :supplier, label_method: :to_s, include_blank: "Type Supplier", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => autocomplete_overseers_suppliers_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: "Supplier" %>
-            </div>
-            <%#= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-            <!--                  Remove Supplier-->
-            <%# end %>
-
 
             <%= render 'overseers/inquiries/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path%>
 
