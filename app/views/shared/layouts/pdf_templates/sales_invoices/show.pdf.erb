@@ -316,21 +316,21 @@
                   <td align="right" valign="top">
                     <span><%= number_to_currency(item.metadata['base_row_total'], precision: 2, unit: '') %></span></td>
                   <td align="center" valign="top">
-                    <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
+                    <span><%= item.tax_rate.round(0) %>%</span></td>
                   <% if record.sales_order.sales_quote.tax_summary.strip == '0' ||
                       (record.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
                     <td align="center" valign="top">
-                      <span><%= item.tax_rate.to_f.round(0) %>%</span></td>
+                      <span><%= item.tax_rate.round(0) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency(item.metadata['base_tax_amount'], precision: 2, unit: '') %></span></td>
                   <% else %>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
                     <td align="right" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %></span>
                     </td>
                     <td align="center" valign="top">
-                      <span><%= (item.tax_rate.to_f / 2).to_f.round(2) %>%</span></td>
+                      <span><%= (item.tax_rate / 2).to_f.round(2) %>%</span></td>
                     <td align="center" valign="top">
                       <span><%= number_to_currency((item.metadata['base_tax_amount'].to_f / 2), precision: 2, unit: '') %>
                         <br></span>

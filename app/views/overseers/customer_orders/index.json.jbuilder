@@ -12,6 +12,7 @@ json.data (@customer_orders) do |customer_order|
                   ].join(' '),
                   customer_order.online_order_number,
                   status_badge(customer_order.status),
+                  customer_order.payment_method,
                   conditional_link( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
                   customer_order.company.present? ? conditional_link(customer_order.company.name, overseers_company_path(customer_order.company), policy(customer_order.company).show?) : "-",
                   customer_order.contact.full_name,

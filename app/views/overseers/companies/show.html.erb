@@ -277,6 +277,9 @@
         <a class="nav-link" data-toggle="tab" href="#online-orders" role="tab">Online Orders</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#payments" role="tab">Online Payments</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#quotes" role="tab">Quotes</a>
       </li>
       <li class="nav-item">
@@ -508,6 +511,7 @@
               <th class="no-sort desktop">Category</th>
               <th class="no-sort desktop">MPN</th>
               <th class="no-sort desktop" data-name="is_active"> Active</th>
+              <th class="no-sort desktop" data-name="created_at"> Created At</th>
             </tr>
             </thead>
             <tbody>
@@ -522,22 +526,46 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Online Orders</h3>
         </div>
 
-        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive w-100 table-responsive" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort all" data-width="70px"></th>
+            <th class="no-sort desktop text-right">Online Order #</th>
+            <th class="no-sort desktop">Status</th>
+            <th class="no-sort desktop">Payment Method</th>
+            <th class="no-sort desktop">Account</th>
+            <th class="no-sort all">Company</th>
             <th class="no-sort all">Customer Name</th>
             <th class="no-sort all">Line Items</th>
+            <th class="sort all">Total (Excl. Tax)</th>
+            <th class="sort all" data-name="grand_total">Total (Incl. Tax)</th>
             <th class="no-sort all">Inside Sales</th>
             <th class="no-sort all">Outside Sales</th>
             <th class="no-sort all">Manager</th>
-            <th class="no-sort desktop" data-name="created_at">Created</th>
+            <th class="sort desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-
+      <div class="tab-pane fade" id="payments" role="tabpanel">
+        <div class="d-md-flex justify-content-between">
+          <h3 class="display-5 mb-1 d-none d-md-block">Online Payments</h3>
+        </div>
+        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%=  payments_overseers_customer_orders_path(:company_id =>@company.id)%>">
+          <thead>
+          <tr>
+            <th class="no-sort all"></th>
+            <th class="no-sort desktop">Status</th>
+            <th class="no-sort all">Online Order</th>
+            <th class="no-sort desktop ">Payment #</th>
+            <th class="no-sort desktop">Amount</th>
+            <th class="sort desktop" data-name="created_at">Created</th>
+          </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
       <div class="tab-pane fade" id="quotes" role="tabpanel">
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Quotes</h3>

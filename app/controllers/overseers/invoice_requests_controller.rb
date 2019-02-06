@@ -109,7 +109,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ar_invoice_number,
         :purchase_order_id,
         :status,
-        :comments_attributes => [:id, :message, :created_by_id],
+        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
   end
@@ -117,4 +117,5 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def set_invoice_request
     @invoice_request = InvoiceRequest.find(params[:id])
   end
+
 end

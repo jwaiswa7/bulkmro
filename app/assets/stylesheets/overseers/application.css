@@ -2101,7 +2101,7 @@ textarea.form-control {
     .form-inline .custom-control-label {
       margin-bottom: 0; } }
 
-.btn {
+.btn, .razorpay-payment-button {
   display: inline-block;
   font-weight: 700;
   text-align: center;
@@ -2122,31 +2122,32 @@ textarea.form-control {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out; }
   @media screen and (prefers-reduced-motion: reduce) {
-    .btn {
+    .btn, .razorpay-payment-button {
       -webkit-transition: none;
       -o-transition: none;
       transition: none; } }
-  .btn:hover, .btn:focus {
+  .btn:hover, .razorpay-payment-button:hover, .btn:focus, .razorpay-payment-button:focus {
     text-decoration: none; }
-  .btn:focus, .btn.focus {
+  .btn:focus, .razorpay-payment-button:focus, .btn.focus, .focus.razorpay-payment-button {
     outline: 0;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.25); }
-  .btn.disabled, .btn:disabled {
+  .btn.disabled, .disabled.razorpay-payment-button, .btn:disabled, .razorpay-payment-button:disabled {
     opacity: 0.65;
     -webkit-box-shadow: none;
     box-shadow: none; }
-  .btn:not(:disabled):not(.disabled) {
+  .btn:not(:disabled):not(.disabled), .razorpay-payment-button:not(:disabled):not(.disabled) {
     cursor: pointer; }
-  .btn:not(:disabled):not(.disabled):active, .btn:not(:disabled):not(.disabled).active {
+  .btn:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled):active, .btn:not(:disabled):not(.disabled).active, .razorpay-payment-button:not(:disabled):not(.disabled).active {
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
-    .btn:not(:disabled):not(.disabled):active:focus, .btn:not(:disabled):not(.disabled).active:focus {
+    .btn:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .btn:not(:disabled):not(.disabled).active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus {
       -webkit-box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.25), inset 0 3px 5px rgba(0, 0, 0, 0.125);
       box-shadow: 0 0 0 0.2rem rgba(253, 126, 20, 0.25), inset 0 3px 5px rgba(0, 0, 0, 0.125); }
 
-a.btn.disabled,
-fieldset:disabled a.btn {
+a.btn.disabled, a.disabled.razorpay-payment-button,
+fieldset:disabled a.btn,
+fieldset:disabled a.razorpay-payment-button {
   pointer-events: none; }
 
 .btn-primary {
@@ -2199,28 +2200,28 @@ fieldset:disabled a.btn {
       -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(108, 117, 125, 0.5);
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(108, 117, 125, 0.5); }
 
-.btn-success {
+.btn-success, .razorpay-payment-button {
   color: #fff;
   background-color: #28a745;
   border-color: #28a745;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); }
-  .btn-success:hover {
+  .btn-success:hover, .razorpay-payment-button:hover {
     color: #fff;
     background-color: #218838;
     border-color: #1e7e34; }
-  .btn-success:focus, .btn-success.focus {
+  .btn-success:focus, .razorpay-payment-button:focus, .btn-success.focus, .focus.razorpay-payment-button {
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
-  .btn-success.disabled, .btn-success:disabled {
+  .btn-success.disabled, .disabled.razorpay-payment-button, .btn-success:disabled, .razorpay-payment-button:disabled {
     color: #fff;
     background-color: #28a745;
     border-color: #28a745; }
-  .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active, .show > .btn-success.dropdown-toggle {
+  .btn-success:not(:disabled):not(.disabled):active, .razorpay-payment-button:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active, .razorpay-payment-button:not(:disabled):not(.disabled).active, .show > .btn-success.dropdown-toggle, .show > .dropdown-toggle.razorpay-payment-button {
     color: #fff;
     background-color: #1e7e34;
     border-color: #1c7430; }
-    .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus, .show > .btn-success.dropdown-toggle:focus {
+    .btn-success:not(:disabled):not(.disabled):active:focus, .razorpay-payment-button:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus, .razorpay-payment-button:not(:disabled):not(.disabled).active:focus, .show > .btn-success.dropdown-toggle:focus, .show > .dropdown-toggle.razorpay-payment-button:focus {
       -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
       box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
 
@@ -2551,27 +2552,29 @@ fieldset:disabled a.btn {
     color: #6c757d;
     pointer-events: none; }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg, .btn-group-lg > .btn, .btn-group-lg > .razorpay-payment-button {
   padding: 0.625rem 1rem;
   font-size: 1.0625rem;
   line-height: 1.5;
   border-radius: 0.3rem; }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm, .btn-group-sm > .btn, .btn-group-sm > .razorpay-payment-button {
   padding: 0.25rem 0.5rem;
   font-size: 0.74375rem;
   line-height: 1.5;
   border-radius: 0.2rem; }
 
-.btn-block {
+.btn-block, .razorpay-payment-button {
   display: block;
   width: 100%; }
-  .btn-block + .btn-block {
+  .btn-block + .btn-block, .razorpay-payment-button + .btn-block, .btn-block + .razorpay-payment-button, .razorpay-payment-button + .razorpay-payment-button {
     margin-top: 0.5rem; }
 
-input[type="submit"].btn-block,
+input[type="submit"].btn-block, input[type="submit"].razorpay-payment-button,
 input[type="reset"].btn-block,
-input[type="button"].btn-block {
+input[type="reset"].razorpay-payment-button,
+input[type="button"].btn-block,
+input[type="button"].razorpay-payment-button {
   width: 100%; }
 
 .fade {
@@ -2774,27 +2777,39 @@ input[type="button"].btn-block {
   display: -ms-inline-flexbox;
   display: inline-flex;
   vertical-align: middle; }
-  .btn-group > .btn,
-  .btn-group-vertical > .btn {
+  .btn-group > .btn, .btn-group > .razorpay-payment-button,
+  .btn-group-vertical > .btn,
+  .btn-group-vertical > .razorpay-payment-button {
     position: relative;
     -webkit-box-flex: 0;
     -ms-flex: 0 1 auto;
     flex: 0 1 auto; }
-    .btn-group > .btn:hover,
-    .btn-group-vertical > .btn:hover {
+    .btn-group > .btn:hover, .btn-group > .razorpay-payment-button:hover,
+    .btn-group-vertical > .btn:hover,
+    .btn-group-vertical > .razorpay-payment-button:hover {
       z-index: 1; }
-    .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,
+    .btn-group > .btn:focus, .btn-group > .razorpay-payment-button:focus, .btn-group > .btn:active, .btn-group > .razorpay-payment-button:active, .btn-group > .btn.active, .btn-group > .active.razorpay-payment-button,
     .btn-group-vertical > .btn:focus,
+    .btn-group-vertical > .razorpay-payment-button:focus,
     .btn-group-vertical > .btn:active,
-    .btn-group-vertical > .btn.active {
+    .btn-group-vertical > .razorpay-payment-button:active,
+    .btn-group-vertical > .btn.active,
+    .btn-group-vertical > .active.razorpay-payment-button {
       z-index: 1; }
-  .btn-group .btn + .btn,
+  .btn-group .btn + .btn, .btn-group .razorpay-payment-button + .btn, .btn-group .btn + .razorpay-payment-button, .btn-group .razorpay-payment-button + .razorpay-payment-button,
   .btn-group .btn + .btn-group,
+  .btn-group .razorpay-payment-button + .btn-group,
   .btn-group .btn-group + .btn,
+  .btn-group .btn-group + .razorpay-payment-button,
   .btn-group .btn-group + .btn-group,
   .btn-group-vertical .btn + .btn,
+  .btn-group-vertical .razorpay-payment-button + .btn,
+  .btn-group-vertical .btn + .razorpay-payment-button,
+  .btn-group-vertical .razorpay-payment-button + .razorpay-payment-button,
   .btn-group-vertical .btn + .btn-group,
+  .btn-group-vertical .razorpay-payment-button + .btn-group,
   .btn-group-vertical .btn-group + .btn,
+  .btn-group-vertical .btn-group + .razorpay-payment-button,
   .btn-group-vertical .btn-group + .btn-group {
     margin-left: -1px; }
 
@@ -2810,14 +2825,16 @@ input[type="button"].btn-block {
   .btn-toolbar .input-group {
     width: auto; }
 
-.btn-group > .btn:first-child {
+.btn-group > .btn:first-child, .btn-group > .razorpay-payment-button:first-child {
   margin-left: 0; }
-.btn-group > .btn:not(:last-child):not(.dropdown-toggle),
-.btn-group > .btn-group:not(:last-child) > .btn {
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle), .btn-group > .razorpay-payment-button:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn-group:not(:last-child) > .btn,
+.btn-group > .btn-group:not(:last-child) > .razorpay-payment-button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0; }
-.btn-group > .btn:not(:first-child),
-.btn-group > .btn-group:not(:first-child) > .btn {
+.btn-group > .btn:not(:first-child), .btn-group > .razorpay-payment-button:not(:first-child),
+.btn-group > .btn-group:not(:first-child) > .btn,
+.btn-group > .btn-group:not(:first-child) > .razorpay-payment-button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0; }
 
@@ -2829,11 +2846,11 @@ input[type="button"].btn-block {
   .dropleft .dropdown-toggle-split::before {
     margin-right: 0; }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .btn-group-sm > .razorpay-payment-button + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem; }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .btn-group-lg > .razorpay-payment-button + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem; }
 
@@ -2855,31 +2872,39 @@ input[type="button"].btn-block {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center; }
-  .btn-group-vertical .btn,
+  .btn-group-vertical .btn, .btn-group-vertical .razorpay-payment-button,
   .btn-group-vertical .btn-group {
     width: 100%; }
-  .btn-group-vertical > .btn + .btn,
+  .btn-group-vertical > .btn + .btn, .btn-group-vertical > .razorpay-payment-button + .btn, .btn-group-vertical > .btn + .razorpay-payment-button, .btn-group-vertical > .razorpay-payment-button + .razorpay-payment-button,
   .btn-group-vertical > .btn + .btn-group,
+  .btn-group-vertical > .razorpay-payment-button + .btn-group,
   .btn-group-vertical > .btn-group + .btn,
+  .btn-group-vertical > .btn-group + .razorpay-payment-button,
   .btn-group-vertical > .btn-group + .btn-group {
     margin-top: -1px;
     margin-left: 0; }
-  .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle),
-  .btn-group-vertical > .btn-group:not(:last-child) > .btn {
+  .btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .btn-group-vertical > .razorpay-payment-button:not(:last-child):not(.dropdown-toggle),
+  .btn-group-vertical > .btn-group:not(:last-child) > .btn,
+  .btn-group-vertical > .btn-group:not(:last-child) > .razorpay-payment-button {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0; }
-  .btn-group-vertical > .btn:not(:first-child),
-  .btn-group-vertical > .btn-group:not(:first-child) > .btn {
+  .btn-group-vertical > .btn:not(:first-child), .btn-group-vertical > .razorpay-payment-button:not(:first-child),
+  .btn-group-vertical > .btn-group:not(:first-child) > .btn,
+  .btn-group-vertical > .btn-group:not(:first-child) > .razorpay-payment-button {
     border-top-left-radius: 0;
     border-top-right-radius: 0; }
 
-.btn-group-toggle > .btn,
-.btn-group-toggle > .btn-group > .btn {
+.btn-group-toggle > .btn, .btn-group-toggle > .razorpay-payment-button,
+.btn-group-toggle > .btn-group > .btn,
+.btn-group-toggle > .btn-group > .razorpay-payment-button {
   margin-bottom: 0; }
-  .btn-group-toggle > .btn input[type="radio"],
+  .btn-group-toggle > .btn input[type="radio"], .btn-group-toggle > .razorpay-payment-button input[type="radio"],
   .btn-group-toggle > .btn input[type="checkbox"],
+  .btn-group-toggle > .razorpay-payment-button input[type="checkbox"],
   .btn-group-toggle > .btn-group > .btn input[type="radio"],
-  .btn-group-toggle > .btn-group > .btn input[type="checkbox"] {
+  .btn-group-toggle > .btn-group > .razorpay-payment-button input[type="radio"],
+  .btn-group-toggle > .btn-group > .btn input[type="checkbox"],
+  .btn-group-toggle > .btn-group > .razorpay-payment-button input[type="checkbox"] {
     position: absolute;
     clip: rect(0, 0, 0, 0);
     pointer-events: none; }
@@ -2947,18 +2972,26 @@ input[type="button"].btn-block {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
-  .input-group-prepend .btn,
-  .input-group-append .btn {
+  .input-group-prepend .btn, .input-group-prepend .razorpay-payment-button,
+  .input-group-append .btn,
+  .input-group-append .razorpay-payment-button {
     position: relative;
     z-index: 2; }
-  .input-group-prepend .btn + .btn,
+  .input-group-prepend .btn + .btn, .input-group-prepend .razorpay-payment-button + .btn, .input-group-prepend .btn + .razorpay-payment-button, .input-group-prepend .razorpay-payment-button + .razorpay-payment-button,
   .input-group-prepend .btn + .input-group-text,
+  .input-group-prepend .razorpay-payment-button + .input-group-text,
   .input-group-prepend .input-group-text + .input-group-text,
   .input-group-prepend .input-group-text + .btn,
+  .input-group-prepend .input-group-text + .razorpay-payment-button,
   .input-group-append .btn + .btn,
+  .input-group-append .razorpay-payment-button + .btn,
+  .input-group-append .btn + .razorpay-payment-button,
+  .input-group-append .razorpay-payment-button + .razorpay-payment-button,
   .input-group-append .btn + .input-group-text,
+  .input-group-append .razorpay-payment-button + .input-group-text,
   .input-group-append .input-group-text + .input-group-text,
-  .input-group-append .input-group-text + .btn {
+  .input-group-append .input-group-text + .btn,
+  .input-group-append .input-group-text + .razorpay-payment-button {
     margin-left: -1px; }
 
 .input-group-prepend {
@@ -2993,7 +3026,9 @@ input[type="button"].btn-block {
 .input-group-lg > .input-group-prepend > .input-group-text,
 .input-group-lg > .input-group-append > .input-group-text,
 .input-group-lg > .input-group-prepend > .btn,
-.input-group-lg > .input-group-append > .btn {
+.input-group-lg > .input-group-prepend > .razorpay-payment-button,
+.input-group-lg > .input-group-append > .btn,
+.input-group-lg > .input-group-append > .razorpay-payment-button {
   height: calc(2.84375rem + 2px);
   padding: 0.625rem 1rem;
   font-size: 1.0625rem;
@@ -3004,27 +3039,33 @@ input[type="button"].btn-block {
 .input-group-sm > .input-group-prepend > .input-group-text,
 .input-group-sm > .input-group-append > .input-group-text,
 .input-group-sm > .input-group-prepend > .btn,
-.input-group-sm > .input-group-append > .btn {
+.input-group-sm > .input-group-prepend > .razorpay-payment-button,
+.input-group-sm > .input-group-append > .btn,
+.input-group-sm > .input-group-append > .razorpay-payment-button {
   height: calc(1.615625rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.74375rem;
   line-height: 1.5;
   border-radius: 0.2rem; }
 
-.input-group > .input-group-prepend > .btn,
+.input-group > .input-group-prepend > .btn, .input-group > .input-group-prepend > .razorpay-payment-button,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
+.input-group > .input-group-append:not(:last-child) > .razorpay-payment-button,
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+.input-group > .input-group-append:last-child > .razorpay-payment-button:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0; }
 
-.input-group > .input-group-append > .btn,
+.input-group > .input-group-append > .btn, .input-group > .input-group-append > .razorpay-payment-button,
 .input-group > .input-group-append > .input-group-text,
 .input-group > .input-group-prepend:not(:first-child) > .btn,
+.input-group > .input-group-prepend:not(:first-child) > .razorpay-payment-button,
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+.input-group > .input-group-prepend:first-child > .razorpay-payment-button:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0; }
@@ -4080,7 +4121,7 @@ input[type="button"].btn-block {
   .badge:empty {
     display: none; }
 
-.btn .badge {
+.btn .badge, .razorpay-payment-button .badge {
   position: relative;
   top: -1px; }
 
@@ -7810,7 +7851,7 @@ a.text-dark:hover, a.text-dark:focus {
     -webkit-box-shadow: none !important;
     box-shadow: none !important; }
 
-  a:not(.btn) {
+  a:not(.btn):not(.razorpay-payment-button) {
     text-decoration: underline; }
 
   abbr[title]::after {
@@ -9008,7 +9049,9 @@ div.dataTables_wrapper div.dataTables_processing {
   .input-group > .select2-container--bootstrap .input-group-append,
   .input-group > .select2-container--bootstrap .input-group-prepend,
   .input-group > .select2-container--bootstrap .input-group-append .btn,
-  .input-group > .select2-container--bootstrap .input-group-prepend .btn {
+  .input-group > .select2-container--bootstrap .input-group-append .razorpay-payment-button,
+  .input-group > .select2-container--bootstrap .input-group-prepend .btn,
+  .input-group > .select2-container--bootstrap .input-group-prepend .razorpay-payment-button {
     vertical-align: top; }
 
 /**
@@ -9063,6 +9106,8 @@ div.dataTables_wrapper div.dataTables_processing {
     background: #fff;
     border-radius: 0.25rem; }
 
+.select2-container--bootstrap .select2-dropdown--below, .select2-container--bootstrap .select2-dropdown--above {
+  min-width: 12.5rem; }
 .select2-container--bootstrap .select2-results__option[aria-selected=true] {
   display: none; }
 
@@ -9330,7 +9375,7 @@ div.dataTables_wrapper div.dataTables_processing {
   font-size: 12px;
   padding-right: 8px; }
 
-.daterangepicker .drp-buttons .btn {
+.daterangepicker .drp-buttons .btn, .daterangepicker .drp-buttons .razorpay-payment-button {
   margin-left: 8px;
   font-size: 12px;
   font-weight: bold;
@@ -9534,11 +9579,11 @@ i.material-icons.h1, i.material-icons.h2, i.material-icons.h3, i.material-icons.
 button, button:link, button:visited, button:hover, button:active, button:focus {
   outline: 0; }
 
-.btn {
+.btn, .razorpay-payment-button {
   font-size: 0.85rem;
   text-transform: uppercase;
   position: relative; }
-  .btn[data-badge]:after {
+  .btn[data-badge]:after, [data-badge].razorpay-payment-button:after {
     content: attr(data-badge);
     position: absolute;
     right: 0;
@@ -9799,11 +9844,11 @@ th {
       border-right-style: solid;
       border-bottom-right-radius: 0.25rem;
       border-top-right-radius: 0.25rem; }
-    .table th a:not(.btn), .table td a:not(.btn) {
+    .table th a:not(.btn):not(.razorpay-payment-button), .table td a:not(.btn):not(.razorpay-payment-button) {
       color: inherit;
       display: inline-block;
       width: 100%; }
-      .table th a:not(.btn):hover, .table td a:not(.btn):hover {
+      .table th a:not(.btn):not(.razorpay-payment-button):hover, .table td a:not(.btn):not(.razorpay-payment-button):hover {
         color: #fd7e14;
         text-decoration: underline; }
   .table thead th {
@@ -9977,19 +10022,23 @@ th {
   z-index: 10000;
   position: fixed;
   margin: 0;
-  width: 100% !important;
-  left: 0;
   -webkit-box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
-  top: auto;
-  bottom: 0;
-  opacity: 0.95; }
+  opacity: 0.95;
+  top: 135px;
+  right: 25px;
+  bottom: auto;
+  left: auto;
+  width: auto !important;
+  max-width: 250px; }
   @media (max-width: 991.98px) {
     .alert {
-      width: 100%;
+      width: 100% !important;
+      max-width: 100%;
       top: auto;
-      left: 0;
+      right: auto;
       bottom: 0;
+      left: 0;
       -webkit-box-shadow: 0 0 0 0 transparent;
       box-shadow: 0 0 0 0 transparent;
       border-radius: 0; } }
@@ -10256,6 +10305,86 @@ a.bg-highlight-dark:hover, a.bg-highlight-dark:focus,
 button.bg-highlight-dark:hover,
 button.bg-highlight-dark:focus {
   background-color: #7a8793 !important; }
+
+.bg-highlight-color-light-blue {
+  background-color: white !important; }
+
+a.bg-highlight-color-light-blue:hover, a.bg-highlight-color-light-blue:focus,
+button.bg-highlight-color-light-blue:hover,
+button.bg-highlight-color-light-blue:focus {
+  background-color: #d2e1fa !important; }
+
+.bg-highlight-color-dark-blue {
+  background-color: #c7daf7 !important; }
+
+a.bg-highlight-color-dark-blue:hover, a.bg-highlight-color-dark-blue:focus,
+button.bg-highlight-color-dark-blue:hover,
+button.bg-highlight-color-dark-blue:focus {
+  background-color: #9abcf1 !important; }
+
+.bg-highlight-color-yellow {
+  background-color: #ffdb6d !important; }
+
+a.bg-highlight-color-yellow:hover, a.bg-highlight-color-yellow:focus,
+button.bg-highlight-color-yellow:hover,
+button.bg-highlight-color-yellow:focus {
+  background-color: #ffce3a !important; }
+
+.bg-highlight-color-light-yellow {
+  background-color: #ffe7a0 !important; }
+
+a.bg-highlight-color-light-yellow:hover, a.bg-highlight-color-light-yellow:focus,
+button.bg-highlight-color-light-yellow:hover,
+button.bg-highlight-color-light-yellow:focus {
+  background-color: #ffdb6d !important; }
+
+.bg-highlight-color-red {
+  background-color: #fbeeee !important; }
+
+a.bg-highlight-color-red:hover, a.bg-highlight-color-red:focus,
+button.bg-highlight-color-red:hover,
+button.bg-highlight-color-red:focus {
+  background-color: #f3c3c3 !important; }
+
+.bg-highlight-color-light-green {
+  background-color: #f1f7ee !important; }
+
+a.bg-highlight-color-light-green:hover, a.bg-highlight-color-light-green:focus,
+button.bg-highlight-color-light-green:hover,
+button.bg-highlight-color-light-green:focus {
+  background-color: #d3e7cb !important; }
+
+.bg-highlight-color-green {
+  background-color: #cde4c3 !important; }
+
+a.bg-highlight-color-green:hover, a.bg-highlight-color-green:focus,
+button.bg-highlight-color-green:hover,
+button.bg-highlight-color-green:focus {
+  background-color: #b0d4a0 !important; }
+
+.bg-highlight-color-dark-green {
+  background-color: #a3cc91 !important; }
+
+a.bg-highlight-color-dark-green:hover, a.bg-highlight-color-dark-green:focus,
+button.bg-highlight-color-dark-green:hover,
+button.bg-highlight-color-dark-green:focus {
+  background-color: #86bb6f !important; }
+
+.bg-highlight-color-orange {
+  background-color: #fffefc !important; }
+
+a.bg-highlight-color-orange:hover, a.bg-highlight-color-orange:focus,
+button.bg-highlight-color-orange:hover,
+button.bg-highlight-color-orange:focus {
+  background-color: #fce4cc !important; }
+
+.bg-highlight-color-grey {
+  background-color: #eaeaea !important; }
+
+a.bg-highlight-color-grey:hover, a.bg-highlight-color-grey:focus,
+button.bg-highlight-color-grey:hover,
+button.bg-highlight-color-grey:focus {
+  background-color: #d1d1d1 !important; }
 
 .headway {
   display: inline-block;
@@ -10682,3 +10811,10 @@ a.text-color-orange:hover, a.text-color-orange:focus {
 
 a.text-color-grey:hover, a.text-color-grey:focus {
   color: #9e9e9e !important; }
+
+.notifications {
+  min-width: 22.5rem;
+  max-width: 22.5rem; }
+  .notifications .dropdown-item {
+    word-wrap: normal;
+    white-space: normal; }

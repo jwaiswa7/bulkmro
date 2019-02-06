@@ -62,3 +62,18 @@ wit:
 
 heroku:
   dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3
+
+razorpay:
+  MERCHANT_KEY_ID:  'rzp_test_YorJsu5KKxrZxc'
+  MERCHANT_KEY_SECRET:  'F1KKKL5ntCXObq4EZ6huRj32'
+
+sap:
+  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
+  DATABASE: 'BMRO_15NOV'
+  USERNAME: 'manager'
+  PASSWORD: 'vm1234'
+  ATTACHMENT_ENDPOINT:  'https://35.200.144.191:22'
+  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
+  ATTACHMENT_USERNAME:  'pradeep'
+  ATTACHMENT_PASSWORD:  ''

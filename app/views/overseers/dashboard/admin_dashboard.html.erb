@@ -1,0 +1,103 @@
+<%= render layout: 'overseers/dashboard/show' do %>
+
+  <div class="form-row mt-3 mt-lg-4">
+    <% if policy(:account).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Accounts</strong></p>
+              <h3 class="mb-0"><%= number_with_delimiter(Account.all.size, delimiter: ',') %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_accounts_path %>" class="btn btn-lg btn-block btn-success">See Accounts</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:company).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase text-black-50 mb-1"><strong>Companies</strong>
+              </p>
+              <h3 class="mb-0"><%= number_with_delimiter(Company.all.size, delimiter: ',') %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_companies_path %>" class="btn btn-lg btn-block btn-success">See Companies</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:contact).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Contacts</strong></p>
+              <h3 class="mb-0"><%= number_with_delimiter(Contact.all.size, delimiter: ',') %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_contacts_path %>" class="btn btn-lg btn-block btn-success">See Contacts</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if policy(:product).index? %>
+      <div class="col-md-3">
+        <div class="card mb-3 ">
+          <div class="card-body">
+            <div class="text-center">
+              <p class="text-uppercase mb-1"><strong>Products</strong></p>
+              <h3 class="mb-0"><%= number_with_delimiter(Product.all.size, delimiter: ',') %></h3>
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="<%= overseers_products_path %>" class="btn btn-lg btn-block btn-success">See Products</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-row">
+    <% if @dashboard.entries.any? %>
+      <div class="col-12 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table w-100 wrap-whitespace datatable" data-sort="false" data-fixed-header="false">
+              <thead>
+              <tr>
+                <th class="no-sort text-right"></th>
+                <th class="no-sort text-right">Inquiry</th>
+                <th class="no-sort text-right">Quotes</th>
+                <th class="no-sort text-right">Orders</th>
+                <th class="no-sort text-right">Invoices</th>
+                <th class="no-sort text-right">Purchase Orders</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @dashboard.entries.each do |month, values| %>
+                <tr>
+                  <td><strong><%= format_month_without_date(month) %></strong></td>
+                  <% values.each do |column, value| %>
+                    <td class="text-uppercase text-right text-black-50">
+                      <%= number_with_delimiter(value[:count], delimiter: ',') %>
+                      <hr class="my-1">
+                      <strong><%= format_currency(value[:total], precision: 0, show_symbol: true) %></strong>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

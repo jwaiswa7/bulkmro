@@ -5,10 +5,10 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     freight_requests =
         if params[:status].present?
           @status = params[:status]
-          FreightRequest.where(:status => params[:status])
+          FreightRequest.where(:status => FreightRequest.statuses[params[:status]])
         else
           FreightRequest.all
-        end.order(id: :desc)
+        end
 
     @freight_requests = ApplyDatatableParams.to(freight_requests, params)
     authorize @freight_requests
@@ -20,6 +20,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
 
   def new
     if params[:sales_order_id].present? || params[:sales_quote_id].present? || params[:inquiry_id].present?
+
       if params[:sales_order_id].present?
         @sales_order = SalesOrder.find(params[:sales_order_id])
         @sales_quote = @sales_order.sales_quote
@@ -45,7 +46,6 @@ class Overseers::FreightRequestsController < Overseers::BaseController
   def create
     @freight_request = FreightRequest.new(freight_request_params.merge(overseer: current_overseer))
     authorize @freight_request
-
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         @freight_request.save!
@@ -103,6 +103,10 @@ class Overseers::FreightRequestsController < Overseers::BaseController
         :breadth,
         :volumetric_weight,
         :hazardous,
+        :pickup_date,
+        :material_type,
+        :loading,
+        :unloading,
         :comments_attributes => [:id, :message, :created_by_id],
         :attachments => []
     )
