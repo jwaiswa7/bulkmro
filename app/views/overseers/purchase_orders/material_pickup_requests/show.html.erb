@@ -252,13 +252,13 @@
                   <% if @po_request.bill_to.present? %>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block">Bill To</strong>
-                      <%= @po_request.bill_to.to_s %>
+                      <%= @po_request.bill_to.to_multiline_s %>
                     </div>
                   <% end %>
                   <% if @po_request.ship_to.present? %>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block">Ship To</strong>
-                      <%= @po_request.ship_to.to_s %>
+                      <%= @po_request.ship_to.to_multiline_s %>
                     </div>
                   <% end %>
 
