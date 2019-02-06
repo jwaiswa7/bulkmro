@@ -5,11 +5,13 @@ import updateRowTotal from "./updateRowTotal"
 
 const newAction = () => {
 
-    bindRatingModalTabClick();
+ /*   bindRatingModalTabClick();
     $('.rating-modal a').click();
 
-    var customTabSelector =  $('#multipleRatingForm .custom-tab')
-    updateRatingForm();
+    var customTabSelector = $('#multipleRatingForm .custom-tab')
+    customTabSelector.eq(0).removeClass('disabled')
+    customTabSelector[0].click();
+    updateRatingForm();*/
 
     $('form').on('change', 'select[name*=product_id]', function (e) {
         onProductChange(this);

@@ -56,7 +56,7 @@
         <% if po_request.sales_order.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier PO Type</strong>
-            <%= po_request.sales_order.opportunity_type.humanize %>
+            <%= po_request.supplier_po_type.humanize %>
           </div>
         <% end %>
 
@@ -168,14 +168,14 @@
             <th>Product</th>
             <th>Make</th>
             <th>HSN</th>
-            <th>T. Rate</th>
+            <th data-toggle="tooltip" title="Tax Rate">T. Rate</th>
             <th>Quantity</th>
-            <th>UOM</th>
-            <th>UP</th>
-            <th>TP</th>
-            <th>TT</th>
-            <th>TP with Tax</th>
-            <th>Discount %</th>
+            <th data-toggle="tooltip" title="Unit of Measurement">UOM</th>
+            <th data-toggle="tooltip" title="Unit Price">UP</th>
+            <th data-toggle="tooltip" title="Total Price">TP</th>
+            <th data-toggle="tooltip" title="Total Tax">TT</th>
+            <th data-toggle="tooltip" title="Total Price with tax">TP with Tax</th>
+            <th data-toggle="tooltip" title="Discount percentage">Disc. %</th>
             <th>Lead Time</th>
           </tr>
           </thead>

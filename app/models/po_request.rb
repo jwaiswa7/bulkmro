@@ -72,7 +72,7 @@ class PoRequest < ApplicationRecord
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
   scope :can_amend, -> {where(:status => [:'PO Created'])}
-  scope :amended_po, -> {where(:status => [:'Amend'])}
+  scope :amended, -> {where(:status => [:'Amend'])}
   scope :pending_stock_po, -> {where(:stock_status => [:'Stock Requested'])}
 
   validate :purchase_order_created?

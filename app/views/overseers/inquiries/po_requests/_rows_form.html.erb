@@ -254,9 +254,9 @@
           <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, label: false, disabled: true %>
         </div>
 
-<!--        <div class="col-12 col-md-2">-->
-          <%#= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: false %>
-<!--        </div>-->
+        <div class="col-12 col-md-2">
+          <%= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: false , disabled: true%>
+        </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.remove_nested_fields_link do %>
             <div class="form-group align-self-center flex-grow-1 ml-2">

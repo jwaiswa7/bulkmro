@@ -33,19 +33,19 @@
           <div class="form-row mt-2">
             <div class="col-5 col-md-3 mb-2">
               <strong class="d-block">Bill From</strong>
-              <%= po_request.object.bill_from.to_s %>
+              <%= po_request.object.bill_from.to_multiline_s %>
             </div>
             <div class="col-5 col-md-3 mb-2">
               <strong class="d-block">Ship From</strong>
-              <%= po_request.object.ship_from.to_s %>
+              <%= po_request.object.ship_from.to_multiline_s %>
             </div>
             <div class="col-5 col-md-3 mb-2">
               <strong class="d-block">Bill To</strong>
-              <%= po_request.object.bill_to.to_s %>
+              <%= po_request.object.bill_to.to_multiline_s %>
             </div>
             <div class="col-5 col-md-3 mb-2">
               <strong class="d-block">Ship To</strong>
-              <%= po_request.object.ship_to.to_s %>
+              <%= po_request.object.ship_to.to_multiline_s %>
             </div>
 
             <% if po_request.object.contact.present? %>
@@ -132,14 +132,14 @@
               <th class="no-sort">Product</th>
               <th class="no-sort">Make</th>
               <th class="no-sort">HSN</th>
-              <th class="no-sort">T. Rate</th>
+              <th data-toggle="tooltip" title="Tax Rate" class="no-sort">Tax %</th>
               <th class="no-sort">Quantity</th>
-              <th class="no-sort">UOM</th>
-              <th class="no-sort">UP</th>
-              <th class="no-sort">TP</th>
-              <th class="no-sort">TT</th>
-              <th class="no-sort">TP with Tax</th>
-              <th class="no-sort">Discount %</th>
+              <th data-toggle="tooltip" title="Unit of Measurement" class="no-sort">UOM</th>
+              <th data-toggle="tooltip" title="Unit Price" class="no-sort">UP</th>
+              <th data-toggle="tooltip" title="Total Price" class="no-sort">TP</th>
+              <th data-toggle="tooltip" title="Total Tax" class="no-sort">TT</th>
+              <th data-toggle="tooltip" title="Total Price with tax" class="no-sort">TP with Tax</th>
+              <th data-toggle="tooltip" title="Discount percentage" class="no-sort">Disc. %</th>
               <th class="no-sort">Lead time</th>
             </tr>
             </thead>
