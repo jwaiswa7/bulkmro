@@ -1,0 +1,20 @@
+<%= provide :container_fluid, true %>
+<% provide :can_be_directly_created, policy(:account).new? %>
+<% provide :can_be_ajaxed, true %>
+<% provide :wrap_whitespace, true %>
+
+<% content_for :header_row do %>
+  <th class="no-sort"></th>
+  <th class="no-sort desktop text-right">Alias</th>
+  <th class="no-sort desktop text-right">Amount Receivable</th>
+  <th class="no-sort desktop text-right">Amount Received by Invoice</th>
+  <th class="no-sort desktop text-right">Amount Received On Account</th>
+  <th class="no-sort desktop text-right">Total</th>
+  <th class="no-sort desktop text-right">Overdue Outstanding</th>
+  <th class="no-sort desktop text-right">Total Outstanding</th>
+  <th class="desktop text-right" data-name="created_at">Created</th>
+<% end %>
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

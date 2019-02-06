@@ -59,6 +59,11 @@ class Overseers::AccountsController < Overseers::BaseController
     end
   end
 
+  def payment_collection
+    @accounts = ApplyDatatableParams.to(Account.all, params)
+    authorize @accounts
+  end
+
   private
 
   def account_params

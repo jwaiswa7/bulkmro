@@ -399,6 +399,7 @@ Rails.application.routes.draw do
     resources :accounts do
       collection do
         get 'autocomplete'
+        get 'payment_collection'
       end
       scope module: 'accounts' do
         resources :companies

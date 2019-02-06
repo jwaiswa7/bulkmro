@@ -2329,4 +2329,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total) if sales_invoice.sales_order.present?
     end
   end
+
+  def update_account_id
+    SalesReceipt.all.each do |sr|
+      sr.account_id = sr.company.account_id if sr.company_id.present?
+      sr.save!
+    end
+  end
 end
