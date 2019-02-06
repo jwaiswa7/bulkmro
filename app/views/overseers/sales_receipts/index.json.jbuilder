@@ -11,7 +11,7 @@ json.data (@sales_receipts) do |sales_receipt|
                 sales_receipt.sales_invoice_id.present? ? format_succinct_date(sales_receipt.sales_invoice.created_at) : ' - ',
                 ' - ',
                 sales_receipt.payment_received_date.present? ? format_succinct_date(sales_receipt.payment_received_date) : ' - ',
-                sales_receipt.payment_type.present? ? sales_receipt.payment_type : '' ,
+                sales_receipt.payment_type.present? ? sales_receipt.payment_type.titlecase : '' ,
                 sales_receipt.payment_method.present? ? sales_receipt.payment_method.titlecase : '',
                 sales_receipt.currency_id.present? ? sales_receipt.currency.name : ' - ',
                 sales_receipt.payment_amount_received.present? ? sales_receipt.payment_amount_received : ' - ',

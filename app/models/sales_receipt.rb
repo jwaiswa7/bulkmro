@@ -8,7 +8,7 @@ class SalesReceipt < ApplicationRecord
   scope :with_includes, -> {includes(:company, :sales_order,:sales_invoice,:currency)}
   enum payment_method: {
       :'banktransfer' => 10,
-      :'cheque' => 20,
+      :'Cheque' => 20,
       :'checkmo' => 30,
       :'razorpay' => 40,
       :'free' => 50,
@@ -17,7 +17,7 @@ class SalesReceipt < ApplicationRecord
       :'cash' => 80,
       :'creditnote' => 85,
       :'writeoff' => 90,
-      :'transfer acct' => 95
+      :'Transfer Acct' => 95
   }
 
   enum payment_type: {

@@ -13,8 +13,8 @@ class SalesReceiptsIndex < BaseIndex
     field :company, value: -> (record) { record.company.to_s if record.company_id.present? }, analyzer: 'substring'
     field :created_by_id, value: -> (record) {record.created_by_id if record.created_by_id.present? }
     field :created_by_name, value: -> (record) { record.created_by.name if record.created_by_id.present?}, analyzer: 'substring'
-    field :payment_type, value: -> (record) { payment_types[record.payment_type] if record.payment_type.present?}
-    field :payment_method, value: -> (record) { payment_methods[record.payment_method] if record.payment_method.present?}
+    field :payment_type, value: -> (record) { payment_types[record.payment_type.downcase] if record.payment_type.present?}
+    field :payment_method, value: -> (record) { payment_methods[record.payment_method.downcase] if record.payment_method.present?}
     field :payment_received_amount, value: -> (record) { record.payment_amount_received if record.payment_amount_received.present?},type: 'float'
     field :reference_number, value: -> (record) { record.remote_reference if record.remote_reference.present?}
     field :currency_id, value: -> (record) { record.currency_id if record.currency_id.present?}
