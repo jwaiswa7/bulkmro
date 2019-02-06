@@ -1,5 +1,6 @@
 import updateRowTotal from "./updateRowTotal"
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
+import validatePoRequestContacts from "./validatePoRequestContacts";
 
 const edit = () => {
     $('form').on('change','select[name*=status]',function(e){
