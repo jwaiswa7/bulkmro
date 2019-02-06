@@ -22,9 +22,7 @@
       <% else %>
         <%= f.input :status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.statuses, alphabetical: false), disabled: true, :include_blank => false %>
       <% end %>
-
     </div>
-
 
     <div class="col-4 d-none status-rejected">
       <%= f.input :rejection_reason, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PoRequest.rejection_reasons, keep_raw: true, alphabetical: false), disabled: !policy(f.object).can_reject?, :include_blank => true %>
@@ -44,14 +42,14 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.association :contact, as: :select, collection: f.object.supplier.contacts, :include_blank => false %>
+    <%= f.association :contact, collection: f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]}, input_html: {class: 'select2-single'}, required: true %>
   </div>
 
   <div class="col-12 col-md-4">
-    <%= f.input :contact_email, label: 'Contact Email', required: false, placeholder: 'Contact email', hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', hint: 'Note: If left blank, above selected contact\'s email will be applied', input_html: {'data-parsley-contact-email': ''} %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_phone, label: 'Contact Phone', required: false, placeholder: 'Contact phone', hint: 'Note: If left blank, above selected contact\'s number will be applied' %>
+    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', hint: 'Note: If left blank, above selected contact\'s number will be applied', input_html: {'data-parsley-contact-phone': ''} %>
   </div>
 
   <div class="col-12 col-md-4">
@@ -69,7 +67,6 @@
       <div class="col-12 col-md-6">
         <%= f.association :ship_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
       </div>
-
 
       <div class="col-12 col-md-6">
         <%= f.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
@@ -261,7 +258,7 @@
           <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, label: false, disabled: false, required: true %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage}, label: false, disabled: false %>
+          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: false, disabled: false %>
         </div>
       </div>
     </div>
