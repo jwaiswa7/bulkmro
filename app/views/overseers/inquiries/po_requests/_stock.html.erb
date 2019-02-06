@@ -53,7 +53,7 @@
         <div class="card-body">
           <div class="simple-row">
 
-            <%= render 'overseers/inquiries/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path%>
+            <%= render 'overseers/po_requests/rows_form', f: po_request, product_path: autocomplete_overseers_products_path, stock: true%>
 
             <%= po_request.add_nested_fields_link :rows, class: 'btn btn-success btn-outline-success btn-block mb-2 mb-md-0', role: 'button' do %>
               <i class="fal fa-plus-circle mr-1"></i>Add a product

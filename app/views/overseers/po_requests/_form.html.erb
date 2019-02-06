@@ -37,7 +37,7 @@
           </h5>
         </div>
 
-        <%= render 'overseers/po_requests/rows_form', f: f %>
+        <%= render 'overseers/po_requests/rows_form', f: f , product_path: service_autocomplete_overseers_products_path, stock: false%>
       </div>
     </div>
     <% if action_name.capitalize == "New" %>
