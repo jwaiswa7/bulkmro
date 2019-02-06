@@ -130,9 +130,11 @@
                     <%= row.input :pickup_quantity, type: "number", input_html: {value: row.object.pickup_quantity.to_f, min: 0} %>
                   </div>
                 <% end %>
-                <div class="col-2  mt-3 ">
-                  <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
-                </div>
+                <% if policy(f.object).remove_products? %>
+                  <div class="col-2  mt-3 ">
+                    <%= row.remove_nested_fields_link 'Remove Product', class: 'btn btn-danger align-self-center delete_row', wrapper_class: 'simple-row' if policy(row.object).destroy? %>
+                  </div>
+                <% end %>
                 <hr/>
               </div>
             <% end %>
