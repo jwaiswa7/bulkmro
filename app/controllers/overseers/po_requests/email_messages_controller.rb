@@ -101,7 +101,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @supplier = @purchase_order.get_supplier(@purchase_order.rows.first.metadata['PopProductId'].to_i)
     @contact = @po_request.contact.present? ? @po_request.contact : @supplier.company_contacts.first.contact
     @metadata[:packing] = @purchase_order.get_packing(@metadata)
-    @to_email = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
-    @to = @to_email.present? ? @to_email : @supplier.company_contacts.first.contact.email
+    to_email = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
+    @to = to_email.present? ? to_email : @supplier.company_contacts.first.contact.email
   end
 end

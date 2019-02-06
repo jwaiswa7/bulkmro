@@ -7,6 +7,7 @@ import updateOnContactSelect from "../poRequests/updateOnContactSelect";
 
 const newPurchaseOrdersRequests = () => {
     validatePoRequestAddresses();
+    validatePoRequestContacts();
     updateRowTotal();
 
     updateOnContactSelect();
