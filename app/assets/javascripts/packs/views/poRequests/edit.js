@@ -1,23 +1,23 @@
 import updateRowTotal from "./updateRowTotal"
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
+import updateOnContactSelect from "./updateOnContactSelect";
 
 const edit = () => {
-    $('form').on('change','select[name*=status]',function(e){
-        if($(e.target).val() == "Cancelled"){
+    $('form').on('change', 'select[name*=status]', function (e) {
+        if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
-            $('.status-cancelled').find('textarea').attr("required",true);
-        }
-        else if($(e.target).val() == "Rejected"){
+            $('.status-cancelled').find('textarea').attr("required", true);
+        } else if ($(e.target).val() == "Rejected") {
             $('.status-rejected').removeClass('d-none');
-            $('.status-rejected').find('select').attr("required",true);
+            $('.status-rejected').find('select').attr("required", true);
         }
-        if($(e.target).val() != "Cancelled"){
+        if ($(e.target).val() != "Cancelled") {
             $('.status-cancelled').addClass('d-none');
-            $('.status-cancelled').find('textarea').val('').attr("required",false);
+            $('.status-cancelled').find('textarea').val('').attr("required", false);
         }
-        if($(e.target).val() != "Rejected"){
+        if ($(e.target).val() != "Rejected") {
             $('.status-rejected').addClass('d-none');
-            $('.status-rejected').find('select').val('').attr("required",false);
+            $('.status-rejected').find('select').val('').attr("required", false);
         }
     });
     $('form').on('change','select[name*=stock_status]',function(e){
@@ -40,6 +40,7 @@ const edit = () => {
     $('select[name*=stock_status]').trigger('change');
     validatePoRequestAddresses();
     updateRowTotal();
+    updateOnContactSelect();
 };
 
 export default edit

@@ -84,7 +84,6 @@ class MaterialPickupRequest < ApplicationRecord
 
   def date_validation
     errors[:expected_delivery_date] << " Cannot be less than Expected Dispatch Date" if self[:expected_delivery_date] < self[:expected_dispatch_date]
-    errors[:actual_delivery_date] << " Cannot be less than Expected Dispatch Date" if self[:actual_delivery_date] < self[:expected_delivery_date]
   end
 
   def set_defaults

@@ -3,7 +3,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
 ``
   def sending_po_to_supplier
     if @po_request.purchase_order.present?
-      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @supplier.company_contacts.first.contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order)
+      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order, to: @to)
       @action = "sending_po_to_supplier_notification"
       @email_message.assign_attributes(
           :subject => "Internal Ref Inq ##{@inquiry.id} Purchase Order ##{@po_request.purchase_order.po_number}",
@@ -18,7 +18,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   def sending_po_to_supplier_notification
     @email_message = @po_request.purchase_order.email_messages.build(
         :overseer => current_overseer,
-        :contact => @supplier.company_contacts.first.contact,
+        :contact => @contact,
         :inquiry => @inquiry,
         :purchase_order => @po_request.purchase_order,
         :sales_order => @po_request.sales_order,
@@ -47,7 +47,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   def dispatch_from_supplier_delayed
     if @po_request.purchase_order.present?
       @action = "dispatch_from_supplier_delayed_notification"
-      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @inquiry.contact, :inquiry => @inquiry)
+      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @contact, :inquiry => @inquiry, :to => @to)
       @email_message.assign_attributes(
           :to => @inquiry.inside_sales_owner.email,
           :subject => "Ref # #{@inquiry.id} Delay in Material Delivery",
@@ -62,7 +62,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   def dispatch_from_supplier_delayed_notification
     @email_message = @po_request.purchase_order.email_messages.build(
         :overseer => current_overseer,
-        :contact => @inquiry.contact,
+        :contact => @contact,
         :inquiry => @inquiry,
         :email_type => "Dispatch from Supplier Delayed"
     )
@@ -99,6 +99,9 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @purchase_order = @po_request.purchase_order
     @metadata = @purchase_order.metadata.deep_symbolize_keys
     @supplier = @purchase_order.get_supplier(@purchase_order.rows.first.metadata['PopProductId'].to_i)
+    @contact = @po_request.contact.present? ? @po_request.contact : @supplier.company_contacts.first.contact
     @metadata[:packing] = @purchase_order.get_packing(@metadata)
+    to_email = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
+    @to = to_email.present? ? to_email : @supplier.company_contacts.first.contact.email
   end
 end

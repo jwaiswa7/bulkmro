@@ -54,5 +54,5 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(update_invoice_statuses update_cancelled_po_statuses update_po_status), folder: 'seed_files')
 service.call
 
-service = Services::Shared::Migrations::Migrations.new(%w(create_po_request_for_purchase_orders))
+service = Services::Shared::Migrations::Migrations.new(%w(update_created_po_requests_with_no_po_order update_existing_po_requests_with_purchase_order create_po_request_for_purchase_orders))
 service.call

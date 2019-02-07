@@ -13,7 +13,6 @@ const validatePoRequestAddresses = () => {
             var selectedShipToCity = $(parsleyInstance.$element[0]).closest('div.po-request-form').find('[name*=ship_to_id] :selected').data('warehouse-city');
 
             if (supplier_po_type == "regular" && selectedBillToCity == selectedShipToCity) {
-
                 return true;
             }
 
@@ -35,15 +34,20 @@ const validatePoRequestAddresses = () => {
         }
     });
 
-
-    $('.supplier-committed-date').daterangepicker({
+    var datepickerOptions = {
         singleDatePicker: true,
         minDate: moment(),
         locale: {
             format: 'DD-MMM-YYYY'
         }
-    });
-};
+    };
 
+    $('.supplier-committed-date').daterangepicker(datepickerOptions);
+
+    $('.lead-time').daterangepicker(datepickerOptions);
+    $('body').on("fields_added.nested_form_fields", function (e, params) {
+        $('.lead-time').daterangepicker(datepickerOptions);
+    })
+};
 
 export default validatePoRequestAddresses
