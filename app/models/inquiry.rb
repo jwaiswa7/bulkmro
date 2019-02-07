@@ -106,7 +106,8 @@ class Inquiry < ApplicationRecord
       :repeat => 60,
       :list => 65,
       :route_through => 70,
-      :tender => 80
+      :tender => 80,
+      :stock => 90
   }
 
   enum opportunity_source: {
