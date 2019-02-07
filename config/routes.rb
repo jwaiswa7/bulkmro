@@ -228,6 +228,12 @@ Rails.application.routes.draw do
       scope module: 'sales_orders' do
         resources :comments
         resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+          end
+        end
       end
     end
 
