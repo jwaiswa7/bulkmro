@@ -31,7 +31,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   def payment_collection
     base_filter = {
         :base_filter_key => "account_id",
-        :base_filter_value => params[:account_id]
+        :base_filter_value => @account.id
     }
 
     authorize :company

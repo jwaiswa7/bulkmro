@@ -2322,7 +2322,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       elsif sr.company.present?
         sr.payment_type = 10
       end
-      sr.payment_amount_received = metadata_obj['p_amount_received']
+      sr.payment_amount_received = metadata_obj['p_amount_received'] || 0.0
       sr.payment_received_date = metadata_obj['p_received_date']
       sr.save!
     end

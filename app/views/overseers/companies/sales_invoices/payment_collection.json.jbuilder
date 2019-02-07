@@ -17,9 +17,9 @@ json.data (@sales_invoices) do |sales_invoice|
                   else
                     '-'
                   end,
-                  format_currency(sales_invoice.calculated_total || 0),
+                  format_currency(sales_invoice.calculated_total_with_tax || 0),
                   format_currency(sales_invoice.amount_received_against_invoice || 0),
-                  format_currency((sales_invoice.calculated_total - sales_invoice.amount_received_against_invoice) || 0),
+                  format_currency((sales_invoice.calculated_total_with_tax - sales_invoice.amount_received_against_invoice) || 0),
                   "",
                   "",
                   if sales_invoice.inquiry.present?
@@ -42,5 +42,5 @@ end
 
 
 json.recordsTotal @company.invoices.count
-json.recordsFiltered @sales_invoices.total_count
+json.recordsFiltered @indexed_sales_invoices.total_count
 json.draw params[:draw]
