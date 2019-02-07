@@ -232,6 +232,8 @@ Rails.application.routes.draw do
           collection do
             get 'material_dispatched_to_customer'
             post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
           end
         end
       end

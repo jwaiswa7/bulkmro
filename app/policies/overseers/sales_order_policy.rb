@@ -141,6 +141,14 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     material_dispatched_to_customer_new_email_msg?
   end
 
+  def material_delivered_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_delivered_to_customer_create_email_msg?
+    material_delivered_to_customer_new_email_msg?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 

@@ -18,6 +18,9 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order).material_dispatched_to_customer_new_email_msg?
                         row_action_button(material_dispatched_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Dispatched to Customer Notification', 'dark', :_blank)
+                      end,
+                      if policy(sales_order).material_delivered_to_customer_new_email_msg?
+                        row_action_button(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Delivered to Customer Notification', 'dark', :_blank)
                       end
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show?),
