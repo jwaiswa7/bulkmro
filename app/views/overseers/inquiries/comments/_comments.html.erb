@@ -32,10 +32,15 @@
       </div>
     <% end %>
   </div>
+
+  <%=paginate comments, param_name:  show_to_customer ? "customer": "internal", params: {show_to_customer: show_to_customer} %>
+
 <% end %>
+
 
 <%= f.input :message, required: true, :placeholder => 'Type message', input_html: {:'data-parsely-no-valid-feedback' => ''} %>
 <%= f.hidden_field :show_to_customer, value: show_to_customer %>
+```
 <div class="flex-fill">
   <%= f.submit 'Reply', name: 'reply', class: 'btn btn-dark' %>
   <% if sales_order.present? %>

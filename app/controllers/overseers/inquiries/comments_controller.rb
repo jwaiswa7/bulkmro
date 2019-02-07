@@ -7,6 +7,8 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
                   @inquiry.comments.earliest
                 end
 
+     @internal_comments=@comments.internal_comments.page(params[:internal]).per(10)
+     @customer_comments=@comments.customer_comments.page(params[:customer]).per(10)
     authorize @comments
   end
 
