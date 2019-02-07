@@ -9,6 +9,7 @@ class SalesInvoice < ApplicationRecord
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
   scope :not_cancelled_invoices, -> { where.not(:status => 'Cancelled')}
+  has_many :sales_receipts
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
@@ -72,6 +73,18 @@ class SalesInvoice < ApplicationRecord
 
   def calculated_total_with_tax
     (calculated_total.to_f + calculated_total_tax.to_f).round(2)
+  end
+
+  def amount_received
+    SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
+  end
+
+  def amount_received_against_invoice
+    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'against invoice').pluck(:payment_amount_received).compact.sum
+  end
+
+  def amount_received_on_account
+    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'on account').pluck(:payment_amount_received).compact.sum
   end
 
 end
