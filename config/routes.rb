@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get '/customers', to: redirect('/customers/dashboard'), as: 'customer_root'
 
   devise_for :overseers, controllers: {sessions: 'overseers/sessions', omniauth_callbacks: 'overseers/omniauth_callbacks'}
-  devise_for :contacts, controllers: {sessions: 'customers/sessions'}, path: 'customers'
+  devise_for :contacts, controllers: {sessions: 'customers/sessions', passwords: 'customers/passwords'}, path: 'customers'
 
   namespace 'callbacks' do
     resources :sales_orders do
