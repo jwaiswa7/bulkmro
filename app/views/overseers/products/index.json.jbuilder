@@ -22,10 +22,12 @@ json.data (@products) do |product|
                   product.brand.to_s,
                   product.category.name,
                   product.mpn,
+                  product.total_pos,
+                  product.total_quotes,
                   format_boolean(product.is_active?),
                   format_boolean_label(product.synced?, 'synced'),
-                  format_date(product.created_at),
-                  format_date(product.approval.try(:created_at))
+                  format_succinct_date(product.created_at),
+                  format_succinct_date(product.approval.try(:created_at))
               ]
 end
 json.columnFilters [
@@ -33,6 +35,8 @@ json.columnFilters [
                     [{"source": autocomplete_overseers_products_path}],
                     [],
                     [{"source": autocomplete_overseers_brands_path}],
+                    [],
+                    [],
                     [],
                     [],
                     [],

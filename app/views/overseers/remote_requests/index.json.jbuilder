@@ -10,13 +10,24 @@ json.data (@remote_requests) do |remote_request|
                   end,
                   status_badge(remote_request.status),
                   format_enum(remote_request.method),
+                  remote_request.manage_remote_request_data(remote_request),
                   remote_request.resource,
-                  format_date(remote_request.created_at)
+                  format_date_with_time(remote_request.created_at)
               ]
   columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
   json.merge! columns.merge({"DT_RowClass": "bg-highlight-" + status_color(remote_request.status)})
 end
 
+json.columnFilters [
+                       [],
+                       [],
+                       [],
+                       [],
+                       [],
+                       RemoteRequest.resources.map{|k, v| {:"label" => k.titlecase, :"value" => v.to_s}}.as_json,
+                       []
+                   ]
+
 json.recordsTotal @remote_requests.model.all.count
-json.recordsFiltered @remote_requests.total_count
+json.recordsFiltered @indexed_remote_requests.total_count
 json.draw params[:draw]

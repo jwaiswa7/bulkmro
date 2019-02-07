@@ -1,0 +1,50 @@
+<% provide :container_fluid, true %>
+<% provide :can_be_ajaxed, true %>
+
+<% content_for :heading do %>
+  Pending Activities
+<% end %>
+
+<% provide :heading_buttons do %>
+  <% if policy(:activity).approve_selected? %>
+    <button type="button" id="approve_selected" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-check mr-1"></i>Approve Selected
+    </button>
+  <% end %>
+  <% if policy(:activity).reject_selected? %>
+    <button type="button" id="reject_selected" class=" btn btn-danger btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1">
+      <i class="fal fa-times mr-1"></i>Reject Selected
+    </button>
+  <% end %>
+<% end %>
+
+<% content_for :header_row do %>
+  <th class="no-sort">
+    <% if policy(:activity).perform_actions? %>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" name="all_activities" id="all_activities">
+        <label class="custom-control-label" for="all_activities">Select All</label>
+      </div>
+    <% end %>
+  </th>
+  <th class="no-sort">Created By</th>
+  <th data-name="activity_date">Activity Date</th>
+  <th class="no-sort">Account</th>
+  <th class="no-sort">Company</th>
+  <th data-name="activity_type">Is Supplier</th>
+  <th data-name="activity_type">Is Customer</th>
+  <th class="no-sort">Company Creation Request Status</th>
+  <th class="no-sort">Inquiry</th>
+  <th class="no-sort">Contact Name</th>
+  <th data-name="purpose">Purpose</th>
+  <th data-name="activity_type">Type</th>
+  <th class="no-sort">Misc Expenses</th>
+  <th class="no-sort">Points Discussed</th>
+  <th class="no-sort">Actions Required</th>
+  <th data-name="created_at">Created</th>
+<% end %>
+
+<div class="col-lg-12">
+  <%= render layout: 'shared/layouts/datatable' do %>
+  <% end %>
+</div>

@@ -4,7 +4,6 @@ class Overseers::ProductsController < Overseers::BaseController
   def index
     service = Services::Overseers::Finders::Products.new(params)
     service.call
-
     @indexed_products = service.indexed_records
     @products = service.records
     authorize @products
@@ -15,7 +14,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
 
     @indexed_products = service.indexed_records
-    @products = service.records
+    @products = service.records.active
     authorize @products
   end
 
@@ -102,7 +101,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
-    redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
+    redirect_to overseers_product_path(@product, :anchor => "inventory"), notice: flash_message(@product, action_name)
   end
 
   def export_all

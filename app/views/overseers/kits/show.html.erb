@@ -98,16 +98,20 @@
               <td><strong class="d-block">Sr No</strong></td>
               <td><strong class="d-block">Product</strong></td>
               <td><strong class="d-block">Quantity</strong></td>
+              <td><strong class="d-block">Tax Code</strong></td>
+              <td><strong class="d-block">Tax Rate</strong></td>
             </tr>
             </thead>
             <tbody>
-            <% @kit.kit_product_rows.each_with_index do |kit_product, index| %>
-              <tr>
-                <td><%= (index + 1) %></td>
-                <td><%= kit_product.product.name %></td>
-                <td><%= kit_product.quantity %></td>
-              </tr>
-            <% end %>
+              <% @kit.kit_product_rows.each_with_index do |kit_product, index| %>
+                <tr>
+                  <td><%= (index + 1) %></td>
+                  <td><%= kit_product.product.name %></td>
+                  <td><%= kit_product.quantity %></td>
+                  <td><%= kit_product.tax_code.code if kit_product.tax_code.present? %></td>
+                  <td><%= kit_product.tax_rate.to_s %></td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

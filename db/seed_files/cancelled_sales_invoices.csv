@@ -1,0 +1,215 @@
+Invoice Number,Date,Customer,Due Date,Document Status,Branch,Document Total,Canceled,Document Type,Inside Sales Owner,Order Number,Project
+9991246,12-Jan-2018,B.a.g.g.i. (S.r.l.),11-Feb-2018,Closed,Maharashtra,"7,17,430.86",Yes,S,,,
+9991555,15-Mar-2018,JSC OGCC KazstroyService,15-Mar-2018,Closed,Maharashtra,"59,10,479.38",Yes,S,,,
+9991662,27-Mar-2018,JSC OGCC KazstroyService,27-Mar-2018,Closed,Maharashtra,"26,66,730.00",Yes,S,,,
+9991663,27-Mar-2018,JSC OGCC KazstroyService,27-Mar-2018,Closed,Maharashtra,"16,97,010.00",Yes,S,,,
+20210008,06-Apr-2018,Cummins Technologies India Pvt. Ltd.,06-Apr-2018,Closed,Maharashtra,"62,208.67",Yes,I,Swati Bhosale,,
+20210109,24-Apr-2018,Cummins Technologies India Pvt. Ltd.,24-Apr-2018,Closed,Maharashtra,"23,049.59",Yes,I,Swati Bhosale,,
+20210129,30-Apr-2018,Cummins India Ltd.,30-Apr-2018,Closed,Maharashtra,"23,010.00",Yes,I,Poonam Mohite,,
+20210148,03-May-2018,Cummins Technologies India Pvt. Ltd.,03-May-2018,Closed,Maharashtra,"7,767.49",Yes,I,Sajida Sayyed,,
+20210157,05-May-2018,Xpro India Ltd.,05-May-2018,Closed,Maharashtra,"22,409.95",Yes,I,Sandeep Pal,,
+20210184,11-May-2018,Xpro India Ltd.,11-May-2018,Closed,Maharashtra,"9,255.63",Yes,I,Sandeep Pal,,
+20210247,22-May-2018,Soktas India Pvt. Ltd.,22-May-2018,Closed,Maharashtra,"5,203.80",Yes,I,Suvidha Shinde,,20075
+20210281,30-May-2018,Cummins India Ltd.,30-May-2018,Closed,Maharashtra,"13,043.44",Yes,I,Sarika Tanawade,,18428
+20210291,31-May-2018,Cummins Technologies India Pvt. Ltd.,31-May-2018,Closed,Maharashtra,"1,61,071.98",Yes,I,Swati Bhosale,,
+20210297,31-May-2018,GE Power Systems India Pvt. Ltd.,31-May-2018,Closed,Maharashtra,"1,53,116.80",Yes,I,Dhrumil Patel,,19921
+20210309,05-Jun-2018,Galiakotwala Engineering Co. Pvt. Ltd.,05-Jun-2018,Closed,Maharashtra,"83,76,258.51",Yes,I,Rajani Kyatham,,15029
+20210383,15-Jun-2018,Trident Computer Resources Inc.,15-Jun-2018,Closed,Maharashtra,"2,36,637.34",Yes,I,Rajani Ong,,
+20210385,16-Jun-2018,McNally Bharat Engineering Co. Ltd.,16-Jun-2018,Closed,Maharashtra,"22,53,212.24",Yes,I,Swati Bhosale,,8681
+20210392,18-Jun-2018,McNally Bharat Engineering Co. Ltd.,18-Jun-2018,Closed,Maharashtra,"35,426.70",Yes,I,Nisha Patil,,
+20210425,25-Jun-2018,Cummins Technologies India Pvt. Ltd.,25-Jun-2018,Closed,Maharashtra,"48,291.50",Yes,I,Poonam Mohite,,17893
+20210449,27-Jun-2018,Applied Materials India Pvt. Ltd.,27-Jun-2018,Closed,Maharashtra,"38,223.48",Yes,I,Swati Bhosale,,21122
+20210457,28-Jun-2018,ZF India Pvt. Ltd.,28-Jun-2018,Closed,Maharashtra,"18,059.90",Yes,I,Pravin Shinde,,20197
+20210465,30-Jun-2018,Henkel Adhesive Technologies India Pvt. Ltd.,30-Jun-2018,Closed,Maharashtra,"5,08,782.11",Yes,I,Sheeba Shaikh,,19523
+20210485,04-Jul-2018,Cummins India Ltd.,04-Jul-2018,Closed,Maharashtra,"2,183.00",Yes,I,Poonam Mohite,,19913
+20210489,05-Jul-2018,ZF India Pvt. Ltd.,05-Jul-2018,Closed,Maharashtra,"12,477.32",Yes,I,Pravin Shinde,,20197
+20210538,12-Jul-2018,J S Equipments,12-Jul-2018,Closed,Maharashtra,"19,83,554.66",Yes,I,Rajani Ong,,25360
+20210539,12-Jul-2018,J S Equipments,12-Jul-2018,Closed,Maharashtra,"16,16,407.52",Yes,I,Rajani Ong,,25359
+20210552,14-Jul-2018,Alstom Bharat Forge Power Pvt. Ltd.,14-Jul-2018,Closed,Maharashtra,"21,31,363.20",Yes,I,Neel Patel,,
+20210554,16-Jul-2018,ZF India Pvt. Ltd.,16-Jul-2018,Closed,Maharashtra,"1,03,840.00",Yes,I,Pravin Shinde,,21172
+20210574,19-Jul-2018,Survival Systems India,19-Jul-2018,Closed,Maharashtra,"1,104.66",Yes,I,Sarika Tanawade,,25403
+20210581,20-Jul-2018,J S Equipments,20-Jul-2018,Closed,Maharashtra,"16,16,407.52",Yes,I,Rajani Ong,,25359
+20210586,20-Jul-2018,J S Equipments,20-Jul-2018,Closed,Maharashtra,"18,42,467.63",Yes,I,Rajani Ong,,25360
+20210620,26-Jul-2018,Henkel Adhesive Technologies India Pvt. Ltd.,26-Jul-2018,Closed,Maharashtra,"1,98,736.78",Yes,I,Rajani Kyatham,,20271
+20210649,31-Jul-2018,Henkel Adhesive Technologies India Pvt. Ltd.,31-Jul-2018,Closed,Maharashtra,"7,797.44",Yes,I,Aditya Andankar,,19968
+20210674,06-Aug-2018,Henkel Adhesive Technologies India Pvt. Ltd.,06-Aug-2018,Closed,Maharashtra,"1,11,229.86",Yes,I,Aditya Andankar,,25711
+20210693,07-Aug-2018,Cummins Technologies India Pvt. Ltd.,07-Aug-2018,Closed,Maharashtra,"19,234.00",Yes,I,Sajida Sayyed,,19715
+20210718,10-Aug-2018,VVF India Ltd.,10-Aug-2018,Closed,Maharashtra,"6,844.00",Yes,I,Poonam Mohite,,25502
+20210727,14-Aug-2018,Reliance Industries Ltd.,14-Aug-2018,Closed,Maharashtra,"13,824.85",Yes,I,Husna Khan,,25944
+20210734,14-Aug-2018,APM Terminals India Pvt. Ltd.,14-Aug-2018,Closed,Maharashtra,"25,583.58",Yes,I,Sandeep Pal,,26308
+20210735,14-Aug-2018,APM Terminals India Pvt. Ltd.,14-Aug-2018,Closed,Maharashtra,"30,417.34",Yes,I,Sandeep Pal,,26248
+20210765,18-Aug-2018,Henkel Adhesive Technologies India Pvt. Ltd.,18-Aug-2018,Closed,Maharashtra,"2,07,763.86",Yes,I,Rajani Kyatham,,21455
+20210811,28-Aug-2018,GE India Industrial Pvt. Ltd.,28-Aug-2018,Closed,Maharashtra,"11,75,982.10",Yes,I,Supriya Govalkar,,20973
+20210848,31-Aug-2018,Henkel Adhesive Technologies India Pvt. Ltd.,31-Aug-2018,Closed,Maharashtra,509.6,Yes,I,Sheeba Shaikh,,25924
+20210873,04-Sep-2018,Gruppe Littlesilver,04-Sep-2018,Closed,Maharashtra,"17,955.10",Yes,I,Mithun Trisule,,26274
+20210967,18-Sep-2018,Henkel Adhesive Technologies India Pvt. Ltd.,18-Sep-2018,Closed,Maharashtra,"44,740.88",Yes,I,Husna Khan,,26612
+20210984,20-Sep-2018,Henkel Adhesive Technologies India Pvt. Ltd.,21-Sep-2018,Closed,Maharashtra,"13,697.44",Yes,I,Sheeba Shaikh,,27060
+20210987,20-Sep-2018,Bituflex Shipping And Trading LLP,20-Sep-2018,Closed,Maharashtra,"10,52,984.80",Yes,I,Rajani Ong,,27425
+20210988,20-Sep-2018,Bituflex Shipping And Trading LLP,20-Sep-2018,Closed,Maharashtra,"10,32,830.40",Yes,I,Rajani Ong,,27425
+20210998,22-Sep-2018,Reliance Industries Ltd.,22-Sep-2018,Closed,Maharashtra,"3,06,800.00",Yes,I,Sheeba Shaikh,,25373
+20211013,26-Sep-2018,Bituflex Shipping And Trading LLP,26-Sep-2018,Closed,Maharashtra,"11,43,514.40",Yes,I,Rajani Ong,,27528
+20211014,26-Sep-2018,Bituflex Shipping And Trading LLP,26-Sep-2018,Closed,Maharashtra,"11,48,470.40",Yes,I,Rajani Ong,,27528
+20211022,26-Sep-2018,Cargill India Pvt. Ltd.,26-Oct-2018,Closed,Maharashtra,"44,868.32",Yes,I,Rahul Sonawane,,27075
+20211025,26-Sep-2018,Applied Materials India Pvt. Ltd.,26-Sep-2018,Closed,Maharashtra,"25,680.86",Yes,I,Supriya Govalkar,,27493
+20211047,28-Sep-2018,Bituflex Shipping And Trading LLP,28-Sep-2018,Closed,Maharashtra,"10,18,953.60",Yes,I,Mithun Trisule,,27658
+20211048,28-Sep-2018,Bituflex Shipping And Trading LLP,28-Sep-2018,Closed,Maharashtra,"4,28,859.20",Yes,I,Mithun Trisule,,27658
+20211070,03-Oct-2018,Cummins Technologies India Pvt. Ltd.,03-Oct-2018,Closed,Maharashtra,"5,631.89",Yes,I,Pravin Shinde,,27126
+20211082,04-Oct-2018,GE Diesel Locomotive Pvt. Ltd.,04-Oct-2018,Closed,Maharashtra,"27,140.00",Yes,I,Swati Bhosale,,21297
+20211084,04-Oct-2018,Applied Materials India Pvt. Ltd.,04-Oct-2018,Closed,Maharashtra,"23,674.86",Yes,I,Supriya Govalkar,,26725
+20211101,04-Oct-2018,ZF India Pvt. Ltd.,04-Oct-2018,Closed,Maharashtra,"5,278.74",Yes,I,Pravin Shinde,,26399
+20211192,17-Oct-2018,Trident Computer Resources Inc.,17-Oct-2018,Closed,Maharashtra,"2,88,173.70",Yes,I,Rajani Kyatham,,26998
+20211196,17-Oct-2018,ZF India Pvt. Ltd.,17-Oct-2018,Closed,Maharashtra,217.12,Yes,I,Pravin Shinde,,26399
+20211225,23-Oct-2018,Reliance Industries Ltd.,23-Oct-2018,Closed,Maharashtra,"2,60,000.00",Yes,I,Sheeba Shaikh,,25373
+20211282,31-Oct-2018,Reliance Industries Ltd.,30-Nov-2018,Closed,Maharashtra,"20,268.20",Yes,I,Husna Khan,,27415
+20211309,03-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,03-Nov-2018,Closed,Maharashtra,"2,60,378.80",Yes,I,Mitesh Mandaliya,,27826
+20211315,13-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,13-Nov-2018,Closed,Maharashtra,"43,270.60",Yes,I,Sheeba Shaikh,,27512
+20211326,13-Nov-2018,Survival Systems India,13-Nov-2018,Closed,Maharashtra,"20,405.08",Yes,I,Sarika Tanawade,,26516
+20211330,13-Nov-2018,Survival Systems India,13-Nov-2018,Closed,Maharashtra,"21,255.56",Yes,I,Sarika Tanawade,,26516
+20211348,14-Nov-2018,McNally Bharat Engineering Co. Ltd.,14-Dec-2018,Closed,Maharashtra,"2,89,154.28",Yes,I,Swati Bhosale,,8681
+20211363,15-Nov-2018,Flextronics Technologies India Pvt. Ltd.,15-Nov-2018,Closed,Maharashtra,"28,320.00",Yes,I,Mitesh Mandaliya,,28717
+20211381,17-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,17-Nov-2018,Closed,Maharashtra,"37,263.18",Yes,I,Rajani Kyatham,,
+20211403,02-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,02-Nov-2018,Closed,Maharashtra,"7,82,526.31",Yes,I,Suvidha Shinde,,19691
+20211410,22-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,22-Nov-2018,Closed,Maharashtra,"18,082.92",Yes,I,Husna Khan,,28107
+20211455,26-Nov-2018,Reliance Industries Ltd.,26-Dec-2018,Closed,Maharashtra,"1,21,953.00",Yes,I,Husna Khan,,26888
+20211462,27-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,27-Nov-2018,Closed,Maharashtra,"78,873.56",Yes,I,Aditya Andankar,,28679
+20211492,29-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,29-Nov-2018,Closed,Maharashtra,"36,960.00",Yes,I,Mitesh Mandaliya,,28629
+20211508,01-Dec-2018,Cummins India Ltd.,01-Dec-2018,Closed,Maharashtra,"4,41,591.40",Yes,I,Sajida Sayyed,,28140
+20211518,03-Dec-2018,Henkel Adhesive Technologies India Pvt. Ltd.,03-Dec-2018,Closed,Maharashtra,"8,400.00",Yes,I,Mitesh Mandaliya,,28843
+20211633,17-Dec-2018,Delhi International Airport Limited,17-Dec-2018,Closed,Maharashtra,"31,222.80",Yes,I,Mayur Salunke,,26992
+20211659,19-Dec-2018,APM Terminals India Pvt. Ltd.,19-Dec-2018,Closed,Maharashtra,"6,485.28",Yes,I,Supriya Govalkar,,17432
+20211660,19-Dec-2018,Reliance Industries Ltd.,18-Jan-2019,Closed,Maharashtra,"2,22,531.80",Yes,I,Mitesh Mandaliya,,28665
+20211676,21-Dec-2018,Henkel Adhesive Technologies India Pvt. Ltd.,21-Dec-2018,Closed,Maharashtra,"46,441.68",Yes,I,Aditya Andankar,,29235
+20211680,21-Dec-2018,Cummins Technologies India Pvt. Ltd.,21-Dec-2018,Closed,Maharashtra,"1,11,451.63",Yes,I,Pravin Shinde,,30093
+20211718,27-Dec-2018,Brahmaputra Cracker and Polymer Ltd.,27-Dec-2018,Closed,Maharashtra,"2,32,314.86",Yes,I,Mithun Trisule,,28398
+20211756,31-Dec-2018,GE Diesel Locomotive Pvt. Ltd.,31-Dec-2018,Closed,Maharashtra,"2,309.49",Yes,I,Vishal Gajera,,29936
+20211816,07-Jan-2019,Cummins India Ltd.,07-Jan-2019,Closed,Maharashtra,"1,41,600.00",Yes,I,Sajida Sayyed,,19875
+20211835,09-Jan-2019,Cummins India Ltd.,09-Jan-2019,Closed,Maharashtra,"1,41,600.00",Yes,I,Sajida Sayyed,,19875
+20211845,10-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,10-Jan-2019,Closed,Maharashtra,"1,239.00",Yes,I,Neha Mundhe,,28715
+20211847,11-Jan-2019,Applied Materials India Pvt. Ltd.,11-Jan-2019,Closed,Maharashtra,"31,176.84",Yes,I,Supriya Govalkar,,28570
+20211848,11-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,11-Jan-2019,Closed,Maharashtra,"12,120.96",Yes,I,Vishal Gajera,,29775
+20211849,11-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,11-Jan-2019,Closed,Maharashtra,"2,55,802.76",Yes,I,Vishal Gajera,,29784
+20211860,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"11,412.71",Yes,I,Vishal Gajera,,30031
+20211863,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"19,742.01",Yes,I,Vishal Gajera,,29862
+20211864,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"6,922.82",Yes,I,Vishal Gajera,,30175
+20211866,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"7,909.88",Yes,I,Vishal Gajera,,29786
+20211872,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"49,560.00",Yes,I,Vishal Gajera,,28775
+20211873,14-Jan-2019,GE Diesel Locomotive Pvt. Ltd.,14-Jan-2019,Closed,Maharashtra,"3,730.99",Yes,I,Vishal Gajera,,29782
+20211881,15-Jan-2019,Cameron Middle East FZE,15-Jan-2019,Closed,Maharashtra,"3,83,25,000.00",Yes,I,Vijay Manjrekar,,30670
+20211936,21-Jan-2019,GE India Industrial Pvt. Ltd.,20-Feb-2019,Closed,Maharashtra,"3,15,382.31",Yes,I,Supriya Govalkar,,28353
+20211953,23-Jan-2019,Henkel Adhesive Technologies India Pvt. Ltd.,23-Jan-2019,Closed,Maharashtra,"60,915.01",Yes,I,Aditya Andankar,,29563
+20211968,24-Jan-2019,Henkel Adhesive Technologies India Pvt. Ltd.,24-Jan-2019,Closed,Maharashtra,"11,659.97",Yes,I,Sheeba Shaikh,,27060
+20211984,28-Jan-2019,Pipeline Infrastructure Pvt. Ltd.,27-Feb-2019,Closed,Maharashtra,"1,439.60",Yes,I,Mitesh Mandaliya,,30973
+20211995,29-Jan-2019,Henkel Adhesive Technologies India Pvt. Ltd.,29-Jan-2019,Closed,Maharashtra,"18,539.33",Yes,I,Aditya Andankar,,29563
+20310006,27-Oct-2018,Flextronics Technologies India Pvt. Ltd.,27-Oct-2018,Closed,Maharashtra,"2,32,200.00",Yes,I,Mitesh Mandaliya,,28579
+20310010,20-Nov-2018,Henkel Adhesive Technologies India Pvt. Ltd.,20-Nov-2018,Closed,Maharashtra,"7,82,526.31",Yes,I,Suvidha Shinde,,19691
+20410018,31-Dec-2018,Cameron Middle East FZE,31-Dec-2018,Closed,Maharashtra,"20,84,999.72",Yes,I,Vijay Manjrekar,,
+20410019,31-Dec-2018,Cameron Middle East FZE,31-Dec-2018,Closed,Maharashtra,"66,75,000.28",Yes,I,Vijay Manjrekar,,
+20610018,26-Apr-2018,Alstom Bharat Forge Power Pvt. Ltd.,26-Apr-2018,Closed,Gujarat,"46,330.76",Yes,I,Neel Patel,,
+20610027,04-May-2018,Deep Industries Ltd.,04-May-2018,Closed,Gujarat,"19,968.00",Yes,I,Neel Patel,,
+20610044,15-May-2018,John Energy Ltd.,15-May-2018,Closed,Gujarat,"8,12,164.50",Yes,I,Rajani Kyatham,,19922
+20610047,18-May-2018,Alstom Bharat Forge Power Pvt. Ltd.,18-May-2018,Closed,Gujarat,"1,614.74",Yes,I,Avni Shah,,
+20610061,22-May-2018,Deep Industries Ltd.,22-May-2018,Closed,Gujarat,"9,888.40",Yes,I,Neel Patel,,19862
+20610065,25-May-2018,Alstom Bharat Forge Power Pvt. Ltd.,25-May-2018,Closed,Gujarat,"7,965.00",Yes,I,Dhrumil Patel,,
+20610108,06-Jun-2018,GE Power Systems India Pvt. Ltd.,06-Jun-2018,Closed,Gujarat,"2,507.50",Yes,I,Avni Shah,,20917
+20610110,06-Jun-2018,GE Power Systems India Pvt. Ltd.,06-Jun-2018,Closed,Gujarat,"17,552.50",Yes,I,Avni Shah,,20917
+20610119,07-Jun-2018,GE Power Systems India Pvt. Ltd.,07-Jun-2018,Closed,Gujarat,"7,392.00",Yes,I,Avni Shah,,19878
+20610120,07-Jun-2018,GE Power Systems India Pvt. Ltd.,07-Jun-2018,Closed,Gujarat,"3,802.12",Yes,I,Avni Shah,,19668
+20610121,07-Jun-2018,GE Power Systems India Pvt. Ltd.,07-Jun-2018,Closed,Gujarat,"3,802.12",Yes,I,Avni Shah,,19668
+20610130,14-Jun-2018,Ingersoll Rand (India) Ltd.,14-Jun-2018,Closed,Gujarat,"2,33,227.00",Yes,I,Prit Patel,,18719
+20610148,19-Jun-2018,GE Power Systems India Pvt. Ltd.,19-Jun-2018,Closed,Gujarat,"1,16,531.10",Yes,I,Avni Shah,,19668
+20610164,25-Jun-2018,GE Power Systems India Pvt. Ltd.,25-Jun-2018,Closed,Gujarat,"3,46,547.12",Yes,I,Avni Shah,,20755
+20610171,25-Jun-2018,Alstom Bharat Forge Power Pvt. Ltd.,25-Jun-2018,Closed,Gujarat,"1,664.00",Yes,I,Piyush Yadav,,18814
+20610219,06-Jul-2018,GE Power Systems India Pvt. Ltd.,06-Jul-2018,Closed,Gujarat,"12,744.00",Yes,I,Avni Shah,,19848
+20610228,06-Jul-2018,GE Power Systems India Pvt. Ltd.,06-Jul-2018,Closed,Gujarat,"93,151.56",Yes,I,Avni Shah,,19876
+20610242,11-Jul-2018,Alstom Bharat Forge Power Pvt. Ltd.,11-Jul-2018,Closed,Gujarat,"1,486.80",Yes,I,Piyush Yadav,,18502
+20610260,17-Jul-2018,ABB India Ltd.,17-Jul-2018,Closed,Gujarat,"5,770.92",Yes,I,Neel Patel,,25088
+20610277,20-Jul-2018,GE Power Systems India Pvt. Ltd.,20-Jul-2018,Closed,Gujarat,"40,859.60",Yes,I,Avni Shah,,19668
+20610295,26-Jul-2018,GE Power Systems India Pvt. Ltd.,26-Jul-2018,Closed,Gujarat,"37,170.00",Yes,I,Jigar Patel,,25634
+20610311,31-Jul-2018,GHCL Ltd.,31-Jul-2018,Closed,Gujarat,"82,600.00",Yes,I,Prit Patel,,25171
+20610317,01-Aug-2018,GE Power Systems India Pvt. Ltd.,01-Aug-2018,Closed,Gujarat,"84,704.00",Yes,I,Dhrumil Patel,,19921
+20610337,10-Aug-2018,Ingersoll Rand (India) Ltd.,10-Aug-2018,Closed,Gujarat,"20,681.44",Yes,I,Suhas Nair,,26125
+20610410,01-Sep-2018,GE Power Systems India Pvt. Ltd.,01-Sep-2018,Closed,Gujarat,"2,43,906.00",Yes,I,Avni Shah,,25522
+20610445,12-Sep-2018,GE Power Systems India Pvt. Ltd.,12-Sep-2018,Closed,Gujarat,"14,160.00",Yes,I,Avni Shah,,25044
+20610454,17-Sep-2018,Ingersoll Rand (India) Ltd.,17-Sep-2018,Closed,Gujarat,"15,598.80",Yes,I,Prit Patel,,25240
+20610465,18-Sep-2018,Plasser India Pvt. Ltd.,18-Sep-2018,Closed,Gujarat,"30,697.12",Yes,I,Ranjit Kumar,,26318
+20610505,01-Oct-2018,Micron Enterprises,01-Oct-2018,Closed,Gujarat,"1,510.40",Yes,I,Ranjit Kumar,,25639
+20610531,08-Oct-2018,GHCL Ltd.,07-Nov-2018,Closed,Gujarat,"1,744.86",Yes,I,Harsh Patel,,26570
+20610533,08-Oct-2018,GHCL Ltd.,07-Nov-2018,Closed,Gujarat,567.58,Yes,I,Harsh Patel,,26569
+20610536,09-Oct-2018,GHCL Ltd.,09-Oct-2018,Closed,Gujarat,567.58,Yes,I,Prit Patel,,21017
+20610544,12-Oct-2018,GE Power Systems India Pvt. Ltd.,12-Oct-2018,Closed,Gujarat,"4,248.00",Yes,I,Avni Shah,,28007
+20610577,20-Oct-2018,Alstom Bharat Forge Power Pvt. Ltd.,20-Oct-2018,Closed,Gujarat,"2,230.20",Yes,I,Piyush Yadav,,18502
+20610655,03-Nov-2018,GHCL Ltd.,03-Nov-2018,Closed,Gujarat,"3,282.76",Yes,I,Prit Patel,,21023
+20610660,12-Nov-2018,GE Power Systems India Pvt. Ltd.,12-Nov-2018,Closed,Gujarat,"40,750.20",Yes,I,Avni Shah,,19668
+20610668,12-Nov-2018,Ingersoll Rand (India) Ltd.,12-Nov-2018,Closed,Gujarat,"8,229.44",Yes,I,Prit Patel,,21508
+20610669,12-Nov-2018,GE Power Systems India Pvt. Ltd.,12-Nov-2018,Closed,Gujarat,"25,709.25",Yes,I,Harsh Patel,,28540
+20610677,16-Nov-2018,GE Power Systems India Pvt. Ltd.,16-Nov-2018,Closed,Gujarat,"2,02,555.10",Yes,I,Harsh Patel,,25003
+20610686,20-Nov-2018,Ingersoll Rand (India) Ltd.,20-Nov-2018,Closed,Gujarat,"15,598.80",Yes,I,Suhas Nair,,25172
+20610690,21-Nov-2018,GE Power India Ltd.,21-Nov-2018,Closed,Gujarat,"3,12,127.13",Yes,I,Vijay Manjrekar,,29130
+20610691,21-Nov-2018,GE Power India Ltd.,21-Nov-2018,Closed,Gujarat,"1,25,347.18",Yes,I,Vijay Manjrekar,,29130
+20610708,23-Nov-2018,GE Power Systems India Pvt. Ltd.,23-Nov-2018,Closed,Gujarat,"16,841.78",Yes,I,Avni Shah,,28683
+20610713,23-Nov-2018,GE Power Systems India Pvt. Ltd.,23-Nov-2018,Closed,Gujarat,"9,558.00",Yes,I,Avni Shah,,25225
+20610772,11-Dec-2018,Alstom Bharat Forge Power Pvt. Ltd.,11-Dec-2018,Closed,Gujarat,"2,89,926.00",Yes,I,Piyush Yadav,,
+20610791,05-Dec-2018,GE Power India Ltd.,05-Dec-2018,Closed,Gujarat,"1,17,922.92",Yes,I,Vijay Manjrekar,,29130
+20610822,19-Dec-2018,GE Power Systems India Pvt. Ltd.,19-Dec-2018,Closed,Gujarat,"37,263.18",Yes,I,Avni Shah,,25239
+20610831,21-Dec-2018,GE T and D India Ltd.,20-Jan-2019,Closed,Gujarat,"4,661.00",Yes,I,Prit Patel,,28905
+20610835,21-Dec-2018,GE Power Systems India Pvt. Ltd.,21-Dec-2018,Closed,Gujarat,"18,631.02",Yes,I,Avni Shah,,28879
+20610884,07-Jan-2019,GE Power Systems India Pvt. Ltd.,07-Jan-2019,Closed,Gujarat,"41,602.40",Yes,I,Avni Shah,,26017
+20610905,11-Jan-2019,GHCL Ltd.,10-Feb-2019,Closed,Gujarat,88.21,Yes,I,Prit Patel,,30441
+20610923,17-Jan-2019,GHCL Ltd.,16-Feb-2019,Closed,Gujarat,"1,21,727.05",Yes,I,Prit Patel,,30441
+20610932,21-Jan-2019,GE Power Systems India Pvt. Ltd.,21-Jan-2019,Closed,Gujarat,"6,570.24",Yes,I,Harsh Patel,,27244
+20610942,23-Jan-2019,GE T and D India Ltd.,22-Feb-2019,Closed,Gujarat,"5,685.24",Yes,I,Jigar Patel,,29459
+20610951,24-Jan-2019,GHCL Ltd.,23-Feb-2019,Closed,Gujarat,"1,615.42",Yes,I,Prit Patel,,28782
+20610952,24-Jan-2019,GHCL Ltd.,23-Feb-2019,Closed,Gujarat,"2,462.08",Yes,I,Prit Patel,,28793
+20610967,25-Jan-2019,GE T and D India Ltd.,24-Feb-2019,Closed,Gujarat,"5,685.24",Yes,I,Jigar Patel,,29459
+20610973,28-Jan-2019,GE T and D India Ltd.,27-Feb-2019,Closed,Gujarat,"27,635.60",Yes,I,Jigar Patel,,29459
+20710001,19-May-2018,Sukan Engineering Pvt. Ltd.,19-May-2018,Closed,Gujarat,"24,172.31",Yes,I,Dhrumil Patel,,
+20710002,19-May-2018,John Energy Ltd.,19-May-2018,Closed,Gujarat,"24,190.00",Yes,I,Neel Patel,,
+20710003,19-May-2018,John Energy Ltd.,19-May-2018,Closed,Gujarat,"24,190.00",Yes,I,Neel Patel,,
+20710004,19-May-2018,John Energy Ltd.,19-May-2018,Closed,Gujarat,"24,190.00",Yes,I,Neel Patel,,
+20710005,19-May-2018,Deep Industries Ltd.,19-May-2018,Closed,Gujarat,"9,888.40",Yes,I,Neel Patel,,19620
+20710006,19-May-2018,Deep Industries Ltd.,19-May-2018,Closed,Gujarat,"9,888.40",Yes,I,Neel Patel,,19862
+20710007,19-May-2018,Deep Industries Ltd.,19-May-2018,Closed,Gujarat,"9,888.40",Yes,I,Neel Patel,,19863
+20710008,19-May-2018,Deep Industries Ltd.,19-May-2018,Closed,Gujarat,"9,888.40",Yes,I,Neel Patel,,19865
+20710053,18-Apr-2018,Metso India Pvt. Ltd.,18-Apr-2018,Closed,Gujarat,"3,072.00",Yes,I,Piyush Yadav,,18819
+20910016,18-Jun-2018,McNally Bharat Engineering Co. Ltd.,18-Jun-2018,Closed,Delhi,"9,40,883.62",Yes,I,Swati Bhosale,,8681
+20910022,02-Jul-2018,Henkel Anand India Pvt. Ltd.,02-Jul-2018,Closed,Delhi,"7,987.42",Yes,I,Komal Nagar,,20916
+20910063,05-Sep-2018,Bharti Airtel Ltd.,05-Oct-2018,Closed,Delhi,"2,566.50",Yes,I,Komal Nagar,,26895
+20910076,12-Sep-2018,Graziano Trasmissioni India Pvt. Ltd.,12-Oct-2018,Closed,Delhi,"4,068.69",Yes,I,Harsh Patel,,27109
+20910122,02-Nov-2018,Delhivery Pvt. Ltd.,02-Dec-2018,Closed,Delhi,"2,08,989.80",Yes,I,Komal Nagar,,28381
+20910185,24-Dec-2018,Covestro India Pvt. Ltd.,23-Jan-2019,Closed,Delhi,"1,593.00",Yes,I,Sandeep Pal,,29711
+20910207,11-Jan-2019,Bharti Airtel Ltd.,10-Feb-2019,Closed,Delhi,"4,720.00",Yes,I,Komal Nagar,,30611
+21210120,11-Jan-2019,Piramal Enterprises Ltd.,11-Jan-2019,Closed,TamilNadu,"85,923.95",Yes,I,Mrunal Malkar,,29725
+21410001,13-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,13-May-2018,Closed,Maharashtra,205.89,Yes,I,,,
+21410002,21-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,21-May-2018,Closed,Maharashtra,"1,855.64",Yes,I,,,
+21410003,22-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,22-May-2018,Closed,Maharashtra,789.11,Yes,I,,,
+21410004,29-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,28-Jun-2018,Closed,Maharashtra,"29,425.07",Yes,I,,,
+21410005,05-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,05-Jun-2018,Closed,Maharashtra,"83,094.42",Yes,I,,,
+21410006,11-Apr-2018,Bulk MRO Industrial Supply Pvt. Ltd.,11-Apr-2018,Closed,Maharashtra,"3,879.84",Yes,I,,,
+21410007,23-Apr-2018,Bulk MRO Industrial Supply Pvt. Ltd.,23-Apr-2018,Closed,Maharashtra,"41,630.40",Yes,I,,,
+21410008,12-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,12-Jun-2018,Closed,Maharashtra,"3,687.50",Yes,I,,,
+21410009,18-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,18-Jun-2018,Closed,Maharashtra,"8,21,280.00",Yes,I,,,
+21410010,19-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,19-Jun-2018,Closed,Maharashtra,"1,29,029.68",Yes,I,,,
+21410012,26-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,26-Jun-2018,Closed,Maharashtra,"2,513.40",Yes,I,,,
+21410013,28-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,28-Jun-2018,Closed,Maharashtra,"1,117.58",Yes,I,,,
+21410014,28-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,28-Jun-2018,Closed,Maharashtra,"32,909.13",Yes,I,,,
+21410018,18-Jul-2018,Bulk MRO Industrial Supply Pvt. Ltd.,18-Jul-2018,Closed,Maharashtra,"19,86,822.14",Yes,I,,,
+21410025,10-Apr-2018,Bulk MRO Industrial Supply Pvt. Ltd.,10-Apr-2018,Closed,Maharashtra,"1,18,519.20",Yes,I,,,
+21410033,07-Sep-2018,Bulk MRO Industrial Supply Pvt. Ltd.,07-Sep-2018,Closed,Maharashtra,"23,788.80",Yes,I,,,
+21410042,19-Sep-2018,Bulk MRO Industrial Supply Pvt. Ltd.,19-Sep-2018,Closed,Maharashtra,"2,01,101.51",Yes,I,,,
+21410073,26-Nov-2018,Bulk MRO Industrial Supply Pvt. Ltd.,26-Nov-2018,Closed,Maharashtra,"56,070.00",Yes,I,,,
+21410090,05-Jan-2019,Bulk MRO Industrial Supply Pvt. Ltd.,05-Jan-2019,Closed,Maharashtra,"3,07,567.68",Yes,I,,,
+21510001,19-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,19-May-2018,Closed,Gujarat,572.3,Yes,I,,,
+21510002,19-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,19-May-2018,Closed,Gujarat,"12,600.00",Yes,I,,,
+21510003,31-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,31-May-2018,Closed,Gujarat,"4,906.44",Yes,I,,,
+21510004,11-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,11-Jun-2018,Closed,Gujarat,"16,384.00",Yes,I,,,
+21510015,21-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,21-May-2018,Closed,Gujarat,"17,640.00",Yes,I,,,
+21510017,22-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,22-May-2018,Closed,Gujarat,708,Yes,I,,,
+21510019,22-May-2018,Bulk MRO Industrial Supply Pvt. Ltd.,22-May-2018,Closed,Gujarat,"5,203.80",Yes,I,,,
+21510021,11-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,11-Jun-2018,Closed,Gujarat,"19,968.00",Yes,I,,,
+21510029,19-Dec-2018,Bulk MRO Industrial Supply Pvt. Ltd.,19-Dec-2018,Closed,Gujarat,"12,919.96",Yes,I,,,
+21610001,20-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,20-Jun-2018,Closed,Delhi,"18,880.00",Yes,I,,,
+21610003,20-Jun-2018,Bulk MRO Industrial Supply Pvt. Ltd.,20-Jun-2018,Closed,Delhi,"9,40,883.62",Yes,I,,,
+21810001,27-Oct-2018,Bulk MRO Industrial Supply Pvt. Ltd.,27-Oct-2018,Closed,TamilNadu,"9,06,494.40",Yes,I,,,
+21910004,07-Sep-2018,Piramal Enterprises Ltd.,07-Sep-2018,Closed,Telangana,"33,163.20",Yes,I,Dipali Ghanvat,,26729
+21910047,27-Nov-2018,Piramal Enterprises Ltd.,27-Nov-2018,Closed,Telangana,200.6,Yes,I,Dipali Ghanvat,,28574
+22100002,26-Dec-2018,Bulk MRO Industrial Supply Pvt. Ltd.,26-Dec-2018,Closed,Telangana,"1,534.00",Yes,I,,,

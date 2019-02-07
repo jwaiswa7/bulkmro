@@ -32,7 +32,7 @@ class SalesOrder < ApplicationRecord
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
-  has_one :po_request
+  has_many :po_requests
   has_many :invoice_requests
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
@@ -40,7 +40,7 @@ class SalesOrder < ApplicationRecord
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, to: :inquiry, allow_nil: true
-
+  delegate :currency_sign,to: :sales_quote
 
   #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
@@ -171,6 +171,15 @@ class SalesOrder < ApplicationRecord
     end
   end
 
+
+  def serailized_billing_address
+    self.billing_address || self.inquiry.billing_address
+  end
+
+  def serailized_shipping_address
+    self.shipping_address || self.inquiry.shipping_address
+  end
+
   def filename(include_extension: false)
     [
         ['order', id].join('_'),
@@ -187,6 +196,10 @@ class SalesOrder < ApplicationRecord
   end
 
   def has_purchase_order_request
-    self.po_request.present?
+    self.po_requests.present?
+  end
+
+  def not_invoiced_value(status)
+    self.order_total
   end
 end

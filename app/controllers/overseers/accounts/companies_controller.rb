@@ -78,6 +78,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :company_type,
         :priority,
         :site,
+        :company_creation_request_id,
         :nature_of_business,
         :creadit_limit,
         :tan_proof,

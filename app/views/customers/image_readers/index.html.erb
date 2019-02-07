@@ -1,0 +1,47 @@
+<% provide :container_fluid, true %>
+
+<div class="col-12">
+  <div class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <h3 class="text-black-50 mb-0">
+      <strong>Requests</strong>
+      <div style="float: right">
+        <%= link_to customers_image_readers_path, method: :post, class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1" do %>
+          <i class="fal fa-paper-plane mr-1"></i>Create Request
+        <% end %>
+        <%= link_to export_all_customers_image_readers_path(format: :csv), class: "btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1", target: "_blank" do %>
+          <i class="fal fa-download mr-1"></i>Image Readers
+        <% end %>
+      </div>
+    </h3>
+  </div>
+
+  <div class="card mt-1">
+    <div class="card-body">
+      <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
+        <thead>
+          <tr>
+            <th class="no-sort">Action</th>
+            <th class="no-sort">Date</th>
+            <th class="no-sort">Completed Records</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @completed_records.each do |date, count| %>
+            <tr>
+              <td>
+                <%= link_to export_by_date_customers_image_readers_path(date: date, status: "completed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
+                  <i class="fal fa-download mr-1"></i>Completed Records
+                <% end %>
+                <%= link_to export_by_date_customers_image_readers_path(date: date, status: "failed", format: :csv), target: "_blank", class: "btn btn-success btn-rounded" do %>
+                  <i class="fal fa-download mr-1"></i>Failed Records
+                <% end %>
+              </td>
+              <td><%= date %></td>
+              <td><%= count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

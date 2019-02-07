@@ -29,8 +29,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.custom_find(company_name, company_type)
-
-    response = get("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    encoded_url = URI.encode("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    response = get(encoded_url)
 
     log_request(:get, company_name, is_find: true)
     validated_response = get_validated_response(response)
@@ -51,6 +51,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     company = Company.find_by_remote_uid!(response['CardCode'])
     addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
+    banks  = response['BPBankAccounts']
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
@@ -89,12 +90,20 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
       company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
     end if contacts.present?
+
+    banks.each do |bank|
+      account_number= bank["AccountNo"]
+      remote_uid = bank["InternalKey"]
+      company_bank = CompanyBank.find_by_account_number(account_number)
+      company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
+    end if banks.present?
   end
 
   def self.to_remote(record)
     addresses = []
     contacts = []
     bp_tax_collection = []
+    banks = []
 
     if record.remote_uid.blank?
       record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid(record))
@@ -277,6 +286,23 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
+    record.company_banks.each do |company_bank|
+
+      bank_row = OpenStruct.new
+      bank_row.BPCode = record.remote_uid
+      bank_row.AccountNo = company_bank.account_number
+      bank_row.AccountName = company_bank.account_name
+      bank_row.Branch = company_bank.branch
+      bank_row.MandateID = company_bank.mandate_id
+      bank_row.BankCode = company_bank.bank.code
+
+      if company_bank.remote_uid.present?
+        bank_row.InternalKey = company_bank.remote_uid
+      end
+
+      banks.push(bank_row.marshal_dump)
+    end if record.remote_uid.present?
+
     params = {
         CardCode: record.remote_uid,
         CardName: record.name,
@@ -312,6 +338,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         U_URD: record.is_unregistered_dealer ? "Yes" : "No",
         BPAddresses: addresses,
         ContactEmployees: contacts,
+        BPBankAccounts: banks,
         BPFiscalTaxIDCollection: bp_tax_collection,
         UseBillToAddrToDetermineTax: "tYES"
     }

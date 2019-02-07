@@ -917,4 +917,21 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
   end
+
+  def set_activity_date_and_create_approval
+    Activity.where(activity_date: nil).each do |activity|
+      activity.update_attribute('activity_date', activity.created_at)
+    end
+
+    Activity.not_approved.each do |activity|
+      activity.create_approval(:overseer => Overseer.default_approver)
+    end
+  end
+
+  def set_tax_rate_and_tax_code_for_customer_order_rows
+    CustomerOrderRow.all.each do |row|
+      row.update_attributes(tax_rate_id: row.customer_product.best_tax_rate.id, tax_code_id: row.customer_product.best_tax_code.id)
+      row.save
+    end
+  end
 end

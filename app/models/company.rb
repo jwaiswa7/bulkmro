@@ -16,7 +16,6 @@ class Company < ApplicationRecord
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
-  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, :through => :company_contacts
   accepts_nested_attributes_for :company_contacts
@@ -42,11 +41,15 @@ class Company < ApplicationRecord
   has_many :company_products, :through => :customer_products
   has_many :customer_orders
   has_many :product_imports, :class_name => 'CustomerProductImport', inverse_of: :company
+  has_many :company_banks
+  has_many :banks, through: :company_banks
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
   has_one_attached :logo
+  belongs_to :company_creation_request, optional: true
+
 
   enum company_type: {
       :proprietorship => 10,
@@ -188,7 +191,7 @@ class Company < ApplicationRecord
   end
 
   def validate_pan?
-    if self.pan.length != 10
+    if self.pan.blank? || self.pan.length != 10
       errors.add(:company, 'PAN is not valid')
     end
   end

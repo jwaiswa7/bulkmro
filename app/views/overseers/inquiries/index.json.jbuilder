@@ -16,9 +16,12 @@ json.data (@inquiries) do |inquiry|
       link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: "_blank"),
       inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: "_blank") : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
-      link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank"),
+      if inquiry.contact.present?
+        link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank")
+      end,
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
+      inquiry.margin_percentage,
       format_currency(inquiry.try(:potential_amount)),
       format_currency(inquiry.final_sales_quote.try(:calculated_total)),
       format_succinct_date(inquiry.created_at)
@@ -37,10 +40,10 @@ json.columnFilters [
                        [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
-                       [],
                        [{"source": autocomplete_overseers_contacts_path}],
                        Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
                        Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
                        [],
                        [],
                        []
@@ -48,5 +51,6 @@ json.columnFilters [
 
 json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
+json.recordsTotalValue @total_values
 json.draw params[:draw]
 json.recordsSummary Inquiry.statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
