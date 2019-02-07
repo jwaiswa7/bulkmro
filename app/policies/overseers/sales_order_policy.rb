@@ -117,6 +117,18 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && admin?
   end
 
+  def new_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def preview_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def create_purchase_orders_requests?
+    admin? || developer?
+  end
+
   def fetch_order_data?
     developer?
   end

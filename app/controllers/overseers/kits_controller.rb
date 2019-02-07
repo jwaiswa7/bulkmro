@@ -19,17 +19,18 @@ class Overseers::KitsController < Overseers::BaseController
 
   def create
     @kit = Kit.new(kit_params.merge(overseer: current_overseer))
-
+    @kit.product.assign_attributes(overseer: current_overseer)
     authorize @kit
     if @kit.save
-
       if @kit.inquiry.present?
         @kit_products = @kit.inquiry.try(:final_sales_quote).try(:sales_quote_rows) || @kit.inquiry.inquiry_products
         @kit_products.each do |kit_product|
-          @kit.kit_product_rows.where(:product_id => kit_product.product.id).first_or_create! do |row|
-            row.quantity = kit_product.quantity
-            row.tax_code = kit_product.try(:tax_code) || kit_product.product.tax_code
-            row.tax_rate = kit_product.try(:tax_rate) || kit_product.product.tax_rate
+          if @kit.kit_product_rows.present?
+            @kit.kit_product_rows.where(:product_id => kit_product.product.id).first_or_create! do |row|
+              row.quantity = kit_product.quantity
+              row.tax_code = kit_product.try(:tax_code) || kit_product.product.tax_code
+              row.tax_rate = kit_product.try(:tax_rate) || kit_product.product.tax_rate
+            end
           end
         end
         @kit.save
@@ -47,6 +48,7 @@ class Overseers::KitsController < Overseers::BaseController
 
   def update
     @kit.assign_attributes(kit_params.merge(overseer: current_overseer))
+    @kit.product.assign_attributes(overseer: current_overseer)
     authorize @kit
     if @kit.product.approved? ? @kit.save_and_sync : @kit.save
       redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)

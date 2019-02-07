@@ -12,7 +12,7 @@ json.data (@activities) do |activity|
                       end,
                   ].join(' '),
                   activity.created_by.to_s,
-                  format_date(activity.activity_date),
+
                   if activity.activity_account.present?
                     conditional_link(activity.activity_account.to_s, overseers_account_path(activity.activity_account), policy(activity.activity_account))
                   end,
@@ -33,18 +33,41 @@ json.data (@activities) do |activity|
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
+                  if activity.inquiry.present?
+                    status_badge(activity.inquiry.commercial_status)
+                  end,
                   if activity.contact.present?
                     activity.contact.to_s
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
                   activity.expenses,
+                  format_date(activity.activity_date),
                   activity.points_discussed,
                   activity.actions_required,
+                  format_date(activity.activity_date),
                   format_succinct_date(activity.created_at)
               ]
-end
 
+end
+json.columnFilters [
+                      [],
+                      Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                      [{"source": autocomplete_overseers_accounts_path}],
+                      [{"source": autocomplete_overseers_companies_path}],
+                      [],
+                      [],
+                      [],
+                      [],
+                      [{"source": autocomplete_overseers_contacts_path}],
+                      Activity.purposes.map {|k,v| {:"label" => k,:"value" => v}},
+                      [],
+                      [],
+                      [],
+                      [],
+                      [],
+                      []
+                   ]
 json.recordsTotal @activities.model.all.count
-json.recordsFiltered @activities.total_count
+json.recordsFiltered @indexed_activities.total_count
 json.draw params[:draw]

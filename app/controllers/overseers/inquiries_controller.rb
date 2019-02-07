@@ -23,10 +23,10 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::InquiriesExporter.new
-    service.call
-
-    redirect_to url_for(Export.inquiries.last.report)
+    service = Services::Overseers::Exporters::InquiriesExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   def index_pg
@@ -107,8 +107,10 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   def update
     @inquiry.assign_attributes(inquiry_params.merge(overseer: current_overseer))
+    @inquiry.inquiry_products.each do |inquiry_product|
+      inquiry_product.overseer = current_overseer
+    end if inquiry_params[:inquiry_products_attributes]
     authorize @inquiry
-
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
       if @inquiry.status == 'Order Lost'

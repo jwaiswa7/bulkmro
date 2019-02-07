@@ -1,0 +1,105 @@
+<%= provide :container_fluid, true %>
+<div class="col-lg-12">
+
+  <div class="page-header">
+    <h2>PO Requests for Order <%= format_id(@sales_order.order_number) %></h2>
+    <p>This will <em>Create purchase order requests</em> and log it under
+      <strong><%= current_overseer.full_name %></strong>.</p>
+  </div>
+
+  <%= simple_form_for(@sales_order, url: preview_purchase_orders_requests_overseers_sales_order_path, method: :POST, :html => {:class => 'needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <div class="card mb-2">
+      <div class="card-body">
+        <%= render 'shared/snippets/form_errors', f: f %>
+
+        <%= f.hidden_field :order_number, as: :string %>
+
+
+        <div class="form-row">
+          <div class="form-group col-4">
+            <strong class="d-block">Order Number</strong>
+            <%= link_to overseers_inquiry_sales_order_path(f.object.inquiry, f.object), target: :_blank do %>
+              <%= f.object.order_number %>
+            <% end %>
+          </div>
+          <div class="form-group col-4">
+            <strong class="d-block">Inquiry</strong>
+            <%= link_to overseers_inquiry_path(f.object.inquiry) do %>
+              <%= f.object.inquiry %>
+            <% end %>
+          </div>
+          <br>
+          <div class="col-4">
+            <%= f.input :customer_committed_date, label: 'Customer Committed Date', disabled: true, :wrapper => :custom_multi_select, include_blank: 'Committed Date' %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if @po_requests.present? %>
+      <div class="card">
+        <div class="card-body">
+          <%= f.simple_fields_for :po_requests, @po_requests.values do |po_request| %>
+            <div class="simple-row">
+
+              <p class="text">
+                <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
+                <strong><%= po_request.object.supplier.to_s %>
+                  : <%= po_request.object.supplier.try(:legacy_email) %></strong>
+                <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                  Remove Supplier
+                <% end %>
+                <%= render 'overseers/po_requests/rows_form', f: po_request %>
+            </div>
+            <hr class="<%= f.object.po_requests.last == po_request.object ? 'd-none' : '' %>"/>
+          <% end %>
+        </div>
+        <div class="card-footer">
+          <% if policy(@sales_order).create_purchase_orders_requests? %>
+            <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+              <i class="fal fa-pen"></i> Preview PO request
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="card text-lg-center">
+        <div class="card-body">
+          <p>
+            All PO Requests have already been created. <br>
+
+            If you cannot see a Supplier that was present in the Sales Order. <br> Please check if the supplier has
+            contact or not.
+          </p>
+          <table class="table table-bordered dt-responsive wrap-whitespace w-100 mb-0" data-fixed-header="false">
+            <tr>
+              <th class="no-sort desktop" data-name="name">PO Request No.</th>
+              <th class="no-sort desktop text-right" data-name="name">Inquiry</th>
+              <th class="no-sort all text-right" data-name="sku">Order</th>
+              <th class="no-sort all" data-name="sku">Inside Sales</th>
+              <th class="no-sort all" data-name="supplier">Supplier</th>
+              <th class="no-sort desktop">Status</th>
+              <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
+            </tr>
+
+            <% @sales_order.po_requests.each do |po_request| %>
+              <tr>
+                <td><%= link_to edit_overseers_po_request_path(po_request), target: :_blank do %>
+                    <%= format_id(po_request.id) %>
+                  <% end %>
+                </td>
+                <td><%= format_id(po_request.inquiry.inquiry_number) %></td>
+                <td><%= format_id(po_request.sales_order.order_number) %></td>
+                <td><%= po_request.inquiry.inside_sales_owner %></td>
+                <td><%= po_request.supplier.try(:name) || '-' %></td>
+                <td><%= po_request.status || '-' %></td>
+                <td><%= po_request.logistics_owner || '-' %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    <% end %>
+
+  <% end %>
+</div>
+<%= render partial: 'shared/layouts/rating_modal_with_multiple_tab' %>

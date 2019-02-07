@@ -1,6 +1,6 @@
 json.results(@purchase_orders) do |purchase_order|
   json.set! :id, purchase_order.id
-  json.set! :text, purchase_order.po_number.to_s
+  json.set! :text, purchase_order.to_s
 end
 
 json.pagination do

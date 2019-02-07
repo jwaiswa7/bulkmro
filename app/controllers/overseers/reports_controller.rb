@@ -22,6 +22,10 @@ class Overseers::ReportsController < Overseers::BaseController
     render @report.uid
   end
 
+  def bi_report
+    authorize :report
+  end
+
   private
 
   def report_params

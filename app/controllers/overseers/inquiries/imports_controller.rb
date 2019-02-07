@@ -79,7 +79,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     @excel_import.assign_attributes(create_failed_skus_params)
 
     authorize @excel_import
-    service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
+    service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import, current_overseer)
 
     if service.call
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)

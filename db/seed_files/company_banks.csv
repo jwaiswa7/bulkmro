@@ -1,0 +1,1052 @@
+internal_key,bp_code,bank_code,country,account_no,branch,street,block,zip_code,city,county,state,ctrl_int_id,iban,log_instance,building_floor_room,alias_name,account_type,bank_internal_id,bik,account_name,correspondent_account,phone,fax,isr_type,isr_biller_id,customer_id_number,address_type,street_no,swift_code,aba_routing_number,mandate_id,date_of_signature,pwz_abs_entry,branch_check_digit,date_of_mandate_expiration,sepa_seq_type,account_type,is_prenotification,post_magento
+565,SC-8644,UTBI,IN,1515050042006,,,,,,,,,,,,,,46,,,,,,2,,0,,,,,,,,,,,,N,Y
+566,SC-6870,DEUT,IN,2055168000,,,,,,,,,,,,,,25,,,,,,2,,0,,,,,DEUT0797BGL,,,,,,,N,Y
+567,SC-8482,UTIB,IN,916030048847343,,,,,,,,,,,,,,31,,,,,,2,,0,,,,,UTIB0001636,,,,,,,N,Y
+569,SC-8724,HDFC,IN,8562320000497,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,HDFC0000856,,,,,,,N,Y
+572,1726,CITI,IN,RRCT000000T598,,,,,,,,,,,,,,23,,,,,,2,,0,,,,,CITI0100000,,,,,,,N,N
+462,SC-8626,SBI,IN,10010481541,URMI SOCIETY,,,,,IN,,,,,,,,2,,,,,,2,,0,,,,,SBIN0007442,,,,,,,N,Y
+12,SC-00580,UBIN,IN,321801010036985,PUNE CITY,,,,,IN,,,,,,,,12,,Mercury Traders,,,,2,,0,,,,,UBIN0532185,,,,,,,N,Y
+33,SC-04482,INDB,IN,200002179571,ANDHERI,,,,,IN,,,,,,,,33,,Rajdhani Steel Industries,,,,2,,0,,,,,INDB0000018,,,,,,,N,Y
+19,SC-00356,CORP,IN,109800401150002,MANJALPUR,,,,,IN,,,,,,,,19,,United Instrument Services,,,,2,,0,,,,,CORP0001098,,,,,,,N,Y
+986,E-900152,SBI,IN,20280641411,,,,,,,,,,,,,,2,,Atul Thakur,,,,2,,0,,,SBIN0017930,,,,,,,,,N,N
+1110,SC-8594,ICIC,IN,410000000000,,,,,,,,,,,,,,7,,Intech Automation Pvt Ltd,,,,2,,0,,,ICIC0004102,,,,,,,,,N,N
+1197,SC-9168,ICIC,IN,101000000000,,,,,,,,,,,,,,7,,Biolix Technologies,,,,2,,0,,,ICIC0001008,,,,,,,,,N,N
+1102,SC-8474,UBIN,IN,420000000000000,,,,,,,,,,,,,,12,,Majestic D'signs,,,,2,,0,,,UBIN0541991,,,,,,,,,N,N
+580,SC-00165,2HDFC,IN,50200022472725,,,,,,,,,,,,,,4,,,,,,2,,0,,,,,,,,,,,,N,N
+1024,SC-01151,ICIC,IN,26105002302,,,,,,,,,,,,,,7,,S M Enterprise,,,,2,,0,,,ICIC0000261,,,,,,,,,N,N
+1169,SC-9019,UTIB,IN,915000000000000,,,,,,,,,,,,,,31,,Titan Minetech,,,,2,,0,,,UTIB0001875,,,,,,,,,N,N
+888,E-900001,SBI,IN,10009727023,,,,,,,,,,,,,,2,,Devang Shah,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+1164,SC-8988,ICIC,IN,3705014494,,,,,,,,,,,,,,7,,Shivam Electronics,,,,2,,0,,,ICIC0000037,,,,,,,,,N,N
+560,SC-7282,SRCB,IN,35100000000000,F C ROAD,,,,,IN,,,,,,,,71,,Ashwini Enterprises,,,,2,,0,,,SRCB0000035,,SRCB0000035,,,,,,,N,N
+1155,SC-8946,ICIC,IN,641000000000,,,,,,,,,,,,,,7,,Aries Creation,,,,2,,0,,,ICIC0006414,,,,,,,,,N,N
+1053,SC-207679,YESB,IN,2110000000000,,,,,,,,,,,,,,11,,Foremost Systems,,,,2,,0,,,YESB0PSB004,,,,,,,,,N,N
+593,SC-7565,BCBM,IN,913100000473,,,,,,,,,,,,,,47,,,,,,2,,0,,,,,,,,,,,,N,N
+1143,SC-8899,SYNB,IN,70200000000000,,,,,,,,,,,,,,17,,Durva Enterprise,,,,2,,0,,,SYNB0007022,,,,,,,,,N,N
+980,E-900145,SBI,IN,66010093302,,,,,,,,,,,,,,2,,Ranjit Kumar,,,,2,,0,,,SBIN0010971,,,,,,,,,N,N
+588,SC-8634,KMPL,IN,7111602192,,,,,,,,,,,,,,3,,,,,,2,,0,,,,,,,,,,,,N,N
+1172,SC-9025,INDB,IN,201000000000,,,,,,,,,,,,,,33,,NK Scientifics,,,,2,,0,,,INDB0000838,,,,,,,,,N,N
+884,207595,2HDFC,IN,10100000000000,,,,,,,,,,,,,,4,,Gokak Enterprises,,,,2,,0,,,HDFC0CMASBL,,,,,,,,,N,N
+921,E-900047,SBI,IN,33272287715,,,,,,,,,,,,,,2,,Aarti Hapan,,,,2,,0,,,SBIN0003837,,,,,,,,,N,N
+1034,SC-02212,YESB,IN,8290000000000,,,,,,,,,,,,,,11,,Marine Marketing Services,,,,2,,0,,,YESB0000082,,,,,,,,,N,N
+1023,SC-01102,ICIC,IN,305500352,,,,,,,,,,,,,,7,,Global Marketing,,,,2,,0,,,ICIC0000003,,,,,,,,,N,N
+1059,SC-207699,IBKL,IN,1330000000000000,,,,,,,,,,,,,,27,,Vijay Enterprises,,,,2,,0,,,IBKL0001334,,,,,,,,,N,N
+947,E-900078,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Jeetendra Sharma,,,,2,,0,,,HDFC0001677,,,,,,,,,N,N
+895,E-900011,2HDFC,IN,3570000000000,,,,,,,,,,,,,,4,,Vinod Shinde,,,,2,,0,,,HDFC0000357,,,,,,,,,N,N
+1219,SC-9256,SBI,IN,35332229706,,,,,,,,,,,,,,2,,Suchi Communication,,,,2,,0,,,SBIN0002628,,,,,,,,,N,N
+596,SC-02323,BARB,IN,12530400000168,,,,,,,,,,,,,,13,,,,,,2,,0,,,,,,,,,,,,N,N
+1178,SC-9053,BARB,IN,35500000000000,,,,,,,,,,,,,,13,,Cleantek,,,,2,,0,,,BARB0GANAPA,,,,,,,,,N,N
+1153,SC-8942,ICIC,IN,122000000000,,,,,,,,,,,,,,7,,Sumangal Relocations,,,,2,,0,,,ICIC0001216,,,,,,,,,N,N
+1101,SC-8399,SRCB,IN,19100000000000,,,,,,,,,,,,,,71,,Honest Enterprise,,,,2,,0,,,SRCB0000019,,,,,,,,,N,N
+1069,SC-207764,2HDFC,IN,35700000000000,,,,,,,,,,,,,,4,,Ganesh Mudra,,,,2,,0,,,HDFC0000357,,,,,,,,,N,N
+162,SC-8048,CORP,IN,560000000000000,AHMEDABAD - NEW RANI,,,,,IN,,,,,,,,19,,Chex Audio Visual Solution,,,,2,,0,,,CORP0003448,,CORP0003448,,,,,,,N,N
+958,E-900094,UTIB,IN,915000000000000,,,,,,,,,,,,,,31,,Avni Yogeshkumar Shah,,,,2,,0,,,UTIB0000032,,,,,,,,,N,N
+1176,SC-9049,BKID,IN,50600000000000,,,,,,,,,,,,,,8,,Fanstech Services,,,,2,,0,,,BKID0000506,,,,,,,,,N,N
+1097,SC-7902,ICIC,IN,2105023652,,,,,,,,,,,,,,7,,3D Chemicals,,,,2,,0,,,ICIC0000021,,,,,,,,,N,N
+1160,SC-8962,IBKL,IN,579000000000000,,,,,,,,,,,,,,27,,De Integro,,,,2,,0,,,IBKL0000579,,,,,,,,,N,N
+1037,SC-206309,BARB,IN,4040000000000,,,,,,,,,,,,,,13,,Gala Sons,,,,2,,0,,,BARB0MANBOM,,,,,,,,,N,N
+1152,SC-8938,ICIC,IN,3705007753,,,,,,,,,,,,,,7,,See Automation and Engineers,,,,2,,0,,,ICIC0000037,,,,,,,,,N,N
+937,E-900065,ICIC,IN,196000000000,,,,,,,,,,,,,,7,,Sarwar Rizvi,,,,2,,0,,,ICIC0001962,,,,,,,,,N,N
+543,SC-8700,2HDFC,IN,3830000000000,AHMEDABAD - NARANPUR,,,,,IN,,,,,,,,4,,Sonata Traders,,,,2,,0,,,HDFC0000383,,HDFC0000383,,,,,,,N,N
+1140,SC-8857,DEUT,IN,19173930019,,,,,,,,,,,,,,25,,Master Files,,,,2,,0,,,DEUT0784PBC,,,,,,,,,N,N
+1163,SC-8980,2HDFC,IN,17900000000000,,,,,,,,,,,,,,4,,Isha Enterprises,,,,2,,0,,,HDFC0001790,,,,,,,,,N,N
+1027,SC-01413,BKID,IN,9030000000000,,,,,,,,,,,,,,8,,MTP Controls,,,,2,,0,,,BKID0000090,,,,,,,,,N,N
+1190,SC-9110,BKID,IN,203000000000000,,,,,,,,,,,,,,8,,Desmin Agencies,,,,2,,0,,,BKID0002034,,,,,,,,,N,N
+893,E-900008,SBI,IN,20104561186,,,,,,,,,,,,,,2,,Nilesh Jawlekar,,,,2,,0,,,SBIN0001154,,,,,,,,,N,N
+1139,SC-8850,MAHB,IN,60187249988,,,,,,,,,,,,,,28,,More Enterprises,,,,2,,0,,,MAHB0000027,,,,,,,,,N,N
+1226,SC-9293,YESB,IN,45200000000000,,,,,,,,,,,,,,11,,Classic Cargo Carriers,,,,2,,0,,,YESB0000451,,,,,,,,,N,N
+1015,SC-00708,2HDFC,IN,842000000000,,,,,,,,,,,,,,4,,Jain Electricals and Engineers,,,,2,,0,,,HDFC0000084,,,,,,,,,N,N
+957,E-900093,SBI,IN,30309252730,,,,,,,,,,,,,,2,,Hiteshkumar Gajanan Harinkhede,,,,2,,0,,,SBIN0000491,,,,,,,,,N,N
+950,E-900083,ICIC,IN,121000000000,,,,,,,,,,,,,,7,,Vinodkumar Gangaram Ranaveni,,,,2,,0,,,ICIC0001206,,,,,,,,,N,N
+1184,SC-9084,IBKL,IN,87100000000000,,,,,,,,,,,,,,27,,Devyani Enterprises,,,,2,,0,,,IBKL0000087,,,,,,,,,N,N
+1195,SC-9157,YESB,IN,45800000000000,,,,,,,,,,,,,,11,,Yoga Land,,,,2,,0,,,YESB0000457,,,,,,,,,N,N
+945,E-900076,ICIC,IN,641000000000,,,,,,,,,,,,,,7,,Narendra Madanlal Solanki,,,,2,,0,,,ICIC0006414,,,,,,,,,N,N
+586,SC-00859,KMPL,IN,511315266,,,,,,,,,,,,,,3,,,,,,2,,0,,,,,,,,,,,,N,N
+1170,SC-9021,IOBA,IN,43200000000000,,,,,,,,,,,,,,43,,Bafna Industrial Stores,,,,2,,0,,,IOBA0000432,,,,,,,,,N,N
+1072,SC-207785,SBI,IN,62460686956,,,,,,,,,,,,,,2,,Sapphire Technology,,,,2,,0,,,SBIN0021993,,,,,,,,,N,N
+1018,SC-00733,SBI,IN,30738330200,,,,,,,,,,,,,,2,,Transpower Switchgear Industries,,,,2,,0,,,SBIN0004832,,,,,,,,,N,N
+913,E-900038,ICIC,IN,34401540181,,,,,,,,,,,,,,7,,Rahul Dhanani,,,,2,,0,,,ICIC0000344,,,,,,,,,N,N
+1230,SC-9318,CBIN,IN,1355556057,,,,,,,,,,,,,,14,,Kagzi Stationery Mart,,,,2,,0,,,CBIN0280512,,,,,,,,,N,N
+1177,SC-9051,SRCB,IN,350000000000000,,,,,,,,,,,,,,71,,SVR ENTERPRISES,,,,2,,0,,,SRCB0000350,,,,,,,,,N,N
+901,E-900019,SBI,IN,36509273544,,,,,,,,,,,,,,2,,Swati Kapil Shedge,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+922,E-900049,COSB,IN,721000000000,,,,,,,,,,,,,,42,,Jyoti S Trivedi,,,,2,,0,,,COSB0000072,,,,,,,,,N,N
+584,SC-8706,SBI,IN,33866259171,,,,,,,,,,,,,,2,,,,,,2,,0,,,,,,,,,,,,N,N
+1082,SC-207890,SBI,IN,37976077651,,,,,,,,,,,,,,2,,Minaxi Bitumen,,,,2,,0,,,SBIN0016059,,,,,,,,,N,N
+1054,SC-207684,CNRB,IN,410000000000,,,,,,,,,,,,,,9,,Southern Associates,,,,2,,0,,,CNRB0000410,,,,,,,,,N,N
+577,SC-8736,HDFC,IN,2752020000204,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,,,,,,,,N,N
+1008,E-900216,IBKL,IN,1280000000000000,,,,,,,,,,,,,,27,,Yash Rashmikant Gajjar,,,,2,,0,,,IBKL0001282,,,,,,,,,N,N
+981,E-900146,2HDFC,IN,50100126777999,,,,,,,,,,,,,,4,,Vishwajeet singh Chavan,,,,2,,0,,,HDFC0000359,,,,,,,,,N,N
+1149,SC-8931,MAHB,IN,60253319894,,,,,,,,,,,,,,28,,Metro Foam Furnishing,,,,2,,0,,,MAHB0000588,,,,,,,,,N,N
+961,E-900098,ICIC,IN,28101526995,,,,,,,,,,,,,,7,,Dipali Vasant Ghanvat,,,,2,,0,,,ICIC0000281,,,,,,,,,N,N
+968,E-900121,UTIB,IN,910000000000000,,,,,,,,,,,,,,31,,Ankit Shah,,,,2,,0,,,UTIB0000565,,,,,,,,,N,N
+1075,SC-207790,BARB,IN,31900000000000,,,,,,,,,,,,,,13,,Fine Enterprises,,,,2,,0,,,BARB0NALASO,,,,,,,,,N,N
+936,E-900064,IDIB,IN,6394447092,,,,,,,,,,,,,,44,,Neha Mundhe,,,,2,,0,,,IDIB000A170,,,,,,,,,N,N
+1045,SC-207653,UBIN,IN,594000000000000,,,,,,,,,,,,,,12,,Tech Ocean,,,,2,,0,,,UBIN0559423,,,,,,,,,N,N
+1211,SC-9226,BKID,IN,12100000000000,,,,,,,,,,,,,,8,,SR Enterprises,,,,2,,0,,,BKID0000121,,,,,,,,,N,N
+1052,SC-207678,VIJB,IN,505000000000000,,,,,,,,,,,,,,18,,Amar Bearings,,,,2,,0,,,VIJB0005047,,,,,,,,,N,N
+1228,SC-9300,MAHB,IN,60249274347,,,,,,,,,,,,,,28,,Hajrah Enterprises,,,,2,,0,,,MAHB0000575,,,,,,,,,N,N
+1056,SC-207690,BARB,IN,4480000000000,,,,,,,,,,,,,,13,,Suraj Enterprises,,,,2,,0,,,BARB0POOCTY,,,,,,,,,N,N
+880,17571,ABHY,IN,52000000000000,,,,,,,,,,,,,,48,,Rutuja Transport,,,,2,,0,,,ABHY0065109,,,,,,,,,N,N
+1162,SC-8975,ICIC,IN,21105005249,,,,,,,,,,,,,,7,,Consistency Sensors,,,,2,,0,,,ICIC0000211,,,,,,,,,N,N
+591,SC-7841,KVBL,IN,2212115000002774,,,,,,,,,,,,,,16,,,,,,2,,0,,,,,,,,,,,,N,N
+519,SC-8663,BCBM,IN,3910000000000,JOGESHWARI (EAST),,,,,IN,,,,,,,,47,,Saanvi Enterprises,,,,2,,0,,,BCBM0000040,,BCBM0000040,,,,,,,N,N
+1199,SC-9179,PUNB,IN,1010000000000000,,,,,,,,,,,,,,24,,Hinglaj Spring Industries,,,,2,,0,,,PUNB0100700,,,,,,,,,N,N
+956,E-900092,YESB,IN,45200000000000,,,,,,,,,,,,,,11,,Supriya Suresh Govalkar,,,,2,,0,,,YESB0000451,,,,,,,,,N,N
+885,207598,UTIB,IN,917000000000000,,,,,,,,,,,,,,31,,B R Associates,,,,2,,0,,,UTIB0000177,,,,,,,,,N,N
+1191,SC-9115,UTIB,IN,8010000000000,,,,,,,,,,,,,,31,,Hawa and Marck Engineers,,,,2,,0,,,UTIB0000008,,,,,,,,,N,N
+897,E-900013,CNRB,IN,391000000000,,,,,,,,,,,,,,9,,Vivek Syal,,,,2,,0,,,CNRB0000391,,,,,,,,,N,N
+1224,SC-9282,DCBL,IN,2720000000000,,,,,,,,,,,,,,26,,Modern Crane Service,,,,2,,0,,,DCBL0000027,,,,,,,,,N,N
+929,E-900056,2HDFC,IN,3010000000000,,,,,,,,,,,,,,4,,Sujata Keer,,,,2,,0,,,HDFC0CVJSBL,,,,,,,,,N,N
+1123,SC-8730,PUNB,IN,1250000000000000,,,,,,,,,,,,,,24,,PNP Industries,,,,2,,0,,,PUNB0462300,,,,,,,,,N,N
+1118,SC-8660,BARB,IN,2010000000000,,,,,,,,,,,,,,13,,A S Enterprise,,,,2,,0,,,BARB0MSUNIV,,,,,,,,,N,N
+1020,SC-00991,ORBC,IN,5610000000000,,,,,,,,,,,,,,32,,Samarth Industries,,,,2,,0,,,ORBC0100561,,,,,,,,,N,N
+1080,SC-207838,UTIB,IN,918000000000000,,,,,,,,,,,,,,31,,Parmar Steel,,,,2,,0,,,UTIB0000849,,,,,,,,,N,N
+1167,SC-9015,CORP,IN,510000000000000,,,,,,,,,,,,,,19,,Senate Office System,,,,2,,0,,,CORP0000058,,,,,,,,,N,N
+1222,SC-9268,SBI,IN,31015569979,,,,,,,,,,,,,,2,,Game Zone,,,,2,,0,,,SBIN0005411,,,,,,,,,N,N
+925,E-900052,UBIN,IN,326000000000000,,,,,,,,,,,,,,12,,Gajendra Pawar,,,,2,,0,,,UBIN0532606,,,,,,,,,N,N
+1225,SC-9285,VIJB,IN,500000000000000,,,,,,,,,,,,,,18,,Pooja Electrical Services,,,,2,,0,,,VIJB0005004,,,,,,,,,N,N
+983,E-900148,KMPL,IN,2212334348,Lower Parel,,,,,,,,,,,,,3,,Sanchit Sharma,,,,2,,0,,,KKBK0000282,,,,,,,,,N,N
+1006,E-900210,ICIC,IN,102801504217,,,,,,,,,,,,,,7,,Dimple Phate,,,,2,,0,,,ICIC0001205,,,,,,,,,N,N
+1257,SC-9075,IBKL,IN,899102000005470,,,,,,,,,,,,,,27,,SHIREE SAMARTH ENTERPRISES,,,,2,,0,,,,,IBKL0000899,,,,,,,N,N
+1147,SC-8924,VIJB,IN,603000000000000,,,,,,,,,,,,,,18,,Friends Associates,,,,2,,0,,,VIJB0006031,,,,,,,,,N,N
+970,E-900124,BKID,IN,12700000000000,,,,,,,,,,,,,,8,,Siddharth Shantaram Jadhav,,,,2,,0,,,BKID0000127,,,,,,,,,N,N
+954,E-900087,ICIC,IN,3220640960,,,,,,,,,,,,,,7,,Shashikant Katkar,,,,2,,0,,,ICIC0001962,,,,,,,,,N,N
+1175,SC-9048,SVBL,IN,21101006387,,,,,,,,,,,,,,70,,Shivam Traders,,,,2,,0,,,SVBL0000001,,,,,,,,,N,N
+1154,SC-8944,UBIN,IN,546000000000000,,,,,,,,,,,,,,12,,Jagmeet Transport,,,,2,,0,,,UBIN0554634,,,,,,,,,N,N
+879,107589,YESB,IN,64900000000000,,,,,,,,,,,,,,11,,Ganraj Electricals,,,,2,,0,,,YESB0000648,,,,,,,,,N,N
+1227,SC-9294,INDB,IN,100000000000,,,,,,,,,,,,,,33,,Arunabh Agarwal,,,,2,,0,,,INDB0000006,,,,,,,,,N,N
+1088,SC-6454,YESB,IN,3060000000000,,,,,,,,,,,,,,11,,Digilab India,,,,2,,0,,,YESB0000030,,,,,,,,,N,N
+904,E-900022,KMPL,IN,611702010,Lower Parel,,,,,,,,,,,,,3,,Nisha Ashok Patil,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+959,E-900095,BKID,IN,200000000000000,,,,,,,,,,,,,,8,,Henisha ka Patel,,,,2,,0,,,BKID0002002,,,,,,,,,N,N
+949,E-900080,SBI,IN,33333196807,,,,,,,,,,,,,,2,,Megha Naresh Solanki,,,,2,,0,,,SBIN0000539,,,,,,,,,N,N
+1182,SC-9062,UTIB,IN,255000000000000,,,,,,,,,,,,,,31,,Arihant Electronics,,,,2,,0,,,UTIB0000255,,,,,,,,,N,N
+946,E-900077,SBI,IN,31163390516,,,,,,,,,,,,,,2,,Suresh Singh,,,,2,,0,,,SBIN0001154,,,,,,,,,N,N
+1011,E-900225,IOBA,IN,20500000000000,,,,,,,,,,,,,,43,,Ganesh Bhuvad,,,,2,,0,,,IOBA0000205,,,,,,,,,N,N
+1005,E-900209,SBI,IN,10657035715,,,,,,,,,,,,,,2,,Manoj Pawar,,,,2,,0,,,SBIN0006945,,,,,,,,,N,N
+999,E-900190,BCBM,IN,210000000000,,,,,,,,,,,,,,47,,Santosh Majalkar,,,,2,,0,,,BCBM0000003,,,,,,,,,N,N
+1040,SC-207631,SBI,IN,30833941709,,,,,,,,,,,,,,2,,NDT Technologies Pvt Ltd,,,,2,,0,,,SBIN0003736,,,,,,,,,N,N
+236,SC-6499,UBIN,IN,317000000000000,COTTON GREEN - MUMBA,,,,,IN,,,,,,,,12,,Ashish Industrial Fabric,,,,2,,0,,,UBIN0531651,,UBIN0531651,,,,,,,N,N
+1066,SC-207733,DCBL,IN,621000000000,,,,,,,,,,,,,,26,,Lakhani Electronics,,,,2,,0,,,DCBL0000006,,,,,,,,,N,N
+1142,SC-8861,CBIN,IN,3030093283,,,,,,,,,,,,,,14,,Prakash Chandrakant Waghmore,,,,2,,0,,,CBIN0280631,,,,,,,,,N,N
+991,E-900164,SYNB,IN,70200000000000,,,,,,,,,,,,,,17,,Harsh Patel,,,,2,,0,,,SYNB0007018,,,,,,,,,N,N
+977,E-900138,ICIC,IN,36201515376,,,,,,,,,,,,,,7,,Ankur Gupta,,,,2,,0,,,ICIC0000362,,,,,,,,,N,N
+963,E-900100,KMPL,IN,512122047,Lower Parel,,,,,,,,,,,,,3,,Soni M Valmiki,,,,2,,0,,,KKBK0001379,,,,,,,,,N,N
+1044,SC-207646,IBKL,IN,1.08E+015,,,,,,,,,,,,,,27,,Sai Prashanthi Party Sales,,,,2,,0,,,IBKL0001084,,,,,,,,,N,N
+253,SC-6503,JSBL,IN,5010000000000,SION,,,,,IN,,,,,,,,41,,Creative Engineers,,,,2,,0,,,JSBL0000005,,JSBL0000005,,,,,,,N,N
+1135,SC-8810,ABHY,IN,115000000000000,,,,,,,,,,,,,,48,,Just Print Solution,,,,2,,0,,,ABHY0065070,,,,,,,,,N,N
+962,E-900099,BARB,IN,3360000000000,,,,,,,,,,,,,,13,,Piyush Yadav,,,,2,,0,,,BARB0INDRAK,,,,,,,,,N,N
+150,SC-7170,UTIB,IN,914000000000000,RUDRAPUR,,,,,IN,,,,,,,,31,,Tirlochan Pandey,,,,2,,0,,,UTIB0000176,,UTIB0000176,,,,,,,N,N
+1145,SC-8908,VIJB,IN,500000000000000,,,,,,,,,,,,,,18,,MAN Enterprises,,,,2,,0,,,VIJB0005003,,,,,,,,,N,N
+995,E-900178,CIUB,IN,500000000000000,,,,,,,,,,,,,,36,,Anand Negi,,,,2,,0,,,CIUB0000102,,,,,,,,,N,N
+938,E-900066,SBI,IN,32635984870,,,,,,,,,,,,,,2,,Mahesh Patil,,,,2,,0,,,SBIN0030002,,,,,,,,,N,N
+976,E-900137,CNRB,IN,2490000000000,,,,,,,,,,,,,,9,,Mohammed Mujeebuddin,,,,2,,0,,,CNRB0002493,,,,,,,,,N,N
+1061,SC-207709,JSBL,IN,19000000000000,,,,,,,,,,,,,,41,,Akanksha Express,,,,2,,0,,,JSBL0000019,,,,,,,,,N,N
+1258,SC-207814,IBKL,IN,430102000012555,,,,,,,,,,,,,,27,,,,,,2,,0,,,,,IBKL0000430,,,,,,,N,N
+1093,SC-7527,CORP,IN,5100000000000000,,,,,,,,,,,,,,19,,Esteem Group,,,,2,,0,,,CORP0000163,,,,,,,,,N,N
+2,SC-01304,DCBL,IN,1920000000000,MOHAMEDALI ROAD,,,,,IN,,,,,,,,26,,Aim Safety,,,,2,,0,,,DCBL0000019,,DCBL0000019,,,,,,,N,N
+1117,SC-8659,NKGS,IN,18100000000000,,,,,,,,,,,,,,75,,Shakti Engineers,,,,2,,0,,,NKGS0000018,,,,,,,,,N,N
+969,E-900122,UTIB,IN,914000000000000,,,,,,,,,,,,,,31,,Sachin Thakur,,,,2,,0,,,UTIB0001469,,,,,,,,,N,N
+648,SC-8444,HSBC,IN,51732014001,,,,,,,,,,,,,,38,,NETZSCH TECHNOLOGIES INDIA PVT LTD,,,,2,,0,,,,,HSBC0110002,,,,,,,N,N
+200,SC-00664,BKDN,IN,7111003059,GOREGAON WEST,,,,,IN,,,,,,,,22,,Adarsh Industries,,,,2,,0,,,BKDN0460071,,BKDN0460071,,,,,,,N,N
+966,E-900112,UTIB,IN,916000000000000,,,,,,,,,,,,,,31,,Harkesh Singh,,,,2,,0,,,UTIB0000073,,,,,,,,,N,N
+232,SC-6895,MAHB,IN,60233191934,JALOCHI,,,,,IN,,,,,,,,28,,Aryan Enterprises,,,,2,,0,,,MAHB0001409,,MAHB0001409,,,,,,,N,N
+49,SC-02335,UTIB,IN,913000000000000,DHANKAWADI,,,,,IN,,,,,,,,31,,Render Technology Solutions,,,,2,,0,,,UTIB0001168,,UTIB0001168,,,,,,,N,N
+900,E-900018,KMPL,IN,5611692521,Lower Parel,,,,,,,,,,,,,3,,Shailesh Dyandev Salekar,,,,2,,0,,,KKBK0000958,,,,,,,,,N,N
+942,E-900072,YESB,IN,16300000000000,,,,,,,,,,,,,,11,,Ravi Ranjan,,,,2,,0,,,YESB0000162,,,,,,,,,N,N
+1202,SC-9202,CBIN,IN,3521373093,,,,,,,,,,,,,,14,,Prime Electrotech,,,,2,,0,,,CBIN0280287,,,,,,,,,N,N
+1070,SC-207779,KMPL,IN,9333345678,Lower Parel,,,,,,,,,,,,,3,,Jain Stainless (India),,,,2,,0,,,KKBK0007456,,,,,,,,,N,N
+1028,SC-01678,SCBL,IN,24505001147,,,,,,,,,,,,,,29,,Hindustan Lubes,,,,2,,0,,,SCBL0036066,,,,,,,,,N,N
+454,SC-7410,ANDB,IN,36200000000000,M G ROAD BRANCH,,,,,IN,,,,,,,,34,,Symphony Pharma Life Sciences Private Limited,,,,2,,0,,,ANDB0000362,,ANDB0000362,,,,,,,N,N
+23,SC-01329,CITI,IN,840346118,MUMBAI,,,,,IN,,,,,,,,23,,Rahul Brothers,,,,2,,0,,,CITI0100000,,CITI0100000,,,,,,,N,N
+295,SC-6573,CORP,IN,560000000000000,FARIDABAD,,,,,IN,,,,,,,,19,,Jabbals,,,,2,,0,,,CORP0000479,,CORP0000479,,,,,,,N,N
+964,E-900102,ICIC,IN,92801503230,,,,,,,,,,,,,,7,,Madan Gopal Sharma,,,,2,,0,,,ICIC0000928,,,,,,,,,N,N
+1017,SC-00723,BARB,IN,4030000000000,,,,,,,,,,,,,,13,,Pranav Engineering,,,,2,,0,,,BARB0MANDVI,,,,,,,,,N,N
+31,SC-01311,UTIB,IN,72000000000000,VASHI,,,,,IN,,,,,,,,31,,Tej Engineering,,,,2,,0,,,UTIB0000072,,UTIB0000072,,,,,,,N,N
+1051,SC-207672,VIJB,IN,302000000000000,,,,,,,,,,,,,,18,,Sharon Furniture World,,,,2,,0,,,VIJB0003024,,,,,,,,,N,N
+632,SC-00050,HDFC,IN,9018020000210,RELIEF ROAD,,,,,,,,,,,,,1,,SWAN MACHINE TOOLS PVT. LTD.,,,,2,,0,,,,,HDFC0000210,,,,,,,N,N
+911,E-900036,BKID,IN,31619569442,,,,,,,,,,,,,,8,,Shweta Mane,,,,2,,0,,,BKID0000037,,,,,,,,,N,N
+1216,SC-9235,MAHB,IN,60152691304,,,,,,,,,,,,,,28,,Rajshree Electro Systems,,,,2,,0,,,MAHB0000088,,,,,,,,,N,N
+1115,SC-8655,IBKL,IN,102000000000000,,,,,,,,,,,,,,27,,Mahalaxmi Enterprises,,,,2,,0,,,IBKL0000102,,,,,,,,,N,N
+918,E-900044,MAHB,IN,60249443170,,,,,,,,,,,,,,28,,Rahul Malusare,,,,2,,0,,,MAHB0000769,,,,,,,,,N,N
+108,SC-02689,SCBL,IN,22905128792,PUNE,,,,,IN,,,,,,,,29,,Alba Sales Corporation,,,,2,,0,,,SCBL0036050,,SCBL0036050,,,,,,,N,N
+573,SC-8645,CBIN,IN,3219501464,,,,,,,,,,,,,,14,,Suri Sports Industries Pvt Ltd,,,,2,,0,,,CBIN0280632,,,,,,,,,N,N
+1033,SC-02170,KMPL,IN,3011851388,Lower Parel,,,,,,,,,,,,,3,,Chintan Engineers,,,,2,,0,,,KKBK0000811,,,,,,,,,N,N
+155,SC-00129,SIBL,IN,266000000000000,MUMBAI GIRGAUM,,,,,IN,,,,,,,,63,,Special Metals,,,,2,,0,,,SIBL0000266,,SIBL0000266,,,,,,,N,N
+239,SC-7278,PMCB,IN,243000000000000,RAHATANI,,,,,IN,,,,,,,,20,,Spectrum Engineers,,,,2,,0,,,PMCB0000243,,PMCB0000243,,,,,,,N,N
+1223,SC-9275,CORP,IN,73700000000000,,,,,,,,,,,,,,19,,Credence Rewards,,,,2,,0,,,CORP0000737,,,,,,,,,N,N
+1071,SC-207782,SIBL,IN,399000000000000,,,,,,,,,,,,,,63,,Quality Enterprises,,,,2,,0,,,SIBL0000399,,,,,,,,,N,N
+881,17581,SIBL,IN,794000000000000,,,,,,,,,,,,,,63,,Maruti Rolling Shutters Industries,,,,2,,0,,,SIBL0000794,,,,,,,,,N,N
+598,SC-4658,HDFC,IN,50200016532675,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,,,,,,,,N,N
+953,E-900086,IDIB,IN,6124664389,,,,,,,,,,,,,,44,,Rushit Patel,,,,2,,0,,,IDIB000D042,,,,,,,,,N,N
+1087,SC-4591,ICIC,IN,26105007663,,,,,,,,,,,,,,7,,Arise World,,,,2,,0,,,ICIC0000261,,,,,,,,,N,N
+616,207579,MAHB,IN,20157103225,Dapodi Pune,,,,,,,,,,,,,28,,Konvertor Packaging Solutions Pvt Ltd,,,,2,,0,,,,,MAHB0000114,,,,,,,N,N
+387,SC-8358,DCBL,IN,9722900000666,PARRYS CORNER,,,,,IN,,,,,,,,26,,Jainam Steels,,,,2,,0,,,DCBL0000097,,DCBL0000097,,,,,,,N,N
+1119,SC-8684,IBKL,IN,1070000000000000,,,,,,,,,,,,,,27,,Agarwal Furniture,,,,2,,0,,,IBKL0001070,,,,,,,,,N,N
+1260,SC-207931,ORBC,IN,21214011000017,,,,,,,,,,,,,,32,,,,,,2,,0,,,,,ORBC0102121,,,,,,,N,N
+935,E-900062,GSMC,IN,47000000000000,,,,,,,,,,,,,,72,,Sandip Ujal,,,,2,,0,,,MCBL0960007,,,,,,,,,N,N
+975,E-900136,KMPL,IN,8311387063,Lower Parel,,,,,,,,,,,,,3,,Sunil Waghchure,,,,2,,0,,,KKBK0000638,,,,,,,,,N,N
+902,E-900020,UBIN,IN,316000000000000,,,,,,,,,,,,,,12,,Virendra Tiwari,,,,2,,0,,,UBIN0531600,,,,,,,,,N,N
+1192,SC-9122,DCBL,IN,1020000000000,,,,,,,,,,,,,,26,,Flow Point India,,,,2,,0,,,DCBL0000010,,,,,,,,,N,N
+1065,SC-207731,IBKL,IN,1.68E+015,,,,,,,,,,,,,,27,,Ratnadeep Chemicals Supplier,,,,2,,0,,,IBKL0001678,,,,,,,,,N,N
+1083,SC-207895,BARB,IN,4130000000000,,,,,,,,,,,,,,13,,Satyam Marbles,,,,2,,0,,,BARB0SANEAS,,,,,,,,,N,N
+940,E-900070,ICIC,IN,61001520703,,,,,,,,,,,,,,7,,Mohit Sardana,,,,2,,0,,,ICIC0000610,,,,,,,,,N,N
+1206,SC-9212,CNRB,IN,3220000000000,,,,,,,,,,,,,,9,,Zeebeetronics,,,,2,,0,,,CNRB0003220,,,,,,,,,N,N
+909,E-900031,GSMC,IN,3710000000000,,,,,,,,,,,,,,72,,Radhika Shankar Alle,,,,2,,0,,,MCBL0960007,,,,,,,,,N,N
+1232,SC-207818,COSB,IN,92100101496,TILAK ROAD,,,,,,,,,,,,,42,,AVION CORPORATION,,,,2,,0,,,,,COSB0000092,,,,,,,N,N
+105,SC-01939,UTIB,IN,917000000000000,RELIEF ROAD (AHMEDAB,,,,,IN,,,,,,,,31,,Five Star Stationers,,,,2,,0,,,UTIB0000453,,UTIB0000453,,,,,,,N,N
+934,E-900061,UBIN,IN,542000000000000,,,,,,,,,,,,,,12,,Mahesh Vinayak Puranik,,,,2,,0,,,UBIN0554219,,,,,,,,,N,N
+932,E-900059,BKID,IN,6210000000000,,,,,,,,,,,,,,8,,Pranali Prakash Dhuri,,,,2,,0,,,BKID0000062,,,,,,,,,N,N
+1094,SC-7563,INDB,IN,650000000000,,,,,,,,,,,,,,33,,Industrial Marketing Associates,,,,2,,0,,,INDB0000040,,,,,,,,,N,N
+1133,SC-8793,YESB,IN,20200000000000,,,,,,,,,,,,,,11,,Hendo industries,,,,2,,0,,,YESB0000201,,,,,,,,,N,N
+1067,SC-207735,ALLA,IN,50390383709,,,,,,,,,,,,,,59,,Avon power,,,,2,,0,,,ALLA0210918,,,,,,,,,N,N
+1022,SC-01085,SCBL,IN,54405100550,,,,,,,,,,,,,,29,,Manak Engineering Services,,,,2,,0,,,SCBL0036034,,,,,,,,,N,N
+1241,SC-8413,KMPL,IN,8411218816,,,,,,,,,,,,,,3,,SAHIL INTERNATIONAL,,,,2,,0,,,,,KKBK0000665,,,,,,,N,N
+972,E-900130,CORP,IN,75000000000000,,,,,,,,,,,,,,19,,Dilip Karsan Chauhan,,,,2,,0,,,CORP0000750,,,,,,,,,N,N
+665,SC-6256,2HDFC,IN,70430002169,,,,,,,,,,,,,,4,,TRIDENT SERVICES PVT LTD,,,,2,,0,,,,,HDFC0000007,,,,,,,N,N
+641,SC-8860,BARB,IN,1940000000000,,,,,,,,,,,,,,13,,Pragnesh Ghanshyambhai Shah,,,,2,,0,,,BARB0MAJALP,,BARB0MAJALP,,,,,,,N,N
+1194,SC-9153,KVBL,IN,1150000000000000,,,,,,,,,,,,,,16,,Velwin Technocrats,,,,2,,0,,,KVBL0001154,,,,,,,,,N,N
+967,E-900115,BKID,IN,5510000000000,,,,,,,,,,,,,,8,,Mohammed Ovais Ansari,,,,2,,0,,,BKID0000055,,,,,,,,,N,N
+1030,SC-01996,UTBI,IN,281000000000,,,,,,,,,,,,,,46,,Mahavir Brothers,,,,2,,0,,,UTBI0MMT602,,,,,,,,,N,N
+1029,SC-01802,KMPL,IN,7111796440,Lower Parel,,,,,,,,,,,,,3,,Max Spare Limited,,,,2,,0,,,KKBK0001353,,,,,,,,,N,N
+1146,SC-8917,MAHB,IN,60224133869,,,,,,,,,,,,,,28,,Mohammad Hashim Shaikh,,,,2,,0,,,MAHB0001401,,,,,,,,,N,N
+1198,SC-9172,PMCB,IN,23100000000000,,,,,,,,,,,,,,20,,India Tech Projects,,,,2,,0,,,PMCB0000023,,,,,,,,,N,N
+993,E-900170,KMPL,IN,7812383277,Lower Parel,,,,,,,,,,,,,3,,Hemal Lathia,,,,2,,0,,,KKBK0001358,,,,,,,,,N,N
+1074,SC-207788,CORP,IN,510000000000000,,,,,,,,,,,,,,19,,Berwal International Transport Service,,,,2,,0,,,CORP0001244,,,,,,,,,N,N
+1165,SC-8990,KMPL,IN,5540000000000,Lower Parel,,,,,,,,,,,,,3,,Dynamic Industrials,,,,2,,0,,,KKBK0000554,,,,,,,,,N,N
+1085,SC-207947,BKID,IN,204000000000000,,,,,,,,,,,,,,8,,Hotel Ashray Inn,,,,2,,0,,,BKID0002037,,,,,,,,,N,N
+1062,SC-207712,PUNB,IN,4980000000000000,,,,,,,,,,,,,,24,,Yashvi Enterprise,,,,2,,0,,,PUNB0497700,,,,,,,,,N,N
+605,SC-7145,DEUT,IN,2001030007,BANGALORE,,,,,,,,,,,,,25,,BOSCH LIMITD,,,,2,,0,,,,,DEUT0797BGL,,,,,,,N,N
+169,SC-6858,BKID,IN,18000000000000,BORIVLI LINK ROAD,,,,,IN,,,,,,,,8,,PRATHAM INDUSTRIAL CORPORATION,,,,2,,0,,,BKID0000180,,BKID0000180,,,,,,,N,N
+1263,SC-207981,ICIC,IN,305500989,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,ICIC0000003,,,,,,,N,N
+1077,SC-207807,SVCB,IN,101000000000000,,,,,,,,,,,,,,30,,Patel Sanitary Ware,,,,2,,0,,,SVCB0000010,,,,,,,,,N,N
+965,E-900107,KMPL,IN,4511362435,Lower Parel,,,,,,,,,,,,,3,,Vinit Nadkarni,,,,2,,0,,,KKBK0000670,,,,,,,,,N,N
+974,E-900135,SRCB,IN,3010100074859,,,,,,,,,,,,,,71,,Shaikh Altaf Siddique,,,,2,,0,,,SRCB0KNS003,,,,,,,,,N,N
+905,E-900023,SRCB,IN,106000000000000,,,,,,,,,,,,,,71,,Chandrika Krishna Kawalkar,,,,2,,0,,,SRCB0000106,,,,,,,,,N,N
+973,E-900131,CBIN,IN,3128924096,,,,,,,,,,,,,,14,,Rahul Raju Sonwane,,,,2,,0,,,CBIN0282930,,,,,,,,,N,N
+1084,SC-207946,ANDB,IN,182000000000000,,,,,,,,,,,,,,34,,Mani Das Mahant,,,,2,,0,,,ANDB0001815,,,,,,,,,N,N
+1004,E-900204,BKDN,IN,11210012169,,,,,,,,,,,,,,22,,Sanjana Malkani,,,,2,,0,,,BKDN0460112,,,,,,,,,N,N
+951,E-900084,DCBL,IN,9410000000000,,,,,,,,,,,,,,26,,Akbar Amin Mukadam,,,,2,,0,,,DCBL0000094,,,,,,,,,N,N
+1168,SC-9017,KMPL,IN,2611185176,Lower Parel,,,,,,,,,,,,,3,,Exim Fasteners,,,,2,,0,,,KKBK0000554,,,,,,,,,N,N
+1183,SC-9069,TJSB,IN,55100000000000,,,,,,,,,,,,,,51,,Kavitsu Automation,,,,2,,0,,,TJSB0000055,,,,,,,,,N,N
+1116,SC-8657,UBIN,IN,318000000000000,,,,,,,,,,,,,,12,,Vinsyst Technologies,,,,2,,0,,,UBIN0531821,,,,,,,,,N,N
+1068,SC-207747,PUNB,IN,3937002100007068,,,,,,,,,,,,,,24,,Sneha Industries,,,,2,,0,,,PUNB0393700,,,,,,,,,N,N
+630,SC-9304,FDRL,IN,14000000000000,SECUNDERABAD,,,,,,,,,,,,,40,,Nandkishore & Company,,,,2,,0,,,FDRL0001395,,FDRL0001395,,,,,,,N,N
+1207,SC-9213,CITI,IN,124016224,,,,,,,,,,,,,,23,,Newvik Teleservices,,,,2,,0,,,CITI0000002,,,,,,,,,N,N
+1050,SC-207671,DCBL,IN,2920000000000,,,,,,,,,,,,,,26,,Pinewood Associate,,,,2,,0,,,DCBL0000029,,,,,,,,,N,N
+610,SC-00922,ICIC,IN,85605000152,Chala Vapi,,,,,,,,,,,,,7,,ITEC Measures Pvt. Ltd.,,,,2,,0,,,,,ICIC0000856,,,,,,,N,N
+611,SC-8401,KMPL,IN,9411293704,"Malleswaram, Bangalore",,,,,,,,,,,,,3,,A.T.E. Enterprises Pvt Ltd,,,,2,,0,,,,,KKBK0000418,,,,,,,N,N
+1021,SC-01066,CBIN,IN,3604838297,,,,,,,,,,,,,,14,,Scientific Sales Syndicate,,,,2,,0,,,CBIN0282197,,,,,,,,,N,N
+189,SC-7740,CORP,IN,33500000000000,AHMEDABAD- NAVRANGPU,,,,,IN,,,,,,,,19,,Prompt Pest Control Equipments,,,,2,,0,,,CORP0000335,,CORP0000335,,,,,,,N,N
+607,SC-01257,2HDFC,IN,17958190000857,,,,,,,,,,,,,,4,,Seimitsu Factory Automation Pvt Ltd,,,,2,,0,,,,,HDFC0001795,,,,,,,N,N
+1090,SC-6797,PMCB,IN,43100000000000,,,,,,,,,,,,,,20,,DewDry Industries,,,,2,,0,,,PMCB0000043,,,,,,,,,N,N
+910,E-900034,IBKL,IN,33100000000000,,,,,,,,,,,,,,27,,Puja Gundu Tanawade,,,,2,,0,,,IBKL0000033,,,,,,,,,N,N
+226,SC-7748,YESB,IN,984000000000,"BARODA, GUJARAT",,,,,IN,,,,,,,,11,,V V Electrotech,,,,2,,0,,,YESB0000009,,YESB0000009,,,,,,,N,N
+926,E-900053,KMPL,IN,9511741068,Lower Parel,,,,,,,,,,,,,3,,Vrushali Walanj,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+1268,SC-9086,ICIC,IN,603805012391,Ahmedabad,,,,,,,,,,,,,7,,Comtech Engineers & Consultants Pvt Ltd,,,,2,,0,,,,,ICIC0006038,,,,,,,N,N
+1038,SC-207570,KMPL,IN,9512867514,Lower Parel,,,,,,,,,,,,,3,,Truck Guru LLP,,,,2,,0,,,KKBK0002752,,,,,,,,,N,N
+1214,SC-9232,KMPL,IN,4220000000000,Lower Parel,,,,,,,,,,,,,3,,Vishal Electricals,,,,2,,0,,,KKBK0000422,,,,,,,,,N,N
+637,SC-8870,IDIB,IN,6543282733,Yamuna Vihar,,,,,,,,,,,,,44,,More Stores,,,,2,,0,,,IDIB000Y010,,IDIB000Y010,,,,,,,N,N
+1132,SC-8792,ANDB,IN,58700000000000,,,,,,,,,,,,,,34,,JC and Sons Industries,,,,2,,0,,,ANDB0000587,,,,,,,,,N,N
+1159,SC-8960,BCBM,IN,3010000000000,,,,,,,,,,,,,,47,,Dinesh Enterprises,,,,2,,0,,,BCBM0000031,,,,,,,,,N,N
+654,SC-7220,CORP,IN,44300401930020,,,,,,,,,,,,,,19,,Nilkamal Ltd.,,,,2,,0,,,,,CORP0000443,,,,,,,N,N
+1271,SC-9320,HDFC,IN,50200005482829,Sandoz House Worli,,,,,,,,,,,,,1,,,,,,2,,0,,,,,HDFC0000240,,,,,,,N,N
+915,E-900040,KMPL,IN,5611692538,Lower Parel,,,,,,,,,,,,,3,,Akshay Bhilare,,,,2,,0,,,KKBK0000638,,,,,,,,,N,N
+912,E-900037,KMPL,IN,693000000000,Lower Parel,,,,,,,,,,,,,3,,Ujwala Shinde,,,,2,,0,,,KKBK0001364,,,,,,,,,N,N
+1244,SC-7877,2HDFC,IN,2712120000086,,,,,,,,,,,,,,4,,SPOTON LOGISTICS PVT LTD,,,,2,,0,,,,,HDFC0000271,,,,,,,N,N
+1048,SC-207667,KMPL,IN,7411960794,Lower Parel,,,,,,,,,,,,,3,,Darshil Enterprise,,,,2,,0,,,KKBK0002583,,,,,,,,,N,N
+216,SC-00729,CBIN,IN,1019557861,TARDEO,,,,,IN,,,,,,,,14,,Shubh Instruments,,,,2,,0,,,CBIN0281201,,CBIN0281201,,,,,,,N,N
+1196,SC-9158,UBIN,IN,609000000000000,,,,,,,,,,,,,,12,,Shree Rupnath Enterprises,,,,2,,0,,,UBIN0560898,,,,,,,,,N,N
+1014,SC-00695,KMPL,IN,9600000000000,Lower Parel,,,,,,,,,,,,,3,,Vijay Engineers,,,,2,,0,,,KKBK0000960,,,,,,,,,N,N
+1031,SC-02092,KMPL,IN,561000000000,Lower Parel,,,,,,,,,,,,,3,,Alpha Batteries,,,,2,,0,,,KKBK0001392,,,,,,,,,N,N
+644,E-900010,SBI,IN,36493009072,,,,,,,,,,,,,,2,,Rajkumar Yadav,,,,2,,0,,,SBIN0000510,,SBIN0000510,,,,,,,N,N
+914,E-900039,KMPL,IN,611702065,Lower Parel,,,,,,,,,,,,,3,,Suvidha V Shinde,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+1181,SC-9061,ZCBL,IN,11300000000000,,,,,,,,,,,,,,74,,Parth Enterprises,,,,2,,0,,,ZCBL0000011,,,,,,,,,N,N
+627,SC-02353,MAHB,IN,20028404684,,,,,,,,,,,,,,28,,VICTOR ENTERPRISES,,,,2,,0,,,,,MAHB0000026,,,,,,,N,N
+384,SC-7580,GSCB,IN,2110000000000,THE NARODA NAGRIK CO,,,,,IN,,,,,,,,52,,Foreman Equipments,,,,2,,0,,,GSCB0UNNCBL,,GSCB0UNNCBL,,,,,,,N,N
+1000,E-900192,IDIB,IN,6486259821,,,,,,,,,,,,,,44,,Jayeshkumar Waghela,,,,2,,0,,,IDIB000S202,,,,,,,,,N,N
+1269,SC-8357,KMPL,IN,5612062538,,,,,,,,,,,,,,3,,A M Associates,,,,2,,0,,,,,KKBK0008497,,,,,,,N,N
+364,SC-7002,2HDFC,IN,4470000000000,PIMPLE NILAKH,,,,,IN,,,,,,,,4,,Prerana Laboratories,,,,2,,0,,,HDFC0003982,,HDFC0003982,,,,,,,N,N
+1237,SC-7518,2HDFC,IN,16762640000013,Shyamal Cross Road,,,,,,,,,,,,,4,,Yash Filters,,,,2,,0,,,,,HDFC0001676,,,,,,,N,N
+650,SC-02309,INDB,IN,650014056410,Viman Nagar,,,,,,,,,,,,,33,,SHORE AUTO RUBBER EXPORTS PVT LTD,,,,2,,0,,,,,INDB0000380,,,,,,,N,N
+643,SC-7855,ICIC,IN,95701506833,,,,,,,,,,,,,,7,,KINNARI PANDYA,,,,2,,0,,,,,ICIC0000957,,,,,,,N,N
+1036,SC-03399,KMPL,IN,622000000000,Lower Parel,,,,,,,,,,,,,3,,Mitsu Chem Plast Limited,,,,2,,0,,,KKBK0000642,,,,,,,,,N,N
+1267,SC-01541,BARB,IN,6910200000319,,,,,,,,,,,,,,13,,Testo India Private Limited,,,,2,,0,,,,,BARB0POOSEN,,,,,,,N,N
+1205,SC-9209,MAHB,IN,60068958694,,,,,,,,,,,,,,28,,Caliber Gauges and Instrument Laboratory,,,,2,,0,,,MAHB0000244,,,,,,,,,N,N
+1215,SC-9233,CORP,IN,560261000000595,Ghatkopar Easr,,,,,,,,,,,,,19,,Shah Enterprises,,,,2,,0,,,CORP0000737,,CORP0000737,,,,,,,N,N
+125,SC-4558,2HDFC,IN,50200000000000,MUMBAI - KANDIVALI (,,,,,IN,,,,,,,,4,,Vijay Sales,,,,2,,0,,,HDFC0000182,,HDFC0000182,,,,,,,N,N
+621,SC-9176,SBI,IN,31750629206,,,,,,,,,,,,,,2,,,,,,2,,0,,,,,SBIN0060400,,,,,,,N,N
+1204,SC-9206,UBIN,IN,410000000000000,,,,,,,,,,,,,,12,,Synergy Engineering Solutions,,,,2,,0,,,UBIN0541028,,,,,,,,,N,N
+84,SC-02081,2HDFC,IN,50200000000000,RAOPURA - BARODA,,,,,IN,,,,,,,,4,,Jai Ambe Enterprise,,,,2,,0,,,HDFC0000429,,HDFC0000429,,,,,,,N,N
+1259,SC-207762,IDIB,IN,6519478850,,,,,,,,,,,,,,44,,,,,,2,,0,,,,,IDIB000U016,,,,,,,N,N
+908,E-900030,ABHY,IN,13100000000000,,,,,,,,,,,,,,48,,Mamta Shivaratri,,,,2,,0,,,ABHY0065013,,,,,,,,,N,N
+72,SC-02570,2HDFC,IN,50200000000000,PUNE - LAXMI ROAD,,,,,IN,,,,,,,,4,,Extreme Adventure Sports,,,,2,,0,,,HDFC0000427,,HDFC0000427,,,,,,,N,N
+923,E-900050,KMPL,IN,5511675150,Lower Parel,,,,,,,,,,,,,3,,Shailendra Trivedi,,,,2,,0,,,KKBK0002575,,,,,,,,,N,N
+1239,SC-207565,MAHB,IN,20062345660,,,,,,,,,,,,,,28,,,,,,2,,0,,,,,MAHB0000330,,,,,,,N,N
+1063,SC-207713,BKID,IN,204000000000000,,,,,,,,,,,,,,8,,The Metropole Hotel,,,,2,,0,,,BKID0002037,,,,,,,,,N,N
+1242,SC-8895,UBIN,IN,429301010077708,,,,,,,,,,,,,,12,,R K INTERIOR,,,,2,,0,,,,,UBIN0542938,,,,,,,N,N
+1114,SC-8649,SVCB,IN,200000000000000,,,,,,,,,,,,,,30,,Shri Aniruddha Enterprises,,,,2,,0,,,SVCB0019002,,,,,,,,,N,N
+1253,SC-207908,SBI,IN,52013379178,Dadar,,,,,,,,,,,,,2,,BHAVANA AGENCIES,,,,2,,0,,,,,SBIN0020377,,,,,,,N,N
+7,SC-00574,BKDN,IN,56111023887,SECUNDERABADRPROAD,,,,,IN,,,,,,,,22,,Unique Industrials,,,,2,,0,,,BKDN0610561,,BKDN0610561,,,,,,,N,N
+658,SC-207872,BARB,IN,8190000000000,,,,,,,,,,,,,,13,,Geeta Enterprises,,,,2,,0,,,BARB0BHUTDI,,BARB0BHUTDI,,,,,,,N,N
+660,SC-207919,ANDB,IN,176611100000098,Jamnagar,,,,,,,,,,,,,34,,Jagannatha Enterprise,,,,2,,0,,,,,ANDB0001766,,,,,,,N,N
+634,SC-01325,KMPL,IN,7232000000094,BAKRE AVENUE,,,,,,,,,,,,,3,,S.R. ENTERPRISES,,,,2,,0,,,,,KKBK0000723,,,,,,,N,N
+1081,SC-207860,BARB,IN,29800000000000,,,,,,,,,,,,,,13,,Mech Tech Industries,,,,2,,0,,,BARB0LAWAHM,,,,,,,,,N,N
+657,SC-207910,KMPL,IN,2311478288,Lower Parel,,,,,,,,,,,,,3,,Kemper India,,,,2,,0,,,KKBK0004600,,KKBK0004600,,,,,,,N,N
+1264,207583,2HDFC,IN,13748630000034,,,,,,,,,,,,,,4,,,,,,2,,0,,,,,HDFC0001374,,,,,,,N,N
+487,SC-7429,2HDFC,IN,50200000000000,MUMBAI - MISTRY BHAV,,,,,IN,,,,,,,,4,,Mark Trade Links,,,,2,,0,,,HDFC0000501,,HDFC0000501,,,,,,,N,N
+1104,SC-8536,KMPL,IN,9712161870,Lower Parel,,,,,,,,,,,,,3,,Piping World Projects,,,,2,,0,,,KKBK0002748,,,,,,,,,N,N
+323,SC-7540,2HDFC,IN,50200000000000,MALAD EAST - UPPER G,,,,,IN,,,,,,,,4,,AMI Metals India,,,,2,,0,,,HDFC0001451,,HDFC0001451,,,,,,,N,N
+601,SC-01571,KMPL,IN,550044001944,Lower Parel,,,,,,,,,,,,,3,,,,,,2,,0,,,,,,,,,,,,N,N
+617,SC-9121,KMPL,IN,9411640461,"Patel Nagar, New Delhi",,,,,,,,,,,,,3,,Everest Blowers Private Limited,,,,2,,0,,,,,KKBK0000220,,,,,,,N,N
+1262,SC-207970,ICIC,IN,18905001198,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,ICIC0000189,,,,,,,N,N
+615,SC-207622,UTIB,IN,911000000000000,Hadapsar,,,,,,,,,,,,,31,,Varunraj Housekeeping Material Supplier,,,,2,,0,,,UTIB0000404,,UTIB0000404,,,,,,,N,N
+1250,SC-02226,UTIB,IN,4010201024469,,,,,,,,,,,,,,31,,WORK STORE LTD,,,,2,,0,,,,,UTIB0001345,,,,,,,N,N
+1265,SC-207685,BOFA,IN,10056700,,,,,,,,,,,,,,57,,,,,,2,,0,,,,,SMBC0000001,,,,,,,N,N
+1272,SC-208044,IBKL,IN,459651100000338,,,,,,,,,,,,,,27,,,,,,2,,0,,,,,IBKL0000459,,,,,,,N,N
+614,207600,KMPL,IN,8711711659,Lower Parel,,,,,,,,,,,,,3,,Agents International,,,,2,,0,,,KKBK0008478,,KKBK0008478,,,,,,,N,N
+1218,SC-9243,IDFB,IN,10029502710,,,,,,,,,,,,,,55,,Minda Systems,,,,2,,0,,,IDFB0040107,,,,,,,,,N,N
+646,SC-207649,SIBL,IN,277000000000000,,,,,,,,,,,,,,63,,SKL Traders,,,,2,,0,,,SIBL0000772,,SIBL0000772,,,,,,,N,N
+1150,SC-8933,IOBA,IN,91300000000000,,,,,,,,,,,,,,43,,Shree Krishna Electronics,,,,2,,0,,,IOBA0000913,,,,,,,,,N,N
+479,SC-8433,2HDFC,IN,50200000000000,AHMEDABAD - MANINAGA,,,,,IN,,,,,,,,4,,Thermotech Systems Ltd,,,,2,,0,,,HDFC0000300,,HDFC0000300,,,,,,,N,N
+485,SC-8446,2HDFC,IN,3230000000000,GOREGAON WEST - JAWA,,,,,IN,,,,,,,,4,,Global Techno India,,,,2,,0,,,HDFC0000322,,HDFC0000322,,,,,,,N,N
+1245,SC-8766,KMPL,IN,5542000006253,,,,,,,,,,,,,,3,,S H M TOOLS AND HARDWARE MART,,,,2,,0,,,,,KKBK0000554,,,,,,,N,N
+1079,SC-207822,KMPL,IN,8512064534,Lower Parel,,,,,,,,,,,,,3,,Western Services India,,,,2,,0,,,KKBK0001986,,,,,,,,,N,N
+262,SC-6934,2HDFC,IN,50200000000000,MUMBAI - GOREGAON (E,,,,,IN,,,,,,,,4,,Hygine Systems,,,,2,,0,,,HDFC0000212,,HDFC0000212,,,,,,,N,N
+370,SC-7370,2HDFC,IN,3290000000000,NEW DELHI - VASUNDHA,,,,,IN,,,,,,,,4,,Alfa Digital Imaging,,,,2,,0,,,HDFC0000329,,HDFC0000329,,,,,,,N,N
+264,SC-8083,ICIC,IN,121000000000,"PANT NAGAR, GHATKOPA",,,,,IN,,,,,,,,7,,Vesi Enterprises,,,,2,,0,,,ICIC0001207,,ICIC0001207,,,,,,,N,N
+659,SC-207891,ICIC,IN,27505006823,,,,,,,,,,,,,,7,,Rapidtec Enterprises,,,,2,,0,,,ICIC0000275,,ICIC0000275,,,,,,,N,N
+666,SC-207726,KMPL,IN,9613062306,,,,,,,,,,,,,,3,,PIDIOK Industries,,,,2,,0,,,,,KKBK0002580,,,,,,,N,N
+1251,SC-207884,IOBA,IN,33002000001081,Jogeshwari,,,,,,,,,,,,,43,,Dolphin Labware,,,,2,,0,,,,,IOBA0000330,,,,,,,N,N
+944,E-900074,KMPL,IN,36709285032,Lower Parel,,,,,,,,,,,,,3,,Bhagyashree Shinde,,,,2,,0,,,KKBK0001364,,,,,,,,,N,N
+899,E-900016,KMPL,IN,6511702846,Lower Parel,,,,,,,,,,,,,3,,Lavanya Vaibhav Jamma,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+639,SC-00286,2HDFC,IN,50200000000000,Mohammad Ali Rd,,,,,,,,,,,,,4,,Pilot Gaskets And Engineers,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+116,SC-4492,2HDFC,IN,50200000000000,DHALIWAL TOWERS,,,,,IN,,,,,,,,4,,Madaan Medicare,,,,2,,0,,,HDFC0001263,,HDFC0001263,,,,,,,N,N
+651,SC-01365,2HDFC,IN,50200017393506,udyog vihar,,,,,,,,,,,,,4,,Euronics Industries Pvt. Ltd.,,,,2,,0,,,,,HDFC0000485,,,,,,,N,N
+574,SC-8753,ANDB,IN,23800000000000,,,,,,,,,,,,,,34,,The Bombay Textile Research Association,,,,2,,0,,,ANDB0000238,,ANDB0000238,,,,,,,N,N
+1026,SC-01220,ORBC,IN,1210000000000,,,,,,,,,,,,,,32,,Care Safety,,,,2,,0,,,ORBC0100121,,,,,,,,,N,N
+618,SC-6878,PUNB,IN,6022002100006272,,,,,,,,,,,,,,24,,Famous Engineering,,,,2,,0,,,,,PUNB0602200,,,,,,,N,N
+1209,SC-9219,CNRB,IN,1150000000000,,,,,,,,,,,,,,9,,S A M Technologies,,,,2,,0,,,CNRB0001147,,,,,,,,,N,N
+52,SC-02373,2HDFC,IN,13400000000000,GHATLODIYA,,,,,IN,,,,,,,,4,,Arihant Ceramics,,,,2,,0,,,HDFC0001337,,HDFC0001337,,,,,,,N,N
+58,SC-01300,KMPL,IN,8100000000000,AHMEDABAD -SATELLITE,,,,,IN,,,,,,,,3,,Bearing and Tool Centre,,,,2,,0,,,KKBK0000810,,KKBK0000810,,,,,,,N,N
+278,SC-01721,2HDFC,IN,50200000000000,DAHANU,,,,,IN,,,,,,,,4,,Victor Imports,,,,2,,0,,,HDFC0000173,,HDFC0000173,,,,,,,N,N
+1266,SC-207964,ICIC,IN,358105000229,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,ICIC0003581,,,,,,,N,N
+163,SC-7173,2HDFC,IN,17600000000000,CHANDRA LAYOUT,,,,,IN,,,,,,,,4,,Neo Systek,,,,2,,0,,,HDFC0001757,,HDFC0001757,,,,,,,N,N
+622,SC-207738,ALLA,IN,50323848907,Hyderabad main,,,,,,,,,,,,,59,,Laxmi Enterprises,,,,2,,0,,,ALLA0210213,,ALLA0210213,,,,,,,N,N
+513,SC-8658,2HDFC,IN,843000000000,MUMBAI - DADAR,,,,,IN,,,,,,,,4,,Bailiwick India,,,,2,,0,,,HDFC0000084,,HDFC0000084,,,,,,,N,N
+225,SC-00744,2HDFC,IN,50200000000000,MUMBAI - CRAWFORD MA,,,,,IN,,,,,,,,4,,Aayushi Enterprises,,,,2,,0,,,HDFC0000143,,HDFC0000143,,,,,,,N,N
+107,SC-02507,2HDFC,IN,12300000000000,VASNA,,,,,IN,,,,,,,,4,,Shree Mahavir Stationery Mart,,,,2,,0,,,HDFC0001229,,HDFC0001229,,,,,,,N,N
+655,SC-8813,2HDFC,IN,883000000000,,,,,,,,,,,,,,4,,Prolific Engineers,,,,2,,0,,,HDFC0000088,,HDFC0000088,,,,,,,N,N
+314,SC-8119,2HDFC,IN,50200000000000,PIMPRI - PUNE,,,,,IN,,,,,,,,4,,Hartej Electronics,,,,2,,0,,,HDFC0000437,,HDFC0000437,,,,,,,N,N
+1261,SC-207758,KARB,IN,9.2620001000433E+015,,,,,,,,,,,,,,45,,,,,,2,,0,,,,,KARB0000926,,,,,,,N,N
+54,SC-01609,2HDFC,IN,1850000000000,PUNE - NIGDI,,,,,IN,,,,,,,,4,,Armatech Associates,,,,2,,0,,,HDFC0000185,,HDFC0000185,,,,,,,N,N
+1248,SC-207704,IBKL,IN,198102000000019,,,,,,,,,,,,,,27,,Saluja Cad Consultancy,,,,2,,0,,,,,IBKL0000198,,,,,,,N,N
+629,SC-8233,SBI,IN,10057476988,PRERNA TIRTH ROAD,,,,,,,,,,,,,2,,DHAVAL PAPER BAG MFG. CO.,,,,2,,0,,,,,SBIN0011791,,,,,,,N,N
+635,SC-00013,BARB,IN,3920500000055,CRAWFORD MARKET,,,,,,,,,,,,,13,,VALISONS & CO,,,,2,,0,,,,,BARB0CRAWFO,,,,,,,N,N
+620,SC-9073,UBIN,IN,318301010011247,Mazgaon,,,,,,,,,,,,,12,,,,,,2,,0,,,,,UBIN0531839,,,,,,,N,N
+1108,SC-8580,RATN,IN,609000000000,,,,,,,,,,,,,,10,,Rotex Manufacturers and Engineers Pvt Ltd,,,,2,,0,,,RATN0000081,,,,,,,,,N,N
+252,SC-01069,2HDFC,IN,50200000000000,GHATKOPAR EAST,,,,,IN,,,,,,,,4,,Bio Technics India,,,,2,,0,,,HDFC0000118,,HDFC0000118,,,,,,,N,N
+604,SC-8144,ANDB,IN,169131100000344,,,,,,,,,,,,,,34,,OPSUTILITY SERVICES PVT LTD,,,,2,,0,,,,,ANDB0001691,,,,,,,N,N
+16,SC-01694,2HDFC,IN,10900000000000,SABARMATI,,,,,IN,,,,,,,,4,,Shree Parshwa Enterprise,,,,2,,0,,,HDFC0001086,,HDFC0001086,,,,,,,N,N
+907,E-900027,KMPL,IN,9511741044,Lower Parel,,,,,,,,,,,,,3,,Mandakini Prabhakar Bhosale,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+124,SC-4542,2HDFC,IN,12300000000000,PEENYA,,,,,IN,,,,,,,,4,,Techniq Precision Tooling System,,,,2,,0,,,HDFC0001232,,HDFC0001232,,,,,,,N,N
+996,E-900181,UCBA,IN,11900000000000,,,,,,,,,,,,,,49,,Shaikh Mohd Shahid Ab. Rasheed,,,,2,,0,,,UCBA0001192,,,,,,,,,N,N
+1,SC-03023,2HDFC,IN,62560006716,AHMEDABAD - NAVRANGP,,,,,IN,,,,,,,,4,,Evergreen Sales,,,,2,,0,,,HDFC0000006,,HDFC0000006,,,,,,,N,N
+342,SC-8332,2HDFC,IN,50200000000000,MUMBAI - MAROL,,,,,IN,,,,,,,,4,,Intermax India,,,,2,,0,,,HDFC0000592,,HDFC0000592,,,,,,,N,N
+619,SC-9313,ICIC,IN,38705000469,Kamla Nagar,,,,,,,,,,,,,7,,Ravi Scientific Industries,,,,2,,0,,,ICIC0000387,,ICIC0000387,,,,,,,N,N
+933,E-900060,BKID,IN,951000000000000,,,,,,,,,,,,,,8,,Nikhilesh Patil,,,,2,,0,,,BKID0009509,,,,,,,,,N,N
+373,SC-8572,KMPL,IN,6380000000000,MUMBAI LOWER PAREL,,,,,IN,,,,,,,,3,,Paris Collection,,,,2,,0,,,KKBK0000638,,KKBK0000638,,,,,,,N,N
+1247,SC-6192,IBKL,IN,102102000006101,,,,,,,,,,,,,,27,,KAKAMARI TOOLS & EQUIPMENTS,,,,2,,0,,,,,IBKL0000102,,,,,,,N,N
+257,SC-01429,2HDFC,IN,3570000000000,MUMBAI - PAREL,,,,,IN,,,,,,,,4,,Maz Auto Lift Services,,,,2,,0,,,HDFC0000357,,HDFC0000357,,,,,,,N,N
+1240,SC-7655,KMPL,IN,4642000005691,,,,,,,,,,,,,,3,,GALAXY TOOLS AND HARDWARE,,,,2,,0,,,,,KKBK0000464,,,,,,,N,N
+662,SC-207913,BARB,IN,33010400000079,PRATAP NAGAR,,,,,,,,,,,,,13,,DHAKAR  ENGINEERS,,,,2,,0,,,,,BARB0PRATUD,,,,,,,N,N
+369,SC-6677,2HDFC,IN,6330000000000,PUNE - NANA PETH,,,,,IN,,,,,,,,4,,Taj Enterprises,,,,2,,0,,,HDFC0000633,,HDFC0000633,,,,,,,N,N
+86,SC-01241,2HDFC,IN,50200000000000,GOREGOAN EAST,,,,,IN,,,,,,,,4,,Reflectosafe,,,,2,,0,,,HDFC0001120,,HDFC0001120,,,,,,,N,N
+653,SC-8651,HSBC,IN,11296464001,,,,,,,,,,,,,,38,,HSE Solutions Pvt Ltd,,,,2,,0,,,,,HSBC0400004HSBC0400004,,,,,,,N,N
+624,SC-8922,BARB,IN,5730500000106,Vadodara,,,,,,,,,,,,,13,,,,,,2,,0,,,,,BARB0INDMAK,,,,,,,N,N
+1276,E-900259,ICIC,IN,24501535821,,,,,,,,,,,,,,7,,Niraj Tiwari,,,,2,,0,,,,,ICIC0000245,,,,,,,N,N
+636,SC-207852,UTIB,IN,914000000000000,,,,,,,,,,,,,,31,,Fleetpro Enterprises,,,,2,,0,,,UTIB0000804,,UTIB0000804,,,,,,,N,N
+212,SC-7746,2HDFC,IN,50200000000000,NEW DELHI - GUJRANWA,,,,,IN,,,,,,,,4,,HD Engineers,,,,2,,0,,,HDFC0000247,,HDFC0000247,,,,,,,N,N
+159,SC-00156,2HDFC,IN,1040000000000,PUNE - SHANKARSHETH,,,,,IN,,,,,,,,4,,Mehta Tools and Machinery,,,,2,,0,,,HDFC0000104,,HDFC0000104,,,,,,,N,N
+161,SC-7725,2HDFC,IN,50200000000000,MUMBAI - MOHAMED ALI,,,,,IN,,,,,,,,4,,Mufaddal Traders,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+496,SC-7146,2HDFC,IN,2370000000000,AHMEDABAD - SARANGPU,,,,,IN,,,,,,,,4,,Shree Chamunda Welding & Tools Traders,,,,2,,0,,,HDFC0000237,,HDFC0000237,,,,,,,N,N
+609,SC-7446,2HDFC,IN,5922560006174,Andheri East,,,,,,,,,,,,,4,,Balia Security IT Solutions Pvt.Ltd.,,,,2,,0,,,,,HDFC0000592,,,,,,,N,N
+379,SC-7008,2HDFC,IN,11000000000000,JIJAMATA MAHILA SAH,,,,,IN,,,,,,,,4,,Ray Engineers,,,,2,,0,,,HDFC0CJMS11,,HDFC0CJMS11,,,,,,,N,N
+531,SC-7657,2HDFC,IN,50100000000000,MUMBAI - WORLI SEA F,,,,,IN,,,,,,,,4,,Arjun Paramhans,,,,2,,0,,,HDFC0000080,,HDFC0000080,,,,,,,N,N
+447,SC-7409,2HDFC,IN,40310001825,CHENNAI - ITC CENTRE,,,,,IN,,,,,,,,4,,Redington (India) Limited,,,,2,,0,,,HDFC0000004,,HDFC0000004,,,,,,,N,N
+1064,SC-207725,VIJB,IN,602000000000000,,,,,,,,,,,,,,18,,Anozone Craft Technologies,,,,2,,0,,,VIJB0006024,,,,,,,,,N,N
+1002,E-900199,KMPL,IN,6380000000000,Lower Parel,,,,,,,,,,,,,3,,Shravan Agarwal,,,,2,,0,,,KKBK0000638,,,,,,,,,N,N
+289,SC-6558,2HDFC,IN,50200000000000,KATHWADA,,,,,IN,,,,,,,,4,,Devmax Industries Llp,,,,2,,0,,,HDFC0004289,,HDFC0004289,,,,,,,N,N
+924,E-900051,KMPL,IN,611701969,Lower Parel,,,,,,,,,,,,,3,,Diksha Devedra Tambe,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+640,SC-207702,MAHB,IN,20020302838,Maninagar,,,,,,,,,,,,,28,,GUJARAT OTOFILT,,,,2,,0,,,MAHB0000542,,MAHB0000542,,,,,,,N,N
+436,SC-7600,2HDFC,IN,50200000000000,VATVA,,,,,IN,,,,,,,,4,,Pramukh Sales,,,,2,,0,,,HDFC0000971,,HDFC0000971,,,,,,,N,N
+1256,SC-8873,BARB,IN,4480200000028,,,,,,,,,,,,,,13,,THAKUR SHROFF & ELECTRIC CO,,,,2,,0,,,,,BARB0POOCTY,,,,,,,N,N
+1231,SC-9102,NKGS,IN,7130400000019,,,,,,,,,,,,,,75,,,,,,2,,0,,,,,NKGS0000007,,,,,,,N,N
+238,SC-7498,2HDFC,IN,5530000000000,DELHI - CHANDNI CHOW,,,,,IN,,,,,,,,4,,Instruments International,,,,2,,0,,,HDFC0000553,,HDFC0000553,,,,,,,N,N
+1073,SC-207786,BNPA,IN,901000000000000,,,,,,,,,,,,,,73,,Jeena and Company,,,,2,,0,,,BNPA0009009,,,,,,,,,N,N
+1270,SC-9314,SBI,IN,30412818506,,,,,,,,,,,,,,2,,Western Steel Drums Pvt Ltd,,,,2,,0,,,,,SBIN0007074,,,,,,,N,N
+1252,SC-8243,MAHB,IN,20000721455,PUNE,,,,,,,,,,,,,28,,IEC AIR TOOLS PVT LTD,,,,2,,0,,,,,MAHB0001144,,,,,,,N,N
+339,SC-7557,2HDFC,IN,50200000000000,MANDVI BRANCH,,,,,IN,,,,,,,,4,,FOR HOME NEEDS,,,,2,,0,,,HDFC0002031,,HDFC0002031,,,,,,,N,N
+197,SC-00615,SBI,IN,33372982997,SPL SIB GHATKOPAR,,,,,IN,,,,,,,,2,,Supremex Equipments,,,,2,,0,,,SBIN0004832,,SBIN0004832,,,,,,,N,N
+538,SC-7660,2HDFC,IN,601000000000,FORT,,,,,IN,,,,,,,,4,,Parita Patel,,,,2,,0,,,HDFC0000060,,HDFC0000060,,,,,,,N,N
+242,SC-7753,SBI,IN,33223302970,JEJURI,,,,,IN,,,,,,,,2,,Mayur Kumbhar,,,,2,,0,,,SBIN0011518,,SBIN0011518,,,,,,,N,N
+333,SC-6607,2HDFC,IN,3000000000000,AHMEDABAD - MANINAGA,,,,,IN,,,,,,,,4,,Rajdeep Steel Industries,,,,2,,0,,,HDFC0000300,,HDFC0000300,,,,,,,N,N
+237,SC-01022,2HDFC,IN,1490000000000,PUNE - KOTHRUD,,,,,IN,,,,,,,,4,,Mel Services,,,,2,,0,,,HDFC0000149,,HDFC0000149,,,,,,,N,N
+368,SC-6196,2HDFC,IN,50200000000000,JALANDHAR  - INDUSTR,,,,,IN,,,,,,,,4,,S.P.Sales Corporation,,,,2,,0,,,HDFC0000653,,HDFC0000653,,,,,,,N,N
+377,SC-7908,2HDFC,IN,50200000000000,VATVA,,,,,IN,,,,,,,,4,,Pinnacle Transmatix,,,,2,,0,,,HDFC0000971,,HDFC0000971,,,,,,,N,N
+40,SC-01920,KMPL,IN,1411112580,AHMEDABAD - DRIVE IN,,,,,IN,,,,,,,,3,,Shree Laxmi Trading,,,,2,,0,,,KKBK0000825,,KKBK0000825,,,,,,,N,N
+411,SC-8598,2HDFC,IN,4270000000000,PUNE - LAXMI ROAD,,,,,IN,,,,,,,,4,,Indian Electricals,,,,2,,0,,,HDFC0000427,,HDFC0000427,,,,,,,N,N
+143,SC-6426,2HDFC,IN,492000000000,AHMEDABAD - BODAKDEV,,,,,IN,,,,,,,,4,,Parshv Enterprise,,,,2,,0,,,HDFC0000049,,HDFC0000049,,,,,,,N,N
+376,SC-6210,KMPL,IN,8100000000000,MUMBAI-NPT,,,,,IN,,,,,,,,3,,Navkar Enterprise,,,,2,,0,,,KKBK0000958,,KKBK0000958,,,,,,,N,N
+1249,SC-8891,HDFC,IN,8252790000051,,,,,,,,,,,,,,1,,S A ELECTRONIC,,,,2,,0,,,,,HDFC0000825,,,,,,,N,N
+391,SC-6716,2HDFC,IN,15600000000000,JANAKPURI,,,,,IN,,,,,,,,4,,Red Marketing Services,,,,2,,0,,,HDFC0001558,,HDFC0001558,,,,,,,N,N
+371,SC-7578,2HDFC,IN,17900000000000,NAVI PETH,,,,,IN,,,,,,,,4,,Manik Engineers,,,,2,,0,,,HDFC0001793,,HDFC0001793,,,,,,,N,N
+50,SC-02523,KMPL,IN,8100000000000,AHMEDABAD -SATELLITE,,,,,IN,,,,,,,,3,,Futuristic Climate Controls,,,,2,,0,,,KKBK0000810,,KKBK0000810,,,,,,,N,N
+190,SC-00591,UBIN,IN,352000000000000,GOWALIA TANK - MUMBA,,,,,IN,,,,,,,,12,,Cosmos Abrasives,,,,2,,0,,,UBIN0535222,,UBIN0535222,,,,,,,N,N
+284,SC-8093,KMPL,IN,5011948976,RELIEF ROAD BRANCH A,,,,,IN,,,,,,,,3,,Shree Siddhi Time,,,,2,,0,,,KKBK0002569,,KKBK0002569,,,,,,,N,N
+631,SC-207772,SBI,IN,30727190468,DOMBIVLI (E),,,,,,,,,,,,,2,,Kulkarni Pumps Pvt. Ltd.,,,,2,,0,,,SBIN0001595,,SBIN0001595,,,,,,,N,N
+62,SC-02389,2HDFC,IN,50200000000000,MUMBAI - GRANT ROAD,,,,,IN,,,,,,,,4,,Spectra Connectronics LLP,,,,2,,0,,,HDFC0000423,,HDFC0000423,,,,,,,N,N
+30,SC-00343,2HDFC,IN,50200000000000,AHURA CENTRE - ANDHE,,,,,IN,,,,,,,,4,,Srp Laser,,,,2,,0,,,HDFC0000543,,HDFC0000543,,,,,,,N,N
+337,SC-8130,2HDFC,IN,1440000000000,MUMBAI - CRAWFORD MA,,,,,IN,,,,,,,,4,,Vishal Woollens,,,,2,,0,,,HDFC0000143,,HDFC0000143,,,,,,,N,N
+296,SC-6078,KMPL,IN,8100000000000,AHMEDABAD -SATELLITE,,,,,IN,,,,,,,,3,,Utkal Engineers,,,,2,,0,,,KKBK0000810,,KKBK0000810,,,,,,,N,N
+568,SC-01641,2HDFC,IN,6270000000000,MUMBAI - MOHAMED ALI,,,,,IN,,,,,,,,4,,Hadeed Corporation,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+345,SC-6178,2HDFC,IN,5420000000000,MUMBAI - KAMALA MILL,,,,,IN,,,,,,,,4,,Crown Rubber Works,,,,2,,0,,,HDFC0000542,,HDFC0000542,,,,,,,N,N
+153,SC-8043,2HDFC,IN,50200000000000,ODHAV,,,,,IN,,,,,,,,4,,Om Enterprise,,,,2,,0,,,HDFC0002481,,HDFC0002481,,,,,,,N,N
+299,SC-6949,2HDFC,IN,13400000000000,RAJOURI GARDEN B K D,,,,,IN,,,,,,,,4,,Rife Technologies,,,,2,,0,,,HDFC0001343,,HDFC0001343,,,,,,,N,N
+1233,SC-207739,UBIN,IN,317901011013281,,,,,,,,,,,,,,12,,STERLING AND WILSON POWERGEN PVT LTD,,,,2,,0,,,,,UBIN0531791,,,,,,,N,N
+39,SC-00124,SBI,IN,30488318650,D N ROAD,,,,,IN,,,,,,,,2,,Innovative Technologies,,,,2,,0,,,SBIN0008599,,SBIN0008599,,,,,,,N,N
+249,SC-7287,SBI,IN,56187000115,MADHUPURA,,,,,IN,,,,,,,,2,,Anand Enterprise,,,,2,,0,,,SBIN0003093,,SBIN0003093,,,,,,,N,N
+309,SC-6091,2HDFC,IN,12100000000000,K H ROAD,,,,,IN,,,,,,,,4,,Gifting Xpress,,,,2,,0,,,HDFC0001206,,HDFC0001206,,,,,,,N,N
+6,SC-01391,2HDFC,IN,693000000000,AHMEDABAD - ASHRAM R,,,,,IN,,,,,,,,4,,Samruddhi Industries,,,,2,,0,,,HDFC0000069,,HDFC0000069,,,,,,,N,N
+638,SC-9105,KMPL,IN,7232000000094,,,,,,,,,,,,,,3,,S.R. Enterprises,,,,2,,0,,,,,KKBK0000723,,,,,,,N,N
+1275,SC-208047,ICIC,IN,108605500690,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,ICIC0001086,,,,,,,N,N
+1047,SC-207662,CITI,IN,14482668,,,,,,,,,,,,,,23,,Market pulse,,,,2,,0,,,CITI0000007,,,,,,,,,N,N
+71,SC-01247,UBIN,IN,582000000000000,BORIVALI EAST,,,,,IN,,,,,,,,12,,Navketan Enterprises,,,,2,,0,,,UBIN0558231,,UBIN0558231,,,,,,,N,N
+281,SC-7312,KMPL,IN,1720000000000,NEW DELHI - CONNAUGH,,,,,IN,,,,,,,,3,,Aykay Electronics,,,,2,,0,,,KKBK0000172,,KKBK0000172,,,,,,,N,N
+356,SC-8139,SBI,IN,33474817621,PATLIPUTRA,,,,,IN,,,,,,,,2,,Candy,,,,2,,0,,,SBIN0001513,,SBIN0001513,,,,,,,N,N
+351,SC-7890,UBIN,IN,317000000000000,GRANT ROAD - MUMBAI,,,,,IN,,,,,,,,12,,Excel Computers,,,,2,,0,,,UBIN0531723,,UBIN0531723,,,,,,,N,N
+67,SC-00246,2HDFC,IN,13900000000000,ADARSH NAGAR,,,,,IN,,,,,,,,4,,Inder Industries,,,,2,,0,,,HDFC0001391,,HDFC0001391,,,,,,,N,N
+415,SC-6375,KMPL,IN,511236783,MUMBAI-NPT,,,,,IN,,,,,,,,3,,Shree Krishna Switchgear,,,,2,,0,,,KKBK0000958,,KKBK0000958,,,,,,,N,N
+355,SC-6984,2HDFC,IN,5400000000000,MUMBAI - VASHI EXTN,,,,,IN,,,,,,,,4,,Star Enterprises,,,,2,,0,,,HDFC0000540,,HDFC0000540,,,,,,,N,N
+77,SC-00231,2HDFC,IN,792000000000,MUMBAI - SANTACRUZ (,,,,,IN,,,,,,,,4,,New India Tools Corporation,,,,2,,0,,,HDFC0000079,,HDFC0000079,,,,,,,N,N
+310,SC-7536,2HDFC,IN,92320000838,BANGALORE - KASTURBA,,,,,IN,,,,,,,,4,,Rollmann Trading Company,,,,2,,0,,,HDFC0000009,,HDFC0000009,,,,,,,N,N
+139,SC-6425,2HDFC,IN,50200000000000,BANGALORE - KORAMANG,,,,,IN,,,,,,,,4,,Corp Attire,,,,2,,0,,,HDFC0000053,,HDFC0000053,,,,,,,N,N
+246,SC-01067,2HDFC,IN,6280000000000,MUMBAI - MOHAMED ALI,,,,,IN,,,,,,,,4,,Luna Bearings,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+649,SC-02721,YESB,IN,7781300000046,,,,,,,,,,,,,,11,,VASHI ELECTRICALS PVT LTD,,,,2,,0,,,,,YESB0000077,,,,,,,N,N
+344,SC-7889,2HDFC,IN,50100000000000,PAUD ROAD,,,,,IN,,,,,,,,4,,Rohit Yeole,,,,2,,0,,,HDFC0001796,,HDFC0001796,,,,,,,N,N
+525,SC-7456,2HDFC,IN,50200000000000,KOTI,,,,,IN,,,,,,,,4,,LIGHTMEN,,,,2,,0,,,HDFC0001997,,HDFC0001997,,,,,,,N,N
+661,SC-207669,MAHB,IN,20058097620,Ranade Rode,,,,,,,,,,,,,28,,Prakash Kala Mandir,,,,2,,0,,,MAHB0000016,,MAHB0000016,,,,,,,N,N
+47,SC-00268,UBIN,IN,319000000000000,SION (EAST) - MUMBAI,,,,,IN,,,,,,,,12,,Venus Enterprise,,,,2,,0,,,UBIN0531936,,UBIN0531936,,,,,,,N,N
+179,SC-6459,2HDFC,IN,5920000000000,MUMBAI - MAROL,,,,,IN,,,,,,,,4,,Caltech Engineering Services,,,,2,,0,,,HDFC0000592,,HDFC0000592,,,,,,,N,N
+42,SC-01741,KMPL,IN,4220000000000,BANGALORE -LAVELLE R,,,,,IN,,,,,,,,3,,Balaji Enterprises,,,,2,,0,,,KKBK0000422,,KKBK0000422,,,,,,,N,N
+389,SC-7017,KMPL,IN,7711709406,LBS MARG THANE BRANC,,,,,IN,,,,,,,,3,,Atharva Engineering,,,,2,,0,,,KKBK0001371,,KKBK0001371,,,,,,,N,N
+941,E-900071,KMPL,IN,311507519,Lower Parel,,,,,,,,,,,,,3,,Pradeep Bhauso Ketkale,,,,2,,0,,,KKBK0000651,,,,,,,,,N,N
+320,SC-7331,UBIN,IN,389000000000000,JAIPUR,,,,,IN,,,,,,,,12,,Ratan Ancillaries,,,,2,,0,,,UBIN0538922,,UBIN0538922,,,,,,,N,N
+498,SC-7439,SBI,IN,64107781533,KALKAJI,,,,,IN,,,,,,,,2,,Vishwanath Traders,,,,2,,0,,,SBIN0040798,,SBIN0040798,,,,,,,N,N
+140,E-900024,KMPL,IN,6511702860,MUMBAI-NPT,,,,,IN,,,,,,,,3,,Shailender Agarwal,,,,2,,0,,,KKBK0000958,,KKBK0000958,,,,,,,N,N
+419,SC-6740,SBI,IN,30316739950,SPL SSI BRANCH EKKAD,,,,,IN,,,,,,,,2,,Ganesh Moldss,,,,2,,0,,,SBIN0004033,,SBIN0004033,,,,,,,N,N
+274,SC-6528,2HDFC,IN,299000000000,PUNE - KONDHWE KHURD,,,,,IN,,,,,,,,4,,Ferrocare International,,,,2,,0,,,HDFC0000029,,HDFC0000029,,,,,,,N,N
+29,SC-00326,AMCB,IN,66000000000000,NARODA,,,,,IN,,,,,,,,37,,Dhiren Traders,,,,2,,0,,,AMCB0660030,,AMCB0660030,,,,,,,N,N
+546,SC-7670,SBI,IN,10516272590,OLD PALASIA,,,,,IN,,,,,,,,2,,Shalabh Agencies,,,,2,,0,,,SBIN0003432,,SBIN0003432,,,,,,,N,N
+628,SC-02343,KMPL,IN,5211629309,Mumbai,,,,,,,,,,,,,3,,Brisk Electro Sales Pvt. Ltd.,,,,2,,0,,,,,KKBK0000661,,,,,,,N,N
+194,SC-6470,MAHB,IN,60127293473,MANINAGAR AHMEDABAD,,,,,IN,,,,,,,,28,,Shraddha Filter Technology,,,,2,,0,,,MAHB0000542,,MAHB0000542,,,,,,,N,N
+51,SC-01207,UBIN,IN,307000000000000,CHAWRI BAZAR - NEW D,,,,,IN,,,,,,,,12,,Krishan Brothers,,,,2,,0,,,UBIN0530727,,UBIN0530727,,,,,,,N,N
+308,SC-6958,KMPL,IN,8411218816,MUMBAI - KANDIVALI,,,,,IN,,,,,,,,3,,Sahil International,,,,2,,0,,,KKBK0000665,,KKBK0000665,,,,,,,N,N
+418,SC-7399,SBI,IN,36706114035,COMMERCIAL BRANCH RA,,,,,IN,,,,,,,,2,,InPhase Power Technologies Private Limited,,,,2,,0,,,SBIN0004230,,SBIN0004230,,,,,,,N,N
+906,E-900025,KMPL,IN,311737411,Lower Parel,,,,,,,,,,,,,3,,Chirag Gohil,,,,2,,0,,,KKBK0001411,,,,,,,,,N,N
+363,SC-6648,2HDFC,IN,3000000000000,AHMEDABAD - MANINAGA,,,,,IN,,,,,,,,4,,Sharpex Engineering Works,,,,2,,0,,,HDFC0000300,,HDFC0000300,,,,,,,N,N
+26,SC-01878,BKID,IN,4630000000000,VILE PARLE (EAST),,,,,IN,,,,,,,,8,,Classic Vision,,,,2,,0,,,BKID0000046,,BKID0000046,,,,,,,N,N
+68,SC-01833,KMPL,IN,211725402,AHMEDABAD- ASHRAM RD,,,,,IN,,,,,,,,3,,Bombay Fire Safety,,,,2,,0,,,KKBK0000811,,KKBK0000811,,,,,,,N,N
+3,SC-02508,KMPL,IN,8110000000000,AHMEDABAD- ASHRAM RD,,,,,IN,,,,,,,,3,,Neel Ceramics,,,,2,,0,,,KKBK0000811,,KKBK0000811,,,,,,,N,N
+507,E-900197,2HDFC,IN,12400000000000,COMMERCE HOUSE,,,,,IN,,,,,,,,4,,Rahul Dwivedi,,,,2,,0,,,HDFC0001240,,HDFC0001240,,,,,,,N,N
+426,SC-6770,BKID,IN,203000000000000,KHANPUR,,,,,IN,,,,,,,,8,,Volga Agency,,,,2,,0,,,BKID0002030,,BKID0002030,,,,,,,N,N
+244,SC-6500,2HDFC,IN,9700000000000,GANDHI ROAD,,,,,IN,,,,,,,,4,,Perfect Envelopes,,,,2,,0,,,HDFC0000970,,HDFC0000970,,,,,,,N,N
+38,SC-00623,KMPL,IN,540000000000,MIRA ROAD MUMBAI,,,,,IN,,,,,,,,3,,Lift Arts,,,,2,,0,,,KKBK0001418,,KKBK0001418,,,,,,,N,N
+9,SC-00705,2HDFC,IN,1040000000000,PUNE - SHANKARSHETH,,,,,IN,,,,,,,,4,,Impex Tools,,,,2,,0,,,HDFC0000104,,HDFC0000104,,,,,,,N,N
+288,SC-7316,2HDFC,IN,1050000000000,PUNE - SHANKARSHETH,,,,,IN,,,,,,,,4,,Shri Instruments,,,,2,,0,,,HDFC0000104,,HDFC0000104,,,,,,,N,N
+24,SC-01848,2HDFC,IN,50200000000000,NYAY MANDIR - VADODA,,,,,IN,,,,,,,,4,,Industrial Bearing Corporation,,,,2,,0,,,HDFC0002443,,HDFC0002443,,,,,,,N,N
+407,SC-8373,2HDFC,IN,50200000000000,ZADESHWAR BRANCH,,,,,IN,,,,,,,,4,,Kalindi Engineering Services,,,,2,,0,,,HDFC0001450,,HDFC0001450,,,,,,,N,N
+157,SC-7172,2HDFC,IN,3140000000000,NEW DELHI - DARYA GA,,,,,IN,,,,,,,,4,,Sultan Kitchen Equipments,,,,2,,0,,,HDFC0000314,,HDFC0000314,,,,,,,N,N
+102,SC-00254,UBIN,IN,317000000000000,GRANT ROAD - MUMBAI,,,,,IN,,,,,,,,12,,Vilking Electrics and Electronics,,,,2,,0,,,UBIN0531723,,UBIN0531723,,,,,,,N,N
+506,SC-7444,2HDFC,IN,3270000000000,NEW DELHI - PASCHIM,,,,,IN,,,,,,,,4,,Regent Seating Collection,,,,2,,0,,,HDFC0000327,,HDFC0000327,,,,,,,N,N
+406,SC-6736,IBKL,IN,19100000000000,WARDEN ROAD,,,,,IN,,,,,,,,27,,Souvenier Chemicals,,,,2,,0,,,IBKL0000019,,IBKL0000019,,,,,,,N,N
+144,SC-7165,UBIN,IN,450000000000000,MAROL BHAVANI NAGAR,,,,,IN,,,,,,,,12,,Mercury Autoconsys,,,,2,,0,,,UBIN0545031,,UBIN0545031,,,,,,,N,N
+65,SC-02390,UBIN,IN,319000000000000,PRINCESS STREET - MU,,,,,IN,,,,,,,,12,,Shah Electric Spare Product,,,,2,,0,,,UBIN0531910,,UBIN0531910,,,,,,,N,N
+613,SC-01364,IBKL,IN,55212010003209,,,,,,,,,,,,,,27,,Hanuman Power Transmission Equip. Pvt. Ltd.,,,,2,,0,,,,,IBKL0000552,,,,,,,N,N
+663,SC-207700,2HDFC,IN,18512000000284,Tamilnadu,,,,,,,,,,,,,4,,P M Enterprises,,,,2,,0,,,,,HDFC0001851,,,,,,,N,N
+270,SC-6524,SBI,IN,10091037428,"AMRIAWADI, AHMEDABAD",,,,,IN,,,,,,,,2,,Willy Sales Agency,,,,2,,0,,,SBIN0003806,,SBIN0003806,,,,,,,N,N
+10,SC-00842,ICIC,IN,349000000000,PUNE NANDED CITY,,,,,IN,,,,,,,,7,,Deluxe Industrial Gases,,,,2,,0,,,ICIC0003491,,ICIC0003491,,,,,,,N,N
+396,SC-7021,BKID,IN,50300000000000,KARVE ROAD C&P BANKI,,,,,IN,,,,,,,,8,,INDOMAX,,,,2,,0,,,BKID0000503,,BKID0000503,,,,,,,N,N
+85,SC-02640,2HDFC,IN,6270000000000,MUMBAI - MOHAMED ALI,,,,,IN,,,,,,,,4,,Vnm Hydrotek,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+101,SC-02301,2HDFC,IN,60340023069,AHMEDABAD - NAVRANGP,,,,,IN,,,,,,,,4,,S P Corporation,,,,2,,0,,,HDFC0000006,,HDFC0000006,,,,,,,N,N
+397,SC-7921,2HDFC,IN,13700000000000,EAST PATEL NAGAR,,,,,IN,,,,,,,,4,,System Controls and Switchgears,,,,2,,0,,,HDFC0001365,,HDFC0001365,,,,,,,N,N
+429,SC-7594,UBIN,IN,356000000000000,THEVARA (PERUMANOOR),,,,,IN,,,,,,,,12,,Jaine Agencies and Travels,,,,2,,0,,,UBIN0535591,,UBIN0535591,,,,,,,N,N
+304,SC-6584,KMPL,IN,4211591111,MUMBAI - OPERA HOUSE,,,,,IN,,,,,,,,3,,Jaiman Metalloys Llp,,,,2,,0,,,KKBK0000666,,KKBK0000666,,,,,,,N,N
+36,SC-7329,KMPL,IN,4211745361,KHARGHAR BRANCH,,,,,IN,,,,,,,,3,,Aaradhya Ventures,,,,2,,0,,,KKBK0001356,,KKBK0001356,,,,,,,N,N
+90,SC-02132,BARB,IN,32200000000000,"KONDHWA BR.,PUNE,MAH",,,,,IN,,,,,,,,13,,Accurate Ampere,,,,2,,0,,,BARB0KONDHW,,BARB0KONDHW,,,,,,,N,N
+385,SC-8143,KMPL,IN,8410000000000,VADODARA,,,,,IN,,,,,,,,3,,Parshwa Instruments,,,,2,,0,,,KKBK0000841,,KKBK0000841,,,,,,,N,N
+41,SC-01737,KMPL,IN,505000000000,MANDVI MUMBAI,,,,,IN,,,,,,,,3,,Mazko Enterprises,,,,2,,0,,,KKBK0001386,,KKBK0001386,,,,,,,N,N
+449,SC-6394,2HDFC,IN,3060000000000,AHMEDABAD - SG ROAD,,,,,IN,,,,,,,,4,,Hydrofit,,,,2,,0,,,HDFC0000306,,HDFC0000306,,,,,,,N,N
+254,SC-8079,KMPL,IN,6711182233,DELHI - MANSAROVER,,,,,IN,,,,,,,,3,,Texcare Instruments,,,,2,,0,,,KKBK0000192,,KKBK0000192,,,,,,,N,N
+412,SC-6739,UBIN,IN,564000000000000,NERUL,,,,,IN,,,,,,,,12,,Manoj Industries,,,,2,,0,,,UBIN0556432,,UBIN0556432,,,,,,,N,N
+343,SC-8569,IBKL,IN,490000000000000,PUNE TILAK ROAD,,,,,IN,,,,,,,,27,,Sunny Power Control,,,,2,,0,,,IBKL0000490,,IBKL0000490,,,,,,,N,N
+8,SC-00652,2HDFC,IN,1430000000000,MUMBAI - CRAWFORD MA,,,,,IN,,,,,,,,4,,Deluxe Electrical Corporation,,,,2,,0,,,HDFC0000143,,HDFC0000143,,,,,,,N,N
+127,SC-6842,SBI,IN,10268773380,SAKINAKA,,,,,IN,,,,,,,,2,,Endee Engineers Pvt Ltd,,,,2,,0,,,SBIN0000567,,SBIN0000567,,,,,,,N,N
+361,SC-8342,KMPL,IN,1678102000007535,BHOSARI,,,,,IN,,,,,,,,3,,,,,,2,,0,,,,,IBKL0001678,,,,,,,N,N
+1012,SC-00377,SRCB,IN,15100000000000,,,,,,,,,,,,,,71,,Shriram Engineering,,,,2,,0,,,SRCB0000015,,,,,,,,,N,N
+128,SC-6409,BKID,IN,55200000000000,KARVE  NAGAR,,,,,IN,,,,,,,,8,,Vision Enterprises,,,,2,,0,,,BKID0000552,,BKID0000552,,,,,,,N,N
+170,SC-6456,ICIC,IN,3105005374,NOIDA - SECTOR 18?á,,,,,IN,,,,,,,,7,,Lokpal Industries,,,,2,,0,,,ICIC0000031,,ICIC0000031,,,,,,,N,N
+460,SC-6812,BKID,IN,206000000000000,VASTRAL,,,,,IN,,,,,,,,8,,K K FILTER SYSTEMS,,,,2,,0,,,BKID0002059,,BKID0002059,,,,,,,N,N
+255,SC-6913,UBIN,IN,313000000000000,GANDHI ROAD - AHMEDA,,,,,IN,,,,,,,,12,,Lalwani Agencies,,,,2,,0,,,UBIN0531294,,UBIN0531294,,,,,,,N,N
+433,SC-7999,2HDFC,IN,603000000000,FORT,,,,,IN,,,,,,,,4,,New Era Office Equipments,,,,2,,0,,,HDFC0000060,,HDFC0000060,,,,,,,N,N
+501,SC-7630,KMPL,IN,9111501512,CHAWRI BAZAAR BRANCH,,,,,IN,,,,,,,,3,,Maa Chandi Fasteners,,,,2,,0,,,KKBK0000213,,KKBK0000213,,,,,,,N,N
+35,SC-7348,BARB,IN,27700000000000,PER.BKG.BRAN BRANCH,,,,,IN,,,,,,,,13,,Aalap,,,,2,,0,,,BARB0PBBAHM,,BARB0PBBAHM,,,,,,,N,N
+230,SC-00750,2HDFC,IN,4100000000000,MUMBAI - I C COLONY,,,,,IN,,,,,,,,4,,Aditi Associate,,,,2,,0,,,HDFC0000410,,HDFC0000410,,,,,,,N,N
+532,SC-7458,ICIC,IN,123000000000,"KHETWADI, MUMBAI",,,,,IN,,,,,,,,7,,Om Tubes & Fitting Industries,,,,2,,0,,,ICIC0001233,,ICIC0001233,,,,,,,N,N
+442,SC-6389,SBI,IN,30068535220,MAKARPURA INDL. ESTA,,,,,IN,,,,,,,,2,,Electrica Energy Products,,,,2,,0,,,SBIN0001456,,SBIN0001456,,,,,,,N,N
+348,SC-6982,SBI,IN,34855496161,"ATOMIC ENERGY DEPT.,",,,,,IN,,,,,,,,2,,Active Power,,,,2,,0,,,SBIN0009050,,SBIN0009050,,,,,,,N,N
+606,SC-9027,TBSB,IN,8110000002005,,,,,,,,,,,,,,68,,LETS TALK,,,,2,,0,,,,,TBSB0000008,,,,,,,N,N
+321,SC-6600,SBI,IN,32476251036,"SSI PEENYA I.E, BANG",,,,,IN,,,,,,,,2,,Seed Enterprises,,,,2,,0,,,SBIN0006506,,SBIN0006506,,,,,,,N,N
+534,SC-7659,2HDFC,IN,1630000000000,MUMBAI - SION (EAST),,,,,IN,,,,,,,,4,,Geetesh P Patil,,,,2,,0,,,HDFC0000163,,HDFC0000163,,,,,,,N,N
+123,SC-6406,2HDFC,IN,3820000000000,KOLKATA - G C AVENUE,,,,,IN,,,,,,,,4,,Arun Enterprises,,,,2,,0,,,HDFC0000382,,HDFC0000382,,,,,,,N,N
+198,SC-6864,KMPL,IN,7411210066,PUNE,,,,,IN,,,,,,,,3,,Royal Tools & Hardware Mart,,,,2,,0,,,KKBK0000723,,KKBK0000723,,,,,,,N,N
+318,SC-7853,SBI,IN,52015761688,"NIGDI, PUNE",,,,,IN,,,,,,,,2,,Rashmi Doshi,,,,2,,0,,,SBIN0011646,,SBIN0011646,,,,,,,N,N
+214,SC-8506,KMPL,IN,4611234274,MATUNGA BRANCH,,,,,IN,,,,,,,,3,,Chromatography World,,,,2,,0,,,KKBK0000644,,KKBK0000644,,,,,,,N,N
+221,SC-7747,IBKL,IN,85100000000000,ISANPUR GHODASAR ROA,,,,,IN,,,,,,,,27,,BALAJI MACHINE TOOLS,,,,2,,0,,,IBKL0001603,,IBKL0001603,,,,,,,N,N
+219,SC-6490,ICIC,IN,305001589,VADODARA?á,,,,,IN,,,,,,,,7,,Sorbead India,,,,2,,0,,,ICIC0000003,,ICIC0000003,,,,,,,N,N
+626,SC-207906,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Avanti Foundation,,,,2,,0,,,HDFC0001211,,HDFC0001211,,,,,,,N,N
+300,SC-8544,BKID,IN,210000000000000,NARODA,,,,,IN,,,,,,,,8,,Power Electronics & Control,,,,2,,0,,,BKID0002101,,BKID0002101,,,,,,,N,N
+366,SC-7574,UBIN,IN,319000000000000,PRINCESS STREET - MU,,,,,IN,,,,,,,,12,,Krishna Electric Corporation,,,,2,,0,,,UBIN0531910,,UBIN0531910,,,,,,,N,N
+505,SC-7147,UTIB,IN,916000000000000,METODA,,,,,IN,,,,,,,,31,,Integral Enterprise LLP,,,,2,,0,,,UTIB0000809,,UTIB0000809,,,,,,,N,N
+490,SC-8033,SBI,IN,31190074381,"SRPF CAMPUS BR., DAU",,,,,IN,,,,,,,,2,,Shree Krishna Signs,,,,2,,0,,,SBIN0010718,,SBIN0010718,,,,,,,N,N
+27,SC-00917,IBKL,IN,100000000000000,KALBADEVI,,,,,IN,,,,,,,,27,,International Tools Syndicate,,,,2,,0,,,IBKL0000100,,IBKL0000100,,,,,,,N,N
+80,SC-02613,SBI,IN,30768205004,SHIVAJI PARK,,,,,IN,,,,,,,,2,,Apple Automation And Sensor,,,,2,,0,,,SBIN0001429,,SBIN0001429,,,,,,,N,N
+374,SC-8350,UTIB,IN,80000000000000,MANINAGAR,,,,,IN,,,,,,,,31,,Rudrra Sensor,,,,2,,0,,,UTIB0000080,,UTIB0000080,,,,,,,N,N
+240,SC-6901,2HDFC,IN,50200000000000,CHANDRA LAYOUT,,,,,IN,,,,,,,,4,,GRAVODRONE,,,,2,,0,,,HDFC0001757,,HDFC0001757,,,,,,,N,N
+79,SC-02426,BARB,IN,3310000000000,MASKATI MKT. BRANCH,,,,,IN,,,,,,,,13,,Manohar Bag House,,,,2,,0,,,BARB0KALUPU,,BARB0KALUPU,,,,,,,N,N
+64,SC-00502,BKID,IN,2430000000000,KALBADEVI,,,,,IN,,,,,,,,8,,Deepak Electric Corporation,,,,2,,0,,,BKID0000024,,BKID0000024,,,,,,,N,N
+515,SC-7152,ICIC,IN,1105013781,MUMBAI - ANDHERI?á,,,,,IN,,,,,,,,7,,Nizamis World,,,,2,,0,,,ICIC0000011,,ICIC0000011,,,,,,,N,N
+500,SC-8650,SBI,IN,10521862015,YESWANTPUR,,,,,IN,,,,,,,,2,,Central Manufacturing Technology Institute,,,,2,,0,,,SBIN0003297,,SBIN0003297,,,,,,,N,N
+91,SC-02449,ICIC,IN,98405000489,MUMBAI - BHANDUP(W),,,,,IN,,,,,,,,7,,Vijay Electricals,,,,2,,0,,,ICIC0000984,,ICIC0000984,,,,,,,N,N
+173,SC-6859,BARB,IN,5220000000000,MYSORE BRANCH,,,,,IN,,,,,,,,13,,Shree Mahaveer Distributors,,,,2,,0,,,BARB0MYSORE,,BARB0MYSORE,,,,,,,N,N
+76,SC-00110,UBIN,IN,465000000000000,KANDIVLI (WEST) - DA,,,,,IN,,,,,,,,12,,Unique Safety Services,,,,2,,0,,,UBIN0546496,,UBIN0546496,,,,,,,N,N
+81,SC-02428,UBIN,IN,317000000000000,GOREGAON (EAST) - MU,,,,,IN,,,,,,,,12,,Prime Products,,,,2,,0,,,UBIN0531707,,UBIN0531707,,,,,,,N,N
+168,SC-7186,BKID,IN,14400000000000,THANE,,,,,IN,,,,,,,,8,,Bhavya Enterprise,,,,2,,0,,,BKID0000043,,BKID0000043,,,,,,,N,N
+206,SC-6865,SBI,IN,36034186692,DECCAN GYMKHANA (PUN,,,,,IN,,,,,,,,2,,Genematrix,,,,2,,0,,,SBIN0001110,,SBIN0001110,,,,,,,N,N
+362,E-900154,KMPL,IN,9812272209,MUMBAI ANDHERI,,,,,IN,,,,,,,,3,,Nitin Nabera,,,,2,,0,,,KKBK0000651,,KKBK0000651,,,,,,,N,N
+267,SC-6938,UBIN,IN,317000000000000,GOREGAON (WEST) - MU,,,,,IN,,,,,,,,12,,Nathani Steels,,,,2,,0,,,UBIN0531715,,UBIN0531715,,,,,,,N,N
+141,SC-6844,ICIC,IN,34805500072,OPERA HOUSE - MUMBAI,,,,,IN,,,,,,,,7,,Dev Electronics,,,,2,,0,,,ICIC0000348,,ICIC0000348,,,,,,,N,N
+193,SC-8498,UBIN,IN,315000000000000,ABDUL REHMAN STREET,,,,,IN,,,,,,,,12,,Bombay Machinery Stores,,,,2,,0,,,UBIN0531537,,UBIN0531537,,,,,,,N,N
+56,SC-02377,ICIC,IN,624000000000,MUMBAI - MULUND?á,,,,,IN,,,,,,,,7,,Atlantic Sales and Service,,,,2,,0,,,ICIC0006238,,ICIC0006238,,,,,,,N,N
+63,SC-01163,BKID,IN,2430000000000,KALBADEVI,,,,,IN,,,,,,,,8,,Marvel Gloves Industries,,,,2,,0,,,BKID0000024,,BKID0000024,,,,,,,N,N
+175,SC-8286,2HDFC,IN,50100000000000,CIVIL LINES ALLAHABA,,,,,IN,,,,,,,,4,,Shreeradhe Khanduja,,,,2,,0,,,HDFC0000226,,HDFC0000226,,,,,,,N,N
+70,SC-02403,BKID,IN,420000000000,RAMDAS NAYAK MARG,,,,,IN,,,,,,,,8,,Heven International,,,,2,,0,,,BKID0000004,,BKID0000004,,,,,,,N,N
+117,SC-4498,ICIC,IN,33005000035,NEW DELHI - ANAND VI,,,,,IN,,,,,,,,7,,Apurv Enterprises,,,,2,,0,,,ICIC0000330,,ICIC0000330,,,,,,,N,N
+656,SC-204590,KMPL,IN,6811910910,,,,,,,,,,,,,,3,,SGM Lab Solutions Pvt Ltd,,,,2,,0,,,,,KKBK0000197,,,,,,,N,N
+434,SC-7066,KMPL,IN,8811582210,MUMBAI FORT,,,,,IN,,,,,,,,3,,Pacific Computers,,,,2,,0,,,KKBK0000957,,KKBK0000957,,,,,,,N,N
+273,SC-6945,BKID,IN,849000000000000,MILK COLONY (BANGALO,,,,,IN,,,,,,,,8,,Bhatia Tools and Technology,,,,2,,0,,,BKID0008494,,BKID0008494,,,,,,,N,N
+57,SC-02724,BARB,IN,4200000000000,VILE PAR WST BRANCH,,,,,IN,,,,,,,,13,,Techno Rise Industries,,,,2,,0,,,BARB0VILWES,,BARB0VILWES,,,,,,,N,N
+227,SC-7255,KMPL,IN,8110000000000,AHMEDABAD- ASHRAM RD,,,,,IN,,,,,,,,3,,Avin Enterprise,,,,2,,0,,,KKBK0000811,,KKBK0000811,,,,,,,N,N
+203,SC-7468,ICIC,IN,3905012803,SHIVAJINAGAR?á,,,,,IN,,,,,,,,7,,Gayatri Traders,,,,2,,0,,,ICIC0000039,,ICIC0000039,,,,,,,N,N
+474,SC-7103,UBIN,IN,315000000000000,AGRIPADA,,,,,IN,,,,,,,,12,,Divine Engineering,,,,2,,0,,,UBIN0531545,,UBIN0531545,,,,,,,N,N
+145,SC-4655,ICIC,IN,661000000000,FARIDABAD,,,,,IN,,,,,,,,7,,Standard Electric Co,,,,2,,0,,,ICIC0006613,,ICIC0006613,,,,,,,N,N
+248,SC-8518,BKDN,IN,13711023918,ANNA SALAI BRANCH,,,,,IN,,,,,,,,22,,Beena E Office Solutions,,,,2,,0,,,BKDN0620137,,BKDN0620137,,,,,,,N,N
+106,SC-02302,IBKL,IN,183000000000000,BELAPUR,,,,,IN,,,,,,,,27,,Rioj International,,,,2,,0,,,IBKL0000183,,IBKL0000183,,,,,,,N,N
+349,SC-8131,ICIC,IN,624000000000,AHMEDABAD MAIN?á,,,,,IN,,,,,,,,7,,Maven Automation,,,,2,,0,,,ICIC0006244,,ICIC0006244,,,,,,,N,N
+317,SC-7537,PUNB,IN,1540000000000000,ROHINI SECTOR 15,,,,,IN,,,,,,,,24,,Indus Technologies,,,,2,,0,,,PUNB0658100,,PUNB0658100,,,,,,,N,N
+346,SC-6617,BARB,IN,3310000000000,MASKATI MKT. BRANCH,,,,,IN,,,,,,,,13,,Chirag Traders,,,,2,,0,,,BARB0KALUPU,,BARB0KALUPU,,,,,,,N,N
+404,SC-8597,ICIC,IN,353000000000,KALHER,,,,,IN,,,,,,,,7,,Maa Logistics,,,,2,,0,,,ICIC0003525,,ICIC0003525,,,,,,,N,N
+177,SC-7465,UBIN,IN,384000000000000,MALAD (EAST) - MUMBA,,,,,IN,,,,,,,,12,,SAI ENGINEERS,,,,2,,0,,,UBIN0538442,,UBIN0538442,,,,,,,N,N
+311,SC-6965,UBIN,IN,315000000000000,ABDUL REHMAN STREET,,,,,IN,,,,,,,,12,,R.K.Engineering Corporation,,,,2,,0,,,UBIN0531537,,UBIN0531537,,,,,,,N,N
+316,SC-6587,ICIC,IN,18205003054,NASHIK ROAD?á,,,,,IN,,,,,,,,7,,Rudani Enterprises,,,,2,,0,,,ICIC0000182,,ICIC0000182,,,,,,,N,N
+352,SC-6623,IBKL,IN,1280000000000000,KALOL-NG,,,,,IN,,,,,,,,27,,Shree Durga Lighting,,,,2,,0,,,IBKL0001282,,IBKL0001282,,,,,,,N,N
+217,SC-7475,IBKL,IN,7100000000000,F. C. ROAD,,,,,IN,,,,,,,,27,,Shree Venkateshwara Controls,,,,2,,0,,,IBKL0000007,,IBKL0000007,,,,,,,N,N
+135,SC-4629,UBIN,IN,333000000000000,CHENNAI - MAIN,,,,,IN,,,,,,,,12,,Agarwal Sons,,,,2,,0,,,UBIN0533262,,UBIN0533262,,,,,,,N,N
+44,SC-00726,KMPL,IN,2130000000000,CHAWRI BAZAAR BRANCH,,,,,IN,,,,,,,,3,,Safety Solutions,,,,2,,0,,,KKBK0000213,,KKBK0000213,,,,,,,N,N
+92,SC-02651,ICIC,IN,34805004872,OPERA HOUSE - MUMBAI,,,,,IN,,,,,,,,7,,Skyking Instruments,,,,2,,0,,,ICIC0000348,,ICIC0000348,,,,,,,N,N
+94,SC-02283,BKID,IN,5820000000000,VILE PARLE (WEST),,,,,IN,,,,,,,,8,,Manan Enterprise,,,,2,,0,,,BKID0000058,,BKID0000058,,,,,,,N,N
+131,SC-6413,YESB,IN,785000000000,AHMEDABAD,,,,,IN,,,,,,,,11,,A R Enterprise,,,,2,,0,,,YESB0000007,,YESB0000007,,,,,,,N,N
+110,SC-01941,BKID,IN,4820000000000,WODEHOUSE ROAD C P B,,,,,IN,,,,,,,,8,,Hakimi Enterprises,,,,2,,0,,,BKID0000048,,BKID0000048,,,,,,,N,N
+48,SC-01262,ICIC,IN,181000000000,QUTHBULLAPUR-KOMPALL,,,,,IN,,,,,,,,7,,Micron Engineering Corporation,,,,2,,0,,,ICIC0001807,,ICIC0001807,,,,,,,N,N
+4,SC-01910,PUNB,IN,7540000000000000,NIKOL,,,,,IN,,,,,,,,24,,Archtech Automation,,,,2,,0,,,PUNB0753700,,PUNB0753700,,,,,,,N,N
+34,SC-6894,BKID,IN,604000000000000,VIKASPURI,,,,,IN,,,,,,,,8,,A Business.com,,,,2,,0,,,BKID0006039,,BKID0006039,,,,,,,N,N
+287,SC-8314,UTIB,IN,345000000000000,MOGAPPAIR [CHENNAI],,,,,IN,,,,,,,,31,,Hindustan Hardware,,,,2,,0,,,UTIB0000345,,UTIB0000345,,,,,,,N,N
+104,SC-02499,UBIN,IN,609000000000000,WARJE MALVADI,,,,,IN,,,,,,,,12,,Healthfirst MediCorp,,,,2,,0,,,UBIN0560898,,UBIN0560898,,,,,,,N,N
+465,SC-7622,SBI,IN,30566867851,"VIMANNAGAR, PUNE",,,,,IN,,,,,,,,2,,Precision Source,,,,2,,0,,,SBIN0011699,,SBIN0011699,,,,,,,N,N
+93,SC-01475,BKID,IN,10300000000000,RAJAJI PATH,,,,,IN,,,,,,,,8,,Renuka Enterprises,,,,2,,0,,,BKID0000103,,BKID0000103,,,,,,,N,N
+473,SC-8237,MAHB,IN,68018296094,JEJURI,,,,,IN,,,,,,,,28,,Sadanand Shinde,,,,2,,0,,,MAHB0001828,,MAHB0001828,,,,,,,N,N
+550,E-900157,KMPL,IN,2812613744,GOLF COURSE GURGAON,,,,,IN,,,,,,,,3,,Subrata Malla Buzar Baruah,,,,2,,0,,,KKBK0004265,,KKBK0004265,,,,,,,N,N
+14,SC-02727,BKDN,IN,32811031079,NARODA,,,,,IN,,,,,,,,22,,Kohinoor Paints Mart,,,,2,,0,,,BKDN0110328,,BKDN0110328,,,,,,,N,N
+209,SC-00679,CNRB,IN,2080000000000,"KOLIWADA FLANK ROAD,",,,,,IN,,,,,,,,9,,Rohnil Products,,,,2,,0,,,CNRB0002076,,CNRB0002076,,,,,,,N,N
+46,SC-01753,SBI,IN,30431692113,VAPI IND. ESTATE,,,,,IN,,,,,,,,2,,Kapsun Resources Corporation,,,,2,,0,,,SBIN0001658,,SBIN0001658,,,,,,,N,N
+96,SC-02669,BKDN,IN,48911023348,VATVA,,,,,IN,,,,,,,,22,,Shreeji Technology,,,,2,,0,,,BKDN0110489,,BKDN0110489,,,,,,,N,N
+13,SC-01005,BKID,IN,2420000000000,KALBADEVI,,,,,IN,,,,,,,,8,,Novabond,,,,2,,0,,,BKID0000024,,BKID0000024,,,,,,,N,N
+312,SC-8558,BKDN,IN,51310031518,SUNMILL COMPOUND,,,,,IN,,,,,,,,22,,Jitesh Gokar Balat,,,,2,,0,,,BKDN0450513,,BKDN0450513,,,,,,,N,N
+438,SC-8231,UBIN,IN,318000000000000,BYCULLA - MUMBAI,,,,,IN,,,,,,,,12,,Wonder Ladders,,,,2,,0,,,UBIN0531626,,UBIN0531626,,,,,,,N,N
+486,SC-7111,ICIC,IN,34505002882,AHMEDABAD - NARANPUR,,,,,IN,,,,,,,,7,,Vatsal Engineers,,,,2,,0,,,ICIC0000345,,ICIC0000345,,,,,,,N,N
+191,SC-7194,UTIB,IN,911000000000000,"SECTOR 31, GURGAON",,,,,IN,,,,,,,,31,,Six and Out Sports,,,,2,,0,,,UTIB0001359,,UTIB0001359,,,,,,,N,N
+164,SC-8284,ICIC,IN,15101593482,MUMBAI - VASHI?á,,,,,IN,,,,,,,,7,,Aditi Vishwasrao,,,,2,,0,,,ICIC0000151,,ICIC0000151,,,,,,,N,N
+137,SC-4630,BARB,IN,7910000000000,SUBHAS NAGAR BRANCH,,,,,IN,,,,,,,,13,,Kohinoor Sales,,,,2,,0,,,BARB0SUBHAS,,BARB0SUBHAS,,,,,,,N,N
+183,SC-7191,UTIB,IN,915000000000000,JANAKPURI (NEW DELHI,,,,,IN,,,,,,,,31,,Tanishq Billiards,,,,2,,0,,,UTIB0000207,,UTIB0000207,,,,,,,N,N
+25,SC-02731,ICIC,IN,34805002042,OPERA HOUSE - MUMBAI,,,,,IN,,,,,,,,7,,Mahadev Computers,,,,2,,0,,,ICIC0000348,,ICIC0000348,,,,,,,N,N
+458,SC-7092,YESB,IN,19000000000000,"LAMINGTON ROAD, MUMB",,,,,IN,,,,,,,,11,,Maruti Compusystems,,,,2,,0,,,YESB0000189,,YESB0000189,,,,,,,N,N
+466,SC-7095,CNRB,IN,124000000000,"BHANDUP MAIN, MUMBAI",,,,,IN,,,,,,,,9,,Shefa Industries,,,,2,,0,,,CNRB0000124,,CNRB0000124,,,,,,,N,N
+332,SC-7555,ICIC,IN,205009979,BANGALORE - M G ROAD,,,,,IN,,,,,,,,7,,Scope AMRA Logistics India Pvt Ltd,,,,2,,0,,,ICIC0000002,,ICIC0000002,,,,,,,N,N
+315,SC-6093,UCBA,IN,2150000000000,GRANT ROAD MUMBAI,,,,,IN,,,,,,,,49,,Pearl Electronics,,,,2,,0,,,UCBA0000215,,UCBA0000215,,,,,,,N,N
+360,SC-6194,IBKL,IN,430000000000000,GHODBUNDER,,,,,IN,,,,,,,,27,,Siddharth Trading Co,,,,2,,0,,,IBKL0000430,,IBKL0000430,,,,,,,N,N
+199,SC-7218,ICIC,IN,140000000000,"SEC-29,FARIDABAD, HA",,,,,IN,,,,,,,,7,,New National Hydraulics,,,,2,,0,,,ICIC0001400,,ICIC0001400,,,,,,,N,N
+188,SC-8289,SBI,IN,31714837981,BHANDUP,,,,,IN,,,,,,,,2,,Sandip Heavy Lifters & Movers,,,,2,,0,,,SBIN0000562,,SBIN0000562,,,,,,,N,N
+136,SC-7715,SBI,IN,31061306153,RAJAJI NAGAR  V BLOC,,,,,IN,,,,,,,,2,,Focus Industrial Solutions,,,,2,,0,,,SBIN0003023,,SBIN0003023,,,,,,,N,N
+280,SC-6541,BCBM,IN,112000000000,MAIN BRANCH,,,,,IN,,,,,,,,47,,Vinayak Enterprises,,,,2,,0,,,BCBM0000002,,BCBM0000002,,,,,,,N,N
+112,SC-01958,IBKL,IN,100000000000000,KALBADEVI,,,,,IN,,,,,,,,27,,Patani Brothers,,,,2,,0,,,IBKL0000100,,IBKL0000100,,,,,,,N,N
+421,SC-7049,UTIB,IN,911000000000000,KOTHRUD (PUNE),,,,,IN,,,,,,,,31,,Asmita Consultant,,,,2,,0,,,UTIB0000104,,UTIB0000104,,,,,,,N,N
+517,SC-7644,UBIN,IN,585000000000000,JAMIA  NAGAR,,,,,IN,,,,,,,,12,,Vadotech Engineering,,,,2,,0,,,UBIN0558451,,UBIN0558451,,,,,,,N,N
+463,SC-8417,MAHB,IN,60186485756,"GANESHNAGAR, PUNE",,,,,IN,,,,,,,,28,,Hansford Sensors,,,,2,,0,,,MAHB0000756,,MAHB0000756,,,,,,,N,N
+306,SC-7326,UTIB,IN,916000000000000,THALTEJ,,,,,IN,,,,,,,,31,,ASGEE Innotech,,,,2,,0,,,UTIB0002998,,UTIB0002998,,,,,,,N,N
+283,SC-7795,BARB,IN,4030000000000,MANDVI-BOMBA BRANCH,,,,,IN,,,,,,,,13,,Samju Sales Corporation,,,,2,,0,,,BARB0MANDVI,,BARB0MANDVI,,,,,,,N,N
+18,SC-01734,BKID,IN,13000000000000,BHAKTI PARK,,,,,IN,,,,,,,,8,,Techknow Engineering Enterprise,,,,2,,0,,,BKID0000130,,BKID0000130,,,,,,,N,N
+401,SC-6288,BKID,IN,840000000000000,CANTONMENT,,,,,IN,,,,,,,,8,,Alpha Linear,,,,2,,0,,,BKID0008404,,BKID0008404,,,,,,,N,N
+409,SC-6305,2HDFC,IN,2025001964,THE KUKARWADA NAGRIK,,,,,IN,,,,,,,,4,,Mangal Murti Hardware,,,,2,,0,,,HDFC0CTKNSB,,HDFC0CTKNSB,,,,,,,N,N
+59,SC-01182,CITI,IN,10307268,BARODA,,,,,IN,,,,,,,,23,,Ross Enterprises,,,,2,,0,,,CITI0000008,,CITI0000008,,,,,,,N,N
+229,SC-7493,UTIB,IN,916000000000000,GREEN PARK,,,,,IN,,,,,,,,31,,Videology,,,,2,,0,,,UTIB0000015,,UTIB0000015,,,,,,,N,N
+450,SC-6798,BKDN,IN,54913031112,LAW COLLEGE,,,,,IN,,,,,,,,22,,CONTROLS INDIA PVT LTD,,,,2,,0,,,BKDN0110549,,BKDN0110549,,,,,,,N,N
+215,SC-6888,MAHB,IN,60107737729,KARAD,,,,,IN,,,,,,,,28,,Shivaji Raghunath Wankar,,,,2,,0,,,MAHB0000188,,MAHB0000188,,,,,,,N,N
+118,SC-02324,BARB,IN,36700000000000,"MANPADA ROAD,DOMBIVA",,,,,IN,,,,,,,,13,,Environment Engineering,,,,2,,0,,,BARB0MANPAD,,BARB0MANPAD,,,,,,,N,N
+394,SC-8369,UBIN,IN,558000000000000,SECTOR 7 CHANDIGARH,,,,,IN,,,,,,,,12,,Komfort Sales,,,,2,,0,,,UBIN0555827,,UBIN0555827,,,,,,,N,N
+350,SC-8341,SBI,IN,11153770698,PUNE CITY,,,,,IN,,,,,,,,2,,Shende Sales Corporation,,,,2,,0,,,SBIN0000455,,SBIN0000455,,,,,,,N,N
+74,SC-01105,TMBL,IN,163000000000000,MUMBAI - ANDHERI,,,,,IN,,,,,,,,67,,Vitronics (India),,,,2,,0,,,TMBL0000162,,TMBL0000162,,,,,,,N,N
+435,SC-7401,YESB,IN,48100000000000,PRAHLADNAGAR - AHMED,,,,,IN,,,,,,,,11,,SHREENATH TOOLS CENTRE,,,,2,,0,,,YESB0000480,,YESB0000480,,,,,,,N,N
+263,SC-7776,CITI,IN,16512265,BARODA,,,,,IN,,,,,,,,23,,Solutions,,,,2,,0,,,CITI0000008,,CITI0000008,,,,,,,N,N
+552,SC-7704,SBI,IN,10303997802,ITI AIE MAHADEVAPUR,,,,,IN,,,,,,,,2,,Shriram Institute For Industrial Research,,,,2,,0,,,SBIN0003028,,SBIN0003028,,,,,,,N,N
+146,SC-6845,MAHB,IN,20049385858,S S I THANE,,,,,IN,,,,,,,,28,,Precious Instruments,,,,2,,0,,,MAHB0000088,,MAHB0000088,,,,,,,N,N
+277,SC-7307,IBKL,IN,7530000000000000,BHOSARI,,,,,IN,,,,,,,,27,,Shubham Sales,,,,2,,0,,,IBKL0001678,,IBKL0001678,,,,,,,N,N
+171,SC-00228,UBIN,IN,320000000000000,VIKHROLI (WEST) - MU,,,,,IN,,,,,,,,12,,Tribotech,,,,2,,0,,,UBIN0531961,,UBIN0531961,,,,,,,N,N
+431,SC-6779,VARA,IN,100000000000,ANKLESHWAR BRANCH,,,,,IN,,,,,,,,62,,Sat Color Care,,,,2,,0,,,VARA0289011,,VARA0289011,,,,,,,N,N
+66,SC-02038,MAHB,IN,20130402996,AIROLI,,,,,IN,,,,,,,,28,,Atharva Filters,,,,2,,0,,,MAHB0001283,,MAHB0001283,,,,,,,N,N
+290,SC-02228,MAHB,IN,60028543642,"BORIVLI EAST, MUMBAI",,,,,IN,,,,,,,,28,,Saishan Engineers,,,,2,,0,,,MAHB0000306,,MAHB0000306,,,,,,,N,N
+167,SC-7727,UTIB,IN,917000000000000,"VIDYARANYAPURA, BANG",,,,,IN,,,,,,,,31,,Process Automation and Controls,,,,2,,0,,,UTIB0001097,,UTIB0001097,,,,,,,N,N
+347,SC-7568,UTIB,IN,916000000000000,HISSAR,,,,,IN,,,,,,,,31,,Yash Traders,,,,2,,0,,,UTIB0003110,,UTIB0003110,,,,,,,N,N
+518,SC-7455,ANDB,IN,292000000000000,KALUPUR,,,,,IN,,,,,,,,34,,Heena Enterprise,,,,2,,0,,,ANDB0002922,,ANDB0002922,,,,,,,N,N
+73,SC-02418,BKID,IN,203000000000000,INCOME TAX CHAR RAST,,,,,IN,,,,,,,,8,,Harish Duplicators,,,,2,,0,,,BKID0002034,,BKID0002034,,,,,,,N,N
+536,SC-8283,ICIC,IN,120000000000,"GODREJ IT PARK, VIKH",,,,,IN,,,,,,,,7,,Aarti Saroj,,,,2,,0,,,ICIC0001196,,ICIC0001196,,,,,,,N,N
+471,SC-7625,SBI,IN,36966148783,GOKUL INDUSTRIAL EST,,,,,IN,,,,,,,,2,,Universal Precision Tools,,,,2,,0,,,SBIN0002212,,SBIN0002212,,,,,,,N,N
+303,SC-7834,UBIN,IN,317000000000000,GOREGAON (EAST) - MU,,,,,IN,,,,,,,,12,,Surya Powerpacks,,,,2,,0,,,UBIN0531707,,UBIN0531707,,,,,,,N,N
+208,SC-7236,IBKL,IN,87100000000000,NIGDI,,,,,IN,,,,,,,,27,,Sunshine Corporation,,,,2,,0,,,IBKL0000087,,IBKL0000087,,,,,,,N,N
+359,SC-7569,IBKL,IN,47000000000000,KARAD,,,,,IN,,,,,,,,27,,Ajanta Automobiles,,,,2,,0,,,IBKL0000470,,IBKL0000470,,,,,,,N,N
+400,SC-7386,KMPL,IN,8430000000000,VADODARA-TARSHALI,,,,,IN,,,,,,,,3,,Manish Grinding Works,,,,2,,0,,,KKBK0000843,,KKBK0000843,,,,,,,N,N
+100,SC-01934,BKID,IN,200000000000000,ELLIS BRIDGE,,,,,IN,,,,,,,,8,,Compressor Point,,,,2,,0,,,BKID0002004,,BKID0002004,,,,,,,N,N
+293,SC-7817,BARB,IN,6950000000000,FORT UNIVER. BRANCH,,,,,IN,,,,,,,,13,,Earthsoul Bio Products,,,,2,,0,,,BARB0FORTUN,,BARB0FORTUN,,,,,,,N,N
+510,SC-7149,PUNB,IN,4500000000000000,"DELHI F-122, VIKASPU",,,,,IN,,,,,,,,24,,Texcare International,,,,2,,0,,,PUNB0449600,,PUNB0449600,,,,,,,N,N
+192,SC-6861,MAHB,IN,60057709886,"MASULKAR COLONY, PUN",,,,,IN,,,,,,,,28,,Fairdeal Rubber,,,,2,,0,,,MAHB0001072,,MAHB0001072,,,,,,,N,N
+259,SC-7763,MAHB,IN,60274870779,LONI KALBHOR,,,,,IN,,,,,,,,28,,Giri Steel Furniture,,,,2,,0,,,MAHB0000131,,MAHB0000131,,,,,,,N,N
+53,SC-01276,BARB,IN,3410000000000,S.P.COLONY BRANCH,,,,,IN,,,,,,,,13,,ATR Chemicals And Lubricants,,,,2,,0,,,BARB0SARDAR,,BARB0SARDAR,,,,,,,N,N
+292,SC-8543,BARB,IN,4100000000000,PRINCESS ST. BRANCH,,,,,IN,,,,,,,,13,,Analytik Instruments,,,,2,,0,,,BARB0PRINCE,,BARB0PRINCE,,,,,,,N,N
+633,SC-9307,ANDB,IN,20700000000000,HYDERBASTHI,,,,,,,,,,,,,34,,Flange Bureau,,,,2,,0,,,ANDB0000207,,ANDB0000207,,,,,,,N,N
+341,SC-6980,PJSB,IN,5010000000000,KHARKAR ALI BRANCH,,,,,IN,,,,,,,,54,,Jai Gopal Steel,,,,2,,0,,,PJSB0000007,,PJSB0000007,,,,,,,N,N
+21,SC-01805,IBKL,IN,587000000000000,MULUND  E,,,,,IN,,,,,,,,27,,Sayali Electro Systems,,,,2,,0,,,IBKL0000587,,IBKL0000587,,,,,,,N,N
+158,SC-6448,CNRB,IN,4820000000000,VASTRAL,,,,,IN,,,,,,,,9,,Hingule Engineering,,,,2,,0,,,CNRB0004822,,CNRB0004822,,,,,,,N,N
+440,SC-7405,UTBI,IN,1230000000000,SARVODAYA NAGAR(MULU,,,,,IN,,,,,,,,46,,Deepak Corporation,,,,2,,0,,,UTBI0SVN647,,UTBI0SVN647,,,,,,,N,N
+134,SC-7163,UBIN,IN,322000000000000,PUNE CITY,,,,,IN,,,,,,,,12,,Hakimi Sales Corporation,,,,2,,0,,,UBIN0532185,,UBIN0532185,,,,,,,N,N
+451,SC-7617,IDIB,IN,6241533349,AMINJIKARAI,,,,,IN,,,,,,,,44,,Lingam Industrial Solutions,,,,2,,0,,,IDIB000Y005,,IDIB000Y005,,,,,,,N,N
+564,SC-7702,SRCB,IN,284000000000000,SME PUNE,,,,,IN,,,,,,,,71,,Suman Electricals,,,,2,,0,,,SRCB0000283,,SRCB0000283,,,,,,,N,N
+142,SC-4636,SCBL,IN,23305197325,AHMEDABAD,,,,,IN,,,,,,,,29,,Sharad Engineering Solutions,,,,2,,0,,,SCBL0036051,,SCBL0036051,,,,,,,N,N
+223,SC-8297,CITI,IN,20423331,KOLKATA,,,,,IN,,,,,,,,23,,Arizona Tools Company,,,,2,,0,,,CITI0000001,,CITI0000001,,,,,,,N,N
+148,SC-6432,BKID,IN,203000000000000,INCOME TAX CHAR RAST,,,,,IN,,,,,,,,8,,Shreeji Marketing Corporation,,,,2,,0,,,BKID0002034,,BKID0002034,,,,,,,N,N
+266,SC-01647,YESB,IN,26500000000000,"VASANT VIHAR, NEW DE",,,,,IN,,,,,,,,11,,Tack Innovation,,,,2,,0,,,YESB0000264,,YESB0000264,,,,,,,N,N
+420,SC-8201,BKDN,IN,79913001004,MULUND EAST,,,,,IN,,,,,,,,22,,Innovative Engineers,,,,2,,0,,,BKDN0460799,,BKDN0460799,,,,,,,N,N
+185,SC-6860,SVCB,IN,101000000000000,SLEATER ROAD,,,,,IN,,,,,,,,30,,Dodia Electricals,,,,2,,0,,,SVCB0000009,,SVCB0000009,,,,,,,N,N
+417,SC-8376,SVBL,IN,91101001527,RTGS-HO,,,,,IN,,,,,,,,70,,Sagar Engineering & Tools,,,,2,,0,,,SVBL0000001,,SVBL0000001,,,,,,,N,N
+381,SC-8356,IBKL,IN,226000000000000,BOISAR,,,,,IN,,,,,,,,27,,Classic Scientific,,,,2,,0,,,IBKL0000226,,IBKL0000226,,,,,,,N,N
+511,SC-8265,SVCB,IN,107000000000000,TILAKNAGAR,,,,,IN,,,,,,,,30,,Akshay Bapat,,,,2,,0,,,SVCB0000068,,SVCB0000068,,,,,,,N,N
+129,SC-4567,YESB,IN,1160000000000,"SURAT, GUJARAT",,,,,IN,,,,,,,,11,,Marck Engineers,,,,2,,0,,,YESB0000011,,YESB0000011,,,,,,,N,N
+445,SC-7612,BKID,IN,6820000000000,PANCHPAKHADI,,,,,IN,,,,,,,,8,,Qualitech Industrial Products,,,,2,,0,,,BKID0000068,,BKID0000068,,,,,,,N,N
+121,SC-4514,KMPL,IN,9913380872,"KALINA, MUMBAI",,,,,IN,,,,,,,,3,,Khas Enterprises,,,,2,,0,,,KKBK0001386,,CNRB0000116,,,,,,,N,N
+103,SC-02679,ORBC,IN,2180000000000,PIMPRI-PUNE,,,,,IN,,,,,,,,32,,Excellent Hydraulics,,,,2,,0,,,ORBC0100218,,ORBC0100218,,,,,,,N,N
+87,SC-02446,BARB,IN,47300000000000,"VIKHROLI,MUMBAI",,,,,IN,,,,,,,,13,,Anudeep Engineering,,,,2,,0,,,BARB0VIKHRO,,BARB0VIKHRO,,,,,,,N,N
+99,SC-02493,PUNB,IN,33000000000000,"AHMEDABAD, SHAHI BAG",,,,,IN,,,,,,,,24,,Shah Dharamchand Chhaganlal,,,,2,,0,,,PUNB0003300,,PUNB0003300,,,,,,,N,N
+172,SC-8050,CNRB,IN,1990000000000,"N R I BRANCH, DELHI",,,,,IN,,,,,,,,9,,Beeta Tech India,,,,2,,0,,,CNRB0001994,,CNRB0001994,,,,,,,N,N
+467,SC-6837,CORP,IN,510000000000000,COIMBATORE MAIN,,,,,IN,,,,,,,,19,,SHRUTI MECHATRONICS,,,,2,,0,,,CORP0000021,,CORP0000021,,,,,,,N,N
+553,SC-7705,IBKL,IN,443000000000000,JIVAN COMMERCIAL CO,,,,,IN,,,,,,,,27,,Mahashakti Foundry and Engineering Works,,,,2,,0,,,IBKL0JIVAN2,,IBKL0JIVAN2,,,,,,,N,N
+132,SC-6843,MAHB,IN,20006601495,"DAHISAR EAST, MUMBAI",,,,,IN,,,,,,,,28,,LIBRATHERM INSTRUMENTS PVT LTD,,,,2,,0,,,MAHB0000964,,MAHB0000964,,,,,,,N,N
+20,SC-01772,MAHB,IN,60011929465,"GHATKOPAR, MUMBAI",,,,,IN,,,,,,,,28,,Ajisons,,,,2,,0,,,MAHB0000228,,MAHB0000228,,,,,,,N,N
+154,SC-6850,KMPL,IN,2511800841,HYDERABAD RASHTRAPAT,,,,,IN,,,,,,,,3,,Air Flow Control,,,,2,,0,,,KKBK0007529,,KKBK0007529,,,,,,,N,N
+388,SC-6277,PUNB,IN,1300000000000000,"BADEM, DISTT. AURANG",,,,,IN,,,,,,,,24,,Baba Enterprises,,,,2,,0,,,PUNB0129800,,PUNB0129800,,,,,,,N,N
+89,SC-01275,BKDN,IN,811002570,MUMBAI ZAVERI BAZAR,,,,,IN,,,,,,,,22,,Prachin Industrial Corporation,,,,2,,0,,,BKDN0450008,,BKDN0450008,,,,,,,N,N
+1234,SC-207793,SVCB,IN,104504180000679,,,,,,,,,,,,,,30,,BHARAT FORGING,,,,2,,0,,,,,SVCB0000045,,,,,,,N,N
+98,SC-02286,CITI,IN,25787118,MUMBAI,,,,,IN,,,,,,,,23,,Network Inc,,,,2,,0,,,CITI0100000,,CITI0100000,,,,,,,N,N
+160,SC-6856,CNRB,IN,282000000000,"MANINAGAR, AHMEDABAD",,,,,IN,,,,,,,,9,,Kaizen Industries,,,,2,,0,,,CNRB0000282,,CNRB0000282,,,,,,,N,N
+75,SC-02221,PUNB,IN,791000000000000,"SURAT, MAJURA",,,,,IN,,,,,,,,24,,Kiran Diamond Tools,,,,2,,0,,,PUNB0079100,,PUNB0079100,,,,,,,N,N
+378,SC-6680,GSCB,IN,9110000000000,SARASPUR NAGARIK CO.,,,,,IN,,,,,,,,52,,Krisha Enterprise,,,,2,,0,,,GSCB0USNCBL,,GSCB0USNCBL,,,,,,,N,N
+126,SC-6408,IDIB,IN,731376891,KIRKEE,,,,,IN,,,,,,,,44,,Shraddha Tooling Systems,,,,2,,0,,,IDIB000K155,,IDIB000K155,,,,,,,N,N
+414,SC-7044,SBI,IN,10091038636,"AMRIAWADI, AHMEDABAD",,,,,IN,,,,,,,,2,,Shree Laxmi Tools Centre,,,,2,,0,,,SBIN0003806,,SBIN0003806,,,,,,,N,N
+109,SC-02310,PUNB,IN,3540000000000000,PATIALA - TRIPURI,,,,,IN,,,,,,,,24,,Ambey Laboratories,,,,2,,0,,,PUNB0789800,,PUNB0789800,,,,,,,N,N
+443,SC-6792,INDB,IN,260000000000,"CRAWFORD MARKET, MUM",,,,,IN,,,,,,,,33,,PRINCE STATIONERY,,,,2,,0,,,INDB0000470,,INDB0000470,,,,,,,N,N
+549,SC-7674,HSBC,IN,106000000000,PUNE,,,,,IN,,,,,,,,38,,Neelam Enterprises,,,,2,,0,,,HSBC0411002,,HSBC0411002,,,,,,,N,N
+218,SC-7239,ICIC,IN,54605001612,MUMBAI - MAHALAXMI?á,,,,,IN,,,,,,,,7,,Sagar Stationery Stores,,,,2,,0,,,ICIC0000546,,ICIC0000546,,,,,,,N,N
+392,SC-8595,HDFC,IN,50200002082978,RAJARAJESHWARI NAGAR,,,,,IN,,,,,,,,1,,Qualitas Technologies Pvt Ltd,,,,2,,0,,,,,HDFC0001039,,,,,,,N,N
+138,SC-4635,IDIB,IN,6218404357,DAXINI SOCIETY,,,,,IN,,,,,,,,44,,Darshan Scale Industries,,,,2,,0,,,IDIB000D042,,IDIB000D042,,,,,,,N,N
+245,SC-6907,CBIN,IN,1058991519,VASNA,,,,,IN,,,,,,,,14,,Machno India,,,,2,,0,,,CBIN0281463,,CBIN0281463,,,,,,,N,N
+459,SC-7417,IDIB,IN,6318816175,"KAUSHAMBHI,GHAZIABAD",,,,,IN,,,,,,,,44,,Measurements International LLP,,,,2,,0,,,IDIB000K231,,IDIB000K231,,,,,,,N,N
+152,SC-6437,RATN,IN,409000000000,DOMBIVALI(EAST),,,,,IN,,,,,,,,10,,SiliCon Scientific,,,,2,,0,,,RATN0000090,,RATN0000090,,,,,,,N,N
+416,SC-7927,UTIB,IN,914000000000000,ANDHERI,,,,,IN,,,,,,,,31,,Criticam Medical Systems LLP,,,,2,,0,,,UTIB0000020,,UTIB0000020,,,,,,,N,N
+365,SC-7906,LAVB,IN,678000000000000,SECUNDERABAD  HYDERA,,,,,IN,,,,,,,,66,,SN Fluid Tech Systems,,,,2,,0,,,LAVB0000677,,LAVB0000677,,,,,,,N,N
+297,SC-7324,BARB,IN,36000000000000,"MAHIM BRANCH, MUMBAI",,,,,IN,,,,,,,,13,,Famous Electronics,,,,2,,0,,,BARB0MCMAHI,,BARB0MCMAHI,,,,,,,N,N
+508,SC-7635,IDIB,IN,454815188,ANANTAPUR,,,,,IN,,,,,,,,44,,Parvathi Enterprises,,,,2,,0,,,IDIB000A022,,IDIB000A022,,,,,,,N,N
+453,SC-7088,MAHB,IN,60182459912,JEJURI,,,,,IN,,,,,,,,28,,Raju Walmiki,,,,2,,0,,,MAHB0001828,,MAHB0001828,,,,,,,N,N
+353,SC-7345,CBIN,IN,1180603833,COTTON EXCHANGE,,,,,IN,,,,,,,,14,,Universal Industries,,,,2,,0,,,CBIN0280611,,CBIN0280611,,,,,,,N,N
+22,SC-01826,ORBC,IN,555000000000,MUMBAI-KALBADEVI,,,,,IN,,,,,,,,32,,Avishkar,,,,2,,0,,,ORBC0100055,,ORBC0100055,,,,,,,N,N
+524,SC-8665,ANDB,IN,121000000000000,KALKAJI,,,,,IN,,,,,,,,34,,Narang Electric Centre,,,,2,,0,,,ANDB0001214,,ANDB0001214,,,,,,,N,N
+544,SC-7664,UTIB,IN,914000000000000,"BASAVESHWAR NAGAR, B",,,,,IN,,,,,,,,31,,Sunrise Eservices,,,,2,,0,,,UTIB0000065,,UTIB0000065,,,,,,,N,N
+437,SC-6785,MSNU,IN,41101001462,BAZAR,,,,,IN,,,,,,,,61,,Replete Industries,,,,2,,0,,,MSNU0000004,,MSNU0000004,,,,,,,N,N
+258,SC-6505,GSCB,IN,108000000000,RTGS-HO,,,,,IN,,,,,,,,52,,Royal Traders,,,,2,,0,,,GSCB0000001,,GSCB0000001,,,,,,,N,N
+119,SC-4502,CNRB,IN,408000000000,"JNGR SHOP COMPLEX ,",,,,,IN,,,,,,,,9,,Globetek,,,,2,,0,,,CNRB0000408,,CNRB0000408,,,,,,,N,N
+213,SC-6484,PUNB,IN,3970000000000000,"KOTHRUD,PUNE (MAHARA",,,,,IN,,,,,,,,24,,Jowell,,,,2,,0,,,PUNB0397400,,PUNB0397400,,,,,,,N,N
+399,SC-7591,CNRB,IN,2680000000000,ANDHERI EAST J B NAG,,,,,IN,,,,,,,,9,,Dry Air Engineers,,,,2,,0,,,CNRB0002675,,CNRB0002675,,,,,,,N,N
+1236,SC-207783,MAHB,IN,20055272700,Karol Bagh,,,,,,,,,,,,,28,,,,,,2,,0,,,,,MAHB0000140,,,,,,,N,N
+551,SC-7692,CBIN,IN,1003206706,PUNE CITY,,,,,IN,,,,,,,,14,,Bhaigora Enterprises,,,,2,,0,,,CBIN0280661,,CBIN0280661,,,,,,,N,N
+480,SC-8238,TJSB,IN,91100000000000,KUDUS BRANCH,,,,,IN,,,,,,,,51,,Kailash Electricals,,,,2,,0,,,TJSB0000091,,TJSB0000091,,,,,,,N,N
+268,SC-7511,CBIN,IN,2984838823,ERNAKULAM,,,,,IN,,,,,,,,14,,Excel Rich Earth,,,,2,,0,,,CBIN0280963,,CBIN0280963,,,,,,,N,N
+393,SC-6286,CNRB,IN,3180000000000,"THALTEJ , AHMEDABAD",,,,,IN,,,,,,,,9,,Shiv Corporation,,,,2,,0,,,CNRB0003180,,CNRB0003180,,,,,,,N,N
+405,SC-7923,INDB,IN,201000000000,VASAI,,,,,IN,,,,,,,,33,,Rina Enterprise,,,,2,,0,,,INDB0000237,,INDB0000237,,,,,,,N,N
+403,SC-8152,PMCB,IN,12100000000000,KOPARKHAIRANE,,,,,IN,,,,,,,,20,,Birla Associates,,,,2,,0,,,PMCB0000012,,PMCB0000012,,,,,,,N,N
+539,SC-8483,CORP,IN,510000000000000,KHAR- MUMBAI,,,,,IN,,,,,,,,19,,Ahuja Electronics,,,,2,,0,,,CORP0000334,,CORP0000334,,,,,,,N,N
+43,SC-00019,IOBA,IN,54400000000000,JANAKPURI,,,,,IN,,,,,,,,43,,Super Systems,,,,2,,0,,,IOBA0000544,,IOBA0000544,,,,,,,N,N
+224,SC-6495,NVNM,IN,139000000000000,SABARMATI,,,,,IN,,,,,,,,65,,Shree Hari Paints,,,,2,,0,,,NVNM0000011,,NVNM0000011,,,,,,,N,N
+547,SC-8710,CIUB,IN,67100000000000,CHINMAYANAGAR CHENNA,,,,,IN,,,,,,,,36,,Thangam Agencies,,,,2,,0,,,CIUB0000067,,CIUB0000067,,,,,,,N,N
+331,SC-7882,INDB,IN,200000000000,JAMNAGAR,,,,,IN,,,,,,,,33,,Nehal Travels,,,,2,,0,,,INDB0000065,,INDB0000065,,,,,,,N,N
+338,SC-7888,YESB,IN,16500000000000,"BORIVALI, MUMBAI",,,,,IN,,,,,,,,11,,Mockingbird,,,,2,,0,,,YESB0000164,,YESB0000164,,,,,,,N,N
+28,SC-01744,MAHB,IN,60256336475,"ZAVERI BAZAR, MUMBAI",,,,,IN,,,,,,,,28,,Neeta Electricals,,,,2,,0,,,MAHB0000026,,MAHB0000026,,,,,,,N,N
+17,SC-7519,SYNB,IN,90500000000000,DELHI NIRMAN VIHAR,,,,,IN,,,,,,,,17,,Bansal Business Corporation,,,,2,,0,,,SYNB0009050,,SYNB0009050,,,,,,,N,N
+113,SC-01961,SVCB,IN,101000000000000,S V MARG,,,,,IN,,,,,,,,30,,Pitambra Power,,,,2,,0,,,SVCB0000006,,SVCB0000006,,,,,,,N,N
+166,SC-00187,ORBC,IN,4640000000000,NEW DELHI-PALAM,,,,,IN,,,,,,,,32,,Amit Enterprises,,,,2,,0,,,ORBC0100464,,ORBC0100464,,,,,,,N,N
+541,SC-7661,PMCB,IN,12100000000000,KOPARKHAIRANE,,,,,IN,,,,,,,,20,,Ridge Fernandes,,,,2,,0,,,PMCB0000012,,PMCB0000012,,,,,,,N,N
+446,SC-8010,2HDFC,IN,50200000000000,MATHEKERE,,,,,IN,,,,,,,,4,,SRS Innovative Solutions,,,,2,,0,,,HDFC0001047,,HDFC0001047,,,,,,,N,N
+201,SC-7745,CORP,IN,150000000000000,SHELA,,,,,IN,,,,,,,,19,,Saptarishi Apparels LLP,,,,2,,0,,,CORP0001495,,CORP0001495,,,,,,,N,N
+247,SC-7754,MAHB,IN,60245416300,JEJURI,,,,,IN,,,,,,,,28,,Lalita Furniture,,,,2,,0,,,MAHB0001828,,MAHB0001828,,,,,,,N,N
+493,SC-7433,CORP,IN,510000000000000,ARSTREET- MUMBAI,,,,,IN,,,,,,,,19,,Cordial,,,,2,,0,,,CORP0000163,,CORP0000163,,,,,,,N,N
+95,SC-02465,ABHY,IN,118000000000000,VIKHROLI W,,,,,IN,,,,,,,,48,,Svas Engineering Industries,,,,2,,0,,,ABHY0065073,,ABHY0065073,,,,,,,N,N
+523,SC-8267,TJSB,IN,12100000000000,VASHI BRANCH,,,,,IN,,,,,,,,51,,Surakhsha Logistic,,,,2,,0,,,TJSB0000012,,TJSB0000012,,,,,,,N,N
+133,SC-7460,KVBL,IN,1240000000000000,CHENNAI USMAN ROAD,,,,,IN,,,,,,,,16,,UPBEAT TECHNOLOGIES,,,,2,,0,,,KVBL0001239,,KVBL0001239,,,,,,,N,N
+61,SC-00930,FDRL,IN,15800000000000,PIMPRI-CHINCHWAD,,,,,IN,,,,,,,,40,,Chandra Electricals,,,,2,,0,,,FDRL0001581,,FDRL0001581,,,,,,,N,N
+1255,SC-207666,CITI,IN,WOILMUM91803076,,,,,,,,,,,,,,23,,WHIRLPOOL OF INDIA LIMITED,,,,2,,0,,,,,CITI0000002,,,,,,,N,N
+271,SC-8089,UBIN,IN,569000000000000,T M T THANE,,,,,IN,,,,,,,,12,,A-One Machineries,,,,2,,0,,,UBIN0556939,,UBIN0556939,,,,,,,N,N
+178,SC-7190,YESB,IN,2960000000000,"AURANGABAD, MAHARASH",,,,,IN,,,,,,,,11,,K J Enterprises,,,,2,,0,,,YESB0000029,,YESB0000029,,,,,,,N,N
+195,SC-8290,ICIC,IN,25005000206,DWARKA?á,,,,,IN,,,,,,,,7,,Iadept Marketing,,,,2,,0,,,ICIC0000250,,ICIC0000250,,,,,,,N,N
+382,SC-6274,IBKL,IN,607000000000000,PUNE SWARGATE,,,,,IN,,,,,,,,27,,Patankar Industries,,,,2,,0,,,IBKL0000607,,IBKL0000607,,,,,,,N,N
+220,SC-8070,FDRL,IN,14500000000000,NEW DELHI/ NIRMAN VI,,,,,IN,,,,,,,,40,,Dabs Automation,,,,2,,0,,,FDRL0001451,,FDRL0001451,,,,,,,N,N
+555,SC-7714,KARB,IN,5470000000000000,LAJPAT NAGAR NEW DEL,,,,,IN,,,,,,,,45,,Dawar Enterprises,,,,2,,0,,,KARB0000547,,KARB0000547,,,,,,,N,N
+196,SC-8066,KVBL,IN,2300000000000000,INDORE,,,,,IN,,,,,,,,16,,Aaryan Instruments,,,,2,,0,,,KVBL0002301,,KVBL0002301,,,,,,,N,N
+398,SC-6727,2HDFC,IN,50200000000000,VIZAG-JAGADAMBA CENT,,,,,IN,,,,,,,,4,,Project Sales Corporation,,,,2,,0,,,HDFC0000417,,HDFC0000417,,,,,,,N,N
+60,SC-00291,JSBP,IN,1150000000000,BAJIRAO ROAD,,,,,IN,,,,,,,,60,,Popatlal and Co,,,,2,,0,,,JSBP0000098,,JSBP0000098,,,,,,,N,N
+494,SC-8641,BKDN,IN,91011031009,INFOCITY AREA,,,,,IN,,,,,,,,22,,A to Z Biomedical Services,,,,2,,0,,,BKDN0131351,,BKDN0131351,,,,,,,N,N
+305,SC-8118,ANDB,IN,73400000000000,VADODARA,,,,,IN,,,,,,,,34,,Indian Engineering Works,,,,2,,0,,,ANDB0000734,,ANDB0000734,,,,,,,N,N
+45,SC-02325,YESB,IN,484000000000,"NARIMAN POINT, MUMBA",,,,,IN,,,,,,,,11,,Elite Electricals and Equipment,,,,2,,0,,,YESB0000004,,YESB0000004,,,,,,,N,N
+130,SC-7156,VIJB,IN,801000000000000,REHABARI GUWAHATI,,,,,IN,,,,,,,,18,,Indus Group,,,,2,,0,,,VIJB0008012,,VIJB0008012,,,,,,,N,N
+151,SC-4662,YESB,IN,802000000000000,SHREE KADI NAG SAH B,,,,,IN,,,,,,,,11,,Shree Marutinandan Enterprise,,,,2,,0,,,YESB0KNB005,,YESB0KNB005,,,,,,,N,N
+597,SC-8812,SYNB,IN,70100000000000,,,,,,,,,,,,,,17,,Elegant enterprise,,,,2,,0,,,SYNB0007008,,,,,,,,,N,N
+32,SC-01724,ORBC,IN,1060000000000,MUMBAI-OPERA HOUSE,,,,,IN,,,,,,,,32,,New Era Engineering,,,,2,,0,,,ORBC0101042,,ORBC0101042,,,,,,,N,N
+307,SC-8548,UBIN,IN,399000000000000,SECTOR 21 C - CHANDI,,,,,IN,,,,,,,,12,,Micromeg Enterprises Pvt Ltd,,,,2,,0,,,UBIN0539899,,UBIN0539899,,,,,,,N,N
+69,SC-02039,SBI,IN,10020440783,NARODA ROAD,,,,,IN,,,,,,,,2,,Gurukrupa Printing Press,,,,2,,0,,,SBIN0003045,,SBIN0003045,,,,,,,N,N
+265,SC-02558,DCBL,IN,1940000000000,MOHAMEDALI ROAD,,,,,IN,,,,,,,,26,,Unique Enterprises,,,,2,,0,,,DCBL0000019,,DCBL0000019,,,,,,,N,N
+432,SC-8226,2HDFC,IN,523000000000,PUNE - AUNDH,,,,,IN,,,,,,,,4,,Delta Flow,,,,2,,0,,,HDFC0000052,,HDFC0000052,,,,,,,N,N
+533,SC-8675,ORBC,IN,10500000000000,MUMBAI-PAREL,,,,,IN,,,,,,,,32,,Motilal Todi,,,,2,,0,,,ORBC0101518,,ORBC0101518,,,,,,,N,N
+327,SC-7332,PUNB,IN,117000000000000,"DELHI DARYA GANJ, DI",,,,,IN,,,,,,,,24,,Promivac Engineers,,,,2,,0,,,PUNB0011700,,PUNB0011700,,,,,,,N,N
+55,SC-02538,PMCB,IN,4140000000000,ANDHERI E,,,,,IN,,,,,,,,20,,Acrosil,,,,2,,0,,,PMCB0000004,,PMCB0000004,,,,,,,N,N
+202,SC-6474,RATN,IN,1010000000000000,VARTAKNAGAR THANE,,,,,IN,,,,,,,,10,,Dejini Systems,,,,2,,0,,,RATN0000058,,RATN0000058,,,,,,,N,N
+358,SC-7347,UCBA,IN,570000000000,SUBZIMANDI - NEW DEL,,,,,IN,,,,,,,,49,,Scientific Engineering Corporation,,,,2,,0,,,UCBA0000057,,UCBA0000057,,,,,,,N,N
+328,SC-6605,BCBM,IN,1710000000000,MIRAROAD BRANCH,,,,,IN,,,,,,,,47,,Delta Chemicals,,,,2,,0,,,BCBM0000018,,BCBM0000018,,,,,,,N,N
+302,SC-7530,VIJB,IN,506000000000000,VIJAYA BANK - SME BR,,,,,IN,,,,,,,,18,,Dhanlaxmi Engineer,,,,2,,0,,,VIJB0005056,,VIJB0005056,,,,,,,N,N
+375,SC-8142,AMCB,IN,66100000000000,MUMBAI,,,,,IN,,,,,,,,37,,Chetan Enterprise,,,,2,,0,,,AMCB0660024,,AMCB0660024,,,,,,,N,N
+37,SC-01520,AMCB,IN,66000000000000,RELIEF ROAD,,,,,IN,,,,,,,,37,,Kothari Engineering Corporation,,,,2,,0,,,AMCB0660002,,AMCB0660002,,,,,,,N,N
+537,SC-8676,IOBA,IN,1400000000000,MUMBAI FORT,,,,,IN,,,,,,,,43,,Todi Exports,,,,2,,0,,,IOBA0000014,,IOBA0000014,,,,,,,N,N
+408,SC-7027,UBIN,IN,366000000000000,NARODA ROAD,,,,,IN,,,,,,,,12,,Shree Sai Engineering,,,,2,,0,,,UBIN0536644,,UBIN0536644,,,,,,,N,N
+324,SC-8123,SBI,IN,52019301003,PUNE KOTHRUD,,,,,IN,,,,,,,,2,,SSM Enterprises,,,,2,,0,,,SBIN0020734,,SBIN0020734,,,,,,,N,N
+165,SC-6451,ABHY,IN,119000000000000,KAUSA MUMBRA,,,,,IN,,,,,,,,48,,Metro Trading,,,,2,,0,,,ABHY0065074,,ABHY0065074,,,,,,,N,N
+386,SC-8586,2HDFC,IN,50200000000000,ASHOK VIHAR PHASE II,,,,,IN,,,,,,,,4,,Naitik Cooling Solutions,,,,2,,0,,,HDFC0001441,,HDFC0001441,,,,,,,N,N
+83,SC-02438,AMCB,IN,66100000000000,MUMBAI,,,,,IN,,,,,,,,37,,Shakti Inc,,,,2,,0,,,AMCB0660024,,AMCB0660024,,,,,,,N,N
+468,SC-7422,2HDFC,IN,50200000000000,MUMBAI - SHER-E-PUNJ,,,,,IN,,,,,,,,4,,Jal Jyoti International,,,,2,,0,,,HDFC0000669,,HDFC0000669,,,,,,,N,N
+120,SC-4511,IOBA,IN,8600000000000,SOWKARPET,,,,,IN,,,,,,,,43,,Electro Science,,,,2,,0,,,IOBA0000086,,IOBA0000086,,,,,,,N,N
+441,SC-7072,CORP,IN,70200000000000,BANGALORE VIDYARANYA,,,,,IN,,,,,,,,19,,NV Dynamics,,,,2,,0,,,CORP0000702,,CORP0000702,,,,,,,N,N
+1103,SC-8500,BARB,IN,4470000000000,,,,,,,,,,,,,,13,,Dutech Corporation,,,,2,,0,,,BARB0KARVER,,,,,,,,,N,N
+11,SC-00843,INDB,IN,201000000000,NERUL,,,,,IN,,,,,,,,33,,Super Hydro Pneumatic,,,,2,,0,,,INDB0000267,,INDB0000267,,,,,,,N,N
+147,SC-7723,ANDB,IN,139000000000000,NERUL,,,,,IN,,,,,,,,34,,Solas Fire and Safety Corporation,,,,2,,0,,,ANDB0001391,,ANDB0001391,,,,,,,N,N
+233,SC-8298,MAHB,IN,20057604225,DAUND BRANCH,,,,,IN,,,,,,,,28,,Shree Laxmi Enterprises,,,,2,,0,,,MAHB0000680,,MAHB0000680,,,,,,,N,N
+326,SC-7854,2HDFC,IN,50200000000000,AHURA CENTRE - ANDHE,,,,,IN,,,,,,,,4,,Finance Lookup Advisors LLP,,,,2,,0,,,HDFC0000543,,HDFC0000543,,,,,,,N,N
+561,SC-8153,SRCB,IN,2400000000000,SAMATA SAH BANK - OS,,,,,IN,,,,,,,,71,,Aashapoora Traders,,,,2,,0,,,SRCB0SAM001,,SRCB0SAM001,,,,,,,N,N
+527,SC-7654,SBI,IN,31997391577,MAKARPURA INDL. ESTA,,,,,IN,,,,,,,,2,,Maruti Protectives,,,,2,,0,,,SBIN0001456,,SBIN0001456,,,,,,,N,N
+427,SC-8218,BKID,IN,13500000000000,BHANDUP (WEST),,,,,IN,,,,,,,,8,,Subodh Network,,,,2,,0,,,BKID0000135,,BKID0000135,,,,,,,N,N
+88,SC-02649,DCBL,IN,822000000000,GOREGAON,,,,,IN,,,,,,,,26,,Flow Point Technology,,,,2,,0,,,DCBL0000008,,DCBL0000008,,,,,,,N,N
+82,SC-01883,PUNB,IN,1290000000000000,MUMBAI KANDIVALI WES,,,,,IN,,,,,,,,24,,Rajesh Trade Centre,,,,2,,0,,,PUNB0128600,,PUNB0128600,,,,,,,N,N
+475,SC-8027,KCCB,IN,3520100666,JETALPUR,,,,,IN,,,,,,,,64,,Tirth Enterprise,,,,2,,0,,,KCCB0JBR035,,KCCB0JBR035,,,,,,,N,N
+502,SC-8259,SVCB,IN,101000000000000,SAKINAKA,,,,,IN,,,,,,,,30,,Amarama Engineers,,,,2,,0,,,SVCB0000007,,SVCB0000007,,,,,,,N,N
+522,SC-7649,SBI,IN,54000644262,MATUNGA,,,,,IN,,,,,,,,2,,Cosmotech,,,,2,,0,,,SBIN0040243,,SBIN0040243,,,,,,,N,N
+557,SC-01141,SRCB,IN,144000000000000,CARNAC BUNDER,,,,,IN,,,,,,,,71,,Ruchit Enterprise,,,,2,,0,,,SRCB0000143,,SRCB0000143,,,,,,,N,N
+298,SC-8094,2HDFC,IN,50200000000000,TULSIANI CHMBRS - NA,,,,,IN,,,,,,,,4,,Umang Home Furnishing,,,,2,,0,,,HDFC0000001,,HDFC0000001,,,,,,,N,N
+497,SC-8038,BKID,IN,205000000000000,CHANGODAR,,,,,IN,,,,,,,,8,,Bhavani Enterprise,,,,2,,0,,,BKID0002045,,BKID0002045,,,,,,,N,N
+115,SC-01972,YESB,IN,7880000000000,"ANDHERI (E), MUMBAI",,,,,IN,,,,,,,,11,,Sagar Office Automation,,,,2,,0,,,YESB0000078,,YESB0000078,,,,,,,N,N
+329,SC-8564,KMPL,IN,811251066,MALAD S V ROAD BRANC,,,,,IN,,,,,,,,3,,Chemo Fab Industries LLP,,,,2,,0,,,KKBK0000683,,KKBK0000683,,,,,,,N,N
+491,SC-8450,UBIN,IN,322000000000000,KASARWADI - PUNE,,,,,IN,,,,,,,,12,,Care Lifting Equipments,,,,2,,0,,,UBIN0532207,,UBIN0532207,,,,,,,N,N
+357,SC-7892,ICIC,IN,625000000000,AHMEDABAD-BOPAL?á,,,,,IN,,,,,,,,7,,Tushar Panchal,,,,2,,0,,,ICIC0000361,,ICIC0000361,,,,,,,N,N
+222,SC-8514,2HDFC,IN,6260000000000,MUMBAI - NULL BAZAR,,,,,IN,,,,,,,,4,,Silver Tubes,,,,2,,0,,,HDFC0000626,,HDFC0000626,,,,,,,N,N
+664,SC-01295,BARB,IN,12240400008376,,,,,,,,,,,,,,13,,ALPINES TECHNOQUIP PVT LTD,,,,2,,0,,,,,BARB0ASTODI,,,,,,,N,N
+272,SC-01682,YESB,IN,45200000000000,"PAREL, MUMBAI",,,,,IN,,,,,,,,11,,Ambika Paints,,,,2,,0,,,YESB0000451,,YESB0000451,,,,,,,N,N
+469,SC-8024,SBI,IN,10298777866,GUJARAT UNIVERSITY,,,,,IN,,,,,,,,2,,Saicon Sales,,,,2,,0,,,SBIN0002651,,SBIN0002651,,,,,,,N,N
+335,SC-8327,CITI,IN,351367121,MUMBAI,,,,,IN,,,,,,,,23,,Golden Dyechem,,,,2,,0,,,CITI0100000,,CITI0100000,,,,,,,N,N
+319,SC-8563,INDB,IN,650000000000,BARODA,,,,,IN,,,,,,,,33,,United Insulation Industries,,,,2,,0,,,INDB0000017,,INDB0000017,,,,,,,N,N
+1179,SC-9054,2HDFC,IN,16800000000000,,,,,,,,,,,,,,4,,Laxmi Polymers,,,,2,,0,,,HDFC0001682,,,,,,,,,N,N
+558,SC-02637,SRCB,IN,36500000000000,KARVE ROAD,,,,,IN,,,,,,,,71,,Sunrise Toolings,,,,2,,0,,,SRCB0000036,,SRCB0000036,,,,,,,N,N
+78,SC-02610,PUNB,IN,1250000000000000,BANGALORE PEENYA IND,,,,,IN,,,,,,,,24,,Kshipraa Mechatronics,,,,2,,0,,,PUNB0125100,,PUNB0125100,,,,,,,N,N
+585,SC-8640,KMPL,IN,7230000000000,Lower Parel,,,,,,,,,,,,,3,,Praj Metallurgical Laboratory,,,,2,,0,,,KKBK0000723,,,,,,,,,N,N
+571,SC-8701,SBI,IN,36209209954,,,,,,,,,,,,,,2,,P S Traders,,,,2,,0,,,SBIN0060010,,SBIN0060010,,,,,,,N,N
+448,SC-8232,UBIN,IN,318000000000000,MOHAMEDALI ROAD - MU,,,,,IN,,,,,,,,12,,Paras Enterprise,,,,2,,0,,,UBIN0531847,,UBIN0531847,,,,,,,N,N
+313,SC-8323,ICIC,IN,2605001169,MUMBAI - GHATKOPAR?á,,,,,IN,,,,,,,,7,,Cadetronics,,,,2,,0,,,ICIC0000026,,ICIC0000026,,,,,,,N,N
+1112,SC-8638,INDB,IN,201000000000,,,,,,,,,,,,,,33,,Rushabh Fastech LLP,,,,2,,0,,,INDB0000935,,,,,,,,,N,N
+234,SC-8517,SBI,IN,20212224217,"MALAGALA ROAD, BANGA",,,,,IN,,,,,,,,2,,Advance Engineering Solutions,,,,2,,0,,,SBIN0013260,,SBIN0013260,,,,,,,N,N
+495,SC-8250,SBI,IN,31974096103,BARAMATI,,,,,IN,,,,,,,,2,,Deepak Arts,,,,2,,0,,,SBIN0000321,,SBIN0000321,,,,,,,N,N
+492,SC-7130,KMPL,IN,2211252360,NEW DELHI - GREATER,,,,,IN,,,,,,,,3,,Bajrang Industries,,,,2,,0,,,KKBK0000173,,KKBK0000173,,,,,,,N,N
+529,SC-8282,BCBM,IN,8010000000000,WORLI,,,,,IN,,,,,,,,47,,Sun Restaurant,,,,2,,0,,,BCBM0000081,,BCBM0000081,,,,,,,N,N
+301,SC-8318,2HDFC,IN,2870000000000,NEW DELHI - ASHOK VI,,,,,IN,,,,,,,,4,,Yokins Instruments Pvt Ltd,,,,2,,0,,,HDFC0000287,,HDFC0000287,,,,,,,N,N
+413,SC-8154,CNRB,IN,6410000000000,URULI KANCHAN,,,,,IN,,,,,,,,9,,Jay Malhar Refrigeration,,,,2,,0,,,CNRB0006413,,CNRB0006413,,,,,,,N,N
+1121,SC-8714,UBIN,IN,534000000000000,,,,,,,,,,,,,,12,,Divya Chemicals,,,,2,,0,,,UBIN0553425,,,,,,,,,N,N
+425,SC-7400,BARB,IN,27700000000000,PER.BKG.BRAN BRANCH,,,,,IN,,,,,,,,13,,Parikh Sales,,,,2,,0,,,BARB0PBBAHM,,BARB0PBBAHM,,,,,,,N,N
+184,SC-00548,ALLA,IN,50277133090,GOREGOAN,,,,,IN,,,,,,,,59,,Ravi Transmission Products,,,,2,,0,,,ALLA0211048,,ALLA0211048,,,,,,,N,N
+372,SC-7007,AMCB,IN,66000000000000,MAHENDIKUA,,,,,IN,,,,,,,,37,,Bhumi Enterprise,,,,2,,0,,,AMCB0660007,,AMCB0660007,,,,,,,N,N
+535,SC-8481,KMPL,IN,5411282526,YOJNA VIHAR,,,,,IN,,,,,,,,3,,Anu Enterprises,,,,2,,0,,,KKBK0000211,,KKBK0000211,,,,,,,N,N
+181,SC-8051,DNSB,IN,16000000000000,FORT,,,,,IN,,,,,,,,35,,Bell Hydromatics,,,,2,,0,,,DNSB0000016,,DNSB0000016,,,,,,,N,N
+1185,SC-9091,GSMC,IN,560000000000000,,,,,,,,,,,,,,72,,Delta Water Services,,,,2,,0,,,MCBL0960056,,,,,,,,,N,N
+211,SC-8068,COSB,IN,1775115143,VILE PARLE EAST,,,,,IN,,,,,,,,42,,Dharmesh Hingorani,,,,2,,0,,,COSB0000017,,COSB0000017,,,,,,,N,N
+243,SC-8303,VIJB,IN,505000000000000,BORIVALI(W) MUMBAI,,,,,IN,,,,,,,,18,,Vector Corporation,,,,2,,0,,,VIJB0005047,,VIJB0005047,,,,,,,N,N
+260,SC-7507,2HDFC,IN,17900000000000,VISHRANTWADI,,,,,IN,,,,,,,,4,,Aps Lifetech,,,,2,,0,,,HDFC0001791,,HDFC0001791,,,,,,,N,N
+652,SC-8889,HSBC,IN,030-537476-002,,,,,,,,,,,,,,38,,Aramex India Pvt. Ltd.,,,,2,,0,,,,,HSBC0400002,,,,,,,N,N
+488,SC-8633,BKID,IN,801000000000000,KODAMBAKAM,,,,,IN,,,,,,,,8,,Vani Lab,,,,2,,0,,,BKID0008014,,BKID0008014,,,,,,,N,N
+1243,SC-7894,2HDFC,IN,540340011942,,,,,,,,,,,,,,4,,Instaoffice Business Solutions Pvt  Ltdq,,,,2,,0,,,,,HDFC0000054,,,,,,,N,N
+1113,SC-8642,2HDFC,IN,4120000000000,,,,,,,,,,,,,,4,,Designer Furniture,,,,2,,0,,,HDFC0000411,,,,,,,,,N,N
+514,SC-8461,IBKL,IN,306000000000000,SANPADA,,,,,IN,,,,,,,,27,,MGS Technologies,,,,2,,0,,,IBKL0000306,,IBKL0000306,,,,,,,N,N
+516,SC-8266,BKID,IN,840000000000000,CANTONMENT,,,,,IN,,,,,,,,8,,Unicorn Precitech,,,,2,,0,,,BKID0008404,,BKID0008404,,,,,,,N,N
+422,SC-8608,BARB,IN,4050000000000,MARINE DRIVE BRANCH,,,,,IN,,,,,,,,13,,Designaren Graphic,,,,2,,0,,,BARB0MARINE,,BARB0MARINE,,,,,,,N,N
+1109,SC-8587,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Wayona Corporation,,,,2,,0,,,HDFC0000015,,,,,,,,,N,N
+291,SC-7529,DCBL,IN,3120000000000,LOKHANDWALA,,,,,IN,,,,,,,,26,,Veejay Tex,,,,2,,0,,,DCBL0000031,,DCBL0000031,,,,,,,N,N
+509,SC-8456,COSB,IN,72100000000000,NARODA INDUSTRIAL ES,,,,,IN,,,,,,,,42,,Payal Engineering,,,,2,,0,,,COSB0000072,,COSB0000072,,,,,,,N,N
+1122,SC-8721,KVBL,IN,1620000000000000,,,,,,,,,,,,,,16,,GKM Ladders,,,,2,,0,,,KVBL0001617,,,,,,,,,N,N
+570,SC-8624,BARB,IN,4130000000000,,,,,,,,,,,,,,13,,Vijay Electronics,,,,2,,0,,,BARB0SANEAS,,BARB0SANEAS,,,,,,,N,N
+286,SC-7526,MAHB,IN,60283555688,"VIKASPURI, NEW DELHI",,,,,IN,,,,,,,,28,,Cookspick Commercial Kitchen Equipment,,,,2,,0,,,MAHB0001595,,MAHB0001595,,,,,,,N,N
+269,SC-7781,KMPL,IN,6590000000000,VASAI,,,,,IN,,,,,,,,3,,Stakall,,,,2,,0,,,KKBK0000659,,KKBK0000659,,,,,,,N,N
+476,SC-8631,HSBC,IN,41544602001,MAIN BRANCH  CHENNAI,,,,,IN,,,,,,,,38,,Eppendorf India Ltd,,,,2,,0,,,HSBC0600002,,HSBC0600002,,,,,,,N,N
+483,SC-8028,UTIB,IN,917000000000000,PITAMPURA,,,,,IN,,,,,,,,31,,Ambika Trading,,,,2,,0,,,UTIB0000040,,UTIB0000040,,,,,,,N,N
+390,SC-7916,2HDFC,IN,50200000000000,SECTOR XXXI FARIDABA,,,,,IN,,,,,,,,4,,Adlite Electricals,,,,2,,0,,,HDFC0004131,,HDFC0004131,,,,,,,N,N
+602,SC-8672,IBKL,IN,68100000000000,,,,,,,,,,,,,,27,,Dinesh Plastic Products,,,,2,,0,,,IBKL0000068,,,,,,,,,N,N
+325,SC-6116,TJSB,IN,35100000000000,PIMPRI BRANCH,,,,,IN,,,,,,,,51,,Pooja Enterprises,,,,2,,0,,,TJSB0000035,,TJSB0000035,,,,,,,N,N
+276,SC-8092,UCBA,IN,1840000000000,MEMNAGAR - AHMEDABAD,,,,,IN,,,,,,,,49,,Energy Trade,,,,2,,0,,,UCBA0001954,,UCBA0001954,,,,,,,N,N
+499,SC-8452,KMPL,IN,1612625896,SECUNDERABAD HYDERAB,,,,,IN,,,,,,,,3,,Bharat Trading Company,,,,2,,0,,,KKBK0007450,,KKBK0007450,,,,,,,N,N
+489,SC-8240,BARB,IN,29600000000000,VIJAYANAGARA BRANCH,,,,,IN,,,,,,,,13,,Quesst International,,,,2,,0,,,BARB0VIJBAN,,BARB0VIJBAN,,,,,,,N,N
+1254,SC-207749,BKID,IN,720110000508,Breach Candy,,,,,,,,,,,,,8,,National Interior Decorators and furnitutr,,,,2,,0,,,,,BKID0000007,,,,,,,N,N
+461,SC-8023,SYNB,IN,90400000000000,NEHRU PLACE DELHI,,,,,IN,,,,,,,,17,,Abhishek Enterprises,,,,2,,0,,,SYNB0009044,,SYNB0009044,,,,,,,N,N
+1138,SC-8848,IOBA,IN,33000000000000,,,,,,,,,,,,,,43,,Garg Scientific Glass Industries,,,,2,,0,,,IOBA0000330,,,,,,,,,N,N
+1171,SC-9024,MAHB,IN,68020784790,,,,,,,,,,,,,,28,,Caught In A Cuff,,,,2,,0,,,MAHB0001112,,,,,,,,,N,N
+444,SC-8392,KMPL,IN,4640000000000,CHENNAI - PARRY,,,,,IN,,,,,,,,3,,Royal Tool Agencies,,,,2,,0,,,KKBK0000464,,KKBK0000464,,,,,,,N,N
+542,SC-8487,2HDFC,IN,3780000000000,PALACE ROAD,,,,,IN,,,,,,,,4,,Monarch Appliances,,,,2,,0,,,HDFC0000378,,HDFC0000378,,,,,,,N,N
+383,SC-7914,TJSB,IN,2130000000000,MAIN BRANCH,,,,,IN,,,,,,,,51,,Flameproof Instrumentation,,,,2,,0,,,TJSB0000002,,TJSB0000002,,,,,,,N,N
+478,SC-7427,BKDN,IN,811002489,MUMBAI ZAVERI BAZAR,,,,,IN,,,,,,,,22,,Maharashtra Stationers,,,,2,,0,,,BKDN0450008,,BKDN0450008,,,,,,,N,N
+204,SC-8293,BKID,IN,251000000000000,UNIVERSITY ROAD,,,,,IN,,,,,,,,8,,Narmada Hydraulics,,,,2,,0,,,BKID0002505,,BKID0002505,,,,,,,N,N
+439,SC-8006,2HDFC,IN,50200000000000,BAHADURGARH,,,,,IN,,,,,,,,4,,Blowvacc Enterprises,,,,2,,0,,,HDFC0000325,,HDFC0000325,,,,,,,N,N
+430,SC-8616,IDIB,IN,6493512616,MANDVI,,,,,IN,,,,,,,,44,,Saboo Trading Company,,,,2,,0,,,IDIB000M013,,IDIB000M013,,,,,,,N,N
+477,SC-7628,ICIC,IN,305500142,VADODARA?á,,,,,IN,,,,,,,,7,,Aarya Enterprises,,,,2,,0,,,ICIC0000003,,ICIC0000003,,,,,,,N,N
+334,SC-6136,BCBM,IN,112000000000,MAIN BRANCH,,,,,IN,,,,,,,,47,,Shree Safety Services,,,,2,,0,,,BCBM0000002,,BCBM0000002,,,,,,,N,N
+455,SC-8234,KMPL,IN,8320000000000,ANAND,,,,,IN,,,,,,,,3,,The Transformer Company,,,,2,,0,,,KKBK0000832,,KKBK0000832,,,,,,,N,N
+250,SC-7500,KMPL,IN,8110000000000,AHMEDABAD- ASHRAM RD,,,,,IN,,,,,,,,3,,Sahajanand Industries,,,,2,,0,,,KKBK0000811,,KKBK0000811,,,,,,,N,N
+231,SC-7751,ORBC,IN,11400000000000,VIMAN NAGAR,,,,,IN,,,,,,,,32,,Trafo Filter Services,,,,2,,0,,,ORBC0101142,,ORBC0101142,,,,,,,N,N
+1096,SC-7783,PUNB,IN,4620000000000000,,,,,,,,,,,,,,24,,Jagrati Enterprises,,,,2,,0,,,PUNB0462200,,,,,,,,,N,N
+187,SC-6460,BKDN,IN,13011001679,NAGDEVI STREET,,,,,IN,,,,,,,,22,,Moiz Traders,,,,2,,0,,,BKDN0450130,,BKDN0450130,,,,,,,N,N
+1221,SC-9258,UTIB,IN,68000000000000,,,,,,,,,,,,,,31,,Sachchidanand Enterprises,,,,2,,0,,,UTIB0000068,,,,,,,,,N,N
+464,SC-8236,GSCB,IN,607000000000,AHMEDABD DISTRICT CO,,,,,IN,,,,,,,,52,,Om Hardware and Paint Mart,,,,2,,0,,,GSCB0ADC001,,GSCB0ADC001,,,,,,,N,N
+504,SC-8453,UTIB,IN,916000000000000,"CBD, BELAPUR",,,,,IN,,,,,,,,31,,Adventure Enterprises,,,,2,,0,,,UTIB0000861,,UTIB0000861,,,,,,,N,N
+482,SC-8632,INDB,IN,650000000000,"ASHOK NAGAR, CHENNAI",,,,,IN,,,,,,,,33,,Bio Corporals,,,,2,,0,,,INDB0000177,,INDB0000177,,,,,,,N,N
+559,SC-8060,SRCB,IN,32500000000000,MASJID BUNDER,,,,,IN,,,,,,,,71,,Paragon Electricals,,,,2,,0,,,SRCB0000032,,SRCB0000032,,,,,,,N,N
+608,207594,SBI,IN,30359803019,Diamond Garden Chembur,,,,,,,,,,,,,2,,Universal Speciality Chemicals (P) Limited,,,,2,,0,,,,,SBIN0013340,,,,,,,N,N
+176,SC-7732,2HDFC,IN,62560003909,AHMEDABAD - NAVRANGP,,,,,IN,,,,,,,,4,,Aira Euro Automation Pvt Ltd,,,,2,,0,,,HDFC0000006,,HDFC0000006,,,,,,,N,N
+1041,SC-207637,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Hindustan Enterprises,,,,2,,0,,,HDFC0000089,,,,,,,,,N,N
+548,SC-8491,CITI,IN,14937668,NEW DELHI,,,,,IN,,,,,,,,23,,Ruju Corporation,,,,2,,0,,,CITI0000002,,CITI0000002,,,,,,,N,N
+1130,SC-8785,DCBL,IN,920000000000,,,,,,,,,,,,,,26,,Royal Engineers,,,,2,,0,,,DCBL0000009,,,,,,,,,N,N
+917,E-900043,2HDFC,IN,4250000000000,,,,,,,,,,,,,,4,,Sanket Yeram,,,,2,,0,,,HDFC0000542,,,,,,,,,N,N
+275,SC-7792,2HDFC,IN,6260000000000,MUMBAI - NULL BAZAR,,,,,IN,,,,,,,,4,,Chetan Agencies,,,,2,,0,,,HDFC0000626,,HDFC0000626,,,,,,,N,N
+207,SC-8502,ICIC,IN,676000000000,JAIPUR STOCK EXCHANG,,,,,IN,,,,,,,,7,,Capstan Meters India Ltd.,,,,2,,0,,,ICIC0006756,,ICIC0006756,,,,,,,N,N
+1007,E-900214,2HDFC,IN,50100218443287,,,,,,,,,,,,,,4,,Sandeep Saini,,,,2,,0,,,HDFC0000661,,,,,,,,,N,N
+322,SC-8325,2HDFC,IN,50200000000000,PUNE - NANA PETH,,,,,IN,,,,,,,,4,,Nafe Traders,,,,2,,0,,,HDFC0000633,,HDFC0000633,,,,,,,N,N
+452,SC-8395,BARB,IN,4020000000000,MALAD WEST BRANCH,,,,,IN,,,,,,,,13,,JMD International,,,,2,,0,,,BARB0MALADX,,BARB0MALADX,,,,,,,N,N
+285,SC-02145,2HDFC,IN,50200000000000,AHMEDABAD - PALDI,,,,,IN,,,,,,,,4,,Vijay Sales Corporation,,,,2,,0,,,HDFC0000299,,HDFC0000299,,,,,,,N,N
+395,SC-8147,2HDFC,IN,9980000000000,VIKHROLI BRANCH,,,,,IN,,,,,,,,4,,Tritech,,,,2,,0,,,HDFC0000998,,HDFC0000998,,,,,,,N,N
+1129,SC-8783,SBI,IN,10606573312,,,,,,,,,,,,,,2,,Utkarsh Brush Works,,,,2,,0,,,SBIN0007074,,,,,,,,,N,N
+612,SC-6944,BKDN,IN,12311023920,Khodadad Circle,,,,,,,,,,,,,22,,Total Sporting and Fitness Solutions Pvt. Ltd.,,,,2,,0,,,,,12311023920,,,,,,,N,N
+241,SC-8077,IBKL,IN,1.12E+015,LOHIA NAGAR,,,,,IN,,,,,,,,27,,Royal Marketing,,,,2,,0,,,IBKL0001121,,IBKL0001121,,,,,,,N,N
+210,SC-8296,2HDFC,IN,30700000000000,SABARMATI,,,,,IN,,,,,,,,4,,Arizona Company,,,,2,,0,,,HDFC0001086,,HDFC0001086,,,,,,,N,N
+1213,SC-9231,2HDFC,IN,3780000000000,,,,,,,,,,,,,,4,,Mukesh Metal,,,,2,,0,,,HDFC0000377,,,,,,,,,N,N
+1151,SC-8937,SBI,IN,33722614564,,,,,,,,,,,,,,2,,Patna Indore Roadways,,,,2,,0,,,SBIN0013553,,,,,,,,,N,N
+228,SC-8073,MAHB,IN,60302514202,SOUTH TUKOGANJ INDOR,,,,,IN,,,,,,,,28,,Parashwanath Plastic,,,,2,,0,,,MAHB0001765,,MAHB0001765,,,,,,,N,N
+186,SC-8497,BARB,IN,7430000000000,SUFIBAUG BRANCH,,,,,IN,,,,,,,,13,,Technotech Enterprises,,,,2,,0,,,BARB0SUFIBA,,BARB0SUFIBA,,,,,,,N,N
+354,SC-8570,2HDFC,IN,26900000000000,BAWDHAN - PUNE,,,,,IN,,,,,,,,4,,Vishal Redake,,,,2,,0,,,HDFC0002690,,HDFC0002690,,,,,,,N,N
+424,SC-8381,CSBK,IN,2.33E+016,MULUND,,,,,IN,,,,,,,,21,,Active Systems,,,,2,,0,,,CSBK0000233,,CSBK0000233,,,,,,,N,N
+898,E-900014,2HDFC,IN,5420000000000,,,,,,,,,,,,,,4,,Prasad Koli,,,,2,,0,,,HDFC0000542,,,,,,,,,N,N
+1003,E-900203,2HDFC,IN,5001050009898,,,,,,,,,,,,,,4,,Vignesh G,,,,2,,0,,,HDFC0000500,,,,,,,,,N,N
+1106,SC-8549,UBIN,IN,322000000000000,,,,,,,,,,,,,,12,,Param Associates,,,,2,,0,,,UBIN0532207,,,,,,,,,N,N
+423,SC-7985,SBI,IN,34800815525,"SAKET ROAD,  THANE W",,,,,IN,,,,,,,,2,,Athena Technology,,,,2,,0,,,SBIN0016417,,SBIN0016417,,,,,,,N,N
+251,SC-8307,SBI,IN,35183888199,"PRASHANT VIHAR, DELH",,,,,IN,,,,,,,,2,,Chemeric Biotech LLP,,,,2,,0,,,SBIN0004040,,SBIN0004040,,,,,,,N,N
+1173,SC-9028,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Theiakshi Enterprises,,,,2,,0,,,HDFC0002040,,,,,,,,,N,N
+410,SC-7393,BKID,IN,864000000000000,BALANAGAR,,,,,IN,,,,,,,,8,,BHAGYA TOOLS SHARPNERS,,,,2,,0,,,BKID0008640,,BKID0008640,,,,,,,N,N
+156,SC-7724,CBIN,IN,3484222726,BHANDUP,,,,,IN,,,,,,,,14,,Sumit Lab Solutions,,,,2,,0,,,CBIN0283506,,CBIN0283506,,,,,,,N,N
+470,SC-8630,2HDFC,IN,40120000864,CHENNAI - ITC CENTRE,,,,,IN,,,,,,,,4,,Girias Investment Pvt Ltd,,,,2,,0,,,HDFC0000004,,HDFC0000004,,,,,,,N,N
+1001,E-900195,SBI,IN,30141514739,,,,,,,,,,,,,,2,,Gourav Shinde,,,,2,,0,,,SBIN0016374,,,,,,,,,N,N
+528,SC-8669,INDB,IN,201000000000,ASHRAM ROAD,,,,,IN,,,,,,,,33,,Cube CAD Center,,,,2,,0,,,INDB0000622,,INDB0000622,,,,,,,N,N
+180,SC-7734,KMPL,IN,6511554964,PAHARGANJ BRANCH,,,,,IN,,,,,,,,3,,Intek Instruments,,,,2,,0,,,KKBK0004596,,KKBK0004596,,,,,,,N,N
+503,SC-8040,2HDFC,IN,50200000000000,NOIDA SEC 84 HOSIERY,,,,,IN,,,,,,,,4,,Ferreterro Tools LLP,,,,2,,0,,,HDFC0001900,,HDFC0001900,,,,,,,N,N
+340,SC-7333,VIJB,IN,601000000000000,KRISHNA PARK NEW DEL,,,,,IN,,,,,,,,18,,Pooja Scientific Instruments,,,,2,,0,,,VIJB0006013,,VIJB0006013,,,,,,,N,N
+1013,SC-00640,2HDFC,IN,6270000000000,,,,,,,,,,,,,,4,,Montana International,,,,2,,0,,,HDFC0000627,,,,,,,,,N,N
+891,E-900005,SBI,IN,36508940113,,,,,,,,,,,,,,2,,Vijay Ayare,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+1042,SC-207639,2HDFC,IN,60330000036,,,,,,,,,,,,,,4,,PPI Systems,,,,2,,0,,,HDFC0000006,,,,,,,,,N,N
+512,SC-7445,CBIN,IN,3299442695,DARYAGANJ,,,,,IN,,,,,,,,14,,National General Store,,,,2,,0,,,CBIN0280290,,CBIN0280290,,,,,,,N,N
+174,SC-8493,SBI,IN,30718004316,POONAMALEE,,,,,IN,,,,,,,,2,,V R Weighing Solutions,,,,2,,0,,,SBIN0005201,,SBIN0005201,,,,,,,N,N
+943,E-900073,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Shradha Singh,,,,2,,0,,,HDFC0000001,,,,,,,,,N,N
+886,207615,2HDFC,IN,42320006211,,,,,,,,,,,,,,4,,Jain Marketing,,,,2,,0,,,HDFC0000004,,,,,,,,,N,N
+457,SC-7621,PUNB,IN,4660000000000000,"METRO HOSPITAL, SECT",,,,,IN,,,,,,,,24,,ISOL CORP,,,,2,,0,,,PUNB0466000,,PUNB0466000,,,,,,,N,N
+182,SC-8288,PMCB,IN,12100000000000,KOPARKHAIRANE,,,,,IN,,,,,,,,20,,Shreyja Pratik Mhatre,,,,2,,0,,,PMCB0000012,,PMCB0000012,,,,,,,N,N
+955,E-900091,SBI,IN,20057077081,,,,,,,,,,,,,,2,,Ved Prakash,,,,2,,0,,,SBIN0011755,,,,,,,,,N,N
+1161,SC-8974,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Mahesh Trading Corporation,,,,2,,0,,,HDFC0000042,,,,,,,,,N,N
+919,E-900045,SBI,IN,36509000020,,,,,,,,,,,,,,2,,Poonam Ramchandra Mohite,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+985,E-900151,SBI,IN,63051172642,,,,,,,,,,,,,,2,,Akshay Jindal,,,,2,,0,,,SBIN0030192,,,,,,,,,N,N
+930,E-900057,SBI,IN,36509469140,,,,,,,,,,,,,,2,,Ankit Kumar Upadhyay,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+1089,SC-6778,2HDFC,IN,8250000000000,,,,,,,,,,,,,,4,,Tradelinks Marketing Services,,,,2,,0,,,HDFC0000825,,,,,,,,,N,N
+1078,SC-207809,CITI,IN,11783667,,,,,,,,,,,,,,23,,Vishruti International,,,,2,,0,,,CITI0000007,,,,,,,,,N,N
+367,SC-8141,ICIC,IN,325000000000000,SULAIMANI CO OP BANK,,,,,IN,,,,,,,,7,,Spark Batteries,,,,2,,0,,,ICIC00SULCB,,ICIC00SULCB,,,,,,,N,N
+149,SC-6849,IBKL,IN,804000000000000,THE MEHSANA NAGRIK S,,,,,IN,,,,,,,,27,,Suny Engineering,,,,2,,0,,,IBKL0443MNB,,IBKL0443MNB,,,,,,,N,N
+1126,SC-8749,SBI,IN,32546544409,,,,,,,,,,,,,,2,,Ashok Kumar Syal,,,,2,,0,,,SBIN0004208,,,,,,,,,N,N
+1166,SC-8993,KMPL,IN,4211690807,Lower Parel,,,,,,,,,,,,,3,,Kamdar Enterprise,,,,2,,0,,,KKBK0001354,,,,,,,,,N,N
+1091,SC-7265,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Ajanta Auto Industries,,,,2,,0,,,HDFC0000488,,,,,,,,,N,N
+330,SC-8126,CITI,IN,1142429,COIMBATORE,,,,,IN,,,,,,,,23,,Excellent Engineering Enterprises,,,,2,,0,,,CITI0000011,,CITI0000011,,,,,,,N,N
+1043,SC-207643,2HDFC,IN,882000000000,,,,,,,,,,,,,,4,,Joshi Sons,,,,2,,0,,,HDFC0000088,,,,,,,,,N,N
+581,SC-8591,KVBL,IN,1280000000000000,,,,,,,,,,,,,,16,,Green Office Automation India,,,,2,,0,,,KVBL0001283,,,,,,,,,N,N
+205,SC-8067,PUNB,IN,1160000000000000,AMRITSAR KATRA BHAI,,,,,IN,,,,,,,,24,,Kumar Industries,,,,2,,0,,,PUNB0116000,,PUNB0116000,,,,,,,N,N
+1201,SC-9200,IDIB,IN,493103004,,,,,,,,,,,,,,44,,Bhawani Electrical Works,,,,2,,0,,,IDIB000H027,,,,,,,,,N,N
+1131,SC-8789,BARB,IN,25800000000000,,,,,,,,,,,,,,13,,Rohit Rathi,,,,2,,0,,,BARB0GNBHIL,,,,,,,,,N,N
+892,E-900007,2HDFC,IN,5420000000000,,,,,,,,,,,,,,4,,Dinesh Kashyap,,,,2,,0,,,HDFC0000542,,,,,,,,,N,N
+647,SC-8893,2HDFC,IN,5590000000000,,,,,,,,,,,,,,4,,Kewalson,,,,2,,0,,,HDFC0000558,,HDFC0000558,,,,,,,N,N
+472,SC-8427,2HDFC,IN,50200000000000,MUMBAI - MOHAMED ALI,,,,,IN,,,,,,,,4,,PARAS Machine Tools,,,,2,,0,,,HDFC0000627,,HDFC0000627,,,,,,,N,N
+887,207616,2HDFC,IN,602000000000,,,,,,,,,,,,,,4,,All India Trading Centre,,,,2,,0,,,HDFC0000060,,,,,,,,,N,N
+1180,SC-9059,BKID,IN,16600000000000,,,,,,,,,,,,,,8,,Shree Bhadrakali Industries,,,,2,,0,,,BKID0000166,,,,,,,,,N,N
+556,SC-8654,SRCB,IN,25200000000000,MALAD,,,,,IN,,,,,,,,71,,Swapnil S Upadhyay,,,,2,,0,,,SRCB0000025,,SRCB0000025,,,,,,,N,N
+1009,E-900220,2HDFC,IN,471050012762,,,,,,,,,,,,,,4,,Vinayak Degwekar,,,,2,,0,,,HDFC0000047,,,,,,,,,N,N
+1099,SC-8385,SRCB,IN,445000000000000,,,,,,,,,,,,,,71,,Arham Marketing,,,,2,,0,,,SRCB0000444,,,,,,,,,N,N
+575,SC-8604,TJSB,IN,155000000000000,,,,,,,,,,,,,,51,,Arihant Enterprises,,,,2,,0,,,TJSB0000155,,TJSB0000155,,,,,,,N,N
+997,E-900182,SBI,IN,20101676134,,,,,,,,,,,,,,2,,Suhas Chandran Nair,,,,2,,0,,,SBIN0011798,,,,,,,,,N,N
+256,SC-8519,TBSB,IN,7110000000000,SHREE NAGAR,,,,,IN,,,,,,,,68,,Siddheshwar Enterprises,,,,2,,0,,,TBSB0000007,,TBSB0000007,,,,,,,N,N
+336,SC-8565,KMPL,IN,3811184730,CHENNAI - ANNAI SALA,,,,,IN,,,,,,,,3,,Veliba Office Equipment India,,,,2,,0,,,KKBK0000462,,KKBK0000462,,,,,,,N,N
+1212,SC-9228,2HDFC,IN,4230000000000,,,,,,,,,,,,,,4,,Teknor,,,,2,,0,,,HDFC0000423,,,,,,,,,N,N
+592,SC-8329,UBIN,IN,498804010032011,,,,,,,,,,,,,,12,,,,,,2,,0,,,,,,,,,,,,N,N
+992,E-900166,2HDFC,IN,50100207847063,,,,,,,,,,,,,,4,,Abid Shaikh,,,,2,,0,,,HDFC0000542,,,,,,,,,N,N
+1137,SC-8839,IDIB,IN,60001090189,,,,,,,,,,,,,,44,,Dharshan Marketing,,,,2,,0,,,IDIB0PBG001,,,,,,,,,N,N
+1174,SC-9033,SBI,IN,30136763635,,,,,,,,,,,,,,2,,Moon Light Electricals,,,,2,,0,,,SBIN0001456,,,,,,,,,N,N
+554,SC-7707,COSB,IN,9310010268,FATIMANAGAR,,,,,IN,,,,,,,,42,,Cure and Care,,,,2,,0,,,COSB0000093,,COSB0000093,,,,,,,N,N
+988,E-900158,SBI,IN,30258635172,,,,,,,,,,,,,,2,,Aditya Andankar,,,,2,,0,,,SBIN0009058,,,,,,,,,N,N
+481,SC-7107,KMPL,IN,7011600533,MUMBAI - CRAWFORD MA,,,,,IN,,,,,,,,3,,Pawan Marketing,,,,2,,0,,,KKBK0000673,,KKBK0000673,,,,,,,N,N
+282,SC-8535,2HDFC,IN,18000000000000,CHINCHWAD,,,,,IN,,,,,,,,4,,Jaguar Surface Coating Equipments,,,,2,,0,,,HDFC0001795,,HDFC0001795,,,,,,,N,N
+1238,SC-9166,SBI,IN,3313741933,,,,,,,,,,,,,,2,,Suprimo Automation Pvt. Ltd.,,,,2,,0,,,,,SBIN0016435,,,,,,,N,N
+948,E-900079,SBI,IN,33449192630,,,,,,,,,,,,,,2,,Prit Sudhirbhai Patel,,,,2,,0,,,SBIN0016028,,,,,,,,,N,N
+998,E-900185,2HDFC,IN,331000000000,,,,,,,,,,,,,,4,,Jignesh Shah,,,,2,,0,,,HDFC0004819,,,,,,,,,N,N
+1128,SC-8761,ICIC,IN,166000000000,,,,,,,,,,,,,,7,,Saral Info Solutions,,,,2,,0,,,ICIC0001656,,,,,,,,,N,N
+1134,SC-8799,COSB,IN,38600101090,,,,,,,,,,,,,,42,,Shah Enterprise,,,,2,,0,,,COSB0000038,,,,,,,,,N,N
+1188,SC-9107,SBI,IN,10606567751,,,,,,,,,,,,,,2,,Indian Institute of Packaging,,,,2,,0,,,SBIN0007074,,,,,,,,,N,N
+583,SC-02535,CORP,IN,43000401130001,,,,,,,,,,,,,,19,,,,,,2,,0,,,,,,,,,,,,N,N
+1144,SC-8903,SBI,IN,35180659636,,,,,,,,,,,,,,2,,Trades Global,,,,2,,0,,,SBIN0013264,,,,,,,,,N,N
+982,E-900147,2HDFC,IN,50100029510622,,,,,,,,,,,,,,4,,Pravin Shinde,,,,2,,0,,,HDFC0002630,,,,,,,,,N,N
+1125,SC-8744,2HDFC,IN,5840000000000,,,,,,,,,,,,,,4,,Sunder Electronics Instrumentation Engineers,,,,2,,0,,,HDFC0000584,,,,,,,,,N,N
+645,SC-9259,HDFC,IN,50200024583674,,,,,,,,,,,,,,1,,BIGSMALL GIFTS PVT LTD,,,,2,,0,,,,,HDFC0002024,,,,,,,N,N
+1076,SC-207804,2HDFC,IN,3000000000000,,,,,,,,,,,,,,4,,Ultra Tech,,,,2,,0,,,HDFC0000300,,,,,,,,,N,N
+1098,SC-8011,2HDFC,IN,4180000000000,,,,,,,,,,,,,,4,,B S K Technologies,,,,2,,0,,,HDFC0000418,,,,,,,,,N,N
+984,E-900150,2HDFC,IN,12000000000000,,,,,,,,,,,,,,4,,Denika Bansal,,,,2,,0,,,HDFC0001201,,,,,,,,,N,N
+1107,SC-8578,CBIN,IN,1057801779,,,,,,,,,,,,,,14,,Allied Scientific Equipments,,,,2,,0,,,CBIN0280608,,,,,,,,,N,N
+600,SC-8704,ICIC,IN,630005005961,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,,,,,,,,N,N
+1035,SC-03396,2HDFC,IN,3560000000000,,,,,,,,,,,,,,4,,Aastha Exports,,,,2,,0,,,HDFC0000356,,,,,,,,,N,N
+952,E-900085,BARB,IN,4220000000000,,,,,,,,,,,,,,13,,Swapnil Ashok Ghadge,,,,2,,0,,,BARB0WORLIX,,,,,,,,,N,N
+960,E-900097,ICIC,IN,28101007663,,,,,,,,,,,,,,7,,Sheeba Shaikh,,,,2,,0,,,ICIC0000281,,,,,,,,,N,N
+235,SC-8074,UBIN,IN,307000000000000,CHAWRI BAZAR - NEW D,,,,,IN,,,,,,,,12,,OMCO Tools,,,,2,,0,,,UBIN0530727,,UBIN0530727,,,,,,,N,N
+402,SC-8372,SBI,IN,31127636861,COMM PUNE,,,,,IN,,,,,,,,2,,NIYO Engineers,,,,2,,0,,,SBIN0004108,,SBIN0004108,,,,,,,N,N
+1039,SC-207630,2HDFC,IN,12560003756,,,,,,,,,,,,,,4,,Welldone Stationers,,,,2,,0,,,HDFC0000001,,,,,,,,,N,N
+623,SC-8984,ICIC,IN,1805011222,Borivali west,,,,,,,,,,,,,7,,Multilinks,,,,2,,0,,,ICIC0000018,,ICIC0000018,,,,,,,N,N
+1186,SC-9092,ICIC,IN,645000000000,,,,,,,,,,,,,,7,,Megatrade,,,,2,,0,,,ICIC0006451,,,,,,,,,N,N
+428,SC-7062,BCBM,IN,2910000000000,LAMINGTON ROAD,,,,,IN,,,,,,,,47,,Lakshya Infotech,,,,2,,0,,,BCBM0000030,,BCBM0000030,,,,,,,N,N
+979,E-900144,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Mohit Solanki,,,,2,,0,,,HDFC0001229,,,,,,,,,N,N
+882,207582,2HDFC,IN,922000000000,,,,,,,,,,,,,,4,,Good Looks,,,,2,,0,,,HDFC0000092,,,,,,,,,N,N
+987,E-900153,SBI,IN,10464201762,,,,,,,,,,,,,,2,,Rajesh Sharma,,,,2,,0,,,SBIN0001705,,,,,,,,,N,N
+1057,SC-207694,2HDFC,IN,1670000000000,,,,,,,,,,,,,,4,,Shabbir Hardware Stores,,,,2,,0,,,HDFC0000166,,,,,,,,,N,N
+1025,SC-01203,2HDFC,IN,6270000000000,,,,,,,,,,,,,,4,,Jyoti Sales Corporation,,,,2,,0,,,HDFC0000627,,,,,,,,,N,N
+883,207591,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Gujarat Industrial Syndicate,,,,2,,0,,,HDFC0000255,,,,,,,,,N,N
+642,SC-8780,BKDN,IN,747000000000,,,,,,,,,,,,,,22,,Amrutji Chaturji Thakor,,,,2,,0,,,BKDN0700000,,BKDN0700000,,,,,,,N,N
+1156,SC-8950,UTIB,IN,917000000000000,,,,,,,,,,,,,,31,,Star Cool Services,,,,2,,0,,,UTIB0002458,,,,,,,,,N,N
+589,SC-02035,HSBC,IN,71569966001,,,,,,,,,,,,,,38,,,,,,2,,0,,,,,,,,,,,,N,N
+916,E-900042,SBI,IN,36492260846,,,,,,,,,,,,,,2,,Chetan Utekar,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+530,SC-8480,ICIC,IN,284000000000,TURBHE,,,,,IN,,,,,,,,7,,Gurudav Enterprises LLP,,,,2,,0,,,ICIC0002841,,ICIC0002841,,,,,,,N,N
+989,E-900159,2HDFC,IN,13300000000000,,,,,,,,,,,,,,4,,Uday Salvi,,,,2,,0,,,HDFC0001333,,,,,,,,,N,N
+894,E-900009,SBI,IN,36508998685,,,,,,,,,,,,,,2,,Prem Lal Banvari Chaudhari,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+1246,SC-207974,HDFC,IN,50200009999201,,,,,,,,,,,,,,1,,Construction Diagnostic Centre Pvt. Ltd.,,,,2,,0,,,,,HDFC0000149,,,,,,,N,N
+1203,SC-9204,SBI,IN,37683729282,,,,,,,,,,,,,,2,,Minaxi Enterprise,,,,2,,0,,,SBIN0016059,,,,,,,,,N,N
+971,E-900126,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Kaushik Banglorkar,,,,2,,0,,,HDFC0000967,,,,,,,,,N,N
+890,E-900004,2HDFC,IN,5420000000000,,,,,,,,,,,,,,4,,Bhargav Trivedi,,,,2,,0,,,HDFC0000542,,,,,,,,,N,N
+1058,SC-207696,ICIC,IN,624000000000,,,,,,,,,,,,,,7,,Power tech system,,,,2,,0,,,ICIC0006244,,,,,,,,,N,N
+1200,SC-9184,ICIC,IN,343000000000,,,,,,,,,,,,,,7,,Fluid Power Engineers,,,,2,,0,,,ICIC0003428,,,,,,,,,N,N
+1010,E-900221,2HDFC,IN,321000000000,,,,,,,,,,,,,,4,,Shishir Jain,,,,2,,0,,,HDFC0000032,,,,,,,,,N,N
+594,SC-8779,VIJB,IN,504800301000013,,,,,,,,,,,,,,18,,,,,,2,,0,,,,,,,,,,,,N,N
+380,SC-8585,SBI,IN,62178125299,KALBADEVI,,,,,IN,,,,,,,,2,,Staplez Sales Corporation,,,,2,,0,,,SBIN0020869,,SBIN0020869,,,,,,,N,N
+122,SC-4529,BARB,IN,3920000000000,CRAWFORD MKT BRANCH,,,,,IN,,,,,,,,13,,Bharat Corporation,,,,2,,0,,,BARB0CRAWFO,,BARB0CRAWFO,,,,,,,N,N
+521,SC-8462,SBI,IN,37546100488,GOTRI ROAD,,,,,IN,,,,,,,,2,,Keval Incorporation,,,,2,,0,,,SBIN0010968,,SBIN0010968,,,,,,,N,N
+994,E-900175,2HDFC,IN,50100065030272,,,,,,,,,,,,,,4,,Nilesh Dattaram Desai,,,,2,,0,,,HDFC0000240,,,,,,,,,N,N
+587,SC-8025,HDFC,IN,50200003688378,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,,,,,,,,N,N
+1086,SC-4544,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Madras Tools,,,,2,,0,,,HDFC0000166,,,,,,,,,N,N
+1032,SC-02150,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Emm Kay Lubricants,,,,2,,0,,,HDFC0000091,,,,,,,,,N,N
+540,SC-8689,2HDFC,IN,5420000000000,MUMBAI - KAMALA MILL,,,,,IN,,,,,,,,4,,RKS Photolab,,,,2,,0,,,HDFC0000542,,HDFC0000542,,,,,,,N,N
+1220,SC-9257,ICIC,IN,112000000000,,,,,,,,,,,,,,7,,Unique Industrial Products,,,,2,,0,,,ICIC0001121,,,,,,,,,N,N
+261,SC-8313,2HDFC,IN,50200000000000,CHAWRI BAZAR,,,,,IN,,,,,,,,4,,ABSA Trades Pvt Ltd,,,,2,,0,,,HDFC0001070,,HDFC0001070,,,,,,,N,N
+896,E-900012,SBI,IN,33886959452,,,,,,,,,,,,,,2,,Lalit Dhingra,,,,2,,0,,,SBIN0001154,,,,,,,,,N,N
+1148,SC-8925,SBI,IN,20104505314,,,,,,,,,,,,,,2,,Kishor Kamble,,,,2,,0,,,SBIN0001154,,,,,,,,,N,N
+582,SC-8671,ICIC,IN,236000000000,,,,,,,,,,,,,,7,,J D Enterprises,,,,2,,0,,,ICIC0002362,,,,,,,,,N,N
+578,SC-6599,HDFC,IN,50200025440643,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,,,,,,,,N,N
+1189,SC-9108,2HDFC,IN,18000000000000,,,,,,,,,,,,,,4,,Linux Machines Incorporation,,,,2,,0,,,HDFC0001803,,,,,,,,,N,N
+576,SC-8729,BKID,IN,203830110000029,,,,,,,,,,,,,,8,,,,,,2,,0,,,,,,,,,,,,N,N
+978,E-900139,ICIC,IN,2601555040,,,,,,,,,,,,,,7,,Rahul Pandey,,,,2,,0,,,ICIC0000026,,,,,,,,,N,N
+1092,SC-7335,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Galore Systems,,,,2,,0,,,HDFC0000312,,,,,,,,,N,N
+1111,SC-8606,ICIC,IN,56105000342,,,,,,,,,,,,,,7,,RDL Technologies Pvt Ltd,,,,2,,0,,,ICIC0000561,,,,,,,,,N,N
+625,SC-9016,HDFC,IN,3942560000834,Sector 62 Noida,,,,,,,,,,,,,1,,Inventa Cleantec Pvt Ltd,,,,2,,0,,,,,HDFC0002649,,,,,,,N,N
+599,SC-01980,ICIC,IN,628805010754,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,,,,,,,,N,N
+1046,SC-207658,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Safety Solutions India,,,,2,,0,,,HDFC0000394,,,,,,,,,N,N
+1127,SC-8750,2HDFC,IN,2120000000000,,,,,,,,,,,,,,4,,Raj Scientific Company,,,,2,,0,,,HDFC0000212,,,,,,,,,N,N
+927,E-900054,SBI,IN,30995026818,,,,,,,,,,,,,,2,,Priyanka Kale,,,,2,,0,,,SBIN0003428,,,,,,,,,N,N
+1120,SC-8691,ICIC,IN,661000000000,,,,,,,,,,,,,,7,,Flexibles,,,,2,,0,,,ICIC0006613,,,,,,,,,N,N
+1105,SC-8547,INDB,IN,2505692050,,,,,,,,,,,,,,33,,Shabbir Trading Corporation,,,,2,,0,,,INDB0000002,,,,,,,,,N,N
+1136,SC-8814,BKID,IN,51800000000000,,,,,,,,,,,,,,8,,Sangam Agencies,,,,2,,0,,,BKID0000518,,,,,,,,,N,N
+1095,SC-7741,ICIC,IN,85505000899,,,,,,,,,,,,,,7,,RBL Technologies,,,,2,,0,,,ICIC0000855,,,,,,,,,N,N
+1235,SC-9141,TJSB,IN,8140200001022,,,,,,,,,,,,,,51,,DESHMUKH & ASSOCIATES,,,,2,,0,,,,,TJSB0000008,,,,,,,N,N
+294,SC-8315,BARB,IN,7120000000000,DAHISAR BRANCH,,,,,IN,,,,,,,,13,,Sumit B Mhatre,,,,2,,0,,,BARB0DAHISA,,BARB0DAHISA,,,,,,,N,N
+590,SC-8802,HDFC,IN,1442560002639,,,,,,,,,,,,,,1,,,,,,2,,0,,,,,,,,,,,,N,N
+990,E-900163,2HDFC,IN,50100000000000,,,,,,,,,,,,,,4,,Nitish Srivastav,,,,2,,0,,,HDFC0001220,,,,,,,,,N,N
+526,SC-8478,KMPL,IN,3611581067,GREATER NOIDA ALFA 1,,,,,IN,,,,,,,,3,,New Delta International,,,,2,,0,,,KKBK0005028,,KKBK0005028,,,,,,,N,N
+1158,SC-8958,BARB,IN,17700000000000,,,,,,,,,,,,,,13,,Volga Freeze,,,,2,,0,,,BARB0JETALP,,,,,,,,,N,N
+1124,SC-8731,BARB,IN,12300000000000,,,,,,,,,,,,,,13,,Gujarat Carbon Products,,,,2,,0,,,BARB0DUDHES,,,,,,,,,N,N
+1100,SC-8398,2HDFC,IN,16800000000000,,,,,,,,,,,,,,4,,Soham Systems,,,,2,,0,,,HDFC0001678,,,,,,,,,N,N
+1229,SC-9302,SBI,IN,20343453269,,,,,,,,,,,,,,2,,Ishwar Vaidya,,,,2,,0,,,SBIN0009689,,,,,,,,,N,N
+889,E-900003,SBI,IN,36488847422,,,,,,,,,,,,,,2,,Vijay Manjrekar,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+1210,SC-9225,BARB,IN,16500000000000,,,,,,,,,,,,,,13,,Shri Girraj Jee Office Systems,,,,2,,0,,,BARB0KIRTIN,,,,,,,,,N,N
+903,E-900021,SBI,IN,36492253613,,,,,,,,,,,,,,2,,Apeksha Daulat Khambe,,,,2,,0,,,SBIN0000510,,,,,,,,,N,N
+579,SC-8728,ICIC,IN,624405028409,,,,,,,,,,,,,,7,,,,,,2,,0,,,,,,,,,,,,N,N
+595,SC-8709,IBKL,IN,387000000000000,,,,,,,,,,,,,,27,,Cello Plastotech,,,,2,,0,,,IBKL0000386,,,,,,,,,N,N
+1016,SC-00715,BKID,IN,4720000000000,,,,,,,,,,,,,,8,,Mehta Earthmovers,,,,2,,0,,,BKID0000047,,,,,,,,,N,N
+931,E-900058,SBI,IN,34585510412,,,,,,,,,,,,,,2,,Pooja Manohar Egade,,,,2,,0,,,SBIN0016388,,,,,,,,,N,N
+1019,SC-00929,SBI,IN,32256315659,,,,,,,,,,,,,,2,,M Traders,,,,2,,0,,,SBIN0000455,,,,,,,,,N,N
+1193,SC-9136,SBI,IN,64156969639,,,,,,,,,,,,,,2,,Dhruva Thare Airconditioning,,,,2,,0,,,SBIN0040163,,,,,,,,,N,N
+1157,SC-8956,SBI,IN,10844360334,,,,,,,,,,,,,,2,,Revathi Electronics and Controls,,,,2,,0,,,SBIN0001040,,,,,,,,,N,N
+1208,SC-9217,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Tube Products India,,,,2,,0,,,HDFC0001237,,,,,,,,,N,N
+920,E-900046,2HDFC,IN,36492256557,,,,,,,,,,,,,,4,,Manoj Bodduna,,,,2,,0,,,HDFC0000357,,,,,,,,,N,N
+1141,SC-8859,BARB,IN,4120000000000,,,,,,,,,,,,,,13,,Saral Systems,,,,2,,0,,,BARB0SAKINA,,,,,,,,,N,N
+1187,SC-9106,JSBP,IN,20200000000000,,,,,,,,,,,,,,60,,Kalptaru,,,,2,,0,,,JSBP0000020,,,,,,,,,N,N
+1060,SC-207701,SBI,IN,61241652027,,,,,,,,,,,,,,2,,Amcode Infotech,,,,2,,0,,,SBIN0016337,,,,,,,,,N,N
+939,E-900068,ICIC,IN,124000000000,,,,,,,,,,,,,,7,,Dhaval Shah,,,,2,,0,,,ICIC0001237,,,,,,,,,N,N
+545,SC-8488,BKDN,IN,180000000000,KHUTWARD NAGAR,,,,,IN,,,,,,,,22,,Enermax Systems,,,,2,,0,,,BKDN0521803,,BKDN0521803,,,,,,,N,N
+1049,SC-207670,2HDFC,IN,50200000000000,,,,,,,,,,,,,,4,,Progressive Chromatography,,,,2,,0,,,HDFC0002441,,,,,,,,,N,N
+484,SC-8239,ORBC,IN,2180000000000,PIMPRI-PUNE,,,,,IN,,,,,,,,32,,Vishal Enterprises,,,,2,,0,,,ORBC0100218,,ORBC0100218,,,,,,,N,N
+1217,SC-9242,MAHB,IN,60085843819,,,,,,,,,,,,,,28,,GS Creations,,,,2,,0,,,MAHB0001280,,,,,,,,,N,N
+928,E-900055,ICIC,IN,121000000000,,,,,,,,,,,,,,7,,Rani Ashok Shinde,,,,2,,0,,,ICIC0001213,,,,,,,,,N,N
+1055,SC-207689,UTIB,IN,916000000000000,,,,,,,,,,,,,,31,,Techbiiz Solutions,,,,2,,0,,,UTIB0000368,,,,,,,,,N,N

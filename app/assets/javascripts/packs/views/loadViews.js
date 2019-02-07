@@ -27,6 +27,7 @@ import customerProducts from "./customerProducts/init";
 import kits from "./kits/init";
 import freightRequests from "./freightRequests/init";
 import freightQuotes from "./freightQuotes/init";
+import materialPickupRequests from "./materialPickupRequests/init";
 
 // Sales Invoices
 import salesInvoices from "./salesInvoices/init";
@@ -41,10 +42,17 @@ import purchaseOrders from "./purchaseOrders/init";
 import paymentRequests from "./paymentRequests/init";
 
 // Invoice Requests
-import invoiceRequests from "./paymentRequests/init";
+import invoiceRequests from "./invoiceRequests/init";
 
 // Activities
 import activities from './activities/init'
+
+import companies from './companies/init'
+
+// Company Reviews
+
+import companyReviews from './companyReviews/init'
+import poRequests from './poRequests/init'
 
 let loader = {
     imports: imports,
@@ -58,12 +66,16 @@ let loader = {
     kits: kits,
     freightRequests: freightRequests,
     freightQuotes: freightQuotes,
+    materialPickupRequests: materialPickupRequests,
     salesInvoices: salesInvoices,
     salesShipments: salesShipments,
     purchaseOrders: purchaseOrders,
     paymentRequests: paymentRequests,
     invoiceRequests: invoiceRequests,
-    activities: activities
+    poRequests: poRequests,
+    activities: activities,
+    companies: companies,
+    companyReviews: companyReviews
 };
 
 // Imports
