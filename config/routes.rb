@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
     resources :attachments
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -377,6 +378,7 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+        resources :company_banks
 
         resources :imports do
           collection do

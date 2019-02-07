@@ -16,7 +16,7 @@ class Resources::ApplicationResource
 
   def self.get_sap_cookie
     Rails.cache.fetch('sap_cookie', expires_in: 20.minutes) do
-      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{20.minutes}" #TODO Expires should be in date format
+      "B1SESSION=#{new_session_id}; path=#{ENDPOINT.path}; domain=#{[ENDPOINT.scheme, '://', ENDPOINT.host].join}; HttpOnly; Expires=#{(DateTime.now-1.day).strftime('%a, %d %b %Y %T') }"
     end
   end
 
