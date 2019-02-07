@@ -73,7 +73,7 @@ class Inquiry < ApplicationRecord
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
-      :'SO Not Created-Customer PO Awaited' => 13, # todo SO not created to order won is all Order Won
+      :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
       :'SO Draft: Pending Accounts Approval' => 8,
