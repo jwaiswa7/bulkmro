@@ -907,6 +907,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   def set_tax_rate_and_tax_code_for_customer_order_rows
     CustomerOrderRow.all.each do |row|
       row.update_attributes(tax_rate_id: row.customer_product.best_tax_rate.id, tax_code_id: row.customer_product.best_tax_code.id)
+      row.save
     end
   end
 end
