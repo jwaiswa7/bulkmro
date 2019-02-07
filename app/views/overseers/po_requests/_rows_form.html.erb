@@ -80,10 +80,10 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: true %>
+    <%= f.input :contact_email, label: 'Contact Email', placeholder: 'Contact email', required: !stock %>
   </div>
   <div class="col-12 col-md-4">
-    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: true %>
+    <%= f.input :contact_phone, label: 'Contact Phone', placeholder: 'Contact phone', required: !stock %>
   </div>
 
   <div class="col-12 col-md-4">
