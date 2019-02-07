@@ -1,7 +1,7 @@
 json.data (@accounts) do |account|
   json.array! [
                   [
-                      row_action_button(overseers_account_path(account), 'eye', 'View Account', 'info', :_blank)
+                      row_action_button(payment_collection_overseers_account_companies_path(account), 'eye', 'View Account', 'info', :_blank)
                   ].join(' '),
                   account.alias,
                   if account.invoices.present?

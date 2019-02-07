@@ -8,7 +8,7 @@ class SalesInvoice < ApplicationRecord
   has_many :receipts,dependent: :destroy, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
-
+  scope :not_cancelled_invoices, -> { where.not(:status => 'Cancelled')}
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
