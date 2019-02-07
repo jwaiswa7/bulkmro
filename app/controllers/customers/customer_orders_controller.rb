@@ -39,6 +39,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.customer_order_id = @customer_order.id
           row.quantity = cart_item.quantity
           row.customer_product = cart_item.customer_product
+          row.tax_rate_id = cart_item.customer_product.best_tax_rate.id
+          row.tax_code_id = cart_item.customer_product.best_tax_code.id
         end
       end
 

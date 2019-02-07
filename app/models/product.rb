@@ -50,7 +50,7 @@ class Product < ApplicationRecord
   validate :unique_name?
 
   def unique_name?
-    if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
+    if self.not_rejected? && Product.not_rejected.where(name: self.name, is_active: true).count > 1 && self.is_active
       errors.add(:name, " must be unique")
     end
   end
