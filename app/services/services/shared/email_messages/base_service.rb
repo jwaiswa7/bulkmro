@@ -56,13 +56,13 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
         personalizations: personalizations_array.as_json,
         template_id: template_id
     }.as_json)
+
     recipients.each_with_index do |recipient, index|
       if Rails.env.production?
         recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
       else
         recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: contact[index], template_data: template_data) if response.present? && response.headers.present?
       end
-
     end
   end
 

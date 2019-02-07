@@ -50,14 +50,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
-    email_service.call
+    email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
+    email_service.send_order_confirmation_email
 
     company = @customer_order.company
     account_managers = company.contacts.where(:role => 'account_manager')
     if account_managers.present?
-      email_service = Services::Overseers::EmailMessages::OrderConfirmationToAccountManagerMailer.new(@customer_order,account_managers, current_overseer)
-      email_service.call
+      email_service.send_order_approval_email(account_managers)
     end
 
 
