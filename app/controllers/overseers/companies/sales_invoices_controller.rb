@@ -5,7 +5,21 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
   end
 
   def payment_collection
-    @sales_invoices = ApplyDatatableParams.to(SalesInvoice.all, params.reject! { |k, v| k == 'company_id' })
-    authorize @sales_invoices
+
+    authorize :sales_invoice
+    base_filter = {
+        :base_filter_key => "sales_order_id",
+        :base_filter_value => @company.sales_orders.pluck(:id).uniq
+    }
+
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::SalesInvoices.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_sales_invoices = service.indexed_records
+        @sales_invoices = service.records.try(:reverse)
+      end
+    end
   end
 end

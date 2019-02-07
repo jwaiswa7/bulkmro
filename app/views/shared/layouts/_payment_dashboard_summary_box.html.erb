@@ -1,0 +1,24 @@
+<a class="btn btn-light text-left btn-lg btn-block mt-3 mt-lg-4" type="button" data-toggle="collapse" data-target="#summary">
+   Summary
+</a>
+
+<div id="summary" class="collapse">
+  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+    <%# summary_obj.each do |data| %>
+      <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+        <a name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " href="#">
+        <div class="card-body px-3 pt-3 pb-3">
+            <div class="text-center d-flex flex-column h-100">
+              <p class="mb-1 text-small text-uppercase text-red">
+                <strong>Name</strong>
+              </p>
+              <h5 class="mb-0 mt-auto text-red status-count-50"></h5>
+              <hr class="my-2">
+              <h5 class="my-0 text-small text-red ">&#8377;50</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    <%# end %>
+  </div>
+</div>

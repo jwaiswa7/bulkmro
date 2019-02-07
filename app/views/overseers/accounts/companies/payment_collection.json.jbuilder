@@ -2,14 +2,14 @@ json.data (@companies) do |company|
   json.array! [
                   [
                       if policy(company).show?;
-                        row_action_button(overseers_company_path(company), 'eye', 'View Company', 'info', :_blank)
+                        row_action_button(payment_collection_overseers_company_sales_invoices_path(company), 'eye', 'View Company', 'info', :_blank)
                       end,
                       if policy(company).show?;
                         row_action_button(new_overseers_payment_collection_email_path(:type =>'company'), 'envelope', 'Send Email', 'dark', :_blank)
                       end
                   ].join(' '),
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
-                  format_currency(company.invoices.sum(&:calculated_total)),
+                  format_currency(company.invoices.not_cancelled.sum(&:calculated_total_with_tax)),
                   format_currency(company.amount_received_against_invoice),
                   format_currency(company.amount_received_on_account),
                   format_currency(company.amount_received),
