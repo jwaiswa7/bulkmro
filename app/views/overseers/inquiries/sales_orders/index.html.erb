@@ -5,19 +5,19 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th>Order #</th>
-      <th>Doc ID</th>
+      <th class="no-sort desktop text-right">Order #</th>
+      <th class="no-sort desktop text-right">Doc ID</th>
       <th>Status</th>
       <% if @sales_orders.where(status: "Approved").count > 1 %>
         <th> SAP Status</th>
       <% end %>
-      <th>Sent At</th>
+      <th class="no-sort desktop text-right">Sent At</th>
 
-      <th>Line Items</th>
-      <th>Quote Total</th>
-      <th>Order Total</th>
-      <th>Order Date</th>
-      <th>Created At</th>
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Quote Total</th>
+      <th class="no-sort desktop text-right">Order Total</th>
+      <th class="no-sort desktop text-right">Order Date</th>
+      <th class="no-sort desktop text-right">Created At</th>
       <th>Created By</th>
     <% end %>
 
