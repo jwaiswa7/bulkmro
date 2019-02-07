@@ -78,4 +78,12 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def pending_stock_approval?
     index? && (manager? || admin?)
   end
+
+  def stock?
+    index? && (sales? || admin?)
+  end
+
+  def completed_stock?
+    index? && (logistics? || admin?)
+  end
 end

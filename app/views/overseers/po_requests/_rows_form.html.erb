@@ -279,7 +279,7 @@
         <!--        </div>-->
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => product_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, label: false, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
@@ -325,7 +325,7 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: true , disabled: stock %>
+          <%= po_request_row.input :lead_time, label: false, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: !stock , disabled: stock %>
         </div>
         <div class="col-12 col-md-1">
           <%= po_request_row.remove_nested_fields_link do %>

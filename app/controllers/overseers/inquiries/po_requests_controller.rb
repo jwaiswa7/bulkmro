@@ -26,7 +26,10 @@ class Overseers::Inquiries::PoRequestsController < Overseers::Inquiries::BaseCon
     authorize @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
-      @po_request.stock_status = "Stock Supplier PO Created" if @po_request.purchase_order.present? && @po_request.stock_status == "Stock Requested"
+       if @po_request.purchase_order.present? && @po_request.stock_status == "Stock Requested"
+         @po_request.stock_status = "Stock Supplier PO Created"
+         @po_request.approved_by = current_overseer
+       end
       ActiveRecord::Base.transaction do
         if @po_request.stock_status_changed?
           if @po_request.stock_status == "Stock Rejected"

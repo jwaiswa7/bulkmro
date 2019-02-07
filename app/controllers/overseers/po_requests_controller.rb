@@ -32,7 +32,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def index
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.handled.order(id: :desc), params)
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
     authorize @po_requests
   end
 
@@ -122,6 +122,26 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   def pending_stock_approval
     @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.stock_po.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def completed_stock
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.completed_stock_po.order(id: :desc), params)
     authorize @po_requests
 
     respond_to do |format|
