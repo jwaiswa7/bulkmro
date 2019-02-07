@@ -37,6 +37,7 @@ Rails.application.routes.draw do
 
   namespace 'overseers' do
     get "/docs/*page" => "docs#index"
+    resources :payment_collection_emails
     resources :attachments
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
