@@ -1,0 +1,40 @@
+<div class="font-family: Arial; font-size: 14.5px;">
+  <p style="color: #555;">Dear Customer,</p>
+  <p style="color: #555;">Please find attached the statement of your account as per our system.  </p>
+  <p style="color: #555;">The total outstanding amount as on date is <b><%= format_currency(@company.amount_receivable - @company.amount_received) %></b>. Summary can be seen as below:</p>
+  <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%" style="color: #333;">
+    <tbody>
+      <tr>
+        <th style="padding: 5px; text-align: center;">Sr No.</th>
+        <th style="padding: 5px; text-align: center;">Name Of Entity</th>
+        <th style="padding: 5px; text-align: center;">Invoice No</th>
+        <th style="padding: 5px; text-align: center;">Invoice Date</th>
+        <th style="padding: 5px; text-align: center;">Customer PO No.</th>
+        <th style="padding: 5px; text-align: center;">GRN No.</th>
+        <th style="padding: 5px; text-align: center;">Amount Invoiced</th>
+        <th style="padding: 5px; text-align: center;">Amount Received</th>
+        <th style="padding: 5px; text-align: center;">Amount Outstanding</th>
+        <th style="padding: 5px; text-align: center;">No. of Days Outstanding</th>
+        <th style="padding: 5px; text-align: center;">Bill To Name</th>
+        <th style="padding: 5px; text-align: center;">Ship To Name</th>
+
+      </tr>
+      <% @company.invoices.each_with_index do |invoice,index| %>
+        <tr>
+          <td style="padding: 5px; text-align: center;"><%= index+1 %></td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.sales_order.company %></td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.invoice_number %></td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.created_date %></td>
+          <td style="padding: 5px; text-align: center;">Pick-up location</td>
+          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+          <td style="padding: 5px; text-align: center;">Supplier Name</td>
+          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+          <td style="padding: 5px; text-align: center;">Pick-up location</td>
+          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,7 +1,12 @@
 json.data (@accounts) do |account|
   json.array! [
                   [
-                      row_action_button(payment_collection_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
+                      if policy(account).show?
+                        row_action_button(payment_collection_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
+                      end,
+                      if policy(account).show?
+                        row_action_button(new_overseers_payment_collection_email_path(:type =>'Account',:account => account), 'envelope', 'Send Email', 'dark', :_blank)
+                      end
                   ].join(' '),
                   account.alias,
                   if account.invoices.not_cancelled_invoices.present?
