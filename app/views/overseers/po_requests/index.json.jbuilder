@@ -14,6 +14,9 @@ json.data (@po_requests) do |po_request|
                       end,
                       if policy(po_request).sending_po_to_supplier_new_email_message?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
+                      end,
+                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
+                        row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       end
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),

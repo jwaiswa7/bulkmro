@@ -184,6 +184,8 @@ Rails.application.routes.draw do
             post 'sending_po_to_supplier_notification'
             get 'dispatch_from_supplier_delayed'
             post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
           end
         end
       end

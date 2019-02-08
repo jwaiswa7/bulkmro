@@ -17,7 +17,8 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
     @email_message = @sales_order.email_messages.build(
         :overseer => current_overseer,
         :contact => @inquiry.contact,
-        :inquiry => @inquiry
+        :inquiry => @inquiry,
+        :email_type => "Material Dispatched to Customer"
     )
 
     @email_message.assign_attributes(email_message_params)
@@ -51,7 +52,8 @@ class Overseers::SalesOrders::EmailMessagesController < Overseers::SalesOrders::
     @email_message = @sales_order.email_messages.build(
         :overseer => current_overseer,
         :contact => @inquiry.contact,
-        :inquiry => @inquiry
+        :inquiry => @inquiry,
+        :email_type => "Material Delivered to Customer"
     )
 
     @email_message.assign_attributes(email_message_params)

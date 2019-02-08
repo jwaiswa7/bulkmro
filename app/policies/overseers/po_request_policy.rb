@@ -70,4 +70,12 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def dispatch_supplier_delayed_create_email_message?
     dispatch_supplier_delayed_new_email_message?
   end
+
+  def material_received_in_bm_warehouse_new_email_msg?
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order # && record.purchase_order.material_status.present?
+  end
+
+  def material_received_in_bm_warehouse_create_email_msg?
+    material_received_in_bm_warehouse_new_email_msg?
+  end
 end
