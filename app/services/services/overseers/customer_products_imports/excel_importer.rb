@@ -1,6 +1,8 @@
 class Services::Overseers::CustomerProductsImports::ExcelImporter
-  class ExcelInvalidHeader < StandardError; end
-  class ExcelInvalidRows < StandardError; end
+  class ExcelInvalidHeader < StandardError;
+  end
+  class ExcelInvalidRows < StandardError;
+  end
 
   def initialize(company, import)
     @company = company
@@ -42,7 +44,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
       if file_url.present? && filename.present?
         url = URI(file_url)
         res = Net::HTTP.get_response(url)
-        if res.code == '200' || res.code =='301' || res.code =='302'
+        if res.code == '200' || res.code == '301' || res.code == '302'
           file = open(file_url)
           record.send('images').attach(io: file, filename: filename)
         else
@@ -62,15 +64,15 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         if product.present?
           customer_product = CustomerProduct.where(company_id: company.id, product_id: product.id).first_or_create
           customer_product.customer_price = row['price'].to_f
-          customer_product.name = (row['name'] if row['name'].present? ) || product.name
-          customer_product.sku =  row['sku'] || product.sku
-          brand = ( Brand.find_by_name(row['brand']) if row['brand'].present? ) || product.brand
-          customer_product.brand_id = brand.id if brand.present?
+          customer_product.name = (row['name'] if row['name'].present?) || product.name
+          customer_product.sku = row['material_code'] || product.sku
+          customer_product.brand = (Brand.find_by_name(row['brand']) if row['brand'].present?) || product.brand
+          customer_product.measurement_unit = (MeasurementUnit.find_by_name(row['uom']) if row['uom'].present?) || product.measurement_unit
           if row['url'].present?
             filename = row['url'].split('/').last
             attach_file(customer_product, row['url'], filename)
           end
-          customer_product.tax_code = (TaxCode.where("code LIKE '%?%'",row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
+          customer_product.tax_code = (TaxCode.where("code LIKE '%?%'", row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
           customer_product.tax_rate = (TaxRate.where(:tax_percentage => row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
           customer_product.save
         end
