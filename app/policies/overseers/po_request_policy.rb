@@ -36,7 +36,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales? || admin? ) && record.status == "Rejected"
+    record.purchase_order.present? && (manager_or_sales? || admin?) && record.status == "Rejected"
   end
 
   def can_process_amended_po_requests?
@@ -64,7 +64,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-     record.status == 'PO Created' && (admin? || logistics?)
+    record.status == 'PO Created' && (admin? || logistics?)
   end
 
   def dispatch_supplier_delayed_create_email_message?
@@ -72,7 +72,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def material_received_in_bm_warehouse_new_email_msg?
-    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order # && record.purchase_order.material_status.present?
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.purchase_order.material_status.present?
   end
 
   def material_received_in_bm_warehouse_create_email_msg?

@@ -4,8 +4,7 @@
     <strong><%= current_overseer.full_name %></strong>.
   <% end %>
   <%= render layout: 'shared/layouts/form' do %>
-
-    <%= simple_form_for([:overseers, @po_request, @email_message], url: {action: "#{@action}", controller: 'overseers/po_requests/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for([:overseers, @po_request, @email_message], url: {action: @action, controller: 'overseers/po_requests/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <div class="card-body">
         <%= hidden_field_tag :type, params[:type] %>
         <%= f.input :from, disabled: true %>
