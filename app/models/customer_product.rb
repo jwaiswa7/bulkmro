@@ -19,7 +19,9 @@ class CustomerProduct < ApplicationRecord
   validates_presence_of :name
   validates_presence_of :sku
   validates_presence_of :customer_price
-  validates_uniqueness_of :sku, scope: :company_id
+
+  #validates_uniqueness_of :sku, scope: :company_id # Commenting validation due to probability of non unique product codes
+
   validates_uniqueness_of :product_id, scope: :company_id
   validates_presence_of :moq
 
