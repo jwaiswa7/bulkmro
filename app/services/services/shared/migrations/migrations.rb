@@ -2117,8 +2117,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
       service.loop(nil) do |x|
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
-        if purchase_order.present? && ((purchase_order.calculated_total.to_f != x.get_column('Document Total').to_f)||(purchase_order.calculated_total_with_tax.to_f != ( x.get_column('Tax Amount (SC)').to_f + x.get_column('Document Total').to_f)))
-          writer << [purchase_order.po_number, purchase_order.calculated_total.to_f, purchase_order.calculated_total_with_tax.to_f, x.get_column('Document Total').to_f, ( x.get_column('Tax Amount (SC)').to_f + x.get_column('Document Total').to_f)]
+        if purchase_order.present? && ((purchase_order.converted_total_with_tax.to_f != x.get_column('Document Total').to_f)||(purchase_order.converted_total.to_f != ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f)))
+          writer << [purchase_order.po_number, purchase_order.converted_total.to_f, purchase_order.converted_total_with_tax.to_f, ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f) ,x.get_column('Document Total').to_f]
         end
       end
     end
