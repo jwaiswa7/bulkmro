@@ -1,5 +1,6 @@
-class Resources::PaymentTermsType < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::PaymentTermsType < Resources::ApplicationResource
   def self.identifier
     :GroupNumber
   end
@@ -12,5 +13,4 @@ class Resources::PaymentTermsType < Resources::ApplicationResource
         PaymentTermsGroupName: record.name
     }
   end
-
 end

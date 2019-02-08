@@ -1,15 +1,16 @@
-class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::BaseCallback
+# frozen_string_literal: true
 
+class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::BaseCallback
   def call
-    sprint_order_id = params['U_MgntDocID']
-    remote_status = params['Status']
-    remote_comment = params['comment']
-    remote_uid = params['DocEntry']
-    order_number = params['DocNum']
+    sprint_order_id = params["U_MgntDocID"]
+    remote_status = params["Status"]
+    remote_comment = params["comment"]
+    remote_uid = params["DocEntry"]
+    order_number = params["DocNum"]
     comment_message = [
-        ['SAP Status Updated', to_local_status(remote_status)].join(': '),
-        ['Comment', remote_comment].join(': '),
-    ].join(' | ')
+        ["SAP Status Updated", to_local_status(remote_status)].join(": "),
+        ["Comment", remote_comment].join(": "),
+    ].join(" | ")
 
     if sprint_order_id.blank?
       return_response("Order not found.", 0)
@@ -21,7 +22,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
         when :'Approved'
           if sales_order.remote_status.blank?
             begin
-              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :mis_date => Date.today, :order_number => order_number, :remote_uid => remote_uid)
+              sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: order_number, remote_uid: remote_uid)
               Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
               sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
               sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
@@ -35,10 +36,10 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
           end
         when :'SAP Rejected'
           begin
-            sales_order.update_attributes(:status => :'SAP Rejected')
+            sales_order.update_attributes(status: :'SAP Rejected')
             comment = InquiryComment.where(message: comment_message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create! if sales_order.inquiry.present?
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :sap_rejected).call
-            sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
+            sales_order.create_rejection!(comment: comment, overseer: Overseer.default_approver)
             sales_order.approval.destroy! if sales_order.approval.present?
             sales_order.update_index
             return_response("Order Rejected Successfully")
@@ -54,11 +55,11 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
 
   def to_local_status(remote_status)
     case remote_status
-    when '1'
+    when "1"
       :'Approved'
-    when '2'
+    when "2"
       :'SAP Rejected'
-    when '3'
+    when "3"
       :'SAP Rejected'
     end
   end

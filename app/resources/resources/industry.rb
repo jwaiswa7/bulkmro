@@ -1,5 +1,6 @@
-class Resources::Industry < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::Industry < Resources::ApplicationResource
   def self.identifier
     :IndustryCode
   end

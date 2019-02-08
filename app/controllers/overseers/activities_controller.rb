@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ActivitiesController < Overseers::BaseController
   before_action :set_activity, only: [:edit, :update, :approve, :reject]
 
@@ -12,8 +14,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def new
-    @activity = current_overseer.activities.build(:overseer => current_overseer)
-    @activity.build_company_creation_request(:overseer => current_overseer)
+    @activity = current_overseer.activities.build(overseer: current_overseer)
+    @activity.build_company_creation_request(overseer: current_overseer)
     @accounts = Account.all
     authorize @activity
   end
@@ -24,7 +26,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     if @activity.save
       redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -46,7 +48,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
   def approve
     authorize @activity
     ActiveRecord::Base.transaction do
-      @activity.create_approval(:overseer => current_overseer)
+      @activity.create_approval(overseer: current_overseer)
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end
@@ -57,72 +59,68 @@ class Overseers::ActivitiesController < Overseers::BaseController
     authorize @activities
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
-        activity.create_approval(:overseer => current_overseer)
+        activity.create_approval(overseer: current_overseer)
       end
     end
   end
 
   def reject_selected
-
     @activities = Activity.where(id: params[:activities])
 
     authorize @activities
     @activities.each do |activity|
       ActiveRecord::Base.transaction do
-        activity.create_rejection(:overseer => current_overseer)
+        activity.create_rejection(overseer: current_overseer)
       end
     end
-
   end
 
   def reject
     authorize @activity
     ActiveRecord::Base.transaction do
-      @activity.create_rejection(:overseer => current_overseer)
+      @activity.create_rejection(overseer: current_overseer)
     end
     redirect_to overseers_activities_path, notice: flash_message(@activity, action_name)
   end
 
   def add_to_inquiry
-
     @activities = Activity.where(id: params[:activities])
     @inquiry = params[:inquiry]
 
     authorize @activities
     @activities.update_all(inquiry_id: @inquiry)
-
   end
 
 
   private
 
-  def activity_params
-    params.require(:activity).permit(
+    def activity_params
+      params.require(:activity).permit(
         :inquiry_id,
-        :company_id,
-        :contact_id,
-        :company_type,
-        :subject,
-        :purpose,
-        :activity_date,
-        :activity_type,
-        :points_discussed,
-        :actions_required,
-        :expenses,
-        :overseer_ids => [],
-        :company_creation_request_attributes => [
-            :name,
-            :email,
-            :first_name,
-            :last_name,
-            :address,
-            :account_type,
-          ],
-        :attachments => []
-    )
-  end
+          :company_id,
+          :contact_id,
+          :company_type,
+          :subject,
+          :purpose,
+          :activity_date,
+          :activity_type,
+          :points_discussed,
+          :actions_required,
+          :expenses,
+          overseer_ids: [],
+          company_creation_request_attributes: [
+              :name,
+              :email,
+              :first_name,
+              :last_name,
+              :address,
+              :account_type,
+            ],
+          attachments: []
+      )
+    end
 
-  def set_activity
-    @activity = Activity.find(params[:id])
-  end
+    def set_activity
+      @activity = Activity.find(params[:id])
+    end
 end

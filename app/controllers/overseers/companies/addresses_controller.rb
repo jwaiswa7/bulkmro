@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
   before_action :set_address, only: [:show, :edit, :update]
 
   def index
     base_filter = {
-        :base_filter_key => "company_id",
-        :base_filter_value => params[:company_id]
+        base_filter_key: "company_id",
+        base_filter_value: params[:company_id]
     }
     authorize :address
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::Addresses.new(params.merge(base_filter), current_overseer)
         service.call
@@ -39,12 +41,12 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address.remove_gst_whitespace
 
     if @address.save
-      @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
-      @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
+      @company.update_attributes(default_billing_address: @address) if @company.default_billing_address.blank?
+      @company.update_attributes(default_shipping_address: @address) if @company.default_shipping_address.blank?
       @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -58,44 +60,44 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address.remove_gst_whitespace
 
     if @address.save
-      @company.update_attributes(:default_billing_address => @address) if @company.default_billing_address.blank?
-      @company.update_attributes(:default_shipping_address => @address) if @company.default_shipping_address.blank?
+      @company.update_attributes(default_billing_address: @address) if @company.default_billing_address.blank?
+      @company.update_attributes(default_shipping_address: @address) if @company.default_shipping_address.blank?
       @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   private
 
-  def set_address
-    @address ||= Address.find(params[:id])
-  end
+    def set_address
+      @address ||= Address.find(params[:id])
+    end
 
-  def address_params
-    params.require(:address).permit(
+    def address_params
+      params.require(:address).permit(
         :name,
-        :country_code,
-        :pincode,
-        :city_name,
-        :remote_uid,
-        :address_state_id,
-        :state_name,
-        :street1,
-        :street2,
-        :telephone,
-        :mobile,
-        :gst_proof,
-        :cst_proof,
-        :vat_proof,
-        :excise_proof,
-        :gst,
-        :cst,
-        :vat,
-        :tan,
-        :excise,
-        :gst_type
-    )
-  end
+          :country_code,
+          :pincode,
+          :city_name,
+          :remote_uid,
+          :address_state_id,
+          :state_name,
+          :street1,
+          :street2,
+          :telephone,
+          :mobile,
+          :gst_proof,
+          :cst_proof,
+          :vat_proof,
+          :excise_proof,
+          :gst,
+          :cst,
+          :vat,
+          :tan,
+          :excise,
+          :gst_type
+      )
+    end
 end

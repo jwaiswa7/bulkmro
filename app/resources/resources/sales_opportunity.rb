@@ -1,20 +1,20 @@
-class Resources::SalesOpportunity < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::SalesOpportunity < Resources::ApplicationResource
   def self.identifier
     :SequentialNo
   end
 
   def self.to_remote(record)
-
     {
         CardCode: record.company.remote_uid, #
         U_SalesMgr: record.sales_manager.try(:full_name),
-        StartDate: record.created_at.strftime('%F'),
+        StartDate: record.created_at.strftime("%F"),
         MaxSystemTotal: record.potential_amount,
         ProjectCode: record.project_uid,
         Status: "sos_Open",
         GrossProfit: record.gross_profit_percentage,
-        PredictedClosingDate: (record.created_at + 2.months).strftime('%F'),
+        PredictedClosingDate: (record.created_at + 2.months).strftime("%F"),
         OpportunityName: record.subject,
         InterestLevel: 2,
         SalesOpportunitiesLines: [
@@ -43,7 +43,5 @@ class Resources::SalesOpportunity < Resources::ApplicationResource
         ],
         MaxLocalTotal: record.potential_amount
     }
-
   end
-
 end

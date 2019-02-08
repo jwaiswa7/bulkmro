@@ -1,5 +1,6 @@
-class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::BaseService
   def initialize(inquiry)
     @inquiry = inquiry
   end
@@ -11,9 +12,9 @@ class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::Ba
 
           inquiry_product.product.lowest_inquiry_product_suppliers(number: 5).each do |product_supplier|
             inquiry_product.inquiry_product_suppliers.build(
-                :supplier => product_supplier.supplier,
-                :unit_cost_price => product_supplier.lowest_unit_cost_price,
-                :bp_catalog_name => inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
+              supplier: product_supplier.supplier,
+              unit_cost_price: product_supplier.lowest_unit_cost_price,
+              bp_catalog_name: inquiry_product.product.bp_catalog_for_supplier(product_supplier.supplier)
             )
           end
 

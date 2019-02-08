@@ -1,22 +1,24 @@
-require 'wit'
-require_relative './config/../config/environment'
+# frozen_string_literal: true
+
+require "wit"
+require_relative "./config/../config/environment"
 
 client = Wit.new(access_token: Settings.wit.auth_token)
 client.interactive
 
 def first_entity_value(entities, entity)
   return nil unless entities.has_key? entity
-  val = entities[entity][0]['value']
+  val = entities[entity][0]["value"]
   return nil if val.nil?
   return val
 end
 
 def handle_message(response)
-  entities = response['entities']
-  entity = first_entity_value(entities, 'entity')
-  intent = first_entity_value(entities, 'intent')
-  greetings = first_entity_value(entities, 'greetings')
-  number = first_entity_value(entities, 'number')
+  entities = response["entities"]
+  entity = first_entity_value(entities, "entity")
+  intent = first_entity_value(entities, "intent")
+  greetings = first_entity_value(entities, "greetings")
+  number = first_entity_value(entities, "number")
 
   case
   when intent

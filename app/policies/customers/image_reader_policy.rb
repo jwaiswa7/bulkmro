@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::ImageReaderPolicy < Customers::ApplicationPolicy
   def export_all?
     true

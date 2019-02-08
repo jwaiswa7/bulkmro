@@ -1,21 +1,22 @@
-class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
+# frozen_string_literal: true
 
+class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
   def call
-    order_number = params['increment_id']
-    remote_status = params['sap_order_status']
+    order_number = params["increment_id"]
+    remote_status = params["sap_order_status"]
 
     if order_number && remote_status
       sales_order = SalesOrder.find_by_order_number(order_number)
 
       if sales_order.present?
         begin
-          sales_order.update_attributes(:remote_status => remote_status.to_i)
+          sales_order.update_attributes(remote_status: remote_status.to_i)
           message = [
               ["SAP Status Updated: ", sales_order.remote_status].join
           ].join('\n')
           InquiryComment.where(message: message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create if sales_order.inquiry.present?
           if sales_order.remote_status == "Cancelled by SAP"
-            sales_order.update_attributes(:status => "Cancelled")
+            sales_order.update_attributes(status: "Cancelled")
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :expected_order).call
           end
 

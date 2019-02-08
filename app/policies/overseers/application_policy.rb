@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ApplicationPolicy
   attr_reader :overseer, :record
 
@@ -35,7 +37,7 @@ class Overseers::ApplicationPolicy
   end
 
   def developer?
-    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'ruta.kambli@bulkmro.com', 'rucha.parab@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'pradeep.ketkale@bulkmro.com'].include? overseer.email
+    ["bhargav.trivedi@bulkmro.com", "saurabh.bhosale@bulkmro.com", "ashwin.goyal@bulkmro.com", "malav.desai@bulkmro.com", "prikesh.savla@bulkmro.com", "amit.goyal@bulkmro.com", "sandesh.raut@bulkmro.com", "sourabh.raje@bulkmro.com", "lopesh.durugkar@bulkmro.com", "ruta.kambli@bulkmro.com", "rucha.parab@bulkmro.com", "meenakshi.naik@bulkmro.com", "pradeep.ketkale@bulkmro.com"].include? overseer.email
   end
 
   def admin?
@@ -107,15 +109,15 @@ class Overseers::ApplicationPolicy
   end
 
   def allow_export?
-    developer? || ['vijay.manjrekar@bulkmro.com', 'nilesh.desai@bulkmro.com', 'lavanya.j@bulkmro.com'].include?(overseer.email)
+    developer? || ["vijay.manjrekar@bulkmro.com", "nilesh.desai@bulkmro.com", "lavanya.j@bulkmro.com"].include?(overseer.email)
   end
 
   def allow_logistics_format_export?
-    developer? || ['amit.rawool@bulkmro.com'].include?(overseer.email)
+    developer? || ["amit.rawool@bulkmro.com"].include?(overseer.email)
   end
 
   def allow_customer_portal?
-    ['kartik.pai@bulkmro.com'].include?(overseer.email)
+    ["kartik.pai@bulkmro.com"].include?(overseer.email)
   end
 
   def export_rows?
@@ -142,7 +144,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

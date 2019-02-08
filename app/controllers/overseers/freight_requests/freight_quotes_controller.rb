@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRequests::BaseController
   before_action :set_freight_quote, only: [:show, :edit, :update]
 
@@ -10,7 +12,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
   def new
     authorize @freight_request, :new_freight_quote?
-    @freight_quote = @freight_request.build_freight_quote(:overseer => current_overseer, :inquiry => @freight_request.inquiry)
+    @freight_quote = @freight_request.build_freight_quote(overseer: current_overseer, inquiry: @freight_request.inquiry)
   end
 
   def show
@@ -26,13 +28,13 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
         @freight_quote.freight_request.status = "Freight Quote Submitted"
         @freight_quote.freight_request.save!
         @freight_quote.save!
-        @freight_quote_comment = FreightQuoteComment.new(:message => "Payment Request submitted.", :freight_quote => @freight_quote, :overseer => current_overseer)
+        @freight_quote_comment = FreightQuoteComment.new(message: "Payment Request submitted.", freight_quote: @freight_quote, overseer: current_overseer)
         @freight_quote_comment.save!
       end
 
       redirect_to overseers_freight_quote_path(@freight_quote), notice: flash_message(@freight_quote, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -48,7 +50,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
         if @freight_quote.status_changed?
-          @freight_quote_comment = FreightQuoteComment.new(:message => "Status Changed: #{@freight_quote.status}", :freight_quote => @freight_quote, :overseer => current_overseer)
+          @freight_quote_comment = FreightQuoteComment.new(message: "Status Changed: #{@freight_quote.status}", freight_quote: @freight_quote, overseer: current_overseer)
           @freight_quote.save!
           @freight_quote_comment.save!
         else
@@ -58,17 +60,17 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
       redirect_to overseers_freight_request_freight_quote_path(@freight_request, @freight_quote), notice: flash_message(@freight_quote, action_name)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   private
 
-  def freight_quote_params
-    params.require(:freight_quote).permit!
-  end
+    def freight_quote_params
+      params.require(:freight_quote).permit!
+    end
 
-  def set_freight_quote
-    @freight_quote = FreightQuote.find(params[:id])
-  end
+    def set_freight_quote
+      @freight_quote = FreightQuote.find(params[:id])
+    end
 end

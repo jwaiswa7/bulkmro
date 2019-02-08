@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SalesQuoteMailer < ApplicationMailer
-  default :template_path => "mailers/#{self.name.underscore}"
+  default template_path: "mailers/#{self.name.underscore}"
 
   def acknowledgement(email_message)
     @overseer = email_message.overseer
@@ -18,6 +20,6 @@ class SalesQuoteMailer < ApplicationMailer
 
     attach_files(email_message.files)
     email = htmlized_email(email_message)
-    email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
+    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
 end

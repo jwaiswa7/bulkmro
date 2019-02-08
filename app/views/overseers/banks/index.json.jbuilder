@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 json.data (@banks) do |bank|
   json.array! [
 
                   [
                       if policy(bank).show?
-                        row_action_button(overseers_bank_path(bank), 'fal fa-eye', 'View bank', 'dark')
+                        row_action_button(overseers_bank_path(bank), "fal fa-eye", "View bank", "dark")
                       end,
                       if policy(bank).edit?
-                        row_action_button(edit_overseers_bank_path(bank), 'pencil', 'Edit bank', 'warning')
+                        row_action_button(edit_overseers_bank_path(bank), "pencil", "Edit bank", "warning")
                       end
-                  ].join(' '),
+                  ].join(" "),
                   bank.name,
                   bank.code,
                   bank.swift_number,
                   bank.iban,
-                  format_boolean_label(bank.synced?, 'synced'),
+                  format_boolean_label(bank.synced?, "synced"),
                   format_date(bank.created_at)
               ]
 end

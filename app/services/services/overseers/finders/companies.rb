@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::Finders::Companies < Services::Overseers::Finders::BaseFinder
   def call
     call_base
@@ -24,14 +26,14 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
   def perform_query(query)
     query = query[0, 35]
 
-    indexed_records = index_klass.query({
-                                            multi_match: {
-                                                query: query,
-                                                operator: 'and',
-                                                fields: %w[name^4 pan^3 is_pan_valid],
-                                                minimum_should_match: '100%'
-                                            }
-                                        })
+    indexed_records = index_klass.query(
+      multi_match: {
+          query: query,
+          operator: "and",
+          fields: %w[name^4 pan^3 is_pan_valid],
+          minimum_should_match: "100%"
+      }
+                                        )
 
     if @base_filter.present?
       indexed_records =  indexed_records.filter(@base_filter)

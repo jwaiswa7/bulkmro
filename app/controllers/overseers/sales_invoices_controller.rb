@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::SalesInvoicesController < Overseers::BaseController
   before_action :set_invoice, only: [:edit_pod, :update_pod]
 
@@ -5,7 +7,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
     authorize :sales_invoice
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer)
         service.call
@@ -64,15 +66,14 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   private
 
-  def set_invoice
-    @invoice ||= SalesInvoice.find(params[:id])
-  end
+    def set_invoice
+      @invoice ||= SalesInvoice.find(params[:id])
+    end
 
-  def invoice_params
-    params.require(:sales_invoice).permit(
+    def invoice_params
+      params.require(:sales_invoice).permit(
         :pod_attachment,
-        :delivery_date
-    )
-  end
-
+          :delivery_date
+      )
+    end
 end

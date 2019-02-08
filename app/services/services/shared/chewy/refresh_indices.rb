@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "rake"
 
 class Services::Shared::Chewy::RefreshIndices < Services::Shared::BaseService
   def initialize
     Rails.application.class.load_tasks
-    Rake::Task['chewy:reset'].invoke
+    Rake::Task["chewy:reset"].invoke
   end
 end

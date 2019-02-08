@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 json.data (@overseers) do |overseer|
   json.array! [
                   [
                       if policy(overseer).edit?
-                        row_action_button(edit_overseers_overseer_path(overseer), 'pencil', 'Edit Overseer', 'warning')
+                        row_action_button(edit_overseers_overseer_path(overseer), "pencil", "Edit Overseer", "warning")
                       end,
-                  ].join(' '),
+                  ].join(" "),
                   overseer.hierarchy_to_s,
                   format_enum(overseer.role),
                   format_date(overseer.created_at)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 
@@ -6,21 +8,21 @@ class Overseers::DashboardController < Overseers::BaseController
 
     if current_overseer.inside_sales_executive?
       @dashboard = Overseers::Dashboard.new(current_overseer)
-      render 'sales_dashboard'
+      render "sales_dashboard"
     elsif current_overseer.admin?
       service = Services::Overseers::Dashboards::Admin.new
       @dashboard = service.call
-      render 'admin_dashboard'
+      render "admin_dashboard"
     else
-      render 'default_dashboard'
+      render "default_dashboard"
     end
   end
 
   def serializer
     authorize :dashboard, :show?
-    render json: Serializers::InquirySerializer.new(Inquiry.find(1004), {
+    render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
         include: [
-        ]}).serialized_json
+        ]).serialized_json
   end
 
   def chewy
@@ -48,8 +50,8 @@ class Overseers::DashboardController < Overseers::BaseController
 
     CustomerProduct.with_attachments.each do |customer_product|
       customer_product.best_images.each do |image|
-        image.service.delete(customer_product.watermarked_variation(image, 'tiny').key)
-        image.service.delete(customer_product.watermarked_variation(image, 'medium').key)
+        image.service.delete(customer_product.watermarked_variation(image, "tiny").key)
+        image.service.delete(customer_product.watermarked_variation(image, "medium").key)
       end
     end
     # render json: Resources::BusinessPartner.find('3095267094', quotes: true)

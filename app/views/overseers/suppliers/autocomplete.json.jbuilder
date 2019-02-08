@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.results(@suppliers) do |supplier|
   json.set! :id, supplier.id
   json.set! :text, supplier.to_s

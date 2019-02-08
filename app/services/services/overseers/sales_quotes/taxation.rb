@@ -1,5 +1,6 @@
-class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
   def initialize(sales_quote_row)
     @sales_quote_row = sales_quote_row
     @sales_quote = sales_quote_row.sales_quote
@@ -15,15 +16,15 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     @is_sez = sales_quote.is_sez || (sales_quote.billing_address.present? && sales_quote.billing_address.is_sez)
     @is_service = sales_quote_row.try(:product).try(:is_service) # || tax_code.is_service
 
-    @is_cgst_sgst = if (bill_to.present? && bill_to.country_code == 'IN') && bill_from.present? &&  ship_from.present?
-                      if is_service
-                        ship_from.address.state == bill_to.state
-                      else
-                        ship_from.address.state == bill_to.state
-                      end
-                    else
-                      false
-                    end
+    @is_cgst_sgst = if (bill_to.present? && bill_to.country_code == "IN") && bill_from.present? && ship_from.present?
+      if is_service
+        ship_from.address.state == bill_to.state
+      else
+        ship_from.address.state == bill_to.state
+      end
+    else
+      false
+    end
 
     @is_igst = !is_cgst_sgst
   end

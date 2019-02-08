@@ -1,5 +1,6 @@
-class Services::Resources::Industries::SaveAndSync < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Resources::Industries::SaveAndSync < Services::Shared::BaseService
   def initialize(industry)
     @industry = industry
   end
@@ -15,7 +16,7 @@ class Services::Resources::Industries::SaveAndSync < Services::Shared::BaseServi
       ::Resources::Industry.update(industry.remote_uid, industry)
     else
       remote_uid = ::Resources::Industry.create(industry)
-      industry.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
+      industry.update_attributes(remote_uid: remote_uid) if remote_uid.present?
     end
   end
 

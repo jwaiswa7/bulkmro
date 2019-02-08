@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Callbacks::ImageReadersController < ApplicationController
   protect_from_forgery with: :null_session
 
@@ -5,5 +7,4 @@ class Callbacks::ImageReadersController < ApplicationController
     service = Services::Customers::ImageReaders::ImageReaderUpdate.new(params)
     render json: service.call || {}, status: :ok
   end
-
 end

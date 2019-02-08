@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Product < ApplicationRecord
-  COMMENTS_CLASS = 'ProductComment'
-  REJECTIONS_CLASS = 'ProductRejection'
-  APPROVALS_CLASS = 'ProductApproval'
+  COMMENTS_CLASS = "ProductComment"
+  REJECTIONS_CLASS = "ProductRejection"
+  APPROVALS_CLASS = "ProductApproval"
 
   include ActiveModel::Validations
   include Mixins::CanBeStamped
@@ -14,39 +16,39 @@ class Product < ApplicationRecord
   include Mixins::CanBeActivated
   include Mixins::HasImages
 
-  update_index('products#product') {self if self.approved?}
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
+  update_index("products#product") { self if self.approved? }
+  pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category
   belongs_to :inquiry_import_row, required: false
   belongs_to :measurement_unit, required: false
-  has_one :import, :through => :inquiry_import_row, class_name: 'InquiryImport'
-  has_one :inquiry, :through => :import
+  has_one :import, through: :inquiry_import_row, class_name: "InquiryImport"
+  has_one :inquiry, through: :import
   has_many :product_suppliers, dependent: :destroy
-  has_many :inquiry_products, :dependent => :destroy
-  has_many :inquiry_product_suppliers, :through => :inquiry_products
-  has_many :suppliers, :through => :inquiry_product_suppliers, class_name: 'Company', source: :supplier
+  has_many :inquiry_products, dependent: :destroy
+  has_many :inquiry_product_suppliers, through: :inquiry_products
+  has_many :suppliers, through: :inquiry_product_suppliers, class_name: "Company", source: :supplier
   has_many :customer_order_rows
   has_many :customer_products
   has_one :kit
   has_many :cart_items
-  has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
+  has_many :stocks, class_name: "WarehouseProductStock", inverse_of: :product, dependent: :destroy
 
   attr_accessor :applicable_tax_percentage
 
-  enum product_type: {item: 10, service: 20}
+  enum product_type: { item: 10, service: 20 }
 
-  scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
-  scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
+  scope :with_includes, -> { includes(:brand, :approval, :category, :tax_code) }
+  scope :with_manage_failed_skus, -> { includes(:brand, :tax_code, category: [:tax_code]) }
 
   validates_presence_of :name
 
-  validates_presence_of :sku, :if => :not_rejected?
-  validates_uniqueness_of :sku, :if => :not_rejected?
-  #validates_with MultipleImageFileValidator, attachments: :images
+  validates_presence_of :sku, if: :not_rejected?
+  validates_uniqueness_of :sku, if: :not_rejected?
+  # validates_with MultipleImageFileValidator, attachments: :images
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
   validate :unique_name?
 
   def unique_name?
@@ -57,13 +59,12 @@ class Product < ApplicationRecord
 
   def service_product
     if self.is_service && !self.category.is_service
-      errors.add(:category, ' should be a service category')
+      errors.add(:category, " should be a service category")
     end
 
     if self.is_service && !self.tax_code.is_service
-      errors.add(:tax_code, 'Tax Code should be a service tax code')
+      errors.add(:tax_code, "Tax Code should be a service tax code")
     end
-
   end
 
   def set_defaults
@@ -94,7 +95,7 @@ class Product < ApplicationRecord
   end
 
   def lowest_inquiry_product_supplier
-    self.inquiry_product_suppliers.order(:unit_cost_price => :asc).first
+    self.inquiry_product_suppliers.order(unit_cost_price: :asc).first
   end
 
   def lowest_inquiry_product_suppliers(number: 1)
@@ -114,11 +115,11 @@ class Product < ApplicationRecord
   end
 
   def lowest_unit_cost_price_for(supplier, except = nil)
-    self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).order(:unit_cost_price => :asc).first.try(:unit_cost_price) || 'N/A'
+    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).order(unit_cost_price: :asc).first.try(:unit_cost_price) || "N/A"
   end
 
   def latest_unit_cost_price_for(supplier, except = nil)
-    self.inquiry_product_suppliers.except_object(except).where(:supplier => supplier).latest_record.try(:unit_cost_price) || 'N/A'
+    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).latest_record.try(:unit_cost_price) || "N/A"
   end
 
   def bp_catalog_for_customer(company)

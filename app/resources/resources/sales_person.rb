@@ -1,7 +1,8 @@
-class Resources::SalesPerson < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::SalesPerson < Resources::ApplicationResource
   def self.collection_name
-    'SalesPersons'
+    "SalesPersons"
   end
 
   def self.identifier

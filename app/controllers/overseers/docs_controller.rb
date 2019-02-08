@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::DocsController < Overseers::BaseController
   prepend_view_path("app/views/overseers/docs")
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Builder
   def initialize(daterange)
     super
@@ -12,9 +14,9 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
                   label: "Order Count",
                   type: "bar",
                   borderColor: "#fd7e14",
-                  backgroundColor: '#fd7e14',
+                  backgroundColor: "#fd7e14",
                   data: [],
-                  yAxisID: 'order_count',
+                  yAxisID: "order_count",
                   fill: false
               }
           ]
@@ -24,16 +26,16 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           scales: {
               yAxes: [
                   {
-                      id: 'order_count',
-                      type: 'linear',
-                      position: 'left',
+                      id: "order_count",
+                      type: "linear",
+                      position: "left",
                       ticks: {
                           display: true,
-                          userCallback: ''
+                          userCallback: ""
                       },
                       scaleLabel: {
                           display: true,
-                          labelString: 'Order Count'
+                          labelString: "Order Count"
                       },
                       gridLines: {
                           display: true
@@ -43,9 +45,9 @@ class Services::Customers::Charts::OrderCount < Services::Customers::Charts::Bui
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
 
-      sales_orders.group_by_month('sales_orders.created_at', format: "%b-%y", series:true).size.each do |month, order_count|
+      sales_orders.group_by_month("sales_orders.created_at", format: "%b-%y", series: true).size.each do |month, order_count|
         @data[:labels].push(month)
         @data[:datasets][0][:data].push(order_count)
       end

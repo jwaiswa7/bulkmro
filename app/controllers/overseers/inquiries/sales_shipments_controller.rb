@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::BaseController
   before_action :set_sales_shipment, only: [:show]
 
@@ -16,7 +18,7 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
 
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_shipment
       end
@@ -24,8 +26,7 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
   end
 
   private
-  def set_sales_shipment
-    @sales_shipment = @inquiry.shipments.find(params[:id])
-  end
+    def set_sales_shipment
+      @sales_shipment = @inquiry.shipments.find(params[:id])
+    end
 end
-

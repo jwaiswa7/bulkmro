@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class ProductComment < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :product
-  has_one :approval, class_name: 'ProductApproval'
-  has_one :rejection, class_name: 'ProductRejection'
+  has_one :approval, class_name: "ProductApproval"
+  has_one :rejection, class_name: "ProductRejection"
 
   attr_accessor :merge_with_product_id
 

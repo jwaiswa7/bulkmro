@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::Dashboard
   def initialize(contact, company, params)
     @contact = contact

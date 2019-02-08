@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module MenuHelper
   def active_if_path_is(path=nil)
     if path == nil || request == nil; return nil; end
-    request.path == path ? 'active' : nil
+    request.path == path ? "active" : nil
   end
 
   def show_if(bool)
     if bool
-      'show'
+      "show"
     else
       nil
     end
@@ -42,8 +44,8 @@ module MenuHelper
 
   def nav_item(name, path, authorized=false, li_classes=nil, a_classes=nil, attributes: nil)
     if authorized
-      content_tag(:li, class: ['nav-item', li_classes].compact.join(' ')) do
-        content_tag(:a, class: [active_if_path_is(path), 'nav-link', a_classes].compact.join(' '), href: path, role: 'tab') do
+      content_tag(:li, class: ["nav-item", li_classes].compact.join(" ")) do
+        content_tag(:a, class: [active_if_path_is(path), "nav-link", a_classes].compact.join(" "), href: path, role: "tab") do
           name
         end
       end
@@ -52,7 +54,7 @@ module MenuHelper
 
   def nav_dropdown_item(name, path, authorized=false, li_classes=nil, a_classes=nil, attributes: nil)
     if authorized
-      content_tag(:a, class: [active_if_path_is(path), 'dropdown-item', a_classes].compact.join(' '), href: path, role: 'tab') do
+      content_tag(:a, class: [active_if_path_is(path), "dropdown-item", a_classes].compact.join(" "), href: path, role: "tab") do
         name
       end
     end

@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 json.data (@customer_orders) do |customer_order|
   json.array! [
 
                   [
-                      row_action_button(customers_customer_order_path(customer_order), 'fal fa-eye', 'View Order Contents', 'info'),
+                      row_action_button(customers_customer_order_path(customer_order), "fal fa-eye", "View Order Contents", "info"),
                       if customer_order.pending?
-                        row_action_button(customers_customer_order_path(customer_order), 'comment-alt-check', 'Comments and Approval', 'success')
+                        row_action_button(customers_customer_order_path(customer_order), "comment-alt-check", "Comments and Approval", "success")
                       end
-                  ].join(' '),
+                  ].join(" "),
                   status_badge(customer_order.status),
                   customer_order.online_order_number,
                   customer_order.rows.count,

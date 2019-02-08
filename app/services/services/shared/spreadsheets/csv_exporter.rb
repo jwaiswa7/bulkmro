@@ -1,4 +1,6 @@
-require 'csv'
+# frozen_string_literal: true
+
+require "csv"
 
 class Services::Shared::Spreadsheets::CsvExporter < Services::Shared::BaseService
   def initialize(name, start_at, end_at, fields, records)

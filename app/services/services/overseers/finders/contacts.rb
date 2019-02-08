@@ -1,5 +1,6 @@
-class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::BaseFinder
+# frozen_string_literal: true
 
+class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::BaseFinder
   def call
     call_base
   end
@@ -11,17 +12,17 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
   def perform_query(query)
     query = query[0, 35]
 
-    index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'and',
-                              fields: %w[firstname^3 lastname^3 email account inquiry],
-                              minimum_should_match: '100%'
-                          }
-                      }).order(sort_definition)
+    index_klass.query(
+      multi_match: {
+          query: query,
+          operator: "and",
+          fields: %w[firstname^3 lastname^3 email account inquiry],
+          minimum_should_match: "100%"
+      }
+                      ).order(sort_definition)
   end
 
   def sort_definition
-    {:created_at => :asc}
+    { created_at: :asc }
   end
 end

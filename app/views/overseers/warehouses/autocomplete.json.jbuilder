@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.results(@warehouse) do |warehouse|
   json.set! :id, warehouse.id
   json.set! :text, warehouse.to_s

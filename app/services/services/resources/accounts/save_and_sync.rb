@@ -1,5 +1,6 @@
-class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
   def initialize(account)
     @account = account
   end
@@ -16,7 +17,7 @@ class Services::Resources::Accounts::SaveAndSync < Services::Shared::BaseService
         ::Resources::BusinessPartnerGroup.update(account.remote_uid, account)
       else
         remote_uid = ::Resources::BusinessPartnerGroup.create(account)
-        account.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
+        account.update_attributes(remote_uid: remote_uid) if remote_uid.present?
       end
     end
   end

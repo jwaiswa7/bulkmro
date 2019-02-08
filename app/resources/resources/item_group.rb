@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Resources::ItemGroup < Resources::ApplicationResource
   def self.identifier
     :Number
@@ -8,10 +10,10 @@ class Resources::ItemGroup < Resources::ApplicationResource
         GroupName: record.name[0..19]
     }
 
-    params.merge!({
-                      ItemClass: "itcService",
-                      InventorySystem: "bis_MovingAverage"
-                  }) if record.is_service?
+    params.merge!(
+      ItemClass: "itcService",
+      InventorySystem: "bis_MovingAverage"
+                  ) if record.is_service?
 
     params
   end

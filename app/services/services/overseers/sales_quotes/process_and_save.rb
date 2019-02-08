@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseService
   def initialize(sales_quote)
     @sales_quote = sales_quote
   end
 
   def call
-
     if sales_quote.selected_suppliers.present?
       sales_quote.selected_suppliers.each do |inquiry_product_id, inquiry_product_supplier_id|
         selected_rows = sales_quote.rows.reject { |r| r.inquiry_product.id == inquiry_product_id.to_i && r.inquiry_product_supplier_id != inquiry_product_supplier_id.to_i }

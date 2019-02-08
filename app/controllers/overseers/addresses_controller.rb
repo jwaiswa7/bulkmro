@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Overseers::AddressesController < Overseers::BaseController
   def index
-     service = Services::Overseers::Finders::Addresses.new(params)
-     service.call
+    service = Services::Overseers::Finders::Addresses.new(params)
+    service.call
 
-     @indexed_addresses = service.indexed_records
-     @addresses = service.records
+    @indexed_addresses = service.indexed_records
+    @addresses = service.records
 
-     authorize :address
+    authorize :address
   end
 
   def autocomplete
@@ -22,7 +24,6 @@ class Overseers::AddressesController < Overseers::BaseController
     addresses = Address.joins(:warehouse)
     @addresses = ApplyParams.to(addresses.includes(:state), params)
     authorize @addresses
-    render 'autocomplete'
+    render "autocomplete"
   end
-
 end

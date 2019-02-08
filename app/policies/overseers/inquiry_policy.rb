@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || cataloging? || logistics?
@@ -131,7 +133,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where("inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)", {overseer_ids: overseer.self_and_descendant_ids })
+        scope.where("inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)", overseer_ids: overseer.self_and_descendant_ids)
       end
     end
   end

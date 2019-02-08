@@ -1,185 +1,187 @@
+# frozen_string_literal: true
+
 # when :'$0'
 # '$2'
 module StatusesHelper
   def status_color(status)
     case status.to_sym
     when :'Processing'
-      'color-light-blue'
+      "color-light-blue"
     when :'Material Ready For Dispatch'
-      'color-dark-blue'
+      "color-dark-blue"
     when :'Partially Shipped'
-      'color-light-yellow'
+      "color-light-yellow"
     when :'Partially Invoiced'
-      'color-light-yellow'
+      "color-light-yellow"
     when :'Partially Delivered: GRN Pending'
-      'color-red'
+      "color-red"
     when :'Partially Delivered: GRN Received'
-      'color-light-green'
+      "color-light-green"
     when :'Shipped'
-      'color-yellow'
+      "color-yellow"
     when :'Invoiced'
-      'color-yellow'
+      "color-yellow"
     when :'In stock'
-      'color-yellow'
+      "color-yellow"
     when :'Delivered: GRN Pending'
-      'color-red'
+      "color-red"
     when :'Delivered: GRN Received'
-      'color-light-green'
+      "color-light-green"
     when :'Partial Payment Received'
-      'color-green'
+      "color-green"
     when :'Full Payment Received'
-      'color-dark-green'
+      "color-dark-green"
     when :'Short Closed'
-      'color-grey'
+      "color-grey"
     when :'Cancelled'
-      'color-grey'
+      "color-grey"
 
     # defaults
     when :'Lead by O/S'
-      'dark'
+      "dark"
     when :'New Inquiry'
-      'dark'
+      "dark"
     when :'Acknowledgement Mail'
-      'dark'
+      "dark"
     when :'Cross Reference'
-      'dark'
+      "dark"
     when :'Supplier RFQ Sent'
-      'dark'
+      "dark"
     when :'Preparing Quotation'
-      'dark'
+      "dark"
     when :'Quotation Sent'
-      'dark'
+      "dark"
     when :'Follow Up on Quotation'
-      'dark'
+      "dark"
     when :'Expected Order'
-      'dark'
+      "dark"
     when :'Inquiry Sent'
-      'dark'
+      "dark"
     when :'Supplier PO: Request Pending'
-      'dark'
+      "dark"
     when :'Supplier PO: Partially Created'
-      'dark'
+      "dark"
     when :'Supplier PO: Created'
-      'dark'
+      "dark"
     when :'Processing'
-      'dark'
+      "dark"
     when :'Closed'
-      'dark'
+      "dark"
     when :'Order Deleted'
-      'dark'
+      "dark"
     when :'SO Not Created-Customer PO Awaited'
-      'success'
+      "success"
     when :'SO Not Created-Pending Customer PO Revision'
-      'success'
+      "success"
     when :'Draft SO for Approval by Sales Manager'
-      'success'
+      "success"
     when :'SO Draft: Pending Accounts Approval'
-      'success'
+      "success"
     when :'Order Won'
-      'success'
+      "success"
     when :'Purchase Order Issued'
-      'success'
+      "success"
     when :'active'
-      'success'
+      "success"
     when :'Payment Received (Closed)'
-      'success'
+      "success"
     when :'Completed AR Invoice Request'
-      'success'
+      "success"
     when :'Completed'
-      'success'
+      "success"
     when :'PO Created'
-      'success'
+      "success"
     when :'success'
-      'success'
-    when 'Delivered'
-      'success'
-    when 'created'
-      'success'
+      "success"
+    when "Delivered"
+      "success"
+    when "created"
+      "success"
     when :'Approved'
-      'success'
+      "success"
     when :'SO Rejected by Sales Manager'
-      'warning'
+      "warning"
     when :'Rejected by Accounts'
-      'warning'
+      "warning"
     when :'Hold by Accounts'
-      'warning'
+      "warning"
     when :'Preparing Quotation'
-      'warning'
+      "warning"
     when :'Quotation Received'
-      'warning'
+      "warning"
     when :'Partially Shipped'
-      'warning'
+      "warning"
     when :'Partially Invoiced'
-      'warning'
+      "warning"
     when :'Partially Delivered: GRN Received'
-      'warning'
+      "warning"
     when :'Shipped'
-      'warning'
+      "warning"
     when :'Invoiced'
-      'warning'
+      "warning"
     when :'Delivered: GRN Received'
-      'warning'
+      "warning"
     when :'Partial Payment Received'
-      'warning'
+      "warning"
     when :'Material Ready For Dispatch'
-      'warning'
+      "warning"
     when :'Pending AP Invoice'
-      'warning'
+      "warning"
     when :'Pending'
-      'warning'
+      "warning"
     when :'pending'
-      'warning'
+      "warning"
     when :'SAP Rejected'
-      'warning'
+      "warning"
     when :'SAP Approval Pending'
-      'warning'
+      "warning"
     when :'Hold by Finance'
-      'warning'
+      "warning"
     when :'refunded'
-      'color-yellow'
+      "color-yellow"
     when :'Order Lost'
-      'danger'
+      "danger"
     when :'Regret'
-      'danger'
+      "danger"
     when :'Purchase Order Revision Pending'
-      'danger'
+      "danger"
     when :'Partially Delivered: GRN Pending'
-      'danger'
+      "danger"
     when :'Delivered: GRN Pending'
-      'danger'
+      "danger"
     when :'Short Close'
-      'danger'
+      "danger"
     when :'Order Deleted'
-      'danger'
+      "danger"
     when :'Cancelled AR Invoice'
-      'danger'
+      "danger"
     when :'failed'
-      'danger'
+      "danger"
     when :'Rejected'
-      'danger'
+      "danger"
     when :'Cancelled'
-      'danger'
+      "danger"
     when :'Cancelled by SAP'
-      'danger'
+      "danger"
     when :'Pending GRPO'
-      'primary'
+      "primary"
     when :'Requested'
-      'primary'
+      "primary"
     when :'created'
-      'success'
+      "success"
     when :'Pending AR Invoice'
-      'info'
+      "info"
     when :'authorized'
-      'info'
+      "info"
     when :'captured'
-      'success'
+      "success"
     else
-      'danger'
+      "danger"
     end
   end
 
   def format_badge(text, color)
-    if text.to_s != ''
+    if text.to_s != ""
       content_tag :span, class: "badge badge-wrap text-uppercase badge-#{color}" do
         content_tag :strong, text.to_s.capitalize
       end

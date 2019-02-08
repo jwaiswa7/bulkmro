@@ -1,5 +1,6 @@
-class Customers::DashboardController < Customers::BaseController
+# frozen_string_literal: true
 
+class Customers::DashboardController < Customers::BaseController
   def show
     @dashboard = Customers::Dashboard.new(current_contact, current_company, params)
     authorize :dashboard

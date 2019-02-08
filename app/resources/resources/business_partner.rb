@@ -1,5 +1,6 @@
-class Resources::BusinessPartner < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::BusinessPartner < Resources::ApplicationResource
   def self.identifier
     :CardCode
   end
@@ -36,66 +37,64 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     validated_response = get_validated_response(response)
     log_response(validated_response)
 
-    if validated_response['value'].present?
-      remote_record = validated_response['value'][0]
+    if validated_response["value"].present?
+      remote_record = validated_response["value"][0]
       yield remote_record if block_given?
       remote_record[self.identifier.to_s]
     end
   end
 
   def self.update_associated_records(response, force_find: false)
-
     response = find(response, quotes: true) if force_find
     return if response.blank?
 
-    company = Company.find_by_remote_uid!(response['CardCode'])
-    addresses = response['BPAddresses']
-    contacts = response['ContactEmployees']
-    banks  = response['BPBankAccounts']
+    company = Company.find_by_remote_uid!(response["CardCode"])
+    addresses = response["BPAddresses"]
+    contacts = response["ContactEmployees"]
+    banks = response["BPBankAccounts"]
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
       if address_to_update.blank?
 
-        address_to_update = company.addresses.where(remote_uid: address['AddressName']).first_or_initialize do |new_address|
+        address_to_update = company.addresses.where(remote_uid: address["AddressName"]).first_or_initialize do |new_address|
           new_address.assign_attributes(
-              legacy_id: address['AddressName'],
-              name: company.name,
-              street1: address['Street'].present? ? address['Street'] : nil,
-              city_name: address['City'].present? ? address['City'] : nil,
-              street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
-              country_code: address['Country'].present? ? address['Country'] : 'IN',
-              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.name : nil,
-              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.id : nil,
-              pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
-              gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
-              vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
-              cst: address['U_CST'].present? ? address['U_CST'] : nil
+            legacy_id: address["AddressName"],
+            name: company.name,
+            street1: address["Street"].present? ? address["Street"] : nil,
+            city_name: address["City"].present? ? address["City"] : nil,
+            street2: address["AddressName2"].present? ? address["AddressName2"] : nil,
+            country_code: address["Country"].present? ? address["Country"] : "IN",
+            state_name: address["State"].present? ? AddressState.where(region_code: address["State"], country_code: address["Country"]).first.name : nil,
+            address_state_id: address["State"].present? ? AddressState.where(region_code: address["State"], country_code: address["Country"]).first.id : nil,
+            pincode: address["ZipCode"].present? ? address["ZipCode"] : nil,
+            gst: address["GSTIN"].present? ? address["GSTIN"] : nil,
+            vat: address["U_VAT"].present? ? address["U_VAT"] : nil,
+            cst: address["U_CST"].present? ? address["U_CST"] : nil
           )
         end
         address_to_update.save
 
       end
 
-      if address['AddressType'].eql? "bo_BillTo"
-        address_to_update.update_attribute(:billing_address_uid, address['RowNum'])
-      elsif address['AddressType'].eql? "bo_ShipTo"
-        address_to_update.update_attribute(:shipping_address_uid, address['RowNum'])
+      if address["AddressType"].eql? "bo_BillTo"
+        address_to_update.update_attribute(:billing_address_uid, address["RowNum"])
+      elsif address["AddressType"].eql? "bo_ShipTo"
+        address_to_update.update_attribute(:shipping_address_uid, address["RowNum"])
       end
-
     end if addresses.present?
 
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact["E_Mail"].to_s.strip.downcase).first
-      company_contact.update_attributes(:remote_uid => remote_uid) if company_contact.present?
+      company_contact = company.company_contacts.joins(:contact).where("contacts.email = ?", contact["E_Mail"].to_s.strip.downcase).first
+      company_contact.update_attributes(remote_uid: remote_uid) if company_contact.present?
     end if contacts.present?
 
     banks.each do |bank|
-      account_number= bank["AccountNo"]
+      account_number = bank["AccountNo"]
       remote_uid = bank["InternalKey"]
       company_bank = CompanyBank.find_by_account_number(account_number)
-      company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
+      company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
     end if banks.present?
   end
 
@@ -106,13 +105,13 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     banks = []
 
     if record.remote_uid.blank?
-      record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid(record))
+      record.assign_attributes(remote_uid: Services::Resources::Shared::UidGenerator.company_uid(record))
     end
 
     record.addresses.each do |address|
-      address.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.address_uid(address)) if address.remote_uid.blank?
+      address.assign_attributes(remote_uid: Services::Resources::Shared::UidGenerator.address_uid(address)) if address.remote_uid.blank?
 
-      street_address = [address.street1, address.street2].compact.join(' ')
+      street_address = [address.street1, address.street2].compact.join(" ")
       street = street_address[0..99]
       address_name2 = street_address[100..149]
       address_name3 = street_address[150..199]
@@ -183,39 +182,39 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       # Push as billing
       bp_tax_collection_row = OpenStruct.new
 
-      #Address Level tax Info
+      # Address Level tax Info
       bp_tax_collection_row.Address = address.remote_uid
       bp_tax_collection_row.AddrType = "bo_BillTo"
       bp_tax_collection_row.BPCode = record.remote_uid
       bp_tax_collection_row.TaxId1 = address.cst
       bp_tax_collection_row.TaxId2 = address.vat
-      #bp_tax_collection_row.TaxId6 = address.vat #TAN num
+      # bp_tax_collection_row.TaxId6 = address.vat #TAN num
 
-      #Company level info
+      # Company level info
       bp_tax_collection_row.TaxId0 = record.pan
-      #bp_tax_collection_row.TaxId3 = record.cmp_st;
-      #bp_tax_collection_row.TaxId4 = record.cmp_edr;
+      # bp_tax_collection_row.TaxId3 = record.cmp_st;
+      # bp_tax_collection_row.TaxId4 = record.cmp_edr;
       bp_tax_collection_row.TaxId6 = record.tan
       bp_tax_collection_row.TaxId8 = record.company_type
       bp_tax_collection_row.TaxId9 = record.nature_of_business
 
       bp_tax_collection.push(bp_tax_collection_row.marshal_dump)
 
-      #Push as shipping
+      # Push as shipping
       bp_tax_collection_row = OpenStruct.new
 
-      #Address Level tax Info
+      # Address Level tax Info
       bp_tax_collection_row.Address = address.remote_uid
       bp_tax_collection_row.AddrType = "bo_ShipTo"
       bp_tax_collection_row.BPCode = record.remote_uid
       bp_tax_collection_row.TaxId1 = address.cst
       bp_tax_collection_row.TaxId2 = address.vat
-      #bp_tax_collection_row.TaxId6 = address.vat #TAN num
+      # bp_tax_collection_row.TaxId6 = address.vat #TAN num
 
-      #Company level info
+      # Company level info
       bp_tax_collection_row.TaxId0 = record.pan
-      #bp_tax_collection_row.TaxId3 = record.cmp_st;
-      #bp_tax_collection_row.TaxId4 = record.cmp_edr;
+      # bp_tax_collection_row.TaxId3 = record.cmp_st;
+      # bp_tax_collection_row.TaxId4 = record.cmp_edr;
       bp_tax_collection_row.TaxId6 = record.tan
       bp_tax_collection_row.TaxId8 = record.company_type
       bp_tax_collection_row.TaxId9 = record.nature_of_business
@@ -224,7 +223,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
       # BPFiscalTaxIDCollection End
 
-      #Extra as per SAP
+      # Extra as per SAP
       # address_tax_row = OpenStruct.new
       # address_tax_row.Address = address.remote_uid
       # address_tax_row.TaxId0 = record.try(:pan) || "ABCDE1234F"
@@ -241,13 +240,13 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       # bp_tax_collection.push(address_tax_row.marshal_dump)
     end if record.remote_uid.present?
 
-    #push company pan, edr,tan etc in BPFiscalTaxIDCollection
+    # push company pan, edr,tan etc in BPFiscalTaxIDCollection
     bp_tax_collection_row = OpenStruct.new
 
-    #Address Level tax Info
+    # Address Level tax Info
     bp_tax_collection_row.TaxId0 = record.pan || "ABCDE1234F"
-    #bp_tax_collection_row.TaxId3 = address.remote_uid #Magento field cmp_st
-    #bp_tax_collection_row.TaxId4 = address.remote_uid #Magento field cmp_edr
+    # bp_tax_collection_row.TaxId3 = address.remote_uid #Magento field cmp_st
+    # bp_tax_collection_row.TaxId4 = address.remote_uid #Magento field cmp_edr
     bp_tax_collection_row.TaxId6 = record.tan
     bp_tax_collection_row.TaxId8 = record.company_type
     bp_tax_collection_row.TaxId9 = record.nature_of_business
@@ -287,7 +286,6 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     end if record.remote_uid.present?
 
     record.company_banks.each do |company_bank|
-
       bank_row = OpenStruct.new
       bank_row.BPCode = record.remote_uid
       bank_row.AccountNo = company_bank.account_number
@@ -308,7 +306,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         CardName: record.name,
         CardType: record.is_supplier? ? "cSupplier" : "cCustomer",
         GroupCode: record.account.remote_uid,
-        #Address: record.default_billing_address.present? ? record.default_billing_address.to_s : nil,
+        # Address: record.default_billing_address.present? ? record.default_billing_address.to_s : nil,
         ZipCode: record.default_billing_address.present? ? record.default_billing_address.pincode : nil,
         Country: record.default_billing_address.present? ? record.default_billing_address.country_code : nil,
         EmailAddress: record.default_company_contact.present? ? record.default_company_contact.contact.email : nil,

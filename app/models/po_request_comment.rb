@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PoRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :po_request

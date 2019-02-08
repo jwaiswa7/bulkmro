@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   def show?
     all_roles?

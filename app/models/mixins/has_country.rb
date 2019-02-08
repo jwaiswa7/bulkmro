@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::HasCountry
   extend ActiveSupport::Concern
 
@@ -7,11 +9,11 @@ module Mixins::HasCountry
       country.translations[I18n.locale.to_s] || country.name if country.present?
     end
 
-    scope :domestic, -> { where(:country_code => 'IN') }
-    scope :international, -> { where.not(:country_code => 'IN') }
+    scope :domestic, -> { where(country_code: "IN") }
+    scope :international, -> { where.not(country_code: "IN") }
 
     def domestic?
-      self.country_code == 'IN'
+      self.country_code == "IN"
     end
 
     def international?

@@ -1,5 +1,6 @@
-class Services::Resources::Brands::SaveAndSync < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Resources::Brands::SaveAndSync < Services::Shared::BaseService
   def initialize(brand)
     @brand = brand
   end
@@ -15,7 +16,7 @@ class Services::Resources::Brands::SaveAndSync < Services::Shared::BaseService
       ::Resources::Manufacturer.update(brand.remote_uid, brand)
     else
       remote_uid = ::Resources::Manufacturer.create(brand)
-      brand.update_attributes(:remote_uid => remote_uid) if remote_uid.present?
+      brand.update_attributes(remote_uid: remote_uid) if remote_uid.present?
     end
   end
 

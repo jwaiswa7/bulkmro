@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CallbackRequestsController < Overseers::BaseController
   before_action :set_callback_request, only: [:show]
 
@@ -15,7 +17,7 @@ class Overseers::CallbackRequestsController < Overseers::BaseController
   end
 
   private
-  def set_callback_request
-    @callback_request = CallbackRequest.find(params[:id])
-  end
+    def set_callback_request
+      @callback_request = CallbackRequest.find(params[:id])
+    end
 end

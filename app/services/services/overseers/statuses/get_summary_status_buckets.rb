@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared::BaseService
   def initialize(all_indexed_records, model_klass, remote_status: false)
@@ -12,10 +13,10 @@ class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared:
     else
       model_statuses = model_klass.statuses
     end
-    default_statuses = model_statuses.values.inject({}){|hash,key| hash[key] = 0; hash}
+    default_statuses = model_statuses.values.inject({}){ |hash, key| hash[key] = 0; hash }
     indexed_buckets = all_indexed_records.aggregations["statuses"]["buckets"]
-    statuses = indexed_buckets.inject({}){|hash, bucket| hash[bucket["key"]] = bucket["doc_count"]; hash}
-    total_values = indexed_buckets.inject({}){|hash, bucket| hash[bucket["key"]] = bucket["total_value"]["value"]; hash}
+    statuses = indexed_buckets.inject({}){ |hash, bucket| hash[bucket["key"]] = bucket["doc_count"]; hash }
+    total_values = indexed_buckets.inject({}){ |hash, bucket| hash[bucket["key"]] = bucket["total_value"]["value"]; hash }
     @indexed_statuses = default_statuses.merge(statuses)
     @indexed_total_values = default_statuses.merge(total_values)
   end

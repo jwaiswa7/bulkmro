@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::BaseFinder
   def call
     call_base
@@ -5,10 +7,10 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
-                      else
-                        super
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
+    else
+      super
+    end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
@@ -19,21 +21,21 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     end
 
     if range_filters.present?
-          indexed_records = range_query(indexed_records)
+      indexed_records = range_query(indexed_records)
     end
 
-    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
+    indexed_records = indexed_records.aggregations(aggregate_by_status("status_key"))
     indexed_records
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query({
-                                            multi_match: {
-                                                query: query_string,
-                                                operator: 'and',
-                                                fields: index_klass.fields
-                                            }
-                                        }).order(sort_definition)
+    indexed_records = index_klass.query(
+      multi_match: {
+          query: query_string,
+          operator: "and",
+          fields: index_klass.fields
+      }
+                                        ).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
       indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids))
@@ -50,7 +52,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
+    indexed_records = indexed_records.aggregations(aggregate_by_status("status_key"))
     indexed_records
   end
 

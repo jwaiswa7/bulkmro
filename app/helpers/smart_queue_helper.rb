@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module SmartQueueHelper
   def smart_queue_priority_color(priority)
-     if priority >= 107
+    if priority >= 107
       "danger"
-     elsif priority >= 104
+    elsif priority >= 104
       "primary"
     elsif priority >= 100
       "warning"

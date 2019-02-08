@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ProductsController < Overseers::BaseController
   before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
 
@@ -29,7 +31,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def new
-    @product = Product.new(:overseer => current_overseer)
+    @product = Product.new(overseer: current_overseer)
     authorize @product
   end
 
@@ -39,7 +41,7 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -53,7 +55,7 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -101,7 +103,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
-    redirect_to overseers_product_path(@product, :anchor => "inventory"), notice: flash_message(@product, action_name)
+    redirect_to overseers_product_path(@product, anchor: "inventory"), notice: flash_message(@product, action_name)
   end
 
   def export_all
@@ -114,23 +116,23 @@ class Overseers::ProductsController < Overseers::BaseController
 
   private
 
-  def product_params
-    params.require(:product).permit(
+    def product_params
+      params.require(:product).permit(
         :name,
-        :sku,
-        :mpn,
-        :is_service,
-        :is_active,
-        :brand_id,
-        :category_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        :images => []
-    )
-  end
+          :sku,
+          :mpn,
+          :is_service,
+          :is_active,
+          :brand_id,
+          :category_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          images: []
+      )
+    end
 
-  def set_product
-    @product = Product.find(params[:id])
-  end
+    def set_product
+      @product = Product.find(params[:id])
+    end
 end

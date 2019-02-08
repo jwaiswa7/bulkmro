@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 json.data (@freight_requests) do |freight_request|
   json.array! [
                   [
                       if policy(freight_request).show?
-                        row_action_button(overseers_freight_request_path(freight_request), 'eye', 'View Freight Request', 'info')
+                        row_action_button(overseers_freight_request_path(freight_request), "eye", "View Freight Request", "info")
                       end,
-                      row_action_button(edit_overseers_freight_request_path(freight_request), 'pencil', 'Edit Freight Request', 'warning'),
+                      row_action_button(edit_overseers_freight_request_path(freight_request), "pencil", "Edit Freight Request", "warning"),
                       if freight_request.freight_quote.present? && policy(:freight_quote).show?
-                        row_action_button(overseers_freight_quote_path(freight_request.freight_quote), 'eye', 'View Freight Quote', 'primary')
+                        row_action_button(overseers_freight_quote_path(freight_request.freight_quote), "eye", "View Freight Quote", "primary")
                       end,
                       if freight_request.freight_quote.present? && policy(:freight_quote).edit?
-                        row_action_button(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), 'pencil', 'Edit Freight Quote', 'success')
+                        row_action_button(edit_overseers_freight_request_freight_quote_path(freight_request, freight_request.freight_quote), "pencil", "Edit Freight Quote", "success")
                       end,
                       if !freight_request.freight_quote.present? && policy(:freight_quote).new?
-                        row_action_button(new_overseers_freight_request_freight_quote_path(freight_request), 'external-link', 'New Freight Quote', 'warning')
+                        row_action_button(new_overseers_freight_request_freight_quote_path(freight_request), "external-link", "New Freight Quote", "warning")
                       end,
-                  ].join(' '),
+                  ].join(" "),
                   freight_request.id,
                   status_badge(freight_request.status),
                   freight_request.inquiry.inquiry_number,

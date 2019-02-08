@@ -1,5 +1,6 @@
-class Resources::Item < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::Item < Resources::ApplicationResource
   def self.identifier
     :ItemCode
   end
@@ -13,14 +14,14 @@ class Resources::Item < Resources::ApplicationResource
   end
 
   def self.find_inventory_info_for_all_items(next_link_count: nil)
-    get("/#{collection_name}?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection" + ( next_link_count ? "&$skip=#{next_link_count}" : ""))
+    get("/#{collection_name}?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection" + (next_link_count ? "&$skip=#{next_link_count}" : ""))
   end
 
   def self.to_remote(record)
     params = {
         ItemCode: record.sku, #  BMRO Part#
         ItemName: record.name[0..99], # Product Name
-        ItemsGroupCode: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, #record.category.remote_uid, # Product Category
+        ItemsGroupCode: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, # record.category.remote_uid, # Product Category
         PurchaseItem: "tYES", # TO BE CREATED IN MAGENTO
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
@@ -38,7 +39,7 @@ class Resources::Item < Resources::ApplicationResource
         MinOrderQuantity: 0, # Minimum Order Qty
         InventoryUOM: record.measurement_unit.try(:name), #
         InventoryWeight1: 0, # Weight
-        U_Category: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, #record.category.remote_uid, # ????
+        U_Category: (record.category.present? && record.category.remote_uid.present?) ? record.category.remote_uid : 100, # record.category.remote_uid, # ????
         U_ProdID: record.to_param, # Product Id
         U_MRP: 0, # MRP Price
         U_DistAmt: 0, # Distributor Discount
@@ -63,26 +64,26 @@ class Resources::Item < Resources::ApplicationResource
     }
 
     if record.is_service
-      params.merge!({
-                        SACEntry: record.best_tax_code.try(:remote_uid),
-                        ManageBatchNumbers: "tNO",
-                        InventoryItem: "tNO"
-                    })
+      params.merge!(
+        SACEntry: record.best_tax_code.try(:remote_uid),
+        ManageBatchNumbers: "tNO",
+        InventoryItem: "tNO"
+                    )
     else
-      params.merge!({
-                        InventoryItem: "tYES",
-                        ManageBatchNumbers: "tYES",
-                        ChapterID: record.best_tax_code.try(:remote_uid)
-                    })
+      params.merge!(
+        InventoryItem: "tYES",
+        ManageBatchNumbers: "tYES",
+        ChapterID: record.best_tax_code.try(:remote_uid)
+                    )
     end
 
     if record.is_kit
-      params.merge!({
-                        InventoryItem: "tNO",
-                        ManageBatchNumbers: "tNO",
-                        PurchaseItem: "tNO",
-                        SalesItem: "tYES"
-                    })
+      params.merge!(
+        InventoryItem: "tNO",
+        ManageBatchNumbers: "tNO",
+        PurchaseItem: "tNO",
+        SalesItem: "tYES"
+                    )
     end
 
     params

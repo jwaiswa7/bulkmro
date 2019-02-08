@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module Extensions::ActiveRecord::FindByOrderedIds
   extend ActiveSupport::Concern
   module ClassMethods
     def find_ordered(ids)
-
       order_clause = "CASE #{self.table_name}.id "
       ids.each_with_index do |id, index|
         order_clause << sanitize_sql_array(["WHEN ? THEN ? ", id, index])

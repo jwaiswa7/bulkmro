@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class FreightRequest < ApplicationRecord
-  COMMENTS_CLASS = 'FreightRequestComment'
+  COMMENTS_CLASS = "FreightRequestComment"
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -9,54 +11,54 @@ class FreightRequest < ApplicationRecord
   belongs_to :sales_order, required: false
   belongs_to :sales_quote
 
-  belongs_to :supplier, -> (record) {where('id in (?)', record.inquiry.inquiry_product_suppliers.pluck(:supplier_id))}, class_name: 'Company', foreign_key: :supplier_id, required: true
-  belongs_to :pick_up_address, class_name: 'Address', foreign_key: :pick_up_address_id, required: true
-  belongs_to :delivery_address, class_name: 'Address', foreign_key: :delivery_address_id, required: true
+  belongs_to :supplier, -> (record) { where("id in (?)", record.inquiry.inquiry_product_suppliers.pluck(:supplier_id)) }, class_name: "Company", foreign_key: :supplier_id, required: true
+  belongs_to :pick_up_address, class_name: "Address", foreign_key: :pick_up_address_id, required: true
+  belongs_to :delivery_address, class_name: "Address", foreign_key: :delivery_address_id, required: true
 
   has_one :freight_quote
   has_many_attached :attachments
 
   enum request_type: {
-      :'Domestic' => 10,
-      :'International' => 20
+      'Domestic': 10,
+      'International': 20
   }
 
   enum delivery_type: {
-      :'Regular' => 10,
-      :'Dropship' => 20
+      'Regular': 10,
+      'Dropship': 20
   }
 
   enum measurement: {
-      :'CM' => 10,
-      :'IN' => 20
+      'CM': 10,
+      'IN': 20
   }
 
   enum status: {
-      :'Freight Quote Requested' => 10,
-      :'Pending Info: IS & P' => 20,
-      :'Awaiting Quote: 3PLs' => 30,
-      :'Freight Quote Submitted' => 40,
-      :'Cancelled' => 50
+      'Freight Quote Requested': 10,
+      'Pending Info: IS & P': 20,
+      'Awaiting Quote: 3PLs': 30,
+      'Freight Quote Submitted': 40,
+      'Cancelled': 50
   }
 
   enum loading: {
-      :'BM Scope' => 10,
-      :'Supplier Scope' => 20,
-      :'Customer Scope' => 30
-  },_prefix:'loading'
+      'BM Scope': 10,
+      'Supplier Scope': 20,
+      'Customer Scope': 30
+  }, _prefix: "loading"
 
   enum unloading: {
-      :'BM Scope' => 10,
-      :'Supplier Scope' => 20,
-      :'Customer Scope' => 30
-  },_prefix:'unloading'
+      'BM Scope': 10,
+      'Supplier Scope': 20,
+      'Customer Scope': 30
+  }, _prefix: "unloading"
 
   [:length, :breadth, :width, :volumetric_weight].each do | field|
     validates_presence_of field
-    validates_numericality_of field, greater_than: 0.00, message: 'should be numeric and greater than zero.'
+    validates_numericality_of field, greater_than: 0.00, message: "should be numeric and greater than zero."
   end
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.status ||= :'Freight Quote Requested'

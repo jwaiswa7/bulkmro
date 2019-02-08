@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
 
   def index
     authorize :customer_product
 
-    if params[:view] == 'list_view'
+    if params[:view] == "list_view"
       params[:per] = 20
     else
       params[:page] = 1 unless params[:page].present?
@@ -35,17 +37,17 @@ class Customers::CustomerProductsController < Customers::BaseController
   def most_ordered_products
     authorize :customer_product
 
-    skip_skus = ['BM9L3P1', 'BM9C4L6']
+    skip_skus = ["BM9L3P1", "BM9C4L6"]
     skip_product_ids = Product.where("sku ILIKE ANY ( array[?] )", skip_skus).uniq.pluck(:id)
 
-    products = Inquiry.joins(:inquiry_products).where(:company => current_company).top(:product_id, 55).reject{ |op, count| op.in?(skip_product_ids) } # nil top returns all
+    products = Inquiry.joins(:inquiry_products).where(company: current_company).top(:product_id, 55).reject{ |op, count| op.in?(skip_product_ids) } # nil top returns all
     @total_products = products.size
-    @most_ordered_products = products.drop(5).map {|id, c| [Product.find(id), [c, 'times'].join(' ')]}
+    @most_ordered_products = products.drop(5).map { |id, c| [Product.find(id), [c, "times"].join(" ")] }
   end
 
   private
 
-  def set_customer_product
-    @customer_product ||= CustomerProduct.find(params[:id])
-  end
+    def set_customer_product
+      @customer_product ||= CustomerProduct.find(params[:id])
+    end
 end

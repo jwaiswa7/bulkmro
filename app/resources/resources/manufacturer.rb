@@ -1,5 +1,6 @@
-class Resources::Manufacturer < Resources::ApplicationResource
+# frozen_string_literal: true
 
+class Resources::Manufacturer < Resources::ApplicationResource
   def self.identifier
     :Code
   end

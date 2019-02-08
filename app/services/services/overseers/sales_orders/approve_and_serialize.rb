@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::BaseService
   def initialize(sales_order, comment)
     @sales_order = sales_order
@@ -8,13 +10,13 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   def call
     ActiveRecord::Base.transaction do
       @sales_order.create_approval(
-          :comment => @comment,
-          :overseer => overseer,
-          :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
+        comment: @comment,
+        overseer: overseer,
+        metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
       @sales_order.update_attributes(
-          :status => :"SAP Approval Pending"
+        status: :"SAP Approval Pending"
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
@@ -28,13 +30,13 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   end
 
   private
-  def make_duplicate_address(address)
-    duplicate_address = address.dup
-    duplicate_address.company_id = nil
-    duplicate_address.remote_uid = nil
-    duplicate_address.save
-    duplicate_address
-  end
+    def make_duplicate_address(address)
+      duplicate_address = address.dup
+      duplicate_address.company_id = nil
+      duplicate_address.remote_uid = nil
+      duplicate_address.save
+      duplicate_address
+    end
 
-  attr_reader :sales_order, :overseer, :comment
+    attr_reader :sales_order, :overseer, :comment
 end

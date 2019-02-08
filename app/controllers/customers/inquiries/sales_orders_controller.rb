@@ -1,5 +1,6 @@
-class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseController
+# frozen_string_literal: true
 
+class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseController
   before_action :get_final_sales_orders
 
   def index
@@ -8,7 +9,7 @@ class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseCo
   def show
     @final_sales_order = @final_sales_orders.find(params[:id])
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @final_sales_order
       end
@@ -17,7 +18,7 @@ class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseCo
 
   private
 
-  def get_final_sales_orders
-    @final_sales_orders = @inquiry.final_sales_orders
-  end
+    def get_final_sales_orders
+      @final_sales_orders = @inquiry.final_sales_orders
+    end
 end

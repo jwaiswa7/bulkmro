@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Resources::BusinessPartnerGroup < Resources::ApplicationResource
   def self.identifier
     :Code

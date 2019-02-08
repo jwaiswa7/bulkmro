@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::MeasurementUnitsController < Overseers::BaseController
   before_action :set_measurement_unit, only: [:edit, :update, :show]
 
@@ -28,7 +30,7 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -43,18 +45,18 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   private
-  def set_measurement_unit
-    @measurement_unit ||= MeasurementUnit.find(params[:id])
-  end
+    def set_measurement_unit
+      @measurement_unit ||= MeasurementUnit.find(params[:id])
+    end
 
-  def measurement_unit_params
-    params.require(:measurement_unit).permit(
+    def measurement_unit_params
+      params.require(:measurement_unit).permit(
         :name
-    )
-  end
+      )
+    end
 end

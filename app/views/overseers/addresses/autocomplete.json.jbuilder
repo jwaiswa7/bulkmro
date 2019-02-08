@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.results(@addresses) do |address|
   json.set! :id, address.id
   json.set! :text, address.to_s

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.results(@company_banks) do |bank|
   json.set! :id, bank.id
   json.set! :text, bank.to_s

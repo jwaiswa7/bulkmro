@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
   def index?
     admin? || cataloging?
@@ -14,5 +16,4 @@ class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
   def exchange_with_existing_company?
     index?
   end
-
 end

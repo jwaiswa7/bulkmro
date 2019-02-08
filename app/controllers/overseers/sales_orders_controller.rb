@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Overseers::SalesOrdersController < Overseers::BaseController
   before_action :set_sales_order, only: [ :resync]
   def pending
     authorize :sales_order
 
     respond_to do |format|
-      format.html { render 'pending' }
+      format.html { render "pending" }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer,paginate: false)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
         service.call
 
         @indexed_sales_orders = service.indexed_records
@@ -18,7 +20,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
 
-        render 'pending'
+        render "pending"
       end
     end
   end
@@ -26,7 +28,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def cancelled
     authorize :sales_order
     respond_to do |format|
-      format.html { render 'pending' }
+      format.html { render "pending" }
       format.json do
         service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -39,7 +41,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
-        render 'pending'
+        render "pending"
       end
     end
   end
@@ -79,7 +81,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def index
     authorize :sales_order
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
@@ -87,7 +89,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -101,7 +103,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def not_invoiced
     authorize :sales_order
     respond_to do |format|
-      format.html {render 'not_invoiced' }
+      format.html { render "not_invoiced" }
       format.json do
         service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
         service.call
@@ -109,7 +111,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -133,13 +135,13 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def drafts_pending
     authorize :sales_order
 
-    sales_orders = SalesOrder.where.not(:sent_at => nil).where(:draft_uid => nil , :status => :'SAP Approval Pending').not_legacy
+    sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
-        render 'drafts_pending'
+        render "drafts_pending"
       end
     end
   end
@@ -153,7 +155,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   private
 
-  def set_sales_order
-    @sales_order = SalesOrder.find(params[:id])
-  end
+    def set_sales_order
+      @sales_order = SalesOrder.find(params[:id])
+    end
 end

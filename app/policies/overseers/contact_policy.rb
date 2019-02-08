@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ContactPolicy < Overseers::ApplicationPolicy
   def become?
     cataloging? || admin? || manager? || allow_customer_portal?
@@ -10,5 +12,4 @@ class Overseers::ContactPolicy < Overseers::ApplicationPolicy
   def edit?
     record.company.is_active if record.company.present?
   end
-
 end

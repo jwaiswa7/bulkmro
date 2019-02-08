@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Charts::Builder
   def initialize(daterange)
     super
@@ -12,7 +14,7 @@ class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Ch
                   label: "Categorywise Revenue",
                   type: "doughnut",
                   borderColor: "#fd7e14",
-                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", '#fd7e14'],
+                  backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#fd7e14"],
                   data: [],
               }
           ]
@@ -22,7 +24,7 @@ class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Ch
 
       }
 
-      sales_orders = SalesOrder.remote_approved.where(:created_at => start_at..end_at).includes(:rows).joins(:company).where(companies: {id: company.id}).includes(:products, :categories)
+      sales_orders = SalesOrder.remote_approved.where(created_at: start_at..end_at).includes(:rows).joins(:company).where(companies: { id: company.id }).includes(:products, :categories)
       total_revenue = 0
       categorywise_revenue = {}
 
@@ -30,7 +32,7 @@ class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Ch
         so.rows.each do |row|
           category = row.product.category.name
           if row.product.category.ancestors.present?
-            categories = row.product.category.ancestors.pluck(:name) -  Category.default_ancestors
+            categories = row.product.category.ancestors.pluck(:name) - Category.default_ancestors
             if categories.any?
               category = categories.last
             end
@@ -43,7 +45,7 @@ class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Ch
 
       categorywise_revenue.each do |category|
         @data[:labels].push(category[0])
-        @data[:datasets][0][:data].push(category[1]/total_revenue)*100
+        @data[:datasets][0][:data].push(category[1] / total_revenue) * 100
       end
     end
   end

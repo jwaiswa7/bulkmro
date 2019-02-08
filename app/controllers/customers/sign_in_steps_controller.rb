@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::SignInStepsController < Customers::BaseController
   before_action :set_contact, only: [:reset_current_company, :edit_current_company, :update_current_company]
 
@@ -24,13 +26,13 @@ class Customers::SignInStepsController < Customers::BaseController
 
   private
 
-  def contact_params
-    params.require(:contact).permit(
+    def contact_params
+      params.require(:contact).permit(
         :company_id
-    )
-  end
+      )
+    end
 
-  def set_contact
-    @contact = current_contact
-  end
+    def set_contact
+      @contact = current_contact
+    end
 end

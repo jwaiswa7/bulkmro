@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
   before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
@@ -11,7 +13,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @import
 
     respond_to do |format|
-      format.text {render plain: @import.import_text}
+      format.text { render plain: @import.import_text }
     end
   end
 
@@ -29,7 +31,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     if service.call
       redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render 'new_list_import'
+      render "new_list_import"
     end
   end
 
@@ -42,7 +44,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @inquiry
     respond_to do |format|
       format.xlsx {
-        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", 'xlsx'].join('.') + '"'
+        response.headers["Content-Disposition"] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", "xlsx"].join(".") + '"'
       }
     end
   end
@@ -62,9 +64,9 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
         end
       end
     rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidHeader => e
-      render 'new_excel_import'
+      render "new_excel_import"
     rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidRows => e
-      render 'new_excel_import'
+      render "new_excel_import"
     end
   end
 
@@ -86,45 +88,45 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     else
       service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
       service.call
-      render 'manage_failed_skus'
+      render "manage_failed_skus"
     end
   end
 
   private
 
-  def set_import
-    @import = @inquiry.imports.find(params[:id])
-  end
+    def set_import
+      @import = @inquiry.imports.find(params[:id])
+    end
 
-  def set_excel_import
-    @excel_import = @inquiry.imports.find(params[:id])
-  end
+    def set_excel_import
+      @excel_import = @inquiry.imports.find(params[:id])
+    end
 
-  def create_list_import_params
-    params.require(:inquiry_import).permit(
+    def create_list_import_params
+      params.require(:inquiry_import).permit(
         :import_text
-    )
-  end
+      )
+    end
 
-  def create_excel_import_params
-    params.require(:inquiry_import).permit(
+    def create_excel_import_params
+      params.require(:inquiry_import).permit(
         :file
-    )
-  end
+      )
+    end
 
-  def create_failed_skus_params
-    params[:inquiry_import].present? ? params.require(:inquiry_import).permit(
-        :rows_attributes => [
+    def create_failed_skus_params
+      params[:inquiry_import].present? ? params.require(:inquiry_import).permit(
+        rows_attributes: [
             :id,
             :approved_alternative_id,
             :_destroy,
-            :inquiry_product_attributes => [
+            inquiry_product_attributes: [
                 :inquiry_id,
                 :quantity,
                 :sr_no,
-                :product_attributes => [:inquiry_import_row_id, :name, :sku, :mpn, :is_service, :brand_id, :tax_code_id,:tax_rate_id, :category_id]
+                product_attributes: [:inquiry_import_row_id, :name, :sku, :mpn, :is_service, :brand_id, :tax_code_id, :tax_rate_id, :category_id]
             ],
         ]
-    ) : {}
-  end
+      ) : {}
+    end
 end

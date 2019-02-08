@@ -1,5 +1,6 @@
-class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::Shared::BaseService
   def call
     CustomerProduct.all.each do |customer_product|
       if customer_product.best_images.present?
@@ -9,7 +10,7 @@ class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::
           else
             if ActiveStorage::Blob.service.exist?(image.key)
               path = "#{Dir.tmpdir}/#{image.key}#{image.filename}"
-              File.open(path, 'wb') do |file|
+              File.open(path, "wb") do |file|
                 file.write(image.download)
               end
 
@@ -22,8 +23,6 @@ class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::
           end
         end
       end
-
     end
   end
-
 end

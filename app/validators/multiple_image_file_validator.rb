@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultipleImageFileValidator < ActiveModel::Validator
   def validate(record)
     if options[:attachments].present? && record.send(attachments).attached?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 
@@ -13,7 +15,7 @@ class Overseers::BrandsController < Overseers::BaseController
 
   def show
     @brand_products = Product.where(brand_id: @brand.id)
-    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps}.compact.flatten.uniq}.compact.flatten.uniq)
+    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps }.compact.flatten.uniq }.compact.flatten.uniq)
 
     authorize @brand
   end
@@ -30,7 +32,7 @@ class Overseers::BrandsController < Overseers::BaseController
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -45,20 +47,20 @@ class Overseers::BrandsController < Overseers::BaseController
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   private
-  def set_brand
-    @brand ||= Brand.find(params[:id])
-  end
+    def set_brand
+      @brand ||= Brand.find(params[:id])
+    end
 
-  def brand_params
-    params.require(:brand).permit(
+    def brand_params
+      params.require(:brand).permit(
         :name,
-        :is_active,
-        :company_ids => []
-    )
-  end
+          :is_active,
+          company_ids: []
+      )
+    end
 end

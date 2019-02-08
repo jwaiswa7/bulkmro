@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def pending?
     index?

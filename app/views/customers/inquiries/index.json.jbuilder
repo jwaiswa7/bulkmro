@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 json.data (@inquiries) do |inquiry|
   json.array! [
                   [
-                      row_action_button(customers_inquiry_path(inquiry), 'eye', 'View Inquiry', 'info')
-                  ].join(' '),
+                      row_action_button(customers_inquiry_path(inquiry), "eye", "View Inquiry", "info")
+                  ].join(" "),
                   inquiry.inquiry_number,
                   status_badge(inquiry.status),
                   inquiry.company.to_s,

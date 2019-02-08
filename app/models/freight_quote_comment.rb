@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FreightQuoteComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :freight_quote

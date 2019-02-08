@@ -1,5 +1,6 @@
-class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
   def initialize(kit)
     @kit = kit
   end
@@ -13,7 +14,7 @@ class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
   def call_later
     if kit.persisted?
       remote_uid = ::Resources::ProductTree.custom_find(kit.product.sku)
-      remote_uid.present? ? kit.update_attributes(:remote_uid => remote_uid) : kit.update_attributes(:remote_uid => nil)
+      remote_uid.present? ? kit.update_attributes(remote_uid: remote_uid) : kit.update_attributes(remote_uid: nil)
 
       kit.product.save_and_sync
 
@@ -26,7 +27,7 @@ class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
       if kit.remote_uid.present?
         ::Resources::ProductTree.update(kit.remote_uid, kit, quotes: true)
       else
-        kit.update_attributes(:remote_uid => ::Resources::ProductTree.create(kit))
+        kit.update_attributes(remote_uid: ::Resources::ProductTree.create(kit))
       end
     end
   end

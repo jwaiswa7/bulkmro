@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :sequence do
   desc "TODO"
   task inquiry: :environment do
@@ -10,13 +12,12 @@ namespace :sequence do
     end
   end
 
-  task :disable => :environment do
+  task disable: :environment do
     ActiveRecord::Base.connection.execute("
       ALTER TABLE inquiries ALTER COLUMN inquiry_number SET NOT NULL;
     ")
   end
 
-  task :enable => :environment do
-
+  task enable: :environment do
   end
 end

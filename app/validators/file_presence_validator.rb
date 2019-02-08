@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FilePresenceValidator < ActiveModel::Validator
   def validate(record)
     if options[:attachment].blank? || !record.send(attachment).attached?

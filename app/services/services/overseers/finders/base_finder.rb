@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil, paginate: true)
     @search_filters = []
@@ -11,37 +13,37 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
-          if column[:search][:value].include? '~'
+          if column[:search][:value].include? "~"
             range_filters << column
           else
             search_filters << column
           end
         end
       end
-      if params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
-        @sort_by = params[:columns][params[:order].values.first['column']][:name]
-        @sort_order = params[:order].values.first['dir']
+      if params[:order].values.first["column"].present? && params[:columns][params[:order].values.first["column"]][:name].present? && params[:order].values.first["dir"].present?
+        @sort_by = params[:columns][params[:order].values.first["column"]][:name]
+        @sort_order = params[:order].values.first["dir"]
       end
     end
     if params[:base_filter_key].present? && params[:base_filter_value].present?
       if params[:base_filter_value].kind_of?(Array)
-        #filter_By_array
+        # filter_By_array
         @base_filter = filter_by_array(params[:base_filter_key], params[:base_filter_value])
       else
-        #filter by value
+        # filter by value
         @base_filter = filter_by_value(params[:base_filter_key], params[:base_filter_value])
       end
     end
 
     @query_string = if params[:search].present? && params[:search][:value].present?
-                      params[:search][:value]
-                    elsif params[:q].present?
-                      params[:q]
-                    elsif params.is_a?(String)
-                      params
-                    else
-                      ''
-                    end.try(:strip)
+      params[:search][:value]
+    elsif params[:q].present?
+      params[:q]
+    elsif params.is_a?(String)
+      params
+    else
+      ""
+    end.try(:strip)
 
 
     @per = (params[:per] || params[:length] || 20).to_i
@@ -51,10 +53,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def call_base
     non_paginated_records = if query_string.present?
-                              perform_query(query_string)
-                            else
-                              all_records
-                            end
+      perform_query(query_string)
+    else
+      all_records
+    end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
     @indexed_records = non_paginated_records if !paginate
@@ -74,23 +76,22 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def perform_query(query_string)
-    index_klass.query({
-                          :query_string => {
-                              fields: index_klass.fields,
-                              query: query_string,
-                              default_operator: 'or'
-                          }
-                      })
+    index_klass.query(
+      query_string: {
+          fields: index_klass.fields,
+          query: query_string,
+          default_operator: "or"
+      }
+                      )
   end
 
   def filter_query(indexed_records)
     search_filters.each do |search_filter|
-
-      indexed_records = indexed_records.filter({
-                                                   term: {
-                                                       :"#{search_filter[:name]}" => search_filter[:search][:value]
-                                                   }
-                                               }) if (search_filter[:search][:value].present? && search_filter[:search][:value] != 'null')
+      indexed_records = indexed_records.filter(
+        term: {
+            :"#{search_filter[:name]}" => search_filter[:search][:value]
+        }
+                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != "null"
     end
 
     indexed_records
@@ -99,25 +100,25 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def range_query(indexed_records)
     range_filters.each do |range_filter|
       range = range_filter[:search][:value].split("~")
-      indexed_records = indexed_records.query({
-                                                  range: {
-                                                      :"#{range_filter[:name]}" => {
-                                                          gte: range[0].strip.to_date,
-                                                          lte: range[1].strip.to_date
-                                                      }
-                                                  }
-                                              })
+      indexed_records = indexed_records.query(
+        range: {
+            :"#{range_filter[:name]}" => {
+                gte: range[0].strip.to_date,
+                lte: range[1].strip.to_date
+            }
+        }
+                                              )
     end
 
     indexed_records
   end
 
   def sort_definition
-    {"#{sort_by}" => "#{sort_order}"}
+    { "#{sort_by}" => "#{sort_order}" }
   end
 
   def index_klass
-    [model_klass.to_s.pluralize, 'Index'].join.constantize
+    [model_klass.to_s.pluralize, "Index"].join.constantize
   end
 
   def filter_by_owner(ids)
@@ -125,10 +126,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    terms: {inside_sales_executive: ids},
+                    terms: { inside_sales_executive: ids },
                 },
                 {
-                    terms: {outside_sales_executive: ids}
+                    terms: { outside_sales_executive: ids }
                 }
             ],
             minimum_should_match: 1,
@@ -142,7 +143,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    exists: {field: "#{key}"}
+                    exists: { field: "#{key}" }
                 },
             ],
         },
@@ -154,7 +155,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    terms: {"#{key}": vals},
+                    terms: { "#{key}": vals },
                 }
             ]
         },
@@ -167,7 +168,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    term: {"#{key}": val},
+                    term: { "#{key}": val },
                 },
             ]
         },
@@ -175,19 +176,19 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     }
   end
 
-  def filter_by_status(only_remote_approved = false, key = nil )
+  def filter_by_status(only_remote_approved = false, key = nil)
     if only_remote_approved
       {
           bool: {
               should: [
                   {
-                      term: {status: SalesOrder.statuses[:Approved]},
+                      term: { status: SalesOrder.statuses[:Approved] },
                   },
                   {
-                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[:Approved]},
+                      term: { legacy_request_status: SalesOrder.legacy_request_statuses[:Approved] },
                   },
                   {
-                      term: {approval_status: 'approved'},
+                      term: { approval_status: "approved" },
                   },
               ],
               minimum_should_match: 2,
@@ -199,13 +200,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {status: SalesOrder.statuses[key]},
+                      term: { status: SalesOrder.statuses[key] },
                   },
                   {
-                      term: {legacy_request_status: SalesOrder.legacy_request_statuses[key]},
+                      term: { legacy_request_status: SalesOrder.legacy_request_statuses[key] },
                   },
                   {
-                      term: {approval_status: key},
+                      term: { approval_status: key },
                   },
               ],
               minimum_should_match: 2,
@@ -216,13 +217,13 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {legacy_status: 'not_legacy'},
+                      term: { legacy_status: "not_legacy" },
                   },
                   {
-                      exists: {field: 'sent_at'}
+                      exists: { field: "sent_at" }
                   },
                   {
-                      terms: {status: SalesOrder.statuses.except(:'Approved', :'Rejected',:'Canceled').values},
+                      terms: { status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Canceled').values },
                   },
               ],
               minimum_should_match: 3,

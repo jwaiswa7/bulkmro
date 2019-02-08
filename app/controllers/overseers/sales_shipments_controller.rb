@@ -1,10 +1,11 @@
-class Overseers::SalesShipmentsController < Overseers::BaseController
+# frozen_string_literal: true
 
+class Overseers::SalesShipmentsController < Overseers::BaseController
   def index
     authorize :sales_shipment
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesShipments.new(params, current_overseer)
         service.call

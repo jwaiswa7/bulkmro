@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :sprint do
   desc "TODO"
   task setup: :environment do
@@ -5,12 +7,12 @@ namespace :sprint do
   end
 
   # Pull
-  task :pull, [:repo] do |t,args|
-    args.with_defaults(:repo => "master")
+  task :pull, [:repo] do |t, args|
+    args.with_defaults(repo: "master")
     system  "git pull "
     system  "git checkout #{args.repo}"
-    system 'yarn install'
-    system 'bundle'
+    system "yarn install"
+    system "bundle"
     Rake::Task["db:migrate"].invoke
   end
 

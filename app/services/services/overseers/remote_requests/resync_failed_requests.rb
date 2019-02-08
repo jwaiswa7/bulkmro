@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::RemoteRequests::ResyncFailedRequests < Services::Shared::BaseService
   def initialize
     @start_at = Date.today.beginning_of_day
@@ -5,10 +7,10 @@ class Services::Overseers::RemoteRequests::ResyncFailedRequests < Services::Shar
   end
 
   def call
-    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
+    requests = RemoteRequest.where(created_at: start_at..end_at).failed
     requested = []
     requests.each do |request|
-      new_request = [request.subject_type, request.subject_id].join('-')
+      new_request = [request.subject_type, request.subject_id].join("-")
       if !requested.include? new_request
         if request.subject_type.present? && request.subject_id.present?
           begin

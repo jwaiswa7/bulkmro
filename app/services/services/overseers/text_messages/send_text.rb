@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include DisplayHelper
 
 class Services::Overseers::TextMessages::SendText < Services::Shared::TextMessages::BaseService

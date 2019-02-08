@@ -1,5 +1,6 @@
-class Services::Resources::Addresses::SaveAndSync < Services::Shared::BaseService
+# frozen_string_literal: true
 
+class Services::Resources::Addresses::SaveAndSync < Services::Shared::BaseService
   def initialize(address)
     @address = address
   end
