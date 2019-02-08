@@ -9,11 +9,16 @@ class Customers::ProfileController < Customers::BaseController
   def update
     authorize :profile
     @contact = current_contact
-    @contact.assign_attributes(profile_params)
-    if @contact.update_with_password(profile_params)
-      redirect_to edit_customers_profile_path, notice: flash_message(@contact, action_name)
+    if @contact.valid_password?(profile_params[:current_password].to_s)
+      @contact.assign_attributes(profile_params)
+      if @contact.save
+        bypass_sign_in(@contact)
+        redirect_to edit_customers_profile_path, notice: flash_message(@contact, action_name)
+      else
+        render 'edit'
+      end
     else
-      render 'edit'
+      redirect_to edit_customers_profile_path, notice: "Current password is incorrect"
     end
   end
 
