@@ -56,7 +56,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    (admin? || sales?) && record.status == "PO Created" && record.purchase_order && record.purchase_order.has_supplier? && record.purchase_order.get_supplier(record.purchase_order.rows.first.metadata['PopProductId'].to_i).company_contacts.present?
+    (admin? || sales?) && record.status == "PO Created" && record.purchase_order && record.has_supplier_contact?
   end
 
   def sending_po_to_supplier_create_email_message?
@@ -64,7 +64,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def dispatch_supplier_delayed_new_email_message?
-    record.status == 'PO Created' && (admin? || logistics?)
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.has_supplier_contact?
   end
 
   def dispatch_supplier_delayed_create_email_message?
@@ -72,7 +72,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def material_received_in_bm_warehouse_new_email_msg?
-    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.purchase_order.material_status.present?
+    record.status == 'PO Created' && (admin? || logistics?) && record.purchase_order && record.purchase_order.material_status.present? && (record.contact.present? || record.has_supplier_contact?)
   end
 
   def material_received_in_bm_warehouse_create_email_msg?
