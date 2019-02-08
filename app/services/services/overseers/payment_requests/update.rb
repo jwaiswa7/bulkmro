@@ -17,8 +17,8 @@ class Services::Overseers::PaymentRequests::Update < Services::Shared::BaseServi
     else
       payment_request.save!
     end
-    payment_request.update_status!
-    payment_request.save!
+    # payment_request.update_status!
+    # payment_request.save!
   end
 
   private
