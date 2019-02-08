@@ -39,6 +39,7 @@ sendgrid:
   username: bulk
   password: GhgjIH4zw3p2
   api_key: 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
+  default_email: pradeep.ketkale@bulkmro.com
 
 domain: staging.bulkmro.com
 
