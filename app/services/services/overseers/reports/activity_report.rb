@@ -25,7 +25,7 @@ class Services::Overseers::Reports::ActivityReport < Services::Overseers::Report
           overseers.push(OpenStruct.new({id: overseer_id, name: Overseer.find(overseer_id).full_name, count: overseer_count}))
         end
       end
-      geo_overseers = Overseer.where(:geography => geography_name).outside_sales_executive
+      geo_overseers = Overseer.where(:geography => geography_name).with_activity
       if overseers.size != geo_overseers.size
         geo_overseers.where.not(id: overseers.collect {|o| o.id}).each do |geo_overseer|
           overseers.push(OpenStruct.new({id: geo_overseer.id, name: geo_overseer.full_name, count: 0}))

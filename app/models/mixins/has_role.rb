@@ -29,6 +29,8 @@ module Mixins::HasRole
     scope :target_outside, -> {where('role IN (?)', TARGET_OUTSIDE_ROLES.map {|r| self.roles[r]})}
     scope :outside_and_obj, -> (obj) {where('role IN (?) OR id = ?', OUTSIDE_ROLES.map {|r| Overseer.roles[r]}, obj.try(:id))}
 
+    scope :with_activity, -> {where('role IN (?)', TARGET_OUTSIDE_ROLES.map {|r| self.roles[r]})}
+
     MANAGER_ROLES = %w(admin inside_sales_manager outside_sales_manager)
     LEADER_ROLES = %w(inside_sales_team_leader outside_sales_team_leader)
     INSIDE_ROLES = %w(inside_sales_executive inside_sales_team_leader inside_sales_manager outside_sales_manager admin)
