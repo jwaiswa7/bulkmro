@@ -208,6 +208,10 @@ group :development do
   # Preview emails instead of sending them
   gem 'letter_opener'
 
+  # RuboCop is a Ruby static code analyzer and code formatter
+  gem "rubocop", "~> 0.63.0", require: false
+  gem "rubocop-rails_config"
+
 end
 
 group :test do
