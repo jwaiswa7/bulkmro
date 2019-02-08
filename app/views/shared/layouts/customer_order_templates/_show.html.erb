@@ -75,14 +75,14 @@
   <div class="card-header">
     <div class="text-right">
       <% if customer_order.billing_address.present? %>
-        <% customer_order.tax_line_items.each do |key, value| %>
+        <% customer_order.tax_line_items(for_order: true).each do |key, value| %>
                 <span class="d-block"><em class="float-left"><%= TaxRateString.for(customer_order.billing_address, customer_order.default_warehouse_address, customer_order.default_warehouse_address, key) %>
                   :</em> <%= format_currency(value) %></span>
         <% end %>
         <strong class="float-left">Total Tax:</strong>
-        <strong><%= format_currency(customer_order.calculated_total_tax) %></strong>
+        <strong><%= format_currency(customer_order.calculated_total_tax(for_order: true)) %></strong>
         <hr class="my-1">
-        <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(customer_order.grand_total) %>
+        <strong class="d-block"><span class="float-left">Grand Total:</span> <%= format_currency(customer_order.grand_total(for_order: true)) %>
         </strong>
       <% else %>
         <span class="d-block" data-toggle="tooltip" title="Taxes will be displayed after you select a billing address."><strong class="float-left">Total Tax <i class="fal fa-info-circle text-small"></i>:</strong> 0.00</span>

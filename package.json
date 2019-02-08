@@ -33,7 +33,7 @@
   "version": "1.0.0",
   "description": "b2b industrial supplies",
   "main": "index.js",
-  "author": "Ashwin Goyal <ashwin.goyal@bulkmro.com>",
+  "author": "Ashwin G <ashwin.goyal@bulkmro.com>, Amit G <amit.goyal@bulkmro.com>, Prikesh S <prikesh.savla@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
     "webpack-dev-server": "2.11.2"

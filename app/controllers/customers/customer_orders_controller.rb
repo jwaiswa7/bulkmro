@@ -39,6 +39,8 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.customer_order_id = @customer_order.id
           row.quantity = cart_item.quantity
           row.customer_product = cart_item.customer_product
+          row.tax_rate_id = cart_item.customer_product.best_tax_rate.id
+          row.tax_code_id = cart_item.customer_product.best_tax_code.id
         end
       end
 
@@ -50,8 +52,13 @@ class Customers::CustomerOrdersController < Customers::BaseController
       current_cart.destroy
     end
 
-    email_service = Services::Overseers::EmailMessages::OrderConfirmationMailer.new(@customer_order, current_overseer)
-    email_service.call
+    email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
+    email_service.send_order_confirmation_email
+
+    account_managers = @customer_order.company.contacts.where(:role => 'account_manager')
+    if account_managers.present?
+      email_service.send_order_approval_email(account_managers)
+    end
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)
   end

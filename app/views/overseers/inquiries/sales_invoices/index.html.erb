@@ -5,11 +5,11 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th># Invoice</th>
-      <th># Sales Order</th>
-      <th>Line Items</th>
-      <th>Invoice Date</th>
-      <th>Created At</th>
+      <th class="no-sort desktop text-right"># Invoice</th>
+      <th class="no-sort desktop text-right"># Sales Order</th>
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Invoice Date</th>
+      <th class="no-sort desktop text-right">Created At</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>
