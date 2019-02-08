@@ -60,6 +60,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def cancelled?
+    manager_or_sales?
+  end
+
   def not_invoiced?
     # have to confirm
     manager_or_sales?

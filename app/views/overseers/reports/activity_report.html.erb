@@ -41,27 +41,28 @@
       </div>
     </div>
 
-    <table class="table text-center mt-3">
+    <table class="table text-center mt-3" data-toggle="wholly">
       <thead data-toggle="sticky">
       <tr>
-        <th></th>
-        <% @data.geographies.each do |geography| %>
-          <th class="text-uppercase text-black-50" colspan="<%= geography.overseers.size %>"><%= geography.name %></th>
+        <th class="border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
+          <th class="text-uppercase text-black-50 border-right <% if index.odd? %>bg-highlight-secondary<% end %>" colspan="<%= geography.overseers.size %>">
+            <%= !(geography.name == "") ? geography.name : "-" %></th>
         <% end %>
       </tr>
       <tr>
-        <th></th>
-        <% @data.geographies.each do |geography| %>
+        <th class="border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
           <% geography.overseers.each do |overseer| %>
-            <td><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
+            <td class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>"><h5 class="mb-0 text-black-50"><%= overseer.count %></h5></td>
           <% end %>
         <% end %>
       </tr>
       <tr>
-        <th class="text-right no-sort"></th>
-        <% @data.geographies.each do |geography| %>
+        <th class="text-right no-sort border-right"></th>
+        <% @data.geographies.each.with_index do |geography, index| %>
           <% geography.overseers.each do |overseer| %>
-            <td data-toggle="tooltip" title="<%= overseer.name %>">
+            <td data-toggle="tooltip" title="<%= overseer.name %>" class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>">
               <strong><%= "#{overseer.name.split(' ').first[0]}. #{overseer.name.split(" ").last[0]}." %></strong>
             </td>
           <% end %>
@@ -71,10 +72,10 @@
       <tbody>
       <% @report.start_date.upto(@report.end_date) do |date| %>
         <tr>
-          <td class="text-right"><strong><%= format_date_without_time(date) %></strong></td>
-          <% @data.geographies.each do |geography| %>
+          <td class="text-right border-right"><strong><%= format_date_without_time(date) %></strong></td>
+          <% @data.geographies.each.with_index do |geography, index| %>
             <% geography.overseers.each do |overseer| %>
-              <td><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
+              <td class="border-right <% if index.odd? %>bg-highlight-secondary<% end %>"><%= get_entry(@data.entries, date, overseer.id) != 0 ? get_entry(@data.entries, date, overseer.id) : '-' %></td>
             <% end %>
           <% end %>
         </tr>

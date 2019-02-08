@@ -10022,19 +10022,23 @@ th {
   z-index: 10000;
   position: fixed;
   margin: 0;
-  width: 100% !important;
-  left: 0;
   -webkit-box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2);
-  top: auto;
-  bottom: 0;
-  opacity: 0.95; }
+  opacity: 0.95;
+  top: 135px;
+  right: 25px;
+  bottom: auto;
+  left: auto;
+  width: auto !important;
+  max-width: 250px; }
   @media (max-width: 991.98px) {
     .alert {
-      width: 100%;
+      width: 100% !important;
+      max-width: 100%;
       top: auto;
-      left: 0;
+      right: auto;
       bottom: 0;
+      left: 0;
       -webkit-box-shadow: 0 0 0 0 transparent;
       box-shadow: 0 0 0 0 transparent;
       border-radius: 0; } }
@@ -10301,6 +10305,86 @@ a.bg-highlight-dark:hover, a.bg-highlight-dark:focus,
 button.bg-highlight-dark:hover,
 button.bg-highlight-dark:focus {
   background-color: #7a8793 !important; }
+
+.bg-highlight-color-light-blue {
+  background-color: white !important; }
+
+a.bg-highlight-color-light-blue:hover, a.bg-highlight-color-light-blue:focus,
+button.bg-highlight-color-light-blue:hover,
+button.bg-highlight-color-light-blue:focus {
+  background-color: #d2e1fa !important; }
+
+.bg-highlight-color-dark-blue {
+  background-color: #c7daf7 !important; }
+
+a.bg-highlight-color-dark-blue:hover, a.bg-highlight-color-dark-blue:focus,
+button.bg-highlight-color-dark-blue:hover,
+button.bg-highlight-color-dark-blue:focus {
+  background-color: #9abcf1 !important; }
+
+.bg-highlight-color-yellow {
+  background-color: #ffdb6d !important; }
+
+a.bg-highlight-color-yellow:hover, a.bg-highlight-color-yellow:focus,
+button.bg-highlight-color-yellow:hover,
+button.bg-highlight-color-yellow:focus {
+  background-color: #ffce3a !important; }
+
+.bg-highlight-color-light-yellow {
+  background-color: #ffe7a0 !important; }
+
+a.bg-highlight-color-light-yellow:hover, a.bg-highlight-color-light-yellow:focus,
+button.bg-highlight-color-light-yellow:hover,
+button.bg-highlight-color-light-yellow:focus {
+  background-color: #ffdb6d !important; }
+
+.bg-highlight-color-red {
+  background-color: #fbeeee !important; }
+
+a.bg-highlight-color-red:hover, a.bg-highlight-color-red:focus,
+button.bg-highlight-color-red:hover,
+button.bg-highlight-color-red:focus {
+  background-color: #f3c3c3 !important; }
+
+.bg-highlight-color-light-green {
+  background-color: #f1f7ee !important; }
+
+a.bg-highlight-color-light-green:hover, a.bg-highlight-color-light-green:focus,
+button.bg-highlight-color-light-green:hover,
+button.bg-highlight-color-light-green:focus {
+  background-color: #d3e7cb !important; }
+
+.bg-highlight-color-green {
+  background-color: #cde4c3 !important; }
+
+a.bg-highlight-color-green:hover, a.bg-highlight-color-green:focus,
+button.bg-highlight-color-green:hover,
+button.bg-highlight-color-green:focus {
+  background-color: #b0d4a0 !important; }
+
+.bg-highlight-color-dark-green {
+  background-color: #a3cc91 !important; }
+
+a.bg-highlight-color-dark-green:hover, a.bg-highlight-color-dark-green:focus,
+button.bg-highlight-color-dark-green:hover,
+button.bg-highlight-color-dark-green:focus {
+  background-color: #86bb6f !important; }
+
+.bg-highlight-color-orange {
+  background-color: #fffefc !important; }
+
+a.bg-highlight-color-orange:hover, a.bg-highlight-color-orange:focus,
+button.bg-highlight-color-orange:hover,
+button.bg-highlight-color-orange:focus {
+  background-color: #fce4cc !important; }
+
+.bg-highlight-color-grey {
+  background-color: #eaeaea !important; }
+
+a.bg-highlight-color-grey:hover, a.bg-highlight-color-grey:focus,
+button.bg-highlight-color-grey:hover,
+button.bg-highlight-color-grey:focus {
+  background-color: #d1d1d1 !important; }
 
 .headway {
   display: inline-block;

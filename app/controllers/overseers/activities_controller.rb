@@ -20,7 +20,6 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def create
     @activity = Activity.new(activity_params.merge(overseer: current_overseer))
-
     authorize @activity
     if @activity.save
       redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
@@ -109,7 +108,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :activity_type,
         :points_discussed,
         :actions_required,
-        :daily_allowance,
+        :expenses,
         :overseer_ids => [],
         :company_creation_request_attributes => [
             :name,
@@ -118,7 +117,8 @@ class Overseers::ActivitiesController < Overseers::BaseController
             :last_name,
             :address,
             :account_type,
-          ]
+          ],
+        :attachments => []
     )
   end
 

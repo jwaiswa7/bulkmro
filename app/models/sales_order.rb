@@ -33,10 +33,12 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
   has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
+
   has_one :confirmation, :class_name => 'SalesOrderConfirmation', dependent: :destroy
   has_many :po_requests, :inverse_of => :sales_order, dependent: :destroy
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :invoice_requests
+  has_many :email_messages
   belongs_to :billing_address, :class_name => 'Address', dependent: :destroy, required: false
   belongs_to :shipping_address, :class_name => 'Address', dependent: :destroy, required: false
 
@@ -44,6 +46,8 @@ class SalesOrder < ApplicationRecord
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
   delegate :inside_sales_owner, :outside_sales_owner, :inside_sales_owner_id, :outside_sales_owner_id, :opportunity_type, :customer_committed_date, to: :inquiry, allow_nil: true
   delegate :currency_sign,to: :sales_quote
+
+
 
   #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
@@ -200,7 +204,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def has_purchase_order_request
-    self.po_request.present?
+    self.po_requests.present?
   end
 
   def not_invoiced_value(status)

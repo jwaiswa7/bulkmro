@@ -1262,62 +1262,66 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def create_po_request_for_purchase_orders
-    SalesOrder.remote_approved.each do |sales_order|
-      rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
-      sales_order.inquiry.purchase_orders.each do |purchase_order|
-        if purchase_order.rows.present?
-          purchase_order.rows.each do |line_item|
-            product_sku = line_item.sku
-            if rows[product_sku] != nil
-              row = sales_order.rows.find(rows[product_sku])
-              quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
-              if !purchase_order.po_request.present?
-                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number).first_or_create!
-              else
-                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created', purchase_order_number: purchase_order.po_number).first
-                po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, purchase_order_number: purchase_order.po_number})
-              end
-              po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit)
-            end
-          end
-        end
+  def update_created_po_requests_with_no_po_order
+    po_requests = PoRequest.where(status: 'PO Created', purchase_order_id: nil)
+    po_requests.each do |po_request|
+      if !po_request.purchase_order_number.present?
+        po_request.status = 'Cancelled'
+        po_request.comments.create(message: "Migration Cancelled: Status was PO created but PO number not assigned to PO requests", overseer: Overseer.default)
       end
     end
   end
 
   def update_existing_po_requests_with_purchase_order
     PoRequest.where.not(status: ["PO Created", "Requested", "Cancelled"]).update_all(status: 'Cancelled')
-    PoRequest.where.not(purchase_order_number: nil).each do |po_request|
+    skips = [47, 50, 83, 86, 12, 64, 72]
+    PoRequest.where.not(purchase_order_id: nil).each do |po_request|
+      next if skips.include?(po_request.id)
       if po_request.status != "Cancelled"
         rows = po_request.sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
         if po_request.status != 'Requested'
           if !po_request.status != 'PO Created'
-            purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
+            purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
             if purchase_order.present?
+              service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: purchase_order.inquiry.company.name)
               purchase_order.rows.each do |line_item|
                 product_sku = line_item.sku
                 if rows[product_sku] != nil
                   row = po_request.sales_order.rows.find(rows[product_sku])
                   quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
-                  if !po_request.purchase_order.present?
+                  if po_request.purchase_order.blank?
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(:validate => false)
+                      next
+                    end
                     if purchase_order.po_request.present?
                       po_request.update!(status: 'Cancelled')
                     else
-                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order)
+                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
                     end
                   else
-                    po_request.update!(supplier_id: row.supplier.id)
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(:validate => false)
+                      next
+                    end
+                    po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, is_legacy: true)
                     po_request.rows.where(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit).first_or_create!
                   end
                 end
               end
             end
-
           end
         else
+          service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: po_request.sales_order.inquiry.company.name)
           po_request.sales_order.rows.each do |row|
-            po_request.update!(supplier_id: row.supplier.id)
+            if row.supplier.blank? || row.supplier.addresses.blank?
+              po_request.is_legacy = true
+              po_request.save(:validate => false)
+              next
+            end
+            po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: po_request.sales_order.inquiry.bill_from_id, ship_to_id: po_request.sales_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
             po_request.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
           end
         end
@@ -1325,12 +1329,37 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def update_created_po_requests_with_no_po_order
-    po_requests = PoRequest.where(status: 'PO Created', purchase_order_id: nil)
-    po_requests.each do |po_request|
-      if !po_request.purchase_order_number.present?
-        po_request.status = 'Cancelled'
-        po_request.comments.create(message: "Migration Cancelled: Status was PO created but PO number not assigned to PO requests", overseer: Overseer.default)
+  def create_po_request_for_purchase_orders
+    SalesOrder.remote_approved.each do |sales_order|
+      rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
+      sales_order.inquiry.purchase_orders.each do |purchase_order|
+        if purchase_order.rows.present?
+          purchase_order.rows.each do |line_item|
+            product_sku = line_item.sku
+            if rows[product_sku] != nil
+              row = sales_order.rows.find(rows[product_sku])
+              if row.supplier.present? && row.supplier.addresses.present?
+                quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
+                if purchase_order.po_request.blank?
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true).first_or_create!
+                else
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                  if po_request
+                    po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true})
+                  end
+                end
+                po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit) if po_request
+              else
+                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                if po_request.present?
+                  po_request.is_legacy = true
+                  po_request.save(:validate => false)
+                end
+              end
+            end
+          end
+        end
       end
     end
   end
@@ -2227,7 +2256,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     sales_order_exists = []
     service.loop(nil) do |x|
       i = i + 1
-      # next if i < 17732
+      next if i < 11729
       next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
       next if (Product.where(sku: x.get_column('product sku')).present? == false)
@@ -2326,6 +2355,65 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts inquiry_not_found.inspect
   end
 
+  def update_invoice_statuses
+    missing_invoices = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_sales_invoices.csv', folder)
+    service.loop(limit) do |x|
+      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('Invoice Number'))
+      if sales_invoice.present? && sales_invoice.sales_order.present?
+        sales_invoice.status = 3
+        sales_invoice.metadata['state'] = 3 if sales_invoice.metadata.present?
+        sales_invoice.save!
+      else
+        missing_invoices << x.get_column('Invoice Number')
+      end
+    end
+    puts "Missing Invoices", missing_invoices
+  end
+
+  def update_cancelled_po_statuses
+    missing_po = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_purchase_orders.csv', folder)
+    service.loop(limit) do |x|
+      po = PurchaseOrder.find_by_po_number(x.get_column('Purchase Order Number'))
+      if po.present?
+        po.metadata['PoStatus'] = 95
+        po.save!
+      else
+        missing_po << x.get_column('Purchase Order Number')
+      end
+    end
+    puts "Missing PO", missing_po
+  end
+
+  def update_po_status
+    PurchaseOrder.all.each do |po|
+      if po.metadata['PoStatus'].present?
+        if po.metadata['PoStatus'].to_i > 0
+          po.status = po.metadata['PoStatus'].to_i
+        else
+          po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+        end
+        po.save
+      end
+    end
+  end
+
+  def update_mis_date_of_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+    missing_so = []
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+      if sales_order.present?
+        sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
+      else
+        missing_so.push(x.get_column('order number'))
+      end
+    end
+    puts "<--------------------------------------------------------------------------------------------->"
+    puts missing_so
+  end
+
   def generate_review_questions
     service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
@@ -2386,11 +2474,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_purchase_order_fields
     PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
     PurchaseOrder.all.each do |po|
-      po.followup_date = if po.metadata.present? && po.metadata['PoDate'].present?
-                           po.metadata['PoDate'].to_date
-                         else
-                           po.created_at
-                         end
       update_material_status(po)
       po.save
     end
@@ -2405,7 +2488,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_material_status(po)
-
     if po.material_pickup_requests.any?
       partial = true
       if po.rows.sum(&:get_pickup_quantity) <= 0

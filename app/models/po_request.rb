@@ -13,7 +13,11 @@ class PoRequest < ApplicationRecord
   belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: false
   has_many :rows, class_name: 'PoRequestRow', :inverse_of => :po_request, dependent: :destroy
   accepts_nested_attributes_for :rows, allow_destroy: true
-  belongs_to :address, required: false
+  belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id
+  belongs_to :ship_to, class_name: 'Warehouse', foreign_key: :ship_to_id
+
+  belongs_to :bill_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :bill_from_id
+  belongs_to :ship_from, -> (record) {where(company_id: record.supplier.id)}, class_name: 'Address', foreign_key: :ship_from_id
   belongs_to :contact, required: false
 
   belongs_to :purchase_order, required: false
@@ -27,20 +31,15 @@ class PoRequest < ApplicationRecord
       :'Requested' => 10,
       :'PO Created' => 20,
       :'Cancelled' => 30,
-      :'Rejected' => 40
+      :'Rejected' => 40,
+      :'Amend' => 50
   }
 
-  # enum supplier_po_type: {
-  #     :amazon => 10,
-  #     :rate_contract => 20,
-  #     :financing => 30,
-  #     :regular => 40,
-  #     :service => 50,
-  #     :repeat => 60,
-  #     :list => 65,
-  #     :route_through => 70,
-  #     :tender => 80
-  # }
+  enum supplier_po_type: {
+      :'regular' => 10,
+      :'route_through' => 20,
+      :'drop_ship' => 30
+  }
 
   enum rejection_reason: {
       :'Not Found: Supplier in SAP' => 10,
@@ -53,13 +52,15 @@ class PoRequest < ApplicationRecord
       :'Others' => 80
   }
 
-  scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected'])}
-  scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled'])}
+  scope :pending_and_rejected, -> {where(:status => [:'Requested', :'Rejected', :'Amend'])}
+  scope :handled, -> {where.not(:status => [:'Requested', :'Cancelled', :'Amend'])}
   scope :not_cancelled, -> {where.not(:status => [:'Cancelled'])}
   scope :cancelled, -> {where(:status => [:'Cancelled'])}
+  scope :can_amend, -> {where(:status => [:'PO Created'])}
+  scope :amended, -> {where(:status => [:'Amend'])}
 
   validate :purchase_order_created?
-  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present?}
+  validates_uniqueness_of :purchase_order, if: -> {purchase_order.present? && !is_legacy}
   validate :update_reason_for_status_change?
 
   after_initialize :set_defaults, :if => :new_record?
@@ -85,6 +86,14 @@ class PoRequest < ApplicationRecord
     self.status ||= :'Requested'
   end
 
+  def amending?
+    status == 'Amend'
+  end
+
+  def not_amending?
+    status != 'Amend'
+  end
+
   def selling_price
     rows.sum(&:converted_total_selling_price).round(2)
   end
@@ -95,5 +104,15 @@ class PoRequest < ApplicationRecord
 
   def po_margin_percentage
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
+  end
+
+  def readable_status
+    status = self.status
+    if self.status == "Requested"
+      title = "Pending"
+    elsif self.status == "PO Created"
+      title = "Completed"
+    end
+    "#{title} PO Request"
   end
 end
