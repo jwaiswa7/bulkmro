@@ -443,6 +443,7 @@ Rails.application.routes.draw do
       get 'edit_current_company'
       patch 'update_current_company'
     end
+    resource :profile, :controller => :profile, except: [:show, :index]
 
     resources :reports, only: %i[index] do
       member do
