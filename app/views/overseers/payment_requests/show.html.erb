@@ -190,6 +190,7 @@
               <th>Sr. No.</th>
               <th>Payment Type</th>
               <th>UTR / Cheque Number</th>
+              <th>Issue Date</th>
               <th>Cheque Date</th>
               <th>Amount Paid</th>
             </tr>
@@ -200,6 +201,7 @@
                 <td><%= sr_no + 1 %></td>
                 <td><%= row.payment_type %></td>
                 <td><%= row.utr_or_cheque_no %></td>
+                <td><%= row.issue_date %></td>
                 <td><%= row.cheque_date %></td>
                 <td><%= format_currency(row.amount_paid) %></td>
               </tr>
