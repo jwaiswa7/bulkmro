@@ -1893,7 +1893,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     puts no_sales_orders.uniq
   end
 
-<<<<<<< HEAD
   def purchase_order_to_po_request
     po_requests = PoRequest.where.not({purchase_order_number: nil})
     po_requests.each do |po_request|
@@ -2394,7 +2393,4 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               end
     end
   end
-
-=======
->>>>>>> FEATURE-purchase-orders-total-mismatch
 end
