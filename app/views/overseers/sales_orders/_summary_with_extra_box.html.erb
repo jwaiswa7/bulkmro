@@ -42,7 +42,7 @@
             <p class="mb-1 text-small text-uppercase text-blue">
               <strong>Total Order</strong>
             </p>
-            <h5 class="mb-0 mt-auto text-blue"><%= SalesOrder.remote_approved.count %></h5>
+            <h5 class="mb-0 mt-auto text-blue"><%= number_with_delimiter(SalesOrder.remote_approved.count, options = {}) %></h5>
             <hr class="my-2">
             <h5 class="my-0 text-small text-blue status-value"><%= format_currency(SalesOrder.remote_approved.pluck(:order_total).compact.sum) %></h5>
           </div>
