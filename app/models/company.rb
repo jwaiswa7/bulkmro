@@ -15,6 +15,7 @@ class Company < ApplicationRecord
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
   belongs_to :default_billing_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) {where(company_id: record.id)}, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: true
   belongs_to :industry, required: false
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
@@ -117,6 +118,7 @@ class Company < ApplicationRecord
     self.default_company_contact ||= set_default_company_contact
     self.default_billing_address ||= set_default_company_billing_address
     self.default_shipping_address ||= set_default_company_shipping_address
+    self.logistics_owner ||= default_logistics_owner
   end
 
   def syncable_identifiers
@@ -143,6 +145,10 @@ class Company < ApplicationRecord
   def shipping_address
     self.update_attributes(:default_shipping_address => self.set_default_company_shipping_address) if self.default_shipping_address.blank?
     self.default_shipping_address
+  end
+
+  def default_logistics_owner
+    Overseer.find(213)
   end
 
   def to_contextual_s(product)
