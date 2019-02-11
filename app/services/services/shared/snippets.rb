@@ -709,6 +709,30 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
+
+    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
+    requested = []
+    requested_ids = []
+    requests.each do |request|
+      new_request = [request.subject]
+      if !requested.include? new_request
+        if request.subject_type.present? && request.subject_id.present? && request.latest_request.status == 'failed'
+          begin
+            Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
+            requested << new_request
+            requested_ids << request.id
+          rescue
+            puts request
+          end
+        end
+      end
+
+    end
+    ResyncRequest.create(:request => requested_ids) if requested_ids.present?
+    [requested_ids.sort, requested_ids.size]
+  end
+
   def update_warehouse_and_inquiry
     update_if_exists = true
 
