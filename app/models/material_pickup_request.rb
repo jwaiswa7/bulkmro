@@ -48,8 +48,20 @@ class MaterialPickupRequest < ApplicationRecord
       'Drop Ship': 30
   }
 
+  enum logistics_aggregator: {
+      'Maruti Courier': 10,
+      'PS Enterprises': 20,
+      'BlueDart': 30,
+      'Spoton': 40,
+      'Elite Enterprise': 50,
+      'Safe Xpress': 60,
+      'Mahavir Courier Services': 70,
+      'Anjani Courier': 80,
+      'Sri Krishna Logistics': 90
+  }, _prefix: true
+
   scope :with_includes, -> {includes(:inquiry).includes(:purchase_order)}
-  scope :'3PL', -> {where(logistics_partner: [10,11,12,13,14,15,16,17,18])}
+  scope :'3PL', -> {where(logistics_partner: [10, 11, 12, 13, 14, 15, 16, 17, 18])}
   after_initialize :set_defaults, if: :new_record?
 
   validates_length_of :rows, minimum: 1, message: "must have at least one product", :on => :update

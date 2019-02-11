@@ -189,6 +189,8 @@ Rails.application.routes.draw do
             post 'sending_po_to_supplier_notification'
             get 'dispatch_from_supplier_delayed'
             post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
           end
         end
       end
@@ -233,6 +235,14 @@ Rails.application.routes.draw do
       scope module: 'sales_orders' do
         resources :comments
         resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
+          end
+        end
       end
     end
 
