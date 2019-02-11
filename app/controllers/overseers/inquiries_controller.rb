@@ -15,8 +15,8 @@ class Overseers::InquiriesController < Overseers::BaseController
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_inquiries, Inquiry)
         status_service.call
-        @total_values = status_service.indexed_total_values
-        @statuses = status_service.indexed_statuses
+        @total_values = status_service.indexed_total_values.except!(Inquiry.statuses.slice('Lead by O/S').values)
+        @statuses = status_service.indexed_statuses.except!(Inquiry.statuses.slice('Lead by O/S').values)
       end
     end
   end

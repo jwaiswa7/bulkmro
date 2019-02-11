@@ -4,7 +4,7 @@
 <% provide :container_fluid, true %>
 
 <div class="col-lg-12">
-  <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses} %>
+  <%= render partial: "shared/layouts/summary", locals: {klass: PurchaseOrder, statuses: PurchaseOrder.statuses, aggregation:{}} %>
 </div>
 
 <div class="col-lg-12">
