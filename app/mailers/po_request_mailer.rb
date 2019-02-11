@@ -41,4 +41,22 @@ class PoRequestMailer < ApplicationMailer
     email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
   end
 
+  def material_received_in_bm_warehouse_details(email_message)
+    @overseer = email_message.overseer
+    @inquiry = email_message.inquiry
+    @to = @inquiry.inside_sales_owner
+    @po_request = email_message.purchase_order.po_request
+    standard_email(email_message)
+  end
+
+
+  def send_material_received_in_bm_warehouse_notification(email_message)
+    @overseer = email_message.overseer
+    @inquiry = email_message.inquiry
+    @to = @inquiry.inside_sales_owner
+
+    email = htmlized_email(email_message)
+    email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
+  end
+
 end
