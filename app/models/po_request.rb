@@ -94,6 +94,10 @@ class PoRequest < ApplicationRecord
     status != 'Amend'
   end
 
+  def not_cancelled?
+    status != 'Cancelled'
+  end
+
   def selling_price
     rows.sum(&:converted_total_selling_price).round(2)
   end

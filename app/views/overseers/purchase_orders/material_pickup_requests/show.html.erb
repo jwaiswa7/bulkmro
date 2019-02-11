@@ -252,13 +252,13 @@
                   <% if @po_request.bill_to.present? %>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block">Bill To</strong>
-                      <%= @po_request.bill_to.to_multiline_s %>
+                      <%= @po_request.bill_to.address.to_multiline_s %>
                     </div>
                   <% end %>
                   <% if @po_request.ship_to.present? %>
                     <div class="col-6 col-md-3 mb-2">
                       <strong class="d-block">Ship To</strong>
-                      <%= @po_request.ship_to.to_multiline_s %>
+                      <%= @po_request.ship_to.address.to_multiline_s %>
                     </div>
                   <% end %>
 
@@ -321,6 +321,7 @@
                     <th>Product</th>
                     <th>Pickup Quantity</th>
                     <th>Delivered Quantity</th>
+                    <th>Lead Date</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -330,6 +331,7 @@
                       <td><%= row.purchase_order_row.to_s %></td>
                       <td><%= row.pickup_quantity %></td>
                       <td><%= row.delivered_quantity %></td>
+                      <td><%= format_succinct_date(row.get_lead_date(@po_request)) %></td>
                     </tr>
                   <% end %>
                   </tbody>

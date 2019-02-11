@@ -19,6 +19,17 @@ class MprRow < ApplicationRecord
     self.pickup_quantity ||= purchase_order_row.get_pickup_quantity if purchase_order_row.present?
   end
 
+  def row_product_id
+    purchase_order_row.get_product.id
+  end
+
+  def get_lead_date(po_request)
+    po_request_rows = po_request.rows.where.not(product_id: nil)
+    return false if po_request_rows.blank? || row_product_id.nil?
+
+    po_request_rows.where(product_id: row_product_id).first.lead_time
+  end
+
   def check_pickup_quantity?
 
     previous_pickup_quantity = pickup_quantity_was || 0

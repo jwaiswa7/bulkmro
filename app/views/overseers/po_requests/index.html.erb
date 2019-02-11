@@ -8,6 +8,15 @@
 <% end %>
 
 <% content_for(:heading_buttons) do %>
+  <% if policy(:po_request).update_logistics_owner? && !(action_name == 'cancelled' || action_name == "amended") %>
+    <div class="mr-2 float-left update_logistics_owner_wrapper">
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect{|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+    </div>
+    <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
+      <i class="fal fa-plus mr-1"></i>Update Logistics Owner
+    </button>
+  <% end %>
+
   <% if policy(:sales_order).index? %>
     <a href="<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
@@ -20,7 +29,14 @@
 <% end %>
 <% %>
 <% content_for :header_row do %>
-  <th class="no-sort all" data-width="70px"></th>
+  <th class="no-sort">
+    <% if policy(:po_request).update_logistics_owner? && !(action_name == 'cancelled' || action_name == "amended") %>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" name="all_po_requests" id="all_po_requests">
+        <label class="custom-control-label" for="all_po_requests">Select All</label>
+      </div>
+    <% end %>
+  </th>
   <th class="no-sort desktop" data-name="po_request_no">PO Request No.</th>
   <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
   <% if action_name == 'index' || action_name == "Completed" %>
