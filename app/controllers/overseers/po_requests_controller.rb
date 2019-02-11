@@ -47,7 +47,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       @sales_order.rows.each do |sales_order_row|
         @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
       end
-      service = Services::Overseers::CompanyReviews::CreateCompanyReview .new(@sales_order,current_overseer)
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order,current_overseer)
       @company_reviews = service.call
 
       authorize @po_request
@@ -106,8 +106,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
         end
       end
 
-      create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
-      create_payment_request.call
+      # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
+      # create_payment_request.call
 
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
