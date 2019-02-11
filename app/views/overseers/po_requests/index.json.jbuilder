@@ -12,11 +12,14 @@ json.data (@po_requests) do |po_request|
                       elsif policy(po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(po_request.payment_request), 'eye', 'View Payment Request', 'success')
                       end,
-                      if policy(po_request).dispatch_supplier_delayed_new_email_message?
-                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'clock', 'Dispatch from Supplier Delayed', 'warning', :_blank)
-                      end,
                       if policy(po_request).sending_po_to_supplier_new_email_message?
                         row_action_button(sending_po_to_supplier_overseers_po_request_email_messages_path(po_request), 'envelope', 'Send Purchase Order to Supplier', 'dark', :_blank)
+                      end,
+                      if policy(po_request).dispatch_supplier_delayed_new_email_message?
+                        row_action_button(dispatch_from_supplier_delayed_overseers_po_request_email_messages_path(po_request), 'envelope', 'Dispatch from Supplier Delayed', 'success', :_blank)
+                      end,
+                      if policy(po_request).material_received_in_bm_warehouse_new_email_msg?
+                        row_action_button(material_received_in_bm_warehouse_overseers_po_request_email_messages_path(po_request), 'envelope', 'Material Received in BM Warehouse', 'warning', :_blank)
                       end
                   ].join(' '),
                   conditional_link(po_request.id, overseers_po_request_path(po_request), policy(po_request).show?),

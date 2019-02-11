@@ -90,6 +90,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
             :shipped_to,
             :logistics_partner,
             :tracking_number,
+            :logistics_aggregator,
             :purchase_order_id,
             :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
             :rows_attributes => [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :_destroy],

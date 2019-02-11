@@ -9,7 +9,7 @@
         #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status).downcase %>'</em>
+    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>'</em>
       and log it under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
@@ -179,7 +179,7 @@
                   <%= number_to_currency(k[:purchase_order_row].unit_selling_price, precision: 0, unit: '') %>
                 </div>
                 <div class="col-12 col-md-1">
-                  <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f , precision: 0, unit: '') %>
+                  <%= number_to_currency(k[:purchase_order_row].unit_selling_price.to_f * k[:total_quantity].to_f, precision: 0, unit: '') %>
                 </div>
               </div>
             <% end %>
@@ -188,21 +188,15 @@
       </div>
     </div>
 
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> Create Invoice Request
+    <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+      <% if action_name.capitalize == "New" %>
+        <i class="fal fa-plus-circle"></i>
+      <% else %>
+        <i class="fal fa-pen"></i>
       <% end %>
-    <% elsif @invoice_request.status %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
-        <i class="fal fa-pen"></i> Update <%= @invoice_request.readable_status %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
-        <i class="fal fa-pen"></i> Update Invoice Request
-      <% end %>
+      <%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>
     <% end %>
   <% end %>
-
   <% if action_name.capitalize != "New" %>
     <div class="card">
       <div class="card-body">

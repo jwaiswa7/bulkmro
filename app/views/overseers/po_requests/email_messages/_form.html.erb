@@ -4,8 +4,7 @@
     <strong><%= current_overseer.full_name %></strong>.
   <% end %>
   <%= render layout: 'shared/layouts/form' do %>
-
-    <%= simple_form_for([:overseers, @po_request, @email_message], url: {action: "#{@action}", controller: 'overseers/po_requests/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= simple_form_for([:overseers, @po_request, @email_message], url: {action: @action, controller: 'overseers/po_requests/email_messages'}, :method => :post, :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <div class="card-body">
         <%= hidden_field_tag :type, params[:type] %>
         <%= f.input :from, disabled: true %>
@@ -13,8 +12,8 @@
         <%= f.input :cc %>
         <%= f.input :bcc %>
         <%= f.input :subject %>
+        <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
         <% if f.object.auto_attach == true %>
-          <%= f.input :files, wrapper: :custom_file, input_html: {multiple: true} %>
           <div class="d-flex flex-row align-items-center">
             <div class="form-group mr-2">
               <%= link_to overseers_purchase_order_path(@po_request.purchase_order, format: :pdf), target: :_blank, :class => 'btn btn-success' do %>
