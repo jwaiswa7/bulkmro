@@ -4,14 +4,14 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   def sending_po_to_supplier
     to_email = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
     @to = to_email.present? ? to_email : @supplier.company_contacts.first.contact.email
+    cc_addresses = [@po_request.logistics_owner.try(:email), "sales@bulkmro.com", "logistics@bulkmro.com"].join(", ")
     if @po_request.purchase_order.present?
-      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order)
+      @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order, :cc => cc_addresses)
       @action = "sending_po_to_supplier_notification"
       @email_message.assign_attributes(
           :to => @to,
           :subject => "Internal Ref Inq ##{@inquiry.inquiry_number} Purchase Order ##{@po_request.purchase_order.po_number}",
-          :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
-          :auto_attach => true
+          :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source
       )
     end
     authorize @po_request, :sending_po_to_supplier_new_email_message?
@@ -33,10 +33,6 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
 
     authorize @po_request, :sending_po_to_supplier_create_email_message?
 
-    if @email_message.auto_attach?
-      @email_message.files.attach(io: File.open(RenderPdfToFile.for(@po_request.purchase_order, locals: {inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier})), filename: @po_request.purchase_order.filename(include_extension: true))
-    end
-
     if @email_message.save
         if PoRequestMailer.send_supplier_notification(@email_message).deliver_now
           @po_request.update_attributes(:sent_at => Time.now)
@@ -54,8 +50,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @email_message.assign_attributes(
           :to => @inquiry.inside_sales_owner.email,
           :subject => "Ref # #{@inquiry.inquiry_number} Delay in Material Delivery",
-          :body => PoRequestMailer.dispatch_supplier_delayed(@email_message).body.raw_source,
-          :auto_attach => false
+          :body => PoRequestMailer.dispatch_supplier_delayed(@email_message).body.raw_source
       )
     end
     authorize @po_request, :dispatch_supplier_delayed_new_email_message?
