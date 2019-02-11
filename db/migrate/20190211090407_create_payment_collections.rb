@@ -2,15 +2,34 @@ class CreatePaymentCollections < ActiveRecord::Migration[5.2]
   def change
     create_table :payment_collections do |t|
         t.references :account
-        t.decimal :amount_received_on_account_no_due
-        t.decimal :amount_received_on_account_overdue
-        t.decimal :amount_received_against_invoice_no_due
-        t.decimal :amount_received_against_invoice_overdue
-        t.decimal :total_amount_received_no_due
-        t.decimal :total_amount_received_overdue
-        t.decimal :amount_outstanding_no_due
-        t.decimal :amount_outstanding_overdue
+
+        t.decimal :amount_received_on_account
+        t.decimal :amount_received_against_invoice
+        t.decimal :total_amount_received
+        t.decimal :amount_outstanding
+
+        t.decimal :amount_received_fp_nd
+        t.decimal :amount_received_pp_nd
+        t.decimal :amount_received_npr_nd
+
+        t.decimal :amount_received_fp_od
+        t.decimal :amount_received_pp_od
+        t.decimal :amount_received_npr_od
+
+        t.decimal :amount_outstanding_pp_nd
+        t.decimal :amount_outstanding_npr_nd
+
+        t.decimal :amount_outstanding_pp_od
+        t.decimal :amount_outstanding_npr_od
+
+        t.userstamps
         t.timestamps
+
+        # FP: Full Paid
+        # PP: Partially Paid
+        # NPR: No Payment Received
+        # ND: Not Due
+        # OD: Over Due
     end
   end
 end
