@@ -5,7 +5,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
                   ].join(' '),
-                  @company.account.name,
+                  @company.account.alias,
                   @company.name,
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), policy(sales_invoice.inquiry).edit?) : "-",
                   sales_invoice.inquiry.present? ? conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoices_path(sales_invoice.inquiry),policy(sales_invoice).show?) : sales_invoice.invoice_number,

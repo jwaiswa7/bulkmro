@@ -16,6 +16,7 @@ json.data (@sales_receipts) do |sales_receipt|
                 sales_receipt.currency_id.present? ? sales_receipt.currency.name : ' - ',
                 sales_receipt.payment_amount_received.present? ? sales_receipt.payment_amount_received : ' - ',
                 sales_receipt.remote_reference.present? ? sales_receipt.remote_reference : ' - ',
+                sales_receipt.comments.present? ? sales_receipt.comments : ' - ',
                 format_succinct_date(sales_receipt.created_at)
                ]
 end
@@ -30,6 +31,7 @@ json.columnFilters [
                       SalesReceipt.payment_types.map {|k, v| {:"label" => k.titlecase, :"value" => v.to_s}}.as_json,
                       SalesReceipt.payment_methods.map {|k, v| {:"label" => k.titlecase, :"value" => v.to_s}}.as_json,
                       Currency.all.map{|v| {:"label" => v.name, :"value" => v.id}}.as_json,
+                      [],
                       [],
                       [],
                       [],

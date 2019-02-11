@@ -8,6 +8,7 @@ json.data (@companies) do |company|
                         row_action_button(new_overseers_payment_collection_email_path(:type =>'Company',:company=> company),  'envelope', 'Send Email', 'dark', :_blank)
                       end
                   ].join(' '),
+                  company.account.alias,
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),
                   format_currency(company.invoices.not_cancelled.sum(&:calculated_total_with_tax)),
                   format_currency(company.amount_received_against_invoice),

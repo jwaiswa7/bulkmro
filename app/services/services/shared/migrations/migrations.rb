@@ -2324,6 +2324,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
       sr.payment_amount_received = metadata_obj['p_amount_received'] || 0.0
       sr.payment_received_date = metadata_obj['p_received_date']
+      sr.comments = metadata_obj['p_comments']
       sr.save!
     end
   end
