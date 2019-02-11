@@ -3,22 +3,25 @@
 </a>
 
 <div id="summary" class="collapse">
-  <div class="mt-2 form-row d-flex flex-row align-content-stretch">
-    <%# summary_obj.each do |data| %>
-      <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-        <a name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-red " href="#">
-        <div class="card-body px-3 pt-3 pb-3">
-            <div class="text-center d-flex flex-column h-100">
-              <p class="mb-1 text-small text-uppercase text-red">
-                <strong>Name</strong>
-              </p>
-              <h5 class="mb-0 mt-auto text-red status-count-50"></h5>
-              <hr class="my-2">
-              <h5 class="my-0 text-small text-red ">&#8377;50</h5>
-            </div>
+    <% @summery_data.each do |data| %>
+      <h6><%= data[0].to_s.tr("_"," ").capitalize %></h6>
+      <div class="mt-2 form-row d-flex flex-row align-content-stretch">
+        <% data[1].each do |data_elm| %>
+          <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
+            <a name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= data_elm[1][:color] %> " href="#">
+              <div class="card-body px-3 pt-3 pb-3">
+                <div class="text-center d-flex flex-column h-100">
+                  <p class="mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
+                    <strong><%=data_elm[1][:name] %></strong>
+                  </p>
+                  <h5 class="mb-0 mt-auto text-<%= data_elm[1][:color] %> status-count-50"><%= data_elm[1][:total_count] %></h5>
+                  <hr class="my-2">
+                  <h5 class="my-0 text-small text-<%= data_elm[1][:color] %> ">&#8377;<%= data_elm[1][:value] %></h5>
+                </div>
+              </div>
+            </a>
           </div>
-        </a>
+        <%end %>
       </div>
-    <%# end %>
-  </div>
+<% end %>
 </div>
