@@ -8,7 +8,7 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="company_name">Customer Company Name</th>
+    <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort desktop" data-name="so_number">Sales Order #</th>
     <th class="no-sort desktop text-right" data-name="so_date">Sales Order Date</th>
     <th class="no-sort desktop text-right" data-name="committed_date">Committed Date to Customer</th>
@@ -25,7 +25,7 @@
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>

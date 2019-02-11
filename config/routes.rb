@@ -200,6 +200,7 @@ Rails.application.routes.draw do
         get 'pending_and_rejected'
         get 'cancelled'
         get 'amended'
+        post 'update_logistics_owner'
       end
 
     end

@@ -15,13 +15,11 @@ let toggleCheckboxes = () => {
 
 let createInvoiceRequest = () => {
     let pickup_requests = {};
-    let pickup_requests_by_so = {};
     $('input[type=checkbox][name="pickup_requests[]"]:checked').each((index, element) => {
         pickup_requests[$(element).val()] = $(element).data("po-id");
-        pickup_requests_by_so[$(element).val()] = $(element).data("so-id");
     });
 
-    if (checkValues(pickup_requests) == true || checkValues(pickup_requests_by_so) == true) {
+    if (checkValues(pickup_requests) == true) {
         let data = {ids: Object.keys(pickup_requests), purchase_order_id: Object.values(pickup_requests)[0]};
         window.open(Routes.new_overseers_invoice_request_path(data));
     } else {

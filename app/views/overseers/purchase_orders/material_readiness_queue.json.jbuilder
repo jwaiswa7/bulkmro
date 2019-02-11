@@ -42,7 +42,7 @@ end
 json.columnFilters [
                        [],
                        [],
-                       [],
+                       [{"source": autocomplete_overseers_companies_path}],
                        [],
                        [],
                        [],

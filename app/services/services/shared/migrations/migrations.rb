@@ -2593,4 +2593,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
               end
     end
   end
+
+  def add_logistics_owner_to_companies
+    Company.all.each do |company|
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+      company.logistics_owner = service.call
+      company.save(:validate => false)
+    end
+  end
 end

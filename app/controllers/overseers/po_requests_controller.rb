@@ -115,6 +115,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
+  def update_logistics_owner
+    @po_requests = PoRequest.where(id: params[:po_requests])
+    authorize @po_requests
+    @po_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
+  end
+
   private
 
   def po_request_params
