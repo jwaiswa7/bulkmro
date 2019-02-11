@@ -177,7 +177,7 @@ ulmwwTdSSRVmjSfz4OxPuSNQdXmYhHDkXMKfewl4mkEJSp92a1HHXw==
     # if response[:error_message].present?
     #   response[:error_message] = "Invalid session.."
     # end
-    if response[:error_message].present? && response[:error_message] == "Invalid session."
+    if response[:error_message].present? && (response[:error_message].downcase.include? "invalid session")
       Rails.cache.delete('sap_cookie')
       status = :failed
       set_headers

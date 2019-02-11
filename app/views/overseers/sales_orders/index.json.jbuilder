@@ -15,9 +15,15 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
+                      end,
+                      if policy(sales_order).material_dispatched_to_customer_new_email_msg?
+                        row_action_button(material_dispatched_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Dispatched to Customer Notification', 'dark', :_blank)
+                      end,
+                      if policy(sales_order).material_delivered_to_customer_new_email_msg?
+                        row_action_button(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Delivered to Customer Notification', 'dark', :_blank)
                       end
                   ].join(' '),
-                  conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show? ),
+                  conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show?),
                   format_succinct_date(sales_order.created_at),
                   format_succinct_date(sales_order.mis_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
@@ -55,7 +61,7 @@ json.columnFilters [
 json.recordsTotal SalesOrder.all.count
 json.recordsFiltered @indexed_sales_orders.total_count
 json.draw params[:draw]
-json.recordsSummary SalesOrder.remote_statuses.map {|status, status_id| {:status_id => status_id ,:"label" => status, :"size" => @statuses[status_id]}}.as_json
+json.recordsSummary SalesOrder.remote_statuses.map {|status, status_id| {:status_id => status_id, :"label" => status, :"size" => @statuses[status_id]}}.as_json
 json.recordsTotalValue @total_values
 json.recordsStatus @statuses
 json.recordsOverallStatusCount @statuses_count

@@ -1,15 +1,16 @@
 <div class="font-family: Arial; font-size: 14.5px;">
-  <p style="color: #555;">Dear <%= @contact.first_name %>,</p>
-  <p style="color: #555;">Greetings from Bulk MRO!<br/></p>
-  <p style="color: #555;">Please find attached our Purchase Order No. : <%= format_id(@purchase_order.po_number) %></p>
-  <p style="color: #555;">We look forward to receiving your confirmation of the same along with your PI and delivery
-    date of the material.</p>
-  <p style="color: #555;">Kindly treat this as priority and initiate the process at the earliest.</p>
-
-  <p style="color: #555;">Thanking you</p>
-  <p style="color: #555;">Inq
-    <%= format_id(@inquiry.inquiry_number) %>
+  <p style="color: #555;">Dear Sir/Madam,</p>
+  <p style="color: #555;">Thank you for your Order # <%= @inquiry.customer_po_number %>
+    dated <%= format_date(@inquiry.customer_order_date) %><br/></p>
+  <p style="color: #555;">We are pleased to inform you that your order has been dispatched! </p>
+  <p style="color: #555;">Below are the dispatch details: </p>
+  <p style="color: #555;">
+    Delivered by:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__________<br>
+    Docket Number:&nbsp;__________
   </p>
+  <p style="color: #555;">Please find attached our Invoice copy for your reference. </p>
+  <p style="color: #555;">Please feel free to contact us at any time for any questions. </p>
+
   <br/>
   <p style="color: #555;">Best Regards,<br>
   <p style="color: #555">
@@ -19,6 +20,7 @@
     <% end %>
   </p>
 </div>
+
 <div>
   <div>
     <div dir="ltr">
