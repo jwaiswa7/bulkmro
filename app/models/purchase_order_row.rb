@@ -64,6 +64,18 @@ class PurchaseOrderRow < ApplicationRecord
     Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 
+
+  def lead_date
+    po_request = purchase_order.po_request
+    if po_request.present?
+      po_request_rows = po_request.rows.where.not(product_id: nil)
+      return false if po_request_rows.blank? || get_product.nil?
+      po_request_rows.where(product_id: get_product.id).first.try(:lead_time)
+    else
+      return false
+    end
+  end
+
   def get_pickup_quantity
     self.quantity - self.mpr_rows.sum(&:reserved_quantity)
   end
