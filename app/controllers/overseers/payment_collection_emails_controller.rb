@@ -10,20 +10,26 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
           )
     else
       params[:type].downcase
-      raise
+      @account = Account.find(params[:account])
+      @email_message = @account.email_messages.build(:overseer => current_overseer)
+      @email_message.assign_attributes(
+          :subject => "Account Payment Collection",
+          :body => AccountPaymentCollectionMailer.acknowledgement(@email_message).body.raw_source,
+          )
     end
     authorize :payment_collection_emails
   end
 
   def create
     authorize :payment_collection_emails
-
-    if params['email_message'].has_key?('company')
-      @company = Company.find(params['email_message']['company'])
+    if params.has_key?('company')
+      @company = Company.find(params['company'])
       @company_email_message = @company.email_messages.build(:overseer => current_overseer)
       email_variable_assign_attribute(@company_email_message,'company')
-    elsif params['email_message'].has_key?('account')
-
+    elsif params.has_key?('account')
+      @account = Account.find(params['account'])
+      @account_email_message = @account.email_messages.build(:overseer => current_overseer)
+      email_variable_assign_attribute(@account_email_message,'account')
     end
   end
 
@@ -36,7 +42,8 @@ class Overseers::PaymentCollectionEmailsController < Overseers::BaseController
         CompanyPaymentCollectionMailer.send_acknowledgement(email_message_obj).deliver_now
         redirect_to payment_collection_overseers_account_companies_path(email_message_obj.company.account)
       elsif type_of_mail == 'account'
-
+        AccountPaymentCollectionMailer.send_acknowledgement(email_message_obj).deliver_now
+        redirect_to payment_collection_overseers_accounts_path
       end
     end
   end

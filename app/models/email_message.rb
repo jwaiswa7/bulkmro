@@ -1,8 +1,8 @@
 class EmailMessage < ApplicationRecord
   belongs_to :overseer, required: false
-  belongs_to :contact
-  belongs_to :company
-  belongs_to :account
+  belongs_to :contact, required: false
+  belongs_to :company, required: false
+  belongs_to :account, required: false
 
 
   has_many_attached :files

@@ -10,6 +10,7 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
         sales_receipt.assign_attributes(
             :sales_invoice => invoice,
             :company => company,
+            :account => company.account,
             :metadata => params,
             :currency => currency,
             :payment_type => (params['on_account'] == "1" ? 10 : (params['on_account'] == "0" ? 20 : nil) ),
