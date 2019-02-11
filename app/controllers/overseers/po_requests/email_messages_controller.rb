@@ -11,7 +11,8 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @email_message.assign_attributes(
           :to => @to,
           :subject => "Internal Ref Inq ##{@inquiry.inquiry_number} Purchase Order ##{@po_request.purchase_order.po_number}",
-          :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source
+          :body => PoRequestMailer.purchase_order_details(@email_message).body.raw_source,
+          :auto_attach => false
       )
     end
     authorize @po_request, :sending_po_to_supplier_new_email_message?
@@ -50,7 +51,8 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @email_message.assign_attributes(
           :to => @inquiry.inside_sales_owner.email,
           :subject => "Ref # #{@inquiry.inquiry_number} Delay in Material Delivery",
-          :body => PoRequestMailer.dispatch_supplier_delayed(@email_message).body.raw_source
+          :body => PoRequestMailer.dispatch_supplier_delayed(@email_message).body.raw_source,
+          :auto_attach => false
       )
     end
     authorize @po_request, :dispatch_supplier_delayed_new_email_message?
@@ -85,7 +87,8 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
       @email_message.assign_attributes(
           :to => @inquiry.inside_sales_owner.email,
           :subject => "Ref # #{@inquiry.inquiry_number} Material Received in BM Warehouse",
-          :body => PoRequestMailer.material_received_in_bm_warehouse_details(@email_message).body.raw_source
+          :body => PoRequestMailer.material_received_in_bm_warehouse_details(@email_message).body.raw_source,
+          :auto_attach => false
       )
     end
     authorize @po_request, :material_received_in_bm_warehouse_new_email_msg?
