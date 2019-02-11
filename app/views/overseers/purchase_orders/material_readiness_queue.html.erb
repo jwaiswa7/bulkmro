@@ -8,28 +8,24 @@
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
     <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
-    <th class="no-sort desktop" data-name="company_name">Customer Company Name</th>
+    <th class="no-sort desktop" data-name="customer_id">Customer Company Name</th>
     <th class="no-sort desktop" data-name="so_number">Sales Order #</th>
     <th class="no-sort desktop" data-name="so_date">Sales Order Date</th>
     <th class="no-sort desktop" data-name="committed_date">Committed Date to Customer</th>
     <th class="no-sort desktop" data-name="supplier_po_number">Supplier PO #</th>
     <th class="no-sort desktop" data-name="supplier_po_date">Supplier PO Date</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier Name</th>
-    <th class="no-sort desktop" data-name="sales_owner">IS & P Owner</th>
+    <th class="no-sort desktop" data-name="inside_sales_executive">IS & P Owner</th>
     <th class="no-sort desktop" data-name="logistics_owner">Logistics Owner</th>
-    <th class="no-sort desktop" data-name="po_status">Status</th>
-    <th class="no-sort desktop" data-name="po_request_status">PO Request Status</th>
-    <th class="no-sort desktop" data-name="pr_status">Payment Request Status</th>
     <th class="no-sort all" data-name="material_status">Material Status</th>
     <th class="sort desktop" data-name="followup_date">Material Readiness Date</th>
     <th class="sort desktop" data-name="expected_delivery_date">Expected Delivery Date</th>
-
     <th class="no-sort desktop">Latest Comment</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="ajax"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
@@ -37,10 +33,7 @@
     <td data-filter="false"></td>
     <td data-filter="ajax"></td>
     <td data-filter="dropdown"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
-    <td data-filter="false"></td>
+    <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="false"></td>
     <td data-filter="daterange"></td>

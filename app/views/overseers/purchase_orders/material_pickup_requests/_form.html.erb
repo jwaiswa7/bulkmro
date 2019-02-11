@@ -76,6 +76,10 @@
             </div>
 
             <div class="col-6">
+              <%= f.input :logistics_aggregator, as: :select, collection: enum_to_collection(MaterialPickupRequest.logistics_aggregators), label: "Logistics Aggregator", include_blank: "None" %>
+            </div>
+
+            <div class="col-6">
               <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
             </div>
 
@@ -101,9 +105,11 @@
             <div class="col-4">
               <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime, "%d-%b-%Y")}, required: true, disabled: f.object.invoice_request.present? %>
             </div>
-            <div class="col-4">
-              <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y")}, required: true, disabled: f.object.invoice_request.present? %>
-            </div>
+            <% if action_name == 'confirm_delivery' %>
+              <div class="col-4">
+                <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y")}, disabled: f.object.invoice_request.present? %>
+              </div>
+            <% end %>
           </div>
         </div>
 
