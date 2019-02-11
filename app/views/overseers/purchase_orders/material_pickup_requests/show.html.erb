@@ -322,6 +322,7 @@
                     <th>Product</th>
                     <th>Pickup Quantity</th>
                     <th>Delivered Quantity</th>
+                    <th>Lead Date</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -331,6 +332,7 @@
                       <td><%= row.purchase_order_row.to_s %></td>
                       <td><%= row.pickup_quantity %></td>
                       <td><%= row.delivered_quantity %></td>
+                      <td><%= format_succinct_date(row.get_lead_date(@po_request)) %></td>
                     </tr>
                   <% end %>
                   </tbody>
