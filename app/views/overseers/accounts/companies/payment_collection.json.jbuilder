@@ -5,7 +5,7 @@ json.data (@companies) do |company|
                         row_action_button(payment_collection_overseers_company_sales_invoices_path(company), 'eye', 'View Company', 'info', :_blank)
                       end,
                       if policy(company).show?;
-                        row_action_button(new_overseers_payment_collection_email_path(:type =>'company'), 'envelope', 'Send Email', 'dark', :_blank)
+                        row_action_button(new_overseers_payment_collection_email_path(:type =>'Company',:company=> company),  'envelope', 'Send Email', 'dark', :_blank)
                       end
                   ].join(' '),
                   conditional_link(company.to_s,  overseers_company_path(company), policy(company).show?),

@@ -8,7 +8,7 @@ class Account < ApplicationRecord
   # validates_presence_of :alias
   # validates_uniqueness_of :alias
   # validates_length_of :alias, :maximum => 20
-
+  has_many :email_messages, dependent: :destroy
   has_many :companies
   has_many :company_creation_request
   has_many :contacts

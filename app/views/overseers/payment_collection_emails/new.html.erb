@@ -1,0 +1,38 @@
+<div class="col-lg-12">
+    <%= simple_form_for(@email_message,:url => url_for(:action => 'create', :controller => 'overseers/payment_collection_emails'), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+      <div class="card-body">
+        <% if params[:company].present? %>
+          <%= f.hidden_field 'company', :value => params[:company] %>
+        <% elsif params[:account].present?%>
+          <%= f.hidden_field 'account', :value => params[:account] %>
+        <% end %>
+        <div class="form-group">
+          <%= f.input :from , disabled: true %>
+        </div>
+
+        <div class="form-group ">
+          <%= f.input :to%>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :cc,required:false %>
+        </div>
+        <div class="form-group">
+          <%= f.input :bcc ,required:false%>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :subject %>
+        </div>
+
+        <div class="form-group">
+          <%= f.input :body, input_html: {class: 'html-editor'} %>
+        </div>
+      </div>
+      <div class="card-footer">
+        <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+          <i class="fal fa-paper-plane"></i> Send Email
+        <% end %>
+      </div>
+    <% end %>
+</div>
