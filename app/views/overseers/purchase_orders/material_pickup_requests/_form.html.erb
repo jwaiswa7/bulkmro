@@ -76,6 +76,10 @@
             </div>
 
             <div class="col-6">
+              <%= f.input :logistics_aggregator, as: :select, collection: enum_to_collection(MaterialPickupRequest.logistics_aggregators), label: "Logistics Aggregator", include_blank: "None" %>
+            </div>
+
+            <div class="col-6">
               <%= f.input :logistics_partner, collection: f.object.grouped_status, as: :grouped_select, :wrapper => :custom_multi_select, group_method: :last, include_blank: true, required: true%>
             </div>
 
