@@ -19,22 +19,26 @@
         <th style="padding: 5px; text-align: center;">Ship To Name</th>
 
       </tr>
-      <% @company.invoices.each_with_index do |invoice,index| %>
+      <% @company.invoices.not_cancelled_invoices.each_with_index do |invoice,index| %>
         <tr>
           <td style="padding: 5px; text-align: center;"><%= index+1 %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.sales_order.company %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.invoice_number %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.created_date %></td>
-          <td style="padding: 5px; text-align: center;">Pick-up location</td>
-          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
-          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
-          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
-          <td style="padding: 5px; text-align: center;">Supplier Name</td>
-          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
-          <td style="padding: 5px; text-align: center;">Pick-up location</td>
-          <td style="padding: 5px; text-align: center;">Inquiry_number</td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.inquiry.customer_po_number %></td>
+          <td style="padding: 5px; text-align: center;">GRN Number</td>
+          <td style="padding: 5px; text-align: center;"><%= format_currency(invoice.calculated_total) %></td>
+          <td style="padding: 5px; text-align: center;">Ammount Received</td>
+          <td style="padding: 5px; text-align: center;"><%= format_currency(invoice.calculated_total - 0) %></td>
+          <td style="padding: 5px; text-align: center;"> 30 days</td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.inquiry.contact.full_name %></td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.inquiry.shipping_contact.present? ? invoice.inquiry.shipping_contact.full_name : invoice.inquiry.contact.full_name%></td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <p style="color: #555;">We request you to please clear the payments at the earliest.</p>
+  <p style="color: #555;">Assuring you of our best services always.</p>
+  <p style="color: #555;">Sincerely,</p>
+  <p style="color: #555;">Bulk MRO Accounts Department</p>
 </div>

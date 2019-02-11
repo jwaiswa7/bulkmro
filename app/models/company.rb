@@ -158,7 +158,7 @@ class Company < ApplicationRecord
   end
 
   def amount_receivable
-    self.invoices.map{|invoice| invoice.calculated_total}.compact.sum
+    self.invoices.not_cancelled_invoices.map{|invoice| invoice.calculated_total}.compact.sum
   end
 
   def to_contextual_s(product)

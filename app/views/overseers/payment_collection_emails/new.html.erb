@@ -2,9 +2,9 @@
     <%= simple_form_for(@email_message,:url => url_for(:action => 'create', :controller => 'overseers/payment_collection_emails'), :html => {:class => 'card needs-validation mt-3', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
       <div class="card-body">
         <% if params[:company].present? %>
-          <%= f.hidden_field 'company', :value => params[:company] %>
+          <%= hidden_field_tag 'company', params[:company] %>
         <% elsif params[:account].present?%>
-          <%= f.hidden_field 'account', :value => params[:account] %>
+          <%= hidden_field_tag 'account', params[:account] %>
         <% end %>
         <div class="form-group">
           <%= f.input :from , disabled: true %>
