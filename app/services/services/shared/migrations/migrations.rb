@@ -2503,4 +2503,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       po.update_attribute(:material_status, 'Material Readiness Follow-Up')
     end
   end
+
+  def add_logistics_owner_to_companies
+    Company.all.each do |company|
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+      company.logistics_owner = service.call
+      company.save(:validate => false)
+    end
+  end
 end
