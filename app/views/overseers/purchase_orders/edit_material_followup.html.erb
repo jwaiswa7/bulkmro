@@ -77,6 +77,7 @@
                   <td><strong class="d-block">PO Total Quantity</strong></td>
                   <td><strong class="d-block">Available Pickup Quantity</strong></td>
                   <td><strong class="d-block">Quantity Pickup / Delivered </strong></td>
+                  <td><strong class="d-block">Lead Date </strong></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,6 +89,7 @@
                     <td><%= row.quantity %></td>
                     <td><%= row.get_pickup_quantity %></td>
                     <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                    <td><%= format_succinct_date(row.lead_date) %></td>
                   </tr>
 
                 <% end %>
