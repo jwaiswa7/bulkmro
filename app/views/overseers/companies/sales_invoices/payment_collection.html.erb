@@ -2,6 +2,10 @@
 <% provide :wrap_whitespace, true %>
 <% provide :container_fluid, true %>
 
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
+</div>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all">Account Name</th>

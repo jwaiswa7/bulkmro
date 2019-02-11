@@ -5,6 +5,9 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
   end
 
   def payment_collection
+    service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@company)
+    service.call
+    @summery_data = service.summery_data
 
     authorize :sales_invoice
     base_filter = {

@@ -34,6 +34,6 @@ json.data (@accounts) do |account|
               ]
 end
 
-json.recordsTotal @accounts.model.all.count
+json.recordsTotal Account.count
 json.recordsFiltered @accounts.total_count
 json.draw params[:draw]
