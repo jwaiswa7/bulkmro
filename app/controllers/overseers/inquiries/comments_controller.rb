@@ -2,13 +2,13 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?
     @comments = if @sales_order.present?
-                  @inquiry.comments.where(:sales_order_id => [nil, @sales_order.id])
+                  @inquiry.comments.where(:sales_order_id => [nil, @sales_order.id]).earliest
                 else
                   @inquiry.comments.earliest
                 end
 
-     @internal_comments=@comments.internal_comments.page(params[:internal]).per(10)
-     @customer_comments=@comments.customer_comments.page(params[:customer]).per(10)
+    @internal_comments = @comments.internal_comments.page(params[:internal]).per(10)
+    @customer_comments = @comments.customer_comments.page(params[:customer]).per(10)
     authorize @comments
   end
 
