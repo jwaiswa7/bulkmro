@@ -16,6 +16,7 @@
     <th class="no-sort all" data-name="currency_id">Currency</th>
     <th class="sort all" data-name="payment_received_amount">Received Amount</th>
     <th class="sort all" data-name="reference_number">Reference Number</th>
+    <th class="sort all" data-name="comments">Comments</th>
     <th class="sort desktop" data-name="created_at">Created At</th>
   <% end %>
   <% content_for :filter_row do %>
@@ -29,6 +30,7 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
+    <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="false"></td>
     <td data-filter="daterange"></td>

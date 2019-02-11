@@ -8,7 +8,7 @@
       <div class="mt-2 form-row d-flex flex-row align-content-stretch">
         <% data[1].each do |data_elm| %>
           <div class="col-4 col-md-3 col-lg-3 col-xl-2 d-flex flex-row align-content-stretch">
-            <a name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= data_elm[1][:color] %> " href="#">
+            <div name="status" class="summary_box card w-100 mb-2 rim rim-bottom border-<%= data_elm[1][:color] %>" >
               <div class="card-body px-3 pt-3 pb-3">
                 <div class="text-center d-flex flex-column h-100">
                   <p class="mb-1 text-small text-uppercase text-<%= data_elm[1][:color] %>">
@@ -19,7 +19,7 @@
                   <h5 class="my-0 text-small text-<%= data_elm[1][:color] %> ">&#8377;<%= data_elm[1][:value] %></h5>
                 </div>
               </div>
-            </a>
+            </div>
           </div>
         <%end %>
       </div>
