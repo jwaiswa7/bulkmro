@@ -18,7 +18,8 @@ class Customers::ProfileController < Customers::BaseController
         render 'edit'
       end
     else
-      redirect_to edit_customers_profile_path, notice: "Current password is incorrect"
+      @contact.errors.add(:current_password, ' is incorrect')
+      render 'edit'
     end
   end
 

@@ -16,22 +16,24 @@
       </div>
       <div class="col-6">
         <%= f.input :current_password,
-                    hint: "we need your current password to confirm your changes",
                     required: true,
-                    input_html: {autocomplete: "current-password"} %>
+                    input_html: {autocomplete: "off"} %>
       </div>
       <div class="col-6">
         <%= f.input :password,
-                    required: false,
-                    input_html: {autocomplete: "new-password"} %>
+                    required: true, label: 'New Password',
+                    input_html: {autocomplete: "off"} %>
       </div>
       <div class="col-6">
         <%= f.input :password_confirmation,
-                    required: false,
-                    input_html: {autocomplete: "new-password"} %>
+                    required: true, label: 'Confirm New Password',
+                    input_html: {autocomplete: "off"} %>
       </div>
     </div>
 
-    <%= action_button(action_name, @contact) %>
+    <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+      <i class="fal fa-pen"></i> <%= submit_text(@contact, use_alias: 'Profile Details') %>
+    <% end %>
+
   <% end %>
 </div>
