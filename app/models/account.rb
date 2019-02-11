@@ -20,6 +20,7 @@ class Account < ApplicationRecord
   has_many :sales_quotes, :through => :inquiries, :source => "final_sales_quote"
   has_many :addresses, :through => :companies
   has_many :sales_receipts, :class_name => 'SalesReceipt'
+  has_many :payment_collections
   enum :account_type => {
       :is_supplier => 10,
       :is_customer => 20,
