@@ -2,7 +2,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update]
 
   def pending_and_rejected
-    @po_requests = ApplyDatatableParams.to(scope_by(current_overseer).pending_and_rejected.order(id: :desc), params)
+    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.pending_and_rejected.order(id: :desc)), params)
     authorize @po_requests
 
     respond_to do |format|
@@ -12,7 +12,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def cancelled
-    @po_requests = ApplyDatatableParams.to(scope_by(current_overseer).cancelled.order(id: :desc), params)
+    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.cancelled.order(id: :desc)), params)
     authorize @po_requests
 
     respond_to do |format|
@@ -22,7 +22,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
   end
 
   def amended
-    @po_requests = ApplyDatatableParams.to(scope_by(current_overseer).amended.order(id: :desc), params)
+    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.amended.order(id: :desc)), params)
     authorize @po_requests
 
     respond_to do |format|
@@ -31,12 +31,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def scope_by(overseer)
-    PoRequest.all.joins(:inquiry).where('inquiries.inside_sales_owner_id = ? OR inquiries.outside_sales_owner_id = ? OR po_requests.created_by_id = ?', overseer.id, overseer.id, overseer.id)
-  end
-
   def index
-    @po_requests = ApplyDatatableParams.to(scope_by(current_overseer).handled.order(id: :desc), params)
+    @po_requests = ApplyDatatableParams.to(policy_scope(PoRequest.all.handled.order(id: :desc)), params)
     authorize @po_requests
   end
 

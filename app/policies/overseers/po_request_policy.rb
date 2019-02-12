@@ -82,4 +82,21 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def material_received_in_bm_warehouse_create_email_msg?
     material_received_in_bm_warehouse_new_email_msg?
   end
+
+  class Scope
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
+    end
+
+    def resolve
+      if overseer.allow_inquiries?
+        scope.all
+      else
+        scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id) )
+      end
+    end
+  end
 end
