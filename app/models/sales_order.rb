@@ -45,7 +45,6 @@ class SalesOrder < ApplicationRecord
   #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
   after_initialize :set_defaults, :if => :new_record?
-   where.not(:status => "Requested")
 
   def set_defaults
     #self.status ||= :'Requested'
