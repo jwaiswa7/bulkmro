@@ -2409,8 +2409,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def set_invoice_due_date
     SalesInvoice.all.each do |sales_invoice|
-      due_date = sales_invoice.created_at + (sales_invoice.inquiry.payment_option.get_days).days
-      sales_invoice.update_attributes!(:due_date => due_date)
+      sales_invoice.update_attributes(:due_date => sales_invoice.get_due_date) if sales_invoice.sales_order.present?
     end
   end
 end
