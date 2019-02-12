@@ -15,7 +15,7 @@ json.data (@accounts) do |account|
                   account.contacts.size,
                   account.inquiries.size,
                   format_boolean_label(account.synced?, 'synced'),
-                  format_date(account.created_at)
+                  format_succinct_date(account.created_at)
               ]
 end
 

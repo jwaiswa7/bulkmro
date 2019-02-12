@@ -3,7 +3,7 @@ class InquiryProduct < ApplicationRecord
 
   belongs_to :inquiry
   has_one :company, :through => :inquiry
-  belongs_to :product
+  belongs_to :product, validate: false
   accepts_nested_attributes_for :product
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, :required => false
   has_many :inquiry_product_suppliers, :inverse_of => :inquiry_product, dependent: :destroy
@@ -24,6 +24,17 @@ class InquiryProduct < ApplicationRecord
   #validates_uniqueness_of :sr_no, scope: :inquiry_id, if: :not_legacy?
   # validates_numericality_of :quantity, :greater_than => 0
   after_initialize :set_defaults, :if => :new_record?
+
+  after_create :increase_product_count
+  before_destroy :decrease_product_count
+
+  def increase_product_count
+    self.product.update_attribute('total_quotes', self.product.total_quotes + 1) if self.product.present?
+  end
+
+  def decrease_product_count
+    self.product.update_attribute('total_quotes', (self.product.total_quotes == 0 ? 0 : ( self.product.total_quotes - 1 ))) if self.product.present?
+  end
 
   def set_defaults
     self.quantity ||= 1

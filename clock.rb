@@ -58,3 +58,28 @@ every(1.day, 'gcloud_run_backups_alt', :at => '23:30') do
   service = Services::Shared::Gcloud::RunBackups.new(send_chat_message: false)
   service.call
 end if Rails.env.production?
+
+# every(1.month, 'product_inventory_update', :at => '05:00') do
+#   service = Services::Resources::Products::UpdateInventory.new
+#   service.call
+# end if Rails.env.production?
+
+every(1.day, 'inquiry_product_inventory_update', :at => '02:00') do
+  service = Services::Resources::Products::UpdateRecentInquiryProductInventory.new
+  service.call
+end if Rails.env.production?
+
+every(1.day, 'remote_unwanted_requests', :at => '22:00') do
+  service = Services::Overseers::RequestCronJobs::RemoveRequestCronJob.new
+  service.call
+end if Rails.env.production?
+
+every(1.day, 'resync_failed_requests', :at => '03:00') do
+  service = Services::Overseers::FailedRemoteRequests::Resync.new
+  service.call
+end if Rails.env.production?
+
+every(1.day, 'resync_requests_status', :at => '06:00') do
+  service = Services::Overseers::FailedRemoteRequests::Resync.new
+  service.verify
+end if Rails.env.production?

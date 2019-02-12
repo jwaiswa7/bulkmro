@@ -31,6 +31,7 @@ class Product < ApplicationRecord
   has_many :customer_products
   has_one :kit
   has_many :cart_items
+  has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
 
   attr_accessor :applicable_tax_percentage
 
@@ -49,8 +50,8 @@ class Product < ApplicationRecord
   validate :unique_name?
 
   def unique_name?
-    if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
-      errors.add(:name, " name must be unique")
+    if self.not_rejected? && Product.not_rejected.where(name: self.name, is_active: true).count > 1 && self.is_active
+      errors.add(:name, " must be unique")
     end
   end
 

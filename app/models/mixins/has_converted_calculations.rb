@@ -3,23 +3,23 @@ module Mixins::HasConvertedCalculations
 
   included do
     def calculated_total
-      rows.map {|row| row.total_selling_price}.sum.round(2)
+      rows.map {|row| row.total_selling_price || 0 }.sum.round(2)
     end
 
     def calculated_total_tax
-      rows.map {|row| row.total_tax}.sum.round(2)
+      rows.map {|row| row.total_tax || 0}.sum.round(2)
     end
 
     def calculated_total_with_tax
-      rows.map {|row| row.total_selling_price_with_tax}.sum.round(2)
+      rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)
     end
 
     def calculated_total_margin
-      rows.map {|row| row.total_margin}.sum.round(2)
+      rows.map {|row| row.total_margin || 0}.sum.round(2)
     end
 
     def calculated_total_margin_percentage
-      (((calculated_total - calculated_total_cost) / calculated_total) * 100).round(2) if calculated_total > 0
+      ((1 - (calculated_total_cost / calculated_total)) * 100).round(2) if calculated_total > 0
     end
 
     def calculated_total_cost

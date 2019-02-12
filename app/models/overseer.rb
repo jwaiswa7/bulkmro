@@ -74,7 +74,9 @@ class Overseer < ApplicationRecord
     find_by_email('ashwin.goyal@bulkmro.com')
   end
 
-
+  def to_s
+    [self.first_name, ' ', self.last_name.chars.first, '.'].join('')
+  end
 
   def self.default_approver
     overseer = Overseer.where(:email => 'approver@bulkmro.com').first_or_create do |overseer|

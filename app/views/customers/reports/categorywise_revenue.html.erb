@@ -1,0 +1,11 @@
+<%= render layout: 'customers/reports/tabs_layout' do %>
+  <div class="page-header">
+    <h2>Categorywise Revenue % </h2>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <%= doughnut_chart @chart[:data], @chart[:options].merge({:height => '200px', :id => 'categorywise_revenue'}) %>
+    </div>
+  </div>
+<% end %>

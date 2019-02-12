@@ -13,7 +13,7 @@ class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finder
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
@@ -27,12 +27,8 @@ class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finder
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
-  end
-
-  def sort_definition
-    {:shipment_number => :desc}
   end
 
   def model_klass

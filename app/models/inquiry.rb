@@ -39,6 +39,7 @@ class Inquiry < ApplicationRecord
   has_many :po_requests
   has_many :sales_quote_rows, :through => :sales_quotes
   has_one :final_sales_quote, -> {where.not(:sent_at => nil).latest}, class_name: 'SalesQuote'
+  has_many :draft_sales_quotes, -> {where(:sent_at => nil)}, class_name: 'SalesQuote'
   has_many :final_sales_orders, :through => :final_sales_quote, class_name: 'SalesOrder'
   has_one :approved_final_sales_order, -> {approved}, :through => :final_sales_quote, :class_name => 'SalesOrder'
   has_one :sales_quote, -> {latest}
@@ -72,7 +73,7 @@ class Inquiry < ApplicationRecord
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
-      :'SO Not Created-Customer PO Awaited' => 13, # todo SO not created to order won is all Order Won
+      :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
       :'SO Draft: Pending Accounts Approval' => 8,
@@ -159,9 +160,9 @@ class Inquiry < ApplicationRecord
   attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
-    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
+    # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
-    inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
+    # inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
     inquiry.validates_presence_of :customer_committed_date
@@ -176,12 +177,12 @@ class Inquiry < ApplicationRecord
     self.valid?
   end
 
-  validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
-  validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
+  # validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_numericality_of :potential_amount, greater_than: 0.00, :if => :not_legacy?
@@ -345,4 +346,32 @@ class Inquiry < ApplicationRecord
       self.billing_company.remote_uid
     end
   end
+
+  def potential_value(status)
+    case status
+      when 'Lead by O/S','New Inquiry','Acknowledgement Mail'
+        self.potential_amount || 0.0
+      when 'Cross Reference'
+        self.products.map(&:latest_unit_cost_price).compact.sum || 0.0
+      when 'Preparing Quotation'
+        self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
+      when 'Quotation Sent','Follow-Up on Quotation','Expected Order','SO Not Created-Customer PO Awaited','SO Not Created-Pending Customer PO Revision'
+        self.final_sales_quote.try(:calculated_total) || 0.0
+      when 'Order Won'
+        self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
+      when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval','SO Rejected by Sales Manager','Rejected by Accounts'
+        self.sales_orders.map(&:calculated_total).compact.sum || 0.0
+      when 'Order Lost'
+        (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0 ) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
+      when 'Regret'
+        self.final_sales_quote.try(:calculated_total) || 0.0
+      else
+        0
+    end
+  end
+
+  def margin_percentage
+    self.final_sales_quote.present? ? self.final_sales_quote.calculated_total_margin_percentage.to_f : 0
+  end
+
 end

@@ -23,6 +23,18 @@ class Customers::CartPolicy < Customers::ApplicationPolicy
     true
   end
 
+  def update_special_instructions?
+    true
+  end
+
+  def update_payment_method?
+    true
+  end
+
+  def update_payment_data?
+    true
+  end
+
   def add_po_number?
     true
   end

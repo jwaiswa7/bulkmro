@@ -28,7 +28,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-
+    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -36,7 +36,9 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/*page" => "docs#index"
     resources :attachments
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -61,7 +63,28 @@ Rails.application.routes.draw do
     end
 
     resources :reports
-    resources :activities, except: [:show]
+    resources :company_creation_requests do
+      # member do
+      #   post 'exchange_with_existing_company'
+      # end
+      collection do
+        get 'requested'
+        get 'created'
+      end
+    end
+
+    resources :activities, except: [:show] do
+      collection do
+        get 'pending'
+        post 'approve_selected'
+        post 'reject_selected'
+        post 'add_to_inquiry'
+      end
+      member do
+        get 'approve'
+        get 'reject'
+      end
+    end
     resource :profile, :controller => :profile, except: [:show, :index]
     resources :overseers, except: [:show]
 
@@ -126,6 +149,7 @@ Rails.application.routes.draw do
         get 'best_prices_and_supplier_bp_catalog'
         get 'sku_purchase_history'
         get 'resync'
+        get 'resync_inventory'
       end
 
       collection do
@@ -176,12 +200,14 @@ Rails.application.routes.draw do
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
         get 'export_for_logistics'
         get 'export_for_sap'
         get 'autocomplete'
+        get 'not_invoiced'
       end
 
       scope module: 'sales_orders' do
@@ -228,6 +254,11 @@ Rails.application.routes.draw do
         resources :inquiries do
 
         end
+      end
+
+      collection do
+        get 'payments'
+        get 'refresh_payment'
       end
     end
 
@@ -277,6 +308,7 @@ Rails.application.routes.draw do
             get 'proforma'
             post 'create_confirmation'
             post 'resync'
+            get 'fetch_order_data'
           end
 
           collection do
@@ -348,6 +380,7 @@ Rails.application.routes.draw do
         resources :sales_quotes
         resources :sales_orders
         resources :sales_invoices
+        resources :company_banks
 
         resources :imports do
           collection do
@@ -377,9 +410,12 @@ Rails.application.routes.draw do
     end
 
 
-    resources  :warehouses do
+    resources :warehouses do
       collection do
         get 'autocomplete'
+      end
+      scope module: 'warehouses' do
+        resources :product_stocks, only: %i[index]
       end
     end
     resources :payment_options
@@ -412,12 +448,16 @@ Rails.application.routes.draw do
       patch 'update_current_company'
     end
 
-    resources :reports do
+    resources :reports, only: %i[index] do
       member do
       end
 
       collection do
         get 'monthly_purchase_data'
+        get 'revenue_trend'
+        get 'unique_skus'
+        get 'order_count'
+        get 'categorywise_revenue'
       end
     end
 
@@ -477,6 +517,9 @@ Rails.application.routes.draw do
         get 'checkout'
         patch 'update_billing_address'
         patch 'update_shipping_address'
+        patch 'update_special_instructions'
+        patch 'update_payment_method'
+        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end
@@ -485,6 +528,13 @@ Rails.application.routes.draw do
     resources :inquiries do
       scope module: 'inquiries' do
         resources :comments
+      end
+    end
+
+    resources :image_readers do
+      collection do
+        get 'export_all'
+        get 'export_by_date'
       end
     end
 

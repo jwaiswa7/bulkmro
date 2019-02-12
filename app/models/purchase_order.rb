@@ -16,7 +16,10 @@ class PurchaseOrder < ApplicationRecord
   has_one_attached :document
   has_one :po_request
   has_one :payment_request
+  has_one :invoice_request
+
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
+  has_many_attached :attachments
 
   scope :with_includes, -> {includes(:inquiry)}
 
@@ -53,7 +56,8 @@ class PurchaseOrder < ApplicationRecord
       :'Supplier PI Pending Finance Approval' => 64,
       :'Supplier PI delayed' => 67,
       :'Payment to Supplier Delayed' => 68,
-      :'Cancelled' => 95,
+      :'payment_done_out_from_bm_warehouse' => 69,
+      :'cancelled' => 95,
       :'Closed' => 96
   }
 
@@ -66,6 +70,7 @@ class PurchaseOrder < ApplicationRecord
   scope :material_readiness_queue, -> {where(:internal_status => :'Material Readiness Follow-Up')}
   scope :material_pickup_queue, -> {where(:internal_status => :'Material Pickup')}
   scope :material_delivered_queue, -> {where(:internal_status => :'Material Delivered')}
+  scope :not_cancelled, -> {where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s)}
 
   def get_supplier(product_id)
     if self.metadata['PoSupNum'].present?

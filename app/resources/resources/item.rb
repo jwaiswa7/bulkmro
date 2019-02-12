@@ -8,6 +8,14 @@ class Resources::Item < Resources::ApplicationResource
     super(id, record, quotes: true)
   end
 
+  def self.find_inventory_info_for_item(id)
+    get("/#{collection_name}(#{["'", id, "'"].join})?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection")
+  end
+
+  def self.find_inventory_info_for_all_items(next_link_count: nil)
+    get("/#{collection_name}?$select=ItemCode,U_ProdID,ItemName,ItemWarehouseInfoCollection" + ( next_link_count ? "&$skip=#{next_link_count}" : ""))
+  end
+
   def self.to_remote(record)
     params = {
         ItemCode: record.sku, #  BMRO Part#
@@ -17,14 +25,15 @@ class Resources::Item < Resources::ApplicationResource
         SalesItem: "tYES", # TO BE CREATED IN MAGENTO
         Mainsupplier: nil, # Supplier ID
         Manufacturer: (record.brand.present? && record.brand.remote_uid.present?) ? record.brand.remote_uid : -1, # Product Manufacturer
-        Valid: "tYES", # Status
+        Valid: record.is_active ? "tYES" : "tNO", # Status
         SalesUnit: nil, # TO BE CREATED IN MAGENTO
         SalesItemsPerUnit: 1, # UOM Quantity
         PurchaseUnit: nil, # TO BE CREATED IN MAGENTO
         PurchaseItemsPerUnit: 1, # TO BE CREATED IN MAGENTO
         PurchaseUnitWeight: 0, # TO BE CREATED IN MAGENTO
         SalesUnitWeight1: 0, # weight
-        SWW: record.try(:mpn), # MPN
+        SWW: record.mpn.present? ? record.mpn[0..15] : "", # MPN
+        U_MPN: record.try(:mpn),
         LeadTime: nil, # Delivery Period
         MinOrderQuantity: 0, # Minimum Order Qty
         InventoryUOM: record.measurement_unit.try(:name), #
@@ -49,7 +58,8 @@ class Resources::Item < Resources::ApplicationResource
         GSTTaxCategory: "gtc_Regular",
         U_TaxClass: record.best_tax_code.tax_percentage.to_i, # Tax Class,
         MaterialType: "mt_FinishedGoods",
-        Excisable: "tNO"
+        Excisable: "tNO",
+        Frozen: record.is_active ? "tNO" : "tYES"
     }
 
     if record.is_service

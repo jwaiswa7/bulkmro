@@ -34,14 +34,18 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
+
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, :if => :not_legacy?
+
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
 
+
   validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, :if => :not_legacy?
+
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
@@ -49,6 +53,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :tax_percentage_is_not_nil?, :if => :not_legacy?
+
   def tax_percentage_is_not_nil?
     if self.not_legacy? && self.tax_rate.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
@@ -56,6 +61,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   after_initialize :set_defaults, :if => :new_record?
+
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
     self.freight_cost_subtotal ||= 0.0
@@ -117,7 +123,7 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def total_cost_price
-    self.unit_cost_price * self.quantity
+    self.unit_cost_price_with_unit_freight_cost * self.quantity
   end
 
   def unit_cost_price_with_unit_freight_cost
