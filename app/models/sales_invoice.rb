@@ -94,10 +94,9 @@ class SalesInvoice < ApplicationRecord
   end
 
   def get_due_date
+    due_in_days = 30
     if self.inquiry.present? && self.inquiry.payment_option.present?
       due_in_days = self.inquiry.payment_option.get_days
-    else
-      due_in_days = 30
     end
     self.created_at + due_in_days.days
   end
