@@ -2,6 +2,7 @@ class CreatePaymentCollections < ActiveRecord::Migration[5.2]
   def change
     create_table :payment_collections do |t|
         t.references :account
+        t.references :company
 
         t.decimal :amount_received_on_account
         t.decimal :amount_received_against_invoice

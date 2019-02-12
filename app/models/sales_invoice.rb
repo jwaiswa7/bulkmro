@@ -28,6 +28,12 @@ class SalesInvoice < ApplicationRecord
       :'Material Rejected' => 207
   }
 
+  enum payment_status: {
+      :'Fully Paid' => 10,
+      :'Partially Paid' => 20,
+      :'Unpaid' => 30,
+  }
+
   scope :with_includes, -> {includes(:sales_order)}
   scope :not_cancelled, -> {where.not(:status => 'Cancelled')}
 
