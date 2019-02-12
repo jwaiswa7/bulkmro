@@ -151,14 +151,6 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
-  def debugging
-    authorize :sales_order
-    @sales_order = SalesOrder.find(params['id'])
-    @remote_requests = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => @sales_order.id)
-    @remote_request_success_date = @remote_requests.where(:status => "success").first
-    @callback_requests = CallbackRequest.sales_order_callbacks(@sales_order.id)
-  end
-
   private
 
   def set_sales_order
