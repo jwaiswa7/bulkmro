@@ -935,10 +935,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
   def fetch_address
-    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_address.csv', "seed_files")
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_address1.csv', "seed_files")
     mismatch = []
     missing = []
-    service.loop(1000) do |x|
+    service.loop() do |x|
       address_uid = x.get_column("address_uid")
       company_uid = x.get_column("company_uid")
       data = {company: company_uid, address: address_uid}
@@ -949,10 +949,27 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           mismatch << data
         end
       else
-        missing << data
+        # missing << data
         # missing << company_uid
+        company=Company.find_by_remote_uid(company_uid)
+        if company.present?
+          address=company.addresses.new(
+              gst: x.get_column("gst"),
+              country_code: x.get_column("country_code"),
+              state: AddressState.find_by_region_code(x.get_column('State')),
+              state_name: nil,
+              city_name: x.get_column("city_name"),
+              pincode: x.get_column("pincode"),
+              street1: x.get_column("street1"),
+              remote_uid: address_uid
+
+          )
+          address.save!
+        else
+          missing << data
+        end
       end
     end
-    return {missing:missing, mismatch:mismatch}
+    return {missing:missing.uniq, mismatch:mismatch.uniq}
   end
 end
