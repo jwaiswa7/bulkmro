@@ -1,0 +1,47 @@
+<div class="col-md-12">
+  <section class="pt-3 pt-lg-4 pb-2 pb-lg-3">
+    <div class="d-md-flex justify-content-between">
+      <h1 class="display-5 mb-1">Sales Order #<%= @sales_order.order_number %></h1>
+    </div>
+  </section>
+  <section class="mb-3">
+    <div class="card mb-2">
+      <div class="card-body">
+        <h6 class="text-uppercase mt-2">SO Manager Approved Date </h6>
+        <% if @sales_order.manager_approved_date.present? %>
+          <p><%= format_date_time_with_second(@sales_order.manager_approved_date) %></p>
+        <% else %>
+          <p>-</p>
+        <% end %>
+        <h6 class="text-uppercase mt-2">SO Draft Sync Date </h6>
+        <% if @remote_requests.is_remote_request_success.present?%>
+          <p><%= format_date_time_with_second(@remote_requests.first.created_at) %></p>
+        <% else %>
+          <p>-</p>
+        <% end %>
+        <h6 class="text-uppercase mt-2">SO SAP Approval Date </h6>
+        <% if @sales_order.approved_date.present?  %>
+          <p><%= format_date_time_with_second(@sales_order.approved_date) %></p>
+        <% else %>
+          <p>-</p>
+        <% end %>
+        <h6 class="text-uppercase  mt-2">Remote Request</h6>
+        <% if @remote_requests.present? %>
+          <% @remote_requests.each_with_index do |remote_request| %>
+            <p><%= link_to(remote_request.id,overseers_remote_request_path(remote_request),target: '_blank') %> => <span class="text-<%= status_color(remote_request.status) %> mb-1"><%= remote_request.status.titlecase %></span></p>
+          <% end %>
+        <% else %>
+          <p> - </p>
+        <% end %>
+        <h6 class="text-uppercase  mt-2">Callback Request </h6>
+        <% if @callback_requests.present? %>
+          <% @callback_requests.each_with_index do |callback_request| %>
+            <p><%= link_to(overseers_callback_request_path(callback_request),overseers_callback_request_path(callback_request),target: '_blank') %></p>
+          <% end %>
+        <% else %>
+          <p> - </p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

@@ -195,6 +195,13 @@ class SalesOrder < ApplicationRecord
     self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
+  def is_not_requested?(record)
+    if record.status != "Requested"
+      true
+    else
+      false
+    end
+  end
   def has_purchase_order_request
     self.po_requests.present?
   end

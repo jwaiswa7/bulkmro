@@ -121,6 +121,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer?
   end
 
+  def debugging?
+    developer?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
