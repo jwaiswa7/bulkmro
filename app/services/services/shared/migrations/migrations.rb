@@ -2342,4 +2342,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sr.save!
     end
   end
+
+  def add_days_in_payment_terms
+    service = Services::Shared::Spreadsheets::CsvImporter.new('payment_terms_days.csv', 'seed_files')
+    service.loop(nil) do |x|
+      payment_options = PaymentOption.find(x.get_column('payment_term_id'))
+      payment_options.update_attributes(:days => x.get_column('days'))
+    end
+  end
 end
