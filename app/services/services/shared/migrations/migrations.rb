@@ -1946,33 +1946,33 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_images_for_reliance_products
-  service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
-  service.loop(nil) do |x|
-  puts x.get_column('Image Link')
-  if x.get_column('Image Link').present?
-  if x.get_column('Image Link').split(':').first != 'http'
-  product = Product.find_by_sku(x.get_column('SKU'))
-  if product.present?
-  sheet_columns = [
-  ['Image Link', 'images']
-  ]
-  sheet_columns.each do |file|
-  file_url = x.get_column(file[0])
-  begin
-  puts "<-------------------------->"
-  if !product.has_images?
-    attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
-  end
-  rescue URI::InvalidURIError => e
-  puts "Help! #{e} did not migrate."
-  end
-  end
-  end
-  end
-  else
-  puts "false"
-  end
-  end
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      puts x.get_column('Image Link')
+      if x.get_column('Image Link').present?
+        if x.get_column('Image Link').split(':').first != 'http'
+          product = Product.find_by_sku(x.get_column('SKU'))
+          if product.present?
+            sheet_columns = [
+                ['Image Link', 'images']
+            ]
+            sheet_columns.each do |file|
+              file_url = x.get_column(file[0])
+              begin
+                puts "<-------------------------->"
+                if !product.has_images?
+                  attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+                end
+              rescue URI::InvalidURIError => e
+                puts "Help! #{e} did not migrate."
+              end
+            end
+          end
+        end
+      else
+        puts "false"
+      end
+    end
   end
 
   def update_online_order_numbers
@@ -1984,7 +1984,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_is_international_field_in_company
     Company.update_all(is_international: false)
     Company.all.includes(:addresses).each do |company|
-      if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+      if company.addresses.present? && !company.addresses.map {|address| address.country_code}.include?("IN")
         company.update_attribute('is_international', true)
       end
     end
@@ -2009,7 +2009,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['inquiry_number', 'order_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
         if sales_order.blank?
@@ -2024,10 +2024,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
-        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f)||(sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f) || (sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
           writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, x.get_column('SUM of Selling Price (as per SO / AR Invoice)'), x.get_column('SUM of Gross Total Selling')]
         end
       end
@@ -2039,7 +2039,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['inquiry_number', 'order_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
         if sales_order.blank?
@@ -2054,13 +2054,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
         sap_total_without_tax = 0
         sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
 
-        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax)||(sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax) || (sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
           writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, sap_total_without_tax, x.get_column('Document Total')]
         end
       end
@@ -2072,7 +2072,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['invoice_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
         if sales_invoice.blank?
@@ -2087,7 +2087,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['invoice_number', 'sprint_total', 'sprint_tax', 'sprint_total_with_tax', 'sap_total', 'sap_tax', 'sap_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
 
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
@@ -2097,7 +2097,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if sales_invoice.present? && !sales_invoice.is_legacy?
           total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
           sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
-          if ((total_without_tax != sap_total_without_tax)||(sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
+          if ((total_without_tax != sap_total_without_tax) || (sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
 
             writer << [
                 sales_invoice.invoice_number,
@@ -2117,7 +2117,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_total_cost_in_sales_order
     SalesOrder.all.each do |so|
       so.order_total = so.calculated_total
-      so.invoice_total = so.invoices.map{|i| i.metadata.present? ? ( i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f ) : 0.0 }.inject(0){|sum,x| sum + x }
+      so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
       so.save
     end
   end
@@ -2141,14 +2141,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
     i = 0
-    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771]
+    skips = [10709, 17619, 10541, 19229, 20001, 20037, 19232, 20029, 21413, 19412, 25097, 25239, 30037, 30040, 30041, 30042, 30034, 30035, 30045, 30083, 30098, 25003, 25361, 19523, 19636, 19717, 20004, 20583, 20612, 20916, 20973, 20975, 21455, 21473, 25329, 25373, 26285, 20627, 25698, 26430, 26901, 10491, 21447, 27044, 27013, 25042, 26062, 19875, 18840, 20132, 28767, 27782, 21030, 26771]
     totals = {}
     inquiry_not_found = []
     sales_order_exists = []
     service.loop(nil) do |x|
       i = i + 1
       next if i < 11729
-      next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7','BM9R0R1', 'BM9H7O3', 'BM9P0T9','BM9J7D7'])
+      next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
       next if (Product.where(sku: x.get_column('product sku')).present? == false)
       puts "*********************** INQUIRY ", x.get_column('inquiry number')
@@ -2195,7 +2195,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row = nil
         if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
           so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
-          if so.rows.map{|r| r.product.sku}.include?(x.get_column('product sku'))
+          if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
             row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
           end
         end
@@ -2211,7 +2211,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
         row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
         row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
-        row.created_at = x.get_column('created at',to_datetime: true)
+        row.created_at = x.get_column('created at', to_datetime: true)
 
         row.save!
 
@@ -2221,14 +2221,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
         sales_order.overseer = inquiry.inside_sales_owner
         sales_order.order_number = x.get_column('order number')
-        sales_order.created_at = x.get_column('created at',to_datetime: true)
-        sales_order.mis_date = x.get_column('created at',to_datetime: true)
+        sales_order.created_at = x.get_column('created at', to_datetime: true)
+        sales_order.mis_date = x.get_column('created at', to_datetime: true)
 
         sales_order.status = x.get_column('status') || "Approved"
         sales_order.remote_status = x.get_column('SAP status') || "Processing"
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
-        row_object = { :sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f }
+        row_object = {:sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
         puts "************************** ORDER SAVED *******************************"
@@ -2296,7 +2296,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
       if sales_order.present?
-        sales_order.update_attribute('mis_date', x.get_column('mis date',to_datetime: true))
+        sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
       else
         missing_so.push(x.get_column('order number'))
       end
@@ -2330,7 +2330,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def sales_invoice_totals
-    SalesInvoice.all.each do | sales_invoice |
+    SalesInvoice.all.each do |sales_invoice|
       sales_invoice.update_attributes!(:calculated_total => sales_invoice.calculated_total) if sales_invoice.sales_order.present?
       sales_invoice.update_attributes!(:calculated_total_with_tax => sales_invoice.calculated_total_with_tax) if sales_invoice.sales_order.present?
     end
@@ -2348,6 +2348,52 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       payment_options = PaymentOption.find(x.get_column('payment_term_id'))
       payment_options.update_attributes(:days => x.get_column('days'))
+    end
+  end
+
+  def migrate_sales_receipt
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_against_invoice.csv', 'seed_files')
+    service.loop(nil) do |x|
+      invoice = SalesInvoice.find_by_invoice_number(x.get_column('AR Invoice No'))
+      company = Company.find_by_remote_uid(x.get_column('BP Code'))
+      if invoice.present? && company.present?
+        currency = Currency.find_by_name(x.get_column('Document Currency'))
+
+        SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create! do |sales_receipt|
+          sales_receipt.assign_attributes(
+              :sales_invoice => invoice,
+              :company => company,
+              :account => company.account,
+              :currency => currency,
+              :payment_type => :'Against Invoice',
+              :payment_received_date => x.get_column('Payment Date'),
+              :payment_amount_received => x.get_column('Paid Amt'),
+              :comments => x.get_column('Remarks')
+          )
+        end
+      end
+    end
+
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_on_account.csv', 'seed_files')
+
+    service.loop(nil) do |x|
+      company = Company.find_by_remote_uid(x.get_column('BP Code'))
+
+      if company.present?
+        currency = Currency.find_by_name(x.get_column('Document Currency'))
+        SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create! do |sales_receipt|
+          sales_receipt.assign_attributes(
+              :company => company,
+              :account => company.account,
+              :currency => currency,
+              :payment_type => :'On Account',
+              :payment_received_date => x.get_column('Payment Date'),
+              :payment_amount_received => x.get_column('Non-Calculated Amount'),
+              :comments => x.get_column('Remarks')
+          )
+        end
+      end
     end
   end
 end
