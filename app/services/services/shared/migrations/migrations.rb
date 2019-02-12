@@ -2451,4 +2451,25 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_invoice.update_attributes(:due_date => sales_invoice.get_due_date) if sales_invoice.sales_order.present?
     end
   end
+
+
+  def update_payment_status_of_sales_invoice
+    SalesInvoice.all.each do |si|
+      if si.inquiry.present?
+        company = si.inquiry.company
+        invoiced_ammount = si.calculated_total_with_tax
+        amount_received = si.sales_receipts.sum(:payment_amount_received)
+        if (invoiced_ammount <= amount_received)
+          si.payment_status = 'Fully Paid'
+        elsif (amount_received < invoiced_ammount)
+          si.payment_status = 'Partially Paid'
+        else
+          p amount_received
+          p invoiced_ammount
+          si.payment_status = 'Unpaid'
+        end
+        si.save
+      end
+    end
+  end
 end
