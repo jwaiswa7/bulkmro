@@ -39,6 +39,7 @@ sendgrid:
   username: bulk
   password: GhgjIH4zw3p2
   api_key: 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
+  default_email: pradeep.ketkale@bulkmro.com
 
 domain: sprint.bulkmro.com
 
@@ -66,3 +67,14 @@ heroku:
 razorpay:
   MERCHANT_KEY_ID:  'rzp_live_RpAdyGJ65HXFGB'
   MERCHANT_KEY_SECRET:  'qfPQ2TRAPQxPAqQx8Msvrya9'
+
+sap:
+  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
+  DATABASE: 'BULKMRO_PRODUCTION'
+  USERNAME: 'manager'
+  PASSWORD: 'vm1234'
+  ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
+  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
+  ATTACHMENT_USERNAME: 'pradeep'
+  ATTACHMENT_PASSWORD: ''

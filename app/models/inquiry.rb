@@ -73,7 +73,7 @@ class Inquiry < ApplicationRecord
       :'Quotation Sent' => 5,
       :'Follow Up on Quotation' => 6,
       :'Expected Order' => 7,
-      :'SO Not Created-Customer PO Awaited' => 13, # todo SO not created to order won is all Order Won
+      :'SO Not Created-Customer PO Awaited' => 13,
       :'SO Not Created-Pending Customer PO Revision' => 14,
       :'Draft SO for Approval by Sales Manager' => 15,
       :'SO Draft: Pending Accounts Approval' => 8,
@@ -160,9 +160,9 @@ class Inquiry < ApplicationRecord
   attr_accessor :force_has_sales_orders, :common_supplier_id, :select_all_products, :select_all_suppliers
 
   with_options if: :has_sales_orders_and_not_legacy? do |inquiry|
-    inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
+    # inquiry.validates_with FilePresenceValidator, attachment: :customer_po_sheet
     # inquiry.validates_with FilePresenceValidator, attachment: :calculation_sheet
-    inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
+    # inquiry.validates_with MultipleFilePresenceValidator, attachments: :supplier_quotes
     inquiry.validates_presence_of :customer_po_number
     inquiry.validates_presence_of :customer_order_date
     inquiry.validates_presence_of :customer_committed_date
@@ -177,12 +177,12 @@ class Inquiry < ApplicationRecord
     self.valid?
   end
 
-  validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
-  validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
-  validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :customer_po_sheet, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :copy_of_email, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :supplier_quote, file_size_in_megabytes: 2
+  # validates_with MultipleFileValidator, attachments: :supplier_quotes, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :final_supplier_quote, file_size_in_megabytes: 2
+  # validates_with FileValidator, attachment: :calculation_sheet, file_size_in_megabytes: 2
 
   validates_numericality_of :gross_profit_percentage, greater_than_equal_to: 0, less_than_or_equal_to: 100, allow_nil: true
   validates_numericality_of :potential_amount, greater_than: 0.00, :if => :not_legacy?

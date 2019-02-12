@@ -51,6 +51,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     company = Company.find_by_remote_uid!(response['CardCode'])
     addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
+    banks  = response['BPBankAccounts']
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address["AddressName"])
@@ -64,8 +65,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
               city_name: address['City'].present? ? address['City'] : nil,
               street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
               country_code: address['Country'].present? ? address['Country'] : 'IN',
-              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'], :country_code => address['Country']).first.name : nil,
-              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'], :country_code => address['Country']).first.id : nil,
+              state_name: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.name : nil,
+              address_state_id: address['State'].present? ? AddressState.where(:region_code => address['State'],:country_code => address['Country']).first.id : nil,
               pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
               gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
               vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
@@ -108,6 +109,13 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         )
       end
       company.company_contacts.where(:remote_uid => remote_uid, :contact => assigned_contact).first_or_create!
+
+      banks.each do |bank|
+        account_number= bank["AccountNo"]
+        remote_uid = bank["InternalKey"]
+        company_bank = CompanyBank.find_by_account_number(account_number)
+        company_bank.update_attributes(:remote_uid => remote_uid) if company_bank .present?
+      end if banks.present?
     end
   end
 
@@ -115,6 +123,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     addresses = []
     contacts = []
     bp_tax_collection = []
+    banks = []
 
     if record.remote_uid.blank?
       record.assign_attributes(:remote_uid => Services::Resources::Shared::UidGenerator.company_uid(record))
@@ -297,6 +306,23 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
+    record.company_banks.each do |company_bank|
+
+      bank_row = OpenStruct.new
+      bank_row.BPCode = record.remote_uid
+      bank_row.AccountNo = company_bank.account_number
+      bank_row.AccountName = company_bank.account_name
+      bank_row.Branch = company_bank.branch
+      bank_row.MandateID = company_bank.mandate_id
+      bank_row.BankCode = company_bank.bank.code
+
+      if company_bank.remote_uid.present?
+        bank_row.InternalKey = company_bank.remote_uid
+      end
+
+      banks.push(bank_row.marshal_dump)
+    end if record.remote_uid.present?
+
     params = {
         CardCode: record.remote_uid,
         CardName: record.name,
@@ -332,6 +358,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         U_URD: record.is_unregistered_dealer ? "Yes" : "No",
         BPAddresses: addresses,
         ContactEmployees: contacts,
+        BPBankAccounts: banks,
         BPFiscalTaxIDCollection: bp_tax_collection,
         UseBillToAddrToDetermineTax: "tYES"
     }

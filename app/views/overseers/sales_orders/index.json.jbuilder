@@ -15,13 +15,17 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
+                      end,
+                      if policy(sales_order).debugging?
+                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry,sales_order),'cogs', 'Debugging', 'danger')
                       end
+
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show? ),
                   format_succinct_date(sales_order.created_at),
                   format_succinct_date(sales_order.mis_date),
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
-                  sales_order.inquiry.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(sales_order.inquiry), target: "_blank")}.compact.join(' '),
+                  sales_order.invoices.map {|invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(sales_order.inquiry), target: "_blank")}.compact.join(' '),
                   sales_order.inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", sales_order.inquiry.po_subject].join('').html_safe, sales_order.inquiry.customer_po_sheet, target: "_blank") : sales_order.inquiry.po_subject,
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   status_badge(format_enum(sales_order.remote_status, humanize_text: false)),
