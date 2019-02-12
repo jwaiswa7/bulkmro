@@ -29,9 +29,9 @@ class SalesInvoice < ApplicationRecord
   }
 
   enum payment_status: {
-      :'Unpaid' => 10,
-      :'Fully Paid' => 20,
-      :'Partially Paid' => 30
+      :'Fully Paid' => 10,
+      :'Partially Paid' => 20,
+      :'Unpaid' => 30,
   }
 
   scope :with_includes, -> {includes(:sales_order)}
