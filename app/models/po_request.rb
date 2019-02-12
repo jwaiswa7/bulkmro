@@ -110,10 +110,6 @@ class PoRequest < ApplicationRecord
     (((self.buying_price - self.selling_price) / self.buying_price) * 100).round(2) if self.buying_price > 0
   end
 
-  def has_supplier_contact?
-    (self.purchase_order.has_supplier? && self.purchase_order.get_supplier(self.purchase_order.rows.first.metadata['PopProductId'].to_i).company_contacts.present?)
-  end
-
   def readable_status
     status = self.status
     if self.status == "Requested"
