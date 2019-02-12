@@ -103,10 +103,10 @@
                 </div>
               <% end %>
 
-                <div class="col-6 col-md-3 mb-2">
-                  <strong class="d-block">Active</strong>
-                  <strong class="text-info"><%= format_boolean(@company.is_active) %></strong>
-                </div>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Active</strong>
+                <strong class="text-info"><%= format_boolean(@company.is_active) %></strong>
+              </div>
 
 
               <% if @company.default_payment_option.present? %>
@@ -292,33 +292,24 @@
 
     <div class="tab-content">
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
+        <% provide :ajax_url, overseers_company_addresses_path(company_id: @company.id) %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort"></th>
+          <th class="no-sort" data-name="name">Address</th>
+          <th class="no-sort" data-name="state">State</th>
+          <th class="no-sort" data-name="city">City</th>
+          <th class="no-sort" data-name="valid_gst">Valid GST</th>
+          <th class="no-sort" data-name="gst">GST</th>
+          <th class="no-sort" data-name="pincode">Pincode</th>
+          <th class="no-sort">SAP status</th>
+          <th class="no-sort desktop" data-name="created_at">Created</th>
+        <% end %>
+        <% provide :heading_buttons do %>
           <% if policy(:address).new? && policy(@company).new_address? %>
-            <h3 class="display-5 mb-1 d-none d-md-block">Addresses</h3>
-            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-              Address</a>
+            <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Address</a>
           <% end %>
-        </div>
-        <p class="mt-md-1 d-none d-md-block">
-          All addresses searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
-        </p>
-
-        <table class="datatable table table-bordered dt-responsive" data-fixed-header="false" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_addresses_path(company_id: @company.id) %>">
-          <thead>
-          <tr>
-            <th class="no-sort"></th>
-            <th class="no-sort" data-name="name">Address</th>
-            <th class="no-sort" data-name="state">State</th>
-            <th class="no-sort" data-name="city">City</th>
-            <th class="no-sort" data-name="valid_gst">Valid GST</th>
-            <th class="no-sort" data-name="gst">GST</th>
-            <th class="no-sort" data-name="pincode">Pincode</th>
-            <th class="no-sort">SAP status</th>
-            <th class="no-sort desktop" data-name="created_at">Created</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'addresses' %>
       </div>
 
       <div class="tab-pane fade" id="contacts" role="tabpanel">
@@ -554,7 +545,7 @@
         <div class="d-md-flex justify-content-between">
           <h3 class="display-5 mb-1 d-none d-md-block">Online Payments</h3>
         </div>
-        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%=  payments_overseers_customer_orders_path(:company_id =>@company.id)%>">
+        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%= payments_overseers_customer_orders_path(:company_id => @company.id) %>">
           <thead>
           <tr>
             <th class="no-sort all"></th>
