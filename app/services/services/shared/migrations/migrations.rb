@@ -2338,13 +2338,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
 
-
-
   def new_sales_receipt
     SalesReceipt.destroy_all
     service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipts_1.csv', 'seed_files')
     service.loop(nil) do |x|
-      response =  JSON.parse JSON.parse(x.get_column('response'))
+      response = JSON.parse JSON.parse(x.get_column('response'))
       p response
       if response['success'] == 1
         p '&&&&&&&&&&&&&&&&&&&&&&&&'
@@ -2467,6 +2465,65 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           si.payment_status = 'Unpaid'
         end
         si.save
+      end
+    end
+  end
+
+  def set_payment_collection_summary
+
+    Company.all.each do |company|
+      not_due_date = Time.now + 30.days
+      nd_sales_invoices = Company.sales_invoices.where('due_date > ?', not_due_date)
+
+      # CALCULATE NOT DUE
+      no_pay_received_not_due = partially_paid_not_due = fully_paid_not_due = 0
+      nd_sales_invoices.each do |sales_invoice|
+        if sales_invoice.payment_status == 'Fully Paid'
+          fully_paid_not_due = fully_paid_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
+        elsif sales_invoice.payment_status == 'Partially Paid'
+          partially_paid_not_due = partially_paid_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
+        elsif sales_invoice.payment_status == 'Unpaid'
+          no_pay_received_not_due = no_pay_received_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
+        end
+      end
+
+      # CALCULATE OVERDUE
+      overdue_no_pay_received = overdue_partially_paid = overdue_fully_paid = 0
+      od_sales_invoices = Company.sales_invoices
+      # od_sales_invoices = Company.sales_invoices.where('due_date < ?', Time.now)
+
+      od_sales_invoices.each do |sales_invoice|
+        sales_invoice.sales_receipts.each do |sales_receipt|
+          if sales_receipt.payment_received_date > sales_invoice.due_date
+            if sales_invoice.payment_status == 'Fully Paid'
+              overdue_fully_paid = overdue_fully_paid + sales_receipt.payment_amount_received
+            elsif sales_invoice.payment_status == 'Partially Paid'
+              overdue_partially_paid = overdue_fully_paid + sales_receipt.payment_amount_received
+            elsif sales_invoice.payment_status == 'Partially Paid'
+              overdue_no_pay_received = overdue_no_pay_received + sales_invoice.calculated_total_with_tax
+            end
+          end
+        end
+      end
+
+      # CALCULATE OUTSTANDING
+      oustanding_pp_nd = 0
+
+
+      PaymentCollection.where(:company => company).first_or_create! do |payment_collection|
+        payment_collection.assign_attributes(
+            :amount_received_fp_nd => fully_paid_not_due,
+            :amount_received_pp_nd => partially_paid_not_due,
+            :amount_received_npr_nd => no_pay_received_not_due,
+            :amount_received_fp_od => overdue_fully_paid,
+            :amount_received_pp_od => overdue_partially_paid,
+            :amount_received_npr_od => overdue_no_pay_received,
+
+            :amount_outstanding_pp_nd => overdue_no_pay_received,
+            :amount_outstanding_npr_nd => overdue_no_pay_received,
+            :amount_outstanding_pp_od => overdue_no_pay_received,
+            :amount_outstanding_npr_od => overdue_no_pay_received,
+        )
       end
     end
   end
