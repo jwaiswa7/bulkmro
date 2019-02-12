@@ -8,4 +8,4 @@ development:
 production:
   host: <%= ENV["BONSAI_URL"] %>
 staging:
-  host: <%= ENV["FOUNDELASTICSEARCH_URL"] %>
+  host: <%= ENV["BONSAI_URL"] %>
