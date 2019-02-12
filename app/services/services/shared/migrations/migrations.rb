@@ -2396,4 +2396,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
+
+  def migrate_opening_balances
+    service = Services::Shared::Spreadsheets::CsvImporter.new('account_company_opening_balances.csv', 'seed_files')
+    service.loop(nil) do |x|
+      company = Company.find_by_remote_uid(x.get_column('BP Code'))
+      if company.present?
+        company.update_attributes!(:opening_balance => x.get_column('opening_balance'))
+      end
+    end
+  end
+
+  def set_invoice_due_date
+    SalesInvoice.all.each do |sales_invoice|
+      due_date = sales_invoice.created_at + (sales_invoice.inquiry.payment_option.get_days).days
+      sales_invoice.update_attributes!(:due_date => due_date)
+    end
+  end
 end

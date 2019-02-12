@@ -7,7 +7,8 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
       if sales_order.present?
         if !SalesInvoice.find_by_invoice_number(params['increment_id']).present?
           sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
-            invoice.assign_attributes(:status => 1, :metadata => params, mis_date: params['created_at'])
+            due_date = Time.now + (sales_order.inquiry.payment_option.get_days).days
+            invoice.assign_attributes(:status => 1, :metadata => params, mis_date: params['created_at'], :due_date => due_date)
 
             if params['is_kit'].to_i == 1
               sales_order_row = sales_order.sales_order_rows.first
