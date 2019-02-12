@@ -3,9 +3,9 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
-<!--<div class="col-lg-12">-->
-  <%#= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
-<!--</div>-->
+<div class="col-lg-12">
+  <%= render partial: "shared/layouts/payment_dashboard_summary_box", locals: {} %>
+</div>
 
 <% content_for :header_row do %>
   <th class="no-sort"></th>

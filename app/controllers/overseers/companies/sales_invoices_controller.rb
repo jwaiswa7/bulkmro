@@ -22,6 +22,10 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
         service.call
         @indexed_sales_invoices = service.indexed_records
         @sales_invoices = service.records.try(:reverse)
+
+        service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@company)
+        service.call
+        @summery_data = service.summery_data
       end
     end
   end

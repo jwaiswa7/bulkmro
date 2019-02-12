@@ -29,8 +29,9 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
   end
 
   def payment_collection
-     service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@account)
-     service.call
+
+    service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@account)
+    service.call
      @summery_data = service.summery_data
       base_filter = {
           :base_filter_key => "account_id",
