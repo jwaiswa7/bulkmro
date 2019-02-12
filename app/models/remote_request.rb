@@ -5,7 +5,7 @@ class RemoteRequest < ApplicationRecord
   update_index('remote_requests#remote_request') {self}
 
   pg_search_scope :locate, :against => [:url], :associated_against => {}, :using => { :tsearch => { :prefix => true } }
-
+  scope :is_remote_request_success, ->{where(:status => "success")}
   enum resources:{
     :'Projects' => 10,
     :'EmployeesInfo' => 20,

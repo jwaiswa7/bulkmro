@@ -45,6 +45,7 @@ class SalesOrder < ApplicationRecord
   #validates_length_of :rows, minimum: 1, :message => "must have at least one sales order row", :if => :not_legacy?
 
   after_initialize :set_defaults, :if => :new_record?
+   where.not(:status => "Requested")
 
   def set_defaults
     #self.status ||= :'Requested'
@@ -195,6 +196,13 @@ class SalesOrder < ApplicationRecord
     self.rows.pluck(:quantity).inject(0) {|sum, x| sum + x}
   end
 
+  def is_not_requested?(record)
+    if record.status != "Requested"
+      true
+    else
+      false
+    end
+  end
   def has_purchase_order_request
     self.po_requests.present?
   end

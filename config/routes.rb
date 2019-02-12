@@ -196,6 +196,7 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'debugging'
       end
 
       collection do
@@ -300,7 +301,7 @@ Rails.application.routes.draw do
           member do
             get 'edit_mis_date'
             patch 'update_mis_date'
-
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
