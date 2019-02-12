@@ -68,9 +68,9 @@ class PurchaseOrderRow < ApplicationRecord
   def lead_date
     po_request = purchase_order.po_request
     if po_request.present?
-      po_request_rows = po_request.rows.where.not(product_id: nil)
+      po_request_rows = po_request.rows
       return false if po_request_rows.blank? || get_product.nil?
-      po_request_rows.where(product_id: get_product.id).first.try(:lead_time)
+      po_request_rows.select {|por_row| por_row.sales_order_row.product == get_product}.first.try(:lead_time)
     else
       return false
     end
