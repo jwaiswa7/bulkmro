@@ -23,8 +23,8 @@
           <% end %>
         <% end %>
         <h6 class="text-uppercase mt-2">SO Draft Sync Date </h6>
-        <% if @remote_requests.is_remote_request_success.present?%>
-          <p class="text-<%= status_color('success')%>"><%= format_date_time_with_second(@remote_requests.first.created_at) %></p>
+        <% if @sales_order.get_draft_sap_sync.present?%>
+          <p class="text-<%= status_color('success')%>"><%= format_date_time_with_second(@sales_order.get_draft_sap_sync) %></p>
         <% else %>
           <p>-</p>
         <% end %>

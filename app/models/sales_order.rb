@@ -209,4 +209,16 @@ class SalesOrder < ApplicationRecord
   def not_invoiced_value(status)
     self.order_total
   end
+
+  def get_draft_sap_sync
+    if self.approval.present?
+      draft_sync_date = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => self.id, :status => "success")
+      if draft_sync_date.present?
+
+        self.draft_sync_date = draft_sync_date.first.created_at
+        self.save!
+        self.draft_sync_date
+      end
+    end
+  end
 end
