@@ -86,16 +86,36 @@ class Resources::BusinessPartner < Resources::ApplicationResource
 
     contacts.each do |contact|
       remote_uid = contact["InternalCode"]
-      company_contact = company.company_contacts.joins(:contact).where("contacts.email = ?", contact["E_Mail"].to_s.strip.downcase).first
-      company_contact.update_attributes(remote_uid: remote_uid) if company_contact.present?
-    end if contacts.present?
+      contact_email = contact["E_Mail"].to_s.strip.downcase
+      existing_contact = Contact.find_by_email(contact_email)
 
-    banks.each do |bank|
-      account_number = bank["AccountNo"]
-      remote_uid = bank["InternalKey"]
-      company_bank = CompanyBank.find_by_account_number(account_number)
-      company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
-    end if banks.present?
+      if existing_contact.blank?
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account == existing_contact.account
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account != existing_contact.account
+        assigned_email = [contact_email.split('@', 2)[0], '_duplicate', '@', contact_email.split('@', 2)[1]].join('')
+      end
+
+      assigned_contact = Contact.where(:email => assigned_email).first_or_create! do |new_contact|
+        new_contact.update_attributes(
+            :account => company.account,
+            :first_name => contact['FirstName'],
+            :last_name => contact['LastName'],
+            :telephone => contact['Phone1'],
+            :mobile => contact['MobilePhone'],
+            :email => assigned_email
+        )
+      end
+      company.company_contacts.where(:remote_uid => remote_uid, :contact => assigned_contact).first_or_create!
+
+      banks.each do |bank|
+        account_number = bank["AccountNo"]
+        remote_uid = bank["InternalKey"]
+        company_bank = CompanyBank.find_by_account_number(account_number)
+        company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
+      end if banks.present?
+    end
   end
 
   def self.to_remote(record)

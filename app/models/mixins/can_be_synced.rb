@@ -12,7 +12,7 @@ module Mixins::CanBeSynced
       end
 
       service.call
-      self.save if Rails.env.development?
+      self.save
     end
 
     def syncable_identifiers

@@ -11,6 +11,7 @@ class CallbackRequest < ApplicationRecord
     self.hits = 0
   end
 
+  scope :sales_order_callbacks, -> (sales_order_id) { where("resource = 'SalesOrder' AND request ->> 'U_MgntDocID' = '#{sales_order_id}'") }
   scope :with_includes, -> { }
   enum resources: {
       'SalesOrder': 10,

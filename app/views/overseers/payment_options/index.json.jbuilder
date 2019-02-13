@@ -11,9 +11,9 @@ json.data (@payment_options) do |payment_option|
                       end,
                   ].join(" "),
                   conditional_link(payment_option.name.to_s, overseers_payment_option_path(payment_option), policy(payment_option).edit?),
-                  payment_option.credit_limit,
-                  payment_option.general_discount,
-                  payment_option.load_limit,
+                  number_with_delimiter(payment_option.credit_limit, delimiter: ','),
+                  number_with_delimiter(payment_option.general_discount, delimiter: ','),
+                  number_with_delimiter(payment_option.load_limit, delimiter: ','),
                   payment_option.remote_uid.to_s,
                   format_boolean_label(payment_option.synced?, "synced"),
                   format_succinct_date(payment_option.created_at)

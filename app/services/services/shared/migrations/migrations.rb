@@ -2099,7 +2099,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    def sap_sales_orders_totals_mismatch
+    def purchase_orders_total_mismatch
+    file = "#{Rails.root}/tmp/purchase_orders_total_mismatch.csv"
+    column_headers = ['PO_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_mismatch_purchase_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+      service.loop(nil) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
+        if purchase_order.present? && ((purchase_order.converted_total_with_tax.to_f != x.get_column('Document Total').to_f)||(purchase_order.converted_total.to_f != ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f)))
+          writer << [purchase_order.po_number, purchase_order.converted_total.to_f, purchase_order.converted_total_with_tax.to_f, ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f) ,x.get_column('Document Total').to_f]
+        end
+      end
+    end
+  enddef sap_sales_orders_totals_mismatch
       file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
       column_headers = ["order_number", "sprint_total", "sprint_total_with_tax", "sap_total", "sap_total_with_tax"]
 

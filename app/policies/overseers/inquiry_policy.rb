@@ -117,6 +117,15 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
     edit?
   end
 
+  def resync_inquiry_products?
+     developer?
+  end
+
+  def resync_unsync_inquiry_products?
+    developer?
+  end
+
+
   def new_freight_request?
     !record.freight_request.present? && !logistics?
   end
