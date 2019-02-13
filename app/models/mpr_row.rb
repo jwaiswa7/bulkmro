@@ -25,15 +25,7 @@ class MprRow < ApplicationRecord
   end
 
   def lead_date
-    po_request = purchase_order_row.purchase_order.po_request
-    if po_request.present?
-      po_request_rows = po_request.rows.where.not(product_id: nil)
-      return false if po_request_rows.blank? || row_product_id.nil?
-
-      po_request_rows.where(product_id: row_product_id).first.try(:lead_time)
-    else
-      return false
-    end
+    purchase_order_row.lead_date
   end
 
 
