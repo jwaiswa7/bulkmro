@@ -292,7 +292,8 @@
 
     <div class="tab-content">
       <div class="tab-pane fade active show" id="addresses" role="tabpanel">
-        <% provide :ajax_url, overseers_company_addresses_path(company_id: @company.id) %>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_addresses_path(company_id: @company.id) %>
+        <% end %>
         <% content_for :header_row, flush: true do %>
           <th class="no-sort"></th>
           <th class="no-sort" data-name="name">Address</th>
@@ -300,11 +301,11 @@
           <th class="no-sort" data-name="city">City</th>
           <th class="no-sort" data-name="valid_gst">Valid GST</th>
           <th class="no-sort" data-name="gst">GST</th>
-          <th class="no-sort" data-name="pincode">Pincode</th>
+          <th class="no-sort text-right" data-name="pincode">Pincode</th>
           <th class="no-sort">SAP status</th>
-          <th class="no-sort desktop" data-name="created_at">Created</th>
+          <th class="no-sort desktop text-right" data-name="created_at">Created</th>
         <% end %>
-        <% provide :heading_buttons do %>
+        <% content_for :heading_buttons, flush: true do %>
           <% if policy(:address).new? && policy(@company).new_address? %>
             <a href="<%= new_overseers_company_address_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Address</a>
           <% end %>
@@ -313,109 +314,72 @@
       </div>
 
       <div class="tab-pane fade" id="contacts" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Contacts</h3>
+        <% content_for :ajax_url, flush: true do %>
+          <%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>
+        <% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort all"></th>
+          <th class="all" data-name="name">Name</th>
+          <th class="all" data-name="email">Email</th>
+          <th class="all" data-name="account_id">Account</th>
+          <th class="all" data-name="account_id">Role</th>
+          <th class="no-sort desktop text-right">Inquiry</th>
+          <th class="desktop text-right" data-name="created_at">Created</th>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
           <% if policy(:contact).new? && policy(@company).new_contact? %>
-            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-              Contact</a>
+            <a href="<%= new_overseers_contact_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Contact</a>
           <% end %>
-        </div>
-        <p class="mt-md-1 d-none d-md-block">
-          All contacts searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
-        </p>
-
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_contacts_path(company_id: @company.id, via_company_contacts: true) %>">
-          <thead>
-          <tr>
-            <th class="no-sort all"></th>
-            <th class="all" data-name="name">Name</th>
-            <th class="all" data-name="email">Email</th>
-            <th class="all" data-name="account_id">Account</th>
-            <th class="all" data-name="account_id">Role</th>
-            <th class="no-sort desktop">Inquiry</th>
-            <!--<th class="no-sort desktop">SAP Status</th>-->
-            <th class="desktop" data-name="created_at">Created</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'contacts' %>
       </div>
 
       <div class="tab-pane fade" id="banks" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Banks</h3>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_company_banks_path(company_id: @company.id) %>
+        <% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort all"></th>
+          <th class="all" data-name="name">Name</th>
+          <th class="all" data-name="code">Code</th>
+          <th class="all" data-name="branch">Branch</th>
+          <th class="all" data-name="account_name">Account Name</th>
+          <th class="all" data-name="account_number">Account Number</th>
+          <th class="desktop" data-name="created_at">SAP Status</th>
+          <th class="desktop text-right" data-name="created_at">Created</th>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
           <% if policy(:contact).new? %>
-            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-              Bank</a>
+            <a href="<%= new_overseers_company_company_bank_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New Bank</a>
           <% end %>
-        </div>
-        <p class="mt-md-1 d-none d-md-block">
-          All banks searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
-        </p>
-
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_company_banks_path(company_id: @company.id) %>">
-          <thead>
-          <tr>
-            <th class="no-sort all"></th>
-            <th class="all" data-name="name">Name</th>
-            <th class="all" data-name="code">Code</th>
-            <th class="all" data-name="branch">Branch</th>
-            <th class="all" data-name="account_name">Account Name</th>
-            <th class="all" data-name="account_number">Account Number</th>
-            <th class="desktop" data-name="created_at">SAP Status</th>
-            <th class="desktop" data-name="created_at">Created</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'banks' %>
       </div>
 
       <div class="tab-pane fade" id="products" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Products</h3>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_products_path(@company) %><% end %>
+        <% content_for :header_row, flush: true do %>
+          <th class="no-sort"></th>
+          <th class="no-sort">Name</th>
+          <th class="no-sort">SKU</th>
+          <th class="no-sort desktop">Customer Price</th>
+          <th class="no-sort desktop">SAP Status</th>
+          <th class="desktop text-right" data-name="created_at">Created</th>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
           <div>
             <% if policy(:customer_product).generate_catalog? %>
-              <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate
-                Catalog</a>
+              <a href="<%= generate_catalog_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>Generate Catalog</a>
             <% end %>
-
             <% if policy(:customer_product).destroy_all? %>
-              <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy
-                Catalog</a>
+              <a href="<%= destroy_all_overseers_company_customer_products_path(@company) %>" data-method="post" class="btn btn-danger btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-minus-circle mr-1"></i>Destroy Catalog</a>
             <% end %>
-
             <% if policy(:customer_product).new? %>
-              <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-                Customer Product</a>
+              <a href="<%= new_overseers_company_customer_product_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0 mr-1"><i class="fal fa-plus-circle mr-1"></i>New Customer Product</a>
             <% end %>
-            <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add
-              products using excel</a>
-
+            <a href="<%= new_excel_customer_product_import_overseers_company_imports_path(@company) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-file-excel mr-1"></i>Add products using excel</a>
           </div>
-        </div>
-        <p class="mt-md-1 d-none d-md-block">
-          All products searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
-        </p>
-
-        <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= overseers_company_customer_products_path(@company) %>">
-          <thead>
-          <tr>
-            <th class="no-sort"></th>
-            <th class="no-sort">Name</th>
-            <th class="no-sort">SKU</th>
-            <th class="no-sort desktop">Customer Price</th>
-            <th class="no-sort desktop">SAP Status</th>
-            <th class="desktop" data-name="created_at">Created</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'products' %>
       </div>
 
       <% if policy(@company).new_inquiry? %>
