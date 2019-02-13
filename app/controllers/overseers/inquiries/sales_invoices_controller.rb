@@ -14,7 +14,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
 
     respond_to do |format|
-      format.html {}
+      format.html {render "show"}
       format.pdf do
         render_pdf_for @sales_invoice, locals
       end

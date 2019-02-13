@@ -30,7 +30,7 @@ json.data (@sales_invoices) do |sales_invoice|
                         row_action_button(edit_mis_date_overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice), 'calendar-alt', 'Update MIS Date', 'success')
                       end,
                   ].join(' '),
-                  conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoices_path(sales_invoice.inquiry),policy(sales_invoice).show?),
+                  conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoice_path(sales_invoice.inquiry, sales_invoice),policy(sales_invoice).show?),
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_invoice.inquiry), policy(sales_invoice.inquiry).edit?) : "-",
                   sales_invoice.inquiry.present? ?  conditional_link(sales_invoice.sales_order.order_number, overseers_inquiry_sales_order_path(sales_invoice.inquiry, sales_invoice.sales_order), policy(sales_invoice.sales_order).show?) : "-",
                   sales_invoice.inquiry.company.name,
