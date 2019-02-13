@@ -16,9 +16,9 @@ class Services::Callbacks::Shared::BaseCallback < Services::Shared::BaseService
 
   def to_callback_status(status)
     case status.to_s
-    when "1"
+    when '1'
       :'success'
-    when "0"
+    when '0'
       :'failed'
     end
   end

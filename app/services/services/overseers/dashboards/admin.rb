@@ -6,13 +6,13 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
     start_at = Date.new(2018, 10, 01).beginning_of_day
     end_at = Date.today.end_of_day
 
-    @data = Rails.cache.fetch("admin_dashboard_data", expires_in: 30.minutes) do
+    @data = Rails.cache.fetch('admin_dashboard_data', expires_in: 30.minutes) do
       @data = OpenStruct.new(entries: {})
       ActiveRecord::Base.default_timezone = :utc
       filter_by_dates = start_at.beginning_of_month..end_at.end_of_month
 
       inquiries = Inquiry.includes(:products).where(created_at: filter_by_dates)
-      sales_quotes_array = SalesQuote.find_by_sql ["(select *From  sales_quotes sq where sq.created_at = (select max(sales_quotes.created_at) from sales_quotes where sq.inquiry_id = sales_quotes.inquiry_id and sales_quotes.sent_at is not null ) and sq.created_at between ? and ? order by sq.created_at desc) union( select sq.* from sales_quotes as sq left join sales_orders as so on sq.id = so.sales_quote_id where ( so.status = ? or so.legacy_request_status = ? ) and sq.created_at between ? and ?)", start_at.beginning_of_month, end_at.end_of_month, SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'], start_at.beginning_of_month, end_at.end_of_month]
+      sales_quotes_array = SalesQuote.find_by_sql ['(select *From  sales_quotes sq where sq.created_at = (select max(sales_quotes.created_at) from sales_quotes where sq.inquiry_id = sales_quotes.inquiry_id and sales_quotes.sent_at is not null ) and sq.created_at between ? and ? order by sq.created_at desc) union( select sq.* from sales_quotes as sq left join sales_orders as so on sq.id = so.sales_quote_id where ( so.status = ? or so.legacy_request_status = ? ) and sq.created_at between ? and ?)', start_at.beginning_of_month, end_at.end_of_month, SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'], start_at.beginning_of_month, end_at.end_of_month]
       sales_quotes = SalesQuote.includes(:rows).where(id: sales_quotes_array.map(&:id))
 
       sales_orders = SalesOrder.includes(:rows).where(mis_date: filter_by_dates).remote_approved

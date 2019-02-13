@@ -20,18 +20,18 @@ module Mixins::HasRole
         hr: 90
     }
 
-    scope :managers, -> { where("role IN (?)", MANAGER_ROLES.map { |r| self.roles[r] }) }
-    scope :managers_and_obj, -> (obj) { where("role IN (?) OR id = ?", MANAGER_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :managers, -> { where('role IN (?)', MANAGER_ROLES.map { |r| self.roles[r] }) }
+    scope :managers_and_obj, -> (obj) { where('role IN (?) OR id = ?', MANAGER_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
 
-    scope :inside, -> { where("role IN (?)", INSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :target_inside, -> { where("role IN (?)", TARGET_INSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :inside_and_obj, -> (obj) { where("role IN (?) OR id = ?", INSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :inside, -> { where('role IN (?)', INSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :target_inside, -> { where('role IN (?)', TARGET_INSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :inside_and_obj, -> (obj) { where('role IN (?) OR id = ?', INSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
 
-    scope :outside, -> { where("role IN (?)", OUTSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :target_outside, -> { where("role IN (?)", TARGET_OUTSIDE_ROLES.map { |r| self.roles[r] }) }
-    scope :outside_and_obj, -> (obj) { where("role IN (?) OR id = ?", OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
+    scope :outside, -> { where('role IN (?)', OUTSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :target_outside, -> { where('role IN (?)', TARGET_OUTSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :outside_and_obj, -> (obj) { where('role IN (?) OR id = ?', OUTSIDE_ROLES.map { |r| Overseer.roles[r] }, obj.try(:id)) }
 
-    scope :with_activity, -> { where("role IN (?)", TARGET_OUTSIDE_ROLES.map { |r| self.roles[r] }) }
+    scope :with_activity, -> { where('role IN (?)', TARGET_OUTSIDE_ROLES.map { |r| self.roles[r] }) }
 
     MANAGER_ROLES = %w(admin inside_sales_manager outside_sales_manager)
     LEADER_ROLES = %w(inside_sales_team_leader outside_sales_team_leader)
@@ -66,11 +66,11 @@ module Mixins::HasRole
     end
 
     def logistics?
-      role == "logistics"
+      role == 'logistics'
     end
 
     def cataloging?
-      role == "cataloging"
+      role == 'cataloging'
     end
 
     def allow_inquiries?

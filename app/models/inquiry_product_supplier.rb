@@ -5,8 +5,8 @@ class InquiryProductSupplier < ApplicationRecord
   has_one :product, through: :inquiry_product
   has_one :inquiry, through: :inquiry_product
   has_many :sales_quote_rows, dependent: :destroy
-  has_one :final_sales_quote, through: :inquiry, class_name: "SalesQuote"
-  has_one :final_sales_quote_row, -> (record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: "SalesQuoteRow", source: :rows
+  has_one :final_sales_quote, through: :inquiry, class_name: 'SalesQuote'
+  has_one :final_sales_quote_row, -> (record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: 'SalesQuoteRow', source: :rows
   delegate :sr_no, to: :inquiry_product
 
   validates_uniqueness_of :supplier, scope: :inquiry_product

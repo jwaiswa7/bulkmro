@@ -29,7 +29,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     if service.call
       redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render "new_list_import"
+      render 'new_list_import'
     end
   end
 
@@ -42,7 +42,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     authorize @inquiry
     respond_to do |format|
       format.xlsx {
-        response.headers["Content-Disposition"] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", "xlsx"].join(".") + '"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", 'xlsx'].join('.') + '"'
       }
     end
   end
@@ -62,9 +62,9 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
         end
       end
     rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidHeader => e
-      render "new_excel_import"
+      render 'new_excel_import'
     rescue Services::Overseers::InquiryImports::ExcelImporter::ExcelInvalidRows => e
-      render "new_excel_import"
+      render 'new_excel_import'
     end
   end
 
@@ -86,7 +86,7 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     else
       service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
       service.call
-      render "manage_failed_skus"
+      render 'manage_failed_skus'
     end
   end
 

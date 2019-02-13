@@ -1,11 +1,11 @@
+require 'net/scp'
+require 'net/scp'
 
-
-require "net/scp"
-require "net/scp"class Resources::Attachment < Resources::ApplicationResource
+class Resources::Attachment < Resources::ApplicationResource
   include Net
 
   def self.collection_name
-    "Attachments2"
+    'Attachments2'
   end
 
   def self.identifier
@@ -21,23 +21,23 @@ require "net/scp"class Resources::Attachment < Resources::ApplicationResource
         if attachment.present? && attachment.try(:key)
           if ActiveStorage::Blob.service.exist?(attachment.key)
             path = "#{Dir.tmpdir}/#{attachment.key}#{attachment.filename}"
-            File.open(path, "wb") do |file|
+            File.open(path, 'wb') do |file|
               file.write(attachment.download)
             end
 
             if File.exist?(path)
 
-              filename = [record.inquiry_number, attachment.key, attachment.filename.base].join("_")
+              filename = [record.inquiry_number, attachment.key, attachment.filename.base].join('_')
               extension = attachment.filename.extension_without_delimiter
 
               remote_attachment = OpenStruct.new(
                 FileExtension: extension,
                 FileName: filename,
                 SourcePath: SAP.attachment_directory,
-                UserID: "1"
+                UserID: '1'
               )
 
-              ssh.scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
+              ssh.scp.upload!(path, [SAP.attachment_directory, filename].join('/'))
               remote_attachments.push(remote_attachment.marshal_dump)
             end
           end
@@ -52,7 +52,7 @@ require "net/scp"class Resources::Attachment < Resources::ApplicationResource
 
 
   def self.sanitize_filename(name)
-    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: "�").strip.tr("\u{202E}%$|:;/\t\r\n\\", "-")
+    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: '�').strip.tr("\u{202E}%$|:;/\t\r\n\\", '-')
   end
 end
 

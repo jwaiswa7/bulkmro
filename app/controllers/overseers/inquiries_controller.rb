@@ -96,7 +96,7 @@ class Overseers::InquiriesController < Overseers::BaseController
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :new_inquiry).call if @inquiry.persisted?
       redirect_to overseers_inquiry_imports_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -110,9 +110,9 @@ class Overseers::InquiriesController < Overseers::BaseController
 
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call if @inquiry.inquiry_products.present?
-      if @inquiry.status == "Order Lost"
+      if @inquiry.status == 'Order Lost'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :order_lost).call
-      elsif @inquiry.status == "Regret"
+      elsif @inquiry.status == 'Regret'
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :regret).call
       else
         Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :default).call
@@ -120,7 +120,7 @@ class Overseers::InquiriesController < Overseers::BaseController
 
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

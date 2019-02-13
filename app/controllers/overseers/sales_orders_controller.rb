@@ -4,7 +4,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize :sales_order
 
     respond_to do |format|
-      format.html { render "pending" }
+      format.html { render 'pending' }
       format.json do
         service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -18,7 +18,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
 
-        render "pending"
+        render 'pending'
       end
     end
   end
@@ -26,7 +26,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def cancelled
     authorize :sales_order
     respond_to do |format|
-      format.html { render "pending" }
+      format.html { render 'pending' }
       format.json do
         service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -39,7 +39,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @total_values = status_service.indexed_total_values
         @statuses = status_service.indexed_statuses
-        render "pending"
+        render 'pending'
       end
     end
   end
@@ -101,7 +101,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def not_invoiced
     authorize :sales_order
     respond_to do |format|
-      format.html { render "not_invoiced" }
+      format.html { render 'not_invoiced' }
       format.json do
         service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
         service.call
@@ -139,7 +139,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
-        render "drafts_pending"
+        render 'drafts_pending'
       end
     end
   end

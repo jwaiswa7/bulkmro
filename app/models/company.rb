@@ -6,15 +6,15 @@ class Company < ApplicationRecord
   # include Mixins::HasUniqueName
   include Mixins::HasManagers
 
-  update_index("companies#company") { self }
+  update_index('companies#company') { self }
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   belongs_to :account
-  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: "CompanyContact", foreign_key: :default_company_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
-  belongs_to :default_payment_option, class_name: "PaymentOption", foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: "Address", foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: "Address", foreign_key: :default_shipping_address_id, required: false
+  belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
+  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, through: :company_contacts
@@ -27,7 +27,7 @@ class Company < ApplicationRecord
   accepts_nested_attributes_for :category_suppliers
   has_many :brand_suppliers, foreign_key: :supplier_id
   has_many :brands, through: :brand_suppliers
-  has_many :brand_products, through: :brands, class_name: "Product", source: :products
+  has_many :brand_products, through: :brands, class_name: 'Product', source: :products
   accepts_nested_attributes_for :brand_suppliers
   has_many :inquiries
   has_many :inquiry_product_suppliers, through: :inquiries
@@ -40,7 +40,7 @@ class Company < ApplicationRecord
   has_many :customer_products, dependent: :destroy
   has_many :company_products, through: :customer_products
   has_many :customer_orders
-  has_many :product_imports, class_name: "CustomerProductImport", inverse_of: :company
+  has_many :product_imports, class_name: 'CustomerProductImport', inverse_of: :company
   has_many :company_banks
   has_many :banks, through: :company_banks
 
@@ -81,8 +81,8 @@ class Company < ApplicationRecord
   alias_attribute :gst, :tax_identifier
 
   scope :with_includes, -> { includes(:addresses, :inquiries, :contacts) }
-  scope :acts_as_supplier, -> { left_outer_joins(:account).where("accounts.account_type = ?", Account.account_types[:is_supplier]) }
-  scope :acts_as_customer, -> { left_outer_joins(:account).where("accounts.account_type = ?", Account.account_types[:is_customer]) }
+  scope :acts_as_supplier, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_supplier]) }
+  scope :acts_as_customer, -> { left_outer_joins(:account).where('accounts.account_type = ?', Account.account_types[:is_customer]) }
 
   validates_presence_of :name
   validates :credit_limit, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
@@ -98,8 +98,8 @@ class Company < ApplicationRecord
   validate :name_is_conditionally_unique?
 
   def name_is_conditionally_unique?
-    if Company.joins(:account).where(name: self.name).where.not(id: self.id).where("accounts.account_type = ?", Account.account_types[self.account.account_type]).exists?
-      errors.add :name, "has to be unique"
+    if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
+      errors.add :name, 'has to be unique'
     end
   end
 
@@ -145,14 +145,14 @@ class Company < ApplicationRecord
     s = [self.to_s]
 
     if product.p_suppliers.include?(self)
-      s.append("(Supplies product directly)")
+      s.append('(Supplies product directly)')
     elsif product.c_suppliers.include?(self)
-      s.append("(Supplies category)")
+      s.append('(Supplies category)')
     else
-      s.append("(Supplies brand)")
+      s.append('(Supplies brand)')
     end
 
-    s.join(" ")
+    s.join(' ')
   end
 
   def generate_catalog(overseer)
@@ -162,8 +162,8 @@ class Company < ApplicationRecord
         CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id, customer_price: (inquiry_product.product.latest_unit_cost_price || 0)).first_or_create! do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
-          customer_product.name = (inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
-          customer_product.sku = (inquiry_product.bp_catalog_sku == "" ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
+          customer_product.name = (inquiry_product.bp_catalog_name == '' ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
+          customer_product.sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
           customer_product.tax_code = inquiry_product.product.best_tax_code
           customer_product.tax_rate = inquiry_product.best_tax_rate
           customer_product.measurement_unit = inquiry_product.product.measurement_unit
@@ -175,11 +175,11 @@ class Company < ApplicationRecord
   end
 
   def customer_product_for(product)
-    customer_products.joins(:product).where("products.id = ?", product.id).first
+    customer_products.joins(:product).where('products.id = ?', product.id).first
   end
 
   def self.legacy
-    self.find_by_name("Legacy Company")
+    self.find_by_name('Legacy Company')
   end
 
   def validate_pan
@@ -192,7 +192,7 @@ class Company < ApplicationRecord
 
   def validate_pan?
     if self.pan.blank? || self.pan.length != 10
-      errors.add(:company, "PAN is not valid")
+      errors.add(:company, 'PAN is not valid')
     end
   end
 end

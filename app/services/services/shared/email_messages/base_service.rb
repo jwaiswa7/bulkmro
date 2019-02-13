@@ -4,7 +4,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
   end
 
   def send_email_message(recipient, template_id, template_data, subject, contact= nil)
-    response = client.client.mail._("send").post(request_body: {
+    response = client.client.mail._('send').post(request_body: {
         from: {
             email: Settings.email_messages.from,
             name: Settings.email_messages.from_name
@@ -24,9 +24,9 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     }.as_json)
 
     if Rails.env.production?
-      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers["x-message-id"][0], metadata: response, subject: subject, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
+      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
     else
-      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers["x-message-id"][0], metadata: response, subject: subject, overseer: recipient, contact: contact, template_data: template_data) if response.present? && response.headers.present?
+      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, overseer: recipient, contact: contact, template_data: template_data) if response.present? && response.headers.present?
     end
   end
 
@@ -43,7 +43,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
                                   )
     end
 
-    response = client.client.mail._("send").post(request_body: {
+    response = client.client.mail._('send').post(request_body: {
         from: {
             email: Settings.email_messages.from,
             name: Settings.email_messages.from_name
@@ -58,9 +58,9 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
 
     recipients.each_with_index do |recipient, index|
       if Rails.env.production?
-        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers["x-message-id"][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
+        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
       else
-        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers["x-message-id"][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: contact[index], template_data: template_data) if response.present? && response.headers.present?
+        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: contact[index], template_data: template_data) if response.present? && response.headers.present?
       end
     end
   end

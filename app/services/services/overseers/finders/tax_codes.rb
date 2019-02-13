@@ -13,9 +13,9 @@ class Services::Overseers::Finders::TaxCodes < Services::Overseers::Finders::Bas
     index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[code taxpercentage],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
   end

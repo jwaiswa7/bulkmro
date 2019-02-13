@@ -1,5 +1,5 @@
 class InquiryImportRow < ApplicationRecord
-  belongs_to :import, class_name: "InquiryImport", foreign_key: :inquiry_import_id
+  belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id
   has_one :inquiry, through: :import
   belongs_to :inquiry_product, required: false
   accepts_nested_attributes_for :inquiry_product, allow_destroy: true
@@ -23,6 +23,6 @@ class InquiryImportRow < ApplicationRecord
 
   def approved_alternatives(page=1)
     service = Services::Overseers::Finders::Products.new({})
-    service.manage_failed_skus([metadata["mpn"], metadata["name"]].map{ |a| a.to_s.strip }.compact.join(" "), 4, page)
+    service.manage_failed_skus([metadata['mpn'], metadata['name']].map{ |a| a.to_s.strip }.compact.join(' '), 4, page)
   end
 end

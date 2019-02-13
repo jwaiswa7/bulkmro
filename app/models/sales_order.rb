@@ -1,7 +1,7 @@
 class SalesOrder < ApplicationRecord
-  COMMENTS_CLASS = "InquiryComment"
-  REJECTIONS_CLASS = "SalesOrderRejection"
-  APPROVALS_CLASS = "SalesOrderApproval"
+  COMMENTS_CLASS = 'InquiryComment'
+  REJECTIONS_CLASS = 'SalesOrderRejection'
+  APPROVALS_CLASS = 'SalesOrderApproval'
 
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
@@ -11,7 +11,7 @@ class SalesOrder < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::HasConvertedCalculations
 
-  update_index("sales_orders#sales_order") { self }
+  update_index('sales_orders#sales_order') { self }
   pg_search_scope :locate, against: [:status, :id, :order_number], associated_against: { company: [:name], inquiry: [:inquiry_number, :customer_po_number] }, using: { tsearch: { prefix: true } }
   has_closure_tree(name_column: :to_s)
 
@@ -22,20 +22,20 @@ class SalesOrder < ApplicationRecord
   has_one :company, through: :inquiry
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
-  has_many :rows, -> { joins(:inquiry_product).order("inquiry_products.sr_no ASC") }, class_name: "SalesOrderRow", inverse_of: :sales_order, dependent: :destroy
+  has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesOrderRow', inverse_of: :sales_order, dependent: :destroy
   has_many :sales_order_rows, inverse_of: :sales_order
-  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes["sales_quote_row_id"].blank? || attributes["quantity"].blank? || attributes["quantity"].to_f < 0) && attributes["id"].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| (attributes['sales_quote_row_id'].blank? || attributes['quantity'].blank? || attributes['quantity'].to_f < 0) && attributes['id'].blank? }, allow_destroy: true
   has_many :sales_quote_rows, through: :sales_quote
   has_many :products, through: :rows
   has_many :categories, through: :products
-  has_many :shipments, class_name: "SalesShipment", inverse_of: :sales_order
-  has_many :invoices, class_name: "SalesInvoice", inverse_of: :sales_order
-  has_many :shipments, class_name: "SalesShipment", inverse_of: :sales_order
-  has_one :confirmation, class_name: "SalesOrderConfirmation", dependent: :destroy
+  has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
+  has_many :invoices, class_name: 'SalesInvoice', inverse_of: :sales_order
+  has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
+  has_one :confirmation, class_name: 'SalesOrderConfirmation', dependent: :destroy
   has_many :po_requests
   has_many :invoice_requests
-  belongs_to :billing_address, class_name: "Address", dependent: :destroy, required: false
-  belongs_to :shipping_address, class_name: "Address", dependent: :destroy, required: false
+  belongs_to :billing_address, class_name: 'Address', dependent: :destroy, required: false
+  belongs_to :shipping_address, class_name: 'Address', dependent: :destroy, required: false
 
   delegate :conversion_rate, to: :inquiry_currency
   attr_accessor :confirm_ord_values, :confirm_tax_rates, :confirm_hsn_codes, :confirm_billing_address, :confirm_shipping_address, :confirm_customer_po_no, :confirm_attachments
@@ -94,14 +94,14 @@ class SalesOrder < ApplicationRecord
   }, _prefix: true
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :inquiry) }
-  scope :remote_approved, -> { where("sales_orders.status = ? AND sales_orders.remote_status != ?", SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: "Approved")) }
+  scope :remote_approved, -> { where('sales_orders.status = ? AND sales_orders.remote_status != ?', SalesOrder.statuses[:'Approved'], SalesOrder.remote_statuses[:'Cancelled by SAP']).or(SalesOrder.where(legacy_request_status: 'Approved')) }
 
   def confirmed?
     self.confirmation.present?
   end
 
   def remote_approved?
-    self.status == "Approved" || self.legacy_request_status == "Approved"
+    self.status == 'Approved' || self.legacy_request_status == 'Approved'
   end
 
   def legacy?
@@ -126,48 +126,48 @@ class SalesOrder < ApplicationRecord
 
   def effective_customer_status
     if self.remote_status.blank?
-      return "Processing"
+      return 'Processing'
     end
 
     case self.remote_status.to_sym
     when :'Supplier PO: Request Pending'
-      "Processing"
+      'Processing'
     when :'Supplier PO: Partially Created'
-      "Processing"
+      'Processing'
     when :'Partially Shipped'
-      "Partially Shipped"
+      'Partially Shipped'
     when :'Partially Invoiced'
-      "Partially Invoiced"
+      'Partially Invoiced'
     when :'Partially Delivered: GRN Pending'
-      "Partially Delivered: GRN Pending"
+      'Partially Delivered: GRN Pending'
     when :'Partially Delivered: GRN Received'
-      "Partially Delivered: GRN Received"
+      'Partially Delivered: GRN Received'
     when :'Supplier PO: Created'
-      "Processing"
+      'Processing'
     when :'Shipped'
-      "Shipped"
+      'Shipped'
     when :'Invoiced'
-      "Invoiced"
+      'Invoiced'
     when :'Delivered: GRN Pending'
-      "Delivered: GRN Pending"
+      'Delivered: GRN Pending'
     when :'Delivered: GRN Received'
-      "Delivered: GRN Received"
+      'Delivered: GRN Received'
     when :'Partial Payment Received'
-      "Partial Payment Received"
+      'Partial Payment Received'
     when :'Payment Received (Closed)'
-      "Full Payment Received"
+      'Full Payment Received'
     when :'Cancelled by SAP'
-      "Processing"
+      'Processing'
     when :'Short Close'
-      "Short Closed"
+      'Short Closed'
     when :'Processing'
-      "Processing"
+      'Processing'
     when :'Material Ready For Dispatch'
-      "Material Ready For Dispatch"
+      'Material Ready For Dispatch'
     when :'Order Deleted'
-      "Cancelled"
+      'Cancelled'
     when :'Order Lost'
-      "Closed"
+      'Closed'
     end
   end
 
@@ -182,13 +182,13 @@ class SalesOrder < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ["order", id].join("_"),
-        ("pdf" if include_extension)
-    ].compact.join(".")
+        ['order', id].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 
   def to_s
-    ["#", order_number].join if order_number.present?
+    ['#', order_number].join if order_number.present?
   end
 
   def total_quantities
@@ -196,7 +196,7 @@ class SalesOrder < ApplicationRecord
   end
 
   def is_not_requested?(record)
-    if record.status != "Requested"
+    if record.status != 'Requested'
       true
     else
       false

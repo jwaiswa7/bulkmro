@@ -8,7 +8,7 @@ class Overseers::CategoriesController < Overseers::BaseController
 
   def autocomplete_closure_tree
     @categories = []
-    ApplyParams.to(Category.where("is_active = ? and is_service = ?", true, params[:is_service]).where.not(id: Category.default.id), params).each do |grandparent|
+    ApplyParams.to(Category.where('is_active = ? and is_service = ?', true, params[:is_service]).where.not(id: Category.default.id), params).each do |grandparent|
       @categories << get_category_hash(grandparent, :grandparent)
       grandparent.children.each do |parent|
         @categories << get_category_hash(parent, :parent)
@@ -40,7 +40,7 @@ class Overseers::CategoriesController < Overseers::BaseController
     if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -54,7 +54,7 @@ class Overseers::CategoriesController < Overseers::BaseController
     if @category.save_and_sync
       redirect_to overseers_categories_path, notice: flash_message(@category, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

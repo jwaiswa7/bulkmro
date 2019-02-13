@@ -2,7 +2,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == "company_id" })
+    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == 'company_id' })
     authorize @products
   end
 
@@ -36,7 +36,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     if @customer_product.save
       redirect_to overseers_company_customer_product_path(@company, @customer_product), notice: flash_message(@customer_product, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -70,7 +70,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     if @customer_product.save
       redirect_to overseers_company_customer_product_path(@customer_product.company, @customer_product), notice: flash_message(@customer_product, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

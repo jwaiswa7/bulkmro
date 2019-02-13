@@ -13,13 +13,13 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
         @payment_request.save!
-        @payment_request_comment = PaymentRequestComment.new(message: "Payment Request submitted.", payment_request: @payment_request, overseer: current_overseer)
+        @payment_request_comment = PaymentRequestComment.new(message: 'Payment Request submitted.', payment_request: @payment_request, overseer: current_overseer)
         @payment_request_comment.save!
       end
 
       redirect_to overseers_payment_request_path(@payment_request), notice: flash_message(@payment_request, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -44,7 +44,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
       redirect_to overseers_payment_request_path(@payment_request), notice: flash_message(@payment_request, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

@@ -14,8 +14,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render "index" }
-      format.html { render "index" }
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -24,8 +24,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json { render "index" }
-      format.html { render "index" }
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -60,13 +60,13 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         @invoice_request.save!
-        @invoice_request_comment = InvoiceRequestComment.new(message: "Invoice Request submitted.", invoice_request: @invoice_request, overseer: current_overseer)
+        @invoice_request_comment = InvoiceRequestComment.new(message: 'Invoice Request submitted.', invoice_request: @invoice_request, overseer: current_overseer)
         @invoice_request_comment.save!
       end
 
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -92,7 +92,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
       redirect_to overseers_invoice_request_path(@invoice_request), notice: flash_message(@invoice_request, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

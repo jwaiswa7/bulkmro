@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   add_template_helper(DisplayHelper)
-  layout "mailers/layouts/mailer"
+  layout 'mailers/layouts/mailer'
 
   # default from: 'somebody@bulkmro.com'
   # default reply_to: 'sales@bulkmro.com'

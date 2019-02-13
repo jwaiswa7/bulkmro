@@ -1,13 +1,13 @@
+require 'money/bank/open_exchange_rates_bank'
 
-
-require "money/bank/open_exchange_rates_bank"class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::BaseService
+class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::BaseService
   def initialize
   end
 
   def call
     Currency.non_inr.each do |currency|
       oxr = Money::Bank::OpenExchangeRatesBank.new
-      oxr.app_id = "45dbf3d4fa144d718f18d559b754cbc7"
+      oxr.app_id = '45dbf3d4fa144d718f18d559b754cbc7'
       oxr.update_rates
 
       Money.default_bank = oxr

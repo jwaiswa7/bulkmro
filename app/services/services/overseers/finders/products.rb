@@ -26,9 +26,9 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[sku^3 sku_edge name brand category mpn],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                                         )
 
@@ -49,7 +49,7 @@ class Services::Overseers::Finders::Products < Services::Overseers::Finders::Bas
     search_query = {
         multi_match: {
             query: query,
-            operator: "or",
+            operator: 'or',
             fields: %w[name mpn^3  ],
         }
     }

@@ -13,7 +13,7 @@ class Overseers::ReportsController < Overseers::BaseController
     @report.assign_attributes(report_params)
     params[:overseer] = current_overseer
     # @report.designation = 'Inside'
-    service = ["Services", "Overseers", "Reports", @report.name].join("::").constantize.send(:new, @report, params)
+    service = ['Services', 'Overseers', 'Reports', @report.name].join('::').constantize.send(:new, @report, params)
     @data = service.call
 
     authorize @report

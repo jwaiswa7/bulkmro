@@ -2,21 +2,21 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
   def initialize
     super
     @model = Inquiry
-    @export_name = "inquiries"
-    @path = Rails.root.join("tmp", filename)
-    @columns = ["inquiry_number", "order_number", "created_at", "customer_committed_date", "updated_at", "quote_type", "status", "opportunity_type", "inside_sales_owner", "ise_city", "outside_sales_owner", "ose_city", "company_alias", "company_name", "customer", "subject", "currency", "potential amount", "total (Exc. Tax)", "comments", "reason"]
+    @export_name = 'inquiries'
+    @path = Rails.root.join('tmp', filename)
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type', 'status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason']
     @start_at = Date.new(2018, 04, 01)
   end
 
   def call
-    perform_export_later("InquiriesExporter")
+    perform_export_later('InquiriesExporter')
   end
 
   def build_csv
     model.where(created_at: start_at..end_at).order(created_at: :desc).each do |record|
       rows.push(
         inquiry_number: record.inquiry_number,
-        order_number: record.sales_orders.pluck(:order_number).compact.join(","),
+        order_number: record.sales_orders.pluck(:order_number).compact.join(','),
         created_at: record.created_at.to_date.to_s,
         committed_customer_date: (record.customer_committed_date.present? ? record.customer_committed_date.to_date.to_s : nil),
         updated_at: record.updated_at.to_date.to_s,
@@ -34,8 +34,8 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
         currency: record.currency.try(:name),
         potential_amount: record.potential_amount,
         total: record.final_sales_quote.try(:calculated_total),
-        comments: record.comments.pluck(:message).join(","),
-        reason: ""
+        comments: record.comments.pluck(:message).join(','),
+        reason: ''
                 )
     end
     export = Export.create!(export_type: 1)

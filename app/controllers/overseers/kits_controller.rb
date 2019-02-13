@@ -37,7 +37,7 @@ class Overseers::KitsController < Overseers::BaseController
 
       redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -51,7 +51,7 @@ class Overseers::KitsController < Overseers::BaseController
     if @kit.product.approved? ? @kit.save_and_sync : @kit.save
       redirect_to overseers_kit_path(@kit), notice: flash_message(@kit, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

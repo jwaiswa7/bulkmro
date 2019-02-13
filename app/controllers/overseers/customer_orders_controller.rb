@@ -8,7 +8,7 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
 
   def payments
     payments = if params[:company_id].present?
-      OnlinePayment.joins(:customer_order).where("customer_orders.company_id = ?", params[:company_id])
+      OnlinePayment.joins(:customer_order).where('customer_orders.company_id = ?', params[:company_id])
     else
       OnlinePayment.all
     end.order(id: :desc)

@@ -10,6 +10,6 @@ class MeasurementUnit < ApplicationRecord
   end
 
   def self.default
-    find_by_name("EA")
+    find_by_name('EA')
   end
 end

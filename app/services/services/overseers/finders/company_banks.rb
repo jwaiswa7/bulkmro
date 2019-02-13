@@ -27,9 +27,9 @@ class Services::Overseers::Finders::CompanyBanks < Services::Overseers::Finders:
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[bank^4 code^3 account_name^3 branch],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
 

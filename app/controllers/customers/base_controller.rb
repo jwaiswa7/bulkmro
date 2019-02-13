@@ -2,7 +2,7 @@ class Customers::BaseController < ApplicationController
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  layout "customers/layouts/application"
+  layout 'customers/layouts/application'
 
   before_action :authenticate_contact!
   before_action :set_paper_trail_whodunnit
@@ -16,11 +16,11 @@ class Customers::BaseController < ApplicationController
     def render_pdf_for(record, locals={})
       render(
         pdf: record.filename,
-        template: ["shared", "layouts", "pdf_templates", record.class.name.pluralize.underscore, "show"].join("/"),
-        layout: "shared/layouts/pdf_templates/show",
-        page_size: "A4",
+        template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+        layout: 'shared/layouts/pdf_templates/show',
+        page_size: 'A4',
         footer: {
-            center: "[page] of [topage]"
+            center: '[page] of [topage]'
         },
         # show_as_html: true,
         locals: {
@@ -36,16 +36,16 @@ class Customers::BaseController < ApplicationController
         if params[:became].present? && current_contact.companies.pluck(:id).exclude?(current_company.id)
           session[:current_company_id] = nil
           edit_current_company_customers_sign_in_steps_path
-        elsif controller_name == "sign_in_steps"
+        elsif controller_name == 'sign_in_steps'
           customers_dashboard_path
         end
       end
 
-      redirect_to(redirect_to_path) if redirect_to_path.present? && request.path != redirect_to_path && request.method == "GET"
+      redirect_to(redirect_to_path) if redirect_to_path.present? && request.path != redirect_to_path && request.method == 'GET'
     end
 
     def user_not_authorized
-      message = "You are not authorized to perform this action."
+      message = 'You are not authorized to perform this action.'
       set_flash_message(message, :warning, now: false)
       redirect_to(request.referrer || root_path)
     end
@@ -99,6 +99,6 @@ class Customers::BaseController < ApplicationController
     end
 
     def controller_namespace
-      @controller_namespace ||= controller_path.split("/").first
+      @controller_namespace ||= controller_path.split('/').first
     end
 end

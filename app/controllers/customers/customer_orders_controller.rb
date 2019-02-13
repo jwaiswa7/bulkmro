@@ -55,7 +55,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
     email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
     email_service.send_order_confirmation_email
 
-    account_managers = @customer_order.company.contacts.where(role: "account_manager")
+    account_managers = @customer_order.company.contacts.where(role: 'account_manager')
     if account_managers.present?
       email_service.send_order_approval_email(account_managers)
     end
@@ -76,7 +76,7 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
-    render "customers/customer_orders/index"
+    render 'customers/customer_orders/index'
   end
 
   def approved
@@ -88,15 +88,15 @@ class Customers::CustomerOrdersController < Customers::BaseController
 
     authorize customer_orders
     @customer_orders = ApplyDatatableParams.to(customer_orders, params)
-    render "customers/customer_orders/index"
+    render 'customers/customer_orders/index'
   end
 
   def order_confirmed
     authorize @customer_order
     if @customer_order.not_approved?
-      render template: "customers/customer_orders/approval_pending"
+      render template: 'customers/customer_orders/approval_pending'
     else
-      render template: "customers/customer_orders/order_confirmed"
+      render template: 'customers/customer_orders/order_confirmed'
     end
   end
 

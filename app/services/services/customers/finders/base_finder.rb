@@ -6,7 +6,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
-          if column[:search][:value].include? "~"
+          if column[:search][:value].include? '~'
             range_filters << column
           else
             search_filters << column
@@ -22,7 +22,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     elsif params.is_a?(String)
       params
     else
-      ""
+      ''
     end.strip
 
     @per = (params[:per] || params[:length] || 20).to_i
@@ -52,7 +52,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
       query_string: {
           fields: index_klass.fields,
           query: query_string,
-          default_operator: "or"
+          default_operator: 'or'
       }
                       )
   end
@@ -63,7 +63,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
         term: {
             :"#{search_filter[:name]}" => search_filter[:search][:value]
         }
-                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != "null"
+                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
     end
 
     indexed_records
@@ -71,7 +71,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
   def range_query(indexed_records)
     range_filters.each do |range_filter|
-      range = range_filter[:search][:value].split("~")
+      range = range_filter[:search][:value].split('~')
       indexed_records = indexed_records.query(
         range: {
             :"#{range_filter[:name]}" => {
@@ -90,7 +90,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def index_klass
-    [model_klass.to_s.pluralize, "Index"].join.constantize
+    [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
   def filter_by_array(key, vals)

@@ -1,6 +1,9 @@
 
 
-require "csv"class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
+require 'csv'
+
+
+class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
   def initialize(name, folder, skip = 0, log_errors = false)
     @errors = []
     @skip = skip
@@ -30,9 +33,9 @@ require "csv"class Services::Shared::Spreadsheets::CsvImporter < Services::Share
   end
 
   def set_files(name, folder)
-    folder = "seed_files" if !folder.present?
-    @file = Rails.root.join("db", folder, name)
-    @errors_file = Rails.root.join("db", "seed_errors_files", name)
+    folder = 'seed_files' if !folder.present?
+    @file = Rails.root.join('db', folder, name)
+    @errors_file = Rails.root.join('db', 'seed_errors_files', name)
   end
 
   def set_current_row(row_hash)
@@ -40,9 +43,9 @@ require "csv"class Services::Shared::Spreadsheets::CsvImporter < Services::Share
   end
 
   def get_column(name, nil_if_zero: false, default: nil, downcase: false, to_datetime: false, remove_whitespace: false, to_f: false)
-    value = if current_row[name].present? && current_row[name] != "NULL"
+    value = if current_row[name].present? && current_row[name] != 'NULL'
       if nil_if_zero
-        current_row[name].to_s == "0" ? nil : current_row[name].strip
+        current_row[name].to_s == '0' ? nil : current_row[name].strip
       else
         current_row[name].strip
       end
@@ -51,9 +54,9 @@ require "csv"class Services::Shared::Spreadsheets::CsvImporter < Services::Share
     end
 
     if value.present?
-      value = value.gsub(/\s+/, "") if remove_whitespace
+      value = value.gsub(/\s+/, '') if remove_whitespace
       value = value.downcase if downcase
-      value = (value == "0000-00-00" ? Time.at(0) : value.to_datetime) if to_datetime
+      value = (value == '0000-00-00' ? Time.at(0) : value.to_datetime) if to_datetime
       value = value.to_f if to_f
       value
     else
@@ -71,7 +74,7 @@ require "csv"class Services::Shared::Spreadsheets::CsvImporter < Services::Share
   end
 
   def errors_to_csv
-    CSV.open(errors_file, "w", write_headers: true, headers: ["Errors"]) do |f|
+    CSV.open(errors_file, 'w', write_headers: true, headers: ['Errors']) do |f|
       f << errors
     end
   end

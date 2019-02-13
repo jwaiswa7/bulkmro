@@ -2,11 +2,11 @@ class SalesInvoiceRow < ApplicationRecord
   belongs_to :sales_invoice
 
   def sku
-    self.metadata["sku"]
+    self.metadata['sku']
   end
 
   def quantity
-    self.metadata["qty"]
+    self.metadata['qty']
   end
 
 
@@ -31,8 +31,8 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def tax_rate
-    tax_amount = self.metadata["tax_amount"].to_f
-    row_total = self.metadata["row_total"].to_f
+    tax_amount = self.metadata['tax_amount'].to_f
+    row_total = self.metadata['row_total'].to_f
     if(tax_amount.nil? || tax_amount.zero?) || (row_total.nil? || row_total.zero?)
       0
     else

@@ -11,7 +11,7 @@ module Mixins::HasOnlinePayments
     end
 
     def capture
-      if self.fetch_payment.status != "captured"
+      if self.fetch_payment.status != 'captured'
         razorpay_obj = Razorpay::Payment.capture(self.payment_id, amount: self.capture_amount)
         self.update_attributes(metadata: razorpay_obj.to_json, status: razorpay_obj.status) if razorpay_obj.present?
       end

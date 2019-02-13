@@ -27,7 +27,7 @@ class Services::Overseers::Finders::SmartQueues < Services::Overseers::Finders::
     indexed_records = index_klass.query(
       multi_match: {
           query: query_string,
-          operator: "and",
+          operator: 'and',
           fields: index_klass.fields
       }
                                         )

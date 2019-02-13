@@ -17,6 +17,6 @@ class Brand < ApplicationRecord
   end
 
   def self.legacy
-    find_by_name("Legacy Brand")
+    find_by_name('Legacy Brand')
   end
 end

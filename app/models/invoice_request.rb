@@ -1,5 +1,5 @@
 class InvoiceRequest < ApplicationRecord
-  COMMENTS_CLASS = "InvoiceRequestComment"
+  COMMENTS_CLASS = 'InvoiceRequestComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -35,7 +35,7 @@ class InvoiceRequest < ApplicationRecord
 
   def grpo_number_valid?
     if self.grpo_number.present? && self.grpo_number <= 50000000
-      errors.add(:grpo_number, "must be 8 digits starting with 5")
+      errors.add(:grpo_number, 'must be 8 digits starting with 5')
     end
   end
 
@@ -43,7 +43,7 @@ class InvoiceRequest < ApplicationRecord
 
   def shipment_number_valid?
     if self.shipment_number.present? && self.shipment_number <= 30000000
-      errors.add(:shipment_number, "must be 8 digits starting with 3")
+      errors.add(:shipment_number, 'must be 8 digits starting with 3')
     end
   end
 
@@ -64,7 +64,7 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def update_status(status)
-    if status == "In stock" || status == "Cancelled"
+    if status == 'In stock' || status == 'Cancelled'
       self.status = status
     elsif self.ar_invoice_number.present?
       self.status = :'Completed AR Invoice Request'
@@ -79,18 +79,18 @@ class InvoiceRequest < ApplicationRecord
 
   def readable_status
     status = self.status
-    if status.include? "Pending"
-      title_without_pending = status.remove("Pending")
-      title = status.include?("GRPO") ? "Invoice GRPO" : "#{title_without_pending}"
-    elsif (status.include? "Completed AR Invoice") || (status.include? "Cancelled AR Invoice")
-      title = status.gsub(status, "AR Invoice")
+    if status.include? 'Pending'
+      title_without_pending = status.remove('Pending')
+      title = status.include?('GRPO') ? 'Invoice GRPO' : "#{title_without_pending}"
+    elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
+      title = status.gsub(status, 'AR Invoice')
     else
-      title = "Invoice"
+      title = 'Invoice'
     end
       "#{title} Request"
   end
 
   def to_s
-    [readable_status, "Request", "##{self.id}"].join(" ")
+    [readable_status, 'Request', "##{self.id}"].join(' ')
   end
 end

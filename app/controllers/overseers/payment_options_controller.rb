@@ -31,7 +31,7 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
     if @payment_option.save_and_sync
       redirect_to overseers_payment_option_path(@payment_option), notice: flash_message(@payment_option, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

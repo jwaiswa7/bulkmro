@@ -13,7 +13,7 @@ class Services::Overseers::Reports::MonthlySalesReport < Services::Overseers::Re
     ActiveRecord::Base.default_timezone = :utc
 
     inquiries = Inquiry.includes(:products).where(created_at: start_at.beginning_of_month..end_at.end_of_month)
-    sales_orders = SalesOrder.includes([rows: :sales_quote_row]).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where("sales_orders.status = ? OR sales_orders.legacy_request_status = ?", SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
+    sales_orders = SalesOrder.includes([rows: :sales_quote_row]).where(created_at: start_at.beginning_of_month..end_at.end_of_month).where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
 
     inquiry_groups = inquiries.group_by_month(:created_at, default_value: nil).count
     sales_order_groups = sales_orders.group_by_month(:created_at, default_value: nil).count

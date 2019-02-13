@@ -28,7 +28,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = Services::Overseers::SalesQuotes::BuildFromSalesQuote.new(@old_sales_quote, current_overseer).call
 
     authorize @old_sales_quote
-    render "new"
+    render 'new'
   end
 
   def create
@@ -41,7 +41,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, :sales_quote_saved).call
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -59,7 +59,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -69,7 +69,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
 
   def reset_quote
     authorize @sales_quote
-    @inquiry.update_attributes(quotation_uid: "")
+    @inquiry.update_attributes(quotation_uid: '')
     redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 

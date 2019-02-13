@@ -26,27 +26,27 @@ class Report < ApplicationRecord
   end
 
   def self.activity
-    where(name: "ActivityReport").first_or_create do |report|
-      report.uid = "activity_report"
+    where(name: 'ActivityReport').first_or_create do |report|
+      report.uid = 'activity_report'
     end
   end
 
   def self.pipeline
-    where(name: "PipelineReport").first_or_create do |report|
-      report.uid = "pipeline_report"
+    where(name: 'PipelineReport').first_or_create do |report|
+      report.uid = 'pipeline_report'
     end
   end
 
 
   def self.target
-    where(name: "TargetReport").first_or_create do |report|
-      report.uid = "target_report"
+    where(name: 'TargetReport').first_or_create do |report|
+      report.uid = 'target_report'
     end
   end
 
   def self.monthly_sales
-    where(name: "MonthlySalesReport").first_or_create do |report|
-      report.uid = "monthly_sales_report"
+    where(name: 'MonthlySalesReport').first_or_create do |report|
+      report.uid = 'monthly_sales_report'
     end
   end
 
@@ -59,11 +59,11 @@ class Report < ApplicationRecord
   end
 
   def start_month
-    start_at.strftime("%B, %Y")
+    start_at.strftime('%B, %Y')
   end
 
   def end_month
-    end_at.strftime("%B, %Y")
+    end_at.strftime('%B, %Y')
   end
 
   def to_param

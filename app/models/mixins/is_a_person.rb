@@ -9,12 +9,12 @@ module Mixins::IsAPerson
 
     def full_name
       if first_name.present?
-        [first_name, last_name].compact.join(" ").titleize
+        [first_name, last_name].compact.join(' ').titleize
       end
     end
 
     def name
-      full_name || ["Contact", id].compact.join(" #")
+      full_name || ['Contact', id].compact.join(' #')
     end
   end
 end

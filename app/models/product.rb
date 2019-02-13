@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
-  COMMENTS_CLASS = "ProductComment"
-  REJECTIONS_CLASS = "ProductRejection"
-  APPROVALS_CLASS = "ProductApproval"
+  COMMENTS_CLASS = 'ProductComment'
+  REJECTIONS_CLASS = 'ProductRejection'
+  APPROVALS_CLASS = 'ProductApproval'
 
   include ActiveModel::Validations
   include Mixins::CanBeStamped
@@ -14,24 +14,24 @@ class Product < ApplicationRecord
   include Mixins::CanBeActivated
   include Mixins::HasImages
 
-  update_index("products#product") { self if self.approved? }
+  update_index('products#product') { self if self.approved? }
   pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category
   belongs_to :inquiry_import_row, required: false
   belongs_to :measurement_unit, required: false
-  has_one :import, through: :inquiry_import_row, class_name: "InquiryImport"
+  has_one :import, through: :inquiry_import_row, class_name: 'InquiryImport'
   has_one :inquiry, through: :import
   has_many :product_suppliers, dependent: :destroy
   has_many :inquiry_products, dependent: :destroy
   has_many :inquiry_product_suppliers, through: :inquiry_products
-  has_many :suppliers, through: :inquiry_product_suppliers, class_name: "Company", source: :supplier
+  has_many :suppliers, through: :inquiry_product_suppliers, class_name: 'Company', source: :supplier
   has_many :customer_order_rows
   has_many :customer_products
   has_one :kit
   has_many :cart_items
-  has_many :stocks, class_name: "WarehouseProductStock", inverse_of: :product, dependent: :destroy
+  has_many :stocks, class_name: 'WarehouseProductStock', inverse_of: :product, dependent: :destroy
 
   attr_accessor :applicable_tax_percentage
 
@@ -51,17 +51,17 @@ class Product < ApplicationRecord
 
   def unique_name?
     if self.not_rejected? && Product.not_rejected.where(name: self.name, is_active: true).count > 1 && self.is_active
-      errors.add(:name, " must be unique")
+      errors.add(:name, ' must be unique')
     end
   end
 
   def service_product
     if self.is_service && !self.category.is_service
-      errors.add(:category, " should be a service category")
+      errors.add(:category, ' should be a service category')
     end
 
     if self.is_service && !self.tax_code.is_service
-      errors.add(:tax_code, "Tax Code should be a service tax code")
+      errors.add(:tax_code, 'Tax Code should be a service tax code')
     end
   end
 
@@ -113,19 +113,19 @@ class Product < ApplicationRecord
   end
 
   def lowest_unit_cost_price_for(supplier, except = nil)
-    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).order(unit_cost_price: :asc).first.try(:unit_cost_price) || "N/A"
+    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).order(unit_cost_price: :asc).first.try(:unit_cost_price) || 'N/A'
   end
 
   def latest_unit_cost_price_for(supplier, except = nil)
-    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).latest_record.try(:unit_cost_price) || "N/A"
+    self.inquiry_product_suppliers.except_object(except).where(supplier: supplier).latest_record.try(:unit_cost_price) || 'N/A'
   end
 
   def bp_catalog_for_customer(company)
-    self.inquiry_products.joins(:inquiry).where("inquiries.company_id = ?", company.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first
+    self.inquiry_products.joins(:inquiry).where('inquiries.company_id = ?', company.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first
   end
 
   def bp_catalog_for_supplier(supplier)
-    self.inquiry_product_suppliers.where("supplier_id = ?", supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
+    self.inquiry_product_suppliers.where('supplier_id = ?', supplier.id).order(updated_at: :desc).pluck(:bp_catalog_name, :bp_catalog_sku).compact.first if supplier.present?
   end
 
   def is_kit
@@ -145,7 +145,7 @@ class Product < ApplicationRecord
   end
 
   def with_images_to_s
-    ["#{self.to_s}", has_images? ? " - Has #{self.images.count} Image(s)" : ""].join
+    ["#{self.to_s}", has_images? ? " - Has #{self.images.count} Image(s)" : ''].join
   end
 
   def has_images?

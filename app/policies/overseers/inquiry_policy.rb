@@ -126,7 +126,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
-  endclass Scope
+    endclass Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)
@@ -138,7 +138,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where("inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)", overseer_ids: overseer.self_and_descendant_ids)
+        scope.where('inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)', overseer_ids: overseer.self_and_descendant_ids)
       end
     end
   end

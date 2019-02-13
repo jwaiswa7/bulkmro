@@ -30,9 +30,9 @@ class Services::Overseers::Finders::RemoteRequests < Services::Overseers::Finder
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[subject],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
     if search_filters.present?

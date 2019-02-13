@@ -4,12 +4,12 @@ json.data (@sales_shipments) do |sales_shipment|
   json.array! [
                   [
                       if policy(sales_shipment).show?
-                        row_action_button(overseers_inquiry_sales_shipment_path(sales_shipment.inquiry, sales_shipment, format: :pdf), "file-pdf", "Download", "dark", :_blank)
+                        row_action_button(overseers_inquiry_sales_shipment_path(sales_shipment.inquiry, sales_shipment, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
                       end,
                       if policy(sales_shipment).show_shipment_pdf?
-                        row_action_button(url_for(sales_shipment.shipment_pdf), "file-pdf", sales_shipment.shipment_pdf.filename, "dark", :_blank)
+                        row_action_button(url_for(sales_shipment.shipment_pdf), 'file-pdf', sales_shipment.shipment_pdf.filename, 'dark', :_blank)
                       end,
-                  ].join(" "),
+                  ].join(' '),
                   conditional_link(sales_shipment.shipment_number, overseers_inquiry_sales_shipments_path(sales_shipment.inquiry, sales_shipment), policy(sales_shipment).show?),
                   conditional_link(sales_shipment.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_shipment.inquiry), policy(sales_shipment.inquiry).edit?),
                   conditional_link(sales_shipment.sales_order.order_number, overseers_inquiry_sales_order_path(sales_shipment.inquiry, sales_shipment.sales_order), policy(sales_shipment.sales_order).show?),

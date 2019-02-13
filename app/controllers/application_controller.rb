@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
   def render_pdf_for(record)
     render(
       pdf: record.filename,
-      template: ["shared", "layouts", "pdf_templates", record.class.name.pluralize.underscore, "show"].join("/"),
-      layout: "shared/layouts/pdf_templates/show",
-      page_size: "A4",
+      template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+      layout: 'shared/layouts/pdf_templates/show',
+      page_size: 'A4',
       footer: {
-          center: "[page] of [topage]"
+          center: '[page] of [topage]'
       },
       locals: {
           record: record

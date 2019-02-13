@@ -3,7 +3,7 @@ class CustomerProduct < ApplicationRecord
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index("customer_products#customer_product") { self }
+  update_index('customer_products#customer_product') { self }
   pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false

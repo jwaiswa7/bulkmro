@@ -9,8 +9,8 @@ class Resources::ItemGroup < Resources::ApplicationResource
     }
 
     params.merge!(
-      ItemClass: "itcService",
-      InventorySystem: "bis_MovingAverage"
+      ItemClass: 'itcService',
+      InventorySystem: 'bis_MovingAverage'
                   ) if record.is_service?
 
     params

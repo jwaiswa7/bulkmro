@@ -2,7 +2,7 @@ class CallbackRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::IsARequest
 
-  update_index("callback_requests#callback_request") { self }
+  update_index('callback_requests#callback_request') { self }
   after_initialize :set_defaults, if: :new_record?
 
   def set_defaults

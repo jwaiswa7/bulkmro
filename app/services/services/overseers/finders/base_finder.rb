@@ -5,22 +5,22 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     @paginate = paginate
     @status = params[:status]
     @base_filter = []
-    @sort_by = "created_at"
-    @sort_order = "desc"
+    @sort_by = 'created_at'
+    @sort_order = 'desc'
 
     if params[:columns].present?
       params[:columns].each do |index, column|
         if column[:searchable] && column[:search][:value].present?
-          if column[:search][:value].include? "~"
+          if column[:search][:value].include? '~'
             range_filters << column
           else
             search_filters << column
           end
         end
       end
-      if params[:order].values.first["column"].present? && params[:columns][params[:order].values.first["column"]][:name].present? && params[:order].values.first["dir"].present?
-        @sort_by = params[:columns][params[:order].values.first["column"]][:name]
-        @sort_order = params[:order].values.first["dir"]
+      if params[:order].values.first['column'].present? && params[:columns][params[:order].values.first['column']][:name].present? && params[:order].values.first['dir'].present?
+        @sort_by = params[:columns][params[:order].values.first['column']][:name]
+        @sort_order = params[:order].values.first['dir']
       end
     end
     if params[:base_filter_key].present? && params[:base_filter_value].present?
@@ -40,7 +40,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     elsif params.is_a?(String)
       params
     else
-      ""
+      ''
     end.try(:strip)
 
 
@@ -78,7 +78,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
       query_string: {
           fields: index_klass.fields,
           query: query_string,
-          default_operator: "or"
+          default_operator: 'or'
       }
                       )
   end
@@ -89,7 +89,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
         term: {
             :"#{search_filter[:name]}" => search_filter[:search][:value]
         }
-                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != "null"
+                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
     end
 
     indexed_records
@@ -97,7 +97,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
 
   def range_query(indexed_records)
     range_filters.each do |range_filter|
-      range = range_filter[:search][:value].split("~")
+      range = range_filter[:search][:value].split('~')
       indexed_records = indexed_records.query(
         range: {
             :"#{range_filter[:name]}" => {
@@ -116,7 +116,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def index_klass
-    [model_klass.to_s.pluralize, "Index"].join.constantize
+    [model_klass.to_s.pluralize, 'Index'].join.constantize
   end
 
   def filter_by_owner(ids)
@@ -186,7 +186,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
                       term: { legacy_request_status: SalesOrder.legacy_request_statuses[:Approved] },
                   },
                   {
-                      term: { approval_status: "approved" },
+                      term: { approval_status: 'approved' },
                   },
               ],
               minimum_should_match: 2,
@@ -215,10 +215,10 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: { legacy_status: "not_legacy" },
+                      term: { legacy_status: 'not_legacy' },
                   },
                   {
-                      exists: { field: "sent_at" }
+                      exists: { field: 'sent_at' }
                   },
                   {
                       terms: { status: SalesOrder.statuses.except(:'Approved', :'Rejected', :'Canceled').values },
@@ -230,7 +230,7 @@ class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
     end
   end
 
-  def aggregate_by_status(key= "statuses",  aggregation_field= "potential_value", status_field)
+  def aggregate_by_status(key= 'statuses',  aggregation_field= 'potential_value', status_field)
     {
         "#{key}": {
             terms: {

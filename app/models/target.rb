@@ -1,8 +1,8 @@
 class Target < ApplicationRecord
   belongs_to :target_period, required: true
   belongs_to :overseer, required: true
-  belongs_to :manager, class_name: "Overseer", foreign_key: :manager_id, required: false
-  belongs_to :business_head, class_name: "Overseer", foreign_key: :business_head_id, required: false
+  belongs_to :manager, class_name: 'Overseer', foreign_key: :manager_id, required: false
+  belongs_to :business_head, class_name: 'Overseer', foreign_key: :business_head_id, required: false
 
   enum target_type: {
       'Inquiry': 10,

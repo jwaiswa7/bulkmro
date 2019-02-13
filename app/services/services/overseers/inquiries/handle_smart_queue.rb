@@ -20,7 +20,7 @@ class Services::Overseers::Inquiries::HandleSmartQueue < Services::Shared::BaseS
       1
     end
 
-    stage_multiplier = if inquiry.status.in? ["Quotation Sent", "Follow Up on Quotation", "Expected Order", "SO Not Created-Customer PO Awaited", "SO Not Created-Pending Customer PO Revision"]
+    stage_multiplier = if inquiry.status.in? ['Quotation Sent', 'Follow Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision']
       2
     else
       1

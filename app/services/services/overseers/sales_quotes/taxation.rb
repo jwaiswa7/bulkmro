@@ -14,7 +14,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
     @is_sez = sales_quote.is_sez || (sales_quote.billing_address.present? && sales_quote.billing_address.is_sez)
     @is_service = sales_quote_row.try(:product).try(:is_service) # || tax_code.is_service
 
-    @is_cgst_sgst = if (bill_to.present? && bill_to.country_code == "IN") && bill_from.present? && ship_from.present?
+    @is_cgst_sgst = if (bill_to.present? && bill_to.country_code == 'IN') && bill_from.present? && ship_from.present?
       if is_service
         ship_from.address.state == bill_to.state
       else
@@ -29,7 +29,7 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_s
     if is_sez
-      "0"
+      '0'
     elsif is_igst
       "IGST #{tax_rate.tax_percentage}%"
     else
@@ -39,11 +39,11 @@ class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
 
   def to_remote_s
     if is_sez
-      "IG@0"
+      'IG@0'
     elsif is_igst
-      "IG@%g" % ("%.2f" % tax_rate.tax_percentage)
+      'IG@%g' % ('%.2f' % tax_rate.tax_percentage)
     else
-      "CSG@%g" % ("%.2f" % tax_rate.tax_percentage)
+      'CSG@%g' % ('%.2f' % tax_rate.tax_percentage)
     end
   end
 

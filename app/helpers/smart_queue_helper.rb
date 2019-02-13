@@ -3,33 +3,33 @@
 module SmartQueueHelper
   def smart_queue_priority_color(priority)
     if priority >= 107
-      "danger"
+      'danger'
     elsif priority >= 104
-      "primary"
+      'primary'
     elsif priority >= 100
-      "warning"
+      'warning'
     elsif priority >= 7
-      "success"
+      'success'
     elsif priority >= 4
-      "success"
+      'success'
     elsif priority >= 0
-      "success"
+      'success'
     end
   end
 
   def smart_queue_priority_state(priority)
     if priority >= 107
-      "Extreme"
+      'Extreme'
     elsif priority >= 104
-      "Very High"
+      'Very High'
     elsif priority >= 100
-      "High"
+      'High'
     elsif priority >= 7
-      "Normal"
+      'Normal'
     elsif priority >= 4
-      "Low"
+      'Low'
     elsif priority >= 0
-      "Very Low"
+      'Very Low'
     end
   end
 

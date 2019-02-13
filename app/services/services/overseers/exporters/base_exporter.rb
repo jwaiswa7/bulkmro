@@ -16,7 +16,7 @@ class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseServi
       end
     end
 
-    temp_file = File.open(Rails.root.join("tmp", filename), "wb")
+    temp_file = File.open(Rails.root.join('tmp', filename), 'wb')
     begin
       temp_file.write(csv_data)
       temp_file.close

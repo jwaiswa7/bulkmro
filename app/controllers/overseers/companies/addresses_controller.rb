@@ -3,7 +3,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
 
   def index
     base_filter = {
-        base_filter_key: "company_id",
+        base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
     authorize :address
@@ -44,7 +44,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
       @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -63,7 +63,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
       @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@address, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

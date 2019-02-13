@@ -1,6 +1,6 @@
 class Resources::EmployeeInfo < Resources::ApplicationResource
   def self.collection_name
-    "EmployeesInfo"
+    'EmployeesInfo'
   end
 
   def self.identifier
@@ -11,8 +11,8 @@ class Resources::EmployeeInfo < Resources::ApplicationResource
     {
         FirstName: record.full_name,
         LastName: record.last_name,
-        JobTitle: record.designation.present? ? record.designation.truncate(15) : "",
-        Active: "Y",
+        JobTitle: record.designation.present? ? record.designation.truncate(15) : '',
+        Active: 'Y',
         Remarks: record.parent.try(:full_name),
         EmployeeBranchAssignment: [
             { BPLID: 0 },

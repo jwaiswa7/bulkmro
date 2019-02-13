@@ -8,7 +8,7 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def show
     if @account.is_customer?
-      service = ["Services", "Overseers", "Reports", "Account"].join("::").constantize.send(:new, @account, params)
+      service = ['Services', 'Overseers', 'Reports', 'Account'].join('::').constantize.send(:new, @account, params)
       @data = service.call
     end
 
@@ -36,7 +36,7 @@ class Overseers::AccountsController < Overseers::BaseController
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -55,7 +55,7 @@ class Overseers::AccountsController < Overseers::BaseController
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

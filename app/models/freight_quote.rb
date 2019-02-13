@@ -1,5 +1,5 @@
 class FreightQuote < ApplicationRecord
-  COMMENTS_CLASS = "FreightQuoteComment"
+  COMMENTS_CLASS = 'FreightQuoteComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -15,6 +15,6 @@ class FreightQuote < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
-    self.iec_code ||= "0316935051"
+    self.iec_code ||= '0316935051'
   end
 end

@@ -11,7 +11,7 @@ class Customers::SalesQuotes::CommentsController < Customers::SalesQuotes::BaseC
     if @comment.save
       redirect_to customers_quote_path(@sales_quote), notice: flash_message(@comment, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

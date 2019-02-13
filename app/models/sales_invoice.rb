@@ -1,13 +1,13 @@
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
-  update_index("sales_invoices#sales_invoice") { self }
+  update_index('sales_invoices#sales_invoice') { self }
 
   belongs_to :sales_order
   has_one :inquiry, through: :sales_order
 
-  has_many :receipts, class_name: "SalesReceipt", inverse_of: :sales_invoice
-  has_many :packages, class_name: "SalesPackage", inverse_of: :sales_invoice
-  has_many :rows, class_name: "SalesInvoiceRow", inverse_of: :sales_invoice
+  has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
+  has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
+  has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
 
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
@@ -28,7 +28,7 @@ class SalesInvoice < ApplicationRecord
   }
 
   scope :with_includes, -> { includes(:sales_order) }
-  scope :not_cancelled, -> { where.not(status: "Cancelled") }
+  scope :not_cancelled, -> { where.not(status: 'Cancelled') }
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -38,16 +38,16 @@ class SalesInvoice < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ["invoice", invoice_number].join("_"),
-        ("pdf" if include_extension)
-    ].compact.join(".")
+        ['invoice', invoice_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 
   def zipped_filename(include_extension: false)
     [
-        ["invoices", invoice_number].join("_"),
-        ("zip" if include_extension)
-    ].compact.join(".")
+        ['invoices', invoice_number].join('_'),
+        ('zip' if include_extension)
+    ].compact.join('.')
   end
 
   def billing_address
@@ -63,11 +63,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map { |row| row.metadata["base_row_total"].to_f }.sum.round(2)
+    rows.map { |row| row.metadata['base_row_total'].to_f }.sum.round(2)
   end
 
   def calculated_total_tax
-    rows.map { |row| row.metadata["base_tax_amount"].to_f }.sum.round(2)
+    rows.map { |row| row.metadata['base_tax_amount'].to_f }.sum.round(2)
   end
 
   def calculated_total_with_tax

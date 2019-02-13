@@ -2,11 +2,11 @@ class SalesShipmentRow < ApplicationRecord
   belongs_to :sales_shipment
 
   def sku
-    self.metadata["sku"]
+    self.metadata['sku']
   end
 
   def quantity
-    self.metadata["qty"]
+    self.metadata['qty']
   end
 
   def hsn

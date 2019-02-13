@@ -1,5 +1,5 @@
 class CustomPolicyFinder
-  SUFFIX = "Policy"
+  SUFFIX = 'Policy'
 
   attr_reader :object, :namespace
 
@@ -41,7 +41,7 @@ class CustomPolicyFinder
   # @raise [NotDefinedError] if scope could not be determined
   #
   def scope!
-    raise NotDefinedError, "unable to find policy scope of nil" if object.nil?
+    raise NotDefinedError, 'unable to find policy scope of nil' if object.nil?
     scope or raise NotDefinedError, "unable to find scope `#{find}::Scope` for `#{object.inspect}`"
   end
 
@@ -49,7 +49,7 @@ class CustomPolicyFinder
   # @raise [NotDefinedError] if policy could not be determined
   #
   def policy!
-    raise Exception, "unable to find policy of nil" if object.nil?
+    raise Exception, 'unable to find policy of nil' if object.nil?
     policy or raise Exception, "unable to find policy `#{find}` for `#{object.inspect}`"
   end
 
@@ -76,7 +76,7 @@ class CustomPolicyFinder
         object.class.policy_class
       else
         klass = if object.is_a?(Array)
-          object.map { |x| find_class_name(x) }.join("::")
+          object.map { |x| find_class_name(x) }.join('::')
         else
           find_class_name(object)
         end

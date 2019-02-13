@@ -2,13 +2,13 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
   def initialize
     super
     @model = PurchaseOrder
-    @export_name = "purchase_orders"
-    @path = Rails.root.join("tmp", filename)
+    @export_name = 'purchase_orders'
+    @path = Rails.root.join('tmp', filename)
     @columns = %w(po_number inquiry_number inquiry_date company_name inside_sales procurement_date order_number order_date order_status po_date po_status supplier_name payment_terms committed_customer_date supplier_phone_no supplier_email route_through ship_from ship_to)
   end
 
   def call
-    perform_export_later("PurchaseOrdersExporter")
+    perform_export_later('PurchaseOrdersExporter')
   end
 
   def build_csv
@@ -19,7 +19,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
           po_number: purchase_order.po_number.to_s,
           inquiry_number: inquiry.inquiry_number.to_s,
           inquiry_date: inquiry.created_at.to_date.to_s,
-          company_name: inquiry.company.name.gsub(";", ""),
+          company_name: inquiry.company.name.gsub(';', ''),
           inside_sales: (inquiry.inside_sales_owner.present? ? inquiry.inside_sales_owner.try(:full_name) : nil)
       }
 
@@ -31,7 +31,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
         end
       )
 
-      supplier = purchase_order.get_supplier(purchase_order.rows.first.metadata["PopProductId"].to_i)
+      supplier = purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i)
 
        sales_order = inquiry.sales_orders.remote_approved.each do |sales_order|
         ids = []
@@ -53,7 +53,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
               order_number: sales_order.order_number.to_s,
               order_date: sales_order.created_at.to_date.to_s,
               order_status: sales_order.remote_status,
-              po_date: (purchase_order.metadata["PoDate"].to_date.strftime("%d-%b-%Y").to_s if purchase_order.metadata["PoDate"].present? && purchase_order.valid_po_date?) || nil,
+              po_date: (purchase_order.metadata['PoDate'].to_date.strftime('%d-%b-%Y').to_s if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?) || nil,
               po_status: nil,
               supplier_name: supplier.name
           }
@@ -62,7 +62,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
               order_number: nil,
               order_date: nil,
               order_status: nil,
-              po_date: (purchase_order.metadata["PoDate"].to_date.strftime("%d-%b-%Y").to_s if purchase_order.metadata["PoDate"].present? && purchase_order.valid_po_date?) || nil,
+              po_date: (purchase_order.metadata['PoDate'].to_date.strftime('%d-%b-%Y').to_s if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?) || nil,
               po_status: nil,
               supplier_name: nil
           }
@@ -83,7 +83,7 @@ class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Oversee
 
       supplier_phone = if supplier.present?
         if supplier.phone.present? && supplier.mobile.present?
-          supplier.phone + "/" + supplier.mobile
+          supplier.phone + '/' + supplier.mobile
         elsif supplier.mobile.present?
           supplier.mobile
         else

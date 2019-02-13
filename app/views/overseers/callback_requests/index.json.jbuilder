@@ -4,9 +4,9 @@ json.data (@callback_requests) do |callback_request|
   columns = [
                   [
                       if policy(callback_request).show?
-                        row_action_button(overseers_callback_request_path(callback_request), "eye", "Show Remote Request", "info", :_blank)
+                        row_action_button(overseers_callback_request_path(callback_request), 'eye', 'Show Remote Request', 'info', :_blank)
                       end,
-                  ].join(" "),
+                  ].join(' '),
                   status_badge(callback_request.status),
                   callback_request.hits.present? ? callback_request.hits.to_i : nil,
                   format_enum(callback_request.method),
@@ -15,7 +15,7 @@ json.data (@callback_requests) do |callback_request|
                   format_succinct_date(callback_request.created_at)
               ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
-  json.merge! columns.merge("DT_RowClass": "bg-highlight-" + status_color(callback_request.status))
+  json.merge! columns.merge("DT_RowClass": 'bg-highlight-' + status_color(callback_request.status))
 end
 
 json.columnFilters [

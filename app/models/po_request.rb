@@ -1,5 +1,5 @@
 class PoRequest < ApplicationRecord
-  COMMENTS_CLASS = "PoRequestComment"
+  COMMENTS_CLASS = 'PoRequestComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments
@@ -8,8 +8,8 @@ class PoRequest < ApplicationRecord
 
   belongs_to :sales_order
   belongs_to :inquiry
-  belongs_to :logistics_owner, -> (record) { where(role: "logistics") }, class_name: "Overseer", foreign_key: "logistics_owner_id"
-  has_many :rows, class_name: "PoRequestRow"
+  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id'
+  has_many :rows, class_name: 'PoRequestRow'
   accepts_nested_attributes_for :rows, allow_destroy: true
 
   belongs_to :purchase_order, required: false
@@ -30,8 +30,8 @@ class PoRequest < ApplicationRecord
   validates_uniqueness_of :purchase_order, if: -> { purchase_order.present? }
 
   def purchase_order_created?
-    if self.status == "PO Created" && self.purchase_order.blank?
-      errors.add(:purchase_order, " number is mandatory")
+    if self.status == 'PO Created' && self.purchase_order.blank?
+      errors.add(:purchase_order, ' number is mandatory')
     end
   end
 

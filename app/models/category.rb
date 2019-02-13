@@ -19,7 +19,7 @@ class Category < ApplicationRecord
   end
 
   def self.default_ancestors
-    ["Root Catalog", "Default Category"]
+    ['Root Catalog', 'Default Category']
   end
 
   def all_descendants

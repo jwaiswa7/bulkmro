@@ -24,7 +24,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
     if @activity.save
       redirect_to pending_overseers_activities_path, notice: flash_message(@activity, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

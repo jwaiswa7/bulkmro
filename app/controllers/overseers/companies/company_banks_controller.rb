@@ -3,7 +3,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def index
     base_filter = {
-        base_filter_key: "company_id",
+        base_filter_key: 'company_id',
         base_filter_value: params[:company_id]
     }
     authorize :company_bank
@@ -41,7 +41,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     if @company_bank.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company_bank, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -56,7 +56,7 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
     if @company_bank.save_and_sync
       redirect_to overseers_company_company_bank_path(@company, @company_bank), notice: flash_message(@company_bank, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

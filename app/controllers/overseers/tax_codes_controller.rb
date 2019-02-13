@@ -2,19 +2,19 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
 
   def autocomplete
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?", params[:is_service]), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
     authorize :tax_code
   end
 
   def autocomplete_for_product
     @product = Product.find(params[:product_id])
     @is_service = @product.try(:is_service) || false
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?", @is_service), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
     authorize @tax_codes
     respond_to do |format|
       format.html { }
       format.json do
-        render "autocomplete"
+        render 'autocomplete'
       end
     end
   end
@@ -44,7 +44,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -61,7 +61,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

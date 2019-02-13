@@ -1,21 +1,21 @@
+require 'slack-ruby-bot'
+include DisplayHelper
 
-
-require "slack-ruby-bot"
-include DisplayHelperclass Services::Slack::Sita < SlackRubyBot::Bot
+class Services::Slack::Sita < SlackRubyBot::Bot
   help do
-    title "Sita"
-    desc "She is the sister you always wanted."
+    title 'Sita'
+    desc 'She is the sister you always wanted.'
 
-    command "inquiries today" do
-      desc "Tells you how many inquiries were handled today."
+    command 'inquiries today' do
+      desc 'Tells you how many inquiries were handled today.'
     end
 
-    command "inquiry <inquiry number>" do
-      desc "Tells you about a particular inquiry."
+    command 'inquiry <inquiry number>' do
+      desc 'Tells you about a particular inquiry.'
     end
 
-    command "sales order <order number>" do
-      desc "Tells you about a particular sales order."
+    command 'sales order <order number>' do
+      desc 'Tells you about a particular sales order.'
     end
   end
 

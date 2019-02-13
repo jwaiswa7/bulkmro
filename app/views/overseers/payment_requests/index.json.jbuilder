@@ -4,12 +4,12 @@ json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
                       if policy(payment_request).show?
-                        row_action_button(overseers_payment_request_path(payment_request), "eye", "View Payment Request", "info")
+                        row_action_button(overseers_payment_request_path(payment_request), 'eye', 'View Payment Request', 'info')
                       end,
                       if policy(payment_request).edit?
-                        row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), "pencil", "Edit Payment Request", "warning")
+                        row_action_button(edit_overseers_po_request_payment_request_path(payment_request.po_request, payment_request), 'pencil', 'Edit Payment Request', 'warning')
                       end
-                  ].join(" "),
+                  ].join(' '),
                   payment_request.id,
                   status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,

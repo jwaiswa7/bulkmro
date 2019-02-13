@@ -1,6 +1,6 @@
 class Resources::SalesPerson < Resources::ApplicationResource
   def self.collection_name
-    "SalesPersons"
+    'SalesPersons'
   end
 
   def self.identifier
@@ -11,7 +11,7 @@ class Resources::SalesPerson < Resources::ApplicationResource
     {
         SalesEmployeeName: record.full_name,
         Remarks: record.parent.try(:full_name),
-        Active: "tYES"
+        Active: 'tYES'
     }
   end
 end
