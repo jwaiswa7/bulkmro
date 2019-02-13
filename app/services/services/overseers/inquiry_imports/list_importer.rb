@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::InquiryImports::BaseImporter
   def call

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@tax_codes) do |tax_code|
   json.array! [

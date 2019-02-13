@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@inquiries.reverse) do |inquiry|
   json.set! :id, inquiry.id

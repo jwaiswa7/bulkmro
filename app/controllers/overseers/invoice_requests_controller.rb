@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::InvoiceRequestsController < Overseers::BaseController
   before_action :set_invoice_request, only: [:show, :edit, :update]

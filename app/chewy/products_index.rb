@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ProductsIndex < BaseIndex
   define_type Product.approved.with_includes do

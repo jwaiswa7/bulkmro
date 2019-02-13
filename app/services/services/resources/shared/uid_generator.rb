@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   def self.inquiry_number

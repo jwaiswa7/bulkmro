@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@sales_quotes) do |sales_quote|
   json.array! [

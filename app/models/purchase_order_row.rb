@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order

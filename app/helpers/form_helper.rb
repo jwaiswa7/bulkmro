@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 module FormHelper
 	 def enum_to_collection(enum, keep_raw: false, all_caps: false, alphabetical: true)

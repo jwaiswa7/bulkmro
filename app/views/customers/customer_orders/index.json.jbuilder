@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@customer_orders) do |customer_order|
   json.array! [

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CompaniesIndex < BaseIndex
   define_type Company.all.with_includes do

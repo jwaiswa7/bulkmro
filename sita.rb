@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 require "wit"
 require_relative "./config/../config/environment"

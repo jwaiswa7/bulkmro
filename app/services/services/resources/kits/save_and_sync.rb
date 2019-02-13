@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
   def initialize(kit)

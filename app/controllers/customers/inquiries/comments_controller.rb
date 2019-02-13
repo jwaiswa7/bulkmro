@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::Inquiries::CommentsController < Customers::Inquiries::BaseController
   def index

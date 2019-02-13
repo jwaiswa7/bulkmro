@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@kits) do |kit|
   json.array! [

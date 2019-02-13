@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::Overseers::SaveAndSync < Services::Shared::BaseService
   def initialize(overseer)

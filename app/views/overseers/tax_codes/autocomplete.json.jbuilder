@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@tax_codes) do |tax_code|
   json.set! :id, tax_code.id

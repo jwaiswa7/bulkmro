@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::BaseController
   before_action :set_purchase_order, only: [:show]

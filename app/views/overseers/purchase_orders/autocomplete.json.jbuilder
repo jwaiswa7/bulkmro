@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@purchase_orders) do |purchase_order|
   json.set! :id, purchase_order.id

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Shared::Snippets < Services::Shared::BaseService
   def supplier_data_summary

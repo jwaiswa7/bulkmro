@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@po_requests) do |po_request|
   json.array! [

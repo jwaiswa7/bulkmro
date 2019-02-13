@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil, paginate: true)

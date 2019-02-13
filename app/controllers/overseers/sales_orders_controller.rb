@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::SalesOrdersController < Overseers::BaseController
   before_action :set_sales_order, only: [ :resync]

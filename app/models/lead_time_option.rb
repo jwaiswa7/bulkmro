@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class LeadTimeOption < ApplicationRecord
   has_many :sales_quote_rows

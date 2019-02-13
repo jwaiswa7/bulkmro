@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Callbacks::Shared::BaseCallback < Services::Shared::BaseService
   def initialize(params, callback_request)

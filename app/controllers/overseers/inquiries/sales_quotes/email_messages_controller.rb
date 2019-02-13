@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::Inquiries::SalesQuotes::BaseController
   def new

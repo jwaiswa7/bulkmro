@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::SessionsController < Devise::SessionsController
   layout "shared/layouts/sign_in"

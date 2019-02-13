@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Serializers::InquirySerializer < Serializers::BaseSerializer
   attributes :billing_address, :shipping_address, :customer_po_number, :customer_order_date, :commercial_terms_and_conditions, :is_sez

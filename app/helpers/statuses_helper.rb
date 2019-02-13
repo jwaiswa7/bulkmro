@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 # when :'$0'
 # '$2'

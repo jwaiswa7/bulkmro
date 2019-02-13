@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Products::CommentsController < Overseers::Products::BaseController
   def index

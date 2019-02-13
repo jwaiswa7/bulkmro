@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [

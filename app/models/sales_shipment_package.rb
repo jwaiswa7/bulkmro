@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class SalesShipmentPackage < ApplicationRecord
   belongs_to :sales_shipment

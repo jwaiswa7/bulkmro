@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class FreightRequest < ApplicationRecord
   COMMENTS_CLASS = "FreightRequestComment"

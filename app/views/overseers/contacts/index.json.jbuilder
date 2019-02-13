@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@contacts) do |contact|
   json.array! [

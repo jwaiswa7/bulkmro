@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CustomerProductsIndex < BaseIndex
   define_type CustomerProduct.all do

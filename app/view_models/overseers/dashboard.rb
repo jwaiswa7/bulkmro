@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Dashboard
   def initialize(current_overseer)

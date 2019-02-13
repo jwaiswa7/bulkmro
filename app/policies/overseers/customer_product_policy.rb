@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::CustomerProductPolicy < Overseers::ApplicationPolicy
   def generate_catalog?

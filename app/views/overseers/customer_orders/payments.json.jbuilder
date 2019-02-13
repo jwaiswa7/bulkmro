@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@payments) do |payment|
   json.array! [

@@ -132,17 +132,7 @@ Style/MethodDefParentheses:
   Enabled: true
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
-  EnforcedStyle: always
-  Exclude:
-    - 'actionview/test/**/*.builder'
-    - 'actionview/test/**/*.ruby'
-    - 'actionpack/test/**/*.builder'
-    - 'actionpack/test/**/*.ruby'
-    - 'activestorage/db/migrate/**/*.rb'
-    - 'activestorage/db/update_migrate/**/*.rb'
-    - 'actionmailbox/db/migrate/**/*.rb'
-    - 'actiontext/db/migrate/**/*.rb'
+  Enabled: false
 
 Style/RedundantFreeze:
   Enabled: true

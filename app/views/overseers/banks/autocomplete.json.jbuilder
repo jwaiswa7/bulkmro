@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@banks) do |bank|
   json.set! :id, bank.id

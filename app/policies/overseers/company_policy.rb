@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?

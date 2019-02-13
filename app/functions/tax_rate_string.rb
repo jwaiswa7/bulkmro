@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class TaxRateString < BaseFunction
   def self.for(bill_to, bill_from, ship_from, tax_rate)

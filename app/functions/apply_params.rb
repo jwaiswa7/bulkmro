@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ApplyParams < BaseFunction
 	 def self.to(records, params)

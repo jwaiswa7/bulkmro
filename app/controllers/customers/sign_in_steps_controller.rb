@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::SignInStepsController < Customers::BaseController
   before_action :set_contact, only: [:reset_current_company, :edit_current_company, :update_current_company]

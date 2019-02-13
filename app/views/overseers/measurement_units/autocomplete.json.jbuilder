@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@measurements_units) do |mu|
   json.set! :id, mu.id

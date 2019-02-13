@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders::BaseController
   def create

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@measurement_units) do |measurement_unit|
   json.array! [

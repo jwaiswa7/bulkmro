@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced

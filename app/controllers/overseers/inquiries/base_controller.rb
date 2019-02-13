@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Inquiries::BaseController < Overseers::BaseController
   before_action :set_inquiry

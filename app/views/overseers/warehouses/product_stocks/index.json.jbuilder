@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@warehouse_products.order(instock: :desc)) do |warehouse_product|
   json.array! [

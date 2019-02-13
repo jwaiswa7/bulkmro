@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CustomerProductImport < ApplicationRecord
   HEADERS = %w(sku price name material_code brand hsn tax_percentage moq uom url).freeze

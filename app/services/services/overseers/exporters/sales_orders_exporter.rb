@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Exporters::SalesOrdersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize

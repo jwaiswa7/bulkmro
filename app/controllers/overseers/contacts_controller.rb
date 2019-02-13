@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::ContactsController < Overseers::BaseController
   before_action :set_contact, only: [:show, :edit, :update, :become]

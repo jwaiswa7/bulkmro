@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::ReportPolicy < Customers::ApplicationPolicy
   def show?

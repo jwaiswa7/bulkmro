@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@warehouses) do |warehouse|
   json.array! [

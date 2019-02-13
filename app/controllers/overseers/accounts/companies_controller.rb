@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseController
   before_action :set_company, only: [:show, :edit, :update]

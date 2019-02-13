@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::PaymentOptions::SaveAndSync < Services::Shared::BaseService
   def initialize(payment_option)

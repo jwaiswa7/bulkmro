@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
   def index?

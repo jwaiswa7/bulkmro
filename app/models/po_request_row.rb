@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PoRequestRow < ApplicationRecord
   belongs_to :po_request

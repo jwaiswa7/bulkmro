@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::AccountsController < Overseers::BaseController
   before_action :set_account, only: [:edit, :update, :show]

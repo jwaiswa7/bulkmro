@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@sales_orders) do |sales_order|
   columns = [

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseService
   def initialize(company, options = false)

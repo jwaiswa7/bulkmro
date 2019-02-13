@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Customers::Finders::SalesQuotes < Services::Customers::Finders::BaseFinder
   def call

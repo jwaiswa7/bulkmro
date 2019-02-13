@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@remote_requests) do |remote_request|
   columns = [

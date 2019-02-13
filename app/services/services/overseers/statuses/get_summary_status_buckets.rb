@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Statuses::GetSummaryStatusBuckets < Services::Shared::BaseService
   def initialize(all_indexed_records, model_klass, remote_status: false)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Target < ApplicationRecord
   belongs_to :target_period, required: true

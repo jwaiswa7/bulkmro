@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Finders::SalesShipments < Services::Overseers::Finders::BaseFinder
   def call

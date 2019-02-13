@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Customers::Charts::Builder < Services::Shared::BaseService
   def initialize(daterange)

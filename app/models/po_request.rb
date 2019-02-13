@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PoRequest < ApplicationRecord
   COMMENTS_CLASS = "PoRequestComment"

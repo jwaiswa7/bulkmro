@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRequests::BaseController
   before_action :set_freight_quote, only: [:show, :edit, :update]

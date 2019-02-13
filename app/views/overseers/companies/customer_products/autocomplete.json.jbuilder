@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@products) do |product|
   json.set! :id, product.id

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::SalesOrdersController < Customers::BaseController
   before_action :set_sales_order, only: [:show]

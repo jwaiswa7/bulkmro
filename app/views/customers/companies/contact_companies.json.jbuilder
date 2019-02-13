@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@companies) do |company|
   json.set! :id, company.id

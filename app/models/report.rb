@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Report < ApplicationRecord
   pg_search_scope :locate, against: [:name, :uid], associated_against: {}, using: { tsearch: { prefix: true } }

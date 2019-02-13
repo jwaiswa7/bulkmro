@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseService
   def initialize

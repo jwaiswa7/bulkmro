@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Products::BaseController < Overseers::BaseController
   before_action :set_product

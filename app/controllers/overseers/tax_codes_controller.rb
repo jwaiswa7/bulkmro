@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]

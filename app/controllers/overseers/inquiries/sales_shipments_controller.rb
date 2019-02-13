@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::BaseController
   before_action :set_sales_shipment, only: [:show]

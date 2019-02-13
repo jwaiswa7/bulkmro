@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CustomerOrderApproval < ApplicationRecord
   include Mixins::Customers::CanBeStamped

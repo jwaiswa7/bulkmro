@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::PurchaseOrdersController < Overseers::BaseController
   before_action :set_purchase_order, only: [:edit_internal_status, :update_internal_status]

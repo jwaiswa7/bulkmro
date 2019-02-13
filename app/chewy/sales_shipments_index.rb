@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class SalesShipmentsIndex < BaseIndex
   statuses = SalesShipment.statuses

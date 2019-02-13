@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PurchaseOrder < ApplicationRecord
   COMMENTS_CLASS = "PoComment"

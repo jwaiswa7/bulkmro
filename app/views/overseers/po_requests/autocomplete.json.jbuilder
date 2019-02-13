@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.results(@po_requests) do |kit|
   json.set! :id, kit.id

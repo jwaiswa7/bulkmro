@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@products) do |customer_product|
   json.array! [

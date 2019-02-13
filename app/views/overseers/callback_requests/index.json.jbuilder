@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@callback_requests) do |callback_request|
   columns = [

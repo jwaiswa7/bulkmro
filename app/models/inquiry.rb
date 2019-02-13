@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Inquiry < ApplicationRecord
   COMMENTS_CLASS = "InquiryComment"

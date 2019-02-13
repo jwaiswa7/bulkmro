@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Resources::SalesPerson < Resources::ApplicationResource
   def self.collection_name

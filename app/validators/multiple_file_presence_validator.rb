@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class MultipleFilePresenceValidator < ActiveModel::Validator
   def validate(record)

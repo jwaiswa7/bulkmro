@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CompanyContact < ApplicationRecord
   include Mixins::CanBeStamped

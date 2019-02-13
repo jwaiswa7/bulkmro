@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Resources::BusinessPartner < Resources::ApplicationResource
   def self.identifier

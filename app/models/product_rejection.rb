@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ProductRejection < ApplicationRecord
   include Mixins::CanBeStamped

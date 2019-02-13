@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 json.data (@activities) do |activity|
   json.array! [

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_email_message?
