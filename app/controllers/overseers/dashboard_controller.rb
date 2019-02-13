@@ -8,12 +8,10 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'sales_dashboard'
     elsif current_overseer.admin?
-      @data = Rails.cache.fetch('admin_dashboard_data') do
+      @dashboard = Rails.cache.fetch('admin_dashboard_data') do
         service = Services::Overseers::Dashboards::Admin.new
         @dashboard = service.call
       end
-      @dashboard = @data if !Rails.cache.fetch('admin_dashboard_data').blank?
-      puts "CACHE", Rails.cache.fetch('admin_dashboard_data')
       render 'admin_dashboard'
     else
       render 'default_dashboard'
