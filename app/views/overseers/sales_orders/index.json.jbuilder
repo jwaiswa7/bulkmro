@@ -15,7 +15,11 @@ json.data (@sales_orders) do |sales_order|
                       end,
                       if policy(sales_order.sales_quote).new_freight_request?
                         row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
+                      end,
+                      if policy(sales_order).debugging?
+                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry,sales_order),'cogs', 'Debugging', 'danger')
                       end
+
                   ].join(' '),
                   conditional_link(sales_order.order_number.present? ? sales_order.order_number : "-", overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order).show? ),
                   format_succinct_date(sales_order.created_at),

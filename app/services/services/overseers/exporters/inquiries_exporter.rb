@@ -5,7 +5,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
     @model = Inquiry
     @export_name = 'inquiries'
     @path = Rails.root.join('tmp', filename)
-    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'total (Exc. Tax)', 'comments', 'reason']
+    @columns = ['inquiry_number', 'order_number', 'created_at', 'customer_committed_date', 'updated_at', 'quote_type','status', 'opportunity_type', 'inside_sales_owner', 'ise_city', 'outside_sales_owner', 'ose_city', 'company_alias', 'company_name', 'customer', 'subject', 'currency', 'potential amount', 'total (Exc. Tax)', 'comments', 'reason']
     @start_at = Date.new(2018, 04, 01)
   end
 
@@ -33,6 +33,7 @@ class Services::Overseers::Exporters::InquiriesExporter < Services::Overseers::E
                     :customer => record.contact.to_s,
                     :subject => record.subject,
                     :currency => record.currency.try(:name),
+                    :potential_amount => record.potential_amount,
                     :total => record.final_sales_quote.try(:calculated_total),
                     :comments => record.comments.pluck(:message).join(','),
                     :reason => ''

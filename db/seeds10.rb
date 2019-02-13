@@ -56,3 +56,6 @@ service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(update_invoice_statuses update_cancelled_po_statuses update_po_status), folder: 'seed_files')
 service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(fetch_address), folder: 'seed_files')
+service.call

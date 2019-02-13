@@ -102,6 +102,14 @@ module DisplayHelper
     end
   end
 
+  def format_date_time_with_second(date)
+    if date.present?
+      date.strftime("%d-%b-%Y, %I:%M:%S %p")
+    else
+      "-"
+    end
+  end
+
   def format_date_without_time(date)
     if date.present?
       date.strftime("%d-%b-%Y")

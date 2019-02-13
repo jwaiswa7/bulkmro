@@ -11,8 +11,7 @@ module Mixins::CanBeSynced
       end
 
       service.call
-      self.save if Rails.env.development?
-      return true
+      self.save
     end
 
     def syncable_identifiers
