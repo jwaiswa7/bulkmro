@@ -1,5 +1,5 @@
 <div class="d-md-flex justify-content-between">
-  <% if content_for?(:heading_buttons)%>
+  <% if content_for?(:heading_buttons) %>
     <h3 class="display-5 mb-1 d-none d-md-block"><%= children.to_s.titlecase %></h3>
     <%= yield :heading_buttons %>
   <% end %>

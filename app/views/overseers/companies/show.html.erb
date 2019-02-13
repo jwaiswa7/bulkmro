@@ -397,18 +397,8 @@
 
       <% if policy(@company).new_inquiry? %>
         <div class="tab-pane fade" id="inquiries" role="tabpanel">
-          <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Inquiries</h3>
-            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
-              Inquiry</a>
-          </div>
-          <p class="mt-md-1 d-none d-md-block">
-            All inquiries searchable with relevant term/keywords under <strong><%= @company.name %></strong>.
-          </p>
-
-          <table class="datatable table table-bordered dt-responsive" data-search="Enter search term/keywords" style="width:100%;" data-ajax="<%= index_pg_overseers_inquiries_path(company_id: @company.id) %>">
-            <thead>
-            <tr>
+          <% content_for :ajax_url, flush: true do %><%= index_pg_overseers_inquiries_path(company_id: @company.id) %><% end %>
+          <% content_for :header_row, flush: true do %>
               <th class="no-sort"></th>
               <th data-name="inquiry_number">IQ #</th>
               <th class="no-sort">Status</th>
@@ -419,28 +409,23 @@
               <th class="no-sort">Outside Sales</th>
               <th class="no-sort">Total</th>
               <th data-name="created_at">Created</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="<%= new_overseers_inquiry_path(company_id: @company.to_param) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down mb-2 mb-md-0"><i class="fal fa-plus-circle mr-1"></i>New
+              Inquiry</a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'inquiries' %>
         </div>
       <% end %>
 
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="purchase-orders" role="tabpanel">
-          <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Purchase Orders</h3>
-
-          </div>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_purchase_orders_path(company_id: @company.id, via_sales_orders: true)  %><% end %>
           <!--          <p class="mt-md-1 d-none d-md-block">-->
           <!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
           <!--          </p>-->
 
-          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_purchase_orders_path(company_id: @company.id) %>">
-            <thead>
-            <tr>
+          <% content_for :header_row, flush: true do %>
               <th class="no-sort all"></th>
               <th class="no-sort all" data-name="po_number">Purchase #</th>
               <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
@@ -451,28 +436,22 @@
               <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
               <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
               <th class="no-sort desktop" data-name="created_at">Created</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'purchase orders'  %>
         </div>
       <% end %>
 
       <% if @company.is_supplier? %>
         <div class="tab-pane fade" id="supplier-products" role="tabpanel">
-          <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Supplied Products</h3>
-
-          </div>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_products_path(company_id: @company.id)  %><% end %>
           <!--          <p class="mt-md-1 d-none d-md-block">-->
           <!--            All inquiries filterable in any way that we want under <strong><%#= @company.name %></strong>.-->
           <!--          </p>-->
 
-          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Filter by anything" style="width:100%;" data-ajax="<%= overseers_company_products_path(company_id: @company.id) %>">
-            <thead>
-            <tr>
+          <% content_for :header_row, flush: true do %>
               <th class="no-sort all" data-width="70px"></th>
               <th class="no-sort desktop" data-name="product_id">Name</th>
               <th class="no-sort all" data-name="sku">SKU</th>
@@ -482,22 +461,17 @@
               <th class="no-sort desktop" data-name="is_active"> Active</th>
               <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
               <th class="no-sort desktop" data-name="created_at"> Created At</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products'  %>
         </div>
       <% end %>
       <% if @company.is_customer? %>
         <div class="tab-pane fade" id="online-orders" role="tabpanel">
-          <div class="d-md-flex justify-content-between">
-            <h3 class="display-5 mb-1 d-none d-md-block">Online Orders</h3>
-          </div>
-
-          <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
-            <thead>
+          <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company)  %><% end %>
+          <% content_for :header_row, flush: true do %>
             <tr>
               <th class="no-sort all" data-width="70px"></th>
               <th class="no-sort desktop text-right">Online Order #</th>
@@ -514,38 +488,33 @@
               <th class="no-sort all">Manager</th>
               <th class="sort desktop" data-name="created_at">Created</th>
             </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <% end %>
+          <% content_for :heading_buttons, flush: true do %>
+            <a href="#"></a>
+          <% end %>
+          <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'supplied products'  %>
         </div>
       <% end %>
       <% if @company.is_customer? %>
       <div class="tab-pane fade" id="payments" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Online Payments</h3>
-        </div>
-        <table class="datatable table table-bordered dt-responsive w-100" data-search="Searchable with relevant term/keywords." data-ajax="<%= payments_overseers_customer_orders_path(:company_id => @company.id) %>">
-          <thead>
-          <tr>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_customer_orders_path(@company)  %><% end %>
+        <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
             <th class="no-sort desktop">Status</th>
             <th class="no-sort all">Online Order</th>
             <th class="no-sort desktop ">Payment #</th>
             <th class="no-sort desktop">Amount</th>
             <th class="sort desktop" data-name="created_at">Created</th>
-          </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
+          <a href="#"></a>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment'  %>
       </div>
 
       <div class="tab-pane fade" id="quotes" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Quotes</h3>
-        </div>
-        <table class="datatable table table-bordered dt-responsive" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_sales_quotes_path(@company) %>">
-          <thead>
-          <tr>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_quotes_path(@company) %><% end %>
+        <% content_for :header_row, flush: true do %>
             <th class="no-sort all" data-width="70px"></th>
             <th class="no-sort all">Doc ID</th>
             <th class="no-sort all">Sent At</th>
@@ -554,21 +523,15 @@
             <th class="no-sort all">Total(Excl. Tax)</th>
             <th class="no-sort all">Total(Incl. Tax)</th>
             <th class="no-sort all">Created At</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
+          <a href="#"></a>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'online payment'  %>
       </div>
       <div class="tab-pane fade" id="orders" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Fulfilled Orders</h3>
-        </div>
-
-        <table class="datatable table table-bordered dt-responsive" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_sales_orders_path(@company) %>">
-          <thead>
-          <tr>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_orders_path(@company) %><% end %>
+        <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
             <th class="no-sort all">Order #</th>
             <th class="no-sort desktop" data-name="status">Inquiry #</th>
@@ -578,21 +541,16 @@
             <th class="no-sort desktop">Order Total</th>
             <th class="no-sort desktop" data-name="mis_date">Order Date</th>
             <th class="no-sort desktop" data-name="created_at">Created At</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
+          <a href="#"></a>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Fullfilled Order'  %>
       </div>
       <div class="tab-pane fade" id="invoices" role="tabpanel">
-        <div class="d-md-flex justify-content-between">
-          <h3 class="display-5 mb-1 d-none d-md-block">Invoices</h3>
-        </div>
+        <% content_for :ajax_url, flush: true do %><%= overseers_company_sales_invoices_path(@company) %><% end %>
 
-        <table class="datatable table table-bordered dt-responsive" data-search="Searchable with relevant term/keywords." style="width:100%;" data-ajax="<%= overseers_company_sales_invoices_path(@company) %>">
-          <thead>
-          <tr>
+        <% content_for :header_row, flush: true do %>
             <th class="no-sort all"></th>
             <th class="no-sort all" data-name="invoice_number">Invoice #</th>
             <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
@@ -601,12 +559,11 @@
             <th class="no-sort desktop">Status</th>
             <th class="no-sort desktop" data-name="mis_date">Invoice Date</th>
             <th class="no-sort desktop">Created At</th>
-          </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
+        <% end %>
+        <% content_for :heading_buttons, flush: true do %>
+          <a href="#"></a>
+        <% end %>
+        <%= render 'shared/layouts/internal_datatable', entity: @company, children: 'Invoices'  %>
       </div>
       <% end %>
     </div>
