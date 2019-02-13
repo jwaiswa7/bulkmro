@@ -1,5 +1,5 @@
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages]
+  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages, :resync_inquiry_products, :resync_unsync_inquiry_products ]
 
   def index
     authorize :inquiry
@@ -123,6 +123,26 @@ class Overseers::InquiriesController < Overseers::BaseController
     else
       render 'edit'
     end
+  end
+
+  def resync_inquiry_products
+    authorize @inquiry
+    @inquiry_products = @inquiry.products
+    @inquiry_products.each do |product|
+        product.save_and_sync
+    end
+     redirect_to edit_overseers_inquiry_path(@inquiry) and return
+  end
+
+  def resync_unsync_inquiry_products
+    authorize @inquiry
+    @inquiry_products = @inquiry.products
+    @inquiry_products.each do |product|
+      if product.not_synced?
+      product.save_and_sync
+      end
+    end
+    redirect_to edit_overseers_inquiry_path(@inquiry) and return
   end
 
   def edit_suppliers
