@@ -59,7 +59,7 @@ module ShortcutsHelper
 
   def submit_text(obj, use_alias: nil, suffix: nil)
     class_name = use_alias ? use_alias.humanize : obj.class.name
-    text = class_name.titlecase.split('_').join(' ')
+    text = class_name.titlecase.split("_").join(" ")
     if obj.new_record?
       "Create #{text}"
     else

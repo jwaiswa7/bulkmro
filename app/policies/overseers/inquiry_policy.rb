@@ -118,7 +118,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-     developer?
+    developer?
   end
 
   def resync_unsync_inquiry_products?

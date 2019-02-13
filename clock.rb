@@ -76,12 +76,12 @@ every(1.day, "remote_unwanted_requests", at: "22:00") do
   service.call
 end if Rails.env.production?
 
-every(1.day, 'resync_failed_requests', :at => '03:00') do
+every(1.day, "resync_failed_requests", at: "03:00") do
   service = Services::Overseers::FailedRemoteRequests::Resync.new
   service.call
 end if Rails.env.production?
 
-every(1.day, 'resync_requests_status', :at => '06:00') do
+every(1.day, "resync_requests_status", at: "06:00") do
   service = Services::Overseers::FailedRemoteRequests::Resync.new
   service.verify
 end if Rails.env.production?

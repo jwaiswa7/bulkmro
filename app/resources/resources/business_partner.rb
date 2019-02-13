@@ -94,20 +94,20 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       elsif existing_contact.present? && company.account == existing_contact.account
         assigned_email = contact_email
       elsif existing_contact.present? && company.account != existing_contact.account
-        assigned_email = [contact_email.split('@', 2)[0], '_duplicate', '@', contact_email.split('@', 2)[1]].join('')
+        assigned_email = [contact_email.split("@", 2)[0], "_duplicate", "@", contact_email.split("@", 2)[1]].join("")
       end
 
-      assigned_contact = Contact.where(:email => assigned_email).first_or_create! do |new_contact|
+      assigned_contact = Contact.where(email: assigned_email).first_or_create! do |new_contact|
         new_contact.update_attributes(
-            :account => company.account,
-            :first_name => contact['FirstName'],
-            :last_name => contact['LastName'],
-            :telephone => contact['Phone1'],
-            :mobile => contact['MobilePhone'],
-            :email => assigned_email
+          account: company.account,
+          first_name: contact["FirstName"],
+          last_name: contact["LastName"],
+          telephone: contact["Phone1"],
+          mobile: contact["MobilePhone"],
+          email: assigned_email
         )
       end
-      company.company_contacts.where(:remote_uid => remote_uid, :contact => assigned_contact).first_or_create!
+      company.company_contacts.where(remote_uid: remote_uid, contact: assigned_contact).first_or_create!
 
       banks.each do |bank|
         account_number = bank["AccountNo"]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::BaseService
   def initialize
     @client = Slack::Web::Client.new
@@ -6,24 +8,24 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
   def call
     @service = Services::Shared::Snippets.new
     request = @service.resend_failed_remote_requests
-    message = [{"title": "Total requests initiated", "text": +request[1].to_s, "color": "#439FE0"}]
-    title = "*Resync requests initiated at* "+ Time.now.to_s
+    message = [{ "title": "Total requests initiated", "text": +request[1].to_s, "color": "#439FE0" }]
+    title = "*Resync requests initiated at* " + Time.now.to_s
     self.send_chat_message(title, message)
   end
 
   def send_chat_message(title, message)
     client.chat_postMessage(
-        channel: "GDRG23Z7F",
-        icon_emoji: Settings.slack.icon_emoji,
-        username: Settings.slack.username,
-        text: title,
-        attachments: message,
-        as_user: true
+      channel: "GDRG23Z7F",
+      icon_emoji: Settings.slack.icon_emoji,
+      username: Settings.slack.username,
+      text: title,
+      attachments: message,
+      as_user: true
     )
   end
 
   def verify
-    title = "*Resync requests status at* "+ Time.now.to_s
+    title = "*Resync requests status at* " + Time.now.to_s
     resync_request = ResyncRequest.initiated_today.last
     validated_requests = []
     if resync_request.present?
@@ -31,17 +33,17 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
       total = requests.count
       success = 0; failed = 0; pending = 0
       requests.each do |request|
-        status = ''
+        status = ""
         old_request = RemoteRequest.find(request)
-        new_request =  RemoteRequest.find_by_subject_type_and_subject_id(old_request.subject_type,old_request.subject_id).latest_request
+        new_request = RemoteRequest.find_by_subject_type_and_subject_id(old_request.subject_type, old_request.subject_id).latest_request
         validated_requests << new_request.id
         case new_request.status
-          when 'pending'
-            pending += 1
-          when 'success'
-            success += 1
-          else
-            failed += 1
+        when "pending"
+          pending += 1
+        when "success"
+          success += 1
+        else
+          failed += 1
         end
       end
       message = [
@@ -76,7 +78,7 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
           }
       ]
     end
-    self.send_chat_message(title,message)
+    self.send_chat_message(title, message)
   end
 
 

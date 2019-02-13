@@ -83,8 +83,8 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def debugging
     authorize :sales_order
-    @sales_order = SalesOrder.find(params['id'])
-    @remote_requests = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => @sales_order.id)
+    @sales_order = SalesOrder.find(params["id"])
+    @remote_requests = RemoteRequest.where(subject_type: "SalesOrder", subject_id: @sales_order.id)
     @callback_requests = CallbackRequest.sales_order_callbacks(@sales_order.id)
   end
 
