@@ -19,6 +19,10 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
     new_revision? && record.inquiry.synced? && record.synced? && record.inquiry.valid_for_new_sales_order? && record.email_messages.present? && record.sales_quote_quantity_not_fulfilled?
   end
 
+  def can_create_order?
+    record.inquiry.last_synced_quote.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote)
+  end
+
   def reset_quote?
     developer?
   end
