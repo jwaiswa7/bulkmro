@@ -13,7 +13,6 @@ class Resources::Quotation < Resources::ApplicationResource
 
   def self.update(id, record)
     update_associated_records(id, force_find: true) # todo remove this when update associated records works on create
-
     super(id, record) do |response|
       update_associated_records(id, force_find: true) if response.present?
     end
@@ -25,14 +24,13 @@ class Resources::Quotation < Resources::ApplicationResource
 
     document_lines = response['DocumentLines']
     inquiry = Inquiry.find_by_inquiry_number(response['Project'])
-
     if inquiry.present? && inquiry.final_sales_quote.present?
       final_sales_quote = inquiry.final_sales_quote
-
       document_lines.each do |line|
         sales_quote_row = final_sales_quote.rows.select {|r| r.sku == line['ItemCode']}[0]
         sales_quote_row.update_attributes!(:remote_uid => line['LineNum']) if sales_quote_row.present?
       end
+      inquiry.update_attributes(last_synced_quote: final_sales_quote.id)
     end
   end
 
