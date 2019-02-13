@@ -2,8 +2,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   before_action :set_purchase_order_details, only: [:sending_po_to_supplier, :sending_po_to_supplier_notification, :dispatch_from_supplier_delayed, :dispatch_from_supplier_delayed_notification, :material_received_in_bm_warehouse, :material_received_in_bm_warehouse_notification]
 ``
   def sending_po_to_supplier
-    to_email = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
-    @to = to_email.present? ? to_email : @supplier.company_contacts.first.contact.email
+    @to = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
     cc_addresses = [@po_request.logistics_owner.try(:email), "sales@bulkmro.com", "logistics@bulkmro.com"].join(", ")
     if @po_request.purchase_order.present?
       @email_message = @po_request.purchase_order.email_messages.build(:overseer => current_overseer, :contact => @contact, :inquiry => @inquiry, :sales_order => @po_request.sales_order, :cc => cc_addresses)
@@ -135,7 +134,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
     @purchase_order = @po_request.purchase_order
     @metadata = @purchase_order.metadata.deep_symbolize_keys
     @supplier = @purchase_order.get_supplier(@purchase_order.rows.first.metadata['PopProductId'].to_i)
-    @contact = @po_request.contact.present? ? @po_request.contact : @supplier.company_contacts.first.contact
+    @contact = @po_request.contact
     @metadata[:packing] = @purchase_order.get_packing(@metadata)
   end
 end
