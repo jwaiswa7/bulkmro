@@ -216,4 +216,32 @@ class Company < ApplicationRecord
       errors.add(:company, 'PAN is not valid')
     end
   end
+
+  def total_amount_received
+    self.amount_received_against_invoice + self.amount_received_on_account
+  end
+
+  def amount_received_on_account
+    amount = 0
+    self.sales_invoices.where('mis_date >= ?', '01-04-2018').each do |sales_invoice|
+      amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'On Account').sum(:payment_amount_received)
+    end
+    amount
+  end
+
+  def amount_received_against_invoice
+    amount = 0
+    self.sales_invoices.where('mis_date >= ?', '01-04-2018').each do |sales_invoice|
+      amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'Against Invoice').sum(:payment_amount_received)
+    end
+    amount
+  end
+
+  def total_amount_due
+    self.sales_invoices.where('mis_date >= ?', '01-04-2018').sum(:calculated_total_with_tax)
+  end
+
+  def total_amount_outstanding
+    self.total_amount_due - self.total_amount_received
+  end
 end
