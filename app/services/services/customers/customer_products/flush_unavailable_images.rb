@@ -1,5 +1,4 @@
 class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::Shared::BaseService
-
   def call
     CustomerProduct.all.each do |customer_product|
       if customer_product.best_images.present?
@@ -22,8 +21,6 @@ class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::
           end
         end
       end
-
     end
   end
-
 end

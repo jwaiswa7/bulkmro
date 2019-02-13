@@ -1,3 +1,5 @@
+
+
 json.data (@reports) do |report|
   json.array! [
                   [

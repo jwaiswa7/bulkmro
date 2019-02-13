@@ -1,4 +1,4 @@
-  class InquiriesIndex < BaseIndex
+class InquiriesIndex < BaseIndex
   statuses = Inquiry.statuses
   define_type Inquiry.all.with_includes do
     field :id, type: 'integer'
@@ -8,7 +8,7 @@
     field :subject, analyzer: 'substring'
     field :inquiry_number, value: -> (record) { record.inquiry_number.to_i }, type: 'integer'
     field :inquiry_number_string, value: -> (record) { record.inquiry_number.to_s }, analyzer: 'substring'
-    field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number:nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
+    field :sales_orders_ids, value: -> (record) { record.sales_orders.where.not(order_number: nil).map(&:order_number).compact.join(',') if record.sales_orders.ids.present? }, analyzer: 'substring'
     field :sales_invoices_ids, value: -> (record) { record.invoices.map(&:invoice_number).compact.join(',') if record.invoices.ids.present? }, analyzer: 'substring'
     field :potential_amount, value: -> (record) { record.potential_amount.to_f if record.potential_amount.present? }, type: 'integer'
     field :calculated_total, value: -> (record) { record.calculated_total.to_i if record.calculated_total.present? }, type: 'integer'
@@ -30,7 +30,7 @@
     field :updated_at, type: 'date'
     field :created_by_id
     field :updated_by_id, value: -> (record) { record.updated_by.to_s }, analyzer: 'letter'
-    field :potential_value, value: -> (record) {record.potential_value(record.status.to_s)}, type: 'double'
+    field :potential_value, value: -> (record) { record.potential_value(record.status.to_s) }, type: 'double'
   end
 
   def self.fields

@@ -1,3 +1,5 @@
+
+
 json.results(@freight_quotes) do |freight_quote|
   json.set! :id, freight_quote.id
   json.set! :text, freight_quote.to_s

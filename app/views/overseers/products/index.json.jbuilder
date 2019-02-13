@@ -1,3 +1,5 @@
+
+
 json.data (@products) do |product|
   json.array! [
                   [
@@ -14,7 +16,7 @@ json.data (@products) do |product|
                         row_action_button(sku_purchase_history_overseers_product_path(product), 'history', 'View Purchase History', 'outline-dark', :_blank)
                       end,
                       if policy(product).resync_inventory?
-                          row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
+                        row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
                   product.name,
@@ -32,9 +34,9 @@ json.data (@products) do |product|
 end
 json.columnFilters [
                     [],
-                    [{"source": autocomplete_overseers_products_path}],
+                    [{ "source": autocomplete_overseers_products_path }],
                     [],
-                    [{"source": autocomplete_overseers_brands_path}],
+                    [{ "source": autocomplete_overseers_brands_path }],
                     [],
                     [],
                     [],

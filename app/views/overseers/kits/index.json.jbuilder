@@ -1,3 +1,5 @@
+
+
 json.data (@kits) do |kit|
   json.array! [
                   [
@@ -8,7 +10,7 @@ json.data (@kits) do |kit|
                         row_action_button(edit_overseers_kit_path(kit), 'pencil', 'Edit Kit', 'warning', :_blank)
                       end
                   ].join(' '),
-                  conditional_link(kit.product.present? ? kit.product.name : "-", overseers_kit_path(kit), policy(kit).show? ),
+                  conditional_link(kit.product.present? ? kit.product.name : '-', overseers_kit_path(kit), policy(kit).show?),
                   kit.product.sku,
                   conditional_link(kit.inquiry.inquiry_number, edit_overseers_inquiry_path(kit.inquiry), policy(kit.inquiry).edit?),
                   kit.inquiry.inside_sales_owner.full_name,

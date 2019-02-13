@@ -17,14 +17,14 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
     end
 
     @query_string = if params[:search].present? && params[:search][:value].present?
-                      params[:search][:value]
-                    elsif params[:q].present?
-                      params[:q]
-                    elsif params.is_a?(String)
-                      params
-                    else
-                      ''
-                    end.strip
+      params[:search][:value]
+    elsif params[:q].present?
+      params[:q]
+    elsif params.is_a?(String)
+      params
+    else
+      ''
+    end.strip
 
     @per = (params[:per] || params[:length] || 20).to_i
     @page = params[:page] || ((params[:start] || 20).to_i / per + 1)
@@ -34,13 +34,13 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
   def call_base
     non_paginated_records = if query_string.present?
-                              perform_query(query_string)
-                            else
-                              all_records
-                            end
+      perform_query(query_string)
+    else
+      all_records
+    end
 
     @indexed_records = non_paginated_records.page(page).per(per) if non_paginated_records.present?
-    @records = model_klass.where(:id => indexed_records.pluck(:id)).with_includes if indexed_records.present?
+    @records = model_klass.where(id: indexed_records.pluck(:id)).with_includes if indexed_records.present?
   end
 
 
@@ -49,23 +49,22 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   end
 
   def perform_query(query_string)
-    index_klass.query({
-                          :query_string => {
-                              fields: index_klass.fields,
-                              query: query_string,
-                              default_operator: 'or'
-                          }
-                      })
+    index_klass.query(
+      query_string: {
+          fields: index_klass.fields,
+          query: query_string,
+          default_operator: 'or'
+      }
+                      )
   end
 
   def filter_query(indexed_records)
     search_filters.each do |search_filter|
-
-      indexed_records = indexed_records.filter({
-                                                   term: {
-                                                       :"#{search_filter[:name]}" => search_filter[:search][:value]
-                                                   }
-                                               }) if (search_filter[:search][:value].present? && search_filter[:search][:value] != 'null')
+      indexed_records = indexed_records.filter(
+        term: {
+            :"#{search_filter[:name]}" => search_filter[:search][:value]
+        }
+                                               ) if search_filter[:search][:value].present? && search_filter[:search][:value] != 'null'
     end
 
     indexed_records
@@ -73,22 +72,22 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
 
   def range_query(indexed_records)
     range_filters.each do |range_filter|
-      range = range_filter[:search][:value].split("~")
-      indexed_records = indexed_records.query({
-                                                  range: {
-                                                      :"#{range_filter[:name]}" => {
-                                                          gte: range[0].strip.to_date,
-                                                          lte: range[1].strip.to_date
-                                                      }
-                                                  }
-                                              })
+      range = range_filter[:search][:value].split('~')
+      indexed_records = indexed_records.query(
+        range: {
+            :"#{range_filter[:name]}" => {
+                gte: range[0].strip.to_date,
+                lte: range[1].strip.to_date
+            }
+        }
+                                              )
     end
 
     indexed_records
   end
 
   def sort_definition
-    {:created_at => :desc}
+    { created_at: :desc }
   end
 
   def index_klass
@@ -100,7 +99,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    terms: {"#{key}": vals},
+                    terms: { "#{key}": vals },
                 }
             ]
         },
@@ -112,7 +111,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    exists: {field: "#{key}"}
+                    exists: { field: "#{key}" }
                 },
             ],
         },
@@ -124,7 +123,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
         bool: {
             should: [
                 {
-                    term: {"#{key}": val},
+                    term: { "#{key}": val },
                 },
             ]
         },
@@ -138,7 +137,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      term: {status: Inquiry.statuses[:Approved]},
+                      term: { status: Inquiry.statuses[:Approved] },
                   },
               ],
           },
@@ -149,7 +148,7 @@ class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
           bool: {
               should: [
                   {
-                      terms: {status: Inquiry.statuses.except(:'SO Rejected by Sales Manager', :'Rejected by Accounts', :'Regret', :'Order Lost').values},
+                      terms: { status: Inquiry.statuses.except(:'SO Rejected by Sales Manager', :'Rejected by Accounts', :'Regret', :'Order Lost').values },
                   },
               ],
           },

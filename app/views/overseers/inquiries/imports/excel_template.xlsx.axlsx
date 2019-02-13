@@ -1,6 +1,8 @@
+
+
 wb = xlsx_package.workbook
 
-wb.add_worksheet(name: "Products") do |sheet|
+wb.add_worksheet(name: 'Products') do |sheet|
   # this is the head row of your spreadsheet
   sheet.add_row InquiryImport::TEMPLATE_HEADERS
 end

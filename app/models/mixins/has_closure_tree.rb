@@ -1,3 +1,5 @@
+
+
 module Mixins::HasClosureTree
   extend ActiveSupport::Concern
 

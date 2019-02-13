@@ -132,9 +132,7 @@ class Overseers::ApplicationPolicy
 
   def export_for_logistics?
     false
-  end
-
-  class Scope
+    endclass Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)
@@ -146,7 +144,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

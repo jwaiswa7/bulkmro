@@ -20,11 +20,11 @@ class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::
           row.reload
         else
           row.build_inquiry_product(
-              :inquiry => inquiry,
-              :import => excel_import,
-              :product_id => row.approved_alternative_id,
-              :quantity => row.metadata['quantity'],
-              :sr_no => service.call(row.metadata['sr_no'] || row.metadata['id']),
+            inquiry: inquiry,
+            import: excel_import,
+            product_id: row.approved_alternative_id,
+            quantity: row.metadata['quantity'],
+            sr_no: service.call(row.metadata['sr_no'] || row.metadata['id']),
           )
 
           already_approved_alternative_ids << row.approved_alternative_id

@@ -1,3 +1,5 @@
+
+
 module MenuHelper
   def active_if_path_is(path=nil)
     if path == nil || request == nil; return nil; end

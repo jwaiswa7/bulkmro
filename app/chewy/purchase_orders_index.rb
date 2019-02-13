@@ -29,10 +29,10 @@ class PurchaseOrdersIndex < BaseIndex
     field :company_id, value: -> (record) {record.inquiry.company_id if record.inquiry.present?}
     field :company_rating, value: ->(record) {record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.rows.present?}
     field :company_rating, value: ->(record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:rating) if record.rows.present? }
-    field :po_date, value: -> (record) {record.metadata['PoDate'].to_date if (record.metadata['PoDate'].present? && record.valid_po_date?)}, type: 'date'
+    field :po_date, value: -> (record) {record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date?}, type: 'date'
     field :followup_date, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-    field :potential_value, value: -> (record) {record.try(:calculated_total)}, type: 'double'
+    field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
   end
 end

@@ -1,3 +1,5 @@
+
+
 module Sidekiq
   class ChewyMiddleware
     def initialize(strategy = :atomic)

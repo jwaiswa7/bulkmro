@@ -1,3 +1,5 @@
+
+
 json.data (@addresses) do |address|
   json.array! [
 
@@ -9,7 +11,7 @@ json.data (@addresses) do |address|
                         row_action_button(edit_overseers_company_address_path(address.company, address), 'pencil', 'Edit Address', 'warning', :_blank)
                       end,
                   ].join(' '),
-                  link_to(address.company.to_s.truncate(50), overseers_company_path(address.company), target: "_blank"),
+                  link_to(address.company.to_s.truncate(50), overseers_company_path(address.company), target: '_blank'),
                   address.to_s.truncate(50),
                   address.try(:state).try(:name),
                   address.try(:city_name),
@@ -23,11 +25,11 @@ end
 
 json.columnFilters [
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
+                       [{ "source": autocomplete_overseers_companies_path }],
                        [],
                        [],
                        [],
-                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
                        [],
                        [],
                        [],

@@ -1,3 +1,5 @@
+
+
 json.data (@contacts) do |contact|
   json.array! [
 

@@ -14,5 +14,4 @@ class Overseers::CompanyCreationRequestPolicy < Overseers::ApplicationPolicy
   def exchange_with_existing_company?
     index?
   end
-
 end

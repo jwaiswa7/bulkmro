@@ -1,5 +1,7 @@
+
+
 source 'https://rubygems.org'
-git_source(:github) {|repo| "https://github.com/#{repo}.git"}
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # ruby '2.5.3'
 
@@ -188,7 +190,7 @@ gem 'parser'
 gem 'unparser'
 gem 'mini_magick'
 
-#This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
+# This gem allows you to write static Rails views and partials using the Markdown syntax. No more editing prose in HTML!
 gem 'markdown-rails'
 
 # Star Rating
@@ -211,6 +213,9 @@ group :development do
   # Preview emails instead of sending them
   gem 'letter_opener'
 
+  # RuboCop is a Ruby static code analyzer and code formatter
+  gem 'rubocop', '~> 0.63.0', require: false
+  gem 'rubocop-rails_config'
 end
 
 group :test do
@@ -241,11 +246,11 @@ gem 'slack-ruby-bot'
 # For charts
 gem 'chartjs-ror'
 
-#For online payments with Razorpay
+# For online payments with Razorpay
 gem 'razorpay'
 
 # Wit.ai
 gem 'wit'
 
-#new relic - Performance Analytics
+# new relic - Performance Analytics
 gem 'newrelic_rpm'

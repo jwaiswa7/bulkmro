@@ -1,3 +1,5 @@
+
+
 json.data (@inquiries) do |inquiry|
   json.array! [
                   [

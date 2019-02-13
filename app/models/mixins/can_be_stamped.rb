@@ -1,3 +1,5 @@
+
+
 module Mixins::CanBeStamped
   extend ActiveSupport::Concern
 
@@ -26,6 +28,5 @@ module Mixins::CanBeStamped
     def set_created_by_overseer
       self.assign_attributes(created_by: overseer)
     end
-
   end
 end

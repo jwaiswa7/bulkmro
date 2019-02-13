@@ -1,8 +1,10 @@
+
+
 module Mixins::CanBeWatermarked
   extend ActiveSupport::Concern
 
   included do
-    IMAGE_SIZES = {tiny: 40, small: 250, medium: 400, xlarge: 2400}
+    IMAGE_SIZES = { tiny: 40, small: 250, medium: 400, xlarge: 2400 }
     WATERMARK_PATH = Rails.root.join('app', 'assets', 'images', 'watermark.png')
 
     after_save :create_watermarked_variation
@@ -19,13 +21,13 @@ module Mixins::CanBeWatermarked
       ratio = "#{size}X#{size}"
 
       variation = ActiveStorage::Variation.new(
-          combine_options: {
-              resize: "#{ratio}^",
-              extent: "#{ratio}",
-              quality: "90",
-              gravity: 'Center',
-              draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'"
-          }
+        combine_options: {
+            resize: "#{ratio}^",
+            extent: "#{ratio}",
+            quality: '90',
+            gravity: 'Center',
+            draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'"
+        }
       )
       begin
         if image.present?

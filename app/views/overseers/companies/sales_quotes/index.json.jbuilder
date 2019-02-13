@@ -1,3 +1,5 @@
+
+
 json.data (@sales_quotes) do |sales_quote|
   json.array! [
                   [
@@ -19,4 +21,3 @@ json.recordsTotal @company.sales_quotes.count
 json.recordsFiltered @sales_quotes.total_count
 
 json.draw params[:draw]
-

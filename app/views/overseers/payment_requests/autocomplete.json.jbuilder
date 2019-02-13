@@ -1,3 +1,5 @@
+
+
 json.results(@payment_requests) do |payment_request|
   json.set! :id, payment_request.id
   json.set! :text, payment_request.to_s

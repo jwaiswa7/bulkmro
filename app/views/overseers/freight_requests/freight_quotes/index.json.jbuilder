@@ -1,3 +1,5 @@
+
+
 json.data (@freight_quotes) do |freight_quote|
   json.array! [
                   [

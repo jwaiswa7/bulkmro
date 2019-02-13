@@ -1,12 +1,13 @@
-require 'platform-api'
 
+
+require 'platform-api'
 class Services::Shared::Heroku::DynoAdjuster < Services::Shared::BaseService
   def initialize
     @client = PlatformAPI.connect_oauth(Settings.heroku.dyno_adjuster_token)
     @app_name = 'bulkmro'
 
     processes = client.formation.list(app_name)
-    process = processes.select {|process| process['type'] == 'web'}[0]
+    process = processes.select { |process| process['type'] == 'web' }[0]
 
     if Time.now.wday.in?(1..5) && '9:45 AM'.to_time < Time.now && Time.now < '7:30 PM'.to_time
       scale(process, 'Performance-M', 2)
@@ -21,14 +22,14 @@ class Services::Shared::Heroku::DynoAdjuster < Services::Shared::BaseService
     if process['size'] == size && process['quantity'] == quantity
       puts "Process #{process['type']} is already #{size} sized."
     else
-      client.formation.batch_update(app_name, {
-          :updates => [
+      client.formation.batch_update(app_name,
+          updates: [
               {
-                  :process => process['type'],
-                  :quantity => quantity,
-                  :size => size
+                  process: process['type'],
+                  quantity: quantity,
+                  size: size
               }
-          ]}
+          ]
       )
     end
   end

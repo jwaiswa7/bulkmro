@@ -1,3 +1,5 @@
+
+
 module Mixins::HasManagers
   extend ActiveSupport::Concern
 

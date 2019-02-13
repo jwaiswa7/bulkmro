@@ -1,3 +1,5 @@
+
+
 json.data (@products) do |product|
   json.array! [
       [

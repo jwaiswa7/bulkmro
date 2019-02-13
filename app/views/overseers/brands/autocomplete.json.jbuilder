@@ -1,3 +1,5 @@
+
+
 json.results(@brands) do |brand|
   json.set! :id, brand.id
   json.set! :text, brand.to_s

@@ -1,3 +1,5 @@
+
+
 json.data (@customer_orders) do |customer_order|
   json.array! [
                   [
@@ -13,15 +15,15 @@ json.data (@customer_orders) do |customer_order|
                   customer_order.online_order_number,
                   status_badge(customer_order.status),
                   customer_order.payment_method,
-                  conditional_link( customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
-                  customer_order.company.present? ? conditional_link(customer_order.company.name, overseers_company_path(customer_order.company), policy(customer_order.company).show?) : "-",
+                  conditional_link(customer_order.contact.account.name, overseers_account_path(customer_order.contact.account), policy(customer_order.contact.account).show?),
+                  customer_order.company.present? ? conditional_link(customer_order.company.name, overseers_company_path(customer_order.company), policy(customer_order.company).show?) : '-',
                   customer_order.contact.full_name,
                   customer_order.rows.count,
                   format_currency(customer_order.calculated_total),
                   format_currency(customer_order.grand_total),
-                  customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : "-",
-                  customer_order.company.present? && customer_order.company.outside_sales_owner.present? ? customer_order.company.outside_sales_owner.full_name : "-",
-                  customer_order.company.present? && customer_order.company.sales_manager.present? ? customer_order.company.sales_manager.full_name : "-",
+                  customer_order.company.present? && customer_order.company.inside_sales_owner.present? ? customer_order.company.inside_sales_owner.full_name : '-',
+                  customer_order.company.present? && customer_order.company.outside_sales_owner.present? ? customer_order.company.outside_sales_owner.full_name : '-',
+                  customer_order.company.present? && customer_order.company.sales_manager.present? ? customer_order.company.sales_manager.full_name : '-',
                   format_succinct_date(customer_order.created_at)
               ]
 end

@@ -219,6 +219,7 @@ Rails.application.routes.draw do
         get 'new_purchase_orders_requests'
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
+        get 'debugging'
       end
 
       collection do
@@ -307,6 +308,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
@@ -341,7 +344,7 @@ Rails.application.routes.draw do
           member do
             get 'edit_mis_date'
             patch 'update_mis_date'
-
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'

@@ -1,3 +1,5 @@
+
+
 # NOT IS USE
 json.data (@sales_orders) do |sales_order|
   columns = [
@@ -9,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
             row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
           end
       ].join(' '),
-      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : "",
+      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : '',
       sales_order.id,
       conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
       status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
@@ -23,8 +25,8 @@ json.data (@sales_orders) do |sales_order|
       format_succinct_date(sales_order.created_at)
   ]
 
-  columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
-  json.merge! columns.merge({"DT_RowClass": sales_order.calculated_total_margin_percentage.to_f < 10 ? "bg-highlight-danger" : ''})
+  columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
+  json.merge! columns.merge("DT_RowClass": sales_order.calculated_total_margin_percentage.to_f < 10 ? 'bg-highlight-danger' : '')
 end
 
 json.columnFilters [
@@ -35,8 +37,8 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [],
                        [],

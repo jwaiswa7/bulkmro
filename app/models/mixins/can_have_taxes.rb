@@ -1,3 +1,5 @@
+
+
 module Mixins::CanHaveTaxes
   extend ActiveSupport::Concern
 

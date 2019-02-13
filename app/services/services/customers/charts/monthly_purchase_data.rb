@@ -9,19 +9,19 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
           labels: [],
           datasets: [
               {
-                  label: "Products",
-                  type: "line",
+                  label: 'Products',
+                  type: 'line',
                   lineTension: 0,
-                  borderColor: "#007bff",
-                  backgroundColor: "#007bff",
+                  borderColor: '#007bff',
+                  backgroundColor: '#007bff',
                   data: [],
                   yAxisID: 'products_count',
                   fill: false
               },
               {
-                  label: "₹ Lacs",
-                  type: "bar",
-                  borderColor: "#fd7e14",
+                  label: '₹ Lacs',
+                  type: 'bar',
+                  borderColor: '#fd7e14',
                   backgroundColor: '#fd7e14',
                   data: [],
                   yAxisID: 'revenue',
@@ -61,11 +61,11 @@ class Services::Customers::Charts::MonthlyPurchaseData < Services::Customers::Ch
           },
       }
 
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(:created_at => start_at..end_at).joins(:company).where(companies: {id: company.id})
-      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map {|k, v| [k.strftime("%b-%y"), v.map(&:calculated_total).sum.to_s]}.to_h
-      monthwise_products_count = sales_orders.joins(:products).group_by_month('sales_orders.created_at', format: "%b-%y", series:true).count.to_h
+      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
+      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
+      monthwise_products_count = sales_orders.joins(:products).group_by_month('sales_orders.created_at', format: '%b-%y', series: true).count.to_h
 
-      (start_at..end_at).map {|a| a.strftime("%b-%y")}.uniq.each do |month|
+      (start_at..end_at).map { |a| a.strftime('%b-%y') }.uniq.each do |month|
         @data[:labels].push(month)
         @data[:datasets][1][:data].push(monthwise_order_totals[month] || 0)
         @data[:datasets][0][:data].push(monthwise_products_count[month] || 0)

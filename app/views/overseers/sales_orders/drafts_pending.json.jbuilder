@@ -1,3 +1,5 @@
+
+
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
@@ -31,11 +33,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.remote_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [],
                        []

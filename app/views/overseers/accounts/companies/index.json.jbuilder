@@ -1,3 +1,5 @@
+
+
 json.data (@companies) do |company|
   json.array! [
                   [
@@ -25,7 +27,7 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  (company.addresses.present? && company.is_international) ? 'International' :company.pan,
+                  (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
                   format_boolean(company.is_supplier?),
                   format_boolean(company.is_customer?),
@@ -41,7 +43,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
                        [],
                        [],
                        [],

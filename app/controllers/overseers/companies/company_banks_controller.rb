@@ -3,12 +3,12 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   def index
     base_filter = {
-        :base_filter_key => "company_id",
-        :base_filter_value => params[:company_id]
+        base_filter_key: 'company_id',
+        base_filter_value: params[:company_id]
     }
     authorize :company_bank
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::CompanyBanks.new(params.merge(base_filter))
         service.call
@@ -62,22 +62,22 @@ class Overseers::Companies::CompanyBanksController < Overseers::Companies::BaseC
 
   private
 
-  def set_company_bank
-    @company_bank ||= CompanyBank.find(params[:id])
-  end
+    def set_company_bank
+      @company_bank ||= CompanyBank.find(params[:id])
+    end
 
-  def company_bank_params
-    params.require(:company_bank).permit(
+    def company_bank_params
+      params.require(:company_bank).permit(
         :company_id,
-        :bank_id,
-        :branch,
-        :account_name,
-        :account_number,
-        :address_line_1,
-        :address_line_2,
-        :beneficiary_email,
-        :beneficiary_mobile,
-        :mandate_id
-    )
-  end
+          :bank_id,
+          :branch,
+          :account_name,
+          :account_number,
+          :address_line_1,
+          :address_line_2,
+          :beneficiary_email,
+          :beneficiary_mobile,
+          :mandate_id
+      )
+    end
 end

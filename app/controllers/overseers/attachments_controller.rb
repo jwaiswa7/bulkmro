@@ -12,7 +12,7 @@ class Overseers::AttachmentsController < Overseers::BaseController
   end
 
   private
-  def set_attachment
-    @attachment = ActiveStorage::Attachment.find(params[:id])
-  end
+    def set_attachment
+      @attachment = ActiveStorage::Attachment.find(params[:id])
+    end
 end

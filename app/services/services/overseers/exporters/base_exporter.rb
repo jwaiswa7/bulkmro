@@ -1,5 +1,4 @@
 class Services::Overseers::Exporters::BaseExporter < Services::Shared::BaseService
-
   def initialize(headers, file_name)
     @start_at = Date.new(2018, 10, 19)
     @end_at = Date.today.end_of_day

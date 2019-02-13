@@ -49,9 +49,7 @@ class Customers::ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(contact, record.class)
-  end
-
-  class Scope
+    endclass Scope
     attr_reader :contact, :scope
 
     def initialize(contact, scope)
