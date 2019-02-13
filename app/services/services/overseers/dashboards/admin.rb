@@ -3,13 +3,11 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
   end
 
   def call
-
-
     start_at = Date.new(2018, 10, 01).beginning_of_day
     end_at = Date.today.end_of_day
 
-    @data = Rails.cache.fetch('admin_dashboard_data', expires_in: 30.minutes) do
-      @data = OpenStruct.new({entries: {}})
+    # @data = Rails.cache.fetch('admin_dashboard_data') do
+      @data = OpenStruct.new({entries: {}, timestamp: nil})
       ActiveRecord::Base.default_timezone = :utc
       filter_by_dates = start_at.beginning_of_month..end_at.end_of_month
 
@@ -71,7 +69,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
       end
       ActiveRecord::Base.default_timezone = :local
       @data
-    end
-    @data
+    # end
+    # @data
   end
 end
