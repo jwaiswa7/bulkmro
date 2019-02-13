@@ -1,5 +1,3 @@
-
-
 class ProductApproval < ApplicationRecord
   include Mixins::CanBeStamped
 

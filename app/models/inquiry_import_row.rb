@@ -1,5 +1,3 @@
-
-
 class InquiryImportRow < ApplicationRecord
   belongs_to :import, class_name: "InquiryImport", foreign_key: :inquiry_import_id
   has_one :inquiry, through: :import

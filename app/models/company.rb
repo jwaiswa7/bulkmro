@@ -1,5 +1,3 @@
-
-
 class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped

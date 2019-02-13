@@ -1,5 +1,3 @@
-
-
 class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseService
   def initialize
     @client = SendGrid::API.new(api_key: Settings.sendgrid.api_key)

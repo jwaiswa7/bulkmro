@@ -1,5 +1,3 @@
-
-
 class Cart < ApplicationRecord
   include Mixins::CanBeTotalled
 

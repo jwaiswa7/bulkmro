@@ -1,5 +1,3 @@
-
-
 class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::BaseCallback
   def call
     begin

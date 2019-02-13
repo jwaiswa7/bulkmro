@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shared::BaseService
   def initialize(inquiry, excel_import)
     @inquiry = inquiry

@@ -1,5 +1,3 @@
-
-
 class Overseers::Accounts::BaseController < Overseers::BaseController
   before_action :set_account
 

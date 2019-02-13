@@ -1,5 +1,3 @@
-
-
 class Customers::Inquiries::SalesQuotesController < Customers::Inquiries::BaseController
   before_action :set_final_sales_quote
 

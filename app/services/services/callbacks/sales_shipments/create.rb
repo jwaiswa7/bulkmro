@@ -1,5 +1,3 @@
-
-
 class Services::Callbacks::SalesShipments::Create < Services::Callbacks::Shared::BaseCallback
   def call
     begin

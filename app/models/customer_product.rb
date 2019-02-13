@@ -1,5 +1,3 @@
-
-
 class CustomerProduct < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasImages

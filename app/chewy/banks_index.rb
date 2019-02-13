@@ -1,5 +1,3 @@
-
-
 class BanksIndex < BaseIndex
   define_type Bank.all do
     field :id, type: "integer"

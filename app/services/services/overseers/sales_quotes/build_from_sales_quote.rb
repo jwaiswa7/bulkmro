@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::BaseService
   def initialize(old_sales_quote, overseer)
     @old_sales_quote = old_sales_quote

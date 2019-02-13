@@ -1,5 +1,3 @@
-
-
 class CustomerProductsIndex < BaseIndex
   define_type CustomerProduct.all do
     field :id, type: "integer"

@@ -1,5 +1,3 @@
-
-
 class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || cataloging? || logistics?
@@ -128,9 +126,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
 
   def new_freight_request?
     !record.freight_request.present? && !logistics?
-  end
-
-  class Scope
+  endclass Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

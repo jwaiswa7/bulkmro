@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Reports::Account
   def initialize(account, params)
     @account = account

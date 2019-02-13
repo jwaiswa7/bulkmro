@@ -1,6 +1,4 @@
-
-
-  class InquiriesIndex < BaseIndex
+class InquiriesIndex < BaseIndex
     statuses = Inquiry.statuses
     define_type Inquiry.all.with_includes do
       field :id, type: "integer"

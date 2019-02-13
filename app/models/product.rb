@@ -1,5 +1,3 @@
-
-
 class Product < ApplicationRecord
   COMMENTS_CLASS = "ProductComment"
   REJECTIONS_CLASS = "ProductRejection"

@@ -1,5 +1,3 @@
-
-
 class Category < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasClosureTree

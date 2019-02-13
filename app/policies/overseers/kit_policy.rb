@@ -1,5 +1,3 @@
-
-
 class Overseers::KitPolicy < Overseers::ApplicationPolicy
   def index?
     cataloging? || admin?

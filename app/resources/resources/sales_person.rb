@@ -1,5 +1,3 @@
-
-
 class Resources::SalesPerson < Resources::ApplicationResource
   def self.collection_name
     "SalesPersons"

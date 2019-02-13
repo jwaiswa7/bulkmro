@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Finders::TaxCodes < Services::Overseers::Finders::BaseFinder
   def call
     call_base

@@ -1,5 +1,3 @@
-
-
 class TaxCode < ApplicationRecord
   pg_search_scope :locate, against: [:code, :description, :tax_percentage], using: { tsearch: { prefix: true, any_word: true } }
 

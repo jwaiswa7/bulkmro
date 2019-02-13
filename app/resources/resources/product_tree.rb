@@ -1,5 +1,3 @@
-
-
 class Resources::ProductTree < Resources::ApplicationResource
   def self.identifier
     :TreeCode

@@ -1,9 +1,7 @@
 
 
 require "net/scp"
-require "net/scp"
-
-class Resources::Attachment < Resources::ApplicationResource
+require "net/scp"class Resources::Attachment < Resources::ApplicationResource
   include Net
 
   def self.collection_name

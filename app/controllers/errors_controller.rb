@@ -1,5 +1,3 @@
-
-
 class ErrorsController < ApplicationController
   include Gaffe::Errors
 

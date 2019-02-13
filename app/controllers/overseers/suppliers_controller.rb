@@ -1,5 +1,3 @@
-
-
 class Overseers::SuppliersController < Overseers::BaseController
   def index
     @suppliers = ApplyParams.to(Company.all, params)

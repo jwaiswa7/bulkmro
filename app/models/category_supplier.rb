@@ -1,5 +1,3 @@
-
-
 class CategorySupplier < ApplicationRecord
   belongs_to :category
 

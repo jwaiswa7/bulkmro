@@ -1,5 +1,3 @@
-
-
 class Resources::Quotation < Resources::ApplicationResource
   def self.identifier
     :DocEntry

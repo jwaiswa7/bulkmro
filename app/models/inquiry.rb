@@ -1,5 +1,3 @@
-
-
 class Inquiry < ApplicationRecord
   COMMENTS_CLASS = "InquiryComment"
 

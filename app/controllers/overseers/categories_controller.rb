@@ -1,5 +1,3 @@
-
-
 class Overseers::CategoriesController < Overseers::BaseController
   before_action :set_category, only: [:edit, :update, :show]
 

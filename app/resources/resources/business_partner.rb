@@ -1,5 +1,3 @@
-
-
 class Resources::BusinessPartner < Resources::ApplicationResource
   def self.identifier
     :CardCode

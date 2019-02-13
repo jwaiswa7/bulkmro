@@ -1,5 +1,3 @@
-
-
 class Overseers::CallbackRequestPolicy < Overseers::ApplicationPolicy
   def index?
     admin?

@@ -1,8 +1,6 @@
 
 
-require "mail"
-
-class Overseer < ApplicationRecord
+require "mail"class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced
   include Mixins::IsAPerson

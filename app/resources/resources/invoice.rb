@@ -1,5 +1,3 @@
-
-
 class Resources::Invoice < Resources::ApplicationResource
   def self.identifier
     :DocEntry

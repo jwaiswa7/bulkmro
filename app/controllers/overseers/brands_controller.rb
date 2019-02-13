@@ -1,5 +1,3 @@
-
-
 class Overseers::BrandsController < Overseers::BaseController
   before_action :set_brand, only: [:edit, :update, :show]
 

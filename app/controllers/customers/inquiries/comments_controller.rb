@@ -1,5 +1,3 @@
-
-
 class Customers::Inquiries::CommentsController < Customers::Inquiries::BaseController
   def index
     @sales_order = @inquiry.sales_orders.find(params[:sales_order_id]) if params[:sales_order_id].present?

@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   def self.inquiry_number
     # Generates in Postgres sequences

@@ -1,5 +1,3 @@
-
-
 class Customers::CustomerProductsController < Customers::BaseController
   before_action :set_customer_product, only: [:show, :to_cart]
 

@@ -1,5 +1,3 @@
-
-
 class InquiryProductSupplier < ApplicationRecord
   include Mixins::HasSupplier
 

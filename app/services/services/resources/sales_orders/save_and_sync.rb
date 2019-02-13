@@ -1,5 +1,3 @@
-
-
 class Services::Resources::SalesOrders::SaveAndSync < Services::Shared::BaseService
   def initialize(sales_order)
     @sales_order = sales_order

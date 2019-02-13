@@ -1,5 +1,3 @@
-
-
 class InquiryStatusRecord < ApplicationRecord
   belongs_to :subject, polymorphic: true, required: false
 

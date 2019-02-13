@@ -1,5 +1,3 @@
-
-
 class Services::Resources::PaymentOptions::SaveAndSync < Services::Shared::BaseService
   def initialize(payment_option)
     @payment_option = payment_option

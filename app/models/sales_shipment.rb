@@ -1,5 +1,3 @@
-
-
 class SalesShipment < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanBeStamped

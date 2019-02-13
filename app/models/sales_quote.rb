@@ -1,5 +1,3 @@
-
-
 class SalesQuote < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSent

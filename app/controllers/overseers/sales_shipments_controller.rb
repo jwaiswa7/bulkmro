@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesShipmentsController < Overseers::BaseController
   def index
     authorize :sales_shipment

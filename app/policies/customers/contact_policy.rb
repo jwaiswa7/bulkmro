@@ -1,5 +1,3 @@
-
-
 class Customers::ContactPolicy < Customers::ApplicationPolicy
   def edit_current_company?
     true

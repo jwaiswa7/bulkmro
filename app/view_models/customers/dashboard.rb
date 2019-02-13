@@ -1,5 +1,3 @@
-
-
 class Customers::Dashboard
   def initialize(contact, company, params)
     @contact = contact

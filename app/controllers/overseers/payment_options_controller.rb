@@ -1,5 +1,3 @@
-
-
 class Overseers::PaymentOptionsController < Overseers::BaseController
   before_action :set_payment_option, only: [:edit, :show, :update]
 

@@ -1,5 +1,3 @@
-
-
 class Customers::SalesQuotes::BaseController < Customers::BaseController
   before_action :set_sales_quote
 

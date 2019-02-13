@@ -1,5 +1,3 @@
-
-
 class SalesOrderApproval < ApplicationRecord
   include Mixins::CanBeStamped
 

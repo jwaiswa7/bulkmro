@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
   def initialize(record, locals)
     @record = record

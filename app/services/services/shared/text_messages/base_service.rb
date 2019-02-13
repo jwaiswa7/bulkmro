@@ -1,8 +1,6 @@
 
 
-require "msg91ruby"
-
-class Services::Shared::TextMessages::BaseService < Services::Shared::BaseService
+require "msg91ruby"class Services::Shared::TextMessages::BaseService < Services::Shared::BaseService
   def send_text_message(recipient, to, message, use_alt_provider: false)
     text_message = if recipient.present?
       recipient.text_messages.build

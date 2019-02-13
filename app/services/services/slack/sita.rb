@@ -1,9 +1,7 @@
 
 
 require "slack-ruby-bot"
-include DisplayHelper
-
-class Services::Slack::Sita < SlackRubyBot::Bot
+include DisplayHelperclass Services::Slack::Sita < SlackRubyBot::Bot
   help do
     title "Sita"
     desc "She is the sister you always wanted."

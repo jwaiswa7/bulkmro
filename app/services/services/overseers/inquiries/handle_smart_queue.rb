@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::HandleSmartQueue < Services::Shared::BaseService
   def initialize(inquiry)
     @inquiry = inquiry

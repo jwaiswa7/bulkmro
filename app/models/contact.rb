@@ -1,5 +1,3 @@
-
-
 class Contact < ApplicationRecord
   include Mixins::IsAPerson
   include Mixins::CanBeStamped

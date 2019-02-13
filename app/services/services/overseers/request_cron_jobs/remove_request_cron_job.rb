@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::RequestCronJobs::RemoveRequestCronJob < Services::Shared::BaseService
   def call
     delete_unwanted_request(CallbackRequest.order("updated_at"))

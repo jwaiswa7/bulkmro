@@ -1,5 +1,3 @@
-
-
 class MultipleFilePresenceValidator < ActiveModel::Validator
   def validate(record)
     if options[:attachments].blank? || !record.send(attachments).attached?

@@ -1,5 +1,3 @@
-
-
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
   before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]

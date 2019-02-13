@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Categories::SaveAndSync < Services::Shared::BaseService
   def initialize(category)
     @category = category

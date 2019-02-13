@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
   def initialize
   end

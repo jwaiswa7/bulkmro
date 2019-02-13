@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesInvoicesController < Overseers::BaseController
   before_action :set_invoice, only: [:edit_pod, :update_pod]
 

@@ -1,5 +1,3 @@
-
-
 class Resources::Draft < Resources::ApplicationResource
   def self.identifier
     :DocEntry

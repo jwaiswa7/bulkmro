@@ -1,5 +1,3 @@
-
-
 class InquiryProduct < ApplicationRecord
   include Mixins::CanBeStamped
 

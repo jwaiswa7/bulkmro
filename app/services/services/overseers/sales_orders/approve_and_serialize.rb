@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::BaseService
   def initialize(sales_order, comment)
     @sales_order = sales_order

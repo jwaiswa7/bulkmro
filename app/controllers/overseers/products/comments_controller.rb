@@ -1,5 +1,3 @@
-
-
 class Overseers::Products::CommentsController < Overseers::Products::BaseController
   def index
     @comments = @product.comments.earliest

@@ -1,5 +1,3 @@
-
-
 class Target < ApplicationRecord
   belongs_to :target_period, required: true
   belongs_to :overseer, required: true

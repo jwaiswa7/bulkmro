@@ -1,5 +1,3 @@
-
-
 class Customers::CartController < Customers::BaseController
   before_action :set_cart
 

@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesInvoicePolicy < Overseers::ApplicationPolicy
   def show?
     record.persisted? && record.not_legacy? && !record.original_invoice.attached?

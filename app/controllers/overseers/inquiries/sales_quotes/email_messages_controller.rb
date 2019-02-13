@@ -1,5 +1,3 @@
-
-
 class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::Inquiries::SalesQuotes::BaseController
   def new
     @email_message = @sales_quote.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_quote: @sales_quote)

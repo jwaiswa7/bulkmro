@@ -1,5 +1,3 @@
-
-
 class Overseers::ProfileController < Overseers::BaseController
 	 def edit
  		 @overseer = current_overseer

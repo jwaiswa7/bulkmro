@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesOrders::FetchOrderData < Services::Shared::BaseService
   def initialize(sales_order)
     @sales_order = sales_order

@@ -1,5 +1,3 @@
-
-
 class Services::Shared::ChatMessages::BaseService < Services::Shared::BaseService
   def initialize
     @client = Slack::Web::Client.new

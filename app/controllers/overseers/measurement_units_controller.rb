@@ -1,5 +1,3 @@
-
-
 class Overseers::MeasurementUnitsController < Overseers::BaseController
   before_action :set_measurement_unit, only: [:edit, :update, :show]
 

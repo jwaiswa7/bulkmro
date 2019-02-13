@@ -1,9 +1,7 @@
 
 
 require "csv"
-require "net/http"
-
-class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
+require "net/http"class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
   def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)

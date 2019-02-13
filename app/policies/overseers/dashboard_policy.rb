@@ -1,5 +1,3 @@
-
-
 class Overseers::DashboardPolicy < Overseers::ApplicationPolicy
   def show?
     all_roles?

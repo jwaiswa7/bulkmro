@@ -1,5 +1,3 @@
-
-
 class SalesOrder < ApplicationRecord
   COMMENTS_CLASS = "InquiryComment"
   REJECTIONS_CLASS = "SalesOrderRejection"

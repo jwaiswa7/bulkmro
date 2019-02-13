@@ -1,5 +1,3 @@
-
-
 class Overseers::ApplicationPolicy
   attr_reader :overseer, :record
 
@@ -130,9 +128,7 @@ class Overseers::ApplicationPolicy
 
   def export_for_logistics?
     false
-  end
-
-  class Scope
+  endclass Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

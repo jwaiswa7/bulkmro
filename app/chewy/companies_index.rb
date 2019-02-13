@@ -1,5 +1,3 @@
-
-
 class CompaniesIndex < BaseIndex
   define_type Company.all.with_includes do
     field :id, type: "integer"

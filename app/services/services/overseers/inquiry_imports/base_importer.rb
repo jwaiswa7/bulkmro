@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::BaseService
   def initialize(inquiry, import)
     @inquiry = inquiry

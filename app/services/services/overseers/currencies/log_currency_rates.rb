@@ -1,8 +1,6 @@
 
 
-require "money/bank/open_exchange_rates_bank"
-
-class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::BaseService
+require "money/bank/open_exchange_rates_bank"class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::BaseService
   def initialize
   end
 

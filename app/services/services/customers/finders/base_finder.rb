@@ -1,5 +1,3 @@
-
-
 class Services::Customers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_contact = nil, current_company = nil)
     @search_filters = []

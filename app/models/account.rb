@@ -1,5 +1,3 @@
-
-
 class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName

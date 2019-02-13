@@ -1,5 +1,3 @@
-
-
 class InvoiceRequest < ApplicationRecord
   COMMENTS_CLASS = "InvoiceRequestComment"
 

@@ -1,5 +1,3 @@
-
-
 class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::BaseService
   if Rails.env.production?
     URL = "https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline"

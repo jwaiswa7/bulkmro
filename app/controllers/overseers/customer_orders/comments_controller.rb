@@ -1,5 +1,3 @@
-
-
 class Overseers::CustomerOrders::CommentsController < Overseers::CustomerOrders::BaseController
   def create
     @comment = @customer_order.comments.build(comment_params.merge(overseer: current_overseer))

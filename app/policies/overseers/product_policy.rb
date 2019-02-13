@@ -1,5 +1,3 @@
-
-
 class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   def new?
     cataloging? || admin?

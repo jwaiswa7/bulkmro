@@ -1,5 +1,3 @@
-
-
 class Overseers::BanksController < Overseers::BaseController
   before_action :set_bank, only: [:show, :edit, :update]
 

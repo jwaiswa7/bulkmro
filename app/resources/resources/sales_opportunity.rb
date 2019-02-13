@@ -1,5 +1,3 @@
-
-
 class Resources::SalesOpportunity < Resources::ApplicationResource
   def self.identifier
     :SequentialNo

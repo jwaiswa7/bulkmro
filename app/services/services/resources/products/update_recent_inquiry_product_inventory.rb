@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Products::UpdateRecentInquiryProductInventory < Services::Shared::BaseService
   def initialize
   end

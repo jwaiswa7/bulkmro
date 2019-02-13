@@ -1,5 +1,3 @@
-
-
 class SalesQuotesIndex < BaseIndex
   statuses = Inquiry.statuses
   define_type SalesQuote.limit(1).with_includes do

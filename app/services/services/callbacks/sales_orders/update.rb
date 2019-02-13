@@ -1,5 +1,3 @@
-
-
 class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
   def call
     order_number = params["increment_id"]

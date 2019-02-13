@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesOrders::BuildFromSalesQuote < Services::Shared::BaseService
   def initialize(sales_quote, overseer)
     @sales_quote = sales_quote

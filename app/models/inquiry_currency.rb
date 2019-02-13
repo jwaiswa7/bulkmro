@@ -1,5 +1,3 @@
-
-
 class InquiryCurrency < ApplicationRecord
   belongs_to :currency
   has_one :inquiry

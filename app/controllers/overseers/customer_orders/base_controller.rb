@@ -1,5 +1,3 @@
-
-
 class Overseers::CustomerOrders::BaseController < Overseers::BaseController
   before_action :set_customer_order
 

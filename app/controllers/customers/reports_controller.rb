@@ -1,5 +1,3 @@
-
-
 class Customers::ReportsController < Customers::BaseController
   def monthly_purchase_data
     authorize :report, :show_aggregate_reports?

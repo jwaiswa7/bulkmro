@@ -1,5 +1,3 @@
-
-
 class Currency < ApplicationRecord
   has_many :inquiry_currencies
   has_many :rates, class_name: "CurrencyRate"

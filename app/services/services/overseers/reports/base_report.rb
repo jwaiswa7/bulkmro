@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Reports::BaseReport < Services::Shared::BaseService
   def initialize(report, params)
     @report = report

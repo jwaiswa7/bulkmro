@@ -1,5 +1,3 @@
-
-
 class Customers::SessionsController < Devise::SessionsController
   layout "shared/layouts/sign_in"
 

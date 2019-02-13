@@ -1,5 +1,3 @@
-
-
 class InquiryComment < ApplicationRecord
   include Mixins::CanBeStamped
 

@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Kits::SaveAndSync < Services::Shared::BaseService
   def initialize(kit)
     @kit = kit

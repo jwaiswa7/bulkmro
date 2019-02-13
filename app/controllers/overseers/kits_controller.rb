@@ -1,5 +1,3 @@
-
-
 class Overseers::KitsController < Overseers::BaseController
   before_action :set_kit, only: [:show, :edit, :update]
 

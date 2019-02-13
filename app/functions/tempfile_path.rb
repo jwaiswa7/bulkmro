@@ -1,5 +1,3 @@
-
-
 class TempfilePath < BaseFunction
   def self.for(attachment)
     tempfile = Tempfile.new

@@ -1,5 +1,3 @@
-
-
 class Bank < ApplicationRecord
   include Mixins::HasCountry
   include Mixins::CanBeSynced

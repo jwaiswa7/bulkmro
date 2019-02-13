@@ -1,5 +1,3 @@
-
-
 class Services::Customers::Finders::Products < Services::Customers::Finders::BaseFinder
   def call
     call_base

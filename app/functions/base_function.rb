@@ -1,4 +1,2 @@
-
-
 class BaseFunction
 end

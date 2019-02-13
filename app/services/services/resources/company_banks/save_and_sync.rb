@@ -1,5 +1,3 @@
-
-
 class Services::Resources::CompanyBanks::SaveAndSync < Services::Shared::BaseService
   def initialize(company_bank)
     @company_bank = company_bank

@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || logistics?
@@ -124,9 +122,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
 
   def debugging?
     developer?
-  end
-
-  class Scope
+  endclass Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Finders::CompanyBanks < Services::Overseers::Finders::BaseFinder
   def call
     call_base

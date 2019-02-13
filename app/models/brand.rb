@@ -1,5 +1,3 @@
-
-
 class Brand < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced

@@ -1,5 +1,3 @@
-
-
 class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def index?
     true

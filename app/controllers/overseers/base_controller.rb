@@ -1,5 +1,3 @@
-
-
 class Overseers::BaseController < ApplicationController
 	 include Pundit
 

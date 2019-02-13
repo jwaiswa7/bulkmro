@@ -1,5 +1,3 @@
-
-
 class Resources::EmployeeInfo < Resources::ApplicationResource
   def self.collection_name
     "EmployeesInfo"

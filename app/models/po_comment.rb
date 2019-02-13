@@ -1,5 +1,3 @@
-
-
 class PoComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :purchase_order

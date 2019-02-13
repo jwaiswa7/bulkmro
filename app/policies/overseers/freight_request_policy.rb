@@ -1,5 +1,3 @@
-
-
 class Overseers::FreightRequestPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || logistics?

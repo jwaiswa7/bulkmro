@@ -1,5 +1,3 @@
-
-
 class InquiryMailer < ApplicationMailer
   default template_path: "mailers/#{self.name.underscore}"
 

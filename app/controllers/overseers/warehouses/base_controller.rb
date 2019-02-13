@@ -1,5 +1,3 @@
-
-
 class Overseers::Warehouses::BaseController < Overseers::BaseController
   before_action :set_warehouse
 

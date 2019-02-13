@@ -1,5 +1,3 @@
-
-
 class Activity < ApplicationRecord
   REJECTIONS_CLASS = "ActivityRejection"
   APPROVALS_CLASS = "ActivityApproval"

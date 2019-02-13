@@ -1,5 +1,3 @@
-
-
 class Overseers::AttachmentsController < Overseers::BaseController
   before_action :set_attachment, only: [:destroy]
 

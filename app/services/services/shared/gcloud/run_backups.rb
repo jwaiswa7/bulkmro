@@ -1,9 +1,7 @@
 
 
 require "google/apis/compute_v1"
-require "googleauth"
-
-class Services::Shared::Gcloud::RunBackups < Services::Shared::BaseService
+require "googleauth"class Services::Shared::Gcloud::RunBackups < Services::Shared::BaseService
   def initialize(send_chat_message: true)
     @client = client = Google::Apis::ComputeV1::ComputeService.new
     @project = project = "bmsap-212015"

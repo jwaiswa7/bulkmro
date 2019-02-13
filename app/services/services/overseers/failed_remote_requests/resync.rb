@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::BaseService
   def initialize
     @client = Slack::Web::Client.new

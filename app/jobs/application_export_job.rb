@@ -1,5 +1,3 @@
-
-
 class ApplicationExportJob < ActiveJob::Base
   queue_as :default
 
