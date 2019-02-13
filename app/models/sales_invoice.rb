@@ -86,11 +86,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def amount_received_against_invoice
-    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'against invoice').pluck(:payment_amount_received).compact.sum
+    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'Against Invoice').pluck(:payment_amount_received).compact.sum
   end
 
   def amount_received_on_account
-    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'on account').pluck(:payment_amount_received).compact.sum
+    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'On Account').pluck(:payment_amount_received).compact.sum
   end
 
   def get_due_date

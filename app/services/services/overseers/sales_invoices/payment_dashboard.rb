@@ -41,7 +41,7 @@ class Services::Overseers::SalesInvoices::PaymentDashboard < Services::Shared::B
       summery_data[:total_outstanding][:no_payment_nt_due][:value] =  payment_collection.sum(:amount_outstanding_npr_nd)
       summery_data[:total_outstanding][:partial_paid_over_due][:value] = payment_collection.sum(:amount_outstanding_pp_od)
       summery_data[:total_outstanding][:no_payment_over_due][:value] =  payment_collection.sum(:amount_outstanding_npr_od)
-      summery_data[:total_outstanding][:on_account][:value] =  payment_collection.sum(:total_amount_received)
+      summery_data[:total_outstanding][:on_account][:value] =  payment_collection.sum(:amount_received_on_account)
     end
   end
 

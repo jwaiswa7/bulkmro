@@ -13,9 +13,9 @@ json.data (@companies) do |company|
                   format_currency(company.invoices.not_cancelled.sum(&:calculated_total_with_tax)),
                   format_currency(company.amount_received_against_invoice),
                   format_currency(company.amount_received_on_account),
-                  format_currency(company.amount_received),
+                  format_currency(company.total_amount_received),
                   format_currency(0),
-                  format_currency(company.amount_receivable - company.amount_received),
+                  format_currency(company.total_amount_outstanding),
 
               ]
 end

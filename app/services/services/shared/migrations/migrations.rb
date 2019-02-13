@@ -2396,19 +2396,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       company = Company.find_by_remote_uid(x.get_column('BP Code'))
       if invoice.present? && company.present?
         currency = Currency.find_by_name(x.get_column('Document Currency'))
-
-        SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create! do |sales_receipt|
-          sales_receipt.assign_attributes(
-              :sales_invoice => invoice,
-              :company => company,
-              :account => company.account,
-              :currency => currency,
-              :payment_type => :'Against Invoice',
-              :payment_received_date => x.get_column('Payment Date'),
-              :payment_amount_received => x.get_column('Paid Amt'),
-              :comments => x.get_column('Remarks')
-          )
-        end
+        date = "20"+x.get_column('Payment Date').split('/').reverse.join('/')
+        sales_receipt = SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create
+        sales_receipt.update_attributes(
+            :sales_invoice => invoice,
+            :company => company,
+            :account => company.account,
+            :currency => currency,
+            :payment_type => :'Against Invoice',
+            :payment_received_date => date,
+            :payment_amount_received => x.get_column('Paid Amt'),
+            :comments => x.get_column('Remarks')
+        )
       end
     end
 
@@ -2419,17 +2418,18 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       if company.present?
         currency = Currency.find_by_name(x.get_column('Document Currency'))
-        SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create! do |sales_receipt|
+        date = "20"+x.get_column('Payment Date').split('/').reverse.join('/')
+
+        sales_receipt = SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create!
           sales_receipt.assign_attributes(
               :company => company,
               :account => company.account,
               :currency => currency,
               :payment_type => :'On Account',
-              :payment_received_date => x.get_column('Payment Date'),
+              :payment_received_date => date ,
               :payment_amount_received => x.get_column('Non-Calculated Amount'),
               :comments => x.get_column('Remarks')
           )
-        end
       end
     end
   end
@@ -2459,10 +2459,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         if invoiced_amount <= amount_received
           si.payment_status = 'Fully Paid'
+        elsif amount_received == 0.0
+          si.payment_status = 'Unpaid'
         elsif amount_received < invoiced_amount
           si.payment_status = 'Partially Paid'
-        else
-          si.payment_status = 'Unpaid'
         end
         si.save
       end
@@ -2470,48 +2470,60 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def set_payment_collection_summary
-
-    Company.all.each do |company|
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Company.all.each do |company|
       not_due_date = Time.now + 30.days
-      nd_sales_invoices = Company.sales_invoices.where('due_date > ?', not_due_date)
+      nd_sales_invoices = company.invoices.where('due_date > ?', not_due_date)
 
       # CALCULATE NOT DUE
-      no_pay_received_not_due = partially_paid_not_due = fully_paid_not_due = 0
+      no_pay_received_not_due = partially_paid_not_due = fully_paid_not_due = outstanding_partially_paid_not_due = outstanding_no_pay_received_not_due = 0
       nd_sales_invoices.each do |sales_invoice|
         if sales_invoice.payment_status == 'Fully Paid'
           fully_paid_not_due = fully_paid_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
         elsif sales_invoice.payment_status == 'Partially Paid'
           partially_paid_not_due = partially_paid_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
+          outstanding_partially_paid_not_due = outstanding_partially_paid_not_due + (sales_invoice.calculated_total_with_tax - sales_invoice.sales_receipts.sum(:payment_amount_received))
         elsif sales_invoice.payment_status == 'Unpaid'
           no_pay_received_not_due = no_pay_received_not_due + sales_invoice.sales_receipts.sum(:payment_amount_received)
+          outstanding_no_pay_received_not_due = outstanding_no_pay_received_not_due + (sales_invoice.calculated_total_with_tax -sales_invoice.sales_receipts.sum(:payment_amount_received))
         end
       end
 
       # CALCULATE OVERDUE
-      overdue_no_pay_received = overdue_partially_paid = overdue_fully_paid = 0
-      od_sales_invoices = Company.sales_invoices
-      # od_sales_invoices = Company.sales_invoices.where('due_date < ?', Time.now)
-
-      od_sales_invoices.each do |sales_invoice|
-        sales_invoice.sales_receipts.each do |sales_receipt|
-          if sales_receipt.payment_received_date > sales_invoice.due_date
-            if sales_invoice.payment_status == 'Fully Paid'
-              overdue_fully_paid = overdue_fully_paid + sales_receipt.payment_amount_received
-            elsif sales_invoice.payment_status == 'Partially Paid'
-              overdue_partially_paid = overdue_fully_paid + sales_receipt.payment_amount_received
-            elsif sales_invoice.payment_status == 'Partially Paid'
-              overdue_no_pay_received = overdue_no_pay_received + sales_invoice.calculated_total_with_tax
+      overdue_no_pay_received = overdue_partially_paid = overdue_fully_paid = outstanding_overdue_partially_paid = outstanding_overdue_no_pay_received =0
+      od_sales_invoices = company.invoices
+      # od_sales_invoices = company.invoices.where('due_date < ?', Time.now)
+        od_sales_invoices.each do |sales_invoice|
+          if sales_invoice.payment_status == 'Partially Paid'
+            outstanding_overdue_partially_paid = sales_invoice.calculated_total_with_tax
+          elsif sales_invoice.payment_status == 'Unpaid'
+            outstanding_overdue_no_pay_received = sales_invoice.calculated_total_with_tax
+          end
+          sales_invoice.sales_receipts.each do |sales_receipt|
+            if sales_receipt.payment_received_date > sales_invoice.due_date
+              if sales_invoice.payment_status == 'Fully Paid'
+                overdue_fully_paid += sales_receipt.payment_amount_received
+              elsif sales_invoice.payment_status == 'Partially Paid'
+                overdue_partially_paid +=  sales_receipt.payment_amount_received
+                outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
+              elsif sales_invoice.payment_status == 'Unpaid'
+                overdue_no_pay_received +=  sales_invoice.calculated_total_with_tax
+              end
+            else
+              if sales_invoice.payment_status == 'Partially Paid'
+                outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
+              end
             end
           end
-        end
-      end
 
+      end
       # CALCULATE OUTSTANDING
       oustanding_pp_nd = 0
 
+      total_amount_received = company.sales_receipts.sum(:payment_amount_received)
 
-      PaymentCollection.where(:company => company).first_or_create! do |payment_collection|
-        payment_collection.assign_attributes(
+      PaymentCollection.find_or_create_by(:company => company) do |payment_collection|
+        payment_collection.update_attributes(
+            :account_id =>  company.account_id,
             :amount_received_fp_nd => fully_paid_not_due,
             :amount_received_pp_nd => partially_paid_not_due,
             :amount_received_npr_nd => no_pay_received_not_due,
@@ -2519,12 +2531,19 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             :amount_received_pp_od => overdue_partially_paid,
             :amount_received_npr_od => overdue_no_pay_received,
 
-            :amount_outstanding_pp_nd => overdue_no_pay_received,
-            :amount_outstanding_npr_nd => overdue_no_pay_received,
-            :amount_outstanding_pp_od => overdue_no_pay_received,
-            :amount_outstanding_npr_od => overdue_no_pay_received,
+            :amount_outstanding_pp_nd => outstanding_partially_paid_not_due,
+            :amount_outstanding_npr_nd => outstanding_no_pay_received_not_due,
+            :amount_outstanding_pp_od => outstanding_overdue_partially_paid,
+            :amount_outstanding_npr_od => outstanding_overdue_no_pay_received,
+            :amount_received_on_account => company.sales_receipts.with_amount_on_account.sum(:payment_amount_received),
+            :amount_received_against_invoice => company.sales_receipts.with_amount_by_invoice.sum(:payment_amount_received),
+            :total_amount_received => total_amount_received,
+            :amount_outstanding => company.invoices.sum(:calculated_total_with_tax) - total_amount_received
+
         )
       end
+
     end
+
   end
 end

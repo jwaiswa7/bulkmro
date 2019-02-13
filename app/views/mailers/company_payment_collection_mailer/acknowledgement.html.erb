@@ -1,7 +1,7 @@
 <div class="font-family: Arial; font-size: 14.5px;">
   <p style="color: #555;">Dear Customer,</p>
   <p style="color: #555;">Please find attached the statement of your account as per our system.  </p>
-  <p style="color: #555;">The total outstanding amount as on date is <b><%= format_currency(@company.amount_receivable - @company.amount_received) %></b>. Summary can be seen as below:</p>
+  <p style="color: #555;">The total outstanding amount as on date is <b><%= format_currency(@company.amount_receivable - @company.total_amount_received) %></b>. Summary can be seen as below:</p>
   <table border="1" cellspacing="0" class="table table-bordered" align="center" width="100%" style="color: #333;">
     <tbody>
       <tr>
