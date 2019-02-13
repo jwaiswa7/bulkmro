@@ -12,7 +12,7 @@ let toggleCheckboxes = () => {
     $('#all_po_requests').prop("checked", false);
 
     $('#all_po_requests').change((event) => {
-        var $element = $(event.target)
+        var $element = $(event.target);
         if ($element.is(':checked')) {
             $('input[type=checkbox][name="po_requests[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
@@ -31,7 +31,7 @@ let toggleCheckboxes = () => {
     $('table').on('change', 'input[type=checkbox][name="po_requests[]"]', (event) => {
         showOrHideActions();
     })
-}
+};
 
 let updateLogisticsOwner = () => {
     let po_requests = [];
@@ -92,6 +92,6 @@ let showOrHideActions = () => {
         $('.update_logistics_owner_wrapper').hide();
     }
 
-}
+};
 
 export default index

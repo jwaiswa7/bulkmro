@@ -1,7 +1,7 @@
 const bindAndUpdateStarRating = () => {
-    let reviewQuestionsLength = $(".star").length
+    let reviewQuestionsLength = $(".star").length;
     for (let i = 0; i < reviewQuestionsLength; i++) {
-        let starRating = ".star-"+i
+        let starRating = ".star-"+i;
         $(starRating).raty({scoreName: "review-score-"+i,
             click:function (score) {
                 $(".rating-"+i).val(score)
@@ -9,6 +9,6 @@ const bindAndUpdateStarRating = () => {
                 return $(".rating-"+i).data('rating');
             }});
     }
-}
+};
 
 export default bindAndUpdateStarRating

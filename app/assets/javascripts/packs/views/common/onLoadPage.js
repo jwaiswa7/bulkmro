@@ -8,5 +8,5 @@ const onLoadPage = () => {
             $(star_id).raty({'readOnly': true , 'score': ratings['rating'] , 'precision': true, 'hints': ['bad','poor','average','good','best']})
         });
     } );
-}
+};
 export default onLoadPage

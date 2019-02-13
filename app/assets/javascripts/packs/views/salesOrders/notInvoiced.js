@@ -3,8 +3,8 @@ import updateSummaryBox from "../common/updateSummaryBox";
 import aggregateSummaryBox from "./index";
 
 const notInvoiced = () => {
-    bindSummaryBox(".summary_box", '.status-filter')
-    updateSummaryBox()
+    bindSummaryBox(".summary_box", '.status-filter');
+    updateSummaryBox();
     aggregateSummaryBox()
 };
 

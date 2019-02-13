@@ -149,27 +149,29 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   class Scope
-  def debugging?
-    developer?
-    end
-  class Scope
-    attr_reader :overseer, :scope
-
-    def initialize(overseer, scope)
-      @overseer = overseer
-      @scope = scope
+    def debugging?
+      developer?
     end
 
-    def resolve
-      if overseer.manager?
-        scope.all
-      else
-        if overseer.inside?
-          scope.joins(sales_quote: :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
-        elsif overseer.outside?
-          scope.joins(sales_quote: :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+    class Scope
+      attr_reader :overseer, :scope
+
+      def initialize(overseer, scope)
+        @overseer = overseer
+        @scope = scope
+      end
+
+      def resolve
+        if overseer.manager?
+          scope.all
         else
-          scope.joins(sales_quote: :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
+          if overseer.inside?
+            scope.joins(sales_quote: :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          elsif overseer.outside?
+            scope.joins(sales_quote: :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          else
+            scope.joins(sales_quote: :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
+          end
         end
       end
     end

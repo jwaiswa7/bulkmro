@@ -1,5 +1,3 @@
-
-
 module ShortcutsHelper
   def current_model
     controller_name.capitalize.pluralize
@@ -15,7 +13,7 @@ module ShortcutsHelper
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
-    elements = full_path.split('/').reject { |e| e.blank? }
+    elements = full_path.split('/').reject {|e| e.blank?}
     crumbs = []
 
     elements.each_with_index do |element, index|
@@ -68,8 +66,8 @@ module ShortcutsHelper
     else
       "Update #{class_name.titleize} #{suffix.humanize}"
     end
-    end
   end
+
 
   def get_entry(entries, *attributes)
     if entries[attributes[0]].present? && entries[attributes[0]][attributes[1]].present?

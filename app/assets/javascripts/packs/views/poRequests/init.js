@@ -10,6 +10,6 @@ let poRequests= {
     pendingAndRejected: pending,
     amended: amended,
     index: index
-}
+};
 
 export default poRequests
