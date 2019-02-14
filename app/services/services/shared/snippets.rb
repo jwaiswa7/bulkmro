@@ -1,11 +1,10 @@
 class Services::Shared::Snippets < Services::Shared::BaseService
-
   def supplier_data_summary
     Account.is_supplier.size
     Company.acts_as_supplier.size
-    ids = PurchaseOrder.all.map {|po| po.metadata['PoSupNum']}.compact.uniq
+    ids = PurchaseOrder.all.map { |po| po.metadata['PoSupNum'] }.compact.uniq
     ids.size
-    nov_ids = Company.acts_as_supplier.where(:created_at => Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
+    nov_ids = Company.acts_as_supplier.where(created_at: Time.new(2018, 11, 1).beginning_of_month..Time.new(2018, 11, 1).end_of_month).pluck(:remote_uid)
     (ids & nov_ids).size
 # # Accounts as suppliers
 #     7
@@ -74,7 +73,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     invoices = Contact.find_by_email('bhupali_pawar@contractor.amat.com').account.invoices
 
     invoices.all.each do |i|
-      i.update_attributes(:status => :Unpaid)
+      i.update_attributes(status: :Unpaid)
     end
 
 
@@ -242,36 +241,35 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
     statuses.each do |status|
       invoice = invoices.find_by_invoice_number(status[0])
-      invoice.update_attributes(:status => status[1]) if invoice.present?
+      invoice.update_attributes(status: status[1]) if invoice.present?
     end
   end
 
   def inquiry
     Inquiry.find_each(batch_size: 100) do |i|
-      i.update_attributes(:shipping_company => i.company) if i.shipping_company.blank?;
-      i.update_attributes(:shipping_contact => i.contact) if i.shipping_contact.blank?;
+      i.update_attributes(shipping_company: i.company) if i.shipping_company.blank?;
+      i.update_attributes(shipping_contact: i.contact) if i.shipping_contact.blank?;
     end
-
   end
 
   def best_products
     inquiry_products = InquiryProduct.joins(:inquiry, :product).where('inquiries.company_id = ?', company.id)
     best_products = inquiry_products.top(:product_id, 5)
-    best_product_ids = best_products.map {|best_product| best_product[0]}
+    best_product_ids = best_products.map { |best_product| best_product[0] }
     inquiry_products.where('products.id IN (?)', best_product_ids).select('inquiry_products.product_id, inquiry_products.bp_catalog_sku').distinct
   end
 
   def comments
     overseer = Overseer.find_by_first_name('Husna')
-    Inquiry.find_by_inquiry_number('28597').comments.last.update_attributes(:created_by => overseer, :updated_by => overseer)
+    Inquiry.find_by_inquiry_number('28597').comments.last.update_attributes(created_by: overseer, updated_by: overseer)
   end
 
   def tax_rate_migration
-    TaxRate.where(:tax_percentage => 0).first_or_create
-    TaxRate.where(:tax_percentage => 5).first_or_create
-    TaxRate.where(:tax_percentage => 12).first_or_create
-    TaxRate.where(:tax_percentage => 18).first_or_create
-    TaxRate.where(:tax_percentage => 28).first_or_create
+    TaxRate.where(tax_percentage: 0).first_or_create
+    TaxRate.where(tax_percentage: 5).first_or_create
+    TaxRate.where(tax_percentage: 12).first_or_create
+    TaxRate.where(tax_percentage: 18).first_or_create
+    TaxRate.where(tax_percentage: 28).first_or_create
 
     Category.all.each do |record|
       if record.tax_code.present? && record.tax_rate.blank?
@@ -280,14 +278,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
 
-    Product.all.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
+    Product.all.where(tax_rate_id: nil).where.not(tax_code_id: nil).each do |record|
       if record.tax_code.present? && record.tax_rate.blank?
         record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
         record.save!
       end
     end
 
-    SalesQuoteRow.where(:tax_rate_id => nil).where.not(:tax_code_id => nil).each do |record|
+    SalesQuoteRow.where(tax_rate_id: nil).where.not(tax_code_id: nil).each do |record|
       if record.tax_code.present? && record.tax_rate.blank?
         record.tax_rate = TaxRate.find_by_tax_percentage(record.tax_code.tax_percentage) || TaxRate.default
         record.save!
@@ -297,70 +295,70 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def set_non_trade_accounts
     [
-        ['SC-7894', "InstaOffice Business Solutions Pvt. Ltd."],
-        ['SC-7952', "Emtex Engineering Pvt. Ltd."],
-        ['SC-7954', "Megan Impex Pvt. Ltd."],
-        ['SC-7960', "TCI Express Limited"],
-        ['SC-7964', "Indigo Airlines"],
-        ['SC-7969', "VRL Logistics Ltd"],
-        ['SC-7971', "Attune Offitech"],
-        ['SC-7972', "Twenty First Century Techno Products Pvt Ltd (FA)"],
-        ['SC-7975', "Nagesh Enterprises"],
-        ['SC-7976', "Prakruti Projects Pvt. Ltd."],
-        ['SC-7978', "Doshi & Shah"],
-        ['SC-7979', "Joule Consulting Pvt. Ltd."],
-        ['SC-7980', "KDK Softwares India Pvt. Ltd."],
-        ['SC-7981', "Membership Fee 18%"],
-        ['SC-7982', "Stone Wood Interior"],
-        ['SC-7983', "Vodafone Number 8291952385"],
-        ['SC-7984', "Advance-Vinod Shinde"],
-        ['SC-8113', "Shortlist Professional Services Pvt. Ltd."],
-        ['SC-8197', "Expeditors International (India) Pvt. Ltd."],
-        ['SC-8198', "Fedex Express Transportation And Supply Chain Services (India) Pvt. Ltd."],
-        ['SC-8199', "Griffin Products Pvt. Ltd."],
-        ['SC-8200', "Haqcom Software Pvt. Ltd."],
-        ['SC-8201', "Innovative Engineers"],
-        ['SC-8205', "LTI - LumiTronic Industries B.V."],
-        ['SC-8207', "Praxis Info Solutions Pvt. Ltd."],
-        ['SC-8208', "R.K. Infosys"],
-        ['SC-8212', "Reliance Retail Ltd."],
-        ['SC-8215', "Spine Technologies(I) Pvt. Ltd."],
-        ['SC-8218', "Subodh Network"],
-        ['SC-8219', "TCI Express Ltd."],
-        ['SC-8220', "The New India Assurance Company Ltd."],
-        ['SC-8222', "United India Insurance Co. Ltd."],
-        ['SC-8223', "V. A. Parikh & Co."],
-        ['SC-8384', "Dell International Services India Pvt. Ltd."],
-        ['SC-8531', "MothersonSumi Infotech & Designs Ltd."],
-        ['SC-8536', "Piping World Projects"],
-        ['SC-8540', "Print Studio Planet"],
-        ['SC-8541', "Nandan Mukhiya - UrbanClap"],
-        ['SC-8542', "Parduman Enterprises"],
-        ['SC-8549', "Param Associates"],
-        ['SC-8553', "TCI House"],
-        ['SC-8554', "Environnement SA India Pvt. Ltd."],
-        ['SC-8557', "Brainsearch Consulting Pvt. Ltd."],
-        ['SC-8925', "Kishor Kamble"],
-        ['SC-9288', "Sure Resistors"],
+        ['SC-7894', 'InstaOffice Business Solutions Pvt. Ltd.'],
+        ['SC-7952', 'Emtex Engineering Pvt. Ltd.'],
+        ['SC-7954', 'Megan Impex Pvt. Ltd.'],
+        ['SC-7960', 'TCI Express Limited'],
+        ['SC-7964', 'Indigo Airlines'],
+        ['SC-7969', 'VRL Logistics Ltd'],
+        ['SC-7971', 'Attune Offitech'],
+        ['SC-7972', 'Twenty First Century Techno Products Pvt Ltd (FA)'],
+        ['SC-7975', 'Nagesh Enterprises'],
+        ['SC-7976', 'Prakruti Projects Pvt. Ltd.'],
+        ['SC-7978', 'Doshi & Shah'],
+        ['SC-7979', 'Joule Consulting Pvt. Ltd.'],
+        ['SC-7980', 'KDK Softwares India Pvt. Ltd.'],
+        ['SC-7981', 'Membership Fee 18%'],
+        ['SC-7982', 'Stone Wood Interior'],
+        ['SC-7983', 'Vodafone Number 8291952385'],
+        ['SC-7984', 'Advance-Vinod Shinde'],
+        ['SC-8113', 'Shortlist Professional Services Pvt. Ltd.'],
+        ['SC-8197', 'Expeditors International (India) Pvt. Ltd.'],
+        ['SC-8198', 'Fedex Express Transportation And Supply Chain Services (India) Pvt. Ltd.'],
+        ['SC-8199', 'Griffin Products Pvt. Ltd.'],
+        ['SC-8200', 'Haqcom Software Pvt. Ltd.'],
+        ['SC-8201', 'Innovative Engineers'],
+        ['SC-8205', 'LTI - LumiTronic Industries B.V.'],
+        ['SC-8207', 'Praxis Info Solutions Pvt. Ltd.'],
+        ['SC-8208', 'R.K. Infosys'],
+        ['SC-8212', 'Reliance Retail Ltd.'],
+        ['SC-8215', 'Spine Technologies(I) Pvt. Ltd.'],
+        ['SC-8218', 'Subodh Network'],
+        ['SC-8219', 'TCI Express Ltd.'],
+        ['SC-8220', 'The New India Assurance Company Ltd.'],
+        ['SC-8222', 'United India Insurance Co. Ltd.'],
+        ['SC-8223', 'V. A. Parikh & Co.'],
+        ['SC-8384', 'Dell International Services India Pvt. Ltd.'],
+        ['SC-8531', 'MothersonSumi Infotech & Designs Ltd.'],
+        ['SC-8536', 'Piping World Projects'],
+        ['SC-8540', 'Print Studio Planet'],
+        ['SC-8541', 'Nandan Mukhiya - UrbanClap'],
+        ['SC-8542', 'Parduman Enterprises'],
+        ['SC-8549', 'Param Associates'],
+        ['SC-8553', 'TCI House'],
+        ['SC-8554', 'Environnement SA India Pvt. Ltd.'],
+        ['SC-8557', 'Brainsearch Consulting Pvt. Ltd.'],
+        ['SC-8925', 'Kishor Kamble'],
+        ['SC-9288', 'Sure Resistors'],
     ].each do |company_array|
       Company.find_by_remote_uid(company_array[0]).update_attribute(:account_id, Account.non_trade.id)
     end
   end
 
   def set_is_customer_for_accounts
-    Account.where.not(:account_type => Account.account_types[:is_supplier]).update_all(:account_type => :is_customer)
+    Account.where.not(account_type: Account.account_types[:is_supplier]).update_all(account_type: :is_customer)
   end
 
   def update_password
-    Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(:password => 'abc123', :password_confirmation => 'abc123')
+    Overseer.find_by_email('neha.mundhe@bulkmro.com').update_attributes(password: 'abc123', password_confirmation: 'abc123')
   end
 
   def sync_unsynced_companies
-    Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").each do |company|
+    Company.where(created_at: 5.days.ago..Time.now).where(remote_uid: nil).where("pan IS NOT NULL AND pan != ''").each do |company|
       company.save_and_sync
     end
 
-    company = Company.where(:created_at => 5.days.ago..Time.now).where(:remote_uid => nil).where("pan IS NOT NULL AND pan != ''").first
+    company = Company.where(created_at: 5.days.ago..Time.now).where(remote_uid: nil).where("pan IS NOT NULL AND pan != ''").first
   end
 
   def make_admin
@@ -374,8 +372,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def copy_inquiry_number_into_project_uid
-    Inquiry.where.not(:opportunity_uid => nil).each do |inquiry|
-      inquiry.update_attributes(:project_uid => inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?;
+    Inquiry.where.not(opportunity_uid: nil).each do |inquiry|
+      inquiry.update_attributes(project_uid: inquiry.inquiry_number) if inquiry.inquiry_number.present? && inquiry.project_uid.blank?;
     end
   end
 
@@ -617,14 +615,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         ['left', 'rajani.ong@bulkmro.com'],
     ].each do |kv|
       overseer = Overseer.find_by_email(kv[1])
-      overseer.update_attributes(:role => kv[0].to_sym) if overseer.present?
+      overseer.update_attributes(role: kv[0].to_sym) if overseer.present?
     end
   end
 
   def approve_products
     PaperTrail.request(enabled: false) do
       Product.all.not_approved.each do |product|
-        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Legacy product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
       end
     end
   end
@@ -644,18 +642,18 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         next if x.get_column('entity_id').to_i < 677812
         brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
         product = Product.find_by_legacy_id(x.get_column('entity_id'))
-        product.update_attributes(:brand => brand) if product.present?
+        product.update_attributes(brand: brand) if product.present?
       end
     end
   end
 
 
   def activities_migration_fix
-    Activity.where(:created_by => nil).each do |activity|
+    Activity.where(created_by: nil).each do |activity|
       activity_overseer = activity.activity_overseers.first
 
       ActiveRecord::Base.transaction do
-        activity.update_attributes!(:overseer => activity_overseer.overseer)
+        activity.update_attributes!(overseer: activity_overseer.overseer)
         activity_overseer.destroy!
       end if activity_overseer.present?
     end
@@ -667,7 +665,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       overseer_legacy_id = x.get_column('overseer_legacy_id')
       overseer = Overseer.find_by_legacy_id(overseer_legacy_id)
       activity = Activity.where(legacy_id: x.get_column('legacy_id')).first
-      activity.update_attributes(:created_by => overseer, :updated_by => overseer) if activity.present?
+      activity.update_attributes(created_by: overseer, updated_by: overseer) if activity.present?
     end
   end
 
@@ -676,7 +674,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     service.loop(nil) do |x|
       brand = Brand.where("legacy_metadata->>'option_id' = ?", x.get_column('product_brand')).first
       product = Product.find_by_legacy_id(x.get_column('entity_id'))
-      product.update_attributes(:brand => brand)
+      product.update_attributes(brand: brand)
     end
   end
 
@@ -692,15 +690,15 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
         inquiry = Inquiry.find_by_inquiry_number(inquiry_number)
         if inquiry.present?
-          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(" ").join(".") if x.get_column('manager', downcase: true).present?
+          legacy_inside_sales_owner_username = x.get_column('manager', downcase: true).downcase.split(' ').join('.') if x.get_column('manager', downcase: true).present?
           inside_sales_owner_username = inquiry.inside_sales_owner.username if inquiry.inside_sales_owner.present?
           inquiry.inside_sales_owner = Overseer.find_by_username(legacy_inside_sales_owner_username) if legacy_inside_sales_owner_username != inside_sales_owner_username
 
-          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(" ").join(".") if x.get_column('outside', downcase: true).present?
+          legacy_outside_sales_owner_username = x.get_column('outside', downcase: true).downcase.split(' ').join('.') if x.get_column('outside', downcase: true).present?
           outside_sales_owner_username = inquiry.outside_sales_owner.username if inquiry.outside_sales_owner.present?
           inquiry.outside_sales_owner = Overseer.find_by_username(legacy_outside_sales_owner_username) if legacy_outside_sales_owner_username != outside_sales_owner_username
 
-          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(" ").join(".") if x.get_column('powermanager', downcase: true).present?
+          legacy_sales_manager_username = x.get_column('powermanager', downcase: true).downcase.split(' ').join('.') if x.get_column('powermanager', downcase: true).present?
           sales_manager_username = inquiry.sales_manager.username if inquiry.sales_manager.present?
           inquiry.sales_manager = Overseer.find_by_username(legacy_sales_manager_username) if legacy_sales_manager_username != sales_manager_username
           inquiry.save!
@@ -709,12 +707,34 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
   end
 
+  def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
+    requests = RemoteRequest.where(created_at: start_at..end_at).failed
+    requested = []
+    requested_ids = []
+    requests.each do |request|
+      new_request = [request.subject]
+      if !requested.include? new_request
+        if request.subject_type.present? && request.subject_id.present? && request.latest_request.status == 'failed'
+          begin
+            Object.const_get(request.subject_type).find(request.subject_id).save_and_sync
+            requested << new_request
+            requested_ids << request.id
+          rescue
+            puts request
+          end
+        end
+      end
+    end
+    ResyncRequest.create(request: requested_ids) if requested_ids.present?
+    [requested_ids.sort, requested_ids.size]
+  end
+
   def update_warehouse_and_inquiry
     update_if_exists = true
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv', 'seed_files')
     service.loop(nil) do |x|
-      warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
+      warehouse = Warehouse.where(name: x.get_column('Warehouse Name')).first_or_initialize
       if warehouse.new_record? || update_if_exists
         warehouse.remote_uid = x.get_column('Warehouse Code')
         warehouse.legacy_id = x.get_column('Warehouse Code')
@@ -723,14 +743,14 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-            :name => x.get_column('Account Name'),
-            :street1 => x.get_column('Street'),
-            :street2 => x.get_column('Block'),
-            :pincode => x.get_column('Zip Code'),
-            :city_name => x.get_column('City'),
-            :country_code => x.get_column('Country'),
-            :gst => x.get_column('GST'),
-            :state => AddressState.find_by_region_code(x.get_column('State'))
+          name: x.get_column('Account Name'),
+          street1: x.get_column('Street'),
+          street2: x.get_column('Block'),
+          pincode: x.get_column('Zip Code'),
+          city_name: x.get_column('City'),
+          country_code: x.get_column('Country'),
+          gst: x.get_column('GST'),
+          state: AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -741,7 +761,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
       service.loop(nil) do |x|
         inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
-        next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+        next if inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0
         inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
         if inquiry.new_record? || update_if_exists
           inquiry.bill_from = Warehouse.find_by_legacy_id(x.get_column('warehouse'))
@@ -755,10 +775,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
 
   def get_product_price(product_id, company)
     company_inquiries = company.inquiries.includes(:sales_quote_rows, :sales_order_rows)
-    sales_order_rows = company_inquiries.map {|i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
-    sales_order_row_price = sales_order_rows.map {|r| r.unit_selling_price}.flatten if sales_order_rows.present?
+    sales_order_rows = company_inquiries.map { |i| i.sales_order_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
+    sales_order_row_price = sales_order_rows.map { |r| r.unit_selling_price }.flatten if sales_order_rows.present?
     return sales_order_row_price.min if sales_order_row_price.present?
-    sales_quote_rows = company_inquiries.map {|i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id)}.flatten.compact
+    sales_quote_rows = company_inquiries.map { |i| i.sales_quote_rows.includes(:product).joins(:product).where('products.id = ?', product_id) }.flatten.compact
     sales_quote_row_price = sales_quote_rows.pluck(:unit_selling_price)
     return sales_quote_row_price.min
   end
@@ -767,10 +787,10 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     customers = Contact.all
     customers.each do |customer|
       customer_companies = customer.companies
-      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten if customer_companies.present?
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map { |i| i.inquiry_products }.flatten if customer_companies.present?
       if inquiry_products.present?
         inquiry_products.each do |inquiry_product|
-          CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :sku => inquiry_product.product.sku).first_or_create do |customer_product|
+          CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, sku: inquiry_product.product.sku).first_or_create do |customer_product|
             customer_product.product_id = inquiry_product.product_id
             customer_product.category_id = inquiry_product.product.category_id
             customer_product.brand_id = inquiry_product.product.brand_id
@@ -793,14 +813,13 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         # TODO: remove sales quote rows which are excluded in magento and not considered in total sales quote value
       end
     end
-
   end
 
   def update_sales_orders_for_legacy_inquiries
     folders = ['seed_files', 'seed_files_2']
     folders.each do |folder|
-      legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
-      remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
+      legacy_request_status_mapping = { 'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70 }
+      remote_status = { 'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70 }
       service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
       service.loop(nil) do |x|
         inquiry_number = x.get_column('inquiry_number').to_i
@@ -813,7 +832,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         sales_quote = inquiry.sales_quotes.last
         next if sales_quote.blank?
         sales_orders_legacy_metadata = inquiry.sales_orders.pluck(:legacy_metadata)
-        puts "<-------------------###########################33------------------>" if sales_orders_legacy_metadata.include?(x.get_row)
+        puts '<-------------------###########################33------------------>' if sales_orders_legacy_metadata.include?(x.get_row)
         # sales_order = sales_quote.sales_orders.where(remote_uid: x.get_column('remote_uid')).first_or_initialize
         # if sales_order.new_record? || update_if_exists
         #   sales_order.overseer = requested_by
@@ -859,12 +878,11 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def inquiry_status_update
-
-    Inquiry.joins("LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id").distinct.where(inquiry_status_records: {inquiry_id: nil}).with_includes.each do |inquiry|
+    Inquiry.joins('LEFT JOIN inquiry_status_records ON inquiry_status_records.inquiry_id = inquiries.id').distinct.where(inquiry_status_records: { inquiry_id: nil }).with_includes.each do |inquiry|
       if inquiry.inquiry_status_records.blank?
         subject = inquiry
         status = inquiry.status
-        if (inquiry.final_sales_quote.present?)
+        if inquiry.final_sales_quote.present?
           subject = inquiry.final_sales_quote
           status = 'Quotation Sent'
         end
@@ -900,7 +918,52 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     end
 
     Activity.not_approved.each do |activity|
-      activity.create_approval(:overseer => Overseer.default_approver)
+      activity.create_approval(overseer: Overseer.default_approver)
     end
+  end
+
+  def set_tax_rate_and_tax_code_for_customer_order_rows
+    CustomerOrderRow.all.each do |row|
+      row.update_attributes(tax_rate_id: row.customer_product.best_tax_rate.id, tax_code_id: row.customer_product.best_tax_code.id)
+      row.save
+    end
+  end
+  def fetch_address
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_address1.csv', 'seed_files')
+    mismatch = []
+    missing = []
+    service.loop() do |x|
+      address_uid = x.get_column('address_uid')
+      company_uid = x.get_column('company_uid')
+      data = { company: company_uid, address: address_uid }
+      address = Address.find_by_remote_uid(address_uid)
+      if address.present?
+        if address.company.remote_uid != company_uid
+          # mismatch = []
+          mismatch << data
+        end
+      else
+        # missing << data
+        # missing << company_uid
+        company = Company.find_by_remote_uid(company_uid)
+        if company.present?
+          address = company.addresses.new(
+            gst: x.get_column('gst'),
+            country_code: x.get_column('country_code'),
+            state: AddressState.find_by_region_code(x.get_column('State')),
+            state_name: nil,
+            city_name: x.get_column('city_name'),
+            pincode: x.get_column('pincode'),
+            street1: x.get_column('street1'),
+            remote_uid: address_uid
+
+          )
+          address.save!
+        else
+          missing << data
+        end
+      end
+    end
+    return { missing: missing.uniq, mismatch: mismatch.uniq }
   end
 end

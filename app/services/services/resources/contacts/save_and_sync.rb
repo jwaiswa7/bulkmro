@@ -1,5 +1,4 @@
 class Services::Resources::Contacts::SaveAndSync < Services::Shared::BaseService
-
   def initialize(contact)
     @contact = contact
   end

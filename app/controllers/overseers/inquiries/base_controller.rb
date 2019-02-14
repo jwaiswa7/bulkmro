@@ -3,12 +3,12 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
 
   private
 
-  def set_inquiry
-    @inquiry = Inquiry.find(params[:inquiry_id])
-  end
+    def set_inquiry
+      @inquiry = Inquiry.find(params[:inquiry_id])
+    end
 
-  def render_pdf_for(record, locals={})
-    render(
+    def render_pdf_for(record, locals={})
+      render(
         pdf: record.filename,
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         layout: 'shared/layouts/pdf_templates/show',
@@ -20,6 +20,6 @@ class Overseers::Inquiries::BaseController < Overseers::BaseController
         locals: {
             record: record
         }.merge(locals)
-    )
-  end
+      )
+    end
 end
