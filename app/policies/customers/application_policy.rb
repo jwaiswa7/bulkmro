@@ -49,7 +49,8 @@ class Customers::ApplicationPolicy
 
   def scope
     Pundit.policy_scope!(contact, record.class)
-    end
+  end
+
   class Scope
     attr_reader :contact, :scope
 
