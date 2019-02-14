@@ -8,7 +8,8 @@ class Services::Overseers::Exporters::GenerateExportsHourly < Services::Shared::
       ['Services', 'Overseers', 'Exporters', value].join('::').constantize.new.call
     end
   end
-  endclass Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::BaseService
+end
+class Services::Overseers::Exporters::GenerateExportsDaily < Services::Shared::BaseService
   def initialize
     export_arr = [
         'ProductsExporter',
