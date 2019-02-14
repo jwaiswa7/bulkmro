@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::RemoteRequestsController < Overseers::BaseController
   before_action :set_remote_request, only: [:show]

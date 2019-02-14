@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CustomerOrder < ApplicationRecord
   APPROVALS_CLASS = 'CustomerOrderApproval'

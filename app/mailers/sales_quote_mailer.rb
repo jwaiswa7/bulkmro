@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class SalesQuoteMailer < ApplicationMailer
   default template_path: "mailers/#{self.name.underscore}"

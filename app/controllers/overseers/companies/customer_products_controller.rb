@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Companies::CustomerProductsController < Overseers::Companies::BaseController
   before_action :set_customer_product, only: [:show, :edit, :update, :destroy]

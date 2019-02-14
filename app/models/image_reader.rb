@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ImageReader < ApplicationRecord
   validates_uniqueness_of :reference_id

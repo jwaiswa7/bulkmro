@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class OverseersIndex < BaseIndex
   define_type Overseer.all do

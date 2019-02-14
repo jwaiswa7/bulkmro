@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::WarehousesController < Overseers::BaseController
   before_action :set_warehouse, only: [:edit, :show, :update]

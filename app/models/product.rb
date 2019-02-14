@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Product < ApplicationRecord
   COMMENTS_CLASS = 'ProductComment'

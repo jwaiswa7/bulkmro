@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 module MenuHelper
   def active_if_path_is(path=nil)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Companies::SalesInvoicesController < Overseers::Companies::BaseController
   def index

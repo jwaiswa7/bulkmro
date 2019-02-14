@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::OverseersController < Overseers::BaseController
   before_action :set_overseer, only: [:edit, :update]

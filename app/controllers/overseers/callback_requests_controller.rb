@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::CallbackRequestsController < Overseers::BaseController
   before_action :set_callback_request, only: [:show]

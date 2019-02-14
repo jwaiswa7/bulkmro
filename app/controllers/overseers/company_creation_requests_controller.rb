@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::CompanyCreationRequestsController < Overseers::BaseController
   before_action :set_company_creation_request, only: [:show, :update]

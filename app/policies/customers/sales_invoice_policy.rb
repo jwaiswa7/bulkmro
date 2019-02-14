@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::SalesInvoicePolicy < Customers::ApplicationPolicy
   def show_original_invoice?

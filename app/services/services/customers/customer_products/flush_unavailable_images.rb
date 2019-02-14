@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::Shared::BaseService
   def call

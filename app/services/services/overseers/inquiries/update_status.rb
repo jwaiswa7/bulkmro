@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseService
   def initialize(subject, action_performed, should_update_status: true)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PurchaseOrder < ApplicationRecord
   COMMENTS_CLASS = 'PoComment'
@@ -96,7 +96,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def calculated_total_with_tax
-    ( rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2) ) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+    (rows.map { |row| row.total_selling_price_with_tax || 0 }.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
   end
 
   def valid_po_date?

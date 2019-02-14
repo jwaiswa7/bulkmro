@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::InquiryProductSupplierPolicy < Overseers::ApplicationPolicy
   def destroy?

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 module Mixins::IsARequest
   extend ActiveSupport::Concern

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::ReportsController < Customers::BaseController
   def monthly_purchase_data

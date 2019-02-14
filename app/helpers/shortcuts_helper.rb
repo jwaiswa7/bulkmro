@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 module ShortcutsHelper
   def current_model

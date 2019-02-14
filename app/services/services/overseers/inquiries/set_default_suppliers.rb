@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::BaseService
   def initialize(inquiry)

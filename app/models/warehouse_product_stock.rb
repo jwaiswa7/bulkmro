@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class WarehouseProductStock < ApplicationRecord
   belongs_to :product

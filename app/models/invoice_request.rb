@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class InvoiceRequest < ApplicationRecord
   COMMENTS_CLASS = 'InvoiceRequestComment'

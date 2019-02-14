@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class PaymentOption < ApplicationRecord
   include Mixins::CanBeStamped

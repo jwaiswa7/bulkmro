@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Inquiries::CommonSupplierSelected < Services::Shared::BaseService
   def initialize(inquiry, common_supplier_id, inquiry_product_ids)

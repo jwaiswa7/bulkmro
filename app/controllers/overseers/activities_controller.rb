@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::ActivitiesController < Overseers::BaseController
   before_action :set_activity, only: [:edit, :update, :approve, :reject]

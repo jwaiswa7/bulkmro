@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ContactsIndex < BaseIndex
   define_type Contact.all do

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 module SmartQueueHelper
   def smart_queue_priority_color(priority)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class InquiryCurrency < ApplicationRecord
   belongs_to :currency

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
   def initialize

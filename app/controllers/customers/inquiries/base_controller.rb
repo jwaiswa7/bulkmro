@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::Inquiries::BaseController < Customers::BaseController
   before_action :set_inquiry

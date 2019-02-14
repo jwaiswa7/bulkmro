@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Resources::ItemGroup < Resources::ApplicationResource
   def self.identifier

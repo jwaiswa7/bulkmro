@@ -1468,8 +1468,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
                     if bill_from.present? && ship_from.present? && bill_to.present?
                       purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
-                    row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
-                    row.save
+                      row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+                      row.save
                     end
                   end
                 end
@@ -2108,10 +2108,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
           if purchase_order.present? && ((purchase_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f) || (purchase_order.calculated_total.to_f != (x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f).to_f))
             writer << [purchase_order.po_number, purchase_order.calculated_total.to_f, purchase_order.calculated_total_with_tax.to_f, (x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f), x.get_column('Document Total').to_f, purchase_order.is_legacy?]
-        end
-        # if !purchase_order.present?
-        #   writer << [x.get_column('Po number'), x.get_column('Date'), x.get_column('Project'), x.get_column('Document Total'), x.get_column('Project Code'),x.get_column('Tax Amount (SC)'),x.get_column('Canceled')]
-          #end
+          end
+          # if !purchase_order.present?
+          #   writer << [x.get_column('Po number'), x.get_column('Date'), x.get_column('Project'), x.get_column('Document Total'), x.get_column('Project Code'),x.get_column('Tax Amount (SC)'),x.get_column('Canceled')]
+          # end
         end
       end
       enddef sap_sales_orders_totals_mismatch

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class RandomRecord < BaseFunction
 	 def self.for(object)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::SalesQuotes::BuildFromSalesQuote < Services::Shared::BaseService
   def initialize(old_sales_quote, overseer)

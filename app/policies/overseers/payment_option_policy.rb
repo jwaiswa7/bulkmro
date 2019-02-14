@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::PaymentOptionPolicy < Overseers::ApplicationPolicy
   def new?

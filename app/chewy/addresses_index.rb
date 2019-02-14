@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class AddressesIndex < BaseIndex
   define_type Address.has_company_id.with_includes do

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Callbacks::SalesOrders::Update < Services::Callbacks::Shared::BaseCallback
   def call

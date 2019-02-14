@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::EmailMessages::SalesMailer < Services::Shared::BaseService
   def initialize(customer_order, current_overseer = nil)

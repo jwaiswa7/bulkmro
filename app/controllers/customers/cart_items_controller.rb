@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]

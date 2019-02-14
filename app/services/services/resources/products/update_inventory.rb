@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Resources::Products::UpdateInventory < Services::Shared::BaseService
   def initialize(products)

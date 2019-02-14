@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::TaxCodePolicy < Overseers::ApplicationPolicy
   def new?

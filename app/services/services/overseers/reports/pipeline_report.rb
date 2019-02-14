@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Reports::PipelineReport < Services::Overseers::Reports::BaseReport
   def call

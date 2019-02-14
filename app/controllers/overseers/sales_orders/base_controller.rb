@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::SalesOrders::BaseController < Overseers::BaseController
   before_action :set_sales_order_and_inquiry

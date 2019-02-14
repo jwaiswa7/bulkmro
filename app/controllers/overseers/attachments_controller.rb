@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::AttachmentsController < Overseers::BaseController
   before_action :set_attachment, only: [:destroy]

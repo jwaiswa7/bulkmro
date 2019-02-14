@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::Inquiries::RefreshSmartQueue < Services::Shared::BaseService
   def initialize

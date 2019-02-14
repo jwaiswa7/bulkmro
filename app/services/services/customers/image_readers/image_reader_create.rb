@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Customers::ImageReaders::ImageReaderCreate < Services::Shared::BaseService
   if Rails.env.production?

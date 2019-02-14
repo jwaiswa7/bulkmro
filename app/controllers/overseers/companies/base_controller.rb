@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Companies::BaseController < Overseers::BaseController
   before_action :set_company

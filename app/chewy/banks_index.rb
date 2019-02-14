@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class BanksIndex < BaseIndex
   define_type Bank.all do

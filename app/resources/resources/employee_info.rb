@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Resources::EmployeeInfo < Resources::ApplicationResource
   def self.collection_name

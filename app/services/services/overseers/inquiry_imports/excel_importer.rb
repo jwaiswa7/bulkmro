@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
   class ExcelInvalidHeader < StandardError; end

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class TaxCodesIndex < BaseIndex
   define_type TaxCode.all do

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::SalesOrders::FetchOrderData < Services::Shared::BaseService
   def initialize(sales_order)

@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::BaseService
   def initialize(inquiry, import)

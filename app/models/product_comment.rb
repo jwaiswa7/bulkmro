@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class ProductComment < ApplicationRecord
   include Mixins::CanBeStamped

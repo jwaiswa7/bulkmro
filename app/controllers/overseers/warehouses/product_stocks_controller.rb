@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class Overseers::Warehouses::ProductStocksController < Overseers::Warehouses::BaseController
   def index

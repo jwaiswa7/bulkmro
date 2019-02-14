@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class RenderPdfToFile < BaseFunction
   def self.for(record, locals={})

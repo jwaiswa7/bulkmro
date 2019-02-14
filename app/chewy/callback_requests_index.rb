@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class CallbackRequestsIndex < BaseIndex
   callback_resources = CallbackRequest.resources

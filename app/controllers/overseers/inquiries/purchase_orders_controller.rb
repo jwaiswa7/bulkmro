@@ -47,7 +47,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
       @purchase_order = @inquiry.purchase_orders.find(params[:id])
     end
 
-  def set_purchase_order_items
-    Resources::PurchaseOrder.set_purchase_order_items([@purchase_order.po_number])
-  end
+    def set_purchase_order_items
+      Resources::PurchaseOrder.set_purchase_order_items([@purchase_order.po_number])
+    end
 end

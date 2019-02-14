@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 class TaxRate < ApplicationRecord
   has_many :products
