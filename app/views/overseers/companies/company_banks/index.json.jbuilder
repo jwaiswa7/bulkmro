@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.data (@company_banks) do |company_bank|
   json.array! [
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.results(@purchase_orders) do |purchase_order|
   json.set! :id, purchase_order.id
   json.set! :text, purchase_order.to_s

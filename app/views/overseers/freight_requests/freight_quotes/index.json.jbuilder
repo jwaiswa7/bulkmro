@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.data (@freight_quotes) do |freight_quote|
   json.array! [
                   [

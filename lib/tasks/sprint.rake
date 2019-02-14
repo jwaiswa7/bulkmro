@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :sprint do
   desc 'TODO'
   task setup: :environment do

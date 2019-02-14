@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :sequence do
   desc 'TODO'
   task inquiry: :environment do

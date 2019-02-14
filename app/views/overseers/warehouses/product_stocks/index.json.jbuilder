@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.data (@warehouse_products.order(instock: :desc)) do |warehouse_product|
   json.array! [
                   conditional_link(warehouse_product.product.name.truncate(50, separator: ' '), overseers_product_path(warehouse_product.product), policy(warehouse_product.product).show?),

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.results(@brands) do |brand|
   json.set! :id, brand.id
   json.set! :text, brand.to_s

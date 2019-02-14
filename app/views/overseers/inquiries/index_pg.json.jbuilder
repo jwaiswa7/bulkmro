@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.data (@inquiries) do |inquiry|
   json.array! [
                   [
