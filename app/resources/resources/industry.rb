@@ -1,5 +1,4 @@
 class Resources::Industry < Resources::ApplicationResource
-
   def self.identifier
     :IndustryCode
   end

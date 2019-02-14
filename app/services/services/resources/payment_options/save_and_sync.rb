@@ -1,5 +1,4 @@
 class Services::Resources::PaymentOptions::SaveAndSync < Services::Shared::BaseService
-
   def initialize(payment_option)
     @payment_option = payment_option
   end
@@ -15,7 +14,7 @@ class Services::Resources::PaymentOptions::SaveAndSync < Services::Shared::BaseS
       if payment_option.remote_uid.present?
         ::Resources::PaymentTermsType.update(payment_option.remote_uid, payment_option)
       else
-        payment_option.update_attributes(:remote_uid => ::Resources::PaymentTermsType.create(payment_option))
+        payment_option.update_attributes(remote_uid: ::Resources::PaymentTermsType.create(payment_option))
       end
     end
   end

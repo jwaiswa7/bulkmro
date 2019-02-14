@@ -1,5 +1,4 @@
 class Services::Resources::SalesQuotes::SaveAndSync < Services::Shared::BaseService
-
   def initialize(sales_quote)
     @sales_quote = sales_quote
   end
@@ -14,7 +13,7 @@ class Services::Resources::SalesQuotes::SaveAndSync < Services::Shared::BaseServ
     if sales_quote.quotation_uid.present?
       ::Resources::Quotation.update(sales_quote.quotation_uid, sales_quote)
     else
-      sales_quote.inquiry.update_attributes(:quotation_uid => ::Resources::Quotation.create(sales_quote))
+      sales_quote.inquiry.update_attributes(quotation_uid: ::Resources::Quotation.create(sales_quote))
     end
   end
 

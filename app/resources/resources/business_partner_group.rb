@@ -9,12 +9,12 @@ class Resources::BusinessPartnerGroup < Resources::ApplicationResource
     if record.is_customer?
       {
           Name: name,
-          Type: "bbpgt_CustomerGroup"
+          Type: 'bbpgt_CustomerGroup'
       }
     elsif record.is_supplier?
       {
           Name: name,
-          Type: "bbpgt_VendorGroup"
+          Type: 'bbpgt_VendorGroup'
       }
     end
   end

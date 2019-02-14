@@ -12,7 +12,7 @@ module Mixins::IsAPerson
     end
 
     def name
-      full_name || ["Contact", id].compact.join(' #')
+      full_name || ['Contact', id].compact.join(' #')
     end
   end
 end
