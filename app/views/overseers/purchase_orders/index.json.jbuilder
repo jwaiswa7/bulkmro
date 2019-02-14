@@ -2,7 +2,9 @@ json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [
                       if policy(purchase_order).show?
-                        row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        [row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order), 'eye', 'View PO', 'info', :_blank),
+                            row_action_button(overseers_inquiry_purchase_order_path(purchase_order.inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank)
+                        ]
                       end,
                       if policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
