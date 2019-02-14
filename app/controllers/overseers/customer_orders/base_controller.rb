@@ -3,7 +3,7 @@ class Overseers::CustomerOrders::BaseController < Overseers::BaseController
 
   private
 
-  def set_customer_order
-    @customer_order = CustomerOrder.find(params[:customer_order_id])
-  end
+    def set_customer_order
+      @customer_order = CustomerOrder.find(params[:customer_order_id])
+    end
 end

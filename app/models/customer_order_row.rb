@@ -4,5 +4,4 @@ class CustomerOrderRow < ApplicationRecord
   belongs_to :tax_code
   belongs_to :tax_rate
   delegate :best_tax_rate, to: :customer_product
-
 end

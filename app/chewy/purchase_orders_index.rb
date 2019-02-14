@@ -1,5 +1,5 @@
 class PurchaseOrdersIndex < BaseIndex
-  internal_statuses =  PurchaseOrder.internal_statuses
+  internal_statuses = PurchaseOrder.internal_statuses
   statuses = PurchaseOrder.statuses
 
   define_type PurchaseOrder.all.with_includes do
@@ -10,7 +10,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :internal_status, value: -> (record) { internal_statuses[record.internal_status] }
     field :po_number, value: -> (record) { record.po_number.to_i }, type: 'integer'
     field :po_number_string, value: -> (record) { record.po_number.to_s }, analyzer: 'substring'
-    field :po_status, value: -> (record) { statuses[record.status]}, type: 'integer'
+    field :po_status, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :po_status_string, value: -> (record) { record.status || record.metadata_status  }, analyzer: 'substring'
     field :supplier_id, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:id) if record.rows.present? }
     field :supplier, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).to_s if record.rows.present? }, analyzer: 'substring'
@@ -23,9 +23,9 @@ class PurchaseOrdersIndex < BaseIndex
     field :inside_sales_executive, value: -> (record) { record.inquiry.inside_sales_owner_id }
     field :outside_sales_executive, value: -> (record) { record.inquiry.outside_sales_owner_id }
     field :company_id, value: -> (record) { record.inquiry.company_id if record.inquiry.present? }
-    field :po_date, value: -> (record) { record.metadata['PoDate'].to_date if ( record.metadata['PoDate'].present? && record.valid_po_date? ) }, type: 'date'
+    field :po_date, value: -> (record) { record.metadata['PoDate'].to_date if record.metadata['PoDate'].present? && record.valid_po_date? }, type: 'date'
     field :created_at, type: 'date'
     field :updated_at, type: 'date'
-    field :potential_value, value: -> (record) {record.try(:calculated_total)}, type: 'double'
+    field :potential_value, value: -> (record) { record.try(:calculated_total) }, type: 'double'
   end
 end

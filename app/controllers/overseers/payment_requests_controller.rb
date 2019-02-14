@@ -5,7 +5,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
     payment_requests =
         if params[:status].present?
           @status = params[:status]
-          PaymentRequest.where(:status => params[:status])
+          PaymentRequest.where(status: params[:status])
         else
           PaymentRequest.all
         end.order(id: :desc)
@@ -21,7 +21,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   private
 
-  def set_payment_request
-    @payment_request = PaymentRequest.find(params[:id])
-  end
+    def set_payment_request
+      @payment_request = PaymentRequest.find(params[:id])
+    end
 end

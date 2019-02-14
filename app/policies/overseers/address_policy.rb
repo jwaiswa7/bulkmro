@@ -14,5 +14,4 @@ class Overseers::AddressPolicy < Overseers::ApplicationPolicy
   def warehouse_addresses?
     true
   end
-
 end

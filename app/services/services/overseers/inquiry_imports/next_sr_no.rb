@@ -1,5 +1,4 @@
 class Services::Overseers::InquiryImports::NextSrNo < Services::Shared::BaseService
-
   def initialize(inquiry)
     @inquiry = inquiry
     @sr_nos = inquiry.inquiry_products.pluck(:sr_no).reject { |sr_no| sr_no.blank? }

@@ -3,7 +3,7 @@ module Mixins::CanBeTotalled
 
   included do
     def calculated_total
-      items.inject(0) {|sum, item| sum + item.customer_product.customer_price.to_f * item.quantity}
+      items.inject(0) { |sum, item| sum + item.customer_product.customer_price.to_f * item.quantity }
     end
 
     def tax_line_items(for_order: false)
@@ -29,7 +29,7 @@ module Mixins::CanBeTotalled
     end
 
     def grand_total(for_order: nil)
-      calculated_total + calculated_total_tax(for_order:for_order)
+      calculated_total + calculated_total_tax(for_order: for_order)
     end
 
     def default_warehouse_address
