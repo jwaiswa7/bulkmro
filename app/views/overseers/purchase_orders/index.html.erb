@@ -10,16 +10,16 @@
 <div class="col-lg-12">
   <% content_for :header_row do %>
     <th class="no-sort all"></th>
-    <th class="sort desktop" data-name="po_number">Purchase #</th>
-    <th class="no-sort desktop" data-name="inquiry_number">Inquiry #</th>
+    <th class="sort desktop text-right" data-name="po_number">Purchase #</th>
+    <th class="no-sort desktop text-right" data-name="inquiry_number">Inquiry #</th>
     <th class="no-sort desktop" data-name="supplier_id">Supplier</th>
     <th class="no-sort desktop" data-name="customer_id">Customer</th>
     <th class="no-sort all" data-name="po_status">Status</th>
     <th class="no-sort desktop text-right">Line Items</th>
     <th class="no-sort desktop" data-name="inside_sales_executive" >Inside Sales</th>
     <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-    <th class="sort desktop" data-name="po_date">PO Date</th>
-    <th class="sort desktop" data-name="created_at">Created</th>
+    <th class="sort desktop text-right" data-name="po_date">PO Date</th>
+    <th class="sort desktop text-right" data-name="created_at">Created</th>
   <% end %>
   <% content_for :filter_row do %>
     <td data-filter="false"></td>
@@ -32,7 +32,7 @@
     <td data-filter="dropdown"></td>
     <td data-filter="dropdown"></td>
     <td data-filter="daterange"></td>
-    <td data-filter="daterange"></td>
+    <td data-filter="false"></td>
   <% end %>
 
   <%= render layout: 'shared/layouts/datatable' do %>

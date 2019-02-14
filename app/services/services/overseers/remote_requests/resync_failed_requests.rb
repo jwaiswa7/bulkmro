@@ -5,7 +5,7 @@ class Services::Overseers::RemoteRequests::ResyncFailedRequests < Services::Shar
   end
 
   def call
-    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
+    requests = RemoteRequest.where(created_at: start_at..end_at).failed
     requested = []
     requests.each do |request|
       new_request = [request.subject_type, request.subject_id].join('-')

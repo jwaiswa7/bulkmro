@@ -15,7 +15,7 @@ class Overseers::CallbackRequestsController < Overseers::BaseController
   end
 
   private
-  def set_callback_request
-    @callback_request = CallbackRequest.find(params[:id])
-  end
+    def set_callback_request
+      @callback_request = CallbackRequest.find(params[:id])
+    end
 end

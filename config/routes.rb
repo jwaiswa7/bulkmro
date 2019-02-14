@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     get "/docs/*page" => "docs#index"
     resources :payment_collection_emails
     resources :attachments
+    resources :banks
     resource :dashboard, :controller => :dashboard do
       get 'chewy'
       get 'reset_index'
@@ -196,6 +197,7 @@ Rails.application.routes.draw do
     resources :sales_orders do
       member do
         get 'new_purchase_order'
+        get 'debugging'
       end
 
       collection do
@@ -266,6 +268,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
@@ -300,7 +304,7 @@ Rails.application.routes.draw do
           member do
             get 'edit_mis_date'
             patch 'update_mis_date'
-
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -382,6 +386,7 @@ Rails.application.routes.draw do
             get 'payment_collection'
           end
         end
+        resources :company_banks
 
         resources :imports do
           collection do
