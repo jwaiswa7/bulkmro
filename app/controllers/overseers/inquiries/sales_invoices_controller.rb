@@ -5,7 +5,6 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def index
     @sales_invoices = @inquiry.invoices
     authorize @sales_invoices
-
   end
 
   def show
@@ -14,7 +13,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
 
     respond_to do |format|
-      format.html {render "show"}
+      format.html { render "show"}
       format.pdf do
         render_pdf_for @sales_invoice, locals
       end
@@ -24,9 +23,9 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge!({duplicate: true})
+    locals.merge!(duplicate: true)
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_invoice, locals
       end
@@ -36,9 +35,9 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals.merge!({triplicate: true})
+    locals.merge!(triplicate: true)
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_invoice, locals
       end
@@ -51,12 +50,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
     zip = service.call
 
-    send_data(zip, :type => 'application/zip', :filename => @sales_invoice.zipped_filename(include_extension: true))
+    send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))
   end
 
   def edit_mis_date
     if @sales_invoice.mis_date.blank?
-      @sales_invoice.mis_date = @sales_invoice.created_at.strftime("%d-%b-%Y")
+      @sales_invoice.mis_date = @sales_invoice.created_at.strftime('%d-%b-%Y')
     end
 
     authorize @sales_invoice
@@ -75,25 +74,25 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
 
   private
 
-  def save
-    @sales_invoice.save
-  end
-
-  def set_sales_invoice
-    @sales_invoice = @inquiry.invoices.find(params[:id])
-    @locals = {stamp: false}
-    if params[:stamp].present?
-      @locals = {stamp: true}
+    def save
+      @sales_invoice.save
     end
-  end
 
-  def set_invoice_items
-    Resources::Invoice.set_invoice_items(@sales_invoice)
-  end
+    def set_sales_invoice
+      @sales_invoice = @inquiry.invoices.find(params[:id])
+      @locals = { stamp: false }
+      if params[:stamp].present?
+        @locals = { stamp: true }
+      end
+    end
 
-  def sales_invoice_params
-    params.require(:sales_invoice).permit(:mis_date)
-  end
+    def set_invoice_items
+      Resources::Invoice.set_invoice_items([@sales_invoice.invoice_number])
+    end
 
-  attr_accessor :locals
+    def sales_invoice_params
+      params.require(:sales_invoice).permit(:mis_date)
+    end
+
+    attr_accessor :locals
 end

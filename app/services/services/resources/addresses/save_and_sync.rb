@@ -1,5 +1,4 @@
 class Services::Resources::Addresses::SaveAndSync < Services::Shared::BaseService
-
   def initialize(address)
     @address = address
   end

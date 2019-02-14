@@ -4,7 +4,7 @@ module ShortcutsHelper
   end
 
   def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '')
-    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, :method => method, :remote => remote, class: ['btn btn-sm btn-', color].join do
+    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join do
       concat content_tag(:span, label)
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
@@ -13,7 +13,7 @@ module ShortcutsHelper
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
-    elements = full_path.split('/').reject {|e| e.blank?}
+    elements = full_path.split('/').reject { |e| e.blank? }
     crumbs = []
 
     elements.each_with_index do |element, index|

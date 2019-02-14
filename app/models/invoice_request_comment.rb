@@ -1,4 +1,3 @@
-
 class InvoiceRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
 

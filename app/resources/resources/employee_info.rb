@@ -11,21 +11,20 @@ class Resources::EmployeeInfo < Resources::ApplicationResource
     {
         FirstName: record.full_name,
         LastName: record.last_name,
-        JobTitle: record.designation.present? ? record.designation.truncate(15) : "",
+        JobTitle: record.designation.present? ? record.designation.truncate(15) : '',
         Active: 'Y',
         Remarks: record.parent.try(:full_name),
         EmployeeBranchAssignment: [
-            {BPLID: 0},
-            {BPLID: 1},
-            {BPLID: 2},
-            {BPLID: 3},
-            {BPLID: 4},
-            {BPLID: 5},
-            {BPLID: 6},
-            {BPLID: 7},
-            {BPLID: 8},
+            { BPLID: 0 },
+            { BPLID: 1 },
+            { BPLID: 2 },
+            { BPLID: 3 },
+            { BPLID: 4 },
+            { BPLID: 5 },
+            { BPLID: 6 },
+            { BPLID: 7 },
+            { BPLID: 8 },
         ],
     }
   end
-
 end

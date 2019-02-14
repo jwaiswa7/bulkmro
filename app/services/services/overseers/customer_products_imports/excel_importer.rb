@@ -24,7 +24,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
   def set_and_validate_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-    excel_rows.reject! {|er| er.compact.blank?}
+    excel_rows.reject! { |er| er.compact.blank? }
     @excel_rows = excel_rows
   end
 
@@ -73,7 +73,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
             attach_file(customer_product, row['url'], filename)
           end
           customer_product.tax_code = (TaxCode.where("code LIKE '%?%'", row['hsn'].to_i).first if row['hsn'].present?) || product.tax_code
-          customer_product.tax_rate = (TaxRate.where(:tax_percentage => row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
+          customer_product.tax_rate = (TaxRate.where(tax_percentage: row['tax_percentage'].to_d).first if row['tax_percentage'].present?) || product.tax_rate
           customer_product.save
         end
       else

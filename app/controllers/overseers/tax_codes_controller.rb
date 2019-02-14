@@ -2,22 +2,21 @@ class Overseers::TaxCodesController < Overseers::BaseController
   before_action :set_tax_code, only: [:edit, :update, :show]
 
   def autocomplete
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",params[:is_service]), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
     authorize :tax_code
   end
 
   def autocomplete_for_product
     @product = Product.find(params[:product_id])
     @is_service = @product.try(:is_service) || false
-    @tax_codes = ApplyParams.to(TaxCode.active.where("is_service = ?",@is_service), params)
+    @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', @is_service), params)
     authorize @tax_codes
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         render 'autocomplete'
       end
     end
-
   end
 
   def index
@@ -68,21 +67,20 @@ class Overseers::TaxCodesController < Overseers::BaseController
 
   private
 
-  def set_tax_code
-    @tax_code ||= TaxCode.find(params[:id])
-  end
+    def set_tax_code
+      @tax_code ||= TaxCode.find(params[:id])
+    end
 
-  def tax_code_params
-    params.require(:tax_code).permit(
+    def tax_code_params
+      params.require(:tax_code).permit(
         :remote_uid,
-        :code,
-        :chapter,
-        :description,
-        :tax_percentage,
-        :is_service,
-        :is_active,
-        :is_pre_gst
-    )
-  end
-
+          :code,
+          :chapter,
+          :description,
+          :tax_percentage,
+          :is_service,
+          :is_active,
+          :is_pre_gst
+      )
+    end
 end
