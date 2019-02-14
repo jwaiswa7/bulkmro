@@ -116,62 +116,32 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && admin?
   end
 
-  def new_purchase_orders_requests?
-    admin? || developer?
-  end
-
-  def preview_purchase_orders_requests?
-    admin? || developer?
-  end
-
-  def create_purchase_orders_requests?
-    admin? || developer?
-  end
-
   def fetch_order_data?
     developer?
   end
 
-  def material_dispatched_to_customer_new_email_msg?
-    (admin? || logistics?)
-  end
-
-  def material_dispatched_to_customer_create_email_msg?
-    material_dispatched_to_customer_new_email_msg?
-  end
-
-  def material_delivered_to_customer_new_email_msg?
-    (admin? || logistics?)
-  end
-
-  def material_delivered_to_customer_create_email_msg?
-    material_delivered_to_customer_new_email_msg?
+  def debugging?
+    developer?
   end
 
   class Scope
-    def debugging?
-      developer?
+    attr_reader :overseer, :scope
+
+    def initialize(overseer, scope)
+      @overseer = overseer
+      @scope = scope
     end
 
-    class Scope
-      attr_reader :overseer, :scope
-
-      def initialize(overseer, scope)
-        @overseer = overseer
-        @scope = scope
-      end
-
-      def resolve
-        if overseer.manager?
-          scope.all
+    def resolve
+      if overseer.manager?
+        scope.all
+      else
+        if overseer.inside?
+          scope.joins(sales_quote: :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+        elsif overseer.outside?
+          scope.joins(sales_quote: :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
         else
-          if overseer.inside?
-            scope.joins(sales_quote: :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
-          elsif overseer.outside?
-            scope.joins(sales_quote: :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
-          else
-            scope.joins(sales_quote: :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
-          end
+          scope.joins(sales_quote: :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
         end
       end
     end
