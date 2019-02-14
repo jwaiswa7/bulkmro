@@ -31,7 +31,6 @@ class Services::Overseers::FailedRemoteRequests::Resync < Services::Shared::Base
       total = requests.count
       success = 0; failed = 0; pending = 0
       requests.each do |request|
-        status = ''
         old_request = RemoteRequest.find(request)
         new_request = RemoteRequest.find_by_subject_type_and_subject_id(old_request.subject_type, old_request.subject_id).latest_request
         validated_requests << new_request.id
