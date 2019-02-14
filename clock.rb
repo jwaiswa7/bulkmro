@@ -24,11 +24,11 @@ every(20.minutes, 'refresh_smart_queue') do
 end
 
 every(30.minutes, 'update_admin_dashboard_cache') do
-    service = Services::Overseers::Dashboards::Admin.new
-    service.call
+  service = Services::Overseers::Dashboards::Admin.new
+  service.call
 end
 
-every(1.day, 'flush_unavailable_images', :at => '03:30') do
+every(1.day, 'flush_unavailable_images', at: '03:30') do
   service = Services::Customers::CustomerProducts::FlushUnavailableImages.new
   service.call
 end
