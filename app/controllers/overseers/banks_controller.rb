@@ -51,17 +51,17 @@ class Overseers::BanksController < Overseers::BaseController
 
   private
 
-  def set_bank
-    @bank ||= Bank.find(params[:id])
-  end
+    def set_bank
+      @bank ||= Bank.find(params[:id])
+    end
 
-  def bank_params
-    params.require(:bank).permit(
+    def bank_params
+      params.require(:bank).permit(
         :country_code,
-        :name,
-        :code,
-        :swift_number,
-        :iban
-    )
-  end
+          :name,
+          :code,
+          :swift_number,
+          :iban
+      )
+    end
 end

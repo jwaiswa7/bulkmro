@@ -10,13 +10,13 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
     authorize @sales_shipment
     @metadata = @sales_shipment.metadata.present? ? @sales_shipment.metadata.deep_symbolize_keys : nil
     if @metadata.nil?
-      set_flash_message("There is no information to show for this Sales Shipment", :warning, now: false)
+      set_flash_message('There is no information to show for this Sales Shipment', :warning, now: false)
       redirect_to(request.referrer || root_path)
     end
 
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_shipment
       end
@@ -24,8 +24,7 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
   end
 
   private
-  def set_sales_shipment
-    @sales_shipment = @inquiry.shipments.find(params[:id])
-  end
+    def set_sales_shipment
+      @sales_shipment = @inquiry.shipments.find(params[:id])
+    end
 end
-

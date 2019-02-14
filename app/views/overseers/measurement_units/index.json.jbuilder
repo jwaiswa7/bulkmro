@@ -2,7 +2,7 @@ json.data (@measurement_units) do |measurement_unit|
   json.array! [
                   [
                       if policy(measurement_unit).edit?
-                      row_action_button(edit_overseers_measurement_unit_path(measurement_unit), 'pencil', 'Edit Measurement Unit', 'warning')
+                        row_action_button(edit_overseers_measurement_unit_path(measurement_unit), 'pencil', 'Edit Measurement Unit', 'warning')
                       end,
                   ].join(' '),
                   conditional_link(measurement_unit.to_s, edit_overseers_measurement_unit_path(measurement_unit),  policy(measurement_unit).edit?),

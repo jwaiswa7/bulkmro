@@ -3,8 +3,8 @@ class CustomerProduct < ApplicationRecord
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index('customer_products#customer_product') {self}
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
+  update_index('customer_products#customer_product') { self }
+  pg_search_scope :locate, against: [:sku, :name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category, required: false
@@ -20,14 +20,14 @@ class CustomerProduct < ApplicationRecord
   validates_presence_of :sku
   validates_presence_of :customer_price
 
-  #validates_uniqueness_of :sku, scope: :company_id # Commenting validation due to probability of non unique product codes
+  # validates_uniqueness_of :sku, scope: :company_id # Commenting validation due to probability of non unique product codes
 
   validates_uniqueness_of :product_id, scope: :company_id
   validates_presence_of :moq
 
-  scope :with_includes, -> {includes(:brand, :category)}
+  scope :with_includes, -> { includes(:brand, :category) }
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.moq ||= 1

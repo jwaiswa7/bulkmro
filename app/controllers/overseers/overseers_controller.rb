@@ -17,7 +17,7 @@ class Overseers::OverseersController < Overseers::BaseController
 
   def create
     password = Devise.friendly_token[0, 20]
-    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer, password: password, :password_confirmation => password))
+    @overseer = Overseer.new(overseer_params.merge(overseer: current_overseer, password: password, password_confirmation: password))
     authorize @overseer
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
@@ -31,7 +31,7 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def update
-    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
+    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
     authorize @overseer
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
@@ -42,27 +42,27 @@ class Overseers::OverseersController < Overseers::BaseController
 
   private
 
-  def overseer_params
-    params.require(:overseer).permit(
+    def overseer_params
+      params.require(:overseer).permit(
         :first_name,
-        :last_name,
-        :role,
-        :parent_id,
-        :email,
-        :mobile,
-        :telephone,
-        :identifier,
-        :designation,
-        :department,
-        :function,
-        :geography,
-        :status,
-        :password,
-        :password_confirmation,
-    )
-  end
+          :last_name,
+          :role,
+          :parent_id,
+          :email,
+          :mobile,
+          :telephone,
+          :identifier,
+          :designation,
+          :department,
+          :function,
+          :geography,
+          :status,
+          :password,
+          :password_confirmation,
+      )
+    end
 
-  def set_overseer
-    @overseer = Overseer.find(params[:id])
-  end
+    def set_overseer
+      @overseer = Overseer.find(params[:id])
+    end
 end

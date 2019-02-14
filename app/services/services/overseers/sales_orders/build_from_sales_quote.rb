@@ -5,10 +5,10 @@ class Services::Overseers::SalesOrders::BuildFromSalesQuote < Services::Shared::
   end
 
   def call
-    @sales_order = sales_quote.sales_orders.build(:overseer => overseer)
+    @sales_order = sales_quote.sales_orders.build(overseer: overseer)
 
     sales_quote.rows.each do |row|
-      sales_order.rows.build(:sales_quote_row => row)
+      sales_order.rows.build(sales_quote_row: row)
     end
 
     sales_order
