@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Resources::Invoice < Resources::ApplicationResource
   def self.identifier
     :DocEntry

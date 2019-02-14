@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Services::Callbacks::PurchaseOrders::Create < Services::Callbacks::Shared::BaseCallback
   def call
     inquiry = Inquiry.find_by_inquiry_number(params['PoEnquiryId'])
