@@ -9,15 +9,15 @@
       <div class="card-body">
         <% if @sales_order.approval.present? %>
           <h6 class="text-uppercase mt-2">SO Manager Approved Date </h6>
-          <% if @sales_order.manager_approved_date.present? %>
-            <p class="text-<%= status_color('success')%>"><%= format_date_time_with_second(@sales_order.approval.created_at) %></p>
+          <% if @sales_order.manager_so_status_date.present? %>
+            <p class="text-<%= status_color('success')%>"><%= format_date_time_with_second(@sales_order.manager_so_status_date) %></p>
           <% else %>
             <p>-</p>
           <% end %>
         <% else %>
           <h6 class="text-uppercase mt-2">SO Manager Rejected Date </h6>
           <% if @sales_order.rejection.present? %>
-            <p class="text-<%= status_color('failed')%>"><%= format_date_time_with_second(@sales_order.rejection.created_at) %></p>
+            <p class="text-<%= status_color('failed')%>"><%= format_date_time_with_second(@sales_order.manager_so_status_date) %></p>
           <% else %>
             <p>-</p>
           <% end %>

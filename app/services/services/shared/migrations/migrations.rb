@@ -2396,20 +2396,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def add_manager_apporved_date
      SalesOrder.approved.each do |sales_order|
-       sales_order.manager_approved_date = sales_order.approval.created_at
+       sales_order.manager_so_status_date = sales_order.approval.created_at
        sales_order.save!
      end
   end
 
   def add_manager_rejected_date
     SalesOrder.rejected.each do |sales_order|
-      sales_order.manager_approved_date = sales_order.rejection.created_at
+      sales_order.manager_so_status_date = sales_order.rejection.created_at
+      sales_order.save!
     end
   end
 
   def draft_sync_date
     SalesOrder.all.each do |sales_order|
-      if sales_order.manager_approved_date.present?
+      if sales_order.manager_so_status_date.present?
         remote_request = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => sales_order.id,:status => "success")
         if remote_request.present?
           sales_order.draft_sync_date = remote_request.first.created_at
@@ -2418,5 +2419,5 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
   end
-  #SalesOrder.where(:manager_approved_date => nil).count
+  #SalesOrder.where(:manager_so_status_date => nil).count
 end
