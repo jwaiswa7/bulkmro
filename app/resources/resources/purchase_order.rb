@@ -29,7 +29,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           purchase_order.update_attributes!(:metadata => metadata)
 
           metadata['ItemLine'].each do |remote_row|
-            row = purchase_order.rows.select {|por| por.metadata['Linenum'] == remote_row['Linenum']}.first
+            row = purchase_order.rows.select {|por| por.metadata['Linenum'].to_i == remote_row['Linenum'].to_i}.first
 
             if row.present?
               row.assign_attributes(metadata: remote_row)
