@@ -1455,6 +1455,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         puts "<----------------------- #{i}"
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         if purchase_order.present?
+          purchase_order.rows.delete_all
           puts x.get_column('purchase_order_number')
           meta_data = JSON.parse(x.get_column('meta_data'))
 
@@ -1474,7 +1475,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   bill_to = purchase_order.inquiry.bill_from.address
 
                   if bill_from.present? && ship_from.present? && bill_to.present?
-                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                    purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                    row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+                    row.save
                   end
                 end
               end
@@ -2112,14 +2115,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def purchase_orders_total_mismatch
     file = "#{Rails.root}/tmp/purchase_orders_total_mismatch.csv"
-    column_headers = ['PO_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
+    column_headers = ['PO_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax', 'is_legacy']
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_mismatch_purchase_orders.csv', 'seed_files')
     CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
       service.loop(nil) do |x|
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
-        if purchase_order.present? && ((purchase_order.converted_total_with_tax.to_f != x.get_column('Document Total').to_f)||(purchase_order.converted_total.to_f != ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f)))
-          writer << [purchase_order.po_number, purchase_order.converted_total.to_f, purchase_order.converted_total_with_tax.to_f, ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f) ,x.get_column('Document Total').to_f]
+        if purchase_order.present? && ((purchase_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f)||(purchase_order.calculated_total.to_f != ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f).to_f))
+          writer << [purchase_order.po_number, purchase_order.calculated_total.to_f, purchase_order.calculated_total_with_tax.to_f, ( x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f) ,x.get_column('Document Total').to_f, purchase_order.is_legacy?]
         end
+        # if !purchase_order.present?
+        #   writer << [x.get_column('Po number'), x.get_column('Date'), x.get_column('Project'), x.get_column('Document Total'), x.get_column('Project Code'),x.get_column('Tax Amount (SC)'),x.get_column('Canceled')]
+        # end
       end
     end
   end
