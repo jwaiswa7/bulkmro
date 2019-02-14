@@ -371,7 +371,7 @@
                   <td align="center" valign="top">
                     <span></span></td>
                   <td align="right" valign="top">
-                    <b><span><%= number_to_currency(record.metadata['base_tax_amount'] / record.metadata['base_to_order_rate'].to_f, precision: 2, unit: '') %></span></b>
+                    <b><span><%= number_to_currency(record.metadata['base_tax_amount'].to_f / record.metadata['base_to_order_rate'].to_f, precision: 2, unit: '') %></span></b>
                   </td>
                 <% else %>
                   <td align="center" valign="top">
