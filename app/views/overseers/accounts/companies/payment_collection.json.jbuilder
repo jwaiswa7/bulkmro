@@ -14,7 +14,7 @@ json.data (@companies) do |company|
                   format_currency(company.amount_received_against_invoice),
                   format_currency(company.amount_received_on_account),
                   format_currency(company.total_amount_received),
-                  format_currency(0),
+                  format_currency(company.amount_overdue_outstanding),
                   format_currency(company.total_amount_outstanding),
 
               ]

@@ -146,12 +146,9 @@ class Company < ApplicationRecord
     self.default_shipping_address
   end
 
-  def amount_received
-    SalesReceipt.where(:company_id => self.id).pluck(:payment_amount_received).compact.sum
-  end
 
   def amount_receivable
-    self.invoices.not_cancelled_invoices.map{|invoice| invoice.calculated_total}.compact.sum
+    self.invoices.not_cancelled_invoices.map{|invoice| invoice.calculated_total_with_tax}.compact.sum
   end
 
   def to_contextual_s(product)
@@ -214,11 +211,7 @@ class Company < ApplicationRecord
   end
 
   def amount_received_on_account
-    amount = 0
-    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
-      amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'On Account').sum(:payment_amount_received)
-    end
-    amount
+    self.sales_receipts.where(:payment_type => :'On Account').sum(:payment_amount_received)
   end
 
   def amount_received_against_invoice
@@ -230,10 +223,27 @@ class Company < ApplicationRecord
   end
 
   def total_amount_due
+    # here we are not considering cancelled invoice?
     self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').sum(:calculated_total_with_tax)
   end
 
   def total_amount_outstanding
-    self.total_amount_due - self.total_amount_received
+    amount = self.total_amount_due - self.total_amount_received
+    (amount <  0.0) ? 0.0 : amount
+  end
+
+  def amount_overdue_outstanding
+    # invoice date is crossed and payment is not received yet
+    amount = 0.0
+    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
+      outstanding_amount = sales_invoice.calculated_total_with_tax
+      sales_invoice.sales_receipts.each do |sales_receipt|
+        if (sales_receipt.payment_received_date < sales_invoice.due_date) || (sales_receipt.payment_received_date < Date.today)
+          outstanding_amount -= sales_receipt.payment_amount_received
+        end
+      end
+      amount += outstanding_amount
+    end
+    amount
   end
 end

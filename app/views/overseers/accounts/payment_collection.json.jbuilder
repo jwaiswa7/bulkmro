@@ -10,28 +10,28 @@ json.data (@accounts) do |account|
                   ].join(' '),
                   account.alias,
                   if account.invoices.not_cancelled_invoices.present?
-                    format_currency(account.invoices.not_cancelled_invoices.sum(&:calculated_total))
+                    format_currency(account.invoices.not_cancelled_invoices.sum(&:calculated_total_with_tax))
                   else
                     ' - '
                   end,
                   if account.sales_receipts.with_amount_by_invoice.present?
-                   format_currency(account.sales_receipts.with_amount_by_invoice.sum(&:payment_amount_received))
+                   format_currency(account.amount_received_against_invoice)
                   else
                      ' - '
                   end,
                   if account.sales_receipts.with_amount_on_account.present?
-                   format_currency(account.sales_receipts.with_amount_on_account.sum(&:payment_amount_received))
+                   format_currency(account.amount_received_on_account)
                   else
                     ' - '
                   end,
                   if account.sales_receipts.with_amount_on_account.present? || account.sales_receipts.with_amount_by_invoice.present?
-                   format_currency(account.sales_receipts.sum(&:payment_amount_received))
+                   format_currency(account.total_amount_received)
                   else
                     ' - '
                   end,
-                  '',
+                  format_currency(account.amount_overdue_outstanding),
                   if account.invoices.not_cancelled_invoices.present? && (account.sales_receipts.with_amount_on_account.present? || account.sales_receipts.with_amount_by_invoice.present?)
-                    format_currency(account.invoices.not_cancelled_invoices.sum(&:calculated_total) - (account.sales_receipts.sum(&:payment_amount_received)))
+                    format_currency(account.total_amount_outstanding)
                   else
                     ' - '
                   end,
