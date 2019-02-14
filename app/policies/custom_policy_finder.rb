@@ -1,5 +1,3 @@
-
-
 class CustomPolicyFinder
   SUFFIX = 'Policy'
 

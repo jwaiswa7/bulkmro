@@ -1,5 +1,3 @@
-
-
 class EmailMessage < ApplicationRecord
   belongs_to :overseer, required: false
   belongs_to :contact

@@ -1,5 +1,3 @@
-
-
 class AddressState < ApplicationRecord
   include Mixins::HasUniqueName
 

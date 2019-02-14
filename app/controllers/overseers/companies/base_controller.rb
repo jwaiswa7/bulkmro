@@ -1,5 +1,3 @@
-
-
 class Overseers::Companies::BaseController < Overseers::BaseController
   before_action :set_company
 

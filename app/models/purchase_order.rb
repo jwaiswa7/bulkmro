@@ -1,5 +1,3 @@
-
-
 class PurchaseOrder < ApplicationRecord
   COMMENTS_CLASS = 'PoComment'
 

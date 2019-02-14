@@ -1,5 +1,3 @@
-
-
 class PoRequest < ApplicationRecord
   COMMENTS_CLASS = 'PoRequestComment'
 

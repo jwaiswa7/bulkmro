@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesQuotes::BaseController < Overseers::BaseController
   before_action :set_sales_quote_and_inquiry
 

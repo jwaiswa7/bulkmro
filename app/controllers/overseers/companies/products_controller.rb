@@ -1,5 +1,3 @@
-
-
 class Overseers::Companies::ProductsController < Overseers::Companies::BaseController
   def index
     base_filter = {

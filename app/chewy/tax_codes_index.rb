@@ -1,5 +1,3 @@
-
-
 class TaxCodesIndex < BaseIndex
   define_type TaxCode.all do
     field :id, type: 'integer'

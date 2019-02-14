@@ -1,5 +1,3 @@
-
-
 class Services::Resources::SalesQuotes::SaveAndSync < Services::Shared::BaseService
   def initialize(sales_quote)
     @sales_quote = sales_quote

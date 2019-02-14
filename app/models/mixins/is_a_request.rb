@@ -1,5 +1,3 @@
-
-
 module Mixins::IsARequest
   extend ActiveSupport::Concern
 

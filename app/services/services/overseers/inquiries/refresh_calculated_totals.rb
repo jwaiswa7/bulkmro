@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::RefreshCalculatedTotals < Services::Shared::BaseService
   def initialize
   end

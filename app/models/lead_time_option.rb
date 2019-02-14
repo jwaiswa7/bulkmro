@@ -1,5 +1,3 @@
-
-
 class LeadTimeOption < ApplicationRecord
   has_many :sales_quote_rows
 

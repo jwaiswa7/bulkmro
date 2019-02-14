@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Resources::PurchaseOrder < Resources::ApplicationResource
   def self.identifier
     :DocEntry

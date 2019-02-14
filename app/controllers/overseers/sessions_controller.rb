@@ -1,5 +1,3 @@
-
-
 class Overseers::SessionsController < Devise::SessionsController
   layout 'shared/layouts/sign_in'
 

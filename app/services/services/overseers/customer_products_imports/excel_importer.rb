@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::CustomerProductsImports::ExcelImporter
   class ExcelInvalidHeader < StandardError;
   end

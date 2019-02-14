@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeWatermarked
   extend ActiveSupport::Concern
 

@@ -1,5 +1,3 @@
-
-
 class ApplicationController < ActionController::Base
   before_action :set_raven_context, if: :production?
   before_action :set_raven_context, if: :staging?

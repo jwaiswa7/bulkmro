@@ -1,5 +1,3 @@
-
-
 class Resources::PaymentTermsType < Resources::ApplicationResource
   def self.identifier
     :GroupNumber

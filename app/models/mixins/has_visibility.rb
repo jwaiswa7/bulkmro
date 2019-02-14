@@ -1,5 +1,3 @@
-
-
 module Mixins::HasVisibility
   extend ActiveSupport::Concern
 

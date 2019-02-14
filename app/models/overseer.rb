@@ -1,5 +1,3 @@
-
-
 require 'mail'
 
 class Overseer < ApplicationRecord

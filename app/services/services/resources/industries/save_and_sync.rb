@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Industries::SaveAndSync < Services::Shared::BaseService
   def initialize(industry)
     @industry = industry

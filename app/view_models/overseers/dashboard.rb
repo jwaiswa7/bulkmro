@@ -1,5 +1,3 @@
-
-
 class Overseers::Dashboard
   def initialize(current_overseer)
     @overseer = current_overseer

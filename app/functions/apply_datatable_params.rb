@@ -1,5 +1,3 @@
-
-
 class ApplyDatatableParams < BaseFunction
 	 def self.to(records, params, if_no_search_term: nil, unscoped_if_search_term: false, do_not_search: false, paginate: true)
  		 if params[:search] && params[:search][:value].present?

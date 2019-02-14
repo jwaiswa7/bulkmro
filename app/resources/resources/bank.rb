@@ -1,5 +1,3 @@
-
-
 class Resources::Bank < Resources::ApplicationResource
   def self.identifier
     :AbsoluteEntry

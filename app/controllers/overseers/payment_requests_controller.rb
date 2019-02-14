@@ -1,5 +1,3 @@
-
-
 class Overseers::PaymentRequestsController < Overseers::BaseController
   before_action :set_payment_request, only: [:show]
 

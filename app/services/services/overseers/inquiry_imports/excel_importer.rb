@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::ExcelImporter < Services::Overseers::InquiryImports::BaseImporter
   class ExcelInvalidHeader < StandardError; end
   class ExcelInvalidRows < StandardError; end

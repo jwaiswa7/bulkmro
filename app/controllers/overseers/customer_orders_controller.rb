@@ -1,5 +1,3 @@
-
-
 class Overseers::CustomerOrdersController < Overseers::BaseController
   before_action :set_customer_order, only: [:show]
 

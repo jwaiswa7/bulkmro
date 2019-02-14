@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::RemoteRequests::ResyncFailedRequests < Services::Shared::BaseService
   def initialize
     @start_at = Date.today.beginning_of_day

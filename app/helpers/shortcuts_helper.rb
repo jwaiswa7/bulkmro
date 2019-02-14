@@ -1,5 +1,3 @@
-
-
 module ShortcutsHelper
   def current_model
     controller_name.capitalize.pluralize

@@ -1,5 +1,3 @@
-
-
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 

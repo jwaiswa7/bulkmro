@@ -1,5 +1,3 @@
-
-
 class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseController
   before_action :get_final_sales_orders
 

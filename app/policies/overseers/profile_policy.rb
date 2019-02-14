@@ -1,5 +1,3 @@
-
-
 class Overseers::ProfilePolicy < Overseers::ApplicationPolicy
   def edit?
     true

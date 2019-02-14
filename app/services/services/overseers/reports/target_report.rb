@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports::BaseReport
   def call
     call_base

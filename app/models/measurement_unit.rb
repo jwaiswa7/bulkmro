@@ -1,5 +1,3 @@
-
-
 class MeasurementUnit < ApplicationRecord
   include Mixins::HasUniqueName
 

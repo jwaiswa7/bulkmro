@@ -1,5 +1,3 @@
-
-
 class SalesPurchaseOrder < ApplicationRecord
   include Mixins::CanBeSynced
 

@@ -1,5 +1,3 @@
-
-
 class Address < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasCountry

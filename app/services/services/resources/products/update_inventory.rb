@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Products::UpdateInventory < Services::Shared::BaseService
   def initialize(products)
     @products = products || Product.all

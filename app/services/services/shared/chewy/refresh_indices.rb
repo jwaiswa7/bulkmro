@@ -1,5 +1,3 @@
-
-
 require 'rake'
 
 class Services::Shared::Chewy::RefreshIndices < Services::Shared::BaseService

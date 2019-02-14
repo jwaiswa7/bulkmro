@@ -1,5 +1,3 @@
-
-
 class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::BaseController
   before_action :set_payment_request, only: [:edit, :update]
 

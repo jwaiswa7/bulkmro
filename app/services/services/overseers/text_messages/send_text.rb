@@ -1,5 +1,3 @@
-
-
 include DisplayHelper
 
 class Services::Overseers::TextMessages::SendText < Services::Shared::TextMessages::BaseService

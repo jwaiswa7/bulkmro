@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::NewFromCustomerOrder < Services::Shared::BaseService
   def initialize(customer_order, current_overseer)
     @customer_order = customer_order

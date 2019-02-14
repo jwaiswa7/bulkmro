@@ -1,5 +1,3 @@
-
-
 class Overseers::ReportsController < Overseers::BaseController
   def index
     Report.activity

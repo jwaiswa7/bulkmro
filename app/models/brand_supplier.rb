@@ -1,5 +1,3 @@
-
-
 class BrandSupplier < ApplicationRecord
   belongs_to :brand
 

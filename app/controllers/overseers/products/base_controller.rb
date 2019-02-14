@@ -1,5 +1,3 @@
-
-
 class Overseers::Products::BaseController < Overseers::BaseController
   before_action :set_product
 

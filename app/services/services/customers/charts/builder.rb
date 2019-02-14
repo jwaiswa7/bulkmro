@@ -1,5 +1,3 @@
-
-
 class Services::Customers::Charts::Builder < Services::Shared::BaseService
   def initialize(daterange)
     @start_at = daterange ? daterange.split('~')[0].to_date : Date.new(2018, 4, 1).beginning_of_month

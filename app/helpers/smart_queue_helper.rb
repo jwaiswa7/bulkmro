@@ -1,5 +1,3 @@
-
-
 module SmartQueueHelper
   def smart_queue_priority_color(priority)
     if priority >= 107

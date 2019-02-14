@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Finders::BaseFinder < Services::Shared::BaseService
   def initialize(params, current_overseer = nil, paginate: true)
     @search_filters = []

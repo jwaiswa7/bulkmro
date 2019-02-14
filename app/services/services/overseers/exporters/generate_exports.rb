@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Exporters::GenerateExportsHourly < Services::Shared::BaseService
   def initialize
     export_arr = [

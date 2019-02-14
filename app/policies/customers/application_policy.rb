@@ -1,5 +1,3 @@
-
-
 class Customers::ApplicationPolicy
   attr_reader :contact, :current_company, :record
 

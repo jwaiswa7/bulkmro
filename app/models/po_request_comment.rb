@@ -1,5 +1,3 @@
-
-
 class PoRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :po_request

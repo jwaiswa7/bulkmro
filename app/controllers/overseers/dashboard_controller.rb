@@ -1,5 +1,3 @@
-
-
 class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 

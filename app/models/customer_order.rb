@@ -1,5 +1,3 @@
-
-
 class CustomerOrder < ApplicationRecord
   APPROVALS_CLASS = 'CustomerOrderApproval'
   REJECTIONS_CLASS = 'CustomerOrderRejection'

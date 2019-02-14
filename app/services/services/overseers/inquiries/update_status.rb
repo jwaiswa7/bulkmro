@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseService
   def initialize(subject, action_performed, should_update_status: true)
     @should_update_status = should_update_status

@@ -1,5 +1,3 @@
-
-
 class SalesShipmentsIndex < BaseIndex
   statuses = SalesShipment.statuses
 

@@ -1,5 +1,3 @@
-
-
 class Resources::BusinessPartnerGroup < Resources::ApplicationResource
   def self.identifier
     :Code

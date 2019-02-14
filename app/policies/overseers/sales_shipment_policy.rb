@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesShipmentPolicy < Overseers::ApplicationPolicy
   def show?
     record.persisted? && record.not_legacy? && !record.shipment_pdf.attached?

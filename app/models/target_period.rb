@@ -1,5 +1,3 @@
-
-
 class TargetPeriod < ApplicationRecord
   has_many :targets
 

@@ -1,5 +1,3 @@
-
-
 class Resources::ApplicationResource
   include HTTParty
   # @@remote_exchange_log = ::Logger.new("#{Rails.root}/log/remote_exchange.log")

@@ -1,5 +1,3 @@
-
-
 class Services::Shared::BaseService
   include DisplayHelper
 

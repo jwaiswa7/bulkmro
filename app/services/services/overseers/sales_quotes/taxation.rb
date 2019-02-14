@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::SalesQuotes::Taxation < Services::Shared::BaseService
   def initialize(sales_quote_row)
     @sales_quote_row = sales_quote_row

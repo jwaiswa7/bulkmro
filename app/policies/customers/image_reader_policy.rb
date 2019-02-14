@@ -1,5 +1,3 @@
-
-
 class Customers::ImageReaderPolicy < Customers::ApplicationPolicy
   def export_all?
     true

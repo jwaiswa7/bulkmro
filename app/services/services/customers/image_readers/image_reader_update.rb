@@ -1,5 +1,3 @@
-
-
 class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::BaseService
   URL = 'https://api.playment.in/v1/project/fd3f4026-a21e-4191-9373-3e775c494d3e/feedline'
 

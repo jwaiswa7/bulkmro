@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::ListImporter < Services::Overseers::InquiryImports::BaseImporter
   def call
     if import.save

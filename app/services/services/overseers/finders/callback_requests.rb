@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Finders::BaseFinder
   def call
     call_base

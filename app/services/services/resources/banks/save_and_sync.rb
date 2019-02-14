@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Banks::SaveAndSync < Services::Shared::BaseService
   def initialize(bank)
     @bank = bank

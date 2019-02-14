@@ -1,5 +1,3 @@
-
-
 class Overseers::Companies::ImportsController < Overseers::Companies::BaseController
   def new_excel_customer_product_import
     @product_excel_import = @company.product_imports.build(overseer: current_overseer)

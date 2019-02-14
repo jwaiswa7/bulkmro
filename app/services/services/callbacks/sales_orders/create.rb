@@ -1,5 +1,3 @@
-
-
 class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::BaseCallback
   def call
     sprint_order_id = params['U_MgntDocID']

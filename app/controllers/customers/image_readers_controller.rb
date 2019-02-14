@@ -1,5 +1,3 @@
-
-
 class Customers::ImageReadersController < Customers::BaseController
   require 'httparty'
   protect_from_forgery with: :null_session

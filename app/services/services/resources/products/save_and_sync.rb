@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Products::SaveAndSync < Services::Shared::BaseService
   def initialize(product)
     @product = product

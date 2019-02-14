@@ -1,5 +1,3 @@
-
-
 class ApplicationMailer < ActionMailer::Base
   add_template_helper(DisplayHelper)
   layout 'mailers/layouts/mailer'

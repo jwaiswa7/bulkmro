@@ -1,5 +1,3 @@
-
-
 class SalesOrderRow < ApplicationRecord
   include Mixins::CanBeStamped
 

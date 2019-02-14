@@ -1,5 +1,3 @@
-
-
 class CompanyBanksIndex < BaseIndex
   define_type CompanyBank.all.with_includes do
     field :id, type: 'integer'

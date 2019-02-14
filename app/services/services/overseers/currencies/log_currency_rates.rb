@@ -1,5 +1,3 @@
-
-
 require 'money/bank/open_exchange_rates_bank'
 
 class Services::Overseers::Currencies::LogCurrencyRates < Services::Shared::BaseService

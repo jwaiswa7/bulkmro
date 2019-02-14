@@ -1,5 +1,3 @@
-
-
 class Resources::Item < Resources::ApplicationResource
   def self.identifier
     :ItemCode

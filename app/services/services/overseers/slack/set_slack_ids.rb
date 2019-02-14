@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Slack::SetSlackIds < Services::Shared::BaseService
   def initialize
     @client = Slack::Web::Client.new

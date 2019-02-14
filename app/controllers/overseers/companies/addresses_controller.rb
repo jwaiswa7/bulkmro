@@ -1,5 +1,3 @@
-
-
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
   before_action :set_address, only: [:show, :edit, :update]
 

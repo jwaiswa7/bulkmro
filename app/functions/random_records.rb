@@ -1,5 +1,3 @@
-
-
 class RandomRecords < BaseFunction
 	 def self.for(object, limit)
  		 if object.is_a?(Class)

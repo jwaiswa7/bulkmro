@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeApproved
   extend ActiveSupport::Concern
 

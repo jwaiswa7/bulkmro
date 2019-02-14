@@ -1,5 +1,3 @@
-
-
 class Overseers::ApplicationPolicy
   attr_reader :overseer, :record
 

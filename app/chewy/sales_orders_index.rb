@@ -1,5 +1,3 @@
-
-
 class SalesOrdersIndex < BaseIndex
   statuses = SalesOrder.statuses
   legacy_request_statuses = SalesOrder.legacy_request_statuses

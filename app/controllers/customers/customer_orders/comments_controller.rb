@@ -1,5 +1,3 @@
-
-
 class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders::BaseController
   def create
     @comment = @customer_order.comments.build(comment_params.merge(contact: current_contact))

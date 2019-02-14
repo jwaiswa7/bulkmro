@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Inquiries::SaveAndSync < Services::Shared::BaseService
   def initialize(inquiry)
     @inquiry = inquiry

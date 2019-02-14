@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::BaseCallback
   def call
     begin

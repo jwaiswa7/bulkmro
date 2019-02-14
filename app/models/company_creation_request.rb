@@ -1,5 +1,3 @@
-
-
 class CompanyCreationRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasApproveableStatus

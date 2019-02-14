@@ -1,5 +1,3 @@
-
-
 class Overseers::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
     @overseer = Overseer.from_omniauth(request.env['omniauth.auth'])

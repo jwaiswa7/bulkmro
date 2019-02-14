@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Exporters::PurchaseOrdersExporter < Services::Overseers::Exporters::BaseExporter
   def initialize
     super

@@ -1,5 +1,3 @@
-
-
 module Mixins::HasSupplier
   extend ActiveSupport::Concern
 

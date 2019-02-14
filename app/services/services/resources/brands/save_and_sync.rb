@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Brands::SaveAndSync < Services::Shared::BaseService
   def initialize(brand)
     @brand = brand

@@ -1,5 +1,3 @@
-
-
 module Mixins::IsAPerson
   extend ActiveSupport::Concern
 

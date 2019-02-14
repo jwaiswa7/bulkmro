@@ -1,5 +1,3 @@
-
-
 require 'google/apis/compute_v1'
 require 'googleauth'
 

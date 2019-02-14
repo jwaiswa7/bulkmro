@@ -1,5 +1,3 @@
-
-
 class CallbackRequestsIndex < BaseIndex
   callback_resources = CallbackRequest.resources
   define_type CallbackRequest.all do

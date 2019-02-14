@@ -1,5 +1,3 @@
-
-
 class ActivityOverseer < ApplicationRecord
   belongs_to :overseer
   belongs_to :activity

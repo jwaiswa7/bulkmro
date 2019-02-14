@@ -1,5 +1,3 @@
-
-
 class Resources::Project < Resources::ApplicationResource
   def self.identifier
     :Code

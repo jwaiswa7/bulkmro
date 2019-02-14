@@ -1,5 +1,3 @@
-
-
 class ApplyParams < BaseFunction
 	 def self.to(records, params)
  		 # Set search query

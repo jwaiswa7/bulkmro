@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::CreateFailedSkus < Services::Shared::BaseService
   def initialize(inquiry, excel_import)
     @inquiry = inquiry

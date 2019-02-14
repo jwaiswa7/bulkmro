@@ -1,5 +1,3 @@
-
-
 module Mixins::HasConvertedCalculations
   extend ActiveSupport::Concern
 

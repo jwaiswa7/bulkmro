@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::RefreshSmartQueue < Services::Shared::BaseService
   def initialize
   end

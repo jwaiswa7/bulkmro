@@ -1,5 +1,3 @@
-
-
 class OnlinePayment < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasOnlinePayments

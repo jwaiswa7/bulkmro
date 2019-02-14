@@ -1,5 +1,3 @@
-
-
 class Overseers::FreightRequests::BaseController < Overseers::BaseController
   before_action :set_freight_request
 

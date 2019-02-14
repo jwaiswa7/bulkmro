@@ -1,5 +1,3 @@
-
-
 class Services::Customers::Charts::RevenueTrend < Services::Customers::Charts::Builder
   def initialize(daterange)
     super

@@ -1,5 +1,3 @@
-
-
 class Resources::ItemGroup < Resources::ApplicationResource
   def self.identifier
     :Number

@@ -1,5 +1,3 @@
-
-
 class Overseers::PoRequests::BaseController < Overseers::BaseController
   before_action :set_po_request
 

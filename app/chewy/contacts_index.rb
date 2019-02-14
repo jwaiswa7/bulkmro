@@ -1,5 +1,3 @@
-
-
 class ContactsIndex < BaseIndex
   define_type Contact.all do
     field :id, type: 'integer'

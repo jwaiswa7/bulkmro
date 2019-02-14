@@ -1,5 +1,3 @@
-
-
 class RemoteRequestsIndex < BaseIndex
   resource_status = RemoteRequest.resources
   define_type RemoteRequest.all do

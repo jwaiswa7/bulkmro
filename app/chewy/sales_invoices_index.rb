@@ -1,5 +1,3 @@
-
-
 class SalesInvoicesIndex < BaseIndex
   statuses = SalesInvoice.statuses
 

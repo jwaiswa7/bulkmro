@@ -1,5 +1,3 @@
-
-
 class FreightRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
   belongs_to :freight_request

@@ -1,5 +1,3 @@
-
-
 class ProductComment < ApplicationRecord
   include Mixins::CanBeStamped
 

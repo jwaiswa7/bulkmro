@@ -1,5 +1,3 @@
-
-
 class Services::Shared::Snippets < Services::Shared::BaseService
   def supplier_data_summary
     Account.is_supplier.size

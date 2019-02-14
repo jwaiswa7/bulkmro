@@ -1,5 +1,3 @@
-
-
 class Customers::SalesInvoicesController < Customers::BaseController
   before_action :set_sales_invoice, only: [:show]
 

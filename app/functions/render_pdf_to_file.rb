@@ -1,5 +1,3 @@
-
-
 class RenderPdfToFile < BaseFunction
   def self.for(record, locals={})
     action_view = ActionView::Base.new(ActionController::Base.view_paths, {})

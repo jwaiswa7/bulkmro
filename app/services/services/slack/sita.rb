@@ -1,5 +1,3 @@
-
-
 require 'slack-ruby-bot'
 include DisplayHelper
 

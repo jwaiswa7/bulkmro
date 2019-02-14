@@ -1,5 +1,3 @@
-
-
 class Overseers::PoRequestRowPolicy < Overseers::ApplicationPolicy
   def destroy?
     true

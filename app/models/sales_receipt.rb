@@ -1,5 +1,3 @@
-
-
 class SalesReceipt < ApplicationRecord
   include Mixins::CanBeSynced
 

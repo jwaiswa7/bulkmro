@@ -1,5 +1,3 @@
-
-
 module Mixins::HasApproveableStatus
   extend ActiveSupport::Concern
 

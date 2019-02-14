@@ -1,5 +1,3 @@
-
-
 class PaymentOption < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced

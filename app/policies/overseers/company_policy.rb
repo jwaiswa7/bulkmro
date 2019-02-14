@@ -1,5 +1,3 @@
-
-
 class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?
     record.contacts.any? && record.addresses.any? && manager_or_sales? && is_active? && record.is_customer?

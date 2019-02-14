@@ -1,5 +1,3 @@
-
-
 module Mixins::HasComments
   extend ActiveSupport::Concern
 

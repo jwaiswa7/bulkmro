@@ -1,5 +1,3 @@
-
-
 class CompanyBank < ApplicationRecord
   include Mixins::CanBeSynced
 

@@ -1,5 +1,3 @@
-
-
 class ProductRejection < ApplicationRecord
   include Mixins::CanBeStamped
 

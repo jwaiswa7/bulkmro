@@ -1,5 +1,3 @@
-
-
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
   before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
 

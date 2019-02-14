@@ -1,5 +1,3 @@
-
-
 class PaymentRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
 

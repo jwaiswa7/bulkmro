@@ -1,5 +1,3 @@
-
-
 class FreightQuote < ApplicationRecord
   COMMENTS_CLASS = 'FreightQuoteComment'
 

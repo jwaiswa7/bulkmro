@@ -1,5 +1,3 @@
-
-
 class Services::Resources::Overseers::SaveAndSync < Services::Shared::BaseService
   def initialize(overseer)
     @overseer = overseer

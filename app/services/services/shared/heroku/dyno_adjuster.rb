@@ -1,5 +1,3 @@
-
-
 require 'platform-api'
 
 class Services::Shared::Heroku::DynoAdjuster < Services::Shared::BaseService

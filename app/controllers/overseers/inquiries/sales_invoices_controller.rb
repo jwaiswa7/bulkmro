@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
   before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
   before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]

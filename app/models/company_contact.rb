@@ -1,5 +1,3 @@
-
-
 class CompanyContact < ApplicationRecord
   include Mixins::CanBeStamped
 

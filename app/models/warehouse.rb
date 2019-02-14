@@ -1,5 +1,3 @@
-
-
 class Warehouse < ApplicationRecord
   include Mixins::HasVisibility
   include Mixins::CanBeActivated

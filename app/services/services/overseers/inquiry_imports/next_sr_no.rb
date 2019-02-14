@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::InquiryImports::NextSrNo < Services::Shared::BaseService
   def initialize(inquiry)
     @inquiry = inquiry

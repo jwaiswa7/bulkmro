@@ -1,5 +1,3 @@
-
-
 require 'msg91ruby'
 
 class Services::Shared::TextMessages::BaseService < Services::Shared::BaseService

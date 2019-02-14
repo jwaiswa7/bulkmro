@@ -1,5 +1,3 @@
-
-
 class Kit < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSynced

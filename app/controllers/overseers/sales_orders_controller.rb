@@ -1,5 +1,3 @@
-
-
 class Overseers::SalesOrdersController < Overseers::BaseController
   before_action :set_sales_order, only: [ :resync]
   def pending

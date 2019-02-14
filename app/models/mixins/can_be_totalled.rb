@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeTotalled
   extend ActiveSupport::Concern
 

@@ -1,5 +1,3 @@
-
-
 class PaymentRequest < ApplicationRecord
   COMMENTS_CLASS = 'PaymentRequestComment'
 

@@ -1,5 +1,3 @@
-
-
 module Mixins::HasImages
   extend ActiveSupport::Concern
 

@@ -1,5 +1,3 @@
-
-
 class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]
   before_action :cart_item_params, only: [:create]

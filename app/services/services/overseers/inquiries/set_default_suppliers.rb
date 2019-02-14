@@ -1,5 +1,3 @@
-
-
 class Services::Overseers::Inquiries::SetDefaultSuppliers < Services::Shared::BaseService
   def initialize(inquiry)
     @inquiry = inquiry

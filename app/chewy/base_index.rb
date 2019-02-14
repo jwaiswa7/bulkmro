@@ -1,5 +1,3 @@
-
-
 class BaseIndex < Chewy::Index
   settings(
     analysis: {

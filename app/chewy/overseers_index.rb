@@ -1,5 +1,3 @@
-
-
 class OverseersIndex < BaseIndex
   define_type Overseer.all do
     field :id, type: 'integer'

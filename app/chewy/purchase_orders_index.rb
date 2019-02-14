@@ -1,5 +1,3 @@
-
-
 class PurchaseOrdersIndex < BaseIndex
   internal_statuses = PurchaseOrder.internal_statuses
   statuses = PurchaseOrder.statuses

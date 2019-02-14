@@ -1,5 +1,3 @@
-
-
 class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def pending?
     index?
