@@ -1,7 +1,6 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::BaseController
   before_action :set_purchase_order, only: [:show]
+  before_action :set_purchase_order_items, only: [:show]
 
   def index
     @purchase_orders = @inquiry.purchase_orders
@@ -47,4 +46,8 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     def set_purchase_order
       @purchase_order = @inquiry.purchase_orders.find(params[:id])
     end
+
+  def set_purchase_order_items
+    Resources::PurchaseOrder.set_purchase_order_items([@purchase_order.po_number])
+  end
 end
