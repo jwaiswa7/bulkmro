@@ -6,9 +6,9 @@ module Mixins::CanBeSynced
   included do
     def save_and_sync(options = false)
       if options
-        service = ["Services", "Resources", self.class.name.pluralize, "SaveAndSync"].join("::").constantize.new(self, options)
+        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self, options)
       else
-        service = ["Services", "Resources", self.class.name.pluralize, "SaveAndSync"].join("::").constantize.new(self)
+        service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self)
       end
 
       service.call

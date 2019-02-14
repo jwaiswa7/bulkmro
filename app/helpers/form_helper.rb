@@ -17,11 +17,11 @@ module FormHelper
    end
 
   def show_if(condition)
-		  condition ? "show" : nil
+		  condition ? 'show' : nil
 	end
 
 	def disabled_if(condition)
-		 condition ? "disabled" : nil
+		 condition ? 'disabled' : nil
 	end
 
 	def format_submit_text(obj, use_alias: nil, suffix: nil)
@@ -42,8 +42,8 @@ module FormHelper
 	end
 
   def placeholder_for(f, name)
-		  singular = ["simple_form", "placeholders", f.object.class.name.underscore, name].join(".")
-		plural = ["simple_form", "placeholders", f.object.class.name.underscore.pluralize, name].join(".")
+		  singular = ['simple_form', 'placeholders', f.object.class.name.underscore, name].join('.')
+		plural = ['simple_form', 'placeholders', f.object.class.name.underscore.pluralize, name].join('.')
 
 		if I18n.exists?(singular, I18n.locale)
 			 I18n.t(singular, I18n.locale)
@@ -63,15 +63,15 @@ module FormHelper
 	end
 
   def action_button(action, entity)
-		  if action.capitalize == "New"
-  			 i = "fa-plus-circle"
-  			color = "success"
+		  if action.capitalize == 'New'
+  			 i = 'fa-plus-circle'
+  			color = 'success'
   		else
-  			 i = "fa-pen"
-  			color = "warning"
+  			 i = 'fa-pen'
+  			color = 'warning'
   		end
 
-		button_tag(type: "submit", class: "btn btn-#{color} btn-block") do
+		button_tag(type: 'submit', class: "btn btn-#{color} btn-block") do
 			 concat content_tag :i, nil, class: "fal #{i} mr-1"
 			concat content_tag :span, submit_text(entity)
 		end

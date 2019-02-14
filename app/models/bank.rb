@@ -4,7 +4,7 @@ class Bank < ApplicationRecord
   include Mixins::HasCountry
   include Mixins::CanBeSynced
 
-  update_index("banks#bank") { self }
+  update_index('banks#bank') { self }
   pg_search_scope :locate, against: [:name, :code, :swift_number], using: { tsearch: { prefix: true } }
 
   has_many :company_banks

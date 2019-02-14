@@ -27,19 +27,19 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def material_readiness_queue
     authorize :purchase_order
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_readiness_queue, params)
-    render "material_readiness_queue"
+    render 'material_readiness_queue'
   end
 
   def material_pickup_queue
     authorize :purchase_order
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_pickup_queue, params)
-    render "material_readiness_queue"
+    render 'material_readiness_queue'
   end
 
   def material_delivered_queue
     authorize :purchase_order
     @purchase_orders = ApplyDatatableParams.to(PurchaseOrder.material_delivered_queue, params)
-    render "material_readiness_queue"
+    render 'material_readiness_queue'
   end
 
   def edit_internal_status
@@ -61,7 +61,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
       end
       redirect_to edit_internal_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
-      render "edit_internal_status"
+      render 'edit_internal_status'
     end
   end
 

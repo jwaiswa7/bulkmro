@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Customers::SessionsController < Devise::SessionsController
-  layout "shared/layouts/sign_in"
+  layout 'shared/layouts/sign_in'
 
   def edit_current_company
     current_contact

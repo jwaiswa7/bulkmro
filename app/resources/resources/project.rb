@@ -12,9 +12,9 @@ class Resources::Project < Resources::ApplicationResource
     validated_response = get_validated_response(response)
     log_response(validated_response)
 
-    if validated_response[:error_message].present? && validated_response[:error_message] == "This entry already exists in the following tables (ODBC -2035)"
+    if validated_response[:error_message].present? && validated_response[:error_message] == 'This entry already exists in the following tables (ODBC -2035)'
       record.inquiry_number
-    elsif validated_response["code"].present?
+    elsif validated_response['code'].present?
       record.inquiry_number
     else
       nil

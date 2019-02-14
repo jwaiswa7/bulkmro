@@ -3,31 +3,31 @@
 class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::BaseCallback
   def call
     begin
-      sales_order = SalesOrder.find_by_order_number(params["order_id"])
+      sales_order = SalesOrder.find_by_order_number(params['order_id'])
 
       if sales_order.present?
-        if !SalesInvoice.find_by_invoice_number(params["increment_id"]).present?
-          sales_order.invoices.where(invoice_number: params["increment_id"]).first_or_create! do |invoice|
-            invoice.assign_attributes(status: 1, metadata: params, mis_date: params["created_at"])
+        if !SalesInvoice.find_by_invoice_number(params['increment_id']).present?
+          sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
+            invoice.assign_attributes(status: 1, metadata: params, mis_date: params['created_at'])
 
-            if params["is_kit"].to_i == 1
+            if params['is_kit'].to_i == 1
               sales_order_row = sales_order.sales_order_rows.first
 
               invoice.rows.where(sku: sales_order_row.product.sku).first_or_initialize do |row|
-                qty_kit = params["qty_kit"].to_i
-                unit_price_kit = params["unitprice_kit"].to_f
+                qty_kit = params['qty_kit'].to_i
+                unit_price_kit = params['unitprice_kit'].to_f
 
                 kit_meta_data = {
                     qty: qty_kit,
                     sku: sales_order_row.product.sku,
-                    name: params["desc_kit"],
+                    name: params['desc_kit'],
                     price: unit_price_kit,
                     base_cost: nil,
                     row_total: unit_price_kit * qty_kit,
                     base_price: unit_price_kit,
                     product_id: sales_order_row.product.id.to_param,
                     tax_amount: sales_order.calculated_total_tax,
-                    description: params["desc_kit"],
+                    description: params['desc_kit'],
                     order_item_id: nil,
                     base_row_total: unit_price_kit * qty_kit,
                     price_incl_tax: nil,
@@ -56,10 +56,10 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
                 )
               end if sales_order_row.present?
             else
-              params["ItemLine"].each do |remote_row|
-                invoice.rows.where(sku: remote_row["sku"]).first_or_initialize do |row|
+              params['ItemLine'].each do |remote_row|
+                invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
                   row.assign_attributes(
-                    quantity: remote_row["qty"],
+                    quantity: remote_row['qty'],
                     metadata: remote_row
                   )
                 end
@@ -67,15 +67,15 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
             end
           end
 
-          sales_order.invoice_total = sales_order.invoices.map{ |i| i.metadata.present? ? (i.metadata["base_grand_total"].to_f - i.metadata["base_tax_amount"].to_f) : 0.0 }.inject(0){ |sum, x| sum + x }
+          sales_order.invoice_total = sales_order.invoices.map{ |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0){ |sum, x| sum + x }
           sales_order.save
 
-          return_response("Sales Invoice created successfully.")
+          return_response('Sales Invoice created successfully.')
         else
-          return_response("Sales Invoice already created.")
+          return_response('Sales Invoice already created.')
         end
       else
-        return_response("Sales Invoice not found.", 0)
+        return_response('Sales Invoice not found.', 0)
       end
     rescue => e
       return_response(e.message, 0)

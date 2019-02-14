@@ -50,6 +50,6 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
   end
 
   def export_all?
-    allow_export? || ["priyanka.rajpurkar@bulkmro.com", "subrata.baruah@bulkmro.com"].include?(overseer.email)
+    allow_export? || ['priyanka.rajpurkar@bulkmro.com', 'subrata.baruah@bulkmro.com'].include?(overseer.email)
   end
 end

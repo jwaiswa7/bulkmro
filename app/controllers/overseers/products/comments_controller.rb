@@ -13,11 +13,11 @@ class Overseers::Products::CommentsController < Overseers::Products::BaseControl
 
     if @comment.save!
       callback_method = %w(approve reject merge).detect { |action| params[action] }
-      send(callback_method) if callback_method.present? && policy(@product).send([callback_method, "?"].join)
+      send(callback_method) if callback_method.present? && policy(@product).send([callback_method, '?'].join)
 
       redirect_to overseers_product_comments_path(@product), notice: flash_message(@comment, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

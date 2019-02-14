@@ -2,8 +2,8 @@
 
 class Callbacks::SessionsController < Callbacks::BaseController
   skip_before_action :authenticate_callback!
-  EMAIL = "ashwin.goyal@bulkmro.com"
-  PASSWORD = "abc123"
+  EMAIL = 'ashwin.goyal@bulkmro.com'
+  PASSWORD = 'abc123'
 
   def new
     @callback_request = CallbackRequest.where(method: self.to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
@@ -30,7 +30,7 @@ class Callbacks::SessionsController < Callbacks::BaseController
 
       render json: response, status: :ok
     else
-      response = { success: 0, status: :failed, message: "Invalid username or password." }
+      response = { success: 0, status: :failed, message: 'Invalid username or password.' }
       @callback_request.update(
         response: response.to_json,
         status: :failed,
@@ -43,11 +43,11 @@ class Callbacks::SessionsController < Callbacks::BaseController
 
   def to_callback_request(request_type)
     case request_type
-    when "POST"
+    when 'POST'
       :post
-    when "GET"
+    when 'GET'
       :get
-    when "PATCH"
+    when 'PATCH'
       :patch
     end
   end

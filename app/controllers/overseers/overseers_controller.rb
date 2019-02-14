@@ -24,7 +24,7 @@ class Overseers::OverseersController < Overseers::BaseController
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -33,12 +33,12 @@ class Overseers::OverseersController < Overseers::BaseController
   end
 
   def update
-    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == "password" || k == "password_confirmation") && v.blank? })
+    @overseer.assign_attributes(overseer_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
     authorize @overseer
     if @overseer.save_and_sync
       redirect_to overseers_overseers_path, notice: flash_message(@overseer, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

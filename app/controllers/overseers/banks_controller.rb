@@ -32,7 +32,7 @@ class Overseers::BanksController < Overseers::BaseController
     if @bank.save_and_sync
       redirect_to overseers_banks_path, notice: flash_message(@bank, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -47,7 +47,7 @@ class Overseers::BanksController < Overseers::BaseController
     if @bank.save_and_sync
       redirect_to overseers_bank_path(@bank), notice: flash_message(@bank, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

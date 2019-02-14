@@ -15,9 +15,9 @@ class Services::Overseers::Finders::Warehouses < Services::Overseers::Finders::B
     index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[name^3 state_name remote_uid gst location],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
   end

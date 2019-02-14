@@ -5,10 +5,10 @@ class Cart < ApplicationRecord
 
   belongs_to :contact
   belongs_to :company, required: false
-  has_many :items, class_name: "CartItem", dependent: :destroy
+  has_many :items, class_name: 'CartItem', dependent: :destroy
   accepts_nested_attributes_for :items
-  belongs_to :billing_address, foreign_key: :billing_address_id, class_name: "Address", required: false
-  belongs_to :shipping_address, foreign_key: :shipping_address_id, class_name: "Address", required: false
+  belongs_to :billing_address, foreign_key: :billing_address_id, class_name: 'Address', required: false
+  belongs_to :shipping_address, foreign_key: :shipping_address_id, class_name: 'Address', required: false
 
   after_initialize :set_global_defaults
 

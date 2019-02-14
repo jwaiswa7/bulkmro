@@ -3,7 +3,7 @@
 class FilePresenceValidator < ActiveModel::Validator
   def validate(record)
     if options[:attachment].blank? || !record.send(attachment).attached?
-      record.errors.add(attachment, "must be attached")
+      record.errors.add(attachment, 'must be attached')
     end
   end
 

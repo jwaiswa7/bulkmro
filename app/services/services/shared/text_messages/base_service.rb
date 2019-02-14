@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "msg91ruby"
+require 'msg91ruby'
 
 class Services::Shared::TextMessages::BaseService < Services::Shared::BaseService
   def send_text_message(recipient, to, message, use_alt_provider: false)
@@ -23,7 +23,7 @@ class Services::Shared::TextMessages::BaseService < Services::Shared::BaseServic
                           text_message.to,
             text_message.message,
             4
-        ))["message"]
+        ))['message']
       )
 
       text_message.save!

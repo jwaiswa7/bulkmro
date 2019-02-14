@@ -24,7 +24,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
       indexed_records = range_query(indexed_records)
     end
 
-    indexed_records = indexed_records.aggregations(aggregate_by_status("status_key"))
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 
@@ -32,7 +32,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     indexed_records = index_klass.query(
       multi_match: {
           query: query_string,
-          operator: "and",
+          operator: 'and',
           fields: index_klass.fields
       }
                                         ).order(sort_definition)
@@ -52,7 +52,7 @@ class Services::Overseers::Finders::Inquiries < Services::Overseers::Finders::Ba
     if range_filters.present?
       indexed_records = range_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status("status_key"))
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status_key'))
     indexed_records
   end
 

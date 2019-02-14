@@ -7,7 +7,7 @@ class Overseers::CustomerOrders::CommentsController < Overseers::CustomerOrders:
     if @comment.save
       redirect_to overseers_customer_order_path(@customer_order), notice: flash_message(@comment, action_name)
     else
-      "new"
+      'new'
     end
   end
 

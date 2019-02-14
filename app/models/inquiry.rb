@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Inquiry < ApplicationRecord
-  COMMENTS_CLASS = "InquiryComment"
+  COMMENTS_CLASS = 'InquiryComment'
 
   include Mixins::CanBeStamped
   # include Mixins::HasAddresses
@@ -9,7 +9,7 @@ class Inquiry < ApplicationRecord
   include Mixins::HasManagers
   include Mixins::HasComments
 
-  update_index("inquiries#inquiry") { self }
+  update_index('inquiries#inquiry') { self }
   pg_search_scope :locate, against: [:id, :inquiry_number], associated_against: { company: [:name], account: [:name], contact: [:first_name, :last_name], inside_sales_owner: [:first_name, :last_name], outside_sales_owner: [:first_name, :last_name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :inquiry_currency, dependent: :destroy
@@ -17,44 +17,44 @@ class Inquiry < ApplicationRecord
   # belongs_to :contact, -> (record) { joins(:company_contacts).where('company_contacts.company_id = ?', record.company_id) }
   belongs_to :contact, required: false
   belongs_to :company
-  belongs_to :billing_company, -> (record) { where("id in (?)", record.account.companies.pluck(:id)) }, class_name: "Company", foreign_key: "billing_company_id"
-  belongs_to :shipping_company, -> (record) { where("id in (?)", record.account.companies.pluck(:id)) }, class_name: "Company", foreign_key: "shipping_company_id"
-  belongs_to :shipping_contact, class_name: "Contact", foreign_key: "shipping_contact_id"
+  belongs_to :billing_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, class_name: 'Company', foreign_key: 'billing_company_id'
+  belongs_to :shipping_company, -> (record) { where('id in (?)', record.account.companies.pluck(:id)) }, class_name: 'Company', foreign_key: 'shipping_company_id'
+  belongs_to :shipping_contact, class_name: 'Contact', foreign_key: 'shipping_contact_id'
   has_one :account, through: :company
   has_one :industry, through: :company
-  belongs_to :bill_from, class_name: "Warehouse", foreign_key: :bill_from_id, required: false
-  belongs_to :ship_from, class_name: "Warehouse", foreign_key: :ship_from_id, required: false
+  belongs_to :bill_from, class_name: 'Warehouse', foreign_key: :bill_from_id, required: false
+  belongs_to :ship_from, class_name: 'Warehouse', foreign_key: :ship_from_id, required: false
   has_one :account, through: :company
   has_many :inquiry_products, -> { order(sr_no: :asc) }, inverse_of: :inquiry, dependent: :destroy
-  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes["product_id"].blank? && attributes["id"].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :inquiry_products, reject_if: lambda { |attributes| attributes['product_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   belongs_to :payment_option, required: false
-  belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: "Address", foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, class_name: "Address", foreign_key: :shipping_address_id, required: false
+  belongs_to :billing_address, -> (record) { where(company_id: record.company.id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, class_name: 'Address', foreign_key: :shipping_address_id, required: false
   has_many :products, through: :inquiry_products
-  has_many :approvals, through: :products, class_name: "ProductApproval"
+  has_many :approvals, through: :products, class_name: 'ProductApproval'
   has_many :inquiry_product_suppliers, through: :inquiry_products
   has_many :brands, through: :products
   has_many :suppliers, through: :inquiry_product_suppliers
-  has_many :imports, class_name: "InquiryImport", inverse_of: :inquiry
+  has_many :imports, class_name: 'InquiryImport', inverse_of: :inquiry
   has_many :sales_quotes, dependent: :destroy
   has_many :purchase_orders
   has_many :po_requests
   has_many :sales_quote_rows, through: :sales_quotes
-  has_one :final_sales_quote, -> { where.not(sent_at: nil).latest }, class_name: "SalesQuote"
-  has_many :draft_sales_quotes, -> { where(sent_at: nil) }, class_name: "SalesQuote"
-  has_many :final_sales_orders, through: :final_sales_quote, class_name: "SalesOrder"
-  has_one :approved_final_sales_order, -> { approved }, through: :final_sales_quote, class_name: "SalesOrder"
+  has_one :final_sales_quote, -> { where.not(sent_at: nil).latest }, class_name: 'SalesQuote'
+  has_many :draft_sales_quotes, -> { where(sent_at: nil) }, class_name: 'SalesQuote'
+  has_many :final_sales_orders, through: :final_sales_quote, class_name: 'SalesOrder'
+  has_one :approved_final_sales_order, -> { approved }, through: :final_sales_quote, class_name: 'SalesOrder'
   has_one :sales_quote, -> { latest }
   has_many :sales_orders, through: :sales_quotes, dependent: :destroy
-  has_many :shipments, through: :sales_orders, class_name: "SalesShipment", source: :shipments
-  has_many :invoices, through: :sales_orders, class_name: "SalesInvoice"
+  has_many :shipments, through: :sales_orders, class_name: 'SalesShipment', source: :shipments
+  has_many :invoices, through: :sales_orders, class_name: 'SalesInvoice'
   has_many :sales_order_rows, through: :sales_orders
-  has_many :final_sales_orders, -> { where.not(sent_at: nil).latest }, through: :final_sales_quote, class_name: "SalesOrder", source: :sales_orders
+  has_many :final_sales_orders, -> { where.not(sent_at: nil).latest }, through: :final_sales_quote, class_name: 'SalesOrder', source: :sales_orders
   has_many :email_messages, dependent: :destroy
   has_many :activities, dependent: :nullify
   has_many :inquiry_status_records
-  belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: "Company", foreign_key: :legacy_shipping_company_id, required: false
-  belongs_to :legacy_bill_to_contact, class_name: "Contact", foreign_key: :legacy_bill_to_contact_id, required: false
+  belongs_to :legacy_shipping_company, -> (record) { where(company_id: record.company.id) }, class_name: 'Company', foreign_key: :legacy_shipping_company_id, required: false
+  belongs_to :legacy_bill_to_contact, class_name: 'Contact', foreign_key: :legacy_bill_to_contact_id, required: false
   has_one :customer_order, dependent: :nullify
   has_one :freight_request
 
@@ -88,7 +88,7 @@ class Inquiry < ApplicationRecord
   }
 
   def regrettable_statuses
-    Inquiry.statuses.keys.sort.reject { |status| ["Order Lost", "Regret", "Expected Order"].include?(status) }
+    Inquiry.statuses.keys.sort.reject { |status| ['Order Lost', 'Regret', 'Expected Order'].include?(status) }
   end
 
   enum stage: {
@@ -151,7 +151,7 @@ class Inquiry < ApplicationRecord
 
   scope :with_includes, -> { includes(:created_by, :updated_by, :contact, :inside_sales_owner, :outside_sales_owner, :company, :account, final_sales_quote: [rows: [:inquiry_product_supplier]]) }
   scope :smart_queue, -> {
-    where("status NOT IN (?)", [
+    where('status NOT IN (?)', [
         Inquiry.statuses[:'Lead by O/S'],
         Inquiry.statuses[:'Order Lost'],
         Inquiry.statuses[:'Regret']
@@ -211,13 +211,13 @@ class Inquiry < ApplicationRecord
 
   def company_is_active
     if !self.company.is_active
-      errors.add(:company, "must be active to make a inquiry")
+      errors.add(:company, 'must be active to make a inquiry')
     end
   end
 
   def every_product_is_only_added_once?
     if self.inquiry_products.uniq { |ip| ip.product_id }.size != self.inquiry_products.size
-      errors.add(:inquiry_products, "every product can only be included once in a particular inquiry")
+      errors.add(:inquiry_products, 'every product can only be included once in a particular inquiry')
     end
   end
 
@@ -255,10 +255,10 @@ class Inquiry < ApplicationRecord
       self.bill_from ||= Warehouse.default
       self.ship_from ||= Warehouse.default
       self.commercial_terms_and_conditions ||= [
-          "1. Cost does not include any additional certification if required as per Indian regulations.",
-          "2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.",
-          "3. Order once placed cannot be changed.",
-          "4. BulkMRO does not accept any financial penalties for late deliveries."
+          '1. Cost does not include any additional certification if required as per Indian regulations.',
+          '2. Any errors in quotation including HSN codes, GST Tax rates must be notified before placing order.',
+          '3. Order once placed cannot be changed.',
+          '4. BulkMRO does not accept any financial penalties for late deliveries.'
       ].join("\r\n") if not_legacy?
       self.stage ||= 1
     end
@@ -277,7 +277,7 @@ class Inquiry < ApplicationRecord
   end
 
   def inquiry_products_for(supplier)
-    self.inquiry_products.joins(:inquiry_product_suppliers).where("inquiry_product_suppliers.supplier_id = ?", supplier.id)
+    self.inquiry_products.joins(:inquiry_product_suppliers).where('inquiry_product_suppliers.supplier_id = ?', supplier.id)
   end
 
   def attachments
@@ -312,15 +312,15 @@ class Inquiry < ApplicationRecord
 
   def to_s
     [
-        ["#", self.inquiry_number].join,
+        ['#', self.inquiry_number].join,
         self.company.name
-    ].join(" ")
+    ].join(' ')
   end
 
   def po_subject
     if self.customer_po_number.present?
-      if self.customer_po_number != ""
-        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(" - ")
+      if self.customer_po_number != ''
+        self.customer_po_number.strip.empty? ? self.subject : [self.customer_po_number, self.subject].join(' - ')
       else
         self.subject
       end
@@ -351,21 +351,21 @@ class Inquiry < ApplicationRecord
 
   def potential_value(status)
     case status
-      when "Lead by O/S", "New Inquiry", "Acknowledgement Mail"
+      when 'Lead by O/S', 'New Inquiry', 'Acknowledgement Mail'
         self.potential_amount || 0.0
-      when "Cross Reference"
+      when 'Cross Reference'
         self.products.map(&:latest_unit_cost_price).compact.sum || 0.0
-      when "Preparing Quotation"
+      when 'Preparing Quotation'
         self.draft_sales_quotes.map(&:calculated_total).compact.sum || 0.0
-      when "Quotation Sent", "Follow-Up on Quotation", "Expected Order", "SO Not Created-Customer PO Awaited", "SO Not Created-Pending Customer PO Revision"
+      when 'Quotation Sent', 'Follow-Up on Quotation', 'Expected Order', 'SO Not Created-Customer PO Awaited', 'SO Not Created-Pending Customer PO Revision'
         self.final_sales_quote.try(:calculated_total) || 0.0
-      when "Order Won"
+      when 'Order Won'
         self.final_sales_orders.remote_approved.map(&:calculated_total).sum || 0.0
-      when "Draft SO For Approval by Sales Manager", "SO Draft: Pending Accounts Approval", "SO Rejected by Sales Manager", "Rejected by Accounts"
+      when 'Draft SO For Approval by Sales Manager', 'SO Draft: Pending Accounts Approval', 'SO Rejected by Sales Manager', 'Rejected by Accounts'
         self.sales_orders.map(&:calculated_total).compact.sum || 0.0
-      when "Order Lost"
+      when 'Order Lost'
         (self.final_sales_quote.try(:calculated_total) || 0.0) + (self.final_sales_orders.last.try(&:calculated_total) || 0.0) + (self.products.map(&:latest_unit_cost_price).compact.sum || 0.0)
-      when "Regret"
+      when 'Regret'
         self.final_sales_quote.try(:calculated_total) || 0.0
       else
         0

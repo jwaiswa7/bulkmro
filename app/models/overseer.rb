@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "mail"
+require 'mail'
 
 class Overseer < ApplicationRecord
   include Mixins::CanBeStamped
@@ -38,27 +38,27 @@ class Overseer < ApplicationRecord
   end
 
   def hierarchy_to_s
-    ancestry_path.join(" > ")
+    ancestry_path.join(' > ')
   end
 
   def self.from_omniauth(access_token)
     data = access_token.info
-    email = data["email"]
+    email = data['email']
     domain = Mail::Address.new(email).domain
 
     if domain.in? %w(bulkmro.com)
       password = Devise.friendly_token[0, 20]
 
-      overseer = Overseer.where(email: data["email"]).first_or_create do |overseer|
+      overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
         overseer.password_confirmation = password
         overseer.password = password
-        overseer.first_name = data["first_name"]
-        overseer.last_name = data["last_name"]
-        overseer.google_oauth2_uid = data["uid"]
-        overseer.username = "none"
+        overseer.first_name = data['first_name']
+        overseer.last_name = data['last_name']
+        overseer.google_oauth2_uid = data['uid']
+        overseer.username = 'none'
       end
 
-      overseer.update_attributes(username: "nousername") if overseer.username.blank?
+      overseer.update_attributes(username: 'nousername') if overseer.username.blank?
       overseer.update_attributes(google_oauth2_metadata: data)
       overseer
     end
@@ -73,19 +73,19 @@ class Overseer < ApplicationRecord
   end
 
   def self.default
-    find_by_email("ashwin.goyal@bulkmro.com")
+    find_by_email('ashwin.goyal@bulkmro.com')
   end
 
   def to_s
-    [self.first_name, " ", self.last_name.chars.first, "."].join("")
+    [self.first_name, ' ', self.last_name.chars.first, '.'].join('')
   end
 
   def self.default_approver
-    overseer = Overseer.where(email: "approver@bulkmro.com").first_or_create do |overseer|
-      overseer.first_name = "SAP"
-      overseer.last_name = "Approver"
-      overseer.password = "bm@123"
-      overseer.password_confirmation = "bm@123"
+    overseer = Overseer.where(email: 'approver@bulkmro.com').first_or_create do |overseer|
+      overseer.first_name = 'SAP'
+      overseer.last_name = 'Approver'
+      overseer.password = 'bm@123'
+      overseer.password_confirmation = 'bm@123'
     end
 
     overseer.save!

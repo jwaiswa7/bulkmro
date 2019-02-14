@@ -29,9 +29,9 @@ class Services::Overseers::Finders::Companies < Services::Overseers::Finders::Ba
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[name^4 pan^3 is_pan_valid],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                                         )
 

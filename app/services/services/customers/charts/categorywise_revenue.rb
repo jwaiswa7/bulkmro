@@ -11,10 +11,10 @@ class Services::Customers::Charts::CategorywiseRevenue < Services::Customers::Ch
           labels: [],
           datasets: [
               {
-                  label: "Categorywise Revenue",
-                  type: "doughnut",
-                  borderColor: "#fd7e14",
-                  backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#fd7e14"],
+                  label: 'Categorywise Revenue',
+                  type: 'doughnut',
+                  borderColor: '#fd7e14',
+                  backgroundColor: ['#3e95cd', '#8e5ea2', '#3cba9f', '#e8c3b9', '#c45850', '#fd7e14'],
                   data: [],
               }
           ]

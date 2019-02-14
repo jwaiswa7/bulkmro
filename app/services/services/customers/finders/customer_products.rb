@@ -7,7 +7,7 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
 
   def all_records
     indexed_records = if current_company.present?
-      super.filter(filter_by_value("company_id", current_company.id))
+      super.filter(filter_by_value('company_id', current_company.id))
     else
       super
     end
@@ -31,10 +31,10 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
   def perform_query(query)
     query = query[0, 35]
 
-    indexed_records = index_klass.query(multi_match: { query: query, operator: "and", fields: %w[sku^3 name brand category], minimum_should_match: "100%" }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query, operator: 'and', fields: %w[sku^3 name brand category], minimum_should_match: '100%' }).order(sort_definition)
 
     if current_company.present?
-      indexed_records = indexed_records.filter(filter_by_value("company_id", current_company.id))
+      indexed_records = indexed_records.filter(filter_by_value('company_id', current_company.id))
     end
 
     if search_filters.present?

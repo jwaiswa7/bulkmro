@@ -51,13 +51,13 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         @freight_request.save!
-        @freight_request_comment = FreightRequestComment.new(message: "Freight Request submitted.", freight_request: @freight_request, overseer: current_overseer)
+        @freight_request_comment = FreightRequestComment.new(message: 'Freight Request submitted.', freight_request: @freight_request, overseer: current_overseer)
         @freight_request_comment.save!
       end
 
       redirect_to overseers_freight_request_path(@freight_request), notice: flash_message(@freight_request, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -80,7 +80,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
       end
       redirect_to overseers_freight_request_path(@freight_request), notice: flash_message(@freight_request, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

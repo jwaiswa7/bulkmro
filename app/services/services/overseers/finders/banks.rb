@@ -29,9 +29,9 @@ class Services::Overseers::Finders::Banks < Services::Overseers::Finders::BaseFi
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[code^4 name^3],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                                         ).order(sort_definition)
 

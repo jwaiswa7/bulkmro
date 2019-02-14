@@ -7,8 +7,8 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
     @company_creation_requests = ApplyDatatableParams.to(CompanyCreationRequest.all.requested.order(id: :desc), params)
     authorize @company_creation_requests
     respond_to do |format|
-      format.json { render "index" }
-      format.html { render "index" }
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -16,8 +16,8 @@ class Overseers::CompanyCreationRequestsController < Overseers::BaseController
     @company_creation_requests = ApplyDatatableParams.to(CompanyCreationRequest.all.created.order(id: :desc), params)
     authorize @company_creation_requests
     respond_to do |format|
-      format.json { render "index" }
-      format.html { render "index" }
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 

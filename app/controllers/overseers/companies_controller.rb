@@ -36,7 +36,7 @@ class Overseers::CompaniesController < Overseers::BaseController
         redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
       end
     else
-      render "new"
+      render 'new'
     end
   end
 

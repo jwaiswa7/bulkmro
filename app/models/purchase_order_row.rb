@@ -9,12 +9,12 @@ class PurchaseOrderRow < ApplicationRecord
 
   def increase_product_count
     product = self.get_product
-    product.update_attribute("total_pos", product.total_pos + 1) if product.present?
+    product.update_attribute('total_pos', product.total_pos + 1) if product.present?
   end
 
   def decrease_product_count
     product = self.get_product
-    product.update_attribute("total_pos", (product.total_pos == 0 ? 0 : (product.total_pos - 1))) if product.present?
+    product.update_attribute('total_pos', (product.total_pos == 0 ? 0 : (product.total_pos - 1))) if product.present?
   end
 
   def sku
@@ -30,19 +30,19 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    self.metadata["PopTaxRate"].gsub(/\D/, "").to_f
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
   end
 
   def applicable_tax_percentage
-    self.metadata["PopTaxRate"].gsub(/\D/, "").to_f / 100
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
   end
 
   def quantity
-    self.metadata["PopQty"].to_f.round(2)
+    self.metadata['PopQty'].to_f.round(2)
   end
 
   def unit_selling_price
-    (self.metadata["PopPriceHt"].to_f).round(2) if self.metadata["PopPriceHt"].present?
+    (self.metadata['PopPriceHt'].to_f).round(2) if self.metadata['PopPriceHt'].present?
   end
 
   def unit_selling_price_with_tax
@@ -54,7 +54,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    (self.unit_selling_price.to_f * self.quantity.to_f).round(2) if self.metadata["PopPriceHt"].present?
+    (self.unit_selling_price.to_f * self.quantity.to_f).round(2) if self.metadata['PopPriceHt'].present?
   end
 
   def total_selling_price_with_tax
@@ -62,6 +62,6 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def get_product
-    Product.where(legacy_id: self.metadata["PopProductId"].to_i).or(Product.where(id: Product.decode_id(self.metadata["PopProductId"]))).try(:first)
+    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
   end
 end

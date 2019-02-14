@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PaymentRequest < ApplicationRecord
-  COMMENTS_CLASS = "PaymentRequestComment"
+  COMMENTS_CLASS = 'PaymentRequestComment'
 
   include Mixins::CanBeStamped
   include Mixins::HasComments

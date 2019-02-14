@@ -39,7 +39,7 @@ class Overseers::ContactsController < Overseers::BaseController
       @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
       redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -48,13 +48,13 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == "password" || k == "password_confirmation") && v.blank? })
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
     authorize @contact
 
     if @contact.save_and_sync
       redirect_to overseers_account_path(@contact.account), notice: flash_message(@contact, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

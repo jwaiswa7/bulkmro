@@ -4,22 +4,22 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if policy(inquiry).edit?
-            row_action_button(overseers_inquiry_comments_path(inquiry), "comment-alt-check", inquiry.comments.last ? inquiry.comments.last.try(:message) : "No comments", inquiry.comments.last ? "success" : "dark", :_blank)
+            row_action_button(overseers_inquiry_comments_path(inquiry), 'comment-alt-check', inquiry.comments.last ? inquiry.comments.last.try(:message) : 'No comments', inquiry.comments.last ? 'success' : 'dark', :_blank)
           end,
           if policy(inquiry).new_freight_request?
-            row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), "external-link", "New Freight Request", "warning")
+            row_action_button(new_overseers_freight_request_path(inquiry_id: inquiry.to_param), 'external-link', 'New Freight Request', 'warning')
           end
-      ].join(" "),
-      link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: "_blank"),
-      inquiry.sales_orders.where.not(order_number: nil).map { |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: "_blank") }.compact.join(" "),
-      inquiry.invoices.map { |invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(inquiry), target: "_blank") }.compact.join(" "),
+      ].join(' '),
+      link_to(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), target: '_blank'),
+      inquiry.sales_orders.where.not(order_number: nil).map { |sales_order| link_to(sales_order.order_number, overseers_inquiry_sales_order_path(inquiry, sales_order), target: '_blank') }.compact.join(' '),
+      inquiry.invoices.map { |invoice| link_to(invoice.invoice_number, overseers_inquiry_sales_invoices_path(inquiry), target: '_blank') }.compact.join(' '),
       status_badge(inquiry.status),
-      link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: "_blank"),
-      link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: "_blank"),
-      inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join("").html_safe, inquiry.customer_po_sheet, target: "_blank") : inquiry.po_subject,
+      link_to(inquiry.account.to_s, overseers_account_path(inquiry.account), target: '_blank'),
+      link_to(inquiry.company.to_s, overseers_company_path(inquiry.company), target: '_blank'),
+      inquiry.customer_po_sheet.attached? ? link_to(["<i class='fal fa-file-alt mr-1'></i>", inquiry.po_subject].join('').html_safe, inquiry.customer_po_sheet, target: '_blank') : inquiry.po_subject,
       format_succinct_date(inquiry.quotation_followup_date),
       if inquiry.contact.present?
-        link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: "_blank")
+        link_to(inquiry.contact.to_s, overseers_contact_path(inquiry.contact), target: '_blank')
       end,
       inquiry.inside_sales_owner.to_s,
       inquiry.outside_sales_owner.to_s,
@@ -29,7 +29,7 @@ json.data (@inquiries) do |inquiry|
       format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
-  json.merge! columns.merge("DT_RowClass": inquiry.status == "Order Won" ? "bg-highlight-success" : "")
+  json.merge! columns.merge("DT_RowClass": inquiry.status == 'Order Won' ? 'bg-highlight-success' : '')
 end
 
 json.columnFilters [

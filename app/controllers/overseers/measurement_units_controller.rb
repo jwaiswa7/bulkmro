@@ -30,7 +30,7 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -45,7 +45,7 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
     if @measurement_unit.save
       redirect_to overseers_measurement_units_path, notice: flash_message(@measurement_unit, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

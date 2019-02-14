@@ -32,7 +32,7 @@ class Overseers::BrandsController < Overseers::BaseController
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -47,7 +47,7 @@ class Overseers::BrandsController < Overseers::BaseController
     if @brand.save_and_sync
       redirect_to overseers_brands_path, notice: flash_message(@brand, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

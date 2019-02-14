@@ -10,7 +10,7 @@ class Services::Overseers::RemoteRequests::ResyncFailedRequests < Services::Shar
     requests = RemoteRequest.where(created_at: start_at..end_at).failed
     requested = []
     requests.each do |request|
-      new_request = [request.subject_type, request.subject_id].join("-")
+      new_request = [request.subject_type, request.subject_id].join('-')
       if !requested.include? new_request
         if request.subject_type.present? && request.subject_id.present?
           begin

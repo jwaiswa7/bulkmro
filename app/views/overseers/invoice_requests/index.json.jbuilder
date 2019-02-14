@@ -4,12 +4,12 @@ json.data (@invoice_requests) do |invoice_request|
   json.array! [
                   [
                       if policy(invoice_request).show?
-                        row_action_button(overseers_invoice_request_path(invoice_request), "eye", "View Invoice Request", "info")
+                        row_action_button(overseers_invoice_request_path(invoice_request), 'eye', 'View Invoice Request', 'info')
                       end,
                       if policy(invoice_request).edit?
-                        row_action_button(edit_overseers_invoice_request_path(invoice_request), "pencil", "Edit #{invoice_request.readable_status}", "warning")
+                        row_action_button(edit_overseers_invoice_request_path(invoice_request), 'pencil', "Edit #{invoice_request.readable_status}", 'warning')
                       end
-                  ].join(" "),
+                  ].join(' '),
                   invoice_request.id,
                   status_badge(invoice_request.status),
                   conditional_link(invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(invoice_request.inquiry), policy(invoice_request.inquiry).edit?),

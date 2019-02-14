@@ -4,13 +4,13 @@ class Services::Overseers::Exporters::CompaniesExporter < Services::Overseers::E
   def initialize
     super
     @model = Company
-    @export_name = "companies"
-    @path = Rails.root.join("tmp", filename)
-    @columns = ["name", "company_alias", "industry", "remote_uid", "state_name", "company_contact", "payment_option", "inside_sales_owner", "outside_sales_owner", "sales_manager", "site", "phone", "mobile", "email", "pan", "tan", "company_type", "nature_of_business", "credit_limit", "is_msme", "tax_identifier", "created_at"]
+    @export_name = 'companies'
+    @path = Rails.root.join('tmp', filename)
+    @columns = ['name', 'company_alias', 'industry', 'remote_uid', 'state_name', 'company_contact', 'payment_option', 'inside_sales_owner', 'outside_sales_owner', 'sales_manager', 'site', 'phone', 'mobile', 'email', 'pan', 'tan', 'company_type', 'nature_of_business', 'credit_limit', 'is_msme', 'tax_identifier', 'created_at']
   end
 
   def call
-    perform_export_later("CompaniesExporter")
+    perform_export_later('CompaniesExporter')
   end
 
   def build_csv

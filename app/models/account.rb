@@ -19,7 +19,7 @@ class Account < ApplicationRecord
   has_many :products, through: :inquiry_products
   has_many :sales_orders, through: :inquiries
   has_many :invoices, through: :inquiries
-  has_many :sales_quotes, through: :inquiries, source: "final_sales_quote"
+  has_many :sales_quotes, through: :inquiries, source: 'final_sales_quote'
   has_many :addresses, through: :companies
   enum account_type: {
       is_supplier: 10,
@@ -38,14 +38,14 @@ class Account < ApplicationRecord
   end
 
   def self.legacy
-    find_by_name("Legacy Account")
+    find_by_name('Legacy Account')
   end
 
   def self.trade
-    find_by_name("Trade")
+    find_by_name('Trade')
   end
 
   def self.non_trade
-    find_by_name("Non-Trade")
+    find_by_name('Non-Trade')
   end
 end

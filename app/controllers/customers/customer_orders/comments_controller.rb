@@ -7,12 +7,12 @@ class Customers::CustomerOrders::CommentsController < Customers::CustomerOrders:
 
     if @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }
-      send(callback_method) if callback_method.present? && policy(@customer_order).send([callback_method, "?"].join)
+      send(callback_method) if callback_method.present? && policy(@customer_order).send([callback_method, '?'].join)
       redirect_to customers_customer_order_path(@customer_order), notice: flash_message(@comment, action_name)
     elsif @comment.save
       redirect_to customers_customer_order_path(@customer_order), notice: flash_message(@comment, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

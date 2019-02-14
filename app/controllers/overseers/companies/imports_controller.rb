@@ -10,7 +10,7 @@ class Overseers::Companies::ImportsController < Overseers::Companies::BaseContro
     authorize @company
     respond_to do |format|
       format.xlsx {
-        response.headers["Content-Disposition"] = 'attachment; filename="' + ["#{@company.name.to_s} Excel Template", "xlsx"].join(".") + '"'
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@company.name.to_s} Excel Template", 'xlsx'].join('.') + '"'
       }
     end
   end

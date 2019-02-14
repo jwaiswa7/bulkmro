@@ -9,12 +9,12 @@ module Mixins::IsAnImport
     enum import_type: { excel: 10, list: 20 }
 
     validates_presence_of :import_type
-    validates :file, file_content_type: { allow: ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"] }, if: -> { file.attached? }
+    validates :file, file_content_type: { allow: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'] }, if: -> { file.attached? }
     validate :has_file_attachment?, if: :excel?
 
     def has_file_attachment?
       if !file.attached?
-        errors.add(:base, "File is required")
+        errors.add(:base, 'File is required')
       end
     end
 

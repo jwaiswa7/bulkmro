@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class CustomerOrder < ApplicationRecord
-  APPROVALS_CLASS = "CustomerOrderApproval"
-  REJECTIONS_CLASS = "CustomerOrderRejection"
-  COMMENTS_CLASS = "CustomerOrderComment"
+  APPROVALS_CLASS = 'CustomerOrderApproval'
+  REJECTIONS_CLASS = 'CustomerOrderRejection'
+  COMMENTS_CLASS = 'CustomerOrderComment'
   include Mixins::CanBeApproved
   include Mixins::CanBeRejected
   include Mixins::HasComments
@@ -14,11 +14,11 @@ class CustomerOrder < ApplicationRecord
   belongs_to :contact
   belongs_to :company
   belongs_to :inquiry, required: false
-  has_many :rows, dependent: :destroy, class_name: "CustomerOrderRow"
-  has_many :items, dependent: :destroy, class_name: "CustomerOrderRow"
-  has_many :comments, dependent: :destroy, class_name: "CustomerOrderComment"
-  belongs_to :billing_address, -> (record) { where(company_id: record.company_id) }, class_name: "Address", foreign_key: :billing_address_id, required: false
-  belongs_to :shipping_address, -> (record) { where(company_id: record.company_id) }, class_name: "Address", foreign_key: :shipping_address_id, required: false
+  has_many :rows, dependent: :destroy, class_name: 'CustomerOrderRow'
+  has_many :items, dependent: :destroy, class_name: 'CustomerOrderRow'
+  has_many :comments, dependent: :destroy, class_name: 'CustomerOrderComment'
+  belongs_to :billing_address, -> (record) { where(company_id: record.company_id) }, class_name: 'Address', foreign_key: :billing_address_id, required: false
+  belongs_to :shipping_address, -> (record) { where(company_id: record.company_id) }, class_name: 'Address', foreign_key: :shipping_address_id, required: false
 
   enum payment_method: {
       'Bank Transfer': 10,
@@ -31,13 +31,13 @@ class CustomerOrder < ApplicationRecord
 
   def get_payment_method
     if self.payment_method.nil?
-      self.update_attributes!(payment_method: "Bank Transfer")
+      self.update_attributes!(payment_method: 'Bank Transfer')
     end
     self.payment_method
   end
 
   def to_s
-    super.gsub!("CustomerOrder", "Order")
+    super.gsub!('CustomerOrder', 'Order')
   end
 
   def total_quantities
@@ -46,11 +46,11 @@ class CustomerOrder < ApplicationRecord
 
   def status
     if self.approved?
-      "Approved"
+      'Approved'
     elsif self.rejected?
-      "Rejected"
+      'Rejected'
     else
-      "Pending Approval"
+      'Pending Approval'
     end
   end
 

@@ -32,9 +32,9 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
     indexed_records = index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[resource],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
     if search_filters.present?

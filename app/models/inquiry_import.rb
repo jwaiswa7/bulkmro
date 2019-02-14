@@ -11,7 +11,7 @@ class InquiryImport < ApplicationRecord
   has_many :inquiry_products, dependent: :destroy
   accepts_nested_attributes_for :inquiry_products, allow_destroy: true
   has_one_attached :file
-  has_many :rows, class_name: "InquiryImportRow"
+  has_many :rows, class_name: 'InquiryImportRow'
   has_many :products, through: :rows
   accepts_nested_attributes_for :rows, allow_destroy: true
 
@@ -21,6 +21,6 @@ class InquiryImport < ApplicationRecord
   validates :import_text, format: { with: /BM\d*[,]?\s?\d*/ }, if: :list?
 
   def to_s
-    "InquiryImport"
+    'InquiryImport'
   end
 end

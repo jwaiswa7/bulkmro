@@ -10,7 +10,7 @@ class Services::Customers::CustomerProducts::FlushUnavailableImages < Services::
           else
             if ActiveStorage::Blob.service.exist?(image.key)
               path = "#{Dir.tmpdir}/#{image.key}#{image.filename}"
-              File.open(path, "wb") do |file|
+              File.open(path, 'wb') do |file|
                 file.write(image.download)
               end
 

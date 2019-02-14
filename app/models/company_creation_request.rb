@@ -19,13 +19,13 @@ class CompanyCreationRequest < ApplicationRecord
 
 
   def status
-    (self.company_id.present?) ? "created" : "Requested"
+    (self.company_id.present?) ? 'created' : 'Requested'
   end
 
   def is_customer?
-    self.account_type == "is_customer"
+    self.account_type == 'is_customer'
   end
   def is_supplier?
-    self.account_type == "is_supplier"
+    self.account_type == 'is_supplier'
   end
 end

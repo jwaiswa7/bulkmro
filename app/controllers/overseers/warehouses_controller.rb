@@ -38,7 +38,7 @@ class Overseers::WarehousesController < Overseers::BaseController
     if @warehouse.save
       redirect_to overseers_warehouse_path(@warehouse), notice: flash_message(@warehouse, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

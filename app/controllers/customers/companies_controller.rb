@@ -7,7 +7,7 @@ class Customers::CompaniesController < Customers::BaseController
       session[:current_company_id] = current_contact.companies.first.id
       redirect_to customers_dashboard_path
     else
-      render "shared/layouts/choose_company"
+      render 'shared/layouts/choose_company'
     end
     authorize @contact
   end

@@ -52,12 +52,12 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     service = Services::Overseers::SalesInvoices::Zipped.new(@sales_invoice, locals)
     zip = service.call
 
-    send_data(zip, type: "application/zip", filename: @sales_invoice.zipped_filename(include_extension: true))
+    send_data(zip, type: 'application/zip', filename: @sales_invoice.zipped_filename(include_extension: true))
   end
 
   def edit_mis_date
     if @sales_invoice.mis_date.blank?
-      @sales_invoice.mis_date = @sales_invoice.created_at.strftime("%d-%b-%Y")
+      @sales_invoice.mis_date = @sales_invoice.created_at.strftime('%d-%b-%Y')
     end
 
     authorize @sales_invoice
@@ -70,7 +70,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     if @sales_invoice.save
       redirect_to overseers_inquiry_sales_invoices_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

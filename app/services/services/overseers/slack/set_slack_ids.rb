@@ -10,7 +10,7 @@ class Services::Overseers::Slack::SetSlackIds < Services::Shared::BaseService
       begin
         slack_uid = client.users_lookupByEmail(email: overseer.email).user.id
       rescue
-        slack_uid = ""
+        slack_uid = ''
       end
       overseer.assign_attributes(slack_uid: slack_uid)
       overseer.save!

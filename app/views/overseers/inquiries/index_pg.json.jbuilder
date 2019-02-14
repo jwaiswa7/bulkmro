@@ -4,9 +4,9 @@ json.data (@inquiries) do |inquiry|
   json.array! [
                   [
                       if policy(inquiry).edit?
-                        row_action_button(edit_overseers_inquiry_path(inquiry), "pencil", "Edit Inquiry", "warning")
+                        row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
                       end,
-                  ].join(" "),
+                  ].join(' '),
                   inquiry.inquiry_number,
                   status_badge(inquiry.status),
                   inquiry.account.to_s,

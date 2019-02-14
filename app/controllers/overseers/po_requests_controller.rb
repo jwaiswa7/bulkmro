@@ -8,8 +8,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json { render "index" }
-      format.html { render "index" }
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -42,13 +42,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         @po_request.save!
-        @po_request_comment = PoRequestComment.new(message: "PO Request submitted.", po_request: @po_request, overseer: current_overseer)
+        @po_request_comment = PoRequestComment.new(message: 'PO Request submitted.', po_request: @po_request, overseer: current_overseer)
         @po_request_comment.save!
       end
 
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -70,7 +70,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
       end
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

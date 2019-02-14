@@ -13,7 +13,7 @@ class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
         { name: "triplicate_#{record.filename}.pdf", path: RenderPdfToFile.for(record, locals.merge(triplicate: true)) }
     ]
 
-    invoice_zip = Rails.root.join("tmp", "archive.zip")
+    invoice_zip = Rails.root.join('tmp', 'archive.zip')
 
     Zip::OutputStream.open(invoice_zip) { |os| }
 
@@ -23,7 +23,7 @@ class Services::Overseers::SalesInvoices::Zipped < Services::Shared::BaseService
         temp_invoice_file.puts(File.open(file[:path]))
         temp_invoice_file.close
 
-        zip_file.add((file[:name]), File.join(Rails.root.join("tmp"), File.basename(file[:path])))
+        zip_file.add((file[:name]), File.join(Rails.root.join('tmp'), File.basename(file[:path])))
       end
     end
 

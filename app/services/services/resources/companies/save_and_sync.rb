@@ -26,7 +26,7 @@ class Services::Resources::Companies::SaveAndSync < Services::Shared::BaseServic
         company_name = company.name
       end
 
-      remote_uid = ::Resources::BusinessPartner.custom_find(company_name, company.is_supplier? ? "cSupplier" : "cCustomer")
+      remote_uid = ::Resources::BusinessPartner.custom_find(company_name, company.is_supplier? ? 'cSupplier' : 'cCustomer')
       remote_uid.present? ? company.update_attributes(remote_uid: remote_uid) : company.update_attributes(remote_uid: nil)
 
       if company.remote_uid.blank?

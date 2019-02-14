@@ -7,6 +7,6 @@ class LeadTimeOption < ApplicationRecord
   validates_uniqueness_of :name
 
   def self.default
-    find_by_name("1-2 WEEKS")
+    find_by_name('1-2 WEEKS')
   end
 end

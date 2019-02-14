@@ -24,9 +24,9 @@ class ApplyDatatableParams < BaseFunction
  		end
 
  		if params[:company_id].present? && params[:via_company_contacts]
- 			 records = records.joins(:company_contacts).where("company_contacts.company_id = ?", params[:company_id])
+ 			 records = records.joins(:company_contacts).where('company_contacts.company_id = ?', params[:company_id])
  		else
- 			 params.keys.select { |key| key.ends_with? "id" }.each do |key|
+ 			 params.keys.select { |key| key.ends_with? 'id' }.each do |key|
   			  records = records.where(key.to_sym => params[key])
   			end
  		end

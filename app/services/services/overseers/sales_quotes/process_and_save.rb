@@ -27,7 +27,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       end
     else
       sales_quote.reload
-      sales_quote.inquiry.errors.add(:sales_quote, "Must have at least one sales quote row")
+      sales_quote.inquiry.errors.add(:sales_quote, 'Must have at least one sales quote row')
     end
   end
 

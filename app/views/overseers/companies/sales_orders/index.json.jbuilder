@@ -4,21 +4,21 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if policy(sales_order).show?
-                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), "eye", "View Sales Order", "info")
+                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info')
                       end,
                       if policy(sales_order).comments?
-                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), "comment-alt-check", "Comments and Approval", "success")
+                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
                       end,
                       if policy(sales_order).go_to_inquiry?
-                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), "arrow-right", "Go to Inquiry", "dark")
+                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end,
                       if policy(sales_order).edit_mis_date?
-                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), "calendar-alt", "Update MIS Date", "success")
+                        row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success')
                       end,
                       if policy(sales_order).can_request_po?
-                        row_action_button(new_overseers_po_request_path(sales_order_id: sales_order.to_param), "external-link", "Request PO", "info")
+                        row_action_button(new_overseers_po_request_path(sales_order_id: sales_order.to_param), 'external-link', 'Request PO', 'info')
                       end
-                  ].join(" "),
+                  ].join(' '),
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),

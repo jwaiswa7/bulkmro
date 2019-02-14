@@ -21,12 +21,12 @@ class Overseers::Inquiries::CommentsController < Overseers::Inquiries::BaseContr
 
     if @comment.sales_order.present? && @comment.save
       callback_method = %w(approve reject).detect { |action| params[action] }
-      send(callback_method) if callback_method.present? && policy(@comment.sales_order).send([callback_method, "?"].join)
+      send(callback_method) if callback_method.present? && policy(@comment.sales_order).send([callback_method, '?'].join)
       redirect_to overseers_inquiry_comments_path(@inquiry, sales_order_id: @comment.sales_order.to_param, show_to_customer: inquiry_comment_params[:show_to_customer]), notice: flash_message(@comment, action_name)
     elsif @comment.save
       redirect_to overseers_inquiry_comments_path(@inquiry, show_to_customer: inquiry_comment_params[:show_to_customer]), notice: flash_message(@comment, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

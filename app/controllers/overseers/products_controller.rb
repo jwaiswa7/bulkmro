@@ -41,7 +41,7 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -55,7 +55,7 @@ class Overseers::ProductsController < Overseers::BaseController
     if @product.approved? ? @product.save_and_sync : @product.save
       redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -103,7 +103,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
-    redirect_to overseers_product_path(@product, anchor: "inventory"), notice: flash_message(@product, action_name)
+    redirect_to overseers_product_path(@product, anchor: 'inventory'), notice: flash_message(@product, action_name)
   end
 
   def export_all

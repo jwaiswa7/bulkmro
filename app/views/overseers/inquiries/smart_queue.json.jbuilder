@@ -4,9 +4,9 @@ json.data (@inquiries) do |inquiry|
   columns = [
       [
           if policy(inquiry).edit?
-            row_action_button(edit_overseers_inquiry_path(inquiry), "pencil", "Edit Inquiry", "warning")
+            row_action_button(edit_overseers_inquiry_path(inquiry), 'pencil', 'Edit Inquiry', 'warning')
           end,
-      ].join(" "),
+      ].join(' '),
       priority_helper_format_label(inquiry.priority),
       conditional_link(inquiry.inquiry_number, edit_overseers_inquiry_path(inquiry), policy(inquiry).edit?),
       status_badge(inquiry.status),
@@ -19,7 +19,7 @@ json.data (@inquiries) do |inquiry|
       format_succinct_date(inquiry.created_at)
   ]
   columns = Hash[columns.collect.with_index { |item, index| [index, item] } ]
-  json.merge! columns.merge("DT_RowClass": "bg-highlight-" + smart_queue_priority_color(inquiry.priority))
+  json.merge! columns.merge("DT_RowClass": 'bg-highlight-' + smart_queue_priority_color(inquiry.priority))
 end
 
 json.columnFilters [

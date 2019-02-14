@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Activity < ApplicationRecord
-  REJECTIONS_CLASS = "ActivityRejection"
-  APPROVALS_CLASS = "ActivityApproval"
+  REJECTIONS_CLASS = 'ActivityRejection'
+  APPROVALS_CLASS = 'ActivityApproval'
 
   include Mixins::CanBeStamped
   include Mixins::CanBeApproved
@@ -13,13 +13,13 @@ class Activity < ApplicationRecord
 
   has_many :activity_overseers
   has_many :overseers, through: :activity_overseers
-  accepts_nested_attributes_for :activity_overseers, reject_if: lambda { |attributes| attributes["overseer_id"].blank? && attributes["id"].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :activity_overseers, reject_if: lambda { |attributes| attributes['overseer_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   belongs_to :inquiry, required: false
   belongs_to :company, required: false
   has_one :account, through: :company
   belongs_to :contact, required: false
   has_one :company_creation_request, dependent: :destroy, validate: false
-  accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes["name"].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :company_creation_request, reject_if: lambda { |attributes| attributes['name'].blank? }, allow_destroy: true
 
   has_many_attached :attachments
 

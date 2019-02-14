@@ -18,11 +18,11 @@ class Resources::ProductTree < Resources::ApplicationResource
 
     params = {
         TreeCode: record.product.sku,
-        TreeType: "iSalesTree",
+        TreeType: 'iSalesTree',
         Project: record.inquiry.inquiry_number,
         Quantity: 1, # record.quantity,
         Warehouse: record.inquiry.ship_from.remote_uid,
-        HideBOMComponentsInPrintout: "tNO",
+        HideBOMComponentsInPrintout: 'tNO',
         ProductTreeLines: kit_items,
     }
 

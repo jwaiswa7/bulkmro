@@ -10,6 +10,6 @@ class TaxRate < ApplicationRecord
   end
 
   def to_s
-    self.tax_percentage ? "GST #{self.tax_percentage}%" : " GST N/A"
+    self.tax_percentage ? "GST #{self.tax_percentage}%" : ' GST N/A'
   end
 end

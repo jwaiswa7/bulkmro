@@ -4,13 +4,13 @@ class SalesShipment < ApplicationRecord
   include Mixins::CanBeSynced
   include Mixins::CanBeStamped
 
-  update_index("sales_shipments#sales_shipment") { self }
+  update_index('sales_shipments#sales_shipment') { self }
 
   belongs_to :sales_order
   has_one :inquiry, through: :sales_order
-  has_many :rows, class_name: "SalesShipmentRow", inverse_of: :sales_shipment
-  has_many :packages, class_name: "SalesShipmentPackage", inverse_of: :sales_shipment
-  has_many :comments, class_name: "SalesShipmentComment", inverse_of: :sales_shipment
+  has_many :rows, class_name: 'SalesShipmentRow', inverse_of: :sales_shipment
+  has_many :packages, class_name: 'SalesShipmentPackage', inverse_of: :sales_shipment
+  has_many :comments, class_name: 'SalesShipmentComment', inverse_of: :sales_shipment
 
   has_one_attached :shipment_pdf
 
@@ -31,9 +31,9 @@ class SalesShipment < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ["shipment", shipment_number].join("_"),
-        ("pdf" if include_extension)
-    ].compact.join(".")
+        ['shipment', shipment_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 
   def self.syncable_identifiers

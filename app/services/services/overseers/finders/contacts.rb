@@ -15,9 +15,9 @@ class Services::Overseers::Finders::Contacts < Services::Overseers::Finders::Bas
     index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[firstname^3 lastname^3 email account inquiry],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
   end

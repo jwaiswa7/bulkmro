@@ -9,7 +9,7 @@ class MultipleFileValidator < ActiveModel::Validator
           record.errors.add(attachments, "must be less than #{file_size_in_megabytes} mb in size")
         elsif !attachment.blob.content_type.in? file_content_types
           attachment.purge
-          record.errors.add(attachments, "must be an image or pdf file")
+          record.errors.add(attachments, 'must be an image or pdf file')
         end
       end
     end

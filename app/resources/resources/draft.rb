@@ -19,8 +19,8 @@ class Resources::Draft < Resources::ApplicationResource
       items.push(item.marshal_dump)
     end
 
-    company_contact = record.inquiry.company.company_contacts.joins(:contact).where("contacts.email = ?", record.inquiry.contact.email).first
-    company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where("contacts.email = ?", record.inquiry.shipping_contact.email).first
+    company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
+    company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
 
     {
         AttachmentEntry: record.inquiry.attachment_uid, # 6383, #$quote['attachment_entry'] ------------
@@ -29,9 +29,9 @@ class Resources::Draft < Resources::ApplicationResource
         CntctCode: record.inquiry.contact.full_name,
         ContactPersonCode: company_contact.present? ? company_contact.remote_uid : nil,
         DiscountPercent: 0, # hardcode
-        DocDueDate: record.inquiry.customer_committed_date.present? ? record.inquiry.customer_committed_date.strftime("%Y-%m-%d") : nil, # estimated_shipping_date
+        DocDueDate: record.inquiry.customer_committed_date.present? ? record.inquiry.customer_committed_date.strftime('%Y-%m-%d') : nil, # estimated_shipping_date
         DocumentsOwner: record.inquiry.outside_sales_owner.employee_uid,
-        DocCurrency: "INR", # record.inquiry.inquiry_currency.currency.name
+        DocCurrency: 'INR', # record.inquiry.inquiry_currency.currency.name
         DocDate: record.created_date, # created_at
         DocRate: record.conversion_rate.to_s,
         DocObjectCode: SAP.draft_doc_object_code, # hardcode
@@ -42,28 +42,28 @@ class Resources::Draft < Resources::ApplicationResource
         ProjectCode: record.inquiry.project_uid, # increment_id inq
         ShipToCode: record.inquiry.remote_shipping_address_uid, # record.inquiry.shipping_address.legacy_id, ------
         SalesPersonCode: record.inquiry.inside_sales_owner.salesperson_uid,
-        U_CustComDt: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime("%Y-%m-%d") : nil, # not
+        U_CustComDt: record.inquiry.expected_closing_date.present? ? record.inquiry.expected_closing_date.strftime('%Y-%m-%d') : nil, # not
         U_SalesMgr: record.inquiry.sales_manager.try(:full_name), # record.inquiry.sales_manager.full_name,
         U_ConsigneeAddr: record.inquiry.shipping_address.remote_uid,
         U_Freight_Cost: record.inquiry.freight_cost,
-        U_CnfrmAddB: "P", # hardcode
-        U_Cnfrm_GSTIN: "P", # hardcode
-        U_Cnfrm_PayTerm: "P", # hardcode
-        U_CnfrmAddS: "P", # hardcode
-        U_CnfirmQty: "P", # hardcode
-        U_CnfrmRate: "P", # hardcode
-        U_CnfrmTax: "P", # hardcode
+        U_CnfrmAddB: 'P', # hardcode
+        U_Cnfrm_GSTIN: 'P', # hardcode
+        U_Cnfrm_PayTerm: 'P', # hardcode
+        U_CnfrmAddS: 'P', # hardcode
+        U_CnfirmQty: 'P', # hardcode
+        U_CnfrmRate: 'P', # hardcode
+        U_CnfrmTax: 'P', # hardcode
         U_SO_Status: 32, # hardcode
-        U_CnfrmGross: "P", # hardcode
+        U_CnfrmGross: 'P', # hardcode
         U_MgntDocID: record.id,
-        U_Rate_Rmks: "", # hardcode
-        U_Qty_Rmks: "", # hardcode
-        U_Tax_Rmks: "", # hardcode
-        U_Total_Rmks: "", # hardcode
-        U_Ship_Rmks: "", # hardcode
-        U_Bill_Rmks: "", # hardcode
-        U_PostBy: "Magento", # hardcode
-        U_PostMagento: "Y", # hardcode
+        U_Rate_Rmks: '', # hardcode
+        U_Qty_Rmks: '', # hardcode
+        U_Tax_Rmks: '', # hardcode
+        U_Total_Rmks: '', # hardcode
+        U_Ship_Rmks: '', # hardcode
+        U_Bill_Rmks: '', # hardcode
+        U_PostBy: 'Magento', # hardcode
+        U_PostMagento: 'Y', # hardcode
         BPChannelCode: record.inquiry.remote_shipping_company_uid,
         U_Ovr_Margin: record.calculated_total_margin_percentage,
         U_Over_Marg_Amnt: record.calculated_total_margin,

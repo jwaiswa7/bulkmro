@@ -21,8 +21,8 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     )
 
     @email_message.assign_attributes(email_message_params)
-    @email_message.assign_attributes(cc: email_message_params[:cc].split(",").map { |email| email.strip }) if email_message_params[:cc].present?
-    @email_message.assign_attributes(bcc: email_message_params[:cc].split(",").map { |email| email.strip }) if email_message_params[:bcc].present?
+    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
+    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
     authorize @sales_quote, :create_email_message?
 
@@ -43,7 +43,7 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
       @sales_quote.save_and_sync
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@sales_quote, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 

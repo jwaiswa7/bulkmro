@@ -15,7 +15,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   def index
     base_filter = {
-        base_filter_key: "account_id",
+        base_filter_key: 'account_id',
         base_filter_value: params[:account_id]
     }
     authorize @account
@@ -37,7 +37,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     if @company.save_and_sync
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -54,7 +54,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     if @company.save_and_sync(options)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

@@ -8,7 +8,7 @@ class ApplicationRecord < ActiveRecord::Base
   include PgSearch
   include Hashid::Rails
 
-  belongs_to :created_by, class_name: "Overseer", required: false
+  belongs_to :created_by, class_name: 'Overseer', required: false
 
   scope :latest, -> { order(created_at: :desc) }
   scope :latest_record, -> { latest.first }
@@ -17,9 +17,9 @@ class ApplicationRecord < ActiveRecord::Base
   scope :updated_today, -> { where("DATE(#{self.model_name.collection}.updated_at) = ?", Date.today) }
   scope :yesterday, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today - 1) }
   scope :tomorrow, -> { where("DATE(#{self.model_name.collection}.created_at) = ?", Date.today + 1) }
-  scope :before_datetime, -> (time) { where("created_at < ?", time) }
-  scope :after_datetime, -> (time) { where("created_at >= ?", time) }
-  scope :as_of, -> (time) { where("created_at < ?", time) }
+  scope :before_datetime, -> (time) { where('created_at < ?', time) }
+  scope :after_datetime, -> (time) { where('created_at >= ?', time) }
+  scope :as_of, -> (time) { where('created_at < ?', time) }
   scope :except_object, -> (obj) { where.not(id: obj.id) if obj.present? }
   scope :except_objects, -> (objs) { where.not("#{self.model_name.collection}.id IN (?)", objs.pluck(:id)) if objs.present? }
   scope :persisted, -> { where "#{self.model_name.collection}.id IS NOT NULL" }
@@ -37,11 +37,11 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def next
-    self.where("id > ?", id).order(id: :asc).first || self.first
+    self.where('id > ?', id).order(id: :asc).first || self.first
   end
 
   def previous
-    self.where("id < ?", id).order(id: :desc).first || self.last
+    self.where('id < ?', id).order(id: :desc).first || self.last
   end
 
   def to_s
@@ -49,11 +49,11 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def created_date
-    self.created_at.strftime("%F") if self.created_at.present?
+    self.created_at.strftime('%F') if self.created_at.present?
   end
 
   def updated_date
-    self.updated_at.strftime("%F") if self.updated_at.present?
+    self.updated_at.strftime('%F') if self.updated_at.present?
   end
 
   def self.execute_sql(*sql_array)

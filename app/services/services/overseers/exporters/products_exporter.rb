@@ -5,13 +5,13 @@ class Services::Overseers::Exporters::ProductsExporter < Services::Overseers::Ex
     super
 
     @model = Product
-    @export_name = "products"
-    @path = Rails.root.join("tmp", filename)
-    @columns = ["id", "SKU", "Name", "Category", "Sub Category 1", "Sub Category 2", "Brand", "UOM", "Hsn/Sac Code", "MPN", "Tax Percentage", "Is Service", "Is Active", "SAP Synced", "Created by", "Created At" ]
+    @export_name = 'products'
+    @path = Rails.root.join('tmp', filename)
+    @columns = ['id', 'SKU', 'Name', 'Category', 'Sub Category 1', 'Sub Category 2', 'Brand', 'UOM', 'Hsn/Sac Code', 'MPN', 'Tax Percentage', 'Is Service', 'Is Active', 'SAP Synced', 'Created by', 'Created At' ]
   end
 
   def call
-    perform_export_later("ProductsExporter")
+    perform_export_later('ProductsExporter')
   end
 
   def build_csv

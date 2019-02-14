@@ -8,7 +8,7 @@ class ImageFileValidator < ActiveModel::Validator
         record.errors.add(attachment, "must be less than #{file_size_in_megabytes} mb in size")
       elsif !record.send(attachment).blob.content_type.in? file_content_types
         record.send(attachment).purge
-        record.errors.add(attachment, "must be a valid image file")
+        record.errors.add(attachment, 'must be a valid image file')
       end
     end
   end

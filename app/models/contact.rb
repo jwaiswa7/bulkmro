@@ -7,7 +7,7 @@ class Contact < ApplicationRecord
   include Mixins::HasMobileAndTelephone
   include Mixins::CanBeActivated
 
-  update_index("contacts#contact") { self }
+  update_index('contacts#contact') { self }
   pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: { account: [:name] }, using: { tsearch: { prefix: true } }
 
   # Include default devise modules. Others available are:
@@ -59,7 +59,7 @@ class Contact < ApplicationRecord
   end
 
   def self.legacy
-    find_by_email("legacy@bulkmro.com")
+    find_by_email('legacy@bulkmro.com')
   end
 
   def current_cart
@@ -75,8 +75,8 @@ class Contact < ApplicationRecord
         CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id).first_or_create! do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
-          customer_product.name = (inquiry_product.bp_catalog_name == "" ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
-          customer_product.sku = (inquiry_product.bp_catalog_sku == "" ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
+          customer_product.name = (inquiry_product.bp_catalog_name == '' ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
+          customer_product.sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
           customer_product.tax_code = inquiry_product.product.best_tax_code
           customer_product.tax_rate = inquiry_product.best_tax_rate
           customer_product.measurement_unit = inquiry_product.product.measurement_unit

@@ -25,8 +25,8 @@ class Services::Resources::Shared::UidGenerator < Services::Shared::BaseService
   end
 
   def self.generate_sku(length)
-    alphabets = [*"A".."Z"]
-    numbers = [*"0".."9"]
+    alphabets = [*'A'..'Z']
+    numbers = [*'0'..'9']
 
     sku_characters = %w(B M 9)
 

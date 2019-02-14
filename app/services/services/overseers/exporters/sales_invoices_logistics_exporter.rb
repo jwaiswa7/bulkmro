@@ -4,13 +4,13 @@ class Services::Overseers::Exporters::SalesInvoicesLogisticsExporter < Services:
   def initialize
     super
     @model = SalesInvoice
-    @export_name = "sales_invoice_logistics"
-    @path = Rails.root.join("tmp", filename)
+    @export_name = 'sales_invoice_logistics'
+    @path = Rails.root.join('tmp', filename)
     @columns = %w(inquiry_number inquiry_date company_name inside_sales order_number order_date order_status invoice_number invoice_date committed_customer_date)
   end
 
   def call
-    perform_export_later("SalesInvoicesLogisticsExporter")
+    perform_export_later('SalesInvoicesLogisticsExporter')
   end
 
   def build_csv

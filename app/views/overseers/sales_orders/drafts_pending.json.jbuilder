@@ -4,18 +4,18 @@ json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
                       if policy(sales_order).show?
-                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), "eye", "View Sales Order", "info")
+                        row_action_button(overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'eye', 'View Sales Order', 'info')
                       end,
                       if policy(sales_order).resync?
-                        row_action_button(resync_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), "retweet-alt", "Resync with SAP", "danger", :_self, :post)
+                        row_action_button(resync_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'retweet-alt', 'Resync with SAP', 'danger', :_self, :post)
                       end,
                       if policy(sales_order).comments?
-                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), "comment-alt-check", "Comments and Approval", "success")
+                        row_action_button(overseers_inquiry_comments_path(sales_order.inquiry, sales_order_id: sales_order.to_param), 'comment-alt-check', 'Comments and Approval', 'success')
                       end,
                       if policy(sales_order).go_to_inquiry?
-                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), "arrow-right", "Go to Inquiry", "dark")
+                        row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
                       end
-                  ].join(" "),
+                  ].join(' '),
                   sales_order.id,
                   conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
                   status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),

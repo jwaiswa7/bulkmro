@@ -48,14 +48,14 @@ class InquiryStatusRecord < ApplicationRecord
 
   def color
     if self.subject.present?
-      if self.subject_type == "SalesOrder"
-        "warning"
+      if self.subject_type == 'SalesOrder'
+        'warning'
       else
-        "warning"
+        'warning'
       end
 
     else
-      "warning"
+      'warning'
     end
   end
 

@@ -15,9 +15,9 @@ class Services::Overseers::Finders::Overseers < Services::Overseers::Finders::Ba
     index_klass.query(
       multi_match: {
           query: query,
-          operator: "and",
+          operator: 'and',
           fields: %w[firstname^3 lastname^3 role],
-          minimum_should_match: "100%"
+          minimum_should_match: '100%'
       }
                       ).order(sort_definition)
   end

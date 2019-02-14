@@ -48,7 +48,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @old_sales_order = @inquiry.sales_orders.find(params[:id])
     @sales_order = Services::Overseers::SalesOrders::BuildFromSalesQuote.new(@old_sales_order.sales_quote, current_overseer).call
     authorize @old_sales_order
-    render "new"
+    render 'new'
   end
 
   def create
@@ -60,7 +60,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -77,14 +77,14 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
-      render "edit"
+      render 'edit'
     end
   end
 
   def debugging
     authorize :sales_order
     @sales_order = SalesOrder.find(params['id'])
-    @remote_requests = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => @sales_order.id)
+    @remote_requests = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: @sales_order.id)
     @callback_requests = CallbackRequest.sales_order_callbacks(@sales_order.id)
   end
 
@@ -96,7 +96,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_order, :order_confirmed).call
       ActiveRecord::Base.transaction do
         @confirmation.save!
-        @sales_order.update_attributes(status: "Requested")
+        @sales_order.update_attributes(status: 'Requested')
         @sales_order.update_attributes(sent_at: Time.now)
       end
       # chat_message = Services::Overseers::ChatMessages::SendChat.new
@@ -126,7 +126,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
 
   def edit_mis_date
     if @sales_order.mis_date.blank?
-      @sales_order.mis_date = @sales_order.created_at.strftime("%d-%b-%Y")
+      @sales_order.mis_date = @sales_order.created_at.strftime('%d-%b-%Y')
     end
 
     authorize @sales_order
@@ -139,7 +139,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     if @sales_order.save
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
-      render "edit"
+      render 'edit'
     end
   end
 

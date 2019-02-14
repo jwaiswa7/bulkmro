@@ -21,25 +21,25 @@ class Services::Shared::ChatMessages::BaseService < Services::Shared::BaseServic
     [
         {
            "fallback": fallback,
-           "color": "warning",
+           "color": 'warning',
            "pretext": pretext,
            "author_name": author_name,
-           "title": "Order Details",
+           "title": 'Order Details',
            "fields": [
                {
-                   "title": "Inquiry",
+                   "title": 'Inquiry',
                    "value": inquiry_number,
                    "short": true
                },
                {
-                   "title": "Order Number",
+                   "title": 'Order Number',
                    "value": order_no,
                    "short": true
                }
            ],
            # "image_url": "http://my-website.com/path/to/image.jpg",
            # "thumb_url": "http://example.com/path/to/thumb.png",
-           "footer": "For issues, usersnap us"
+           "footer": 'For issues, usersnap us'
            # "footer_icon": "",
            # "ts": Time.now()
         }

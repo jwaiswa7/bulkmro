@@ -8,5 +8,5 @@ class CustomerProductImport < ApplicationRecord
   include Mixins::IsAnImport
 
   belongs_to :company
-  has_many :rows, class_name: "CustomerProductImportRow"
+  has_many :rows, class_name: 'CustomerProductImportRow'
 end

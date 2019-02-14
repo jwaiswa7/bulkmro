@@ -14,12 +14,12 @@ class Overseers::FreightQuotesController < Overseers::BaseController
 
     @freight_quotes = ApplyDatatableParams.to(freight_quotes, params)
     authorize @freight_quotes
-    render "overseers/freight_requests/freight_quotes/index"
+    render 'overseers/freight_requests/freight_quotes/index'
   end
 
   def show
     authorize @freight_quote
-    render "overseers/freight_requests/freight_quotes/show"
+    render 'overseers/freight_requests/freight_quotes/show'
   end
 
   def edit

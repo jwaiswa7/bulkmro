@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class PurchaseOrder < ApplicationRecord
-  COMMENTS_CLASS = "PoComment"
+  COMMENTS_CLASS = 'PoComment'
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index("purchase_orders#purchase_order") { self }
+  update_index('purchase_orders#purchase_order') { self }
 
   pg_search_scope :locate, against: [:id, :po_number], using: { tsearch: { prefix: true } }
 
@@ -14,7 +14,7 @@ class PurchaseOrder < ApplicationRecord
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
   has_one :conversion_rate, through: :inquiry_currency
-  has_many :rows, class_name: "PurchaseOrderRow", inverse_of: :purchase_order
+  has_many :rows, class_name: 'PurchaseOrderRow', inverse_of: :purchase_order
   has_one_attached :document
   has_one :po_request
   has_one :payment_request
@@ -27,9 +27,9 @@ class PurchaseOrder < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ["po", po_number].join("_"),
-        ("pdf" if include_extension)
-    ].compact.join(".")
+        ['po', po_number].join('_'),
+        ('pdf' if include_extension)
+    ].compact.join('.')
   end
 
   enum status: {
@@ -75,8 +75,8 @@ class PurchaseOrder < ApplicationRecord
   scope :not_cancelled, -> { where.not("metadata->>'PoStatus' = ?", PurchaseOrder.statuses[:Cancelled].to_s) }
 
   def get_supplier(product_id)
-    if self.metadata["PoSupNum"].present?
-      product_supplier = (Company.find_by_legacy_id(self.metadata["PoSupNum"]) || Company.find_by_remote_uid(self.metadata["PoSupNum"]))
+    if self.metadata['PoSupNum'].present?
+      product_supplier = (Company.find_by_legacy_id(self.metadata['PoSupNum']) || Company.find_by_remote_uid(self.metadata['PoSupNum']))
       return product_supplier if self.inquiry.suppliers.include?(product_supplier) || self.is_legacy?
     end
 
@@ -87,17 +87,17 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def metadata_status
-    PurchaseOrder.statuses.key(self.metadata["PoStatus"].to_i).to_s if self.metadata.present?
+    PurchaseOrder.statuses.key(self.metadata['PoStatus'].to_i).to_s if self.metadata.present?
   end
 
   def to_s
-    supplier_name = self.get_supplier(self.rows.first.metadata["PopProductId"].to_i) if self.rows.present?
-    ["#" + po_number.to_s, supplier_name].join(" ") if po_number.present?
+    supplier_name = self.get_supplier(self.rows.first.metadata['PopProductId'].to_i) if self.rows.present?
+    ['#' + po_number.to_s, supplier_name].join(' ') if po_number.present?
   end
 
   def valid_po_date?
     begin
-      self.metadata["PoDate"].to_date
+      self.metadata['PoDate'].to_date
       true
     rescue ArgumentError
       false

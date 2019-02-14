@@ -7,9 +7,9 @@ class Services::Overseers::Finders::CancelledSalesOrders < Services::Overseers::
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_status(false, "Cancelled")))
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_status(false, 'Cancelled')))
     else
-      super.filter(filter_by_status(false, "Cancelled"))
+      super.filter(filter_by_status(false, 'Cancelled'))
     end
 
     if @status.present?
@@ -19,17 +19,17 @@ class Services::Overseers::Finders::CancelledSalesOrders < Services::Overseers::
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status("status"))
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query(multi_match: { query: query_string, operator: "and", fields: %w[approval_status order_number^3 status_string remote_status_string updated_by_id quote_total order_total inside_sales_owner outside_sales_owner legacy_status inquiry_number^5 inquiry_number_string^5  ] }).order(sort_definition)
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[approval_status order_number^3 status_string remote_status_string updated_by_id quote_total order_total inside_sales_owner outside_sales_owner legacy_status inquiry_number^5 inquiry_number_string^5  ] }).order(sort_definition)
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_status(false, "Cancelled")))
+      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_status(false, 'Cancelled')))
     else
-      indexed_records = indexed_records.filter(filter_by_status(false, "Cancelled"))
+      indexed_records = indexed_records.filter(filter_by_status(false, 'Cancelled'))
     end
 
     if @status.present?
@@ -39,7 +39,7 @@ class Services::Overseers::Finders::CancelledSalesOrders < Services::Overseers::
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
-    indexed_records = indexed_records.aggregations(aggregate_by_status("status"))
+    indexed_records = indexed_records.aggregations(aggregate_by_status('status'))
     indexed_records
   end
 

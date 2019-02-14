@@ -4,16 +4,16 @@ json.data (@warehouses) do |warehouse|
   json.array! [
                   [
                       if policy(warehouse).edit?
-                        row_action_button(overseers_warehouse_path(warehouse), "eye", "View Warehouse", "info")
+                        row_action_button(overseers_warehouse_path(warehouse), 'eye', 'View Warehouse', 'info')
                       end,
                       if policy(warehouse).edit?
-                        row_action_button(edit_overseers_warehouse_path(warehouse), "pencil", "Edit Warehouse", "warning")
+                        row_action_button(edit_overseers_warehouse_path(warehouse), 'pencil', 'Edit Warehouse', 'warning')
                       end,
-                  ].join(" "),
+                  ].join(' '),
                   conditional_link(warehouse.name.to_s, overseers_warehouse_path(warehouse), policy(warehouse).edit?),
                   warehouse.address.state.name.to_s,
                   if warehouse.address.gst.to_s.empty?
-                    "N/A"
+                    'N/A'
                   else
                     warehouse.address.gst
                   end,

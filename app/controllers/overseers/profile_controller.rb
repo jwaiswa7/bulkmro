@@ -14,7 +14,7 @@ class Overseers::ProfileController < Overseers::BaseController
  		 if @overseer.save
   			 redirect_to edit_overseers_profile_path, notice: flash_message(@overseer, action_name)
   		else
-  			 render "edit"
+  			 render 'edit'
   		end
  	end
 

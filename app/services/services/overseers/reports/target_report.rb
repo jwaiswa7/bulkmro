@@ -21,7 +21,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
          dump: []
        )
 
-       designation = params[:designation].present? ? params[:designation] : "Inside"
+       designation = params[:designation].present? ? params[:designation] : 'Inside'
        data.selected_filters[:designation] = designation
        executive = params[:executive].present? ? params[:executive] : nil
        executive_id = Overseer.find(executive).id if executive.present?
@@ -39,12 +39,12 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
 
 
        fields = {
-           "Inquiry" => [:inquiry_target, :inquiry_achieved, :"inquiry_achieved %"],
-           "Order" => [:order_target, :order_achieved, :"order_achieved %"],
-           "Invoice" => [:invoice_target, :invoice_achieved, :"invoice_achieved %"],
+           'Inquiry' => [:inquiry_target, :inquiry_achieved, :"inquiry_achieved %"],
+           'Order' => [:order_target, :order_achieved, :"order_achieved %"],
+           'Invoice' => [:invoice_target, :invoice_achieved, :"invoice_achieved %"],
        }
 
-       targets_records = Target.joins(:target_period).where("target_periods.period_month" => report.start_at.beginning_of_month..report.end_at.end_of_month).where(target_type: ["Inquiry", "Invoice", "Order"]).where.not(target_value: 0)
+       targets_records = Target.joins(:target_period).where('target_periods.period_month' => report.start_at.beginning_of_month..report.end_at.end_of_month).where(target_type: ['Inquiry', 'Invoice', 'Order']).where.not(target_value: 0)
        overseer = params[:overseer]
 
        if overseer.admin?
@@ -57,7 +57,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
          child_overseer_ids = [overseer.id]
        end
 
-       target_child_overseer_ids = targets_records.where("manager_id = ? OR business_head_id = ?", overseer.id, overseer.id).pluck(:overseer_id)
+       target_child_overseer_ids = targets_records.where('manager_id = ? OR business_head_id = ?', overseer.id, overseer.id).pluck(:overseer_id)
        targets_records_overseers = (child_overseer_ids + target_child_overseer_ids).uniq
 
 
@@ -91,22 +91,22 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
 
        date_range = report.start_at.beginning_of_month..report.end_at.end_of_month
 
-       inquiries = Inquiry.where("created_at" => date_range).
+       inquiries = Inquiry.where('created_at' => date_range).
            includes({ sales_quotes: [{ sales_quote_rows: :inquiry_product_supplier }] }, :inside_sales_owner).
            order(inquiry_number: :desc)
        sales_orders = SalesOrder.
            joins(:inquiry).
            includes(:rows).
-           where("mis_date" => date_range).
-           where("sales_orders.status = ? OR sales_orders.legacy_request_status = ?", SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
+           where('mis_date' => date_range).
+           where('sales_orders.status = ? OR sales_orders.legacy_request_status = ?', SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'])
        sales_invoices = SalesInvoice.joins(:inquiry).
-           where("mis_date" => date_range)
+           where('mis_date' => date_range)
 
        overseer_ids.each do |overseer_id|
          overseer = Overseer.find(overseer_id)
          targets = targets_records.
              where(overseer_id: overseer_id).
-             select(" min(target_periods.period_month) as start_month, max(target_periods.period_month) as end_month, overseer_id, manager_id, business_head_id, target_type,sum(target_value) as target_value").
+             select(' min(target_periods.period_month) as start_month, max(target_periods.period_month) as end_month, overseer_id, manager_id, business_head_id, target_type,sum(target_value) as target_value').
              group(:overseer_id, :manager_id, :business_head_id, :target_type)
 
          targets.each do |target|
@@ -118,7 +118,7 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
            date_range = start_date..end_date
            overseer_hash_key = "#{overseer_id}-#{target.manager_id}-#{target.business_head_id}"
 
-           data.entries[overseer_hash_key] ||= { executive: "", manager: "", business_head: "", inquiry_target: 0, inquiry_achieved: 0, "inquiry_achieved %": 0, order_target: 0, order_achieved: 0, "order_achieved %": 0, invoice_target: 0, invoice_achieved: 0, "invoice_achieved %": 0 }
+           data.entries[overseer_hash_key] ||= { executive: '', manager: '', business_head: '', inquiry_target: 0, inquiry_achieved: 0, "inquiry_achieved %": 0, order_target: 0, order_achieved: 0, "order_achieved %": 0, invoice_target: 0, invoice_achieved: 0, "invoice_achieved %": 0 }
 
            if fields.keys.include?(target_type)
 
@@ -126,25 +126,25 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
              data.entries[overseer_hash_key][:executive] = target.overseer.full_name
              data.entries[overseer_hash_key][:manager] = target.manager.full_name
              data.entries[overseer_hash_key][:business_head] = target.business_head.full_name
-             if target_type == "Inquiry"
-               records = inquiries.where("created_at" => date_range).
+             if target_type == 'Inquiry'
+               records = inquiries.where('created_at' => date_range).
                    where(inside_sales_owner_id: overseer_id).
-                   or(inquiries.where("created_at" => date_range).where(outside_sales_owner_id: overseer_id)).
+                   or(inquiries.where('created_at' => date_range).where(outside_sales_owner_id: overseer_id)).
                    map { |i| i.final_sales_quote.try(:calculated_total).to_f }
-             elsif target_type == "Order"
+             elsif target_type == 'Order'
                records = sales_orders.
-                   where("inquiries.inside_sales_owner_id = ?", overseer_id).
-                   or(sales_orders.where("inquiries.outside_sales_owner_id = ?", overseer_id)).
-                   where("mis_date" => date_range).
+                   where('inquiries.inside_sales_owner_id = ?', overseer_id).
+                   or(sales_orders.where('inquiries.outside_sales_owner_id = ?', overseer_id)).
+                   where('mis_date' => date_range).
                    compact.
                    map { |i| (i.try(:calculated_total).to_f) }.flatten
-             elsif target_type == "Invoice"
+             elsif target_type == 'Invoice'
                records = sales_invoices.
-                   where("inquiries.inside_sales_owner_id = ?", overseer_id).
-                   or(sales_invoices.where("inquiries.outside_sales_owner_id = ?", overseer_id)).
-                   where("mis_date" => date_range).map do |sales_invoice|
+                   where('inquiries.inside_sales_owner_id = ?', overseer_id).
+                   or(sales_invoices.where('inquiries.outside_sales_owner_id = ?', overseer_id)).
+                   where('mis_date' => date_range).map do |sales_invoice|
                      if sales_invoice.metadata.present?
-                       sales_invoice.metadata["subtotal"].to_f
+                       sales_invoice.metadata['subtotal'].to_f
                      elsif sales_invoice.report_total.present?
                        sales_invoice.report_total.to_f
                      else
@@ -157,9 +157,9 @@ class Services::Overseers::Reports::TargetReport < Services::Overseers::Reports:
              data.entries[overseer_hash_key][fields[target_type][1]] = ((records.inject(0) { |sum, x| sum + x }.to_f) / 100000).round(2)
              data.entries[overseer_hash_key][fields[target_type][2]] = data.entries[overseer_hash_key][fields[target_type][0]] == 0.0 ? 0 : ((data.entries[overseer_hash_key][fields[target_type][1]] / data.entries[overseer_hash_key][fields[target_type][0]]) * 100).ceil
 
-             data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][0]] += data.entries[overseer_hash_key][fields[target_type][0]].round(2)
-             data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][1]] += data.entries[overseer_hash_key][fields[target_type][1]].round(2)
-             data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][2]] = data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][0]] == 0 ? 0 : ((data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][1]] / data.summary_entries[target_type.split(" ").join("_").downcase.pluralize.to_sym][fields[target_type][0]]) * 100).ceil
+             data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][0]] += data.entries[overseer_hash_key][fields[target_type][0]].round(2)
+             data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][1]] += data.entries[overseer_hash_key][fields[target_type][1]].round(2)
+             data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][2]] = data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][0]] == 0 ? 0 : ((data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][1]] / data.summary_entries[target_type.split(' ').join('_').downcase.pluralize.to_sym][fields[target_type][0]]) * 100).ceil
 
            end
          end

@@ -4,12 +4,12 @@ json.data (@freight_quotes) do |freight_quote|
   json.array! [
                   [
                       if policy(freight_quote).show?
-                        row_action_button(overseers_freight_quote_path(freight_quote), "eye", "View Freight Quote", "info")
+                        row_action_button(overseers_freight_quote_path(freight_quote), 'eye', 'View Freight Quote', 'info')
                       end,
                       if policy(freight_quote).edit?
-                        row_action_button(edit_overseers_freight_request_freight_quote_path(freight_quote.freight_request, freight_quote), "pencil", "Edit Freight Quote", "warning")
+                        row_action_button(edit_overseers_freight_request_freight_quote_path(freight_quote.freight_request, freight_quote), 'pencil', 'Edit Freight Quote', 'warning')
                       end
-                  ].join(" "),
+                  ].join(' '),
                   freight_quote.id,
                   freight_quote.inquiry.inquiry_number,
                   freight_quote.freight_request.id,
