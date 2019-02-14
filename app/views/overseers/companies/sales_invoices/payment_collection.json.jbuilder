@@ -11,7 +11,6 @@ json.data (@sales_invoices) do |sales_invoice|
                   sales_invoice.inquiry.present? ? conditional_link(sales_invoice.invoice_number,overseers_inquiry_sales_invoices_path(sales_invoice.inquiry),policy(sales_invoice).show?) : sales_invoice.invoice_number,
                   format_succinct_date(sales_invoice.mis_date),
                   '',
-
                   if  sales_invoice.sales_order.present? && sales_invoice.sales_order.inquiry.present? && sales_invoice.sales_order.inquiry.payment_option.present?
                     sales_invoice.sales_order.inquiry.payment_option.name
                   else
@@ -20,8 +19,8 @@ json.data (@sales_invoices) do |sales_invoice|
                   format_currency(sales_invoice.calculated_total_with_tax || 0),
                   format_currency(sales_invoice.amount_received_against_invoice || 0),
                   format_currency((sales_invoice.calculated_total_with_tax - sales_invoice.amount_received_against_invoice) || 0),
-                  "",
-                  "",
+                  format_date(sales_invoice.due_date),
+                  format_remaing_days(sales_invoice.due_date),
                   if sales_invoice.inquiry.present?
                     sales_invoice.inquiry.customer_po_number
                   end,

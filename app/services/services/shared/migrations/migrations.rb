@@ -2493,7 +2493,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       od_sales_invoices = company.invoices
       # od_sales_invoices = company.invoices.where('due_date < ?', Time.now)
       od_sales_invoices.each do |sales_invoice|
-        if sales_invoice.payment_status == 'Partially Paid'
+        # all invoiced amount added as outstaningif sales_invoice.payment_status == 'Partially Paid'
           outstanding_overdue_partially_paid = sales_invoice.calculated_total_with_tax
         elsif sales_invoice.payment_status == 'Unpaid'
           outstanding_overdue_no_pay_received = sales_invoice.calculated_total_with_tax
