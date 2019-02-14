@@ -215,7 +215,7 @@ class Company < ApplicationRecord
 
   def amount_received_on_account
     amount = 0
-    self.invoices.where('sales_invoice.mis_date >= ?', '01-04-2018').each do |sales_invoice|
+    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
       amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'On Account').sum(:payment_amount_received)
     end
     amount
@@ -223,14 +223,14 @@ class Company < ApplicationRecord
 
   def amount_received_against_invoice
     amount = 0
-    self.invoices.where('sales_invoice.mis_date >= ?', '01-04-2018').each do |sales_invoice|
+    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
       amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'Against Invoice').sum(:payment_amount_received)
     end
     amount
   end
 
   def total_amount_due
-    self.invoices.where('sales_invoice.mis_date >= ?', '01-04-2018').sum(:calculated_total_with_tax)
+    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').sum(:calculated_total_with_tax)
   end
 
   def total_amount_outstanding
