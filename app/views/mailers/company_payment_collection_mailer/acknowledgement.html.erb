@@ -30,7 +30,7 @@
           <td style="padding: 5px; text-align: center;"><%= format_currency(invoice.calculated_total_with_tax) %></td>
           <td style="padding: 5px; text-align: center;"><%= format_currency(invoice.amount_received) %></td>
           <td style="padding: 5px; text-align: center;"><%= format_currency(invoice.calculated_total_with_tax - invoice.amount_received) %></td>
-          <td style="padding: 5px; text-align: center;"><%= format_remaing_days(invoice.due_date) %></td>
+          <td style="padding: 5px; text-align: center;"><%= invoice.get_due_days %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.inquiry.contact.full_name %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.inquiry.shipping_contact.present? ? invoice.inquiry.shipping_contact.full_name : invoice.inquiry.contact.full_name%></td>
         </tr>

@@ -101,4 +101,17 @@ class SalesInvoice < ApplicationRecord
     self.created_at + due_in_days.days
   end
 
+  def get_due_days
+    sales_receipt_dates = self.sales_receipts.pluck(:payment_received_date).compact
+    due_date = self.due_date
+    max_date = sales_receipt_dates.max
+    days = "-"
+    if due_date.present?
+      if max_date.nil? || due_date < max_date
+        days = "#{((Time.now - self.get_due_date) / 86400).to_i} days"
+      end
+    end
+    days
+  end
+
 end

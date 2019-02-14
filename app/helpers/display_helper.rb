@@ -52,10 +52,6 @@ module DisplayHelper
     end
   end
 
-  def format_remaing_days(date)
-    "#{((Time.now - date) / 86400).to_i} days"
-  end
-
   def format_size(kollection)
     [kollection.size, kollection.class.to_s.split('::').first.downcase.pluralize].join(' ')
   end

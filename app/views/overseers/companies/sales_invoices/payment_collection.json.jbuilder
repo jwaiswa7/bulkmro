@@ -20,7 +20,7 @@ json.data (@sales_invoices) do |sales_invoice|
                   format_currency(sales_invoice.amount_received_against_invoice || 0),
                   format_currency((sales_invoice.calculated_total_with_tax - sales_invoice.amount_received_against_invoice) || 0),
                   format_date(sales_invoice.due_date),
-                  format_remaing_days(sales_invoice.due_date),
+                  sales_invoice.get_due_days,
                   if sales_invoice.inquiry.present?
                     sales_invoice.inquiry.customer_po_number
                   end,
