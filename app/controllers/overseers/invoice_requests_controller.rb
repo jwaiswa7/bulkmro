@@ -48,11 +48,24 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
 
       authorize @invoice_request
-    elsif  params[:purchase_order_id].present?
+    elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+      @sales_order = @purchase_order.try(:po_request).try(:sales_order)
       @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+      @mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
 
       authorize @invoice_request
+      if(params[:mpr_id] || params[:ids])
+        if params[:mpr_id]
+          @invoice_request.material_pickup_requests << MaterialPickupRequest.find(@mpr_ids)
+        else
+          @invoice_request.material_pickup_requests << MaterialPickupRequest.where(id: @mpr_ids)
+        end
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@mpr_ids, by_po = false)
+      else
+        service = Services::Overseers::InvoiceRequests::FormProductsList.new(@purchase_order, by_po = true)
+      end
+      @products_list = service.call
     else
       redirect_to overseers_invoice_requests_path
     end
@@ -80,6 +93,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     @order = @invoice_request.sales_order || @invoice_request.purchase_order
     service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@order, current_overseer, @invoice_request, 'Logistics')
     @company_reviews = service.call
+
+    mpr_ids = @invoice_request.material_pickup_requests.map(&:id).join(", ")
+    service = Services::Overseers::InvoiceRequests::FormProductsList.new(mpr_ids, by_po = false)
+    @products_list = service.call
   end
 
   def update
@@ -117,7 +134,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ar_invoice_number,
         :purchase_order_id,
         :status,
-        :comments_attributes => [:id, :message, :created_by_id],
+        :material_pickup_request_ids,
+        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
   end

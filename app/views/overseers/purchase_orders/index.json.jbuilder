@@ -7,11 +7,12 @@ json.data (@purchase_orders) do |purchase_order|
                       if policy(purchase_order).show_document?
                         row_action_button(url_for(purchase_order.document), 'file-pdf', purchase_order.document.filename, 'dark', :_blank)
                       end,
-                      if policy(purchase_order).edit_internal_status?
-                        row_action_button(edit_internal_status_overseers_purchase_order_path(purchase_order), 'pencil', 'Edit Internal Status', 'success')
-                      end,
+
                       if policy(purchase_order).can_request_invoice?
                         row_action_button(new_overseers_invoice_request_path(:purchase_order_id => purchase_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
+                      end,
+                      if policy(purchase_order).new_email_message?
+                        row_action_button(new_overseers_po_request_email_message_path(purchase_order.po_request), 'envelope', 'Send Notification', 'dark', :_blank)
                       end
                   ].join(' '),
                   conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
@@ -24,6 +25,13 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   (format_succinct_date(purchase_order.metadata['PoDate'].to_date) if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )),
+                  purchase_order.material_status,
+                  if purchase_order.payment_request.present?
+                    purchase_order.payment_request.status
+                  end,
+                  if purchase_order.payment_request.present?
+                    purchase_order.payment_request.percent_amount_paid
+                  end,
                   format_succinct_date(purchase_order.created_at)
               ]
 end

@@ -1,5 +1,5 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync]
+  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests,:create_purchase_orders_requests]
   def pending
     authorize :sales_order
 
@@ -10,7 +10,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service.call
 
         @indexed_sales_orders = service.indexed_records
-        @sales_orders = service.records.try(:reverse)
+        @sales_orders = service.records
 
         status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
         status_service.call
@@ -23,36 +23,57 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def cancelled
+    authorize :sales_order
+    respond_to do |format|
+      format.html { render 'pending' }
+      format.json do
+        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+        render 'pending'
+      end
+    end
+  end
+
   def export_all
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersExporter.new
-    service.call
-
-    redirect_to url_for(Export.sales_orders.last.report)
+    service = Services::Overseers::Exporters::SalesOrdersExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   def export_rows
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new
-    service.call
-
-    redirect_to url_for(Export.sales_order_rows.last.report)
+    service = Services::Overseers::Exporters::SalesOrderRowsExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   def export_for_logistics
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new
-    service.call
-
-    redirect_to url_for(Export.sales_order_logistics.last.report)
+    service = Services::Overseers::Exporters::SalesOrdersLogisticsExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   def export_for_sap
     authorize :sales_order
-    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new
-    service.call
-
-    redirect_to url_for(Export.sales_order_sap.last.report)
+    service = Services::Overseers::Exporters::SalesOrdersSapExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   def index
@@ -130,9 +151,84 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     end
   end
 
+  def new_purchase_orders_requests
+    authorize :sales_order
+
+    if Rails.cache.exist?(:po_requests)
+      @po_requests =  Rails.cache.read(:po_requests)
+      Rails.cache.delete(:po_requests)
+    else
+      service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
+      @po_requests = service.call
+    end
+  end
+
+  def preview_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::PreviewPoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    @po_requests = service.call
+
+    Rails.cache.write(:po_requests, @po_requests, expires_in: 25.minutes)
+  end
+
+  def create_purchase_orders_requests
+    authorize :sales_order
+
+    service = Services::Overseers::SalesOrders::UpdatePoRequests.new(@sales_order, current_overseer, new_purchase_orders_requests_params[:po_requests_attributes].to_h)
+    service.call
+    Rails.cache.delete(:po_requests)
+    redirect_to pending_and_rejected_overseers_po_requests_path
+  end
+
   private
 
   def set_sales_order
     @sales_order = SalesOrder.find(params[:id])
+  end
+
+  def new_purchase_orders_requests_params
+    if params.has_key?(:sales_order)
+      params.require(:sales_order).permit(
+          :id,
+          :po_requests_attributes => [
+              :id,
+              :supplier_id,
+              :inquiry_id,
+              :_destroy,
+              :logistics_owner_id,
+              :bill_from_id,
+              :ship_from_id,
+              :bill_to_id,
+              :ship_to_id,
+              :contact_id,
+              :payment_option_id,
+              :supplier_po_type,
+              :status,
+              :supplier_committed_date,
+              :contact_email,
+              :contact_phone,
+              :blobs,
+              :attachments => [],
+              :rows_attributes => [
+                  :id,
+                  :_destroy,
+                  :status,
+                  :quantity,
+                  :sales_order_row_id,
+                  :product_id,
+                  :brand_id,
+                  :tax_code_id,
+                  :tax_rate_id,
+                  :lead_time,
+                  :measurement_unit_id,
+                  :discount_percentage,
+                  :unit_price
+              ]
+          ]
+      )
+    else
+      {}
+    end
   end
 end

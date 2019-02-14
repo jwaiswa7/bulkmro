@@ -7,7 +7,6 @@ def generate_csv(objects,columns,name= "po_export_")
   end
 end
 
-
 def get_purchase_order
   start_at = Date.new(2018, 10, 19)
   end_at = Date.today.end_of_day

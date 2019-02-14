@@ -17,7 +17,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -57,6 +57,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def pending?
+    manager_or_sales?
+  end
+
+  def cancelled?
     manager_or_sales?
   end
 
@@ -113,8 +117,36 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     record.sent? && record.approved? && record.not_synced? && admin?
   end
 
+  def new_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def preview_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def create_purchase_orders_requests?
+    admin? || developer?
+  end
+
   def fetch_order_data?
     developer?
+  end
+
+  def material_dispatched_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_dispatched_to_customer_create_email_msg?
+    material_dispatched_to_customer_new_email_msg?
+  end
+
+  def material_delivered_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_delivered_to_customer_create_email_msg?
+    material_delivered_to_customer_new_email_msg?
   end
 
   class Scope

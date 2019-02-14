@@ -39,6 +39,7 @@ class Product < ApplicationRecord
 
   scope :with_includes, -> {includes(:brand, :approval, :category, :tax_code)}
   scope :with_manage_failed_skus, -> {includes(:brand, :tax_code, :category => [:tax_code])}
+  scope :is_service, ->{ where(is_service: true)}
 
   validates_presence_of :name
 
@@ -50,8 +51,8 @@ class Product < ApplicationRecord
   validate :unique_name?
 
   def unique_name?
-    if self.not_rejected? && Product.where(name: self.name, is_active: true).count > 1 && self.is_active
-      errors.add(:name, " name must be unique")
+    if self.not_rejected? && Product.not_rejected.where(name: self.name, is_active: true).count > 1 && self.is_active
+      errors.add(:name, " must be unique")
     end
   end
 

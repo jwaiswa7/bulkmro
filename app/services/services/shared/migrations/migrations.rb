@@ -1262,6 +1262,115 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_created_po_requests_with_no_po_order
+    po_requests = PoRequest.where(status: 'PO Created', purchase_order_id: nil)
+    po_requests.each do |po_request|
+      if !po_request.purchase_order_number.present?
+        po_request.status = 'Cancelled'
+        po_request.comments.create(message: "Migration Cancelled: Status was PO created but PO number not assigned to PO requests", overseer: Overseer.default)
+      end
+    end
+  end
+
+  def update_existing_po_requests_with_purchase_order
+    PoRequest.where.not(status: ["PO Created", "Requested", "Cancelled"]).update_all(status: 'Cancelled')
+    skips = [47, 50, 83, 86, 12, 64, 72]
+    PoRequest.where.not(purchase_order_id: nil).each do |po_request|
+      next if skips.include?(po_request.id)
+      if po_request.status != "Cancelled"
+        rows = po_request.sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+        if po_request.status != 'Requested'
+          if !po_request.status != 'PO Created'
+            purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
+            if purchase_order.present?
+              service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: purchase_order.inquiry.company.name)
+              purchase_order.rows.each do |line_item|
+                product_sku = line_item.sku
+                if rows[product_sku] != nil
+                  row = po_request.sales_order.rows.find(rows[product_sku])
+                  quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
+                  if po_request.purchase_order.blank?
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(:validate => false)
+                      next
+                    end
+                    if purchase_order.po_request.present?
+                      po_request.update!(status: 'Cancelled')
+                    else
+                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
+                    end
+                  else
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(:validate => false)
+                      next
+                    end
+                    po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, is_legacy: true)
+                    po_request.rows.where(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit).first_or_create!
+                  end
+                end
+              end
+            end
+          end
+        else
+          service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: po_request.sales_order.inquiry.company.name)
+          po_request.sales_order.rows.each do |row|
+            if row.supplier.blank? || row.supplier.addresses.blank?
+              po_request.is_legacy = true
+              po_request.save(:validate => false)
+              next
+            end
+            po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: po_request.sales_order.inquiry.bill_from_id, ship_to_id: po_request.sales_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
+            po_request.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
+          end
+        end
+      end
+    end
+  end
+
+  def create_po_request_for_purchase_orders
+    SalesOrder.remote_approved.each do |sales_order|
+      rows = sales_order.rows.inject({}) {|hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash}
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
+      sales_order.inquiry.purchase_orders.each do |purchase_order|
+        if purchase_order.rows.present?
+          purchase_order.rows.each do |line_item|
+            product_sku = line_item.sku
+            if rows[product_sku] != nil
+              row = sales_order.rows.find(rows[product_sku])
+              if row.supplier.present? && row.supplier.addresses.present?
+                quantity = line_item.metadata["PopQty"].present? ? line_item.metadata["PopQty"].to_i : row.quantity
+                if purchase_order.po_request.blank?
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true).first_or_create!
+                else
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                  if po_request
+                    po_request.update_attributes({sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true})
+                  end
+                end
+                po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit) if po_request
+              else
+                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                if po_request.present?
+                  po_request.is_legacy = true
+                  po_request.save(:validate => false)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def update_payment_requests_statuses
+    PaymentRequest.where(status: 10).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 20).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 30).update_all(request_owner: 'Accounts', status: :'Payment Pending')
+    PaymentRequest.where(status: 40).update_all(request_owner: 'Accounts', status: :'Payment Made')
+  end
+
   private
 
   def perform_migration(name)
@@ -1946,33 +2055,33 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_images_for_reliance_products
-  service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
-  service.loop(nil) do |x|
-  puts x.get_column('Image Link')
-  if x.get_column('Image Link').present?
-  if x.get_column('Image Link').split(':').first != 'http'
-  product = Product.find_by_sku(x.get_column('SKU'))
-  if product.present?
-  sheet_columns = [
-  ['Image Link', 'images']
-  ]
-  sheet_columns.each do |file|
-  file_url = x.get_column(file[0])
-  begin
-  puts "<-------------------------->"
-  if !product.has_images?
-    attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
-  end
-  rescue URI::InvalidURIError => e
-  puts "Help! #{e} did not migrate."
-  end
-  end
-  end
-  end
-  else
-  puts "false"
-  end
-  end
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Reliance-product-images.csv', 'seed_files')
+    service.loop(nil) do |x|
+      puts x.get_column('Image Link')
+      if x.get_column('Image Link').present?
+        if x.get_column('Image Link').split(':').first != 'http'
+          product = Product.find_by_sku(x.get_column('SKU'))
+          if product.present?
+            sheet_columns = [
+                ['Image Link', 'images']
+            ]
+            sheet_columns.each do |file|
+              file_url = x.get_column(file[0])
+              begin
+                puts "<-------------------------->"
+                if !product.has_images?
+                  attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
+                end
+              rescue URI::InvalidURIError => e
+                puts "Help! #{e} did not migrate."
+              end
+            end
+          end
+        end
+      else
+        puts "false"
+      end
+    end
   end
 
   def update_online_order_numbers
@@ -1984,7 +2093,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_is_international_field_in_company
     Company.update_all(is_international: false)
     Company.all.includes(:addresses).each do |company|
-      if company.addresses.present? && !company.addresses.map{ |address| address.country_code }.include?("IN")
+      if company.addresses.present? && !company.addresses.map {|address| address.country_code}.include?("IN")
         company.update_attribute('is_international', true)
       end
     end
@@ -2009,7 +2118,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['inquiry_number', 'order_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
         if sales_order.blank?
@@ -2024,10 +2133,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'bible_total', 'bible_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('bible_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
-        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f)||(sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != x.get_column('SUM of Selling Price (as per SO / AR Invoice)').to_f) || (sales_order.calculated_total_with_tax.to_f != x.get_column('SUM of Gross Total Selling').to_f))
           writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, x.get_column('SUM of Selling Price (as per SO / AR Invoice)'), x.get_column('SUM of Gross Total Selling')]
         end
       end
@@ -2039,7 +2148,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['inquiry_number', 'order_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
         if sales_order.blank?
@@ -2054,13 +2163,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_orders.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_order = SalesOrder.find_by_order_number(x.get_column('#'))
         sap_total_without_tax = 0
         sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
 
-        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax)||(sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
+        if sales_order.present? && ((sales_order.calculated_total.to_f != sap_total_without_tax) || (sales_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f))
           writer << [sales_order.order_number, sales_order.calculated_total, sales_order.calculated_total_with_tax, sap_total_without_tax, x.get_column('Document Total')]
         end
       end
@@ -2072,7 +2181,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['invoice_number']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
         if sales_invoice.blank?
@@ -2087,7 +2196,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     column_headers = ['invoice_number', 'sprint_total', 'sprint_tax', 'sprint_total_with_tax', 'sap_total', 'sap_tax', 'sap_total_with_tax']
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
-    CSV.open(file, 'w', write_headers: true, headers: column_headers ) do |writer|
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
 
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
@@ -2097,7 +2206,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if sales_invoice.present? && !sales_invoice.is_legacy?
           total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
           sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
-          if ((total_without_tax != sap_total_without_tax)||(sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
+          if ((total_without_tax != sap_total_without_tax) || (sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
 
             writer << [
                 sales_invoice.invoice_number,
@@ -2117,7 +2226,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def update_total_cost_in_sales_order
     SalesOrder.all.each do |so|
       so.order_total = so.calculated_total
-      so.invoice_total = so.invoices.map{|i| i.metadata.present? ? ( i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f ) : 0.0 }.inject(0){|sum,x| sum + x }
+      so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
       so.save
     end
   end
@@ -2141,21 +2250,32 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def create_missing_orders
     service = Services::Shared::Spreadsheets::CsvImporter.new('missing_orders.csv', 'seed_files')
     i = 0
-    skips = [10709,17619,10541,19229,20001,20037,19232,20029,21413,19412,25097,25239,30037,30040,30041,30042,30034,30035,30045,30083,30098,25003,25361,19523,19636,19717,20004,20583,20612,20916,20973,20975,21455,21473,25329,25373,26285,20627,25698,26430,26901,10491,21447,27044,27013,25042,26062,19875,18840,20132,28767,27782,21030,26771,19173, 28301, 28352, 28232, 27688, 28369, 28288, 28631, 28702, 28017, 28722, 28532, 28746, 28747,28717,28788,28795,28803,28871]
+    skips = [10709, 17619, 10541, 19229, 20001, 20037, 19232, 20029, 21413, 19412, 25097, 25239, 30037, 30040, 30041, 30042, 30034, 30035, 30045, 30083, 30098, 25003, 25361, 19523, 19636, 19717, 20004, 20583, 20612, 20916, 20973, 20975, 21455, 21473, 25329, 25373, 26285, 20627, 25698, 26430, 26901, 10491, 21447, 27044, 27013, 25042, 26062, 19875, 18840, 20132, 28767, 27782, 21030, 26771]
     totals = {}
     inquiry_not_found = []
     sales_order_exists = []
-    service.loop(15300) do |x|
-      # i = i + 1
-      # next if i < 15358
-      next if x.get_column('product sku').in?(['BM9Y7F5','BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7'])
+    service.loop(nil) do |x|
+      i = i + 1
+      next if i < 11729
+      next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
+      next if (Product.where(sku: x.get_column('product sku')).present? == false)
       puts "*********************** INQUIRY ", x.get_column('inquiry number')
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
-      if inquiry.present? && !inquiry.sales_orders.include?(x.get_column('order number'))
+      if inquiry.present?
+
+        if !inquiry.billing_address.present?
+          inquiry.update(billing_address: inquiry.company.addresses.first)
+        end
+
+        if !inquiry.shipping_address.present?
+          inquiry.update(shipping_address: inquiry.company.addresses.first)
+        end
+
         if !inquiry.shipping_contact.present?
           inquiry.update(shipping_contact: inquiry.billing_contact)
         end
+
         sales_quote = inquiry.sales_quotes.last
         if sales_quote.blank?
           sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
@@ -2167,6 +2287,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
         if inquiry_products.blank?
+          similar_products = Product.where(name: product.name).where.not(sku: product.sku)
+          if similar_products.present?
+            similar_products.update_all(is_active: false)
+          end
           sr_no = inquiry.inquiry_products.present? ? (inquiry.inquiry_products.last.sr_no + 1) : 1
           inquiry_product = inquiry.inquiry_products.where(product_id: product.id, sr_no: sr_no, quantity: x.get_column('quantity')).first_or_create!
         else
@@ -2175,73 +2299,216 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
 
         supplier = Company.acts_as_supplier.find_by_name(x.get_column('supplier')) || Company.acts_as_supplier.find_by_name('Local')
-
         inquiry_product_supplier = InquiryProductSupplier.where(:supplier_id => supplier.id, :inquiry_product => inquiry_product).first_or_create!
         inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
-        row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
-          if product_sku == row.product.sku
-            row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
-            row.quantity = x.get_column('quantity')
-            row.margin_percentage = x.get_column('margin percentage')
-            row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
-            row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
-            row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
-            row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
-            row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
-            row.created_at = x.get_column('created at',to_datetime: true)
-
-            # if row.unit_selling_price.round != row.calculated_unit_selling_price.round
-            #   row.margin_percentage = (1 - (row.unit_cost_price / row.unit_selling_price)) * 100
-            # end
-            row.save!
-
-            puts "**************** QUOTE ROW SAVED ********************"
+        row = nil
+        if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
+          so = SalesOrder.find_by_order_number(x.get_column('order number').to_i)
+          if so.rows.map {|r| r.product.sku}.include?(x.get_column('product sku'))
+            row = sales_quote.rows.joins(:product).where('products.sku = ?', x.get_column('product sku')).first
           end
+        end
+        if row.blank?
+          row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
+        end
+
+        row.unit_selling_price = x.get_column('unit selling price (INR)').to_f
+        row.quantity = x.get_column('quantity')
+        row.margin_percentage = x.get_column('margin percentage')
+        row.converted_unit_selling_price = x.get_column('unit selling price (INR)').to_f
+        row.inquiry_product_supplier.unit_cost_price = x.get_column('unit cost price').to_f
+        row.measurement_unit = MeasurementUnit.find_by_name(x.get_column('measurement unit')) || MeasurementUnit.default
+        row.tax_code = TaxCode.find_by_chapter(x.get_column('HSN code')) if row.tax_code.blank?
+        row.tax_rate = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
+        row.created_at = x.get_column('created at', to_datetime: true)
+
+        row.save!
+
+        puts "**************** QUOTE ROW SAVED ********************"
+
 
         sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
         sales_order.overseer = inquiry.inside_sales_owner
         sales_order.order_number = x.get_column('order number')
-        sales_order.created_at = x.get_column('created at',to_datetime: true)
-        sales_order.mis_date = x.get_column('created at',to_datetime: true)
+        sales_order.created_at = x.get_column('created at', to_datetime: true)
+        sales_order.mis_date = x.get_column('created at', to_datetime: true)
 
         sales_order.status = x.get_column('status') || "Approved"
         sales_order.remote_status = x.get_column('SAP status') || "Processing"
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
-        row_object = { :sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f }
+        row_object = {:sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
         puts "************************** ORDER SAVED *******************************"
         so_row = sales_order.rows.where(:sales_quote_row => row).first_or_create!
-
 
         puts "****************** ORDER TOTAL ****************************", sales_order.order_number, sales_order.calculated_total_with_tax
       else
         if !inquiry.present?
           inquiry_not_found.push(x.get_column('inquiry number'))
         end
-        if inquiry.present? && inquiry.sales_orders.include?(x.get_column('order number'))
-          sales_order_exists.push(x.get_column('order_number'))
-        end
       end
     end
     puts totals
-    puts "<------------------------------------------------------------------------------------------->"
-    puts inquiry_not_found
-    puts "<-------------------------------------------------------------------------------------------->"
-    puts sales_order_exists
+    puts "<----------------------------------------INQUIRIES--------------------------------------------------->"
+    puts inquiry_not_found.inspect
+  end
+
+  def update_invoice_statuses
+    missing_invoices = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_sales_invoices.csv', folder)
+    service.loop(limit) do |x|
+      sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('Invoice Number'))
+      if sales_invoice.present? && sales_invoice.sales_order.present?
+        sales_invoice.status = 3
+        sales_invoice.metadata['state'] = 3 if sales_invoice.metadata.present?
+        sales_invoice.save!
+      else
+        missing_invoices << x.get_column('Invoice Number')
+      end
+    end
+    puts "Missing Invoices", missing_invoices
+  end
+
+  def update_cancelled_po_statuses
+    missing_po = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('cancelled_purchase_orders.csv', folder)
+    service.loop(limit) do |x|
+      po = PurchaseOrder.find_by_po_number(x.get_column('Purchase Order Number'))
+      if po.present?
+        po.metadata['PoStatus'] = 95
+        po.save!
+      else
+        missing_po << x.get_column('Purchase Order Number')
+      end
+    end
+    puts "Missing PO", missing_po
+  end
+
+  def update_po_status
+    PurchaseOrder.all.each do |po|
+      if po.metadata['PoStatus'].present?
+        if po.metadata['PoStatus'].to_i > 0
+          po.status = po.metadata['PoStatus'].to_i
+        else
+          po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+        end
+        po.save
+      end
+    end
+  end
+
+  def update_mis_date_of_missing_orders
+    service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+    missing_so = []
+    service.loop(nil) do |x|
+      sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+      if sales_order.present?
+        sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
+      else
+        missing_so.push(x.get_column('order number'))
+      end
+    end
+    puts "<--------------------------------------------------------------------------------------------->"
+    puts missing_so
   end
 
   def generate_review_questions
     service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
 
-      service.loop() do |x|
-        question = x.get_column('Question')
-        type = x.get_column('Type')
-        weightage = x.get_column('Weightage')
-        ReviewQuestion.where(question: question, question_type: type, weightage:weightage).first_or_create!
+    service.loop() do |x|
+      question = x.get_column('Question')
+      type = x.get_column('Type')
+      weightage = x.get_column('Weightage')
+      ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
+    end
+  end
 
+  def create_company_banks
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        company = Company.find_by_remote_uid(x.get_column('bp_code'))
+        bank = Bank.find_by_code(x.get_column('bank_code'))
+        if company
+          company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
+          if company_bank.new_record? || update_if_exists
+            company_bank.company = company
+            company_bank.bank = bank
+            company_bank.account_name = x.get_column('account_name')
+            company_bank.account_number = x.get_column('account_no')
+            company_bank.branch = x.get_column('branch')
+            company_bank.mandate_id = x.get_column('mandate_id')
+            company_bank.metadata = x.get_row
+            company_bank.save!
+          end
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
       end
+    end
+    puts errors
+  end
 
+  def create_banks
+    service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
+        if bank.new_record? || update_if_exists
+          bank.name = x.get_column('Bank Name')
+          bank.country_code = x.get_column('Country Code')
+          bank.remote_uid = x.get_column('Absolute entry')
+          bank.save!
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
+      end
+    end
+    puts errors
+  end
+
+  def update_purchase_order_fields
+    PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
+    PurchaseOrder.all.each do |po|
+      update_material_status(po)
+      po.save
+    end
+  end
+
+  def update_total_cost_in_sales_order
+    SalesOrder.all.each do |so|
+      so.order_total = so.calculated_total
+      so.invoice_total = so.invoices.map {|i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0}.inject(0) {|sum, x| sum + x}
+      so.save
+    end
+  end
+
+  def update_material_status(po)
+    if po.material_pickup_requests.any?
+      partial = true
+      if po.rows.sum(&:get_pickup_quantity) <= 0
+        partial = false
+      end
+      status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
+                 partial ? 'Material Partially Pickup' : 'Material Pickedup'
+               elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+                 partial ? 'Material Partially Delivered' : 'Material Delivered'
+               end
+      po.update_attribute(:material_status, status)
+    else
+      po.update_attribute(:material_status, 'Material Readiness Follow-Up')
+    end
+  end
+
+  def add_logistics_owner_to_companies
+    Company.all.each do |company|
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+      company.logistics_owner = service.call
+      company.save(:validate => false)
+    end
   end
 end

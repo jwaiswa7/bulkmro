@@ -1,8 +1,28 @@
 class Overseers::PoRequestsController < Overseers::BaseController
   before_action :set_po_request, only: [:show, :edit, :update]
 
-  def pending
-    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending.order(id: :desc), params)
+  def pending_and_rejected
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.pending_and_rejected.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def cancelled
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.cancelled.order(id: :desc), params)
+    authorize @po_requests
+
+    respond_to do |format|
+      format.json {render 'index'}
+      format.html {render 'index'}
+    end
+  end
+
+  def amended
+    @po_requests = ApplyDatatableParams.to(PoRequest.all.amended.order(id: :desc), params)
     authorize @po_requests
 
     respond_to do |format|
@@ -63,18 +83,43 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
+      # todo allow only in case of zero form errors
+      @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
+      @po_request.status = "Requested" if @po_request.status == "Rejected" && policy(@po_request).is_manager_or_sales?
       ActiveRecord::Base.transaction do if @po_request.status_changed?
-          @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
+          if @po_request.status == "Cancelled"
+            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" , :po_request => @po_request, :overseer => current_overseer)
+            @po_request.purchase_order = nil
+
+            @po_request.payment_request.update!(status: :'Cancelled')
+            @po_request.payment_request.comments.create!(:message => "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", :payment_request => @po_request.payment_request, :overseer => current_overseer)
+
+          elsif @po_request.status == "Rejected"
+            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}" , :po_request => @po_request, :overseer => current_overseer)
+
+          else
+            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
+          end
           @po_request.save!
           @po_request_comment.save!
         else
           @po_request.save!
         end
       end
+
+      # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
+      # create_payment_request.call
+
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
       render 'edit'
     end
+  end
+
+  def update_logistics_owner
+    @po_requests = PoRequest.where(id: params[:po_requests])
+    authorize @po_requests
+    @po_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
   end
 
   private
@@ -86,9 +131,20 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :sales_order_id,
         :purchase_order_id,
         :logistics_owner_id,
+        :contact_email,
+        :contact_phone,
+        :contact_id,
+        :payment_option_id,
+        :bill_from_id,
+        :ship_from_id,
+        :bill_to_id,
+        :ship_to_id,
         :status,
-        :rows_attributes => [:id, :sales_order_row_id, :_destroy],
-        :comments_attributes => [:id, :message, :created_by_id],
+        :supplier_po_type,
+        :cancellation_reason,
+        :rejection_reason,
+        :rows_attributes => [:id, :sales_order_row_id,:product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
+        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
         :attachments => []
     )
   end
