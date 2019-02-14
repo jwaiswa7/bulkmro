@@ -5,15 +5,15 @@ class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::
       invoice = SalesInvoice.find_by_invoice_number(params['p_invoice_no'])
       company = Company.find_by_remote_uid!(params['cmp_id'])
       currency = Currency.find_by_name(params['p_amount_currency'])
-
+      account = company.present? ? company.account.id : nil
       SalesReceipt.where(:remote_reference => params['p_sap_reference_number']).first_or_create! do |sales_receipt|
         sales_receipt.assign_attributes(
             :sales_invoice => invoice,
             :company => company,
-            :account => company.account,
+            :account => account,
             :metadata => params,
             :currency => currency,
-            :payment_type => (params['on_account'] == "1" ? 10 : (params['on_account'] == "0" ? 20 : nil) ),
+            :payment_type => (params['on_account'] == "1" ? 10 : (params['on_account'] == "0" ? 20 : nil) ), # have to change as per new data
             :payment_received_date => params['p_received_date'],
             :payment_amount_received => params['p_amount_received']
 
