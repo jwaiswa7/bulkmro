@@ -7,7 +7,7 @@ json.data (@activities) do |activity|
                       if policy(activity).edit?;
                         row_action_button(edit_overseers_activity_path(activity), 'pencil', 'Edit Activity', 'warning')
                       end,
-                      if (!activity.company.present? && activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?);
+                      if !activity.company.present? && activity.company_creation_request.present? && !activity.company_creation_request.company_id.present? && policy(activity.company_creation_request).show?;
                         row_action_button(overseers_company_creation_request_path(activity.company_creation_request), 'eye', 'View Company Creation Request', 'info  ')
                       end,
                   ].join(' '),

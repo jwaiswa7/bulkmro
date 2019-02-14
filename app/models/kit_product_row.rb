@@ -4,10 +4,10 @@ class KitProductRow < ApplicationRecord
   belongs_to :tax_code
   belongs_to :tax_rate
 
-  #delegate :unit_cost_price, :to => :inquiry_product_supplier, allow_nil: false
+  # delegate :unit_cost_price, :to => :inquiry_product_supplier, allow_nil: false
   accepts_nested_attributes_for :product
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   validates_numericality_of :quantity, greater_than: 0
 
@@ -25,7 +25,4 @@ class KitProductRow < ApplicationRecord
   def best_tax_rate
     self.tax_rate || self.product.best_tax_rate
   end
-
-
-
 end

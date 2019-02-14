@@ -17,7 +17,7 @@ json.data (@sales_orders) do |sales_order|
                   sales_order.inquiry.company.to_s,
                   format_currency(sales_order.calculated_total),
                   format_date(sales_order.inquiry.customer_committed_date),
-                  sales_order.invoices.any? ? format_date(sales_order.invoices.last.delivery_date || sales_order.invoices.last.mis_date) : "-",
+                  sales_order.invoices.any? ? format_date(sales_order.invoices.last.delivery_date || sales_order.invoices.last.mis_date) : '-',
                   status_badge(sales_order.effective_customer_status)
               ]
 end

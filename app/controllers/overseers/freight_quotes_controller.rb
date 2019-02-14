@@ -5,7 +5,7 @@ class Overseers::FreightQuotesController < Overseers::BaseController
     freight_quotes =
         if params[:status].present?
           @status = params[:status]
-          FreightQuote.where(:status => params[:status])
+          FreightQuote.where(status: params[:status])
         else
           FreightQuote.all
         end.order(id: :desc)
@@ -26,7 +26,7 @@ class Overseers::FreightQuotesController < Overseers::BaseController
 
   private
 
-  def set_freight_quote
-    @freight_quote = FreightQuote.find(params[:id])
-  end
+    def set_freight_quote
+      @freight_quote = FreightQuote.find(params[:id])
+    end
 end

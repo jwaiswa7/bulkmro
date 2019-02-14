@@ -24,7 +24,7 @@ def handle_message(response)
   when greetings
     return "Hi! Try something like 'What's the status of order 29313?'"
   else
-    return "Ah, a little bit too fast for me. Try again?"
+    return 'Ah, a little bit too fast for me. Try again?'
   end
 end
 

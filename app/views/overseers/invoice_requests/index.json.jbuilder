@@ -12,7 +12,7 @@ json.data (@invoice_requests) do |invoice_request|
                   status_badge(invoice_request.status),
                   conditional_link(invoice_request.inquiry.inquiry_number, edit_overseers_inquiry_path(invoice_request.inquiry), policy(invoice_request.inquiry).edit?),
                   conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), policy(invoice_request.sales_order).show?),
-                  ( invoice_request.purchase_order.po_number if invoice_request.purchase_order.present? ),
+                  (invoice_request.purchase_order.po_number if invoice_request.purchase_order.present?),
                   invoice_request.inquiry.inside_sales_owner.to_s,
                   format_date_time_meridiem(invoice_request.created_at),
                   if invoice_request.last_comment.present?
@@ -40,4 +40,4 @@ json.columnFilters [
 json.recordsTotal @invoice_requests.model.all.count
 json.recordsFiltered @invoice_requests.count
 json.draw params[:draw]
-json.recordsSummary InvoiceRequest.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @invoice_requests.pluck(:status).count(k)}}.as_json
+json.recordsSummary InvoiceRequest.statuses.map { |k, v| { status_id: v, "label": k, "size": @invoice_requests.pluck(:status).count(k) } }.as_json

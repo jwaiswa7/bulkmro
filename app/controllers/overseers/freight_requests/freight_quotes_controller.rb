@@ -10,7 +10,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
   def new
     authorize @freight_request, :new_freight_quote?
-    @freight_quote = @freight_request.build_freight_quote(:overseer => current_overseer, :inquiry => @freight_request.inquiry)
+    @freight_quote = @freight_request.build_freight_quote(overseer: current_overseer, inquiry: @freight_request.inquiry)
   end
 
   def show
@@ -23,10 +23,10 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
-        @freight_quote.freight_request.status = "Freight Quote Submitted"
+        @freight_quote.freight_request.status = 'Freight Quote Submitted'
         @freight_quote.freight_request.save!
         @freight_quote.save!
-        @freight_quote_comment = FreightQuoteComment.new(:message => "Payment Request submitted.", :freight_quote => @freight_quote, :overseer => current_overseer)
+        @freight_quote_comment = FreightQuoteComment.new(message: 'Payment Request submitted.', freight_quote: @freight_quote, overseer: current_overseer)
         @freight_quote_comment.save!
       end
 
@@ -48,7 +48,7 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
     if @freight_quote.valid?
       ActiveRecord::Base.transaction do
         if @freight_quote.status_changed?
-          @freight_quote_comment = FreightQuoteComment.new(:message => "Status Changed: #{@freight_quote.status}", :freight_quote => @freight_quote, :overseer => current_overseer)
+          @freight_quote_comment = FreightQuoteComment.new(message: "Status Changed: #{@freight_quote.status}", freight_quote: @freight_quote, overseer: current_overseer)
           @freight_quote.save!
           @freight_quote_comment.save!
         else
@@ -64,11 +64,11 @@ class Overseers::FreightRequests::FreightQuotesController < Overseers::FreightRe
 
   private
 
-  def freight_quote_params
-    params.require(:freight_quote).permit!
-  end
+    def freight_quote_params
+      params.require(:freight_quote).permit!
+    end
 
-  def set_freight_quote
-    @freight_quote = FreightQuote.find(params[:id])
-  end
+    def set_freight_quote
+      @freight_quote = FreightQuote.find(params[:id])
+    end
 end

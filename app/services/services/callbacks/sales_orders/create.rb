@@ -1,5 +1,4 @@
 class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::BaseCallback
-
   def call
     sprint_order_id = params['U_MgntDocID']
     remote_status = params['Status']
@@ -12,7 +11,7 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
     ].join(' | ')
 
     if sprint_order_id.blank?
-      return_response("Order not found.", 0)
+      return_response('Order not found.', 0)
     else
       sales_order = SalesOrder.find(sprint_order_id)
 
@@ -21,33 +20,33 @@ class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::Ba
         when :'Approved'
           if sales_order.remote_status.blank?
             begin
-              sales_order.update_attributes(:remote_status => :'Supplier PO: Request Pending', :status => :'Approved', :mis_date => Date.today, :order_number => order_number, :remote_uid => remote_uid)
+              sales_order.update_attributes(remote_status: :'Supplier PO: Request Pending', status: :'Approved', mis_date: Date.today, order_number: order_number, remote_uid: remote_uid)
               Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :order_won).call
-              sales_order.inquiry.comments.create!(message: "SAP Approved", overseer: Overseer.default_approver)
+              sales_order.inquiry.comments.create!(message: 'SAP Approved', overseer: Overseer.default_approver)
               sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(sales_order)), filename: sales_order.filename)
               sales_order.update_index
-              return_response("Order Created Successfully")
+              return_response('Order Created Successfully')
             rescue => e
               return_response(e.message, 0)
             end
           else
-            return_response("Order Already Synced : " + sales_order.remote_status)
+            return_response('Order Already Synced : ' + sales_order.remote_status)
           end
         when :'SAP Rejected'
           begin
-            sales_order.update_attributes(:status => :'SAP Rejected')
+            sales_order.update_attributes(status: :'SAP Rejected')
             comment = InquiryComment.where(message: comment_message, inquiry: sales_order.inquiry, created_by: Overseer.default_approver, updated_by: Overseer.default_approver, sales_order: sales_order).first_or_create! if sales_order.inquiry.present?
             Services::Overseers::Inquiries::UpdateStatus.new(sales_order, :sap_rejected).call
-            sales_order.create_rejection!(:comment => comment, :overseer => Overseer.default_approver)
+            sales_order.create_rejection!(comment: comment, overseer: Overseer.default_approver)
             sales_order.approval.destroy! if sales_order.approval.present?
             sales_order.update_index
-            return_response("Order Rejected Successfully")
+            return_response('Order Rejected Successfully')
           rescue => e
             return_response(e.message, 0)
           end
         end
       else
-        return_response("Order Not Processed", 0)
+        return_response('Order Not Processed', 0)
       end
     end
   end

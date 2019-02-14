@@ -142,7 +142,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

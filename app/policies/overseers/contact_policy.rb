@@ -10,5 +10,4 @@ class Overseers::ContactPolicy < Overseers::ApplicationPolicy
   def edit?
     record.company.is_active if record.company.present?
   end
-
 end
