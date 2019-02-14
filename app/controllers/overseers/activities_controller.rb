@@ -93,6 +93,13 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   end
 
+  def export_all
+    authorize :activity
+    service = Services::Overseers::Exporters::ActivitiesExporter.new
+    service.call
+
+    redirect_to url_for(Export.activities.last.report)
+  end
 
   private
 
