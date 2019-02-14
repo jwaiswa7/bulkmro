@@ -2394,9 +2394,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       invoice = SalesInvoice.find_by_invoice_number(x.get_column('AR Invoice No'))
       company = Company.find_by_remote_uid(x.get_column('BP Code'))
-      if invoice.present? && company.present?
+      if invoice.present? && company.present? && x.get_column('Paid Amt').to_f > 0
         currency = Currency.find_by_name(x.get_column('Document Currency'))
-        date = "20"+x.get_column('Payment Date').split('/').reverse.join('/')
+        date = "20" + x.get_column('Payment Date').split('/').reverse.join('/')
         sales_receipt = SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create
         sales_receipt.update_attributes(
             :sales_invoice => invoice,
@@ -2416,20 +2416,20 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service.loop(nil) do |x|
       company = Company.find_by_remote_uid(x.get_column('BP Code'))
 
-      if company.present?
+      if company.present? && x.get_column('Non-Calculated Amount').to_f > 0
         currency = Currency.find_by_name(x.get_column('Document Currency'))
-        date = "20"+x.get_column('Payment Date').split('/').reverse.join('/')
+        date = "20" + x.get_column('Payment Date').split('/').reverse.join('/')
 
         sales_receipt = SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create!
-          sales_receipt.assign_attributes(
-              :company => company,
-              :account => company.account,
-              :currency => currency,
-              :payment_type => :'On Account',
-              :payment_received_date => date ,
-              :payment_amount_received => x.get_column('Non-Calculated Amount'),
-              :comments => x.get_column('Remarks')
-          )
+        sales_receipt.assign_attributes(
+            :company => company,
+            :account => company.account,
+            :currency => currency,
+            :payment_type => :'On Account',
+            :payment_received_date => date,
+            :payment_amount_received => x.get_column('Non-Calculated Amount').to_f,
+            :comments => x.get_column('Remarks')
+        )
       end
     end
   end
@@ -2489,31 +2489,31 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       # CALCULATE OVERDUE
-      overdue_no_pay_received = overdue_partially_paid = overdue_fully_paid = outstanding_overdue_partially_paid = outstanding_overdue_no_pay_received =0
+      overdue_no_pay_received = overdue_partially_paid = overdue_fully_paid = outstanding_overdue_partially_paid = outstanding_overdue_no_pay_received = 0
       od_sales_invoices = company.invoices
       # od_sales_invoices = company.invoices.where('due_date < ?', Time.now)
-        od_sales_invoices.each do |sales_invoice|
-          if sales_invoice.payment_status == 'Partially Paid'
-            outstanding_overdue_partially_paid = sales_invoice.calculated_total_with_tax
-          elsif sales_invoice.payment_status == 'Unpaid'
-            outstanding_overdue_no_pay_received = sales_invoice.calculated_total_with_tax
-          end
-          sales_invoice.sales_receipts.each do |sales_receipt|
-            if sales_receipt.payment_received_date > sales_invoice.due_date
-              if sales_invoice.payment_status == 'Fully Paid'
-                overdue_fully_paid += sales_receipt.payment_amount_received
-              elsif sales_invoice.payment_status == 'Partially Paid'
-                overdue_partially_paid +=  sales_receipt.payment_amount_received
-                outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
-              elsif sales_invoice.payment_status == 'Unpaid'
-                overdue_no_pay_received +=  sales_invoice.calculated_total_with_tax
-              end
-            else
-              if sales_invoice.payment_status == 'Partially Paid'
-                outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
-              end
+      od_sales_invoices.each do |sales_invoice|
+        if sales_invoice.payment_status == 'Partially Paid'
+          outstanding_overdue_partially_paid = sales_invoice.calculated_total_with_tax
+        elsif sales_invoice.payment_status == 'Unpaid'
+          outstanding_overdue_no_pay_received = sales_invoice.calculated_total_with_tax
+        end
+        sales_invoice.sales_receipts.each do |sales_receipt|
+          if sales_receipt.payment_received_date.present? && sales_receipt.payment_received_date > sales_invoice.due_date
+            if sales_invoice.payment_status == 'Fully Paid'
+              overdue_fully_paid += sales_receipt.payment_amount_received
+            elsif sales_invoice.payment_status == 'Partially Paid'
+              overdue_partially_paid += sales_receipt.payment_amount_received
+              outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
+            elsif sales_invoice.payment_status == 'Unpaid'
+              overdue_no_pay_received += sales_invoice.calculated_total_with_tax
+            end
+          else
+            if sales_invoice.payment_status == 'Partially Paid'
+              outstanding_overdue_partially_paid -= sales_receipt.payment_amount_received
             end
           end
+        end
 
       end
       # CALCULATE OUTSTANDING
@@ -2523,7 +2523,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       PaymentCollection.find_or_create_by(:company => company) do |payment_collection|
         payment_collection.update_attributes(
-            :account_id =>  company.account_id,
+            :account_id => company.account_id,
             :amount_received_fp_nd => fully_paid_not_due,
             :amount_received_pp_nd => partially_paid_not_due,
             :amount_received_npr_nd => no_pay_received_not_due,
