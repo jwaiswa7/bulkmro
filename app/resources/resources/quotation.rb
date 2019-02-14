@@ -30,7 +30,10 @@ class Resources::Quotation < Resources::ApplicationResource
         sales_quote_row = final_sales_quote.rows.select { |r| r.sku == line['ItemCode'] }[0]
         sales_quote_row.update_attributes!(remote_uid: line['LineNum']) if sales_quote_row.present?
       end
-      inquiry.update_attributes(last_synced_quote_id: final_sales_quote.id)
+      latest_request = RemoteRequest.where(subject_type: 'SalesQuote').where(subject_id: final_sales_quote.id).order(:created_at).last
+      if latest_request.status == 'success'
+        inquiry.update_attributes(last_synced_quote_id: final_sales_quote.id)
+      end
     end
   end
 

@@ -928,6 +928,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       row.save
     end
   end
+
   def fetch_address
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_address1.csv', 'seed_files')
     mismatch = []
@@ -965,5 +966,12 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       end
     end
     return { missing: missing.uniq, mismatch: mismatch.uniq }
+  end
+
+  def sync_last_synced_quote
+    inquiries = Inquiry.where(last_synced_quote_id: nil)
+    inquiries.each do |inquiry|
+      inquiry.update_attribute(:last_synced_quote_id, inquiry.final_sales_quote.id) if inquiry.final_sales_quote.present?
+    end
   end
 end
