@@ -134,6 +134,10 @@ class PurchaseOrder < ApplicationRecord
     end
   end
 
+  def calculated_total_with_tax
+    ( rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2) ) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+  end
+
   def valid_po_date?
     begin
       self.metadata['PoDate'].to_date

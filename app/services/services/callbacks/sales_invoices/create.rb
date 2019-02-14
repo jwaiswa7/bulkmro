@@ -66,7 +66,7 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
           end
 
           sales_order.invoice_total = sales_order.invoices.map{ |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0){ |sum, x| sum + x }
-          sales_order.save
+          sales_order.save!
 
           return_response('Sales Invoice created successfully.')
         else

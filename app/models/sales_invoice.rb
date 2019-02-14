@@ -64,11 +64,11 @@ class SalesInvoice < ApplicationRecord
   end
 
   def calculated_total
-    rows.map { |row| row.metadata['base_row_total'].to_f }.sum.round(2)
+    rows.map { |row| ( row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f ) }.sum.round(2)
   end
 
   def calculated_total_tax
-    rows.map { |row| row.metadata['base_tax_amount'].to_f }.sum.round(2)
+    rows.map { |row| ( row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f ) }.sum.round(2)
   end
 
   def calculated_total_with_tax
