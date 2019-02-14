@@ -1,5 +1,5 @@
 <% content_for :heading do %>
-  View Sales Invoice <%= @sales_invoice.to_s %>
+   <%= @sales_invoice.to_s %>
 <% end %>
 <div class="col-12">
   <%= render layout: 'overseers/inquiries/tabs_layout' do %>
@@ -277,23 +277,79 @@
           <% end %>
           </tbody>
         </table>
-
       </div>
       <div class="card-footer">
         <div class=form-row>
-          <div class="col-6 col-md-4">
+          <div class="col-6 col-md-3">
             Products
             <strong class="d-block"><%= @sales_invoice.rows.count %></strong>
           </div>
 
-          <div class="col-6 col-md-4 mt-2 mt-md-0">
-            Selling Price (E. tax)
-            <strong class="d-block"><%= format_currency((@sales_invoice.metadata['base_tax_amount'].to_f / 2), precision: 2, symbol: nil) %></strong>
+          <div class="col-6 col-md-3 mt-2 mt-md-0">
+           Subtotal
+            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f - @sales_invoice.metadata['base_tax_amount'].to_f, precision: 2, symbol: nil) %></strong>
           </div>
-          <div class="col-6 col-md-4 mt-2 mt-md-0">
-            Selling Price (I. tax)
-            <strong class="d-block"><%= format_currency((@sales_invoice.metadata['base_grand_total'].to_f), precision: 2, symbol: nil) %></strong>
+          <% if @sales_invoice.sales_order.sales_quote.tax_summary.strip == '0' ||
+              (@sales_invoice.sales_order.sales_quote.tax_summary.to_s.include? "IGST") %>
+          <div class="col-6 col-md-3 mt-2 mt-md-0">
+            Total Tax Amt
+            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f, precision: 2,  symbol: nil) %></strong>
           </div>
+            <%else %>
+          <div class="col-6 col-md-3">
+            Total Tax Amt
+            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_tax_amount'].to_f / 2, precision: 2, symbol: nil) %></strong>
+          </div>
+          <%end %>
+          <div class="col-6 col-md-3">
+            Grand Total
+            <strong class="d-block"><%= format_currency(@sales_invoice.metadata['base_grand_total'].to_f, precision: 2, symbol: nil) %></strong>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div>
+          <th><h6 class="text-uppercase text-black-50 mb-1">
+            Note :
+          </h6></th>
+          <ul>
+            <li>Order once confirmed can not be cancelled.</li>
+            <li>Delayed payments will attract 2% interest per month.</li>
+            <li>Invoice will be deemed accepted unless any discrepancy is raised in writing within 7 days from the date of invoice.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div>
+          <th><h6 class="text-uppercase text-black-50 mb-1">
+            Other Information :
+          </h6></th>
+          <ul>
+            <li>Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Invoice# <%= @sales_invoice.metadata['increment_id'] %> when remitting Wire Transfer payment. </li>
+            <li>Bulk MRO Industrial Supply Pvt. Ltd. is not responsible for any banking fees.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-body">
+        <div>
+          <th><h6 class="text-uppercase text-black-50 mb-1">
+            Bulk MRO bank details :
+          </h6></th>
+          <ul>
+            <li>Bank: Kotak Mahindra Bank Ltd</li>
+            <li>Address: Aum Saheel Tower, Mumbai 400080.</li>
+            <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
+            <li>Account Number: 9412329433</li>
+            <li>NEFT/RTGS Code: KKBK0001411</li>
+          </ul>
+          <ul>
+
+            <li>Bank: Kotak State Bank of India</li>
+            <li>Address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.</li>
+            <li>Account Name: Bulk MRO Industrial Supply Pvt. Ltd.</li>
+            <li>Account Number: 35924122136</li>
+            <li>NEFT/RTGS Code: SBIN0000510</li>
+          </ul>
         </div>
       </div>
     </div>
