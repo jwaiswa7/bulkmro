@@ -20,7 +20,7 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def can_create_order?
-    record.inquiry.last_synced_quote.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote)
+    record.inquiry.last_synced_quote_id.present? && (record.inquiry.final_sales_quote.id == record.inquiry.last_synced_quote_id)
   end
 
   def reset_quote?
