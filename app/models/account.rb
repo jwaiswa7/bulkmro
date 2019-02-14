@@ -54,38 +54,42 @@ class Account < ApplicationRecord
   end
 
   def amount_received_on_account
-    self.sales_receipts.where(:payment_type => :'On Account').sum(:payment_amount_received)
+    amount = 0.0
+    self.companies.each do |company|
+      amount += company.amount_received_on_account
+    end
+    amount
   end
 
   def amount_received_against_invoice
     amount = 0.0
-    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
-      amount = amount + sales_invoice.sales_receipts.where(:payment_type => :'Against Invoice').sum(:payment_amount_received)
+    self.companies.each do |company|
+      amount += company.amount_received_against_invoice
     end
     amount
   end
 
   def total_amount_due
-    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').sum(:calculated_total_with_tax)
+    amount = 0.0
+    self.companies.each do |company|
+      amount += company.total_amount_due
+    end
+    amount
   end
 
   def amount_overdue_outstanding
-    # invoice date is crossed and payment is not received yet
     amount = 0.0
-    self.invoices.where('sales_invoices.mis_date >= ?', '01-04-2018').each do |sales_invoice|
-      outstanding_amount = sales_invoice.calculated_total_with_tax
-      sales_invoice.sales_receipts.each do |sales_receipt|
-        if (sales_receipt.payment_received_date < sales_invoice.due_date) || (sales_receipt.payment_received_date < Date.today)
-          outstanding_amount -= sales_receipt.payment_amount_received
-        end
-      end
-      amount += outstanding_amount
+    self.companies.each do |company|
+      amount += company.amount_overdue_outstanding
     end
     amount
   end
 
   def total_amount_outstanding
-    amount = self.total_amount_due - self.total_amount_received
-    (amount <  0.0) ? 0.0 : amount
+    amount = 0.0
+    self.companies.each do |company|
+      amount += company.total_amount_outstanding
+    end
+    amount
   end
 end

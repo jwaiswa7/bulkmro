@@ -226,7 +226,6 @@ class Company < ApplicationRecord
   end
 
   def total_amount_due
-    # here we are not considering cancelled invoice?
     self.invoices.not_cancelled.where('sales_invoices.mis_date >= ?', '01-04-2018').sum(&:calculated_total_with_tax)
   end
 

@@ -15,17 +15,17 @@ json.data (@accounts) do |account|
                     ' - '
                   end,
                   if account.sales_receipts.with_amount_by_invoice.present?
-                   format_currency(account.amount_received_against_invoice)
+                    format_currency(account.amount_received_against_invoice)
                   else
                      ' - '
                   end,
                   if account.sales_receipts.with_amount_on_account.present?
-                   format_currency(account.amount_received_on_account)
+                    format_currency(account.amount_received_on_account)
                   else
                     ' - '
                   end,
                   if account.sales_receipts.with_amount_on_account.present? || account.sales_receipts.with_amount_by_invoice.present?
-                   format_currency(account.total_amount_received)
+                    format_currency(account.total_amount_received)
                   else
                     ' - '
                   end,
