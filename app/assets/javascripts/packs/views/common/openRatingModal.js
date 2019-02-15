@@ -5,7 +5,9 @@ import createAndSetCookie from "./createAndSetCookie";
 const openRatingModal = () => {
     bindRatingModalTabClick();
     var isRated = $('.rating-modal a').attr('data-rating')
-    if (document.cookie.match(/\d+/g) < new Date().getTime() && !isRated) $('.rating-modal a').click();
+    if ((document.cookie.match(/\d+/g) < new Date().getTime()) && (isRated === 'false')){
+        $('.rating-modal a').click();
+    }
     updateRatingForm();
 
     $('#multipleRatingForm').on('click','.review-later',function(e) {

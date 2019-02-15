@@ -30,5 +30,5 @@
 </div>
 
 <div class="rating-modal">
-  <a href="#" class="btn btn-default btn-rounded mb-4 d-none" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false" data-rating= <%=@company_reviews.map(&:rating).present? %>></a>
+  <a href="#" class="btn btn-default btn-rounded mb-4 d-none" data-toggle="modal" data-target="#multipleRatingForm" data-backdrop="static" data-keyboard="false" data-rating= <%=@company_reviews.map(&:rating).compact.present? %>></a>
 </div>
