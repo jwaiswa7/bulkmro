@@ -4,7 +4,7 @@ class PaymentRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number] , :purchase_order => [:po_number]}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number], purchase_order: [:po_number] }, using: { tsearch: { prefix: true } }
 
   belongs_to :inquiry
   belongs_to :purchase_order
@@ -13,28 +13,28 @@ class PaymentRequest < ApplicationRecord
   has_one :payment_option, through: :purchase_order
   belongs_to :company_bank, required: false
   accepts_nested_attributes_for :inquiry
-  has_many :transactions, :class_name => "PaymentRequestTransaction", dependent: :destroy
-  accepts_nested_attributes_for :transactions,allow_destroy: true
+  has_many :transactions, class_name: 'PaymentRequestTransaction', dependent: :destroy
+  accepts_nested_attributes_for :transactions, allow_destroy: true
 
   enum status: {
-      :'Payment Pending' => 10,
-      :'Partial Payment Pending' => 11,
+      'Payment Pending': 10,
+      'Partial Payment Pending': 11,
       # :'Rejected: Payment' => 30,
-      :'Supplier Info: Bank Details Missing' => 31,
-      :'Supplier Info: Bank Details Incorrect' => 32,
+      'Supplier Info: Bank Details Missing': 31,
+      'Supplier Info: Bank Details Incorrect': 32,
       # :'Order Info: Material not Ready' => 33,
-      :'Supplier Info: PI mismatch' => 34,
-      :'Rejected: Others' => 35,
+      'Supplier Info: PI mismatch': 34,
+      'Rejected: Others': 35,
       # :'Payment on Hold' => 40,
-      :'Order Info: Low Margin' => 41,
-      :'Payment on Hold: Others' => 42,
-      :'Payment Made' => 50,
-      :'Partial Payment Made' => 51,
+      'Order Info: Low Margin': 41,
+      'Payment on Hold: Others': 42,
+      'Payment Made': 50,
+      'Partial Payment Made': 51,
       # :'Refund' => 70,
-      :'Excess Payment Made' => 71,
-      :'Supplier cannot fulfill PO' => 72,
-      :'Material Rejected' => 73,
-      :'Cancelled' => 80
+      'Excess Payment Made': 71,
+      'Supplier cannot fulfill PO': 72,
+      'Material Rejected': 73,
+      'Cancelled': 80
   }
 
   enum payment_type: {
@@ -43,25 +43,25 @@ class PaymentRequest < ApplicationRecord
   }
 
   enum purpose_of_payment: {
-      :'Advance - On issue of PO' => 10,
-      :'Advance - Material Ready for dispatch' => 20,
-      :'Credit' => 30
+      'Advance - On issue of PO': 10,
+      'Advance - Material Ready for dispatch': 20,
+      'Credit': 30
   }
 
   enum request_owner: {
-      :'Logistics' => 10,
-      :'Accounts' => 20
+      'Logistics': 10,
+      'Accounts': 20
   }
 
-  scope :Pending, -> {where(status: [10, 11])}
-  scope :Completed, -> {where(:status => 50)}
-  scope :Rejected, -> {where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch'])}
-  scope :Logistics, -> {where(status: [10, 11], request_owner: ['Logistics', 'Accounts'])}
-  scope :Accounts, -> {where(status: [10, 11], request_owner: 'Accounts')}
+  scope :Pending, -> { where(status: [10, 11]) }
+  scope :Completed, -> { where(status: 50) }
+  scope :Rejected, -> { where(status: ['Supplier Info: Bank Details Missing', 'Supplier Info: Bank Details Incorrect', 'Supplier Info: PI mismatch']) }
+  scope :Logistics, -> { where(status: [10, 11], request_owner: ['Logistics', 'Accounts']) }
+  scope :Accounts, -> { where(status: [10, 11], request_owner: 'Accounts') }
 
   validates_presence_of :inquiry
   with_options if: :"Accounts?" do |payment_request|
-    payment_request.validates_presence_of :due_date, :purpose_of_payment #, :supplier_bank_details
+    payment_request.validates_presence_of :due_date, :purpose_of_payment # , :supplier_bank_details
   end
   validate :due_date_cannot_be_in_the_past
 
@@ -93,11 +93,11 @@ class PaymentRequest < ApplicationRecord
 
   def grouped_status
     grouped_status = {}
-    status_category = {10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund', 80 => 'Cancelled'}
+    status_category = { 10 => 'Pending', 30 => 'Rejected', 40 => 'Payment on Hold', 50 => 'Completed', 70 => 'Refund', 80 => 'Cancelled' }
     status_category.each do |index, category|
-      grouped_status[category] = PaymentRequest.statuses.collect {|status, v| ;
-      if v.between?(index, index + 9);
-        status;
+      grouped_status[category] = PaymentRequest.statuses.collect { |status, v|
+      if v.between?(index, index + 9)
+        status
       end}.compact
     end
     grouped_status
@@ -117,5 +117,4 @@ class PaymentRequest < ApplicationRecord
   def percent_amount_paid
     self.total_amount_paid * 100 / self.po_request.sales_order.try(:calculated_total_with_tax)
   end
-
 end

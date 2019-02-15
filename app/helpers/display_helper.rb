@@ -218,7 +218,7 @@ module DisplayHelper
       due_string  = 'Due Today'
       return due_badge(due_in_days, due_string)
     else
-      due_string  = 'Due In'
+      due_string = 'Due In'
     end
 
     due_badge(due_in_days, [due_string, distance_of_time_in_words(current_date, due_date)].join(' '))

@@ -18,8 +18,8 @@ class Address < ApplicationRecord
   has_one :as_default_shipping_address, dependent: :nullify, class_name: 'Company', inverse_of: :default_shipping_address, foreign_key: :default_shipping_address_id
   has_one :sales_order, as: :billing_address, dependent: :nullify
   has_one :sales_order, as: :shipping_address, dependent: :nullify
-  has_one :po_request, :as => :bill_to
-  has_one :po_request, :as => :ship_to
+  has_one :po_request, as: :bill_to
+  has_one :po_request, as: :ship_to
 
   has_one_attached :gst_proof
   has_one_attached :cst_proof

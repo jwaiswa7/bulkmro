@@ -12,11 +12,11 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
 
 
     if @custom_filters.present?
-      indexed_records = indexed_records.filter({
-                                                     terms: {
-                                                         :tags => @custom_filters["tags"]
-                                                     }
-                                                 })
+      indexed_records = indexed_records.filter(
+        terms: {
+            tags: @custom_filters['tags']
+        }
+                                                 )
       indexed_records
     end
     if search_filters.present?
@@ -46,11 +46,11 @@ class Services::Customers::Finders::CustomerProducts < Services::Customers::Find
     end
 
     if @custom_filters.present?
-      indexed_records = indexed_records.filter({
-                                                   terms: {
-                                                       :tags => @custom_filters["tags"]
-                                                   }
-                                               })
+      indexed_records = indexed_records.filter(
+        terms: {
+            tags: @custom_filters['tags']
+        }
+                                               )
       indexed_records
     end
     if search_filters.present?

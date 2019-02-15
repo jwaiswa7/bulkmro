@@ -15,7 +15,7 @@ class Company < ApplicationRecord
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
   belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
   belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
-  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: true
+  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: true
   belongs_to :industry, required: false
   has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
@@ -48,7 +48,7 @@ class Company < ApplicationRecord
   has_many :tags
 
   has_many :company_reviews
-  ratyrate_rateable "supplier_responsiveness"
+  ratyrate_rateable 'supplier_responsiveness'
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
@@ -207,6 +207,6 @@ class Company < ApplicationRecord
   end
 
   def company_rating
-    rating_for self,'supplier_responsiveness',star: Random.rand(1..5)
+    rating_for self, 'supplier_responsiveness', star: Random.rand(1..5)
   end
 end

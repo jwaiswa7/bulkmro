@@ -13,11 +13,11 @@ class EmailMessage < ApplicationRecord
   validates_presence_of :from, :to, :subject
 
   enum email_type: {
-      :'Sending PO to Supplier' => 10,
-      :'Dispatch from Supplier Delayed' => 20,
-      :'Material Received in BM Warehouse' => 30,
-      :'Material Dispatched to Customer' => 40,
-      :'Material Delivered to Customer' => 50
+      'Sending PO to Supplier': 10,
+      'Dispatch from Supplier Delayed': 20,
+      'Material Received in BM Warehouse': 30,
+      'Material Dispatched to Customer': 40,
+      'Material Delivered to Customer': 50
   }
 
   after_initialize :set_defaults, if: :new_record?

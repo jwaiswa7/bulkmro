@@ -34,7 +34,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     custom_params[:tag_ids].each_with_index do |tag_id, index|
       @tag = @company.tags.where(id: tag_id)
       if @tag.blank?
-        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        @new_tag = @company.tags.where(name: tag_id).first_or_create
         custom_params[:tag_ids][index] = @new_tag.id.to_s
       end
     end
@@ -81,7 +81,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     custom_params[:tag_ids].each_with_index do |tag_id, index|
       @tag = @company.tags.where(id: tag_id)
       if @tag.blank?
-        @new_tag = @company.tags.where(:name => tag_id).first_or_create
+        @new_tag = @company.tags.where(name: tag_id).first_or_create
         custom_params[:tag_ids][index] = @new_tag.id.to_s
       end
     end
@@ -123,7 +123,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
           :sku,
           :brand_id,
           :moq,
-          :tag_ids => [],
+          tag_ids: [],
           images: []
       )
     end

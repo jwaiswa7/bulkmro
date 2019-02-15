@@ -20,8 +20,8 @@ class Overseers::ProductsController < Overseers::BaseController
 
   def service_autocomplete
     base_filter = {
-        :base_filter_key => "is_service",
-        :base_filter_value => true
+        base_filter_key: 'is_service',
+        base_filter_value: true
     }
     service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
     service.call

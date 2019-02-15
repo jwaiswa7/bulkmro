@@ -92,6 +92,6 @@ class InvoiceRequest < ApplicationRecord
   end
 
   def to_s
-    [readable_status, "##{self.id}"].join(" ")
+    [readable_status, "##{self.id}"].join(' ')
   end
 end

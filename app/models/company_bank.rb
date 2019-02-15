@@ -16,5 +16,4 @@ class CompanyBank < ApplicationRecord
   def to_s
     [self.bank, account_number, account_name].reject(&:blank?).join(', ')
   end
-
 end

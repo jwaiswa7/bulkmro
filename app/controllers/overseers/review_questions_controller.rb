@@ -41,22 +41,22 @@ class Overseers::ReviewQuestionsController < Overseers::BaseController
 
   def destroy
     authorize @review_question
-    company_rating = CompanyRating.where(:review_question_id => @review_question.id)
+    company_rating = CompanyRating.where(review_question_id: @review_question.id)
     if !company_rating.present?
       @review_question.destroy!
       redirect_to overseers_review_questions_url, notice: flash_message(@review_question, action_name)
     else
-      redirect_to overseers_review_questions_url, notice: "Cannot delete question used in reviews."
+      redirect_to overseers_review_questions_url, notice: 'Cannot delete question used in reviews.'
     end
   end
 
   private
 
-  def set_review_question
-    @review_question = ReviewQuestion.find(params[:id])
-  end
+    def set_review_question
+      @review_question = ReviewQuestion.find(params[:id])
+    end
 
-  def review_question_params
-    params.require(:review_question).permit(:question, :weightage, :question_type)
-  end
+    def review_question_params
+      params.require(:review_question).permit(:question, :weightage, :question_type)
+    end
 end
