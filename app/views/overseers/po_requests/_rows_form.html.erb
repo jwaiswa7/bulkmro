@@ -220,7 +220,7 @@
 </div>
 -->
 
-<%= f.nested_fields_for :rows do |po_request_row| %>
+<%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :desc): f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
   <%= po_request_row.hidden_field :sales_order_row_id %>
   <%= po_request_row.hidden_field :product_id %>
@@ -228,19 +228,22 @@
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
+    <div class="col-12 col-md-12 mb-1" >
+
+      #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
+      <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
+    </div>
     <div class="col-12 col-md-12">
       <div class="form-row">
-        <!--        <div class="col-12 col-md-1">-->
-        <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
-        <!--        </div>-->
+
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, collection: [po_request_row.object.product], label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
 
-        <div class="col-12 col-md-1">
+        <div class="col-12 col-md-2">
 
           <%= po_request_row.input :brand, input_html: {value: po_request_row.object.product.try(:brand).to_s}, label: 'Make', disabled: true %>
           <%#= po_request_row.association :brand, label_method: :to_s, collection: selected_option_or_nil(po_request_row, :brand), include_blank: "Type to search", input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_brands_path}, disabled: po_request_row.object.field_disabled?, f.object.rows.first == po_request_row.object ? "Make" : false  %>
@@ -253,23 +256,25 @@
           <%#= po_request_row.input :tax_rate, f.object.rows.first == po_request_row.object ? "T. rate" : false, disabled: po_request_row.object.field_disabled? %>
           <%= po_request_row.association :tax_rate, collection: TaxRate.all, label_method: :to_s, include_blank: false, label: 'Tax Rate' %>
         </div>
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-1">
           <%= po_request_row.input :quantity, input_html: {value: po_request_row.object.quantity, max: po_request_row.object.try(:sales_order_row).try(:quantity), min: 1}, disabled: false, required: true %>
         </div>
-        <div class="col-12 col-md-2">
-          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: 'Disc. %', disabled: false %>
+
+        <div class="col-12 col-md-1">
+          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true %>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-12">
       <div class="form-row">
 
-        <div class="col-12 col-md-1">
-          <%= po_request_row.input :measurement_unit, value: po_request_row.object.measurement_unit || MeasurementUnit.default.name, disabled: true %>
-        </div>
         <div class="col-12 col-md-2">
           <%= po_request_row.input :unit_price, input_html: {value: po_request_row.object.unit_price || po_request_row.object.unit_price_per_quantity.round(2)}, readonly: po_request_row.object.field_disabled?, required: true %>
         </div>
+        <div class="col-12 col-md-1">
+          <%= po_request_row.input :discount_percentage, input_html: {value: po_request_row.object.discount_percentage || 0}, label: 'Disc. %', disabled: false %>
+        </div>
+
         <div class="col-12 col-md-2">
           <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, disabled: true %>
         </div>
