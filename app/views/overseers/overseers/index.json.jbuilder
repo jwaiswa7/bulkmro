@@ -7,7 +7,7 @@ json.data (@overseers) do |overseer|
                   ].join(' '),
                   overseer.hierarchy_to_s,
                   format_enum(overseer.role),
-                  format_date(overseer.created_at)
+                  format_succinct_date(overseer.created_at)
               ]
 end
 

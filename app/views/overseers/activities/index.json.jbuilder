@@ -38,7 +38,7 @@ json.data (@activities) do |activity|
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
-                  activity.expenses,
+                  format_currency(activity.expenses),
                   activity.points_discussed,
                   activity.actions_required,
                   format_succinct_date(activity.created_at)

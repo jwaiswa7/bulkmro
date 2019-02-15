@@ -14,9 +14,9 @@ json.data (@invoice_requests) do |invoice_request|
                   conditional_link(invoice_request.sales_order.order_number, overseers_inquiry_sales_order_path(invoice_request.inquiry, invoice_request.sales_order), policy(invoice_request.sales_order).show?),
                   ( invoice_request.purchase_order.po_number if invoice_request.purchase_order.present? ),
                   invoice_request.inquiry.inside_sales_owner.to_s,
-                  format_date_time_meridiem(invoice_request.created_at),
+                  format_succinct_date(invoice_request.created_at),
                   if invoice_request.last_comment.present?
-                    format_date_time_meridiem(invoice_request.last_comment.created_at)
+                    format_succinct_date(invoice_request.last_comment.created_at)
                   end,
                   if invoice_request.last_comment.present?
                     format_comment(invoice_request.last_comment, trimmed: true)

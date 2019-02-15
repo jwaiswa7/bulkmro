@@ -20,7 +20,7 @@ json.data (@purchase_orders) do |purchase_order|
                   purchase_order.inquiry.outside_sales_owner.to_s,
                   format_succinct_date(purchase_order.created_at),
                   if purchase_order.last_comment.present?
-                    format_date_time_meridiem(purchase_order.last_comment.updated_at)
+                    format_succinct_date(purchase_order.last_comment.updated_at)
                   end,
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)

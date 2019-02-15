@@ -17,7 +17,7 @@ json.data (@company_creation_requests) do |company|
 	              company.email,
                 format_boolean(company.is_supplier?),
                 format_boolean(company.is_customer?),
-	              format_date(company.created_at)
+                format_succinct_date(company.created_at)
               ]
 end
 json.columnFilters [

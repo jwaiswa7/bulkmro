@@ -184,8 +184,8 @@
               ) <%= inquiry_product_supplier.supplier.name.truncate(25) %></td>
             <td><%= format_currency(inquiry_product_supplier.try(:unit_cost_price)) %></td>
             <td><%= format_currency(inquiry_product_supplier.final_sales_quote_row.try(:unit_selling_price)) %></td>
-            <td><%= format_date(inquiry_product.inquiry.quotation_date) %></td>
-            <td><%= format_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
+            <td><%= format_succinct_date(inquiry_product.inquiry.quotation_date) %></td>
+            <td><%= format_succinct_date(inquiry_product.final_sales_order.try(:sent_at)) %></td>
           </tr>
         <% end %>
         </tbody>

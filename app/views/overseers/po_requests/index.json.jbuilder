@@ -21,9 +21,9 @@ json.data (@po_requests) do |po_request|
                     po_request.logistics_owner.to_s
                   end,
                   po_request.inquiry.inside_sales_owner.to_s,
-                  format_date_time_meridiem(po_request.created_at),
+                  format_succinct_date(po_request.created_at),
                   if po_request.last_comment.present?
-                    format_date_time_meridiem(po_request.last_comment.updated_at)
+                    format_succinct_date(po_request.last_comment.updated_at)
                   end,
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
