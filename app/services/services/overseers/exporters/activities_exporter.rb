@@ -1,7 +1,7 @@
 class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::Exporters::BaseExporter
 
-  def initialize
-    super
+  def initialize(*ranges)
+    super(*ranges)
     @model = Activity
     @export_name = 'activities'
     @path = Rails.root.join('tmp', filename)
@@ -9,11 +9,11 @@ class Services::Overseers::Exporters::ActivitiesExporter < Services::Overseers::
   end
 
   def call
-    perform_export_later('ActivitiesExporter')
+    perform_export_later('ActivitiesExporter', @arguments)
   end
 
   def build_csv
-    model.all.order(created_at: :desc).each do |record|
+    model.where("created_at >= :start_at AND created_at <= :end_at", {start_at: @start_at, end_at: @end_at}).order(created_at: :desc).each do |record|
       rows.push({
                   :created_by => record.created_by.full_name,
                   :account => (record.activity_account.to_s if record.activity_account.present?),

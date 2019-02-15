@@ -95,7 +95,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
 
   def export_all
     authorize :activity
-    service = Services::Overseers::Exporters::ActivitiesExporter.new
+    service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q])
     service.call
 
     redirect_to url_for(Export.activities.last.report)
