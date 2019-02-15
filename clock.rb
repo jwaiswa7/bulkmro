@@ -74,10 +74,12 @@ every(1.day, 'inquiry_product_inventory_update', at: '02:00') do
   service.call
 end if Rails.env.production?
 
+=begin
 every(1.day, 'remote_unwanted_requests', at: '22:00') do
   service = Services::Overseers::RequestCronJobs::RemoveRequestCronJob.new
   service.call
 end if Rails.env.production?
+=end
 
 every(1.day, 'resync_failed_requests', at: '03:00') do
   service = Services::Overseers::FailedRemoteRequests::Resync.new

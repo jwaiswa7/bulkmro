@@ -16,6 +16,7 @@
         <tr>
           <td>
             <% if policy(purchase_order).show? %>
+              <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order), 'eye', 'View Purchase Order ', 'info') %>
               <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, purchase_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
             <% end %>
 
