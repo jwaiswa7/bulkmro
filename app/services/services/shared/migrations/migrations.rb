@@ -2,7 +2,6 @@ require 'csv'
 require 'net/http'
 
 class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
-
   attr_accessor :limit, :secondary_limit, :custom_methods, :update_if_exists, :folder
 
   def initialize(custom_methods = nil, limit = nil, secondary_limit = nil, update_if_exists: true, folder: nil)
@@ -15,7 +14,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def generate_csv(array_of_ids, object_type)
     file = "#{Rails.root}/public/#{object_type}_data.csv"
-    column_headers = ["ID"]
+    column_headers = ['ID']
     calculated_total(file, 'w', write_headers: true, headers: column_headers) do |writer|
       array_of_ids.each do |i|
         writer << [i]
@@ -44,7 +43,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def overseers
-    Overseer.where(:email => 'ashwin.goyal@bulkmro.com').first_or_create! do |overseer|
+    Overseer.where(email: 'ashwin.goyal@bulkmro.com').first_or_create! do |overseer|
       overseer.first_name = 'Ashwin'
       overseer.last_name = 'Goyal'
       overseer.role = :admin
@@ -134,7 +133,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                                business_head
                              end
 
-      overseer.update_attributes(:parent => Overseer.find_by_first_name(actual_business_head.split(' ')[0]))
+      overseer.update_attributes(parent: Overseer.find_by_first_name(actual_business_head.split(' ')[0]))
     end
   end
 
@@ -144,43 +143,43 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       email = x.get_column('email')
       next if email.in? %w(shailesh.salekar@bulkmro.com service@bulkmro.com)
       overseer = Overseer.find_by_email!(email)
-      overseer.update_attributes(:smtp_password => x.get_column('password'))
+      overseer.update_attributes(smtp_password: x.get_column('password'))
     end
   end
 
 
   def measurement_unit
-    measurement_units = ["EA", "SET", "PK", "KG", "M", "FT", "Pack", "Pair", "PR", "BOX", "LTR", "LT", "MTR", "ROLL", "Nos", "PKT", "REEL", "FEET", "Meter", "1 ROLL", "ml", "MAT", "LOT", "No", "RFT", "Bundle", "NPkt", "Metre", "CAN", "SQ.Ft", "BOTTLE", "BOTTEL", "CUBIC METER", "PC", "GRAM", "EACH", "FOOT", "Dozen", "INCH", "Ream", "Bag", "Unit", "MT", "KIT", "SQ INCH", "CASE"]
+    measurement_units = ['EA', 'SET', 'PK', 'KG', 'M', 'FT', 'Pack', 'Pair', 'PR', 'BOX', 'LTR', 'LT', 'MTR', 'ROLL', 'Nos', 'PKT', 'REEL', 'FEET', 'Meter', '1 ROLL', 'ml', 'MAT', 'LOT', 'No', 'RFT', 'Bundle', 'NPkt', 'Metre', 'CAN', 'SQ.Ft', 'BOTTLE', 'BOTTEL', 'CUBIC METER', 'PC', 'GRAM', 'EACH', 'FOOT', 'Dozen', 'INCH', 'Ream', 'Bag', 'Unit', 'MT', 'KIT', 'SQ INCH', 'CASE']
     MeasurementUnit.first_or_create! measurement_units.map {|mu| {name: mu}}
   end
 
   def lead_time_option
     LeadTimeOption.first_or_create!([
-                                        {name: "2-3 DAYS", min_days: 2, max_days: 3},
-                                        {name: "1 WEEK", min_days: 7, max_days: 7},
-                                        {name: "8-10 DAYS", min_days: 8, max_days: 10},
-                                        {name: "1-2 WEEKS", min_days: 7, max_days: 14},
-                                        {name: "2 WEEKS", min_days: 14, max_days: 14},
-                                        {name: "2-3 WEEK", min_days: 14, max_days: 21},
-                                        {name: "3 WEEKS", min_days: 21, max_days: 21},
-                                        {name: "3-4 WEEKS", min_days: 21, max_days: 28},
-                                        {name: "4 WEEKS", min_days: 28, max_days: 28},
-                                        {name: "5 WEEKS", min_days: 35, max_days: 35},
-                                        {name: "4-6 WEEKS", min_days: 28, max_days: 42},
-                                        {name: "6-8 WEEKS", min_days: 42, max_days: 56},
-                                        {name: "8 WEEKS", min_days: 56, max_days: 56},
-                                        {name: "20 WEEKS", min_days: 140, max_days: 140},
-                                        {name: "24 WEEKS", min_days: 168, max_days: 168},
-                                        {name: "6-10 WEEKS", min_days: 42, max_days: 70},
-                                        {name: "10-12 WEEKS", min_days: 70, max_days: 84},
-                                        {name: "12-14 WEEKS", min_days: 84, max_days: 98},
-                                        {name: "14-16 WEEKS", min_days: 98, max_days: 112},
-                                        {name: "MORE THAN 14 WEEKS", min_days: 98, max_days: nil},
-                                        {name: "MORE THAN 12 WEEKS", min_days: 84, max_days: nil},
-                                        {name: "MORE THAN 6 WEEKS", min_days: 42, max_days: nil},
-                                        {name: "60 days from the date of order for 175MT, and 60 days for remaining from the date of call", min_days: 60, max_days: 120},
-                                        {name: "In Stock", min_days: 0, max_days: 0},
-                                        {name: "Refer T&C", min_days: 0, max_days: 0}
+                                        {name: '2-3 DAYS', min_days: 2, max_days: 3},
+                                        {name: '1 WEEK', min_days: 7, max_days: 7},
+                                        {name: '8-10 DAYS', min_days: 8, max_days: 10},
+                                        {name: '1-2 WEEKS', min_days: 7, max_days: 14},
+                                        {name: '2 WEEKS', min_days: 14, max_days: 14},
+                                        {name: '2-3 WEEK', min_days: 14, max_days: 21},
+                                        {name: '3 WEEKS', min_days: 21, max_days: 21},
+                                        {name: '3-4 WEEKS', min_days: 21, max_days: 28},
+                                        {name: '4 WEEKS', min_days: 28, max_days: 28},
+                                        {name: '5 WEEKS', min_days: 35, max_days: 35},
+                                        {name: '4-6 WEEKS', min_days: 28, max_days: 42},
+                                        {name: '6-8 WEEKS', min_days: 42, max_days: 56},
+                                        {name: '8 WEEKS', min_days: 56, max_days: 56},
+                                        {name: '20 WEEKS', min_days: 140, max_days: 140},
+                                        {name: '24 WEEKS', min_days: 168, max_days: 168},
+                                        {name: '6-10 WEEKS', min_days: 42, max_days: 70},
+                                        {name: '10-12 WEEKS', min_days: 70, max_days: 84},
+                                        {name: '12-14 WEEKS', min_days: 84, max_days: 98},
+                                        {name: '14-16 WEEKS', min_days: 98, max_days: 112},
+                                        {name: 'MORE THAN 14 WEEKS', min_days: 98, max_days: nil},
+                                        {name: 'MORE THAN 12 WEEKS', min_days: 84, max_days: nil},
+                                        {name: 'MORE THAN 6 WEEKS', min_days: 42, max_days: nil},
+                                        {name: '60 days from the date of order for 175MT, and 60 days for remaining from the date of call', min_days: 60, max_days: 120},
+                                        {name: 'In Stock', min_days: 0, max_days: 0},
+                                        {name: 'Refer T&C', min_days: 0, max_days: 0}
                                     ])
   end
 
@@ -240,10 +239,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def accounts
-    Account.where(remote_uid: 101, name: "Trade", alias: "TRD", account_type: :is_supplier).first_or_create!
-    Account.where(remote_uid: 102, name: "Non-Trade", alias: "NTRD", account_type: :is_supplier).first_or_create!
+    Account.where(remote_uid: 101, name: 'Trade', alias: 'TRD', account_type: :is_supplier).first_or_create!
+    Account.where(remote_uid: 102, name: 'Non-Trade', alias: 'NTRD', account_type: :is_supplier).first_or_create!
 
-    Account.where(:name => 'Legacy Account').first_or_create! do |account|
+    Account.where(name: 'Legacy Account').first_or_create! do |account|
       account.remote_uid = 99999999
       account.alias = 'LGA'
     end
@@ -270,8 +269,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def contacts
     password = Devise.friendly_token
-    Contact.where(email: "legacy@bulkmro.com").first_or_create! do |contact|
-      contact.assign_attributes(account: Account.legacy, first_name: "Fake", last_name: "Name", telephone: "9999999999", password: password, password_confirmation: password)
+    Contact.where(email: 'legacy@bulkmro.com').first_or_create! do |contact|
+      contact.assign_attributes(account: Account.legacy, first_name: 'Fake', last_name: 'Name', telephone: '9999999999', password: password, password_confirmation: password)
     end
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('company_contacts.csv', folder)
@@ -319,7 +318,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
   def companies_acting_as_customers
     legacy_account = Account.legacy
-    legacy_company = Company.where(name: "Legacy Company").first_or_create! do |company|
+    legacy_company = Company.where(name: 'Legacy Company').first_or_create! do |company|
       company.account = legacy_account
       company.remote_uid = 99999999
       company.is_customer = true
@@ -328,11 +327,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     company_contact = CompanyContact.first_or_create!(company: legacy_company, contact: legacy_account.contacts.first)
     legacy_company.company_contacts << company_contact
-    legacy_company.update_attributes(:default_company_contact => company_contact)
+    legacy_company.update_attributes(default_company_contact: company_contact)
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('companies.csv', folder)
     service.loop(limit) do |x|
-
       id = x.get_column('Magento Id')
       next if id.in? %w(3275)
 
@@ -405,7 +403,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           company_contact.remote_uid = x.get_column('sap_id')
           company_contact.legacy_metadata = x.get_row
           company_contact.save!
-          company.update_attributes(:default_company_contact => company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
+          company.update_attributes(default_company_contact: company_contact) if company.legacy_metadata['default_contact'] == x.get_column('entity_id')
         end
       end
     end
@@ -420,12 +418,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     legacy_company.addresses.where(name: 'Legacy Address').first_or_create! do |address|
       address.assign_attributes(
           gst: '2AAAAAAAAAAAAAA',
-          country_code: "IN",
+          country_code: 'IN',
           state: AddressState.find_by_name('Maharashtra'),
           state_name: nil,
-          city_name: "Mumbai",
-          pincode: "400001",
-          street1: "Lower Parel"
+          city_name: 'Mumbai',
+          pincode: '400001',
+          street1: 'Lower Parel'
       )
     end
 
@@ -444,16 +442,16 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         address.gst = x.get_column('gst_num')
         address.country_code = x.get_column('country')
         address.state = AddressState.find_by_name(x.get_column('state_name')) || legacy_state
-        address.state_name = x.get_column('country') != "IN" ? x.get_column('state_name') : nil
+        address.state_name = x.get_column('country') != 'IN' ? x.get_column('state_name') : nil
         address.city_name = x.get_column('city')
         address.pincode = x.get_column('pincode')
         address.street1 = x.get_column('address')
-        #address.street2 = x.get_column('gst_num')
+        # address.street2 = x.get_column('gst_num')
         address.cst = x.get_column('cst_num')
         address.vat = x.get_column('vat_num')
         address.excise = x.get_column('ed_num')
         address.telephone = x.get_column('telephone')
-        #address.mobile = x.get_column('gst_num')
+        # address.mobile = x.get_column('gst_num')
         address.gst_type = gst_type[x.get_column('gst_type').to_i]
         address.legacy_metadata = x.get_row
         address.save!
@@ -485,8 +483,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if x.get_column('sup_id').in? %w(5406)
 
       company_type_mapping = {'proprietorship' => 10, 'Private Limited' => 20, 'contractor' => 30, 'trust' => 40, 'Public Limited' => 50, 'dealer' => 50, 'distributor' => 60, 'trader' => 70, 'manufacturer' => 80, 'wholesaler/stockist' => 90, 'serviceprovider' => 100, 'employee' => 110}
-      is_msme_mapping = {"N" => false, "Y" => true}
-      urd_mapping = {"N" => false, "Y" => true}
+      is_msme_mapping = {'N' => false, 'Y' => true}
+      urd_mapping = {'N' => false, 'Y' => true}
 
       company = Company.where(remote_uid: x.get_column('sup_code')).first_or_initialize
       if company.new_record? || update_if_exists
@@ -523,7 +521,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('supplier_contacts.csv', folder)
 
     service.loop(limit) do |x|
-
       supplier_remote_uid = x.get_column('sup_code')
       next if supplier_remote_uid.in? ['SC-9192', 'SC-9195', 'SC-9201', 'SC-9202', 'SC-9205', 'SC-9206', 'SC-9207']
 
@@ -533,7 +530,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       supplier_name = x.get_column('sup_name')
       contact_email = x.get_column('pc_email', downcase: true, remove_whitespace: true)
-      contact_email = [entity_id, '@bulkmro.com'].join if (!contact_email.present? || contact_email.match(Devise.email_regexp).blank?)
+      contact_email = [entity_id, '@bulkmro.com'].join if !contact_email.present? || contact_email.match(Devise.email_regexp).blank?
 
       # if contact_email && supplier_name
       supplier_contact = Contact.where(email: contact_email).first_or_initialize
@@ -574,7 +571,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       company = Company.acts_as_supplier.find_by_legacy_id(x.get_column('cmp_id'))
 
       next if company.blank? # todo remove
-      #next if x.get_column('NULL').nil?
+      # next if x.get_column('NULL').nil?
 
       country_code = x.get_column('country')
       address = Address.where(legacy_id: x.get_column('address_id')).first_or_initialize
@@ -621,7 +618,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def warehouse
     service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses.csv', folder)
     service.loop(limit) do |x|
-      warehouse = Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_initialize
+      warehouse = Warehouse.where(name: x.get_column('Warehouse Name')).first_or_initialize
       if warehouse.new_record? || update_if_exists
         warehouse.remote_uid = x.get_column('Warehouse Code')
         warehouse.legacy_id = x.get_column('Warehouse Code')
@@ -630,14 +627,14 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         warehouse.remote_branch_code = x.get_column('Business Place ID')
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-            :name => x.get_column('Account Name'),
-            :street1 => x.get_column('Street'),
-            :street2 => x.get_column('Block'),
-            :pincode => x.get_column('Zip Code'),
-            :city_name => x.get_column('City'),
-            :country_code => x.get_column('Country'),
-            :gst => x.get_column('GST'),
-            :state => AddressState.find_by_region_code(x.get_column('State'))
+            name: x.get_column('Account Name'),
+            street1: x.get_column('Street'),
+            street2: x.get_column('Block'),
+            pincode: x.get_column('Zip Code'),
+            city_name: x.get_column('City'),
+            country_code: x.get_column('Country'),
+            gst: x.get_column('GST'),
+            state: AddressState.find_by_region_code(x.get_column('State'))
         )
         warehouse.save!
       end
@@ -673,7 +670,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if tax.new_record? || update_if_exists
           tax.chapter = chapter
           tax.remote_uid = x.get_column('internal_key')
-          tax.code = ((x.get_column('hsn') == "NULL") || (x.get_column('hsn') == nil) ? x.get_column('chapter') : x.get_column('hsn').gsub('.', ''))
+          tax.code = ((x.get_column('hsn') == 'NULL') || (x.get_column('hsn') == nil) ? x.get_column('chapter') : x.get_column('hsn').gsub('.', ''))
           tax.description = x.get_column('description')
           tax.is_service = x.get_column('is_service') == 'NULL' ? false : true
           tax.tax_percentage = tax_code.match(/\d+/)[0].to_f
@@ -717,7 +714,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sku = x.get_column('sku')
       tax_code = TaxCode.find_by_chapter(x.get_column('hsn_code'))
       next if legacy_id.in? %w(677812 720307 736619 736662 736705)
-      next if Product.where(:sku => sku).exists?
+      next if Product.where(sku: sku).exists?
 
       product = Product.where(legacy_id: legacy_id).first_or_initialize
       if product.new_record? || update_if_exists
@@ -739,7 +736,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         product.updated_at = x.get_column('modified', to_datetime: true)
         product.save!
       end
-      product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Legacy product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+      product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Legacy product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
     end
   end
 
@@ -747,7 +744,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('category_product_mapping.csv', folder)
     service.loop(limit) do |x|
       product = Product.find_by_legacy_id(x.get_column('product_legacy_id'))
-      product.update_attributes(:category => Category.find_by_legacy_id(x.get_column('category_legacy_id'))) if product.present?
+      product.update_attributes(category: Category.find_by_legacy_id(x.get_column('category_legacy_id'))) if product.present?
     end
   end
 
@@ -759,7 +756,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
     service.loop(limit) do |x|
-
       company = Company.find_by_remote_uid(x.get_column('customer_company')) || legacy_company
       contact_legacy_id = x.get_column('customer_id')
       contact_email = x.get_column('email', downcase: true)
@@ -771,13 +767,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         if industry_uid
           industry = Industry.find_by_remote_uid(industry_uid)
-          company.update_attributes!(:industry => industry) if industry.present?
+          company.update_attributes!(industry: industry) if industry.present?
         end
       end
 
       if company != legacy_company
-        shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
-        billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
+        shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if (x.get_column('shipping_address')) != nil
+        billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if (x.get_column('billing_address')) != nil
       end
 
       if company == legacy_company && shipping_address.blank?
@@ -791,7 +787,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       inquiry_number = x.get_column('increment_id', downcase: true, remove_whitespace: true)
       legacy_id = x.get_column('quotation_id', downcase: true, remove_whitespace: true)
 
-      next if (inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0)
+      next if inquiry_number.nil? || inquiry_number == '0' || inquiry_number == 0
 
       inquiry = Inquiry.where(inquiry_number: inquiry_number).first_or_initialize
       if inquiry.new_record? || update_if_exists
@@ -799,7 +795,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.contact = contact
         inquiry.legacy_contact_name = x.get_column('customer_name')
         inquiry.status = x.get_column('bought').to_i
-        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?)
+        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(' ', '_').downcase] if x.get_column('quote_type').present?)
         inquiry.potential_amount = x.get_column('potential_amount')
         inquiry.opportunity_source = (opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?)
         inquiry.subject = x.get_column('caption')
@@ -819,13 +815,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.legacy_id = legacy_id
         inquiry.priority = x.get_column('is_prioritized')
         inquiry.expected_closing_date = x.get_column('closing_date', to_datetime: true)
-        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00")
+        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != '0000-00-00')
         inquiry.quotation_expected_date = x.get_column('quotation_expected_date', to_datetime: true)
-        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00")
+        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != '0000-00-00')
         inquiry.quotation_followup_date = x.get_column('quotation_followup_date', to_datetime: true)
-        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00")
-        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00")
-        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00")
+        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != '0000-00-00')
+        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != '0000-00-00')
+        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != '0000-00-00')
         inquiry.is_sez = x.get_column('sez')
         inquiry.is_kit = x.get_column('is_kit')
         inquiry.weight_in_kgs = x.get_column('weight')
@@ -847,7 +843,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiries_without_amazon.csv', folder)
     service.loop(limit) do |x|
-
       start_date = Date.new(2018, 04, 01)
       inquiry_updated_date = Date.new(2018, 10, 19)
 
@@ -869,8 +864,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       # end
 
 
-      shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if ((x.get_column('shipping_address')) != nil)
-      billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if ((x.get_column('billing_address')) != nil)
+      shipping_address = company.account.addresses.find_by_legacy_id(x.get_column('shipping_address')) if (x.get_column('shipping_address')) != nil
+      billing_address = company.account.addresses.find_by_legacy_id(x.get_column('billing_address')) if (x.get_column('billing_address')) != nil
 
 
       # if company == legacy_company && shipping_address.blank?
@@ -895,7 +890,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.contact = contact
         inquiry.legacy_contact_name = x.get_column('customer_name')
         inquiry.status = x.get_column('bought').to_i
-        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(" ", "_").downcase] if x.get_column('quote_type').present?)
+        inquiry.opportunity_type = (opportunity_type[x.get_column('quote_type').gsub(' ', '_').downcase] if x.get_column('quote_type').present?)
         inquiry.potential_amount = x.get_column('potential_amount')
         inquiry.opportunity_source = (opportunity_source[x.get_column('opportunity_source').to_i] if x.get_column('opportunity_source').present?)
         inquiry.subject = x.get_column('caption')
@@ -915,13 +910,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         inquiry.legacy_id = legacy_id
         inquiry.priority = x.get_column('is_prioritized')
         inquiry.expected_closing_date = x.get_column('closing_date', to_datetime: true)
-        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != "0000-00-00")
+        inquiry.quotation_date = (x.get_column('quotation_date', to_datetime: true) if x.get_column('quotation_date') != '0000-00-00')
         inquiry.quotation_expected_date = x.get_column('quotation_expected_date', to_datetime: true)
-        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != "0000-00-00")
+        inquiry.valid_end_time = (x.get_column('valid_end_time', to_datetime: true) if x.get_column('valid_end_time') != '0000-00-00')
         inquiry.quotation_followup_date = x.get_column('quotation_followup_date', to_datetime: true)
-        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != "0000-00-00")
-        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != "0000-00-00")
-        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != "0000-00-00")
+        inquiry.customer_order_date = (x.get_column('customer_order_date', to_datetime: true) if x.get_column('customer_order_date') != '0000-00-00')
+        inquiry.customer_committed_date = (x.get_column('committed_customer_date', to_datetime: true) if x.get_column('committed_customer_date') != '0000-00-00')
+        inquiry.procurement_date = (x.get_column('procurement_date', to_datetime: true) if x.get_column('procurement_date') != '0000-00-00')
         inquiry.is_sez = x.get_column('sez')
         inquiry.is_kit = x.get_column('is_kit')
         inquiry.weight_in_kgs = x.get_column('weight')
@@ -958,7 +953,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('inquiry_items.csv', folder)
     service.loop(limit) do |x|
       puts "#{x.get_column('quotation_item_id')}"
-      #next if (x.get_column('quotation_item_id').to_i < 3189 )
+      # next if (x.get_column('quotation_item_id').to_i < 3189 )
       quotation_id = x.get_column('quotation_id')
       product_id = x.get_column('product_id')
       supplier_uid = x.get_column('sup_code')
@@ -980,7 +975,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       supplier = Company.acts_as_supplier.find_by_remote_uid(supplier_uid) || Company.legacy
-      inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(:supplier => supplier).first_or_initialize
+      inquiry_product_supplier = inquiry_product.inquiry_product_suppliers.where(supplier: supplier).first_or_initialize
       if inquiry_product_supplier.new_record? || update_if_exists
         inquiry_product_supplier.unit_cost_price = x.get_column('cost').try(:to_i) || 0
         inquiry_product_supplier.save!
@@ -990,12 +985,12 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sales_quote = inquiry.sales_quote
 
       if sales_quote.blank?
-        inquiry.update_attributes(:quotation_uid => quotation_uid)
-        sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
+        inquiry.update_attributes(quotation_uid: quotation_uid)
+        sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
       end
 
       if inquiry.status_before_type_cast >= 5
-        sales_quote.update_attributes!(:sent_at => sales_quote.created_at)
+        sales_quote.update_attributes!(sent_at: sales_quote.created_at)
       end
 
       row = sales_quote.rows.where(inquiry_product_supplier: inquiry_product_supplier).first_or_initialize
@@ -1046,7 +1041,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       sales_quote.rows.each do |row|
         if product_skus.include? row.product.sku
-          sales_order.rows.where(:sales_quote_row => row).first_or_create!
+          sales_order.rows.where(sales_quote_row: row).first_or_create!
         end
       end
 
@@ -1056,17 +1051,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       if !sales_order.approved?
         if request_status.in? %w(approved requested)
           sales_order.create_approval(
-              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
-              :overseer => Overseer.default,
-              :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+              comment: sales_order.inquiry.comments.create!(overseer: Overseer.default, message: 'Legacy sales order, being preapproved'),
+              overseer: Overseer.default,
+              metadata: Serializers::InquirySerializer.new(sales_order.inquiry)
           )
         elsif request_status == 'rejected'
           sales_order.create_rejection(
-              :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
-              :overseer => Overseer.default
+              comment: sales_order.inquiry.comments.create!(overseer: Overseer.default, message: 'Legacy sales order, being rejected'),
+              overseer: Overseer.default
           )
         else
-          sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+          sales_order.inquiry.comments.create(overseer: Overseer.default, message: "Legacy sales order, being #{request_status}")
         end
       end
     end
@@ -1079,7 +1074,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       product = Product.find_by_sku(x.get_column('sku'))
       if sales_order.present?
         if product.present?
-          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(:inquiry_products => {:product_id => product.id})
+          sales_order_rows = sales_order.rows.joins(:inquiry_product).where(inquiry_products: {product_id: product.id})
           if sales_order_rows.present?
             if sales_order.id == 3195
               sales_order_rows.first.update_attributes!(quantity: 1)
@@ -1100,7 +1095,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
     service = Services::Shared::Spreadsheets::CsvImporter.new('activity_reports.csv', folder)
     service.loop(limit) do |x|
-
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry_number'))
       contact = Contact.find_by_legacy_id(x.get_column('company_contact_lagacy'))
 
@@ -1385,7 +1379,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       req = Net::HTTP.new(url.host, url.port)
       req.use_ssl = true
       res = req.request_head(url.path)
-      puts "---------------------------------"
+      puts '---------------------------------'
       if res.code == '200'
         file = open(file_url)
         inquiry.send(field_name).attach(io: file, filename: filename)
@@ -1396,23 +1390,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def update_addresses_remote_uid
-    Addresses.update_all("remote_uid=legacy_uid")
+    Addresses.update_all('remote_uid=legacy_uid')
   end
 
   def warehouse_update_remote_uids
     service = Services::Shared::Spreadsheets::CsvImporter.new('warehouses_remote_uids.csv', 'seed_files')
     service.loop(limit) do |x|
-      Warehouse.where(:name => x.get_column('Warehouse Name')).first_or_create do |warehouse|
+      Warehouse.where(name: x.get_column('Warehouse Name')).first_or_create do |warehouse|
         warehouse.legacy_metadata = x.get_row
         warehouse.build_address(
-            :name => x.get_column('Account Name'),
-            :street1 => x.get_column('Street'),
-            :street2 => x.get_column('Block'),
-            :pincode => x.get_column('Zip Code'),
-            :city_name => x.get_column('City'),
-            :country_code => x.get_column('Country'),
-            :gst => x.get_column('GST'),
-            :state => AddressState.find_by_region_code(x.get_column('State'))
+            name: x.get_column('Account Name'),
+            street1: x.get_column('Street'),
+            street2: x.get_column('Block'),
+            pincode: x.get_column('Zip Code'),
+            city_name: x.get_column('City'),
+            country_code: x.get_column('Country'),
+            gst: x.get_column('GST'),
+            state: AddressState.find_by_region_code(x.get_column('State'))
         )
       end.update_attributes!(remote_uid: x.get_column('Warehouse Code'),
                              legacy_id: x.get_column('Warehouse Code'),
@@ -1436,13 +1430,13 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
       overseer = Overseer.find_by_legacy_id(x.get_column('legacy_overseer_id'))
       if x.get_column('Manager')
-        manager = Overseer.where(first_name: x.get_column('Manager').split(" ").first, last_name: x.get_column('Manager').split(" ").last).first
+        manager = Overseer.where(first_name: x.get_column('Manager').split(' ').first, last_name: x.get_column('Manager').split(' ').last).first
       else
         manager = overseer.parent.present? ? overseer.parent : overseer
       end
 
       if x.get_column('Head')
-        business_head = Overseer.where(first_name: x.get_column('Head').split(" ").first, last_name: x.get_column('Head').split(" ").last).first
+        business_head = Overseer.where(first_name: x.get_column('Head').split(' ').first, last_name: x.get_column('Head').split(' ').last).first
       else
         business_head = manager.parent.present? ? manager.parent : manager
       end
@@ -1463,7 +1457,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     objects = []
     folders = ['seed_files', 'seed_files_2']
     folders.each do |folder|
-
       legacy_request_status_mapping = {'requested' => 10, 'SAP Approval Pending' => 20, 'rejected' => 30, 'SAP Rejected' => 40, 'Cancelled' => 50, 'approved' => 60, 'Order Deleted' => 70}
       remote_status = {'Supplier PO: Request Pending' => 17, 'Supplier PO: Partially Created' => 18, 'Partially Shipped' => 19, 'Partially Invoiced' => 20, 'Partially Delivered: GRN Pending' => 21, 'Partially Delivered: GRN Received' => 22, 'Supplier PO: Created' => 23, 'Shipped' => 24, 'Invoiced' => 25, 'Delivered: GRN Pending' => 26, 'Delivered: GRN Received' => 27, 'Partial Payment Received' => 28, 'Payment Received (Closed)' => 29, 'Cancelled by SAP' => 30, 'Short Close' => 31, 'Processing' => 32, 'Material Ready For Dispatch' => 33, 'Order Deleted' => 70}
       service = Services::Shared::Spreadsheets::CsvImporter.new('sales_order_drafts.csv', folder)
@@ -1478,7 +1471,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_quote = inquiry.sales_quotes.last
         next if sales_quote.blank?
         sales_orders_legacy_metadata = inquiry.sales_orders.pluck(:legacy_metadata)
-        if (!sales_orders_legacy_metadata.include?(x.get_row))
+        if !sales_orders_legacy_metadata.include?(x.get_row)
           sales_order = sales_quote.sales_orders.new
           sales_order.remote_uid = x.get_column('remote_uid')
           sales_order.overseer = requested_by
@@ -1496,7 +1489,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
           sales_quote.rows.each do |row|
             if product_skus.include? row.product.sku
-              sales_order.rows.where(:sales_quote_row => row).first_or_create!
+              sales_order.rows.where(sales_quote_row: row).first_or_create!
             end
           end
 
@@ -1506,17 +1499,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           if !sales_order.approved?
             if request_status.in? %w(approved requested)
               sales_order.create_approval(
-                  :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being preapproved'),
-                  :overseer => Overseer.default,
-                  :metadata => Serializers::InquirySerializer.new(sales_order.inquiry)
+                  comment: sales_order.inquiry.comments.create!(overseer: Overseer.default, message: 'Legacy sales order, being preapproved'),
+                  overseer: Overseer.default,
+                  metadata: Serializers::InquirySerializer.new(sales_order.inquiry)
               )
             elsif request_status == 'rejected'
               sales_order.create_rejection(
-                  :comment => sales_order.inquiry.comments.create!(:overseer => Overseer.default, message: 'Legacy sales order, being rejected'),
-                  :overseer => Overseer.default
+                  comment: sales_order.inquiry.comments.create!(overseer: Overseer.default, message: 'Legacy sales order, being rejected'),
+                  overseer: Overseer.default
               )
             else
-              sales_order.inquiry.comments.create(:overseer => Overseer.default, message: "Legacy sales order, being #{request_status}")
+              sales_order.inquiry.comments.create(overseer: Overseer.default, message: "Legacy sales order, being #{request_status}")
             end
           end
         end
@@ -1534,7 +1527,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('increment_id'))
         if sales_invoice.present?
           meta_data = JSON.parse(x.get_column('meta_data'))
-          sales_invoice.update_attributes(:status => 1, :metadata => meta_data, :created_at => meta_data['created_at'].to_datetime)
+          sales_invoice.update_attributes(status: 1, metadata: meta_data, created_at: meta_data['created_at'].to_datetime)
           puts meta_data['ItemLine'].count
           puts '<---------------------------------------------->'
           meta_data['ItemLine'].each do |remote_row|
@@ -1564,10 +1557,10 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         puts "<----------------------- #{i}"
         purchase_order = PurchaseOrder.find_by_po_number(x.get_column('purchase_order_number'))
         if purchase_order.present?
-          puts x.get_column('purchase_order_number')
+          purchase_order.rows.delete_allputs x.get_column('purchase_order_number')
           meta_data = JSON.parse(x.get_column('meta_data'))
 
-          purchase_order.assign_attributes(:metadata => meta_data, :created_at => meta_data['PoDate'])
+          purchase_order.assign_attributes(metadata: meta_data, created_at: meta_data['PoDate'])
 
           meta_data['ItemLine'].each do |remote_row|
             purchase_order.rows.build do |row|
@@ -1583,7 +1576,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
                   bill_to = purchase_order.inquiry.bill_from.address
 
                   if bill_from.present? && ship_from.present? && bill_to.present?
-                    row.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                    purchase_order.metadata['PoTaxRate'] = TaxRateString.for(bill_to, bill_from, ship_from, tax_rates[remote_row['PopTaxRate'].to_s])
+                    row.metadata['PopTaxRate'] = tax_rates[remote_row['PopTaxRate'].to_s].to_s
+                    row.save
                   end
                 end
               end
@@ -1622,51 +1617,47 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           sales_order.save(validate: false)
         rescue
 
-          puts "-----------------------"
+          puts '-----------------------'
           puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
-          puts "-----------------------"
+          puts '-----------------------'
         end
         sales_order.order_number = x.get_column('order_number').is_a?(Numeric) ? x.get_column('order_number') : sales_order.id
         sales_order.remark = x.get_column('order_number')
         sales_order.report_total = x.get_column('report_total').to_f
         sales_order.mis_date = x.get_column('mis_date')
-        sales_order.status = "Approved"
+        sales_order.status = 'Approved'
         begin
           sales_order.save(validate: false)
         rescue
           skips << x.get_column('order_number')
-          puts "-----------------------"
+          puts '-----------------------'
           puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
-          puts "-----------------------"
+          puts '-----------------------'
         end
       else
         sales_order.each do |so|
-
           so.report_total = so.report_total.present? ? so.report_total + x.get_column('report_total').to_f : x.get_column('report_total').to_f
           so.mis_date = x.get_column('mis_date')
           begin
             so.save(validate: false)
           rescue
             skips << x.get_column('order_number')
-            puts "-----------------------"
+            puts '-----------------------'
             puts "Missed Sales Quote #{x.get_column('order_number')} x.get_column('mis_date')"
-            puts "-----------------------"
+            puts '-----------------------'
           end
         end
       end
-
     end
   end
 
 
   def sales_order_mis_date
-
   end
 
   def sales_invoices_reporting_data
     service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
     service.loop(nil) do |x|
-
       sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
 
 
@@ -1747,7 +1738,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       sheet_columns.each do |file|
         file_url = x.get_column(file[0])
         begin
-          puts "<-------------------------->"
+          puts '<-------------------------->'
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
@@ -1771,9 +1762,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     customers = Contact.all
     customers.each do |customer|
       customer_companies = customer.companies
-      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(:company => customer_companies).map {|i| i.inquiry_products}.flatten
+      inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: customer_companies).map {|i| i.inquiry_products}.flatten
       inquiry_products.each do |inquiry_product|
-        CustomerProduct.where(:company_id => inquiry_product.inquiry.company_id, :product_id => inquiry_product.product_id).first_or_create do |customer_product|
+        CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id).first_or_create do |customer_product|
           customer_product.category_id = inquiry_product.product.category_id
           customer_product.brand_id = inquiry_product.product.brand_id
           customer_product.name = inquiry_product.bp_catalog_name || inquiry_product.product.name
@@ -1798,7 +1789,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sku = x.get_column('BM')
         tax_code = TaxCode.find_by_chapter(x.get_column('HSN Code'))
 
-        next if Product.where(:sku => sku).exists?
+        next if Product.where(sku: sku).exists?
 
         product = Product.new
         product.brand = brand
@@ -1812,7 +1803,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         product.legacy_metadata = x.get_row
         product.save_and_sync
 
-        product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+        product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
       end
 
       sheet_columns = [
@@ -1823,7 +1814,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         file_url = x.get_column(file[0])
         begin
           sleep(1.5)
-          puts "-------------------------------------------"
+          puts '-------------------------------------------'
           attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
         rescue URI::InvalidURIError => e
           puts "Help! #{e} did not migrate."
@@ -1838,7 +1829,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   def sales_invoices_reporting_data_update_mis_date
     service = Services::Shared::Spreadsheets::CsvImporter.new('reporting_sales_invoice.csv', 'seed_files')
     service.loop(nil) do |x|
-
       sales_invoice = SalesInvoice.where(invoice_number: x.get_column('invoice_number'))
       if sales_invoice.present?
         sales_invoice.each do |si|
@@ -1846,7 +1836,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           si.save(validate: false)
         end
       end
-
     end
   end
 
@@ -1884,6 +1873,21 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_products_tax_rate_hsn
+    service = Services::Shared::Spreadsheets::CsvImporter.new('Piramal Stationary.csv', 'seed_files')
+    service.loop(nil) do |x|
+      puts "-----------------#{x.get_column('SKU')}"
+      product = Product.find_by_sku(x.get_column('SKU'))
+      if product.present?
+        tax_rate = TaxRate.find_by_tax_percentage(x.get_column('Tax Rate').split('%').first.to_i)
+        tax_code = TaxCode.where(chapter: x.get_column('HSN').to_i, is_service: product.is_service).first
+        product.tax_rate = tax_rate || nil
+        product.tax_code = tax_code || nil
+        product.save
+      end
+    end
+  end
+
   def create_customer_product(company, product, x)
     product_name = x.get_column('New Description')
     customer_cost = x.get_column('Cost').to_f
@@ -1897,8 +1901,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     measurement_unit = MeasurementUnit.find_by_name(x.get_column('UOM'))
 
     puts product_name, customer_cost
-    puts "<--------------->"
-    CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (customer_cost || 0)).first_or_create! do |customer_product|
+    puts '<--------------->'
+    CustomerProduct.where(company_id: company.id, product_id: product.id, customer_price: (customer_cost || 0)).first_or_create! do |customer_product|
       customer_product.category_id = (category.id if category.present?) || product.category_id
       customer_product.brand_id = (brand.id if brand.present?) || product.brand_id
       customer_product.name = product_name
@@ -1948,7 +1952,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           product.legacy_metadata = x.get_row
           product.save!
 
-          product.create_approval(:comment => product.comments.create!(:overseer => Overseer.default, message: 'Product, being preapproved'), :overseer => Overseer.default) if product.approval.blank?
+          product.create_approval(comment: product.comments.create!(overseer: Overseer.default, message: 'Product, being preapproved'), overseer: Overseer.default) if product.approval.blank?
         end
         create_customer_product(company, product, x)
       end
@@ -1988,7 +1992,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def purchase_order_to_po_request
-    po_requests = PoRequest.where.not({purchase_order_number: nil})
+    po_requests = PoRequest.where.not(purchase_order_number: nil)
     po_requests.each do |po_request|
       if po_request.purchase_order_number.present?
         purchase_order = PurchaseOrder.find_by_po_number(po_request.purchase_order_number)
@@ -1998,7 +2002,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
   end
 
   def payment_option_to_purchase_order
-    purchase_orders = PurchaseOrder.where({payment_option_id: nil})
+    purchase_orders = PurchaseOrder.where(payment_option_id: nil)
     purchase_orders.each do |purchase_order|
       if purchase_order.metadata.present? && purchase_order.metadata['PoPaymentTerms'].present?
         payment_term_name = purchase_order.metadata['PoPaymentTerms'].to_s.strip
@@ -2018,7 +2022,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       companies = [company_1, company_2]
       if product.present? && product.has_images?
         companies.each do |company|
-          CustomerProduct.where(:company_id => company.id, :product_id => product.id, :customer_price => (x.get_column('Last Buying Price').to_f || 0)).first_or_create! do |customer_product|
+          CustomerProduct.where(company_id: company.id, product_id: product.id, customer_price: (x.get_column('Last Buying Price').to_f || 0)).first_or_create! do |customer_product|
             customer_product.category_id = product.try(:category_id)
             customer_product.brand_id = product.try(:brand_id)
             customer_product.name = product.try(:name)
@@ -2068,7 +2072,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             sheet_columns.each do |file|
               file_url = x.get_column(file[0])
               begin
-                puts "<-------------------------->"
+                puts '<-------------------------->'
                 if !product.has_images?
                   attach_file(product, filename: x.get_column(file[0]).split('/').last, field_name: file[1], file_url: file_url)
                 end
@@ -2079,25 +2083,72 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           end
         end
       else
-        puts "false"
+        puts 'false'
       end
     end
   end
 
   def update_online_order_numbers
     CustomerOrder.all.each do |co|
-      co.update_attributes(:online_order_number => Services::Resources::Shared::UidGenerator.online_order_number(co.id))
+      co.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(co.id))
     end
   end
 
   def update_is_international_field_in_company
     Company.update_all(is_international: false)
     Company.all.includes(:addresses).each do |company|
-      if company.addresses.present? && !company.addresses.map {|address| address.country_code}.include?("IN")
+      if company.addresses.present? && !company.addresses.map {|address| address.country_code}.include?('IN')
         company.update_attribute('is_international', true)
       end
     end
   end
+
+  def create_company_banks
+    service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        company = Company.find_by_remote_uid(x.get_column('bp_code'))
+        bank = Bank.find_by_code(x.get_column('bank_code'))
+        if company
+          company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
+          if company_bank.new_record? || update_if_exists
+            company_bank.company = company
+            company_bank.bank = bank
+            company_bank.account_name = x.get_column('account_name')
+            company_bank.account_number = x.get_column('account_no')
+            company_bank.branch = x.get_column('branch')
+            company_bank.mandate_id = x.get_column('mandate_id')
+            company_bank.metadata = x.get_row
+            company_bank.save!
+          end
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
+      end
+    end
+    puts errors
+  end
+
+  def create_banks
+    service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
+    errors = []
+    service.loop(nil) do |x|
+      begin
+        bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
+        if bank.new_record? || update_if_exists
+          bank.name = x.get_column('Bank Name')
+          bank.country_code = x.get_column('Country Code')
+          bank.remote_uid = x.get_column('Absolute entry')
+          bank.save!
+        end
+      rescue => e
+        errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
+      end
+    end
+    puts errors
+  end
+
 
   def missing_inquiries
     file = "#{Rails.root}/tmp/missing_increment_ids.csv"
@@ -2158,7 +2209,22 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
-  def sap_sales_orders_totals_mismatch
+  def purchase_orders_total_mismatch
+    file = "#{Rails.root}/tmp/purchase_orders_total_mismatch.csv"
+    column_headers = ['PO_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax', 'is_legacy']
+    service = Services::Shared::Spreadsheets::CsvImporter.new('sap_mismatch_purchase_orders.csv', 'seed_files')
+    CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
+      service.loop(nil) do |x|
+        purchase_order = PurchaseOrder.find_by_po_number(x.get_column('Po number'))
+        if purchase_order.present? && ((purchase_order.calculated_total_with_tax.to_f != x.get_column('Document Total').to_f) || (purchase_order.calculated_total.to_f != (x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f).to_f))
+          writer << [purchase_order.po_number, purchase_order.calculated_total.to_f, purchase_order.calculated_total_with_tax.to_f, (x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f), x.get_column('Document Total').to_f, purchase_order.is_legacy?]
+        end
+        # if !purchase_order.present?
+        #   writer << [x.get_column('Po number'), x.get_column('Date'), x.get_column('Project'), x.get_column('Document Total'), x.get_column('Project Code'),x.get_column('Tax Amount (SC)'),x.get_column('Canceled')]
+        # end
+      end
+    end
+    enddef sap_sales_orders_totals_mismatch
     file = "#{Rails.root}/tmp/sap_orders_totals_mismatch.csv"
     column_headers = ['order_number', 'sprint_total', 'sprint_total_with_tax', 'sap_total', 'sap_total_with_tax']
 
@@ -2198,7 +2264,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     service = Services::Shared::Spreadsheets::CsvImporter.new('sap_sales_invoices.csv', 'seed_files')
     CSV.open(file, 'w', write_headers: true, headers: column_headers) do |writer|
       service.loop(nil) do |x|
-
         sales_invoice = SalesInvoice.find_by_invoice_number(x.get_column('#'))
         sap_total_without_tax = 0
         total_without_tax = 0
@@ -2206,7 +2271,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if sales_invoice.present? && !sales_invoice.is_legacy?
           total_without_tax = sales_invoice.metadata['base_grand_total'].to_f - sales_invoice.metadata['base_tax_amount'].to_f
           sap_total_without_tax = x.get_column('Document Total').to_f - x.get_column('Tax Amount (SC)').to_f
-          if ((total_without_tax != sap_total_without_tax) || (sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f))
+          if (total_without_tax != sap_total_without_tax) || (sales_invoice.metadata['base_grand_total'].to_f != x.get_column('Document Total').to_f)
 
             writer << [
                 sales_invoice.invoice_number,
@@ -2243,7 +2308,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       row.tax_percentage = TaxRate.find_by_tax_percentage(x.get_column('tax rate')) || nil
       # row.tax_percentage
       row.save!
-      puts "**************** QUOTE ROW SAVED ********************"
+      puts '**************** QUOTE ROW SAVED ********************'
     end
   end
 
@@ -2259,8 +2324,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       next if i < 11729
       next if x.get_column('product sku').in?(['BM9Y7F5', 'BM9U9M5', 'BM9Y6Q3', 'BM9P8F1', 'BM9P8F4', 'BM9P8G5', 'BM5P9Y7', 'BM9R0R1', 'BM9H7O3', 'BM9P0T9', 'BM9J7D7'])
       next if skips.include?(x.get_column('inquiry number').to_i)
-      next if (Product.where(sku: x.get_column('product sku')).present? == false)
-      puts "*********************** INQUIRY ", x.get_column('inquiry number')
+      next if Product.where(sku: x.get_column('product sku')).present? == false
+      puts '*********************** INQUIRY ', x.get_column('inquiry number')
       inquiry = Inquiry.find_by_inquiry_number(x.get_column('inquiry number'))
       if inquiry.present?
 
@@ -2278,11 +2343,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         sales_quote = inquiry.sales_quotes.last
         if sales_quote.blank?
-          sales_quote = inquiry.sales_quotes.create!({overseer: inquiry.inside_sales_owner})
+          sales_quote = inquiry.sales_quotes.create!(overseer: inquiry.inside_sales_owner)
         end
 
         product_sku = x.get_column('product sku')
-        puts "SKU", product_sku
+        puts 'SKU', product_sku
         product = Product.find_by_sku(product_sku)
 
         inquiry_products = inquiry.inquiry_products.where(product_id: product.id)
@@ -2299,7 +2364,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         end
 
         supplier = Company.acts_as_supplier.find_by_name(x.get_column('supplier')) || Company.acts_as_supplier.find_by_name('Local')
-        inquiry_product_supplier = InquiryProductSupplier.where(:supplier_id => supplier.id, :inquiry_product => inquiry_product).first_or_create!
+        inquiry_product_supplier = InquiryProductSupplier.where(supplier_id: supplier.id, inquiry_product: inquiry_product).first_or_create!
         inquiry_product_supplier.update_attribute('unit_cost_price', x.get_column('unit cost price').to_f)
         row = nil
         if inquiry.sales_orders.pluck(:order_number).include?(x.get_column('order number').to_i)
@@ -2324,7 +2389,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
 
         row.save!
 
-        puts "**************** QUOTE ROW SAVED ********************"
+        puts '**************** QUOTE ROW SAVED ********************'
 
 
         sales_order = sales_quote.sales_orders.where(order_number: x.get_column('order number')).first_or_create!
@@ -2333,17 +2398,17 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         sales_order.created_at = x.get_column('created at', to_datetime: true)
         sales_order.mis_date = x.get_column('created at', to_datetime: true)
 
-        sales_order.status = x.get_column('status') || "Approved"
-        sales_order.remote_status = x.get_column('SAP status') || "Processing"
+        sales_order.status = x.get_column('status') || 'Approved'
+        sales_order.remote_status = x.get_column('SAP status') || 'Processing'
         sales_order.sent_at = sales_quote.created_at
         sales_order.save!
-        row_object = {:sku => product_sku, :supplier => x.get_column('supplier'), :total_with_tax => row.total_selling_price_with_tax.to_f}
+        row_object = {sku: product_sku, supplier: x.get_column('supplier'), total_with_tax: row.total_selling_price_with_tax.to_f}
         totals[sales_order.order_number] ||= []
         totals[sales_order.order_number].push(row_object)
-        puts "************************** ORDER SAVED *******************************"
-        so_row = sales_order.rows.where(:sales_quote_row => row).first_or_create!
+        puts '************************** ORDER SAVED *******************************'
+        so_row = sales_order.rows.where(sales_quote_row: row).first_or_create!
 
-        puts "****************** ORDER TOTAL ****************************", sales_order.order_number, sales_order.calculated_total_with_tax
+        puts '****************** ORDER TOTAL ****************************', sales_order.order_number, sales_order.calculated_total_with_tax
       else
         if !inquiry.present?
           inquiry_not_found.push(x.get_column('inquiry number'))
@@ -2351,7 +2416,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
     puts totals
-    puts "<----------------------------------------INQUIRIES--------------------------------------------------->"
+    puts '<----------------------------------------INQUIRIES--------------------------------------------------->'
     puts inquiry_not_found.inspect
   end
 
@@ -2368,7 +2433,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         missing_invoices << x.get_column('Invoice Number')
       end
     end
-    puts "Missing Invoices", missing_invoices
+    puts 'Missing Invoices', missing_invoices
   end
 
   def update_cancelled_po_statuses
@@ -2383,7 +2448,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         missing_po << x.get_column('Purchase Order Number')
       end
     end
-    puts "Missing PO", missing_po
+    puts 'Missing PO', missing_po
   end
 
   def update_po_status
@@ -2392,7 +2457,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         if po.metadata['PoStatus'].to_i > 0
           po.status = po.metadata['PoStatus'].to_i
         else
-          po.status = PurchaseOrder.statuses[po.metadata["PoStatus"]]
+          po.status = PurchaseOrder.statuses[po.metadata['PoStatus']]
         end
         po.save
       end
@@ -2511,4 +2576,32 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       company.save(:validate => false)
     end
   end
+    def update_mis_date_of_missing_orders
+      service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+      missing_so = []
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+        if sales_order.present?
+          sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
+        else
+          missing_so.push(x.get_column('order number'))
+        end
+      end
+      puts '<--------------------------------------------------------------------------------------------->'
+      puts missing_so
+    end
+
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
+        end
+      end
+    end
 end

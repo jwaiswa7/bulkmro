@@ -25,7 +25,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
 
   private
 
-  def set_payment_request
-    @payment_request = PaymentRequest.find(params[:id])
-  end
+    def set_payment_request
+      @payment_request = PaymentRequest.find(params[:id])
+    end
 end

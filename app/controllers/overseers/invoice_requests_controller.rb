@@ -5,7 +5,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     invoice_requests =
         if params[:status].present?
           @status = params[:status]
-          InvoiceRequest.where(:status => params[:status])
+          InvoiceRequest.where(status: params[:status])
         else
           InvoiceRequest.all
         end.order(id: :desc)
@@ -14,8 +14,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -24,8 +24,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -42,21 +42,19 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def new
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
-      @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      @invoice_request = InvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
 
       service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order,current_overseer)
       @company_reviews = service.call
-
       authorize @invoice_request
     elsif params[:purchase_order_id].present?
       @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
       @sales_order = @purchase_order.try(:po_request).try(:sales_order)
-      @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :purchase_order => @purchase_order, :inquiry => @purchase_order.inquiry)
+      @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
       @mpr_ids = params[:ids].present? ? params[:ids] : MaterialPickupRequest.decode_id(params[:mpr_id])
 
       service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@purchase_order,current_overseer)
       @company_reviews = service.call
-
       authorize @invoice_request
       if(params[:mpr_id] || params[:ids])
         if params[:mpr_id]
@@ -82,7 +80,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         @invoice_request.save!
-        @invoice_request_comment = InvoiceRequestComment.new(:message => "Invoice Request submitted.", :invoice_request => @invoice_request, :overseer => current_overseer)
+        @invoice_request_comment = InvoiceRequestComment.new(message: 'Invoice Request submitted.', invoice_request: @invoice_request, overseer: current_overseer)
         @invoice_request_comment.save!
       end
 
@@ -107,7 +105,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
-          @invoice_request_comment = InvoiceRequestComment.new(:message => "Status Changed: #{@invoice_request.status}", :invoice_request => @invoice_request, :overseer => current_overseer)
+          @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
           @invoice_request.save!
           @invoice_request_comment.save!
         else
@@ -123,8 +121,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   private
 
-  def invoice_request_params
-    params.require(:invoice_request).permit(
+    def invoice_request_params
+      params.require(:invoice_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -140,8 +138,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     )
   end
 
-  def set_invoice_request
-    @invoice_request = InvoiceRequest.find(params[:id])
-  end
-
+    def set_invoice_request
+      @invoice_request = InvoiceRequest.find(params[:id])
+    end
 end

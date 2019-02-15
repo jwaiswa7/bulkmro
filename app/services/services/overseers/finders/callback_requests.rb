@@ -11,7 +11,7 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
     indexed_records = super
 
     if @base_filter.present?
-      indexed_records=  indexed_records.filter(@base_filter)
+      indexed_records = indexed_records.filter(@base_filter)
     end
 
     if search_filters.present?
@@ -27,14 +27,14 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
   def perform_query(query)
     query = query[0, 35]
 
-    indexed_records = index_klass.query({
-                          multi_match: {
-                              query: query,
-                              operator: 'and',
-                              fields: %w[resource],
-                              minimum_should_match: '100%'
-                          }
-                      }).order(sort_definition)
+    indexed_records = index_klass.query(
+      multi_match: {
+          query: query,
+          operator: 'and',
+          fields: %w[resource],
+          minimum_should_match: '100%'
+      }
+                      ).order(sort_definition)
     if search_filters.present?
       indexed_records = filter_query(indexed_records)
     end
@@ -46,6 +46,6 @@ class Services::Overseers::Finders::CallbackRequests < Services::Overseers::Find
   end
 
   def sort_definition
-    {:created_at => :desc}
+    { created_at: :desc }
   end
 end

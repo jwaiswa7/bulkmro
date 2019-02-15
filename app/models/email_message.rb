@@ -20,7 +20,7 @@ class EmailMessage < ApplicationRecord
       :'Material Delivered to Customer' => 50
   }
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
   def set_defaults
     if inquiry.present?
       self.subject ||= self.inquiry.subject

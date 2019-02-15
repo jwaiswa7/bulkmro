@@ -24,24 +24,23 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     }.as_json)
 
     if Rails.env.production?
-      recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, contact: recipient) if response.present? && response.headers.present?
+      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
     else
-      recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, overseer: recipient, contact: contact) if response.present? && response.headers.present?
+      recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, overseer: recipient, contact: contact, template_data: template_data) if response.present? && response.headers.present?
     end
-
   end
 
-  def send_email_messages(recipients, template_id, template_data, subject)
+  def send_email_messages(recipients, template_id, template_data, subject, contact = nil)
     personalizations_array = []
 
     recipients.each do |recipient|
-      personalizations_array.push({
-                                      to: [{
-                                               email: recipient.email,
-                                               name: recipient.to_s
-                                           }],
-                                      dynamic_template_data: template_data.merge(name: recipient.to_s, root_url: routes.root_url)
-                                  })
+      personalizations_array.push(
+        to: [{
+                 email: recipient.email,
+                 name: recipient.to_s
+             }],
+        dynamic_template_data: template_data.merge(name: recipient.to_s, root_url: routes.root_url)
+                                  )
     end
 
     response = client.client.mail._('send').post(request_body: {
@@ -57,14 +56,12 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
         template_id: template_id
     }.as_json)
 
-    recipients.each do |recipient|
-
+    recipients.each_with_index do |recipient, index|
       if Rails.env.production?
-        recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient) if response.present? && response.headers.present?
+        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: recipient, template_data: template_data) if response.present? && response.headers.present?
       else
-        recipient.email_messages.create!(:to => recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, overseer: recipient) if response.present? && response.headers.present?
+        recipient.email_messages.create!(to: recipient.email, body: response.body, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response, subject: subject, from: Settings.email_messages.from, contact: contact[index], template_data: template_data) if response.present? && response.headers.present?
       end
-
     end
   end
 

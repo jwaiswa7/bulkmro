@@ -40,16 +40,16 @@ class Customers::CustomerProductsController < Customers::BaseController
     authorize :customer_product
 
     skip_skus = ['BM9L3P1', 'BM9C4L6']
-    skip_product_ids = Product.where("sku ILIKE ANY ( array[?] )", skip_skus).uniq.pluck(:id)
+    skip_product_ids = Product.where('sku ILIKE ANY ( array[?] )', skip_skus).uniq.pluck(:id)
 
-    products = Inquiry.joins(:inquiry_products).where(:company => current_company).top(:product_id, 55).reject{ |op, count| op.in?(skip_product_ids) } # nil top returns all
+    products = Inquiry.joins(:inquiry_products).where(company: current_company).top(:product_id, 55).reject{ |op, count| op.in?(skip_product_ids) } # nil top returns all
     @total_products = products.size
-    @most_ordered_products = products.drop(5).map {|id, c| [Product.find(id), [c, 'times'].join(' ')]}
+    @most_ordered_products = products.drop(5).map { |id, c| [Product.find(id), [c, 'times'].join(' ')] }
   end
 
   private
 
-  def set_customer_product
-    @customer_product ||= CustomerProduct.find(params[:id])
-  end
+    def set_customer_product
+      @customer_product ||= CustomerProduct.find(params[:id])
+    end
 end

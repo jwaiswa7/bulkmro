@@ -379,6 +379,7 @@
             <th class="all" data-name="branch">Branch</th>
             <th class="all" data-name="account_name">Account Name</th>
             <th class="all" data-name="account_number">Account Number</th>
+            <th class="desktop" data-name="created_at">SAP Status</th>
             <th class="desktop" data-name="created_at">Created</th>
           </tr>
           </thead>
@@ -544,6 +545,7 @@
               <th class="no-sort desktop">Category</th>
               <th class="no-sort desktop">MPN</th>
               <th class="no-sort desktop" data-name="is_active"> Active</th>
+              <th class="no-sort desktop" data-name="created_at"> SAP Status</th>
               <th class="no-sort desktop" data-name="created_at"> Created At</th>
             </tr>
             </thead>
@@ -559,7 +561,7 @@
           <h3 class="display-5 mb-1 d-none d-md-block">Online Orders</h3>
         </div>
 
-        <table class="datatable table table-bordered dt-responsive w-100 table-responsive" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
+        <table class="datatable table table-bordered dt-responsive w-100 wrap-whitespace" data-search="Searchable with relevant term/keywords." data-ajax="<%= overseers_company_customer_orders_path(@company) %>">
           <thead>
           <tr>
             <th class="no-sort all" data-width="70px"></th>

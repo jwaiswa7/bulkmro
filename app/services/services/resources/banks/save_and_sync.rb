@@ -1,5 +1,4 @@
 class Services::Resources::Banks::SaveAndSync < Services::Shared::BaseService
-
   def initialize(bank)
     @bank = bank
   end
@@ -15,7 +14,7 @@ class Services::Resources::Banks::SaveAndSync < Services::Shared::BaseService
       if bank.remote_uid.present?
         ::Resources::Bank.update(bank.remote_uid, bank)
       else
-        bank.update_attributes(:remote_uid => ::Resources::Bank.create(bank))
+        bank.update_attributes(remote_uid: ::Resources::Bank.create(bank))
       end
     end
   end

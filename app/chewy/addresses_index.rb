@@ -1,6 +1,6 @@
 class AddressesIndex < BaseIndex
   define_type Address.has_company_id.with_includes do
-    field :id, type:'integer'
+    field :id, type: 'integer'
     field :address, value: -> (record) { record.to_s }, analyzer: 'substring'
     field :state_id, value: -> (record) { record.try(:state_id) }
     field :state, value: -> (record) { record.try(:state).try(:name).to_s }, analyzer: 'substring'

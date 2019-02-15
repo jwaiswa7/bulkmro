@@ -26,8 +26,7 @@ class SalesShipmentRow < ApplicationRecord
   end
 
   private
-  def get_product
-    sales_shipment.sales_order.sales_quote.rows.select { | supplier_row | supplier_row.product.sku == self.sku}.first
-  end
-
+    def get_product
+      sales_shipment.sales_order.sales_quote.rows.select { | supplier_row | supplier_row.product.sku == self.sku }.first
+    end
 end

@@ -4,13 +4,13 @@ class PaymentRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id], :associated_against => {:po_request => [:id, :purchase_order_id], :inquiry => [:inquiry_number], :purchase_order => [:po_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, against: [:id], associated_against: { po_request: [:id, :purchase_order_id], inquiry: [:inquiry_number] , :purchase_order => [:po_number]}, using: { tsearch: { prefix: true } }
 
   belongs_to :inquiry
   belongs_to :purchase_order
   belongs_to :po_request
   has_many_attached :attachments
-  has_one :payment_option, :through => :purchase_order
+  has_one :payment_option, through: :purchase_order
   belongs_to :company_bank, required: false
   accepts_nested_attributes_for :inquiry
   has_many :transactions, :class_name => "PaymentRequestTransaction", dependent: :destroy
@@ -38,8 +38,8 @@ class PaymentRequest < ApplicationRecord
   }
 
   enum payment_type: {
-      :'Cheque' => 10,
-      :'NEFT/RTGS' => 20
+      'Cheque': 10,
+      'NEFT/RTGS': 20
   }
 
   enum purpose_of_payment: {
@@ -71,8 +71,7 @@ class PaymentRequest < ApplicationRecord
     end
   end
 
-  after_initialize :set_defaults, :if => :new_record?
-
+  after_initialize :set_defaults, if: :new_record?
   def set_defaults
     self.status ||= :'Payment Pending'
     self.request_owner ||= :'Logistics'

@@ -5,12 +5,12 @@ class PoRequest < ApplicationRecord
   include Mixins::HasComments
   include Mixins::HasConvertedCalculations
 
-  pg_search_scope :locate, :against => [:id], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, against: [:id], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
-  belongs_to :logistics_owner, -> (record) {where(:role => 'logistics')}, :class_name => 'Overseer', foreign_key: 'logistics_owner_id', required: false
+  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: false
   has_many :rows, class_name: 'PoRequestRow', :inverse_of => :po_request, dependent: :destroy
   accepts_nested_attributes_for :rows, allow_destroy: true
   belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id
@@ -28,9 +28,9 @@ class PoRequest < ApplicationRecord
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
   enum status: {
-      :'Requested' => 10,
-      :'PO Created' => 20,
-      :'Cancelled' => 30,
+      'Requested': 10,
+      'PO Created': 20,
+      'Cancelled': 30,
       :'Rejected' => 40,
       :'Amend' => 50
   }
@@ -67,11 +67,12 @@ class PoRequest < ApplicationRecord
   after_save :update_po_index, if: -> {purchase_order.present?}
 
   def purchase_order_created?
-    if self.status == "PO Created" && self.purchase_order.blank?
+    if self.status == 'PO Created' && self.purchase_order.blank?
       errors.add(:purchase_order, ' number is mandatory')
     end
   end
 
+  after_initialize :set_defaults, if: :new_record?
   def update_po_index
     PurchaseOrdersIndex::PurchaseOrder.import([self.purchase_order.id])
   end

@@ -4,7 +4,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def index
     authorize :purchase_order
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
@@ -121,9 +121,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def autocomplete
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
-      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
       #purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
-
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -155,7 +154,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   private
 
-  def get_supplier(purchase_order, product_id)
+    def get_supplier(purchase_order, product_id)
     if purchase_order.metadata['PoSupNum'].present?
       product_supplier = ( Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']) )
       return product_supplier if ( purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy? )
@@ -170,15 +169,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_order = PurchaseOrder.find(params[:id])
   end
 
-  def purchase_order_params
-    params.require(:purchase_order).permit(
+    def purchase_order_params
+      params.require(:purchase_order).permit(
         :material_status,
         :supplier_dispatch_date,
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :attachments => []
-    )
-  end
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
+      )
+    end
 end

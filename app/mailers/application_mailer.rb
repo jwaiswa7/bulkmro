@@ -13,25 +13,25 @@ class ApplicationMailer < ActionMailer::Base
 
   def standard_email(email_message)
     mail(
-        subject: email_message.subject,
-        from: email_message.from,
-        to: email_message.to,
-        cc: email_message.cc,
-        bcc: email_message.bcc,
-        body: email_message.body
+      subject: email_message.subject,
+      from: email_message.from,
+      to: email_message.to,
+      cc: email_message.cc,
+      bcc: email_message.bcc,
+      body: email_message.body
     )
   end
 
   def htmlized_email(email_message)
     mail(
-        subject: email_message.subject,
-        from: email_message.from,
-        to: email_message.to,
-        cc: email_message.cc,
-        bcc: email_message.bcc,
-        body: email_message.body,
+      subject: email_message.subject,
+      from: email_message.from,
+      to: email_message.to,
+      cc: email_message.cc,
+      bcc: email_message.bcc,
+      body: email_message.body,
         ) do |format|
-      format.html {render html: email_message.body.html_safe}
+      format.html { render html: email_message.body.html_safe }
     end
   end
 

@@ -15,6 +15,9 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(update_inquiries_status), folder: 'seed_files')
 service.call
 
+service = Services::Shared::Migrations::Migrations.new(%w(purchase_orders_total_mismatch), folder: 'seed_files')
+service.call
+
 service = Services::Shared::Migrations::Migrations.new(%w(missing_inquiries), folder: 'seed_files')
 service.call
 
@@ -39,6 +42,9 @@ service.call
 service = Services::Shared::Migrations::Migrations.new(%w(update_images_for_reliance_products), folder: 'seed_files')
 service.call
 
+service = Services::Shared::Migrations::Migrations.new(%w(create_banks), folder: 'seed_files')
+service.call
+
 service = Services::Shared::Migrations::Migrations.new(%w(create_company_banks), folder: 'seed_files')
 service.call
 
@@ -58,4 +64,7 @@ service = Services::Shared::Migrations::Migrations.new(%w(update_created_po_requ
 service.call
 
 service = Services::Shared::Migrations::Migrations.new(%w(add_logistics_owner_to_companies), folder: 'seed_files')
+service.call
+
+service = Services::Shared::Migrations::Migrations.new(%w(fetch_address), folder: 'seed_files')
 service.call
