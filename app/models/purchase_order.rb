@@ -3,9 +3,9 @@ class PurchaseOrder < ApplicationRecord
 
   include Mixins::HasConvertedCalculations
   include Mixins::HasComments
-  update_index('purchase_orders#purchase_order') { self }
+  update_index('purchase_orders#purchase_order') {self}
 
-  pg_search_scope :locate, against: [:id, :po_number], using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:id, :po_number], using: {tsearch: {prefix: true}}
 
   belongs_to :inquiry
   belongs_to :payment_option, required: false
@@ -24,14 +24,15 @@ class PurchaseOrder < ApplicationRecord
   validates_with FileValidator, attachment: :document, file_size_in_megabytes: 2
   has_many_attached :attachments
 
-  scope :with_includes, -> { includes(:inquiry) }
+  scope :with_includes, -> {includes(:inquiry)}
 
   def filename(include_extension: false)
     [
         ['po', po_number].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
-  endmaterial_dispatched_to_customer_new_email_msg
+  end
+
 
   enum status: {
       'Supplier PO Created': 35,
@@ -99,7 +100,7 @@ class PurchaseOrder < ApplicationRecord
     end
 
     if self.inquiry.final_sales_quote.present?
-      product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id }.first
+      product_supplier = self.inquiry.final_sales_quote.rows.select {|supplier_row| supplier_row.product.id == product_id || supplier_row.product.legacy_id == product_id}.first
       return product_supplier.supplier if product_supplier.present?
     end
   end
@@ -135,7 +136,7 @@ class PurchaseOrder < ApplicationRecord
   end
 
   def calculated_total_with_tax
-    ( rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2) ) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
+    (rows.map {|row| row.total_selling_price_with_tax || 0}.sum.round(2)) + self.metadata['LineTotal'].to_f + self.metadata['TaxSum'].to_f
   end
 
   def valid_po_date?
