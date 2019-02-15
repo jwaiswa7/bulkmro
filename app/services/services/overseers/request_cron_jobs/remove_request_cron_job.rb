@@ -1,8 +1,12 @@
 class Services::Overseers::RequestCronJobs::RemoveRequestCronJob < Services::Shared::BaseService
+=begin
   def call
     delete_unwanted_request(CallbackRequest.order('updated_at'))
     delete_unwanted_request(RemoteRequest.order('updated_at'))
+
+
   end
+
 
   def delete_unwanted_request(request_type, count: 5000)
     if request_type.present? && request_type.count > count
@@ -11,4 +15,5 @@ class Services::Overseers::RequestCronJobs::RemoveRequestCronJob < Services::Sha
       puts 'false'
     end
   end
+=end
 end

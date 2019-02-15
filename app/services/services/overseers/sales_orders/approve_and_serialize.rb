@@ -8,14 +8,14 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   def call
     ActiveRecord::Base.transaction do
       @sales_order.create_approval(
-        comment: @comment,
-        overseer: overseer,
-        metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
+          :comment => @comment,
+          :overseer => overseer,
+          :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
       @sales_order.update_attributes(
-        status: :"SAP Approval Pending",
-          manager_approved_date: Time.now
+          :status => :"SAP Approval Pending",
+          :manager_so_status_date => Time.now
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
@@ -37,5 +37,5 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
       duplicate_address
     end
 
-    attr_reader :sales_order, :overseer, :comment
+  attr_reader :sales_order, :overseer, :comment
 end
