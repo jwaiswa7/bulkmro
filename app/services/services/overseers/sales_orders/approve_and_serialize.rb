@@ -7,14 +7,12 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
 
   def call
     ActiveRecord::Base.transaction do
-      @sales_order.create_approval(
-          :comment => @comment,
+      @sales_order.create_approval(:comment => @comment,
           :overseer => overseer,
           :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
-      @sales_order.update_attributes(
-          :status => :"SAP Approval Pending",
+      @sales_order.update_attributes(:status => :"SAP Approval Pending",
         :manager_so_status_date => Time.now,
         quotation_uid: @sales_order.inquiry.quotation_uid
       )
@@ -30,6 +28,7 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   end
 
   private
+
     def make_duplicate_address(address)
       duplicate_address = address.dup
       duplicate_address.company_id = nil
@@ -38,5 +37,5 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
       duplicate_address
     end
 
-  attr_reader :sales_order, :overseer, :comment
+    attr_reader :sales_order, :overseer, :comment
 end
