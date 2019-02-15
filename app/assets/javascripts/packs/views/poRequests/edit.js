@@ -1,15 +1,12 @@
-import bindRatingModalTabClick from "../common/bindRatingModalTabClick"
-import updateRatingForm from "../common/updateRatingForm"
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
 import updateOnContactSelect from "./updateOnContactSelect";
 import updateRowTotal from "./updateRowTotal"
+import openRatingModal from "../common/openRatingModal";
 
 
 const edit = () => {
 
-    bindRatingModalTabClick();
-    $('.rating-modal a').click();
-    updateRatingForm();
+    openRatingModal()
 
     $('form').on('change', 'select[name*=status]', function (e) {
         if ($(e.target).val() == "Cancelled") {

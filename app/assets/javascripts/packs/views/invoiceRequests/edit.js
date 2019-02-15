@@ -1,10 +1,7 @@
-import updateRatingForm from "../common/updateRatingForm";
-import bindRatingModalTabClick from "../common/bindRatingModalTabClick";
+import openRatingModal from "../common/openRatingModal";
 
 const edit = () => {
-    bindRatingModalTabClick();
-    $('.rating-modal a').click();
-    updateRatingForm();
+    openRatingModal()
 };
 
 export default edit
