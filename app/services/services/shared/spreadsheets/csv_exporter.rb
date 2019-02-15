@@ -1,5 +1,3 @@
-
-
 require 'csv'
 
 class Services::Shared::Spreadsheets::CsvExporter < Services::Shared::BaseService

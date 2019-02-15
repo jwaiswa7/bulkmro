@@ -1,5 +1,3 @@
-
-
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
@@ -159,7 +157,7 @@ module DisplayHelper
   end
 
   def format_star(rating)
-    star_given = rating.nil? ? 0 : rating
+    star_given = rating.nil? ? 0 : number_with_precision(rating, :precision => 1).to_f
     color = 'text-success'
     if star_given < 3
       color = 'text-danger'
@@ -220,7 +218,7 @@ module DisplayHelper
       due_string  = 'Due Today'
       return due_badge(due_in_days, due_string)
     else
-      due_string  = 'Due In'
+      due_string = 'Due In'
     end
 
     due_badge(due_in_days, [due_string, distance_of_time_in_words(current_date, due_date)].join(' '))
@@ -236,6 +234,14 @@ module DisplayHelper
       [precentage > 0 && plus_if_positive ? '+' : nil, precentage < 0 ? '-' : nil, number_with_precision(floor ? precentage.abs.floor : precentage.abs, precision: precision), show_symbol ? ('%') : nil].join
     else
       0
+    end
+  end
+
+  def format_review_document(company_review)
+    if company_review.rateable_type == "PoRequest"
+      row_action_button(overseers_po_request_path(company_review.rateable), 'file-invoice', 'View PO Request', 'success', :_blank)
+    elsif company_review.rateable_type == "InvoiceRequest"
+      row_action_button(overseers_invoice_request_path(company_review.rateable), 'dollar-sign', 'View GRPO Request', 'success', :_blank)
     end
   end
 end

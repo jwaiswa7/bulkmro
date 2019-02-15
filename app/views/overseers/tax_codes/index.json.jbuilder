@@ -1,5 +1,3 @@
-
-
 json.data (@tax_codes) do |tax_code|
   json.array! [
                   [

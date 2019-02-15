@@ -1,5 +1,3 @@
-
-
 json.data (@sales_orders) do |sales_order|
   json.array! [
                   [
@@ -16,17 +14,16 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_invoice_request_path(sales_order_id: sales_order.to_param), 'dollar-sign', 'GRPO Request', 'success', :_blank)
                       end,
                       if policy(sales_order.sales_quote).new_freight_request?
-                        row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
+                        row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end,
                       if policy(sales_order).material_dispatched_to_customer_new_email_msg?
                         row_action_button(material_dispatched_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Dispatched to Customer Notification', 'dark', :_blank)
                       end,
                       if policy(sales_order).material_delivered_to_customer_new_email_msg?
                         row_action_button(material_delivered_to_customer_overseers_sales_order_email_messages_path(sales_order), 'envelope', 'Material Delivered to Customer Notification', 'dark', :_blank)
-                        row_action_button(new_overseers_freight_request_path(sales_order_id: sales_order.to_param), 'external-link', 'New Freight Request', 'warning')
                       end,
                       if policy(sales_order).debugging?
-                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry,sales_order),'cogs', 'Debugging', 'danger')
+                        row_action_button(debugging_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'cogs', 'Debugging', 'danger')
                       end
 
                   ].join(' '),
@@ -55,7 +52,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.map {|k, v| {"label":
+                       SalesOrder.statuses.map { |k, v| { "label":
                                                             k, "value": v.to_s } }.as_json,
                        SalesOrder.remote_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],

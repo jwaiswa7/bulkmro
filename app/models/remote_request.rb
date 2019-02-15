@@ -40,6 +40,6 @@ class RemoteRequest < ApplicationRecord
   end
 
   def latest_request
-    RemoteRequest.where(:subject_type => self.subject_type).where(:subject_id => self.subject_id).order(:created_at).last
+    RemoteRequest.where(subject_type: self.subject_type).where(subject_id: self.subject_id).order(:created_at).last
   end
 end

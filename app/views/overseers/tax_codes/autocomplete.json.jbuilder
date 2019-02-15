@@ -1,5 +1,3 @@
-
-
 json.results(@tax_codes) do |tax_code|
   json.set! :id, tax_code.id
   json.set! :text, tax_code.to_s

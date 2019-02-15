@@ -28,7 +28,11 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def new?
-    true
+    admin? || sales? || manager_or_sales?
+  end
+
+  def add_service_product?
+    manager_or_sales?
   end
 
   def can_cancel?
@@ -40,7 +44,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def can_update_rejected_po_requests?
-    record.purchase_order.present? && (manager_or_sales? || admin?) && record.status == "Rejected"
+    record.purchase_order.present? && (manager_or_sales? || admin?) && record.status == 'Rejected'
   end
 
   def can_process_amended_po_requests?
@@ -60,7 +64,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    (admin? || sales?) && record.status == "PO Created" && record.purchase_order && record.contact.present?
+    (admin? || sales?) && record.status == 'PO Created' && record.purchase_order && record.contact.present?
   end
 
   def sending_po_to_supplier_create_email_message?

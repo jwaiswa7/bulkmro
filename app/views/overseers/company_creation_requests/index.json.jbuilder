@@ -1,5 +1,3 @@
-
-
 json.data (@company_creation_requests) do |company|
   json.array! [
   				  [

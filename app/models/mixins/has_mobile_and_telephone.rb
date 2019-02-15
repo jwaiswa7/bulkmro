@@ -1,5 +1,3 @@
-
-
 module Mixins::HasMobileAndTelephone
   extend ActiveSupport::Concern
 

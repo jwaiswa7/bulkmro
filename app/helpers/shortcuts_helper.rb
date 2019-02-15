@@ -13,7 +13,7 @@ module ShortcutsHelper
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
-    elements = full_path.split('/').reject {|e| e.blank?}
+    elements = full_path.split('/').reject { |e| e.blank? }
     crumbs = []
 
     elements.each_with_index do |element, index|
@@ -56,8 +56,7 @@ module ShortcutsHelper
   end
 
   def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias.humanize : obj.class.name
-    text = class_name.titlecase.split('_').join(' ')
+    class_name = use_alias ? use_alias.humanize : obj.class.model_name.human
     if suffix.blank?
       suffix = ''
     end
@@ -67,7 +66,6 @@ module ShortcutsHelper
       "Update #{class_name.titleize} #{suffix.humanize}"
     end
   end
-
 
   def get_entry(entries, *attributes)
     if entries[attributes[0]].present? && entries[attributes[0]][attributes[1]].present?

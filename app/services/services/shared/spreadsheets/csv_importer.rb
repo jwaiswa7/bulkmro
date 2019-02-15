@@ -1,7 +1,4 @@
-
-
 require 'csv'
-
 
 class Services::Shared::Spreadsheets::CsvImporter < Services::Shared::BaseService
   def initialize(name, folder, skip = 0, log_errors = false)

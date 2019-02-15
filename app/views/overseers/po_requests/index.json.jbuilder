@@ -1,12 +1,10 @@
-
-
 json.data (@po_requests) do |po_request|
   json.array! [
                   [
-                      if (policy(po_request).update_logistics_owner? && (po_request.status != 'Cancelled' ));
+                      if policy(po_request).update_logistics_owner? && (po_request.status != 'Cancelled')
                         "<div class='d-inline-block custom-control custom-checkbox align-middle'><input type='checkbox' name='po_requests[]' class='custom-control-input' value='#{po_request.id}' id='c-#{po_request.id}'><label class='custom-control-label' for='c-#{po_request.id}'></label></div>"
                       end,
-                      if (policy(po_request).edit? && po_request.status != 'Cancelled')
+                      if policy(po_request).edit? && po_request.status != 'Cancelled'
                         row_action_button(edit_overseers_po_request_path(po_request), 'pencil', 'Edit PO Request', 'warning')
                       end,
                       if policy(po_request).new_payment_request?
@@ -37,14 +35,14 @@ json.data (@po_requests) do |po_request|
                   po_request.selling_price,
                   po_request.po_margin_percentage,
                   po_request.sales_order.calculated_total_margin_percentage,
-                  po_request.inquiry.customer_committed_date,
-                  po_request.supplier_committed_date,
+                  format_date(po_request.inquiry.customer_committed_date),
+                  format_date(po_request.supplier_committed_date),
                   status_badge(po_request.status),
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?
                     format_date_time_meridiem(po_request.last_comment.updated_at)
                   end,
-                  status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? "Supplier PO Sent" : "Supplier PO: Not Sent to Supplier"),
+                  status_badge(po_request.try(:purchase_order).try(:has_sent_email_to_supplier?) ? 'Supplier PO Sent' : 'Supplier PO: Not Sent to Supplier'),
                   if po_request.last_comment.present?
                     format_comment(po_request.last_comment, trimmed: true)
                   end

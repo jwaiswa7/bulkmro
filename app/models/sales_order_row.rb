@@ -4,9 +4,9 @@ class SalesOrderRow < ApplicationRecord
   belongs_to :sales_order
   has_one :sales_quote, through: :sales_order
   belongs_to :sales_quote_row
-  has_one :supplier, :through => :sales_quote_row
+  has_one :supplier, through: :sales_quote_row
   has_one :tax_code, through: :sales_quote_row
-  has_one :inquiry_product_supplier, :through => :sales_quote_row
+  has_one :inquiry_product_supplier, through: :sales_quote_row
   has_one :inquiry_product, through: :sales_quote_row
   has_one :product, through: :inquiry_product
   has_many :po_request_rows
@@ -91,7 +91,7 @@ class SalesOrderRow < ApplicationRecord
     quantity = self.quantity
     if self.po_request_rows.present?
       self.po_request_rows.each do |po_request_row|
-        if (po_request_row.po_request.status != 'Cancelled')
+        if po_request_row.po_request.status != 'Cancelled'
           quantity -= (po_request_row.quantity || 0)
         end
       end

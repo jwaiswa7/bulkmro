@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeCancelled
   extend ActiveSupport::Concern
 

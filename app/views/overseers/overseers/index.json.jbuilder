@@ -1,5 +1,3 @@
-
-
 json.data (@overseers) do |overseer|
   json.array! [
                   [

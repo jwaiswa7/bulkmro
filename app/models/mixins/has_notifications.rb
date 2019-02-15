@@ -1,5 +1,3 @@
-
-
 module Mixins::HasNotifications
   extend ActiveSupport::Concern
 

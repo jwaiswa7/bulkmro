@@ -1,5 +1,3 @@
-
-
 json.data (@payment_requests) do |payment_request|
   json.array! [
                   [
@@ -13,7 +11,7 @@ json.data (@payment_requests) do |payment_request|
                   payment_request.id,
                   status_badge(payment_request.status),
                   payment_request.inquiry.inquiry_number,
-                  payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.po_number : "-",
+                  payment_request.po_request.purchase_order.present? ? payment_request.po_request.purchase_order.po_number : '-',
                   payment_request.request_owner,
                   # if payment_request.payment_type.present?
                   #   payment_request.payment_type
@@ -23,17 +21,17 @@ json.data (@payment_requests) do |payment_request|
                   # end,
                   payment_request.inquiry.inside_sales_owner.to_s,
                   if payment_request.due_date.present?
-                    if payment_request.status == "Partial Payment Pending" || payment_request.status == "Payment Pending"
+                    if payment_request.status == 'Partial Payment Pending' || payment_request.status == 'Payment Pending'
                       [format_due_distance(payment_request.due_date), format_date(payment_request.due_date)].join(' ')
                     else
                       format_date(payment_request.due_date)
                     end
                   else
-                    "-"
+                    '-'
                   end,
                   format_currency(payment_request.po_request.sales_order.try(:calculated_total_with_tax)),
                   format_currency(payment_request.remaining_amount),
-                  percentage(payment_request.percent_amount_paid,precision: 2),
+                  percentage(payment_request.percent_amount_paid, precision: 2),
                   format_date_time_meridiem(payment_request.created_at),
                   if payment_request.last_comment.present?
                     format_date_time_meridiem(payment_request.last_comment.created_at)

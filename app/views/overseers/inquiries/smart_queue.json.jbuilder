@@ -1,5 +1,3 @@
-
-
 json.data (@inquiries) do |inquiry|
   columns = [
       [

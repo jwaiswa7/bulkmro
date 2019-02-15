@@ -27,10 +27,12 @@
 
     <div class="card mb-2">
       <div class="card-body">
-        <div class="chats">
-          <h5 class="text-uppercase">
+        <div class="form-row">
+          <a href="#" class="btn btn-default btn-danger align-self-center add-review col-1 mr-3" data-toggle="modal" data-target="#modalRatingForm" >Add Review</a>
+          <h5 class="text-uppercase mt-2">
             <strong><%= f.object.supplier.to_s %></strong>
           </h5>
+
         </div>
 
         <%= render 'overseers/po_requests/rows_form', f: f %>

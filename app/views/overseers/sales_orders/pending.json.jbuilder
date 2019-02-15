@@ -1,5 +1,3 @@
-
-
 json.data (@sales_orders) do |sales_order|
   columns = [
       [

@@ -1,9 +1,11 @@
 import invoiceRequestsIndex from "./index";
-import invoiceRequestsNew from "./new";
+import invoiceRequestsEdit from "./edit";
+import invoiceRequestsShow from "./show";
 
 let invoiceRequests= {
     index: invoiceRequestsIndex,
-    new: invoiceRequestsNew
-};
+    edit: invoiceRequestsEdit,
+    show: invoiceRequestsShow
+}
 
 export default invoiceRequests

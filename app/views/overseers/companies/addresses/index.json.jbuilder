@@ -1,5 +1,3 @@
-
-
 json.data (@addresses) do |address|
   json.array! [
 

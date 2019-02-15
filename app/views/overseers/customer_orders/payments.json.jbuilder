@@ -1,5 +1,3 @@
-
-
 json.data (@payments) do |payment|
   json.array! [
                   [

@@ -1,5 +1,3 @@
-
-
 namespace :sequence do
   desc 'TODO'
   task inquiry: :environment do

@@ -1,5 +1,3 @@
-
-
 json.data (@measurement_units) do |measurement_unit|
   json.array! [
                   [

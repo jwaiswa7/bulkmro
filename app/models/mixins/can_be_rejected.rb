@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeRejected
   extend ActiveSupport::Concern
 

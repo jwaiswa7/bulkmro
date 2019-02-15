@@ -15,7 +15,7 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
 
       @sales_order.update_attributes(
         status: :"SAP Approval Pending",
-          :manager_approved_date => Time.now
+          manager_approved_date: Time.now
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)

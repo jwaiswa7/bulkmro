@@ -1,5 +1,3 @@
-
-
 module Extensions::ActiveRecord::FindByOrderedIds
   extend ActiveSupport::Concern
   module ClassMethods

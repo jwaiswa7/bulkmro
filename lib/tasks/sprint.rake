@@ -1,5 +1,3 @@
-
-
 namespace :sprint do
   desc 'TODO'
   task setup: :environment do

@@ -1,5 +1,3 @@
-
-
 json.data (@kits) do |kit|
   json.array! [
                   [

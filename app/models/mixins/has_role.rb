@@ -1,5 +1,3 @@
-
-
 module Mixins::HasRole
   extend ActiveSupport::Concern
 

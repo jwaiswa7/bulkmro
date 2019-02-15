@@ -1,5 +1,3 @@
-
-
 json.data (@purchase_orders) do |purchase_order|
   json.array! [
                   [

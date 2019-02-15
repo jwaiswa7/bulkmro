@@ -1,5 +1,4 @@
 class Resources::PurchaseOrder < Resources::ApplicationResource
-
   def self.identifier
     :DocEntry
   end
@@ -17,27 +16,27 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           next
         end
 
-        purchase_order.assign_attributes(:metadata => metadata)
+        purchase_order.assign_attributes(metadata: metadata)
         if metadata['PoStatus'].to_i > 0
-          purchase_order.assign_attributes(:status => metadata['PoStatus'].to_i)
+          purchase_order.assign_attributes(status: metadata['PoStatus'].to_i)
         else
-          purchase_order.assign_attributes(:status => ::PurchaseOrder.statuses[metadata['PoStatus']])
+          purchase_order.assign_attributes(status: ::PurchaseOrder.statuses[metadata['PoStatus']])
         end
 
         ActiveRecord::Base.transaction do
           # purchase_order.rows.destroy_all
-          purchase_order.update_attributes!(:metadata => metadata)
+          purchase_order.update_attributes!(metadata: metadata)
 
           metadata['ItemLine'].each do |remote_row|
-            row = purchase_order.rows.select {|por| por.metadata['Linenum'] == remote_row['Linenum']}.first
+            row = purchase_order.rows.select { |por| por.metadata['Linenum'].to_i == remote_row['Linenum'].to_i }.first
 
             if row.present?
               row.assign_attributes(metadata: remote_row)
               row.save!
             else
-              new_row = purchase_order.rows.build do |row|
-                row.assign_attributes(
-                    metadata: remote_row
+              new_row = purchase_order.rows.build do |po_row|
+                po_row.assign_attributes(
+                  metadata: remote_row
                 )
               end
               new_row.save!
@@ -81,7 +80,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
           'PriceBefDi' => row['Price'],
           'PopDiscount' => row['DiscountPercent'],
           'PopOrderNum' => row['DocNum'],
-          'PopProductId' => ( product.to_param if product.present? ),
+          'PopProductId' => (product.to_param if product.present?),
           'PopPriceHtBase' => row['UnitPrice'],
           'PopProductName' => row['ItemDescription'],
           'PopSuppliedQty' => row['PackageQuantity'],
@@ -89,7 +88,7 @@ class Resources::PurchaseOrder < Resources::ApplicationResource
       }
       remote_rows_arr.push(remote_row_obj)
     end
-    metadata = {
+    {
         'PoNum' => remote_response['DocNum'],
         'PoDate' => remote_response['DocDate'],
         'PoType' => remote_response['Movement of Goods'],

@@ -8,7 +8,7 @@ class Overseers::PaymentRequestsController < Overseers::BaseController
           if PaymentRequest.send(:valid_scope_name?, @param)
             PaymentRequest.send(@param)
           else
-            PaymentRequest.where(:status => @param)
+            PaymentRequest.where(status: @param)
           end
         else
           PaymentRequest.all

@@ -1,5 +1,3 @@
-
-
 json.data (@brands) do |brand|
   json.array! [
                   [

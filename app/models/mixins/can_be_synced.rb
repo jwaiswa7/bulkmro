@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeSynced
   extend ActiveSupport::Concern
 

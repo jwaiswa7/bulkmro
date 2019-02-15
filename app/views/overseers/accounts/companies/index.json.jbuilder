@@ -1,5 +1,3 @@
-
-
 json.data (@companies) do |company|
   json.array! [
                   [

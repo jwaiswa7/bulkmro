@@ -1,5 +1,3 @@
-
-
 json.data (@customer_products) do |customer_product|
   json.array! [
                   [

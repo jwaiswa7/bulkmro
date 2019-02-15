@@ -20,7 +20,7 @@ class SalesOrder < ApplicationRecord
   belongs_to :sales_quote
 
   has_one :inquiry, through: :sales_quote
-  has_one :payment_option, :through => :inquiry
+  has_one :payment_option, through: :inquiry
   has_one :company, through: :inquiry
   has_one :inquiry_currency, through: :inquiry
   has_one :currency, through: :inquiry_currency
@@ -35,7 +35,7 @@ class SalesOrder < ApplicationRecord
   has_many :shipments, class_name: 'SalesShipment', inverse_of: :sales_order
 
   has_one :confirmation, class_name: 'SalesOrderConfirmation', dependent: :destroy
-  has_many :po_requests, :inverse_of => :sales_order, dependent: :destroy
+  has_many :po_requests, inverse_of: :sales_order, dependent: :destroy
   accepts_nested_attributes_for :po_requests, allow_destroy: true
   has_many :invoice_requests
   has_many :email_messages

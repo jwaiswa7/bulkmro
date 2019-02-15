@@ -1,5 +1,3 @@
-
-
 json.data (@inquiries) do |inquiry|
   columns = [
       [
@@ -55,6 +53,4 @@ json.recordsTotal Inquiry.all.count
 json.recordsFiltered @indexed_inquiries.total_count
 json.recordsTotalValue @total_values
 json.draw params[:draw]
-json.recordsSummary Inquiry.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id]}}.as_json
-json.recordsOverallStatusCount @statuses.values.sum
-json.recordsOverallStatusValue @total_values.values.sum
+json.recordsSummary Inquiry.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json

@@ -1,5 +1,3 @@
-
-
 json.results(@accounts) do |company|
   json.set! :id, company.id
   json.set! :text, company.to_s

@@ -1,5 +1,3 @@
-
-
 json.data (@sales_invoices) do |sales_invoice|
   json.array! [
                   [

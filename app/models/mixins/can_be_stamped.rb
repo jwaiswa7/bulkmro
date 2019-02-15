@@ -1,5 +1,3 @@
-
-
 module Mixins::CanBeStamped
   extend ActiveSupport::Concern
 

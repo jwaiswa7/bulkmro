@@ -1,5 +1,3 @@
-
-
 module Mixins::HasOnlinePayments
   extend ActiveSupport::Concern
 

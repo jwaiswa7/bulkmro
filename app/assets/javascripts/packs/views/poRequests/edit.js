@@ -1,8 +1,13 @@
-import updateRowTotal from "./updateRowTotal"
 import validatePoRequestAddresses from "./validatePoRequestAddresses"
 import updateOnContactSelect from "./updateOnContactSelect";
+import updateRowTotal from "./updateRowTotal"
+import openRatingModal from "../common/openRatingModal";
+
 
 const edit = () => {
+
+    openRatingModal()
+
     $('form').on('change', 'select[name*=status]', function (e) {
         if ($(e.target).val() == "Cancelled") {
             $('.status-cancelled').removeClass('d-none');
@@ -30,6 +35,10 @@ const edit = () => {
     validatePoRequestAddresses();
     updateRowTotal();
     updateOnContactSelect();
+
+    $('form').on('click','.add-review',function (e) {
+        $('.rating-modal a').click();
+    })
 };
 
 export default edit

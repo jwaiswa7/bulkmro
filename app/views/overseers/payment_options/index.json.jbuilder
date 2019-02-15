@@ -1,5 +1,3 @@
-
-
 json.data (@payment_options) do |payment_option|
   json.array! [
                   [

@@ -1,5 +1,5 @@
 class PoRequestMailer < ApplicationMailer
-  default :template_path => "mailers/#{self.name.underscore}"
+  default template_path: "mailers/#{self.name.underscore}"
 
   def purchase_order_details(email_message)
     @contact = email_message.contact
@@ -20,7 +20,7 @@ class PoRequestMailer < ApplicationMailer
 
     attach_files(email_message.files)
     email = htmlized_email(email_message)
-    email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
+    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
 
   def dispatch_supplier_delayed(email_message)
@@ -38,7 +38,7 @@ class PoRequestMailer < ApplicationMailer
     @to = @inquiry.inside_sales_owner
 
     email = htmlized_email(email_message)
-    email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
+    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
 
   def material_received_in_bm_warehouse_details(email_message)
@@ -56,7 +56,6 @@ class PoRequestMailer < ApplicationMailer
     @to = @inquiry.inside_sales_owner
 
     email = htmlized_email(email_message)
-    email.delivery_method.settings.merge!({user_name: @overseer.email, password: @overseer.smtp_password})
+    email.delivery_method.settings.merge!(user_name: @overseer.email, password: @overseer.smtp_password)
   end
-
 end

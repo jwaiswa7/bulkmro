@@ -1,5 +1,3 @@
-
-
 wb = xlsx_package.workbook
 
 wb.add_worksheet(name: 'Products') do |sheet|

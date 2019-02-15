@@ -17,8 +17,8 @@ class Customers::CustomerProductsController < Customers::BaseController
     @indexed_customer_products = service.indexed_records
     @customer_products = service.records.try(:reverse)
 
-    @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{|t| [t.id, t.name]}
-    @checked_tags = (params["custom_filters"]["tags"].nil? ? [] : params["custom_filters"]["tags"].map(&:to_i)) if params["custom_filters"].present?
+    @tags = CustomerProduct.all.map(&:tags).flatten.uniq.collect{ |t| [t.id, t.name] }
+    @checked_tags = (params['custom_filters']['tags'].nil? ? [] : params['custom_filters']['tags'].map(&:to_i)) if params['custom_filters'].present?
 
     @customer_products_paginate = @indexed_customer_products.page(params[:page]) if params[:page].present?
   end

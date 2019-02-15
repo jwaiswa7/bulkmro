@@ -1,6 +1,5 @@
-
-
 require 'platform-api'
+
 class Services::Shared::Heroku::DynoAdjuster < Services::Shared::BaseService
   def initialize
     @client = PlatformAPI.connect_oauth(Settings.heroku.dyno_adjuster_token)

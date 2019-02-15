@@ -67,7 +67,7 @@ class Overseers::ApplicationPolicy
   end
 
   def accounts?
-     overseer.accounts?
+    overseer.accounts?
   end
 
   def index?

@@ -1,5 +1,3 @@
-
-
 json.results(@kits) do |kit|
   json.set! :id, kit.id
   json.set! :text, kit.to_s

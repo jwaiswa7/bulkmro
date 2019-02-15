@@ -1,5 +1,3 @@
-
-
 require 'wit'
 require_relative './config/../config/environment'
 

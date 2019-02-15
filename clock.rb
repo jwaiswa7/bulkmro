@@ -1,5 +1,3 @@
-
-
 require 'clockwork'
 include Clockwork
 require './config/boot'

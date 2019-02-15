@@ -1,10 +1,12 @@
 <%= provide :container_fluid, true %>
+<% provide :can_be_directly_exported, true %>
 <% provide :can_be_ajaxed, true %>
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="all">Overseer Name</th>
   <th class="all">Company Name</th>
+  <th class="all">Review Type</th>
   <th class="all">Rating</th>
 <% end %>
 

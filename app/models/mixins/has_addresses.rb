@@ -1,5 +1,3 @@
-
-
 module Mixins::HasAddresses
   extend ActiveSupport::Concern
 

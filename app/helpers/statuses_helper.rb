@@ -1,5 +1,3 @@
-
-
 # when :'$0'
 # '$2'
 module StatusesHelper

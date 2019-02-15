@@ -7,7 +7,7 @@ class Services::Slack::Sita < SlackRubyBot::Bot
     desc 'She is the sister you always wanted.'
 
     command 'inquiries today' do
-      desc "Tells you how many inquiries were handled today."
+      desc 'Tells you how many inquiries were handled today.'
     end
 
     command 'inquiry <inquiry number>' do

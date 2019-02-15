@@ -1,5 +1,3 @@
-
-
 json.data (@activities) do |activity|
   json.array! [
 

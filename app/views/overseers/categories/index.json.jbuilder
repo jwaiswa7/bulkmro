@@ -1,5 +1,3 @@
-
-
 json.data (@categories) do |category|
   json.array! [
                   [

@@ -1,5 +1,3 @@
-
-
 module Mixins::IsAnImport
   extend ActiveSupport::Concern
 

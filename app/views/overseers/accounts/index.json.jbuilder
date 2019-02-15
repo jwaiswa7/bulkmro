@@ -1,5 +1,3 @@
-
-
 json.data (@accounts) do |account|
   json.array! [
                   [

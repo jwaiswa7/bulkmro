@@ -1,5 +1,3 @@
-
-
 module Mixins::Customers::CanBeStamped
   extend ActiveSupport::Concern
 

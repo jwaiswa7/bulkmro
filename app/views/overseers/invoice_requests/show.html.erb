@@ -7,6 +7,8 @@
       <% if policy(@invoice_request).edit? %>
         <a href="<%= edit_overseers_invoice_request_path(@invoice_request) %>" class="btn btn-warning btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Edit</a>
       <% end %>
+
+      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review -align-right" data-toggle="modal" data-target="#modalRatingForm" >Add Review</a>
     </div>
   </section>
 
@@ -139,3 +141,7 @@
     </div>
   </section>
 </div>
+
+<%if @company_reviews.present? && @company_reviews.map(&:rating).include?(nil) %>
+  <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>
+<%end %>
