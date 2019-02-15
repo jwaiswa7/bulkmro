@@ -1,5 +1,4 @@
 class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::BaseService
-
   def initialize(inquiry, import)
     @inquiry = inquiry
     @import = import
@@ -20,7 +19,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
   end
 
   def delete_duplicate_rows
-    rows.uniq! {|row| row['sku']}
+    rows.uniq! { |row| row['sku'] }
   end
 
   def persist_inquiry_import_rows
@@ -34,7 +33,7 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
     service = Services::Overseers::InquiryImports::NextSrNo.new(inquiry)
 
     import.rows.each do |row|
-      product = Product.active.where('lower(sku) = ? ', row.sku.downcase ).try(:first)
+      product = Product.active.where('lower(sku) = ? ', row.sku.downcase).try(:first)
 
       if product.present?
         inquiry_product = inquiry.inquiry_products.where(product: product).first_or_create do |inquiry_product|
@@ -44,10 +43,9 @@ class Services::Overseers::InquiryImports::BaseImporter < Services::Shared::Base
           inquiry_product.sr_no = service.call(row.metadata['sr_no'] || row.metadata['id'])
         end
 
-        row.update_attributes(:inquiry_product => inquiry_product)
+        row.update_attributes(inquiry_product: inquiry_product)
       end
     end
-
   end
 
   def any_failed?

@@ -5,7 +5,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize :inquiry
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::Inquiries.new(params, current_overseer)
         service.call
@@ -54,7 +54,6 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def autocomplete
-
     service = Services::Overseers::Finders::Inquiries.new(params.merge(page: 1))
     service.call
 
@@ -78,7 +77,7 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
         filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
@@ -129,9 +128,9 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
     @inquiry_products = @inquiry.products
     @inquiry_products.each do |product|
-        product.save_and_sync
+      product.save_and_sync
     end
-     redirect_to edit_overseers_inquiry_path(@inquiry) and return
+    redirect_to(edit_overseers_inquiry_path(@inquiry)) && (return)
   end
 
   def resync_unsync_inquiry_products
@@ -139,10 +138,10 @@ class Overseers::InquiriesController < Overseers::BaseController
     @inquiry_products = @inquiry.products
     @inquiry_products.each do |product|
       if product.not_synced?
-      product.save_and_sync
+        product.save_and_sync
       end
     end
-    redirect_to edit_overseers_inquiry_path(@inquiry) and return
+    redirect_to(edit_overseers_inquiry_path(@inquiry)) && (return)
   end
 
   def edit_suppliers
@@ -153,7 +152,7 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update_suppliers
-    @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
+    @inquiry.assign_attributes(edit_suppliers_params.merge(overseer: current_overseer))
     authorize @inquiry
 
     if @inquiry.save_and_sync
@@ -176,66 +175,66 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   private
 
-  def set_inquiry
-    @inquiry ||= Inquiry.find(params[:id])
-  end
+    def set_inquiry
+      @inquiry ||= Inquiry.find(params[:id])
+    end
 
-  def inquiry_params
-    params.require(:inquiry).permit(
-        :project_uid,
-        :company_id,
-        :contact_id,
-        :industry_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :billing_address_id,
-        :billing_company_id,
-        :shipping_address_id,
-        :shipping_company_id,
-        :shipping_contact_id,
-        :bill_from_id,
-        :ship_from_id,
-        :status,
-        :opportunity_type,
-        :opportunity_source,
-        :subject,
-        :gross_profit_percentage,
-        :quotation_date,
-        :customer_committed_date,
-        :customer_order_date,
-        :valid_end_time,
-        :quotation_followup_date,
-        :procurement_date,
-        :expected_closing_date,
-        :quote_category,
-        :price_type,
-        :potential_amount,
-        :freight_option,
-        :freight_cost,
-        :total_freight_cost,
-        :customer_po_number,
-        :packing_and_forwarding_option,
-        :payment_option_id,
-        :weight_in_kgs,
-        :customer_po_sheet,
-        :final_supplier_quote,
-        :copy_of_email,
-        :is_sez,
-        :calculation_sheet,
-        :commercial_terms_and_conditions,
-        :comments,
-        :supplier_quotes => [],
-        :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-    )
-  end
-
-  def edit_suppliers_params
-    if params.has_key?(:inquiry)
+    def inquiry_params
       params.require(:inquiry).permit(
-          :inquiry_products_attributes => [
+        :project_uid,
+          :company_id,
+          :contact_id,
+          :industry_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :billing_address_id,
+          :billing_company_id,
+          :shipping_address_id,
+          :shipping_company_id,
+          :shipping_contact_id,
+          :bill_from_id,
+          :ship_from_id,
+          :status,
+          :opportunity_type,
+          :opportunity_source,
+          :subject,
+          :gross_profit_percentage,
+          :quotation_date,
+          :customer_committed_date,
+          :customer_order_date,
+          :valid_end_time,
+          :quotation_followup_date,
+          :procurement_date,
+          :expected_closing_date,
+          :quote_category,
+          :price_type,
+          :potential_amount,
+          :freight_option,
+          :freight_cost,
+          :total_freight_cost,
+          :customer_po_number,
+          :packing_and_forwarding_option,
+          :payment_option_id,
+          :weight_in_kgs,
+          :customer_po_sheet,
+          :final_supplier_quote,
+          :copy_of_email,
+          :is_sez,
+          :calculation_sheet,
+          :commercial_terms_and_conditions,
+          :comments,
+          supplier_quotes: [],
+          inquiry_products_attributes: [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
+      )
+    end
+
+    def edit_suppliers_params
+      if params.has_key?(:inquiry)
+        params.require(:inquiry).permit(
+          inquiry_products_attributes: [
               :id,
-              :inquiry_product_suppliers_attributes => [
+              inquiry_product_suppliers_attributes: [
                   :id,
                   :supplier_id,
                   :bp_catalog_name,
@@ -244,9 +243,9 @@ class Overseers::InquiriesController < Overseers::BaseController
                   :_destroy
               ]
           ]
-      )
-    else
-      {}
+        )
+      else
+        {}
+      end
     end
-  end
 end

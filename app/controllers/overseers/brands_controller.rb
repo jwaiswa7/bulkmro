@@ -13,7 +13,7 @@ class Overseers::BrandsController < Overseers::BaseController
 
   def show
     @brand_products = Product.where(brand_id: @brand.id)
-    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps}.compact.flatten.uniq}.compact.flatten.uniq)
+    @brand_suppliers = (@brand_products.map{ |p| p.suppliers.map{ |ps| ps }.compact.flatten.uniq }.compact.flatten.uniq)
 
     authorize @brand
   end
@@ -50,15 +50,15 @@ class Overseers::BrandsController < Overseers::BaseController
   end
 
   private
-  def set_brand
-    @brand ||= Brand.find(params[:id])
-  end
+    def set_brand
+      @brand ||= Brand.find(params[:id])
+    end
 
-  def brand_params
-    params.require(:brand).permit(
+    def brand_params
+      params.require(:brand).permit(
         :name,
-        :is_active,
-        :company_ids => []
-    )
-  end
+          :is_active,
+          company_ids: []
+      )
+    end
 end

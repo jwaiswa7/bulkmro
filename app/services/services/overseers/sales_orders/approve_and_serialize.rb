@@ -15,7 +15,7 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
 
       @sales_order.update_attributes(
           :status => :"SAP Approval Pending",
-          :manager_approved_date => Time.now
+          :manager_so_status_date => Time.now
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
@@ -29,13 +29,13 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   end
 
   private
-  def make_duplicate_address(address)
-    duplicate_address = address.dup
-    duplicate_address.company_id = nil
-    duplicate_address.remote_uid = nil
-    duplicate_address.save
-    duplicate_address
-  end
+    def make_duplicate_address(address)
+      duplicate_address = address.dup
+      duplicate_address.company_id = nil
+      duplicate_address.remote_uid = nil
+      duplicate_address.save
+      duplicate_address
+    end
 
   attr_reader :sales_order, :overseer, :comment
 end

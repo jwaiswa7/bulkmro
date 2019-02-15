@@ -20,7 +20,8 @@
       </div>
       <div class="col-2">
         <% if policy(@product).resync_inventory? %>
-          <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Resync Inventory</a>
+          <a href="<%= resync_inventory_overseers_product_path(@product) %>" class="btn btn-primary btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-pen mr-1"></i>Resync
+            Inventory</a>
         <% end %>
       </div>
     </div>
@@ -66,17 +67,32 @@
                 <%= @product.mpn %>
               </div>
             <% end %>
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">Created By</strong>
+              <%= (@product.created_by || (@product.inquiry_import_row.inquiry.created_by if @product.inquiry_import_row)).try(:name) || '-' %>
+            </div>
+
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">Is Service?</strong>
+              <strong class="d-block">Service?</strong>
               <%= format_boolean(@product.is_service) %>
             </div>
 
             <div class="col-6 col-md-3 mb-2">
-              <strong class="d-block">SAP</strong>
-              <%= format_boolean(@product.synced?) %>
+              <strong class="d-block">Active</strong>
+              <%= format_boolean(@product.is_active) %>
             </div>
 
+            <div class="col-6 col-md-3 mb-2">
+              <strong class="d-block">SAP Synced</strong>
+              <%= format_boolean_label(@product.synced?, 'synced') %>
+            </div>
+            <% if @product.created_at %>
+              <div class="col-6 col-md-3 mb-2">
+                <strong class="d-block">Created At</strong>
+                <%= format_date(@product.created_at) %>
+              </div>
+            <% end %>
           </div>
         </div>
         <div class="mt-3">
@@ -102,9 +118,12 @@
                 <%= @product.measurement_unit %>
               </div>
             <% end %>
+
+
           </div>
         </div>
-        <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#inventoryModal" style="margin-top: 25px;">View Inventory
+        <button type="button" class="btn btn-m btn-block btn-warning" data-toggle="modal" data-target="#inventoryModal" style="margin-top: 25px;">View
+          Inventory
         </button>
         <div class="modal fade" id="inventoryModal" role="dialog">
           <div class="modal-dialog modal-lg">
@@ -116,24 +135,24 @@
               <div class="modal-body">
                 <table class="table table-bordered dt-responsive" style="width:100%;">
                   <thead>
-                    <tr>
-                      <th class="no-sort">Warehouse</th>
-                      <th class="no-sort">In Stock</th>
-                      <th class="no-sort">Committed</th>
-                      <th class="no-sort">Ordered</th>
-                      <th class="no-sort">Available</th>
-                    </tr>
+                  <tr>
+                    <th class="no-sort">Warehouse</th>
+                    <th class="no-sort">In Stock</th>
+                    <th class="no-sort">Committed</th>
+                    <th class="no-sort">Ordered</th>
+                    <th class="no-sort">Available</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    <% @product.stocks.order(instock: :desc).each do |stock| %>
-                      <tr>
-                        <td><%= stock.warehouse.name %></td>
-                        <td><%= stock.instock %></td>
-                        <td><%= stock.committed %></td>
-                        <td><%= stock.ordered %></td>
-                        <td><%= ( stock.instock - stock.committed ) %></td>
-                      </tr>
-                    <% end %>
+                  <% @product.stocks.order(instock: :desc).each do |stock| %>
+                    <tr>
+                      <td><%= stock.warehouse.name %></td>
+                      <td><%= stock.instock %></td>
+                      <td><%= stock.committed %></td>
+                      <td><%= stock.ordered %></td>
+                      <td><%= (stock.instock - stock.committed) %></td>
+                    </tr>
+                  <% end %>
                   </tbody>
                 </table>
               </div>

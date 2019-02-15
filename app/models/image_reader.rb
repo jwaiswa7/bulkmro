@@ -1,6 +1,4 @@
 class ImageReader < ApplicationRecord
-
-
   validates_uniqueness_of :reference_id
   validates_uniqueness_of :flu_id, allow_blank: true
 
@@ -12,5 +10,4 @@ class ImageReader < ApplicationRecord
       pending: 30,
       completed: 40
   }
-
 end

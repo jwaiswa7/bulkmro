@@ -7,10 +7,10 @@ class InquiryComment < ApplicationRecord
   has_one :approval, class_name: 'SalesOrderApproval', dependent: :destroy
   has_one :rejection, class_name: 'SalesOrderRejection', dependent: :destroy
 
-  scope :internal_comments, -> {where(:show_to_customer => [false, nil])}
-  scope :customer_comments, -> {where(:show_to_customer => true)}
+  scope :internal_comments, -> { where(show_to_customer: [false, nil]) }
+  scope :customer_comments, -> { where(show_to_customer: true) }
 
-  after_create :update_inquiry, :if => :persisted?
+  after_create :update_inquiry, if: :persisted?
 
   def update_inquiry
     self.inquiry.touch(:updated_at)

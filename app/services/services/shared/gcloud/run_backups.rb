@@ -60,7 +60,7 @@ class Services::Shared::Gcloud::RunBackups < Services::Shared::BaseService
   def run
     if send_chat_message
       Services::Overseers::ChatMessages::SendChat.new.send_chat_message(
-          'tech-backups',
+        'tech-backups',
           [
               backup_linux,
               backup_windows

@@ -116,7 +116,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-     developer?
+    developer?
   end
 
   def resync_unsync_inquiry_products?
@@ -140,7 +140,7 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where("inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)", {overseer_ids: overseer.self_and_descendant_ids })
+        scope.where('inside_sales_owner_id IN (:overseer_ids) OR outside_sales_owner_id IN (:overseer_ids)', overseer_ids: overseer.self_and_descendant_ids)
       end
     end
   end
