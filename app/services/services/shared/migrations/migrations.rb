@@ -2103,51 +2103,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    def create_company_banks
-      service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
-      errors = []
-      service.loop(nil) do |x|
-        begin
-          company = Company.find_by_remote_uid(x.get_column('bp_code'))
-          bank = Bank.find_by_code(x.get_column('bank_code'))
-          if company
-            company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
-            if company_bank.new_record? || update_if_exists
-              company_bank.company = company
-              company_bank.bank = bank
-              company_bank.account_name = x.get_column('account_name')
-              company_bank.account_number = x.get_column('account_no')
-              company_bank.branch = x.get_column('branch')
-              company_bank.mandate_id = x.get_column('mandate_id')
-              company_bank.metadata = x.get_row
-              company_bank.save!
-            end
-          end
-        rescue => e
-          errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
-        end
-      end
-      puts errors
-    end
-
-    def create_banks
-      service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
-      errors = []
-      service.loop(nil) do |x|
-        begin
-          bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
-          if bank.new_record? || update_if_exists
-            bank.name = x.get_column('Bank Name')
-            bank.country_code = x.get_column('Country Code')
-            bank.remote_uid = x.get_column('Absolute entry')
-            bank.save!
-          end
-        rescue => e
-          errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
-        end
-      end
-      puts errors
-    end
 
 
     def missing_inquiries
@@ -2536,10 +2491,23 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts errors
     end
 
-    def update_purchase_order_fields
+    def update_purchase_order_material_status
       PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
       PurchaseOrder.all.each do |po|
-        update_material_status(po)
+        if po.material_pickup_requests.any?
+          partial = true
+          if po.rows.sum(&:get_pickup_quantity) <= 0
+            partial = false
+          end
+          status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Pickup' : 'Material Pickedup'
+                   elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Delivered' : 'Material Delivered'
+                   end
+          po.update_attribute(:material_status, status)
+        else
+          po.update_attribute(:material_status, 'Material Readiness Follow-Up')
+        end
         po.save
       end
     end
@@ -2552,22 +2520,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    def update_material_status(po)
-      if po.material_pickup_requests.any?
-        partial = true
-        if po.rows.sum(&:get_pickup_quantity) <= 0
-          partial = false
-        end
-        status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
-          partial ? 'Material Partially Pickup' : 'Material Pickedup'
-        elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
-          partial ? 'Material Partially Delivered' : 'Material Delivered'
-        end
-        po.update_attribute(:material_status, status)
-      else
-        po.update_attribute(:material_status, 'Material Readiness Follow-Up')
-      end
-    end
 
     def add_logistics_owner_to_companies
       Company.all.each do |company|
