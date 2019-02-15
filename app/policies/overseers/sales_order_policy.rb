@@ -120,9 +120,38 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer?
   end
 
+  def new_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def preview_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def create_purchase_orders_requests?
+    admin? || developer?
+  end
+
+  def material_dispatched_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_dispatched_to_customer_create_email_msg?
+    material_dispatched_to_customer_new_email_msg?
+  end
+
+  def material_delivered_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_delivered_to_customer_create_email_msg?
+    material_delivered_to_customer_new_email_msg?
+  end
+
   def debugging?
     developer?
   end
+
 
   class Scope
     attr_reader :overseer, :scope

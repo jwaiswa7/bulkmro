@@ -31,7 +31,7 @@ class PurchaseOrder < ApplicationRecord
         ['po', po_number].join('_'),
         ('pdf' if include_extension)
     ].compact.join('.')
-  end
+  endmaterial_dispatched_to_customer_new_email_msg
 
   enum status: {
       'Supplier PO Created': 35,
