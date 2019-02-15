@@ -33,6 +33,9 @@ json.data (@activities) do |activity|
                   if activity.inquiry.present?
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
+                  if activity.inquiry.present?
+                    status_badge(activity.inquiry.commercial_status)
+                  end,
                   if activity.contact.present?
                     activity.contact.to_s
                   end,
@@ -41,6 +44,7 @@ json.data (@activities) do |activity|
                   activity.expenses,
                   activity.points_discussed,
                   activity.actions_required,
+                  format_date(activity.activity_date),
                   format_succinct_date(activity.created_at)
               ]
 end

@@ -21,6 +21,7 @@ class Overseers::ActivityPolicy < Overseers::ApplicationPolicy
   def approve_selected?
     admin?
   end
+
   def reject_selected?
     admin?
   end

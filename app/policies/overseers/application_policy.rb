@@ -66,6 +66,10 @@ class Overseers::ApplicationPolicy
     overseer.hr?
   end
 
+  def accounts?
+    overseer.accounts?
+  end
+
   def index?
     all_roles? && !hr?
   end
@@ -128,9 +132,8 @@ class Overseers::ApplicationPolicy
 
   def export_for_logistics?
     false
-  end
-
-  class Scope
+      end
+class Scope
     attr_reader :overseer, :scope
 
     def initialize(overseer, scope)

@@ -10,20 +10,14 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
   def show
     authorize @purchase_order
 
-    @metadata = @purchase_order.metadata.deep_symbolize_keys
-    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
-    @metadata[:packing] = get_packing(@metadata)
-
-    respond_to do |format|
-      format.html { }
-      format.pdf do
-        render_pdf_for @purchase_order
-      end
-    end
+    redirect_to overseers_purchase_order_path(@purchase_order, format: :pdf)
   end
 
   private
 
+    def set_purchase_order
+      @purchase_order = @inquiry.purchase_orders.find(params[:id])
+    end
     def get_supplier(purchase_order, product_id)
       if purchase_order.metadata['PoSupNum'].present?
         product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
