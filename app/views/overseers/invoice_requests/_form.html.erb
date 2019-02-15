@@ -9,9 +9,14 @@
         #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
-    <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>'</em>
-      and log it under
-      <strong><%= current_overseer.full_name %></strong>.</p>
+    <div class="d-md-flex justify-content-between">
+      <p>This will <em>'<%= submit_text(@invoice_request, use_alias: @invoice_request.readable_status) %>'</em>
+        and log it under
+        <strong><%= current_overseer.full_name %></strong>.</p>
+
+      <a href="#" class="btn btn-default btn-rounded btn-danger align-self-center add-review -align-right" data-toggle="modal" data-target="#modalRatingForm" >Add/Edit Review</a>
+    </div>
+
   </div>
 
   <%= simple_form_for([:overseers, @invoice_request], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
