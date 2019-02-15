@@ -35,8 +35,8 @@ json.data (@po_requests) do |po_request|
                   po_request.selling_price,
                   po_request.po_margin_percentage,
                   po_request.sales_order.calculated_total_margin_percentage,
-                  po_request.inquiry.customer_committed_date,
-                  po_request.supplier_committed_date,
+                  format_date(po_request.inquiry.customer_committed_date),
+                  format_date(po_request.supplier_committed_date),
                   status_badge(po_request.status),
                   format_date_time_meridiem(po_request.created_at),
                   if po_request.last_comment.present?

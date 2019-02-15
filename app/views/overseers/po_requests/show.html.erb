@@ -62,7 +62,7 @@
               </tr>
               </thead>
               <tbody>
-              <% @po_request.rows.each_with_index do |row, sr_no| %>
+              <% @po_request.rows.reverse.each_with_index do |row, sr_no| %>
                 <% if row.product.present? %>
 
                   <tr>

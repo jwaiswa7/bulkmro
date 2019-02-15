@@ -31,6 +31,10 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
     true
   end
 
+  def add_service_product?
+    manager_or_sales?
+  end
+
   def can_cancel?
     record.purchase_order.present? && (manager_or_sales? || admin?) && record.not_amending?
   end
