@@ -15,7 +15,7 @@ class Services::Overseers::Dashboards::Admin < Services::Shared::BaseService
     sales_quotes_array = SalesQuote.find_by_sql ['(select *From  sales_quotes sq where sq.created_at = (select max(sales_quotes.created_at) from sales_quotes where sq.inquiry_id = sales_quotes.inquiry_id and sales_quotes.sent_at is not null ) and sq.created_at between ? and ? order by sq.created_at desc) union( select sq.* from sales_quotes as sq left join sales_orders as so on sq.id = so.sales_quote_id where ( so.status = ? or so.legacy_request_status = ? ) and sq.created_at between ? and ?)', start_at.beginning_of_month, end_at.end_of_month, SalesOrder.statuses[:'Approved'], SalesOrder.statuses[:'Approved'], start_at.beginning_of_month, end_at.end_of_month]
     sales_quotes = SalesQuote.includes(:rows).where(id: sales_quotes_array.map(&:id))
 
-    sales_orders = SalesOrder.includes(:rows).where(mis_date: filter_by_dates).remote_approved
+    sales_orders = SalesOrder.remote_approved.includes(:rows).where(mis_date: filter_by_dates)
     purchase_orders = PurchaseOrder.not_cancelled.includes(:rows).where(created_at: filter_by_dates)
     sales_invoices = SalesInvoice.not_cancelled.includes(:rows).where(created_at: filter_by_dates).where.not(sales_order_id: nil).where.not(metadata: nil)
 
