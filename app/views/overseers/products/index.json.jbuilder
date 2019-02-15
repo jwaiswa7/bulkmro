@@ -22,12 +22,17 @@ json.data (@products) do |product|
                   product.brand.to_s,
                   product.category.name,
                   product.mpn,
+
                   number_with_delimiter(product.total_pos, delimiter: ','),
                   number_with_delimiter(product.total_quotes, delimiter: ','),
                   format_boolean(product.is_active?),
                   format_boolean_label(product.synced?, 'synced'),
                   format_succinct_date(product.created_at),
-                  format_succinct_date(product.approval.try(:created_at))
+                  (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
+                  format_succinct_date(product.approval.try(:created_at)),
+
+
+
               ]
 end
 json.columnFilters [
