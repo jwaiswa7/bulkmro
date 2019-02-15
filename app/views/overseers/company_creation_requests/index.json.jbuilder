@@ -11,7 +11,7 @@ json.data (@company_creation_requests) do |company|
                   row_action_button(edit_overseers_activity_path(company.activity), 'pencil',  'Edit Activity', 'success', :_blank)
                 end
             ].join(' '),
-	              company.name,
+	              link_to(company.name, overseers_company_creation_request_path(company), target: '_blank'),
 	              company.first_name,
 	              company.last_name,
 	              company.email,

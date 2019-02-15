@@ -17,10 +17,10 @@ json.data (@products) do |product|
                         row_action_button(resync_inventory_overseers_product_path(product), 'inventory', 'Resync Inventory', 'outline-dark', :_blank)
                       end
                   ].join(' '),
-                  product.name,
+                  link_to(product.name, overseers_product_path(product), target: '_blank'),
                   product.sku,
-                  product.brand.to_s,
-                  product.category.name,
+                  link_to(product.brand.to_s, overseers_brand_path(product.brand), target: '_blank'),
+                  link_to(product.category.name, overseers_category_path(product.category), target: '_blank'),
                   product.mpn,
 
                   number_with_delimiter(product.total_pos, delimiter: ','),
