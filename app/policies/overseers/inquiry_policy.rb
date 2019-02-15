@@ -116,11 +116,11 @@ class Overseers::InquiryPolicy < Overseers::ApplicationPolicy
   end
 
   def resync_inquiry_products?
-    developer?
+    record.persisted? && developer?
   end
 
   def resync_unsync_inquiry_products?
-    developer?
+    record.persisted? && developer?
   end
 
 

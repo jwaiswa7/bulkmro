@@ -6,6 +6,8 @@ class Resources::Quotation < Resources::ApplicationResource
   def self.create(record)
     id = super(record) do |response|
       update_associated_records(response['DocEntry'], force_find: true) if response['DocEntry'].present?
+      inquiry = record.inquiry
+      inquiry.update_last_synced_quote unless response[:error_message].present?
     end
 
     id
@@ -15,6 +17,8 @@ class Resources::Quotation < Resources::ApplicationResource
     update_associated_records(id, force_find: true) # todo remove this when update associated records works on create
     super(id, record) do |response|
       update_associated_records(id, force_find: true) if response.present?
+      inquiry = record.inquiry
+      inquiry.update_last_synced_quote unless response[:error_message].present?
     end
   end
 
@@ -29,10 +33,6 @@ class Resources::Quotation < Resources::ApplicationResource
       document_lines.each do |line|
         sales_quote_row = final_sales_quote.rows.select { |r| r.sku == line['ItemCode'] }[0]
         sales_quote_row.update_attributes!(remote_uid: line['LineNum']) if sales_quote_row.present?
-      end
-      latest_request = RemoteRequest.where(subject_type: 'SalesQuote').where(subject_id: final_sales_quote.id).order(:created_at).last
-      if latest_request.status == 'success'
-        inquiry.update_attributes(last_synced_quote_id: final_sales_quote.id)
       end
     end
   end
