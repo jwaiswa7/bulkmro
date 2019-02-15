@@ -708,7 +708,8 @@ class Services::Shared::Snippets < Services::Shared::BaseService
   end
 
   def resend_failed_remote_requests(start_at: Date.yesterday.beginning_of_day, end_at: Date.yesterday.end_of_day)
-    requests = RemoteRequest.where(created_at: start_at..end_at).failed
+
+    requests = RemoteRequest.where(:created_at => start_at..end_at).failed
     requested = []
     requested_ids = []
     requests.each do |request|
@@ -724,8 +725,9 @@ class Services::Shared::Snippets < Services::Shared::BaseService
           end
         end
       end
+
     end
-    ResyncRequest.create(request: requested_ids) if requested_ids.present?
+    ResyncRequest.create(:request => requested_ids) if requested_ids.present?
     [requested_ids.sort, requested_ids.size]
   end
 
@@ -941,7 +943,7 @@ class Services::Shared::Snippets < Services::Shared::BaseService
     service.loop() do |x|
       address_uid = x.get_column('address_uid')
       company_uid = x.get_column('company_uid')
-      data = { company: company_uid, address: address_uid }
+      data = {company: company_uid, address: address_uid}
       address = Address.find_by_remote_uid(address_uid)
       if address.present?
         if address.company.remote_uid != company_uid
@@ -951,17 +953,17 @@ class Services::Shared::Snippets < Services::Shared::BaseService
       else
         # missing << data
         # missing << company_uid
-        company = Company.find_by_remote_uid(company_uid)
+        company=Company.find_by_remote_uid(company_uid)
         if company.present?
-          address = company.addresses.new(
-            gst: x.get_column('gst'),
-            country_code: x.get_column('country_code'),
-            state: AddressState.find_by_region_code(x.get_column('State')),
-            state_name: nil,
-            city_name: x.get_column('city_name'),
-            pincode: x.get_column('pincode'),
-            street1: x.get_column('street1'),
-            remote_uid: address_uid
+          address=company.addresses.new(
+              gst: x.get_column('gst'),
+              country_code: x.get_column('country_code'),
+              state: AddressState.find_by_region_code(x.get_column('State')),
+              state_name: nil,
+              city_name: x.get_column('city_name'),
+              pincode: x.get_column('pincode'),
+              street1: x.get_column('street1'),
+              remote_uid: address_uid
 
           )
           address.save!
@@ -970,6 +972,6 @@ class Services::Shared::Snippets < Services::Shared::BaseService
         end
       end
     end
-    return { missing: missing.uniq, mismatch: mismatch.uniq }
+    return {missing:missing.uniq, mismatch:mismatch.uniq}
   end
 end
