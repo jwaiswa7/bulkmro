@@ -4,7 +4,7 @@ class MprRow < ApplicationRecord
 
   validates_uniqueness_of :purchase_order_row_id, scope: :material_pickup_request
   validates_numericality_of :pickup_quantity, greater_than: 0
-  validates_numericality_of :delivered_quantity, greater_than: 0, :allow_nil => true
+  validates_numericality_of :delivered_quantity, greater_than: 0, allow_nil: true
 
 
   def reserved_quantity
@@ -30,7 +30,6 @@ class MprRow < ApplicationRecord
 
 
   def check_pickup_quantity?
-
     previous_pickup_quantity = pickup_quantity_was || 0
     max_quantity = purchase_order_row.get_pickup_quantity + previous_pickup_quantity
 

@@ -2,17 +2,17 @@ class CompanyCreationRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasApproveableStatus
 
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   belongs_to :activity
   belongs_to :company
 
-  scope :requested, -> {where(:company_id => nil)}
-  scope :created, -> {where.not(:company_id => nil)}
+  scope :requested, -> { where(company_id: nil) }
+  scope :created, -> { where.not(company_id: nil) }
 
-  enum :account_type => {
-      :is_supplier => 10,
-      :is_customer => 20,
+  enum account_type: {
+      is_supplier: 10,
+      is_customer: 20,
   }, _prefix: true
 
 

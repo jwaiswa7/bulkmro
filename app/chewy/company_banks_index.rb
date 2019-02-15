@@ -8,7 +8,7 @@ class CompanyBanksIndex < BaseIndex
     field :account_name, value: -> (record) { record.account_name }, analyzer: 'substring'
     field :account_number, value: -> (record) { record.account_number }
     field :branch, value: -> (record) { record.branch }, analyzer: 'substring'
-    field :created_at, value: -> (record) { record.created_at },type: 'date'
-    field :updated_at, value: -> (record) { record.updated_at },type: 'date'
+    field :created_at, value: -> (record) { record.created_at }, type: 'date'
+    field :updated_at, value: -> (record) { record.updated_at }, type: 'date'
   end
 end

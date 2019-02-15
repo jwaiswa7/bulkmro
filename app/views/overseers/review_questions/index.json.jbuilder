@@ -9,7 +9,7 @@ json.data (@review_questions) do |review_question|
                         row_action_button(edit_overseers_review_question_path(review_question), 'pencil', 'Edit Review Question', 'warning')
                       end,
                       if policy(review_question).destroy?
-                        row_action_button(overseers_review_question_path(review_question), 'trash', 'Delete Review Question', 'danger', '', method = :delete)
+                        row_action_button(overseers_review_question_path(review_question), 'trash', 'Delete Review Question', 'danger', '', :delete)
                       end
                   ].join(' '),
                   review_question.question,

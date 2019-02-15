@@ -46,5 +46,4 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_rating?
     record.is_supplier? && (manager? || sales? || logistics?)
   end
-
 end

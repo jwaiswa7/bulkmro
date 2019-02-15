@@ -24,13 +24,13 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       po_request.supplier_po_type = po_request_hash[:supplier_po_type]
       po_request.supplier_committed_date = po_request_hash[:supplier_committed_date]
       if po_request_hash[:blobs].present?
-        po_request_hash[:blobs].split(" ").each do |blob|
+        po_request_hash[:blobs].split(' ').each do |blob|
           po_request.attachments.attach(ActiveStorage::Blob.find(blob))
         end
       end
-      if (po_request.save!)
+      if po_request.save!
         if po_request_hash[:rows_attributes].present?
-          po_request_hash[:rows_attributes].each do |index, row_hash|
+          po_request_hash[:rows_attributes].each do |row_index, row_hash|
             if !row_hash[:_destroy].present? && row_hash[:quantity].present?
               PoRequestRow.create!(sales_order_row_id: row_hash[:sales_order_row_id], quantity: row_hash[:quantity], po_request: po_request, product_id: row_hash[:product_id], tax_code_id: row_hash[:tax_code_id], tax_rate_id: row_hash[:tax_rate_id], measurement_unit_id: row_hash[:measurement_unit_id], unit_price: row_hash[:unit_price], discount_percentage: row_hash[:discount_percentage], lead_time: row_hash[:lead_time])
 

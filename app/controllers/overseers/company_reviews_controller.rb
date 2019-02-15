@@ -2,7 +2,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   before_action :set_company_review, only: [:update, :show, :render_form]
 
   def index
-    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(:rating => nil), params)
+    @company_reviews = ApplyDatatableParams.to(CompanyReview.where.not(rating: nil), params)
     authorize @company_reviews
   end
 
@@ -32,7 +32,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     create_rates("Company", @company_review.company.id, overall_rating)
     @company_review.company.update({rating: overall_rating})
 
-    redirect_to_path_generation("Feedback captured successfully.", 200)
+    redirect_to_path_generation('Feedback captured successfully.', 200)
   end
 
   def show
@@ -42,17 +42,17 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   def render_form
     authorize @company_review
     if @company_review.survey_type == 'Sales'
-      @review_type = "Sales"
+      @review_type = 'Sales'
       review_questions = ReviewQuestion.sales
     elsif @company_review.survey_type == 'Logistics'
-        @review_type = "Logistics"
+        @review_type = 'Logistics'
       review_questions = ReviewQuestion.logistics
     end
     review_questions.each do |question|
-      @company_review.company_ratings.where({company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer}).first_or_create!
+      @company_review.company_ratings.where(company_review_id: @company_review.id, review_question_id: question.id, created_by: current_overseer).first_or_create!
     end
     respond_to do |format|
-      format.html {render :partial => "form", locals: {company_review: @company_review}}
+      format.html { render partial: 'form', locals: { company_review: @company_review } }
     end
   end
 
@@ -65,7 +65,7 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
 
   private
 
-  def create_rates(rateable_type, rateable_id, score)
+    def create_rates(rateable_type, rateable_id, score)
     rate = Rate.where({rater: current_overseer, rateable_type: rateable_type, rateable_id: rateable_id})
     if rate.present?
       Rate.create({rater: current_overseer, rateable_type: rateable_type, rateable_id: rateable_id, stars: score})
@@ -75,12 +75,12 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
   end
 
   def redirect_to_path_generation(message, status)
-    if params[:company_review_redirect]
-      redirect_to overseers_company_review_path(@company_review), :flash => {:error => message}
-    else
-      render :json => {:error => message}, :status => status
+      if params[:company_review_redirect]
+        redirect_to overseers_company_review_path(@company_review), flash: { error: message }
+      else
+        render json: { error: message }, status: status
+      end
     end
-  end
 
 
 
@@ -88,13 +88,12 @@ class Overseers::CompanyReviewsController < Overseers::BaseController
     @company_review ||= CompanyReview.find(params[:id])
   end
 
-  def company_review_params
-    params.require(:company_review).permit(
+    def company_review_params
+      params.require(:company_review).permit(
         :company_review_id,
-        :rating,
-        :company_ratings_attributes => [:rating, :id]
+          :rating,
+          company_ratings_attributes: [:rating, :id]
     )
   end
-
 
 end

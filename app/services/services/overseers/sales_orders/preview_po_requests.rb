@@ -24,7 +24,7 @@ class Services::Overseers::SalesOrders::PreviewPoRequests < Services::Shared::Ba
       end
       po_requests[po_request_hash[:supplier_id]].blobs = blobs
       if po_request_hash[:rows_attributes].present?
-        po_request_hash[:rows_attributes].each do |index, row_hash|
+        po_request_hash[:rows_attributes].each do |row_index, row_hash|
           if !row_hash[:_destroy].present? && row_hash[:quantity].present?
             if row_hash[:measurement_unit_id].present?
               measurement_unit_id = row_hash[:measurement_unit_id]

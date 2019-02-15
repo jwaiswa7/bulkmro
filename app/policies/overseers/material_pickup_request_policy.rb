@@ -34,5 +34,4 @@ class Overseers::MaterialPickupRequestPolicy < Overseers::ApplicationPolicy
   def delivered?
     record.status == 'Material Delivered'
   end
-
 end

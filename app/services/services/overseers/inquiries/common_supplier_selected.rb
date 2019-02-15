@@ -12,5 +12,5 @@ class Services::Overseers::Inquiries::CommonSupplierSelected < Services::Shared:
   end
 
   private
-  attr_accessor :inquiry, :common_supplier_id, :inquiry_product_ids
+    attr_accessor :inquiry, :common_supplier_id, :inquiry_product_ids
 end

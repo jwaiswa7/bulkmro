@@ -1,5 +1,4 @@
 class Export < ApplicationRecord
-
   has_one_attached :report
 
   enum export_type: {

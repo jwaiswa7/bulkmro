@@ -4,7 +4,7 @@ class InvoiceRequest < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasComments
 
-  pg_search_scope :locate, :against => [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], :associated_against => {:sales_order => [:id, :order_number], :inquiry => [:inquiry_number]}, :using => {:tsearch => {:prefix => true}}
+  pg_search_scope :locate, against: [:id, :grpo_number, :ap_invoice_number, :ar_invoice_number], associated_against: { sales_order: [:id, :order_number], inquiry: [:inquiry_number] }, using: { tsearch: { prefix: true } }
 
   belongs_to :sales_order
   belongs_to :inquiry
@@ -15,30 +15,30 @@ class InvoiceRequest < ApplicationRecord
   ratyrate_rateable "CompanyReview"
 
   enum status: {
-      :'Pending GRPO' => 10,
-      :'Pending AP Invoice' => 20,
-      :'Pending AR Invoice' => 30,
-      :'In stock' => 70,
-      :'Completed AR Invoice Request' => 40,
-      :'Cancelled AR Invoice' => 50,
-      :'Cancelled' => 60
+      'Pending GRPO': 10,
+      'Pending AP Invoice': 20,
+      'Pending AR Invoice': 30,
+      'In stock': 70,
+      'Completed AR Invoice Request': 40,
+      'Cancelled AR Invoice': 50,
+      'Cancelled': 60
   }
 
-  scope :grpo_pending, -> {where(:status => :'Pending GRPO')}
-  scope :ap_invoice_pending, -> {where(:status => :'Pending AP Invoice')}
-  scope :ar_invoice_pending, -> {where(:status => :'Pending AR Invoice')}
-  scope :ar_invoice_generated, -> {where(:status => :'Completed AR Invoice Request')}
+  scope :grpo_pending, -> { where(status: :'Pending GRPO') }
+  scope :ap_invoice_pending, -> { where(status: :'Pending AP Invoice') }
+  scope :ar_invoice_pending, -> { where(status: :'Pending AR Invoice') }
+  scope :ar_invoice_generated, -> { where(status: :'Completed AR Invoice Request') }
 
   validates_presence_of :sales_order
   validates_presence_of :inquiry
-  validates :ap_invoice_number, length: {is: 8}, allow_blank: true
+  validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
 
   validate :grpo_number_valid?
 
   def grpo_number_valid?
     if self.grpo_number.present? && self.grpo_number <= 50000000
-      errors.add(:grpo_number, "must be 8 digits starting with 5")
+      errors.add(:grpo_number, 'must be 8 digits starting with 5')
     end
   end
 
@@ -46,7 +46,7 @@ class InvoiceRequest < ApplicationRecord
 
   def shipment_number_valid?
     if self.shipment_number.present? && self.shipment_number <= 30000000
-      errors.add(:shipment_number, "must be 8 digits starting with 3")
+      errors.add(:shipment_number, 'must be 8 digits starting with 3')
     end
   end
 
@@ -56,11 +56,11 @@ class InvoiceRequest < ApplicationRecord
 
   with_options if: :"Completed AR Invoice Request?" do |invoice_request|
     invoice_request.validates_presence_of :ar_invoice_number
-    invoice_request.validates :ar_invoice_number, length: {is: 8}, allow_blank: true
+    invoice_request.validates :ar_invoice_number, length: { is: 8 }, allow_blank: true
     invoice_request.validates_numericality_of :ar_invoice_number, allow_blank: true
   end
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.status ||= :'Pending GRPO'
@@ -82,18 +82,18 @@ class InvoiceRequest < ApplicationRecord
 
   def readable_status
     status = self.status
-    if (status.include? "Pending")
-      title_without_pending = status.remove("Pending")
-      title = status.include?("GRPO") ? "Invoice GRPO" : "#{title_without_pending}"
-    elsif (status.include? "Completed AR Invoice") || (status.include? "Cancelled AR Invoice")
-      title = status.gsub(status, "AR Invoice")
+    if status.include? 'Pending'
+      title_without_pending = status.remove('Pending')
+      title = status.include?('GRPO') ? 'Invoice GRPO' : "#{title_without_pending}"
+    elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
+      title = status.gsub(status, 'AR Invoice')
     else
-      title = "Invoice"
+      title = 'Invoice'
     end
     "#{title} Request"
   end
 
   def to_s
-    [readable_status, "##{self.id}"].join(" ")
+    [readable_status, "##{self.id}"].join(' ')
   end
 end

@@ -1,12 +1,12 @@
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests,:create_purchase_orders_requests]
+  before_action :set_sales_order, only: [ :resync, :new_purchase_orders_requests,  :preview_purchase_orders_requests, :create_purchase_orders_requests]
   def pending
     authorize :sales_order
 
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer,paginate: false)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
         service.call
 
         @indexed_sales_orders = service.indexed_records
@@ -79,7 +79,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def index
     authorize :sales_order
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
@@ -87,7 +87,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -101,7 +101,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def not_invoiced
     authorize :sales_order
     respond_to do |format|
-      format.html {render 'not_invoiced' }
+      format.html { render 'not_invoiced' }
       format.json do
         service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
         service.call
@@ -109,7 +109,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records
         @sales_orders = service.records.try(:reverse)
 
-        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder,remote_status:true)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
         status_service.call
 
         @total_values = status_service.indexed_total_values
@@ -133,9 +133,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def drafts_pending
     authorize :sales_order
 
-    sales_orders = SalesOrder.where.not(:sent_at => nil).where(:draft_uid => nil , :status => :'SAP Approval Pending').not_legacy
+    sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
@@ -155,7 +155,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize :sales_order
 
     if Rails.cache.exist?(:po_requests)
-      @po_requests =  Rails.cache.read(:po_requests)
+      @po_requests = Rails.cache.read(:po_requests)
       Rails.cache.delete(:po_requests)
     else
       service = Services::Overseers::SalesOrders::NewPoRequests.new(@sales_order, current_overseer)
@@ -183,52 +183,52 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   private
 
-  def set_sales_order
-    @sales_order = SalesOrder.find(params[:id])
-  end
-
-  def new_purchase_orders_requests_params
-    if params.has_key?(:sales_order)
-      params.require(:sales_order).permit(
-          :id,
-          :po_requests_attributes => [
-              :id,
-              :supplier_id,
-              :inquiry_id,
-              :_destroy,
-              :logistics_owner_id,
-              :bill_from_id,
-              :ship_from_id,
-              :bill_to_id,
-              :ship_to_id,
-              :contact_id,
-              :payment_option_id,
-              :supplier_po_type,
-              :status,
-              :supplier_committed_date,
-              :contact_email,
-              :contact_phone,
-              :blobs,
-              :attachments => [],
-              :rows_attributes => [
-                  :id,
-                  :_destroy,
-                  :status,
-                  :quantity,
-                  :sales_order_row_id,
-                  :product_id,
-                  :brand_id,
-                  :tax_code_id,
-                  :tax_rate_id,
-                  :lead_time,
-                  :measurement_unit_id,
-                  :discount_percentage,
-                  :unit_price
-              ]
-          ]
-      )
-    else
-      {}
+    def set_sales_order
+      @sales_order = SalesOrder.find(params[:id])
     end
-  end
+
+    def new_purchase_orders_requests_params
+      if params.has_key?(:sales_order)
+        params.require(:sales_order).permit(
+          :id,
+            po_requests_attributes: [
+                :id,
+                :supplier_id,
+                :inquiry_id,
+                :_destroy,
+                :logistics_owner_id,
+                :bill_from_id,
+                :ship_from_id,
+                :bill_to_id,
+                :ship_to_id,
+                :contact_id,
+                :payment_option_id,
+                :supplier_po_type,
+                :status,
+                :supplier_committed_date,
+                :contact_email,
+                :contact_phone,
+                :blobs,
+                attachments: [],
+                rows_attributes: [
+                    :id,
+                    :_destroy,
+                    :status,
+                    :quantity,
+                    :sales_order_row_id,
+                    :product_id,
+                    :brand_id,
+                    :tax_code_id,
+                    :tax_rate_id,
+                    :lead_time,
+                    :measurement_unit_id,
+                    :discount_percentage,
+                    :unit_price
+                ]
+            ]
+        )
+      else
+        {}
+      end
+    end
 end

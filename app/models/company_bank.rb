@@ -1,8 +1,8 @@
 class CompanyBank < ApplicationRecord
   include Mixins::CanBeSynced
 
-  update_index('company_banks#company_bank') {self}
-  pg_search_scope :locate, :against => [:account_number, :account_name, :branch], :associated_against => {:bank => [:name]}, :using => {:tsearch => {:prefix => true}}
+  update_index('company_banks#company_bank') { self }
+  pg_search_scope :locate, against: [:account_number, :account_name, :branch], associated_against: { bank: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :company
   belongs_to :bank
@@ -16,5 +16,4 @@ class CompanyBank < ApplicationRecord
   def to_s
     [self.bank, account_number, account_name].reject(&:blank?).join(', ')
   end
-
 end

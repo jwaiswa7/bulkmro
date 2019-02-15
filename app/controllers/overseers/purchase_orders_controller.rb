@@ -4,7 +4,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def index
     authorize :purchase_order
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
@@ -24,7 +24,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     authorize :purchase_order
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::MaterialReadinessQueues.new(params, current_overseer)
         service.call
@@ -45,16 +45,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
 
     base_filter = {
-        :base_filter_key => "status",
+        base_filter_key: 'status',
 
-        :base_filter_value => MaterialPickupRequest.statuses['Material Pickup']
+        base_filter_value: MaterialPickupRequest.statuses['Material Pickup']
     }
 
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
-
         service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
 
         service.call
@@ -72,16 +71,15 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @status = 'Material Delivered Queue'
 
     base_filter = {
-        :base_filter_key => "status",
+        base_filter_key: 'status',
 
-        :base_filter_value => MaterialPickupRequest.statuses['Material Delivered']
+        base_filter_value: MaterialPickupRequest.statuses['Material Delivered']
     }
 
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
-
         service = Services::Overseers::Finders::MaterialPickupRequests.new(params.merge(base_filter), current_overseer)
 
         service.call
@@ -108,7 +106,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
       messages = DateModifiedMessage.for(@purchase_order, ['supplier_dispatch_date', 'revised_supplier_delivery_date', 'followup_date'])
       if messages.present?
-        @purchase_order.comments.create(:message => messages, :overseer => current_overseer)
+        @purchase_order.comments.create(message: messages, overseer: current_overseer)
       end
 
       @purchase_order.save
@@ -121,9 +119,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
   def autocomplete
     purchase_orders = PurchaseOrder.all
     if params[:inquiry_number].present?
-      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]})
-      #purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
-
+      purchase_orders = PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] })
+      # purchase_orders = purchase_orders.where.not(:id => PoRequest.not_cancelled.pluck(:purchase_order_id)) if params[:has_po_request]
     end
     @purchase_orders = ApplyParams.to(purchase_orders, params)
 
@@ -146,7 +143,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @metadata[:packing] = @purchase_order.get_packing(@metadata)
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
       end
@@ -155,30 +152,30 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   private
 
-  def get_supplier(purchase_order, product_id)
-    if purchase_order.metadata['PoSupNum'].present?
-      product_supplier = ( Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']) )
-      return product_supplier if ( purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy? )
-    end
-    if purchase_order.inquiry.final_sales_quote.present?
-      product_supplier = purchase_order.inquiry.final_sales_quote.rows.select {|sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id}.first
-      product_supplier.supplier if product_supplier.present?
-    end
+    def get_supplier(purchase_order, product_id)
+      if purchase_order.metadata['PoSupNum'].present?
+        product_supplier = (Company.find_by_legacy_id(purchase_order.metadata['PoSupNum']) || Company.find_by_remote_uid(purchase_order.metadata['PoSupNum']))
+        return product_supplier if purchase_order.inquiry.suppliers.include?(product_supplier) || purchase_order.is_legacy?
+      end
+      if purchase_order.inquiry.final_sales_quote.present?
+        product_supplier = purchase_order.inquiry.final_sales_quote.rows.select { |sales_quote_row| sales_quote_row.product.id == product_id || sales_quote_row.product.legacy_id == product_id }.first
+        product_supplier.supplier if product_supplier.present?
+      end
   end
 
-  def set_purchase_order
-    @purchase_order = PurchaseOrder.find(params[:id])
-  end
+    def set_purchase_order
+      @purchase_order = PurchaseOrder.find(params[:id])
+    end
 
-  def purchase_order_params
-    params.require(:purchase_order).permit(
+    def purchase_order_params
+      params.require(:purchase_order).permit(
         :material_status,
         :supplier_dispatch_date,
         :followup_date,
         :logistics_owner_id,
         :revised_supplier_delivery_date,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :attachments => []
-    )
-  end
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
+      )
+    end
 end

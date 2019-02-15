@@ -24,13 +24,13 @@ class Customers::SignInStepsController < Customers::BaseController
 
   private
 
-  def contact_params
-    params.require(:contact).permit(
+    def contact_params
+      params.require(:contact).permit(
         :company_id
-    )
-  end
+      )
+    end
 
-  def set_contact
-    @contact = current_contact
-  end
+    def set_contact
+      @contact = current_contact
+    end
 end

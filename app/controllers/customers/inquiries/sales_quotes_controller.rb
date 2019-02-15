@@ -1,5 +1,4 @@
 class Customers::Inquiries::SalesQuotesController < Customers::Inquiries::BaseController
-
   before_action :set_final_sales_quote
 
   def index
@@ -7,7 +6,7 @@ class Customers::Inquiries::SalesQuotesController < Customers::Inquiries::BaseCo
 
   def show
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @final_sales_quote
       end
@@ -16,7 +15,7 @@ class Customers::Inquiries::SalesQuotesController < Customers::Inquiries::BaseCo
 
   private
 
-  def set_final_sales_quote
-    @final_sales_quote = @inquiry.final_sales_quote
-  end
+    def set_final_sales_quote
+      @final_sales_quote = @inquiry.final_sales_quote
+    end
 end

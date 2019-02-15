@@ -48,13 +48,13 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
   end
 
   private
-  def set_measurement_unit
-    @measurement_unit ||= MeasurementUnit.find(params[:id])
-  end
+    def set_measurement_unit
+      @measurement_unit ||= MeasurementUnit.find(params[:id])
+    end
 
-  def measurement_unit_params
-    params.require(:measurement_unit).permit(
+    def measurement_unit_params
+      params.require(:measurement_unit).permit(
         :name
-    )
-  end
+      )
+    end
 end

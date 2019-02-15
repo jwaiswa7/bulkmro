@@ -8,9 +8,9 @@ json.data (@tags) do |tag|
                       if policy(tag).edit?
                         row_action_button(edit_overseers_company_tag_path(tag.company, tag), 'pencil', 'Edit tag', 'warning')
                       end,
-                      # if policy(tag).destroy?
-                      #   row_action_button(overseers_company_tag_path(tag.company, tag),'trash', 'Delete tag', 'danger', '' ,:delete)
-                      # end
+                    # if policy(tag).destroy?
+                    #   row_action_button(overseers_company_tag_path(tag.company, tag),'trash', 'Delete tag', 'danger', '' ,:delete)
+                    # end
                   ].join(' '),
                   tag.name.to_s.truncate(50),
                   format_date(tag.created_at)

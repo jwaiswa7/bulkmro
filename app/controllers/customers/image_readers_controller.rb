@@ -12,7 +12,7 @@ class Customers::ImageReadersController < Customers::BaseController
 
   def index
     authorize :ImageReader
-    @completed_records = ImageReader.where(status: "completed").group("DATE(created_at)").count
+    @completed_records = ImageReader.where(status: 'completed').group('DATE(created_at)').count
   end
 
   def export_all

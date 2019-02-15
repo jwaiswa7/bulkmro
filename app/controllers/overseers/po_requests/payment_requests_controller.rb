@@ -3,7 +3,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
   def new
     authorize @po_request, :new_payment_request?
-    @payment_request = @po_request.build_payment_request(:overseer => current_overseer, :inquiry => @po_request.inquiry, :purchase_order => @po_request.purchase_order)
+    @payment_request = @po_request.build_payment_request(overseer: current_overseer, inquiry: @po_request.inquiry, purchase_order: @po_request.purchase_order)
   end
 
   def create
@@ -15,7 +15,7 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     if @payment_request.valid?
       ActiveRecord::Base.transaction do
         @payment_request.save!
-        @payment_request_comment = PaymentRequestComment.new(:message => "Payment Request submitted.", :payment_request => @payment_request, :overseer => current_overseer)
+        @payment_request_comment = PaymentRequestComment.new(message: 'Payment Request submitted.', payment_request: @payment_request, overseer: current_overseer)
         @payment_request_comment.save!
       end
 
@@ -47,8 +47,8 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
 
   private
 
-  def payment_request_params
-    params.require(:payment_request).permit(
+    def payment_request_params
+      params.require(:payment_request).permit(
         :id,
         :inquiry_id,
         :utr_number,
@@ -65,13 +65,13 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
         :description,
         :supplier_bank_details,
         :company_bank_id,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :transactions_attributes => [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :_destroy],
-        :attachments => []
+        comments_attributes: [:id, :message, :created_by_id],
+        transactions_attributes: [:id, :payment_type, :utr_or_cheque_no, :issue_date, :cheque_date, :amount_paid, :_destroy],
+        attachments: []
     )
   end
 
-  def set_payment_request
-    @payment_request = PaymentRequest.find(params[:id])
-  end
+    def set_payment_request
+      @payment_request = PaymentRequest.find(params[:id])
+    end
 end

@@ -33,7 +33,7 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def applicable_tax_percentage
-    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100 if !(self.metadata['PopTaxRate'].include?('IMP'))
   end
 
   def quantity
@@ -41,7 +41,12 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def unit_selling_price
-    (self.metadata['PopPriceHt'].to_f).round(2) if self.metadata['PopPriceHt'].present?
+    price = if self.metadata['PopPriceHtBase'].present?
+      (self.metadata['PopPriceHtBase'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2)
+    else
+      (self.metadata['PopPriceHt'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2) if self.metadata['PopPriceHt'].present?
+    end
+    self.metadata['PopDiscount'].present? ? ((1 - (self.metadata['PopDiscount'].to_f / 100)) * price).round(2) : price
   end
 
   def unit_selling_price_with_tax
@@ -70,7 +75,7 @@ class PurchaseOrderRow < ApplicationRecord
     if po_request.present?
       po_request_rows = po_request.rows
       return false if po_request_rows.blank? || get_product.nil?
-      po_request_rows.select {|por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row}.first.try(:lead_time)
+      po_request_rows.select { |por_row| por_row.sales_order_row.product == get_product if por_row.sales_order_row }.first.try(:lead_time)
     else
       return false
     end

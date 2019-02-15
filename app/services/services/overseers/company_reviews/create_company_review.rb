@@ -1,5 +1,5 @@
 class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Shared::BaseService
-  def initialize(order,current_overseer,request,review_type)
+  def initialize(order, current_overseer,request,review_type)
     @order = order
     @current_overseer = current_overseer
     @request = request
@@ -13,7 +13,7 @@ class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Share
       company_review = request.company_reviews.where(created_by: current_overseer, survey_type: review_type, company: supplier).first_or_create
       company_reviews << company_review
     end
-    return company_reviews
+    company_reviews
   end
 
   attr_accessor :order, :current_overseer, :request, :review_type

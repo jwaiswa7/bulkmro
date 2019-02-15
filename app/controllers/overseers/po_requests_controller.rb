@@ -6,8 +6,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -16,8 +16,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -26,8 +26,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -45,10 +45,12 @@ class Overseers::PoRequestsController < Overseers::BaseController
   def new
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
-      @po_request = PoRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      @po_request = PoRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
       @sales_order.rows.each do |sales_order_row|
-        @po_request.rows.where(:sales_order_row => sales_order_row).first_or_initialize
+        @po_request.rows.where(sales_order_row: sales_order_row).first_or_initialize
       end
+      service = Services::Overseers::CompanyReviews::CreateCompanyReview.new(@sales_order, current_overseer)
+      @company_reviews = service.call
 
       authorize @po_request
     else
@@ -63,7 +65,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
     if @po_request.valid?
       ActiveRecord::Base.transaction do
         @po_request.save!
-        @po_request_comment = PoRequestComment.new(:message => "PO Request submitted.", :po_request => @po_request, :overseer => current_overseer)
+        @po_request_comment = PoRequestComment.new(message: 'PO Request submitted.', po_request: @po_request, overseer: current_overseer)
         @po_request_comment.save!
       end
 
@@ -84,27 +86,27 @@ class Overseers::PoRequestsController < Overseers::BaseController
     authorize @po_request
     if @po_request.valid?
       # todo allow only in case of zero form errors
-      @po_request.status = "PO Created" if @po_request.purchase_order.present? && @po_request.status == "Requested"
-      @po_request.status = "Requested" if @po_request.status == "Rejected" && policy(@po_request).is_manager_or_sales?
+      @po_request.status = 'PO Created' if @po_request.purchase_order.present? && @po_request.status == 'Requested'
+      @po_request.status = 'Requested' if @po_request.status == 'Rejected' && policy(@po_request).is_manager_or_sales?
       ActiveRecord::Base.transaction do if @po_request.status_changed?
-          if @po_request.status == "Cancelled"
-            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}" , :po_request => @po_request, :overseer => current_overseer)
-            @po_request.purchase_order = nil
+                                          if @po_request.status == 'Cancelled'
+                                            @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} PO Request for Purchase Order number #{@po_request.purchase_order.po_number} \r\n Cancellation Reason: #{@po_request.cancellation_reason}", po_request: @po_request, overseer: current_overseer)
+                                            @po_request.purchase_order = nil
 
-            @po_request.payment_request.update!(status: :'Cancelled')
-            @po_request.payment_request.comments.create!(:message => "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", :payment_request => @po_request.payment_request, :overseer => current_overseer)
+                                            @po_request.payment_request.update!(status: :'Cancelled')
+                                            @po_request.payment_request.comments.create!(message: "Status Changed: #{@po_request.payment_request.status}; Po Request #{@po_request.id}: Cancelled", payment_request: @po_request.payment_request, overseer: current_overseer)
 
-          elsif @po_request.status == "Rejected"
-            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}" , :po_request => @po_request, :overseer => current_overseer)
+                                          elsif @po_request.status == 'Rejected'
+                                            @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status} \r\n Rejection Reason: #{@po_request.rejection_reason}", po_request: @po_request, overseer: current_overseer)
 
-          else
-            @po_request_comment = PoRequestComment.new(:message => "Status Changed: #{@po_request.status}", :po_request => @po_request, :overseer => current_overseer)
-          end
-          @po_request.save!
-          @po_request_comment.save!
-        else
-          @po_request.save!
-        end
+                                          else
+                                            @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+                                          end
+                                          @po_request.save!
+                                          @po_request_comment.save!
+                                        else
+                                          @po_request.save!
+                                        end
       end
 
       # create_payment_request = Services::Overseers::PaymentRequests::Create.new(@po_request)
@@ -124,8 +126,8 @@ class Overseers::PoRequestsController < Overseers::BaseController
 
   private
 
-  def po_request_params
-    params.require(:po_request).permit(
+    def po_request_params
+      params.require(:po_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -143,13 +145,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :supplier_po_type,
         :cancellation_reason,
         :rejection_reason,
-        :rows_attributes => [:id, :sales_order_row_id,:product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
-        :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
-        :attachments => []
+        rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],
+        comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+        attachments: []
     )
   end
 
-  def set_po_request
-    @po_request = PoRequest.find(params[:id])
-  end
+    def set_po_request
+      @po_request = PoRequest.find(params[:id])
+    end
 end
