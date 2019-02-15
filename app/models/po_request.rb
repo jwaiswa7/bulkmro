@@ -38,9 +38,9 @@ class PoRequest < ApplicationRecord
   }
 
   enum supplier_po_type: {
-      'regular': 10,
-      'route_through': 20,
-      'drop_ship': 30
+      'Regular': 10,
+      'Route Through': 20,
+      'Drop Ship': 30
   }
 
   enum rejection_reason: {
