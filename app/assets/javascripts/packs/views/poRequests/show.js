@@ -7,6 +7,9 @@ const show = () => {
     $('.rating-modal a').click();
     updateRatingForm();
 
+    $('.add-review').on('click',function (e) {
+        $('#multipleRatingForm').modal('toggle')
+    })
 };
 
 export default show

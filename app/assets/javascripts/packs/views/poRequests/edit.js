@@ -39,6 +39,9 @@ const edit = () => {
     updateRowTotal();
     updateOnContactSelect();
 
+    $('form').on('click','.add-review',function (e) {
+        $('.rating-modal a').click();
+    })
 };
 
 export default edit
