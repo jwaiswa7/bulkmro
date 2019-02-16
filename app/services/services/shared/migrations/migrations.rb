@@ -2483,11 +2483,11 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             :currency => currency,
             :payment_type => :'Against Invoice',
             :payment_received_date => date,
-            :payment_amount_received => x.get_column('Paid Amt'),
             :comments => x.get_column('Remarks')
         )
         if is_save
-          sales_receipt.sales_receipt_row.first_or_create!(:sales_invoice => invoice)
+          sales_receipt.sales_receipt_row.first_or_create!(:sales_invoice => invoice,:amount_received => x.get_column('Paid Amt'))
+          sales_receipt.update_attributes!(:payment_amount_received => sales_receipt.sales_receipt_row.sum(:amount_received))
         end
       end
     end
@@ -2511,7 +2511,6 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             :payment_amount_received => x.get_column('Non-Calculated Amount').to_f,
             :comments => x.get_column('Remarks')
         )
-        sales_receipt.save!
       end
     end
   end
