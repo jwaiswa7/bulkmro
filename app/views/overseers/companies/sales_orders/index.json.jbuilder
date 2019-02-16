@@ -17,8 +17,8 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(new_overseers_po_request_path(sales_order_id: sales_order.to_param), 'external-link', 'Request PO', 'info')
                       end
                   ].join(' '),
-                  sales_order.order_number,
-                  sales_order.inquiry.inquiry_number,
+                  link_to(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), target: '_blank'),
+                  link_to(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), target: '_blank'),
                   status_badge(format_enum(sales_order.order_status, humanize_text: false)),
                   format_enum(sales_order.remote_status, humanize_text: false),
                   format_currency(sales_order.sales_quote.calculated_total),

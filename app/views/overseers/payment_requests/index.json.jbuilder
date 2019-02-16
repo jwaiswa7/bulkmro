@@ -10,8 +10,8 @@ json.data (@payment_requests) do |payment_request|
                   ].join(' '),
                   payment_request.id,
                   status_badge(payment_request.status),
-                  payment_request.inquiry.inquiry_number,
-                  payment_request.po_request.purchase_order.id,
+                  link_to(payment_request.inquiry.inquiry_number, edit_overseers_inquiry_path(payment_request.inquiry), target: '_blank'),
+                  link_to(payment_request.po_request.purchase_order.id, overseers_po_request_path(payment_request.po_request), target: '_blank'),
                   if payment_request.payment_option.present?
                     payment_request.payment_option.name
                   end,

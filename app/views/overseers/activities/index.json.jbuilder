@@ -34,7 +34,7 @@ json.data (@activities) do |activity|
                     link_to format_id(activity.inquiry.inquiry_number), edit_overseers_inquiry_path(activity.inquiry)
                   end,
                   if activity.contact.present?
-                    activity.contact.to_s
+                    link_to(activity.contact.to_s, overseers_contact_path(activity.contact), target:'_blank')
                   end,
                   format_enum(activity.purpose),
                   format_enum(activity.activity_type),
