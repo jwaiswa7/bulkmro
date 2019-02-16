@@ -1,49 +1,64 @@
 class Services::Callbacks::SalesReceipts::Create < Services::Callbacks::Shared::BaseCallback
   def call
-    begin
-      invoice = SalesInvoice.find_by_invoice_number(params['p_invoice_no'])
+    # begin
+
       company = Company.find_by_remote_uid!(params['cmp_id'])
       currency = Currency.find_by_name(params['p_amount_currency'])
-      account = company.present? ? company.account.id : nil
+      account = company.present? ? company.account : nil
       payment_type = nil
+
+
       if params['cmp_id'].present? && !params['p_invoice_no'].present?
-        amount_recived = params[:on_account]
+        total_amount_received = params[:on_account]
         payment_type = 'On Account'
       elsif params['p_invoice_no'].present?
-        amount_recived = params[:p_amount_received]
+        total_amount_received = params[:p_amount_received]
         payment_type = 'Against Invoice'
       else
-        amount_recived = 0.0
+        total_amount_received = 0.0
       end
-      SalesReceipt.where(remote_reference: params['p_sap_reference_number']).first_or_create! do |sales_receipt|
+
+      sales_receipt = SalesReceipt.where(remote_reference: params['p_sap_reference_number']).first_or_create! do |sales_receipt|
         sales_receipt.assign_attributes(
-          sales_invoice: invoice,
           company: company,
           account: account,
           metadata: params,
           currency: currency,
           payment_type: payment_type, # have to change as per new data
           payment_received_date: params['p_received_date'],
-          payment_amount_received: amount_recived
-
+          payment_amount_received: total_amount_received
         )
       end
-      if invoice.present?
-        receivable_amount = invoice.calculated_total_with_tax
-        received_amount = invoice.sales_receipts.sum(:payment_amount_received)
-        if received_amount == 0.0
-          payment_status = 'Unpaid'
-        elsif received_amount < receivable_amount
-          payment_status = 'Partially Paid'
-        elsif receivable_amount == received_amount
-          payment_status = 'Fully Paid'
+
+      if params['p_invoice_no'].present?
+        params['p_invoice_no'].each do | si_payment |
+          sales_invoice = SalesInvoice.find_by_invoice_number(si_payment['invoice_number'])
+          if sales_invoice.present?
+
+            #create sales receipt rows
+            sales_receipt.rows.where(:sales_invoice => sales_invoice).first_or_create! do | sales_receipt_rows |
+              sales_receipt_rows.assign_attributes(:amount_received => si_payment['amount_received'])
+            end
+
+            #update sales invoice payment status
+            receivable_amount = sales_invoice.calculated_total_with_tax
+            received_amount = sales_invoice.sales_receipt_rows.sum(:amount_received)
+            if received_amount == 0.0
+              payment_status = 'Unpaid'
+            elsif received_amount < receivable_amount
+              payment_status = 'Partially Paid'
+            elsif receivable_amount == received_amount
+              payment_status = 'Fully Paid'
+            end
+            sales_invoice.update_attributes!(:payment_status => payment_status)
+          end
         end
       end
-      invoice.update__attributes(payment_status: payment_status)
-      return_response('Sales Receipt created successfully.')
-    rescue => e
-      return_response(e.message, 0)
-    end
+
+    return_response('Sales Receipt created successfully.')
+    # rescue => e
+    #   return_response(e.message, 0)
+    # end
   end
 
   attr_accessor :params

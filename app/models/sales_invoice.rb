@@ -8,8 +8,11 @@ class SalesInvoice < ApplicationRecord
   has_many :receipts,dependent: :destroy, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
   has_many :rows, class_name: 'SalesInvoiceRow', inverse_of: :sales_invoice
-  scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled')}
   has_many :sales_receipts
+  has_many :sales_receipt_rows
+
+  scope :not_cancelled_invoices, -> { where.not(status: 'Cancelled')}
+
   has_one_attached :original_invoice
   has_one_attached :duplicate_invoice
   has_one_attached :triplicate_invoice
@@ -82,16 +85,20 @@ class SalesInvoice < ApplicationRecord
   end
 
   def amount_received
-    SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
+    # SalesReceipt.where(:sales_invoice_id => self.id).pluck(:payment_amount_received).compact.sum
+    SalesReceiptRow.where(:sales_invoice_id => self.id).sum(:amount_received)
   end
 
   def amount_received_against_invoice
-    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'Against Invoice').pluck(:payment_amount_received).compact.sum
+    # SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'Against Invoice').pluck(:payment_amount_received).compact.sum
+    SalesReceiptRow.where(:sales_invoice_id => self.id).sum(:amount_received)
   end
 
-  def amount_received_on_account
-    SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'On Account').pluck(:payment_amount_received).compact.sum
-  end
+  # Not needed, there won't be any on account payment for invoice
+
+  # def amount_received_on_account
+  #   SalesReceipt.where(:sales_invoice_id => self.id,:payment_type => 'On Account').pluck(:payment_amount_received).compact.sum
+  # end
 
   def get_due_date
     due_in_days = 30
@@ -112,6 +119,10 @@ class SalesInvoice < ApplicationRecord
       end
     end
     days
+  end
+
+  def amount_due
+    self.calculated_total_with_tax - self.amount_received
   end
 
 end
