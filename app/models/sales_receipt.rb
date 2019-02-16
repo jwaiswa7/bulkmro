@@ -1,5 +1,6 @@
 class SalesReceipt < ApplicationRecord
   include Mixins::CanBeSynced
+  has_many :rows, class_name: 'SalesReceiptRow', dependent: :destroy
 
   belongs_to :sales_invoice, required: false
   belongs_to :company, required: false
