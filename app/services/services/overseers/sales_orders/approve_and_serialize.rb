@@ -7,19 +7,19 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
 
   def call
     ActiveRecord::Base.transaction do
-      @sales_order.create_approval(:comment => @comment,
-          :overseer => overseer,
-          :metadata => Serializers::InquirySerializer.new(@sales_order.inquiry)
+      @sales_order.create_approval(comment: @comment,
+          overseer: overseer,
+          metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
-      @sales_order.update_attributes(:status => :"SAP Approval Pending",
-        :manager_so_status_date => Time.now,
+      @sales_order.update_attributes(status: :"SAP Approval Pending",
+        manager_approved_date: Time.now,
         quotation_uid: @sales_order.inquiry.quotation_uid
       )
 
       @sales_order.serialized_pdf.attach(io: File.open(RenderPdfToFile.for(@sales_order)), filename: @sales_order.filename)
 
-      @sales_order.billing_address =  make_duplicate_address(@sales_order.inquiry.billing_address)
+      @sales_order.billing_address = make_duplicate_address(@sales_order.inquiry.billing_address)
       @sales_order.shipping_address = make_duplicate_address(@sales_order.inquiry.shipping_address)
 
       @sales_order.update_index
