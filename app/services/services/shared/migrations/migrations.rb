@@ -2476,7 +2476,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         currency = Currency.find_by_name(x.get_column('Document Currency'))
         date = "20" + x.get_column('Payment Date').split('/').reverse.join('/')
         sales_receipt = SalesReceipt.where(:remote_reference => x.get_column('Document Number')).first_or_create
-        sales_receipt.update_attributes(
+        is_save = sales_receipt.update_attributes(
             :sales_invoice => invoice,
             :company => company,
             :account => company.account,
@@ -2486,6 +2486,9 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             :payment_amount_received => x.get_column('Paid Amt'),
             :comments => x.get_column('Remarks')
         )
+        if is_save
+          sales_receipt.sales_receipt_row.first_or_create!(:sales_invoice => invoice)
+        end
       end
     end
 
@@ -2508,6 +2511,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
             :payment_amount_received => x.get_column('Non-Calculated Amount').to_f,
             :comments => x.get_column('Remarks')
         )
+        sales_receipt.save!
       end
     end
   end
