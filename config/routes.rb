@@ -384,6 +384,7 @@ Rails.application.routes.draw do
         resources :sales_invoices do
           collection do
             get 'payment_collection'
+            get 'ageing_report'
           end
         end
         resources :company_banks
@@ -410,11 +411,13 @@ Rails.application.routes.draw do
       collection do
         get 'autocomplete'
         get 'payment_collection'
+        get 'ageing_report'
       end
       scope module: 'accounts' do
         resources :companies do
           collection do
             get 'payment_collection'
+            get 'ageing_report'
           end
         end
       end

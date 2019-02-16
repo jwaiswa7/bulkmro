@@ -50,6 +50,28 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
       end
   end
 
+
+  def ageing_report
+    service = Services::Overseers::SalesInvoices::AgeingReport.new(@account)
+    service.call
+    @summery_data = service.summery_data
+    base_filter = {
+        :base_filter_key => "account_id",
+        :base_filter_value => @account.id
+    }
+
+    authorize :company
+    respond_to do |format|
+      format.html {}
+      format.json do
+        service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
+        service.call
+        @indexed_companies = service.indexed_records
+        @companies = service.records.try(:reverse)
+      end
+    end
+  end
+
   def create
     @company = @account.companies.build(company_params.merge(overseer: current_overseer))
     authorize @company
