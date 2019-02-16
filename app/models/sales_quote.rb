@@ -106,6 +106,10 @@ class SalesQuote < ApplicationRecord
     end
   end
 
+  def so_status_req_or_pending
+    self.sales_orders.pluck(:status).include?('Requested') || self.sales_orders.pluck(:status).include?('SAP Approval Pending') if self.sales_orders.present?
+  end
+
   def currency_sign
     self.inquiry_currency.present? ? self.inquiry_currency.sign : nil
   end
