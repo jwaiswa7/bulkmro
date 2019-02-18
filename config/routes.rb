@@ -495,7 +495,11 @@ Rails.application.routes.draw do
         resources :comments
       end
     end
-    resources :orders, :controller => :sales_orders, only: %i[index show]
+    resources :orders, :controller => :sales_orders, only: %i[index show] do
+      collection do
+        get 'export_all'
+      end
+    end
     resources :invoices, :controller => :sales_invoices, only: %i[index show]
     resource :checkout, :controller => :checkout do
       collection do

@@ -27,6 +27,15 @@ class Customers::SalesOrdersController < Customers::BaseController
     end
   end
 
+  def export_all
+    authorize :sales_order
+    Thread.current[:current_company] = current_company
+    service = Services::Overseers::Exporters::CustomerSalesOrdersExporter.new
+    service.call
+
+    redirect_to url_for(Export.customer_sales_orders.last.report)
+  end
+
   private
     def set_sales_order
       @sales_order = current_company.sales_orders.find(params[:id])

@@ -6,6 +6,12 @@
   Orders
 <% end %>
 
+<% provide :heading_buttons do %>
+  <div class="btn-group">
+    <a href="<%= export_all_customers_orders_path(format: :csv) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1" data-toggle="tooltip" title="All sales orders" data-badge="<%= ['', time_ago_in_words(Export.customer_sales_orders.last.created_at), 'ago'].join(' ') if Export.customer_sales_orders.present? %>"><i class="fal fa-download mr-1"></i>Orders</a>
+  </div>
+<% end %>
+
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
   <th class="no-sort all" data-name="order_number">Order #</th>

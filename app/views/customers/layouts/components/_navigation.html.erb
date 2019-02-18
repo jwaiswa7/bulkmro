@@ -34,8 +34,8 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'List', customers_customer_orders_path, policy(:customer_order).index? %>
-          <%= nav_dropdown_item 'Pending Approval', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
-          <%= nav_dropdown_item 'Approved Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
+          <%= nav_dropdown_item 'Open Orders', pending_customers_customer_orders_path, policy(:customer_order).pending? %>
+          <%= nav_dropdown_item 'Closed/Fulfilled Orders', approved_customers_customer_orders_path, policy(:customer_order).approved? %>
         </div>
       </li>
       <%= nav_item 'Image Reader', customers_image_readers_path, policy(:image_reader).index? %>
