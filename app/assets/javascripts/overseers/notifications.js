@@ -28,7 +28,7 @@ Notifications = class Notifications {
             dataType: "JSON",
             method: "POST",
             success: function () {
-                $(document).attr('title', page_title.replace(/^\([\s\d]*?\) /g, ''));
+                $(document).attr('title', this.remove_count(page_title));
                 return $("[data-behavior='unread-count']").text(0).removeClass('badge-danger');
             }
         });
@@ -40,7 +40,7 @@ Notifications = class Notifications {
             return notification.template;
         });
         unread_count = 0;
-        page_title = $(document).attr('title').replace(/^\([\s\d]*?\) /g, '');
+        page_title = this.remove_count($(document).attr('title'));
         $.each(data, function (i, notification) {
             if (notification.unread) {
                 return unread_count += 1;
@@ -54,6 +54,10 @@ Notifications = class Notifications {
             items = '<div class="dropdown-item text-center text-secondary">No records found</div>'
         }
         return $("[data-behavior='notification-items']").html(items);
+    }
+
+    remove_count(title){
+        return title.replace(/^\([\s\d]*?\) /g, '');
     }
 
 };
