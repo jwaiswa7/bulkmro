@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync]
+  before_action :set_product, only: %i[show edit update sku_purchase_history best_prices_and_supplier_bp_catalog customer_bp_catalog resync]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
@@ -30,7 +32,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def new
-    @product = Product.new(:overseer => current_overseer)
+    @product = Product.new(overseer: current_overseer)
     authorize @product
   end
 
@@ -66,12 +68,12 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_supplier(@supplier)
 
     render json: {
-        lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
-        latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+      lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+      latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier)
     }.merge!(bp_catalog ? {
-        bp_catalog_name: bp_catalog[0],
-        bp_catalog_sku: bp_catalog[1]
-    } : {})
+               bp_catalog_name: bp_catalog[0],
+               bp_catalog_sku: bp_catalog[1]
+             } : {})
   end
 
   def customer_bp_catalog
@@ -81,8 +83,8 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_customer(@company)
 
     render json: bp_catalog ? {
-        bp_catalog_name: bp_catalog[0],
-        bp_catalog_sku: bp_catalog[1]
+      bp_catalog_name: bp_catalog[0],
+      bp_catalog_sku: bp_catalog[1]
     } : {}
   end
 
@@ -108,8 +110,8 @@ class Overseers::ProductsController < Overseers::BaseController
 
   private
 
-  def product_params
-    params.require(:product).permit(
+    def product_params
+      params.require(:product).permit(
         :name,
         :sku,
         :mpn,
@@ -120,11 +122,11 @@ class Overseers::ProductsController < Overseers::BaseController
         :tax_code_id,
         :tax_rate_id,
         :measurement_unit_id,
-        :images => []
-    )
-  end
+        images: []
+      )
+    end
 
-  def set_product
-    @product = Product.find(params[:id])
-  end
+    def set_product
+      @product = Product.find(params[:id])
+    end
 end

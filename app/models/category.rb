@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Category < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasClosureTree
@@ -5,45 +7,44 @@ class Category < ApplicationRecord
   include Mixins::CanHaveTaxes
   include Mixins::CanBeActivated
 
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true, :any_word => true}}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true, any_word: true } }
 
   has_many :category_suppliers
-  has_many :suppliers, :through => :category_suppliers
+  has_many :suppliers, through: :category_suppliers
 
   validates_presence_of :name
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.is_service ||= false
   end
 
   def default_ancestors
-    ["Root Catalog", "Default Category"]
+    ['Root Catalog', 'Default Category']
   end
 
   def all_descendants
-    self.children | self.children.map(&:descendants).flatten
+    children | children.map(&:descendants).flatten
   end
 
   def ancestors_to_s
-    self.ancestry_path - default_ancestors
+    ancestry_path - default_ancestors
   end
 
   def autocomplete_to_s(level)
     case level
     when :grandparent
-      "#{self.name}"
+      name.to_s
     when :parent
-      "- #{self.name}"
+      "- #{name}"
     when :child
-      "-- #{self.name}"
-    else
+      "-- #{name}"
     end
   end
 
   def self.root
-    self.find_by_id(1)
+    find_by_id(1)
   end
 
   def self.default

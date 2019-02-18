@@ -23,20 +23,20 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
         template_id: template_id
     }.as_json)
 
-    recipient.email_messages.create!(:to => recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
+    recipient.email_messages.create!(to: recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
   end
 
   def send_email_messages(recipients, template_id, template_data)
     personalizations_array = []
 
     recipients.each do |recipient|
-      personalizations_array.push({
-          to: [{
-              email: recipient.email,
-              name: recipient.to_s
-          }],
-          dynamic_template_data: template_data.merge(name: recipient.to_s, root_url: routes.root_url)
-      })
+      personalizations_array.push(
+        to: [{
+            email: recipient.email,
+            name: recipient.to_s
+        }],
+        dynamic_template_data: template_data.merge(name: recipient.to_s, root_url: routes.root_url)
+      )
     end
 
     response = client.client.mail._('send').post(request_body: {
@@ -53,7 +53,7 @@ class Services::Shared::EmailMessages::BaseService < Services::Shared::BaseServi
     }.as_json)
 
     recipients.each do |recipient|
-      recipient.email_messages.create!(:to => recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
+      recipient.email_messages.create!(to: recipient.email, from: Settings.email_messages.from, uid: response.headers['x-message-id'][0], metadata: response)
     end
   end
 

@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeSynced
   extend ActiveSupport::Concern
 
   included do
     def save_and_sync(options = false)
-
       if options
         service = ['Services', 'Resources', self.class.name.pluralize, 'SaveAndSync'].join('::').constantize.new(self, options)
       else
@@ -11,7 +12,7 @@ module Mixins::CanBeSynced
       end
 
       service.call
-      self.save if Rails.env.development?
+      save if Rails.env.development?
     end
 
     def syncable_identifiers
@@ -20,10 +21,10 @@ module Mixins::CanBeSynced
 
     def synced?
       syncable_identifiers.each do |si|
-        return true if self.send(si).present?
+        return true if send(si).present?
       end
 
-      return false
+      false
     end
 
     def not_synced?
@@ -31,7 +32,7 @@ module Mixins::CanBeSynced
     end
 
     def sync_id
-      self.legacy_id || self.id
+      legacy_id || id
     end
   end
 end

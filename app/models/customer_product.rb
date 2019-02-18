@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class CustomerProduct < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasImages
   include Mixins::CanBeWatermarked
 
-  update_index('customer_products#customer_product') {self}
-  pg_search_scope :locate, :against => [:sku, :name], :associated_against => {brand: [:name]}, :using => {:tsearch => {:prefix => true}}
+  update_index('customer_products#customer_product') { self }
+  pg_search_scope :locate, against: %i[sku name], associated_against: { brand: [:name] }, using: { tsearch: { prefix: true } }
 
   belongs_to :brand, required: false
   belongs_to :category, required: false
@@ -23,9 +25,9 @@ class CustomerProduct < ApplicationRecord
   validates_uniqueness_of :product_id, scope: :company_id
   validates_presence_of :moq
 
-  scope :with_includes, -> {includes(:brand, :category)}
+  scope :with_includes, -> { includes(:brand, :category) }
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.moq ||= 1
@@ -34,51 +36,45 @@ class CustomerProduct < ApplicationRecord
   after_save :update_index
 
   def update_index
-    CustomerProductsIndex::CustomerProduct.import([self.id])
+    CustomerProductsIndex::CustomerProduct.import([id])
   end
 
   def best_brand
-    self.brand || self.product.brand
+    brand || product.brand
   end
 
   def best_tax_code
-    self.tax_code || self.product.best_tax_code
+    tax_code || product.best_tax_code
   end
 
   def best_tax_rate
-    self.tax_rate || self.product.best_tax_rate
+    tax_rate || product.best_tax_rate
   end
 
   def best_measurement_unit
-    self.measurement_unit || self.product.measurement_unit
+    measurement_unit || product.measurement_unit
   end
 
   def best_category
-    self.category || self.product.category
+    category || product.category
   end
 
   def best_images
-    if self.images.present?
-      self.images
-    elsif self.product.images.present?
-      self.product.images
-    else
-      nil
+    if images.present?
+      images
+    elsif product.images.present?
+      product.images
     end
   end
 
   def best_image
     if best_images.present?
-      if best_images.first.present?
-        best_images.first
-      else
-        nil
-      end
+      best_images.first if best_images.first.present?
     end
   end
 
   def has_images?
-    self.best_images.attached?
+    best_images.attached?
   end
 
   # def set_unit_selling_price

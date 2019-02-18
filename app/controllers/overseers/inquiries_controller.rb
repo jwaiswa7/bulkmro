@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Overseers::InquiriesController < Overseers::BaseController
-  before_action :set_inquiry, only: [:show, :edit, :update, :edit_suppliers, :update_suppliers, :export, :calculation_sheet, :stages]
+  before_action :set_inquiry, only: %i[show edit update edit_suppliers update_suppliers export calculation_sheet stages]
 
   def index
     authorize :inquiry
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::Inquiries.new(params, current_overseer, paginate: false)
         service.call
@@ -16,7 +18,7 @@ class Overseers::InquiriesController < Overseers::BaseController
         @indexed_inquiries = service.indexed_records.per(per).page(page)
         @inquiries = service.records.page(page).per(per).try(:reverse)
 
-        if (Inquiry.count != @indexed_inquiries.total_count)
+        if Inquiry.count != @indexed_inquiries.total_count
           status_records = service.records.try(:reverse)
           @statuses = status_records.pluck(:status)
         else
@@ -82,8 +84,8 @@ class Overseers::InquiriesController < Overseers::BaseController
     authorize @inquiry
 
     send_file(
-        "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
-        filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
+      "#{Rails.root}/public/calculation_sheet/Calc_Sheet.xlsx",
+      filename: "##{@inquiry.inquiry_number} Calculation Sheet.xlsx"
     )
   end
 
@@ -137,14 +139,13 @@ class Overseers::InquiriesController < Overseers::BaseController
   end
 
   def update_suppliers
-    @inquiry.assign_attributes(edit_suppliers_params.merge(:overseer => current_overseer))
+    @inquiry.assign_attributes(edit_suppliers_params.merge(overseer: current_overseer))
     authorize @inquiry
 
     if @inquiry.save_and_sync
       Services::Overseers::Inquiries::UpdateStatus.new(@inquiry, :cross_reference).call
 
-
-      if params.has_key?(:common_supplier_selected)
+      if params.key?(:common_supplier_selected)
         Services::Overseers::Inquiries::CommonSupplierSelected.new(@inquiry, params[:inquiry][:common_supplier_id], params[:inquiry_product_ids]).call
         redirect_to edit_suppliers_overseers_inquiry_path(@inquiry)
       else
@@ -160,12 +161,12 @@ class Overseers::InquiriesController < Overseers::BaseController
 
   private
 
-  def set_inquiry
-    @inquiry ||= Inquiry.find(params[:id])
-  end
+    def set_inquiry
+      @inquiry ||= Inquiry.find(params[:id])
+    end
 
-  def inquiry_params
-    params.require(:inquiry).permit(
+    def inquiry_params
+      params.require(:inquiry).permit(
         :project_uid,
         :company_id,
         :contact_id,
@@ -209,28 +210,28 @@ class Overseers::InquiriesController < Overseers::BaseController
         :calculation_sheet,
         :commercial_terms_and_conditions,
         :comments,
-        :supplier_quotes => [],
-        :inquiry_products_attributes => [:id, :product_id, :sr_no, :quantity, :bp_catalog_name, :bp_catalog_sku, :_destroy]
-    )
-  end
-
-  def edit_suppliers_params
-    if params.has_key?(:inquiry)
-      params.require(:inquiry).permit(
-          :inquiry_products_attributes => [
-              :id,
-              :inquiry_product_suppliers_attributes => [
-                  :id,
-                  :supplier_id,
-                  :bp_catalog_name,
-                  :bp_catalog_sku,
-                  :unit_cost_price,
-                  :_destroy
-              ]
-          ]
+        supplier_quotes: [],
+        inquiry_products_attributes: %i[id product_id sr_no quantity bp_catalog_name bp_catalog_sku _destroy]
       )
-    else
-      {}
     end
-  end
+
+    def edit_suppliers_params
+      if params.key?(:inquiry)
+        params.require(:inquiry).permit(
+          inquiry_products_attributes: [
+            :id,
+            inquiry_product_suppliers_attributes: %i[
+              id
+              supplier_id
+              bp_catalog_name
+              bp_catalog_sku
+              unit_cost_price
+              _destroy
+            ]
+          ]
+        )
+      else
+        {}
+      end
+    end
 end

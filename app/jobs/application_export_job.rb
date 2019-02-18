@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationExportJob < ActiveJob::Base
   queue_as :default
 

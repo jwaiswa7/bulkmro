@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 class Overseers::SessionsController < Devise::SessionsController
   layout 'shared/layouts/sign_in'
 
   private
-  def after_sign_out_path_for(resource_or_scope)
-    new_overseer_session_path
-  end
+
+    def after_sign_out_path_for(_resource_or_scope)
+      new_overseer_session_path
+    end
 end

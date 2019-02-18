@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::DashboardController < Overseers::BaseController
   skip_before_action :authenticate_overseer!, only: :migrations
 
@@ -14,15 +16,15 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def serializer
     authorize :dashboard, :show?
-    render json: Serializers::InquirySerializer.new(Inquiry.find(1004), {
-        include: [
-        ]}).serialized_json
+    render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
+                                                    include: [
+                                                    ]).serialized_json
   end
 
   def chewy
     authorize :dashboard
-    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
-      path.gsub(".rb", "").gsub("app/chewy/", "").classify.constantize.reset!
+    Dir[[Chewy.indices_path, '/*'].join].map do |path|
+      path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
     end
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path
@@ -32,9 +34,7 @@ class Overseers::DashboardController < Overseers::BaseController
     authorize :dashboard
     if params.present? && params[:index].present?
       index_class = params[:index].to_s.classify.constantize
-      if index_class <= BaseIndex
-        index_class.reset!
-      end
+      index_class.reset! if index_class <= BaseIndex
     end
     redirect_back fallback_location: overseers_dashboard_path
   end

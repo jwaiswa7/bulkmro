@@ -1,5 +1,4 @@
 class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::BaseCallback
-
   def call
     begin
       sales_order = SalesOrder.find_by_order_number(params['order_id'])
@@ -7,72 +6,70 @@ class Services::Callbacks::SalesInvoices::Create < Services::Callbacks::Shared::
       if sales_order.present?
         if !SalesInvoice.find_by_invoice_number(params['increment_id']).present?
           sales_order.invoices.where(invoice_number: params['increment_id']).first_or_create! do |invoice|
-            invoice.assign_attributes(:status => 1, :metadata => params, mis_date: params['created_at'])
+            invoice.assign_attributes(status: 1, metadata: params, mis_date: params['created_at'])
 
             if params['is_kit'].to_i == 1
               sales_order_row = sales_order.sales_order_rows.first
 
               invoice.rows.where(sku: sales_order_row.product.sku).first_or_initialize do |row|
-
                 qty_kit = params['qty_kit'].to_i
                 unit_price_kit = params['unitprice_kit'].to_f
 
                 kit_meta_data = {
-                    :qty =>  qty_kit,
-                    :sku =>  sales_order_row.product.sku,
-                    :name =>  params['desc_kit'],
-                    :price =>  unit_price_kit,
-                    :base_cost => nil,
-                    :row_total => unit_price_kit * qty_kit,
-                    :base_price =>  unit_price_kit,
-                    :product_id =>  sales_order_row.product.id.to_param,
-                    :tax_amount =>  sales_order.calculated_total_tax,
-                    :description =>  params['desc_kit'],
-                    :order_item_id =>  nil,
-                    :base_row_total =>  unit_price_kit * qty_kit,
-                    :price_incl_tax => nil,
-                    :additional_data => nil,
-                    :base_tax_amount => sales_order.calculated_total_tax,
-                    :discount_amount =>  nil,
-                    :weee_tax_applied => nil,
-                    :hidden_tax_amount => nil,
-                    :row_total_incl_tax => (unit_price_kit * qty_kit) + (sales_order.calculated_total_tax),
-                    :base_price_incl_tax => nil,
-                    :base_discount_amount =>  nil,
-                    :weee_tax_disposition => nil,
-                    :base_hidden_tax_amount => nil,
-                    :base_row_total_incl_tax => nil,
-                    :weee_tax_applied_amount => nil,
-                    :weee_tax_row_disposition => nil,
-                    :base_weee_tax_disposition => nil,
-                    :weee_tax_applied_row_amount => nil,
-                    :base_weee_tax_applied_amount => nil,
-                    :base_weee_tax_row_disposition => nil,
-                    :base_weee_tax_applied_row_amnt => nil
+                    qty: qty_kit,
+                    sku: sales_order_row.product.sku,
+                    name: params['desc_kit'],
+                    price: unit_price_kit,
+                    base_cost: nil,
+                    row_total: unit_price_kit * qty_kit,
+                    base_price: unit_price_kit,
+                    product_id: sales_order_row.product.id.to_param,
+                    tax_amount: sales_order.calculated_total_tax,
+                    description: params['desc_kit'],
+                    order_item_id: nil,
+                    base_row_total: unit_price_kit * qty_kit,
+                    price_incl_tax: nil,
+                    additional_data: nil,
+                    base_tax_amount: sales_order.calculated_total_tax,
+                    discount_amount: nil,
+                    weee_tax_applied: nil,
+                    hidden_tax_amount: nil,
+                    row_total_incl_tax: (unit_price_kit * qty_kit) + (sales_order.calculated_total_tax),
+                    base_price_incl_tax: nil,
+                    base_discount_amount: nil,
+                    weee_tax_disposition: nil,
+                    base_hidden_tax_amount: nil,
+                    base_row_total_incl_tax: nil,
+                    weee_tax_applied_amount: nil,
+                    weee_tax_row_disposition: nil,
+                    base_weee_tax_disposition: nil,
+                    weee_tax_applied_row_amount: nil,
+                    base_weee_tax_applied_amount: nil,
+                    base_weee_tax_row_disposition: nil,
+                    base_weee_tax_applied_row_amnt: nil
                 }
                 row.assign_attributes(
-                    quantity: qty_kit,
-                    metadata: kit_meta_data
+                  quantity: qty_kit,
+                  metadata: kit_meta_data
                 )
               end if sales_order_row.present?
             else
               params['ItemLine'].each do |remote_row|
                 invoice.rows.where(sku: remote_row['sku']).first_or_initialize do |row|
                   row.assign_attributes(
-                      quantity: remote_row['qty'],
-                      metadata: remote_row
+                    quantity: remote_row['qty'],
+                    metadata: remote_row
                   )
                 end
               end
             end
-
           end
-          return_response("Sales Invoice created successfully.")
+          return_response('Sales Invoice created successfully.')
         else
-          return_response("Sales Invoice already created.")
+          return_response('Sales Invoice already created.')
         end
       else
-        return_response("Sales Invoice not found.", 0)
+        return_response('Sales Invoice not found.', 0)
       end
     rescue => e
       return_response(e.message, 0)

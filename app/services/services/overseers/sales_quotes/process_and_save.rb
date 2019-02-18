@@ -4,7 +4,6 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
   end
 
   def call
-
     if sales_quote.selected_suppliers.present?
       sales_quote.selected_suppliers.each do |inquiry_product_id, inquiry_product_supplier_id|
         selected_rows = sales_quote.rows.reject { |r| r.inquiry_product.id == inquiry_product_id.to_i && r.inquiry_product_supplier_id != inquiry_product_supplier_id.to_i }
@@ -26,7 +25,7 @@ class Services::Overseers::SalesQuotes::ProcessAndSave < Services::Shared::BaseS
       end
     else
       sales_quote.reload
-      sales_quote.inquiry.errors.add(:sales_quote, "Must have at least one sales quote row")
+      sales_quote.inquiry.errors.add(:sales_quote, 'Must have at least one sales quote row')
     end
   end
 

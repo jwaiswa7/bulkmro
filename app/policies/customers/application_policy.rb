@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::ApplicationPolicy
   attr_reader :contact, :record
 

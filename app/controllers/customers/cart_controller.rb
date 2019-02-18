@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CartController < Customers::BaseController
   before_action :set_cart
 
@@ -47,11 +49,12 @@ class Customers::CartController < Customers::BaseController
   end
 
   private
-  def set_cart
-    @cart = current_cart
-  end
 
-  def cart_params
-    params.require(:cart).permit(items_attributes: [:quantity, :id])
-  end
+    def set_cart
+      @cart = current_cart
+    end
+
+    def cart_params
+      params.require(:cart).permit(items_attributes: %i[quantity id])
+    end
 end

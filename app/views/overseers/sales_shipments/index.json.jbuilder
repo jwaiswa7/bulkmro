@@ -25,13 +25,13 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesShipment.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       SalesShipment.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        []
                    ]
 
 json.recordsTotal SalesShipment.all.count
 json.recordsFiltered @indexed_sales_shipments.total_count
 json.draw params[:draw]
-json.recordsSummary SalesShipment.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary SalesShipment.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses.count(k) } }.as_json

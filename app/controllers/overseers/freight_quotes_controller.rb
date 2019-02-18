@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class Overseers::FreightQuotesController < Overseers::BaseController
-  before_action :set_freight_quote, only: [:show, :edit]
+  before_action :set_freight_quote, only: %i[show edit]
 
   def index
     freight_quotes =
-        if params[:status].present?
-          @status = params[:status]
-          FreightQuote.where(:status => params[:status])
-        else
-          FreightQuote.all
-        end.order(id: :desc)
+      if params[:status].present?
+        @status = params[:status]
+        FreightQuote.where(status: params[:status])
+      else
+        FreightQuote.all
+      end.order(id: :desc)
 
     @freight_quotes = ApplyDatatableParams.to(freight_quotes, params)
     authorize @freight_quotes
@@ -26,7 +28,7 @@ class Overseers::FreightQuotesController < Overseers::BaseController
 
   private
 
-  def set_freight_quote
-    @freight_quote = FreightQuote.find(params[:id])
-  end
+    def set_freight_quote
+      @freight_quote = FreightQuote.find(params[:id])
+    end
 end

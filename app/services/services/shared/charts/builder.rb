@@ -4,7 +4,7 @@ class Services::Shared::Charts::Builder < Services::Shared::BaseService
     @end_at = Date.today.end_of_month
     @data = {}
     @options = {}
-    @chart = {:data => @data, :options => @options}
+    @chart = { data: @data, options: @options }
   end
 
   def build_chart
@@ -13,8 +13,8 @@ class Services::Shared::Charts::Builder < Services::Shared::BaseService
     ActiveRecord::Base.default_timezone = :local
 
     @chart = {
-        :data => @data,
-        :options => @options
+        data: @data,
+        options: @options
     }
   end
 

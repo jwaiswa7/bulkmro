@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Callbacks::BaseController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :authenticate_callback!
@@ -16,21 +18,21 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def render_successful(status = 1, message = 'Request successfully handled', response = nil)
-    render json: {success: status, status: status, message: message, response: response}, status: :ok
+    render json: { success: status, status: status, message: message, response: response }, status: :ok
   end
 
   def render_unsuccessful(status = 0, message = 'Request unsuccessful', response = nil)
-    render json: {success: status, status: status, message: message, response: response}, status: 500
+    render json: { success: status, status: status, message: message, response: response }, status: 500
   end
 
   def log_request
-    @callback_request=  CallbackRequest.where(:method => self.to_callback_request(request.method.to_s), :resource => controller_name.classify, :request => params).first_or_create do |callback_request|
+    @callback_request = CallbackRequest.where(method: to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
       callback_request.update(
-          method: self.to_callback_request(request.method.to_s),
-          resource: controller_name.classify,
-          request: params,
-          url: request.url,
-          status: :pending
+        method: to_callback_request(request.method.to_s),
+        resource: controller_name.classify,
+        request: params,
+        url: request.url,
+        status: :pending
       )
     end
     @callback_request
@@ -38,7 +40,7 @@ class Callbacks::BaseController < ApplicationController
 
   def to_callback_request(request_type)
     case request_type
-    when "POST"
+    when 'POST'
       :post
     else
       :patch
@@ -47,9 +49,9 @@ class Callbacks::BaseController < ApplicationController
 
   private
 
-  def authenticate_callback!
-    authenticate_or_request_with_http_token do |token, options|
-      token == Rails.cache.fetch(:sap_api_key) ? true : false
+    def authenticate_callback!
+      authenticate_or_request_with_http_token do |token, _options|
+        token == Rails.cache.fetch(:sap_api_key)
+      end
     end
-  end
 end

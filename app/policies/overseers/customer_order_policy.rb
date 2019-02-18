@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_cataloging? || admin?

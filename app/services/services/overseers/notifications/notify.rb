@@ -1,5 +1,4 @@
 class Services::Overseers::Notifications::Notify < Services::Shared::Notifications::BaseService
-
   def initialize(from, namespace)
     super(from, namespace)
   end
@@ -19,9 +18,9 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if msg[0].present?
       @message = "Product #{msg[1]} has been #{msg[0]}"
     else
-      @message =  "New reply for Product #{msg[1]}"
+      @message = "New reply for Product #{msg[1]}"
     end
-    @message =  "#{@message.to_s}: #{msg[2]}" if msg[2].present?
+    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
@@ -43,15 +42,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     if msg[0].present?
       @message = "Order for Inquiry ##{msg[1]} has been #{msg[0]}"
     else
-      @message =  "New reply for order of Inquiry ##{msg[1]}"
+      @message = "New reply for order of Inquiry ##{msg[1]}"
     end
-    @message =  "#{@message.to_s}: #{msg[2]}" if msg[2].present?
+    @message = "#{@message}: #{msg[2]}" if msg[2].present?
     send
   end
 
   def send_sap_order_confirmation(inq, action, notifiable, url, msg)
     @action = action; @notifiable = notifiable; @url = url; @message = msg
-    tos= Array.new
+    tos = Array.new
     tos << inq.sales_manager
     tos << inq.outside_sales_owner
     tos << inq.inside_sales_owner
@@ -60,5 +59,4 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
       send
     end
   end
-
 end

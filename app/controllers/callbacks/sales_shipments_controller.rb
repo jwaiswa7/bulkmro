@@ -1,3 +1,4 @@
-class Callbacks::SalesShipmentsController < Callbacks::BaseController
+# frozen_string_literal: true
 
+class Callbacks::SalesShipmentsController < Callbacks::BaseController
 end

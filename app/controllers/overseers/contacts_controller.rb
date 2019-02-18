@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Overseers::ContactsController < Overseers::BaseController
-  before_action :set_contact, only: [:show, :edit, :update, :become]
+  before_action :set_contact, only: %i[show edit update become]
 
   def index
     # service = Services::Overseers::Finders::Contacts.new(params)
@@ -34,7 +36,7 @@ class Overseers::ContactsController < Overseers::BaseController
     authorize @contact
 
     if @contact.save_and_sync
-      @company.update_attributes(:default_company_contact => @contact.company_contact) if @company.default_company_contact.blank?
+      @company.update_attributes(default_company_contact: @contact.company_contact) if @company.default_company_contact.blank?
       redirect_to overseers_company_path(@company), notice: flash_message(@contact, action_name)
     else
       render 'new'
@@ -46,7 +48,7 @@ class Overseers::ContactsController < Overseers::BaseController
   end
 
   def update
-    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! {|k, v| (k == 'password' || k == 'password_confirmation') && v.blank?})
+    @contact.assign_attributes(contact_params.merge(overseer: current_overseer).reject! { |k, v| (k == 'password' || k == 'password_confirmation') && v.blank? })
     authorize @contact
 
     if @contact.save_and_sync
@@ -64,13 +66,13 @@ class Overseers::ContactsController < Overseers::BaseController
 
   private
 
-  def set_contact
-    @contact ||= Contact.find(params[:id])
-    @inquiries = @contact.inquiries
-  end
+    def set_contact
+      @contact ||= Contact.find(params[:id])
+      @inquiries = @contact.inquiries
+    end
 
-  def contact_params
-    params.require(:contact).permit(
+    def contact_params
+      params.require(:contact).permit(
         :company_id,
         :first_name,
         :last_name,
@@ -86,7 +88,7 @@ class Overseers::ContactsController < Overseers::BaseController
         :status,
         :contact_group,
         :is_active,
-        :company_ids => []
-    )
-  end
+        company_ids: []
+      )
+    end
 end

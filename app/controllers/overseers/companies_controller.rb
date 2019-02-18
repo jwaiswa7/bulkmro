@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CompaniesController < Overseers::BaseController
   before_action :set_company, only: [:show]
 
@@ -28,7 +30,8 @@ class Overseers::CompaniesController < Overseers::BaseController
   end
 
   private
-  def set_company
-    @company ||= Company.find(params[:id])
-  end
+
+    def set_company
+      @company ||= Company.find(params[:id])
+    end
 end

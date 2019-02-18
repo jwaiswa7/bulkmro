@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::HasMobileAndTelephone
   extend ActiveSupport::Concern
 
@@ -8,7 +10,7 @@ module Mixins::HasMobileAndTelephone
     validates_plausible_phone :telephone, :mobile, allow_blank: true, if: :not_legacy?
 
     def phone
-      self.mobile || self.telephone
+      mobile || telephone
     end
   end
 end

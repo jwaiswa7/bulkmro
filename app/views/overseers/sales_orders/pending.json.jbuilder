@@ -11,7 +11,7 @@ json.data (@sales_orders) do |sales_order|
             row_action_button(edit_overseers_inquiry_path(sales_order.inquiry), 'arrow-right', 'Go to Inquiry', 'dark')
           end
       ].join(' '),
-      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : "",
+      sales_order.order_number.present? ? conditional_link(sales_order.order_number, overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), policy(sales_order.inquiry).show?) : '',
       sales_order.id,
       conditional_link(sales_order.inquiry.inquiry_number, edit_overseers_inquiry_path(sales_order.inquiry), policy(sales_order.inquiry).edit?),
       status_badge(format_enum(sales_order.order_status || sales_order.legacy_request_status, humanize_text: false)),
@@ -25,8 +25,8 @@ json.data (@sales_orders) do |sales_order|
       format_date(sales_order.created_at)
   ]
 
-  columns = Hash[columns.collect.with_index {|item, index| [index, item]}]
-  json.merge! columns.merge({"DT_RowClass": sales_order.calculated_total_margin_percentage.to_f < 10 ? "bg-highlight-danger" : ''})
+  columns = Hash[columns.collect.with_index { |item, index| [index, item] }]
+  json.merge! columns.merge("DT_RowClass": sales_order.calculated_total_margin_percentage.to_f < 10 ? 'bg-highlight-danger' : '')
 end
 
 json.columnFilters [
@@ -34,11 +34,11 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       SalesOrder.statuses.except("Approved").map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
-                       SalesOrder.remote_statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       SalesOrder.statuses.except('Approved').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
+                       SalesOrder.remote_statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        [],
                        [],
@@ -51,4 +51,4 @@ json.recordsFiltered @indexed_sales_orders.total_count
 # json.recordsTotal @inquiries.model.all.count
 # json.recordsFiltered @inquiries.total_count
 json.draw params[:draw]
-json.recordsSummary SalesOrder.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary SalesOrder.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses.count(k) } }.as_json

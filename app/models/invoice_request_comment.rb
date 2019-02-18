@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class InvoiceRequestComment < ApplicationRecord
   include Mixins::CanBeStamped
@@ -5,7 +6,7 @@ class InvoiceRequestComment < ApplicationRecord
   belongs_to :invoice_request
 
   def author
-    self.created_by
+    created_by
   end
 
   def author_role

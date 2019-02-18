@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [ :resync]
+  before_action :set_sales_order, only: [:resync]
   def pending
     authorize :sales_order
 
     respond_to do |format|
       format.html { render 'pending' }
       format.json do
-        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer,paginate: false)
+        service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
         service.call
 
         per = (params[:per] || params[:length] || 20).to_i
@@ -14,9 +16,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
         @indexed_sales_orders = service.indexed_records.per(per).page(page)
         @sales_orders = service.records.page(page).per(per).try(:reverse)
-        puts "pending"
+        puts 'pending'
 
-        if (SalesOrder.count != @indexed_sales_orders.total_count)
+        if SalesOrder.count != @indexed_sales_orders.total_count
           status_records = service.records.try(:reverse)
           @statuses = status_records.pluck(:status).concat(status_records.pluck(:legacy_request_status))
         else
@@ -64,7 +66,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
     authorize :sales_order
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -75,7 +77,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         @indexed_sales_orders = service.indexed_records.per(per).page(page)
         @sales_orders = service.records.page(page).per(per).try(:reverse)
 
-        if (SalesOrder.count != @indexed_sales_orders.total_count)
+        if SalesOrder.count != @indexed_sales_orders.total_count
           status_records = service.records.try(:reverse)
           @statuses = status_records.pluck(:remote_status)
         else
@@ -98,9 +100,9 @@ class Overseers::SalesOrdersController < Overseers::BaseController
   def drafts_pending
     authorize :sales_order
 
-    sales_orders = SalesOrder.where.not(:sent_at => nil).where(:draft_uid => nil , :status => :'SAP Approval Pending').not_legacy
+    sales_orders = SalesOrder.where.not(sent_at: nil).where(draft_uid: nil, status: :'SAP Approval Pending').not_legacy
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         @drafts_pending_count = sales_orders.count
         @sales_orders = ApplyDatatableParams.to(sales_orders, params)
@@ -118,7 +120,7 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   private
 
-  def set_sales_order
-    @sales_order = SalesOrder.find(params[:id])
-  end
+    def set_sales_order
+      @sales_order = SalesOrder.find(params[:id])
+    end
 end

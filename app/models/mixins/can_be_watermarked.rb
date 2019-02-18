@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeWatermarked
   extend ActiveSupport::Concern
 
   included do
-    IMAGE_SIZES = {tiny: 40, small: 250, medium: 400, xlarge: 2400}
+    IMAGE_SIZES = { tiny: 40, small: 250, medium: 400, xlarge: 2400 }.freeze
     WATERMARK_PATH = Rails.root.join('app', 'assets', 'images', 'watermark.png')
 
     after_save :create_watermarked_variation
 
     def create_watermarked_variation
-      if self.best_image.present?
+      if best_image.present?
         tiny_best_image
         medium_best_image
       end
@@ -19,13 +21,13 @@ module Mixins::CanBeWatermarked
       ratio = "#{size}X#{size}"
 
       variation = ActiveStorage::Variation.new(
-          combine_options: {
-              resize: "#{ratio}^",
-              extent: "#{ratio}",
-              quality: "90",
-              gravity: 'Center',
-              draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH.to_s}'"
-          }
+        combine_options: {
+          resize: "#{ratio}^",
+          extent: ratio.to_s,
+          quality: '90',
+          gravity: 'Center',
+          draw: "image SrcOver 0,0,#{size},#{size} '#{WATERMARK_PATH}'"
+        }
       )
       begin
         ActiveStorage::Variant.new(image, variation).processed
@@ -35,11 +37,11 @@ module Mixins::CanBeWatermarked
     end
 
     def tiny_best_image
-      watermarked_variation(self.best_image, 'tiny')
+      watermarked_variation(best_image, 'tiny')
     end
 
     def medium_best_image
-      watermarked_variation(self.best_image, 'medium')
+      watermarked_variation(best_image, 'medium')
     end
   end
 end

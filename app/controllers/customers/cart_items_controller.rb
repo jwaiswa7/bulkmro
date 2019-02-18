@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]
   before_action :cart_item_params, only: [:create]
@@ -10,7 +12,7 @@ class Customers::CartItemsController < Customers::BaseController
     @cart_item.update_attributes(quantity: cart_item_params[:quantity])
 
     respond_to do |format|
-      format.js {}
+      format.js { }
     end
   end
 
@@ -24,17 +26,18 @@ class Customers::CartItemsController < Customers::BaseController
     if @cart_item.destroy
       respond_to do |format|
         format.html { redirect_to customers_cart_path(current_cart), notice: flash_message(@cart_item, action_name) }
-        format.js { render :layout => false }
+        format.js { render layout: false }
       end
     end
   end
 
   private
-  def set_cart_item
-    @cart_item = current_cart.items.find(params[:id])
-  end
 
-  def cart_item_params
-    params.require(:cart_item).permit(:quantity, :product_id, :customer_product_id)
-  end
+    def set_cart_item
+      @cart_item = current_cart.items.find(params[:id])
+    end
+
+    def cart_item_params
+      params.require(:cart_item).permit(:quantity, :product_id, :customer_product_id)
+    end
 end

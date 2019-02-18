@@ -21,7 +21,7 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
   def set_and_validate_excel_rows
     excel = SimpleXlsxReader.open(TempfilePath.for(import.file))
     excel_rows = excel.sheets.first.rows
-    excel_rows.reject! {|er| er.compact.blank?}
+    excel_rows.reject! { |er| er.compact.blank? }
     @excel_rows = excel_rows
   end
 
@@ -62,9 +62,9 @@ class Services::Overseers::CustomerProductsImports::ExcelImporter
         if product.present?
           customer_product = CustomerProduct.where(company_id: company.id, product_id: product.id).first_or_create
           customer_product.customer_price = row['price'].to_f
-          customer_product.name = (row['name'] if row['name'].present? ) || product.name
+          customer_product.name = (row['name'] if row['name'].present?) || product.name
           customer_product.sku =  row['sku'] || product.sku
-          brand = ( Brand.find_by_name(row['brand']) if row['brand'].present? ) || product.brand
+          brand = (Brand.find_by_name(row['brand']) if row['brand'].present?) || product.brand
           customer_product.brand_id = brand.id if brand.present?
           if row['url'].present?
             filename = row['url'].split('/').last

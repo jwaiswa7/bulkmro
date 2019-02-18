@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   def index?
     true

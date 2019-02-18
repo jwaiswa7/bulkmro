@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Overseers::Companies::CustomerProductsController < Overseers::Companies::BaseController
-  before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_customer_product, only: %i[show edit update destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! {|k, v| k == 'company_id'})
+    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, _v| k == 'company_id' })
     authorize @products
   end
 
@@ -20,16 +22,16 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
   end
 
   def new
-    @customer_product = @company.customer_products.new(:overseer => current_overseer)
+    @customer_product = @company.customer_products.new(overseer: current_overseer)
     authorize @customer_product
   end
 
   def create
     @product = Product.find(customer_product_params[:product_id])
-    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product = @company.customer_products.where(product: @product).first_or_initialize
     @customer_product.assign_attributes(customer_product_params)
-    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
-    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
+    @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
 
     authorize @customer_product
 
@@ -54,17 +56,16 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
-
   def edit
     authorize @customer_product
   end
 
   def update
     @product = Product.find(customer_product_params[:product_id])
-    @customer_product = @company.customer_products.where(:product => @product).first_or_initialize
+    @customer_product = @company.customer_products.where(product: @product).first_or_initialize
     @customer_product.assign_attributes(customer_product_params)
-    @customer_product.assign_attributes(:name => @product.name) if @customer_product.name.blank?
-    @customer_product.assign_attributes(:sku => @product.sku) if @customer_product.sku.blank?
+    @customer_product.assign_attributes(name: @product.name) if @customer_product.name.blank?
+    @customer_product.assign_attributes(sku: @product.sku) if @customer_product.sku.blank?
     authorize @customer_product
 
     if @customer_product.save
@@ -83,12 +84,12 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
 
   private
 
-  def set_customer_product
-    @customer_product ||= CustomerProduct.find(params[:id])
-  end
+    def set_customer_product
+      @customer_product ||= CustomerProduct.find(params[:id])
+    end
 
-  def customer_product_params
-    params.require(:customer_product).permit(
+    def customer_product_params
+      params.require(:customer_product).permit(
         :name,
         :product_id,
         :tax_code_id,
@@ -99,7 +100,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
         :brand_id,
         :category_id,
         :moq,
-        :images => []
-    )
-  end
+        images: []
+      )
+    end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::ApplicationPolicy
   attr_reader :overseer, :record
 
@@ -35,7 +37,7 @@ class Overseers::ApplicationPolicy
   end
 
   def developer?
-    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com','vishal.biradar@bulkmro.com' ,'lopesh.durugkar@bulkmro.com'].include? overseer.email
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com', 'vishal.biradar@bulkmro.com', 'lopesh.durugkar@bulkmro.com'].include? overseer.email
   end
 
   def admin?
@@ -134,7 +136,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

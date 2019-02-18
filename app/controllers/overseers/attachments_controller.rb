@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::AttachmentsController < Overseers::BaseController
   before_action :set_attachment, only: [:destroy]
 
@@ -12,7 +14,8 @@ class Overseers::AttachmentsController < Overseers::BaseController
   end
 
   private
-  def set_attachment
-    @attachment = ActiveStorage::Attachment.find(params[:id])
-  end
+
+    def set_attachment
+      @attachment = ActiveStorage::Attachment.find(params[:id])
+    end
 end

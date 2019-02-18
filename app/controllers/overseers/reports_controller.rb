@@ -1,5 +1,6 @@
-class Overseers::ReportsController < Overseers::BaseController
+# frozen_string_literal: true
 
+class Overseers::ReportsController < Overseers::BaseController
   def index
     Report.activity
     Report.target
@@ -24,16 +25,16 @@ class Overseers::ReportsController < Overseers::BaseController
 
   private
 
-  def report_params
-    if params.has_key?(:report)
-      params.require(:report).permit(
+    def report_params
+      if params.key?(:report)
+        params.require(:report).permit(
           :date_range,
           :start_at,
           :end_at,
           :filters
-      )
-    else
-      {}
+        )
+      else
+        {}
+      end
     end
-  end
 end

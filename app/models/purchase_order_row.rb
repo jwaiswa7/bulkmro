@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
 
@@ -14,23 +16,23 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    metadata['PopTaxRate'].gsub(/\D/, '').to_f
   end
 
   def applicable_tax_percentage
-    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
+    metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
   end
 
   def quantity
-    self.metadata['PopQty'].to_f.round(2)
+    metadata['PopQty'].to_f.round(2)
   end
 
   def unit_selling_price
-    (self.metadata['PopPriceHt'].to_f).round(2) if self.metadata['PopPriceHt'].present?
+    metadata['PopPriceHt'].to_f.round(2) if metadata['PopPriceHt'].present?
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage || 0))
+    unit_selling_price + (unit_selling_price * (applicable_tax_percentage || 0))
   end
 
   def total_tax
@@ -38,16 +40,16 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    (self.unit_selling_price * self.quantity).round(2) if self.metadata['PopPriceHt'].present?
+    (unit_selling_price * quantity).round(2) if metadata['PopPriceHt'].present?
   end
 
   def total_selling_price_with_tax
-    self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
+    unit_selling_price_with_tax * quantity if unit_selling_price.present?
   end
 
   private
-  def get_product
-    Product.find_by_legacy_id(self.metadata['PopProductId'].to_i) || Product.find(self.metadata['PopProductId'])
-  end
 
+    def get_product
+      Product.find_by_legacy_id(metadata['PopProductId'].to_i) || Product.find(metadata['PopProductId'])
+    end
 end

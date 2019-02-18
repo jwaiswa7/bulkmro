@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
-  update_index('sales_invoices#sales_invoice') {self}
+  update_index('sales_invoices#sales_invoice') { self }
 
   belongs_to :sales_order
-  has_one :inquiry, :through => :sales_order
+  has_one :inquiry, through: :sales_order
 
   has_many :receipts, class_name: 'SalesReceipt', inverse_of: :sales_invoice
   has_many :packages, class_name: 'SalesPackage', inverse_of: :sales_invoice
@@ -15,19 +17,19 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :pod_attachment
 
   enum status: {
-      :'Open' => 1,
-      :'Paid' => 2,
-      :'Unpaid' => 3,
-      :'Partial: Shipped' => 201,
-      :'Shipped' => 202,
-      :'Material Delivery Delayed' => 203,
-      :'Delivered: GRN Pending' => 204,
-      :'Delivered: GRN Delayed' => 205,
-      :'Material Ready For Dispatch' => 206,
-      :'Material Rejected' => 207
+    'Open': 1,
+    'Paid': 2,
+    'Unpaid': 3,
+    'Partial: Shipped': 201,
+    'Shipped': 202,
+    'Material Delivery Delayed': 203,
+    'Delivered: GRN Pending': 204,
+    'Delivered: GRN Delayed': 205,
+    'Material Ready For Dispatch': 206,
+    'Material Rejected': 207
   }
 
-  scope :with_includes, -> {includes(:sales_order)}
+  scope :with_includes, -> { includes(:sales_order) }
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -37,15 +39,15 @@ class SalesInvoice < ApplicationRecord
 
   def filename(include_extension: false)
     [
-        ['invoice', invoice_number].join('_'),
-        ('pdf' if include_extension)
+      ['invoice', invoice_number].join('_'),
+      ('pdf' if include_extension)
     ].compact.join('.')
   end
 
   def zipped_filename(include_extension: false)
     [
-        ['invoices', invoice_number].join('_'),
-        ('zip' if include_extension)
+      ['invoices', invoice_number].join('_'),
+      ('zip' if include_extension)
     ].compact.join('.')
   end
 

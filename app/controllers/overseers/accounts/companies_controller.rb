@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseController
-  before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_company, only: %i[show edit update]
 
   def show
     redirect_to edit_overseers_account_company_path(@account, @company)
@@ -13,12 +15,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   def index
     base_filter = {
-        :base_filter_key => "account_id",
-        :base_filter_value => params[:account_id]
+      base_filter_key: 'account_id',
+      base_filter_value: params[:account_id]
     }
     authorize @account
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::Companies.new(params.merge(base_filter), current_overseer)
         service.call
@@ -47,7 +49,7 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     @company.assign_attributes(company_params.merge(overseer: current_overseer))
     authorize @company
 
-    options = @company.name_changed? ? {:name => @company.name_change[0]} : false
+    options = @company.name_changed? ? { name: @company.name_change[0] } : false
 
     if @company.save_and_sync(options)
       redirect_to overseers_company_path(@company), notice: flash_message(@company, action_name)
@@ -58,12 +60,12 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   private
 
-  def set_company
-    @company ||= Company.find(params[:id])
-  end
+    def set_company
+      @company ||= Company.find(params[:id])
+    end
 
-  def company_params
-    params.require(:company).permit(
+    def company_params
+      params.require(:company).permit(
         :account_id,
         :name,
         :industry_id,
@@ -88,9 +90,9 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
         :is_msme,
         :is_active,
         :is_unregistered_dealer,
-        :contact_ids => [],
-        :brand_ids => [],
-        :product_ids => [],
-    )
-  end
+        contact_ids: [],
+        brand_ids: [],
+        product_ids: []
+      )
+    end
 end

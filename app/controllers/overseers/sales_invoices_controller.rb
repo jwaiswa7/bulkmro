@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Overseers::SalesInvoicesController < Overseers::BaseController
-  before_action :set_invoice, only: [:edit_pod, :update_pod]
+  before_action :set_invoice, only: %i[edit_pod update_pod]
 
   def index
     authorize :sales_invoice
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params, current_overseer, paginate: false)
         service.call
@@ -16,7 +18,7 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
         @indexed_sales_invoices = service.indexed_records.per(per).page(page)
         @sales_invoices = service.records.page(page).per(per).try(:reverse)
 
-        if (SalesInvoice.count != @indexed_sales_invoices.total_count)
+        if SalesInvoice.count != @indexed_sales_invoices.total_count
           status_records = service.records.try(:reverse)
           @statuses = status_records.pluck(:status)
         else
@@ -70,15 +72,14 @@ class Overseers::SalesInvoicesController < Overseers::BaseController
 
   private
 
-  def set_invoice
-    @invoice ||= SalesInvoice.find(params[:id])
-  end
+    def set_invoice
+      @invoice ||= SalesInvoice.find(params[:id])
+    end
 
-  def invoice_params
-    params.require(:sales_invoice).permit(
+    def invoice_params
+      params.require(:sales_invoice).permit(
         :pod_attachment,
         :delivery_date
-    )
-  end
-
+      )
+    end
 end

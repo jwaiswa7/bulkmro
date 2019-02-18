@@ -5,10 +5,10 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
 
   def all_records
     indexed_records = if current_overseer.present? && !current_overseer.allow_inquiries?
-                        super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value("inquiry_present", true)))
-                      else
-                        super.filter(filter_by_value("inquiry_present", true))
-                      end
+      super.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('inquiry_present', true)))
+    else
+      super.filter(filter_by_value('inquiry_present', true))
+    end
 
     if @status.present?
       indexed_records = indexed_records.filter(filter_by_value(:status, @status))
@@ -26,12 +26,12 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def perform_query(query_string)
-    indexed_records = index_klass.query({multi_match: {query: query_string, operator: 'and', fields: %w[invoice_number_string^3 sales_order_number_string status_string inquiry_number_string inside_sales_owner outside_sales_owner]}})
+    indexed_records = index_klass.query(multi_match: { query: query_string, operator: 'and', fields: %w[invoice_number_string^3 sales_order_number_string status_string inquiry_number_string inside_sales_owner outside_sales_owner] })
 
-    indexed_records = indexed_records.filter(filter_by_value("inquiry_present", true))
+    indexed_records = indexed_records.filter(filter_by_value('inquiry_present', true))
 
     if current_overseer.present? && !current_overseer.allow_inquiries?
-      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value("inquiry_present", true)))
+      indexed_records = indexed_records.filter(filter_by_owner(current_overseer.self_and_descendant_ids).merge(filter_by_value('inquiry_present', true)))
     end
 
     if @status.present?
@@ -50,7 +50,7 @@ class Services::Overseers::Finders::SalesInvoices < Services::Overseers::Finders
   end
 
   def sort_definition
-    {:created_at => :desc}
+    { created_at: :desc }
   end
 
   def model_klass

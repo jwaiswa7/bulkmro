@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   def new_email_message?
     record.persisted? && record.sent? && record.children.blank? && overseer.can_send_emails?

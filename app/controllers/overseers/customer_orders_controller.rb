@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Overseers::CustomerOrdersController < Overseers::BaseController
   before_action :set_customer_order, only: [:show]
 
@@ -11,7 +13,8 @@ class Overseers::CustomerOrdersController < Overseers::BaseController
   end
 
   private
-  def set_customer_order
-    @customer_order = CustomerOrder.find(params[:id])
-  end
+
+    def set_customer_order
+      @customer_order = CustomerOrder.find(params[:id])
+    end
 end

@@ -4,5 +4,5 @@ json.results(@sales_orders) do |sales_order|
 end
 
 json.pagination do
-g  json.set! :more, !@indexed_sales_orders.last_page?
+  g json.set! :more, !@indexed_sales_orders.last_page?
 end

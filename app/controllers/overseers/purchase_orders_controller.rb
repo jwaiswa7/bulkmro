@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: [:edit_internal_status, :update_internal_status]
+  before_action :set_purchase_order, only: %i[edit_internal_status update_internal_status]
 
   def index
     authorize :purchase_order
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
         service.call
@@ -16,7 +18,7 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
         @indexed_purchase_orders = service.indexed_records.per(per).page(page)
         @purchase_orders = service.records.page(page).per(per).try(:reverse)
 
-        if (PurchaseOrder.count != @indexed_purchase_orders.total_count)
+        if PurchaseOrder.count != @indexed_purchase_orders.total_count
           status_records = service.records.try(:reverse)
           @statuses = status_records.map(&:metadata_status)
         else
@@ -53,8 +55,9 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
-      ActiveRecord::Base.transaction do if @purchase_order.internal_status_changed?
-          @po_comment = PoComment.new(:message => "Status Changed: #{@purchase_order.internal_status}", :purchase_order => @purchase_order, :overseer => current_overseer)
+      ActiveRecord::Base.transaction do
+        if @purchase_order.internal_status_changed?
+          @po_comment = PoComment.new(message: "Status Changed: #{@purchase_order.internal_status}", purchase_order: @purchase_order, overseer: current_overseer)
           @purchase_order.save!
           @po_comment.save!
         else
@@ -65,12 +68,11 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     else
       render 'edit_internal_status'
     end
-
   end
 
   def autocomplete
     if params[:inquiry_number].present?
-      @purchase_orders = ApplyParams.to(PurchaseOrder.joins(:inquiry).where(inquiries: {inquiry_number: params[:inquiry_number]}), params)
+      @purchase_orders = ApplyParams.to(PurchaseOrder.joins(:inquiry).where(inquiries: { inquiry_number: params[:inquiry_number] }), params)
     else
       @purchase_orders = ApplyParams.to(PurchaseOrder.all, params)
     end
@@ -88,14 +90,14 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
 
   private
 
-  def set_purchase_order
-    @purchase_order = PurchaseOrder.find(params[:id])
-  end
+    def set_purchase_order
+      @purchase_order = PurchaseOrder.find(params[:id])
+    end
 
-  def purchase_order_params
-    params.require(:purchase_order).permit(
+    def purchase_order_params
+      params.require(:purchase_order).permit(
         :internal_status,
-        :comments_attributes => [:id, :message, :created_by_id],
-    )
-  end
+        comments_attributes: %i[id message created_by_id]
+      )
+    end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Overseers::ActivitiesController < Overseers::BaseController
-  before_action :set_activity, only: [:edit, :update]
+  before_action :set_activity, only: %i[edit update]
 
   def index
     @activities = ApplyDatatableParams.to(Activity.all.includes(:created_by, :overseers), params)
@@ -7,7 +9,7 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   def new
-    @activity = current_overseer.activities.build(:overseer => current_overseer)
+    @activity = current_overseer.activities.build(overseer: current_overseer)
     authorize @activity
   end
 
@@ -34,8 +36,9 @@ class Overseers::ActivitiesController < Overseers::BaseController
   end
 
   private
-  def activity_params
-    params.require(:activity).permit(
+
+    def activity_params
+      params.require(:activity).permit(
         :inquiry_id,
         :company_id,
         :contact_id,
@@ -45,11 +48,11 @@ class Overseers::ActivitiesController < Overseers::BaseController
         :activity_type,
         :points_discussed,
         :actions_required,
-        :overseer_ids => []
-    )
-  end
+        overseer_ids: []
+      )
+    end
 
-  def set_activity
-    @activity = Activity.find(params[:id])
-  end
+    def set_activity
+      @activity = Activity.find(params[:id])
+    end
 end

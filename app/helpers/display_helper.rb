@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
@@ -11,11 +13,13 @@ module DisplayHelper
 
   def format_enum(val, humanize_text: true)
     val.to_s.truncate(17) if val.present?
-    if humanize_text
-      val.humanize
-    else
-      val
-    end if val.present?
+    if val.present?
+      if humanize_text
+        val.humanize
+      else
+        val
+      end
+    end
   end
 
   def day_count(val)
@@ -33,22 +37,22 @@ module DisplayHelper
   end
 
   def capitalize(text)
-    text.to_s.humanize if text
+    text&.to_s&.humanize
   end
 
   def format_currency(amount, symbol: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
     if amount.present?
-      [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, :precision => precision, delimiter: ',')].join if amount.present?
+      [amount > 0 && plus_if_positive ? '+' : nil, amount < 0 ? '-' : nil, show_symbol ? (symbol || '₹') : nil, number_with_precision(floor ? amount.abs.floor : amount.abs, precision: precision, delimiter: ',')].join if amount.present?
     else
-      "-"
+      '-'
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
-      return link_to string, url, target: '_blank'
+      link_to string, url, target: '_blank'
     else
-      return string
+      string
     end
   end
 
@@ -68,41 +72,36 @@ module DisplayHelper
 
   def format_date(date)
     if date.present?
-      #date.strftime("%e %b, %Y %H:%M")
-      date.strftime("%d-%b-%Y")
+      # date.strftime("%e %b, %Y %H:%M")
+      date.strftime('%d-%b-%Y')
     else
-      "-"
+      '-'
     end
   end
 
   def format_date_with_time(date)
     if date.present?
-      #date.strftime("%e %b, %Y %H:%M")
-      date.strftime("%d-%b-%Y %H:%M")
+      # date.strftime("%e %b, %Y %H:%M")
+      date.strftime('%d-%b-%Y %H:%M')
     else
-      "-"
+      '-'
     end
   end
 
-
   def format_date_time_meridiem(date)
     if date.present?
-      date.strftime("%d-%b-%Y, %I:%M %p")
+      date.strftime('%d-%b-%Y, %I:%M %p')
     else
-      "-"
+      '-'
     end
   end
 
   def format_date_without_time(date)
-    if date.present?
-      date.strftime("%d-%b-%Y")
-    end
+    date.strftime('%d-%b-%Y') if date.present?
   end
 
   def format_date_without_time_and_date(date)
-    if date.present?
-      date.strftime("%b-%Y")
-    end
+    date.strftime('%b-%Y') if date.present?
   end
 
   def format_num(num, precision = 0)
@@ -134,7 +133,7 @@ module DisplayHelper
   end
 
   def format_boolean_label(true_or_false, verb = '')
-    yes = verb ? verb : 'Yes'
+    yes = verb || 'Yes'
     no = verb ? ['Not', verb].join(' ') : 'No'
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
@@ -144,20 +143,18 @@ module DisplayHelper
       count
     elsif zero_if_nil
       0
-    else
-      nil
     end
   end
 
-  def conditional_link(string,url,allowed)
+  def conditional_link(string, url, allowed)
     if allowed
-      return link_to string, url, target: '_blank'
+      link_to string, url, target: '_blank'
     else
-      return string
+      string
     end
   end
 
-  def url_for_image(image, fallback_url: "", check_remote: false)
+  def url_for_image(image, fallback_url: '', check_remote: false)
     if image.present? && (check_remote == false || ActiveStorage::Blob.service.exist?(image.key))
       url_for(image)
     else
@@ -166,16 +163,16 @@ module DisplayHelper
   end
 
   def chewy_indices
-    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
-      path.gsub(".rb", "").gsub("app/chewy/", "") if !path.include? "base_index"
+    Dir[[Chewy.indices_path, '/*'].join].map do |path|
+      path.gsub('.rb', '').gsub('app/chewy/', '') unless path.include? 'base_index'
     end.compact
   end
 
   def format_comment(comment, trimmed = false)
-    render partial: 'shared/snippets/comments.html', locals: {comment: comment, trimmed: trimmed}
+    render partial: 'shared/snippets/comments.html', locals: { comment: comment, trimmed: trimmed }
   end
 
   def format_times_ago(time)
-    [time_ago_in_words(time),'ago'].join(' ').html_safe
+    [time_ago_in_words(time), 'ago'].join(' ').html_safe
   end
 end

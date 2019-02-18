@@ -5,7 +5,7 @@ class Services::Shared::Notifications::BaseService < Services::Shared::BaseServi
   end
 
   def send
-    Notification.create(recipient: to, sender: from, namespace: namespace, action: action, notifiable: notifiable, action_url:url, message: message)
+    Notification.create(recipient: to, sender: from, namespace: namespace, action: action, notifiable: notifiable, action_url: url, message: message)
   end
 
   attr_accessor :to, :from, :namespace, :action, :notifiable, :url, :message

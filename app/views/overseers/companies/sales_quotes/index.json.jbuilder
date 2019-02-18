@@ -19,4 +19,3 @@ json.recordsTotal @company.sales_quotes.count
 json.recordsFiltered @sales_quotes.total_count
 
 json.draw params[:draw]
-

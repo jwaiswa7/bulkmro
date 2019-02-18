@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmailMessage < ApplicationRecord
   belongs_to :overseer
   belongs_to :contact
@@ -9,19 +11,13 @@ class EmailMessage < ApplicationRecord
 
   validates_presence_of :from, :to, :subject, :body
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
   def set_defaults
-    if inquiry.present?
-      self.subject ||= self.inquiry.subject
-    end
+    self.subject ||= inquiry.subject if inquiry.present?
 
-    if self.overseer.present?
-      self.from ||= self.overseer.email
-    end
+    self.from ||= overseer.email if overseer.present?
 
-    if self.contact.present?
-      self.to ||= self.contact.email
-    end
+    self.to ||= contact.email if contact.present?
 
     self.auto_attach ||= false
   end

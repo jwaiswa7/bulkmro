@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeStamped
   extend ActiveSupport::Concern
 
@@ -16,16 +18,15 @@ module Mixins::CanBeStamped
     end
 
     def new_record_and_overseer_defined?
-      self.new_record? && overseer_defined?
+      new_record? && overseer_defined?
     end
 
     def set_updated_by_overseer
-      self.assign_attributes(updated_by: overseer)
+      assign_attributes(updated_by: overseer)
     end
 
     def set_created_by_overseer
-      self.assign_attributes(created_by: overseer)
+      assign_attributes(created_by: overseer)
     end
-
   end
 end

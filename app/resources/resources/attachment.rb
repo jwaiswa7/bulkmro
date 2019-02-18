@@ -31,13 +31,13 @@ class Resources::Attachment < Resources::ApplicationResource
               extension = attachment.filename.extension_without_delimiter
 
               remote_attachment = OpenStruct.new(
-                  :FileExtension => extension,
-                  :FileName => filename,
-                  :SourcePath => SAP.attachment_directory,
-                  :UserID => "1"
+                FileExtension: extension,
+                FileName: filename,
+                SourcePath: SAP.attachment_directory,
+                UserID: '1'
               )
 
-              ssh.scp.upload!(path, [SAP.attachment_directory, filename].join("/"))
+              ssh.scp.upload!(path, [SAP.attachment_directory, filename].join('/'))
               remote_attachments.push(remote_attachment.marshal_dump)
             end
           end
@@ -52,7 +52,7 @@ class Resources::Attachment < Resources::ApplicationResource
 
 
   def self.sanitize_filename(name)
-    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: "�").strip.tr("\u{202E}%$|:;/\t\r\n\\", "-")
+    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: "\xEF\xBF\xBD").strip.tr("\u{202E}%$|:;/\t\r\n\\", '-')
   end
 end
 

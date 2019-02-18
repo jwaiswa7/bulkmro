@@ -11,15 +11,15 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(edit_internal_status_overseers_purchase_order_path(purchase_order), 'pencil', 'Edit Internal Status', 'success')
                       end,
                   ].join(' '),
-                  conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry) , policy(purchase_order.inquiry).edit? ),
+                  conditional_link(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
                   conditional_link(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), policy(purchase_order.inquiry).edit?),
-                  ( purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present? ),
-                  purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : "-",
+                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
+                  purchase_order.inquiry.company.present? ? conditional_link(purchase_order.inquiry.company.try(:name), overseers_company_path(purchase_order.inquiry.company), policy(purchase_order.inquiry).show?) : '-',
                   purchase_order.status || purchase_order.metadata_status,
                   purchase_order.rows.count,
                   purchase_order.inquiry.inside_sales_owner.to_s,
                   purchase_order.inquiry.outside_sales_owner.to_s,
-                  (format_date(purchase_order.metadata['PoDate'].to_date) if ( purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date? )),
+                  (format_date(purchase_order.metadata['PoDate'].to_date) if purchase_order.metadata['PoDate'].present? && purchase_order.valid_po_date?),
                   format_date(purchase_order.created_at)
               ]
 end
@@ -28,12 +28,12 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       PurchaseOrder.statuses.map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       PurchaseOrder.statuses.map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.outside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
                        [],
                        []
                    ]
@@ -41,4 +41,4 @@ json.columnFilters [
 json.recordsTotal PurchaseOrder.all.count
 json.recordsFiltered @indexed_purchase_orders.total_count
 json.draw params[:draw]
-json.recordsSummary PurchaseOrder.statuses.map {|k, v| {:status_id => v ,:"label" => k, :"size" => @statuses.count(k)}}.as_json
+json.recordsSummary PurchaseOrder.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses.count(k) } }.as_json

@@ -1,21 +1,23 @@
+# frozen_string_literal: true
+
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: [:show, :edit, :update]
+  before_action :set_invoice_request, only: %i[show edit update]
 
   def pending
     invoice_requests =
-        if params[:status].present?
-          @status = params[:status]
-          InvoiceRequest.where(:status => params[:status])
-        else
-          InvoiceRequest.all
-        end.order(id: :desc)
+      if params[:status].present?
+        @status = params[:status]
+        InvoiceRequest.where(status: params[:status])
+      else
+        InvoiceRequest.all
+      end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -24,8 +26,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     authorize @invoice_requests
 
     respond_to do |format|
-      format.json {render 'index'}
-      format.html {render 'index'}
+      format.json { render 'index' }
+      format.html { render 'index' }
     end
   end
 
@@ -42,7 +44,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
   def new
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
-      @invoice_request = InvoiceRequest.new(:overseer => current_overseer, :sales_order => @sales_order, :inquiry => @sales_order.inquiry)
+      @invoice_request = InvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
       authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path
@@ -56,7 +58,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if @invoice_request.valid?
       ActiveRecord::Base.transaction do
         @invoice_request.save!
-        @invoice_request_comment = InvoiceRequestComment.new(:message => "Invoice Request submitted.", :invoice_request => @invoice_request, :overseer => current_overseer)
+        @invoice_request_comment = InvoiceRequestComment.new(message: 'Invoice Request submitted.', invoice_request: @invoice_request, overseer: current_overseer)
         @invoice_request_comment.save!
       end
 
@@ -78,7 +80,7 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
       @invoice_request.update_status(@invoice_request.status)
       ActiveRecord::Base.transaction do
         if @invoice_request.status_changed?
-          @invoice_request_comment = InvoiceRequestComment.new(:message => "Status Changed: #{@invoice_request.status}", :invoice_request => @invoice_request, :overseer => current_overseer)
+          @invoice_request_comment = InvoiceRequestComment.new(message: "Status Changed: #{@invoice_request.status}", invoice_request: @invoice_request, overseer: current_overseer)
           @invoice_request.save!
           @invoice_request_comment.save!
         else
@@ -94,8 +96,8 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
 
   private
 
-  def invoice_request_params
-    params.require(:invoice_request).permit(
+    def invoice_request_params
+      params.require(:invoice_request).permit(
         :id,
         :inquiry_id,
         :sales_order_id,
@@ -105,12 +107,12 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
         :ar_invoice_number,
         :purchase_order_id,
         :status,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :attachments => []
-    )
-  end
+        comments_attributes: %i[id message created_by_id],
+        attachments: []
+      )
+    end
 
-  def set_invoice_request
-    @invoice_request = InvoiceRequest.find(params[:id])
-  end
+    def set_invoice_request
+      @invoice_request = InvoiceRequest.find(params[:id])
+    end
 end

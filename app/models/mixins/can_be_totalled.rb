@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Mixins::CanBeTotalled
   extend ActiveSupport::Concern
 
   included do
     def calculated_total
-      items.inject(0) {|sum, item| sum + item.customer_product.customer_price.to_f * item.quantity}
+      items.inject(0) { |sum, item| sum + item.customer_product.customer_price.to_f * item.quantity }
     end
 
     def tax_line_items

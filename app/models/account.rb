@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::CanBeSynced
 
-  pg_search_scope :locate, :against => [:name], :associated_against => { }, :using => { :tsearch => {:prefix => true} }
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   # validates_presence_of :alias
   # validates_uniqueness_of :alias
@@ -11,22 +13,22 @@ class Account < ApplicationRecord
 
   has_many :companies
   has_many :contacts
-  has_many :inquiries, :through => :companies
-  has_many :inquiry_products, :through => :inquiries
-  has_many :products, :through => :inquiry_products
-  has_many :sales_orders, :through => :inquiries
-  has_many :invoices, :through => :inquiries
-  has_many :sales_quotes, :through => :inquiries, :source => "final_sales_quote"
-  has_many :addresses, :through => :companies
+  has_many :inquiries, through: :companies
+  has_many :inquiry_products, through: :inquiries
+  has_many :products, through: :inquiry_products
+  has_many :sales_orders, through: :inquiries
+  has_many :invoices, through: :inquiries
+  has_many :sales_quotes, through: :inquiries, source: 'final_sales_quote'
+  has_many :addresses, through: :companies
 
-  enum :account_type => {
-      :is_supplier => 10,
-      :is_customer => 20,
+  enum account_type: {
+    is_supplier: 10,
+    is_customer: 20
   }
 
   validates_presence_of :account_type
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
   def set_defaults
     self.account_type ||= :is_customer
   end

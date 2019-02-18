@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class Overseers::FreightRequestsController < Overseers::BaseController
-  before_action :set_freight_request, only: [:show, :edit, :update]
+  before_action :set_freight_request, only: %i[show edit update]
 
   def index
     freight_requests =
-        if params[:status].present?
-          @status = params[:status]
-          FreightRequest.where(:status => params[:status])
-        else
-          FreightRequest.all
-        end.order(id: :desc)
+      if params[:status].present?
+        @status = params[:status]
+        FreightRequest.where(status: params[:status])
+      else
+        FreightRequest.all
+      end.order(id: :desc)
 
     @freight_requests = ApplyDatatableParams.to(freight_requests, params)
     authorize @freight_requests
@@ -32,7 +34,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
         @sales_quote = @inquiry.final_sales_quote
       end
 
-      freight_params = {:overseer => current_overseer, :inquiry => @inquiry, :sales_quote => @sales_quote, :company => @inquiry.shipping_company}
+      freight_params = { overseer: current_overseer, inquiry: @inquiry, sales_quote: @sales_quote, company: @inquiry.shipping_company }
       freight_params[:sales_order] = @sales_order if @sales_order.present?
 
       @freight_request = FreightRequest.new(freight_params)
@@ -49,7 +51,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         @freight_request.save!
-        @freight_request_comment = FreightRequestComment.new(:message => "Freight Request submitted.", :freight_request => @freight_request, :overseer => current_overseer)
+        @freight_request_comment = FreightRequestComment.new(message: 'Freight Request submitted.', freight_request: @freight_request, overseer: current_overseer)
         @freight_request_comment.save!
       end
 
@@ -69,7 +71,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         if @freight_request.status_changed?
-          @freight_request_comment = FreightRequestComment.new(:message => "Status Changed: #{@freight_request.status}", :freight_request => @freight_request, :overseer => current_overseer)
+          @freight_request_comment = FreightRequestComment.new(message: "Status Changed: #{@freight_request.status}", freight_request: @freight_request, overseer: current_overseer)
           @freight_request.save!
           @freight_request_comment.save!
         else
@@ -84,8 +86,8 @@ class Overseers::FreightRequestsController < Overseers::BaseController
 
   private
 
-  def freight_request_params
-    params.require(:freight_request).permit(
+    def freight_request_params
+      params.require(:freight_request).permit(
         :id,
         :request_type,
         :delivery_type,
@@ -103,12 +105,12 @@ class Overseers::FreightRequestsController < Overseers::BaseController
         :breadth,
         :volumetric_weight,
         :hazardous,
-        :comments_attributes => [:id, :message, :created_by_id],
-        :attachments => []
-    )
-  end
+        comments_attributes: %i[id message created_by_id],
+        attachments: []
+      )
+    end
 
-  def set_freight_request
-    @freight_request = FreightRequest.find(params[:id])
-  end
+    def set_freight_request
+      @freight_request = FreightRequest.find(params[:id])
+    end
 end
