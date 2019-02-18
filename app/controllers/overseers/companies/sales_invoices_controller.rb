@@ -11,12 +11,12 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
 
     authorize :sales_invoice
     base_filter = {
-        :base_filter_key => "sales_order_id",
-        :base_filter_value => @company.sales_orders.pluck(:id).uniq
+        'base_filter_key': 'sales_order_id',
+        'base_filter_value': @company.sales_orders.pluck(:id).uniq
     }
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params.merge(base_filter), current_overseer)
         service.call
@@ -37,12 +37,12 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
 
     authorize :sales_invoice
     base_filter = {
-        :base_filter_key => "sales_order_id",
-        :base_filter_value => @company.sales_orders.pluck(:id).uniq
+        'base_filter_key': 'sales_order_id',
+        'base_filter_value': @company.sales_orders.pluck(:id).uniq
     }
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Overseers::Finders::SalesInvoices.new(params.merge(base_filter), current_overseer)
         service.call
@@ -52,7 +52,6 @@ class Overseers::Companies::SalesInvoicesController < Overseers::Companies::Base
         service = Services::Overseers::SalesInvoices::PaymentDashboard.new(@company)
         service.call
         @summery_data = service.summery_data
-        render 'payment_collection'
       end
     end
   end
