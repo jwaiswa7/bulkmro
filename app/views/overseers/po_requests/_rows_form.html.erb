@@ -42,7 +42,7 @@
     </div>
   <% end %>
   <div class="col-12 col-md-4">
-    <%= f.association :contact, collection: f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]}, input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
+    <%= f.association :contact, collection: (f.object.supplier.contacts.map {|contact| [contact.to_s, contact.id, {'data-contact-email' => contact.email || nil, 'data-contact-phone' => contact.phone || nil}]} if f.object.supplier) || [], input_html: {class: 'select2-single'}, required: true, hint: 'Note: If left blank, above selected contact\'s email will be applied' %>
 
   </div>
 
@@ -63,17 +63,17 @@
   <div class="col-12 ">
     <div class="form-row">
       <div class="col-12 col-md-6">
-        <%= f.association :bill_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
+        <%= f.association :bill_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.association :ship_from, collection: Address.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
+        <%= f.association :ship_from, collection: Address.with_includes.where(:company => f.object.supplier).map {|supplier_address| [supplier_address.to_s, supplier_address.id, {'data-supplier-state' => supplier_address.state.id, 'data-city-name' => supplier_address.city_name}]}, input_html: {class: 'select2-single'}, required: true %>
       </div>
 
       <div class="col-12 col-md-6">
-        <%= f.association :bill_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
+        <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.association :ship_to, collection: Warehouse.all.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Shipped TO where the Sales Order is being Shipped From (Inquiry Ship From)' %>
+        <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Shipped TO where the Sales Order is being Shipped From (Inquiry Ship From)' %>
       </div>
       <div class="col-md-12 mb-2 d-none">
         <div class="card card-default">
@@ -220,7 +220,7 @@
 </div>
 -->
 
-<%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :desc): f.object.rows do |po_request_row| %>
+<%= f.nested_fields_for :rows, f.object.persisted? ? f.object.rows.order(id: :desc) : f.object.rows do |po_request_row| %>
   <%= po_request_row.hidden_field :id %>
   <%= po_request_row.hidden_field :sales_order_row_id %>
   <%= po_request_row.hidden_field :product_id %>
@@ -228,7 +228,7 @@
   <%= po_request_row.hidden_field :tax_rate_id %>
   <%= po_request_row.hidden_field :measurement_unit_id, value: po_request_row.object.measurement_unit_id || MeasurementUnit.default.id %>
   <div class="form-row po-request-row">
-    <div class="col-12 col-md-12 mb-1" >
+    <div class="col-12 col-md-12 mb-1">
 
       #<%= ((f.object.rows.index(po_request_row.object) || f.object.rows.size || 0) + 1) %>
       <%#= po_request_row.input :sr, input_html: {value: ((f.object.rows.index(po_request_row.object) || 0) + 1)}, disabled: true %>
@@ -238,7 +238,7 @@
 
         <div class="col-12 col-md-3">
           <div class="select2-wrap">
-            <%= po_request_row.association :product, label_method: :to_s, include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
+            <%= po_request_row.association :product, collection: selected_option_or_nil(po_request_row, :product), include_blank: "Type SKU number, name, or brand", input_html: {class: 'select2-ajax select2-wrap-text', :'data-source' => service_autocomplete_overseers_products_path, :'data-parsley-errors-messages-disabled' => '', :'data-parsely-no-valid-feedback' => ''}, disabled: po_request_row.object.field_disabled? %>
           </div>
         </div>
 
