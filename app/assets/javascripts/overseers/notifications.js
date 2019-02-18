@@ -23,12 +23,13 @@ Notifications = class Notifications {
 
     handleClick(e) {
         var page_title = $(document).attr('title');
+        page_title = this.remove_count(page_title);
         return $.ajax({
             url: "/overseers/notifications/mark_as_read",
             dataType: "JSON",
             method: "POST",
             success: function () {
-                $(document).attr('title', this.remove_count(page_title));
+                $(document).attr('title', page_title);
                 return $("[data-behavior='unread-count']").text(0).removeClass('badge-danger');
             }
         });
