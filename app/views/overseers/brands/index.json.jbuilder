@@ -9,6 +9,7 @@ json.data (@brands) do |brand|
                       end
                   ].join(' '),
                   link_to(brand.to_s, overseers_brand_path(brand)),
+                  format_boolean(brand.is_active?),
                   format_boolean_label(brand.synced?, 'synced'),
                   format_succinct_date(brand.created_at)
               ]

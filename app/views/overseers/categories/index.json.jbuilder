@@ -9,6 +9,8 @@ json.data (@categories) do |category|
                       end
                   ].join(' '),
                   conditional_link(category.to_s, overseers_category_path(category), policy(category).show?),
+                  format_boolean(category.is_active?),
+                  format_boolean(category.is_service?),
                   format_boolean_label(category.synced?, 'synced'),
                   format_succinct_date(category.created_at)
               ]

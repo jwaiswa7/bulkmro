@@ -26,6 +26,7 @@ json.data (@products) do |product|
                   number_with_delimiter(product.total_pos, delimiter: ','),
                   number_with_delimiter(product.total_quotes, delimiter: ','),
                   format_boolean(product.is_active?),
+                  format_boolean(product.is_service?),
                   format_boolean_label(product.synced?, 'synced'),
                   format_succinct_date(product.created_at),
                   (product.created_by || (product.inquiry_import_row.inquiry.created_by if product.inquiry_import_row)).try(:name) || '-',
