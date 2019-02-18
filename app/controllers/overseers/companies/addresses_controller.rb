@@ -1,12 +1,10 @@
-# frozen_string_literal: true
-
 class Overseers::Companies::AddressesController < Overseers::Companies::BaseController
-  before_action :set_address, only: %i[show edit update]
+  before_action :set_address, only: [:show, :edit, :update]
 
   def index
     base_filter = {
-      base_filter_key: 'company_id',
-      base_filter_value: params[:company_id]
+        base_filter_key: 'company_id',
+        base_filter_value: params[:company_id]
     }
     authorize :address
     respond_to do |format|
@@ -33,6 +31,7 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     @address = @company.addresses.build(overseer: current_overseer)
     authorize @address
   end
+
 
   def create
     @address = @company.addresses.build(address_params.merge(overseer: current_overseer))
@@ -77,26 +76,26 @@ class Overseers::Companies::AddressesController < Overseers::Companies::BaseCont
     def address_params
       params.require(:address).permit(
         :name,
-        :country_code,
-        :pincode,
-        :city_name,
-        :remote_uid,
-        :address_state_id,
-        :state_name,
-        :street1,
-        :street2,
-        :telephone,
-        :mobile,
-        :gst_proof,
-        :cst_proof,
-        :vat_proof,
-        :excise_proof,
-        :gst,
-        :cst,
-        :vat,
-        :tan,
-        :excise,
-        :gst_type
+          :country_code,
+          :pincode,
+          :city_name,
+          :remote_uid,
+          :address_state_id,
+          :state_name,
+          :street1,
+          :street2,
+          :telephone,
+          :mobile,
+          :gst_proof,
+          :cst_proof,
+          :vat_proof,
+          :excise_proof,
+          :gst,
+          :cst,
+          :vat,
+          :tan,
+          :excise,
+          :gst_type
       )
     end
 end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
@@ -13,13 +11,11 @@ module DisplayHelper
 
   def format_enum(val, humanize_text: true)
     val.to_s.truncate(17) if val.present?
-    if val.present?
-      if humanize_text
-        val.humanize
-      else
-        val
-      end
-    end
+    if humanize_text
+      val.humanize
+    else
+      val
+    end if val.present?
   end
 
   def day_count(val)
@@ -37,7 +33,7 @@ module DisplayHelper
   end
 
   def capitalize(text)
-    text&.to_s&.humanize
+    text.to_s.humanize if text
   end
 
   def format_currency(amount, symbol: nil, precision: 2, plus_if_positive: false, show_symbol: true, floor: false)
@@ -50,9 +46,9 @@ module DisplayHelper
 
   def conditional_link(string, url, allowed)
     if allowed
-      link_to string, url, target: '_blank'
+      return link_to string, url, target: '_blank'
     else
-      string
+      return string
     end
   end
 
@@ -68,6 +64,15 @@ module DisplayHelper
 
   def format_id(id, prefix: nil)
     ['#', id].join if id.present?
+  end
+
+  def format_succinct_date(date)
+    if date.present?
+      # date.strftime("%e %b, %Y %H:%M")
+      date.strftime('%d-%b-%y')
+    else
+      '-'
+    end
   end
 
   def format_date(date)
@@ -88,6 +93,7 @@ module DisplayHelper
     end
   end
 
+
   def format_date_time_meridiem(date)
     if date.present?
       date.strftime('%d-%b-%Y, %I:%M %p')
@@ -96,12 +102,24 @@ module DisplayHelper
     end
   end
 
+  def format_date_time_with_second(date)
+    if date.present?
+      date.strftime('%d-%b-%Y, %I:%M:%S %p')
+    else
+      '-'
+    end
+  end
+
   def format_date_without_time(date)
-    date.strftime('%d-%b-%Y') if date.present?
+    if date.present?
+      date.strftime('%d-%b-%Y')
+    end
   end
 
   def format_date_without_time_and_date(date)
-    date.strftime('%b-%Y') if date.present?
+    if date.present?
+      date.strftime('%b-%Y')
+    end
   end
 
   def format_num(num, precision = 0)
@@ -133,7 +151,7 @@ module DisplayHelper
   end
 
   def format_boolean_label(true_or_false, verb = '')
-    yes = verb || 'Yes'
+    yes = verb ? verb : 'Yes'
     no = verb ? ['Not', verb].join(' ') : 'No'
     (true_or_false ? ['<span class="badge badge-success text-uppercase">', yes, '</span>'].join('') : ['<span class="badge badge-danger text-uppercase">', no, '</span>'].join('')).html_safe
   end
@@ -143,14 +161,16 @@ module DisplayHelper
       count
     elsif zero_if_nil
       0
+    else
+      nil
     end
   end
 
   def conditional_link(string, url, allowed)
     if allowed
-      link_to string, url, target: '_blank'
+      return link_to string, url, target: '_blank'
     else
-      string
+      return string
     end
   end
 
@@ -163,8 +183,8 @@ module DisplayHelper
   end
 
   def chewy_indices
-    Dir[[Chewy.indices_path, '/*'].join].map do |path|
-      path.gsub('.rb', '').gsub('app/chewy/', '') unless path.include? 'base_index'
+    Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+      path.gsub('.rb', '').gsub('app/chewy/', '') if !path.include? 'base_index'
     end.compact
   end
 
@@ -174,5 +194,14 @@ module DisplayHelper
 
   def format_times_ago(time)
     [time_ago_in_words(time), 'ago'].join(' ').html_safe
+  end
+
+  def format_percent_of(d, n, precision: 0, plus_if_positive: false, show_symbol: true, floor: false)
+    precentage = (d.to_f / n.to_f * 100.0)
+    if d.present? && n.present?
+      [precentage > 0 && plus_if_positive ? '+' : nil, precentage < 0 ? '-' : nil, number_with_precision(floor ? precentage.abs.floor : precentage.abs, precision: precision), show_symbol ? ('%') : nil].join
+    else
+      0
+    end
   end
 end

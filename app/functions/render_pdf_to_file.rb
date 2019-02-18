@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class RenderPdfToFile < BaseFunction
-  def self.for(record, locals = {})
+  def self.for(record, locals={})
     action_view = ActionView::Base.new(ActionController::Base.view_paths, {})
     action_view.class.send(:include, DisplayHelper)
 
@@ -9,15 +7,15 @@ class RenderPdfToFile < BaseFunction
       action_view.render(
         template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
         locals: {
-          record: record
+            record: record,
         }.merge(locals),
-        layout: 'shared/layouts/pdf_templates/show'
+        layout: 'shared/layouts/pdf_templates/show',
       ),
-      pdf: record.filename,
-      layout: false,
-      footer: {
-        center: '[page] of [topage]'
-      }
+        pdf: record.filename,
+        layout: false,
+        footer: {
+            center: '[page] of [topage]'
+        },
     )
 
     tempfile = Tempfile.new([record.filename, 'pdf'].join('.'), Rails.root.join('tmp'))

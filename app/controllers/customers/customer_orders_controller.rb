@@ -1,15 +1,21 @@
-# frozen_string_literal: true
-
 class Customers::CustomerOrdersController < Customers::BaseController
-  before_action :set_customer_order, only: %i[show order_confirmed]
+  before_action :set_customer_order, only: [:show, :order_confirmed]
 
   def create
     authorize :customer_order
 
+    if params[:cart].present? && current_cart.id == params[:cart][:id].to_i
+      payment = OnlinePayment.where(payment_id: params[:razorpay_payment_id]).first_or_create! do |online_payment|
+        online_payment.assign_attributes(contact: current_contact, payment_id: params[:razorpay_payment_id], auth_token: params[:authenticity_token], amount: params[:cart][:grand_total], metadata: params.to_json, status: :'created')
+      end
+      payment.save!
+    end
+
     @customer_order = current_contact.customer_orders.build(
       billing_address_id: current_cart.billing_address_id,
       shipping_address_id: current_cart.shipping_address_id,
-      po_reference: current_cart.po_reference
+      po_reference: current_cart.po_reference,
+      special_instructions: current_cart.special_instructions
     )
 
     ActiveRecord::Base.transaction do
@@ -17,7 +23,9 @@ class Customers::CustomerOrdersController < Customers::BaseController
       @customer_order.assign_attributes(
         billing_address_id: current_cart.billing_address_id,
         shipping_address_id: current_cart.shipping_address_id,
-        po_reference: current_cart.po_reference
+        po_reference: current_cart.po_reference,
+        special_instructions: current_cart.special_instructions,
+        payment_method: current_cart.payment_method
       )
       @customer_order.save
       @customer_order.update_attributes(online_order_number: Services::Resources::Shared::UidGenerator.online_order_number(@customer_order.id))
@@ -31,9 +39,25 @@ class Customers::CustomerOrdersController < Customers::BaseController
           row.customer_order_id = @customer_order.id
           row.quantity = cart_item.quantity
           row.customer_product = cart_item.customer_product
+          row.tax_rate_id = cart_item.customer_product.best_tax_rate.id
+          row.tax_code_id = cart_item.customer_product.best_tax_code.id
         end
       end
+
+      if payment.present?
+        payment.update_attributes!(customer_order: @customer_order)
+        payment.capture
+      end
+
       current_cart.destroy
+    end
+
+    email_service = Services::Overseers::EmailMessages::SalesMailer.new(@customer_order, current_overseer)
+    email_service.send_order_confirmation_email
+
+    account_managers = @customer_order.company.contacts.where(role: 'account_manager')
+    if account_managers.present?
+      email_service.send_order_approval_email(account_managers)
     end
 
     redirect_to order_confirmed_customers_customer_order_path(@customer_order)

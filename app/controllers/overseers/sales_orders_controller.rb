@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::SalesOrdersController < Overseers::BaseController
-  before_action :set_sales_order, only: [:resync]
+  before_action :set_sales_order, only: [ :resync]
   def pending
     authorize :sales_order
 
@@ -11,20 +9,36 @@ class Overseers::SalesOrdersController < Overseers::BaseController
         service = Services::Overseers::Finders::PendingSalesOrders.new(params, current_overseer, paginate: false)
         service.call
 
-        per = (params[:per] || params[:length] || 20).to_i
-        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records
 
-        @indexed_sales_orders = service.indexed_records.per(per).page(page)
-        @sales_orders = service.records.page(page).per(per).try(:reverse)
-        puts 'pending'
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
 
-        if SalesOrder.count != @indexed_sales_orders.total_count
-          status_records = service.records.try(:reverse)
-          @statuses = status_records.pluck(:status).concat(status_records.pluck(:legacy_request_status))
-        else
-          @statuses = SalesOrder.all.pluck(:status).concat(SalesOrder.all.pluck(:legacy_request_status))
-        end
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
 
+        render 'pending'
+      end
+    end
+  end
+
+  def cancelled
+    authorize :sales_order
+    respond_to do |format|
+      format.html { render 'pending' }
+      format.json do
+        service = Services::Overseers::Finders::CancelledSalesOrders.new(params, current_overseer, paginate: false)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
         render 'pending'
       end
     end
@@ -64,25 +78,44 @@ class Overseers::SalesOrdersController < Overseers::BaseController
 
   def index
     authorize :sales_order
-
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::SalesOrders.new(params, current_overseer)
         service.call
 
-        per = (params[:per] || params[:length] || 20).to_i
-        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
 
-        @indexed_sales_orders = service.indexed_records.per(per).page(page)
-        @sales_orders = service.records.page(page).per(per).try(:reverse)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
+        status_service.call
 
-        if SalesOrder.count != @indexed_sales_orders.total_count
-          status_records = service.records.try(:reverse)
-          @statuses = status_records.pluck(:remote_status)
-        else
-          @statuses = SalesOrder.all.pluck(:remote_status)
-        end
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+        @statuses_count = @statuses.values.sum
+        @sales_order_total = @total_values.values.sum
+      end
+    end
+  end
+
+  def not_invoiced
+    authorize :sales_order
+    respond_to do |format|
+      format.html { render 'not_invoiced' }
+      format.json do
+        service = Services::Overseers::Finders::NotInvoicedSalesOrders.new(params, current_overseer)
+        service.call
+
+        @indexed_sales_orders = service.indexed_records
+        @sales_orders = service.records.try(:reverse)
+
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_sales_orders, SalesOrder, remote_status: true)
+        status_service.call
+
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
+        @statuses_count = @statuses.values.sum
+        @not_invoiced_total = @total_values.values.sum
       end
     end
   end

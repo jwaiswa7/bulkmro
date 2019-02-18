@@ -1,74 +1,22 @@
-class Services::Customers::Charts::Builder < Services::Shared::Charts::Builder
-  def initialize
-    super
+class Services::Customers::Charts::Builder < Services::Shared::BaseService
+  def initialize(daterange)
+    @start_at = daterange ? daterange.split('~')[0].to_date : Date.new(2018, 4, 1).beginning_of_month
+    @end_at = daterange ? daterange.split('~')[1].to_date : Date.today.end_of_month
+    @data = {}
+    @options = {}
+    @chart = { data: @data, options: @options }
   end
 
-  def monthly_purchase_data(company)
-    build_chart do
-      @data = {
-          labels: [],
-          datasets: [
-              {
-                  label: 'Products',
-                  type: 'line',
-                  borderColor: '#007bff',
-                  backgroundColor: '#007bff',
-                  data: [],
-                  yAxisID: 'products_count',
-                  fill: false
-              },
-              {
-                  label: "\xE2\x82\xB9 Lacs",
-                  type: 'bar',
-                  borderColor: '#fd7e14',
-                  backgroundColor: '#fd7e14',
-                  data: [],
-                  yAxisID: 'revenue',
-                  fill: false
-              }
-          ]
-      }
+  def build_chart
+    ActiveRecord::Base.default_timezone = :utc
+    yield if block_given?
+    ActiveRecord::Base.default_timezone = :local
 
-      @options = {
-          scales: {
-              yAxes: [
-                  {
-                      id: 'products_count',
-                      type: 'linear',
-                      position: 'right',
-                      ticks: {
-                          display: false
-                      }
-                  },
-                  {
-                      id: 'revenue',
-                      type: 'linear',
-                      position: 'left',
-                      ticks: {
-                          display: true,
-                          userCallback: ''
-                      },
-                      scaleLabel: {
-                          display: true,
-                          labelString: '₹ Lacs'
-                      },
-                      gridLines: {
-                          display: true
-                      }
-                  }
-              ]
-          },
-      }
-
-      sales_orders = SalesOrder.includes(:rows).remote_approved.where(created_at: start_at..end_at).joins(:company).where(companies: { id: company.id })
-      monthwise_order_totals = sales_orders.group_by_month(&:created_at).map { |k, v| [k.strftime('%b-%y'), v.map(&:calculated_total).sum.to_s] }.to_h
-      monthwise_products_count = sales_orders.joins(:products).group_by_month('sales_orders.created_at', format: '%b-%y', series: true).count.to_h
-
-      (start_at..end_at).map { |a| a.strftime('%b-%y') }.uniq.each do |month|
-        @data[:labels].push(month)
-        @data[:datasets][1][:data].push(monthwise_order_totals[month] || 0)
-        @data[:datasets][0][:data].push(monthwise_products_count[month] || 0)
-      end
-    end
+    @chart = {
+        data: @data,
+        options: @options
+    }
   end
+
+  attr_accessor :start_at, :end_at
 end

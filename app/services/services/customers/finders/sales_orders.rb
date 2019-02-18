@@ -7,8 +7,8 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
     indexed_records = if current_company.present?
       super.filter(filter_by_value('company_id', current_company.id))
                         # super.filter(filter_by_value('account_id',current_contact.account.id))
-    elsif current_contact.account_manager?
-      super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+                      # elsif current_contact.account_manager?
+                      #   super.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
     else
       super
     end
@@ -43,10 +43,13 @@ class Services::Customers::Finders::SalesOrders < Services::Customers::Finders::
 
     indexed_records = indexed_records.filter(filter_by_value('approval_status', 'approved'))
 
-    if current_contact.account_manager?
-      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
-    else
-      indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+    # if current_contact.account_manager?
+    #   indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.account.companies.pluck(:id)))
+    # else
+    #   indexed_records = indexed_records.filter(filter_by_array('company_id', current_contact.companies.pluck(:id)))
+    # end
+    if current_company.present?
+      indexed_records = indexed_records.filter(filter_by_value('company_id', current_company.id))
     end
 
     indexed_records = indexed_records.query(

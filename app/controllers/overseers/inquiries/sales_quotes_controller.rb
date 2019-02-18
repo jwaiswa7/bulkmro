@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_quote, only: %i[edit update show preview reset_quote]
+  before_action :set_sales_quote, only: [:edit, :update, :show, :preview, :reset_quote]
 
   def index
     @sales_quotes = @inquiry.sales_quotes
@@ -37,7 +35,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote = SalesQuote.new(sales_quote_params.merge(overseer: current_overseer))
     authorize @sales_quote
 
-    callback_method = %w[save update_sent_at_field save_and_preview].detect { |action| params[action] }
+    callback_method = %w(save update_sent_at_field save_and_preview).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       Services::Overseers::Inquiries::UpdateStatus.new(@sales_quote, :sales_quote_saved).call
@@ -56,7 +54,7 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     @sales_quote.assign_attributes(sales_quote_params.merge(overseer: current_overseer))
     authorize @sales_quote
 
-    callback_method = %w[save update_sent_at_field save_and_preview].detect { |action| params[action] }
+    callback_method = %w(save update_sent_at_field save_and_preview).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -72,15 +70,15 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
   def reset_quote
     authorize @sales_quote
     @inquiry.update_attributes(quotation_uid: '')
+    @inquiry.final_sales_quote.save_and_sync
     redirect_to overseers_inquiry_sales_quotes_path(@inquiry), notice: flash_message(@inquiry, action_name)
   end
 
   private
-
     def save
       service = Services::Overseers::SalesQuotes::ProcessAndSave.new(@sales_quote)
       service.call
-    end
+      end
 
     def update_sent_at_field
       @sales_quote.update_attributes(sent_at: Time.now)
@@ -100,32 +98,32 @@ class Overseers::Inquiries::SalesQuotesController < Overseers::Inquiries::BaseCo
     def sales_quote_params
       params.require(:sales_quote).permit(
         :inquiry_id,
-        :parent_id,
-        :billing_address_id,
-        :shipping_address_id,
-        :comments,
-        inquiry_currency_attributes: %i[
-          id
-          currency_id
-          conversion_rate
-        ],
-        rows_attributes: [
-          :id,
-          :sales_quote_id,
-          :tax_code_id,
-          :tax_rate_id,
-          :inquiry_product_supplier_id,
-          # :inquiry_product_id,
-          :lead_time_option_id,
-          :quantity,
-          :freight_cost_subtotal,
-          :unit_freight_cost,
-          :measurement_unit_id,
-          :margin_percentage,
-          :unit_selling_price,
-          :_destroy
-        ],
-        selected_suppliers: {}
+          :parent_id,
+          :billing_address_id,
+          :shipping_address_id,
+          :comments,
+          inquiry_currency_attributes: [
+              :id,
+              :currency_id,
+              :conversion_rate,
+          ],
+          rows_attributes: [
+              :id,
+              :sales_quote_id,
+              :tax_code_id,
+              :tax_rate_id,
+              :inquiry_product_supplier_id,
+              # :inquiry_product_id,
+              :lead_time_option_id,
+              :quantity,
+              :freight_cost_subtotal,
+              :unit_freight_cost,
+              :measurement_unit_id,
+              :margin_percentage,
+              :unit_selling_price,
+              :_destroy
+          ],
+          selected_suppliers: {}
       )
     end
 end

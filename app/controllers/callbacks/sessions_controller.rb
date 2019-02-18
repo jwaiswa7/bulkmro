@@ -1,14 +1,12 @@
-# frozen_string_literal: true
-
 class Callbacks::SessionsController < Callbacks::BaseController
   skip_before_action :authenticate_callback!
   EMAIL = 'ashwin.goyal@bulkmro.com'
   PASSWORD = 'abc123'
 
   def new
-    @callback_request = CallbackRequest.where(method: to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
+    @callback_request = CallbackRequest.where(method: self.to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
       callback_request.update(
-        method: to_callback_request(request.method.to_s),
+        method: self.to_callback_request(request.method.to_s),
         resource: controller_name.classify,
         request: params,
         url: request.url,
@@ -22,24 +20,20 @@ class Callbacks::SessionsController < Callbacks::BaseController
 
       response = { success: 1, status: :success, api_key: sap_api_key }
 
-      if @callback_request.present?
-        @callback_request.update(
-          response: response.to_json,
-          status: :success,
-          hits: @callback_request.hits.to_i + 1
-        )
-      end
+      @callback_request.update(
+        response: response.to_json,
+        status: :success,
+        hits: @callback_request.hits.to_i + 1,
+          ) if @callback_request.present?
 
       render json: response, status: :ok
     else
       response = { success: 0, status: :failed, message: 'Invalid username or password.' }
-      if @callback_request.present?
-        @callback_request.update(
-          response: response.to_json,
-          status: :failed,
-          hits: @callback_request.hits.to_i + 1
-        )
-      end
+      @callback_request.update(
+        response: response.to_json,
+        status: :failed,
+        hits: @callback_request.hits.to_i + 1,
+          ) if @callback_request.present?
 
       render json: response, status: 401
     end

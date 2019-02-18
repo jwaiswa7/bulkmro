@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseController
-  before_action :set_company, only: %i[show edit update]
+  before_action :set_company, only: [:show, :edit, :update]
 
   def show
     redirect_to edit_overseers_account_company_path(@account, @company)
@@ -15,8 +13,8 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
 
   def index
     base_filter = {
-      base_filter_key: 'account_id',
-      base_filter_value: params[:account_id]
+        base_filter_key: 'account_id',
+        base_filter_value: params[:account_id]
     }
     authorize @account
     respond_to do |format|
@@ -67,32 +65,33 @@ class Overseers::Accounts::CompaniesController < Overseers::Accounts::BaseContro
     def company_params
       params.require(:company).permit(
         :account_id,
-        :name,
-        :industry_id,
-        :remote_uid,
-        :default_company_contact_id,
-        :default_payment_option_id,
-        :default_billing_address_id,
-        :default_shipping_address_id,
-        :inside_sales_owner_id,
-        :outside_sales_owner_id,
-        :sales_manager_id,
-        :company_type,
-        :priority,
-        :site,
-        :nature_of_business,
-        :creadit_limit,
-        :tan_proof,
-        :pan,
-        :pan_proof,
-        :cen_proof,
-        :logo,
-        :is_msme,
-        :is_active,
-        :is_unregistered_dealer,
-        contact_ids: [],
-        brand_ids: [],
-        product_ids: []
+          :name,
+          :industry_id,
+          :remote_uid,
+          :default_company_contact_id,
+          :default_payment_option_id,
+          :default_billing_address_id,
+          :default_shipping_address_id,
+          :inside_sales_owner_id,
+          :outside_sales_owner_id,
+          :sales_manager_id,
+          :company_type,
+          :priority,
+          :site,
+          :company_creation_request_id,
+          :nature_of_business,
+          :creadit_limit,
+          :tan_proof,
+          :pan,
+          :pan_proof,
+          :cen_proof,
+          :logo,
+          :is_msme,
+          :is_active,
+          :is_unregistered_dealer,
+          contact_ids: [],
+          brand_ids: [],
+          product_ids: [],
       )
     end
 end

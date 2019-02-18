@@ -120,7 +120,7 @@ class Resources::Quotation < Resources::ApplicationResource
     end
 
     company_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.contact.email).first
-    company_shipping_contact = record.inquiry.company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.email).first
+    company_shipping_contact = record.inquiry.shipping_company.company_contacts.joins(:contact).where('contacts.email = ?', record.inquiry.shipping_contact.present? ? record.inquiry.shipping_contact.email : record.inquiry.billing_contact.email).first
     {
         U_MgntDocID: record.to_param, # Quote ID
         CardCode: record.inquiry.company.remote_uid, # Customer ID

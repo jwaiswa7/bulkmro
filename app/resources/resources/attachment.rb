@@ -52,7 +52,7 @@ class Resources::Attachment < Resources::ApplicationResource
 
 
   def self.sanitize_filename(name)
-    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: "\xEF\xBF\xBD").strip.tr("\u{202E}%$|:;/\t\r\n\\", '-')
+    name.encode(Encoding::UTF_8, invalid: :replace, undef: :replace, replace: '�').strip.tr("\u{202E}%$|:;/\t\r\n\\", '-')
   end
 end
 

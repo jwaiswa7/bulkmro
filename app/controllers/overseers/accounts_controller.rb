@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::AccountsController < Overseers::BaseController
-  before_action :set_account, only: %i[edit update show]
+  before_action :set_account, only: [:edit, :update, :show]
 
   def index
     @accounts = ApplyDatatableParams.to(Account.all, params)
@@ -10,7 +8,7 @@ class Overseers::AccountsController < Overseers::BaseController
 
   def show
     if @account.is_customer?
-      service = %w[Services Overseers Reports Account].join('::').constantize.send(:new, @account, params)
+      service = ['Services', 'Overseers', 'Reports', 'Account'].join('::').constantize.send(:new, @account, params)
       @data = service.call
     end
 
@@ -31,7 +29,9 @@ class Overseers::AccountsController < Overseers::BaseController
     @account = Account.new(account_params.merge(overseer: current_overseer))
     authorize @account
 
-    @account.alias = @account.name if @account.alias.blank?
+    if @account.alias.blank?
+      @account.alias = @account.name
+    end
 
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
@@ -48,7 +48,9 @@ class Overseers::AccountsController < Overseers::BaseController
     @account.assign_attributes(account_params.merge(overseer: current_overseer))
     authorize @account
 
-    @account.alias = @account.name if @account.alias.blank?
+    if @account.alias.blank?
+      @account.alias = @account.name
+    end
 
     if @account.save_and_sync
       redirect_to overseers_account_path(@account), notice: flash_message(@account, action_name)
@@ -62,8 +64,8 @@ class Overseers::AccountsController < Overseers::BaseController
     def account_params
       params.require(:account).permit(
         :name,
-        :alias,
-        :account_type
+          :alias,
+          :account_type
       )
     end
 

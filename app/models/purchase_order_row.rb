@@ -1,7 +1,19 @@
-# frozen_string_literal: true
-
 class PurchaseOrderRow < ApplicationRecord
   belongs_to :purchase_order
+
+  after_create :increase_product_count
+  before_destroy :decrease_product_count
+
+
+  def increase_product_count
+    product = self.get_product
+    product.update_attribute('total_pos', product.total_pos + 1) if product.present?
+  end
+
+  def decrease_product_count
+    product = self.get_product
+    product.update_attribute('total_pos', (product.total_pos == 0 ? 0 : (product.total_pos - 1))) if product.present?
+  end
 
   def sku
     get_product.sku if get_product.present?
@@ -16,23 +28,28 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def tax_rate
-    metadata['PopTaxRate'].gsub(/\D/, '').to_f
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f
   end
 
   def applicable_tax_percentage
-    metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100
+    self.metadata['PopTaxRate'].gsub(/\D/, '').to_f / 100 if !(self.metadata['PopTaxRate'].include?('IMP'))
   end
 
   def quantity
-    metadata['PopQty'].to_f.round(2)
+    self.metadata['PopQty'].to_f.round(2)
   end
 
   def unit_selling_price
-    metadata['PopPriceHt'].to_f.round(2) if metadata['PopPriceHt'].present?
+    price = if self.metadata['PopPriceHtBase'].present?
+      (self.metadata['PopPriceHtBase'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2)
+    else
+      (self.metadata['PopPriceHt'].to_f * self.purchase_order.metadata['PoCurrencyChangeRate'].to_f).round(2) if self.metadata['PopPriceHt'].present?
+    end
+    self.metadata['PopDiscount'].present? ? ((1 - (self.metadata['PopDiscount'].to_f / 100)) * price).round(2) : price
   end
 
   def unit_selling_price_with_tax
-    unit_selling_price + (unit_selling_price * (applicable_tax_percentage || 0))
+    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage || 0))
   end
 
   def total_tax
@@ -40,16 +57,14 @@ class PurchaseOrderRow < ApplicationRecord
   end
 
   def total_selling_price
-    (unit_selling_price * quantity).round(2) if metadata['PopPriceHt'].present?
+    (self.unit_selling_price.to_f * self.quantity.to_f).round(2) if self.metadata['PopPriceHt'].present?
   end
 
   def total_selling_price_with_tax
-    unit_selling_price_with_tax * quantity if unit_selling_price.present?
+    self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
-  private
-
-    def get_product
-      Product.find_by_legacy_id(metadata['PopProductId'].to_i) || Product.find(metadata['PopProductId'])
-    end
+  def get_product
+    Product.where(legacy_id: self.metadata['PopProductId'].to_i).or(Product.where(id: Product.decode_id(self.metadata['PopProductId']))).try(:first)
+  end
 end

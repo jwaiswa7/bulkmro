@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::BaseController < ApplicationController
   include Pundit
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -14,6 +12,22 @@ class Customers::BaseController < ApplicationController
   helper_method :current_cart, :current_company
 
   private
+
+    def render_pdf_for(record, locals={})
+      render(
+        pdf: record.filename,
+        template: ['shared', 'layouts', 'pdf_templates', record.class.name.pluralize.underscore, 'show'].join('/'),
+        layout: 'shared/layouts/pdf_templates/show',
+        page_size: 'A4',
+        footer: {
+            center: '[page] of [topage]'
+        },
+        # show_as_html: true,
+        locals: {
+            record: record
+        }.merge(locals)
+      )
+    end
 
     def redirect_if_required
       redirect_to_path = if session[:current_company_id].blank? || current_company.blank?
@@ -38,12 +52,12 @@ class Customers::BaseController < ApplicationController
 
   protected
 
-    def policy!(user, record)
-      CustomPolicyFinder.new(record, namespace).policy!.new(user, record)
+    def policy!(user, current_company, record)
+      CustomPolicyFinder.new(record, namespace).policy!.new(user, current_company, record)
     end
 
     def policy(record)
-      policies[record] ||= policy!(pundit_user, record)
+      policies[record] ||= policy!(pundit_user, current_company, record)
     end
 
     def pundit_policy_scope(scope)
@@ -58,7 +72,7 @@ class Customers::BaseController < ApplicationController
       current_contact.cart || current_contact.create_cart(
         company: current_company,
         billing_address: current_company.default_billing_address || current_company.billing_address.first,
-        shipping_address: current_company.default_shipping_address || current_company.shipping_address.first
+        shipping_address: current_company.default_shipping_address || current_company.shipping_address.first,
       )
     end
 

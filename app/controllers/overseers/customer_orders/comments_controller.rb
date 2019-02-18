@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::CustomerOrders::CommentsController < Overseers::CustomerOrders::BaseController
   def create
     @comment = @customer_order.comments.build(comment_params.merge(overseer: current_overseer))
@@ -16,7 +14,7 @@ class Overseers::CustomerOrders::CommentsController < Overseers::CustomerOrders:
     def comment_params
       params.require(:customer_order_comment).permit(
         :message,
-        :show_to_customer
+          :show_to_customer
       )
     end
 end

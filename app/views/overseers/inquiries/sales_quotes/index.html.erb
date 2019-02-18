@@ -33,13 +33,13 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th>Doc ID</th>
-      <th>Sent At</th>
+      <th class="no-sort desktop text-right">Doc ID</th>
+      <th class="no-sort desktop text-right">Sent At</th>
       <th>Created By</th>
-      <th>Line Items</th>
-      <th>Total(Excl. Tax)</th>
-      <th>Total(Incl. Tax)</th>
-      <th>Created At</th>
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Total(Excl. Tax)</th>
+      <th class="no-sort desktop text-right">Total(Incl. Tax)</th>
+      <th class="no-sort desktop text-right">Created At</th>
     <% end %>
 
     <%= render layout: 'shared/layouts/datatable' do %>

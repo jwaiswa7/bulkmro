@@ -1,0 +1,9 @@
+<div class="col-lg-12">
+  <%= render 'shared/snippets/page_header', e: @company %>
+
+  <%= simple_form_for([:overseers, @company], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
+    <%= render 'shared/snippets/form_errors', f: f %>
+    <%= f.association :account, collection: selected_option_or_nil(f, :account), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_accounts_path}, include_blank: 'Link company with account' %>
+    <%= render 'overseers/companies/common_form', :f => f %>
+  <% end %>
+</div>

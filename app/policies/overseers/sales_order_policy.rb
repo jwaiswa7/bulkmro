@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_sales? || logistics?
@@ -61,6 +59,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def cancelled?
+    manager_or_sales?
+  end
+
+  def not_invoiced?
+    # have to confirm
+    manager_or_sales?
+  end
+
   def export_all?
     allow_export?
   end
@@ -74,7 +81,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def export_for_sap?
-    developer? || %w[nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com].include?(overseer.email)
+    developer? || %w(nilesh.desai@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def drafts_pending?
@@ -98,7 +105,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def approve_low_margin?
-    approve? && %w[devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com shravan.agarwal@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com].include?(overseer.email)
+    approve? && %w(devang.shah@bulkmro.com gaurang.shah@bulkmro.com nilesh.desai@bulkmro.com prikesh.savla@bulkmro.com vijay.manjrekar@bulkmro.com akshay.jindal@bulkmro.com bhargav.trivedi@bulkmro.com).include?(overseer.email)
   end
 
   def reject?
@@ -106,7 +113,15 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def resync?
-    record.sent? && record.approved? && record.not_synced? && not_logistics?
+    record.sent? && record.approved? && record.not_synced? && admin?
+  end
+
+  def fetch_order_data?
+    developer?
+  end
+
+  def debugging?
+    developer?
   end
 
   class Scope

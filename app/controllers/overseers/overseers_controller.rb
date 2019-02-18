@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::OverseersController < Overseers::BaseController
-  before_action :set_overseer, only: %i[edit update]
+  before_action :set_overseer, only: [:edit, :update]
 
   def index
     # service = Services::Overseers::Finders::Overseers.new(params)
@@ -47,20 +45,20 @@ class Overseers::OverseersController < Overseers::BaseController
     def overseer_params
       params.require(:overseer).permit(
         :first_name,
-        :last_name,
-        :role,
-        :parent_id,
-        :email,
-        :mobile,
-        :telephone,
-        :identifier,
-        :designation,
-        :department,
-        :function,
-        :geography,
-        :status,
-        :password,
-        :password_confirmation
+          :last_name,
+          :role,
+          :parent_id,
+          :email,
+          :mobile,
+          :telephone,
+          :identifier,
+          :designation,
+          :department,
+          :function,
+          :geography,
+          :status,
+          :password,
+          :password_confirmation,
       )
     end
 

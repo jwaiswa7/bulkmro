@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SalesQuote < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanBeSent
@@ -20,7 +18,7 @@ class SalesQuote < ApplicationRecord
   has_one :company, through: :inquiry
   has_many :inquiry_products, through: :inquiry
   has_many :rows, -> { joins(:inquiry_product).order('inquiry_products.sr_no ASC') }, class_name: 'SalesQuoteRow', inverse_of: :sales_quote, dependent: :destroy
-  accepts_nested_attributes_for :rows, reject_if: ->(attributes) { attributes['inquiry_product_supplier_id'].blank? && attributes['id'].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :rows, reject_if: lambda { |attributes| attributes['inquiry_product_supplier_id'].blank? && attributes['id'].blank? }, allow_destroy: true
   has_many :sales_quote_rows, inverse_of: :sales_quote
   has_many :products, through: :rows
   has_many :sales_orders, dependent: :destroy
@@ -48,8 +46,8 @@ class SalesQuote < ApplicationRecord
   after_save :handle_smart_queue
 
   def handle_smart_queue
-    inquiry.update_attributes(calculated_total: calculated_total)
-    service = Services::Overseers::Inquiries::HandleSmartQueue.new(inquiry)
+    self.inquiry.update_attributes(calculated_total: calculated_total)
+    service = Services::Overseers::Inquiries::HandleSmartQueue.new(self.inquiry)
     service.call
   end
 
@@ -58,23 +56,23 @@ class SalesQuote < ApplicationRecord
   end
 
   def inquiry_has_many_sales_quotes?
-    inquiry.sales_quotes.except_object(self).count >= 1
+    self.inquiry.sales_quotes.except_object(self).count >= 1
   end
 
   def tax_summary
-    rows.first.taxation.to_s
+    self.rows.first.taxation.to_s
   end
 
   def sales_quote_quantity_not_fulfilled?
-    calculated_total_quantity > sales_orders.remote_approved.persisted.map(&:calculated_total_quantity).compact.sum
+    self.calculated_total_quantity > self.sales_orders.remote_approved.persisted.map { |sales_order| sales_order.calculated_total_quantity }.compact.sum
   end
 
   def filename(include_extension: false)
     [
-      [
-        'quotation', inquiry.inquiry_number
-      ].join('_'),
-      ('pdf' if include_extension)
+        [
+            'quotation', inquiry.inquiry_number
+        ].join('_'),
+        ('pdf' if include_extension)
     ].compact.join('.')
   end
 
@@ -99,10 +97,16 @@ class SalesQuote < ApplicationRecord
   end
 
   def is_final?
-    if id.present? && inquiry.final_sales_quote == self
+    if self.id.present? && self.inquiry.final_sales_quote == self
+      true
+    elsif self.sales_orders.size >= 1
       true
     else
-      sales_orders.size >= 1
+      false
     end
+  end
+
+  def currency_sign
+    self.inquiry_currency.present? ? self.inquiry_currency.sign : nil
   end
 end

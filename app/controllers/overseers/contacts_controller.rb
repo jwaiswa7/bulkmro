@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::ContactsController < Overseers::BaseController
-  before_action :set_contact, only: %i[show edit update become]
+  before_action :set_contact, only: [:show, :edit, :update, :become]
 
   def index
     # service = Services::Overseers::Finders::Contacts.new(params)
@@ -74,21 +72,21 @@ class Overseers::ContactsController < Overseers::BaseController
     def contact_params
       params.require(:contact).permit(
         :company_id,
-        :first_name,
-        :last_name,
-        :legacy_email,
-        :password,
-        :password_confirmation,
-        :prefix,
-        :designation,
-        :telephone,
-        :mobile,
-        :email,
-        :role,
-        :status,
-        :contact_group,
-        :is_active,
-        company_ids: []
+          :first_name,
+          :last_name,
+          :legacy_email,
+          :password,
+          :password_confirmation,
+          :prefix,
+          :designation,
+          :telephone,
+          :mobile,
+          :email,
+          :role,
+          :status,
+          :contact_group,
+          :is_active,
+          company_ids: []
       )
     end
 end

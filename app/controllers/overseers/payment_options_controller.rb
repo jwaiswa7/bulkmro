@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::PaymentOptionsController < Overseers::BaseController
-  before_action :set_payment_option, only: %i[edit show update]
+  before_action :set_payment_option, only: [:edit, :show, :update]
 
   def index
     @payment_options = ApplyDatatableParams.to(PaymentOption.all, params)
@@ -46,9 +44,9 @@ class Overseers::PaymentOptionsController < Overseers::BaseController
     def payment_option_params
       params.require(:payment_option).permit(
         :name,
-        :credit_limit,
-        :general_discount,
-        :load_limit
+          :credit_limit,
+          :general_discount,
+          :load_limit
       )
     end
 

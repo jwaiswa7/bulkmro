@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::PurchaseOrdersController < Overseers::BaseController
-  before_action :set_purchase_order, only: %i[edit_internal_status update_internal_status]
+  before_action :set_purchase_order, only: [:edit_internal_status, :update_internal_status]
 
   def index
     authorize :purchase_order
@@ -9,21 +7,17 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     respond_to do |format|
       format.html { }
       format.json do
-        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer, paginate: false)
+        service = Services::Overseers::Finders::PurchaseOrders.new(params, current_overseer)
         service.call
 
-        per = (params[:per] || params[:length] || 20).to_i
-        page = params[:page] || ((params[:start] || 20).to_i / per + 1)
+        @indexed_purchase_orders = service.indexed_records
+        @purchase_orders = service.records.try(:reverse)
 
-        @indexed_purchase_orders = service.indexed_records.per(per).page(page)
-        @purchase_orders = service.records.page(page).per(per).try(:reverse)
+        status_service = Services::Overseers::Statuses::GetSummaryStatusBuckets.new(@indexed_purchase_orders, PurchaseOrder)
+        status_service.call
 
-        if PurchaseOrder.count != @indexed_purchase_orders.total_count
-          status_records = service.records.try(:reverse)
-          @statuses = status_records.map(&:metadata_status)
-        else
-          @statuses = PurchaseOrder.all.map(&:metadata_status)
-        end
+        @total_values = status_service.indexed_total_values
+        @statuses = status_service.indexed_statuses
       end
     end
   end
@@ -55,14 +49,13 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     @purchase_order.assign_attributes(purchase_order_params)
 
     if @purchase_order.valid?
-      ActiveRecord::Base.transaction do
-        if @purchase_order.internal_status_changed?
-          @po_comment = PoComment.new(message: "Status Changed: #{@purchase_order.internal_status}", purchase_order: @purchase_order, overseer: current_overseer)
-          @purchase_order.save!
-          @po_comment.save!
-        else
-          @purchase_order.save!
-        end
+      ActiveRecord::Base.transaction do if @purchase_order.internal_status_changed?
+                                          @po_comment = PoComment.new(message: "Status Changed: #{@purchase_order.internal_status}", purchase_order: @purchase_order, overseer: current_overseer)
+                                          @purchase_order.save!
+                                          @po_comment.save!
+                                        else
+                                          @purchase_order.save!
+                                        end
       end
       redirect_to edit_internal_status_overseers_purchase_order_path, notice: flash_message(@purchase_order, action_name)
     else
@@ -97,7 +90,8 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     def purchase_order_params
       params.require(:purchase_order).permit(
         :internal_status,
-        comments_attributes: %i[id message created_by_id]
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
       )
     end
 end

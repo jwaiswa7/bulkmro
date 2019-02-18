@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::SalesInvoicesController < Customers::BaseController
   before_action :set_sales_invoice, only: [:show]
 
@@ -24,14 +22,19 @@ class Customers::SalesInvoicesController < Customers::BaseController
     respond_to do |format|
       format.html { }
       format.pdf do
-        render_pdf_for @sales_invoice
+        render_pdf_for @sales_invoice, locals
       end
     end
   end
 
   private
-
     def set_sales_invoice
       @sales_invoice = current_contact.account.invoices.find(params[:id])
+      @locals = { stamp: false }
+      if params[:stamp].present?
+        @locals = { stamp: true }
+      end
     end
+
+    attr_accessor :locals
 end

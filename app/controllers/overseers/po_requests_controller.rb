@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::PoRequestsController < Overseers::BaseController
-  before_action :set_po_request, only: %i[show edit update]
+  before_action :set_po_request, only: [:show, :edit, :update]
 
   def pending
     @po_requests = ApplyDatatableParams.to(PoRequest.all.pending.order(id: :desc), params)
@@ -60,14 +58,13 @@ class Overseers::PoRequestsController < Overseers::BaseController
     @po_request.assign_attributes(po_request_params.merge(overseer: current_overseer))
     authorize @po_request
     if @po_request.valid?
-      ActiveRecord::Base.transaction do
-        if @po_request.status_changed?
-          @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
-          @po_request.save!
-          @po_request_comment.save!
-        else
-          @po_request.save!
-        end
+      ActiveRecord::Base.transaction do if @po_request.status_changed?
+                                          @po_request_comment = PoRequestComment.new(message: "Status Changed: #{@po_request.status}", po_request: @po_request, overseer: current_overseer)
+                                          @po_request.save!
+                                          @po_request_comment.save!
+                                        else
+                                          @po_request.save!
+                                        end
       end
       redirect_to overseers_po_request_path(@po_request), notice: flash_message(@po_request, action_name)
     else
@@ -80,14 +77,14 @@ class Overseers::PoRequestsController < Overseers::BaseController
     def po_request_params
       params.require(:po_request).permit(
         :id,
-        :inquiry_id,
-        :sales_order_id,
-        :purchase_order_id,
-        :logistics_owner_id,
-        :status,
-        rows_attributes: %i[id sales_order_row_id _destroy],
-        comments_attributes: %i[id message created_by_id],
-        attachments: []
+          :inquiry_id,
+          :sales_order_id,
+          :purchase_order_id,
+          :logistics_owner_id,
+          :status,
+          rows_attributes: [:id, :sales_order_row_id, :_destroy],
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
       )
     end
 

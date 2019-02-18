@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::BaseController
-  before_action :set_sales_invoice, only: %i[show triplicate duplicate edit_mis_date update_mis_date make_zip]
-  before_action :set_invoice_items, only: %i[show duplicate triplicate make_zip]
+  before_action :set_sales_invoice, only: [:show, :triplicate, :duplicate, :edit_mis_date, :update_mis_date, :make_zip]
+  before_action :set_invoice_items, only: [:show, :duplicate, :triplicate, :make_zip]
 
   def index
     @sales_invoices = @inquiry.invoices
@@ -13,8 +11,9 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     authorize @sales_invoice
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
 
+
     respond_to do |format|
-      format.html { }
+      format.html { render 'show' }
       format.pdf do
         render_pdf_for @sales_invoice, locals
       end
@@ -24,7 +23,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def duplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals[:duplicate] = true
+    locals.merge!(duplicate: true)
     respond_to do |format|
       format.html { }
       format.pdf do
@@ -36,7 +35,7 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
   def triplicate
     authorize @sales_invoice, :show?
     @metadata = @sales_invoice.metadata.deep_symbolize_keys
-    locals[:triplicate] = true
+    locals.merge!(triplicate: true)
     respond_to do |format|
       format.html { }
       format.pdf do
@@ -82,11 +81,13 @@ class Overseers::Inquiries::SalesInvoicesController < Overseers::Inquiries::Base
     def set_sales_invoice
       @sales_invoice = @inquiry.invoices.find(params[:id])
       @locals = { stamp: false }
-      @locals = { stamp: true } if params[:stamp].present?
+      if params[:stamp].present?
+        @locals = { stamp: true }
+      end
     end
 
     def set_invoice_items
-      Resources::Invoice.set_invoice_items(@sales_invoice)
+      Resources::Invoice.set_invoice_items([@sales_invoice.invoice_number])
     end
 
     def sales_invoice_params

@@ -10,7 +10,7 @@ class Customers::CustomerProductPolicy < Customers::ApplicationPolicy
   end
 
   def index?
-    contact.customer_products.exists?
+    current_company.customer_products.exists?
   end
 
   def online_orders?

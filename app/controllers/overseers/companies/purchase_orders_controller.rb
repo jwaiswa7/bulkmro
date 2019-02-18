@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 class Overseers::Companies::PurchaseOrdersController < Overseers::Companies::BaseController
   def index
     base_filter = {
-      base_filter_key: 'supplier_id',
-      base_filter_value: params[:company_id]
+        base_filter_key: 'supplier_id',
+        base_filter_value: params[:company_id]
     }
     authorize :purchase_order
     respond_to do |format|

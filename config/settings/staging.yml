@@ -9,6 +9,27 @@ email_messages:
   reply_to: care@bulkmro.com
   reply_to_name: Bulk MRO Support
 
+primary_bank:
+  name: Kotak Mahindra Bank Ltd
+  address: Aum Saheel Tower, Mumbai 400080.
+  account_name: Bulk MRO Industrial Supply Pvt. Ltd.
+  account_number: 9412329433
+  neft_code: KKBK0001411
+  swift_code: KKBKINBB
+  currency_usd:
+    account_number: 9412666668
+  currency_gbp:
+    account_number: 9412666675
+  currency_eur:
+    account_number: 9412666682
+
+secondary_bank:
+  name: State Bank of India
+  address: Kalpa Taru - 39, Pedder Road, Mumbai 400026.
+  account_name: Bulk MRO Industrial Supply Pvt. Ltd.
+  account_number: 35924122136
+  neft_code: SBIN0000510
+
 slack:
   bot_user_access_token: xoxb-395906857286-397063978996-v0clkA03XHgC2AZcsHm8F7cF
   username: Sprint Bot
@@ -18,6 +39,7 @@ sendgrid:
   username: bulk
   password: GhgjIH4zw3p2
   api_key: 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
+  default_email: pradeep.ketkale@bulkmro.com
 
 domain: staging.bulkmro.com
 
@@ -41,3 +63,18 @@ wit:
 
 heroku:
   dyno_adjuster_token: 3c7865fa-e80c-4e9f-a65a-12f23259c4a3
+
+razorpay:
+  MERCHANT_KEY_ID:  'rzp_test_YorJsu5KKxrZxc'
+  MERCHANT_KEY_SECRET:  'F1KKKL5ntCXObq4EZ6huRj32'
+
+sap:
+  ENDPOINT: 'https://35.200.144.191:50000/b1s/v1'
+  DATABASE: 'BMRO_15NOV'
+  USERNAME: 'manager'
+  PASSWORD: 'vm1234'
+  ATTACHMENT_ENDPOINT: 'https://35.200.144.191:22'
+  ATTACHMENT_DIRECTORY: '/usr/sap/SAPBusinessOne/B1_SHF/Attachments'
+  ATTACHMENT_API: '35.200.144.191/b1_shf/Attachments'
+  ATTACHMENT_USERNAME: 'pradeep'
+  ATTACHMENT_PASSWORD: ''

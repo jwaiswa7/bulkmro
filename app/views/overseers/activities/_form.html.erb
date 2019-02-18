@@ -1,45 +1,99 @@
 <div class="col-lg-12">
-  <div class="page-header">
-    <h2><%= action_name.capitalize %> Activity</h2>
-    <p>This will <em>'<%= submit_text(@activity).downcase %>'</em> and log it under <strong><%= current_overseer.full_name %></strong>.</p>
-  </div>
+  <%= render 'shared/snippets/page_header', e: @activity %>
 
   <%= simple_form_for([:overseers, @activity], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
-    <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path }, include_blank: 'Leave blank if no inquiry connected' %>
-    <%= f.association :company, collection: selected_option_or_nil(f, :company),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_companies_path }, include_blank: 'Leave blank if no company connected' %>
-    <%= f.association :contact, collection: selected_option_or_nil(f, :contact),  input_html: { class: 'select2-ajax', :'data-source' => autocomplete_overseers_contacts_path }, include_blank: 'Leave blank if no contact connected' %>
 
-    <%= f.input :subject %>
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <%= f.association :inquiry, collection: selected_option_or_nil(f, :inquiry), input_html: {class: 'select2-ajax', :'data-source' => autocomplete_overseers_inquiries_path}, include_blank: 'Leave blank if no inquiry connected' %>
+        </div>
+        <%= render partial: 'overseers/activities/company_creation_partials/company_creation_request', locals: {f: f} %>
 
-    <div class="form-row">
-      <div class="col-6 col-md-4">
-        <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
-      </div>
-      <div class="col-6 col-md-4">
-        <%= f.input :activity_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
-      </div>
-      <div class="col-12 col-md-4">
-        <%= f.input :purpose, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
+        <div class="mt-3">
+          <%= f.association :contact, collection: selected_option_or_nil(f, :contact), input_html: {class: 'select2-ajax ', :'data-source' => autocomplete_overseers_contacts_path}, include_blank: 'Leave blank if no contact connected' %>
+          <%= f.input :subject %>
+          <div class="form-row">
+            <div class="col-4 col-md-4">
+              <%= f.input :expenses, label: "Misc Expenses" %>
+            </div>
+            <div class="col-8">
+              <div class="d-block d-md-flex align-items-end">
+                <div class="flex-grow-1">
+                  <%= f.input :attachments, wrapper: :custom_file, input_html: {multiple: true}, label: 'Attachments' %>
+                </div>
+
+                <div class="form-group">
+                  <% f.object.attachments.each do |attachment| %>
+                    <%= link_to url_for(attachment), class: 'ml-md-1 btn btn-success', target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <i class="fal fa-download"></i>
+                      <%= link_to overseers_attachment_path(attachment.id), class: 'btn btn-outline-danger btn-sm ml-1 mr-1 mr-md-0', method: :delete, data: {confirm: 'Are you sure?'}, :"data-toggle" => 'tooltip', :status => ['Delete', ' ', attachment.filename, '?'].join(''), required: true do %>
+                        <i class="fal fa-trash-alt"></i>
+                      <% end if attachment.present? && policy(:attachment).destroy? %>
+                    <% end %>
+                  <% end if f.object.attachments.attached? %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-6 col-md-6">
+              <%= f.input :company_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.company_types) %>
+            </div>
+            <div class="col-6 col-md-6">
+              <%= f.input :activity_type, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.activity_types) %>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-6 col-md-6">
+              <%= f.input :purpose, as: :select, include_blank: false, :wrapper => :custom_multi_select, collection: enum_to_collection(Activity.purposes) %>
+            </div>
+            <div class="col-6 col-md-6">
+              <%= f.input :activity_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: (f.object.activity_date.to_date if f.object.activity_date.present?)} %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="select2-wrapper">
+              <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id]}, input_html: {:multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select other overseers'} %>
+            </div>
+          </div>
+
+          <%= f.input :points_discussed %>
+          <%= f.input :actions_required %>
+
+
+
+          <div class="form-row">
+            <% if action_name.capitalize == "New" %>
+              <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
+                <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
+              <% end %>
+            <% else %>
+              <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
+                <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="form-row mt-2">
+            <% if @activity.persisted? && !(@activity.approved? || @activity.rejected?) %>
+              <% if policy(@activity).approve? %>
+                <div class="col-md-6">
+                  <a href="<%= approve_overseers_activity_path(@activity) %>" class="btn-block btn btn-success"><i class="fal fa-check mr-1"></i>
+                    Approve</a>
+                </div>
+              <% end %>
+              <% if policy(@activity).reject? %>
+                <div class="col-md-6">
+                  <a href="<%= reject_overseers_activity_path(@activity) %>" class="btn-block btn btn-danger"><i class="fal fa-times mr-1"></i>Reject</a>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="form-group">
-      <div class="select2-wrapper">
-        <%= f.input :overseer_ids, as: :select, label: 'Colleagues', collection: Overseer.all.collect {|x| [x.to_s, x.id] }, input_html: { :multiple => true, :class => 'form-control select2-multiple', :"data-placeholder" => 'Select other overseers'} %>
-      </div>
-    </div>
-
-    <%= f.input :points_discussed %>
-    <%= f.input :actions_required %>
-
-    <% if action_name.capitalize == "New" %>
-      <%= button_tag(type: "submit", class: "btn btn-success btn-block") do %>
-        <i class="fal fa-plus-circle"></i> <%= submit_text(@activity) %>
-      <% end %>
-    <% else %>
-      <%= button_tag(type: "submit", class: "btn btn-warning btn-block") do %>
-        <i class="fal fa-pen"></i> <%= submit_text(@activity) %>
-      <% end %>
-    <% end %>
   <% end %>
+  </div>
 </div>

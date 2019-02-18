@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationController < ActionController::Base
   before_action :set_raven_context, if: :production?
   before_action :set_raven_context, if: :staging?
@@ -11,16 +9,16 @@ class ApplicationController < ActionController::Base
       layout: 'shared/layouts/pdf_templates/show',
       page_size: 'A4',
       footer: {
-        center: '[page] of [topage]'
+          center: '[page] of [topage]'
       },
       locals: {
-        record: record
+          record: record
       }
     )
   end
 
-  private
 
+  private
     def production?
       Rails.env.production?
     end
@@ -54,37 +52,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # def notification_message(type, *args)
-    #   case type.to_sym
-    #   when :send_inquiry_product
-    #     "#{args[0]} uploaded for approval in Inquiry ##{args[1]}"
-    #   when :inquiry_product_comment
-    #     if args[0].present?
-    #       "Product #{args[1]} has been #{args[0]}"
-    #     else
-    #       msg = "New reply for Product #{args[1]}"
-    #       msg = "#{msg.to_s}: #{args[2]}" if args[2].present?
-    #     end
-    #   when :inquiry_order_comment
-    #     if args[0].present?
-    #       "Order for Inquiry ##{args[1]} has been #{args[0]}"
-    #     else
-    #       msg = "New reply for order of Inquiry #{args[1]}"
-    #       msg = "#{msg.to_s}: #{args[2]}" if args[2].present?
-    #     end
-    #   when :order_init
-    #     "New Order for inquiry ##{args[0]} awaiting approval"
-    #   else
-    #     "You have new notification"
-    #   end
-    # end
-
     def set_raven_context
       if current_overseer.present?
         Raven.user_context(
           id: current_overseer.id,
           email: current_overseer.email,
           ip_address: request.ip
+
         )
       else
         Raven.user_context(

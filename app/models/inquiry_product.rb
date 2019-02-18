@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
 class InquiryProduct < ApplicationRecord
   include Mixins::CanBeStamped
 
   belongs_to :inquiry
   has_one :company, through: :inquiry
-  belongs_to :product
+  belongs_to :product, validate: false
   accepts_nested_attributes_for :product
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id, required: false
   has_many :inquiry_product_suppliers, inverse_of: :inquiry_product, dependent: :destroy
@@ -27,23 +25,34 @@ class InquiryProduct < ApplicationRecord
   # validates_numericality_of :quantity, :greater_than => 0
   after_initialize :set_defaults, if: :new_record?
 
+  after_create :increase_product_count
+  before_destroy :decrease_product_count
+
+  def increase_product_count
+    self.product.update_attribute('total_quotes', self.product.total_quotes + 1) if self.product.present?
+  end
+
+  def decrease_product_count
+    self.product.update_attribute('total_quotes', (self.product.total_quotes == 0 ? 0 : (self.product.total_quotes - 1))) if self.product.present?
+  end
+
   def set_defaults
     self.quantity ||= 1
   end
 
   def best_tax_code
-    product.tax_code.code if product.tax_code.present?
+    self.product.tax_code.code if self.product.tax_code.present?
   end
 
   def best_tax_rate
-    product.best_tax_rate if product.best_tax_rate.present?
+    self.product.best_tax_rate if self.product.best_tax_rate.present?
   end
 
   def to_s
-    [bp_catalog_sku.present? ? bp_catalog_sku : product.sku, bp_catalog_name.present? ? bp_catalog_name : product.name].reject(&:blank?).compact.join(' - ')
+    [bp_catalog_sku.present? ? bp_catalog_sku : self.product.sku, bp_catalog_name.present? ? bp_catalog_name : self.product.name].reject(&:blank?).compact.join(' - ')
   end
 
   def to_bp_catalog_s
-    [bp_catalog_sku, bp_catalog_name.present? ? bp_catalog_name : product.name].reject(&:blank?).compact.join(' - ')
+    [bp_catalog_sku, bp_catalog_name.present? ? bp_catalog_name : self.product.name].reject(&:blank?).compact.join(' - ')
   end
 end

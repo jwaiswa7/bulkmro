@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class InquiryMailer < ApplicationMailer
-  default template_path: "mailers/#{name.underscore}"
+  default template_path: "mailers/#{self.name.underscore}"
 
   def acknowledgement(email_message)
     @overseer = email_message.overseer

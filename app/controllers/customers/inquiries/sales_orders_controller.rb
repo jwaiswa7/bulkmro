@@ -1,9 +1,8 @@
-# frozen_string_literal: true
-
 class Customers::Inquiries::SalesOrdersController < Customers::Inquiries::BaseController
   before_action :get_final_sales_orders
 
-  def index; end
+  def index
+  end
 
   def show
     @final_sales_order = @final_sales_orders.find(params[:id])

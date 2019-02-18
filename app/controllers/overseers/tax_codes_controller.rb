@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::TaxCodesController < Overseers::BaseController
-  before_action :set_tax_code, only: %i[edit update show]
+  before_action :set_tax_code, only: [:edit, :update, :show]
 
   def autocomplete
     @tax_codes = ApplyParams.to(TaxCode.active.where('is_service = ?', params[:is_service]), params)
@@ -42,9 +40,7 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def update
     @tax_code.assign_attributes(tax_code_params)
     authorize @tax_code
-    # below code is for testing purpose on stagging
-    s = Overseer.find(168)
-    Notification.create(recipient: current_overseer, sender: s, namespace: self.class.parent, action: action_name.to_sym, notifiable: @tax_code, action_url: request.referer, message: flash_message(@tax_code, action_name))
+
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
@@ -78,13 +74,13 @@ class Overseers::TaxCodesController < Overseers::BaseController
     def tax_code_params
       params.require(:tax_code).permit(
         :remote_uid,
-        :code,
-        :chapter,
-        :description,
-        :tax_percentage,
-        :is_service,
-        :is_active,
-        :is_pre_gst
+          :code,
+          :chapter,
+          :description,
+          :tax_percentage,
+          :is_service,
+          :is_active,
+          :is_pre_gst
       )
     end
 end

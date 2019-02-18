@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::CategoriesController < Overseers::BaseController
-  before_action :set_category, only: %i[edit update show]
+  before_action :set_category, only: [:edit, :update, :show]
 
   def autocomplete
     @categories = ApplyParams.to(Category.leaves.active, params)
@@ -64,19 +62,19 @@ class Overseers::CategoriesController < Overseers::BaseController
 
     def get_category_hash(category, level = :child)
       {
-        id: category.id,
-        text: category.autocomplete_to_s(level)
+          id: category.id,
+          text: category.autocomplete_to_s(level)
       }
     end
 
     def category_params
       params.require(:category).permit(
         :parent_id,
-        :name,
-        :is_service,
-        :is_active,
-        :tax_code_id,
-        :tax_rate_id
+          :name,
+          :is_service,
+          :is_active,
+          :tax_code_id,
+          :tax_rate_id
       )
     end
 

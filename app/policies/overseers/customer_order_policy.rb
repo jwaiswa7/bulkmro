@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
   def index?
     manager_or_cataloging? || admin?
@@ -27,5 +25,13 @@ class Overseers::CustomerOrderPolicy < Overseers::ApplicationPolicy
 
   def reject?
     approve?
+  end
+
+  def payments?
+    index?
+  end
+
+  def refresh_payment?
+    index?
   end
 end

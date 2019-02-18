@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Category < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasClosureTree
@@ -20,31 +18,32 @@ class Category < ApplicationRecord
     self.is_service ||= false
   end
 
-  def default_ancestors
+  def self.default_ancestors
     ['Root Catalog', 'Default Category']
   end
 
   def all_descendants
-    children | children.map(&:descendants).flatten
+    self.children | self.children.map(&:descendants).flatten
   end
 
   def ancestors_to_s
-    ancestry_path - default_ancestors
+    self.ancestry_path - Category.default_ancestors
   end
 
   def autocomplete_to_s(level)
     case level
     when :grandparent
-      name.to_s
+      "#{self.name}"
     when :parent
-      "- #{name}"
+      "- #{self.name}"
     when :child
-      "-- #{name}"
+      "-- #{self.name}"
+    else
     end
   end
 
   def self.root
-    find_by_id(1)
+    self.find_by_id(1)
   end
 
   def self.default

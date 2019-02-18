@@ -1,8 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseController
-  before_action :set_sales_order, only: %i[show proforma edit update new_confirmation create_confirmation resync edit_mis_date update_mis_date]
-  before_action :set_notification, only: [:create_confirmation]
+  before_action :set_sales_order, only: [:show, :proforma, :edit, :update, :new_confirmation, :create_confirmation, :resync, :edit_mis_date, :update_mis_date, :fetch_order_data]
 
   def index
     @sales_orders = @inquiry.sales_orders
@@ -56,7 +53,7 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order = SalesOrder.new(sales_order_params.merge(overseer: current_overseer))
     authorize @sales_order
 
-    callback_method = %w[save save_and_confirm].detect { |action| params[action] }
+    callback_method = %w(save save_and_confirm).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
@@ -73,13 +70,20 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     @sales_order.assign_attributes(sales_order_params.merge(overseer: current_overseer))
     authorize @sales_order
 
-    callback_method = %w[save save_and_confirm].detect { |action| params[action] }
+    callback_method = %w(save save_and_confirm).detect { |action| params[action] }
 
     if callback_method.present? && send(callback_method)
       redirect_to overseers_inquiry_sales_orders_path(@inquiry), notice: flash_message(@inquiry, action_name) unless performed?
     else
       render 'edit'
     end
+  end
+
+  def debugging
+    authorize :sales_order
+    @sales_order = SalesOrder.find(params['id'])
+    @remote_requests = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: @sales_order.id)
+    @callback_requests = CallbackRequest.sales_order_callbacks(@sales_order.id)
   end
 
   def create_confirmation
@@ -93,13 +97,15 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
         @sales_order.update_attributes(status: 'Requested')
         @sales_order.update_attributes(sent_at: Time.now)
       end
-      @notification.send_order_confirmation(
-        @inquiry,
-        action_name.to_sym,
-        @sales_order,
-        overseers_inquiry_comments_path(@inquiry, sales_order_id: @sales_order.to_param, show_to_customer: false),
-        @sales_order.inquiry.inquiry_number.to_s
-      )
+      # chat_message = Services::Overseers::ChatMessages::SendChat.new
+      # message = chat_message.message_body(
+      #     fallback: "New Order for approval",
+      #     pretext: "New Order for approval",
+      #     author_name: "Created by: " + @sales_order.created_by.full_name,
+      #     inquiry_number: @sales_order.inquiry_id,
+      #     order_no: @sales_order.id
+      #     )
+      # chat_message.send_chat_message(@inquiry.sales_manager.slack_uid, message)
     else
       @sales_order.update_attributes(sent_at: Time.now) if @sales_order.sent_at.blank?
     end
@@ -142,6 +148,12 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     end
   end
 
+  def fetch_order_data
+    authorize @sales_order
+    Services::Overseers::SalesOrders::FetchOrderData.new(@sales_order).call
+    redirect_to overseers_inquiry_sales_orders_path(@inquiry)
+  end
+
   private
 
     def save
@@ -163,21 +175,21 @@ class Overseers::Inquiries::SalesOrdersController < Overseers::Inquiries::BaseCo
     def sales_order_params
       params.require(:sales_order).permit(
         :mis_date,
-        :sales_quote_id,
-        :parent_id,
-        rows_attributes: %i[
-          id
-          sales_order_id
-          sales_quote_row_id
-          quantity
-          _destroy
-        ]
+          :sales_quote_id,
+          :parent_id,
+          rows_attributes: [
+              :id,
+              :sales_order_id,
+              :sales_quote_row_id,
+              :quantity,
+              :_destroy
+          ]
       )
     end
 
     def mis_date_params
       params.require(:sales_order).permit(
-        :mis_date
+        :mis_date,
       )
     end
 end

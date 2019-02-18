@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class InquiryImportRow < ApplicationRecord
   belongs_to :import, class_name: 'InquiryImport', foreign_key: :inquiry_import_id
   has_one :inquiry, through: :import
@@ -8,8 +6,8 @@ class InquiryImportRow < ApplicationRecord
 
   attr_accessor :approved_alternative_id
 
-  scope :failed, -> { where(inquiry_product_id: nil) }
-  scope :successful, -> { where.not(inquiry_product_id: nil) }
+  scope :failed, -> { where(inquiry_product_id: nil)  }
+  scope :successful, -> { where.not(inquiry_product_id: nil)  }
 
   validates_presence_of :metadata
   validates_uniqueness_of :sku, scope: :import, allow_nil: true
@@ -23,8 +21,8 @@ class InquiryImportRow < ApplicationRecord
     !successful?
   end
 
-  def approved_alternatives(page = 1)
+  def approved_alternatives(page=1)
     service = Services::Overseers::Finders::Products.new({})
-    service.manage_failed_skus([metadata['mpn'], metadata['name']].map { |a| a.to_s.strip }.compact.join(' '), 4, page)
+    service.manage_failed_skus([metadata['mpn'], metadata['name']].map{ |a| a.to_s.strip }.compact.join(' '), 4, page)
   end
 end

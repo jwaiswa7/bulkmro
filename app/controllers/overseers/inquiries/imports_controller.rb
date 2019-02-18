@@ -1,9 +1,6 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseController
   before_action :set_import, only: [:show]
-  before_action :set_excel_import, only: %i[manage_failed_skus create_failed_skus]
-  before_action :set_notification, only: [:create_failed_skus]
+  before_action :set_excel_import, only: [:manage_failed_skus, :create_failed_skus]
 
   def index
     @imports = @inquiry.imports
@@ -44,9 +41,9 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
   def excel_template
     authorize @inquiry
     respond_to do |format|
-      format.xlsx do
-        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry} Excel Template", 'xlsx'].join('.') + '"'
-      end
+      format.xlsx {
+        response.headers['Content-Disposition'] = 'attachment; filename="' + ["#{@inquiry.to_s} Excel Template", 'xlsx'].join('.') + '"'
+      }
     end
   end
 
@@ -85,14 +82,6 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     service = Services::Overseers::InquiryImports::CreateFailedSkus.new(@inquiry, @excel_import)
 
     if service.call
-      @notification.send_product_import_confirmation(
-        Overseer.cataloging,
-        action_name.to_sym,
-        @excel_import,
-        edit_overseers_inquiry_path(@inquiry),
-        @excel_import.rows.map(&:sku).join(', '),
-        @inquiry.inquiry_number.to_s
-      )
       redirect_to edit_overseers_inquiry_path(@inquiry), notice: flash_message(@inquiry, action_name)
     else
       service = Services::Overseers::InquiryImports::BuildInquiryProducts.new(@inquiry, @excel_import)
@@ -126,15 +115,15 @@ class Overseers::Inquiries::ImportsController < Overseers::Inquiries::BaseContro
     def create_failed_skus_params
       params[:inquiry_import].present? ? params.require(:inquiry_import).permit(
         rows_attributes: [
-          :id,
-          :approved_alternative_id,
-          :_destroy,
-          inquiry_product_attributes: [
-            :inquiry_id,
-            :quantity,
-            :sr_no,
-            product_attributes: %i[inquiry_import_row_id name sku mpn is_service brand_id tax_code_id tax_rate_id category_id]
-          ]
+            :id,
+            :approved_alternative_id,
+            :_destroy,
+            inquiry_product_attributes: [
+                :inquiry_id,
+                :quantity,
+                :sr_no,
+                product_attributes: [:inquiry_import_row_id, :name, :sku, :mpn, :is_service, :brand_id, :tax_code_id, :tax_rate_id, :category_id]
+            ],
         ]
       ) : {}
     end

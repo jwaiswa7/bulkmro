@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TargetPeriod < ApplicationRecord
   has_many :targets
 

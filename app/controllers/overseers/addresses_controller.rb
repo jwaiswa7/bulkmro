@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::AddressesController < Overseers::BaseController
   def index
     service = Services::Overseers::Finders::Addresses.new(params)

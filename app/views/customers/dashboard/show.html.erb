@@ -97,6 +97,7 @@
         <table class="table datatable w-100 wrap-whitespace" data-fixed-header="false">
           <thead>
           <tr>
+            <th class="no-sort"></th>
             <th class="no-sort">PO #</th>
             <th class="no-sort">PO Date</th>
             <th class="no-sort">Invoice #</th>
@@ -112,6 +113,12 @@
           <tbody>
           <% @dashboard.recent_sales_invoices.each do |sales_invoice| %>
             <tr>
+              <td>
+                <% if policy(sales_invoice).show? && sales_invoice.inquiry.present? %>
+                  <%= row_action_button(customers_invoice_path(sales_invoice), 'eye', 'View Invoice', 'info') %>
+                  <%= row_action_button(customers_invoice_path(sales_invoice, :stamp => 1, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
+                <% end %>
+              </td>
 
               <td><%= sales_invoice.inquiry.customer_po_number %></td>
               <td><%= format_date(sales_invoice.inquiry.customer_order_date) %></td>

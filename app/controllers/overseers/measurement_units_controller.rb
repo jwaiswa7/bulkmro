@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::MeasurementUnitsController < Overseers::BaseController
-  before_action :set_measurement_unit, only: %i[edit update show]
+  before_action :set_measurement_unit, only: [:edit, :update, :show]
 
   def autocomplete
     @measurement_units = ApplyParams.to(MeasurementUnit.all, params).order(:name)
@@ -19,7 +17,7 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
   end
 
   def new
-    @measurement_unit = MeasurementUnit.new
+    @measurement_unit = MeasurementUnit.new()
     authorize @measurement_unit
   end
 
@@ -50,7 +48,6 @@ class Overseers::MeasurementUnitsController < Overseers::BaseController
   end
 
   private
-
     def set_measurement_unit
       @measurement_unit ||= MeasurementUnit.find(params[:id])
     end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::SalesOrdersController < Customers::BaseController
   before_action :set_sales_order, only: [:show]
 
@@ -30,8 +28,7 @@ class Customers::SalesOrdersController < Customers::BaseController
   end
 
   private
-
     def set_sales_order
-      @sales_order = current_contact.account.sales_orders.find(params[:id])
+      @sales_order = current_company.sales_orders.find(params[:id])
     end
 end

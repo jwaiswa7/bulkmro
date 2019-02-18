@@ -2,7 +2,15 @@
 
 class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   def new_inquiry?
-    record.contacts.any? && record.addresses.any? && manager_or_sales? && record.is_active?
+    record.contacts.any? && record.addresses.any? && manager_or_sales? && is_active? && record.is_customer?
+  end
+
+  def new_contact?
+    edit? && is_active?
+  end
+
+  def new_address?
+    edit? && is_active?
   end
 
   def new?
@@ -18,14 +26,14 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
   end
 
   def download_customer_product_template?
-    all_roles?
+    all_roles? && is_active?
   end
 
   def new_excel_customer_product_import?
-    cataloging? || developer?
+    cataloging? || developer? && is_active?
   end
 
   def create_customer_products?
-    all_roles?
+    all_roles? && is_active?
   end
 end

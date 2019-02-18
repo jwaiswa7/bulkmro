@@ -9,18 +9,21 @@
 
 <% content_for :header_row do %>
   <th class="no-sort all"></th>
-  <th class="no-sort all" data-name="inquiry_number">Inquiry #</th>
-  <th class="no-sort desktop">Sales Orders</th>
-  <th class="no-sort desktop">Sales Invoices</th>
+  <th class="sort all text-right" data-name="inquiry_number">Inquiry</th>
+  <th class="no-sort desktop text-right">Sales Orders</th>
+  <th class="no-sort desktop text-right">Sales Invoices</th>
   <th class="no-sort all" data-name="status">Status</th>
   <th class="no-sort desktop" data-name="account_id">Account</th>
   <th class="no-sort desktop" data-name="company_id">Company</th>
   <th class="no-sort desktop">PO # - Subject</th>
+  <th class="sort desktop text-right" data-name="quotation_followup_date">Follow Up Date</th>
   <th class="no-sort desktop" data-name="contact_id">Contact</th>
   <th class="no-sort desktop" data-name="inside_sales_executive">Inside Sales</th>
   <th class="no-sort desktop" data-name="outside_sales_executive">Outside Sales</th>
-  <th class="no-sort desktop">Total</th>
-  <th class="no-sort desktop" data-name="created_at">Date</th>
+  <th class="sort desktop text-right" data-name="margin_percentage">Margin (%)</th>
+  <th class="sort desktop text-right" data-name="potential_amount">Potential Amount</th>
+  <th class="sort desktop text-right" data-name="calculated_total">Quoted Amount</th>
+  <th class="sort desktop text-right" data-name="created_at">Date</th>
 <% end %>
 
 <% content_for :filter_row do %>
@@ -32,9 +35,12 @@
   <td data-filter="ajax"></td>
   <td data-filter="ajax"></td>
   <td data-filter="false"></td>
+  <td data-filter="false"></td>
   <td data-filter="ajax"></td>
   <td data-filter="dropdown"></td>
   <td data-filter="dropdown"></td>
+  <td data-filter="false"></td>
+  <td data-filter="false"></td>
   <td data-filter="false"></td>
   <td data-filter="daterange"></td>
 <% end %>

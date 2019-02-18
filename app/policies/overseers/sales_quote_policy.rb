@@ -22,7 +22,7 @@ class Overseers::SalesQuotePolicy < Overseers::ApplicationPolicy
   end
 
   def reset_quote?
-    ['shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'pradeep.ketkale@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'vishal.biradar@bulkmro.com'].include? overseer.email
+    developer?
   end
 
   def preview?

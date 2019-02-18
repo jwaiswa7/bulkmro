@@ -1,16 +1,14 @@
-# frozen_string_literal: true
-
 class Overseers::InvoiceRequestsController < Overseers::BaseController
-  before_action :set_invoice_request, only: %i[show edit update]
+  before_action :set_invoice_request, only: [:show, :edit, :update]
 
   def pending
     invoice_requests =
-      if params[:status].present?
-        @status = params[:status]
-        InvoiceRequest.where(status: params[:status])
-      else
-        InvoiceRequest.all
-      end.order(id: :desc)
+        if params[:status].present?
+          @status = params[:status]
+          InvoiceRequest.where(status: params[:status])
+        else
+          InvoiceRequest.all
+        end.order(id: :desc)
 
     @invoice_requests = ApplyDatatableParams.to(invoice_requests, params)
     authorize @invoice_requests
@@ -45,6 +43,10 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     if params[:sales_order_id].present?
       @sales_order = SalesOrder.find(params[:sales_order_id])
       @invoice_request = InvoiceRequest.new(overseer: current_overseer, sales_order: @sales_order, inquiry: @sales_order.inquiry)
+      authorize @invoice_request
+    elsif  params[:purchase_order_id].present?
+      @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+      @invoice_request = InvoiceRequest.new(overseer: current_overseer, purchase_order: @purchase_order, inquiry: @purchase_order.inquiry)
       authorize @invoice_request
     else
       redirect_to overseers_invoice_requests_path
@@ -99,16 +101,16 @@ class Overseers::InvoiceRequestsController < Overseers::BaseController
     def invoice_request_params
       params.require(:invoice_request).permit(
         :id,
-        :inquiry_id,
-        :sales_order_id,
-        :grpo_number,
-        :ap_invoice_number,
-        :shipment_number,
-        :ar_invoice_number,
-        :purchase_order_id,
-        :status,
-        comments_attributes: %i[id message created_by_id],
-        attachments: []
+          :inquiry_id,
+          :sales_order_id,
+          :grpo_number,
+          :ap_invoice_number,
+          :shipment_number,
+          :ar_invoice_number,
+          :purchase_order_id,
+          :status,
+          comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+          attachments: []
       )
     end
 

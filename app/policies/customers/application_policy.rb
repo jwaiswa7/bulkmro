@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Customers::ApplicationPolicy
-  attr_reader :contact, :record
+  attr_reader :contact, :current_company, :record
 
-  def initialize(contact, record)
+  def initialize(contact, current_company, record)
     @contact = contact
+    @current_company = current_company
     @record = record
   end
 

@@ -1,14 +1,12 @@
-# frozen_string_literal: true
-
 class SalesShipmentRow < ApplicationRecord
   belongs_to :sales_shipment
 
   def sku
-    metadata['sku']
+    self.metadata['sku']
   end
 
   def quantity
-    metadata['qty']
+    self.metadata['qty']
   end
 
   def hsn
@@ -28,8 +26,7 @@ class SalesShipmentRow < ApplicationRecord
   end
 
   private
-
     def get_product
-      sales_shipment.sales_order.sales_quote.rows.select { |supplier_row| supplier_row.product.sku == sku }.first
+      sales_shipment.sales_order.sales_quote.rows.select { | supplier_row | supplier_row.product.sku == self.sku }.first
     end
 end

@@ -20,7 +20,7 @@ json.data (@contacts) do |contact|
                   contact.account.name,
                   contact.role.titleize,
                   contact.inquiries.size,
-                  format_date(contact.created_at)
+                  format_succinct_date(contact.created_at)
               ]
 end
 

@@ -1,15 +1,14 @@
-# frozen_string_literal: true
-
 class SalesInvoiceRow < ApplicationRecord
   belongs_to :sales_invoice
 
   def sku
-    metadata['sku']
+    self.metadata['sku']
   end
 
   def quantity
-    metadata['qty']
+    self.metadata['qty']
   end
+
 
   def hsn
     get_product.try(:best_tax_code).try(:chapter)
@@ -32,12 +31,18 @@ class SalesInvoiceRow < ApplicationRecord
   end
 
   def tax_rate
-    ((metadata['tax_amount'].to_f / metadata['row_total'].to_f) * 100).round(2)
+    tax_amount = self.metadata['tax_amount'].to_f
+    row_total = self.metadata['row_total'].to_f
+    if(tax_amount.nil? || tax_amount.zero?) || (row_total.nil? || row_total.zero?)
+      0
+    else
+      ((tax_amount / row_total) * 100).round(2)
+    end
   end
 
   private
 
     def get_product
-      sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: { sku: sku }).first || Product.find_by_sku(sku)
+      sales_invoice.sales_order.sales_quote.rows.joins(:product).where(products: { sku: self.sku }).first || Product.find_by_sku(self.sku)
     end
 end

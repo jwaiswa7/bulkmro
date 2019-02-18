@@ -1,16 +1,14 @@
-# frozen_string_literal: true
-
 class Overseers::FreightRequestsController < Overseers::BaseController
-  before_action :set_freight_request, only: %i[show edit update]
+  before_action :set_freight_request, only: [:show, :edit, :update]
 
   def index
     freight_requests =
-      if params[:status].present?
-        @status = params[:status]
-        FreightRequest.where(status: params[:status])
-      else
-        FreightRequest.all
-      end.order(id: :desc)
+        if params[:status].present?
+          @status = params[:status]
+          FreightRequest.where(status: FreightRequest.statuses[params[:status]])
+        else
+          FreightRequest.all
+        end
 
     @freight_requests = ApplyDatatableParams.to(freight_requests, params)
     authorize @freight_requests
@@ -22,6 +20,7 @@ class Overseers::FreightRequestsController < Overseers::BaseController
 
   def new
     if params[:sales_order_id].present? || params[:sales_quote_id].present? || params[:inquiry_id].present?
+
       if params[:sales_order_id].present?
         @sales_order = SalesOrder.find(params[:sales_order_id])
         @sales_quote = @sales_order.sales_quote
@@ -47,7 +46,6 @@ class Overseers::FreightRequestsController < Overseers::BaseController
   def create
     @freight_request = FreightRequest.new(freight_request_params.merge(overseer: current_overseer))
     authorize @freight_request
-
     if @freight_request.valid?
       ActiveRecord::Base.transaction do
         @freight_request.save!
@@ -89,24 +87,28 @@ class Overseers::FreightRequestsController < Overseers::BaseController
     def freight_request_params
       params.require(:freight_request).permit(
         :id,
-        :request_type,
-        :delivery_type,
-        :inquiry_id,
-        :sales_order_id,
-        :company_id,
-        :delivery_address_id,
-        :supplier_id,
-        :pick_up_address_id,
-        :sales_quote_id,
-        :status,
-        :weight,
-        :length,
-        :width,
-        :breadth,
-        :volumetric_weight,
-        :hazardous,
-        comments_attributes: %i[id message created_by_id],
-        attachments: []
+          :request_type,
+          :delivery_type,
+          :inquiry_id,
+          :sales_order_id,
+          :company_id,
+          :delivery_address_id,
+          :supplier_id,
+          :pick_up_address_id,
+          :sales_quote_id,
+          :status,
+          :weight,
+          :length,
+          :width,
+          :breadth,
+          :volumetric_weight,
+          :hazardous,
+          :pickup_date,
+          :material_type,
+          :loading,
+          :unloading,
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
       )
     end
 

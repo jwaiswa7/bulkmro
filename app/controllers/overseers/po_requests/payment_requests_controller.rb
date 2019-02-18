@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::BaseController
-  before_action :set_payment_request, only: %i[edit update]
+  before_action :set_payment_request, only: [:edit, :update]
 
   def new
     authorize @po_request, :new_payment_request?
@@ -55,16 +53,16 @@ class Overseers::PoRequests::PaymentRequestsController < Overseers::PoRequests::
     def payment_request_params
       params.require(:payment_request).permit(
         :id,
-        :inquiry_id,
-        :utr_number,
-        :po_request_id,
-        :purchase_order_id,
-        :due_date,
-        :payment_type,
-        :status,
-        :payment_terms,
-        comments_attributes: %i[id message created_by_id],
-        attachments: []
+          :inquiry_id,
+          :utr_number,
+          :po_request_id,
+          :purchase_order_id,
+          :due_date,
+          :payment_type,
+          :status,
+          :payment_terms,
+          comments_attributes: [:id, :message, :created_by_id],
+          attachments: []
       )
     end
 

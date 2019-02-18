@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SalesInvoice < ApplicationRecord
   include Mixins::CanBeSynced
   update_index('sales_invoices#sales_invoice') { self }
@@ -17,19 +15,20 @@ class SalesInvoice < ApplicationRecord
   has_one_attached :pod_attachment
 
   enum status: {
-    'Open': 1,
-    'Paid': 2,
-    'Unpaid': 3,
-    'Partial: Shipped': 201,
-    'Shipped': 202,
-    'Material Delivery Delayed': 203,
-    'Delivered: GRN Pending': 204,
-    'Delivered: GRN Delayed': 205,
-    'Material Ready For Dispatch': 206,
-    'Material Rejected': 207
+      'Open': 1,
+      'Paid': 2,
+      'Cancelled': 3,
+      'Partial: Shipped': 201,
+      'Shipped': 202,
+      'Material Delivery Delayed': 203,
+      'Delivered: GRN Pending': 204,
+      'Delivered: GRN Delayed': 205,
+      'Material Ready For Dispatch': 206,
+      'Material Rejected': 207
   }
 
   scope :with_includes, -> { includes(:sales_order) }
+  scope :not_cancelled, -> { where.not(status: 'Cancelled') }
 
   validates_with FileValidator, attachment: :original_invoice, file_size_in_megabytes: 2
   validates_with FileValidator, attachment: :duplicate_invoice, file_size_in_megabytes: 2
@@ -39,15 +38,15 @@ class SalesInvoice < ApplicationRecord
 
   def filename(include_extension: false)
     [
-      ['invoice', invoice_number].join('_'),
-      ('pdf' if include_extension)
+        ['invoice', invoice_number].join('_'),
+        ('pdf' if include_extension)
     ].compact.join('.')
   end
 
   def zipped_filename(include_extension: false)
     [
-      ['invoices', invoice_number].join('_'),
-      ('zip' if include_extension)
+        ['invoices', invoice_number].join('_'),
+        ('zip' if include_extension)
     ].compact.join('.')
   end
 
@@ -61,5 +60,17 @@ class SalesInvoice < ApplicationRecord
 
   def self.syncable_identifiers
     [:invoice_number]
+  end
+
+  def calculated_total
+    rows.map { |row| (row.metadata['base_row_total'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+  end
+
+  def calculated_total_tax
+    rows.map { |row| (row.metadata['base_tax_amount'].to_f * row.sales_invoice.metadata['base_to_order_rate'].to_f) }.sum.round(2)
+  end
+
+  def calculated_total_with_tax
+    (calculated_total.to_f + calculated_total_tax.to_f).round(2)
   end
 end

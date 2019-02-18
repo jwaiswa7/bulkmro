@@ -41,6 +41,10 @@ class Overseers::ProductPolicy < Overseers::ApplicationPolicy
     index? && record.inquiry_products.any?
   end
 
+  def resync_inventory?
+    true
+  end
+
   def resync?
     record.approved? && record.not_synced?
   end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ShortcutsHelper
   def current_model
     controller_name.capitalize.pluralize
@@ -15,26 +13,24 @@ module ShortcutsHelper
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
-    elements = full_path.split('/').reject(&:blank?)
+    elements = full_path.split('/').reject { |e| e.blank? }
     crumbs = []
 
     elements.each_with_index do |element, index|
       path_so_far += [element, '/'].join
       name = element.titleize
 
-      if index > 0
-        begin
-          prev_element = elements[index - 1]
+      begin
+        prev_element = elements[index - 1]
 
-          if prev_element.classify.constantize&.find(element.remove('_'))
-            name = prev_element.classify.constantize.find(element).to_s
-          end
-        rescue NameError => e
-          # Default name is used
-        rescue ActiveRecord::RecordNotFound => e
-          # Default name is used
+        if prev_element.classify.constantize && prev_element.classify.constantize.find(element.remove('_'))
+          name = prev_element.classify.constantize.find(element).to_s
         end
-      end
+      rescue NameError => e
+        # Default name is used
+      rescue ActiveRecord::RecordNotFound => e
+        # Default name is used
+      end if index > 0
 
       name = page_title if page_title.present? && name == controller_name.titleize
 
@@ -45,9 +41,13 @@ module ShortcutsHelper
         end)
       else
         crumbs << (content_tag :li, class: 'breadcrumb-item' do
-          link_to name, path_so_far if recognize_path(path_so_far)
-                   rescue ActionController::RoutingError => e
-                     name
+          begin
+            if recognize_path(path_so_far)
+              link_to name, path_so_far
+            end
+          rescue ActionController::RoutingError => e
+            name
+          end
         end)
       end
     end
@@ -57,13 +57,14 @@ module ShortcutsHelper
 
   def submit_text(obj, use_alias: nil, suffix: nil)
     class_name = use_alias ? use_alias.humanize : obj.class.name
+    text = class_name.titlecase.split('_').join(' ')
     if obj.new_record?
-      "Create #{class_name.split('_').join(' ')}"
+      "Create #{text}"
     else
       if suffix.present?
-        "Update #{class_name} #{suffix.humanize}"
+        "Update #{text} #{suffix.humanize}"
       else
-        "Update #{class_name}"
+        "Update #{text}"
       end
     end
   end
@@ -75,4 +76,5 @@ module ShortcutsHelper
       0
     end
   end
+
 end

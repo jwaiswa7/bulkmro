@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class InquiryProductSupplier < ApplicationRecord
   include Mixins::HasSupplier
 
@@ -8,7 +6,7 @@ class InquiryProductSupplier < ApplicationRecord
   has_one :inquiry, through: :inquiry_product
   has_many :sales_quote_rows, dependent: :destroy
   has_one :final_sales_quote, through: :inquiry, class_name: 'SalesQuote'
-  has_one :final_sales_quote_row, ->(record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: 'SalesQuoteRow', source: :rows
+  has_one :final_sales_quote_row, -> (record) { where(inquiry_product_supplier_id: record.id) }, through: :final_sales_quote, class_name: 'SalesQuoteRow', source: :rows
   delegate :sr_no, to: :inquiry_product
 
   validates_uniqueness_of :supplier, scope: :inquiry_product
@@ -20,14 +18,14 @@ class InquiryProductSupplier < ApplicationRecord
   end
 
   def lowest_unit_cost_price
-    product.lowest_unit_cost_price_for(supplier, self) if persisted?
+    self.product.lowest_unit_cost_price_for(self.supplier, self) if self.persisted?
   end
 
   def latest_unit_cost_price
-    product.latest_unit_cost_price_for(supplier, self) if persisted?
+    self.product.latest_unit_cost_price_for(self.supplier, self) if self.persisted?
   end
 
   def to_s
-    supplier
+    self.supplier
   end
 end

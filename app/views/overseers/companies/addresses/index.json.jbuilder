@@ -16,7 +16,7 @@ json.data (@addresses) do |address|
                   address.try(:gst),
                   address.try(:pincode),
                   format_boolean_label(address.synced?, 'synced'),
-                  format_date(address.created_at)
+                  format_succinct_date(address.created_at)
               ]
 end
 

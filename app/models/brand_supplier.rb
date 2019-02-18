@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class BrandSupplier < ApplicationRecord
   belongs_to :brand
 

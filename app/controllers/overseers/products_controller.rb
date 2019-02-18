@@ -1,12 +1,9 @@
-# frozen_string_literal: true
-
 class Overseers::ProductsController < Overseers::BaseController
-  before_action :set_product, only: %i[show edit update sku_purchase_history best_prices_and_supplier_bp_catalog customer_bp_catalog resync]
+  before_action :set_product, only: [:show, :edit, :update, :sku_purchase_history, :best_prices_and_supplier_bp_catalog, :customer_bp_catalog, :resync, :resync_inventory]
 
   def index
     service = Services::Overseers::Finders::Products.new(params)
     service.call
-
     @indexed_products = service.indexed_records
     @products = service.records
     authorize @products
@@ -17,7 +14,7 @@ class Overseers::ProductsController < Overseers::BaseController
     service.call
 
     @indexed_products = service.indexed_records
-    @products = service.records
+    @products = service.records.active
     authorize @products
   end
 
@@ -40,7 +37,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product = Product.new(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'new'
     end
@@ -54,7 +51,7 @@ class Overseers::ProductsController < Overseers::BaseController
     @product.assign_attributes(product_params.merge(overseer: current_overseer))
     authorize @product
     if @product.approved? ? @product.save_and_sync : @product.save
-      redirect_to overseers_products_path, notice: flash_message(@product, action_name)
+      redirect_to overseers_product_path(@product), notice: flash_message(@product, action_name)
     else
       render 'edit'
     end
@@ -68,12 +65,12 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_supplier(@supplier)
 
     render json: {
-      lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
-      latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier)
+        lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+        latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
     }.merge!(bp_catalog ? {
-               bp_catalog_name: bp_catalog[0],
-               bp_catalog_sku: bp_catalog[1]
-             } : {})
+        bp_catalog_name: bp_catalog[0],
+        bp_catalog_sku: bp_catalog[1]
+    } : {})
   end
 
   def customer_bp_catalog
@@ -83,8 +80,8 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_customer(@company)
 
     render json: bp_catalog ? {
-      bp_catalog_name: bp_catalog[0],
-      bp_catalog_sku: bp_catalog[1]
+        bp_catalog_name: bp_catalog[0],
+        bp_catalog_sku: bp_catalog[1]
     } : {}
   end
 
@@ -100,6 +97,13 @@ class Overseers::ProductsController < Overseers::BaseController
     end
   end
 
+  def resync_inventory
+    authorize @product
+    service = Services::Resources::Products::UpdateInventory.new([@product])
+    service.resync
+    redirect_to overseers_product_path(@product, anchor: 'inventory'), notice: flash_message(@product, action_name)
+  end
+
   def export_all
     authorize :inquiry
     service = Services::Overseers::Exporters::ProductsExporter.new
@@ -113,16 +117,16 @@ class Overseers::ProductsController < Overseers::BaseController
     def product_params
       params.require(:product).permit(
         :name,
-        :sku,
-        :mpn,
-        :is_service,
-        :is_active,
-        :brand_id,
-        :category_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        images: []
+          :sku,
+          :mpn,
+          :is_service,
+          :is_active,
+          :brand_id,
+          :category_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          images: []
       )
     end
 

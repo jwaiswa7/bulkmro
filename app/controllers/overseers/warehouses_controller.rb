@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Overseers::WarehousesController < Overseers::BaseController
-  before_action :set_warehouse, only: %i[edit show update]
+  before_action :set_warehouse, only: [:edit, :show, :update]
 
   def index
     @warehouses = ApplyDatatableParams.to(Warehouse.all, params)
@@ -51,8 +49,8 @@ class Overseers::WarehousesController < Overseers::BaseController
     def warehouse_params
       params.require(:warehouse).permit(
         :name,
-        :is_active,
-        address_attributes: %i[id street1 street2 country_code address_state_id city_name pincode]
+          :is_active,
+          address_attributes: [:id, :street1, :street2, :country_code, :address_state_id, :city_name, :pincode],
       )
     end
 

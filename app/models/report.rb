@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class Report < ApplicationRecord
-  pg_search_scope :locate, against: %i[name uid], associated_against: {}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:name, :uid], associated_against: {}, using: { tsearch: { prefix: true } }
 
   validates_date :start_at
   validates_date :end_at, after: :start_at
@@ -9,11 +7,11 @@ class Report < ApplicationRecord
   attr_accessor :filters
 
   enum date_range: {
-    custom: 10,
-    this_month: 20,
-    today: 30,
-    last_week: 40,
-    last_month: 50
+      custom: 10,
+      this_month: 20,
+      today: 30,
+      last_week: 40,
+      last_month: 50
   }, _prefix: true
 
   validates_presence_of :name
@@ -38,6 +36,7 @@ class Report < ApplicationRecord
       report.uid = 'pipeline_report'
     end
   end
+
 
   def self.target
     where(name: 'TargetReport').first_or_create do |report|
@@ -70,4 +69,6 @@ class Report < ApplicationRecord
   def to_param
     uid
   end
+
+  attr_accessor :daterange
 end

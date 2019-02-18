@@ -16,7 +16,7 @@ class Services::Callbacks::SalesInvoices::Update < Services::Callbacks::Shared::
           if params['state'].to_i == 3
             invoice_request = InvoiceRequest.find_by_ar_invoice_number(params[:increment_id])
             if invoice_request.present?
-              invoice_request.update_attributes!(status: 'AR Invoice Cancelled')
+              invoice_request.update_attributes!(status: ' Cancelled AR Invoice')
             end
           end
         end

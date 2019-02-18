@@ -1,10 +1,11 @@
-# frozen_string_literal: true
-
 class Overseers::RemoteRequestsController < Overseers::BaseController
   before_action :set_remote_request, only: [:show]
 
   def index
-    @remote_requests = ApplyDatatableParams.to(RemoteRequest.all, params)
+    service = Services::Overseers::Finders::RemoteRequests.new(params)
+    service.call
+    @indexed_remote_requests = service.indexed_records
+    @remote_requests = service.records
     authorize @remote_requests
   end
 
@@ -22,7 +23,6 @@ class Overseers::RemoteRequestsController < Overseers::BaseController
   end
 
   private
-
     def set_remote_request
       @remote_request = RemoteRequest.find(params[:id])
     end

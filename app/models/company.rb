@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Company < ApplicationRecord
   include ActiveModel::Validations
   include Mixins::CanBeStamped
@@ -12,13 +10,12 @@ class Company < ApplicationRecord
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
   belongs_to :account
-  belongs_to :default_company_contact, ->(record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
+  belongs_to :default_company_contact, -> (record) { where(company_id: record.id) }, class_name: 'CompanyContact', foreign_key: :default_company_contact_id, required: false
   has_one :default_contact, through: :default_company_contact, source: :contact
   belongs_to :default_payment_option, class_name: 'PaymentOption', foreign_key: :default_payment_option_id, required: false
-  belongs_to :default_billing_address, ->(record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
-  belongs_to :default_shipping_address, ->(record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
+  belongs_to :default_billing_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_billing_address_id, required: false
+  belongs_to :default_shipping_address, -> (record) { where(company_id: record.id) }, class_name: 'Address', foreign_key: :default_shipping_address_id, required: false
   belongs_to :industry, required: false
-  has_many :banks, class_name: 'CompanyBank', inverse_of: :company
   has_many :company_contacts, dependent: :destroy
   has_many :contacts, through: :company_contacts
   accepts_nested_attributes_for :company_contacts
@@ -44,35 +41,39 @@ class Company < ApplicationRecord
   has_many :company_products, through: :customer_products
   has_many :customer_orders
   has_many :product_imports, class_name: 'CustomerProductImport', inverse_of: :company
+  has_many :company_banks
+  has_many :banks, through: :company_banks
 
   has_one_attached :tan_proof
   has_one_attached :pan_proof
   has_one_attached :cen_proof
   has_one_attached :logo
+  belongs_to :company_creation_request, optional: true
+
 
   enum company_type: {
-    proprietorship: 10,
-    private_limited: 20,
-    contractor: 30,
-    trust: 40,
-    dealer_company: 50,
-    distributor: 60,
-    trader: 70,
-    manufacturing_company: 80,
-    wholesaler_stockist: 90,
-    service_provider: 100,
-    employee: 110
+      proprietorship: 10,
+      private_limited: 20,
+      contractor: 30,
+      trust: 40,
+      dealer_company: 50,
+      distributor: 60,
+      trader: 70,
+      manufacturing_company: 80,
+      wholesaler_stockist: 90,
+      service_provider: 100,
+      employee: 110
   }, _prefix: true
 
   enum priority: {
-    non_strategic: 10,
-    strategic: 20
+      non_strategic: 10,
+      strategic: 20
   }, _prefix: true
 
   enum nature_of_business: {
-    trading: 10,
-    manufacturer: 20,
-    dealer: 30
+      trading: 10,
+      manufacturer: 20,
+      dealer: 30
   }, _prefix: true
 
   delegate :mobile, :email, :telephone, to: :default_contact, allow_nil: true
@@ -97,7 +98,7 @@ class Company < ApplicationRecord
   validate :name_is_conditionally_unique?
 
   def name_is_conditionally_unique?
-    if Company.joins(:account).where(name: name).where.not(id: id).where('accounts.account_type = ?', Account.account_types[account.account_type]).exists?
+    if Company.joins(:account).where(name: self.name).where.not(id: self.id).where('accounts.account_type = ?', Account.account_types[self.account.account_type]).exists?
       errors.add :name, 'has to be unique'
     end
   end
@@ -119,29 +120,29 @@ class Company < ApplicationRecord
   end
 
   def set_default_company_contact
-    company_contacts.first
+    self.company_contacts.first
   end
 
   def set_default_company_billing_address
-    addresses.first unless addresses.blank?
+    self.addresses.first if !self.addresses.blank?
   end
 
   def set_default_company_shipping_address
-    addresses.first unless addresses.blank?
+    self.addresses.first if !self.addresses.blank?
   end
 
   def billing_address
-    update_attributes(default_billing_address: set_default_company_billing_address) if self.default_billing_address.blank?
+    self.update_attributes(default_billing_address: self.set_default_company_billing_address) if self.default_billing_address.blank?
     self.default_billing_address
   end
 
   def shipping_address
-    update_attributes(default_shipping_address: set_default_company_shipping_address) if self.default_shipping_address.blank?
+    self.update_attributes(default_shipping_address: self.set_default_company_shipping_address) if self.default_shipping_address.blank?
     self.default_shipping_address
   end
 
   def to_contextual_s(product)
-    s = [to_s]
+    s = [self.to_s]
 
     if product.p_suppliers.include?(self)
       s.append('(Supplies product directly)')
@@ -155,20 +156,20 @@ class Company < ApplicationRecord
   end
 
   def generate_catalog(overseer)
-    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: id).map(&:inquiry_products).flatten
+    inquiry_products = Inquiry.includes(:inquiry_products, :products).where(company: self.id).map { |i| i.inquiry_products }.flatten
     inquiry_products.each do |inquiry_product|
-      next unless inquiry_product.product.synced?
-
-      CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id, customer_price: (inquiry_product.product.latest_unit_cost_price || 0)).first_or_create! do |customer_product|
-        customer_product.category_id = inquiry_product.product.category_id
-        customer_product.brand_id = inquiry_product.product.brand_id
-        customer_product.name = (inquiry_product.bp_catalog_name == '' ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
-        customer_product.sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
-        customer_product.tax_code = inquiry_product.product.best_tax_code
-        customer_product.tax_rate = inquiry_product.best_tax_rate
-        customer_product.measurement_unit = inquiry_product.product.measurement_unit
-        customer_product.moq = 1
-        customer_product.created_by = overseer
+      if inquiry_product.product.synced?
+        CustomerProduct.where(company_id: inquiry_product.inquiry.company_id, product_id: inquiry_product.product_id, customer_price: (inquiry_product.product.latest_unit_cost_price || 0)).first_or_create! do |customer_product|
+          customer_product.category_id = inquiry_product.product.category_id
+          customer_product.brand_id = inquiry_product.product.brand_id
+          customer_product.name = (inquiry_product.bp_catalog_name == '' ? nil : inquiry_product.bp_catalog_name) || inquiry_product.product.name
+          customer_product.sku = (inquiry_product.bp_catalog_sku == '' ? nil : inquiry_product.bp_catalog_sku) || inquiry_product.product.sku
+          customer_product.tax_code = inquiry_product.product.best_tax_code
+          customer_product.tax_rate = inquiry_product.best_tax_rate
+          customer_product.measurement_unit = inquiry_product.product.measurement_unit
+          customer_product.moq = 1
+          customer_product.created_by = overseer
+        end
       end
     end
   end
@@ -178,18 +179,20 @@ class Company < ApplicationRecord
   end
 
   def self.legacy
-    find_by_name('Legacy Company')
+    self.find_by_name('Legacy Company')
   end
 
   def validate_pan
-    if pan.present?
-      pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
+    if self.pan.present?
+      self.pan.match?(/^[A-Z]{5}\d{4}[A-Z]{1}$/)
     else
       false
     end
   end
 
   def validate_pan?
-    errors.add(:company, 'PAN is not valid') if pan.length != 10
+    if self.pan.blank? || self.pan.length != 10
+      errors.add(:company, 'PAN is not valid')
+    end
   end
 end

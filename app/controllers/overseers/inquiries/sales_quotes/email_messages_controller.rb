@@ -1,12 +1,10 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::Inquiries::SalesQuotes::BaseController
   def new
     @email_message = @sales_quote.email_messages.build(overseer: current_overseer, contact: @inquiry.contact, inquiry: @inquiry, sales_quote: @sales_quote)
     @email_message.assign_attributes(
       subject: @inquiry.subject,
       body: SalesQuoteMailer.acknowledgement(@email_message).body.raw_source,
-      auto_attach: true
+      auto_attach: true,
     )
 
     authorize @sales_quote, :new_email_message?
@@ -21,8 +19,8 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     )
 
     @email_message.assign_attributes(email_message_params)
-    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map(&:strip)) if email_message_params[:cc].present?
-    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map(&:strip)) if email_message_params[:bcc].present?
+    @email_message.assign_attributes(cc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:cc].present?
+    @email_message.assign_attributes(bcc: email_message_params[:cc].split(',').map { |email| email.strip }) if email_message_params[:bcc].present?
 
     authorize @sales_quote, :create_email_message?
 
@@ -52,12 +50,12 @@ class Overseers::Inquiries::SalesQuotes::EmailMessagesController < Overseers::In
     def email_message_params
       params.require(:email_message).permit(
         :subject,
-        :body,
-        :to,
-        :cc,
-        :bcc,
-        :auto_attach,
-        files: []
+          :body,
+          :to,
+          :cc,
+          :bcc,
+          :auto_attach,
+          files: []
       )
     end
 end

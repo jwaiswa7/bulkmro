@@ -28,7 +28,8 @@ class Resources::BusinessPartner < Resources::ApplicationResource
   end
 
   def self.custom_find(company_name, company_type)
-    response = get("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    encoded_url = URI.encode("/#{collection_name}?$filter=CardName eq '#{company_name}' and CardType eq '#{company_type}'")
+    response = get(encoded_url)
 
     log_request(:get, company_name, is_find: true)
     validated_response = get_validated_response(response)
@@ -48,30 +49,78 @@ class Resources::BusinessPartner < Resources::ApplicationResource
     company = Company.find_by_remote_uid!(response['CardCode'])
     addresses = response['BPAddresses']
     contacts = response['ContactEmployees']
+    banks = response['BPBankAccounts']
 
     addresses.each do |address|
       address_to_update = company.addresses.find_by_remote_uid(address['AddressName'])
-      if address_to_update.present?
-        if address['AddressType'].eql? 'bo_ShipTo'
-          address_to_update.shipping_address_uid = address['RowNum']
-        elsif address['AddressType'].eql? 'bo_BillTo'
-          address_to_update.billing_address_uid = address['RowNum']
+      if address_to_update.blank?
+
+        address_to_update = company.addresses.where(remote_uid: address['AddressName']).first_or_initialize do |new_address|
+          new_address.assign_attributes(
+            legacy_id: address['AddressName'],
+            name: company.name,
+            street1: address['Street'].present? ? address['Street'] : nil,
+            city_name: address['City'].present? ? address['City'] : nil,
+            street2: address['AddressName2'].present? ? address['AddressName2'] : nil,
+            country_code: address['Country'].present? ? address['Country'] : 'IN',
+            state_name: address['State'].present? ? AddressState.where(region_code: address['State'], country_code: address['Country']).first.name : nil,
+            address_state_id: address['State'].present? ? AddressState.where(region_code: address['State'], country_code: address['Country']).first.id : nil,
+            pincode: address['ZipCode'].present? ? address['ZipCode'] : nil,
+            gst: address['GSTIN'].present? ? address['GSTIN'] : nil,
+            vat: address['U_VAT'].present? ? address['U_VAT'] : nil,
+            cst: address['U_CST'].present? ? address['U_CST'] : nil
+          )
         end
         address_to_update.save
+
+      end
+
+      if address['AddressType'].eql? 'bo_BillTo'
+        address_to_update.update_attribute(:billing_address_uid, address['RowNum'])
+      elsif address['AddressType'].eql? 'bo_ShipTo'
+        address_to_update.update_attribute(:shipping_address_uid, address['RowNum'])
       end
     end if addresses.present?
 
     contacts.each do |contact|
       remote_uid = contact['InternalCode']
-      company_contact = company.company_contacts.joins(:contact).where('contacts.email = ?', contact['E_Mail'].to_s.strip.downcase).first
-      company_contact.update_attributes(remote_uid: remote_uid) if company_contact.present?
-    end if contacts.present?
+      contact_email = contact['E_Mail'].to_s.strip.downcase
+      existing_contact = Contact.find_by_email(contact_email)
+
+      if existing_contact.blank?
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account == existing_contact.account
+        assigned_email = contact_email
+      elsif existing_contact.present? && company.account != existing_contact.account
+        assigned_email = [contact_email.split('@', 2)[0], '_duplicate', '@', contact_email.split('@', 2)[1]].join('')
+      end
+
+      assigned_contact = Contact.where(email: assigned_email).first_or_create! do |new_contact|
+        new_contact.update_attributes(
+          account: company.account,
+          first_name: contact['FirstName'],
+          last_name: contact['LastName'],
+          telephone: contact['Phone1'],
+          mobile: contact['MobilePhone'],
+          email: assigned_email
+        )
+      end
+      company.company_contacts.where(remote_uid: remote_uid, contact: assigned_contact).first_or_create!
+
+      banks.each do |bank|
+        account_number = bank['AccountNo']
+        remote_uid = bank['InternalKey']
+        company_bank = CompanyBank.find_by_account_number(account_number)
+        company_bank.update_attributes(remote_uid: remote_uid) if company_bank .present?
+      end if banks.present?
+    end
   end
 
   def self.to_remote(record)
     addresses = []
     contacts = []
     bp_tax_collection = []
+    banks = []
 
     if record.remote_uid.blank?
       record.assign_attributes(remote_uid: Services::Resources::Shared::UidGenerator.company_uid(record))
@@ -254,6 +303,22 @@ class Resources::BusinessPartner < Resources::ApplicationResource
       contacts.push(contact_row.marshal_dump)
     end if record.remote_uid.present?
 
+    record.company_banks.each do |company_bank|
+      bank_row = OpenStruct.new
+      bank_row.BPCode = record.remote_uid
+      bank_row.AccountNo = company_bank.account_number
+      bank_row.AccountName = company_bank.account_name
+      bank_row.Branch = company_bank.branch
+      bank_row.MandateID = company_bank.mandate_id
+      bank_row.BankCode = company_bank.bank.code
+
+      if company_bank.remote_uid.present?
+        bank_row.InternalKey = company_bank.remote_uid
+      end
+
+      banks.push(bank_row.marshal_dump)
+    end if record.remote_uid.present?
+
     params = {
         CardCode: record.remote_uid,
         CardName: record.name,
@@ -289,6 +354,7 @@ class Resources::BusinessPartner < Resources::ApplicationResource
         U_URD: record.is_unregistered_dealer ? 'Yes' : 'No',
         BPAddresses: addresses,
         ContactEmployees: contacts,
+        BPBankAccounts: banks,
         BPFiscalTaxIDCollection: bp_tax_collection,
         UseBillToAddrToDetermineTax: 'tYES'
     }

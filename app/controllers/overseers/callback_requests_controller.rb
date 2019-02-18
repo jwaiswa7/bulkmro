@@ -1,10 +1,11 @@
-# frozen_string_literal: true
-
 class Overseers::CallbackRequestsController < Overseers::BaseController
   before_action :set_callback_request, only: [:show]
 
   def index
-    @callback_requests = ApplyDatatableParams.to(CallbackRequest.all, params)
+    service = Services::Overseers::Finders::CallbackRequests.new(params)
+    service.call
+    @indexed_callback_request = service.indexed_records
+    @callback_requests = service.records
     authorize @callback_requests
   end
 
@@ -14,7 +15,6 @@ class Overseers::CallbackRequestsController < Overseers::BaseController
   end
 
   private
-
     def set_callback_request
       @callback_request = CallbackRequest.find(params[:id])
     end

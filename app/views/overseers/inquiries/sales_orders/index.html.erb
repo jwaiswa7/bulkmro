@@ -5,19 +5,19 @@
 
     <% content_for :header_row do %>
       <th class="no-sort"></th>
-      <th>Order #</th>
-      <th>Doc ID</th>
+      <th class="no-sort desktop text-right">Order #</th>
+      <th class="no-sort desktop text-right">Doc ID</th>
       <th>Status</th>
       <% if @sales_orders.where(status: "Approved").count > 1 %>
         <th> SAP Status</th>
       <% end %>
-      <th>Sent At</th>
+      <th class="no-sort desktop text-right">Sent At</th>
 
-      <th>Line Items</th>
-      <th>Quote Total</th>
-      <th>Order Total</th>
-      <th>Order Date</th>
-      <th>Created At</th>
+      <th class="no-sort desktop text-right">Line Items</th>
+      <th class="no-sort desktop text-right">Quote Total</th>
+      <th class="no-sort desktop text-right">Order Total</th>
+      <th class="no-sort desktop text-right">Order Date</th>
+      <th class="no-sort desktop text-right">Created At</th>
       <th>Created By</th>
     <% end %>
 
@@ -51,10 +51,16 @@
               <%= row_action_button(overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download', 'dark', :_blank) %>
               <%= row_action_button(proforma_overseers_inquiry_sales_order_path(@inquiry, sales_order, format: :pdf), 'file-pdf', 'Download Proforma Invoice', 'warning', :_blank) %>
             <% end %>
+            <% if policy(sales_order).fetch_order_data? %>
+              <%= row_action_button(fetch_order_data_overseers_inquiry_sales_order_path(@inquiry, sales_order), 'arrows-h', 'SAP Sync', 'success') %>
+            <% end %>
 
             <% if policy(sales_order.sales_quote).new_freight_request? %>
               <%= row_action_button(new_overseers_freight_request_path(:sales_order_id => sales_order.to_param), 'external-link', 'New Freight Request', 'warning') %>
             <% end %>
+            <% if policy(sales_order).debugging? %>
+              <%= row_action_button(debugging_overseers_inquiry_sales_order_path(@inquiry,sales_order),'cogs', 'Debugging', 'danger') %>
+             <% end %>
           </td>
           <td><%= sales_order.order_number %></td>
           <td><%= sales_order.id %></td>

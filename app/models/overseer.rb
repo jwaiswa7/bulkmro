@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'mail'
 
 class Overseer < ApplicationRecord
@@ -11,15 +9,15 @@ class Overseer < ApplicationRecord
 
   has_many :activities, foreign_key: :created_by_id
   has_one_attached :file
-  has_many :notifications, foreign_key: :recipient_id
 
-  pg_search_scope :locate, against: %i[first_name last_name email], associated_against: {}, using: { tsearch: { prefix: true } }
+  pg_search_scope :locate, against: [:first_name, :last_name, :email], associated_against: {}, using: { tsearch: { prefix: true } }
   has_closure_tree(name_column: :to_s)
 
   # Include default devise modules. Others available are:
   # :confirmable, :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :lockable, :omniauthable, omniauth_providers: %i[google_oauth2]
+
 
   enum status: { active: 10, inactive: 20 }
 
@@ -46,7 +44,7 @@ class Overseer < ApplicationRecord
     email = data['email']
     domain = Mail::Address.new(email).domain
 
-    if domain.in? %w[bulkmro.com]
+    if domain.in? %w(bulkmro.com)
       password = Devise.friendly_token[0, 20]
 
       overseer = Overseer.where(email: data['email']).first_or_create do |overseer|
@@ -65,7 +63,7 @@ class Overseer < ApplicationRecord
   end
 
   def can_send_emails?
-    smtp_password.present? && (mobile.present? || telephone.present?)
+    self.smtp_password.present? && (self.mobile.present? || self.telephone.present?)
   end
 
   def cannot_send_emails?
@@ -74,6 +72,10 @@ class Overseer < ApplicationRecord
 
   def self.default
     find_by_email('ashwin.goyal@bulkmro.com')
+  end
+
+  def to_s
+    [self.first_name, ' ', self.last_name.chars.first, '.'].join('')
   end
 
   def self.default_approver

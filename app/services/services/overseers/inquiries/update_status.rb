@@ -40,7 +40,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     when :order_won then
       log_inquiry_status('Order Won')
     when :sap_rejected then
-      log_inquiry_status('SAP Rejected')
+      log_inquiry_status('Rejected by Accounts')
     when :order_lost then
       log_inquiry_status('Order Lost')
     when :regret then

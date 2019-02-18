@@ -28,7 +28,7 @@ class Services::Overseers::Finders::Addresses < Services::Overseers::Finders::Ba
       multi_match: {
                         query: query,
                         operator: 'and',
-                        fields: %w[address^4 state^3 city_name^3 gst^3 is_gst_valid pincode company_id],
+                        fields: %w[address^4 state^3 city_name^3 gst^3 is_gst_valid pincode company_id company],
                         minimum_should_match: '100%'
                     }
     )

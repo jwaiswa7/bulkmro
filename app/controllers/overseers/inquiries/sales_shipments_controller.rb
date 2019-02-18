@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::BaseController
   before_action :set_sales_shipment, only: [:show]
 
@@ -10,7 +8,12 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
 
   def show
     authorize @sales_shipment
-    @metadata = @sales_shipment.metadata.deep_symbolize_keys
+    @metadata = @sales_shipment.metadata.present? ? @sales_shipment.metadata.deep_symbolize_keys : nil
+    if @metadata.nil?
+      set_flash_message('There is no information to show for this Sales Shipment', :warning, now: false)
+      redirect_to(request.referrer || root_path)
+    end
+
 
     respond_to do |format|
       format.html { }
@@ -21,7 +24,6 @@ class Overseers::Inquiries::SalesShipmentsController < Overseers::Inquiries::Bas
   end
 
   private
-
     def set_sales_shipment
       @sales_shipment = @inquiry.shipments.find(params[:id])
     end

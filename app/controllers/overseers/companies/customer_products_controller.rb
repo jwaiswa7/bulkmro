@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 class Overseers::Companies::CustomerProductsController < Overseers::Companies::BaseController
-  before_action :set_customer_product, only: %i[show edit update destroy]
+  before_action :set_customer_product, only: [:show, :edit, :update, :destroy]
 
   def index
-    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, _v| k == 'company_id' })
+    @products = ApplyDatatableParams.to(@company.customer_products, params.reject! { |k, v| k == 'company_id' })
     authorize @products
   end
 
@@ -56,6 +54,7 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     redirect_to overseers_company_path(@company)
   end
 
+
   def edit
     authorize @customer_product
   end
@@ -91,16 +90,16 @@ class Overseers::Companies::CustomerProductsController < Overseers::Companies::B
     def customer_product_params
       params.require(:customer_product).permit(
         :name,
-        :product_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        :customer_price,
-        :sku,
-        :brand_id,
-        :category_id,
-        :moq,
-        images: []
+          :product_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          :customer_price,
+          :sku,
+          :brand_id,
+          :category_id,
+          :moq,
+          images: []
       )
     end
 end

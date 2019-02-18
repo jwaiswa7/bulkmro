@@ -64,8 +64,7 @@ class Services::Shared::Gcloud::RunBackups < Services::Shared::BaseService
           [
               backup_linux,
               backup_windows
-          ].join("\n"),
-          []
+          ].join("\n")
       )
     else
       backup_linux

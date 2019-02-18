@@ -1,4 +1,4 @@
-<%= render 'overseers/layouts/components/headway' %>
+<%#= render 'overseers/layouts/components/headway' %>
 
 <div class="navbar navbar-expand-lg bg-light navbar-light sticky-top">
   <!-- Drawer Toggle -->
@@ -46,6 +46,15 @@
           <%= nav_dropdown_item 'Companies', overseers_companies_path, policy(:company).index? %>
           <%= nav_dropdown_item 'Addresses', overseers_addresses_path, policy(:address).index? %>
           <%= nav_dropdown_item 'Contacts', overseers_contacts_path, policy(:contact).index? %>
+          <%= nav_dropdown_item 'Banks', overseers_banks_path, policy(:bank).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Company Creation Requests</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'All Requests', overseers_company_creation_requests_path, policy(:company_creation_request).index? %>
+              <%= nav_dropdown_item 'Requested', requested_overseers_company_creation_requests_path, policy(:company_creation_request).requested? %>
+              <%= nav_dropdown_item 'Created/Completed', created_overseers_company_creation_requests_path, policy(:company_creation_request).created? %>
+            </ul>
+          </div>
         </div>
       </li>
 
@@ -73,14 +82,22 @@
         </a>
         <div class="dropdown-menu">
           <%= nav_dropdown_item 'Inquiries', overseers_inquiries_path, policy(:inquiry).index? %>
-          <%= nav_dropdown_item 'Online Orders', overseers_customer_orders_path, policy(:customer_order).index? %>
+          <div class="dropdown-submenu">
+            <a class="dropdown-item dropdown-toggle" href="#">Online Orders</a>
+            <ul class="dropdown-menu">
+              <%= nav_dropdown_item 'List', overseers_customer_orders_path, policy(:customer_order).index? %>
+              <%= nav_dropdown_item 'Online Payments List', payments_overseers_customer_orders_path, policy(:customer_order).index? %>
+            </ul>
+          </div>
           <div class="dropdown-divider"></div>
           <div class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Sales Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Sales Orders List', overseers_sales_orders_path, policy(:sales_order).index? %>
+              <%= nav_dropdown_item 'SO Not Invoiced', not_invoiced_overseers_sales_orders_path, policy(:sales_order).index? %>
               <%= nav_dropdown_item 'Pending Approval', pending_overseers_sales_orders_path, policy(:sales_order).pending? %>
               <%= nav_dropdown_item 'Pending SAP Sync', drafts_pending_overseers_sales_orders_path, policy(:sales_order).drafts_pending? %>
+              <%= nav_dropdown_item 'Cancelled SO', cancelled_overseers_sales_orders_path, policy(:sales_order).cancelled? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
@@ -100,13 +117,16 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:inquiry).index? %>
               <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:inquiry).index? %>
-              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:inquiry).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), policy(:inquiry).index? %>
             </ul>
           </div>
 
           <div class="dropdown-divider"></div>
           <%= nav_dropdown_item 'Smart Queue', smart_queue_overseers_inquiries_path, policy(:inquiry).smart_queue? %>
           <%= nav_dropdown_item 'Sales Shipments', overseers_sales_shipments_path, policy(:sales_shipment).index? %>
+          <div  class="dropdown-divider"></div>
+          <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
+          <%= nav_dropdown_item 'Activities Approval Queue', pending_overseers_activities_path, policy(:activity).pending? %>
         </div>
       </li>
 
@@ -119,11 +139,13 @@
             <a class="dropdown-item dropdown-toggle" href="#">Purchase Orders</a>
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'Purchase Orders List', overseers_purchase_orders_path, policy(:purchase_order).index? %>
+              <div class="dropdown-divider"></div>
+              <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
+              <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
+              <div class="dropdown-divider"></div>
               <%= nav_dropdown_item 'Material Readiness Followup Queue', material_readiness_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <%= nav_dropdown_item 'Material Pickup Queue', material_pickup_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
               <%= nav_dropdown_item 'Material Delivered Queue', material_delivered_queue_overseers_purchase_orders_path, policy(:purchase_order).index? %>
-              <%= nav_dropdown_item 'Pending Purchase Order Requests', pending_overseers_po_requests_path, policy(:po_request).pending? %>
-              <%= nav_dropdown_item 'Completed Purchase Order Requests', overseers_po_requests_path, policy(:po_request).index? %>
             </ul>
           </div>
           <div class="dropdown-submenu">
@@ -150,7 +172,7 @@
             <ul class="dropdown-menu">
               <%= nav_dropdown_item 'All Requests', overseers_freight_requests_path, policy(:freight_request).index? %>
               <%= nav_dropdown_item 'Pending Requests', overseers_freight_requests_path(:status => 'Freight Quote Requested'), policy(:freight_request).index? %>
-              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Request Completed'), policy(:freight_request).index? %>
+              <%= nav_dropdown_item 'Completed Requests', overseers_freight_requests_path(:status => 'Freight Quote Submitted'), policy(:freight_request).index? %>
             </ul>
           </div>
 
@@ -182,7 +204,6 @@
             <% Report.all.each do |report| %>
               <%= nav_dropdown_item report.name.titleize, overseers_report_path(report), policy(report).show? %>
             <% end %>
-            <%= nav_dropdown_item 'Activities', overseers_activities_path, policy(:activity).index? %>
           </div>
         </li>
       <% end %>
@@ -203,21 +224,24 @@
                 </div>
               </div>
             <% end %>
-            <% if Rails.env.development? || policy(:dashboard).chewy? %>
-              <div class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>
-                <div class="dropdown-menu">
-                  <% chewy_indices.each do |chewy_index| %>
-                    <%= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
-                  <% end %>
-                  <div class="dropdown-divider"></div>
-                  <%= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
-                </div>
-              </div>
-            <% end %>
+            <%# if Rails.env.development? || policy(:dashboard).chewy? %>
+<!--              <div class="dropdown-submenu">-->
+<!--                <a class="dropdown-item dropdown-toggle" href="#">Chewy</a>-->
+<!--                <div class="dropdown-menu">-->
+                  <%# chewy_indices.each do |chewy_index| %>
+                    <%#= nav_dropdown_item chewy_index.titleize, reset_index_overseers_dashboard_path(index: chewy_index), true %>
+                  <%# end %>
+<!--                  <div class="dropdown-divider"></div>-->
+                  <%#= nav_dropdown_item 'Reset All', chewy_overseers_dashboard_path, true %>
+<!--                </div>-->
+<!--              </div>-->
+            <%# end %>
           </div>
         </li>
       <% end %>
+      <li>
+        <%= nav_item 'Docs', overseers_path(page: 'index'), policy(:doc).index? %>
+      </li>
     </ul>
   </div>
   <!-- Navigation Bar -->
@@ -229,7 +253,7 @@
   <!-- Settings Dropdown DESKTOP -->
   <div class="d-none d-lg-block">
     <div class="dropdown">
-      <a class="d-inline">
+      <a class="d-inline d-none">
         <span class="headway mr-2" style="z-index: 1030;"></span>
       </a>
       <div class="btn-group mr-2" data-behavior="notifications">

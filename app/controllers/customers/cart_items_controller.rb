@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::CartItemsController < Customers::BaseController
   before_action :set_cart_item, only: [:destroy]
   before_action :cart_item_params, only: [:create]
@@ -32,7 +30,6 @@ class Customers::CartItemsController < Customers::BaseController
   end
 
   private
-
     def set_cart_item
       @cart_item = current_cart.items.find(params[:id])
     end

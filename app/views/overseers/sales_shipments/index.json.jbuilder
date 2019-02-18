@@ -15,7 +15,7 @@ json.data (@sales_shipments) do |sales_shipment|
                   sales_shipment.status,
                   sales_shipment.inquiry.inside_sales_owner.to_s,
                   sales_shipment.inquiry.outside_sales_owner.to_s,
-                  format_date(sales_shipment.created_at)
+                  format_succinct_date(sales_shipment.created_at)
               ]
 end
 
@@ -34,4 +34,5 @@ json.columnFilters [
 json.recordsTotal SalesShipment.all.count
 json.recordsFiltered @indexed_sales_shipments.total_count
 json.draw params[:draw]
-json.recordsSummary SalesShipment.statuses.map { |k, v| { status_id: v, "label": k, "size": @statuses.count(k) } }.as_json
+json.status @statuses
+json.recordsSummary SalesShipment.statuses.map { |status, status_id| { status_id: status_id, "label": status, "size": @statuses[status_id] } }.as_json

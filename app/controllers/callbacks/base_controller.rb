@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Callbacks::BaseController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :authenticate_callback!
@@ -26,9 +24,9 @@ class Callbacks::BaseController < ApplicationController
   end
 
   def log_request
-    @callback_request = CallbackRequest.where(method: to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
+    @callback_request = CallbackRequest.where(method: self.to_callback_request(request.method.to_s), resource: controller_name.classify, request: params).first_or_create do |callback_request|
       callback_request.update(
-        method: to_callback_request(request.method.to_s),
+        method: self.to_callback_request(request.method.to_s),
         resource: controller_name.classify,
         request: params,
         url: request.url,
@@ -50,8 +48,8 @@ class Callbacks::BaseController < ApplicationController
   private
 
     def authenticate_callback!
-      authenticate_or_request_with_http_token do |token, _options|
-        token == Rails.cache.fetch(:sap_api_key)
+      authenticate_or_request_with_http_token do |token, options|
+        token == Rails.cache.fetch(:sap_api_key) ? true : false
       end
     end
 end

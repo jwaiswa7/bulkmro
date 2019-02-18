@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CustomPolicyFinder
   SUFFIX = 'Policy'
 
@@ -44,8 +42,7 @@ class CustomPolicyFinder
   #
   def scope!
     raise NotDefinedError, 'unable to find policy scope of nil' if object.nil?
-
-    scope || raise(NotDefinedError, "unable to find scope `#{find}::Scope` for `#{object.inspect}`")
+    scope or raise NotDefinedError, "unable to find scope `#{find}::Scope` for `#{object.inspect}`"
   end
 
   # @return [Class] policy class with query methods
@@ -53,8 +50,7 @@ class CustomPolicyFinder
   #
   def policy!
     raise Exception, 'unable to find policy of nil' if object.nil?
-
-    policy || raise(Exception, "unable to find policy `#{find}` for `#{object.inspect}`")
+    policy or raise Exception, "unable to find policy `#{find}` for `#{object.inspect}`"
   end
 
   # @return [String] the name of the key this object would have in a params hash

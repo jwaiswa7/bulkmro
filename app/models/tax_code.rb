@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 class TaxCode < ApplicationRecord
-  pg_search_scope :locate, against: %i[code description tax_percentage], using: { tsearch: { prefix: true, any_word: true } }
+  pg_search_scope :locate, against: [:code, :description, :tax_percentage], using: { tsearch: { prefix: true, any_word: true } }
 
   include Mixins::CanBeActivated
 
@@ -21,6 +19,6 @@ class TaxCode < ApplicationRecord
   end
 
   def to_s
-    code.to_s
+    "#{self.code}"
   end
 end

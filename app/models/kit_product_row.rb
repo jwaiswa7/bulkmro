@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class KitProductRow < ApplicationRecord
   belongs_to :product
   belongs_to :kit
@@ -11,6 +9,8 @@ class KitProductRow < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  validates_numericality_of :quantity, greater_than: 0
+
   def set_defaults
     if product.present?
       tax_code ||= product.tax_code
@@ -19,10 +19,10 @@ class KitProductRow < ApplicationRecord
   end
 
   def best_tax_code
-    tax_code || product.best_tax_code
+    self.tax_code || self.product.best_tax_code
   end
 
   def best_tax_rate
-    tax_rate || product.best_tax_rate
+    self.tax_rate || self.product.best_tax_rate
   end
 end

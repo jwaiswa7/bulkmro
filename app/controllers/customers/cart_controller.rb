@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::CartController < Customers::BaseController
   before_action :set_cart
 
@@ -45,16 +43,28 @@ class Customers::CartController < Customers::BaseController
     authorize @cart
     @cart.update_attributes(shipping_address_id: params[:cart][:shipping_address_id].to_i)
 
+    redirect_to final_checkout_customers_checkout_path(next_step: 'special_instructions')
+  end
+
+  def update_special_instructions
+    authorize @cart
+    @cart.update_attributes(special_instructions: params[:cart][:special_instructions].to_s)
+
+    redirect_to final_checkout_customers_checkout_path(next_step: 'payment_method')
+  end
+
+  def update_payment_method
+    authorize @cart
+    @cart.update_attributes(payment_method: params[:cart][:payment_method].to_s)
     redirect_to final_checkout_customers_checkout_path(next_step: 'summary')
   end
 
   private
-
     def set_cart
       @cart = current_cart
     end
 
     def cart_params
-      params.require(:cart).permit(items_attributes: %i[quantity id])
+      params.require(:cart).permit(items_attributes: [:quantity, :id])
     end
 end

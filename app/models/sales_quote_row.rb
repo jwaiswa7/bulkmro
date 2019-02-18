@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SalesQuoteRow < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::CanHaveTaxes
@@ -36,14 +34,18 @@ class SalesQuoteRow < ApplicationRecord
     end
   end
 
+
   validate :is_unit_selling_price_consistent_with_converted_unit_selling_price?, if: :not_legacy?
+
   def is_unit_selling_price_consistent_with_converted_unit_selling_price?
     if converted_unit_selling_price.round != converted_unit_selling_price.round
       errors.add :base, 'selling price is not consistent with converted selling price'
     end
   end
 
+
   validate :is_unit_freight_cost_consistent_with_freight_cost_subtotal?, if: :not_legacy?
+
   def is_unit_freight_cost_consistent_with_freight_cost_subtotal?
     if (freight_cost_subtotal / quantity).round != unit_freight_cost.round
       errors.add :base, 'freight cost is not consistent with freight cost subtotal'
@@ -51,21 +53,23 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   validate :tax_percentage_is_not_nil?, if: :not_legacy?
+
   def tax_percentage_is_not_nil?
-    if not_legacy? && tax_rate.tax_percentage.blank?
+    if self.not_legacy? && self.tax_rate.tax_percentage.blank?
       errors.add :base, 'tax rate cannot be N/A'
     end
   end
 
   after_initialize :set_defaults, if: :new_record?
+
   def set_defaults
     self.margin_percentage ||= legacy? ? 0 : 15.0
     self.freight_cost_subtotal ||= 0.0
     self.unit_freight_cost ||= 0.0
     self.lead_time_option ||= LeadTimeOption.default
-    self.measurement_unit ||= product.measurement_unit || MeasurementUnit.default
+    self.measurement_unit ||= self.product.measurement_unit || MeasurementUnit.default
 
-    if inquiry_product_supplier.present?
+    if self.inquiry_product_supplier.present?
       self.quantity ||= maximum_quantity
       self.unit_selling_price ||= calculated_unit_selling_price
     end
@@ -75,31 +79,31 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def best_tax_code
-    self.tax_code || product.best_tax_code
+    self.tax_code || self.product.best_tax_code
   end
 
   def best_tax_rate
-    self.tax_rate || product.best_tax_rate
+    self.tax_rate || self.product.best_tax_rate
   end
 
   def applicable_tax_percentage
     if legacy_applicable_tax_percentage.present? && legacy_applicable_tax_percentage > 0
       legacy_applicable_tax_percentage / 100
     else
-      if persisted? && inquiry.is_sez?
+      if self.persisted? && self.inquiry.is_sez?
         0
       else
-        best_tax_rate ? best_tax_rate.tax_percentage / 100.0 : 0
+        self.best_tax_rate ? self.best_tax_rate.tax_percentage / 100.0 : 0
       end
     end
   end
 
   def conversion_rate
-    sales_quote.inquiry_currency.conversion_rate || 1
+    self.sales_quote.inquiry_currency.conversion_rate || 1
   end
 
   def maximum_quantity
-    inquiry_product.quantity if inquiry_product.present?
+    self.inquiry_product.quantity if self.inquiry_product.present?
   end
 
   def total_tax
@@ -111,15 +115,15 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def total_selling_price_with_tax
-    unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
+    self.unit_selling_price_with_tax * self.quantity if self.unit_selling_price.present?
   end
 
   def total_margin
-    total_selling_price - total_cost_price
+    self.total_selling_price - self.total_cost_price
   end
 
   def total_cost_price
-    unit_cost_price * self.quantity
+    self.unit_cost_price_with_unit_freight_cost * self.quantity
   end
 
   def unit_cost_price_with_unit_freight_cost
@@ -127,25 +131,25 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def calculated_unit_selling_price
-    if unit_cost_price_with_unit_freight_cost.present? && self.margin_percentage.present?
+    if self.unit_cost_price_with_unit_freight_cost.present? && self.margin_percentage.present?
       if self.margin_percentage >= 100
         self.unit_selling_price
       else
-        (unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0)))
+        (self.unit_cost_price_with_unit_freight_cost / (1 - (self.margin_percentage / 100.0)))
       end
     end
   end
 
   def calculated_tax
-    (calculated_unit_selling_price * applicable_tax_percentage)
+    (self.calculated_unit_selling_price * (self.applicable_tax_percentage))
   end
 
   def calculated_unit_selling_price_with_tax
-    (calculated_unit_selling_price + (calculated_unit_selling_price * applicable_tax_percentage))
+    (self.calculated_unit_selling_price + (self.calculated_unit_selling_price * (self.applicable_tax_percentage)))
   end
 
   def unit_selling_price_with_tax
-    self.unit_selling_price + (self.unit_selling_price * applicable_tax_percentage)
+    self.unit_selling_price + (self.unit_selling_price * (self.applicable_tax_percentage))
   end
 
   def calculated_converted_unit_selling_price
@@ -153,15 +157,15 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def converted_total_selling_price
-    (total_selling_price / conversion_rate) if unit_selling_price.present?
+    (self.total_selling_price / conversion_rate) if unit_selling_price.present?
   end
 
   def converted_unit_cost_price_with_unit_freight_cost
-    (unit_cost_price_with_unit_freight_cost / conversion_rate) if unit_cost_price_with_unit_freight_cost.present?
+    (self.unit_cost_price_with_unit_freight_cost / conversion_rate) if unit_cost_price_with_unit_freight_cost.present?
   end
 
   def converted_total_selling_price_with_tax
-    (total_selling_price_with_tax / conversion_rate) if unit_selling_price.present?
+    (self.total_selling_price_with_tax / conversion_rate) if unit_selling_price.present?
   end
 
   def converted_total_tax
@@ -183,6 +187,6 @@ class SalesQuoteRow < ApplicationRecord
   end
 
   def to_remote_s
-    legacy_id.present? ? legacy_id : to_param
+    self.legacy_id.present? ? self.legacy_id : self.to_param
   end
 end

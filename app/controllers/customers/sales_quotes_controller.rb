@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Customers::SalesQuotesController < Customers::BaseController
   before_action :set_sales_quote, only: [:show]
 
@@ -20,6 +18,7 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   def show
     authorize @sales_quote
+    @sales_quote_rows = @sales_quote.sales_quote_rows
     respond_to do |format|
       format.html { }
       format.pdf do
@@ -29,7 +28,6 @@ class Customers::SalesQuotesController < Customers::BaseController
   end
 
   private
-
     def set_sales_quote
       @sales_quote = SalesQuote.find(params[:id])
     end

@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
 # when :'$0'
 # '$2'
 module StatusesHelper
   def status_color(status)
     case status.to_sym
-    when :Processing
+    when :'Processing'
       'color-light-blue'
     when :'Material Ready For Dispatch'
       'color-dark-blue'
@@ -17,9 +15,9 @@ module StatusesHelper
       'color-red'
     when :'Partially Delivered: GRN Received'
       'color-light-green'
-    when :Shipped
+    when :'Shipped'
       'color-yellow'
-    when :Invoiced
+    when :'Invoiced'
       'color-yellow'
     when :'In stock'
       'color-yellow'
@@ -33,7 +31,7 @@ module StatusesHelper
       'color-dark-green'
     when :'Short Closed'
       'color-grey'
-    when :Cancelled
+    when :'Cancelled'
       'color-grey'
 
     # defaults
@@ -63,9 +61,9 @@ module StatusesHelper
       'dark'
     when :'Supplier PO: Created'
       'dark'
-    when :Processing
+    when :'Processing'
       'dark'
-    when :Closed
+    when :'Closed'
       'dark'
     when :'Order Deleted'
       'dark'
@@ -81,21 +79,23 @@ module StatusesHelper
       'success'
     when :'Purchase Order Issued'
       'success'
-    when :active
+    when :'active'
       'success'
     when :'Payment Received (Closed)'
       'success'
     when :'Completed AR Invoice Request'
       'success'
-    when :Completed
+    when :'Completed'
       'success'
     when :'PO Created'
       'success'
-    when :success
+    when :'success'
       'success'
     when 'Delivered'
       'success'
-    when :Approved
+    when 'created'
+      'success'
+    when :'Approved'
       'success'
     when :'SO Rejected by Sales Manager'
       'warning'
@@ -113,9 +113,9 @@ module StatusesHelper
       'warning'
     when :'Partially Delivered: GRN Received'
       'warning'
-    when :Shipped
+    when :'Shipped'
       'warning'
-    when :Invoiced
+    when :'Invoiced'
       'warning'
     when :'Delivered: GRN Received'
       'warning'
@@ -125,9 +125,9 @@ module StatusesHelper
       'warning'
     when :'Pending AP Invoice'
       'warning'
-    when :Pending
+    when :'Pending'
       'warning'
-    when :pending
+    when :'pending'
       'warning'
     when :'SAP Rejected'
       'warning'
@@ -135,9 +135,11 @@ module StatusesHelper
       'warning'
     when :'Hold by Finance'
       'warning'
+    when :'refunded'
+      'color-yellow'
     when :'Order Lost'
       'danger'
-    when :Regret
+    when :'Regret'
       'danger'
     when :'Purchase Order Revision Pending'
       'danger'
@@ -151,20 +153,26 @@ module StatusesHelper
       'danger'
     when :'Cancelled AR Invoice'
       'danger'
-    when :failed
+    when :'failed'
       'danger'
-    when :Rejected
+    when :'Rejected'
       'danger'
-    when :Cancelled
+    when :'Cancelled'
       'danger'
     when :'Cancelled by SAP'
       'danger'
     when :'Pending GRPO'
       'primary'
-    when :Requested
+    when :'Requested'
       'primary'
+    when :'created'
+      'success'
     when :'Pending AR Invoice'
       'info'
+    when :'authorized'
+      'info'
+    when :'captured'
+      'success'
     else
       'danger'
     end
@@ -181,7 +189,7 @@ module StatusesHelper
   def status_count(klass, status)
     case klass.name.to_sym
     when :SalesOrder
-      if klass.statuses.key?(status)
+      if klass.statuses.keys.include?status
         klass.where(status: status).or(klass.where(legacy_request_status: status)).count
       else
         klass.where(remote_status: status).count
@@ -189,7 +197,7 @@ module StatusesHelper
     when :PurchaseOrder
       klass.all.map(&:metadata_status).count(status)
     else
-      klass.where(status: status).count
+      klass.where(status: status).count;
     end
   end
 
