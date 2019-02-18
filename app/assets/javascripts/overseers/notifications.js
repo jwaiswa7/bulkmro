@@ -22,28 +22,32 @@ Notifications = class Notifications {
     }
 
     handleClick(e) {
+        var page_title = $(document).attr('title');
         return $.ajax({
             url: "/overseers/notifications/mark_as_read",
             dataType: "JSON",
             method: "POST",
             success: function () {
+                $(document).attr('title', page_title.replace(/^\([\s\d]*?\) /g, ''));
                 return $("[data-behavior='unread-count']").text(0).removeClass('badge-danger');
             }
         });
     }
 
     handleSuccess(data) {
-        var items, unread_count;
+        var items, unread_count, page_title;
         items = $.map(data, function (notification) {
             return notification.template;
         });
         unread_count = 0;
+        page_title = $(document).attr('title');
         $.each(data, function (i, notification) {
             if (notification.unread) {
                 return unread_count += 1;
             }
         });
         if (unread_count > 0) {
+            $(document).attr('title', '('+unread_count+') ' + page_title);
             $("[data-behavior='unread-count']").text(unread_count).addClass('badge-danger');
         }
         if (items == 0) {

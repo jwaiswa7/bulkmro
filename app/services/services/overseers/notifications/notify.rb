@@ -12,6 +12,12 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     end
   end
 
+  def send_tax_code(to, action, notifiable, url)
+    @to = to; @action = action; @notifiable = notifiable; @url = url
+    @message = "Tax code has been updated!"
+    send
+  end
+
   def send_product_comment(to, action, notifiable, url, *msg)
     @to = to; @action = action; @notifiable = notifiable; @url = url
 

@@ -52,5 +52,9 @@ class Overseers::BaseController < ApplicationController
 
 	  def controller_namespace
   		 @controller_namespace ||= controller_path.split('/').first
-  	end
+		end
+
+	 def set_notification
+		 @notification = Services::Overseers::Notifications::Notify.new(current_overseer, self.namespace)
+	 end
 end
