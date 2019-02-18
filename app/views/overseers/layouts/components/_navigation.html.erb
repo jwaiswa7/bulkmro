@@ -233,16 +233,15 @@
         <span class="headway mr-2" style="z-index: 1030;"></span>
       </a>
       <div class="btn-group mr-2" data-behavior="notifications">
-        <a class="align-self-center" href="#" role="button" data-toggle="dropdown" data-behavior="notifications-link">
-          <i class="fal fa-bell"></i> <span class="badge" data-behavior="unread-count">0</span>
+        <a class="align-self-center d-flex" href="#" role="button" data-toggle="dropdown" data-behavior="notifications-link">
+          <i class="fal fa-bell"></i><span class="badge ml-1 align-self-center" data-behavior="unread-count">0</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-right">
-          <span class="dropdown-item text-center">Notifications</span>
-          <div class="dropdown-divider"></div>
-          <div id="notifications" data-behavior="notification-items"></div>
+        <div class="dropdown-menu dropdown-menu-right notifications">
+          <h6 class="dropdown-header text-uppercase m-0 text-center d-none">Notifications</h6>
+          <div class="notification-items" data-behavior="notification-items"></div>
           <div class="dropdown-divider"></div>
           <%= link_to overseers_notifications_path, class: 'dropdown-item text-center' do %>
-            View More
+            View All
           <% end %>
         </div>
       </div>

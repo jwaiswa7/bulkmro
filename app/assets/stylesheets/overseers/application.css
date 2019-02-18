@@ -10682,3 +10682,11 @@ a.text-color-grey:hover, a.text-color-grey:focus {
 .unread-notification {
     background: #fff6ef;
 }
+.notifications {
+    min-width: 22.5rem;
+    max-width: 22.5rem;
+}
+.notifications .dropdown-item {
+    word-wrap: normal;
+    white-space: normal;
+}

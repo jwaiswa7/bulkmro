@@ -1,4 +1,13 @@
-<% @msg = notification.message+'<br><small>By '+notification.sender.name+' '+ time_ago_in_words(notification.created_at)+' ago</small>' %>
-<div class="<%= "dropdown-item#{" unread-notification" if !notification.read_at?}" %>" >
-<%= link_to_if notification.action_url.present?, @msg.html_safe, notification.action_url %>
-</div>
+<% @msg = [
+    notification.message, '<br>',
+    '<small>',
+    'By', ' ' + notification.sender.name + ' ',
+    '<strong class="mt-1 d-block">',
+    time_ago_in_words(notification.created_at) + ' ' + 'ago',
+    '</strong>',
+    '</small>'
+].join('') %>
+<a class="dropdown-item <%= "unread-notification" if not notification.read_at? %>" href="<%= notification.action_url if notification.action_url.present? %>">
+  <%= @msg.html_safe %>
+</a>
+<div class="dropdown-divider mx-1"></div>

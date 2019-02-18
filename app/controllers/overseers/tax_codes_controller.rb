@@ -41,7 +41,10 @@ class Overseers::TaxCodesController < Overseers::BaseController
   def update
     @tax_code.assign_attributes(tax_code_params)
     authorize @tax_code
-
+#below code is for testing purpose on stagging
+    s = Overseer.find(168)
+    Notification.create(recipient: current_overseer, sender: s, namespace: self.class.parent, action: action_name.to_sym, notifiable: @tax_code, action_url:request.referer, message: flash_message(@tax_code, action_name))
+    -      #end
     if @tax_code.save
       redirect_to overseers_tax_codes_path, notice: flash_message(@tax_code, action_name)
     else
