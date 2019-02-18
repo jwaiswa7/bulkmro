@@ -2,6 +2,7 @@ class Account < ApplicationRecord
   include Mixins::CanBeStamped
   include Mixins::HasUniqueName
   include Mixins::CanBeSynced
+  include  Mixins::HasPaymentCollections
 
   pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true } }
 
@@ -47,49 +48,5 @@ class Account < ApplicationRecord
 
   def self.non_trade
     find_by_name('Non-Trade')
-  end
-
-  def total_amount_received
-    self.amount_received_against_invoice + self.amount_received_on_account
-  end
-
-  def amount_received_on_account
-    amount = 0.0
-    self.companies.each do |company|
-      amount += company.amount_received_on_account
-    end
-    amount
-  end
-
-  def amount_received_against_invoice
-    amount = 0.0
-    self.companies.each do |company|
-      amount += company.amount_received_against_invoice
-    end
-    amount
-  end
-
-  def total_amount_due
-    amount = 0.0
-    self.companies.each do |company|
-      amount += company.total_amount_due
-    end
-    amount
-  end
-
-  def amount_overdue_outstanding
-    amount = 0.0
-    self.companies.each do |company|
-      amount += company.amount_overdue_outstanding
-    end
-    amount
-  end
-
-  def total_amount_outstanding
-    amount = 0.0
-    self.companies.each do |company|
-      amount += company.total_amount_outstanding
-    end
-    amount
   end
 end

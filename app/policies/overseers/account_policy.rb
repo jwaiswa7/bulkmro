@@ -5,4 +5,7 @@ class Overseers::AccountPolicy < Overseers::ApplicationPolicy
   def payment_collection?
     manager_or_cataloging? || logistics?
   end
+  def ageing_report?
+    manager_or_cataloging? || logistics?
+  end
 end

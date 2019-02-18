@@ -35,6 +35,10 @@ class Overseers::CompanyPolicy < Overseers::ApplicationPolicy
     index?
   end
 
+  def ageing_report?
+    index?
+  end
+
   def create_customer_products?
     all_roles? && is_active?
   end

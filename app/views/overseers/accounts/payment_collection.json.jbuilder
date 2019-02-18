@@ -5,7 +5,7 @@ json.data (@accounts) do |account|
                         row_action_button(payment_collection_overseers_account_companies_path(account_id: account.id), 'eye', 'View Account', 'info', :_blank)
                       end,
                       if policy(account).show?
-                        row_action_button(new_overseers_payment_collection_email_path(:type =>'Account',:account => account), 'envelope', 'Send Email', 'dark', :_blank)
+                        row_action_button(new_overseers_payment_collection_email_path(type: 'Account', account: account), 'envelope', 'Send Email', 'dark', :_blank)
                       end
                   ].join(' '),
                   account.alias,
@@ -17,7 +17,7 @@ json.data (@accounts) do |account|
                   if account.sales_receipts.with_amount_by_invoice.present?
                     format_currency(account.amount_received_against_invoice)
                   else
-                     ' - '
+                    ' - '
                   end,
                   if account.sales_receipts.with_amount_on_account.present?
                     format_currency(account.amount_received_on_account)
