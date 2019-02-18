@@ -40,7 +40,7 @@ Notifications = class Notifications {
             return notification.template;
         });
         unread_count = 0;
-        page_title = $(document).attr('title');
+        page_title = $(document).attr('title').replace(/^\([\s\d]*?\) /g, '');
         $.each(data, function (i, notification) {
             if (notification.unread) {
                 return unread_count += 1;
