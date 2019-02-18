@@ -1,0 +1,39 @@
+<div class="col-lg-12">
+  <div class="page-header">
+    <h2><%= action_name.capitalize %> Profile</h2>
+  </div>
+
+  <%= simple_form_for(@contact, url: customers_profile_path, :method => :patch) do |f| %>
+    <div class="form-row">
+      <div class="col-6">
+        <%= f.input :first_name, :disabled => true %>
+      </div>
+      <div class="col-6">
+        <%= f.input :last_name, :disabled => true %>
+      </div>
+      <div class="col-6">
+        <%= f.input :email, :disabled => true %>
+      </div>
+      <div class="col-6">
+        <%= f.input :current_password,
+                    required: true,
+                    input_html: {autocomplete: "off"} %>
+      </div>
+      <div class="col-6">
+        <%= f.input :password,
+                    required: true, label: 'New Password',
+                    input_html: {autocomplete: "off"} %>
+      </div>
+      <div class="col-6">
+        <%= f.input :password_confirmation,
+                    required: true, label: 'Confirm New Password',
+                    input_html: {autocomplete: "off"} %>
+      </div>
+    </div>
+
+    <%= button_tag(type: "submit", class: "btn btn-warning btn-block mb-2") do %>
+      <i class="fal fa-pen"></i> <%= submit_text(@contact, use_alias: 'Profile Details') %>
+    <% end %>
+
+  <% end %>
+</div>

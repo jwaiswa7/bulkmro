@@ -18,6 +18,19 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @products
   end
 
+  def service_autocomplete
+    base_filter = {
+        base_filter_key: 'is_service',
+        base_filter_value: true
+    }
+    service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
+    service.call
+
+    @indexed_products = service.indexed_records
+    @products = service.records
+    authorize @products
+  end
+
   def pending
     @products = ApplyDatatableParams.to(Product.all.not_rejected.left_joins(:inquiry_products, :approval).merge(ProductApproval.where(product_id: nil)), params)
     authorize @products
@@ -65,8 +78,10 @@ class Overseers::ProductsController < Overseers::BaseController
     bp_catalog = @product.bp_catalog_for_supplier(@supplier)
 
     render json: {
+        supplier_id: @supplier.id,
         lowest_unit_cost_price: @product.lowest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
         latest_unit_cost_price: @product.latest_unit_cost_price_for(@supplier, @inquiry_product_supplier),
+        rating: @supplier.rating
     }.merge!(bp_catalog ? {
         bp_catalog_name: bp_catalog[0],
         bp_catalog_sku: bp_catalog[1]
@@ -106,10 +121,10 @@ class Overseers::ProductsController < Overseers::BaseController
 
   def export_all
     authorize :inquiry
-    service = Services::Overseers::Exporters::ProductsExporter.new
-    service.call
-
-    redirect_to url_for(Export.products.last.report)
+    service = Services::Overseers::Exporters::ProductsExporter.new(headers)
+    self.response_body = service.call
+    # Set the status to success
+    response.status = 200
   end
 
   private

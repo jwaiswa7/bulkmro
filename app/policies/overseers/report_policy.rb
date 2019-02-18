@@ -6,4 +6,8 @@ class Overseers::ReportPolicy < Overseers::ApplicationPolicy
   def show?
     admin?
   end
+
+  def bi_report?
+    true
+  end
 end
