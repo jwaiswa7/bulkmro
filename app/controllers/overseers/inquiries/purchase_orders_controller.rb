@@ -15,7 +15,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     @metadata[:packing] = get_packing(@metadata)
 
     respond_to do |format|
-      format.html { }
+      format.html { render 'show' }
       format.pdf do
         render_pdf_for @purchase_order
       end

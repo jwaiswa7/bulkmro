@@ -1,0 +1,328 @@
+<% content_for :heading do %>
+  View Purchase Order <%= @purchase_order.to_s %>
+<% end %>
+<div class="col-12">
+  <%= render layout: 'overseers/inquiries/tabs_layout' do %>
+    <div class="card">
+      <div class="card-header">
+        <div class=form-row>
+          <div class="col-6 col-md-2">
+            <strong class="d-block">Bulk MRO Reference #</strong>
+            <%= @metadata[:PoEnquiryId] %>
+          </div>
+          <div class="col-6 col-md-3">
+            <strong class="d-block">Date of Quotation</strong>
+            <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+          </div>
+          <div class="col-6 col-md-2 mt-2 mt-md-0">
+            <strong class="d-block">Contact Name</strong>
+            <%= @purchase_order.inquiry.contact.full_name || "Mr. Amit Rawool"%>
+          </div>
+          <div class="col-6 col-md-2 mt-2  mt-md-0">
+            <strong class="d-block">Contact # </strong>
+            <% if @purchase_order.inquiry.contact.mobile || @purchase_order.inquiry.contact.telephone %>
+              <%= @inquiry.contact.phone %>
+            <%else %>
+              <span>+91-7506033466</span>
+            <%end %>
+          </div>
+          <div class="col-6 col-md-2">
+            <strong class="d-block">Committed Delivery Date</strong>
+            <%= Date.parse(@metadata[:PoDate]).strftime("%d-%b-%Y") if @metadata[:PoDate].present? %>
+          </div>
+          <div class="col-6 col-md-1">
+              <% if policy(@purchase_order).show? %>
+              <%= row_action_button(overseers_inquiry_purchase_order_path(@inquiry, @purchase_order, format: :pdf), 'file-pdf', 'Download Pdf', 'dark', :_blank) %>
+              <%end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-row mb-1">
+          <div class="col-6 col-md-2">
+            <strong class="d-block">Freight</strong>
+            <%= @metadata[:PoFreight] %>
+          </div>
+          <div class="col-6 col-md-3">
+            <strong class="d-block">Packing & Forwarding</strong>
+            <%= @metadata[:packing] %>
+          </div>
+          <div class="col-6 col-md-2 mt-2 mt-md-0">
+            <strong class="d-block">Mode of Transport</strong>
+            <%= @metadata[:PoModeOfTrasport] %>
+          </div>
+          <div class="col-6 col-md-2 mt-2 mt-md-0">
+            <strong class="d-block">Delivery Terms</strong>
+            <%= @metadata[:PoDeliveryTerms] %>
+          </div>
+          <div class="col-6 col-md-3 mt-2 mt-md-0">
+            <strong class="d-block">Payment Terms</strong>
+            <%= @metadata[:PoPaymentTerms] %>
+          </div>
+        </div>
+
+        <div class="card-alternative mt-3">
+          <div class="form-row">
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Supplier - Bill to :</strong>
+              <% if @supplier.present? %>
+                <%= @supplier.name if @supplier.name.present? %><br>
+                <%= @supplier.billing_address.to_multiline_s if @supplier.billing_address.present? %>
+                <br>
+                Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
+                GST No. : <%= @supplier.billing_address.try(:gst) %><br>
+              <% end %>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Supplier - Ship to :</strong>
+              <% if @supplier.present? %>
+                <%= @supplier.name if @supplier.name.present? %><br>
+                <%= @supplier.shipping_address.to_multiline_s if @supplier.shipping_address.present?%>
+                <br>
+                Tel: <%= @supplier.telephone if @supplier.telephone.present? %><br>
+                GST No. : <%= @supplier.shipping_address.try(:gst) %><br>
+              <% end %>
+            </div>
+          </div>
+          <div class="form-row mt-0 mt-md-2">
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Bulk MRO - Bill to :</strong>
+              <span>
+                      <%= (@inquiry.bill_from.address.name.to_s + '<br>').html_safe if @inquiry.bill_from.address.name.present? %>
+                <% if @inquiry.bill_from.present? %>
+                        <%= @inquiry.bill_from.address.to_multiline_s %><br>
+                        GST No. : <%= @inquiry.bill_from.address.gst %><br>
+                      <% end %>
+                PAN No. : AAGCB7343G</span>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <strong class="d-block">Bulk MRO - Ship to :</strong>
+              <span>
+                      <%= (@inquiry.ship_from.address.name.to_s + '<br>').html_safe if @inquiry.ship_from.address.name.present? %>
+                <% if @inquiry.ship_from.present? %>
+                        <%= @inquiry.ship_from.address.to_multiline_s %><br>
+                        GST No. : <%= @inquiry.ship_from.address.gst %><br>
+                      <% end %>
+                PAN No. : AAGCB7343G</span>
+            </div>
+          </div>
+        </div>
+
+        <% if @inquiry.attachments.present? %>
+          <div class="form-row mt-3">
+            <div class="col-6">
+              <strong class="d-block">Customer Purchase Order</strong>
+              <%= link_to @inquiry.customer_po_sheet, target: '_blank' do %>
+                <%= @inquiry.customer_po_sheet.filename %>
+              <% end if @inquiry.customer_po_sheet.attached? %>
+            </div>
+            <div class="col-6">
+              <% if @inquiry.copy_of_email.attached? %>
+                <strong class="d-block">Email attachment</strong>
+                <%= link_to @inquiry.copy_of_email, target: '_blank' do %>
+                  <%= @inquiry.copy_of_email.filename %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="col-6 mt-2">
+              <strong class="d-block">Supplier Quotes Attachment</strong>
+              <% @inquiry.supplier_quotes.attachments.each do |attachment| %>
+                <%= link_to url_for(attachment), target: '_blank', :status => attachment.filename do %>
+                  <span class="d-block"><%= attachment.filename %></span>
+                <% end %>
+              <% end if @inquiry.supplier_quotes.attached? %>
+            </div>
+          </div>
+        <% end %>
+        <table class="w-100 table table-bordered dt-responsive datatable wrap-whitespace" data-fixed-header="false">
+          <thead>
+          <tr>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Serial Number">Sr.No</span>
+            </th>
+            <th class="no-sort">
+              <span>SKU</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="MPN">Mfr Model</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Description">Description</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Make">Make</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="">HSN /SAC Code</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="UOM">UOM</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Quantity">Qty</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Unit Price">Unit Price</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Subtotal">Subtotal</span>
+            </th>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">Tax Rate</span>
+            </th>
+            <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">IGST Rate</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">IGST Amt</span>
+              </th>
+            <% else %>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">CGST Rate</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">CGST Amt</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">SGST Rate</span>
+              </th>
+              <th class="no-sort">
+                <span data-toggle="tooltip" title="Tax Rate">SGST Amt</span>
+              </th>
+            <% end %>
+            <th class="no-sort">
+              <span data-toggle="tooltip" title="Tax Rate">Total<br>
+              (<%= @purchase_order.inquiry.currency.name %>)</span>
+            </th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <% @purchase_order.rows.each_with_index do |item, index| %>
+            <tr>
+              <td>
+                <span><%= index + 1 %></span>
+              </td>
+              <td>
+                <span><%= item.sku %></span>
+              </td>
+              <td>
+                <span></span>
+              </td>
+              <td align="left" valign="top">
+                <span><%= item.metadata['PopProductName'] %></span>
+              </td>
+              <td>
+                <span><%= item.brand %></span>
+              </td>
+              <td>
+                <span><%= item.metadata['PopHsn'] %></span>
+              </td>
+              <td>
+                <span><%= item.uom %></span>
+              </td>
+              <td>
+                <span><%= number_to_currency(item.quantity, precision: 2, unit: '') %></span>
+              </td>
+              <td align="right" valign="top">
+                <span><%= format_currency(item.unit_selling_price, precision: 2, symbol: nil) %></span>
+              </td>
+              <td align="right" valign="top">
+                <span><%= format_currency(item.total_selling_price, precision: 2, symbol:nil) %></span>
+              </td>
+              <td>
+                <span><%= item.tax_rate.round(0) %>%</span>
+              </td>
+              <% if @metadata[:PoTaxRate].to_s.include? "IG" %>
+                <td>
+                  <span><%= item.tax_rate.round(0) %>%</span>
+                </td>
+                <td align="right" valign="top">
+                  <span><%= format_currency(item.total_tax, precision: 2, symbol: nil) %></span>
+                </td>
+              <% else %>
+                <td>
+                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                <td align="right" valign="top">
+                  <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %></span>
+                </td>
+                <td>
+                  <span><%= (item.tax_rate.to_f / 2).round(0) %>%</span></td>
+                <td>
+                  <span><%= format_currency(item.total_tax / 2, precision: 2, symbol: nil) %><br></span>
+                </td>
+              <% end %>
+              <td align="right" valign="top">
+                <span><%= format_currency(item.total_selling_price_with_tax, precision: 2, symbol: nil) %></span>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <div class="form-row">
+          <div class="col-6 col-md-3">
+            Products
+            <strong class="d-block"><%=@purchase_order.rows.count %></strong>
+          </div>
+          <div class="col-6 col-md-3">
+            Subtotal
+            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total, symbol: nil) %></strong>
+          </div>
+          <%if @metadata[:PoTaxRate].to_s.include? "IG" %>
+          <div class="col-6 col-md-3">
+            Tax Amt
+            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax, symbol: nil) %></strong>
+          </div>
+            <%else %>
+          <div class="col-6 col-md-3">
+            Tax Amt
+            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_tax / 2, symbol: nil) %></strong>
+          </div>
+          <%end %>
+          <div class="col-6 col-md-3">
+            Grand Toatal
+            <strong class="d-block"><%= format_currency(@purchase_order.calculated_total_with_tax, symbol: nil) %></strong>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div>
+          <th><h6 class="text-uppercase text-black-50 mb-1">
+            Commercial Terms and Conditions:
+          </h6></th>
+          <ul>
+            <li>Seller to email Original Invoice to logistics@bulkmro.com after Order is dispatched.</li>
+            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.</li>
+            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</li>
+            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</li>
+            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class=form-row>
+          <th><h6 class="text-uppercase text-black-50 mb-1">
+            Other Information :
+          </h6></th>
+          <ul>
+            <li><% if @inquiry.bill_from.present? && @inquiry.bill_from.legacy_id == 12 %>
+                 Please reference our Bulk MRO Industrial Supply Inc. Purchase Order #<%= @metadata[:PoNum] %>
+                when shipping goods.
+              <% else %>
+                 Please reference our Bulk MRO Industrial Supply Pvt. Ltd. Purchase Order #<%= @metadata[:PoNum] %>
+                when shipping goods.
+              <% end %></li>
+            <li>In the case of (a) any delays in receiving invoice, (b) errors or omissions in invoice, or (c) lack of supporting documentation required by the terms of the Purchase Order, Buyer will have cause to withhold settlement and shall not lose any discount privilege that applied to the products affected by such action or in action.</li>
+            <li>All payments will be issued to Seller at the location specified in Seller’s block on the Purchase Order, unless proper authority for deviation is supplied to Buyer’s Accounts Payable Department</li>
+            <li>Bulk MRO shall not be liable for any third party claims arising out of the use of quoted goods. The customer shall keep Bulk MRO indemnified from/against all such claims.</li>
+            <li>Time of delivery, as provided, is of the essence. Seller must notify Buyer as soon as possible but not later than 3 business days in advance of delivery schedule that will not be met or if material is on back order.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>
