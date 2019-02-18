@@ -2369,42 +2369,41 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts missing_so
     end
 
-  #SalesOrder.where(:manager_so_status_date => nil).count
-  def sup_emails
-    Company.acts_as_supplier.each do |supplier|
-      name = supplier.name
-      sup_code = supplier.remote_uid
-      email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
-                supplier.company_contacts.first.contact.email
-              elsif supplier.default_company_contact_id.present?
-                supplier.default_company_contact.contact.email
-              else
-                supplier.legacy_email
-              end
-    end
-  end
-
-  def add_manager_approved_date
-     SalesOrder.approved.each do |sales_order|
-       sales_order.update_attributes!(:manager_so_status_date => sales_order.approval.created_at) if sales_order.approval.present?
-     end
-  end
-
-  def add_manager_rejected_date
-    SalesOrder.rejected.each do |sales_order|
-      sales_order.update_attributes!(:manager_so_status_date => sales_order.rejection.created_at) if sales_order.rejection.present?
-    end
-  end
-
-  def draft_sync_date
-    SalesOrder.all.each do |sales_order|
-      if sales_order.manager_so_status_date.present?
-        draft_remote_request = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => sales_order.id,:status => "success").first
-        if draft_remote_request.present?
-          sales_order.update_attributes!(:draft_sync_date => draft_remote_request .created_at)
+    # SalesOrder.where(:manager_so_status_date => nil).count
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
         end
       end
     end
-  end
 
+    def add_manager_approved_date
+      SalesOrder.approved.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.approval.created_at) if sales_order.approval.present?
+      end
+    end
+
+    def add_manager_rejected_date
+      SalesOrder.rejected.each do |sales_order|
+        sales_order.update_attributes!(manager_so_status_date: sales_order.rejection.created_at) if sales_order.rejection.present?
+      end
+    end
+
+    def draft_sync_date
+      SalesOrder.all.each do |sales_order|
+        if sales_order.manager_so_status_date.present?
+          draft_remote_request = RemoteRequest.where(subject_type: 'SalesOrder', subject_id: sales_order.id, status: 'success').first
+          if draft_remote_request.present?
+            sales_order.update_attributes!(draft_sync_date: draft_remote_request .created_at)
+          end
+        end
+      end
+    end
 end
