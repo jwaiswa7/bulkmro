@@ -6,7 +6,7 @@
   <div class="page-header">
     <h2><%= action_name.capitalize %> <%= @po_request.readable_status %> for
       Order <%= format_id(@po_request.sales_order.order_number) %></h2>
-    <p>This will <em>'<%= submit_text(@po_request, use_alias: @po_request.readable_status) %>'</em> and log it
+    <p>This will <em>'<%= @po_request.submit_text(@po_request, use_alias: @po_request.readable_status) %>'</em> and log it
       under
       <strong><%= current_overseer.full_name %></strong>.</p>
   </div>
