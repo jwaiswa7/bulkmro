@@ -1,4 +1,4 @@
-class Services::Callbacks::SalesOrders::Create < Services::Callbacks::Shared::BaseCallback
+class Services::Callbacks::SalesOrders::Create < Services::Shared::BaseService
   def call
     sprint_order_id = params['U_MgntDocID']
     remote_status = params['Status']

@@ -4,31 +4,58 @@
 <% provide :wrap_whitespace, true %>
 
 <% content_for :heading do %>
-  Purchase Order Requests
+  <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
 <% end %>
 
 <% content_for(:heading_buttons) do %>
+  <% if policy(:po_request).update_logistics_owner? && (action_name != 'cancelled' ) %>
+    <div class="mr-2 float-left update_logistics_owner_wrapper">
+      <%= select_tag :logistics_owner, options_for_select(Overseer.logistics.collect {|o| [o.full_name.to_s, o.id]}), class: 'form-control select2-wrap update_logistics_owner_wrapper', include_blank: 'Select a logistics owner', id: 'logistics_owner_select' %>
+    </div>
+    <button type="button" id="update_logistics_owner" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 update_logistics_owner_wrapper">
+      <i class="fal fa-plus mr-1"></i>Update Logistics Owner
+    </button>
+  <% end %>
+
   <% if policy(:sales_order).index? %>
-    <a href = "<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+    <a href="<%= overseers_sales_orders_path %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1">
       <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
     </a>
   <% end %>
 <% end %>
 
 <% content_for :hide_table_desc do %>
-<!--  To Do Filters-->
+  <!--  To Do Filters-->
 <% end %>
-
+<% %>
 <% content_for :header_row do %>
-  <th class="no-sort all" data-width="70px"></th>
-  <th class="no-sort desktop text-right" data-name="name">Req. No.</th>
+  <th class="no-sort">
+    <% if policy(:po_request).update_logistics_owner? && (action_name != 'cancelled' && action_name != "amended") %>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" name="all_po_requests" id="all_po_requests">
+        <label class="custom-control-label" for="all_po_requests">Select All</label>
+      </div>
+    <% end %>
+  </th>
+  <th class="no-sort desktop" data-name="po_request_no">PO Request No.</th>
+  <th class="no-sort desktop text-right" data-name="inquiry">Inquiry</th>
+  <% if action_name == 'index' || action_name == "Completed" %>
+    <th class="no-sort all text-right" data-name="po_number">PO Number</th>
+  <% else %>
+    <th class="no-sort all text-right" data-name="order">Order</th>
+  <% end %>
+  <th class="no-sort all" data-name="inside_sales">Inside Sales</th>
+  <th class="no-sort all" data-name="supplier">Supplier</th>
+  <th class="no-sort all" data-name="cp">Buying Price</th>
+  <th class="no-sort all" data-name="sp">Selling Price</th>
+  <th class="no-sort all" data-name="po_margin">PO Margin %</th>
+  <th class="no-sort all" data-name="overall_margin">Overall Margin %</th>
+  <th class="no-sort all">Committed Delivery Date</th>
+  <th class="no-sort all">Supplier Committed Delivery Date</th>
   <th class="no-sort desktop">Status</th>
-  <th class="no-sort desktop text-right" data-name="name">Inquiry #</th>
-  <th class="no-sort all text-right" data-name="sku">Order #</th>
-  <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
-  <th class="no-sort all" data-name="sku">Inside Sales</th>
-  <th class="sort desktop text-right" data-name="created_at">Requested At</th>
-  <th class="no-sort desktop text-right" data-name="name">Updated At</th>
+  <th class="sort desktop" data-name="created_at">Requested At</th>
+  <th class="no-sort desktop" data-name="name">Updated At</th>
+  <th class="no-sort desktop">Email Status</th>
   <th class="no-sort desktop">Latest Comment</th>
 <% end %>
 

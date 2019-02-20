@@ -9,7 +9,10 @@ class InvoiceRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :purchase_order, required: false
+  has_many :material_pickup_requests
   has_many_attached :attachments
+  has_many :company_reviews, as: :rateable
+  ratyrate_rateable "CompanyReview"
 
   enum status: {
       'Pending GRPO': 10,
@@ -87,10 +90,10 @@ class InvoiceRequest < ApplicationRecord
     else
       title = 'Invoice'
     end
-      "#{title} Request"
+    "#{title} Request"
   end
 
   def to_s
-    [readable_status, 'Request', "##{self.id}"].join(' ')
+    [readable_status, "##{self.id}"].join(' ')
   end
 end

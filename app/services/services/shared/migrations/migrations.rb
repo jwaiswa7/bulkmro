@@ -1256,6 +1256,115 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def update_created_po_requests_with_no_po_order
+    po_requests = PoRequest.where(status: 'PO Created', purchase_order_id: nil)
+    po_requests.each do |po_request|
+      if !po_request.purchase_order_number.present?
+        po_request.status = 'Cancelled'
+        po_request.comments.create(message: 'Migration Cancelled: Status was PO created but PO number not assigned to PO requests', overseer: Overseer.default)
+      end
+    end
+  end
+
+  def update_existing_po_requests_with_purchase_order
+    PoRequest.where.not(status: ['PO Created', 'Requested', 'Cancelled']).update_all(status: 'Cancelled')
+    skips = [47, 50, 83, 86, 12, 64, 72]
+    PoRequest.where.not(purchase_order_id: nil).each do |po_request|
+      next if skips.include?(po_request.id)
+      if po_request.status != 'Cancelled'
+        rows = po_request.sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
+        if po_request.status != 'Requested'
+          if !po_request.status != 'PO Created'
+            purchase_order = po_request.purchase_order || PurchaseOrder.find_by_po_number(po_request.purchase_order_id)
+            if purchase_order.present?
+              service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: purchase_order.inquiry.company.name)
+              purchase_order.rows.each do |line_item|
+                product_sku = line_item.sku
+                if rows[product_sku] != nil
+                  row = po_request.sales_order.rows.find(rows[product_sku])
+                  quantity = line_item.metadata['PopQty'].present? ? line_item.metadata['PopQty'].to_i : row.quantity
+                  if po_request.purchase_order.blank?
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(validate: false)
+                      next
+                    end
+                    if purchase_order.po_request.present?
+                      po_request.update!(status: 'Cancelled')
+                    else
+                      po_request.update!(supplier_id: row.supplier.id, purchase_order: purchase_order, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
+                    end
+                  else
+                    if row.supplier.blank? || row.supplier.addresses.blank?
+                      po_request.is_legacy = true
+                      po_request.save(validate: false)
+                      next
+                    end
+                    po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: purchase_order.inquiry.bill_from_id, ship_to_id: purchase_order.inquiry.ship_from_id, is_legacy: true)
+                    po_request.rows.where(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit).first_or_create!
+                  end
+                end
+              end
+            end
+          end
+        else
+          service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: po_request.sales_order.inquiry.company.name)
+          po_request.sales_order.rows.each do |row|
+            if row.supplier.blank? || row.supplier.addresses.blank?
+              po_request.is_legacy = true
+              po_request.save(validate: false)
+              next
+            end
+            po_request.update!(supplier_id: row.supplier.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: po_request.sales_order.inquiry.bill_from_id, ship_to_id: po_request.sales_order.inquiry.ship_from_id, logistics_owner: service.call, is_legacy: true)
+            po_request.rows.where(sales_order_row_id: row.id, quantity: row.quantity).first_or_create!
+          end
+        end
+      end
+    end
+  end
+
+  def create_po_request_for_purchase_orders
+    SalesOrder.remote_approved.each do |sales_order|
+      rows = sales_order.rows.inject({}) { |hash, row| ; hash[row.sales_quote_row.product.sku] = row.id; hash }
+      service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: sales_order.inquiry.company.name)
+      sales_order.inquiry.purchase_orders.each do |purchase_order|
+        if purchase_order.rows.present?
+          purchase_order.rows.each do |line_item|
+            product_sku = line_item.sku
+            if rows[product_sku] != nil
+              row = sales_order.rows.find(rows[product_sku])
+              if row.supplier.present? && row.supplier.addresses.present?
+                quantity = line_item.metadata['PopQty'].present? ? line_item.metadata['PopQty'].to_i : row.quantity
+                if purchase_order.po_request.blank?
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true).first_or_create!
+                else
+                  po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                  if po_request
+                    po_request.update_attributes(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, supplier_id: row.supplier_id, status: 'PO Created', purchase_order_id: purchase_order.id, bill_from_id: row.supplier.addresses.first.id, ship_from_id: row.supplier.addresses.first.id, bill_to_id: sales_order.inquiry.bill_from_id || Warehouse.default.id, ship_to_id: sales_order.inquiry.ship_from_id || Warehouse.default.id, logistics_owner: service.call, is_legacy: true)
+                  end
+                end
+                po_request.rows.create!(sales_order_row_id: row.id, quantity: quantity, product_id: row.product.id, brand_id: row.product.try(:brand_id), tax_code: row.tax_code, tax_rate: row.best_tax_rate, measurement_unit: row.measurement_unit) if po_request
+              else
+                po_request = PoRequest.where(sales_order_id: sales_order.id, inquiry_id: sales_order.inquiry.id, status: 'PO Created').first
+                if po_request.present?
+                  po_request.is_legacy = true
+                  po_request.save(validate: false)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def update_payment_requests_statuses
+    PaymentRequest.where(status: 10).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 20).update_all(request_owner: 'Logistics', status: :'Payment Pending')
+    PaymentRequest.where(status: 30).update_all(request_owner: 'Accounts', status: :'Payment Pending')
+    PaymentRequest.where(status: 40).update_all(request_owner: 'Accounts', status: :'Payment Made')
+  end
+
   private
 
     def perform_migration(name)
@@ -1994,51 +2103,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
     end
 
-    def create_company_banks
-      service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
-      errors = []
-      service.loop(nil) do |x|
-        begin
-          company = Company.find_by_remote_uid(x.get_column('bp_code'))
-          bank = Bank.find_by_code(x.get_column('bank_code'))
-          if company
-            company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
-            if company_bank.new_record? || update_if_exists
-              company_bank.company = company
-              company_bank.bank = bank
-              company_bank.account_name = x.get_column('account_name')
-              company_bank.account_number = x.get_column('account_no')
-              company_bank.branch = x.get_column('branch')
-              company_bank.mandate_id = x.get_column('mandate_id')
-              company_bank.metadata = x.get_row
-              company_bank.save!
-            end
-          end
-        rescue => e
-          errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
-        end
-      end
-      puts errors
-    end
 
-    def create_banks
-      service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
-      errors = []
-      service.loop(nil) do |x|
-        begin
-          bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
-          if bank.new_record? || update_if_exists
-            bank.name = x.get_column('Bank Name')
-            bank.country_code = x.get_column('Country Code')
-            bank.remote_uid = x.get_column('Absolute entry')
-            bank.save!
-          end
-        rescue => e
-          errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
-        end
-      end
-      puts errors
-    end
 
     def missing_inquiries
       file = "#{Rails.root}/tmp/missing_increment_ids.csv"
@@ -2369,6 +2434,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       puts missing_so
     end
 
+<<<<<<< HEAD
   #SalesOrder.where(:manager_so_status_date => nil).count
   def sup_emails
     Company.acts_as_supplier.each do |supplier|
@@ -2402,6 +2468,127 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         draft_remote_request = RemoteRequest.where(:subject_type => "SalesOrder", :subject_id => sales_order.id,:status => "success").first
         if draft_remote_request.present?
           sales_order.update_attributes!(:draft_sync_date => draft_remote_request .created_at)
+=======
+    def generate_review_questions
+      service = Services::Shared::Spreadsheets::CsvImporter.new('review_questions.csv', 'seed_files')
+
+      service.loop() do |x|
+        question = x.get_column('Question')
+        type = x.get_column('Type')
+        weightage = x.get_column('Weightage')
+        ReviewQuestion.where(question: question, question_type: type, weightage: weightage).first_or_create!
+      end
+    end
+
+    def create_company_banks
+      service = Services::Shared::Spreadsheets::CsvImporter.new('company_banks.csv', folder)
+      errors = []
+      service.loop(nil) do |x|
+        begin
+          company = Company.find_by_remote_uid(x.get_column('bp_code'))
+          bank = Bank.find_by_code(x.get_column('bank_code'))
+          if company
+            company_bank = CompanyBank.where(remote_uid: x.get_column('internal_key')).first_or_initialize
+            if company_bank.new_record? || update_if_exists
+              company_bank.company = company
+              company_bank.bank = bank
+              company_bank.account_name = x.get_column('account_name')
+              company_bank.account_number = x.get_column('account_no')
+              company_bank.branch = x.get_column('branch')
+              company_bank.mandate_id = x.get_column('mandate_id')
+              company_bank.metadata = x.get_row
+              company_bank.save!
+            end
+          end
+        rescue => e
+          errors.push("#{e.inspect} - #{x.get_column('internal_key')}")
+        end
+      end
+      puts errors
+    end
+
+    def create_banks
+      service = Services::Shared::Spreadsheets::CsvImporter.new('banks.csv', folder)
+      errors = []
+      service.loop(nil) do |x|
+        begin
+          bank = Bank.where(code: x.get_column('Bank Code')).first_or_initialize
+          if bank.new_record? || update_if_exists
+            bank.name = x.get_column('Bank Name')
+            bank.country_code = x.get_column('Country Code')
+            bank.remote_uid = x.get_column('Absolute entry')
+            bank.save!
+          end
+        rescue => e
+          errors.push("#{e.inspect} - #{x.get_column('Bank Code')}")
+        end
+      end
+      puts errors
+    end
+
+    def update_purchase_order_material_status
+      PurchaseOrder.where(material_status: nil).update_all(material_status: 'Material Readiness Follow-Up')
+      PurchaseOrder.all.each do |po|
+        if po.material_pickup_requests.any?
+          partial = true
+          if po.rows.sum(&:get_pickup_quantity) <= 0
+            partial = false
+          end
+          status = if 'Material Pickup'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Pickup' : 'Material Pickedup'
+                   elsif 'Material Delivered'.in? po.material_pickup_requests.map(&:status)
+                     partial ? 'Material Partially Delivered' : 'Material Delivered'
+                   end
+          po.update_attribute(:material_status, status)
+        else
+          po.update_attribute(:material_status, 'Material Readiness Follow-Up')
+        end
+        po.save
+      end
+    end
+
+    def update_total_cost_in_sales_order
+      SalesOrder.all.each do |so|
+        so.order_total = so.calculated_total
+        so.invoice_total = so.invoices.map { |i| i.metadata.present? ? (i.metadata['base_grand_total'].to_f - i.metadata['base_tax_amount'].to_f) : 0.0 }.inject(0) { |sum, x| sum + x }
+        so.save
+      end
+    end
+
+
+    def add_logistics_owner_to_companies
+      Company.all.each do |company|
+        service = Services::Overseers::MaterialPickupRequests::SelectLogisticsOwner.new(nil, company_name: company.name)
+        company.logistics_owner = service.call
+        company.save(validate: false)
+      end
+    end
+    def update_mis_date_of_missing_orders
+      service = Services::Shared::Spreadsheets::CsvImporter.new('mis_date_for_missing_orders.csv', 'seed_files')
+      missing_so = []
+      service.loop(nil) do |x|
+        sales_order = SalesOrder.find_by_order_number(x.get_column('order number'))
+        if sales_order.present?
+          sales_order.update_attribute('mis_date', x.get_column('mis date', to_datetime: true))
+        else
+          missing_so.push(x.get_column('order number'))
+        end
+      end
+      puts '<--------------------------------------------------------------------------------------------->'
+      puts missing_so
+    end
+
+    def sup_emails
+      Company.acts_as_supplier.each do |supplier|
+        name = supplier.name
+        sup_code = supplier.remote_uid
+        email = if supplier.default_company_contact_id.blank? && supplier.company_contacts.first.present?
+          supplier.company_contacts.first.contact.email
+        elsif supplier.default_company_contact_id.present?
+          supplier.default_company_contact.contact.email
+        else
+          supplier.legacy_email
+>>>>>>> baaf8d092c8830a5cbf9293823f254f1c1899d02
         end
       end
     end
