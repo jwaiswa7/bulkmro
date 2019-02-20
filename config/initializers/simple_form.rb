@@ -80,6 +80,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
     b.use :input, class: 'form-check-input', error_class: 'is-invalid', valid_class: 'is-valid'
+    b.use :label, class: 'text-capitalize'
     b.use :full_error, wrap_with: { tag: 'div', class: 'invalid-feedback d-block' }
     b.use :hint, wrap_with: { tag: 'small', class: 'form-text text-muted' }
   end
@@ -88,7 +89,7 @@ SimpleForm.setup do |config|
   config.wrappers :vertical_collection_inline, item_wrapper_class: 'form-check form-check-inline', tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
-    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
+    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0 text-capitalize' do |ba|
       ba.use :label_text
     end
     b.use :input, class: 'form-check-input', error_class: 'is-invalid', valid_class: 'is-valid'
@@ -158,7 +159,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.optional :readonly
     b.wrapper tag: 'label', class: 'col-sm-3' do |ba|
-      ba.use :label_text
+      ba.use :label_text, class: 'text-capitalize'
     end
     b.wrapper :grid_wrapper, tag: 'div', class: 'col-sm-9' do |wr|
       wr.wrapper :form_check_wrapper, tag: 'div', class: 'form-check' do |bb|
@@ -296,7 +297,7 @@ SimpleForm.setup do |config|
   config.wrappers :custom_collection, item_wrapper_class: 'custom-control', tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
-    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
+    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0 text-capitalize' do |ba|
       ba.use :label_text
     end
     b.use :input, class: 'custom-control-input', error_class: 'is-invalid', valid_class: 'is-valid'
@@ -308,7 +309,7 @@ SimpleForm.setup do |config|
   config.wrappers :custom_collection_inline, item_wrapper_class: 'custom-control custom-control-inline', tag: 'fieldset', class: 'form-group', error_class: 'form-group-invalid', valid_class: 'form-group-valid' do |b|
     b.use :html5
     b.optional :readonly
-    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
+    b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0 text-capitalize' do |ba|
       ba.use :label_text
     end
     b.use :input, class: 'custom-control-input', error_class: 'is-invalid', valid_class: 'is-valid'
