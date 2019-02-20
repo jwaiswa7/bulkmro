@@ -1,14 +1,14 @@
 <% provide :container_fluid, true %>
 <% provide :can_be_ajaxed, true %>
+<% provide :can_be_directly_export_by_daterange, true %>
 <% provide :can_be_directly_created, true %>
 
 <% provide :heading_buttons do %>
-
   <% if policy(:activity).add_to_inquiry? %>
-    <div class="mr-2 float-left add_to_inquiry_wrapper">
-    <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
-</div>
-    <button type="button" id="add_to_inquiry" class=" btn btn-warning btn-rounded align-self-center btn-block-sm-down ml-1 mb-md-0 mb-1 add_to_inquiry_wrapper">
+    <div class="mr-2 d-inline-block export_daterange_wrapper">
+      <%= select_tag :inquiry, '', class: 'select2-ajax select2-wrap add_to_inquiry_wrapper', 'data-source' => autocomplete_overseers_inquiries_path, include_blank: 'Choose an Inquiry to Assign to Activity', id: 'inquiry_select' %>
+    </div>
+    <button type="button" id="add_to_inquiry" class="mr-2 btn btn-warning btn-rounded align-self-center btn-block-sm-down mb-md-0 mb-1 add_to_inquiry_wrapper">
       <i class="fal fa-plus mr-1"></i>Add to Inquiry
     </button>
   <% end %>
@@ -52,10 +52,10 @@
   <th class="no-sort">Contact Name</th>
   <th data-name="purpose">Purpose</th>
   <th data-name="activity_type">Type</th>
-  <th class="no-sort">Misc Expenses</th>
+  <th class="no-sort text-right">Misc. Expenses</th>
   <th class="no-sort">Points Discussed</th>
   <th class="no-sort">Actions Required</th>
-  <th class = "desktop text-right" data-name="created_at">Created</th>
+  <th class="desktop text-right" data-name="created_at">Created</th>
 <% end %>
 
 <div class="col-lg-12">
