@@ -94,7 +94,7 @@ class InvoiceRequest < ApplicationRecord
     elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
       title = status.gsub(status, 'AR Invoice')
     else
-      title = 'Invoice'
+      title = 'GRPO'
     end
     "#{title} Request"
   end

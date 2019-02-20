@@ -113,12 +113,17 @@ class PoRequest < ApplicationRecord
   end
 
   def readable_status
+    title = ''
     if self.status == 'Requested'
       title = 'Pending'
     elsif self.status == 'PO Created'
       title = 'Completed'
     end
     "#{title} PO Request"
+  end
+
+  def to_s
+    [readable_status," ##{self.id}"].join
   end
 
 end
