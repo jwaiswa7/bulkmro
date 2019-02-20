@@ -3,19 +3,19 @@ module Mixins::HasConvertedCalculations
 
   included do
     def calculated_total
-      rows.map {|row| row.total_selling_price}.sum.round(2)
+      rows.map {|row| row.total_selling_price }.compact.sum.round(2)
     end
 
     def calculated_total_tax
-      rows.map {|row| row.total_tax}.sum.round(2)
+      rows.map {|row| row.total_tax }.compact.sum.round(2)
     end
 
     def calculated_total_with_tax
-      rows.map {|row| row.total_selling_price_with_tax}.sum.round(2)
+      rows.map {|row| row.total_selling_price_with_tax }.compact.sum.round(2)
     end
 
     def calculated_total_margin
-      rows.map {|row| row.total_margin}.sum.round(2)
+      rows.map {|row| row.total_margin }.compact.sum.round(2)
     end
 
     def calculated_total_margin_percentage
@@ -23,7 +23,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def calculated_total_cost
-      rows.map {|row| (row.unit_cost_price_with_unit_freight_cost * row.quantity)}.sum.round(2)
+      rows.map {|row| (row.unit_cost_price_with_unit_freight_cost * row.quantity)}.compact.sum.round(2)
     end
 
     def calculated_freight_cost_total
