@@ -3,7 +3,7 @@ class Overseers::PoRequests::EmailMessagesController < Overseers::PoRequests::Ba
   ``
   def sending_po_to_supplier
     @to = @po_request.contact_email.present? ? @po_request.try(:contact_email) : @po_request.contact.try(:email)
-    cc_addresses = [@po_request.purchase_order.logistics_owner.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].join(', ')
+    cc_addresses = [@po_request.purchase_order.logistics_owner.try(:email), 'sales@bulkmro.com', 'logistics@bulkmro.com'].compact.join(', ')
     if @po_request.purchase_order.present?
       @email_message = @po_request.purchase_order.email_messages.build(overseer: current_overseer, contact: @contact, inquiry: @inquiry, sales_order: @po_request.sales_order, cc: cc_addresses)
       @action = 'sending_po_to_supplier_notification'
