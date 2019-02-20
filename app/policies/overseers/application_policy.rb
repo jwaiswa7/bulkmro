@@ -118,6 +118,10 @@ class Overseers::ApplicationPolicy
     ['kartik.pai@bulkmro.com'].include?(overseer.email)
   end
 
+  def allow_activity_export?
+    developer? || ['nilesh.desai@bulkmro.com'].include?(overseer.email)
+  end
+
   def export_rows?
     false
   end
