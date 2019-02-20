@@ -23,16 +23,20 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
     !record.invoice_request.present?
   end
 
-  def edit_internal_status?
+  def edit_material_followup?
     edit?
   end
 
-  def update_internal_status?
+  def update_material_followup?
     edit?
   end
 
   def material_readiness_queue?
     edit?
+  end
+
+  def new_pickup_request?
+    (record.rows.sum(&:get_pickup_quantity) > 0) && record.followup_date.present?
   end
 
   def material_pickup_queue?
@@ -41,5 +45,21 @@ class Overseers::PurchaseOrderPolicy < Overseers::ApplicationPolicy
 
   def material_delivered_queue?
     edit?
+  end
+
+  def new_email_message?
+    (manager_or_sales? || logistics?) && record.po_request.present? && record.has_supplier? && record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).company_contacts.present?
+  end
+
+  def create_email_message?
+    new_email_message?
+  end
+
+  def update_logistics_owner?
+    admin?
+  end
+
+  def update_logistics_owner_for_pickup_requests?
+    admin?
   end
 end
