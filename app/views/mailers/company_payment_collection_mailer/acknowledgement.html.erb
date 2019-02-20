@@ -19,7 +19,7 @@
         <th style="padding: 5px; text-align: center;">Ship To Name</th>
 
       </tr>
-      <% @company.invoices.not_cancelled_invoices.each_with_index do |invoice,index| %>
+      <% @company.invoices.not_cancelled_invoices.not_paid.each_with_index do |invoice,index| %>
         <tr>
           <td style="padding: 5px; text-align: center;"><%= index+1 %></td>
           <td style="padding: 5px; text-align: center;"><%= invoice.sales_order.company %></td>

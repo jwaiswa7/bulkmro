@@ -2530,7 +2530,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       SalesInvoice.all.each do |si|
         if si.inquiry.present?
           invoiced_amount = si.calculated_total_with_tax
-          amount_received = si.sales_receipts.sum(:payment_amount_received)
+          amount_received = si.amount_received
 
           if invoiced_amount <= amount_received
             si.payment_status = 'Fully Paid'
