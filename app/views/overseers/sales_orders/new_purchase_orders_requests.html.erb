@@ -45,8 +45,10 @@
                 <span class="lead text-black-50 text-small mt-1 mr-1">#<%= (@po_requests.index(po_request.object) || 0) %></span>
                 <strong><%= po_request.object.supplier.to_s %>
                   : <%= po_request.object.supplier.try(:legacy_email) %></strong>
-                <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
-                  Remove Supplier
+                <% if @po_requests.values.map(&:supplier).length > 1 %>
+                  <%= link_to_remove_association po_request, {class: 'btn btn-danger align-self-center', wrapper_class: 'simple-row', "data-v": "", "data-v-on:click": "dropRow(_index_)"} do %>
+                    Remove Supplier
+                  <% end %>
                 <% end %>
                 <%= render 'overseers/po_requests/rows_form', f: po_request %>
             </div>
@@ -78,7 +80,6 @@
               <th class="no-sort all" data-name="sku">Inside Sales</th>
               <th class="no-sort all" data-name="supplier">Supplier</th>
               <th class="no-sort desktop">Status</th>
-              <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
             </tr>
 
             <% @sales_order.po_requests.each do |po_request| %>
@@ -92,7 +93,6 @@
                 <td><%= po_request.inquiry.inside_sales_owner %></td>
                 <td><%= po_request.supplier.try(:name) || '-' %></td>
                 <td><%= po_request.status || '-' %></td>
-                <td><%= po_request.logistics_owner || '-' %></td>
               </tr>
             <% end %>
           </table>

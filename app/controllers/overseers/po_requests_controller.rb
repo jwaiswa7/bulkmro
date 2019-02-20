@@ -118,12 +118,6 @@ class Overseers::PoRequestsController < Overseers::BaseController
     end
   end
 
-  def update_logistics_owner
-    @po_requests = PoRequest.where(id: params[:po_requests])
-    authorize @po_requests
-    @po_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
-  end
-
   private
 
     def po_request_params
@@ -143,6 +137,7 @@ class Overseers::PoRequestsController < Overseers::BaseController
         :ship_to_id,
         :status,
         :supplier_po_type,
+        :supplier_committed_date,
         :cancellation_reason,
         :rejection_reason,
         rows_attributes: [:id, :sales_order_row_id, :product_id, :_destroy, :status, :quantity, :tax_code_id, :tax_rate_id, :discount_percentage, :unit_price, :lead_time],

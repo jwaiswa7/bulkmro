@@ -17,7 +17,7 @@ class Overseers::Inquiries::PurchaseOrdersController < Overseers::Inquiries::Bas
     respond_to do |format|
       format.html { render 'show' }
       format.pdf do
-        render_pdf_for @purchase_order
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
       end
     end
   end

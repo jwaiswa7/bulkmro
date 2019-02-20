@@ -4,9 +4,8 @@
   <%= f.hidden_field :sales_order_id %>
   <%= f.hidden_field :inquiry_id %>
   <%= f.hidden_field :supplier_id %>
-  <%= f.hidden_field :logistics_owner_id %>
   <div class="col-12 col-md-4">
-    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => false, label: 'Supplier PO Type' %>
+    <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
   </div>
 
   <% if f.object.persisted? %>
@@ -70,10 +69,10 @@
       </div>
 
       <div class="col-12 col-md-6">
-        <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Billed TO where the Sales Order is being Billed From (Inquiry Bill From)' %>
+        <%= f.association :bill_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To/\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
       </div>
       <div class="col-12 col-md-6">
-        <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier Address is for e.g. from Kolkata where the BulkMRO does not have an office. The Supplier PO will be Shipped TO where the Sales Order is being Shipped From (Inquiry Ship From)' %>
+        <%= f.association :ship_to, collection: Warehouse.all.with_includes.map {|warehouse| [warehouse.to_s, warehouse.id, {'data-warehouse' => warehouse.address.city_name.try(:strip) || 'N/A', 'data-warehouse-state' => warehouse.address.state.id, 'data-warehouse-city' => warehouse.address.city_name}]}, input_html: {class: 'select2-single', 'data-warehouse-list': Warehouse.all.map {|warehouse| [warehouse.address.state.id]}.uniq, 'data-parsley-regular': 'regular', 'data-parsley-locations': [f.object.inquiry.bill_from.address.city_name, f.object.inquiry.shipping_address.city_name, f.object.inquiry.bill_from.address.state.id].join(',')}, required: true, hint: 'Note: If the Supplier is from a location where Bulk MRO has no office eg. Coimbatore, then the \'Bill To\' for the supplier PO will be the Bulk MRO office from which the Sales Order has been created eg. Mumbai, Ahmedabad, Delhi, etc.' %>
       </div>
       <div class="col-md-12 mb-2 d-none">
         <div class="card card-default">
@@ -276,25 +275,27 @@
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, disabled: true %>
+          <%= po_request_row.input :converted_total_selling_price, input_html: {value: po_request_row.object.converted_total_selling_price}, disabled: true, label: 'Total Selling Price' %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, disabled: true %>
+          <%= po_request_row.input :converted_total_tax, input_html: {value: po_request_row.object.converted_total_tax}, disabled: true, label: 'Total Tax' %>
         </div>
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, disabled: true %>
+          <%= po_request_row.input :converted_total_selling_price_with_tax, input_html: {value: po_request_row.object.converted_total_selling_price_with_tax}, disabled: true, label: 'Total Selling Price with Tax' %>
         </div>
 
         <div class="col-12 col-md-2">
-          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, required: true %>
+          <%= po_request_row.input :lead_time, as: :string, input_html: {:'data-toggle' => 'datepicker', :class => 'lead-time'}, label: 'Lead Date', required: true %>
         </div>
-        <div class="col-12 col-md-1">
-          <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
+        <% if f.object.rows.present? && f.object.rows.length > 1 %>
+          <div class="col-12 col-md-1">
+            <%= po_request_row.remove_nested_fields_link(class: 'btn btn-danger form-group align-self-center flex-grow-1 mt-3 ml-2') do %>
 
-            Remove
+              Remove
 
-          <% end if policy(po_request_row.object).destroy? %>
-        </div>
+            <% end if policy(po_request_row.object).destroy? %>
+          </div>
+        <% end %>
       </div>
     </div>
     <hr class="divider">
