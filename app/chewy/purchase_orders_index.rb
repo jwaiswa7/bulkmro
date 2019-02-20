@@ -13,7 +13,7 @@ class PurchaseOrdersIndex < BaseIndex
     field :po_status, value: -> (record) { statuses[record.status] }, type: 'integer'
     field :po_status_string, value: -> (record) { record.status || record.metadata_status }, analyzer: 'substring'
     field :po_request_status, value: -> (record) { po_statuses[record.po_request ? record.po_request.status : 'PO Created'] }
-    # field :po_request_status_string, value: -> (record) { record.po_request ? record.po_request.status : 'PO Created' }, analyzer: 'substring'
+    field :po_request_status_string, value: -> (record) { record.po_request ? record.po_request.status : 'PO Created' }, analyzer: 'substring'
     field :po_email_sent, value: -> (record) { record.try(:has_sent_email_to_supplier?) ? true : nil }
     field :supplier_id, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).try(:id) if record.rows.present? }
     field :supplier, value: -> (record) { record.get_supplier(record.rows.first.metadata['PopProductId'].to_i).to_s if record.rows.present? }, analyzer: 'substring'
