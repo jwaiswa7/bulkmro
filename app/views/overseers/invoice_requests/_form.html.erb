@@ -5,7 +5,7 @@
         <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Order
         #<%= @invoice_request.sales_order.order_number %>
       <% else %>
-        <%= action_name.capitalize %> Invoice Request for Purchase Order
+        <%= action_name.capitalize %> <%= @invoice_request.readable_status %> for Purchase Order
         #<%= @invoice_request.purchase_order.po_number %>
       <% end %>
     </h2>
