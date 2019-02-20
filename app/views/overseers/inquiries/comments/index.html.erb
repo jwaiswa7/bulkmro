@@ -26,12 +26,12 @@
           <a class="btn btn-light text-left text-black-50 btn-lg btn-block" type="button" data-toggle="collapse" data-target="#internal-comments">
             Internal Comments
           </a>
-          <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
+            <div id="internal-comments" class="collapse <%= show_if(params[:show_to_customer].blank? || params[:show_to_customer] == 'false') %>" data-parent="#accordion">
             <div class="card-body">
               <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                 <%= f.hidden_field :sales_order_id %>
                 <%= render 'shared/snippets/form_errors', f: f %>
-                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @inquiry.comments.internal_comments, sales_order: @sales_order, show_to_customer: false %>
+                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @internal_comments, sales_order: @sales_order, show_to_customer: false %>
               <% end %>
             </div>
           </div>
@@ -45,7 +45,7 @@
               <%= simple_form_for([:overseers, @inquiry.comments.build(:sales_order => @sales_order)], :html => {:class => 'needs-validation', :'novalidate' => '', :'data-parsley-validate' => ''}) do |f| %>
                 <%= f.hidden_field :sales_order_id %>
                 <%= render 'shared/snippets/form_errors', f: f %>
-                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @inquiry.comments.customer_comments, sales_order: @sales_order, show_to_customer: true %>
+                <%= render 'overseers/inquiries/comments/comments', f: f, inquiry: @inquiry, comments: @customer_comments, sales_order: @sales_order, show_to_customer: true %>
               <% end %>
             </div>
           </div>

@@ -1,5 +1,4 @@
 class Resources::Manufacturer < Resources::ApplicationResource
-
   def self.identifier
     :Code
   end

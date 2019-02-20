@@ -11,21 +11,21 @@ class Services::Overseers::InquiryImports::BuildInquiryProducts < Services::Shar
       if row.failed?
 
         if Product.find_by_sku(row['sku']).present?
-          row.sku = Services::Resources::Shared::UidGenerator.product_sku(excel_import.rows.map {|r| r['sku']})
+          row.sku = Services::Resources::Shared::UidGenerator.product_sku(excel_import.rows.map { |r| r['sku'] })
         end
 
         row.build_inquiry_product(
-            inquiry: inquiry,
-            import: excel_import,
-            :sr_no => service.call(row.metadata['sr_no'] || row.metadata['id']),
-            product: Product.new(
-                inquiry_import_row: row,
-                name: row.metadata['name'],
-                sku: row.sku,
-                mpn: row.metadata['mpn'],
-                brand: Brand.find_by_name(row.metadata['brand']),
-            ),
-            quantity: row.metadata['quantity'].to_i
+          inquiry: inquiry,
+          import: excel_import,
+          sr_no: service.call(row.metadata['sr_no'] || row.metadata['id']),
+          product: Product.new(
+            inquiry_import_row: row,
+            name: row.metadata['name'],
+            sku: row.sku,
+            mpn: row.metadata['mpn'],
+            brand: Brand.find_by_name(row.metadata['brand']),
+          ),
+          quantity: row.metadata['quantity'].to_i
         )
       end
     end

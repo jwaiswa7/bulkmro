@@ -4,7 +4,7 @@ module ShortcutsHelper
   end
 
   def row_action_button(url, icon, title = '', color = 'success', target = :_self, method = :get, remote = false, label = '')
-    link_to url, :'data-toggle' => 'tooltip', :'data-placement' => 'top', :target => target, :title => title, :method => method, :remote => remote, class: ['btn btn-sm btn-', color].join do
+    link_to url, 'data-toggle': 'tooltip', 'data-placement': 'top', target: target, title: title, method: method, remote: remote, class: ['btn btn-sm btn-', color].join do
       concat content_tag(:span, label)
       concat content_tag :i, nil, class: ['fal fa-', icon].join
     end
@@ -13,7 +13,7 @@ module ShortcutsHelper
   def breadcrumbs(page_title = nil, controller_is_aliased = false)
     full_path = request.path
     path_so_far = '/'
-    elements = full_path.split('/').reject {|e| e.blank?}
+    elements = full_path.split('/').reject { |e| e.blank? }
     crumbs = []
 
     elements.each_with_index do |element, index|
@@ -56,14 +56,14 @@ module ShortcutsHelper
   end
 
   def submit_text(obj, use_alias: nil, suffix: nil)
-    class_name = use_alias ? use_alias.humanize : obj.class.name.humanize
+    class_name = use_alias ? use_alias.humanize : obj.class.model_name.human
     if suffix.blank?
       suffix = ''
     end
     if obj.new_record?
-      "Create #{class_name.split('_').join(' ')} #{suffix.humanize}"
+      "Create #{class_name.titleize} #{suffix.humanize}"
     else
-      "Update #{class_name} #{suffix.humanize}"
+      "Update #{class_name.titleize} #{suffix.humanize}"
     end
   end
 

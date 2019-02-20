@@ -1,5 +1,4 @@
 class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
-
   def index?
     manager_or_sales? || logistics?
   end
@@ -17,7 +16,7 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def edit_mis_date?
-    record.persisted? && ['vijay.manjrekar@bulkmro.com','gaurang.shah@bulkmro.com','devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
+    record.persisted? && ['vijay.manjrekar@bulkmro.com', 'gaurang.shah@bulkmro.com', 'devang.shah@bulkmro.com', 'nilesh.desai@bulkmro.com'].include?(overseer.email)
   end
 
   def update_mis_date?
@@ -60,6 +59,10 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     manager_or_sales?
   end
 
+  def cancelled?
+    manager_or_sales?
+  end
+
   def not_invoiced?
     # have to confirm
     manager_or_sales?
@@ -90,11 +93,11 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
   end
 
   def can_request_po?
-    true #!record.has_purchase_order_request
+    admin? || sales? || manager_or_sales? # !record.has_purchase_order_request
   end
 
   def can_request_invoice?
-    true #!record.has_purchase_order_request
+    admin? || logistics?
   end
 
   def approve?
@@ -129,6 +132,26 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
     developer?
   end
 
+  def material_dispatched_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_dispatched_to_customer_create_email_msg?
+    material_dispatched_to_customer_new_email_msg?
+  end
+
+  def material_delivered_to_customer_new_email_msg?
+    (admin? || logistics?)
+  end
+
+  def material_delivered_to_customer_create_email_msg?
+    material_delivered_to_customer_new_email_msg?
+  end
+
+  def debugging?
+    developer?
+  end
+
   class Scope
     attr_reader :overseer, :scope
 
@@ -142,14 +165,13 @@ class Overseers::SalesOrderPolicy < Overseers::ApplicationPolicy
         scope.all
       else
         if overseer.inside?
-          scope.joins(:sales_quote => :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(sales_quote: :inquiry).where('inquiries.inside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
         elsif overseer.outside?
-          scope.joins(:sales_quote => :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(sales_quote: :inquiry).where('inquiries.outside_sales_owner_id IN (?)', overseer.self_and_descendant_ids)
         else
-          scope.joins(:sales_quote => :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
+          scope.joins(sales_quote: :inquiry).where('inquiries.created_by_id IN (?)', overseer.self_and_descendant_ids)
         end
       end
     end
   end
-
 end

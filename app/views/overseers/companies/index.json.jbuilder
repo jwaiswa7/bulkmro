@@ -18,13 +18,13 @@ json.data (@companies) do |company|
                       end,
                       if policy(company).new_inquiry?;
                         row_action_button(new_overseers_inquiry_path(company_id: company.to_param), 'plus-circle', 'New Inquiry', 'success', :_blank)
-                      end#,
-                      # if policy(company).new_rating?
-                      #   link_to('', class: ['btn btn-sm btn-warning rating '], :'data-company-id' => company.id, :remote => true) do
-                      #     concat content_tag(:span, '')
-                      #     concat content_tag :i, nil, class: ['fal fa-star'].join
-                      #   end
-                      # end
+                      end# ,
+                    # if policy(company).new_rating?
+                    #   link_to('', class: ['btn btn-sm btn-warning rating '], :'data-company-id' => company.id, :remote => true) do
+                    #     concat content_tag(:span, '')
+                    #     concat content_tag :i, nil, class: ['fal fa-star'].join
+                    #   end
+                    # end
                   ].join(' '),
 
 
@@ -32,7 +32,7 @@ json.data (@companies) do |company|
                   company.addresses.size,
                   company.contacts.size,
                   company.inquiries.size,
-                  (company.addresses.present? && company.is_international) ? 'International' :company.pan,
+                  (company.addresses.present? && company.is_international) ? 'International' : company.pan,
                   format_boolean(company.validate_pan),
                   if company.is_supplier?
                     format_star(company.rating)
@@ -50,7 +50,7 @@ json.columnFilters [
                        [],
                        [],
                        [],
-                       [{:"label" => "Yes", :"value" => true},{:"label" => "No", :"value" => false}],
+                       [{ "label": 'Yes', "value": true }, { "label": 'No', "value": false }],
                        [],
                        [],
                        [],

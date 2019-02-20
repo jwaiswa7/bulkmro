@@ -24,15 +24,17 @@
     "pdfmake": "^0.1.37",
     "popper": "^1.0.1",
     "popper.js": "^1.14.4",
+    "raty-fa": "https://github.com/Jacob87/raty-fa",
     "select2": "4.0.5",
     "select2-theme-bootstrap4": "https://github.com/angel-vladov/select2-bootstrap-theme",
     "stickybits": "^3.5.6",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "wholly": "https://github.com/gajus/wholly"
   },
   "version": "1.0.0",
   "description": "b2b industrial supplies",
   "main": "index.js",
-  "author": "Ashwin Goyal <ashwin.goyal@bulkmro.com>",
+  "author": "Ashwin G <ashwin.goyal@bulkmro.com>, Amit G <amit.goyal@bulkmro.com>, Prikesh S <prikesh.savla@bulkmro.com>",
   "license": "MIT",
   "devDependencies": {
     "webpack-dev-server": "2.11.2"

@@ -1,14 +1,13 @@
 class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseService
-
   def initialize(subject, action_performed, should_update_status: true)
     @should_update_status = should_update_status
     @subject = subject
 
     @inquiry = if subject.is_a?(Inquiry)
-                 subject
-               else
-                 subject.inquiry
-               end
+      subject
+    else
+      subject.inquiry
+    end
 
     @action_performed = action_performed
     @status = inquiry.status
@@ -41,7 +40,7 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
     when :order_won then
       log_inquiry_status('Order Won')
     when :sap_rejected then
-      log_inquiry_status('SAP Rejected')
+      log_inquiry_status('Rejected by Accounts')
     when :order_lost then
       log_inquiry_status('Order Lost')
     when :regret then
@@ -53,17 +52,17 @@ class Services::Overseers::Inquiries::UpdateStatus < Services::Shared::BaseServi
 
   private
 
-  def log_inquiry_status(status)
-    if should_update_status
-      inquiry.update_attributes(:status => status)
+    def log_inquiry_status(status)
+      if should_update_status
+        inquiry.update_attributes(status: status)
+      end
+
+      InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
     end
 
-    InquiryStatusRecord.where(status: status, inquiry: inquiry, subject_type: subject.class.name, subject_id: subject.try(:id)).first_or_create
-  end
+    def get_status_value(status)
+      Inquiry.statuses[status]
+    end
 
-  def get_status_value(status)
-    Inquiry.statuses[status]
-  end
-
-  attr_accessor :subject, :inquiry, :status, :action_performed, :should_update_status
+    attr_accessor :subject, :inquiry, :status, :action_performed, :should_update_status
 end

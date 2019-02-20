@@ -8,9 +8,9 @@ class Overseers::DashboardController < Overseers::BaseController
       @dashboard = Overseers::Dashboard.new(current_overseer)
       render 'sales_dashboard'
     elsif current_overseer.admin?
-        service = Services::Overseers::Dashboards::Admin.new
-        @dashboard = service.call
-        render 'admin_dashboard'
+      service = Services::Overseers::Dashboards::Admin.new
+      @dashboard = service.call
+      render 'admin_dashboard'
     else
       render 'default_dashboard'
     end
@@ -18,15 +18,15 @@ class Overseers::DashboardController < Overseers::BaseController
 
   def serializer
     authorize :dashboard, :show?
-    render json: Serializers::InquirySerializer.new(Inquiry.find(1004), {
+    render json: Serializers::InquirySerializer.new(Inquiry.find(1004),
         include: [
-        ]}).serialized_json
+        ]).serialized_json
   end
 
   def chewy
     authorize :dashboard
-    Dir[[Chewy.indices_path, "/*"].join()].map do |path|
-      path.gsub(".rb", "").gsub("app/chewy/", "").classify.constantize.reset!
+    Dir[[Chewy.indices_path, '/*'].join()].map do |path|
+      path.gsub('.rb', '').gsub('app/chewy/', '').classify.constantize.reset!
     end
     # Fix for failure when no shards are found
     redirect_back fallback_location: overseers_dashboard_path

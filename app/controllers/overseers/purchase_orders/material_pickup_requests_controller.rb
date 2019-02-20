@@ -1,15 +1,15 @@
 class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::BaseController
   before_action :set_material_pickup_request, only: [:show, :edit, :update, :confirm_delivery, :delivered_material]
-  before_action :set_purchase_order, only: [:new, :create, :update]
+  before_action :set_purchase_order, only: [:new, :create, :update, :show]
 
   def index
-
     redirect_to material_readiness_queue_overseers_purchase_orders_path()
     authorize :material_pickup_request
   end
 
   def show
     authorize @mpr
+    @po_request = @purchase_order.po_request
   end
 
   def new
@@ -24,7 +24,7 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
 
   def create
     @mpr = @purchase_order.material_pickup_requests.new()
-    @mpr.assign_attributes(mpr_params.merge(:overseer => current_overseer))
+    @mpr.assign_attributes(mpr_params.merge(overseer: current_overseer))
     authorize @mpr
     if @mpr.save
       @purchase_order.update_material_status
@@ -42,12 +42,12 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
   def update
     authorize @mpr
 
-    @mpr.assign_attributes(mpr_params.merge(:overseer => current_overseer))
+    @mpr.assign_attributes(mpr_params.merge(overseer: current_overseer))
 
     if @mpr.valid?
       messages = DateModifiedMessage.for(@mpr, ['expected_dispatch_date', 'expected_delivery_date', 'actual_delivery_date'])
       if messages.present?
-        @mpr.comments.create(:message => messages, :overseer => current_overseer)
+        @mpr.comments.create(message: messages, overseer: current_overseer)
       end
       @mpr.save
       @purchase_order.update_material_status
@@ -68,27 +68,32 @@ class Overseers::PurchaseOrders::MaterialPickupRequestsController < Overseers::B
 
   private
 
-  def set_purchase_order
-    @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
-  end
+    def set_purchase_order
+      @purchase_order = PurchaseOrder.find(params[:purchase_order_id])
+    end
 
-  def set_material_pickup_request
-    @mpr = MaterialPickupRequest.find(params[:id])
-  end
+    def set_material_pickup_request
+      @mpr = MaterialPickupRequest.find(params[:id])
+    end
 
-  def mpr_params
-    params.require(:material_pickup_request).require(:material_pickup_request).except(:action_name)
-        .permit(
+    def mpr_params
+      params.require(:material_pickup_request).require(:material_pickup_request).except(:action_name)
+          .permit(
             :status,
-            :expected_dispatch_date,
-            :expected_delivery_date,
-            :actual_delivery_date,
-            :document_type,
-            :logistics_owner_id,
-            :purchase_order_id,
-            :comments_attributes => [:id, :message, :created_by_id, :updated_by_id],
-            :rows_attributes => [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :_destroy],
-            :attachments => []
-        )
-  end
+              :expected_dispatch_date,
+              :expected_delivery_date,
+              :actual_delivery_date,
+              :document_type,
+              :logistics_owner_id,
+              :dispatched_by,
+              :shipped_to,
+              :logistics_partner,
+              :tracking_number,
+              :logistics_aggregator,
+              :purchase_order_id,
+              comments_attributes: [:id, :message, :created_by_id, :updated_by_id],
+              rows_attributes: [:id, :purchase_order_row_id, :pickup_quantity, :delivered_quantity, :_destroy],
+              attachments: []
+          )
+    end
 end

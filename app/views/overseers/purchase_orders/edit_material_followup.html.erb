@@ -6,9 +6,15 @@
       </h3>
       <span>
         <% if policy(@purchase_order).new_pickup_request? %>
-          <a href="<%= new_overseers_purchase_order_material_pickup_request_path(@purchase_order) %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
+          <a href="<%= new_overseers_purchase_order_material_pickup_request_path(@purchase_order) %> " class=" btn btn-success btn-rounded align-self-center btn-block-sm-down ">
             <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
           </a>
+        <% else %>
+          <span data-toggle="tooltip" title="Followup Date Needed">
+            <a href=# class=" btn btn-success btn-rounded align-self-center btn-block-sm-down disabled">
+              <i class="fal fa-plus-circle mr-1"></i>New Pickup Request
+            </a>
+          </span>
         <% end %>
       </span>
     </div>
@@ -22,10 +28,13 @@
     <div class="card">
       <div class="card-header">
         <div class="form-row">
-          <div class="col-12 col-md-12">
+          <div class="col-6">
             <%= f.input :material_status, as: :select, :wrapper => :custom_multi_select, collection: enum_to_collection(PurchaseOrder.material_statuses, alphabetical: false, keep_raw: true), :disabled => true %>
           </div>
 
+          <div class="col-6">
+            <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
+          </div>
           <div class="col-4">
             <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y")}, required: true %>
           </div>
@@ -67,26 +76,25 @@
                 <thead>
                 <tr>
                   <td></td>
-                  <td><strong class="d-block">Name</strong></td>
-                  <td><strong class="d-block">Sku</strong></td>
+                  <td><strong class="d-block">Product</strong></td>
                   <td><strong class="d-block">PO Total Quantity</strong></td>
                   <td><strong class="d-block">Available Pickup Quantity</strong></td>
                   <td><strong class="d-block">Quantity Pickup / Delivered </strong></td>
+                  <td><strong class="d-block">Lead Date </strong></td>
                 </tr>
                 </thead>
                 <tbody>
                 <% @purchase_order.rows.each_with_index do |row, index| %>
-                  <% if row.get_product %>
 
-                    <tr>
-                      <td><%= index + 1 %></td>
-                      <td><%= row.get_product.name %></td>
-                      <td><%= row.get_product.sku %></td>
-                      <td><%= row.quantity %></td>
-                      <td><%= row.get_pickup_quantity %></td>
-                      <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= row.to_s %></td>
+                    <td><%= row.quantity %></td>
+                    <td><%= row.get_pickup_quantity %></td>
+                    <td><%= row.quantity - row.get_pickup_quantity || 'N/A' %></td>
+                    <td><%= format_succinct_date(row.lead_date) %></td>
+                  </tr>
+
                 <% end %>
                 </tbody>
               </table>

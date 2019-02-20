@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  post '/rate' => 'rater#create', :as => 'rate'
   mount Maily::Engine, at: '/maily' if Rails.env.development?
 
   root :to => 'overseers/dashboard#show'
@@ -28,7 +29,7 @@ Rails.application.routes.draw do
         patch 'update'
       end
     end
-    post '1de9b0a30075ae8c303eb420c103c320' ,:to => 'image_readers#update'
+    post '1de9b0a30075ae8c303eb420c103c320', :to => 'image_readers#update'
     resources :purchase_orders
     resources :products
 
@@ -36,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   namespace 'overseers' do
+    get "/docs/*page" => "docs#index"
     resources :attachments
     resources :review_questions
     resources :banks
@@ -177,12 +179,24 @@ Rails.application.routes.draw do
     resources :po_requests do
       scope module: 'po_requests' do
         resources :payment_requests
+        resources :email_messages do
+          collection do
+            get 'sending_po_to_supplier'
+            post 'sending_po_to_supplier_notification'
+            get 'dispatch_from_supplier_delayed'
+            post 'dispatch_from_supplier_delayed_notification'
+            get 'material_received_in_bm_warehouse'
+            post 'material_received_in_bm_warehouse_notification'
+          end
+        end
       end
 
       collection do
         get 'autocomplete'
         get 'pending_and_rejected'
         get 'cancelled'
+        get 'amended'
+        post 'update_logistics_owner'
       end
 
     end
@@ -201,10 +215,12 @@ Rails.application.routes.draw do
         get 'new_purchase_orders_requests'
         post 'preview_purchase_orders_requests'
         post 'create_purchase_orders_requests'
+        get 'debugging'
       end
 
       collection do
         get 'pending'
+        get 'cancelled'
         get 'export_all'
         get 'drafts_pending'
         get 'export_rows'
@@ -217,6 +233,14 @@ Rails.application.routes.draw do
       scope module: 'sales_orders' do
         resources :comments
         resources :purchase_orders_requests
+        resources :email_messages do
+          collection do
+            get 'material_dispatched_to_customer'
+            post 'material_dispatched_to_customer_notification'
+            get 'material_delivered_to_customer'
+            post 'material_delivered_to_customer_notification'
+          end
+        end
       end
     end
 
@@ -280,6 +304,8 @@ Rails.application.routes.draw do
       member do
         get 'edit_suppliers'
         post 'update_suppliers'
+        get 'resync_inquiry_products'
+        get 'resync_unsync_inquiry_products'
         get 'calculation_sheet'
         get 'export'
         get 'stages'
@@ -314,7 +340,7 @@ Rails.application.routes.draw do
           member do
             get 'edit_mis_date'
             patch 'update_mis_date'
-
+            get 'debugging'
             get 'new_revision'
             get 'new_confirmation'
             get 'proforma'
@@ -465,6 +491,9 @@ Rails.application.routes.draw do
 
     resources :freight_quotes
     resources :company_reviews do
+      collection do
+        get 'export_all'
+      end
       member do
         get 'render_form'
       end
@@ -549,6 +578,7 @@ Rails.application.routes.draw do
         patch 'update_shipping_address'
         patch 'update_special_instructions'
         patch 'update_payment_method'
+        patch 'update_payment_data'
         patch 'add_po_number'
         get 'empty_cart'
       end

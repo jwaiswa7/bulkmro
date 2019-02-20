@@ -1,45 +1,47 @@
-<div class="modal fade" id="modalRatingForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="modalRatingForm">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Company Review Form</h4>
+        <h4 class="modal-title w-100 text-uppercase text-black-50 text-small pt-2">Company Review</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body mx-3 rating-form">
-        <h6 class="text">
-          Kindly share your feedback for `<%= supplier %>`
-        </h6>
-        <%= simple_form_for(company_review, :url => update_rating_overseers_company_path(@company), :method => 'PUT',:remote => true) do |f| %>
-            <%= f.hidden_field :id %>
-            <%= f.simple_fields_for :company_ratings, company_review.company_ratings , wrapper_tag: :div do |company_rating| %>
-              <div class="simple-row">
-                <div class="form-row mt-2">
-                  <div class="col-12 col-md-7">
-                    <%= company_rating.input :review_question, disabled: true, input_html: {value: company_rating.object.review_question}, :include_blank => false %>
-                  </div>
-                  <div class="col-12 col-md-5 mt-3 star">
 
-                    <div class="<%='question-rating star-'+company_rating.index.to_s %>" data-rating="<%=  company_rating.object.rating%>"></div>
-                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-"+company_rating.index.to_s %>
+      <%= simple_form_for(company_review, :url => update_rating_overseers_company_path(@company), :method => 'PUT', :remote => true) do |f| %>
+        <div class="modal-body mx-3 rating-form">
+          <h6 class="text pb-2">
+            Kindly share your feedback for <strong><%= supplier %></strong>.
+          </h6>
+          <%= f.hidden_field :id %>
+          <%= f.simple_fields_for :company_ratings, company_review.company_ratings, wrapper_tag: :div do |company_rating| %>
+            <div class="simple-row">
+              <div class="form-row mt-2">
+                <div class="col-12">
+                  <h6 class="text-uppercase mb-0">
+                    <strong><%= company_rating.object.review_question %></strong>
+                  </h6>
+                  <div class="mb-2 mt-1 star">
+                    <div class="<%= 'question-rating star-' + company_rating.index.to_s %>" data-rating="<%= company_rating.object.rating %>"></div>
+                    <%= company_rating.hidden_field :rating, :include_blank => false, class: "rating-" + company_rating.index.to_s %>
                   </div>
                 </div>
               </div>
-          <% end %>
-          <div class="card-footer">
-              <%= button_tag(type: "submit", class: "btn btn-warning btn-block disabled") do %>
-                <i class="fal fa-pen"></i> Submit Review
-              <% end %>
             </div>
           <% end %>
+        </div>
+        <div class="modal-footer p-0">
+          <div class="card-footer w-100">
+            <%= button_tag(type: "submit", class: "btn btn-success btn-block disabled") do %>
+              Submit Review
+            <% end %>
+          </div>
+      <% end %>
       </div>
-
     </div>
   </div>
 </div>
 
 <div class="rating-modal">
-  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalRatingForm"></a>
+  <a href="#" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalRatingForm"></a>
 </div>

@@ -5,21 +5,21 @@ class Category < ApplicationRecord
   include Mixins::CanHaveTaxes
   include Mixins::CanBeActivated
 
-  pg_search_scope :locate, :against => [:name], :associated_against => {}, :using => {:tsearch => {:prefix => true, :any_word => true}}
+  pg_search_scope :locate, against: [:name], associated_against: {}, using: { tsearch: { prefix: true, any_word: true } }
 
   has_many :category_suppliers
-  has_many :suppliers, :through => :category_suppliers
+  has_many :suppliers, through: :category_suppliers
 
   validates_presence_of :name
 
-  after_initialize :set_defaults, :if => :new_record?
+  after_initialize :set_defaults, if: :new_record?
 
   def set_defaults
     self.is_service ||= false
   end
 
   def self.default_ancestors
-    ["Root Catalog", "Default Category"]
+    ['Root Catalog', 'Default Category']
   end
 
   def all_descendants

@@ -23,7 +23,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def calculated_total_cost
-      rows.map {|row| (row.unit_cost_price_with_unit_freight_cost * row.quantity)}.compact.sum.round(2)
+      rows.map { |row| (row.unit_cost_price_with_unit_freight_cost * row.quantity) }.sum.round(2)
     end
 
     def calculated_freight_cost_total
@@ -35,7 +35,7 @@ module Mixins::HasConvertedCalculations
     end
 
     def calculated_total_quantity
-      rows.map {|row| row.quantity}.sum.round(2)
+      rows.map { |row| row.quantity }.sum.round(2)
     end
 
     # Considers conversion rate for totals
@@ -62,7 +62,5 @@ module Mixins::HasConvertedCalculations
     def converted_freight_cost_total
       (calculated_freight_cost_total / inquiry_currency.conversion_rate).round(2)
     end
-
-
   end
 end

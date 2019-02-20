@@ -6,16 +6,16 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
   end
 
   def call
-    response = {:success => false}
+    response = { success: false }
     begin
       ActiveRecord::Base.transaction do
-        params["feed_line_units"].each do |image|
+        params['feed_line_units'].each do |image|
           reference_id = image[:reference_id]
           flu_id = image[:flu_id]
           image_reader = GlobalID::Locator.locate_signed(reference_id, for: 'image_reader')
 
           if image_reader.present? && image_reader.flu_id == flu_id
-            if image[:status] == "FAILED"
+            if image[:status] == 'FAILED'
               image_reader.status = :failed
             else
               if image[:result].present?
@@ -29,7 +29,7 @@ class Services::Customers::ImageReaders::ImageReaderUpdate < Services::Shared::B
               image_reader.callback_request = params
             end
           end
-        end if params["feed_line_units"].present? && params["feed_line_units"].kind_of?(Array)
+        end if params['feed_line_units'].present? && params['feed_line_units'].kind_of?(Array)
       end
 
     rescue ActiveRecord::RecordInvalid => exception

@@ -8,7 +8,7 @@ json.data (@categories) do |category|
                         row_action_button(edit_overseers_category_path(category), 'pencil', 'Edit Category', 'warning', :_blank)
                       end
                   ].join(' '),
-                  conditional_link(category.to_s, overseers_category_path(category), policy(category).show? ),
+                  conditional_link(category.to_s, overseers_category_path(category), policy(category).show?),
                   format_boolean_label(category.synced?, 'synced'),
                   format_succinct_date(category.created_at)
               ]

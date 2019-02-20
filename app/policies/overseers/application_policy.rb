@@ -35,7 +35,7 @@ class Overseers::ApplicationPolicy
   end
 
   def developer?
-    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'shravan.agarwal@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com','vishal.biradar@bulkmro.com' ,'lopesh.durugkar@bulkmro.com','rucha.parab@bulkmro.com','ruta.kambli@bulkmro.com','meenakshi.naik@bulkmro.com'].include? overseer.email
+    ['bhargav.trivedi@bulkmro.com', 'saurabh.bhosale@bulkmro.com', 'ashwin.goyal@bulkmro.com', 'malav.desai@bulkmro.com', 'prikesh.savla@bulkmro.com', 'amit.goyal@bulkmro.com', 'sandesh.raut@bulkmro.com', 'sourabh.raje@bulkmro.com', 'lopesh.durugkar@bulkmro.com', 'ruta.kambli@bulkmro.com', 'rucha.parab@bulkmro.com', 'meenakshi.naik@bulkmro.com', 'pradeep.ketkale@bulkmro.com'].include? overseer.email
   end
 
   def admin?
@@ -67,7 +67,7 @@ class Overseers::ApplicationPolicy
   end
 
   def accounts?
-     overseer.accounts?
+    overseer.accounts?
   end
 
   def index?
@@ -146,7 +146,7 @@ class Overseers::ApplicationPolicy
       if overseer.manager?
         scope.all
       else
-        scope.where(:created_by => overseer.self_and_descendants)
+        scope.where(created_by: overseer.self_and_descendants)
       end
     end
   end

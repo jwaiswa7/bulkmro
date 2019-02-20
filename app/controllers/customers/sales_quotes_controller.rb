@@ -5,7 +5,7 @@ class Customers::SalesQuotesController < Customers::BaseController
     authorize :sales_quote
 
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.json do
         service = Services::Customers::Finders::SalesQuotes.new(params, current_contact, current_company)
         service.call
@@ -18,8 +18,9 @@ class Customers::SalesQuotesController < Customers::BaseController
 
   def show
     authorize @sales_quote
+    @sales_quote_rows = @sales_quote.sales_quote_rows
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.pdf do
         render_pdf_for @sales_quote
       end
@@ -27,8 +28,7 @@ class Customers::SalesQuotesController < Customers::BaseController
   end
 
   private
-  def set_sales_quote
-    @sales_quote = SalesQuote.find(params[:id])
-  end
+    def set_sales_quote
+      @sales_quote = SalesQuote.find(params[:id])
+    end
 end
-

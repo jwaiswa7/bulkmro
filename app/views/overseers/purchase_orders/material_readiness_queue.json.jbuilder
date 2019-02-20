@@ -14,21 +14,25 @@ json.data (@purchase_orders) do |purchase_order|
                         row_action_button(new_overseers_purchase_order_material_pickup_request_path(purchase_order), 'plus-circle', 'Create Material Pickup Request', 'success', target: :_blank)
                       end,
                       if purchase_order.po_request.present? && policy(purchase_order.po_request).new_payment_request?
-                          row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
+                        row_action_button(new_overseers_po_request_payment_request_path(purchase_order.po_request), 'dollar-sign', 'Payment Request', 'success', :_blank)
                       elsif purchase_order.po_request.present? && policy(purchase_order.po_request).show_payment_request?
                         row_action_button(overseers_payment_request_path(purchase_order.payment_request), 'eye', 'View Payment Request', 'success')
                       end
                   ].join(' '),
-                  link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: "_blank"),
-                  link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: "_blank"),
-                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
+                  link_to(purchase_order.inquiry.inquiry_number, edit_overseers_inquiry_path(purchase_order.inquiry), target: '_blank'),
                   (purchase_order.inquiry.company.try(:name) if purchase_order.inquiry.company.present?),
-                  purchase_order.status || purchase_order.metadata_status,
-                  purchase_order.material_status,
+                  (purchase_order.po_request.sales_order.order_number if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  (purchase_order.po_request.sales_order.mis_date if purchase_order.po_request.present? && purchase_order.po_request.sales_order.present?),
+                  (purchase_order.po_request.supplier_committed_date if purchase_order.po_request.present?),
+                  link_to(purchase_order.po_number, overseers_inquiry_purchase_orders_path(purchase_order.inquiry), target: '_blank'),
+                  purchase_order.metadata['PoDate'],
+                  (purchase_order.get_supplier(purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if purchase_order.rows.present?),
                   purchase_order.inquiry.inside_sales_owner.to_s,
-                  purchase_order.inquiry.outside_sales_owner.to_s,
-                  format_succinct_date(purchase_order.created_at),
+                  (purchase_order.logistics_owner.full_name if purchase_order.logistics_owner.present?),
+                  purchase_order.material_status,
                   format_succinct_date(purchase_order.followup_date),
+                  format_succinct_date(purchase_order.revised_supplier_delivery_date),
+
                   if purchase_order.last_comment.present?
                     format_comment(purchase_order.last_comment, trimmed: true)
                   end
@@ -38,13 +42,16 @@ end
 json.columnFilters [
                        [],
                        [],
+                       [{ "source": autocomplete_overseers_companies_path }],
                        [],
-                       [{"source": autocomplete_overseers_companies_path}],
-                       [{"source": autocomplete_overseers_companies_path}],
                        [],
-                       PurchaseOrder.material_statuses.except(:'Material Delivered').map {|k, v| {:"label" => k, :"value" => v.to_s}}.as_json,
-                       Overseer.inside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
-                       Overseer.outside.alphabetical.map {|s| {:"label" => s.full_name, :"value" => s.id.to_s}}.as_json,
+                       [],
+                       [],
+                       [],
+                       [{ "source": autocomplete_overseers_companies_path }],
+                       Overseer.inside.alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       Overseer.where(role: 'logistics').alphabetical.map { |s| { "label": s.full_name, "value": s.id.to_s } }.as_json,
+                       PurchaseOrder.material_statuses.except(:'Material Delivered').map { |k, v| { "label": k, "value": v.to_s } }.as_json,
                        [],
                        [],
                        []

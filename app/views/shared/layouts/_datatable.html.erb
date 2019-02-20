@@ -12,7 +12,7 @@
             <%= yield :heading_buttons %>
           <% end %>
           <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
-            <a href="<%= [request.path, '/', 'new'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" >
+            <a href="<%= [request.path, '/', 'new'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
               <i class="fal fa-plus-circle mr-1"></i>New <%= controller_path.split('/').last.singularize.split("_").join(" ").upcase %>
             </a>
           <% end %>
@@ -42,7 +42,7 @@
   </section>
 <% end %>
 <section class="pb-4 pb-lg-5">
-  <table class="datatable table table-bordered dt-responsive
+  <table class="datatable table table-bordered table-hover dt-responsive
     <% if content_for?(:wrap_whitespace) %> wrap-whitespace
     <% end %>" data-search="Enter search term/keywords"
          <% if content_for?(:can_be_ajaxed) %>data-ajax="<%= request.fullpath %>"

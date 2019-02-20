@@ -20,8 +20,8 @@ class Overseers::ProductsController < Overseers::BaseController
 
   def service_autocomplete
     base_filter = {
-        :base_filter_key => "is_service",
-        :base_filter_value => true
+        base_filter_key: 'is_service',
+        base_filter_value: true
     }
     service = Services::Overseers::Finders::Products.new(params.merge(page: 1).merge(base_filter))
     service.call
@@ -42,7 +42,7 @@ class Overseers::ProductsController < Overseers::BaseController
   end
 
   def new
-    @product = Product.new(:overseer => current_overseer)
+    @product = Product.new(overseer: current_overseer)
     authorize @product
   end
 
@@ -116,7 +116,7 @@ class Overseers::ProductsController < Overseers::BaseController
     authorize @product
     service = Services::Resources::Products::UpdateInventory.new([@product])
     service.resync
-    redirect_to overseers_product_path(@product, :anchor => "inventory"), notice: flash_message(@product, action_name)
+    redirect_to overseers_product_path(@product, anchor: 'inventory'), notice: flash_message(@product, action_name)
   end
 
   def export_all
@@ -129,23 +129,23 @@ class Overseers::ProductsController < Overseers::BaseController
 
   private
 
-  def product_params
-    params.require(:product).permit(
+    def product_params
+      params.require(:product).permit(
         :name,
-        :sku,
-        :mpn,
-        :is_service,
-        :is_active,
-        :brand_id,
-        :category_id,
-        :tax_code_id,
-        :tax_rate_id,
-        :measurement_unit_id,
-        :images => []
-    )
-  end
+          :sku,
+          :mpn,
+          :is_service,
+          :is_active,
+          :brand_id,
+          :category_id,
+          :tax_code_id,
+          :tax_rate_id,
+          :measurement_unit_id,
+          images: []
+      )
+    end
 
-  def set_product
-    @product = Product.find(params[:id])
-  end
+    def set_product
+      @product = Product.find(params[:id])
+    end
 end
