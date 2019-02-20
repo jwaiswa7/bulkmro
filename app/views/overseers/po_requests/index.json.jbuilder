@@ -30,7 +30,7 @@ json.data (@po_requests) do |po_request|
                     po_request.sales_order.order_number if po_request.sales_order.present?
                   end,
                   po_request.inquiry.inside_sales_owner.to_s,
-                  po_request.supplier.to_s,
+                  link_to(po_request.supplier.to_s, overseers_company_path(po_request.inquiry.company), target: '_blank'),
                   po_request.buying_price,
                   po_request.selling_price,
                   po_request.po_margin_percentage,
