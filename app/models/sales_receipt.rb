@@ -11,7 +11,7 @@ class SalesReceipt < ApplicationRecord
   scope :with_amount_by_invoice, -> { where(payment_type: 'Against Invoice') }
   scope :with_amount_on_account, -> { where(payment_type: 'On Account') }
   scope :total_received_amount, -> { where(payment_type: 'On Account').or(SalesReceipt.where(payment_type: 'against invoice')) }
-  has_many :sales_receipt_row
+  has_many :sales_receipt_rows
   enum payment_method: {
       'banktransfer': 10,
       'Cheque': 20,

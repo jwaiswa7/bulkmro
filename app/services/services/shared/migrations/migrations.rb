@@ -2475,6 +2475,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
           is_save = sales_receipt.update_attributes(
             company: company,
             account: company.account,
+            sales_invoice: invoice,
             currency: currency,
             payment_type: :'Against Invoice',
             payment_received_date: date,
@@ -2488,10 +2489,8 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
       end
 
       service = Services::Shared::Spreadsheets::CsvImporter.new('sales_receipt_sap_on_account.csv', 'seed_files')
-
       service.loop(nil) do |x|
         company = Company.find_by_remote_uid(x.get_column('BP Code'))
-
         if company.present? && x.get_column('Non-Calculated Amount').to_f > 0
           currency = Currency.find_by_name(x.get_column('Document Currency'))
           date = '20' + x.get_column('Payment Date').split('/').reverse.join('/')
@@ -2571,7 +2570,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         due_in_1_to_7_days_invoices = invoices.includes(:sales_receipts).where('due_date >= ? AND due_date <= ?', due_date_after_1, due_date_after_7)
         amount_1_to_7_nd = 0.0
         due_in_1_to_7_days_invoices.each do |invoice|
-          amount_1_to_7_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_1_to_7_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_1_to_7_nd = (amount_1_to_7_nd < 0) ? 0.0 : amount_1_to_7_nd
 
@@ -2580,7 +2579,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         due_in_8_to_15_days_invoices = invoices.includes(:sales_receipts).where('due_date > ? AND due_date <= ?', due_date_after_7, due_date_after_15)
         amount_8_to_15_nd = 0.0
         due_in_8_to_15_days_invoices.each do |invoice|
-          amount_8_to_15_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_8_to_15_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_8_to_15_nd = (amount_8_to_15_nd < 0) ? 0.0 : amount_8_to_15_nd
 
@@ -2589,7 +2588,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         due_in_16_to_30_days_invoices = invoices.includes(:sales_receipts).where('due_date > ? AND due_date <= ?', due_date_after_15, due_date_after_30)
         amount_16_to_30_nd = 0.0
         due_in_16_to_30_days_invoices.each do |invoice|
-          amount_16_to_30_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_16_to_30_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_16_to_30_nd = (amount_16_to_30_nd < 0) ? 0.0 : amount_16_to_30_nd
 
@@ -2598,7 +2597,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         due_in_16_to_30_days_invoices = invoices.includes(:sales_receipts).where('due_date > ?', due_date_after_30)
         amount_more_than_30_nd = 0.0
         due_in_16_to_30_days_invoices.each do |invoice|
-          amount_more_than_30_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_more_than_30_nd += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_more_than_30_nd = (amount_more_than_30_nd < 0) ? 0.0 : amount_more_than_30_nd
 
@@ -2639,7 +2638,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overdue_before_1_30_days_invoices = invoices.includes(:sales_receipts).where(due_date: due_date_before_30..due_date_before_1)
         amount_1_to_30_od = 0.0
         overdue_before_1_30_days_invoices.each do |invoice|
-          amount_1_to_30_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_1_to_30_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_1_to_30_od = (amount_1_to_30_od < 0) ? 0.0 : amount_1_to_30_od
 
@@ -2649,7 +2648,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overdue_before_31_60_days_invoices = invoices.includes(:sales_receipts).where(due_date:  due_date_before_60..due_date_before_30)
         amount_31_to_60_od = 0.0
         overdue_before_31_60_days_invoices.each do |invoice|
-          amount_31_to_60_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_31_to_60_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_31_to_60_od = (amount_31_to_60_od < 0) ? 0.0 : amount_31_to_60_od
 
@@ -2659,7 +2658,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overdue_before_61_90_days_invoices = invoices.includes(:sales_receipts).where(due_date: due_date_before_90..due_date_before_60)
         amount_61_to_90_od = 0.0
         overdue_before_61_90_days_invoices.each do |invoice|
-          amount_61_to_90_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_61_to_90_od += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_61_to_90_od = (amount_61_to_90_od < 0) ? 0.0 : amount_61_to_90_od
 
@@ -2668,7 +2667,7 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
         overdue_before_more_90_days_invoices = invoices.includes(:sales_receipts).where('due_date < ? ', due_date_before_90)
         amount_overdue_more_90 = 0.0
         overdue_before_more_90_days_invoices.each do |invoice|
-          amount_overdue_more_90 += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice
+          amount_overdue_more_90 += (invoice.calculated_total_with_tax - invoice.amount_received_against_invoice)
         end
         amount_overdue_more_90 = (amount_overdue_more_90 < 0) ? 0.0 : amount_overdue_more_90
 
