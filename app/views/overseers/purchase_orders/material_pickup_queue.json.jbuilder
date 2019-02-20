@@ -25,7 +25,7 @@ json.data (@material_pickup_requests) do |material_pickup_request|
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.sales_order.mis_date) if material_pickup_request.purchase_order.po_request.present? && material_pickup_request.purchase_order.po_request.sales_order.present?),
                   (format_succinct_date(material_pickup_request.purchase_order.po_request.supplier_committed_date) if material_pickup_request.purchase_order.po_request.present?),
                   link_to(material_pickup_request.purchase_order.po_number, overseers_inquiry_purchase_orders_path(material_pickup_request.purchase_order.inquiry), target: '_blank'),
-                  format_succinct_date(material_pickup_request.purchase_order.metadata['PoDate'].to_date),
+                  format_succinct_date(material_pickup_request.purchase_order.metadata['PoDate'].try(:to_date)),
                   (material_pickup_request.purchase_order.get_supplier(material_pickup_request.purchase_order.rows.first.metadata['PopProductId'].to_i).try(:name) if material_pickup_request.purchase_order.rows.present?),
                   material_pickup_request.purchase_order.inquiry.inside_sales_owner.to_s,
                   (material_pickup_request.logistics_owner.full_name if material_pickup_request.logistics_owner.present?),
