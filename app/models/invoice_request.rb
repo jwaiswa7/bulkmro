@@ -33,13 +33,18 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :inquiry
   validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
-  validates_presence_of :attachments
-
+  validate :has_attachments?
   validate :grpo_number_valid?
 
   def grpo_number_valid?
     if self.grpo_number.present? && self.grpo_number <= 50000000
       errors.add(:grpo_number, 'must be 8 digits starting with 5')
+    end
+  end
+
+  def has_attachments?
+    if !self.attachments.any?
+      errors.add(:attachments, "must be present to create or update a #{self.readable_status}")
     end
   end
 
