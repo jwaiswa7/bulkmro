@@ -2407,4 +2407,182 @@ class Services::Shared::Migrations::Migrations < Services::Shared::BaseService
     end
   end
 
+  def create_missing_invoices
+    kit_products = []
+    missing_product = []
+    service = Services::Shared::Spreadsheets::CsvImporter.new('14-02-bible-si.csv', 'seed_files')
+    skips = [11563]
+    service.loop(nil) do |x|
+      next if (x.get_column('AR Invoice #').include?(".") || x.get_column('AR Invoice #').include?("/") || x.get_column('AR Invoice #').include?("-") || x.get_column('AR Invoice #').match?(/[a-zA-Z]/))
+      next if skips.include?(x.get_column('Inquiry Number').to_i)
+      sales_order = SalesOrder.find_by_order_number(x.get_column('SO #'))
+      if sales_order.present?
+        if !SalesInvoice.find_by_invoice_number(x.get_column('AR Invoice #').to_i).present?
+          invoice_rows_array = []
+          inquiry = sales_order.inquiry
+          unit_price = x.get_column('Unit Price').to_f # margin doubt
+          sku = x.get_column('BM #')
+          product =  Product.find_by_sku(sku)
+          if product.blank?
+            missing_product.push(x.get_column('BM #'))
+          end
+          if product.present? && product.is_kit
+            kit_products.push(x.get_column('AR Invoice #'))
+          end
+          next if product.present? && product.is_kit
+
+          if !inquiry.billing_address.present?
+            inquiry.update_attributes(billing_address: inquiry.company.addresses.first)
+          end
+
+          if !inquiry.shipping_address.present?
+            inquiry.update(shipping_address: inquiry.company.addresses.first)
+          end
+
+          if !inquiry.shipping_contact.present?
+            inquiry.update(shipping_contact: inquiry.billing_contact)
+          end
+
+          quantity = x.get_column('Qty').to_f
+          tax_amount = x.get_column('Tax Amount').to_f
+          invoice_row_obj = {
+              qty: quantity,
+              sku: sku,
+              name: (product.present? ? product.name.to_s : ''),
+              price: unit_price,
+              base_cost: nil,
+              row_total: unit_price * quantity,
+              base_price: unit_price,
+              product_id: (product.present? ? product.id.to_param : ''),
+              tax_amount: tax_amount,
+              description: (product.present? ? product.description.to_s : ''),
+              order_item_id: nil,
+              base_row_total: unit_price * quantity,
+              price_incl_tax: nil,
+              additional_data: nil,
+              base_tax_amount: tax_amount,
+              discount_amount: nil,
+              weee_tax_applied: nil,
+              hidden_tax_amount: nil,
+              row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+              base_price_incl_tax: (unit_price + (tax_amount / quantity)),
+              base_discount_amount: nil,
+              weee_tax_disposition: nil,
+              base_hidden_tax_amount: nil,
+              base_row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+              weee_tax_applied_amount: nil,
+              weee_tax_row_disposition: nil,
+              base_weee_tax_disposition: nil,
+              weee_tax_applied_row_amount: nil,
+              base_weee_tax_applied_amount: nil,
+              base_weee_tax_row_disposition: nil,
+              base_weee_tax_applied_row_amnt: nil
+          }
+          invoice_rows_array.push(invoice_row_obj)
+
+          sales_order.invoices.where(invoice_number: x.get_column('AR Invoice #').to_i).first_or_create! do |invoice|
+            metadata = {
+                'state' =>  1,
+                'is_kit' => '',
+                'qty_kit' => 0,       #check
+                'ItemLine' => invoice_rows_array,
+                'desc_kit' => '',  #check
+                'order_id' => x.get_column('SO #'),
+                'store_id' => nil,
+                'doc_entry' => x.get_column('AR Invoice #').to_i,
+                'price_kit' => 0,
+                'controller' => 'callbacks/sales_invoices',
+                'created_at' => x.get_column('AR Invoice Date'),
+                'grand_total' => x.get_column('Selling Price (as per SO / AR Invoice)'),
+                'increment_id' => x.get_column('AR Invoice #'),
+                'sales_invoice' => {
+                    'created_at' => x.get_column('AR Invoice Date'),
+                    'updated_at' => nil
+                },
+                'unitprice_kit' => 0,
+                'base_tax_amount' => x.get_column('Tax Amount').to_f,
+                'discount_amount' => '',
+                'shipping_amount' => nil,
+                'base_grand_total' => x.get_column('Selling Price (as per SO / AR Invoice)'),
+                'customer_company' => nil,
+                'hidden_tax_amount' => nil,
+                'shipping_incl_tax' => nil,
+                'base_currency_code' => sales_order.inquiry.currency,
+                'base_to_order_rate' => sales_order.inquiry.currency.conversion_rate.to_f,
+                'billing_address_id' => sales_order.inquiry.billing_address.id,
+                'order_currency_code' => sales_order.inquiry.currency,
+                'shipping_address_id' => sales_order.inquiry.shipping_address.id,
+                'shipping_tax_amount' => nil,
+                'store_currency_code' => '',
+                'store_to_order_rate' => '',
+                'base_discount_amount' => nil,
+                'base_shipping_amount' => nil,
+                'discount_description' => nil,
+                'base_hidden_tax_amount' => nil,
+                'base_shipping_incl_tax' => nil,
+                'base_subtotal_incl_tax' => x.get_column('Gross Total Selling'),
+                'base_shipping_tax_amount' => nil,
+                'shipping_hidden_tax_amount' => nil,
+                'base_shipping_hidden_tax_amnt' => nil
+            }
+            invoice.assign_attributes(status: 1, metadata: metadata, mis_date: x.get_column('AR Invoice Date'))
+            invoice.save!
+            row = nil
+            if invoice.rows.map { |si_row| si_row.product.sku }.include?(x.get_column('BM #'))
+              row = invoice.rows.joins(:product).where('products.sku = ?', x.get_column('BM #')).first
+            end
+
+            if row.blank?
+              row = invoice.rows.where("metadata->>'sku' = ?", x.get_column('BM #')).first_or_initialize
+            end
+
+            row_metadata = {
+                qty: quantity,
+                sku: sku,
+                name: product.present? ? product.name : '',
+                price: unit_price,
+                base_cost: nil,
+                row_total: unit_price * quantity,
+                base_price: unit_price,
+                product_id: (product.present? ? product.id.to_param : ''),
+                tax_amount: tax_amount,
+                description: product.present? ? product.description : '',
+                order_item_id: nil,
+                base_row_total: unit_price * quantity,
+                price_incl_tax: nil,
+                additional_data: nil,
+                base_tax_amount: tax_amount,
+                discount_amount: nil,
+                weee_tax_applied: nil,
+                hidden_tax_amount: nil,
+                row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+                base_price_incl_tax: (unit_price + (tax_amount / quantity)),
+                base_discount_amount: nil,
+                weee_tax_disposition: nil,
+                base_hidden_tax_amount: nil,
+                base_row_total_incl_tax: (unit_price * quantity) + (tax_amount),
+                weee_tax_applied_amount: nil,
+                weee_tax_row_disposition: nil,
+                base_weee_tax_disposition: nil,
+                weee_tax_applied_row_amount: nil,
+                base_weee_tax_applied_amount: nil,
+                base_weee_tax_row_disposition: nil,
+                base_weee_tax_applied_row_amnt: nil
+            }
+            row.sales_invoice = invoice
+            row.quantity = quantity,
+            row.sku = sku,
+            row.metadata = row_metadata
+            row.save!
+
+            puts "********************** Invoice updated *************************", x.get_column('AR Invoice #')
+          end
+        end
+      end
+    end
+
+    puts "Missing sku", missing_product
+    puts "kit products", kit_products
+  end
+
 end
