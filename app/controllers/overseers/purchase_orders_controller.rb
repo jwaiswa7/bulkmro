@@ -20,6 +20,21 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def show
+    authorize @purchase_order
+    @inquiry = @purchase_order.inquiry
+    @metadata = @purchase_order.metadata.deep_symbolize_keys
+    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
+    @metadata[:packing] = @purchase_order.get_packing(@metadata)
+
+    respond_to do |format|
+      format.html { }
+      format.pdf do
+        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
+      end
+    end
+  end
+
   def material_readiness_queue
     authorize :purchase_order
 
@@ -133,21 +148,6 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     self.response_body = service.call
     # Set the status to success
     response.status = 200
-  end
-
-  def show
-    authorize @purchase_order
-    @inquiry = @purchase_order.inquiry
-    @metadata = @purchase_order.metadata.deep_symbolize_keys
-    @supplier = get_supplier(@purchase_order, @purchase_order.rows.first.metadata['PopProductId'].to_i)
-    @metadata[:packing] = @purchase_order.get_packing(@metadata)
-
-    respond_to do |format|
-      format.html { }
-      format.pdf do
-        render_pdf_for(@purchase_order, locals: { inquiry: @inquiry, purchase_order: @purchase_order, metadata: @metadata, supplier: @supplier })
-      end
-    end
   end
 
   def update_logistics_owner
