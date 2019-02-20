@@ -14,8 +14,8 @@ json.data (@sales_orders) do |sales_order|
                         row_action_button(edit_mis_date_overseers_inquiry_sales_order_path(sales_order.inquiry, sales_order), 'calendar-alt', 'Update MIS Date', 'success')
                       end,
                       if policy(sales_order).can_request_po?
-                        row_action_button(new_overseers_po_request_path(sales_order_id: sales_order.to_param), 'external-link', 'Request PO', 'info')
-                      end
+                        row_action_button(new_purchase_orders_requests_overseers_sales_order_path(sales_order.to_param), 'file', 'PO Request', 'success', :_blank)
+                      end,
                   ].join(' '),
                   sales_order.order_number,
                   sales_order.inquiry.inquiry_number,
