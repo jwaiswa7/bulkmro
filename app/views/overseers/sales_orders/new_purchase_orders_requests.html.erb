@@ -78,7 +78,6 @@
               <th class="no-sort all" data-name="sku">Inside Sales</th>
               <th class="no-sort all" data-name="supplier">Supplier</th>
               <th class="no-sort desktop">Status</th>
-              <th class="no-sort all" data-name="logistics_owner">Logistics Owner</th>
             </tr>
 
             <% @sales_order.po_requests.each do |po_request| %>
@@ -92,7 +91,6 @@
                 <td><%= po_request.inquiry.inside_sales_owner %></td>
                 <td><%= po_request.supplier.try(:name) || '-' %></td>
                 <td><%= po_request.status || '-' %></td>
-                <td><%= po_request.logistics_owner || '-' %></td>
               </tr>
             <% end %>
           </table>

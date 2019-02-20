@@ -10,7 +10,6 @@ class PoRequest < ApplicationRecord
   belongs_to :sales_order
   belongs_to :inquiry
   belongs_to :supplier, class_name: 'Company', foreign_key: :supplier_id
-  belongs_to :logistics_owner, -> (record) { where(role: 'logistics') }, class_name: 'Overseer', foreign_key: 'logistics_owner_id', required: false
   has_many :rows, class_name: 'PoRequestRow', inverse_of: :po_request, dependent: :destroy
   accepts_nested_attributes_for :rows, allow_destroy: true
   belongs_to :bill_to, class_name: 'Warehouse', foreign_key: :bill_to_id

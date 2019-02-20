@@ -60,7 +60,6 @@
               <%= po_request.hidden_field :contact_id %>
               <%= po_request.hidden_field :contact_email %>
               <%= po_request.hidden_field :contact_phone %>
-              <%= po_request.hidden_field :logistics_owner_id %>
               <%= po_request.hidden_field :payment_option_id %>
               <%= po_request.hidden_field :supplier_po_type %>
 
@@ -114,12 +113,6 @@
                   </div>
                 <% end %>
 
-                <% if po_request.object.logistics_owner.present? %>
-                  <div class="col-2 col-md-2 mb-2">
-                    <strong class="d-block">Logistics Owner</strong>
-                    <%= po_request.object.logistics_owner.to_s %>
-                  </div>
-                <% end %>
                 <div class="col-2 col-md-2 mb-2">
                   <strong class="d-block">Status</strong>
                   <%= po_request.object.status %>
