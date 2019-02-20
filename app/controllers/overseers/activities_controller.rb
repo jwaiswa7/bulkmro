@@ -89,6 +89,13 @@ class Overseers::ActivitiesController < Overseers::BaseController
     @activities.update_all(inquiry_id: @inquiry)
   end
 
+  def export_all
+    authorize :activity
+    service = Services::Overseers::Exporters::ActivitiesExporter.new(params[:q])
+    service.call
+
+    redirect_to url_for(Export.activities.last.report)
+  end
 
   private
 
