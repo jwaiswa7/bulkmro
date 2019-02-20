@@ -2,10 +2,15 @@ const updateOnContactSelect = () => {
     $('form').on('change', 'select[name*=contact_id]', function (e) {
         console.log('adwadw');
         onContactChange(this);
+    }).find('select[name*=contact_id]').each(function (e) {
+        var container = this
+        if($(container).closest('.po-request-form').find('input[name*=contact_email]').val() == ""){
+            onContactChange(this);
+        }
+
     });
 };
 let onContactChange = (container) => {
-    console.log(container);
     let optionSelected = $("option:selected", container);
     console.log(optionSelected);
 
