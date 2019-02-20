@@ -15,7 +15,7 @@
       <% end %>
         <% if policy(@mpr).delivered? && policy(@mpr.purchase_order).can_request_invoice? %>
         <a href="<%= new_overseers_invoice_request_path(purchase_order_id: @mpr.purchase_order, mpr_id: @mpr) %>" class="btn btn-success btn-rounded align-self-center btn-block-sm-down"><i class="fal fa-plus mr-1"></i>
-          Create Invoice Request</a>
+          Create GRPO Request</a>
       <% end %>
 
         <% if @mpr.purchase_order.po_request.present? && policy(@mpr).delivered? && policy(@mpr.purchase_order.po_request).new_payment_request? %>

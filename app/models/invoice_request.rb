@@ -33,6 +33,7 @@ class InvoiceRequest < ApplicationRecord
   validates_presence_of :inquiry
   validates :ap_invoice_number, length: { is: 8 }, allow_blank: true
   validates_numericality_of :ap_invoice_number, allow_blank: true
+  validates_presence_of :attachments
 
   validate :grpo_number_valid?
 
@@ -84,7 +85,7 @@ class InvoiceRequest < ApplicationRecord
     status = self.status
     if status.include? 'Pending'
       title_without_pending = status.remove('Pending')
-      title = status.include?('GRPO') ? 'Invoice GRPO' : "#{title_without_pending}"
+      title = status.include?('GRPO') ? 'GRPO' : "#{title_without_pending}"
     elsif (status.include? 'Completed AR Invoice') || (status.include? 'Cancelled AR Invoice')
       title = status.gsub(status, 'AR Invoice')
     else

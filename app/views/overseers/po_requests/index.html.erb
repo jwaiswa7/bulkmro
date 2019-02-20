@@ -29,7 +29,7 @@
 <% end %>
 <% %>
 <% content_for :header_row do %>
-  <th class="no-sort">
+  <th class="no-sort all">
     <% if policy(:po_request).update_logistics_owner? && (action_name != 'cancelled' && action_name != "amended") %>
       <div class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" name="all_po_requests" id="all_po_requests">
@@ -52,7 +52,6 @@
   <th class="no-sort all" data-name="overall_margin">Overall Margin %</th>
   <th class="no-sort all">Committed Delivery Date</th>
   <th class="no-sort all">Supplier Committed Delivery Date</th>
-  <th class="no-sort desktop">Status</th>
   <th class="sort desktop" data-name="created_at">Requested At</th>
   <th class="no-sort desktop" data-name="name">Updated At</th>
   <th class="no-sort desktop">Email Status</th>

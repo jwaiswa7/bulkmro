@@ -36,15 +36,15 @@
             <%= f.input :logistics_owner_id, required: true, collection: Overseer.logistics.alphabetical, include_blank: 'Select an Logistics Owner', input_html: {class: "select2-single"}, label: "Logistics Owner" %>
           </div>
           <div class="col-4">
-            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y")}, required: true %>
+            <%= f.input :supplier_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.supplier_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'supplier-dispatch-date'}, required: true %>
           </div>
 
           <div class="col-4">
-            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y")}, required: true %>
+            <%= f.input :revised_supplier_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.revised_supplier_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'revised-supplier-delivery-date'}, required: true %>
           </div>
 
           <div class="col-4">
-            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y")}, required: true %>
+            <%= f.input :followup_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.followup_date.try(:strftime, "%d-%b-%Y"), class: 'followup-date'}, required: true %>
           </div>
 
 
