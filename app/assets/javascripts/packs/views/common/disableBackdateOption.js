@@ -1,4 +1,4 @@
-const disableBackdateOption = (e) => {
+const disableBackdateOption = (element) => {
     var datepickerOptions = {
         singleDatePicker: true,
         minDate: moment(),
@@ -6,7 +6,7 @@ const disableBackdateOption = (e) => {
             format: 'DD-MMM-YYYY'
         }
     };
-    e.daterangepicker(datepickerOptions)
+    element.daterangepicker(datepickerOptions)
 }
 
 export default disableBackdateOption
