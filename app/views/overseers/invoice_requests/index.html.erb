@@ -8,7 +8,7 @@
 
 <% content_for :heading do %>
   Invoice Requests
-  <% if @status .present? %>
+  <% if @status.present? %>
     <%= ": #{@status}" %>
   <% end %>
 <% end %>
@@ -28,7 +28,7 @@
   <th class="no-sort desktop text-right">Inquiry #</th>
   <th class="no-sort all text-right">Order #</th>
   <th class="no-sort all text-right">PO Number #</th>
-  <th class="no-sort all">Inside Sales</th>
+  <th class="no-sort all" title="Inside Sales & Procurement" >IS&P</th>
   <th class="sort desktop text-right" data-name="created_at">Requested At</th>
   <th class="no-sort desktop text-right">Updated At</th>
   <th class="no-sort desktop">Latest Comment</th>

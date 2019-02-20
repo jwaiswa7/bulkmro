@@ -60,7 +60,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
   end
 
   def sending_po_to_supplier_new_email_message?
-    (admin? || sales?) && record.status == 'PO Created' && record.purchase_order && record.contact.present?
+    record.status == 'PO Created' && record.purchase_order && record.contact.present?
   end
 
   def sending_po_to_supplier_create_email_message?
@@ -95,7 +95,7 @@ class Overseers::PoRequestPolicy < Overseers::ApplicationPolicy
       if overseer.allow_inquiries?
         scope.all
       else
-        scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id) )
+        scope.joins(:inquiry).where('inquiries.inside_sales_owner_id IN (:overseer) OR inquiries.outside_sales_owner_id IN (:overseer) OR po_requests.created_by_id IN (:overseer)', overseer: overseer.self_and_descendants.pluck(:id))
       end
     end
   end

@@ -1,4 +1,4 @@
 <%= render 'overseers/invoice_requests/form' %>
-<%if @company_reviews.present? && @company_reviews.map(&:rating).include?(nil)%>
+<%if @company_reviews.present? %>
   <%= render partial: 'shared/layouts/rating_modal_with_multiple_tab'%>
 <%end %>

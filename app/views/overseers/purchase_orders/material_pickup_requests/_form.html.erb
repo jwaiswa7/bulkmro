@@ -100,14 +100,14 @@
         <div class="card-body">
           <div class="form-row flex-row align-items-center">
             <div class="col-4">
-              <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_dispatch_date.try(:strftime, "%d-%b-%Y")}, required: true, disabled: f.object.invoice_request.present? %>
+              <%= f.input :expected_dispatch_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_dispatch_date.try(:strftime, "%d-%b-%Y"), class: 'expected-dispatch-date'}, required: true, disabled: f.object.invoice_request.present? %>
             </div>
             <div class="col-4">
-              <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime, "%d-%b-%Y")}, required: true, disabled: f.object.invoice_request.present? %>
+              <%= f.input :expected_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.expected_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'expected-delivery-date'}, required: true, disabled: f.object.invoice_request.present? %>
             </div>
             <% if f.object.status == "Material Delivered" %>
               <div class="col-4">
-                <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y")}, disabled: f.object.invoice_request.present? %>
+                <%= f.input :actual_delivery_date, as: :string, input_html: {:'data-toggle' => 'datepicker', value: f.object.actual_delivery_date.try(:strftime, "%d-%b-%Y"), class: 'actual-delivery-date'}, disabled: f.object.invoice_request.present? %>
               </div>
             <% end %>
           </div>

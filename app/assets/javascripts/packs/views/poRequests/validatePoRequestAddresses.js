@@ -1,3 +1,5 @@
+import disableBackdateOption from './../common/disableBackdateOption'
+
 const validatePoRequestAddresses = () => {
        window.Parsley.addValidator('locations', {
         validateString: function (_value, locations, parsleyInstance) {
@@ -34,19 +36,11 @@ const validatePoRequestAddresses = () => {
         }
     });
 
-    var datepickerOptions = {
-        singleDatePicker: true,
-        minDate: moment(),
-        locale: {
-            format: 'DD-MMM-YYYY'
-        }
-    };
+    disableBackdateOption($('.supplier-committed-date'));
 
-    $('.supplier-committed-date').daterangepicker(datepickerOptions);
-
-    $('.lead-time').daterangepicker(datepickerOptions);
+    disableBackdateOption($('.lead-time'));
     $('body').on("fields_added.nested_form_fields", function (e, params) {
-        $('.lead-time').daterangepicker(datepickerOptions);
+        disableBackdateOption($('.lead-time'));
     })
 };
 
