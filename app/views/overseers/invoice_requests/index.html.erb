@@ -8,7 +8,7 @@
 
 <% content_for :heading do %>
   Invoice Requests
-  <% if @status .present? %>
+  <% if @status.present? %>
     <%= ": #{@status}" %>
   <% end %>
 <% end %>
