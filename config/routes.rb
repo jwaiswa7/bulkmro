@@ -79,6 +79,7 @@ Rails.application.routes.draw do
         post 'approve_selected'
         post 'reject_selected'
         post 'add_to_inquiry'
+        get 'export_all'
       end
       member do
         get 'approve'
