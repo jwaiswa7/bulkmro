@@ -8,6 +8,9 @@
       <% end unless content_for?(:hide_table_heading) %>
       <% if content_for?(:can_be_directly_created) || content_for?(:can_be_directly_exported) || content_for?(:can_be_directly_export_by_daterange) || content_for?(:heading_buttons) %>
         <div>
+          <% if content_for?(:heading_buttons)%>
+            <%= yield :heading_buttons %>
+          <% end %>
           <% if content_for?(:can_be_directly_export_by_daterange) && policy(current_model.singularize.to_sym).export_all? %>
             <div class="mr-2 d-inline-block export_daterange_wrapper">
               <input type="text" id="export_daterange" name="export_daterange" class="form-control" data-toggle="daterangepicker" data-direction="left" placeholder="Pick a daterange" />
@@ -15,9 +18,6 @@
             <a href="<%= [request.path, '/', 'export_all.csv'].join %>" id="export_daterange_button" class="mr-2 btn btn-success btn-rounded align-self-center btn-block-sm-down export_daterange_wrapper" <% if Export.send(controller_path.split('/').last).last.present? %>data-badge="<%= [time_ago_in_words(Export.send(controller_path.split('/').last).last.created_at), "ago"].join(' ') %><% end %>">
               <i class="fal fa-download mr-1"></i><%= controller_path.split('/').last.pluralize.split("_").join(" ").upcase %>
             </a>
-          <% end %>
-          <% if content_for?(:heading_buttons)%>
-            <%= yield :heading_buttons %>
           <% end %>
           <% if content_for?(:can_be_directly_created) && policy(current_model.singularize.to_sym).new? %>
             <a href="<%= [request.path, '/', 'new'].join %>" class=" btn btn-success btn-rounded align-self-center btn-block-sm-down mr-md-1 mb-md-0 mb-1" target="_blank" >
