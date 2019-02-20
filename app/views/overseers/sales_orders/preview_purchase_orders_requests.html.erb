@@ -148,8 +148,10 @@
                 <div class="col-6 mb-2">
                   <strong class="d-block">Attachments</strong>
                   <% po_request.object.attachments.each_with_index do |attachment, index| %>
-                    <%= "#{(index + 1)} ." if attachment.blob_id.present? %> <%= attachment.filename if attachment.blob_id.present? %>
-                    <br>
+                    <%= link_to url_for(attachment), target: '_blank', :"data-toggle" => 'tooltip', :status => attachment.filename do %>
+                      <%= "#{(index + 1)} ." if attachment.blob_id.present? %> <%= attachment.filename if attachment.blob_id.present? %>
+                      <br>
+                    <% end %>
                   <% end if po_request.object.attachments.attached? %>
                 </div>
               </div>
