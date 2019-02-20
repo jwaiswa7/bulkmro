@@ -3,6 +3,15 @@ class Services::Overseers::Notifications::Notify < Services::Shared::Notificatio
     super(from, namespace)
   end
 
+  def send_company_creation_confirmation(entity, action, notifiable, url, *msg)
+    @action = action; @notifiable = notifiable; @url = url
+    @message = "#{msg[0]} has been approved and created in Sprint"
+    @to = entity.activity.created_by
+    send
+    @to = notifiable.inside_sales_owner
+    send
+  end
+
   def send_product_import_confirmation(tos, action, notifiable, url, *msg)
     @action = action; @notifiable = notifiable; @url = url
     @message = "#{msg[0]} uploaded for approval in Inquiry ##{msg[1]}"
