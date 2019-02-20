@@ -4,7 +4,6 @@
   <%= f.hidden_field :sales_order_id %>
   <%= f.hidden_field :inquiry_id %>
   <%= f.hidden_field :supplier_id %>
-  <%= f.hidden_field :logistics_owner_id %>
   <div class="col-12 col-md-4">
     <%= f.input :supplier_po_type, as: :select, collection: enum_to_collection(PoRequest.supplier_po_types, keep_raw: true, alphabetical: false), :include_blank => true, label: 'Supplier PO Type', required: true %>
   </div>

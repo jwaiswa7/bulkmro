@@ -10,7 +10,6 @@ class Services::Overseers::SalesOrders::UpdatePoRequests < Services::Shared::Bas
       po_request = PoRequest.new(overseer: @overseer)
       po_request.sales_order = @sales_order
       po_request.status = po_request_hash[:status]
-      po_request.logistics_owner_id = po_request_hash[:logistics_owner_id]
       po_request.supplier_id = po_request_hash[:supplier_id]
       po_request.inquiry_id = po_request_hash[:inquiry_id]
       po_request.bill_from_id = po_request_hash[:bill_from_id]

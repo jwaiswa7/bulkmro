@@ -150,6 +150,18 @@ class Overseers::PurchaseOrdersController < Overseers::BaseController
     end
   end
 
+  def update_logistics_owner
+    @purchase_orders = PurchaseOrder.where(id: params[:purchase_orders])
+    authorize @purchase_orders
+    @purchase_orders.update_all(logistics_owner_id: params[:logistics_owner_id])
+  end
+
+  def update_logistics_owner_for_pickup_requests
+    @pickup_requests = MaterialPickupRequest.where(id: params[:pickup_requests])
+    authorize @pickup_requests
+    @pickup_requests.update_all(logistics_owner_id: params[:logistics_owner_id])
+  end
+
   private
 
     def get_supplier(purchase_order, product_id)
