@@ -41,7 +41,7 @@
 
         <% if po_request.purchase_order.present? %>
           <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">PO #</strong>
+            <strong class="d-block">Purchase Order #</strong>
             <%= po_request.purchase_order.po_number %>
           </div>
         <% end %>
@@ -73,10 +73,14 @@
             <%= po_request.inquiry.customer_committed_date %>
           </div>
         <% end %>
-        <div class="col-6 col-md-3 mb-2">
-          <strong class="d-block">Supplier Committed Delivery Date</strong>
-          <%= po_request.supplier_committed_date %>
-        </div>
+
+        <% if po_request.supplier_committed_date.present? %>
+          <div class="col-6 col-md-3 mb-2">
+            <strong class="d-block">Supplier Committed Delivery Date</strong>
+            <%= po_request.supplier_committed_date %>
+          </div>
+        <% end %>
+
         <% if po_request.supplier.present? %>
           <div class="col-6 col-md-3 mb-2">
             <strong class="d-block">Supplier</strong>
@@ -84,12 +88,6 @@
           </div>
         <% end %>
 
-        <% if po_request.logistics_owner.present? %>
-          <div class="col-6 col-md-3 mb-2">
-            <strong class="d-block">Logistics Owner</strong>
-            <%= po_request.logistics_owner.to_s %>
-          </div>
-        <% end %>
         <% if po_request.contact.present? %>
           <div class="col-6 col-md-6 mb-2">
             <strong class="d-block">Supplier Contact</strong>
@@ -132,10 +130,6 @@
 
       <% if po_request.attachments.attached? %>
         <div class="form-row">
-          <div class="col-2 col-md-3 mb-2">
-            <strong class="d-block">Logistics Owner</strong>
-            <%= po_request.logistics_owner.to_s %>
-          </div>
           <div class="col-10 col-md-3 mb-2">
             <strong class="d-block">Attachments </strong>
             <% po_request.attachments.each do |attachment| %>

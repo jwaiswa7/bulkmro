@@ -1,26 +1,26 @@
-const index = () => {
+const updateLogisticsOwner = () => {
     $('.update_logistics_owner_wrapper').hide();
     toggleCheckboxes();
 
     $('#update_logistics_owner').click((event) => {
-        updateLogisticsOwner();
+        updateOwner();
     });
 
 };
 
 let toggleCheckboxes = () => {
-    $('#all_po_requests').prop("checked", false);
+    $('#all_purchase_orders').prop("checked", false);
 
-    $('#all_po_requests').change((event) => {
+    $('#all_purchase_orders').change((event) => {
         var $element = $(event.target)
         if ($element.is(':checked')) {
-            $('input[type=checkbox][name="po_requests[]"]').each((index, element) => {
+            $('input[type=checkbox][name="purchase_orders[]"]').each((index, element) => {
                 //$(element).attr('checked', 'checked')
                 $(element).prop("checked", true);
                 showOrHideActions();
             });
         } else {
-            $('input[type=checkbox][name="po_requests[]"]').each((index, element) => {
+            $('input[type=checkbox][name="purchase_orders[]"]').each((index, element) => {
                 //$(element).removeAttr('checked')
                 $(element).prop("checked", false);
                 showOrHideActions();
@@ -28,15 +28,15 @@ let toggleCheckboxes = () => {
         }
     });
 
-    $('table').on('change', 'input[type=checkbox][name="po_requests[]"]', (event) => {
+    $('table').on('change', 'input[type=checkbox][name="purchase_orders[]"]', (event) => {
         showOrHideActions();
     })
 }
 
-let updateLogisticsOwner = () => {
-    let po_requests = [];
-    $('input[type=checkbox][name="po_requests[]"]:checked').each((index, element) => {
-        po_requests.push($(element).val());
+let updateOwner = () => {
+    let purchase_orders = [];
+    $('input[type=checkbox][name="purchase_orders[]"]:checked').each((index, element) => {
+        purchase_orders.push($(element).val());
     });
 
     let logistics_owner_id = $('select[name*=logistics_owner]').val();
@@ -48,19 +48,19 @@ let updateLogisticsOwner = () => {
         });
     }
 
-    if (po_requests.length == 0) {
+    if (purchase_orders.length == 0) {
         $.notify({
-            message: 'Please Select any PO Request you want to update'
+            message: 'Please Select any Material Followup Request you want to update'
         }, {
             type: 'danger'
         });
     }
 
-    if (po_requests.length > 0 && logistics_owner_id != '') {
+    if (purchase_orders.length > 0 && logistics_owner_id != '') {
 
-        var data = JSON.stringify({po_requests: po_requests, logistics_owner_id: logistics_owner_id});
+        var data = JSON.stringify({purchase_orders: purchase_orders, logistics_owner_id: logistics_owner_id});
         $.ajax({
-            url: Routes.update_logistics_owner_overseers_po_requests_path(),
+            url: Routes.update_logistics_owner_overseers_purchase_orders_path(),
             type: "POST",
             data: data,
             contentType: "application/json; charset=utf-8",
@@ -68,8 +68,8 @@ let updateLogisticsOwner = () => {
             success: function () {
                 var dataTable = $('.datatable').dataTable();
                 dataTable.api().ajax.reload(null, false);
-                $('#all_po_requests').removeAttr('checked');
-                $('#all_po_requests').prop("checked", false);
+                $('#all_purchase_orders').removeAttr('checked');
+                $('#all_purchase_orders').prop("checked", false);
                 $.notify({
                     message: 'Logistics Owner has been successfully updated'
                 }, {
@@ -86,7 +86,7 @@ let updateLogisticsOwner = () => {
 let showOrHideActions = () => {
     let hide = true;
 
-    if ($('input[type=checkbox][name="po_requests[]"]:checked').length > 0) {
+    if ($('input[type=checkbox][name="purchase_orders[]"]:checked').length > 0) {
         $('.update_logistics_owner_wrapper').show();
     } else {
         $('.update_logistics_owner_wrapper').hide();
@@ -94,4 +94,4 @@ let showOrHideActions = () => {
 
 }
 
-export default index
+export default updateLogisticsOwner
