@@ -12,7 +12,7 @@ class InvoiceRequest < ApplicationRecord
   has_many :material_pickup_requests
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
-  ratyrate_rateable "CompanyReview"
+  ratyrate_rateable 'CompanyReview'
 
   enum status: {
       'Pending GRPO': 10,

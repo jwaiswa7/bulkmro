@@ -1,5 +1,5 @@
 class Services::Overseers::CompanyReviews::CreateCompanyReview < Services::Shared::BaseService
-  def initialize(order, current_overseer,request,review_type)
+  def initialize(order, current_overseer, request, review_type)
     @order = order
     @current_overseer = current_overseer
     @request = request

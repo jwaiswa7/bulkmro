@@ -24,7 +24,7 @@ class PoRequest < ApplicationRecord
   belongs_to :payment_option, required: false
   has_many_attached :attachments
   has_many :company_reviews, as: :rateable
-  ratyrate_rateable "CompanyReview"
+  ratyrate_rateable 'CompanyReview'
 
   attr_accessor :opportunity_type, :customer_committed_date, :blobs
 
@@ -123,7 +123,6 @@ class PoRequest < ApplicationRecord
   end
 
   def to_s
-    [readable_status," ##{self.id}"].join
+    [readable_status, " ##{self.id}"].join
   end
-
 end

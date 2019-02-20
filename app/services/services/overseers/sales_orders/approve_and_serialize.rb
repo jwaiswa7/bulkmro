@@ -8,11 +8,12 @@ class Services::Overseers::SalesOrders::ApproveAndSerialize < Services::Shared::
   def call
     ActiveRecord::Base.transaction do
       @sales_order.create_approval(comment: @comment,
-          overseer: overseer,
-          metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
+        overseer: overseer,
+        metadata: Serializers::InquirySerializer.new(@sales_order.inquiry)
       )
 
-      @sales_order.update_attributes(status: :"SAP Approval Pending",
+      @sales_order.update_attributes(
+        status: :"SAP Approval Pending",
         manager_approved_date: Time.now,
         quotation_uid: @sales_order.inquiry.quotation_uid
       )
