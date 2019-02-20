@@ -1,3 +1,5 @@
+import exportDaterange from '../common/exportDaterange'
+
 const index = () => {
     $('.add_to_inquiry_wrapper').hide();
     toggleCheckboxes();
@@ -5,7 +7,7 @@ const index = () => {
     $('#add_to_inquiry').click((event) => {
         addToInquiry();
     });
-
+    exportDaterange();
 };
 
 let toggleCheckboxes = () => {
@@ -62,8 +64,6 @@ let addToInquiry = () => {
             }
         });
     }
-
-
 };
 
 
