@@ -17,7 +17,7 @@ class MaterialPickupRequest < ApplicationRecord
   enum document_types: {
       'Tax Invoice': 10,
       'Proforma Invoice': 20,
-      'Add Delivery Challan': 30
+      'Delivery Challan': 30
   }
 
   enum status: {
