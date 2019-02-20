@@ -3,6 +3,10 @@
 <% provide :can_be_ajaxed, true %>
 <% provide :wrap_whitespace, true %>
 
+<% content_for :page_title do %>
+  PO Requests
+<% end %>
+
 <% content_for :heading do %>
   <%= action_name == 'index' ? 'Completed' : (action_name == 'pending_and_rejected') ? 'Pending' : action_name.capitalize %> Purchase Order Requests
 <% end %>
